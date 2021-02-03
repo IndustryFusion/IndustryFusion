@@ -1,0 +1,59 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<app-asset-type-create *ngIf="shouldShowCreateAssetType" (dismissModalSignal)="onDismissModal()"
+  (confirmModalSignal)="onConfirmModal($event)"></app-asset-type-create>
+<div>
+  <div class="content">
+    <div class="title">Create or update AssetType Template</div>
+    <div class="selection">
+      <!-- <ng2-completer class="select-asset-input" [datasource]="dataService" [minSearchLength]="0" (selected)="onAssetTypeSelect($event)"></ng2-completer> -->
+      <clr-select-container>
+        <label>Select Asset type</label>
+        <select clrSelect class="select-asset-input" name="assetType" [(ngModel)]="assetType">
+          <option *ngFor="let assetType of (assetTypes$ | async)" [ngValue]="assetType.id">{{ assetType.name }}</option>
+        </select>
+      </clr-select-container>
+      <button type="button" class="button-create" (click)="createAssetTypeModal()">
+        <clr-icon shape="plus"></clr-icon>Create new
+      </button>
+    </div>
+    <clr-radio-container clrInline class="select-starting-configuration">
+      <label>Do you want to start with a blank page or update an existing template?</label>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio name="blankPage" required value="blankPage" [(ngModel)]="startConfiguration" />
+        <label>Blank page</label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio name="existingTemplate" required value="existingTemplate"
+          [(ngModel)]="startConfiguration" />
+        <label>Existing template</label>
+      </clr-radio-wrapper>
+    </clr-radio-container>
+    <div *ngIf="startConfiguration === 'blankPage'">
+      <clr-input-container>
+        <label>Asset Type Template name</label>
+        <input clrInput class="select-asset-input" name="name" [(ngModel)]="name" />
+      </clr-input-container>
+      <clr-textarea-container>
+        <label>Description</label>
+        <textarea clrTextarea class="select-asset-input" [(ngModel)]="description" name="description"></textarea>
+      </clr-textarea-container>
+    </div>
+  </div>
+  <div class="footer">
+    <button type="button" class="button-cancel" (click)="cancel()">Cancel</button>
+    <button type="button" class="button-confirm" (click)="changeStep()">Start</button>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>
+
+<div class="go-back-panel">
+  <div class="goback">
+    <button class="btn btn-sm btn-link" (click)="goBack()">
+      <clr-icon shape="undo"></clr-icon> Go Back
+    </button>
+  </div>
+</div>
+
+<div class="clr-row wrapper">
+    <div *ngIf="asset$ | async as asset" class="cards clr-col">
+       <app-asset-card [asset]="asset"></app-asset-card>
+    </div>
+</div>

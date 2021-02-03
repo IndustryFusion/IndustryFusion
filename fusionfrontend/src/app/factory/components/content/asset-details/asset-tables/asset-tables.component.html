@@ -1,0 +1,41 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="card">
+  <h4 class="data-table-header">{{field.description}}</h4>
+  <div class="data-table">
+  <clr-datagrid>
+    <clr-dg-column>
+      <ng-container *clrDgHideableColumn="{hidden: false}">date</ng-container>
+    </clr-dg-column>
+    <clr-dg-column>
+      <ng-container *clrDgHideableColumn="{hidden: false}">value</ng-container>
+    </clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let point of allPoints">
+      <clr-dg-cell> value since {{point[1] | date:'dd.MM.yyyy hh:mm:ss'}}</clr-dg-cell>
+      <clr-dg-cell>{{point[0]}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Values per page</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+          of {{pagination.totalItems}} values
+      </clr-dg-pagination>
+    </clr-dg-footer>
+  </clr-datagrid>
+  </div>
+</div>

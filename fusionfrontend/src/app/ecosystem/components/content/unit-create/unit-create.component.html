@@ -1,0 +1,51 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="backdrop"></div>
+<div class="create-item">
+  <button class="button-close" (click)="dismissModal()">
+    <clr-icon size="19" shape="times"></clr-icon>
+  </button>
+  <div class="create-item-title">Create new Unit</div>
+  <div class="create-item-subtitle">Create new Unit</div>
+  <form clrForm clrLayout="vertical">
+    <clr-input-container>
+      <label>Unit name</label>
+      <input clrInput class="create-item-inputs" name="name" [(ngModel)]="name" />
+    </clr-input-container>
+    <clr-input-container>
+      <label>Unit label</label>
+      <input clrInput class="create-item-inputs" name="label" [(ngModel)]="label" />
+    </clr-input-container>
+    <clr-input-container>
+      <label>Symbol</label>
+      <input clrInput class="create-item-inputs" name="symbol" [(ngModel)]="symbol" />
+    </clr-input-container>
+    <clr-select-container>
+      <label>Quantity type</label>
+      <select clrSelect class="create-item-inputs" name="quantityTypeId" [(ngModel)]="quantityTypeId">
+        <option *ngFor="let quantityType of (quantityTypes$ | async)" [ngValue]="quantityType.id">{{ quantityType.name }}</option>
+      </select>
+    </clr-select-container>
+    <clr-textarea-container>
+      <label>Description</label>
+      <textarea clrTextarea class="create-item-inputs" [(ngModel)]="description" name="description"></textarea>
+    </clr-textarea-container>
+    <div class="create-item-footer">
+      <button type="button" class="button-cancel" type="submit" (click)="dismissModal()">Cancel</button>
+      <button type="button" class="button-confirm" (click)="confirmModal()">Create</button>
+    </div>
+  </form>
+</div>

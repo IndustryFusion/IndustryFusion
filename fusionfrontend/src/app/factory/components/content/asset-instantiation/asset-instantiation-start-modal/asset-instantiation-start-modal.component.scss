@@ -1,0 +1,42 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.start-modal {
+  padding: 15px;
+
+  .start-panel-row{
+    margin-bottom: 12px;
+
+    .asset-img {
+      .asset-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 60px;
+        overflow: hidden;
+      }
+    }
+
+    .start-panel-column {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      column-gap: 15px;;
+
+      .start-button {
+        margin: 0px;
+      }
+    }
+  }
+}

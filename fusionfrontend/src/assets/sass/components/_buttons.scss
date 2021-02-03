@@ -1,0 +1,54 @@
+
+.if-button {
+  padding: 17px 78px 16px;
+
+  text-align: center;
+  font-weight: 500;
+  font-size: $bigger-font-size;
+  line-height: $big-line-height;
+  letter-spacing: 0;
+  color: $basic-grey;
+
+  text-transform: uppercase;
+
+  background: $white-background;
+  border-radius: 44px;
+  opacity: 1;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+
+  &.button-secondary {
+
+    font-weight: normal;
+    color: $basic-black;
+    box-shadow: $dark-box-shadow;
+  }
+
+  &.button-primary {
+    font-weight: bold;
+    color: $basic-white;
+    background: $black-background;
+    box-shadow: $dark-box-shadow;
+  }
+
+  &.button-modal {
+    padding: 0px;
+    margin-right: 10px;
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 20px;
+  }
+}
+
+.close-modal-btn {
+  border: none;
+  float: right;
+  border-color: hsl(198, 0%, 95%);
+  font-size: 15px;
+  color: black;
+  cursor:pointer;
+}

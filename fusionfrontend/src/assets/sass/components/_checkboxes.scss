@@ -1,0 +1,59 @@
+.if-checkbox {
+  /* Hide the browser's default checkbox */
+  input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    height: $checkbox-height;
+    width: $checkbox-width;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    height: $checkbox-height;
+    width: $checkbox-width;
+    border: solid $basic-black 1px;
+    border-radius: 4px;
+    background-color: $basic-white;
+    .checkboxIcon {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .checkmark:after {
+    margin-left: 5px;
+    height: 10px;
+    width: 5px;
+    border: solid $basic-white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  /* Show the checkmark when checked */
+  input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* On mouse-over, add a grey background color */
+  &:hover input ~ .checkmark {
+    background-color: $light-grey;
+  }
+
+  /* On mouse-over, add a grey background color */
+  input:checked ~ .checkmark {
+    background-color: $basic-black;
+  }
+
+}
+

@@ -1,0 +1,268 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+# See https://medium.com/labs42/monorepo-with-circleci-conditional-workflows-69e65d3f1bd0 for details
+# Github: https://github.com/labs42io/circleci-monorepo
+
+version: 2.1
+
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  # A parameter per package
+  fusionbackend:
+    type: boolean
+    default: false
+  fusiondbdataservice:
+    type: boolean
+    default: false
+  fusionfrontend:
+    type: boolean
+    default: false
+  fusiongatewayapp:
+    type: boolean
+    default: false
+  fusionmqttdataservice:
+    type: boolean
+    default: false
+  fusionplcdataservice:
+    type: boolean
+    default: false
+  fusionparent:
+    type: boolean
+    default: false
+  fusionkeycloaktheme:
+    type: boolean
+    default: false
+  setup:
+    type: boolean
+    default: false
+
+executors:
+  node:
+    docker:
+      - image: circleci/node:10-browsers
+  java11:
+    docker:
+      - image: circleci/openjdk:11-jdk-stretch
+  vm:
+    machine:
+      image: ubuntu-1604:201903-01
+
+jobs:
+  trigger-workflows:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Trigger workflows
+          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
+
+  # https://circleci.com/docs/2.0/language-java-maven/
+  build-java:
+    environment:
+      JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64/
+    parameters:
+      package_name:
+        type: string
+
+    executor: vm
+    working_directory: ~/project/<< parameters.package_name >>
+
+    steps:
+      - run:
+          # Need to do this because jdk-11 isn't found without updating the package lists.
+          name: Update Package Lists from apt repositories
+          command: |
+            sudo apt-get update
+      - run:
+          name: Upgrade JDK to JDK 11
+          command: |
+            sudo apt install openjdk-11-jdk-headless
+
+      - checkout:
+          path: ~/base
+
+      - run:
+          name: Copy over subproject
+          command: |
+            mkdir ../fusionparent
+            cp -rp ~/base/fusionparent/. ../fusionparent
+            cp -rp ~/base/<< parameters.package_name >>/. .
+
+      - restore_cache:
+          key: fusion-<< parameters.package_name >>-{{ checksum "pom.xml" }}
+      
+      - run: mvn dependency:go-offline
+      
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: fusion-<< parameters.package_name >>-{{ checksum "pom.xml" }}
+      
+      - run: mvn package
+      
+      - store_test_results: 
+          path: target/surefire-reports
+      
+      #- store_artifacts:
+      #    path: target/demo-java-spring-0.0.1-SNAPSHOT.jar
+
+  build-js:
+    parameters:
+      package_name:
+        type: string
+
+    executor: node
+    working_directory: ~/project/<< parameters.package_name >>
+
+    steps:
+      - checkout:
+          path: ~/base
+
+      - run:
+          name: Copy over subproject
+          command: |
+            cp -rp ~/base/<< parameters.package_name >>/. .
+
+      - restore_cache:
+          key: fusion-<< parameters.package_name >>-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install local dependencies
+          command: npm install
+
+      - run:
+          name: Linting
+          command: npm run lint
+
+      # - run:
+      #     name: Testing
+      #     command: npm run test / e2e
+      # See https://angular.io/guide/testing
+
+      - setup_remote_docker
+
+      - run: 
+          name: Build
+          command: |
+            docker build -t << parameters.package_name >> .
+            # TAG=0.1.$CIRCLE_BUILD_NUM
+            # docker build -t CircleCI-Public/circleci-demo-docker:$TAG .
+            # echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            # docker push CircleCI-Public/circleci-demo-docker:$TAG      
+
+      - save_cache:
+          key: fusion-<< parameters.package_name >>-{{ checksum "yarn.lock" }}
+          paths:
+              - node_modules
+
+  noop:
+    parameters:
+      package_name:
+        type: string
+
+    executor: node
+    working_directory: ~/project/<< parameters.package_name >>
+
+    steps:
+      - checkout:
+          path: ~/base
+
+      - run:
+          name: Copy over subproject
+          command: |
+            cp -rp ~/base/<< parameters.package_name >>/. .
+
+      - run:
+          name: Noop
+          command: echo "Noop << parameters.package_name >> ..."
+                          
+workflows:
+  version: 2
+
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
+
+
+  # Workflows defined for each package.
+  fusionbackend:
+    when: << pipeline.parameters.fusionbackend >>
+    jobs:
+      - build-java:
+          name: fusionbackend-build
+          package_name: fusionbackend
+
+  fusiondbdataservice:
+    when: << pipeline.parameters.fusiondbdataservice >>
+    jobs:
+      - build-java:
+          name: fusiondbdataservice-build
+          package_name: fusiondbdataservice
+
+  fusionfrontend:
+    when: << pipeline.parameters.fusionfrontend >>
+    jobs:
+      - build-js:
+          name: fusionfrontend-build
+          package_name: fusionfrontend
+
+  fusiongatewayapp:
+    when: << pipeline.parameters.fusiongatewayapp >>
+    jobs:
+      - build-java:
+          name: fusiongatewayapp-build
+          package_name: fusiongatewayapp
+
+  fusionmqttdataservice:
+    when: << pipeline.parameters.fusionmqttdataservice >>
+    jobs:
+      - build-java:
+          name: fusionmqttdataservice-build
+          package_name: fusionmqttdataservice
+
+  fusionplcdataservice:
+    when: << pipeline.parameters.fusionplcdataservice >>
+    jobs:
+      - build-java:
+          name: fusionplcdataservice-build
+          package_name: fusionplcdataservice
+
+  setup:
+    when: << pipeline.parameters.setup >>
+    jobs:
+      - noop:
+          name: setup-build
+          package_name: setup
+
+  fusionparent:
+    when: << pipeline.parameters.fusionparent >>
+    jobs:
+      - noop:
+          name: fusionparent-build
+          package_name: fusionparent
+
+  fusionkeycloaktheme:
+    when: << pipeline.parameters.fusionkeycloaktheme >>
+    jobs:
+      - noop:
+          name: fusionkeycloaktheme-build
+          package_name: fusionkeycloaktheme
+

@@ -1,0 +1,66 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="wrapper">
+  <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
+    <clr-alert-item>
+      <span class="alert-text">
+        {{ error }}
+      </span>
+    </clr-alert-item>
+  </clr-alert>
+  <div class="timeline">
+    <ul class="clr-timeline clr-timeline-horizontal">
+      <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === 1" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step !== 1" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>
+      <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === 2" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < 2" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > 2" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>
+      <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === 3" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < 3" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > 3" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>
+      <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === 4" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < 4" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > 4" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>
+    </ul>
+  </div>
+  <app-asset-type-template-create-step-one *ngIf="step === 1" (stepChange)="onStepChange($event)"
+    (assetTypeSelect)="onAssetTypeSelect($event)" (nameSelect)="onNameSelect($event)"
+    (descriptionSelect)="onDescriptionSelect($event)" (errorSignal)="onError($event)">
+  </app-asset-type-template-create-step-one>
+  <app-asset-type-template-create-step-two *ngIf="step === 2" (stepChange)="onStepChange($event)"
+    (metricSelect)="onMetricsSelect($event)" (errorSignal)="onError($event)" [inputMetrics]="getMetrics()">
+  </app-asset-type-template-create-step-two>
+  <app-asset-type-template-create-step-three *ngIf="step === 3" (stepChange)="onStepChange($event)"
+    (attributeSelect)="onAttributesSelect($event)" (errorSignal)="onError($event)" [inputMetrics]="getAttributes()">
+  </app-asset-type-template-create-step-three>
+  <app-asset-type-template-create-step-four *ngIf="step === 4" (stepChange)="onStepChange($event)"
+    [metrics]="getMetrics()" [attributes]="getAttributes()" (saveTemplate)="onSaveTemplate()"
+    (errorSignal)="onError($event)">
+  </app-asset-type-template-create-step-four>
+  <app-asset-type-template-create-step-sumary *ngIf="step === 5"></app-asset-type-template-create-step-sumary>
+</div>

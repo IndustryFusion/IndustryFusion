@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/plc/seldomdata"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "jobId": "seldomdata",
+      "plcName": "My PLC",
+      "timestamp": "2019-11-12T13:57:57.0544117Z",
+      "data": {
+        "DIGITAL_INPUT_1": "47",
+        "DIGITAL_OUTPUT_1": "38"
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

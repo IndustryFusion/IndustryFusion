@@ -1,0 +1,13 @@
+  <ul class="clr-timeline clr-timeline-horizontal">
+    <li class="clr-timeline-step">
+      <clr-icon *ngIf="currentStep === 1" shape="dot-circle" aria-label="Started"></clr-icon>
+      <clr-icon *ngIf="currentStep !== 1" shape="success-standard" aria-label="Finished"></clr-icon>
+      <div class="clr-timeline-step-body"></div>
+    </li>
+    <li *ngFor="let step of steps" class="clr-timeline-step">
+      <clr-icon *ngIf="currentStep === step" shape="dot-circle" aria-label="Started"></clr-icon>
+      <clr-icon *ngIf="currentStep < step" shape="circle" aria-label="Not started"></clr-icon>
+      <clr-icon *ngIf="currentStep > step" shape="success-standard" aria-label="Finished"></clr-icon>
+      <div class="clr-timeline-step-body"></div>
+    </li>
+  </ul>

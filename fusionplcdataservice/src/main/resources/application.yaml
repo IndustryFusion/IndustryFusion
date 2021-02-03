@@ -1,0 +1,141 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+server:
+  error:
+    include-stacktrace: never
+
+fusionplcdataservice:
+  name: Filteranlage
+  connectionString: s7://192.168.49.60/1/1
+  jobSpecs:
+    betriebsdaten:
+      - source: "%DB1000.DB0.0:BOOL"
+        target: Opt_Vol_Modus
+      - source: "%DB1000.DB0.1:BOOL"
+        target: Opt_Venti_Stoerung
+      - source: "%DB1000.DB0.2:BOOL"
+        target: Opt_Betriebsdruck
+      - source: "%DB1000.DB0.3:BOOL"
+        target: Opt_Betriebsdruck_Stoe
+      - source: "%DB1000.DB0.4:BOOL"
+        target: Opt_Mld_Nachfilter
+      - source: "%DB1000.DB0.5:BOOL"
+        target: Opt_Mld_Stoe_Nachfilter
+      - source: "%DB1000.DB0.6:BOOL"
+        target: Opt_Abreinigung_Freigabe
+      - source: "%DB1000.DB0.7:BOOL"
+        target: Abreinig_Manu
+      - source: "%DB1000.DB1.0:BOOL"
+        target: Abreinig_Zeit
+      - source: "%DB1000.DB2.0:INT"
+        target: Abreinig_Offline
+      - source: "%DB1000.DB4.0:INT"
+        target: Abreinig_Ventile
+      - source: "%DB1000.DB6.0:UINT"
+        target: Bus_Rampe_Pos
+      - source: "%DB1000.DB8.0:UINT"
+        target: Bus_Rampe_Neg
+      - source: "%DB1000.DB10.0:DINT"
+        target: Abreinig_Intervall
+      - source: "%DB1000.DB14.0:DINT"
+        target: Ext_Stop_Nachlauf
+      - source: "%DB1000.DB18.0:DINT"
+        target: Abreinig_Pause
+      - source: "%DB1000.DB22.0:DINT"
+        target: Abreinig_Öffnung
+      - source: "%DB1000.DB26.0:DINT"
+        target: Betriebsstunden
+      - source: "%DB1000.DB30.0:DINT"
+        target: FU_Max_Hz
+      - source: "%DB1000.DB34.0:REAL"
+        target: Filter_Strom_HMI
+      - source: "%DB1000.DB38.0:REAL"
+        target: Differenzdruck
+      - source: "%DB1000.DB42.0:REAL"
+        target: Unterdruck
+      - source: "%DB1000.DB46.0:REAL"
+        target: Wasserfluss
+      - source: "%DB1000.DB50.0:REAL"
+        target: Druckluftfluss
+      - source: "%DB1000.DB54.0:REAL"
+        target: Temperatur
+      - source: "%DB1000.DB58.0:REAL"
+        target: Druckluft
+      - source: "%DB1000.DB62.0:REAL"
+        target: Luftverbrauch
+      - source: "%DB1000.DB66.0:REAL"
+        target: Wasserverbrauch
+      - source: "%DB1000.DB70.0:REAL"
+        target: Drehzahl
+      - source: "%DB1000.DB74.0:REAL"
+        target: Strom
+      - source: "%DB1000.DB78.0:REAL"
+        target: Abreinig_Beginn
+      - source: "%DB1000.DB82.0:REAL"
+        target: Abreinig_Ende
+      - source: "%DB1000.DB86.0:REAL"
+        target: Abreinig_Alarm
+      - source: "%DB1000.DB90.0:REAL"
+        target: Vol_Soll
+    statusdaten:
+      - source: "%DB2000.DB0.0:BOOL"
+        target: Wng_FVS_Max_Wasser
+      - source: "%DB2000.DB0.1:BOOL"
+        target: Wng_FVS_Max_Zeit
+      - source: "%DB2000.DB0.2:BOOL"
+        target: Wng_Abreingungsalarm
+      - source: "%DB2000.DB0.3:BOOL"
+        target: Wng_Kein_Betriebsdruck
+      - source: "%DB2000.DB0.4:BOOL"
+        target: Wng_Staubbehaelter
+      - source: "%DB2000.DB0.5:BOOL"
+        target: Wng_Druckluft
+      - source: "%DB2000.DB0.7:BOOL"
+        target: Stoe_Motorschutzschalter
+      - source: "%DB2000.DB1.0:BOOL"
+        target: Stoe_Partikelsensor
+      - source: "%DB2000.DB1.1:BOOL"
+        target: Stoe_Temperatur
+      - source: "%DB2000.DB1.2:BOOL"
+        target: Stoe_Kein_Betriebsdruck
+      - source: "%DB2000.DB1.3:BOOL"
+        target: Stoe_FU_Sammelstoerung
+      - source: "%DB2000.DB1.4:BOOL"
+        target: Stoe_FU_Busfehler
+      - source: "%DB2000.DB1.5:BOOL"
+        target: Stoe_FU_Ueberstrom
+      - source: "%DB2000.DB1.6:BOOL"
+        target: Stoe_FU_Therm_Motor
+      - source: "%DB2000.DB1.7:BOOL"
+        target: Stoe_FU_Leistungsteil
+      - source: "%DB2000.DB2.0:BOOL"
+        target: Stoe_FU_Ueberspg
+      - source: "%DB2000.DB2.1:BOOL"
+        target: Stoe_FU_Unterspg
+      - source: "%DB2000.DB2.2:BOOL"
+        target: Stoe_FU_Uebertemp
+      - source: "%DB2000.DB2.3:BOOL"
+        target: Stoe_FU_Untertemp
+      - source: "%DB2000.DB2.4:BOOL"
+        target: Stoe_FU_PTC
+      - source: "%DB2000.DB2.5:BOOL"
+        target: Stoe_FU_Phase
+      - source: "%DB2000.DB2.6:BOOL"
+        target: Stoe_FU_Motorfang
+      - source: "%DB2000.DB2.7:BOOL"
+        target: Stoerung
+      - source: "%DB2000.DB3.0:BOOL"
+        target: Mld_System_OK
+      - source: "%DB2000.DB3.1:BOOL"
+        target: Mld_Betrieb

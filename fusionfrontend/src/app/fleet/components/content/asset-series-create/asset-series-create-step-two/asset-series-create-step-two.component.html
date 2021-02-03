@@ -1,0 +1,75 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="asset-series-create-step-two">
+  <div class="content">
+      <div id="colum left">
+        Asset implementation
+        <div class="title">2. Asset Info</div>
+        We will guide you through the process of asset implementation to get<br>
+        your asset ready to communicate in the world largest I4.0 ecosystem
+        <br><br>
+        <div class="title">Asset Information</div>
+        Select the category of your Asset.
+        <div *ngIf="assetSeries">
+          <div class="clr-form-control">
+            <clr-select-container>
+              <label>Select asset type template</label>
+              <select [attr.disabled]="(id?.length > 0) ? '' : null"
+                      clrSelect
+                      name="assetTypeTemplate"
+                      placeholder="Asset category"
+                      (ngModelChange)="updateTypeTemplate($event)"
+                      [(ngModel)]="assetSeries.assetTypeTemplateId">
+                <option *ngFor="let assetTypeTemplate of (assetTypeTemplates$ | async)"
+                        [ngValue]="assetTypeTemplate.id">{{ assetTypeTemplate.name }}</option>
+              </select>
+            </clr-select-container>
+          </div>
+
+          <div class="clr-form-control">
+            <label>Name the Asset or Series you want to implement</label>
+            <input [(ngModel)]="assetSeries.name"
+                   placeholder="Asset series name">
+          </div>
+
+          <div class="clr-form-control">
+            <label>What's the name of this concrete asset instance?</label>
+            <input [(ngModel)]="assetSeries.description" placeholder="Asset instance name (IndustryFusion instanced series)">
+          </div>
+
+          <div class="upload-button">
+            <div class="upload-pic">
+              <clr-icon shape="upload" size="48"></clr-icon>
+            </div>
+            <div class="title"> Upload picture</div>
+          </div>
+        </div>
+      </div>
+      <div id="column right">
+        <clr-icon shape="help" size="29"></clr-icon>
+        <span class="if-hint" > How will my asset be displayed in a factory?</span>
+        <div class="sample-asset-display">
+          <img src="/assets/img/asset.png" alt="asset-symbol">
+          <div>
+            <span class="title">Asset series name</span>
+            <span>Asset instance name</span>
+            <span>Asset category</span>
+            <span>Manufacturer</span>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

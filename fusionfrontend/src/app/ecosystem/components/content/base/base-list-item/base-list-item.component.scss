@@ -1,0 +1,170 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'abstract/variables';
+@import 'components/checkboxes';
+
+.list-item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  opacity: 1;
+  height: 56px;
+  margin-bottom: 4px;
+
+  .hidden {
+    opacity: 0;
+  }
+
+  .if-checkbox {
+    display: flex;
+    justify-content: center;
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 4px #00000029;
+
+    .hidden {
+      opacity: 1;
+    }
+  }
+
+  &.selected {
+    border: 1px solid #000000;
+    box-shadow: 0px 0px 4px #00000029;
+    border-radius: 10px;
+  }
+
+  .list-item-cell {
+    text-align: left;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .black {
+    color: #000000;
+    cursor: pointer;
+  }
+
+  .grey {
+    color: #95989A;
+    cursor: pointer;
+  }
+
+  .dropdown-menu {
+    box-shadow: 0px 0px 4px #00000029;
+    border-radius: 10px;
+  }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba($color: #000000, $alpha: 0.75);
+}
+
+.delete-modal {
+  position: fixed;
+  top: 30vh;
+  left: 20vw;
+  width: 60vw;
+  padding: 64px 80px 56px;
+  z-index: 100;
+  background: #F8F8F8 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 10px;
+
+  .delete-modal-title {
+    text-align: left;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: 0;
+    color: #000000;
+    opacity: 1;
+  }
+
+  .delete-modal-footer {
+    margin-top: 80px;
+    text-align: right;
+  }
+
+  .button-close {
+    position: absolute;
+    top: 32px;
+    right: 40px;
+    color: #95989A;
+    background: 0 0;
+    border: 0;
+  }
+
+  .button-cancel {
+    padding-top: 17px;
+    padding-bottom: 16px;
+    padding-right: 78px;
+    padding-left: 78px;
+
+    margin-right: 16px;
+
+    text-align: center;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 23px;
+    letter-spacing: 0;
+    color: #000000;
+    text-transform: uppercase;
+
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 44px;
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .button-confirm {
+    padding-top: 17px;
+    padding-bottom: 16px;
+    padding-right: 78px;
+    padding-left: 78px;
+
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 23px;
+    letter-spacing: 0;
+    color: #FFFFFF;
+    text-transform: uppercase;
+
+    background: #000000 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 44px;
+    opacity: 1;
+    cursor: pointer;
+  }
+}

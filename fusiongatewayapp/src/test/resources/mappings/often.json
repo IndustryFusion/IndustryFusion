@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/plc/oftendata"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "jobId": "oftendata",
+      "plcName": "My PLC",
+      "timestamp": "2019-11-12T13:58:16.43708Z",
+      "data": {
+        "DIGITAL_INPUTS": "59",
+        "DIGITAL_OUTPUTS": "7"
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

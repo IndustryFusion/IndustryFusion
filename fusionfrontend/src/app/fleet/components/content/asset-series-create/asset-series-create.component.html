@@ -1,0 +1,58 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="wrapper">
+  <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
+    <clr-alert-item>
+      <span class="alert-text">
+        {{ error }}
+      </span>
+    </clr-alert-item>
+  </clr-alert>
+  <app-timeline class="timeline" [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
+  <app-asset-series-create-step-one *ngIf="step === 1" (stepChange)="onStepChange($event)">
+  </app-asset-series-create-step-one>
+  <app-asset-series-create-step-two *ngIf="step === 2" [assetSeries]="assetSeries">
+  </app-asset-series-create-step-two>
+  <app-asset-series-create-step-three *ngIf="step === 3" >
+  </app-asset-series-create-step-three>
+  <app-asset-series-create-step-four *ngIf="step === 4" [assetSeries]="assetSeries" [assetSeries$]="assetSeries$">
+  </app-asset-series-create-step-four>
+  <div class="footer">
+    <div *ngIf="step != 1">
+      <button type="button" class="if-button button-secondary" (click)="back()">Back</button>
+      <button type="button" class="if-button button-primary" [disabled]="!readyToTakeNextStep()" (click)="nextStep()">
+        <span *ngIf="step === toalSteps; else normalNext">Finish</span>
+        <ng-template #normalNext>Next</ng-template>
+      </button>
+    </div>
+    <div *ngIf="step==1">
+      <button type="button" class="if-button button-secondary" (click)="back()">Cancel</button>
+      <button [disabled]="!readyToTakeNextStep()" type="button"
+              class="if-button button-primary" (click)="nextStep()">Start
+      </button>
+      <clr-checkbox-container [formGroup]="checkboxGroup">
+        <clr-checkbox-wrapper>
+          <input formControlName="isTermsChecked" type="checkbox" clrCheckbox value="option1" name="options"/>
+          <label>Agree to terms & conditions</label>
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+          <input formControlName="isPrivacyChecked" type="checkbox" clrCheckbox value="option2" name="options"/>
+          <label>Agree to privacy policy</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "6ec08472-63e0-423b-b088-6f5d7a409a46",
+		"name": "fusion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/companies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2?embedChildren=true",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2?embedChildren=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2"
+					],
+					"query": [
+						{
+							"key": "embedChildren",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"DaveFusion\",\n\t\"type\": \"MACHINE_MANUFACTURER\",\n\t\"description\": \"nice factory\",\n\t\"imageKey\": \"imagekey\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/companies",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/40",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"DaveFusiondelta\",\r\n    \"description\": \"nice factorydelta\",\r\n    \"imageKey\": \"imagekeydelta\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/companies/40",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17?embedChildren=true",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17?embedChildren=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17"
+					],
+					"query": [
+						{
+							"key": "embedChildren",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/1/locations/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Begorah\",\n\t\"type\": \"HEADQUARTER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/companies/1/locations/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"1",
+						"locations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/1/locations/41",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"line1\": \"Marienplatz 1\",\n\t\"city\": \"München\",\n\t\"zip\": \"80331\",\n\t\"country\": \"Deutschland\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/companies/1/locations/41",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"1",
+						"locations",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17/rooms",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17",
+						"rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms/33",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17/rooms/33",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17",
+						"rooms",
+						"33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms/33?embedChildren=true",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17/rooms/33?embedChildren=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17",
+						"rooms",
+						"33"
+					],
+					"query": [
+						{
+							"key": "embedChildren",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Begorah\",\n\t\"type\": \"HEADQUARTER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17/rooms",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17",
+						"rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms/42",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Begorahdelta\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17/rooms/42",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17",
+						"rooms",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms/33/assets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17/rooms/33/assets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17",
+						"rooms",
+						"33",
+						"assets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms/33/assets/42",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/2/locations/17/rooms/33/assets/42",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"2",
+						"locations",
+						"17",
+						"rooms",
+						"33",
+						"assets",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/2/locations/17/rooms/33/assets/42?embedChildren=true",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/1/locations/2/rooms/3/assets/4?embedChildren=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"1",
+						"locations",
+						"2",
+						"rooms",
+						"3",
+						"assets",
+						"4"
+					],
+					"query": [
+						{
+							"key": "embedChildren",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/1/assets",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Asset\",\n\t\"description\": \"des\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/companies/1/assets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"1",
+						"assets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/companies/1/assettypetemplates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/companies/1/assettypetemplates",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"companies",
+						"1",
+						"assettypetemplates"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

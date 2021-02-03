@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/gateway/betriebsdaten"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

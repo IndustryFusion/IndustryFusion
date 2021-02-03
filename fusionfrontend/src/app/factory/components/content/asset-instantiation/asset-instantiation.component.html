@@ -1,0 +1,51 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<div *ngIf="modalsActive">
+  <app-asset-instantiation-start-modal  *ngIf="modalTypeActive == assetModalTypes.startInitialitation"
+                                        [assetSeries]="assetSeries"
+                                        (stoppedAssetAssignment)="closeModal($event)"
+                                        (clickedStartEvent)="clickedStartInstantiation($event)">
+  </app-asset-instantiation-start-modal>
+
+  <app-asset-instantiation-paired-modal *ngIf="modalTypeActive == assetModalTypes.customizeAsset"
+                                        [assetSeries]="selectedAssetSeries"
+                                        (stoppedAssetAssignment)="closeModal($event)"
+                                        (clickedCustomizeEvent)="clickedCustomize($event)">
+  </app-asset-instantiation-paired-modal>
+
+  <app-asset-instantiation-description-modal  *ngIf="modalTypeActive == assetModalTypes.addDescription"
+                                              [assetDetailsForm]="assetDetailsForm"
+                                              (stoppedAssetAssignment)="closeModal($event)"
+                                              (clickedButtonEvent)="clickedButtonOnDescription($event)">
+  </app-asset-instantiation-description-modal>
+
+  <app-asset-instantiation-location-assignment-modal  *ngIf="modalTypeActive == assetModalTypes.locationAssignment"
+                                                      [locations] = "locations"
+                                                      [selectedLocation]="selectedLocation"
+                                                      [assetDetailsForm]="assetDetailsForm"
+                                                      (stoppedAssetAssignment)="closeModal($event)"
+                                                      (finishedLocationAssignmentEvent)="finishedLocationAssignmentEvent($event)">
+  </app-asset-instantiation-location-assignment-modal>
+
+  <app-asset-instantiation-room-assignment-modal *ngIf="modalTypeActive == assetModalTypes.roomAssigntment"
+                                                  [rooms]="allRoomsOfLocation"
+                                                  [assetDetailsForm]="assetDetailsForm"
+                                                  (stoppedAssetAssignment)="closeModal($event)"
+                                                  (closedRoomAssignmentModalEvent)="finishInstantiation($event)">
+  </app-asset-instantiation-room-assignment-modal>
+</div>
+
+
+

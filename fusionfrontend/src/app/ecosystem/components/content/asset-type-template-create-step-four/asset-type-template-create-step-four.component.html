@@ -1,0 +1,46 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<div class="content">
+  <div class="title">
+    <div>
+      Review Metrics & Attributes
+    </div>
+    <div>
+      Template Version - v.4
+    </div>
+  </div>
+  <div class="subtitle">Metrics</div>
+  <div *ngIf="metrics && metrics.length > 0" class="metrics-list">
+    <app-asset-type-template-metric-row *ngFor="let metric of metrics" [fieldTarget]="metric"
+      (editSignal)="changeStep(2)" (deleteSignal)="changeStep(2)" confirmed="true">
+    </app-asset-type-template-metric-row>
+  </div>
+  <button type="button" class="button-add" (click)="changeStep(2)">
+    <clr-icon shape="plus"></clr-icon>Add Metric
+  </button>
+  <div class="subtitle">Attributes</div>
+  <div *ngIf="attributes && attributes.length > 0" class="metrics-list">
+    <app-asset-type-template-metric-row *ngFor="let metric of attributes" [fieldTarget]="metric"
+      (editSignal)="changeStep(3)" (deleteSignal)="changeStep(3)" confirmed="true">
+    </app-asset-type-template-metric-row>
+  </div>
+  <button type="button" class="button-add" (click)="changeStep(3)">
+    <clr-icon shape="plus"></clr-icon>Add Attribute
+  </button>
+</div>
+<div class="footer">
+  <button type="button" class="button-cancel" type="submit" (click)="cancel()">Cancel</button>
+  <button type="button" class="button-confirm" (click)="save(5)">Save Template</button>
+</div>

@@ -1,0 +1,18 @@
+{
+  "connected": "true",
+  "tags": {
+    "E2MIX-Entnahmedruck_1": 0.4,
+    "E2MIX-Flaschendruck_Links": 140.6,
+    "E2MIX-Flaschendruck_Rechts": 0.0,
+    "E2MIX-Leitungsdruck": 0.6,
+    "E2ISOTC-Umgebungstemperatur": 0.0,
+    "E2MIX-Entnahmedruck_2": 0.0,
+    "E2MIX-Entnahmedruck_3": 0.0,
+    "E2MIX-Entnahmeventil_1": "ON",
+    "E2MIX-Entnahmeventil_2": "OFF",
+    "E2MIX-Entnahmeventil_3": "OFF",
+    "E2MIX-Ventil_Links": "ON",
+    "E2MIX-Ventil_Rechts": "OFF"
+  },
+  "timestamp": "2019-11-29T00:27:30Z"
+}

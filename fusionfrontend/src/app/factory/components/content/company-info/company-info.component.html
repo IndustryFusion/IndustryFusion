@@ -1,0 +1,59 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<section class="company">
+  <img class="company-img" src="{{ imgUrl }}"/>
+  <div class="company-info">
+    <h3>
+      {{location?.name}}
+    </h3>
+    <div class="address">
+      <p>{{location?.line1}}</p>
+      <p>{{location?.line2}}</p>
+      <p>{{location?.country}}</p>
+    </div>
+  </div>
+  <div class="info-details">
+    <div class="info">
+      <span class="status">
+        Production
+      </span>
+      <span class="c-label">
+        {{date | date:'d.M.yyyy'}}
+      </span>
+      <span class="c-label">
+        {{date | date:'H:mm'}}
+      </span>
+      <span class="c-value">
+        {{temperature$ | async | number: '1.1-1'}}°C
+      </span>
+
+    </div>
+    <div class="details">
+      <p>
+        <span class="c-value">{{rooms?.length}}</span>
+        <span class="c-label">Rooms</span>
+      </p>
+      <p>
+        <span class="c-value">{{assets?.length}}</span>
+        <span class="c-label">Assets</span>
+      </p>
+      <p>
+        <span class="c-value">{{numUsers}}</span>
+        <span class="c-label">Users</span>
+      </p>
+    </div>
+  </div>
+</section>

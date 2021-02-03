@@ -1,0 +1,89 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import '../../../../../ecosystem/components/content/base/base-list-header/base-list-header.component.scss';
+@import 'abstract/variables';
+@import 'components/checkboxes';
+
+.icon{
+  color:  $basic-grey;
+}
+
+.filter-dropdown {
+
+  .filter-dropdown-menu {
+    max-width: fit-content;
+  }
+
+  .dropdown-header{
+    font-size: medium;
+  }
+
+  .form-wrapper {
+    .if-checkbox {
+      display: flex;
+      justify-content: flex-start;
+      margin-left: 8px;
+      margin-right: 5px;
+
+      .fieldLabel {
+        display: flex;
+        justify-content: right;
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .filter-dismiss-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 10px;
+    margin-bottom: 5px;
+
+    .button-wrapper {
+      background-color: $basic-white;
+      color: $basic-black;
+      border: 2px solid $basic-black;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .button-wrapper:hover {
+      background-color: $basic-black;
+      color: $basic-white;
+    }
+  }
+
+  .filter-check-button {
+    display:flex;
+    justify-content: flex-start;
+    margin-left: 8px;
+    margin-bottom: 5px;
+
+    .checkbutton-wrapper{
+      background-color: $basic-white;
+      color: $basic-black;
+      border: 2px solid $basic-black;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .checkbutton-wrapper:hover {
+      background-color: $basic-black;
+      color: $basic-white;
+    }
+  }
+
+}
+

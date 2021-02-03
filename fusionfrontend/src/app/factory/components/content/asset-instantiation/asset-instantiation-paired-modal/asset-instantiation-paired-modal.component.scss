@@ -1,0 +1,62 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.paired-panel {
+  padding: 30px 30px 0px 30px;
+  display: grid;
+  grid-template-areas:
+    'item1 item1 item1 . item2 .'
+    'item1 item1 item1 item3 item3 item3'
+    'item4 item4 item4 item4 item4 item4';
+  column-gap: 100px;
+  row-gap: 15px;
+
+  .item-1 {
+    grid-area: item1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .asset-img {
+      .asset-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 60px;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .item-2 {
+    grid-area: item2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .item-3 {
+    grid-area: item3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .item-4 {
+    grid-area: item4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
