@@ -21,7 +21,7 @@ import io.fusion.fusionmqttdataservice.outputservice.GatewayOutputService;
 import io.fusion.fusionmqttdataservice.parser.PayloadParser;
 import io.fusion.fusionmqttdataservice.parser.PayloadParserProducer;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-public class MqttSubscriber implements MqttCallback {
+public class MqttSubscriber implements MqttCallbackExtended {
     private static final Logger LOG = LoggerFactory.getLogger(MqttSubscriber.class);
 
     private final String clientId = MqttSubscriber.class.getName() + ":" + UUID.randomUUID();
@@ -45,6 +45,7 @@ public class MqttSubscriber implements MqttCallback {
     private final GatewayOutputService gatewayOutputService;
     private final PayloadParserProducer payloadParserProducer;
     private MqttClient mqttClient;
+    private String[] topics;
 
     @Autowired
     public MqttSubscriber(FusionMqttDataServiceConfig appConfig,
@@ -53,11 +54,11 @@ public class MqttSubscriber implements MqttCallback {
         this.appConfig = appConfig;
         this.payloadParserProducer = payloadParserProducer;
         this.gatewayOutputService = gatewayOutputService;
+        topics = appConfig.getTopicSpecs().keySet().toArray(String[]::new);
     }
 
     public void start() {
         final String brokerUrl = appConfig.getMqttBrokerUrl();
-        final String[] topics = appConfig.getTopicSpecs().keySet().toArray(String[]::new);
 
         MqttConnectOptions connOpts = new MqttConnectOptions();
         connOpts.setCleanSession(true);
@@ -76,7 +77,7 @@ public class MqttSubscriber implements MqttCallback {
         }
         LOG.info("Subscribing to: {}", Arrays.toString(topics));
         try {
-            mqttClient.subscribe(topics);
+            mqttClient.subscribe(this.topics);
         } catch (MqttException e) {
             throw new MqttClientException("Subscribe", e);
         }
@@ -127,5 +128,17 @@ public class MqttSubscriber implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         LOG.error("deliveryComplete called although no messages should be sent!!! ");
+    }
+
+    @Override
+    public void connectComplete(boolean reconnect, String serverUri) {
+        System.out.println("Re-Connection Attempt " + reconnect);
+        if (reconnect) {
+            try {
+                this.mqttClient.subscribe(this.topics);
+            } catch (MqttException e) {
+                throw new MqttClientException("Subscribe", e);
+            }
+        }
     }
 }
