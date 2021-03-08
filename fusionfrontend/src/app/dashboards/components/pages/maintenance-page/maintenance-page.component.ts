@@ -34,7 +34,10 @@ import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-detail
 export class MaintenancePageComponent implements OnInit {
 
   companyId: ID
-  public assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
+  assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
+  //assetsMap: Map<Number, AssetDetailsWithFields>;
+  assetsDetailsAndFields: AssetDetailsWithFields[];
+
   
   constructor(
     private factoryResolver: FactoryResolver,
@@ -48,13 +51,15 @@ export class MaintenancePageComponent implements OnInit {
     this.factoryResolver.resolve(this.activatedRoute);
 
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.assetsWithDetailsAndFields$.subscribe(res => {
+      for(let asset of res) {
+        let number = Math.floor(Math.random() * 1500 + 1);
+        asset.videoKey = number.toString();
+      }
+      this.assetsDetailsAndFields = res;
+      this.assetsDetailsAndFields.sort((a, b) => (Number(a.videoKey) > Number(b.videoKey)) ? 1 : -1);
+    });
     
-    // this.assetDetailsQuery.selectAssetDetailsOfCompany(this.companyId).pipe(
-    //   switchMap(assetDetailsArray =>
-    //     forkJoin(
-    //       assetDetailsArray.map(assetDetails => this.fieldService.getFieldsOfAsset(this.companyId, assetDetails.id))))
-    // ).subscribe();
-    // this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinFieldsOfAssetsDetailsWithOispData();
   }
 
 }

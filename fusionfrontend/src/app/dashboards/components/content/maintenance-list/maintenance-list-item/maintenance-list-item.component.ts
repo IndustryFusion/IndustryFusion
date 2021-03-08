@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
 
-
 @Component({
   selector: 'app-maintenance-list-item',
   templateUrl: './maintenance-list-item.component.html',
@@ -10,22 +9,22 @@ import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-detail
 export class MaintenanceListItemComponent implements OnInit {
 
   @Input()
-  assetsWithDetailsAndFields: AssetDetailsWithFields;
+  assetWithDetailsAndFields: AssetDetailsWithFields;
 
-  maintenanceDurationHour: number;
+  maintenanceDurationHours: number;
+  maintenanceDurationDays: number;
+  maintenanceDurationWeeks: number;
   maintenanceDurationMonth: number;
   maintenancePercentage: number;
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log("blub", this.assetsWithDetailsAndFields)
-    this.maintenanceDurationHour = Math.floor(Math.random() * 1500 + 1);
-    console.log(this.maintenanceDurationHour);
-    this.maintenanceDurationMonth = this.maintenanceDurationHour/(30.4167*24);
-    console.log(this.maintenanceDurationMonth);
-    this.maintenancePercentage = (this.maintenanceDurationHour/1500)*100;
-    console.log(this.maintenancePercentage)
+    this.maintenanceDurationHours = Number(this.assetWithDetailsAndFields.videoKey);
+    this.maintenancePercentage = (this.maintenanceDurationHours/1500)*100;
+    this.maintenanceDurationDays = Math.round(this.maintenanceDurationHours/24);
+    this.maintenanceDurationWeeks = Math.round(this.maintenanceDurationHours/(24*7));
+    this.maintenanceDurationMonth = Math.round(this.maintenanceDurationHours/(30.4167*24));
   }
 
 }
