@@ -21,10 +21,10 @@ export class MaintenanceListItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.maintenanceDurationHours = Number(this.assetWithDetailsAndFields.videoKey);
-    this.maintenancePercentage = (this.maintenanceDurationHours/1500)*100;
-    this.maintenanceDurationDays = Math.round(this.maintenanceDurationHours/24);
-    this.maintenanceDurationWeeks = Math.round(this.maintenanceDurationHours/(24*7));
-    this.maintenanceDurationMonth = Math.round(this.maintenanceDurationHours/(30.4167*24));
+    this.maintenancePercentage = (this.maintenanceDurationHours / 1500) * 100;
+    this.maintenanceDurationDays = Math.round(this.maintenanceDurationHours / 24);
+    this.maintenanceDurationWeeks = Math.round(this.maintenanceDurationHours / (24 * 7));
+    this.maintenanceDurationMonth = Math.round(this.maintenanceDurationHours / (30.4167 * 24));
   }
 
 }

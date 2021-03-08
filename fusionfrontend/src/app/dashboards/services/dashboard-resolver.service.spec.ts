@@ -6,7 +6,7 @@ describe('DashboardResolverService', () => {
   let service: DashboardResolverService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ });
     service = TestBed.inject(DashboardResolverService);
   });
 

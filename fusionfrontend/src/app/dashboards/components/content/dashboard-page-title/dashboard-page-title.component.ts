@@ -23,7 +23,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class DashboardPageTitleComponent implements OnInit {
   @Input()
   dashboardSubTitle: string;
-  
+
   constructor() { }
 
   ngOnInit(): void {

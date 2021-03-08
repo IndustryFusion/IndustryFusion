@@ -38,7 +38,7 @@ export class MaintenancePageComponent implements OnInit {
   locations$: Observable<Location[]>;
   companies$: Observable<Company[]>;
   assetsDetailsAndFields: AssetDetailsWithFields[];
-  
+
   constructor(
     private assetTypeQuery: AssetTypeQuery,
     private factoryResolver: FactoryResolver,
@@ -53,9 +53,8 @@ export class MaintenancePageComponent implements OnInit {
 
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.assetsWithDetailsAndFields$.subscribe(res => {
-      for(let asset of res) {
-        let number = Math.floor(Math.random() * 1500 + 1);
-        asset.videoKey = number.toString();
+      for (const asset of res) {
+        asset.videoKey = Math.floor(Math.random() * 1500 + 1).toString();
       }
       this.assetsDetailsAndFields = res;
       this.assetsDetailsAndFields.sort((a, b) => (Number(a.videoKey) > Number(b.videoKey)) ? 1 : -1);
