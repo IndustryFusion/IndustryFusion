@@ -28,8 +28,10 @@ import { environment } from 'src/environments/environment';
 import { MaintenancePageComponent } from 'src/app/dashboards/components/pages/maintenance-page/maintenance-page.component';
 import { MaintenanceListComponent } from './components/content/maintenance-list/maintenance-list.component';
 import { MaintenanceListHeaderComponent } from './components/content/maintenance-list/maintenance-list-header/maintenance-list-header.component';
-import { MaintenanceListItemComponent } from './components/content//maintenance-list/maintenance-list-item/maintenance-list-item.component';
-import { ProgressBarModule } from 'primeng/progressbar'
+import { MaintenanceListItemComponent } from './components/content/maintenance-list/maintenance-list-item/maintenance-list-item.component';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext'
 
 
 @NgModule({
@@ -52,7 +54,9 @@ import { ProgressBarModule } from 'primeng/progressbar'
         FormsModule,
         FontAwesomeModule,
         ReactiveFormsModule,
-        ProgressBarModule
+        ProgressBarModule,
+        DialogModule,
+        InputTextModule
       ],
   exports: [
     DashboardSubHeaderComponent,

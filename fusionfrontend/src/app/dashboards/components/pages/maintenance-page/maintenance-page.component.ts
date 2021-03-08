@@ -18,12 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-// import { AssetDetailsQuery } from '../../../../store/asset-details/asset-details.query';
-// import { forkJoin, Observable } from 'rxjs';
-// import { switchMap } from 'rxjs/operators';
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
-// import { FieldService } from 'src/app/store/field/field.service';
-// import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
 
 
 @Component({
@@ -35,16 +30,12 @@ export class MaintenancePageComponent implements OnInit {
 
   companyId: ID
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
-  //assetsMap: Map<Number, AssetDetailsWithFields>;
   assetsDetailsAndFields: AssetDetailsWithFields[];
 
   
   constructor(
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute
-    // private assetDetailsQuery: AssetDetailsQuery,
-    // private fieldService: FieldService,
-    // private factoryComposedQuery: FactoryComposedQuery,
   ) { }
 
   ngOnInit(): void {
@@ -59,7 +50,6 @@ export class MaintenancePageComponent implements OnInit {
       this.assetsDetailsAndFields = res;
       this.assetsDetailsAndFields.sort((a, b) => (Number(a.videoKey) > Number(b.videoKey)) ? 1 : -1);
     });
-    
   }
 
 }

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model'
 
 @Component({
@@ -21,10 +21,12 @@ import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-detail
   templateUrl: './maintenance-list.component.html',
   styleUrls: ['./maintenance-list.component.scss']
 })
-export class MaintenanceListComponent implements OnInit {
+export class MaintenanceListComponent implements OnInit, OnChanges {
 
   @Input()
   assetsWithDetailsAndFields: AssetDetailsWithFields[];
+
+  displayedAssets: AssetDetailsWithFields[];
 
   constructor(
   ) { }
@@ -32,5 +34,11 @@ export class MaintenanceListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-}
+  ngOnChanges(): void {
+    this.displayedAssets = this.assetsWithDetailsAndFields;
+  }
 
+  searchedForAssets(event: AssetDetailsWithFields[]){
+      this.displayedAssets = event;
+  }
+}

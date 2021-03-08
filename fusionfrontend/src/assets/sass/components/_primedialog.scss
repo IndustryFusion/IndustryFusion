@@ -1,0 +1,26 @@
+.ui-dialog .ui-dialog-titlebar {
+    background: white !important;
+    color: black !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-color: white;
+  }
+
+  .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+    color: black !important;
+  }
+
+
+.ui-dialog .ui-dialog-content {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-color: white !important;
+}
+
+.ui-dialog {
+    width: 275px;
+    position: relative;
+    right: 670px;
+    bottom: 110px;
+}
+

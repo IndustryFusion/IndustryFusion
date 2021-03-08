@@ -1,6 +1,6 @@
 <div class="wrapper">
     <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-      <div class="title" >Maintenance Dashboard</div>
+      <div class="title">Maintenance Dashboard</div>
       <button class="filter-button">
         <clr-icon shape="filter"></clr-icon> 
     </button>
@@ -8,8 +8,8 @@
   
     <div>
       <div class="list-container">
-          <app-maintenance-list-header></app-maintenance-list-header>
-        <app-maintenance-list-item *ngFor="let assetWithDetailsAndFields of assetsWithDetailsAndFields" [assetWithDetailsAndFields]="assetWithDetailsAndFields"></app-maintenance-list-item>
+        <app-maintenance-list-header [assetsWithDetailsAndFields]="assetsWithDetailsAndFields" (assetSearched)="searchedForAssets($event)"></app-maintenance-list-header>
+        <app-maintenance-list-item *ngFor="let assetWithDetailsAndFields of displayedAssets" [assetWithDetailsAndFields]="assetWithDetailsAndFields"></app-maintenance-list-item>
       </div>
     </div>
   </div>
