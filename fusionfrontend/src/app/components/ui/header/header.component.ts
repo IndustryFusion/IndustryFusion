@@ -30,7 +30,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private unSubscribe$ = new Subject<void>();
 
   @Input()
-  subTitle: string;
+  factorySubTitle: string;
+
+  @Input()
+  dashboardSubTitle: string;
 
   @Input()
   user: User;

@@ -13,9 +13,20 @@
  * under the License.
  */
 
-export enum ManagerType {
-  ECOSYSTEM_MANAGER = 'ecosystemmanager',
-  FLEET_MANAGER = 'fleetmanager',
-  FACTORY_MANAGER = 'factorymanager',
-  DASHBOARDS = 'dashboards'
+import { Component, OnInit, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-dashboard-page-title',
+  templateUrl: './dashboard-page-title.component.html',
+  styleUrls: ['./dashboard-page-title.component.scss']
+})
+export class DashboardPageTitleComponent implements OnInit {
+  @Input()
+  dashboardSubTitle: string;
+  
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

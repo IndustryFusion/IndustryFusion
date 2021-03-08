@@ -34,6 +34,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './services/token.interceptor';
+import { DashboardModule } from './dashboards/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { TokenInterceptor } from './services/token.interceptor';
     FleetModule,
     EcosystemModule,
     SettingsModule,
+    DashboardModule,
     AkitaNgRouterStoreModule,
     ClarityModule,
     BrowserAnimationsModule,

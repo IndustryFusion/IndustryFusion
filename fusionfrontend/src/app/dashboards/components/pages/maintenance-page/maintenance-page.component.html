@@ -13,5 +13,4 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<h1>Smart Factory</h1>
-<h2>{{ factorySubTitle }}</h2>
+<app-maintenance-list [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"></app-maintenance-list>

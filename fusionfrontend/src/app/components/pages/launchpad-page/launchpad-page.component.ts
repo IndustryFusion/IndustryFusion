@@ -54,6 +54,13 @@ export class LaunchpadPageComponent implements OnInit {
       route: '/ecosystemmanager'
     },
     {
+      name: 'Dashboards',
+      text: 'Dashboards',
+      itemClass: HomeItemClass.DASHBOARDS,
+      icon: 'bar-chart',
+      route: '/dashboards/companies/2/maintenance'
+    },
+    {
       name: 'Settings',
       text: '',
       itemClass: HomeItemClass.SETTINGS,
