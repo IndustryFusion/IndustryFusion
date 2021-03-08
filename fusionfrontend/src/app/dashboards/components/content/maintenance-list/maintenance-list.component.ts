@@ -16,8 +16,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { AssetDetailsWithFields, DashboardFilterModalType } from 'src/app/store/asset-details/asset-details.model'
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Location } from 'src/app/store/location/location.model';
@@ -29,7 +27,6 @@ interface FilterAttribute {
 }
 
 interface ActiveFilter {
-  id: ID;
   filterAttribute: FilterAttribute;
 }
 
@@ -47,7 +44,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   @Input()
   assetsWithDetailsAndFields: AssetDetailsWithFields[];
-
   @Input()
   locations: Location[];
   @Input()
@@ -57,32 +53,25 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   displayedAssets: AssetDetailsWithFields[];
   faFilter = faFilter;
-  faPlus = faPlus;
-  faTimes = faTimes;
 
+  selectedValueMapping:
+  { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
+
+  activeFilterSet: Set<ActiveFilter> = new Set();
+  filterOptions: FilterAttribute[] = [];
   assetType: FilterAttribute =  { type: 'assetType', name: 'Asset Type' };
   manufacturer: FilterAttribute =  { type: 'manufacturer', name: 'Manufacturer' };
   factory: FilterAttribute =  { type: 'factory', name: 'Factory' };
   maintenanceDue: FilterAttribute =  { type: 'maintenanceDue', name: 'Maintenance Due' };
 
-  filterOptions: FilterAttribute[] = [];
-  activeFilterList: Set<ActiveFilter> = new Set();
-
-
   dashboardFilterModalTypes = DashboardFilterModalType;
   dashboardFilterTypeActice: DashboardFilterModalType;
-  filterCount = 0;
-  filterIdCount = 0;
   selectedAssetTypes: AssetType[] = [];
-  selectedAssetTypesCount = 0;
   selectedCompanies: Company[] = [];
-  selectedCompaniesCount = 0;
   selectedLocations: Location[] = [];
-  selectedLocationsCount = 0;
   maintenanceValues: MaintenanceFilter[] = [{ id: 0, urgency: 'Critical (red)' },
     { id: 1, urgency: 'Soon (grey)' }, { id: 2, urgency: 'Longterm (blue)' }];
   selectedMaintenanceDue: MaintenanceFilter[] = [];
-  selectedMaintenanceCount = 0;
   searchText = '';
 
   constructor(
@@ -103,24 +92,23 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   addFilter() {
     const activeFilters: FilterAttribute[] = [];
-    this.activeFilterList.forEach(filter => {
+    this.activeFilterSet.forEach(filter => {
       activeFilters.push(filter.filterAttribute);
     })
     if (!activeFilters.includes(this.assetType)) {
-      this.activeFilterList.add({ id: this.filterIdCount++ , filterAttribute: this.assetType});
+      this.activeFilterSet.add({ filterAttribute: this.assetType });
     } else if (!activeFilters.includes(this.manufacturer)) {
-      this.activeFilterList.add({ id: this.filterIdCount++ , filterAttribute: this.manufacturer});
+      this.activeFilterSet.add({ filterAttribute: this.manufacturer });
     } else if (!activeFilters.includes(this.factory)) {
-      this.activeFilterList.add({ id: this.filterIdCount++ , filterAttribute: this.factory});
+      this.activeFilterSet.add({ filterAttribute: this.factory });
     } else if (!activeFilters.includes(this.maintenanceDue)) {
-      this.activeFilterList.add({ id: this.filterIdCount++ , filterAttribute: this.maintenanceDue});
+      this.activeFilterSet.add({ filterAttribute: this.maintenanceDue });
     }
-    this.filterCount++;
   }
 
-  clearSingleFilter(filterId: ID) {
-    this.activeFilterList.forEach(filter => {
-      if (filter.id === filterId) {
+  clearSingleFilter(filterToRemove) {
+    this.activeFilterSet.forEach(filter => {
+      if (filter === filterToRemove) {
         if (filter.filterAttribute === this.assetType) {
           this.selectedAssetTypes = [];
         } else if (filter.filterAttribute === this.manufacturer) {
@@ -130,20 +118,18 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
         } else if (filter.filterAttribute === this.maintenanceDue) {
           this.selectedMaintenanceDue = [];
         }
-        this.activeFilterList.delete(filter)
+        this.activeFilterSet.delete(filter)
       }
     })
     this.filterAssets();
-    this.filterCount--;
   }
 
   clearAllFilters() {
-    this.activeFilterList.clear();
+    this.activeFilterSet.clear();
     this.selectedAssetTypes = [];
     this.selectedCompanies = [];
     this.selectedLocations = [];
     this.selectedMaintenanceDue = [];
-    this.filterCount = 0;
     this.filterAssets();
   }
 
@@ -164,10 +150,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
     const companyNames = this.selectedCompanies.map(company => company.description)
     const maintenanceValues = this.selectedMaintenanceDue.map(maintenanceValue => maintenanceValue.urgency)
-    this.selectedAssetTypesCount = this.selectedAssetTypes.length;
-    this.selectedCompaniesCount = this.selectedCompanies.length;
-    this.selectedLocationsCount = this.selectedLocations.length;
-    this.selectedMaintenanceCount = this.selectedMaintenanceDue.length;
     this.displayedAssets = this.assetsWithDetailsAndFields;
 
     if (this.searchText) {
