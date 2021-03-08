@@ -1,28 +1,30 @@
 <div class="list-header">
     <div class="list-header-item" [style.width.%]="5"></div>
-    <div class="list-header-item" [style.width.%]="30">Asset
-        <fa-icon  [icon]="faSort"></fa-icon>
-        <!-- <app-list-filter [assets]="assets" [attribute]="'category'" [attributeName]="'category'" (filterEvent)="onFilter($event)"></app-list-filter> -->
+    <div class="list-header-item" [style.width.%]="30"  #assetDiv>Asset
+        <fa-icon [icon]="faSearch" class="fa-fw" (click)="openSearchDialog()"></fa-icon>
     </div>
     <div class="list-header-item" [style.width.%]="30">Asset Type
-        <fa-icon  [icon]="faSort"></fa-icon>
-        <!-- <app-list-filter [assets]="assets" [attribute]="'category'" [attributeName]="'category'" (filterEvent)="onFilter($event)"></app-list-filter> -->
     </div>
     <div class="list-header-item" [style.width.%]="30">Manufacturer
-        <fa-icon  [icon]="faSort"></fa-icon>
-        <!-- <app-list-filter [assets]="assets" [attribute]="'manufacturer'" [attributeName]="'manufacturer'" (filterEvent)="onFilter($event)"></app-list-filter> -->
     </div>
     <div class="list-header-item" [style.width.%]="20">Factory
-        <fa-icon  [icon]="faSort"></fa-icon>
-        <!-- <app-list-filter [assets]="assets" [attribute]="'roomName'" [attributeName]="'room'" (filterEvent)="onFilter($event)"></app-list-filter> -->
     </div>
     <div class="list-header-item" [style.width.%]="30">Maintenance due
-        <fa-icon  [icon]="faSort"></fa-icon>
-        <!-- <app-list-filter [assets]="assets" [attribute]="'locationName'" [attributeName]="'location'" (filterEvent)="onFilter($event)"></app-list-filter> -->
     </div>
     <div class="list-header-item" [style.width.%]="5"></div>
     <div class="list-header-item" [style.width.%]="30">
-        <!-- <app-list-filter [assets]="assets" [attribute]="'locationName'" [attributeName]="'location'" (filterEvent)="onFilter($event)"></app-list-filter> -->
     </div>
     <div class="list-header-item" [style.width.%]="5"></div>
-  </div>
+</div>
+
+
+<p-dialog class="search-dialog" header="Search" [(visible)]="openSearchBar">
+        <span class="p-input-icon-left">
+            <i class="pi pi-search" style="color: black; font-size: 15px;"></i>
+            <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input">   
+        </span>
+    <br>
+    <div class="footer">
+        <button type="button" class="if-button button-primary button-modal" style="font-size: 12px; height: 30px; margin: 5px 0 0 0;"  (click)="searchAssets()">Apply</button>
+    </div>
+</p-dialog>

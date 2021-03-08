@@ -14,3 +14,14 @@
  */
 
  @import '../../../../../ecosystem/components/content/base/base-list-header/base-list-header.component.scss';
+
+
+.search-dialog {
+    position: relative;
+}
+
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+}
