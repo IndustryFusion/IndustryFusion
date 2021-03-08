@@ -20,91 +20,27 @@
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
 
-.rooms-panel {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: lightgray;
-
-  button {
-    color: black;
-  }
-
-  .manage {
-    .home-icon {
-      margin-right: 10px;
-    }
-  }
-}
-
-.toolbar {
-  border-radius: 10px;
-  display: flex;
-  background: black;
-  color: white;
-  justify-content: space-between;
-  align-items: baseline;
-
-  span {
-    margin: 0 0 0 50px;
-  }
-
-  .btn-group {
-    display: flex;
-    justify-content: center;
-
-    .btn {
-      color: white;
-      border: 0;
-      margin: auto 15px;
-      .icon{
-        transform:scale(1.45, 1.45);
-      }
-    }
-
-  }
-
-  .btn {
-    color: white;
-  }
-
-  .btn-link {
-    margin: 0 25px;
-  }
-}
-
-.asset-row {
-  cursor: pointer;
-}
-
-*:focus {
-    outline: none !important;
-    border: 0 !important;
-}
-
-.wrapper {
-  margin: 0 80px;
-  margin-bottom: 40px;
-
-  .list-header {
-    .if-button {
-      padding: 14px 20px 12px;
-      margin-bottom: 5px;
-      font-size: $regular-font-size;
-      line-height: $regular-line-height;
-      border-radius: 22px;
-    }
-  }
-}
-
-.filter-button {
+.filter-btn {
     height: 48px;
     width: 48px;
     background-color: hsl(198, 0%, 95%);
     border-color: transparent;
     border-radius: 10px;
+}
+
+.remove-all-filters-btn {
+  background-color: transparent;
+  border: transparent;
+  background:none;
+  position: absolute;
+  right: -5px;
+  top:28px;
+  cursor:pointer;
+  
+  .remove-all-filters-btn-icon {
+    font-size: 16px;
+    color: black;
+  }
 }
 
 .panel-heading {
@@ -115,7 +51,7 @@
   margin-left: 5px;
 }
 
-.open-select-panel {
+.open-filterpanel-btn {
   width: 175px;
   height: 38px;
   border-radius: 8px;
@@ -123,11 +59,44 @@
   margin-left: 5px;
   margin-right: 40px;
   padding: 0px 0px;
+
+
+  .filter-panel-btn-grid {
+    display: grid; 
+    grid-template-columns: 75% 25%; 
+    margin-left: 10px;
+
+    .filter-panel-btn-grid-text {
+      font-weight: bold; 
+      justify-self: start;
+      margin-left: 10px;
+    }
+
+    .filter-panel-btn-grid-icon {
+      font-size: 17,5px;
+      margin-top: 3px
+    }
+  }
 }
 
-.add-button {
+.remove-filter-btn {
+  border-color: transparent; 
+  background-color: white;
+
+  .remove-filter-btn-icon {
+    font-size: 14px; 
+    color: black;
+  }
+}
+
+.add-btn {
   background-color: white;
   border: none;
+
+  .add-btn-icon {
+    font-size: 12px; 
+    color: black;
+  }
 }
 
 
