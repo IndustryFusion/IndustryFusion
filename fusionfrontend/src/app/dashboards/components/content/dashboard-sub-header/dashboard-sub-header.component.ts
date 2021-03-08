@@ -26,7 +26,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class DashboardSubHeaderComponent implements OnInit, OnDestroy {
 
-  
   private unSubscribe$ = new Subject<void>();
 
   route: string;

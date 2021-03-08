@@ -14,10 +14,10 @@ export class MaintenanceListHeaderComponent implements OnInit {
   assetsWithDetailsAndFields: AssetDetailsWithFields[];
 
   @Output()
-  searchTextEmitter = new EventEmitter<String>();
+  searchTextEmitter = new EventEmitter<string>();
 
   faSearch = faSearch;
-  openSearchBar: boolean = false;
+  openSearchBar = false;
   searchText: string;
   displayedAssets: AssetDetailsWithFields[];
 
@@ -26,14 +26,14 @@ export class MaintenanceListHeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openSearchDialog(){
-    if(this.openSearchBar)
+  openSearchDialog() {
+    if (this.openSearchBar)
       this.openSearchBar = false;
     else
       this.openSearchBar = true
   }
 
-  searchAssets(){
+  searchAssets() {
     this.openSearchBar = false;
     this.searchTextEmitter.emit(this.searchText);
   }
