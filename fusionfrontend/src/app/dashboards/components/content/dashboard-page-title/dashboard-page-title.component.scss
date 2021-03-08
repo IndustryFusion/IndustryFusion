@@ -13,9 +13,21 @@
  * under the License.
  */
 
-export enum ManagerType {
-  ECOSYSTEM_MANAGER = 'ecosystemmanager',
-  FLEET_MANAGER = 'fleetmanager',
-  FACTORY_MANAGER = 'factorymanager',
-  DASHBOARDS = 'dashboards'
-}
+ @import 'abstract/variables';
+ @import 'base/typography';
+ 
+ h1 {
+   margin: 0;
+   text-align: center;
+   font-size: $big-font-size;
+   font-weight: bolder;
+ }
+ 
+ h2 {
+   margin: 0;
+   text-align: center;
+   font-size: $bigger-font-size;
+   line-height: 23px;
+   color: $basic-grey;
+ }
+ 

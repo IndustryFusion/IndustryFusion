@@ -42,6 +42,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'dashboards',
+    redirectTo: '/dashboards/companies/',
+    pathMatch: 'full'
+  },
+  {
     path: 'settings',
     redirectTo: '/settings/template',
     pathMatch: 'full'

@@ -22,7 +22,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FactoryPageTitleComponent implements OnInit {
   @Input()
-  subTitle: string;
+  factorySubTitle: string;
 
   constructor() { }
 

@@ -13,9 +13,9 @@
  * under the License.
  */
 
-export enum ManagerType {
-  ECOSYSTEM_MANAGER = 'ecosystemmanager',
-  FLEET_MANAGER = 'fleetmanager',
-  FACTORY_MANAGER = 'factorymanager',
-  DASHBOARDS = 'dashboards'
-}
+//  @import '../base/base-list/base-list.component.scss';
+
+ .wrapper {
+   margin: 0 80px;
+ }
+ 

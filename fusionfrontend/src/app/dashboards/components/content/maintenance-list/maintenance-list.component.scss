@@ -1,0 +1,109 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+/*@import 'src/variables.scss';*/
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import 'abstract/variables';
+@import 'base/typography';
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+
+
+.rooms-panel {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: lightgray;
+
+  button {
+    color: black;
+  }
+
+  .manage {
+    .home-icon {
+      margin-right: 10px;
+    }
+  }
+}
+
+.toolbar {
+  border-radius: 10px;
+  display: flex;
+  background: black;
+  color: white;
+  justify-content: space-between;
+  align-items: baseline;
+
+  span {
+    margin: 0 0 0 50px;
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: center;
+
+    .btn {
+      color: white;
+      border: 0;
+      margin: auto 15px;
+      .icon{
+        transform:scale(1.45, 1.45);
+      }
+    }
+
+  }
+
+  .btn {
+    color: white;
+  }
+
+  .btn-link {
+    margin: 0 25px;
+  }
+}
+
+.asset-row {
+  cursor: pointer;
+}
+
+*:focus {
+    outline: none !important;
+    border: 0 !important;
+}
+
+.wrapper {
+  margin: 0 80px;
+
+  .list-header {
+    .if-button {
+      padding: 14px 20px 12px;
+      margin-bottom: 5px;
+      font-size: $regular-font-size;
+      line-height: $regular-line-height;
+      border-radius: 22px;
+    }
+  }
+}
+
+.filter-button {
+    background-color: hsl(198, 0%, 95%);
+    border-color: transparent;
+    border-radius: 7px;
+}
+
+
+
+
