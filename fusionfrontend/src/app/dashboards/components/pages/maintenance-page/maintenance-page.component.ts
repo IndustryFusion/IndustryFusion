@@ -21,8 +21,8 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
 import { Location } from 'src/app/store/location/location.model';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
-import { AssetTypeQuery } from 'src/app/store/asset-type/asset-type.query';
 import { Company } from 'src/app/store/company/company.model';
+import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 
 
 @Component({
@@ -40,16 +40,16 @@ export class MaintenancePageComponent implements OnInit {
   assetsDetailsAndFields: AssetDetailsWithFields[];
 
   constructor(
-    private assetTypeQuery: AssetTypeQuery,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
+    private assetTypesResolver: AssetTypesResolver,
   ) { }
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
     this.locations$ = this.factoryResolver.locations$;
     this.companies$ = this.factoryResolver.companies$;
-    this.assetTypes$ = this.assetTypeQuery.selectAll();
+    this.assetTypes$ = this.assetTypesResolver.resolve();
 
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.assetsWithDetailsAndFields$.subscribe(res => {
