@@ -52,11 +52,11 @@ export class DashboardSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isMaintenanceActive = () => {
-    return this.route && this.route.match('^\/dashboards\/maintenance+$');
+    return this.route && this.route.match('^\/dashboards\/companies\/[0-9]\/maintenance+$');
   }
 
   isEquipmentEfficiencyActive = () => {
-    return this.route && this.route.match('^\/dashboards\/equipment+$');
+    return this.route && this.route.match('^\/dashboards\/companies\/[0-9]\/equipment+$');
   }
 
   isDashboard3Active = () => {
