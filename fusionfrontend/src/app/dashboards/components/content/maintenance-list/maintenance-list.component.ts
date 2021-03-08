@@ -14,11 +14,7 @@
  */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { AssetDetailsQuery } from 'src/app/store/asset-details/asset-details.query';
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model'
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-maintenance-list',
@@ -30,19 +26,10 @@ export class MaintenanceListComponent implements OnInit {
   @Input()
   assetsWithDetailsAndFields: AssetDetailsWithFields[];
 
-  sortField: string;
-  items$: Observable<any[]>;
-
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public assetQuery: AssetQuery,
-    public assetDetailsQuery: AssetDetailsQuery,
   ) { }
 
   ngOnInit(): void {
-    console.log("reached", this.assetsWithDetailsAndFields)
-    this.items$ = this.assetDetailsQuery.selectAssetDetailsOfCompany(2);
   }
 
 }
