@@ -6,8 +6,17 @@
     <div class="list-item-cell grey" [style.width.%]="30">{{assetWithDetailsAndFields.manufacturer}}</div>
     <div class="list-item-cell grey label-success" [style.width.%]="20">{{assetWithDetailsAndFields.locationName}}</div>
     <div class="list-item-cell grey label-success" [style.width.%]="30">
-        <div>
-            <p-progressBar[value]="maintenancePercentage" [showValue]="false"></p-progressBar>
+       <div class="container" *ngIf="maintenancePercentage &lt; 25">
+            <p-progressBar class="progress-bar" class="red-bar" [value]="maintenancePercentage" [showValue]="false"></p-progressBar>
+            <p class="label-class">{{ maintenanceDurationHours }}</p>
+        </div>
+        <div class="container" *ngIf="maintenancePercentage &gt; 25 && maintenancePercentage &lt; 50">
+            <p-progressBar class="progress-bar" class="grey-bar" [value]="maintenancePercentage" [showValue]="false"></p-progressBar>
+            <p class="label-class">{{ maintenanceDurationHours }}</p>
+        </div>
+        <div class="container" *ngIf="maintenancePercentage &gt; 50">
+            <p-progressBar class="progress-bar" class="blue-bar" [value]="maintenancePercentage" [showValue]="false"></p-progressBar>
+            <p class="label-class">{{ maintenanceDurationHours }}</p>
         </div>
     </div>
     <div class="list-item-cell grey" [style.width.%]="5"></div>

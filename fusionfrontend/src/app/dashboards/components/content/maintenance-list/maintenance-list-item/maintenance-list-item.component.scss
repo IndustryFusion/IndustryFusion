@@ -13,4 +13,27 @@
  * under the License.
  */
 
-@import '../../../../../ecosystem/components/content/base/base-list-item/base-list-item.component'
+@import '../../../../../ecosystem/components/content/base/base-list-item/base-list-item.component';
+
+.container {
+    width: 260.59;
+    height: 32px;
+    position: relative;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.label-class {
+    font-size: 14px;
+    font-weight: bold;
+    top: -20px;
+    left: 10px;
+    z-index: 10;
+    background-color: transparent;
+    color: white;
+    position: absolute;
+}
