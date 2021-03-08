@@ -86,6 +86,7 @@
 
 .wrapper {
   margin: 0 80px;
+  margin-bottom: 40px;
 
   .list-header {
     .if-button {
@@ -99,10 +100,27 @@
 }
 
 .filter-button {
+    height: 48px;
+    width: 48px;
     background-color: hsl(198, 0%, 95%);
     border-color: transparent;
-    border-radius: 7px;
+    border-radius: 10px;
 }
+
+.panel-heading {
+  font-size: large;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.add-button {
+  background-color: white;
+  border: none;
+}
+
+
 
 
 

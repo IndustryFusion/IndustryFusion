@@ -1,7 +1,7 @@
 <div class="list-header">
     <div class="list-header-item" [style.width.%]="5"></div>
-    <div class="list-header-item" [style.width.%]="30"  #assetDiv>Asset
-        <fa-icon [icon]="faSearch" class="fa-fw" (click)="openSearchDialog()"></fa-icon>
+    <div class="list-header-item" [style.width.%]="30" (click)="searchpanel.toggle($event)"  #assetDiv>Asset
+        <fa-icon [icon]="faSearch" class="fa-fw" ></fa-icon>
     </div>
     <div class="list-header-item" [style.width.%]="30">Asset Type
     </div>
@@ -18,13 +18,16 @@
 </div>
 
 
-<p-dialog class="search-dialog" header="Search" [(visible)]="openSearchBar">
+<p-overlayPanel #searchpanel [showCloseIcon]="true" class="assetSearchPanel">
+    <ng-template pTemplate>
+        <div class="panel-heading">Search</div>
         <span class="p-input-icon-left">
-            <i class="pi pi-search" style="color: black; font-size: 15px;"></i>
+            <fa-icon [icon]="faSearch" class="fa-fw" ></fa-icon>
             <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input">   
         </span>
     <br>
     <div class="footer">
-        <button type="button" class="if-button button-primary button-modal" style="font-size: 12px; height: 30px; margin: 5px 0 0 0;"  (click)="searchAssets()">Apply</button>
+        <button type="button" class="if-button button-primary button-modal" style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"  (click)="searchAssets()">Apply</button>
     </div>
-</p-dialog>
+    </ng-template>
+</p-overlayPanel>
