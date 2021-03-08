@@ -59,6 +59,7 @@ export class FactoryResolver {
   public assetWithFields$: Observable<AssetWithFields>;
   public fields$: Observable<Field[]>;
   public factorySubTitle$: Subject<string>;
+  public companies$: Observable<Company[]>;
 
   constructor(
     private companyService: CompanyService,
@@ -84,6 +85,8 @@ export class FactoryResolver {
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
+    this.companies$ = this.companyService.getCompanies();
+    this.companyService.getCompanies().subscribe();
     const companyId = activatedRoute.snapshot.paramMap.get('companyId');
     this.companyService.setActive(companyId);
     if (companyId != null) {

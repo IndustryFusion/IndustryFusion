@@ -31,7 +31,10 @@ import { MaintenanceListHeaderComponent } from './components/content/maintenance
 import { MaintenanceListItemComponent } from './components/content/maintenance-list/maintenance-list-item/maintenance-list-item.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext'
+import { InputTextModule } from 'primeng/inputtext';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 @NgModule({
@@ -41,7 +44,7 @@ import { InputTextModule } from 'primeng/inputtext'
     MaintenancePageComponent,
     MaintenanceListComponent,
     MaintenanceListHeaderComponent,
-    MaintenanceListItemComponent
+    MaintenanceListItemComponent,
   ],
     imports: [
         CommonModule,
@@ -56,7 +59,10 @@ import { InputTextModule } from 'primeng/inputtext'
         ReactiveFormsModule,
         ProgressBarModule,
         DialogModule,
-        InputTextModule
+        InputTextModule,
+        OverlayPanelModule,
+        DropdownModule,
+        CheckboxModule
       ],
   exports: [
     DashboardSubHeaderComponent,
