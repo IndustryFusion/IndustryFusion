@@ -14,7 +14,7 @@ export class MaintenanceListHeaderComponent implements OnInit {
   assetsWithDetailsAndFields: AssetDetailsWithFields[];
 
   @Output()
-  assetSearched = new EventEmitter<AssetDetailsWithFields[]>();
+  searchTextEmitter = new EventEmitter<String>();
 
   faSearch = faSearch;
   openSearchBar: boolean = false;
@@ -34,14 +34,8 @@ export class MaintenanceListHeaderComponent implements OnInit {
   }
 
   searchAssets(){
-    this.displayedAssets = [];
-    this.assetsWithDetailsAndFields.forEach(asset =>
-      {
-        if(asset.name.toLowerCase().includes(this.searchText.toLowerCase()))
-          this.displayedAssets.push(asset)
-      });
-      this.assetSearched.emit(this.displayedAssets);
-      this.openSearchBar = false;
+    this.openSearchBar = false;
+    this.searchTextEmitter.emit(this.searchText);
   }
 
 }

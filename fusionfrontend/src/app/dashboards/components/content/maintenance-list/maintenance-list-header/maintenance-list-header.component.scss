@@ -20,6 +20,17 @@
     position: relative;
 }
 
+.panel-heading {
+    font-size: large;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.search-input {
+    border-color: white;
+    touch-action: none;
+}
 
 .footer {
     display: flex;

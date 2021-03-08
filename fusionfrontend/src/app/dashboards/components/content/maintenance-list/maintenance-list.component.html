@@ -1,15 +1,127 @@
 <div class="wrapper">
     <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-      <div class="title">Maintenance Dashboard</div>
-      <button class="filter-button">
-        <clr-icon shape="filter"></clr-icon> 
-    </button>
+        <div class="title">Maintenance Dashboard</div>
+        <div>
+            <button class="filter-button" (click)="filterpanel.toggle($event)">
+                <fa-icon [icon]="faFilter" class="fa-fw" ></fa-icon>
+            </button>
+            <button (click)="clearAllFilters(); filterpanel.hide()">
+                <i class="pi pi-times-circle" style="font-size: 14px; color: black;"></i>
+            </button>
+        </div>
     </div>
-  
+
     <div>
       <div class="list-container">
-        <app-maintenance-list-header [assetsWithDetailsAndFields]="assetsWithDetailsAndFields" (assetSearched)="searchedForAssets($event)"></app-maintenance-list-header>
+        <app-maintenance-list-header [assetsWithDetailsAndFields]="assetsWithDetailsAndFields" (searchTextEmitter)="searchTextEmitted($event)"></app-maintenance-list-header>
         <app-maintenance-list-item *ngFor="let assetWithDetailsAndFields of displayedAssets" [assetWithDetailsAndFields]="assetWithDetailsAndFields"></app-maintenance-list-item>
       </div>
     </div>
   </div>
+
+<p-overlayPanel [dismissable]="false" #filterpanel class="dashboardFilterPanel">
+    <ng-template pTemplate>
+        <div class="panel-heading">Filter</div>
+    <div>
+        <div *ngFor="let activeFilter of activeFilterList" style="margin-bottom: 10px;">
+            <div *ngIf="activeFilter.filterAttribute === assetType">
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name" optionDisabled="filterOptions.inactive"></p-dropdown>
+                <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.assetTypeFilterModal" 
+                    style="margin-left: 5px; margin-right: 40px; width: 175px; border-radius: 8px; border-color: transparent; height: 38px; padding: 0px 0px;">
+                    <span *ngIf="selectedAssetTypesCount == 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedAssetTypesCount }} Value</span>
+                    <span *ngIf="selectedAssetTypesCount == 0 || selectedAssetTypesCount &gt; 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedAssetTypesCount }} Values</span>
+                    <i class="pi pi-sort-down" style="font-size: 14px; justify-self: end;"></i>
+                </button>
+                <button style="border-color: transparent; background-color: white;" (click)="clearSingleFilter(activeFilter.id)">
+                    <i class="pi pi-times" style="font-size: 14px; color: black"></i>
+                </button>
+            </div>
+            <div *ngIf="activeFilter.filterAttribute === manufacturer">
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name"  optionDisabled="inactive"></p-dropdown>
+                <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.manufacturerFilterModal" 
+                    style="margin-left: 5px; margin-right: 40px; width: 175px; border-radius: 8px; border-color: transparent; height: 38px; padding: 0px 0px;">
+                    <span *ngIf="selectedCompaniesCount == 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedCompaniesCount }} Value</span>
+                    <span *ngIf="selectedCompaniesCount == 0 || selectedCompaniesCount &gt; 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedCompaniesCount }} Values</span>
+                    <i class="pi pi-sort-down" style="font-size: 14px; justify-self: end;"></i>
+                </button>
+                <button style="border-color: transparent; background-color: white;" (click)="clearSingleFilter(activeFilter.id)">
+                    <i class="pi pi-times" style="font-size: 14px; color: black"></i>
+                </button>
+            </div>
+            <div *ngIf="activeFilter.filterAttribute === factory">
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name"  optionDisabled="inactive"></p-dropdown>
+                <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.factoryFilterModal" 
+                    style="margin-left: 5px; margin-right: 40px; width: 175px; border-radius: 8px; border-color: transparent; height: 38px; padding: 0px 0px;">
+                    <span *ngIf="selectedLocationsCount == 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedLocationsCount }} Value</span>
+                    <span *ngIf="selectedLocationsCount == 0 || selectedLocationsCount &gt; 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedLocationsCount }} Values</span>
+                    <i class="pi pi-sort-down" style="font-size: 14px; justify-self: end;"></i>
+                </button>
+                <button style="border-color: transparent; background-color: white;" (click)="clearSingleFilter(activeFilter.id)">
+                    <i class="pi pi-times" style="font-size: 14px; color: black"></i>
+                </button>
+            </div>
+            <div *ngIf="activeFilter.filterAttribute === maintenanceDue">
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name"></p-dropdown>
+                <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.maintenanceDueFilterModal" 
+                    style="margin-left: 5px; margin-right: 40px; width: 175px; border-radius: 8px; border-color: transparent; height: 38px; padding: 0px 0px;">
+                    <span *ngIf="filterCount == 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedLocationsCount }} Value</span>
+                    <span *ngIf="filterCount &gt; 1" style="justify-self: flex-start; font-weight: bold;">{{ selectedLocationsCount }} Values</span>
+                    <i class="pi pi-sort-down" style="font-size: 14px; justify-self: end;"></i>
+                </button>
+                <button style="border-color: transparent; background-color: white;" (click)="clearSingleFilter(activeFilter.id)">
+                    <i class="pi pi-times" style="font-size: 14px; color: black"></i>
+                </button>
+            </div>
+        </div>
+        <button class="add-button" (click)="addFilter()" *ngIf="filterCount &lt; 4">
+            <i class="pi pi-plus" style="font-size: 12px; color: black"></i>
+            Add filter
+        </button>
+    </div>
+    </ng-template>
+</p-overlayPanel>
+
+
+<p-overlayPanel #editFilterPanel class="editFilterPanel">
+    <ng-template pTemplate>
+        <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.assetTypeFilterModal">
+            <div class="panel-heading">Select AssetType</div>
+            <div *ngFor="let assetType of assetTypes">
+                <p-checkbox name="locationsValues" value="assetType" [value]="assetType" [(ngModel)]="selectedAssetTypes" [inputId]="assetType.id"></p-checkbox>
+                <label style="margin-left: 7px;" [for]="assetType.id">{{assetType.description}}</label>
+            </div>
+        </div>
+        <div  *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.manufacturerFilterModal">
+            <div class="panel-heading">Select Manufacturer</div>
+            <div *ngFor="let company of companies">
+                <p-checkbox name="locationsValues" value="company" [value]="company" [(ngModel)]="selectedCompanies" [inputId]="company.id"></p-checkbox>
+                <label style="margin-left: 7px;" [for]="company.id">{{company.description}}</label>
+            </div>
+        </div>
+        <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.factoryFilterModal">
+            <div class="panel-heading">Select Location</div>
+            <div *ngFor="let location of locations">
+                <p-checkbox name="locationsValues" value="location" [value]="location" [(ngModel)]="selectedLocations" [inputId]="location.id"></p-checkbox>
+                <label style="margin-left: 7px;" [for]="location.id">{{location.name}}</label>
+            </div>
+        </div>
+        <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.maintenanceDueFilterModal">
+            <div class="panel-heading">Select Location</div>
+            <div *ngFor="let location of locations">
+                <p-checkbox name="locationsValues" value="location" [value]="location" [(ngModel)]="selectedLocations" [inputId]="location.id"></p-checkbox>
+                <label style="margin-left: 7px;" [for]="location.id">{{location.name}}</label>
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <button class="if-button button-secondary button-modal" style="font-weight: bold; font-size: 12px; height: 30px;" (click)="clearSelectFilterValues(); filterAssets();">
+                Clear all
+                <i class="pi pi-times" style="font-size: 14px; color: black"></i>
+            </button>
+            <button class="if-button button-primary button-modal" style="font-size: 12px; height: 30px;" (click)="filterAssets(); editFilterPanel.hide()">
+                Select
+            </button>
+        </div>
+    </ng-template>
+</p-overlayPanel>
+  

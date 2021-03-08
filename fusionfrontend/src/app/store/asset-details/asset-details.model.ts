@@ -33,6 +33,13 @@ export enum AssetModalType  {
   roomAssigntment = 5
 }
 
+export enum DashboardFilterModalType {
+  assetTypeFilterModal = 1,
+  manufacturerFilterModal = 2,
+  factoryFilterModal = 3,
+  maintenanceDueFilterModal = 4
+}
+
 export class AssetDetailsWithFields extends AssetDetails {
   fields: Field[];
 }

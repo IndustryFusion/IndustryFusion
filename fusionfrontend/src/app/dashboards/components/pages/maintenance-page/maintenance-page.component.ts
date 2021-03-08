@@ -19,6 +19,10 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
+import { Location } from 'src/app/store/location/location.model';
+import { AssetType } from 'src/app/store/asset-type/asset-type.model';
+import { AssetTypeQuery } from 'src/app/store/asset-type/asset-type.query';
+import { Company } from 'src/app/store/company/company.model';
 
 
 @Component({
@@ -30,16 +34,22 @@ export class MaintenancePageComponent implements OnInit {
 
   companyId: ID
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
+  assetTypes$: Observable<AssetType[]>;
+  locations$: Observable<Location[]>;
+  companies$: Observable<Company[]>;
   assetsDetailsAndFields: AssetDetailsWithFields[];
-
   
   constructor(
+    private assetTypeQuery: AssetTypeQuery,
     private factoryResolver: FactoryResolver,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
+    this.locations$ = this.factoryResolver.locations$;
+    this.companies$ = this.factoryResolver.companies$;
+    this.assetTypes$ = this.assetTypeQuery.selectAll();
 
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.assetsWithDetailsAndFields$.subscribe(res => {
