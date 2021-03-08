@@ -8,10 +8,13 @@
   .ui-dropdown-label {
     font-weight: bold !important;
     color: black;
+    margin-left: 10px;
     background-color:hsl(198, 0%, 95%) !important;
     }
 
     .ui-dropdown-trigger {
       background-color:hsl(198, 0%, 95%) !important;
+      color: black !important;
+      margin-right: 5px;
     }
-  }
+}
