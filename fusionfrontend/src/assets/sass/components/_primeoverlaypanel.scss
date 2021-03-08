@@ -1,0 +1,23 @@
+
+.assetSearchPanel  {
+    .ui-overlaypanel {
+        border-radius: 8px;
+        width: 300px;
+    }
+
+    .ui-overlaypanel .ui-overlaypanel-close {
+        background-color: white;
+        color: black;
+        position: absolute;
+        right: 15px;
+        top: 12px;
+        border-radius: 8px;
+    }
+}
+
+.dashboardFilterPanel {
+    .ui-overlaypanel {
+        border-radius: 8px;
+        width: 500px;
+    }
+}
