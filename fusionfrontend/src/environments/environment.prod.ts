@@ -21,7 +21,7 @@ export const environment = {
   oispApiUrlPrefix: 'https://PUT-YOUR-OISP-URL-HERE.com/v1/api',
   oispAccountId: 'PUT-YOUR-OISP-ACCOUNTID-HERE',
   // tslint:disable-next-line: max-line-length
-  // oispAuthToken: 'Not required anymore',
+  oispAuthToken: 'Not required anymore',
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',
