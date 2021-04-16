@@ -1,12 +1,6 @@
-
-<div class="list-item">
-    <div class="list-item-cell check" [style.width.%]="5"></div>
-    <div class="list-item-cell bold black" [style.width.%]="28">{{ assetWithDetailsAndFields.name }}</div>
-    <div class="list-item-cell grey" [style.width.%]="32">{{assetWithDetailsAndFields.category}}</div>
-    <div class="list-item-cell grey" [style.width.%]="30">{{assetWithDetailsAndFields.manufacturer}}</div>
-    <div class="list-item-cell grey label-success" [style.width.%]="20">{{assetWithDetailsAndFields.locationName}}</div>
-    <div class="list-item-cell grey label-success" [style.width.%]="30">
-       <div class="container" *ngIf="maintenancePercentage &lt; 25">
+<div class="maintenance-value">
+    <div class="label-success" [style.width.%]="50" *ngIf="!noMaintenacneValue">
+        <div class="container" *ngIf="maintenancePercentage &lt; 25">
             <p-progressBar class="progress-bar" class="red-bar" [value]="maintenancePercentage" [showValue]="false"></p-progressBar>
             <p class="label-class">{{ maintenanceDurationHours }}</p>
         </div>
@@ -19,8 +13,9 @@
             <p class="label-class">{{ maintenanceDurationHours }}</p>
         </div>
     </div>
-    <div class="list-item-cell grey" [style.width.%]="5"></div>
-    <div class="list-item-cell grey label-success" [style.width.%]="30">
+    <div class="label-success" [style.width.%]="50" *ngIf="noMaintenacneValue"></div>
+    <div [style.width.%]="5"></div>
+    <div class="label-success" [style.width.%]="50" *ngIf="!noMaintenacneValue">
         <div *ngIf="maintenancePercentage &lt; 25">
             <b>{{ maintenanceDurationHours }} Stunden</b> oder <b>{{ maintenanceDurationDays }} Tage</b>
         </div>
@@ -31,6 +26,5 @@
             <b>{{ maintenanceDurationHours }} Stunden</b> oder <b>{{ maintenanceDurationMonth }} Monate</b>
         </div>
     </div>
-    <div class="list-item-cell grey" [style.width.%]="5">
-    </div>      
+    <div class="label-success" [style.width.%]="50" *ngIf="noMaintenacneValue"></div>
 </div>

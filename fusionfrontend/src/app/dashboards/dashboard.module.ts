@@ -27,15 +27,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { environment } from 'src/environments/environment';
 import { MaintenancePageComponent } from 'src/app/dashboards/components/pages/maintenance-page/maintenance-page.component';
 import { MaintenanceListComponent } from './components/content/maintenance-list/maintenance-list.component';
-import { MaintenanceListHeaderComponent } from './components/content/maintenance-list/maintenance-list-header/maintenance-list-header.component';
-import { MaintenanceListItemComponent } from './components/content/maintenance-list/maintenance-list-item/maintenance-list-item.component';
+import { MaintenanceProgressbarComponent } from './components/content/maintenance-list/maintenance-progressbar/maintenance-progressbar.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
-
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -43,8 +42,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     DashboardSubHeaderComponent,
     MaintenancePageComponent,
     MaintenanceListComponent,
-    MaintenanceListHeaderComponent,
-    MaintenanceListItemComponent,
+    MaintenanceProgressbarComponent,
   ],
     imports: [
         CommonModule,
@@ -62,7 +60,8 @@ import { CheckboxModule } from 'primeng/checkbox';
         InputTextModule,
         OverlayPanelModule,
         DropdownModule,
-        CheckboxModule
+        CheckboxModule,
+        TableModule
       ],
   exports: [
     DashboardSubHeaderComponent,

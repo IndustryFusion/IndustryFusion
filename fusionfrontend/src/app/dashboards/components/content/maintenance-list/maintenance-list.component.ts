@@ -15,7 +15,7 @@
 
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { AssetDetailsWithFields, DashboardFilterModalType } from 'src/app/store/asset-details/asset-details.model'
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Location } from 'src/app/store/location/location.model';
@@ -43,7 +43,7 @@ interface MaintenanceFilter {
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
   @Input()
-  assetsWithDetailsAndFields: AssetDetailsWithFields[];
+  assetDetailsWithFields: AssetDetailsWithFields[];
   @Input()
   locations: Location[];
   @Input()
@@ -51,8 +51,9 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   @Input()
   assetTypes: AssetType[];
 
-  displayedAssets: AssetDetailsWithFields[];
+  displayedAssets: Array<AssetDetailsWithFields> = [];
   faFilter = faFilter;
+  faSearch = faSearch;
 
   selectedValueMapping:
   { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
@@ -71,7 +72,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   selectedLocations: Location[] = [];
   maintenanceValues: MaintenanceFilter[] = [{ id: 0, urgency: 'Critical (red)' },
     { id: 1, urgency: 'Soon (grey)' }, { id: 2, urgency: 'Longterm (blue)' }];
-  selectedMaintenanceDue: MaintenanceFilter[] = [];
+  selectedMaintenanceDue = [];
   searchText = '';
 
   constructor(
@@ -82,11 +83,10 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.displayedAssets = this.assetsWithDetailsAndFields;
+    this.displayedAssets = this.assetDetailsWithFields;
   }
 
-  searchTextEmitted(event: string) {
-    this.searchText = event;
+  searchAssets() {
     this.filterAssets();
   }
 
@@ -149,11 +149,10 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     const locationNames = this.selectedLocations.map(location => location.name);
     const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
     const companyNames = this.selectedCompanies.map(company => company.description)
-    const maintenanceValues = this.selectedMaintenanceDue.map(maintenanceValue => maintenanceValue.urgency)
-    this.displayedAssets = this.assetsWithDetailsAndFields;
+    this.displayedAssets = this.assetDetailsWithFields;
 
     if (this.searchText) {
-      this.displayedAssets = this.displayedAssets.filter(asset => asset.name.toLowerCase().startsWith(this.searchText.toLowerCase()))
+      this.displayedAssets = this.displayedAssets.filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()))
     }
     if (locationNames.length > 0) {
       this.displayedAssets = this.displayedAssets.filter(asset => locationNames.includes(asset.locationName));
@@ -164,31 +163,54 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     if (companyNames.length > 0) {
       this.displayedAssets = this.displayedAssets.filter(asset => companyNames.includes(asset.manufacturer));
     }
+
     if (this.selectedMaintenanceDue.length > 0) {
-        switch (this.selectedMaintenanceDue.length) {
-          case 3:
-            break;
-          case 2:
-            if (maintenanceValues.includes('Critical (red)' && 'Soon (grey)')) {
-              this.displayedAssets = this.displayedAssets.filter(asset => Number.parseInt(asset.videoKey, 10) < 750);
-            } else if (maintenanceValues.includes('Critical (red)' && 'Longterm (blue)')) {
-              this.displayedAssets = this.displayedAssets.filter(asset => Number.parseInt(asset.videoKey, 10) < 375 ||
-              Number.parseInt(asset.videoKey, 10) > 750);
-            } else if (maintenanceValues.includes('Soon (grey)' && 'Longterm (blue)')) {
-              this.displayedAssets = this.displayedAssets.filter(asset => Number.parseInt(asset.videoKey, 10) > 375);
-            }
-            break;
-          case 1:
-            if (maintenanceValues.includes('Critical (red)')) {
-              this.displayedAssets = this.displayedAssets.filter(asset => Number.parseInt(asset.videoKey, 10) < 375);
-            } else if (maintenanceValues.includes('Soon (grey)')) {
-              this.displayedAssets = this.displayedAssets.filter(asset => Number.parseInt(asset.videoKey, 10) > 375 &&
-              Number.parseInt(asset.videoKey, 10) < 750);
-            } else if (maintenanceValues.includes('Longterm (blue)')) {
-              this.displayedAssets = this.displayedAssets.filter(asset => Number.parseInt(asset.videoKey, 10) > 750);
-            }
-            break;
-        };
+      switch (this.selectedMaintenanceDue.length) {
+        case 3:
+          break;
+        case 2:
+          if (this.selectedMaintenanceDue.includes('Critical (red)') && this.selectedMaintenanceDue.includes('Soon (grey)')) {
+            this.displayedAssets = this.displayedAssets.filter(asset => {
+              const index = asset.fields.findIndex(field => field.name === 'Hours till maintenance');
+              if (index !== -1)
+                return Number.parseInt(asset.fields[index].value, 10) < 750;
+            });
+          } else if (this.selectedMaintenanceDue.includes('Critical (red)') && this.selectedMaintenanceDue.includes('Longterm (blue)')) {
+            this.displayedAssets = this.displayedAssets.filter(asset => {
+              const index = asset.fields.findIndex(field => field.name === 'Hours till maintenance');
+              if (index !== -1)
+                return Number.parseInt(asset.fields[index].value, 10) < 375 || Number.parseInt(asset.fields[index].value, 10) > 750;
+            });
+          } else if (this.selectedMaintenanceDue.includes('Soon (grey)') && this.selectedMaintenanceDue.includes('Longterm (blue)')) {
+            this.displayedAssets = this.displayedAssets.filter(asset => {
+              const index = asset.fields.findIndex(field => field.name === 'Hours till maintenance');
+              if (index !== -1)
+                return Number.parseInt(asset.fields[index].value, 10) > 375;
+            });
+          }
+          break;
+        case 1:
+          if (this.selectedMaintenanceDue.includes('Critical (red)')) {
+            this.displayedAssets = this.displayedAssets.filter(asset => {
+              const index = asset.fields.findIndex(field => field.name === 'Hours till maintenance');
+              if (index !== -1)
+                return Number.parseInt(asset.fields[index].value, 10) < 375;
+            });
+          } else if (this.selectedMaintenanceDue.includes('Soon (grey)')) {
+            this.displayedAssets = this.displayedAssets.filter(asset => {
+              const index = asset.fields.findIndex(field => field.name === 'Hours till maintenance');
+              if (index !== -1)
+                return Number.parseInt(asset.fields[index].value, 10) > 375 && Number.parseInt(asset.fields[index].value, 10) < 750;
+            });
+          } else if (this.selectedMaintenanceDue.includes('Longterm (blue)')) {
+            this.displayedAssets = this.displayedAssets.filter(asset => {
+              const index = asset.fields.findIndex(field => field.name === 'Hours till maintenance');
+              if (index !== -1)
+                return Number.parseInt(asset.fields[index].value, 10) > 750;
+            });
+          }
+          break;
+      };
     }
   }
 }

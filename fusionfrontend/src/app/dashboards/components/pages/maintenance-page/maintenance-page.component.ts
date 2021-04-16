@@ -33,11 +33,11 @@ import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 export class MaintenancePageComponent implements OnInit {
 
   companyId: ID
-  assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
+  assetDetailsWithFields$: Observable<AssetDetailsWithFields[]>;
   assetTypes$: Observable<AssetType[]>;
   locations$: Observable<Location[]>;
   companies$: Observable<Company[]>;
-  assetsDetailsAndFields: AssetDetailsWithFields[];
+  assetDetailsWithFields: AssetDetailsWithFields[];
 
   constructor(
     private factoryResolver: FactoryResolver,
@@ -51,13 +51,21 @@ export class MaintenancePageComponent implements OnInit {
     this.companies$ = this.factoryResolver.companies$;
     this.assetTypes$ = this.assetTypesResolver.resolve();
 
-    this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
-    this.assetsWithDetailsAndFields$.subscribe(res => {
-      for (const asset of res) {
-        asset.videoKey = Math.floor(Math.random() * 1500 + 1).toString();
-      }
-      this.assetsDetailsAndFields = res;
-      this.assetsDetailsAndFields.sort((a, b) => (Number(a.videoKey) > Number(b.videoKey)) ? 1 : -1);
+    this.assetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.assetDetailsWithFields$.subscribe(res => {
+      this.assetDetailsWithFields = res;
+      console.log(res)
+      this.assetDetailsWithFields.sort((a, b) => {
+          const indexA = a.fields.findIndex(field => field.name === 'Hours till maintenance')
+          const indexB = b.fields.findIndex(field => field.name === 'Hours till maintenance')
+        if (indexA !== -1 && indexB !== -1) {
+          return Number(a.fields[indexA].value) > Number(b.fields[indexB].value) ? 1 : -1;
+        } else if (indexA === -1) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
     });
   }
 
