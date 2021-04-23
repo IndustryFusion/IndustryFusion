@@ -13,8 +13,11 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-locations-map (selectedLocation)="setSelectedLocation($event)"></app-locations-map>
-
-<app-locations
-  (createLocationEvent)="locationCreated($event)">
-</app-locations>
+<div *ngIf="modalsActive">
+    <app-create-locations-panel
+        [display]="modalsActive"
+        [locationForm]="locationForm"
+        (createLocationEvent)="locationCreated($event)"
+        (stopCreateLocation)="closeModal($event)">
+    </app-create-locations-panel>
+</div>

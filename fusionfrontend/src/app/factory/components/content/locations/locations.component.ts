@@ -13,13 +13,14 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { LocationWithAssetCount } from 'src/app/store/location/location.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
+import { Location } from 'src/app/store/location/location.model';
 
 @Component({
   selector: 'app-locations',
@@ -27,6 +28,10 @@ import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.qu
   styleUrls: ['./locations.component.scss']
 })
 export class LocationsComponent implements OnInit, OnDestroy {
+
+  @Output()
+  createLocationEvent = new EventEmitter<Location>()
+
   isLoading$: Observable<boolean>;
   companyId: ID;
   locations$: Observable<LocationWithAssetCount[]>;
@@ -34,6 +39,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
     { [k: string]: string } = { '=0': 'No factories', '=1': '# Factory site', other: '# Factory sites' };
   sortField: string;
   sortType: string;
+  modalsActive = false;
 
   constructor(private companyQuery: CompanyQuery,
               private locationQuery: LocationQuery,
@@ -49,8 +55,20 @@ export class LocationsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  openModal(){
+    this.modalsActive = true;
+  }
+
+  closeModal(event: boolean) {
+    this.modalsActive = event;
+  }
+
   onSort(field: [string, string]) {
     this.sortField = field[0];
     this.sortType = field[1];
+  }
+
+  locationCreated(event: Location){
+    this.createLocationEvent.emit(event);
   }
 }

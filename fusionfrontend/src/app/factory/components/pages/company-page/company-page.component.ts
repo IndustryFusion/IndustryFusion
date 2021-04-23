@@ -20,6 +20,8 @@ import { CompanyQuery } from 'src/app/store/company/company.query';
 import { ID } from '@datorama/akita';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
+import { LocationService } from 'src/app/store/location/location.service';
+import { Location } from 'src/app/store/location/location.model';
 
 @Component({
   selector: 'app-company-page',
@@ -33,6 +35,7 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
 
   constructor(private companyQuery: CompanyQuery,
               private factoryResolver: FactoryResolver,
+              private locationService: LocationService,
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -46,5 +49,16 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
 
   setSelectedLocation(id: ID) {
     this.selectedLocation = id;
+  }
+
+  locationCreated(event: Location){
+    console.log(event)
+    const createLocation$ = this.locationService.createLocation(event);
+    createLocation$.subscribe(
+      location => {
+        console.log('[company page] created location: ' + location.name);
+      },
+      error => console.log(error)
+    )
   }
 }

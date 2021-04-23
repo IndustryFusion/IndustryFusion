@@ -13,35 +13,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<!--<div class="wrapper">
-  <h3 class="table-header" *ngIf="(locations$| async)?.length < 2">  {{ (locations$| async)?.length }} Factory site</h3>
-  <h3 class="table-header" *ngIf="(locations$| async)?.length > 1">  {{ (locations$| async)?.length }} Factory sites</h3>
-  <clr-datagrid class="table-noborder">
-    <clr-dg-column>Factory name</clr-dg-column>
-    <clr-dg-column>Street</clr-dg-column>
-    <clr-dg-column>ZIP</clr-dg-column>
-    <clr-dg-column>City</clr-dg-column>
-    <clr-dg-column>Country</clr-dg-column>
-    <clr-dg-column>Assets</clr-dg-column>
-    <clr-dg-column>Users</clr-dg-column>
-
-    <clr-dg-row *clrDgItems="let location of locations$ | async"
-                [routerLink]="['locations' , location.id]">
-      <clr-dg-cell>{{location.name}}</clr-dg-cell>
-      <clr-dg-cell>{{location.line1}}</clr-dg-cell>
-      <clr-dg-cell>{{location.zip}}</clr-dg-cell>
-      <clr-dg-cell>{{location.city}}</clr-dg-cell>
-      <clr-dg-cell>{{location.country}}</clr-dg-cell>
-      <clr-dg-cell>{{location.assetCount}}</clr-dg-cell>
-      <clr-dg-cell>41</clr-dg-cell>
-    </clr-dg-row>
-  </clr-datagrid>
-</div>-->
-
-
 <div class="wrapper">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div class="title" >{{ (locations$ | async)?.length | i18nPlural: locationMapping }}</div>
+    <button class="if-button button-secondary" (click)="openModal()">Create new location</button>
   </div>
   <div>
     <div class="list-container">
@@ -51,3 +26,10 @@ under the License.
     </div>
   </div>
 </div>
+
+<app-location-instantiation
+  [companyId]="companyId"
+  [modalsActive]="modalsActive"
+  (createLocationEvent)="locationCreated($event)"
+  (stopCreateLocation)="closeModal($event)">
+</app-location-instantiation>

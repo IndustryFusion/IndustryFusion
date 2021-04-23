@@ -1,0 +1,56 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<p-dialog [(visible)]="display" class="create-location" modal="true">
+  <p-header>
+    Locations
+  </p-header>
+
+  <div>
+    <div [formGroup]="locationForm">
+      <div class="p-field">
+        <label for="locationName" >Location name</label>
+        <input id="locationName" type="text" pInputText formControlName="name" placeholder="Name" class="location-input">
+      </div>
+      <div>
+        <label>Address</label>
+        <input type="text" formControlName="line1" placeholder="Address" class="location-input">
+      </div>
+      <div>
+        <label>City</label>
+        <input type="text" pInputText formControlName="city" placeholder="City" class="location-input">
+      </div>
+      <div>
+        <label>Zip code</label>
+        <input type="text" formControlName="zip" placeholder="Zip code" class="location-input">
+      </div>
+      <div>
+        <p-dropdown [options]="locationTypes" formControlName="locationType" class="location-input"> </p-dropdown>
+      </div>
+      <div>
+        <p-dropdown [options]="countries" formControlName="country" class="location-input"> </p-dropdown>
+      </div> 
+    </div>
+  </div>
+
+  <div>
+  </div>
+
+  <p-footer>
+    <button type="button" class="if-button button-secondary button-modal footer-btn" (click)="cancel()">Cancel</button>
+    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="continueCreation()">Next</button>
+  </p-footer>
+</p-dialog>
+  
