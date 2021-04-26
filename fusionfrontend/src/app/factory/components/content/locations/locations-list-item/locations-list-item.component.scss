@@ -18,3 +18,31 @@
 .list-item {
   padding-left: 20px;
 }
+
+.dropdown-button {
+  outline: none;
+  background-color: transparent !important;
+  color: #95989a !important;
+  border: none !important;
+}
+
+.list-item .dropdown-button {
+  visibility: hidden;
+}
+
+.list-item:hover .dropdown-button {
+  visibility: visible;
+}
+
+::ng-deep .ui-menu {
+  border-radius: 10px !important;
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
+  margin-top: 0.5em !important;
+  margin-left: 1em !important;
+}
+
+::ng-deep .ui-menuitem-link {
+  padding-left: 2em !important;
+  padding-right: 2em !important;
+}

@@ -21,7 +21,7 @@ under the License.
   <div>
     <div class="list-container">
       <app-locations-list-header (sortEvent)="onSort($event)"></app-locations-list-header>
-      <app-locations-list-item *ngFor="let location of (locations$ | async) | sortExtended:sortField:sortType" [location]="location" [routerLink]="['locations' , location.id]">
+      <app-locations-list-item *ngFor="let location of (locations$ | async) | sortExtended:sortField:sortType" [location]="location">
       </app-locations-list-item>
     </div>
   </div>

@@ -64,6 +64,8 @@ import { CreateLocationsPanelComponent } from './components/content/location-ins
 import { LocationInstantiationComponent } from './components/content/location-instantiation/location-instantiation.component'
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -119,7 +121,9 @@ import { DropdownModule } from 'primeng/dropdown';
     FontAwesomeModule,
     ReactiveFormsModule,
     DialogModule,
-    DropdownModule
+    DropdownModule,
+    ButtonModule,
+    MenuModule,
   ],
   exports: [
     FactorySubHeaderComponent,

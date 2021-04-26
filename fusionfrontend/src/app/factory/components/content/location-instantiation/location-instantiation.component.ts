@@ -13,11 +13,11 @@
  * under the License.
  */
 
-import { Component, OnInit, Input,Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Location } from 'src/app/store/location/location.model';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators'; 
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-location-instantiation',
@@ -26,9 +26,8 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class LocationInstantiationComponent implements OnInit {
 
-
   @Input()
-  modalsActive;
+  modalsActive: boolean;
   @Input()
   companyId;
   @Output()
@@ -57,7 +56,7 @@ export class LocationInstantiationComponent implements OnInit {
     type: null
   }
 
-  constructor(private formBuilder: FormBuilder) { 
+  constructor(private formBuilder: FormBuilder) {
   }
 
   createFormGroupWithBuilderAndModel(formBuilder: FormBuilder, data: any) {
@@ -83,16 +82,14 @@ export class LocationInstantiationComponent implements OnInit {
       let result = this.locationForm.value;
       this.location = result;
     });
-
   }
-
 
   ngOnInit(): void {
     this.createFormGroupWithBuilderAndModel(this.formBuilder, this.initialLocation)
   }
 
-  locationCreated(event){
-    if(event) {
+  locationCreated(event) {
+    if (event) {
       this.location.companyId = this.companyId;
       this.createLocationEvent.emit(this.location);
     }
