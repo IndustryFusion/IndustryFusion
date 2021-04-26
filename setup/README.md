@@ -13,8 +13,6 @@
  under the License.
 -->
 
-TODO docker for tests:  TODO quay.io.ryuk...
-
 
 # Optional: Additional setup for new Ubuntu
 
@@ -63,7 +61,13 @@ sudo npm install --global yarn
 ## 1. Checkout industry fusion application
 Clone directory: `git clone https://github.com/IndustryFusion/IndustryFusion.git`
 
-Go in terminal to the main repo folder. Run Maven (dependency manager) to automatically install node, npm, yarn, angular-cli etc.:
+Pull testcontainer-image to be able to run tests with maven (dependency manager):
+
+```
+docker pull testcontainersofficial/ryuk:0.3.0
+```
+
+Go in terminal to the main repo folder. Run Maven to automatically install node, npm, yarn, angular-cli etc.:
 
 ```
 mvn install
