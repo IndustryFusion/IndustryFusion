@@ -13,8 +13,9 @@
  under the License.
 -->
 
+ToDo (fkn): Remove optional setup or move it to its own location/file  
 
-# Optional: Additional setup for new Ubuntu
+#Optional: Additional setup for new Ubuntu
 
 Note: You should always run 'apt(-get) update' first before installing a package.
 
@@ -55,19 +56,26 @@ sudo npm install --global yarn
 ```
 
 
-# Industry Fusion - Project setup
+# IndustryFusion - Project setup
+## Prerequisites
+Software needed to be installed on your system:
+1. Git Client
+1. Docker
 
 
-## 1. Checkout industry fusion application
+## 1. Checkout IndustryFusion application
 Clone directory: `git clone https://github.com/IndustryFusion/IndustryFusion.git`
 
 Pull testcontainer-image to be able to run tests with maven (dependency manager):
+
+ToDo (fkn): Das untenstehende Container-Image wird von Testcontainers.org verwendet. Sollte aber automatisch gepulled werden. !?! 
 
 ```
 docker pull testcontainersofficial/ryuk:0.3.0
 ```
 
-Go in terminal to the main repo folder. Run Maven to automatically install node, npm, yarn, angular-cli etc.:
+Go in terminal to the maven project root folder (should be `IndustryFusion`). Run Maven to automatically install node, npm, yarn, angular-cli etc. 
+during the build of the fusionfrontend Maven module:
 
 ```
 mvn install
@@ -80,6 +88,8 @@ mvn install
 ```
 sudo apt install openjdk-11-jdk
 ```
+
+ToDo (fkn): Wir sollten eine für alle funktionierende Beschreibung haben also OHNE Fallbacks!
 
 ### Fallback: PrimeNG, PrimeIcons, Angular-DevKit
 
@@ -110,7 +120,7 @@ npm link @angular/cli
 
 ## 3. Database and Authentication
 
-### 3.1. pgadmin4 (DB)  for postgresql
+### 3.1. pgadmin4 (DB) for postgresql
 
 #### Prerequisites
 pgadmin4 is one client/web app for postgresql databases, for setup you first need to run postgresql:
@@ -143,9 +153,6 @@ In pgAdmin4 you can use "Query Tool".
 [Get Postman!](https://www.getpostman.com/)
 
 Download and import [fusion.postman_collection.json](https://github.com/IndustryFusion/IndustryFusion/tree/master/setup/fusion.postman_collection.json), copy content manually if not working.
-
-
-
 
 
 
@@ -199,7 +206,6 @@ Press `Strg` + `Alt` + `S` to open settings, then change to tab "Plugins", pleas
 
 
 ### 4.2. Alternative: VS Code
-
 
 
 #### fusionbackend  (Spring Boot)
@@ -263,7 +269,7 @@ for the second time use `docker start postgres-104`.
 
 
 
-###2. keycloak container (Auth)
+### 2. keycloak container (Auth)
 
 for the initial start use this:
 ```
@@ -281,7 +287,7 @@ Either (Option 2 is recommended)
 
 **Warning**: Running the fusionbackend deletes (currently) all imported data in the DB. Automatic reimport or disabling is neccessary.
 
-###4. fusionfrontend
+### 4. fusionfrontend
 
 Either
 1. run from within the IDE (intellij / eclipse / VS Code) of your choice
