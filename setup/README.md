@@ -69,9 +69,9 @@ Software needed to be installed on your system:
 1. Git Client: version >= 2.31.1
 1. Docker (or other Container-Runtime). Docker: version >=19.03.12 
 1. OpenJDK: version >= 11.0.10
-1. PostgreSQL-Client choose by your own. E.g.: 
-  1. Intellij integrated Data-Grid
-  1. [pgadmin4](https://www.pgadmin.org/download/)
+1. PostgreSQL-Client choose by your own. E.g.:
+   1. Intellij integrated Data-Grid
+   1. [pgadmin4](https://www.pgadmin.org/download/)
 
 
 ## 1. Checkout IndustryFusion application
@@ -153,32 +153,13 @@ Hint: In pgAdmin4 you can use "Query Tool".
 ### 3.2. Keycloak Authentication
 ToDo (fkn): Auch über docker-compose abbilden.
 
-#### Run Docker Container
+ToDo (fkn): Es gibt auch die Möglichkeit die Initialisierung gleich beim Container-Start zu machen. Siehe https://github.com/keycloak/keycloak-containers/blob/12.0.4/server/README.md
 
-for the initial start use this:
-```
-docker run -d -p 8081:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:10.0.2
-```
-
-for the second time use:
-```
-docker start keycloak
-```
-
-#### Import Sample Data
-
-1. Open keycloak at http://localhost:8081 and login with username `admin` and pwd `admin`.
-1. Import "fusion.oisp_realm.json" (TODO Link)
-1. Add e-mail to user admin:  Users → View all users → Edit → tab 'Details' → Email
-   
-The user's role can be edited in the tab "Roles Mapping" by entering "fusion-backend" into Client Roles. Admin user has all three roles:
-   1. ECOSYSTEM_MANAGER
-   1. FACTORY_MANAGER
-   1. FLEET_MANAGER
-
+Do the steps based on the [keycloak setup description](keycloaksetup.md)
 
 
 ## 4. IDE
+ToDo (fkn): Wie wurde das Intellij-Projekt erstellt/importiert/konfiguriert? 
 
 ### 4.1. Recommendation: IntelliJ IDEA (Ultimate Edition)
 

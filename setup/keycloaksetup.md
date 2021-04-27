@@ -7,13 +7,23 @@ Keycloak is an open-source authentification software from JBoss enabling single-
 Use docker for quickstart. Run existing container with `docker start keycloak`. For first use, use this command:
 
 ```
-docker run -d -p 8081:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:10.0.2
+docker run -d -p 8081:8080 --name keycloak \
+-e KEYCLOAK_USER=admin \
+-e KEYCLOAK_PASSWORD=admin \
+-e JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled" \
+jboss/keycloak:12.0.0
 ```
 
-Open the KC Admin GUI at http://localhost:8081/auth/
+**Hint**: The above environment variable JAVA_OPTS_APPEND, and its value, is only necessary if the realm should later be uploaded as a JSON file via the admin gui or by the docker run command with `-e KEYCLOAK_IMPORT`. See the [docker image documentation](https://hub.docker.com/r/jboss/keycloak). 
+
+
+Open the keycloak Admin GUI at http://localhost:8081/auth/
 
 
 ## Keycloak theme
+ToDo (fkn): Ist das Theme im Private-Repo anders wie im Öffentlichen?
+ToDo (fkn): Das untenstehende Kopieren könnte vermutlich über einen Container-Mount und in Docker-Compose vereinfacht werden.
+
 The Theme https://github.com/mattmikulina/IndustryFusion-private-/tree/master/fusionkeycloaktheme should be copied to the running keycloak instance under keycloak/themes.
 
 Instructions for adding the keycloak theme in docker:
@@ -29,9 +39,19 @@ ls
 
 ## Keycloak configuration
 
+### Create Realm
 Follow the instruction below but substitute local URLS for
-   https://platform.industry-fusion.com/fusionfrontend with http://localhost:4200!
-Do this to add an OISP realm with 2 clients and a concrete user that will be used to access the IF application:
+_https://platform.industry-fusion.com/fusionfrontend_ with _http://localhost:4200_.
+
+Do this to add an OISP realm with 2 clients and a concrete user that will be used to access the IF application.
+
+#### Option 1: Create Realm for local Development and based on Import Realm File
+1. Click on the Master realm dropdown and click Add Realm.
+1. Click _Select file_ in the import section.
+1. Choose [fusion.oisp_realm_local.json](fusion.oisp_realm_local.json) from the sources.
+1. Click _Create_
+
+#### Option 2: Create Realm by Admin GUI
 
 1. Click on the Master realm dropdown and click Add Realm
 1. Add Realm with name OISP and enable it
@@ -57,15 +77,26 @@ Do this to add an OISP realm with 2 clients and a concrete user that will be use
         1. Direct Access Grants: OFF
         1. Service Accounts Enabled: ON
         1. Authorization Enabled: ON
-    1. Change to tab "Credentials"
-    	1. copy content of "Secret"
-    	1. open fusionbackend/src/main/resources/application.yaml -> Substitute secret in path  keycloak.credentials.secret
     1. Change to tab "Roles" and add the following roles:
         1. ECOSYSTEM_MANAGER
         1. FACTORY_MANAGER
         1. FLEET_MANAGER
-1. Create a new user and click save
+
+### Handle Backend Secret
+1. Go to client with name "fusion-backend"
+1. Change to tab "Credentials"
+   1. If the secret contains only `*********`: Click _Regenerate Secret_.
+   1. Copy content of "Secret"
+   1. open fusionbackend/src/main/resources/application.yaml -> Substitute secret in path  keycloak.credentials.secret
+
+### Create Access User
+1. Within the OISP-Realm, create a new user 'if-admin' and click save
+    1. add an existing e-mail address, click save
     1. Change to tab "Attributes" and add attribute IF_COMPANY = 2, click save
     1. Change to tab "Credentials" and set a password
     1. Change to tab "Role Mappings" and assign under client roles one (or more) of the above roles of "fusion-backend"
-    1. Assign the role "user" of "oisp-frontend"  (not necessary for quick setup)
+    1. Optional: Assign the role "user" of "oisp-frontend"  (not necessary for quick setup)
+
+### Adjust Admin User
+1. Within the Master-Realm, edit the _admin_ user.
+1. Add an existing e-mail address. 
