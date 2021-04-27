@@ -19,6 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import {AssetTypesComposedQuery} from "../../../../store/composed/asset-types-composed.query";
 
 @Component({
   selector: 'app-asset-type-list-item',
@@ -29,12 +30,22 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
 
   @Input()
   item: AssetType;
+  templateCount: number;
+  assetSeriesCount: number;
+  assetInstancesCount: number;
 
-  constructor(public route: ActivatedRoute, public router: Router, public assetTypeService: AssetTypeService) {
+  constructor(public route: ActivatedRoute,
+              public router: Router,
+              public assetTypeService: AssetTypeService,
+              private assetTypesComposedQuery: AssetTypesComposedQuery) {
     super(route, router, assetTypeService);
   }
 
   ngOnInit() {
+    // TODO: Call resolver?
+    // TODO: Fix: Call via URL yields no data
+    this.assetTypesComposedQuery.selectAssetTypeWithTemplateCount(this.item.id).subscribe(x => this.templateCount = x.templateCount);
+    this.assetSeriesCount = 9999;
+    this.assetInstancesCount = 9999;
   }
-
 }

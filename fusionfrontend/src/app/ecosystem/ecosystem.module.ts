@@ -67,6 +67,7 @@ import { AssetTypeTemplateMetricRowComponent } from './components/content/asset-
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content/asset-type-template-create-step-sumary/asset-type-template-create-step-sumary.component';
 import { Ng2CompleterModule } from 'ng2-completer';
+import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { Ng2CompleterModule } from 'ng2-completer';
     AssetTypeTemplateCreateStepThreeComponent,
     AssetTypeTemplateCreateStepFourComponent,
     AssetTypeTemplateMetricRowComponent,
-    AssetTypeTemplateCreateStepSumaryComponent
+    AssetTypeTemplateCreateStepSumaryComponent,
+    AssetTypePageComponent,
   ],
   imports: [
     CommonModule,

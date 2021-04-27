@@ -12,15 +12,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { BaseEntity } from '../baseentity.model';
 
-export class AssetType extends BaseEntity {
-  name: string;
-  label: string;
-  description: string;
+.wrapper {
+  margin: 0 80px;
 }
 
-// TODO: Name AssetTypeWithAssetTypeTemplateCount or shorter like this:
-export class AssetTypeWithTemplateCount extends AssetType {
-  templateCount: number;
-}

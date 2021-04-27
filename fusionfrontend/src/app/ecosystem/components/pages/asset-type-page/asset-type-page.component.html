@@ -1,0 +1,24 @@
+<section class="company">
+  <div class="company-info">
+    <h3>
+      {{(assetType$ | async).name }}
+<!--      {{assetType?.name}}-->
+    </h3>
+    <div class="address">
+      {{(assetType$ | async).description }}
+<!--      <p>{{assetType?.description}}</p>-->
+    </div>
+  </div>
+</section>
+
+<app-asset-type-template-list></app-asset-type-template-list>
+<!--[items] = "(assetTypeTemplates$ | async)"-->
+
+<!--<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>-->
+
+<div>
+  <h3>Templates</h3>
+  <ng-container *ngFor="let template of assetTypeTemplates$ | async; let i = index">
+    {{ template.name }}
+  </ng-container>
+</div>

@@ -26,12 +26,12 @@ under the License.
     </div>
   </div>
 </div>
-<div class="list-item" [ngClass]="{'selected': selected}">
+<div class="list-item" [ngClass]="{'selected': selected}" [routerLink]="item.id">
   <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}"><input type="checkbox" [(ngModel)]="selected" (click)="select()" /></div>
   <div class="list-item-cell bold black" [style.width.%]="30">{{ item.name }}</div>
-  <div class="list-item-cell grey" [style.width.%]="20">000</div>
-  <div class="list-item-cell grey" [style.width.%]="20">18.12.2019</div>
-  <div class="list-item-cell grey" [style.width.%]="20">Published</div>
+  <div class="list-item-cell grey" [style.width.%]="20">{{ templateCount }}</div>
+  <div class="list-item-cell grey" [style.width.%]="20">{{ assetSeriesCount }}</div>
+  <div class="list-item-cell grey" [style.width.%]="20">{{ assetInstancesCount }}</div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
     <clr-dropdown>
       <button clrDropdownTrigger aria-label="Asset type dropdown menu" class="grey">
