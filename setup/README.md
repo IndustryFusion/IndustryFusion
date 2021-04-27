@@ -13,6 +13,9 @@
  under the License.
 -->
 
+#Set-Up Guide for local Development Environment for IndustryFusion
+This guide is intended to use by developer to setup a local development environment, mostly based on Intellj IDEA and Docker. 
+
 ToDo (fkn): Remove optional setup or move it to its own location/file  
 
 #Optional: Additional setup for new Ubuntu
@@ -54,13 +57,21 @@ The package managers will be automatically installed within the next step. Howev
 sudo apt-get install npm -y
 sudo npm install --global yarn
 ```
+## OpenJDK 11 (LTS)
 
+```
+sudo apt install openjdk-11-jdk
+```
 
-# IndustryFusion - Project setup
+# Setup Development Environment
 ## Prerequisites
 Software needed to be installed on your system:
-1. Git Client
-1. Docker
+1. Git Client: version >= 2.31.1
+1. Docker (or other Container-Runtime). Docker: version >=19.03.12 
+1. OpenJDK: version >= 11.0.10
+1. PostgreSQL-Client choose by your own. E.g.: 
+  1. Intellij integrated Data-Grid
+  1. [pgadmin4](https://www.pgadmin.org/download/)
 
 
 ## 1. Checkout IndustryFusion application
@@ -77,19 +88,17 @@ docker pull testcontainersofficial/ryuk:0.3.0
 Go in terminal to the maven project root folder (should be `IndustryFusion`). Run Maven to automatically install node, npm, yarn, angular-cli etc. 
 during the build of the fusionfrontend Maven module:
 
+ToDo (fkn): Build schlägt aktuell beim fusion-aggregator fehl
+
+
 ```
 mvn install
 ```
 
-## 2. Required Linux Packages
+## 2. Required Packages
 
-### OpenJDK 11 (LTS)
-
-```
-sudo apt install openjdk-11-jdk
-```
-
-ToDo (fkn): Wir sollten eine für alle funktionierende Beschreibung haben also OHNE Fallbacks!
+ToDo (fkn): Wir sollten eine für alle funktionierende Beschreibung haben also OHNE Fallbacks! Das Kaptiel könnte eigentlich komplett 
+enfallen
 
 ### Fallback: PrimeNG, PrimeIcons, Angular-DevKit
 
@@ -120,47 +129,43 @@ npm link @angular/cli
 
 ## 3. Database and Authentication
 
-### 3.1. pgadmin4 (DB) for postgresql
+### 3.1. Postgresql Database
+ToDo (fkn): Es existiert eine docker-compose-Datei mit anderer Image-Konfiguration. Klären! Was ist in der Produktion?
 
-#### Prerequisites
-pgadmin4 is one client/web app for postgresql databases, for setup you first need to run postgresql:
+#### Run Docker Container
 
+for the initial start use this:
 ```
-docker run -d --name postgres-104 -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:10.4    or  docker start postgres-104
-```
-
-Also start the fusionbackend with your IDE or using the terminal (see below).
-
-#### Download
-
-Download and follow the instructions of [pgadmin4](https://www.pgadmin.org/download/pgadmin-4-apt/), choosing the web app is sufficient.
-
-#### Add database
-Open http://127.0.0.1/pgadmin4  and login with your created credentials.
-
-Servers (left side) → Create → Server… → use the following configuration:
-```
-General:     Name = Industry Fusion
-Connection:  Host name / adress = 127.0.0.1;   db-name = postgresdb;   username =  postgres;     password = postgres
+docker run -d --name postgres-104 -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:10.4
 ```
 
+for the second time use:
+```
+ docker start postgres-104
+```
 
-#### Import sample data
+#### Import Sample Data
 The file [demoinserts.sql](https://github.com/IndustryFusion/IndustryFusion/tree/master/setup/demoinserts.sql) can be imported to provide some initial demo data. 
-In pgAdmin4 you can use "Query Tool".
 
-#### Optional: Import Postman collection
-[Get Postman!](https://www.getpostman.com/)
-
-Download and import [fusion.postman_collection.json](https://github.com/IndustryFusion/IndustryFusion/tree/master/setup/fusion.postman_collection.json), copy content manually if not working.
+Hint: In pgAdmin4 you can use "Query Tool".
 
 
+### 3.2. Keycloak Authentication
+ToDo (fkn): Auch über docker-compose abbilden.
 
-### 3.2. keycloak (Auth)
+#### Run Docker Container
 
+for the initial start use this:
 ```
 docker run -d -p 8081:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:10.0.2
 ```
+
+for the second time use:
+```
+docker start keycloak
+```
+
+#### Import Sample Data
 
 1. Open keycloak at http://localhost:8081 and login with username `admin` and pwd `admin`.
 1. Import "fusion.oisp_realm.json" (TODO Link)
@@ -247,36 +252,29 @@ Other important config files:
 
 ## 6. Troubleshooting
 
+### Miscellaneous
 * ECONREFUSED →  Is keycloak running?
 * ECONREFUSED → used port offset at native (no docker) keycloak creation? If yes, please change proxy.conf.js: “/auth” set target to e.g. :8180 or :8080
  * No data in FleetManager  → DB → asset_series:  company_id set to 2
  * GoogleMaps - Plugin not working  → add Keys in environment.ts
  * Local DB-Data were cleared → Running the fusionbackend deletes (currently) all imported data in the DB. Please reimport them.
 
+### Pgadmin Configuration
+
+#### Add database
+Open http://127.0.0.1/pgadmin4  and login with your created credentials.
+
+Servers (left side) → Create → Server… → use the following configuration:
+```
+General:     Name = Industry Fusion
+Connection:  Host name / adress = 127.0.0.1;   db-name = postgresdb;   username =  postgres;     password = postgres
+```
+
 # Start und stop IF (backend + frontend)
 
 ## Start 
 
-###1. postgres container (DB)
-
-for the initial start use this:
-```
-docker run -d --name postgres-104 -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:10.4
-```
-
-
-for the second time use `docker start postgres-104`.
-
-
-
-### 2. keycloak container (Auth)
-
-for the initial start use this:
-```
-docker run -d -p 8081:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:10.0.2
-```
-
-for the second time use `docker start keycloak`.
+Assure database and keycloak docker containers are running. See above!
 
 ### 3. fusionbackend
 
@@ -285,6 +283,7 @@ Either (Option 2 is recommended)
 2. follow the instructions to compile and execute on [fusionbackend](https://github.com/IndustryFusion/IndustryFusion/tree/master/fusionbackend)
 3. or follow the instruction to generate and execute the docker container on follow the instructions to compile and execute on [fusionbackend](https://github.com/IndustryFusion/IndustryFusion/tree/master/fusionbackend)
 
+ToDo (fkn): Dass muss über getrennte Spring-Konfigurationen für local und cloud abgeschaltet werden.
 **Warning**: Running the fusionbackend deletes (currently) all imported data in the DB. Automatic reimport or disabling is neccessary.
 
 ### 4. fusionfrontend
@@ -304,9 +303,16 @@ See running docker containers: `docker ps -a`, stop the following (order not imp
 * stop docker container:  `docker stop postgres-104`
 
 
+# Optional: Import Postman collection
+ToDo (fkn): Für was werden/wurden die Postman-Collections verwendet?
+
+[Get Postman!](https://www.getpostman.com/)
+
+Download and import [fusion.postman_collection.json](https://github.com/IndustryFusion/IndustryFusion/tree/master/setup/fusion.postman_collection.json), copy content manually if not working.
+
 # Using Kubernetes (K8S / K3S)
 
-TODO:  Update
+ToDo (fkn):  Update notwendig
 
 ### Create linux host if running on Windows or Mac
 This step is only necessary if running on Windows or Mac. If on linux skip to next step.
