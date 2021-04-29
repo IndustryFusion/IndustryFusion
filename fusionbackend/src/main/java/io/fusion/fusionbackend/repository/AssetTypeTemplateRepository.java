@@ -15,11 +15,13 @@
 
 package io.fusion.fusionbackend.repository;
 
+import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,4 +36,6 @@ public interface AssetTypeTemplateRepository extends PagingAndSortingRepository<
 
     @EntityGraph(value = "AssetTypeTemplate.allChildrenDeep")
     Optional<AssetTypeTemplate> findDeepById(Long assetTypeTemplateId);
+
+    List<AssetTypeTemplate> findAllByAssetType(AssetType assetType);
 }

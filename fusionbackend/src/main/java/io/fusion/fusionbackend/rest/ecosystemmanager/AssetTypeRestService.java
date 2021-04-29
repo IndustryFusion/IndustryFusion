@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
+import io.fusion.fusionbackend.dto.AssetTypeDetailsDto;
 import io.fusion.fusionbackend.dto.AssetTypeDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeMapper;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
@@ -54,6 +55,11 @@ public class AssetTypeRestService {
         return assetTypeMapper.toDto(
                 assetTypeService.getAssetType(assetTypeId),
                 embedChildren);
+    }
+
+    @GetMapping(path = "/assettypes/{assetTypeId}/details")
+    public AssetTypeDetailsDto getAssetType(@PathVariable final Long assetTypeId) {
+        return assetTypeService.getAssetTypeDetailsDto(assetTypeId);
     }
 
     @PostMapping(path = "/assettypes")
