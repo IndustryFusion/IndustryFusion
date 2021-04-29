@@ -17,5 +17,4 @@ export enum ManagerType {
   ECOSYSTEM_MANAGER = 'ecosystemmanager',
   FLEET_MANAGER = 'fleetmanager',
   FACTORY_MANAGER = 'factorymanager',
-  DASHBOARDS = 'dashboards'
 }

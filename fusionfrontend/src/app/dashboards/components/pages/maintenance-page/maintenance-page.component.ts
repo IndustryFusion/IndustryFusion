@@ -54,18 +54,21 @@ export class MaintenancePageComponent implements OnInit {
     this.assetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.assetDetailsWithFields$.subscribe(res => {
       this.assetDetailsWithFields = res;
-      console.log(res)
-      this.assetDetailsWithFields.sort((a, b) => {
-          const indexA = a.fields.findIndex(field => field.name === 'Hours till maintenance')
-          const indexB = b.fields.findIndex(field => field.name === 'Hours till maintenance')
-        if (indexA !== -1 && indexB !== -1) {
-          return Number(a.fields[indexA].value) > Number(b.fields[indexB].value) ? 1 : -1;
-        } else if (indexA === -1) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
+      this.sortAssetsByMaintenanceValue();
+    });
+  }
+
+  sortAssetsByMaintenanceValue() {
+    this.assetDetailsWithFields.sort((a, b) => {
+      const indexA = a.fields.findIndex(field => field.name === 'Hours till maintenance')
+      const indexB = b.fields.findIndex(field => field.name === 'Hours till maintenance')
+      if (indexA !== -1 && indexB !== -1) {
+        return Number(a.fields[indexA].value) > Number(b.fields[indexB].value) ? 1 : -1;
+      } else if (indexA === -1) {
+        return 1;
+      } else {
+        return -1;
+      }
     });
   }
 
