@@ -21,12 +21,12 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="routerLink">{{location.country}}</div>
   <div class="list-item-cell grey" [style.width.%]="7" [routerLink]="routerLink">{{location.assetCount}}</div>
   <div class="list-item-cell grey" [style.width.%]="7" [routerLink]="routerLink">41</div>
-  <div class="list-item-cell grey" [style.width.%]="5">
-    <p-menu #menu [popup]="true" [model]="actions"></p-menu>
+  <div class="list-item-cell grey table-dropdown-menu" [style.width.%]="5">
+    <p-menu #menu [popup]="true" [model]="menuActions"></p-menu>
     <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event);"
-      class="dropdown-button"></button>
+      class="table-dropdown-menu-button"></button>
   </div>
 </div>
 
-<app-location-instantiation [companyId]="location?.companyId" [modalsActive]="modalsActive" (createLocationEvent)="locationCreated()" (stopCreateLocation)="closeModal()">
+<app-location-instantiation [companyId]="location?.companyId" [locationToEdit]="location" [modalsActive]="modalsActive" (createLocationEvent)="locationCreated()" (updateLocationEvent)="locationUpdated()" (stopCreateLocation)="closeModal()">
 </app-location-instantiation>

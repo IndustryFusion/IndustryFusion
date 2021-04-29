@@ -15,13 +15,15 @@ under the License.
 
 <p-dialog [(visible)]="display" class="create-location" modal="true">
   <p-header>
-    Locations
+    <div *ngIf="editMode then editSite else createSite"></div>
+    <ng-template #createSite>Add new Factory Site</ng-template>
+    <ng-template #editSite>Edit Factory Site</ng-template>
   </p-header>
 
   <div>
     <div [formGroup]="locationForm">
       <div class="p-field">
-        <label for="locationName" >Location name</label>
+        <label for="locationName">Location name</label>
         <input id="locationName" type="text" pInputText formControlName="name" placeholder="Name" class="location-input">
       </div>
       <div>

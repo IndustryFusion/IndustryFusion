@@ -17,7 +17,9 @@ under the License.
     <app-create-locations-panel
         [display]="modalsActive"
         [locationForm]="locationForm"
+        [editMode]="editMode"
         (createLocationEvent)="locationCreated($event)"
+        (updateLocationEvent)="locationUpdated($event)"
         (stopCreateLocation)="closeModal($event)">
     </app-create-locations-panel>
 </div>

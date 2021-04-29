@@ -25,13 +25,16 @@ import { FormGroup } from '@angular/forms';
 })
 export class CreateLocationsPanelComponent implements OnInit {
 
-
   @Input()
   display: boolean;
   @Input()
   locationForm: FormGroup;
+  @Input()
+  editMode: boolean;
   @Output()
   createLocationEvent = new EventEmitter<boolean>();
+  @Output()
+  updateLocationEvent = new EventEmitter<boolean>();
   @Output()
   stopCreateLocation = new EventEmitter<boolean>();
 
@@ -58,8 +61,12 @@ export class CreateLocationsPanelComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  continueCreation(){
-    this.createLocationEvent.emit(true);
+  continueCreation(): void {
+    if (this.editMode) {
+      this.updateLocationEvent.emit(true);
+    } else {
+      this.createLocationEvent.emit(true);
+    }
     this.display = false;
   }
 
