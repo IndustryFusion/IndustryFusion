@@ -13,13 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div *ngIf="modalsActive">
-    <app-create-locations-panel
-        [display]="modalsActive"
-        [locationForm]="locationForm"
-        [editMode]="editMode"
-        (createLocationEvent)="locationCreated($event)"
-        (updateLocationEvent)="locationUpdated($event)"
-        (stopCreateLocation)="closeModal($event)">
-    </app-create-locations-panel>
-</div>
+<app-create-locations-panel [display]="modalsActive" [locationForm]="locationForm" [editMode]="editMode"
+  (createLocationEvent)="locationCreated($event)" (updateLocationEvent)="locationUpdated($event)"
+  (stopCreateLocation)="closeModal($event)">
+</app-create-locations-panel>

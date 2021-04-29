@@ -26,7 +26,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class LocationInstantiationComponent implements OnInit {
 
-  @Input()
+  @Input() @Output()
   modalsActive: boolean;
   @Input()
   companyId;
@@ -90,7 +90,6 @@ export class LocationInstantiationComponent implements OnInit {
       longitude: data ? data.longitude : null,
       locationType: data ? data.type : null,
     });
-    console.log(this.locationForm.value)
     this.formChange = this.locationForm.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(() => {
