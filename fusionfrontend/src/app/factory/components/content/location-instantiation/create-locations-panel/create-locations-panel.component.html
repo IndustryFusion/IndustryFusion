@@ -14,43 +14,56 @@ under the License.
 -->
 
 <p-dialog [(visible)]="display" class="create-location" modal="true">
-  <p-header>
-    Locations
-  </p-header>
-
   <div>
     <div [formGroup]="locationForm">
-      <div class="p-field">
-        <label for="locationName" >Location name</label>
-        <input id="locationName" type="text" pInputText formControlName="name" placeholder="Name" class="location-input">
-      </div>
-      <div>
-        <label>Address</label>
-        <input type="text" formControlName="line1" placeholder="Address" class="location-input">
-      </div>
-      <div>
-        <label>City</label>
-        <input type="text" pInputText formControlName="city" placeholder="City" class="location-input">
-      </div>
-      <div>
-        <label>Zip code</label>
-        <input type="text" formControlName="zip" placeholder="Zip code" class="location-input">
-      </div>
-      <div>
-        <p-dropdown [options]="locationTypes" formControlName="locationType" class="location-input"> </p-dropdown>
-      </div>
-      <div>
-        <p-dropdown [options]="countries" formControlName="country" class="location-input"> </p-dropdown>
-      </div> 
-    </div>
-  </div>
+      <h3 class="headings">Add new Factory site</h3>
 
-  <div>
+      <div class="input-div p-grid p-dir-col">
+        <label class="p-col">Factory name</label>
+        <input type="text" pInputText formControlName="name" placeholder="Name" class="location-input p-col">
+      </div>
+      <div class="input-div p-grid p-dir-col">
+        <label class="p-col">Factory type</label>
+        <p-dropdown [options]="locationTypes" formControlName="locationType" class="p-col"> </p-dropdown>
+      </div>
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <h3 class="headings">Enter address details</h3>
+
+      <div class="input-div p-grid p-dir-col">
+        <label class="p-col">Street</label>
+        <input type="text" formControlName="line1" placeholder="Street" class="location-input p-col">
+      </div>
+      <div class="input-div p-grid p-dir-col">
+        <label class="p-col">Additional address</label>
+        <input type="text" formControlName="line2" placeholder="Additional address" class="location-input p-col">
+      </div>
+
+      <div class="p-grid input-div">
+        <div class="p-col-5 p-grid p-dir-col">
+          <label class="p-col">ZIP</label>
+          <input type="text" formControlName="zip" placeholder="Zip code" class="zip-code-input p-col">
+        </div>
+        <div class="p-col-5 p-grid p-dir-col">
+          <label class="p-col">City</label>
+          <input type="text" pInputText formControlName="city" placeholder="City" class="city-input p-col">
+        </div>
+      </div>
+
+      <div class="input-div p-grid p-dir-col">
+        <label class="p-col">Country</label>
+        <input type="text" formControlName="country" placeholder="Country" class="location-input p-col">
+      </div> 
+    </div> 
   </div>
 
   <p-footer>
     <button type="button" class="if-button button-secondary button-modal footer-btn" (click)="cancel()">Cancel</button>
-    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="continueCreation()">Next</button>
+    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="continueCreation()">Create</button>
   </p-footer>
 </p-dialog>
-  
+
+          <!-- <p-dropdown [options]="countries" formControlName="country" class="p-col"></p-dropdown> -->

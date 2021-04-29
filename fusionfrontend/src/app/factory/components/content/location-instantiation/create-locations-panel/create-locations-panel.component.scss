@@ -16,25 +16,69 @@
 
 @import 'abstract/variables';
 @import 'components/radiobuttons';
+@import 'components/primedialog';
+@import 'components/primedropdown';
 
-:host ::ng-deep .ui-dialog {
-    width: 500px;
-    height: max-content;
-    position: initial !important;
-    left: unset !important;
-    top: unset !important;
+:host ::ng-deep .ui-dropdown {
+    border-radius: 10px  !important;
+    height: 55px;
+    width: 336px;
+    border: none;
+    align-items: center;
+    margin: 0px !important;
+    padding: 0px !important;
 
-    .ui-dialog-content {
-        height: 400px !important;
+    .ui-dropdown-label {
+        width: 100%;
+        border-color: black;
+        color: black;
+        margin-left: 15px;
+    }
+    .ui-dropdown-trigger {
+        margin-right: 15px !important;
     }
 }
 
 .footer-btn {
+    margin-top: 30px !important;
+    margin-bottom: 40px !important;
     width: 125px !important;
 }
 
 .location-input {
-    border-color: black;
+    border: none;
+    height: 55px;
+    width: 672px;
     border-radius: 10px;
-    margin: 10px 5px;
-  }
+    margin-left: 10px !important;
+}
+
+.headings {
+    margin-left: 80px;
+    font-weight: bold !important;
+}
+
+
+.zip-code-input {
+    width: 324px !important;
+    margin-left: 10px;
+    margin-right: 24px;
+    border: none;
+    height: 55px;
+    border-radius: 10px;
+}
+
+.city-input {
+    width: 324px !important;
+    margin-left: 0px;
+    border: none;
+    height: 55px;
+    border-radius: 10px;
+}
+
+.input-div {
+    margin-top:20px;
+    margin-left: 70px;
+    border: none;
+    border-radius: 10px;
+}

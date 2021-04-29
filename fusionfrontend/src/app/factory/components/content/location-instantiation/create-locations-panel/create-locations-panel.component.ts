@@ -50,7 +50,7 @@ export class CreateLocationsPanelComponent implements OnInit {
     ];
 
     this.locationTypes = [
-      { label: 'Headquater', value: LocationType.HEADQUARTER },
+      { label: 'Headquarter', value: LocationType.HEADQUARTER },
       { label: 'Fabrication', value: LocationType.FABRICATION },
     ]
   }

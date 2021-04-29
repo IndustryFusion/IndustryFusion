@@ -1,26 +1,29 @@
-.ui-dialog .ui-dialog-titlebar {
-    background: white !important;
-    color: black !important;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-color: white;
+.ui-dialog {
+  width: 984px;
+  height: max-content;
+  position: relative;
+
+    .ui-dialog-titlebar {
+      color: black !important;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      border-bottom-color: white;
+    }
+  
+    .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+      color: black !important;
+    }
+  
+  
+  .ui-dialog-content {
+    background-color: #f4f4f4 !important;
+    border: none !important;
   }
 
-  .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
-    color: black !important;
-  }
-
-
-.ui-dialog .ui-dialog-content {
+  .ui-dialog-footer {
+    background-color: #f4f4f4 !important;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-top-color: white !important;
-}
-
-.ui-dialog {
-    width: 275px;
-    position: relative;
-    right: 670px;
-    bottom: 70px;
+  }
 }
 
