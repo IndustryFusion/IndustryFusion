@@ -13,36 +13,38 @@
  * under the License.
  */
 
-@import '../../../../../ecosystem/components/content/base/base-list-item/base-list-item.component.scss';
+@import "../../../../../ecosystem/components/content/base/base-list-item/base-list-item.component.scss";
 
 .list-item {
   padding-left: 20px;
 }
 
-.dropdown-button {
+.table-dropdown-menu-button {
   outline: none;
   background-color: transparent !important;
   color: #95989a !important;
   border: none !important;
 }
 
-.list-item .dropdown-button {
+.list-item .table-dropdown-menu-button {
   visibility: hidden;
 }
 
-.list-item:hover .dropdown-button {
+.list-item:hover .table-dropdown-menu-button {
   visibility: visible;
 }
 
-::ng-deep .ui-menu {
-  border-radius: 10px !important;
-  padding-top: 1em !important;
-  padding-bottom: 1em !important;
-  margin-top: 0.5em !important;
-  margin-left: 1em !important;
-}
+.table-dropdown-menu {
+  ::ng-deep .ui-menu {
+    border-radius: 10px !important;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+    margin-top: 0.5em !important;
+  }
 
-::ng-deep .ui-menuitem-link {
-  padding-left: 2em !important;
-  padding-right: 2em !important;
+  ::ng-deep .ui-menuitem-link {
+    padding-left: 2em !important;
+    padding-right: 2em !important;
+    white-space: nowrap !important;
+  }
 }

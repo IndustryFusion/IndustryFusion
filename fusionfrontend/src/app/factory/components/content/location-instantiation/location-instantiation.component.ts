@@ -30,8 +30,12 @@ export class LocationInstantiationComponent implements OnInit {
   modalsActive: boolean;
   @Input()
   companyId;
+  @Input()
+  locationToEdit: Location;
   @Output()
-  createLocationEvent = new EventEmitter<Location>()
+  createLocationEvent = new EventEmitter<Location>();
+  @Output()
+  updateLocationEvent = new EventEmitter<Location>();
   @Output()
   stopCreateLocation = new EventEmitter<boolean>();
 
@@ -56,24 +60,35 @@ export class LocationInstantiationComponent implements OnInit {
     type: null
   }
 
+  editMode: boolean = false;
+
   constructor(private formBuilder: FormBuilder) {
+  }
+
+  ngOnInit(): void {
+    if (this.locationToEdit) {
+      this.editMode = true;
+      this.createFormGroupWithBuilderAndModel(this.formBuilder, this.locationToEdit);
+    } else {
+      this.createFormGroupWithBuilderAndModel(this.formBuilder, this.initialLocation);
+    }
   }
 
   createFormGroupWithBuilderAndModel(formBuilder: FormBuilder, data: any) {
     this.locationForm = formBuilder.group({
-      companyId: data.location ? data.location.companyId : null,
-      roomIds: new FormControl(data.location ? data.location.roomsId : null, [Validators.required]),
-      rooms: new FormControl(data.location ? data.location.rooms : null, [Validators.required]),
-      name: new FormControl(data.location ? data.location.name : null, [Validators.required]),
-      line1: data.location ? data.location.line1 : null,
-      line2: data.location ? data.location.line2 : null,
-      city: data.location ? data.location.city : null,
-      zip: data.location ? data.location.zip : null,
-      country: data.location ? data.location.country : null,
-      imageKey: data.location ? data.location.imageKey : null,
-      latitude: data.location ? data.location.latitude : null,
-      longitude: data.location ? data.location.longitude : null,
-      locationType: data.location ? data.location.type : null,
+      companyId: data ? data.companyId : null,
+      roomIds: new FormControl(data ? data.roomsId : null, [Validators.required]),
+      rooms: new FormControl(data ? data.rooms : null, [Validators.required]),
+      name: new FormControl(data ? data.name : null, [Validators.required]),
+      line1: data ? data.line1 : null,
+      line2: data ? data.line2 : null,
+      city: data ? data.city : null,
+      zip: data ? data.zip : null,
+      country: data ? data.country : null,
+      imageKey: data ? data.imageKey : null,
+      latitude: data ? data.latitude : null,
+      longitude: data ? data.longitude : null,
+      locationType: data ? data.type : null,
     });
     console.log(this.locationForm.value)
     this.formChange = this.locationForm.valueChanges.pipe(
@@ -84,14 +99,16 @@ export class LocationInstantiationComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.createFormGroupWithBuilderAndModel(this.formBuilder, this.initialLocation)
-  }
-
   locationCreated(event) {
     if (event) {
       this.location.companyId = this.companyId;
       this.createLocationEvent.emit(this.location);
+    }
+  }
+
+  locationUpdated(event: Event) {
+    if (event) {
+      this.updateLocationEvent.emit(this.location);
     }
   }
 

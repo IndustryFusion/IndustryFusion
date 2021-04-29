@@ -13,11 +13,11 @@ export class LocationsListItemComponent implements OnInit {
   location: LocationWithAssetCount;
 
   modalsActive: boolean = false;
-  actions: MenuItem[];
+  menuActions: MenuItem[];
   routerLink: string[];
 
   constructor() {
-    this.actions = [
+    this.menuActions = [
       { label: 'Edit', icon: 'pi pi-pencil', command: (_) => { this.openEditModal() } },
       { label: 'Delete', icon: 'pi pi-trash', command: (_) => { } },
     ];
@@ -32,10 +32,13 @@ export class LocationsListItemComponent implements OnInit {
   }
 
   delete(): void {
-    console.warn("TODO");
   }
 
   locationCreated(): void {
+    console.warn("TODO");
+  }
+
+  locationUpdated(): void {
     console.warn("TODO");
   }
 

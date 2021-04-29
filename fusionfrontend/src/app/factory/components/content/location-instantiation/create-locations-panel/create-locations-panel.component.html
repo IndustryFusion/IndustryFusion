@@ -13,10 +13,12 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+
 <p-dialog [(visible)]="display" class="create-location" modal="true">
   <div>
     <div [formGroup]="locationForm">
-      <h3 class="headings">Add new Factory site</h3>
+      <h3 *ngIf="!editMode" class="headings">Add new Factory site</h3>
+      <h3 *ngIf="editMode" class="headings">Edit Factory site</h3>
 
       <div class="input-div p-grid p-dir-col">
         <label class="p-col">Factory name</label>
