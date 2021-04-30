@@ -42,8 +42,8 @@ export class LocationsComponent implements OnInit, OnDestroy {
   modalsActive = false;
 
   constructor(private companyQuery: CompanyQuery,
-              private locationQuery: LocationQuery,
-              private factoryComposedQuery: FactoryComposedQuery) { }
+    private locationQuery: LocationQuery,
+    private factoryComposedQuery: FactoryComposedQuery) { }
 
   ngOnInit() {
     this.isLoading$ = this.locationQuery.selectLoading();
@@ -55,7 +55,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  openModal(){
+  openModal() {
     this.modalsActive = true;
   }
 
@@ -68,7 +68,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
     this.sortType = field[1];
   }
 
-  locationCreated(event: Location){
+  locationCreated(event: Location) {
     this.createLocationEvent.emit(event);
   }
 }

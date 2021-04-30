@@ -34,9 +34,9 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
   selectedLocation: ID;
 
   constructor(private companyQuery: CompanyQuery,
-              private factoryResolver: FactoryResolver,
-              private locationService: LocationService,
-              private activatedRoute: ActivatedRoute) { }
+    private factoryResolver: FactoryResolver,
+    private locationService: LocationService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.isLoading$ = this.companyQuery.selectLoading();
@@ -51,14 +51,13 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
     this.selectedLocation = id;
   }
 
-  locationCreated(event: Location){
-    console.log(event)
+  locationCreated(event: Location) {
     const createLocation$ = this.locationService.createLocation(event);
     createLocation$.subscribe(
       location => {
         console.log('[company page] created location: ' + location.name);
       },
       error => console.log(error)
-    )
+    );
   }
 }

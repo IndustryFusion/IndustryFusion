@@ -88,7 +88,7 @@ export class LocationInstantiationComponent implements OnInit {
       imageKey: data ? data.imageKey : null,
       latitude: data ? data.latitude : null,
       longitude: data ? data.longitude : null,
-      locationType: data ? data.type : null,
+      type: data ? data.type : null,
     });
     this.formChange = this.locationForm.valueChanges.pipe(
       debounceTime(300)
