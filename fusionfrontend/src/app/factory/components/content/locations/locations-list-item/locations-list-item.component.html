@@ -28,5 +28,5 @@ under the License.
   </div>
 </div>
 
-<app-location-instantiation [companyId]="location?.companyId" [locationToEdit]="location" [modalsActive]="modalsActive" (createLocationEvent)="locationCreated()" (updateLocationEvent)="locationUpdated()" (stopCreateLocation)="closeModal()">
+<app-location-instantiation [companyId]="location?.companyId" [locationToEdit]="location" [modalsActive]="modalsActive" (updateLocationEvent)="locationUpdated($event)" (stopCreateLocation)="closeModal()">
 </app-location-instantiation>

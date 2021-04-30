@@ -30,7 +30,10 @@ import { Location } from 'src/app/store/location/location.model';
 export class LocationsComponent implements OnInit, OnDestroy {
 
   @Output()
-  createLocationEvent = new EventEmitter<Location>()
+  createLocationEvent = new EventEmitter<Location>();
+
+  @Output()
+  updateLocationEvent = new EventEmitter<Location>();
 
   isLoading$: Observable<boolean>;
   companyId: ID;
@@ -68,7 +71,11 @@ export class LocationsComponent implements OnInit, OnDestroy {
     this.sortType = field[1];
   }
 
-  locationCreated(event: Location) {
-    this.createLocationEvent.emit(event);
+  locationCreated(location: Location): void {
+    this.createLocationEvent.emit(location);
+  }
+
+  locationUpdated(location: Location): void {
+    this.updateLocationEvent.emit(location);
   }
 }

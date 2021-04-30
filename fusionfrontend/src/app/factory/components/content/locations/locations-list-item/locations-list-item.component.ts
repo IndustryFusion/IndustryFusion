@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LocationWithAssetCount } from 'src/app/store/location/location.model';
+import { Location } from 'src/app/store/location/location.model';
 
 @Component({
   selector: 'app-locations-list-item',
@@ -11,6 +12,9 @@ export class LocationsListItemComponent implements OnInit {
 
   @Input()
   location: LocationWithAssetCount;
+
+  @Output()
+  updateLocationEvent = new EventEmitter<Location>();
 
   modalsActive: boolean = false;
   menuActions: MenuItem[];
@@ -34,12 +38,8 @@ export class LocationsListItemComponent implements OnInit {
   delete(): void {
   }
 
-  locationCreated(): void {
-    console.warn("TODO");
-  }
-
-  locationUpdated(): void {
-    console.warn("TODO");
+  locationUpdated(location: Location): void {
+    this.updateLocationEvent.emit(location);
   }
 
   closeModal(): void {

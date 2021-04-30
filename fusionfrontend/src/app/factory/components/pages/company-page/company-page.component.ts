@@ -51,11 +51,21 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
     this.selectedLocation = id;
   }
 
-  locationCreated(event: Location) {
-    const createLocation$ = this.locationService.createLocation(event);
+  locationCreated(location: Location) {
+    const createLocation$ = this.locationService.createLocation(location);
     createLocation$.subscribe(
       location => {
         console.log('[company page] created location: ' + location.name);
+      },
+      error => console.log(error)
+    );
+  }
+
+  locationUpdated(location: Location) {
+    const createLocation$ = this.locationService.updateLocation(location);
+    createLocation$.subscribe(
+      location => {
+        console.log('[company page] updated location: ' + location.name);
       },
       error => console.log(error)
     );

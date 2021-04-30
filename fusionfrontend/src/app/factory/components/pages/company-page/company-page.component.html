@@ -15,6 +15,5 @@ under the License.
 
 <app-locations-map (selectedLocation)="setSelectedLocation($event)"></app-locations-map>
 
-<app-locations
-  (createLocationEvent)="locationCreated($event)">
+<app-locations (createLocationEvent)="locationCreated($event)" (updateLocationEvent)="locationUpdated($event)">
 </app-locations>

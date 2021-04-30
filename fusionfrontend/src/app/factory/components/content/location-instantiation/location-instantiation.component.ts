@@ -74,27 +74,27 @@ export class LocationInstantiationComponent implements OnInit {
     }
   }
 
-  createFormGroupWithBuilderAndModel(formBuilder: FormBuilder, data: any) {
+  createFormGroupWithBuilderAndModel(formBuilder: FormBuilder, locationData: any) {
+    this.location = locationData;
     this.locationForm = formBuilder.group({
-      companyId: data ? data.companyId : null,
-      roomIds: new FormControl(data ? data.roomsId : null, [Validators.required]),
-      rooms: new FormControl(data ? data.rooms : null, [Validators.required]),
-      name: new FormControl(data ? data.name : null, [Validators.required]),
-      line1: data ? data.line1 : null,
-      line2: data ? data.line2 : null,
-      city: data ? data.city : null,
-      zip: data ? data.zip : null,
-      country: data ? data.country : null,
-      imageKey: data ? data.imageKey : null,
-      latitude: data ? data.latitude : null,
-      longitude: data ? data.longitude : null,
-      type: data ? data.type : null,
+      companyId: locationData ? locationData.companyId : null,
+      roomIds: new FormControl(locationData ? locationData.roomsId : null, [Validators.required]),
+      rooms: new FormControl(locationData ? locationData.rooms : null, [Validators.required]),
+      name: new FormControl(locationData ? locationData.name : null, [Validators.required]),
+      line1: locationData ? locationData.line1 : null,
+      line2: locationData ? locationData.line2 : null,
+      city: locationData ? locationData.city : null,
+      zip: locationData ? locationData.zip : null,
+      country: locationData ? locationData.country : null,
+      imageKey: locationData ? locationData.imageKey : null,
+      latitude: locationData ? locationData.latitude : null,
+      longitude: locationData ? locationData.longitude : null,
+      type: locationData ? locationData.type : null,
     });
     this.formChange = this.locationForm.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(() => {
-      let result = this.locationForm.value;
-      this.location = result;
+      this.location = { ...this.location, ...this.locationForm.value };
     });
   }
 
@@ -114,6 +114,9 @@ export class LocationInstantiationComponent implements OnInit {
   closeModal(event: boolean) {
     this.modalsActive = event;
     this.stopCreateLocation.emit(this.modalsActive);
+    if (this.editMode) {
+      this.locationForm.patchValue(this.locationToEdit);
+    }
   }
 
 }
