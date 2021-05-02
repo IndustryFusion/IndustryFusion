@@ -21,9 +21,11 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
 import { Location } from 'src/app/store/location/location.model';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
-import { Company } from 'src/app/store/company/company.model';
+import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
+import { CompanyQuery } from 'src/app/store/company/company.query';
 
+const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 
 @Component({
   selector: 'app-maintenance-page',
@@ -38,17 +40,23 @@ export class MaintenancePageComponent implements OnInit {
   locations$: Observable<Location[]>;
   companies$: Observable<Company[]>;
   assetDetailsWithFields: AssetDetailsWithFields[];
+  companies: Company[];
 
   constructor(
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
+    private companyQuery: CompanyQuery,
   ) { }
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
     this.locations$ = this.factoryResolver.locations$;
-    this.companies$ = this.factoryResolver.companies$;
+    this.companies$ = this.companyQuery.selectAll();
+    this.companies$.subscribe(res => {
+      this.companies = res;
+      this.companies.filter(company => company.type === CompanyType.MACHINE_MANUFACTURER);
+    });
     this.assetTypes$ = this.assetTypesResolver.resolve();
 
     this.assetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
@@ -60,8 +68,8 @@ export class MaintenancePageComponent implements OnInit {
 
   sortAssetsByMaintenanceValue() {
     this.assetDetailsWithFields.sort((a, b) => {
-      const indexA = a.fields.findIndex(field => field.name === 'Hours till maintenance')
-      const indexB = b.fields.findIndex(field => field.name === 'Hours till maintenance')
+      const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME)
+      const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME)
       if (indexA !== -1 && indexB !== -1) {
         return Number(a.fields[indexA].value) > Number(b.fields[indexB].value) ? 1 : -1;
       } else if (indexA === -1) {

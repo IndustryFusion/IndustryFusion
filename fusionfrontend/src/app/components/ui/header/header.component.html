@@ -30,7 +30,7 @@ under the License.
       <app-ecosystem-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);"></app-ecosystem-page-title>
       <app-factory-page-title *ngIf="isManager(ManagerType.FACTORY_MANAGER);" [factorySubTitle]="factorySubTitle"></app-factory-page-title>
       <app-fleet-page-title *ngIf="isManager(ManagerType.FLEET_MANAGER);"></app-fleet-page-title>
-      <app-dashboard-page-title *ngIf="isManager(ManagerType.FACTORY_MANAGER);" [dashboardSubTitle]="dashboardSubTitle"></app-dashboard-page-title>
+      <app-dashboard-page-title *ngIf=" isDashboards();"></app-dashboard-page-title>
       <div *ngIf="isHome()">
         <h1>Smart Factory</h1>
         <h2>Apps</h2>
@@ -55,7 +55,7 @@ under the License.
     <app-ecosystem-sub-header *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER)"></app-ecosystem-sub-header>
     <app-factory-sub-header *ngIf="isManager(ManagerType.FACTORY_MANAGER)"></app-factory-sub-header>
     <app-fleet-sub-header *ngIf="isManager(ManagerType.FLEET_MANAGER);"></app-fleet-sub-header>
-    <app-dashboard-sub-header *ngIf="isManager(ManagerType.FACTORY_MANAGER);"></app-dashboard-sub-header>
+    <app-dashboard-sub-header *ngIf=" isDashboards();"></app-dashboard-sub-header>
   </section>
 
 </header>

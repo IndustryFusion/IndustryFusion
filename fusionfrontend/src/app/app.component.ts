@@ -30,8 +30,6 @@ import { FactoryResolver } from './factory/services/factory-resolver.service';
 export class AppComponent implements OnInit {
   loggedUser$: Observable<User>;
   factorySubTitle$: Observable<string>;
-  dashboardSubTitle$: Observable<string>;
-
 
   constructor(private factoryResolver: FactoryResolver,
               private userQuery: UserQuery,
