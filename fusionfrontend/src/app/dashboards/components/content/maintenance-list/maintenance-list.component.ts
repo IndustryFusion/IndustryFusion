@@ -78,7 +78,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.companies);
     this.filterOptions = [this.assetType, this.manufacturer, this.factory, this.maintenanceDue];
   }
 
