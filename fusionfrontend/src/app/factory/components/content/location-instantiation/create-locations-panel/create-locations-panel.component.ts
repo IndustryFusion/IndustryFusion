@@ -14,7 +14,7 @@
  */
 
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { LocationType } from 'src/app/store/location/location.model';
+import { Location, LocationType } from 'src/app/store/location/location.model';
 import { SelectItem } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 
@@ -29,6 +29,8 @@ export class CreateLocationsPanelComponent implements OnInit {
   display: boolean;
   @Input()
   locationForm: FormGroup;
+  @Input()
+  location: Location;
   @Input()
   editMode: boolean;
   @Output()
@@ -46,12 +48,6 @@ export class CreateLocationsPanelComponent implements OnInit {
   selectedLocationType: LocationType;
 
   constructor() {
-    this.countries = [
-      { label: 'Germany', value: 'Germany' },
-      { label: 'Switzerland', value: 'Switzerland' },
-      { label: 'Austria', value: 'Austria' }
-    ];
-
     this.locationTypes = [
       { label: 'Headquarter', value: LocationType.HEADQUARTER },
       { label: 'Fabrication', value: LocationType.FABRICATION },
@@ -59,6 +55,10 @@ export class CreateLocationsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChange() {
+
   }
 
   continueCreation(): void {

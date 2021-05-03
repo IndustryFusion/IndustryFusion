@@ -31,11 +31,10 @@ under the License.
         <label class="p-col">Factory type</label>
         <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type" class="p-col"></p-dropdown>
       </div>
+      <div style="height: 40px;"></div>
 
-      <br>
-      <br>
-      <br>
-      <br>
+      <app-locations-map [location]="location"></app-locations-map>
+
       <h3 class="headings">Enter address details</h3>
 
       <div class="input-div p-grid p-dir-col">
@@ -53,7 +52,7 @@ under the License.
           <input type="text" formControlName="zip" placeholder="Zip code" class="zip-code-input p-col">
         </div>
         <div class="p-col-5 p-grid p-dir-col">
-          <label class="p-col">City</label>
+          <label style="margin-left: 24px;" class="p-col">City</label>
           <input type="text" pInputText formControlName="city" placeholder="City" class="city-input p-col">
         </div>
       </div>
@@ -77,5 +76,3 @@ under the License.
     </div>
   </p-footer>
 </p-dialog>
-
-<!-- <p-dropdown [options]="countries" formControlName="country" class="p-col"></p-dropdown> -->

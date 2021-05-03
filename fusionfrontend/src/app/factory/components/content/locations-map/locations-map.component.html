@@ -18,7 +18,10 @@ under the License.
     [fitBounds]='true'
     [styles]='styles'
     [disableDefaultUI]='true'
-    [maxZoom]='9'
+    [latitude]='49.40539219326195'
+    [longitude]='9.959200763226136'
+    [maxZoom]='15'
+    (mapClick)="placeMarker($event)"
     >
 
     <agm-marker

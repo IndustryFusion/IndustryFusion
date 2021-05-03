@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, OnDestroy, Input } from '@angular/core';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { Location } from 'src/app/store/location/location.model';
 import { ID } from '@datorama/akita';
@@ -30,9 +30,16 @@ import { takeUntil } from 'rxjs/operators';
 })
 
 export class LocationsMapComponent implements OnInit, OnDestroy {
+
+  @Input()
+  location: Location;
+
   private unSubscribe$ = new Subject<void>();
 
   mapType = 'terrain';
+  defaultLatitude = 50;
+  defaultLongitude = 10;
+
   companyId: ID;
   locations: Location[];
   @Output() selectedLocation = new EventEmitter<ID>();
@@ -227,6 +234,10 @@ export class LocationsMapComponent implements OnInit, OnDestroy {
 
   @ViewChild('AgmMap', { static: true })
   agmMap: AgmMap;
+  lng: number;
+  lat: number;
+  address;
+
 
   constructor(private companyQuery: CompanyQuery,
               private locationQuery: LocationQuery,
@@ -247,6 +258,26 @@ export class LocationsMapComponent implements OnInit, OnDestroy {
   navigateToLocation(id: ID): void {
     this.router.navigate(['locations', id], { relativeTo: this.route });
   }
+
+  ngOnChange() {
+    console.log(this.location);
+  }
+
+  placeMarker(event) {
+    console.log(this.location);
+    console.log(event.coords.lat);
+    console.log(event.coords.lng);
+    console.log(event);
+    console.log(event.coords);
+
+
+    navigator.geolocation.getCurrentPosition( pos => {
+      this.lng = +pos.coords.longitude;
+      this.lat = +pos.coords.latitude;
+    })
+    // this.getAddress(event.coords.lng, event.coords.lat);
+  }
+
 
   ngOnDestroy(): void {
     this.unSubscribe$.next();

@@ -53,7 +53,7 @@ insert into field_source (id, version, description, name, source_sensor_label, v
 
 
 -- asset
-insert into asset (id, version, description, image_key, name, ce_certified, construction_date, control_system_type, external_id, gateway_connectivity, guid, handbook_key, has_gateway, installation_date, protection_class, serial_number, video_key, asset_series_id, company_id, room_id) values (nextval('idgen_asset'), 0, 'Example asset', 'example.jpg', 'Example asset', true, '2021-01-01 00:00:00.000000', 'PLC', 'PUT_OISP_ID_HERE', 'S7com', '0000000-0000-0000-0000-0000000000', null, true, '2021-01-01 00:00:00.000000', '1', '1234', null, 1, 2, 1);
+insert into asset (id, version, description, image_key, name, ce_certified, construction_date, control_system_type, external_id, gateway_connectivity, guid, handbook_key, has_gateway, installation_date, protection_class, serial_number, video_key, asset_series_id, company_id, room_id) values (nextval('idgen_asset'), 0, 'Example asset', 'example.jpg', 'Example asset', true, '2021-01-01 00:00:00.000000', 'PLC', 'PUT_OISP_ID_HERE', 'S7com', 'f06ec371-68e9-404e-8cf5-1c8da37ecb3d', null, true, '2021-01-01 00:00:00.000000', '1', '1234', null, 1, 2, 1);
 
 -- field_instance
 insert into field_instance (id, version, description, external_id, name, source_sensor_label, value, asset_id, field_source_id) values (nextval('idgen_fieldinstance'), 0, 'Example: Asset status', 'status', 'Example: Asset status', null, null, 1, 1);

@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-create-locations-panel [display]="modalsActive" [locationForm]="locationForm" [editMode]="editMode"
+<app-create-locations-panel [display]="modalsActive" [locationForm]="locationForm" [editMode]="editMode" [location]="location"
   (createLocationEvent)="locationCreated($event)" (updateLocationEvent)="locationUpdated($event)"
   (stopCreateLocation)="closeModal($event)">
 </app-create-locations-panel>
