@@ -1,0 +1,30 @@
+.maintenance-value {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    width: 260.59;
+    height: 32px;
+    position: relative;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.label-class {
+    font-size: 14px;
+    font-weight: bold;
+    top: -20px;
+    left: 10px;
+    z-index: 10;
+    background-color: transparent;
+    color: white;
+    position: absolute;
+}

@@ -1,0 +1,268 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+/*@import 'src/variables.scss';*/
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import 'abstract/variables';
+@import 'base/typography';
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+
+
+.filter-btn {
+    height: 48px;
+    width: 48px;
+    background-color: hsl(198, 0%, 95%);
+    border-color: transparent;
+    border-radius: 10px;
+}
+
+.remove-all-filters-btn {
+  background-color: transparent;
+  border: transparent;
+  background:none;
+  position: absolute;
+  right: -5px;
+  top:28px;
+  cursor:pointer;
+  
+  .remove-all-filters-btn-icon {
+    font-size: 16px;
+    color: black;
+  }
+}
+
+.panel-heading {
+  font-size: large;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.search-dialog {
+  position: relative;
+}
+
+.search-input {
+  border-color: white;
+  touch-action: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.open-filterpanel-btn {
+  width: 175px;
+  height: 38px;
+  border-radius: 8px;
+  border-color: transparent;
+  margin-left: 5px;
+  margin-right: 40px;
+  padding: 0px 0px;
+
+  .filter-panel-btn-grid {
+    display: grid; 
+    grid-template-columns: 75% 25%; 
+    margin-left: 10px;
+
+    .filter-panel-btn-grid-text {
+      font-weight: bold; 
+      justify-self: start;
+      margin-left: 10px;
+    }
+
+    .filter-panel-btn-grid-icon {
+      font-size: 17,5px;
+      margin-top: 3px
+    }
+  }
+}
+
+.remove-filter-btn {
+  border-color: transparent; 
+  background-color: white;
+
+  .remove-filter-btn-icon {
+    font-size: 14px; 
+    color: black;
+  }
+}
+
+.add-btn {
+  background-color: white;
+  border: none;
+
+  .add-btn-icon {
+    font-size: 12px; 
+    color: black;
+  }
+}
+
+.clear-filter-btn {
+  font-weight: bold;
+  font-size: 12px;
+  height: 30px;
+
+  .btn-icon {
+    font-size: 14px;
+    color: black;
+  }
+}
+
+.select-filter-btn {
+  font-size: 12px;
+  height: 30px;
+}
+
+:host ::ng-deep .ui-table	{
+  margin: 30px 80px;
+  border: hidden !important;
+}
+
+:host ::ng-deep .ui-table .ui-table-thead > tr > th {
+  margin-bottom: 10px;
+  height: 56px;
+  text-align: left;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #000000;
+  background-color: #F8F8F8;
+  border: 0 none;
+
+  &:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+
+  &:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+}
+
+:host ::ng-deep .ui-table .ui-table-tbody > tr > td {
+  background-color: white;
+  border-color: transparent;
+  text-align: left;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #95989A;
+  overflow: hidden;
+
+
+  &:first-child {
+    border-radius: 10px 0 0 10px;
+    color: #000000;
+  }
+}
+
+:host ::ng-deep .ui-paginator {
+  height: 45px;
+  background-color: white;
+  border-color: transparent;
+  border: none;
+  margin-top: 5px;
+  padding-bottom: 5px;
+
+  .ui-dropdown {
+    height: 40px;
+    float: right;
+    margin-right: 50px;
+  }
+
+  .ui-paginator-current {
+    float: left;
+  }
+
+  .ui-paginator-pages .ui-paginator-page {
+    height: 38px;
+    width: 38px;
+    margin: 2px;
+    background-color: white !important;
+    color: black !important;
+    font-size: 16px;
+    font-weight: 600;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .ui-widget {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px !important;
+    border-radius: 10px !important;
+
+    .ui-inputtext {
+      height: 38px !important;
+      font-weight: normal;
+      border-color: black;
+      border-width: 2px im !important;
+      border-radius: 10px;
+      width: 60px;
+    }
+
+
+    .ui-state-highlight {
+      background-color: white !important;
+      color: black !important;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+
+    .ui-dropdown-trigger {
+      border-radius: 10px;
+    }
+  }
+
+  .ui-paginator-prev {
+    height: 38px;
+    width: 38px;
+    margin: 2px;
+    color: black;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px !important;
+    border-radius: 10px !important;
+  }
+
+  .ui-paginator-next {
+    height: 38px;
+    width: 38px;
+    margin: 2px;
+    color: black;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px !important;
+    border-radius: 10px !important;
+  }
+
+  .ui-paginator-first {
+    display: none !important;
+  }
+
+  .ui-paginator-last {
+    display: none !important;
+  }
+
+}
+
+

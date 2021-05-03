@@ -13,22 +13,9 @@
  * under the License.
  */
 
-// abstract
-@import 'abstract/mixins';
-@import 'abstract/variables';
+//  @import '../base/base-list/base-list.component.scss';
 
-//base
-@import 'base/typography';
-
-.industry-button{
-  border-radius: 25px;
-}
-
-//components
-@import 'components/buttons';
-@import 'components/checkboxes';
-@import 'components/tables';
-@import 'components/primeprogressbar';
-@import 'components/primedialog';
-@import 'components/primeoverlaypanel';
-@import 'components/primedropdown';
+ .wrapper {
+   margin: 0 80px;
+ }
+ 

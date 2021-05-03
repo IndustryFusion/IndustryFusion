@@ -13,22 +13,27 @@
  * under the License.
  */
 
-// abstract
-@import 'abstract/mixins';
-@import 'abstract/variables';
+ @import 'abstract/variables';
 
-//base
-@import 'base/typography';
-
-.industry-button{
-  border-radius: 25px;
-}
-
-//components
-@import 'components/buttons';
-@import 'components/checkboxes';
-@import 'components/tables';
-@import 'components/primeprogressbar';
-@import 'components/primedialog';
-@import 'components/primeoverlaypanel';
-@import 'components/primedropdown';
+ ul {
+   display: flex;
+   justify-content: center;
+   list-style: none;
+ 
+   li {
+     padding: 15px 50px;
+     color: $basic-grey;
+     cursor: pointer;
+ 
+     &.active {
+       color: black;
+       background: transparent linear-gradient(92deg, #8AC9C1 0%, #0089D8 100%) 0 100% no-repeat padding-box;
+       background-size:100% 5px ;
+     }
+ 
+     &:focus {
+       outline: none;
+     }
+   }
+ }
+ 
