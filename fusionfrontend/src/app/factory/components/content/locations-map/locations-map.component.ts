@@ -23,6 +23,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+declare var google: any;
+
 @Component({
   selector: 'app-locations-map',
   templateUrl: './locations-map.component.html',
@@ -236,7 +238,7 @@ export class LocationsMapComponent implements OnInit, OnDestroy {
   agmMap: AgmMap;
   lng: number;
   lat: number;
-  address;
+  private geocoder: any;
 
 
   constructor(private companyQuery: CompanyQuery,
@@ -261,26 +263,62 @@ export class LocationsMapComponent implements OnInit, OnDestroy {
 
   ngOnChange() {
     console.log(this.location);
+    this.geocoder = new google.maps.Geocoder();
   }
 
   placeMarker(event) {
+    var latlng = new google.maps.LatLng(event.coords.lat, event.coords.lng);
+    console.log(latlng)
+    // this.findAddressByCoordinates(event.coords);
+    this.geocoder = new google.maps.Geocoder();
+    this.geocoder.geocode({'latLng': latlng},  (results, status) =>{
+      if (status !== google.maps.GeocoderStatus.OK) {
+          alert(status);
+      }
+      // This is checking to see if the Geoeode Status is OK before proceeding
+      if (status == google.maps.GeocoderStatus.OK) {
+          console.log(results);
+          var address = (results[0].formatted_address);
+          console.log(address);
+      }
+  });
     console.log(this.location);
     console.log(event.coords.lat);
     console.log(event.coords.lng);
     console.log(event);
     console.log(event.coords);
 
-
-    navigator.geolocation.getCurrentPosition( pos => {
-      this.lng = +pos.coords.longitude;
-      this.lat = +pos.coords.latitude;
-    })
-    // this.getAddress(event.coords.lng, event.coords.lat);
   }
 
+  findAddressByCoordinates(location) {
+    this.geocoder.geocode({
+      'location': {
+        lat: location.lat,
+        lng: location.lng
+      }
+    }, (results, status) => {
+      console.log(results, status);
+    })
+  }
 
   ngOnDestroy(): void {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
   }
+
+  findLocation(address) {
+    if (!this.geocoder) this.geocoder = new google.maps.Geocoder()
+    this.geocoder.geocode({
+      'address': address
+    }, (results, status) => {
+      console.log(results);
+      if (status == google.maps.GeocoderStatus.OK) {
+                // decompose the result
+      } else {
+        alert("Sorry, this search produced no results.");
+      }
+    })
+  }
+
+
 }

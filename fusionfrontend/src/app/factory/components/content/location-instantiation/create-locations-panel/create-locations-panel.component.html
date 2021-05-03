@@ -23,46 +23,51 @@ under the License.
         <ng-template #editFactoryHeading>Edit Factory site</ng-template>
       </h3>
 
-      <div class="input-div p-grid p-dir-col">
-        <label class="p-col">Factory name</label>
-        <input type="text" pInputText formControlName="name" placeholder="Name" class="location-input p-col">
-      </div>
-      <div class="input-div p-grid p-dir-col">
-        <label class="p-col">Factory type</label>
-        <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type" class="p-col"></p-dropdown>
-      </div>
-      <div style="height: 40px;"></div>
-
-      <app-locations-map [location]="location"></app-locations-map>
-
-      <h3 class="headings">Enter address details</h3>
-
-      <div class="input-div p-grid p-dir-col">
-        <label class="p-col">Street</label>
-        <input type="text" formControlName="line1" placeholder="Street" class="location-input p-col">
-      </div>
-      <div class="input-div p-grid p-dir-col">
-        <label class="p-col">Additional address</label>
-        <input type="text" formControlName="line2" placeholder="Additional address" class="location-input p-col">
-      </div>
-
       <div class="p-grid input-div">
-        <div class="p-col-5 p-grid p-dir-col">
-          <label class="p-col">ZIP</label>
-          <input type="text" formControlName="zip" placeholder="Zip code" class="zip-code-input p-col">
+        <div class="p-col-6 p-grid p-dir-col">
+          <label class="p-col">Factory name</label>
+          <input type="text" pInputText formControlName="name" placeholder="Name" class="location-input p-col">
         </div>
-        <div class="p-col-5 p-grid p-dir-col">
-          <label style="margin-left: 24px;" class="p-col">City</label>
-          <input type="text" pInputText formControlName="city" placeholder="City" class="city-input p-col">
+        <div class="p-col-4 p-grid p-dir-col">
+          <label class="p-col">Factory type</label>
+          <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type" class="p-col"></p-dropdown>
         </div>
       </div>
 
-      <div class="input-div p-grid p-dir-col">
-        <label class="p-col">Country</label>
-        <input type="text" formControlName="country" placeholder="Country" class="location-input p-col">
+      <div class="p-grid">
+        <div class="p-col-4 p-dir-col">
+          <h3 class="headings">Enter address details</h3>
+        
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col">Street</label>
+            <input type="text" formControlName="line1" placeholder="Street" class="zip-code-input p-col">
+          </div>
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col">Additional address</label>
+            <input type="text" formControlName="line2" placeholder="Additional address" class="zip-code-input p-col">
+          </div>
+    
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col">ZIP</label>
+            <input type="text" formControlName="zip" placeholder="Zip code" class="zip-code-input p-col">
+          </div>
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col">City</label>
+            <input type="text" pInputText formControlName="city" placeholder="City" class="zip-code-input p-col">
+          </div>
+    
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col">Country</label>
+            <input type="text" formControlName="country" placeholder="Country" class="zip-code-input p-col">
+          </div>
+        </div>
+
+        <app-locations-map class="p-col-8 p-dir-col map-style"[location]="location"></app-locations-map>
+
       </div>
     </div>
   </div>
+
 
   <p-footer>
     <div class="footer-btns">

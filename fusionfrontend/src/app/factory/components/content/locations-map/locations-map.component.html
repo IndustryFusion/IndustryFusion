@@ -18,13 +18,25 @@ under the License.
     [fitBounds]='true'
     [styles]='styles'
     [disableDefaultUI]='true'
-    [latitude]='49.40539219326195'
-    [longitude]='9.959200763226136'
+    [latitude]=49.40539219326195
+    [longitude]=9.959200763226136
     [maxZoom]='15'
     (mapClick)="placeMarker($event)"
     >
 
     <agm-marker
+        [agmFitBounds]="true"
+        [latitude]=48.119422906105115
+        [longitude]=11.60183181625102
+        [iconUrl]="
+        {
+            url: 'assets/icons/custom-marker.png'
+        }
+        "
+        (markerClick)="navigateToLocation(location.id)"
+        >
+    </agm-marker>
+    <!-- <agm-marker
         *ngFor="let location of locations; let i = index"
         [agmFitBounds]="true"
         [latitude]="location.latitude"
@@ -36,6 +48,6 @@ under the License.
         "
         (markerClick)="navigateToLocation(location.id)"
         >
-    </agm-marker>
+    </agm-marker> -->
 
 </agm-map>
