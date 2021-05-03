@@ -34,7 +34,7 @@
     "chartjs-plugin-annotation": "^0.5.7",
     "keycloak-angular": "^8.0.1",
     "keycloak-js": "10",
-    "ng2-charts": "^2.3.0",
+    "ng2-charts": "^2.4.2",
     "ng2-completer": "^9.0.1",
     "ngx-take-until-destroy": "^5.4.0",
     "primeicons": "^4.1.0",
