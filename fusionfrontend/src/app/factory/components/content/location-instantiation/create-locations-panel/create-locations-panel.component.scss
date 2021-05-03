@@ -39,9 +39,11 @@
     }
 }
 
+.footer-btns {
+    margin: 50px 50px 40px auto !important;
+}
+
 .footer-btn {
-    margin-top: 30px !important;
-    margin-bottom: 40px !important;
     width: 125px !important;
 }
 
@@ -54,7 +56,7 @@
 }
 
 .headings {
-    margin-left: 80px;
+    margin-left: 60px;
     font-weight: bold !important;
 }
 
@@ -77,8 +79,7 @@
 }
 
 .input-div {
-    margin-top:20px;
-    margin-left: 70px;
+    margin: 20px 50px auto 50px;
     border: none;
     border-radius: 10px;
 }
