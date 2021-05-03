@@ -5,7 +5,7 @@ const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 const MAXIMAL_MAINTENANCE_VALUE = 1500;
 const HOURS_PER_DAY = 24;
 const DAY_PER_WEEK = 7;
-const DAYS_PER_MONTH = 30.4167; 
+const DAYS_PER_MONTH = 30.4167;
 
 @Component({
   selector: 'app-maintenance-progressbar',
