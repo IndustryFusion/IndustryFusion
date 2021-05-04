@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BaseListComponent } from './base-list.component';
 
@@ -21,7 +21,7 @@ describe('BaseListComponent', () => {
   let component: BaseListComponent;
   let fixture: ComponentFixture<BaseListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BaseListComponent ]
     })

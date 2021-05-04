@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetInstantiationPairedModalComponent } from './asset-instantiation-paired-modal.component';
 
@@ -6,7 +6,7 @@ describe('AssetInstantiationPairedModalComponent', () => {
   let component: AssetInstantiationPairedModalComponent;
   let fixture: ComponentFixture<AssetInstantiationPairedModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetInstantiationPairedModalComponent ]
     })

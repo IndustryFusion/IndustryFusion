@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetTypeTemplateCreateStepSumaryComponent } from './asset-type-template-create-step-sumary.component';
 
@@ -21,7 +21,7 @@ describe('AssetTypeTemplateCreateStepSumaryComponent', () => {
   let component: AssetTypeTemplateCreateStepSumaryComponent;
   let fixture: ComponentFixture<AssetTypeTemplateCreateStepSumaryComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetTypeTemplateCreateStepSumaryComponent ]
     })

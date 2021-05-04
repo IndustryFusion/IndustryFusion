@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EditRoomComponent } from './edit-room.component';
 
@@ -21,7 +21,7 @@ describe('EditRoomComponent', () => {
   let component: EditRoomComponent;
   let fixture: ComponentFixture<EditRoomComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EditRoomComponent ]
     })

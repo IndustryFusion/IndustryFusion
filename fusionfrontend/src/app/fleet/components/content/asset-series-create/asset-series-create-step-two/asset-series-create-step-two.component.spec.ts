@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetSeriesCreateStepTwoComponent } from './asset-series-create-step-two.component';
 
@@ -21,7 +21,7 @@ describe('AssetTypeTemplateCreateStepOneComponent', () => {
   let component: AssetSeriesCreateStepTwoComponent;
   let fixture: ComponentFixture<AssetSeriesCreateStepTwoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetSeriesCreateStepTwoComponent ]
     })

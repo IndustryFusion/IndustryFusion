@@ -115,7 +115,7 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
       map(fields => {
         const filteredFields = fields.filter(field => field.description === 'Maintenance interval');
         if (filteredFields.length > 0) {
-          return parseInt(filteredFields.find(field => field.description === 'Maintenance interval')?.value, 10)
+          return parseInt(filteredFields.find(field => field.description === 'Maintenance interval')?.value, 10);
         }
       })
     );
@@ -164,9 +164,9 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
   }
 
   setMinAndMaxDate(date: string) {
-    const localDate: moment.Moment = moment(date);
+    const localDate: Date = new Date(date);
     this.minDate =  this.datePipe.transform(localDate, 'yyyy-MM-dd');
-    this.maxDate = this.datePipe.transform(moment(localDate).add(2, 'days'), 'yyyy-MM-dd');
+    this.maxDate = this.datePipe.transform(moment(localDate).add(2, 'days').toDate(), 'yyyy-MM-dd');
     this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
   }
 
