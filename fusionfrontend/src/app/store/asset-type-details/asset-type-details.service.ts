@@ -33,7 +33,7 @@ export class AssetTypeDetailsService {
   constructor(private assetTypeDetailsStore: AssetTypeDetailsStore, private http: HttpClient) { }
 
   getAssetTypeDetails (assetTypeId: ID): Observable<AssetTypeDetails> {
-    const path = `assettypes/${assetTypeId}/details`;
+    const path = `assettypes/details/${assetTypeId}`;
     return this.assetTypeDetailsStore.cachedById(assetTypeId, this.http.get<AssetTypeDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assetTypeDetailsStore.upsertCached(entity);

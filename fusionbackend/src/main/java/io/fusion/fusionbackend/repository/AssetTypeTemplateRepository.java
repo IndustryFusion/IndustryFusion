@@ -37,5 +37,6 @@ public interface AssetTypeTemplateRepository extends PagingAndSortingRepository<
     @EntityGraph(value = "AssetTypeTemplate.allChildrenDeep")
     Optional<AssetTypeTemplate> findDeepById(Long assetTypeTemplateId);
 
+    @EntityGraph(value = "AssetTypeTemplate.allChildren")
     List<AssetTypeTemplate> findAllByAssetType(AssetType assetType);
 }

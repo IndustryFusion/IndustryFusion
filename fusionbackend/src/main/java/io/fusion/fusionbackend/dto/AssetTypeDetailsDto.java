@@ -24,19 +24,12 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class AssetTypeDetailsDto {
-    private Long id;
-    private String name;
+public class AssetTypeDetailsDto extends AssetType {
     private Long templateCount;
     private Long assetSeriesCount;
     private Long assetCount;
 
     @JsonCreator
-    public AssetTypeDetailsDto(AssetType assetType, Long templateCount, Long assetSeriesCount, Long assetCount) {
-        this.id = assetType.getId();
-        this.name = assetType.getName();
-        this.templateCount = templateCount;
-        this.assetSeriesCount = assetSeriesCount;
-        this.assetCount = assetCount;
+    public AssetTypeDetailsDto() {
     }
 }

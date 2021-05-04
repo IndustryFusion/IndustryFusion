@@ -16,32 +16,24 @@
 package io.fusion.fusionbackend.service;
 
 import com.google.common.collect.Sets;
-import io.fusion.fusionbackend.dto.AssetTypeDetailsDto;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
-import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetType;
-import io.fusion.fusionbackend.model.AssetTypeTemplate;
-import io.fusion.fusionbackend.repository.*;
+import io.fusion.fusionbackend.repository.AssetTypeRepository;
+import io.fusion.fusionbackend.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class AssetTypeService {
     private final AssetTypeRepository assetTypeRepository;
-    private final AssetTypeTemplateRepository assetTypeTemplateRepository;
 
     @Autowired
-    public AssetTypeService(AssetTypeRepository assetTypeRepository,
-                            AssetTypeTemplateRepository assetTypeTemplateRepository) {
+    public AssetTypeService(AssetTypeRepository assetTypeRepository) {
         this.assetTypeRepository = assetTypeRepository;
-        this.assetTypeTemplateRepository = assetTypeTemplateRepository;
     }
 
     public Set<AssetType> getAllAssetTypes() {
@@ -51,25 +43,6 @@ public class AssetTypeService {
     public AssetType getAssetType(final Long assetTypeId) {
         return assetTypeRepository.findById(assetTypeId).orElseThrow(ResourceNotFoundException::new);
     }
-
-    public AssetTypeDetailsDto getAssetTypeDetailsDto(final Long assetTypeId) {
-        final AssetType assetType = this.getAssetType(assetTypeId);
-
-        final List<AssetTypeTemplate> assetTypeTemplates = assetTypeTemplateRepository.findAllByAssetType(assetType);
-        final Set<AssetSeries> assetSeries = assetTypeTemplates.stream()
-                .map(AssetTypeTemplate::getAssetSeries)
-                .flatMap(Set::stream)
-                .collect(Collectors.toSet());
-        final Set<Asset> assets = assetSeries.stream()
-                .map(AssetSeries::getAssets)
-                .flatMap(Set::stream)
-                .collect(Collectors.toSet());
-
-        // TODO (js): Add Mapper for dto?
-        return new AssetTypeDetailsDto(assetType, (long) assetTypeTemplates.size(),
-                (long) assetSeries.size(), (long) assets.size());
-    }
-
 
     public AssetType createAssetType(final AssetType assetType) {
         return assetTypeRepository.save(assetType);
