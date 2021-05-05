@@ -24,6 +24,7 @@ import io.fusion.fusionbackend.service.AssetTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -56,7 +57,7 @@ public class AssetTypeRestService {
     }
 
     @GetMapping(path = "/assettypes/details")
-    public Set<AssetTypeDetailsDto> getAssetTypesDetails() {
+    public List<AssetTypeDetailsDto> getAssetTypesDetails() {
         return assetTypeDetailsService.getAllAssetTypesDetails();
     }
 

@@ -31,10 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,10 +53,10 @@ public class AssetTypeDetailsService {
         this.assetTypeDetailsMapper = assetTypeDetailsMapper;
     }
 
-    public Set<AssetTypeDetailsDto> getAllAssetTypesDetails() {
+    public List<AssetTypeDetailsDto> getAllAssetTypesDetails() {
         Iterable<AssetType> assetTypes = assetTypeRepository.findAll(CompanyRepository.DEFAULT_SORT);
-        Set<AssetTypeDetailsDto> assetTypeDetailsDtos = new HashSet<>();
-        assetTypes.forEach(assetType -> assetTypeDetailsDtos.add(getAssetTypeDetails(assetType.getId())));
+        List<AssetTypeDetailsDto> assetTypeDetailsDtos = new LinkedList<>();
+        assetTypes.forEach( assetType -> assetTypeDetailsDtos.add(getAssetTypeDetails(assetType.getId())));
 
         return assetTypeDetailsDtos;
     }
