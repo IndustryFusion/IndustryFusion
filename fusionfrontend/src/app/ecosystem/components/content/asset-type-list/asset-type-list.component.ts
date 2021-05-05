@@ -13,12 +13,11 @@
  * under the License.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
-import { BaseListComponent } from '../base/base-list/base-list.component';
-import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BaseListComponent} from '../base/base-list/base-list.component';
+import {AssetTypeDetailsService} from "../../../../store/asset-type-details/asset-type-details.service";
+import {AssetTypeDetailsQuery} from "../../../../store/asset-type-details/asset-type-details.query";
 
 @Component({
   selector: 'app-asset-type-list',
@@ -40,9 +39,9 @@ export class AssetTypeListComponent extends BaseListComponent implements OnInit,
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public assetTypeQuery: AssetTypeQuery,
-    public assetTypeService: AssetTypeService) {
-    super(route, router, assetTypeQuery, assetTypeService);
+    public assetTypeDetailsQuery: AssetTypeDetailsQuery,
+    public assetTypeDetailsService: AssetTypeDetailsService) {
+    super(route, router, assetTypeDetailsQuery, assetTypeDetailsService);
   }
 
   ngOnInit() {
@@ -50,11 +49,10 @@ export class AssetTypeListComponent extends BaseListComponent implements OnInit,
   }
 
   ngOnDestroy() {
-    this.assetTypeQuery.resetError();
+    this.assetTypeDetailsQuery.resetError();
   }
 
   folderView() {
     // TODO
   }
-
 }

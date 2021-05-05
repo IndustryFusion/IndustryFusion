@@ -37,6 +37,7 @@ import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import {Role} from "../services/roles.model";
 import {EcosystemManagerPageType} from "./ecosystem.routing.model";
 import {AssetTypePageComponent} from "./components/pages/asset-type-page/asset-type-page.component";
+import {AssetTypeDetailsResolver} from "../resolvers/asset-type-details.resolver";
 
 const routes: Routes = [
   {
@@ -70,7 +71,7 @@ const routes: Routes = [
     component: AssetTypesPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      assetTypes: AssetTypesResolver,
+      assetTypes: AssetTypeDetailsResolver,
     },
     data: {
       pageTypes: [EcosystemManagerPageType.ASSET_TYPE_LIST],
@@ -85,9 +86,9 @@ const routes: Routes = [
     path: 'ecosystemmanager/assettypes/:assettypeId',
     component: AssetTypePageComponent,
     canActivate: [MainAuthGuardGuard],
-/*    resolve: {
+    resolve: {
       assetTypes: AssetTypesResolver,
-    },*/
+    },
     data: {
       pageTypes: [EcosystemManagerPageType.ASSET_TYPE_DETAIL],
       roles: [Role.ECOSYSTEM_MANAGER]

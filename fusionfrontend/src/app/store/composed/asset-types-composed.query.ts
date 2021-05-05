@@ -17,25 +17,18 @@ import { Injectable } from '@angular/core';
 import { combineQueries, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {AssetTypeQuery} from "../asset-type/asset-type.query";
 import {AssetTypeTemplateQuery} from "../asset-type-template/asset-type-template.query";
 import {AssetTypeTemplate} from "../asset-type-template/asset-type-template.model";
-import {AssetTypeWithTemplateCount} from "../asset-type/asset-type.model";
+import {AssetTypeQuery} from "../asset-type/asset-type.query";
 
 @Injectable({ providedIn: 'root' })
 export class AssetTypesComposedQuery {
-
-  //assetTypeTemplates : AssetTypeTemplate[];
-  //assetType : AssetType;
 
   constructor(
     protected assetTypeQuery: AssetTypeQuery,
     protected assetTypeTemplateQuery: AssetTypeTemplateQuery) { }
 
   selectTemplatesOfAssetType(assetTypeId: ID): Observable<AssetTypeTemplate[]> {
-
-    //this.assetTypeTemplateQuery.selectAll().subscribe(x => this.assetTypeTemplates = x);
-    //this.assetTypeQuery.selectAssetType(assetTypeId).subscribe(x => this.assetType = x);
 
     return combineQueries([
       this.assetTypeTemplateQuery.selectAll(),
@@ -45,34 +38,4 @@ export class AssetTypesComposedQuery {
           return templates.filter(template => String(assetType.id) === String(template.assetTypeId));
         }));
   }
-
-  // TODO:  selectAssetTypeWithAssetTypeTemplateCount  or  shorter like this:
-  selectAssetTypeWithTemplateCount(assetTypeId: ID): Observable<AssetTypeWithTemplateCount>{
-
-    return combineQueries([
-      this.assetTypeTemplateQuery.selectAll(),
-      this.assetTypeQuery.selectAssetType(assetTypeId)])
-      .pipe(
-        map(([templates, assetType]) => {
-          const templateCount = templates.filter(template => String(assetType.id) === String(template.assetTypeId)).length;
-          return Object.assign( { templateCount }, assetType );
-        }));
-
-    // return combineQueries([
-    //   this.locationQuery.selectLocationsOfCompany(companyId),
-    //   this.selectRoomsOfCompany(companyId),
-    //   this.assetQuery.selectAssetsOfCompany(companyId)])
-    //   .pipe(
-    //     map(([locations, rooms, assets]) => locations.map(location => {
-    //       const assetCount =
-    //         assets.filter(
-    //           asset => String(rooms.find(room => String(room.id) === String(asset.roomId))?.locationId) === String(location.id)).length;
-    //       return Object.assign({ assetCount }, location);
-    //     }))
-    //   );
-  }
-
-
-  // TODO: selectAssetTypeWithAssetSeriesCount
-  // TODO: selectAssetTypeWithAssetInstancesCount
 }

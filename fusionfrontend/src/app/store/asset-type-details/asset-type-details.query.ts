@@ -28,8 +28,13 @@ export class AssetTypeDetailsQuery extends BaseQueryEntity<AssetTypeDetailsState
 
   selectDetailsOfAssetType(assetTypeId: ID): Observable<AssetTypeDetails> {
     return this.select(assetTypeId);
-    /*{
-      filterBy: entity => String(entity.id) === String(assetTypeId)
-    });*/
+  }
+
+  resetStore() {
+    this.store.reset();
+  }
+
+  resetError() {
+    this.store.setError(null);
   }
 }

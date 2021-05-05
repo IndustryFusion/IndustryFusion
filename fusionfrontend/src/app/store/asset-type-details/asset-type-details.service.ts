@@ -21,20 +21,29 @@ import {tap} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
 import {AssetTypeDetails} from "./asset-type-details.model";
 import {AssetTypeDetailsStore} from "./asset-type-details.store";
+import {RestService} from "../../services/rest.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AssetTypeDetailsService {
+export class AssetTypeDetailsService implements RestService<AssetTypeDetails> {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   constructor(private assetTypeDetailsStore: AssetTypeDetailsStore, private http: HttpClient) { }
 
-  getAssetTypeDetails (assetTypeId: ID): Observable<AssetTypeDetails> {
-    const path = `assettypes/details/${assetTypeId}`;
-    return this.assetTypeDetailsStore.cachedById(assetTypeId, this.http.get<AssetTypeDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+  getItems(): Observable<AssetTypeDetails[]> {
+    const path = `assettypes/details`;
+    return this.http.get<AssetTypeDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+      .pipe(tap(entities => {
+        this.assetTypeDetailsStore.upsertManyCached(entities);
+      }));
+  }
+
+  getItem (assetTypeDetailsId: ID): Observable<AssetTypeDetails> {
+    const path = `assettypes/details/${assetTypeDetailsId}`;
+    return this.assetTypeDetailsStore.cachedById(assetTypeDetailsId, this.http.get<AssetTypeDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assetTypeDetailsStore.upsertCached(entity);
       })));
@@ -42,5 +51,35 @@ export class AssetTypeDetailsService {
 
   setActive(assetTypeId: ID) {
     this.assetTypeDetailsStore.setActive(assetTypeId);
+  }
+
+  createItem(assetTypeDetails: AssetTypeDetails): Observable<AssetTypeDetails> {
+    const path = `assettypes/details`;
+    return this.http.post<AssetTypeDetails>(`${environment.apiUrlPrefix}/${path}`, assetTypeDetails, this.httpOptions)
+      .pipe(
+        tap(entity => {
+          this.assetTypeDetailsStore.upsert(entity.id, entity);
+        }));
+  }
+
+  editItem(assetTypeDetailsId: ID, assetType: AssetTypeDetails): Observable<AssetTypeDetails> {
+    const path = `assettypes/details/${assetTypeDetailsId}`;
+    return this.http.patch<AssetTypeDetails>(`${environment.apiUrlPrefix}/${path}`, assetType, this.httpOptions)
+      .pipe(
+        tap(entity => {
+          this.assetTypeDetailsStore.upsert(assetTypeDetailsId, entity);
+        }));
+  }
+
+  deleteItem(id: ID): Observable<any> {
+    const path = `assettypes/details/${id}`;
+    return this.http.delete(`${environment.apiUrlPrefix}/${path}`).pipe(tap({
+      complete: () => {
+        this.assetTypeDetailsStore.remove(id);
+      },
+      error: (error) => {
+        this.assetTypeDetailsStore.setError(error);
+      }
+    }));
   }
 }
