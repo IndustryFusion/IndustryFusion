@@ -136,7 +136,7 @@ ToDo (fkn): Es existiert eine docker-compose-Datei mit anderer Image-Konfigurati
 
 for the initial start use this:
 ```
-docker run -d --name postgres-104 -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:10.4
+docker run -d --name postgres-104 -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=postgresdb postgres:10.4
 ```
 
 for the second time use:
@@ -145,7 +145,9 @@ for the second time use:
 ```
 
 #### Import Sample Data
-The file [demoinserts.sql](https://github.com/IndustryFusion/IndustryFusion/tree/master/setup/demoinserts.sql) can be imported to provide some initial demo data. 
+Todo (fkn): Klären welche Datei nun richtig ist, es gibt im privaten Repo auch noch eine.
+
+The file [demoinserts.sql (available only iteratec internal for security reasons)](https://iteratec.sharepoint.com/sites/m365_industryfusion_foundation/Freigegebene%20Dokumente/Entwicklung/demoinserts.sql) can be imported to provide some initial demo data. T
 
 Hint: In pgAdmin4 you can use "Query Tool".
 
