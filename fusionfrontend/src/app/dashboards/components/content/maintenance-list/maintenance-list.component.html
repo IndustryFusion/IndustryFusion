@@ -65,7 +65,7 @@
     <div>
         <div *ngFor="let activeFilter of activeFilterSet" style="margin-bottom: 10px;">
             <div *ngIf="activeFilter.filterAttribute === assetType">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name"></p-dropdown>
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.assetTypeFilterModal" 
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid">
@@ -78,7 +78,7 @@
                 </button>
             </div>
             <div *ngIf="activeFilter.filterAttribute === manufacturer">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name"></p-dropdown>
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.manufacturerFilterModal" 
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid">
@@ -91,7 +91,7 @@
                 </button>
             </div>
             <div *ngIf="activeFilter.filterAttribute === factory">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name"></p-dropdown>
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.factoryFilterModal" 
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid" >
@@ -104,7 +104,7 @@
                 </button>
             </div>
             <div *ngIf="activeFilter.filterAttribute === maintenanceDue">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="name"></p-dropdown>
+                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.maintenanceDueFilterModal" 
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid">
@@ -151,16 +151,16 @@
         <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.maintenanceDueFilterModal">
             <div class="panel-heading">Select Location</div>
             <div>
-                <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[0].urgency }}" [(ngModel)]="selectedMaintenanceDue" [inputId]="maintenanceValues[0].id"></p-checkbox>
-                <label style="margin-left: 7px;" [for]="maintenanceValues[0].id">{{maintenanceValues[0].urgency}}</label>
+                <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[0] }}" [(ngModel)]="selectedMaintenanceDue"></p-checkbox>
+                <label style="margin-left: 7px;">{{ maintenanceValues[0] }}</label>
             </div>
             <div>
-                <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[1].urgency }}" [(ngModel)]="selectedMaintenanceDue" [inputId]="maintenanceValues[1].id"></p-checkbox>
-                <label style="margin-left: 7px;" [for]="maintenanceValues[1].id">{{maintenanceValues[1].urgency}}</label>
+                <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[1] }}" [(ngModel)]="selectedMaintenanceDue"></p-checkbox>
+                <label style="margin-left: 7px;">{{ maintenanceValues[1] }}</label>
             </div>
             <div>
-                <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[2].urgency }}" [(ngModel)]="selectedMaintenanceDue" [inputId]="maintenanceValues[2].id"></p-checkbox>
-                <label style="margin-left: 7px;" [for]="maintenanceValues[2].id">{{maintenanceValues[2].urgency}}</label>
+                <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[2] }}" [(ngModel)]="selectedMaintenanceDue"></p-checkbox>
+                <label style="margin-left: 7px;">{{ maintenanceValues[2] }}</label>
             </div>
         </div>
         

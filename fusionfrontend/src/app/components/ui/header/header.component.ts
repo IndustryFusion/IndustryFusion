@@ -33,9 +33,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   factorySubTitle: string;
 
   @Input()
-  dashboardSubTitle: string;
-
-  @Input()
   user: User;
 
   route: string;
@@ -63,6 +60,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isManager(manager: ManagerType) {
     return this.route && this.route.match(`\/${manager}\/`);
+  }
+
+  isDashboards() {
+    return this.route && this.route.match(`\/${'dashboards'}\/`);
   }
 
   isHome() {
