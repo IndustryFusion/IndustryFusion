@@ -38,6 +38,7 @@ import {Role} from "../services/roles.model";
 import {EcosystemManagerPageType} from "./ecosystem.routing.model";
 import {AssetTypePageComponent} from "./components/pages/asset-type-page/asset-type-page.component";
 import {AssetTypeDetailsResolver} from "../resolvers/asset-type-details.resolver";
+import {AssetTypeEditComponent} from "./components/content/asset-type-edit/asset-type-edit.component";
 
 const routes: Routes = [
   {
@@ -80,6 +81,10 @@ const routes: Routes = [
     children: [{
       path: '',
       component: AssetTypeListComponent,
+    },
+    {
+      path: ':id/edit',
+      component: AssetTypeEditComponent
     }]
   },
   {

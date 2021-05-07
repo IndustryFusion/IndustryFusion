@@ -13,6 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<app-asset-type-edit [modalsActive]="modalsActive" [assetTypeForm]="assetTypeForm" (confirmModalSignal)="onConfirmEditModal($event)" (dismissModalSignal)="onDismissEditModal"></app-asset-type-edit>
+
 <div *ngIf="shouldShowDeleteItem">
   <div class="backdrop"></div>
   <div class="delete-modal">
@@ -38,7 +40,7 @@ under the License.
         <clr-icon shape="ellipsis-horizontal"></clr-icon>
       </button>
       <clr-dropdown-menu class="dropdown-menu" clrPosition="bottom-right" *clrIfOpen>
-        <div aria-label="Edit item" clrDropdownItem (click)="editItem()">
+        <div aria-label="Edit item" clrDropdownItem (click)="editModal()"><!--editItem()">-->
           <clr-icon shape="note"></clr-icon>
           Edit
         </div>

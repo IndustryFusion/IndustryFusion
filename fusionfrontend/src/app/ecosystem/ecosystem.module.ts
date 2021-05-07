@@ -15,7 +15,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -68,6 +68,7 @@ import { AssetTypeTemplateMetricRowComponent } from './components/content/asset-
 import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content/asset-type-template-create-step-sumary/asset-type-template-create-step-sumary.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
+import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 
 @NgModule({
   declarations: [
@@ -110,15 +111,17 @@ import { AssetTypePageComponent } from './components/pages/asset-type-page/asset
     AssetTypeTemplateMetricRowComponent,
     AssetTypeTemplateCreateStepSumaryComponent,
     AssetTypePageComponent,
+    AssetTypeEditComponent,
   ],
-  imports: [
-    CommonModule,
-    EcosystemRoutingModule,
-    ClarityModule,
-    FontAwesomeModule,
-    FormsModule,
-    Ng2CompleterModule
-  ],
+    imports: [
+        CommonModule,
+        EcosystemRoutingModule,
+        ClarityModule,
+        FontAwesomeModule,
+        FormsModule,
+        Ng2CompleterModule,
+        ReactiveFormsModule
+    ],
   exports: [
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent
