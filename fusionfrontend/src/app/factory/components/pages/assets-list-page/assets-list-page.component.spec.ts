@@ -13,14 +13,14 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AssetsListPageComponent } from './assets-list-page.component';
 
 describe('LocationPageComponent', () => {
   let component: AssetsListPageComponent;
   let fixture: ComponentFixture<AssetsListPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetsListPageComponent ]
     })

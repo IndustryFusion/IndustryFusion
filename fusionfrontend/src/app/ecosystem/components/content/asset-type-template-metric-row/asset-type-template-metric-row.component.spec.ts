@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetTypeTemplateMetricRowComponent } from './asset-type-template-metric-row.component';
 
@@ -21,7 +21,7 @@ describe('AssetTypeTemplateMetricRowComponent', () => {
   let component: AssetTypeTemplateMetricRowComponent;
   let fixture: ComponentFixture<AssetTypeTemplateMetricRowComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetTypeTemplateMetricRowComponent ]
     })

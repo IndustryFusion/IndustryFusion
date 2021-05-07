@@ -60,7 +60,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('ngOnInit')
+    console.log('ngOnInit');
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
     this.items$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetSeriesDetailsQuery.selectError().pipe(tap((error) => {
@@ -75,7 +75,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   createItem() {
-    this.startAssetSeriesWizard('')
+    this.startAssetSeriesWizard('');
   }
 
   onSort(field: string) {
@@ -99,7 +99,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   deleteItem(id: number | string) {
     this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe(
       () => this.selected.clear()
-    )
+    );
   }
 
   deselectAllItems() {
@@ -131,7 +131,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString(), 2)
+    this.startAssetSeriesWizard(itemId.toString(), 2);
   }
 
   public startAssetSeriesWizard(idString: string, startStep: number = 1) {

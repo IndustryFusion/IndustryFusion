@@ -52,6 +52,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private ensureTrailingSlash(str: string) {
-    return str + (str.endsWith('/') ? '' : '/')
+    return str + (str.endsWith('/') ? '' : '/');
   }
 }

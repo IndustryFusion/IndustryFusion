@@ -1,0 +1,23 @@
+
+.assetSearchPanel  {
+    .p-overlaypanel {
+        border-radius: 8px;
+        width: 300px;
+    }
+
+    .p-overlaypanel .p-overlaypanel-close {
+        background-color: white;
+        color: black;
+        position: absolute;
+        right: 15px;
+        top: 12px;
+        border-radius: 8px;
+    }
+}
+
+.dashboardFilterPanel {
+    .p-overlaypanel {
+        border-radius: 8px;
+        width: 500px;
+    }
+}

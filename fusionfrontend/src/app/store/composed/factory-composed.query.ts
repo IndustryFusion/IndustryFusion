@@ -144,7 +144,7 @@ export class FactoryComposedQuery {
       this.roomQuery.selectEntity(roomId)
     ]).pipe(map(([assetDetails, room]) => {
       return [assetDetails, room];
-    }))
+    }));
   }
 
   joinFieldsOfAssetsWithOispData(): Observable<AssetWithFields[]> {
@@ -189,7 +189,7 @@ export class FactoryComposedQuery {
         const assetWithFields = Object.assign({ fields: myFields }, asset);
         return this.oispService.getAssetFieldsExternalIds(assetWithFields);
       })
-    )
+    );
   }
 
 }

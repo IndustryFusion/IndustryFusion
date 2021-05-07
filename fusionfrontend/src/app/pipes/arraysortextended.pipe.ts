@@ -45,7 +45,7 @@ function sortAscending(array: any, field: string): any {
         return 0;
       }
     });
-    return array;
+  return array;
 }
 
 function sortDescending(array: any, field: string): any {
@@ -58,7 +58,7 @@ function sortDescending(array: any, field: string): any {
         return 0;
       }
     });
-    return array;
+  return array;
 }
 
 

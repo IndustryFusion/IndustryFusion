@@ -119,7 +119,7 @@ export class AssetService {
     return this.http.patch<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(updatedAsset => {
-            console.log('updated asset with id ' + updatedAsset.id)
+            console.log('updated asset with id ' + updatedAsset.id);
             this.assetStore.upsertCached(updatedAsset);
             const updatedAssetDetails = this.assetDetailsService.getAssetDetails(updatedAsset.id).pipe(tap(entity => {
               this.assetDetailsStore.upsertCached(entity);
@@ -134,8 +134,8 @@ export class AssetService {
     const path = `companies/${companyId}/assets/${assetId}`;
     return this.http.delete(`${environment.apiUrlPrefix}/${path}`).pipe(tap({
       complete: () => {
-        console.log('delete asset with id ' + assetId)
-        this.assetStore.removeCached(assetId)
+        console.log('delete asset with id ' + assetId);
+        this.assetStore.removeCached(assetId);
         this.assetDetailsStore.removeCached(assetId);
       },
       error: (error) => {
@@ -145,7 +145,7 @@ export class AssetService {
   }
 
   mapAssetDetailsToAsset(assetDetails: AssetDetails): Asset {
-    const mappedAsset = new Asset()
+    const mappedAsset = new Asset();
     mappedAsset.id = assetDetails.id;
     mappedAsset.companyId = assetDetails.companyId;
     mappedAsset.roomId = assetDetails.roomId;

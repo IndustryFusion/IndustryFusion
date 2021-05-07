@@ -42,7 +42,7 @@ export class FieldSourceComposedQuery {
         });
         return fieldSources;
       }),
-    )
+    );
   }
 
   selectFieldSourcesWithUnitsByAssetSeries(assetSeriesId: ID): Observable<FieldSource[]> {
@@ -58,11 +58,11 @@ export class FieldSourceComposedQuery {
         });
         fieldSources = fieldSources.filter(fieldSource => {
           // tslint:disable-next-line:triple-equals
-          return fieldSource.assetSeriesId == assetSeriesId
+          return fieldSource.assetSeriesId == assetSeriesId;
         });
         return fieldSources;
       }),
-    )
+    );
   }
 
   selectLoading(): Observable<boolean> {
@@ -73,6 +73,6 @@ export class FieldSourceComposedQuery {
       map(([fieldSourceLoading, unitLoading]) => {
         return fieldSourceLoading && unitLoading;
       })
-    )
+    );
   }
 }

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetsGridPageComponent } from './assets-grid-page.component';
 
@@ -21,7 +21,7 @@ describe('AssetsGridPageComponent', () => {
   let component: AssetsGridPageComponent;
   let fixture: ComponentFixture<AssetsGridPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetsGridPageComponent ]
     })

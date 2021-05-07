@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private unSubscribe$ = new Subject<void>();
 
   @Input()
-  subTitle: string;
+  factorySubTitle: string;
 
   @Input()
   user: User;
@@ -60,6 +60,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isManager(manager: ManagerType) {
     return this.route && this.route.match(`\/${manager}\/`);
+  }
+
+  isDashboards() {
+    return this.route && this.route.match(`\/${'dashboards'}\/`);
   }
 
   isHome() {

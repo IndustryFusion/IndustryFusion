@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetTypeListComponent } from './asset-type-list.component';
 
@@ -21,7 +21,7 @@ describe('AssetTypeListComponent', () => {
   let component: AssetTypeListComponent;
   let fixture: ComponentFixture<AssetTypeListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetTypeListComponent ]
     })

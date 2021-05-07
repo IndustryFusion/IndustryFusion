@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnitListItemComponent } from './unit-list-item.component';
 
@@ -21,7 +21,7 @@ describe('UnitListItemComponent', () => {
   let component: UnitListItemComponent;
   let fixture: ComponentFixture<UnitListItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UnitListItemComponent ]
     })
