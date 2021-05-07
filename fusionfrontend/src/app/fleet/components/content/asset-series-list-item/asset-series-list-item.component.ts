@@ -51,7 +51,7 @@ export class AssetSeriesListItemComponent implements OnInit {
   }
 
   editItem() {
-    this.itemEdit.emit(this.item.id)
+    this.itemEdit.emit(this.item.id);
   }
 
   showDeleteItem() {
@@ -60,7 +60,7 @@ export class AssetSeriesListItemComponent implements OnInit {
 
   deleteItem() {
     this.shouldShowDeleteItem = false;
-    this.itemDelete.emit(this.item.id)
+    this.itemDelete.emit(this.item.id);
   }
 
   select() {

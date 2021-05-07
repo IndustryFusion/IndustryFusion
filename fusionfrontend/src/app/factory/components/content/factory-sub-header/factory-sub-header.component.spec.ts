@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FactorySubHeaderComponent } from './factory-sub-header.component';
 
@@ -21,7 +21,7 @@ describe('FactorySubHeaderComponent', () => {
   let component: FactorySubHeaderComponent;
   let fixture: ComponentFixture<FactorySubHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FactorySubHeaderComponent ]
     })

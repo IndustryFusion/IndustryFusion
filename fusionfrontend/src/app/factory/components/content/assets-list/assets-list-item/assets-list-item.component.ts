@@ -74,12 +74,12 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   getAssetLink(asset: Asset) {
-    if (!asset) return;
+    if (!asset) { return; }
     if (this.room) {
       return ['assets', asset.id];
     } else if (!this.location) {
       const room: Room = this.roomQuery.getEntity(asset.roomId);
-      if (!room) return;
+      if (!room) { return; }
       return ['..', 'locations', room.locationId, 'rooms', asset.roomId, 'assets', asset.id];
     } else {
       return ['rooms', asset.roomId, 'assets', asset.id];

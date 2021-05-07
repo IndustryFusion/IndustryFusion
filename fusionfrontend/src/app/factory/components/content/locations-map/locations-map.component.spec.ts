@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LocationsMapComponent } from './locations-map.component';
 
@@ -21,7 +21,7 @@ describe('LocationsMapComponent', () => {
   let component: LocationsMapComponent;
   let fixture: ComponentFixture<LocationsMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LocationsMapComponent ]
     })

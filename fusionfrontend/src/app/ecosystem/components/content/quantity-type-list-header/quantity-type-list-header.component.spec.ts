@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { QuantityTypeListHeaderComponent } from './quantity-type-list-header.component';
 
@@ -21,7 +21,7 @@ describe('QuantityTypeListHeaderComponent', () => {
   let component: QuantityTypeListHeaderComponent;
   let fixture: ComponentFixture<QuantityTypeListHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ QuantityTypeListHeaderComponent ]
     })

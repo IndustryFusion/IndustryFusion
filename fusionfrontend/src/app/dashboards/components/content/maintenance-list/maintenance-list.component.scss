@@ -36,7 +36,7 @@
   right: -5px;
   top:28px;
   cursor:pointer;
-  
+
   .remove-all-filters-btn-icon {
     font-size: 16px;
     color: black;
@@ -75,29 +75,29 @@
   padding: 0px 0px;
 
   .filter-panel-btn-grid {
-    display: grid; 
-    grid-template-columns: 75% 25%; 
+    display: grid;
+    grid-template-columns: 75% 25%;
     margin-left: 10px;
 
     .filter-panel-btn-grid-text {
-      font-weight: bold; 
+      font-weight: bold;
       justify-self: start;
       margin-left: 10px;
     }
 
     .filter-panel-btn-grid-icon {
-      font-size: 17,5px;
+      font-size: 17.5px;
       margin-top: 3px
     }
   }
 }
 
 .remove-filter-btn {
-  border-color: transparent; 
+  border-color: transparent;
   background-color: white;
 
   .remove-filter-btn-icon {
-    font-size: 14px; 
+    font-size: 14px;
     color: black;
   }
 }
@@ -107,7 +107,7 @@
   border: none;
 
   .add-btn-icon {
-    font-size: 12px; 
+    font-size: 12px;
     color: black;
   }
 }
@@ -128,12 +128,12 @@
   height: 30px;
 }
 
-:host ::ng-deep .ui-table	{
+:host ::ng-deep .p-datatable	{
   margin: 30px 80px;
   border: hidden !important;
 }
 
-:host ::ng-deep .ui-table .ui-table-thead > tr > th {
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
   margin-bottom: 10px;
   height: 56px;
   text-align: left;
@@ -153,7 +153,7 @@
   }
 }
 
-:host ::ng-deep .ui-table .ui-table-tbody > tr > td {
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
   background-color: white;
   border-color: transparent;
   text-align: left;
@@ -171,7 +171,7 @@
   }
 }
 
-:host ::ng-deep .ui-paginator {
+:host ::ng-deep .p-paginator {
   height: 45px;
   background-color: white;
   border-color: transparent;
@@ -179,17 +179,17 @@
   margin-top: 5px;
   padding-bottom: 5px;
 
-  .ui-dropdown {
+  .p-dropdown {
     height: 40px;
     float: right;
     margin-right: 50px;
   }
 
-  .ui-paginator-current {
+  .p-paginator-current {
     float: left;
   }
 
-  .ui-paginator-pages .ui-paginator-page {
+  .p-paginator-pages .p-paginator-page {
     height: 38px;
     width: 38px;
     margin: 2px;
@@ -205,13 +205,13 @@
     justify-content: center;
   }
 
-  .ui-widget {
+  .p-widget {
     border-color: black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
 
-    .ui-inputtext {
+    .p-inputtext {
       height: 38px !important;
       font-weight: normal;
       border-color: black;
@@ -221,19 +221,19 @@
     }
 
 
-    .ui-state-highlight {
+    .p-state-highlight {
       background-color: white !important;
       color: black !important;
       font-weight: bold;
       border-radius: 10px;
     }
 
-    .ui-dropdown-trigger {
+    .p-dropdown-trigger {
       border-radius: 10px;
     }
   }
 
-  .ui-paginator-prev {
+  .p-paginator-prev {
     height: 38px;
     width: 38px;
     margin: 2px;
@@ -244,7 +244,7 @@
     border-radius: 10px !important;
   }
 
-  .ui-paginator-next {
+  .p-paginator-next {
     height: 38px;
     width: 38px;
     margin: 2px;
@@ -255,11 +255,11 @@
     border-radius: 10px !important;
   }
 
-  .ui-paginator-first {
+  .p-paginator-first {
     display: none !important;
   }
 
-  .ui-paginator-last {
+  .p-paginator-last {
     display: none !important;
   }
 

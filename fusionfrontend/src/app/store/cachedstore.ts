@@ -65,7 +65,7 @@ export class CachedStore<S extends EntityState = any, EntityType = getEntityType
     console.log(this.constructor.name + ': Adding ' + entities.length + ' entities to cache');
     this.cachedIds.clear();
     this.cachedParentIdMap.clear();
-    entities.forEach(entity => this.cachedIds.add(String(entity[this.idKey])))
+    entities.forEach(entity => this.cachedIds.add(String(entity[this.idKey])));
     super.set(entities);
     this.emitCachedIds();
   }
@@ -111,7 +111,7 @@ export class CachedStore<S extends EntityState = any, EntityType = getEntityType
   }
 
   private upsertManyCachedInternal(entities: EntityType[]): void {
-    entities.forEach(entity => this.cachedIds.add(String(entity[this.idKey])))
+    entities.forEach(entity => this.cachedIds.add(String(entity[this.idKey])));
     super.upsertMany(entities);
     this.emitCachedIds();
   }

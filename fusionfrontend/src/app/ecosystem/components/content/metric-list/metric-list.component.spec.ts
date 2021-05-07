@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MetricListComponent } from './metric-list.component';
 
@@ -21,7 +21,7 @@ describe('MetricListComponent', () => {
   let component: MetricListComponent;
   let fixture: ComponentFixture<MetricListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MetricListComponent ]
     })

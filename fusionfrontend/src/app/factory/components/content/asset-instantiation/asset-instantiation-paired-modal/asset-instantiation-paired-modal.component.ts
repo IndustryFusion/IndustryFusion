@@ -43,7 +43,7 @@ export class AssetInstantiationPairedModalComponent implements OnInit {
 
   closeModal(event: boolean) {
     if (event) {
-      this.stoppedAssetAssignment.emit(event)
+      this.stoppedAssetAssignment.emit(event);
     }
   }
 }

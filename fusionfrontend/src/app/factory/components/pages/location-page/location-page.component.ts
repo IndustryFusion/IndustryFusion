@@ -91,7 +91,7 @@ export class LocationPageComponent implements OnInit, OnDestroy {
         this.createdAssetDetailsId = id;
       },
       error => console.log(error)
-    )
+    );
   }
 
   updateAssetData(event: AssetDetails) {
@@ -102,13 +102,13 @@ export class LocationPageComponent implements OnInit, OnDestroy {
         console.log('[location page] updated asset with id: ' + res.id);
       },
       error => console.log(error)
-    )
+    );
   }
 
   toolbarClick(button: string) {
     if (button === 'GRID') {
       this.assetQuery.setSelectedAssetIds(this.selectedIds);
-      this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute })
+      this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
     }
   }
 }

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetDetailsHeaderComponent } from './asset-details-header.component';
 
@@ -21,7 +21,7 @@ describe('AssetDetailsHeaderComponent', () => {
   let component: AssetDetailsHeaderComponent;
   let fixture: ComponentFixture<AssetDetailsHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetDetailsHeaderComponent ]
     })

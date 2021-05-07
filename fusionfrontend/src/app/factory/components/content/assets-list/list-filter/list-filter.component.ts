@@ -72,7 +72,7 @@ export class ListFilterComponent implements OnInit, OnChanges {
       const formControls = this.assets.map(() => {
       return this.formBuilder.control( false);
     });
-    return this.formBuilder.array(formControls);
+      return this.formBuilder.array(formControls);
     }
   }
 
@@ -80,7 +80,7 @@ export class ListFilterComponent implements OnInit, OnChanges {
     const selectedFields = this.form.value.assets.map(
       (checked, i) => checked ? this.assets[i][this.attribute] : null).filter(
         v => v !== null);
-    const filterOptions: FilterOptions = Object.assign({ }, { filterAttribute: this.attribute, filterFields: selectedFields})
+    const filterOptions: FilterOptions = Object.assign({ }, { filterAttribute: this.attribute, filterFields: selectedFields});
     this.filterEvent.emit(filterOptions);
     this.dropdownOpen = false;
   }

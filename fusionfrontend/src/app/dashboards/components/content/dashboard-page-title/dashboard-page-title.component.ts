@@ -38,10 +38,12 @@ export class DashboardPageTitleComponent implements OnInit {
   }
 
   resolveSubTitle(path: string) {
-    if (path.match('^\/dashboards\/companies\/[0-9]\/maintenance+$'))
+    if (path.match('^\/dashboards\/companies\/[0-9]\/maintenance+$')) {
       this.dashboardSubTitle = 'Maintenance';
-    else if (path.match('^\/dashboards\/companies\/[0-9]\/equipment+$'))
+    }
+    else if (path.match('^\/dashboards\/companies\/[0-9]\/equipment+$')) {
       this.dashboardSubTitle = 'Equipment';
+ }
   }
 
 }

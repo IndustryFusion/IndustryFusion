@@ -173,8 +173,8 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (this.initialized) {
       if (changes.options) {
-        console.log('options: ' + this.options)
-          switch ( this.options ){
+        console.log('options: ' + this.options);
+        switch ( this.options ){
             case 'current':
               this.flushData();
               this.loadNewData();
@@ -283,13 +283,13 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       const currentDate: moment.Moment = moment(point.ts);
       data.push({ y: point.value, t: currentDate });
       this.lineChartLabels.push(currentDate.toISOString());
-    })
+    });
     this.chart.update();
   }
 
   // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: { }[] }): void {
-    console.log(event, active);
+  public chartClicked(event: { event?: MouseEvent; active?: { }[] }): void {
+    console.log(event);
   }
 
   public chartHovered({ event, active }: { event: MouseEvent, active: { }[] }): void {

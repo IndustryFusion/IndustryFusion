@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ListFilterComponent } from './list-filter.component';
 
@@ -21,7 +21,7 @@ describe('ListFilterComponent', () => {
   let component: ListFilterComponent;
   let fixture: ComponentFixture<ListFilterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ListFilterComponent ]
     })

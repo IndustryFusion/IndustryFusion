@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnitsPageComponent } from './units-page.component';
 
@@ -21,7 +21,7 @@ describe('UnitsPageComponent', () => {
   let component: UnitsPageComponent;
   let fixture: ComponentFixture<UnitsPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UnitsPageComponent ]
     })

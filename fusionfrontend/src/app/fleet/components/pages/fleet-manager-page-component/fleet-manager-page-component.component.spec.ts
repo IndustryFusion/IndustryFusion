@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FleetManagerPageComponentComponent } from './fleet-manager-page-component.component';
 
@@ -21,7 +21,7 @@ describe('FleetManagerPageComponentComponent', () => {
   let component: FleetManagerPageComponentComponent;
   let fixture: ComponentFixture<FleetManagerPageComponentComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FleetManagerPageComponentComponent ]
     })

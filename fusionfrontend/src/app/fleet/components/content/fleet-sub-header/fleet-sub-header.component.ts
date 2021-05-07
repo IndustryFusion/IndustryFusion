@@ -54,7 +54,7 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
     this.unSubscribe$.complete();
   }
 
-  onRouteClick(subroute: string) : Promise<boolean> {
+  onRouteClick(subroute: string): Promise<boolean> {
       if (this.companyId) {
         return this.router.navigateByUrl(this.getUrlTree(subroute));
       } else {

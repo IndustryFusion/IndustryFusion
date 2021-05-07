@@ -59,7 +59,7 @@ export class AssetsListComponent implements OnChanges {
 
   isLoading$: Observable<boolean>;
   selectedIds: Set<ID> = new Set();
-  filterDict: { [key: string]: string[]; }
+  filterDict: { [key: string]: string[]; };
   assetsRoomIds: Set<ID> = new Set<ID>();
   assetRoomNamesAndIds: Set<[string, ID]> = new Set<[string, ID]>();
   assetsCategories: Set<string> = new Set<string>();
@@ -96,7 +96,7 @@ export class AssetsListComponent implements OnChanges {
         this.assetsManufacturers.add(assetDetails.manufacturer);
         if (!this.containsId(assetDetails.roomId)) {
           this.assetsRoomIds.add(assetDetails.roomId);
-          this.assetRoomNamesAndIds.add([assetDetails.roomName, assetDetails.roomId])
+          this.assetRoomNamesAndIds.add([assetDetails.roomName, assetDetails.roomId]);
         }
       });
     }
@@ -108,7 +108,7 @@ export class AssetsListComponent implements OnChanges {
       if (roomId === assetsRoomId) {
         containsId = true;
       }
-    })
+    });
     return containsId;
   }
 
@@ -140,7 +140,7 @@ export class AssetsListComponent implements OnChanges {
   }
 
   assignAsset(room: Room, asset: AssetDetailsWithFields) {
-    if ((!this.company) || (!this.location)) return;
+    if ((!this.company) || (!this.location)) { return; }
     this.assetService.assignAssetToRoom(this.company.id, this.location.id, room.id, asset.roomId, asset.id)
       .subscribe(
         nextAsset => console.log('Asset with id: ' + nextAsset.id + ' reassigned to room ' + room.name),

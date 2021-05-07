@@ -63,7 +63,7 @@ export class AssetDetailsService {
           const assetWithUpdatedRoomName = Object.assign({ }, assetWithDetails);
           assetWithUpdatedRoomName.roomName = room.name;
           return assetWithUpdatedRoomName;
-        })
+        });
         this.assetDetailsStore.upsertManyCached(assetsWithDetails);
       }
       )
