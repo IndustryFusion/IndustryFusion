@@ -13,9 +13,9 @@
  * under the License.
  */
 
-import {BaseEntity} from "../baseentity.model";
+import {AssetType} from "../asset-type/asset-type.model";
 
-export class AssetTypeDetails extends BaseEntity {
+export class AssetTypeDetails extends AssetType {
   name: string;
   templateCount: number;
   assetSeriesCount: number;

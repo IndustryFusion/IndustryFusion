@@ -19,8 +19,3 @@ export class AssetType extends BaseEntity {
   label: string;
   description: string;
 }
-
-// TODO: Name AssetTypeWithAssetTypeTemplateCount or shorter like this:
-export class AssetTypeWithTemplateCount extends AssetType {
-  templateCount: number;
-}
