@@ -24,7 +24,7 @@ import { environment } from '../../../environments/environment';
 import { RoomService } from '../room/room.service';
 import { AssetDetailsStore } from '../asset-details/asset-details.store';
 import { AssetDetailsService } from '../asset-details/asset-details.service';
-import { AssetDetails } from '../../store/asset-details/asset-details.model';
+import { AssetDetails } from '../asset-details/asset-details.model';
 
 
 @Injectable({

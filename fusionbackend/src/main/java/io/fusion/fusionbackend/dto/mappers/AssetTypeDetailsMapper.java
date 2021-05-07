@@ -38,7 +38,10 @@ public class AssetTypeDetailsMapper {
         this.assetTypeTemplateRepository = assetTypeTemplateRepository;
     }
 
-    private AssetTypeDetailsDto toDtoShallow(final AssetType entity, final long templateCount, final long assetSeriesCount, final long assetCount) {
+    private AssetTypeDetailsDto toDtoShallow(final AssetType entity,
+                                             final long templateCount,
+                                             final long assetSeriesCount,
+                                             final long assetCount) {
         if (entity == null) {
             return null;
         }
@@ -55,7 +58,10 @@ public class AssetTypeDetailsMapper {
                 .build();
     }
 
-    public AssetTypeDetailsDto toDto(AssetType entity, final long templateCount, final long assetSeriesCount, final long assetCount) {
+    public AssetTypeDetailsDto toDto(AssetType entity,
+                                     final long templateCount,
+                                     final long assetSeriesCount,
+                                     final long assetCount) {
         return toDtoShallow(entity, templateCount, assetSeriesCount, assetCount);
     }
 }

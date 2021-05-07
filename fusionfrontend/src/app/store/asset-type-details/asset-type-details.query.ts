@@ -15,8 +15,6 @@
 
 import {Injectable} from "@angular/core";
 import {BaseQueryEntity} from "../basequery";
-import {ID} from "@datorama/akita";
-import {Observable} from "rxjs";
 import {AssetTypeDetailsState, AssetTypeDetailsStore} from "./asset-type-details.store";
 import {AssetTypeDetails} from "./asset-type-details.model";
 
@@ -24,10 +22,6 @@ import {AssetTypeDetails} from "./asset-type-details.model";
 export class AssetTypeDetailsQuery extends BaseQueryEntity<AssetTypeDetailsState, AssetTypeDetails> {
   constructor(protected store: AssetTypeDetailsStore) {
     super(store);
-  }
-
-  selectDetailsOfAssetType(assetTypeId: ID): Observable<AssetTypeDetails> {
-    return this.select(assetTypeId);
   }
 
   resetStore() {

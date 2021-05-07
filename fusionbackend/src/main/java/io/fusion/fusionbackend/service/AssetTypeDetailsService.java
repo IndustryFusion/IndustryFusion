@@ -56,7 +56,7 @@ public class AssetTypeDetailsService {
     public List<AssetTypeDetailsDto> getAllAssetTypesDetails() {
         Iterable<AssetType> assetTypes = assetTypeRepository.findAll(CompanyRepository.DEFAULT_SORT);
         List<AssetTypeDetailsDto> assetTypeDetailsDtos = new LinkedList<>();
-        assetTypes.forEach( assetType -> assetTypeDetailsDtos.add(getAssetTypeDetails(assetType.getId())));
+        assetTypes.forEach(assetType -> assetTypeDetailsDtos.add(getAssetTypeDetails(assetType.getId())));
 
         return assetTypeDetailsDtos;
     }

@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-asset-type-edit [modalsActive]="modalsActive" [assetTypeForm]="assetTypeForm" (confirmModalSignal)="onConfirmEditModal($event)" (dismissModalSignal)="onDismissEditModal"></app-asset-type-edit>
+<app-asset-type-edit [modalsActive]="modalsActive" [assetTypeForm]="assetTypeForm" (confirmModalSignal)="onConfirmEditModal($event)" (dismissModalSignal)="onDismissEditModal()"></app-asset-type-edit>
 
 <div *ngIf="shouldShowDeleteItem">
   <div class="backdrop"></div>
