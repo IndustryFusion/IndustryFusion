@@ -15,9 +15,9 @@
 
  import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { RoomsPageComponent } from './rooms-page.component';
+ import { RoomsPageComponent } from './rooms-page.component';
 
-describe('RoomsPageComponent', () => {
+ describe('RoomsPageComponent', () => {
   let component: RoomsPageComponent;
   let fixture: ComponentFixture<RoomsPageComponent>;
 

@@ -131,7 +131,7 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
           } else {
             this.allPoints.unshift([point.value, point.ts]);
           }
-        })
+        });
 
         if (this.lastReceivedTimestamp > 0) {
           this.slidingTimeWindow = (Date.now() - this.lastReceivedTimestamp) / 1000;

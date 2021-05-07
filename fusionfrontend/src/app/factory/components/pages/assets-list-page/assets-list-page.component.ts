@@ -86,7 +86,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
         this.createdAssetDetailsId = id;
       },
       error => console.log(error)
-    )
+    );
   }
 
   updateAssetData(event: AssetDetails) {
@@ -97,7 +97,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
         console.log('[location page] updated asset with id: ' + res.id);
       },
       error => console.log(error)
-    )
+    );
   }
 
   selectTheAssets(selectedAssetIds: Set<ID>) {
@@ -110,9 +110,9 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     if (button === 'GRID') {
       this.assetQuery.setSelectedAssetIds(this.selectedIds);
       if (pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
-        this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute })
+        this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
       } else {
-        this.router.navigate(['..', 'asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute })
+        this.router.navigate(['..', 'asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
       }
     }
   }

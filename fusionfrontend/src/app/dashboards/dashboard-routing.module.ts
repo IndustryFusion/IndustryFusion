@@ -15,7 +15,7 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MaintenancePageComponent } from './components/pages/maintenance-page/maintenance-page.component'
+import { MaintenancePageComponent } from './components/pages/maintenance-page/maintenance-page.component';
 import { DashboardPageType } from './dashboard-routing.model';
 
 const routes: Routes = [

@@ -29,7 +29,7 @@ export class AssetSeriesCreateStepFourComponent implements OnInit {
               private fieldSourceComposedQuery: FieldSourceComposedQuery,
               private fieldSourceService: FieldSourceService) {
     this.$loading = this.fieldSourceComposedQuery.selectLoading();
-    const id: ID = activatedRoute.snapshot.queryParamMap.get('id')
+    const id: ID = activatedRoute.snapshot.queryParamMap.get('id');
     if (id) {
       this.fieldSources$ = this.fieldSourceComposedQuery.selectFieldSourcesWithUnitsByAssetSeries(id);
     }
@@ -39,7 +39,7 @@ export class AssetSeriesCreateStepFourComponent implements OnInit {
   }
 
   updateRegister(register: string, fieldSource: FieldSource) {
-    fieldSource = { ...fieldSource}
+    fieldSource = { ...fieldSource};
     fieldSource.register = register;
     this.fieldSourceService.editItem(this.assetSeries.companyId, fieldSource).subscribe();
   }

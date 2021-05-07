@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { Company } from './company.model';
 import { ActiveState, EntityState, StoreConfig, ID } from '@datorama/akita';
-import { CachedStore } from '../cachedstore'
+import { CachedStore } from '../cachedstore';
 
 export interface CompanyState extends EntityState<Company, ID>, ActiveState { }
 

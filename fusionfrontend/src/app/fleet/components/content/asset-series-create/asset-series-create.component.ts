@@ -40,7 +40,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     this.checkboxGroup = formBuilder.group({
       isTermsChecked: [false, Validators.requiredTrue],
       isPrivacyChecked: [false, Validators.requiredTrue],
-    })
+    });
 
   }
 
@@ -54,11 +54,11 @@ export class AssetSeriesCreateComponent implements OnInit {
   assetSeries: AssetSeries = new AssetSeries();
 
   ngOnInit() {
-    this.companyId = this.route.parent.snapshot.params.companyId
+    this.companyId = this.route.parent.snapshot.params.companyId;
     this.route.queryParamMap.subscribe(paramMap => {
       if (paramMap.has('id')) {
         this.assetSeries$ = this.assetSeriesQuery.selectAssetSeries(paramMap.get('id'));
-        this.assetSeries$.subscribe(assetSeries => this.assetSeries = assetSeries )
+        this.assetSeries$.subscribe(assetSeries => this.assetSeries = assetSeries );
       }
       if (paramMap.has('step')) {
         const paramStep = Number(paramMap.get('step'));
@@ -67,7 +67,7 @@ export class AssetSeriesCreateComponent implements OnInit {
           this.onStepChange(this.step);
         }
       }
-    })
+    });
   }
 
   onStepChange(step: number) {
@@ -76,7 +76,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     if (this.assetSeries?.id || this.assetSeries?.assetTypeTemplateId) {
       this.onUpdateAssetSeries();
     }
-    const queryParams: any = { step: this.step}
+    const queryParams: any = { step: this.step};
     if (this.assetSeries?.id) {
       queryParams.id = this.assetSeries.id;
     }
@@ -96,7 +96,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     } else {
       this.assetSeries.companyId = this.companyId;
       this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries)
+        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
     }
   }
 

@@ -34,7 +34,7 @@ const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 })
 export class MaintenancePageComponent implements OnInit {
 
-  companyId: ID
+  companyId: ID;
   assetDetailsWithFields$: Observable<AssetDetailsWithFields[]>;
   assetTypes$: Observable<AssetType[]>;
   locations$: Observable<Location[]>;
@@ -68,8 +68,8 @@ export class MaintenancePageComponent implements OnInit {
 
   sortAssetsByMaintenanceValue() {
     this.assetDetailsWithFields.sort((a, b) => {
-      const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME)
-      const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME)
+      const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
+      const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       if (indexA !== -1 && indexB !== -1) {
         return Number(a.fields[indexA].value) > Number(b.fields[indexB].value) ? 1 : -1;
       } else if (indexA === -1) {

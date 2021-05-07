@@ -61,7 +61,7 @@ export class AssetInstantiationRoomAssignmentModalComponent implements OnInit {
 
   closeModal(event: boolean) {
     if (event) {
-      this.stoppedAssetAssignment.emit(event)
+      this.stoppedAssetAssignment.emit(event);
     }
   }
 }
