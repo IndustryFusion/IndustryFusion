@@ -14,54 +14,8 @@
 -->
 
 #Set-Up Guide for local Development Environment for IndustryFusion
-This guide is intended to use by developer to setup a local development environment, mostly based on Intellj IDEA and Docker. 
+This guide is intended to be used by developer to set up a local development environment, mostly based on Intellj IDEA and Docker. 
 
-ToDo (fkn): Remove optional setup or move it to its own location/file  
-
-#Optional: Additional setup for new Ubuntu
-
-Note: You should always run 'apt(-get) update' first before installing a package.
-
-```
-sudo apt update           and/or         sudo apt-get update
-```
-
-## Docker
-
-```
-sudo apt-get install docker.io -y
-```
-
-Add current user to docker group to be able to run docker without admin permissions:
-
-```
-sudo gpasswd -a $USER docker
-newgrp docker
-```
-
-Test: docker run hello-world,	docker ps -a,	        docker rm [container id]
-
-
-## Git
-
-```
-sudo apt-get install git -y
-```
-
-## Npm, yarn
-
-The package managers will be automatically installed within the next step. However, for manual installation do this:
-
-
-```
-sudo apt-get install npm -y
-sudo npm install --global yarn
-```
-## OpenJDK 11 (LTS)
-
-```
-sudo apt install openjdk-11-jdk
-```
 
 # Setup Development Environment
 ## Prerequisites
