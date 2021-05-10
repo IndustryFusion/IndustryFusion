@@ -42,6 +42,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'dashboards',
+    redirectTo: '/dashboards/companies/',
+    pathMatch: 'full'
+  },
+  {
     path: 'settings',
     redirectTo: '/settings/template',
     pathMatch: 'full'
@@ -49,7 +54,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

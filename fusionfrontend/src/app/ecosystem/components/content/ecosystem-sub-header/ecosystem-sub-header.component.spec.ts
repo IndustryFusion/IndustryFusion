@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EcosystemSubHeaderComponent } from './ecosystem-sub-header.component';
 
@@ -21,7 +21,7 @@ describe('EcosystemSubHeaderComponent', () => {
   let component: EcosystemSubHeaderComponent;
   let fixture: ComponentFixture<EcosystemSubHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EcosystemSubHeaderComponent ]
     })

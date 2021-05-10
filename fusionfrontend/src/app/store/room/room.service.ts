@@ -53,7 +53,7 @@ export class RoomService {
 
   getRoom(companyId: ID, locationId: ID, roomId: ID, refresh: boolean = false): Observable<Room> {
     const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}`;
-    if (refresh) this.roomStore.invalidateCacheId(roomId);
+    if (refresh) { this.roomStore.invalidateCacheId(roomId); }
     return this.roomStore.cachedById(roomId, this.http.get<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);

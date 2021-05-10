@@ -34,7 +34,7 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
   assetSeries: AssetSeriesDetails[];
 
   @Input()
-  locations : Location[];
+  locations: Location[];
 
   @Input()
   rooms: Room[];
@@ -144,7 +144,7 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
       this.instantiatedAsset.description = this.assetDetailsForm.controls[this.descriptionControl].value;
       this.instantiatedAsset.id = this.assetToEdit.id ? this.assetToEdit.id : null;
     } else {
-      this.closeModal(true)
+      this.closeModal(true);
     }
   }
 
@@ -152,7 +152,7 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
     if (event[0]) {
       this.modalTypeActive = this.assetModalTypes.roomAssigntment;
       this.instantiatedAsset.locationName = this.assetDetailsForm.controls[this.locationControl].value;
-      this.selectedLocation = event[1]
+      this.selectedLocation = event[1];
       this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === event[1].id);
       this.instantiatedAsset.id = this.assetToEdit.id ? this.assetToEdit.id : null;
     } else {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetsListHeaderComponent } from './assets-list-header.component';
 
@@ -6,7 +6,7 @@ describe('AssetsListHeaderComponent', () => {
   let component: AssetsListHeaderComponent;
   let fixture: ComponentFixture<AssetsListHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssetsListHeaderComponent ]
     })

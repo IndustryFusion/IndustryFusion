@@ -42,7 +42,7 @@ export class AssetSeriesCreateStepTwoComponent implements OnInit {
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
     private route: ActivatedRoute
   ) {
-    this.assetTypeTemplates = this.assetTypeTemplateQuery.getAll()
+    this.assetTypeTemplates = this.assetTypeTemplateQuery.getAll();
   }
 
   ngOnInit() {

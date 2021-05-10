@@ -34,7 +34,7 @@ export class Metrics {
 }
 
 export class MetricsWithAggregation extends Metrics {
-  aggregator: Aggregator
+  aggregator: Aggregator;
 }
 
 export class Aggregator {

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LaunchpadItemComponent } from './launchpad-item.component';
 
@@ -21,7 +21,7 @@ describe('LaunchpadItemComponent', () => {
   let component: LaunchpadItemComponent;
   let fixture: ComponentFixture<LaunchpadItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LaunchpadItemComponent ]
     })

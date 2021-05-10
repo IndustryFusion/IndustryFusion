@@ -58,7 +58,8 @@ export class FactoryResolver {
   public asset$: Observable<Asset>;
   public assetWithFields$: Observable<AssetWithFields>;
   public fields$: Observable<Field[]>;
-  public subTitle$: Subject<string>;
+  public factorySubTitle$: Subject<string>;
+  public companies$: Observable<Company[]>;
 
   constructor(
     private companyService: CompanyService,
@@ -80,10 +81,12 @@ export class FactoryResolver {
     this.location$ = this.locationQuery.selectActive();
     this.room$ = this.roomQuery.selectActive();
     this.asset$ = this.assetQuery.selectActive();
-    this.subTitle$ = new BehaviorSubject('Apps');
+    this.factorySubTitle$ = new BehaviorSubject('Apps');
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
+    this.companies$ = this.companyService.getCompanies();
+    this.companyService.getCompanies().subscribe();
     const companyId = activatedRoute.snapshot.paramMap.get('companyId');
     this.companyService.setActive(companyId);
     if (companyId != null) {
@@ -148,34 +151,34 @@ export class FactoryResolver {
 
     const pageTypes: FactoryManagerPageType[] = (activatedRoute.snapshot.data as RouteData).pageTypes || [];
     if (pageTypes.includes(FactoryManagerPageType.COMPANY_DETAIL)) {
-      this.subTitle$.next('My Factories');
+      this.factorySubTitle$.next('My Factories');
     } else if (pageTypes.includes(FactoryManagerPageType.ASSET_DETAIL)) {
       this.assetQuery
         .waitForActive()
-        .subscribe(asset => this.subTitle$.next('Assets > ' + asset.name));
+        .subscribe(asset => this.factorySubTitle$.next('Assets > ' + asset.name));
     } else if (
       pageTypes.includes(FactoryManagerPageType.LOCATION_DETAIL)
       && pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)
       && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
       this.roomQuery
         .waitForActive()
-        .subscribe(room => this.subTitle$.next('Rooms > ' + room.name));
+        .subscribe(room => this.factorySubTitle$.next('Rooms > ' + room.name));
     } else if (pageTypes.includes(FactoryManagerPageType.LOCATION_DETAIL) && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
       this.locationQuery
         .waitForActive()
-        .subscribe(location => this.subTitle$.next('Assets > ' + location.name));
+        .subscribe(location => this.factorySubTitle$.next('Assets > ' + location.name));
     } else if (pageTypes.includes(FactoryManagerPageType.LOCATION_DETAIL) && pageTypes.includes(FactoryManagerPageType.ROOM_LIST)) {
       this.locationQuery
         .waitForActive()
-        .subscribe(location => this.subTitle$.next('Rooms > ' + location.name));
+        .subscribe(location => this.factorySubTitle$.next('Rooms > ' + location.name));
     } else if (pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
       this.roomQuery
         .waitForActive()
-        .subscribe(room => this.subTitle$.next('Rooms > ' + room.name));
+        .subscribe(room => this.factorySubTitle$.next('Rooms > ' + room.name));
     } else if (pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.subTitle$.next('My Assets');
+      this.factorySubTitle$.next('My Assets');
     } else {
-      this.subTitle$.next('Apps');
+      this.factorySubTitle$.next('Apps');
     }
   }
 }

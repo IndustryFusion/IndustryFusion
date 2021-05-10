@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CompanyInfoComponent } from './company-info.component';
 
@@ -21,7 +21,7 @@ describe('CompanyInfoComponent', () => {
   let component: CompanyInfoComponent;
   let fixture: ComponentFixture<CompanyInfoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CompanyInfoComponent ]
     })

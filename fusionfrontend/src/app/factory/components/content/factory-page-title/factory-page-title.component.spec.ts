@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FactoryPageTitleComponent } from './factory-page-title.component';
 
@@ -21,7 +21,7 @@ describe('FactoryPageTitleComponent', () => {
   let component: FactoryPageTitleComponent;
   let fixture: ComponentFixture<FactoryPageTitleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FactoryPageTitleComponent ]
     })

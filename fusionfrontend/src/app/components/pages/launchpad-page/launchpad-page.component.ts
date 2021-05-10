@@ -54,6 +54,13 @@ export class LaunchpadPageComponent implements OnInit {
       route: '/ecosystemmanager'
     },
     {
+      name: 'Dashboards',
+      text: 'Dashboards',
+      itemClass: HomeItemClass.DASHBOARDS,
+      icon: 'bar-chart',
+      route: '/dashboards/companies/2/maintenance'
+    },
+    {
       name: 'Settings',
       text: '',
       itemClass: HomeItemClass.SETTINGS,
@@ -72,7 +79,7 @@ export class LaunchpadPageComponent implements OnInit {
     this.companyId = (this.keycloakService.getKeycloakInstance().tokenParsed as any).IF_COMPANY;
     this.items.forEach((item) => {
       item.route = item.route.replace('<COMPANY_ID>', this.companyId);
-    })
+    });
   }
 
   hasRequiredRole(item: LaunchpadItem) {

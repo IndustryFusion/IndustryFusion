@@ -26,7 +26,7 @@ export class FusionFormatPipe implements PipeTransform {
   transform(gotData: boolean, type: string, statusValue: string): MyFormat {
     if (!gotData) {
       if (type === 'nofields') {
-        return ({ status: 'no status available', color: '#4f504f'})
+        return ({ status: 'no status available', color: '#4f504f'});
       } else {
         return ({ status: 'offline', color: '#4f504f'});
       }

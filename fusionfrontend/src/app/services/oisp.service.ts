@@ -58,7 +58,7 @@ export class OispService {
   }
 
   getAssetFieldsExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
-    if (!asset) return EMPTY;
+    if (!asset) { return EMPTY; }
     const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/devices/${asset.externalId}`;
 
     return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
@@ -75,7 +75,7 @@ export class OispService {
   }
 
   getAssetDetailsFieldsExternalIds(assetDetails: AssetDetailsWithFields): Observable<AssetDetailsWithFields> {
-    if (!assetDetails) return EMPTY;
+    if (!assetDetails) { return EMPTY; }
     const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/devices/${assetDetails.externalId}`;
 
     return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
@@ -95,7 +95,7 @@ export class OispService {
     let answer = false;
     oispSeries.forEach(series => {
       answer = answer || (series.points.length > 0);
-    })
+    });
     return answer;
   }
 
@@ -158,7 +158,7 @@ export class OispService {
     } else {
       let metricsWithAggregation: MetricsWithAggregation;
       const myAggregator: Aggregator = ({ name: 'avg' });
-      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator })
+      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
       const request: OispRequestWithAggregation = {
         from: -secondsInPast,
         maxItems: Number(maxPoints),
@@ -194,7 +194,7 @@ export class OispService {
       return this.getOispPoints(path, request, false);
     } else {
       const myAggregator: Aggregator = ({ name: 'avg' });
-      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator })
+      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
       const request: OispRequestWithAggregation = {
         from: fromDate,
         to: toDate,

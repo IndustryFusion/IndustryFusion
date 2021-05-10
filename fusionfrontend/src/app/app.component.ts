@@ -29,14 +29,14 @@ import { FactoryResolver } from './factory/services/factory-resolver.service';
 })
 export class AppComponent implements OnInit {
   loggedUser$: Observable<User>;
-  subTitle$: Observable<string>;
+  factorySubTitle$: Observable<string>;
 
   constructor(private factoryResolver: FactoryResolver,
               private userQuery: UserQuery,
               private ngZone: NgZone) { }
 
   ngOnInit() {
-    this.subTitle$ = this.factoryResolver.subTitle$;
+    this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
     this.loggedUser$ = this.userQuery.selectActive();
     if (environment.production) {
       enableAkitaProdMode();
