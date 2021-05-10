@@ -92,14 +92,12 @@ Example:
 
 ### fusionfrontend (npm)
 1. Assure there is a npm run configuration for the fusionfrontend.  
-1. Edit "Node Interpreter" and "Package manager" to correct path within your target f
-   in the fusionfrontend module. Example:
+1. Edit "Node Interpreter" and "Package manager" to correct path within your target in the fusionfrontend module. Example:
    ![Run Configuration Frontend](images/Intellij_run_configuration_frontend.png)   
-1. ToDo: environment.dev.template anpassen (LastPass: "Shared-IndustryFusion > Frontend environment.dev.ts")
+1. Copy attachment of LastPass note "Shared-IndustryFusion > Frontend environment.dev.ts" to `fusionfrontend/src/environments/environment.dev.ts`
 
 
 ### Install Plugins
-
 1. Choose menu "File > Settings..."
 1. Change to tab "Plugins" and ensure installation of 
     1. Lombok (installed by default)
