@@ -21,21 +21,20 @@ Open the keycloak Admin GUI at http://localhost:8081/auth/
 
 
 ## Keycloak theme
-ToDo (fkn): Ist das Theme im Private-Repo anders wie im Öffentlichen?
-ToDo (fkn): Das untenstehende Kopieren könnte vermutlich über einen Container-Mount und in Docker-Compose vereinfacht werden.
+- ToDo (fkn): Ist das Theme im Private-Repo anders wie im Öffentlichen? Ggf. Link unten anpssen
+- ToDo (fkn): Das untenstehende Kopieren könnte vermutlich über einen Container-Mount und in Docker-Compose vereinfacht werden oder ein eigenes Dockerfile inkl. Realm-Import.
 
-The Theme https://github.com/mattmikulina/IndustryFusion-private-/tree/master/fusionkeycloaktheme should be copied to the running keycloak instance under keycloak/themes.
+The [fusion keycloak theme](https://github.com/mattmikulina/IndustryFusion-private-/tree/master/fusionkeycloaktheme) must be copied to the running keycloak instance under keycloak/themes.
 
-Instructions for adding the keycloak theme in docker:
+Instructions for copying the keycloak theme in docker:
 1. clone repo, switch to "fusionkeycloaktheme" folder (or use DownGit and switch to "Downloads")
 2. `docker cp fusion/ keycloak:/opt/jboss/keycloak/themes/`
 3. Check if the folder was copied correctly to docker directory:
-   
-```
-docker exec -it keycloak bash
-cd /opt/jboss/keycloak/themes/
-ls
-```
+    ```
+    docker exec -it keycloak bash
+    cd /opt/jboss/keycloak/themes/
+    ls
+    ```
 
 ## Keycloak configuration
 

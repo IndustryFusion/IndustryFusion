@@ -153,11 +153,10 @@ Hint: In pgAdmin4 you can use "Query Tool".
 
 
 ### 3.2. Keycloak Authentication
-ToDo (fkn): Auch über docker-compose abbilden.
+- ToDo (fkn): Auch über docker-compose abbilden.
+- ToDo (fkn): Es gibt auch die Möglichkeit die Initialisierung gleich beim Container-Start zu machen. Siehe https://github.com/keycloak/keycloak-containers/blob/12.0.4/server/README.md
 
-ToDo (fkn): Es gibt auch die Möglichkeit die Initialisierung gleich beim Container-Start zu machen. Siehe https://github.com/keycloak/keycloak-containers/blob/12.0.4/server/README.md
-
-Do the steps based on the [keycloak setup description](keycloaksetup.md)
+Do the steps based on the [keycloak setup instructions](keycloaksetup.md)
 
 
 ## 4. IDE
@@ -270,6 +269,13 @@ ToDo (fkn): Dass muss über getrennte Spring-Konfigurationen für local und clou
 **Warning**: Running the fusionbackend deletes (currently) all imported data in the DB. Automatic reimport or disabling is neccessary.
 
 ### 4. fusionfrontend
+
+ToDo (fkn): Beschreibung Java-Script-Debug-Run-Configuration
+
+Notizen: 
+    1. Run-Configuration gegen lokales node und yarn
+    1. Keycloak Key kopieren
+    1. environment.dev.template anpassen (Lastpass für)
 
 Either
 1. run from within the IDE (intellij / eclipse / VS Code) of your choice
