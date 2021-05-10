@@ -48,3 +48,4 @@ application-developer-*.yaml
 
 ### Others ###
 spy.log
+/src/main/resources/application-dev.yaml

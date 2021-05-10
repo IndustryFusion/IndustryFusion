@@ -23,67 +23,16 @@ Software needed to be installed on your system:
 1. Git Client: version >= 2.31.1
 1. Docker (or other Container-Runtime). Docker: version >=19.03.12 
 1. OpenJDK: version >= 11.0.10
+   1. Think about using [SDKMAN!](https://sdkman.io/)
 1. PostgreSQL-Client choose by your own. E.g.:
-   1. Intellij integrated Data-Grid
-   1. [pgadmin4](https://www.pgadmin.org/download/)
+   1. Preferred: Intellij integrated Data-Grid
+   1. Alternative: [pgadmin4](https://www.pgadmin.org/download/)
+1. Intellij Ultimate Edition: version >= 2021.1.1
 
 
-## 1. Checkout IndustryFusion application
-Clone directory: `git clone https://github.com/IndustryFusion/IndustryFusion.git`
+## Prepare Infrastructure: Database and Authentication
 
-Pull testcontainer-image to be able to run tests with maven (dependency manager):
-
-ToDo (fkn): Das untenstehende Container-Image wird von Testcontainers.org verwendet. Sollte aber automatisch gepulled werden. !?! 
-
-```
-docker pull testcontainersofficial/ryuk:0.3.0
-```
-
-Go in terminal to the maven project root folder (should be `IndustryFusion`). Run Maven to automatically install node, npm, yarn, angular-cli etc. 
-during the build of the fusionfrontend Maven module:
-
-ToDo (fkn): Build schlägt aktuell beim fusion-aggregator fehl
-
-
-```
-mvn install
-```
-
-## 2. Required Packages
-
-ToDo (fkn): Wir sollten eine für alle funktionierende Beschreibung haben also OHNE Fallbacks! Das Kaptiel könnte eigentlich komplett 
-enfallen
-
-### Fallback: PrimeNG, PrimeIcons, Angular-DevKit
-
-Should have been installed with "mvn install". If not, install it manually like this:
-
-`yarn add primeng@9.1.3   or      npm install primeng –save`
-
-`yarn add primeicons      or      npm install primeicons --save`
-
-`yarn add @angular/cdk@9.1.3`
-
-Check if Style files were added to angular.json at  project.architect.build.styles:   
-
- `"./node_modules/primeicons/primeicons.css", ".node_modules/primeng/resources/themes/nova-light/theme.css", ".node_modules/primeng/resources/primeng.min.css"`
-
-### Fallback: Angular CLI
-
-Necessary to run "ng serve" via terminal. Should have been installed with "mvn install". If not, do this and then restart console:
-
-```
-cd ./fusionfrontend	 
-yarn install				   (or npm install)
-yarn global add @angular/cli     	   (for ng serve)
-npm link @angular/cli
-```
-
-
-
-## 3. Database and Authentication
-
-### 3.1. Postgresql Database
+### Database: Postgresql
 ToDo (fkn): Es existiert eine docker-compose-Datei mit anderer Image-Konfiguration. Klären! Was ist in der Produktion?
 
 #### Run Docker Container
@@ -98,152 +47,75 @@ for the second time use:
  docker start postgres-104
 ```
 
-#### Import Sample Data
-Todo (fkn): Klären welche Datei nun richtig ist, es gibt im privaten Repo auch noch eine.
-
-The file [demoinserts.sql (available only iteratec internal for security reasons)](https://iteratec.sharepoint.com/sites/m365_industryfusion_foundation/Freigegebene%20Dokumente/Entwicklung/demoinserts.sql) can be imported to provide some initial demo data. T
-
-Hint: In pgAdmin4 you can use "Query Tool".
-
-
-### 3.2. Keycloak Authentication
+### Authentication: Keycloak 
 - ToDo (fkn): Auch über docker-compose abbilden.
 - ToDo (fkn): Es gibt auch die Möglichkeit die Initialisierung gleich beim Container-Start zu machen. Siehe https://github.com/keycloak/keycloak-containers/blob/12.0.4/server/README.md
 
 Do the steps based on the [keycloak setup instructions](keycloaksetup.md)
 
 
-## 4. IDE
-ToDo (fkn): Wie wurde das Intellij-Projekt erstellt/importiert/konfiguriert? 
+## Checkout IndustryFusion application
 
-### 4.1. Recommendation: IntelliJ IDEA (Ultimate Edition)
+The project is [hosted on GitHub](https://github.com/IndustryFusion/IndustryFusion).
 
-Install IntelliJ IDEA (Ultimate Edition, Community Edition also possible for fusionbackend).
+1. Thus clone from there:  
+   ```git clone https://github.com/IndustryFusion/IndustryFusion.git```
+1. Switch to branch `development`
 
-#### fusionbackend (Spring Boot)
+## Open project in Intellij
+1. Choose menu "File > New > Project from Existing Sources..."
+1. Select POM File of the root folder (IndustryFusion/pom.xml) and click "OK"
+1. Run `mvn install` from terminal or the Maven tool window within the fusionfrontend module to automatically install node, yarn and the node modules to the "target" folder.
 
-1. Open subfolder /fusionbackend
-1. Open main file at src/main/&ava/io/fusion/fusionbackend/FusionbackendApplication.java
-1. Setup SDK (top right) → add...  →  /usr/lib/jvm/java-11-openjdk-amd64
-1. Ensure that container of keycloak and postgres are running (docker ps -a), then run backend
+ToDo (fkn): Build schlägt aktuell beim fusion-aggregator fehl
 
-#### fusionfrontend (Angular + Jetti)
+## Configure Intellij 
 
-1. Open file fusionfrontend/package.json
-2. Click the run button on the left of "start": "ng serve"
-3. From now on you can use the added configuration to run the angular app
+1. Choose menu "File > Project Structure...". Assure that your local java 11 sdk is selected below "Project Settings > Project > Project SDK"
 
-#### Plugins
+### fusionbackend (Spring Boot)
 
-Press `Strg` + `Alt` + `S` to open settings, then change to tab "Plugins", please ensure installation of 
+1. Check Run Configurations: There must be already Spring Boot configuration called "FusionbackendApplication". 
+1. Add "dev" to the section "Active profiles"    
+Example: 
+   ![Run Configuration Backend](images/Intellij_run_configuration_backend.png)
+1. Copy `application.yaml` to `applicaiton-dev.yaml` and change the values of the following keys:
+    1. `keycloak.credentials.secret`: Set it to the secret value, which has been generated during the keycloak set up.
 
-* Lombok (installed by default)
-* PMD-IDEA
-* CheckStyle-IDEA,   add configuration file:
-  * change to settings-tab "Tools"  →  Checkstyle  → Checkstyle Version = `8.27` 
-  * configuration file  → Add  → Description = "Industry Fusion Checks"  → use a local checkstyle file: `./fusionparent/src/site/fusion_google_checks.xml` → Next
-  * checkstyle.header.file = `license.txt`   → Finish  → set as active rule: click at checkbox on the left
+#### Import Sample Data
+1. Change temporary the setting `spring.jpa.hibernate.ddl-auto` in the `application-dev.yaml` from 'validate' to 'create'.
+1. Start the fusionbackend run configuration. This creates the database schema
+1. Import sample data by using the file [demoinserts.sql (located on internal SharePoint)](https://iteratec.sharepoint.com/sites/m365_industryfusion_foundation/Freigegebene%20Dokumente/Entwicklung/demoinserts.sql).
+1. Stop the fusionbackend run configuration.
+1. Change back the setting `spring.jpa.hibernate.ddl-auto` in the `application-dev.yaml` from 'create' to 'validate'.
+
+
+### fusionfrontend (npm)
+1. Assure there is a npm run configuration for the fusionfrontend.  
+1. Edit "Node Interpreter" and "Package manager" to correct path within your target f
+   in the fusionfrontend module. Example:
+   ![Run Configuration Frontend](images/Intellij_run_configuration_frontend.png)   
+1. ToDo: environment.dev.template anpassen (LastPass: "Shared-IndustryFusion > Frontend environment.dev.ts")
+
+
+### Install Plugins
+
+1. Choose menu "File > Settings..."
+1. Change to tab "Plugins" and ensure installation of 
+    1. Lombok (installed by default)
+    1. PMD-IDEA
+    1. CheckStyle-IDEA: Add configuration file:
+       1. change to settings-tab "Tools"  →  Checkstyle  → Checkstyle Version = `8.27` 
+       1. configuration file  → Add  → Description = "Industry Fusion Checks"  → use a local checkstyle file: `./fusionparent/src/site/fusion_google_checks.xml` → Next
+       1. checkstyle.header.file = `license.txt`   → Finish  → set as active rule: click at checkbox on the left
     
 
+### Start Full Stack
+1. Assure docker containers for keycloak and postgres database are running
+1. Start fusionbackend via its run configuration.
+1. Start fusionfrontend via its run configuration. 
 
-### 4.2. Alternative: VS Code
-
-
-#### fusionbackend  (Spring Boot)
-
-Press `Strg` + `Alt` + `P` in VS Code → term → Create new integrated terminal.
-
-```
-cd ./fusionbackend
-mvn clean install -DskipTests
-java -jar target/fusionbackend-1.0.0-SNAPSHOT.jar
-```
-
-
-#### fusionfrontend (Angular + Jetti)  -->  TODO wegen npm install
-
-Press `Strg` + `Alt` + `P` in VS Code → term → Create new integrated terminal → cd fusionfrontend/ → ``ng serve``
-
-Ensure that you installed the latest angular-cli and once ran the command `npm install`.
-
-
-#### Plugins
-
-* GitHub Extension
-
-
-## 5. Changes in Config
-
-Please do the following changes:
-* `fusionfrontend/src/environments/environment.ts`:   insert your keys for GoogleMapsPlugin, OISP etc.
-* Recommendation: Create own dev-environment-yourName, and add it to the git-ignore list, 
-  * add environment to angular.json  
-  * add configuration startdev to package.json → scripts
-  * TODO: @Tobias
-
-Other important config files:
- * fusionbackend/src/main/resources/application.yaml
- * fusionfrontend/src/proxy.confs.js
-
-
-## 6. Troubleshooting
-
-### Miscellaneous
-* ECONREFUSED →  Is keycloak running?
-* ECONREFUSED → used port offset at native (no docker) keycloak creation? If yes, please change proxy.conf.js: “/auth” set target to e.g. :8180 or :8080
- * No data in FleetManager  → DB → asset_series:  company_id set to 2
- * GoogleMaps - Plugin not working  → add Keys in environment.ts
- * Local DB-Data were cleared → Running the fusionbackend deletes (currently) all imported data in the DB. Please reimport them.
-
-### Pgadmin Configuration
-
-#### Add database
-Open http://127.0.0.1/pgadmin4  and login with your created credentials.
-
-Servers (left side) → Create → Server… → use the following configuration:
-```
-General:     Name = Industry Fusion
-Connection:  Host name / adress = 127.0.0.1;   db-name = postgresdb;   username =  postgres;     password = postgres
-```
-
-# Start und stop IF (backend + frontend)
-
-## Start 
-
-Assure database and keycloak docker containers are running. See above!
-
-### 3. fusionbackend
-
-Either (Option 2 is recommended)
-1. run from within the IDE (intellij / eclipse / VS Code) of your choice
-2. follow the instructions to compile and execute on [fusionbackend](https://github.com/IndustryFusion/IndustryFusion/tree/master/fusionbackend)
-3. or follow the instruction to generate and execute the docker container on follow the instructions to compile and execute on [fusionbackend](https://github.com/IndustryFusion/IndustryFusion/tree/master/fusionbackend)
-
-ToDo (fkn): Dass muss über getrennte Spring-Konfigurationen für local und cloud abgeschaltet werden.
-**Warning**: Running the fusionbackend deletes (currently) all imported data in the DB. Automatic reimport or disabling is neccessary.
-
-### 4. fusionfrontend
-
-ToDo (fkn): Beschreibung Java-Script-Debug-Run-Configuration
-
-Notizen: 
-    1. Run-Configuration gegen lokales node und yarn
-    1. Keycloak Key kopieren
-    1. environment.dev.template anpassen (Lastpass für)
-
-Either
-1. run from within the IDE (intellij / eclipse / VS Code) of your choice
-2. go to fusionfrontend-folder, type `ng serve`. For initial run enter once `npm install`. 
-   For details see the instructions on [fusionfrontend](https://github.com/IndustryFusion/IndustryFusion/tree/master/fusionfrontend)
-
-## Stop
-
-See running docker containers: `docker ps -a`, stop the following (order not important):
-
-* stop fusionfrontend
-* stop fusionbackend
-* stop keycloak container:  `docker stop keycloak`
-* stop docker container:  `docker stop postgres-104`
+--> Your are set up! Happy Coding :-)
 
 
 # Optional: Import Postman collection
@@ -255,7 +127,7 @@ Download and import [fusion.postman_collection.json](https://github.com/Industry
 
 # Using Kubernetes (K8S / K3S)
 
-ToDo (fkn):  Update notwendig
+ToDo (fkn): Update für dieses Kapitel notwendig und auslagern in eigene MD-Datei
 
 ### Create linux host if running on Windows or Mac
 This step is only necessary if running on Windows or Mac. If on linux skip to next step.
