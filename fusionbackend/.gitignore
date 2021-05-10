@@ -44,8 +44,7 @@ build/
 .vscode/
 
 ### Spring application developer config ###
-application-developer-*.yaml
+application-dev.yaml
 
 ### Others ###
 spy.log
-/src/main/resources/application-dev.yaml

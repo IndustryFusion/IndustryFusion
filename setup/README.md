@@ -79,7 +79,7 @@ ToDo (fkn): Build schlägt aktuell beim fusion-aggregator fehl
 1. Add "dev" to the section "Active profiles"    
 Example: 
    ![Run Configuration Backend](images/Intellij_run_configuration_backend.png)
-1. Copy `application.yaml` to `applicaiton-dev.yaml` and change the values of the following keys:
+1. Copy `application.yaml` to `application-dev.yaml` and change the values of the following keys:
     1. `keycloak.credentials.secret`: Set it to the secret value, which has been generated during the keycloak set up.
 
 #### Import Sample Data
@@ -92,10 +92,11 @@ Example:
 
 ### fusionfrontend (npm)
 1. Assure there is a npm run configuration for the fusionfrontend.  
-1. Edit "Node Interpreter" and "Package manager" to correct path within your target in the fusionfrontend module. Example:
+1. Edit "Node Interpreter" and "Package manager" to correct path, see example below, within your target folder in the fusionfrontend module. Example:
    ![Run Configuration Frontend](images/Intellij_run_configuration_frontend.png)   
-1. Copy attachment of LastPass note "Shared-IndustryFusion > Frontend environment.dev.ts" to `fusionfrontend/src/environments/environment.dev.ts`
+1. Copy attachment of LastPass note "Shared-IndustryFusion > Frontend environment.dev.ts" to `fusionfrontend/src/environments/environment.dev.ts`. Do not forget to rename it correctly!
 
+Todo (fkn): Besser nicht die ganze Datei, sondern nur die einzelnen Keys in LastPass ablegen
 
 ### Install Plugins
 1. Choose menu "File > Settings..."
