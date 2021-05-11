@@ -69,6 +69,7 @@ import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
+import {CreateButtonComponent} from "../components/ui/create-button/create-button.component";
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { AssetTypeEditComponent } from './components/content/asset-type-edit/ass
     AssetTypeTemplateCreateStepSumaryComponent,
     AssetTypePageComponent,
     AssetTypeEditComponent,
+    CreateButtonComponent,
   ],
     imports: [
         CommonModule,
