@@ -60,7 +60,7 @@ The project is [hosted on GitHub](https://github.com/IndustryFusion/IndustryFusi
 
 1. Thus clone from there:  
    ```git clone https://github.com/IndustryFusion/IndustryFusion.git```
-1. Switch to branch `development`
+1. Switch to branch `develop`
 
 ## Open project in Intellij
 1. Choose menu "File > New > Project from Existing Sources..."
