@@ -93,6 +93,7 @@ const routes: Routes = [
     canActivate: [MainAuthGuardGuard],
     resolve: {
       assetTypes: AssetTypesResolver,
+      templates: AssetTypeTemplatesResolver,
     },
     data: {
       pageTypes: [EcosystemManagerPageType.ASSET_TYPE_DETAIL],

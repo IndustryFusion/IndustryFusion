@@ -1,10 +1,13 @@
 <section class="asset-type">
   <div class="asset-type-info">
     <h3>
-      {{(assetType$ | async)?.name }}
+      {{ (assetType$ | async)?.name }}
     </h3>
-    <div class="description">
-      <p>{{(assetType$ | async)?.description }}</p>
+    <div class="asset-type-label">
+      <p>{{ (assetType$ | async)?.label }}</p>
+    </div>
+    <div class="asset-type-description">
+      <textarea [disabled]="true">{{ (assetType$ | async)?.description  }}</textarea>
     </div>
   </div>
 </section>

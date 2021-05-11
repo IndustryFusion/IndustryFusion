@@ -22,7 +22,8 @@
 
 .asset-type {
   display: flex;
-  height: 150px;
+  height: max-content;
+  /*height: 150px;*/
   width: 100%;
   margin: 4.44% 0;
   background: $grey-background;
@@ -36,13 +37,26 @@
 
     }
 
-    .description {
+    .asset-type-label {
       margin: 20px 0;
 
       p {
         color: $basic-grey;
         font-size: $regular-font-size;
         margin: 2px;
+      }
+    }
+
+    .asset-type-description {
+      margin: 10px 0;
+
+      textarea {
+        color: $basic-grey;
+        font-size: $regular-font-size;
+        margin: 2px;
+        border: none;
+        background: none;
+        resize: none;
       }
     }
   }
