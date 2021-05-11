@@ -28,9 +28,7 @@ under the License.
     <button class="button-create folder-view" (click)="folderView()">
       <clr-icon shape="folder" class="is-solid"></clr-icon> Folder View
     </button>
-    <button class="button-create" (click)="createItemModal()">
-      <clr-icon shape="plus"></clr-icon> Create Asset type
-    </button>
+    <app-create-button [text]="'Create Asset type'" (createItem)="createItemModal()"></app-create-button>
   </div>
 </div>
 <div>

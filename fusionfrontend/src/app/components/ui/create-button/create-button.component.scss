@@ -1,0 +1,25 @@
+@import 'abstract/variables';
+@import 'base/typography';
+
+:host ::ng-deep .button-create {
+  font-style: normal;
+  font-weight: bold;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+  text-align: left;
+
+  letter-spacing: 0;
+  color: $basic-white;
+
+  background: $highlighted 0 0% no-repeat padding-box;
+  border: 1px solid #95989A;
+  border-radius: 10px;
+  opacity: 1;
+
+  //height: 2.96%;
+  padding-top: 8px;
+  padding-right: 32px;
+  padding-left: 16px;
+  padding-bottom: 8px;
+  cursor: pointer;
+}
