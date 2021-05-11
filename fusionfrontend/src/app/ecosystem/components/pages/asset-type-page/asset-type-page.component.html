@@ -1,23 +1,12 @@
-<section class="company">
-  <div class="company-info">
+<section class="asset-type">
+  <div class="asset-type-info">
     <h3>
       {{(assetType$ | async)?.name }}
-<!--      {{assetType?.name}}-->
     </h3>
-    <div class="address">
-      {{(assetType$ | async)?.description }}
-<!--      <p>{{assetType?.description}}</p>-->
+    <div class="description">
+      <p>{{(assetType$ | async)?.description }}</p>
     </div>
   </div>
 </section>
 
-<!--TODO (js): How can I deliver the subset of data to the component? Using set Actives, altering content page or adding new one?-->
-<app-asset-type-template-list></app-asset-type-template-list>
-<!--[items] = "(assetTypeTemplates$ | async)"-->
-
-<div>
-  <h3>Templates</h3>
-  <ng-container *ngFor="let template of assetTypeTemplates$ | async; let i = index">
-    {{ template.name }}
-  </ng-container>
-</div>
+<app-asset-type-template-list [optionalItems$]="assetTypeTemplates$"></app-asset-type-template-list>

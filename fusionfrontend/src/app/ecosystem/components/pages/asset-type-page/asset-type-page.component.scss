@@ -13,7 +13,37 @@
  * under the License.
  */
 
+@import 'abstract/variables';
+@import 'base/typography';
+
 .wrapper {
   margin: 0 80px;
 }
 
+.asset-type {
+  display: flex;
+  height: 150px;
+  width: 100%;
+  margin: 4.44% 0;
+  background: $grey-background;
+  padding: 0.57% 7.71%;
+
+  .asset-type-info  {
+
+    h3 {
+      font-size: $big-font-size;
+      font-weight: bolder;
+
+    }
+
+    .description {
+      margin: 20px 0;
+
+      p {
+        color: $basic-grey;
+        font-size: $regular-font-size;
+        margin: 2px;
+      }
+    }
+  }
+}

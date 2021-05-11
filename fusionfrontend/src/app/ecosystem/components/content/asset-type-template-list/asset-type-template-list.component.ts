@@ -13,12 +13,14 @@
  * under the License.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
 import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
 import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
+import {Observable} from "rxjs";
+import {AssetTypeTemplate} from "../../../../store/asset-type-template/asset-type-template.model";
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -26,6 +28,9 @@ import { AssetTypeTemplateService } from '../../../../store/asset-type-template/
   styleUrls: ['./asset-type-template-list.component.scss']
 })
 export class AssetTypeTemplateListComponent extends BaseListComponent implements OnInit, OnDestroy {
+
+  @Input()
+  optionalItems$: Observable<AssetTypeTemplate[]>;
 
   titleMapping:
     { [k: string]: string } = { '=0': 'No asset type templates.', '=1': '# Asset type template', other: '# Asset type templates' };
@@ -47,6 +52,10 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
 
   ngOnInit() {
     super.ngOnInit();
+
+    if (this.optionalItems$ != null) {
+       this.items$ = this.optionalItems$;
+    }
   }
 
   ngOnDestroy() {

@@ -70,6 +70,8 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 import {CreateButtonComponent} from "../components/ui/create-button/create-button.component";
+import {TableModule} from "primeng/table";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   declarations: [
@@ -115,15 +117,17 @@ import {CreateButtonComponent} from "../components/ui/create-button/create-butto
     AssetTypeEditComponent,
     CreateButtonComponent,
   ],
-    imports: [
-        CommonModule,
-        EcosystemRoutingModule,
-        ClarityModule,
-        FontAwesomeModule,
-        FormsModule,
-        Ng2CompleterModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    CommonModule,
+    EcosystemRoutingModule,
+    ClarityModule,
+    FontAwesomeModule,
+    FormsModule,
+    Ng2CompleterModule,
+    ReactiveFormsModule,
+    DialogModule,
+    TableModule,
+  ],
   exports: [
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent
