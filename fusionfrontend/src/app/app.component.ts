@@ -21,6 +21,7 @@ import { akitaDevtools } from '@datorama/akita';
 import { enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
+import {EcoSystemManagerResolver} from "./ecosystem/services/ecosystem-resolver.service";
 
 @Component({
   selector: 'app-root',
@@ -30,13 +31,16 @@ import { FactoryResolver } from './factory/services/factory-resolver.service';
 export class AppComponent implements OnInit {
   loggedUser$: Observable<User>;
   factorySubTitle$: Observable<string>;
+  ecoSystemManagerSubTitle$: Observable<string>;
 
-  constructor(private factoryResolver: FactoryResolver,
+  constructor(private ecoSystemManagerResolver: EcoSystemManagerResolver,
+              private factoryResolver: FactoryResolver,
               private userQuery: UserQuery,
               private ngZone: NgZone) { }
 
   ngOnInit() {
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
+    this.ecoSystemManagerSubTitle$ = this.ecoSystemManagerResolver.ecoSystemManagerSubTitle$;
     this.loggedUser$ = this.userQuery.selectActive();
     if (environment.production) {
       enableAkitaProdMode();

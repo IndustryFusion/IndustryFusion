@@ -51,6 +51,7 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
   }
 
   showEditDialog() {
+      this.assetTypeService.setActive(this.item.id);
       const ref = this.dialogService.open(AssetTypeEditComponent, {
         data: {
           assetTypeForm: this.assetTypeForm
@@ -75,6 +76,7 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
       this.assetTypeService.editItem(item.id, item).subscribe();
       this.updateUI(item);
     }
+    this.assetTypeService.setActive(this.item.id);
   }
 
   updateUI(assetType: AssetType) {

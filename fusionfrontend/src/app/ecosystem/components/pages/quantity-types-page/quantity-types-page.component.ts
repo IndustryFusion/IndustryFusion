@@ -14,6 +14,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import {EcoSystemManagerResolver} from "../../../services/ecosystem-resolver.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-quantity-types-page',
@@ -22,9 +24,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuantityTypesPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ecoSystemManagerResolver: EcoSystemManagerResolver, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.ecoSystemManagerResolver.resolve(this.activatedRoute);
   }
 
 }

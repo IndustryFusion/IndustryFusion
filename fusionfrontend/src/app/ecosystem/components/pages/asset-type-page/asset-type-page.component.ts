@@ -6,6 +6,8 @@ import {AssetTypeQuery} from "../../../../store/asset-type/asset-type.query";
 import {ActivatedRoute} from "@angular/router";
 import {AssetTypeTemplate} from "../../../../store/asset-type-template/asset-type-template.model";
 import {AssetTypesComposedQuery} from "../../../../store/composed/asset-types-composed.query";
+import {EcoSystemManagerResolver} from "../../../services/ecosystem-resolver.service";
+import {AssetTypeService} from "../../../../store/asset-type/asset-type.service";
 
 @Component({
   selector: 'app-asset-type-details-page',
@@ -21,12 +23,15 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
 
   constructor(private assetTypeQuery: AssetTypeQuery,
+              private assetTypeService: AssetTypeService,
               private activatedRoute: ActivatedRoute,
-              private assetTypesComposedQuery: AssetTypesComposedQuery) {  }
+              private assetTypesComposedQuery: AssetTypesComposedQuery,
+              private ecoSystemManagerResolver: EcoSystemManagerResolver) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.assetTypeQuery.selectLoading();
     this.resolve(this.activatedRoute);
+    this.ecoSystemManagerResolver.resolve(this.activatedRoute);
     this.assetTypeTemplates$ = this.assetTypesComposedQuery.selectTemplatesOfAssetType(this.assetTypeId);
   }
 
@@ -34,15 +39,13 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
     this.assetTypeQuery.resetError();
   }
 
-  // TODO: make resolver with setActive (not existing?!?)  or  using something like factory resolver?
   resolve(activatedRoute: ActivatedRoute): void {
     const assetTypeId = activatedRoute.snapshot.paramMap.get('assettypeId');
     console.log("assetTypeId", assetTypeId);
     if (assetTypeId != null) {
       this.assetType$ = this.assetTypeQuery.selectAssetType(assetTypeId);
-      //this.assetType$.subscribe(assetType => this.assetType = assetType);
       this.assetTypeId = assetTypeId;
-      //console.log("assetType", this.assetType);
+      this.assetTypeService.setActive(assetTypeId);
     }
   }
 }

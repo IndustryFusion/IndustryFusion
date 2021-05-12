@@ -48,6 +48,10 @@ const routes: Routes = [
     resolve: {
       templates: AssetTypeTemplatesResolver,
     },
+    data: {
+      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
     children: [{
       path: '',
       component: AssetTypeTemplateListComponent
@@ -112,6 +116,10 @@ const routes: Routes = [
       metrics: MetricsResolver,
       units: UnitsResolver,
     },
+    data: {
+      pageTypes: [EcosystemManagerPageType.METRIC_ATTRIBUTE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
     children: [{
       path: '',
       component: MetricListComponent,
@@ -125,6 +133,10 @@ const routes: Routes = [
       quantity: QuantityTypesResolver,
       units: UnitsResolver,
     },
+    data: {
+      pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
     children: [{
       path: '',
       component: QuantityTypeListComponent,
@@ -137,6 +149,10 @@ const routes: Routes = [
     resolve: {
       quantity: QuantityTypesResolver,
       units: UnitsResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.UNIT_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
     },
     children: [{
       path: '',

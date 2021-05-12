@@ -27,7 +27,7 @@ under the License.
       </li>
     </ul>
     <div class="page-header">
-      <app-ecosystem-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);"></app-ecosystem-page-title>
+      <app-ecosystem-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);" [ecoSystemManagerSubTitle]="ecoSystemManagerSubTitle"></app-ecosystem-page-title>
       <app-factory-page-title *ngIf="isManager(ManagerType.FACTORY_MANAGER);" [factorySubTitle]="factorySubTitle"></app-factory-page-title>
       <app-fleet-page-title *ngIf="isManager(ManagerType.FLEET_MANAGER);"></app-fleet-page-title>
       <app-dashboard-page-title *ngIf="isDashboards();"></app-dashboard-page-title>
