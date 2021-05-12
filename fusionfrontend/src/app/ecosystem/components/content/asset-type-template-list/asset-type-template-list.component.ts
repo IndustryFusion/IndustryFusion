@@ -58,6 +58,14 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
     }
   }
 
+  onCreate() {
+    if(this.route.snapshot.url.find(x => x.path === 'assettypes') != null) {
+      this.router.navigate(['../../assettypetemplate', 'create'], { relativeTo: this.route });
+    } else {
+      this.createItem();
+    }
+  }
+
   ngOnDestroy() {
     this.assetTypeTemplateQuery.resetError();
   }
