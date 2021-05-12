@@ -1,3 +1,5 @@
+@import 'base/typography';
+@import "abstract/variables";
 
 .if-button {
   padding: 17px 78px 16px;
@@ -7,7 +9,7 @@
   font-size: $bigger-font-size;
   line-height: $big-line-height;
   letter-spacing: 0;
-  color: $basic-grey;
+  color: $basic-black;
 
   text-transform: uppercase;
 
@@ -35,7 +37,7 @@
   }
 
   &.button-modal {
-    padding: 0px;
+    padding: 0;
     margin-right: 10px;
     width: 120px;
     height: 40px;

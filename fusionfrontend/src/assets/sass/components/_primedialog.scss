@@ -1,3 +1,6 @@
+@import 'base/typography';
+@import "abstract/variables";
+
 .p-dialog .p-dialog-titlebar {
     background: white !important;
     color: black !important;
@@ -10,17 +13,44 @@
     color: black !important;
   }
 
+.p-dialog .p-dialog-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: $light-grey !important;
+  opacity: 1;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 8.1%;
+  padding-right: 3.9%;
+  border-bottom: none;
+
+  .p-dialog-title {
+    padding-top: 5.9%;
+    font-size: $big-font-size;
+    line-height: $big-line-height;
+    letter-spacing: 0;
+    color: $highlighted;
+    text-align: left;
+    font-weight: bold !important;
+    opacity: 1;
+  }
+}
 
 .p-dialog .p-dialog-content {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-top-color: white !important;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-top-color: $basic-white !important;
+  background: $light-grey !important;
+  opacity: 1;
+  padding-top: 4.3%;
+  padding-left: 8.1%;
+  padding-right: 8.1%;
 }
 
 .p-dialog {
-    width: 275px;
+    width: 51%;
     position: relative;
-    right: 670px;
-    bottom: 70px;
+    box-shadow: $dark-box-shadow;
+    border-radius: 10px;
 }
 
