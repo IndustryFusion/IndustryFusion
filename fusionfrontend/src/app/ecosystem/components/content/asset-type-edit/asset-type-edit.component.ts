@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AssetType} from "../../../../store/asset-type/asset-type.model";
 import {FormGroup} from "@angular/forms";
+import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
   selector: 'app-asset-type-edit',
@@ -9,50 +10,33 @@ import {FormGroup} from "@angular/forms";
 })
 export class AssetTypeEditComponent implements OnInit {
 
-  @Input()
-  assetTypeForm: FormGroup;
+  public assetTypeForm: FormGroup;
+  public descriptionLength: number = 0;
 
-  @Input()
-  modalsActive;
-
-  @Output() dismissModalSignal = new EventEmitter<boolean>();
-  @Output() confirmModalSignal = new EventEmitter<AssetType>();
-
-  constructor() { }
+  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
 
   ngOnInit() {
+    this.assetTypeForm = this.config.data.assetTypeForm;
+    this.descriptionLength = this.assetTypeForm.value.description.length;
   }
 
-  dismissModal()
-  {
-    this.modalsActive = false;
-    this.dismissModalSignal.emit(true);
+  onCancel() {
+    this.ref.close();
   }
 
-  confirmModal() {
-    //if (this.assetTypeForm.controls) TODO: Max Character Validation
-
+  onSave() {
+    // TODO: Input validation
     const assetType = new AssetType();
-    assetType.id = this.assetTypeForm.get("id").value;
-    assetType.name = this.assetTypeForm.get("name").value;
-    assetType.label = this.assetTypeForm.get("label").value;
-    assetType.description = this.assetTypeForm.get("description").value;
-    this.confirmModalSignal.emit(assetType);
+    assetType.id = this.assetTypeForm.get("id")?.value;
+    assetType.name = this.assetTypeForm.get("name")?.value;
+    assetType.label = this.assetTypeForm.get("label")?.value;
+    assetType.description = this.assetTypeForm.get("description")?.value;
+    this.ref.close(assetType);
   }
 
- /* clickedFinish(event: boolean) {
-    if (event) {
-      if (this.assetDetailsForm.controls[this.roomControlValidation].valid) {
-        this.closedRoomAssignmentModalEvent.emit([event, this.selectedRoom]);
-      }
-    } else {
-      this.closedRoomAssignmentModalEvent.emit([event, null]);
+  onChange(value: string) {
+    if (value) {
+      this.descriptionLength = value.length;
     }
   }
-
-  closeModal(event: boolean) {
-    if (event) {
-      this.stoppedAssetAssignment.emit(event)
-    }
-  }*/
 }

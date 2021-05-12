@@ -13,45 +13,27 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div *ngIf="modalsActive">
-  <div class="backdrop"></div>
-  <div class="create-item">
-    <button class="button-close" (click)="dismissModal()">
-      <clr-icon size="19" shape="times"></clr-icon>
-    </button>
-    <div class="create-item-title">Edit Asset Type ({{ assetTypeForm.get('name').value}})</div>
+<div class="edit-asset-type">
+  <form [formGroup]="assetTypeForm">
+    <div class="input-div">
+      <label class="if-label">Asset type name</label>
+      <input type="text" pInputText formControlName="name" placeholder="Name" class="edit-asset-type-inputs" minlength="1" required />
+    </div>
+    <div class="input-div">
+      <label class="if-label">Asset type label</label>
+      <input type="text" pInputText formControlName="label" placeholder="Label" class="edit-asset-type-inputs" minlength="1" required />
+    </div>
+    <div class="input-div">
+      <label class="if-label">Description</label>
+      <textarea pInputTextarea class="edit-asset-type-inputs"  name="description" formControlName="description"
+                (input)="onChange(description.value)" #description
+                maxlength="300"></textarea>
+      <label class="textarea-character-count if-label">{{ descriptionLength }}/300</label>
+    </div>
 
-    <form clrForm clrLayout="vertical" [formGroup]="assetTypeForm">
-      <clr-input-container>
-        <label>Asset type name</label>
-        <input clrInput class="create-item-inputs" name="name" formControlName="name" />
-      </clr-input-container>
-      <clr-input-container>
-        <label>Asset type label</label>
-        <input clrInput class="create-item-inputs" name="label" formControlName="label" />
-      </clr-input-container>
-      <clr-textarea-container>
-        <label>Description</label>
-        <textarea clrTextarea class="create-item-inputs"  name="description" formControlName="description"></textarea>
-      </clr-textarea-container>
-     <!--   <label for="vertical-textarea-basic" class="clr-control-label">Description</label>
-        <div class="clr-control-container">
-          <div class="clr-textarea-wrapper">
-                  <textarea
-                    id="vertical-textarea-basic"
-                    placeholder="Typing description"
-                    class="clr-textarea label-input"
-                    formControlName="description"
-                    name="label">
-                  </textarea>
-            <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-          </div>
-          <span class="clr-subtext">Maximal 300 characters</span>
-        </div>-->
-      <div class="create-item-footer">
-        <button class="button-cancel" type="submit" (click)="dismissModal()">Cancel</button>
-        <button type="button" class="button-confirm" (click)="confirmModal()">Save</button>
-      </div>
-    </form>
-  </div>
+    <div class="edit-asset-type-footer">
+      <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">Save</button>
+    </div>
+  </form>
 </div>

@@ -72,6 +72,8 @@ import { AssetTypeEditComponent } from './components/content/asset-type-edit/ass
 import {CreateButtonComponent} from "../components/ui/create-button/create-button.component";
 import {TableModule} from "primeng/table";
 import {DialogModule} from "primeng/dialog";
+import {InputTextModule} from "primeng/inputtext";
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -127,6 +129,8 @@ import {DialogModule} from "primeng/dialog";
     ReactiveFormsModule,
     DialogModule,
     TableModule,
+    InputTextModule,
+    InputTextareaModule
   ],
   exports: [
     EcosystemSubHeaderComponent,
