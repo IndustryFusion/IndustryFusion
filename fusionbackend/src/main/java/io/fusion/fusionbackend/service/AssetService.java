@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -253,7 +254,8 @@ public class AssetService {
     }
 
     public FieldInstance generateRandomMaintenanceValue(FieldInstance field) {
-        field.setValue(Integer.toString((int)(1500 * Math.random())));
+        final Random random = new Random();
+        field.setValue(Integer.toString(random.nextInt(1500)));
         return field;
     }
 

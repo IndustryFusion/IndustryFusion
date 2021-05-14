@@ -16,26 +16,13 @@
 package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetTypeDetailsDto;
-import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetType;
-import io.fusion.fusionbackend.model.AssetTypeTemplate;
-import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class AssetTypeDetailsMapper {
 
-    private final AssetTypeTemplateRepository assetTypeTemplateRepository;
-
-    public AssetTypeDetailsMapper(AssetTypeTemplateRepository assetTypeTemplateRepository) {
-        this.assetTypeTemplateRepository = assetTypeTemplateRepository;
+    public AssetTypeDetailsMapper() {
     }
 
     private AssetTypeDetailsDto toDtoShallow(final AssetType entity,
