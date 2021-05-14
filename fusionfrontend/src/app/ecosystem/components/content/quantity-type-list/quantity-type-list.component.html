@@ -20,21 +20,21 @@ under the License.
     </span>
   </clr-alert-item>
 </clr-alert>
+
 <app-quantity-type-create *ngIf="shouldShowCreateItem" (dismissModalSignal)="onDismissModal()"
   (confirmModalSignal)="onConfirmModal($event)"></app-quantity-type-create>
+
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
   <div class="title">{{ (items$ | async).length | i18nPlural: titleMapping }}</div>
   <div>
-    <button class="button-create" (click)="createItemModal()">
-      <clr-icon shape="plus"></clr-icon> Create Quantity
-    </button>
+    <app-create-button [text]="'Create Quantity'" (createItem)="showCreateDialog()"></app-create-button>
   </div>
 </div>
 <div>
   <div class="list-container">
     <div class="list-edit-bar" *ngIf="selected.size > 0">
       <div class="list-edit-bar-item" [style.width.%]="5">
-        <clr-icon shape="check-circle" size="20"></clr-icon>
+        <clr-icon shape="check-circle"></clr-icon>
       </div>
       <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
       <div class="list-edit-bar-item" [style.width.%]="50">

@@ -13,35 +13,38 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="backdrop"></div>
-<div class="create-item">
-  <button class="button-close" (click)="dismissModal()">
-    <clr-icon size="19" shape="times"></clr-icon>
-  </button>
-  <div class="create-item-title">Create new Quantity Type</div>
-  <div class="create-item-subtitle">Create new Quantity Type</div>
-  <form clrForm clrLayout="vertical">
-    <clr-input-container>
-      <label>Quantity Type name</label>
-      <input clrInput class="create-item-inputs" name="name" [(ngModel)]="name" />
-    </clr-input-container>
-    <clr-input-container>
-      <label>Quantity Type label</label>
-      <input clrInput class="create-item-inputs" name="label" [(ngModel)]="label" />
-    </clr-input-container>
-    <clr-textarea-container>
-      <label>Description</label>
-      <textarea clrTextarea class="create-item-inputs" [(ngModel)]="description" name="description"></textarea>
-    </clr-textarea-container>
+<div class="create-quantity-type">
+  <form>
+    <div class="input-div">
+      <label class="if-label">Quantity Type name</label>
+      <input type="text" pInputText class="create-quantity-type-inputs" formControlName="name" />
+    </div>
+    <div class="input-div">
+      <label class="if-label">Quantity Type label</label>
+      <input type="text" pInputText class="create-quantity-type-inputs" formControlName="label" />
+    </div>
+    <div class="input-div">
+      <label class="if-label">Description</label>
+      <textarea pInputTextarea class="create-quantity-type-inputs" formControlName="description"></textarea>
+      <label class="textarea-character-count if-label">{{ quantityTypeForm.get('description').value?.length }}/255</label>
+    </div>
+
+    <div class="input-div">
+      <label class="if-label">Base unit</label>
+      <p-dropdown [options]="(units$ | async)" formControlName="baseUnitId" optionLabel="name" optionValue="code" class="create-quantity-type-inputs">
+      </p-dropdown>
+    </div>
+    <!--
     <clr-select-container>
       <label>Base unit</label>
       <select clrSelect class="create-item-inputs" name="baseUnitId" [(ngModel)]="baseUnitId">
         <option *ngFor="let unit of (units$ | async)" [ngValue]="unit.id">{{ unit.name }}</option>
       </select>
     </clr-select-container>
-    <div class="create-item-footer">
-      <button type="button" class="button-cancel" type="submit" (click)="dismissModal()">Cancel</button>
-      <button type="button" class="button-confirm" (click)="confirmModal()">Create</button>
+-->
+    <div class="create-quantity-type-footer">
+      <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">Save</button>
     </div>
   </form>
 </div>

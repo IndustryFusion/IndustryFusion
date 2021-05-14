@@ -13,13 +13,14 @@
  * under the License.
  */
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ID } from '@datorama/akita';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { Quantity } from '../../../../store/quantity/quantity.model';
 import { Unit } from 'src/app/store/unit/unit.model';
 import { Observable } from 'rxjs';
 import { UnitQuery } from 'src/app/store/unit/unit.query';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-quantity-type-create',
@@ -28,31 +29,35 @@ import { UnitQuery } from 'src/app/store/unit/unit.query';
 })
 export class QuantityTypeCreateComponent implements OnInit {
 
-  name: string;
-  description: string;
-  label: string;
-  baseUnitId: ID;
-
-  units$: Observable<Unit[]>;
+  public quantityTypeForm: FormGroup;
+  public units$: Observable<Unit[]>;
 
   @Output() dismissModalSignal = new EventEmitter<boolean>();
   @Output() confirmModalSignal = new EventEmitter<Quantity>();
 
-  constructor(private unitQuarey: UnitQuery) { }
+  constructor(private unitQuery: UnitQuery,
+              public ref: DynamicDialogRef,
+              public config: DynamicDialogConfig) { }
 
   ngOnInit() {
-    this.units$ = this.unitQuarey.selectAll();
+    this.quantityTypeForm = this.config.data.quantityTypeForm;
+    this.units$ = this.unitQuery.selectAll();
   }
 
-  dismissModal() { this.dismissModalSignal.emit(true); }
-
-  confirmModal() {
-    const quantityType = new Quantity();
-    quantityType.name = this.name;
-    quantityType.description = this.description;
-    quantityType.label = this.label;
-    quantityType.baseUnitId = this.baseUnitId;
-    this.confirmModalSignal.emit(quantityType);
+  onCancel() {
+    this.ref.close();
   }
 
+  onSave() {
+    if (this.quantityTypeForm.valid) {
+      const quantityType = new Quantity();
+      quantityType.name  = this.quantityTypeForm.get('name')?.value;
+      quantityType.label = this.quantityTypeForm.get('label')?.value;
+      quantityType.description = this.quantityTypeForm.get('description')?.value;
+      quantityType.baseUnitId = this.quantityTypeForm.get('baseUnitId')?.value;
+      this.ref.close(quantityType);
+    } else {
+      this.ref.close();
+    }
+  }
 }
