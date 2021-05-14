@@ -39,7 +39,6 @@ export class AssetTypeEditComponent implements OnInit {
   }
 
   onSave() {
-    // TODO: Input validation
     if (this.assetTypeForm.valid) {
       const assetType = new AssetType();
       assetType.id = this.assetTypeForm.get('id')?.value;

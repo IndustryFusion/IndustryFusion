@@ -67,9 +67,9 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
 
     this.assetTypeForm = formBuilder.group({
       id: [],
-      name: ["", requiredTextValidator],
-      label: ["", requiredTextValidator],
-      description: ["", Validators.maxLength(255)]
+      name: ['', requiredTextValidator],
+      label: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)]
     });
     this.assetTypeForm.patchValue(assetTypeToEdit);
   }
