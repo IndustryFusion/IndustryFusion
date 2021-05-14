@@ -13,15 +13,15 @@
  * under the License.
  */
 
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {ID} from '@datorama/akita';
-import {tap} from 'rxjs/operators';
-import {environment} from '../../../environments/environment';
-import {AssetTypeDetails} from "./asset-type-details.model";
-import {AssetTypeDetailsStore} from "./asset-type-details.store";
-import {RestService} from "../../services/rest.service";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ID } from '@datorama/akita';
+import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { AssetTypeDetails } from './asset-type-details.model';
+import { AssetTypeDetailsStore } from './asset-type-details.store';
+import { RestService } from '../../services/rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +41,11 @@ export class AssetTypeDetailsService implements RestService<AssetTypeDetails> {
       }));
   }
 
-  getItem (assetTypeDetailsId: ID): Observable<AssetTypeDetails> {
+  getItem(assetTypeDetailsId: ID): Observable<AssetTypeDetails> {
     const path = `assettypes/details/${assetTypeDetailsId}`;
-    return this.assetTypeDetailsStore.cachedById(assetTypeDetailsId, this.http.get<AssetTypeDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+    return this.assetTypeDetailsStore
+      .cachedById(assetTypeDetailsId,
+        this.http.get<AssetTypeDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assetTypeDetailsStore.upsertCached(entity);
       })));

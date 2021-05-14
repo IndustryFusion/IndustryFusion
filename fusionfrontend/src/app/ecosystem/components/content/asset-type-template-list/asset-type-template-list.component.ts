@@ -13,14 +13,14 @@
  * under the License.
  */
 
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
 import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
 import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
-import {Observable} from "rxjs";
-import {AssetTypeTemplate} from "../../../../store/asset-type-template/asset-type-template.model";
+import { Observable } from 'rxjs';
+import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -59,7 +59,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   }
 
   onCreate() {
-    if(this.route.snapshot.url.find(x => x.path === 'assettypes') != null) {
+    if (this.route.snapshot.url.find(x => x.path === 'assettypes') != null) {
       this.router.navigate(['../../assettypetemplate', 'create'], { relativeTo: this.route });
     } else {
       this.createItem();

@@ -34,11 +34,11 @@ import { UnitsResolver } from '../resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
 import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
-import {Role} from "../services/roles.model";
-import {EcosystemManagerPageType} from "./ecosystem.routing.model";
-import {AssetTypePageComponent} from "./components/pages/asset-type-page/asset-type-page.component";
-import {AssetTypeDetailsResolver} from "../resolvers/asset-type-details.resolver";
-import {AssetTypeEditComponent} from "./components/content/asset-type-edit/asset-type-edit.component";
+import { Role } from '../services/roles.model';
+import { EcosystemManagerPageType } from './ecosystem.routing.model';
+import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
+import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
+import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 
 const routes: Routes = [
   {

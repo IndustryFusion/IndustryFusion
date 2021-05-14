@@ -21,7 +21,7 @@ import { akitaDevtools } from '@datorama/akita';
 import { enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
-import {EcoSystemManagerResolver} from "./ecosystem/services/ecosystem-resolver.service";
+import { EcoSystemManagerResolver } from './ecosystem/services/ecosystem-resolver.service';
 
 @Component({
   selector: 'app-root',

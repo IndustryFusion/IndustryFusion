@@ -14,8 +14,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import {EcoSystemManagerResolver} from "../../../services/ecosystem-resolver.service";
-import {ActivatedRoute} from "@angular/router";
+import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-units-page',

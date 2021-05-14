@@ -13,10 +13,10 @@
  * under the License.
  */
 
-import {Injectable} from '@angular/core';
-import {ActiveState, EntityState, ID, StoreConfig} from '@datorama/akita';
-import {CachedStore} from '../cachedstore';
-import {AssetTypeDetails} from "./asset-type-details.model";
+import { Injectable } from '@angular/core';
+import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
+import { CachedStore } from '../cachedstore';
+import { AssetTypeDetails } from './asset-type-details.model';
 
 export interface AssetTypeDetailsState extends EntityState<AssetTypeDetails, ID>, ActiveState { }
 

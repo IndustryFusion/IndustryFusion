@@ -13,10 +13,10 @@
  * under the License.
  */
 
-import {Injectable} from "@angular/core";
-import {BaseQueryEntity} from "../basequery";
-import {AssetTypeDetailsState, AssetTypeDetailsStore} from "./asset-type-details.store";
-import {AssetTypeDetails} from "./asset-type-details.model";
+import { Injectable } from '@angular/core';
+import { BaseQueryEntity } from '../basequery';
+import { AssetTypeDetailsState, AssetTypeDetailsStore } from './asset-type-details.store';
+import { AssetTypeDetails } from './asset-type-details.model';
 
 @Injectable({ providedIn: 'root' })
 export class AssetTypeDetailsQuery extends BaseQueryEntity<AssetTypeDetailsState, AssetTypeDetails> {

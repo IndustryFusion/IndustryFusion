@@ -13,12 +13,12 @@
  * under the License.
  */
 
-import {Injectable} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {AssetTypeQuery} from "../../store/asset-type/asset-type.query";
-import {AssetType} from "../../store/asset-type/asset-type.model";
-import {EcosystemManagerPageType, RouteData} from "../ecosystem.routing.model";
+import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { AssetTypeQuery } from '../../store/asset-type/asset-type.query';
+import { AssetType } from '../../store/asset-type/asset-type.model';
+import { EcosystemManagerPageType, RouteData } from '../ecosystem.routing.model';
 
 @Injectable({
   providedIn: 'root'

@@ -17,9 +17,9 @@ import { Injectable } from '@angular/core';
 import { combineQueries, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {AssetTypeTemplateQuery} from "../asset-type-template/asset-type-template.query";
-import {AssetTypeTemplate} from "../asset-type-template/asset-type-template.model";
-import {AssetTypeQuery} from "../asset-type/asset-type.query";
+import { AssetTypeTemplateQuery } from '../asset-type-template/asset-type-template.query';
+import { AssetTypeTemplate } from '../asset-type-template/asset-type-template.model';
+import { AssetTypeQuery } from '../asset-type/asset-type.query';
 
 @Injectable({ providedIn: 'root' })
 export class AssetTypesComposedQuery {

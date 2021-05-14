@@ -13,15 +13,15 @@
  * under the License.
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BaseListItemComponent} from '../base/base-list-item/base-list-item.component';
-import {AssetTypeService} from '../../../../store/asset-type/asset-type.service';
-import {AssetTypeDetails} from "../../../../store/asset-type-details/asset-type-details.model";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {AssetType} from "../../../../store/asset-type/asset-type.model";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {AssetTypeEditComponent} from "../asset-type-edit/asset-type-edit.component";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
+import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AssetTypeEditComponent } from '../asset-type-edit/asset-type-edit.component';
 
 
 @Component({
@@ -80,7 +80,7 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
   }
 
   updateUI(assetType: AssetType) {
-    let assetTypeDetails: AssetTypeDetails = new AssetTypeDetails();
+    const assetTypeDetails: AssetTypeDetails = new AssetTypeDetails();
 
     assetTypeDetails.id = this.item.id;
     assetTypeDetails.name = assetType.name;

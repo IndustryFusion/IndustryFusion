@@ -13,11 +13,11 @@
  * under the License.
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BaseListComponent} from '../base/base-list/base-list.component';
-import {AssetTypeDetailsService} from "../../../../store/asset-type-details/asset-type-details.service";
-import {AssetTypeDetailsQuery} from "../../../../store/asset-type-details/asset-type-details.query";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BaseListComponent } from '../base/base-list/base-list.component';
+import { AssetTypeDetailsService } from '../../../../store/asset-type-details/asset-type-details.service';
+import { AssetTypeDetailsQuery } from '../../../../store/asset-type-details/asset-type-details.query';
 
 @Component({
   selector: 'app-asset-type-list',

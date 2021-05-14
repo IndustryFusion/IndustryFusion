@@ -13,11 +13,11 @@
  * under the License.
  */
 
-import {Injectable} from '@angular/core';
-import {Resolve} from '@angular/router';
-import {AssetTypeDetailsService} from "../store/asset-type-details/asset-type-details.service";
-import {Observable} from "rxjs";
-import {AssetTypeDetails} from "../store/asset-type-details/asset-type-details.model";
+import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
+import { AssetTypeDetailsService } from '../store/asset-type-details/asset-type-details.service';
+import { Observable } from 'rxjs';
+import { AssetTypeDetails } from '../store/asset-type-details/asset-type-details.model';
 
 @Injectable({ providedIn: 'root' })
 export class AssetTypeDetailsResolver implements Resolve<any> {

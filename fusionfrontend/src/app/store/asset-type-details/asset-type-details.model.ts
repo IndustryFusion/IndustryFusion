@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import {AssetType} from "../asset-type/asset-type.model";
+import { AssetType } from '../asset-type/asset-type.model';
 
 export class AssetTypeDetails extends AssetType {
   name: string;
