@@ -26,13 +26,12 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class AssetTypeEditComponent implements OnInit {
 
   public assetTypeForm: FormGroup;
-  public descriptionLength: number;
 
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
 
   ngOnInit() {
     this.assetTypeForm = this.config.data.assetTypeForm;
-    this.descriptionLength = this.assetTypeForm.value.description.length;
+    this.assetTypeForm.get('description').setValue(this.assetTypeForm.get('description').value);
   }
 
   onCancel() {
@@ -41,17 +40,15 @@ export class AssetTypeEditComponent implements OnInit {
 
   onSave() {
     // TODO: Input validation
-    const assetType = new AssetType();
-    assetType.id = this.assetTypeForm.get('id')?.value;
-    assetType.name = this.assetTypeForm.get('name')?.value;
-    assetType.label = this.assetTypeForm.get('label')?.value;
-    assetType.description = this.assetTypeForm.get('description')?.value;
-    this.ref.close(assetType);
-  }
-
-  onChange(value: string) {
-    if (value) {
-      this.descriptionLength = value.length;
+    if (this.assetTypeForm.valid) {
+      const assetType = new AssetType();
+      assetType.id = this.assetTypeForm.get('id')?.value;
+      assetType.name = this.assetTypeForm.get('name')?.value;
+      assetType.label = this.assetTypeForm.get('label')?.value;
+      assetType.description = this.assetTypeForm.get('description')?.value;
+      this.ref.close(assetType);
+    } else {
+      this.ref.close();
     }
   }
 }

@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeEditComponent } from '../asset-type-edit/asset-type-edit.component';
@@ -63,12 +63,15 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
   }
 
   createAssetTypeForm(formBuilder: FormBuilder, assetTypeToEdit: AssetTypeDetails) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
     this.assetTypeForm = formBuilder.group({
-      id: assetTypeToEdit ? new FormControl(assetTypeToEdit.id) : new FormControl(null),
-      name: assetTypeToEdit ? new FormControl(assetTypeToEdit.name) : new FormControl(null),
-      label: assetTypeToEdit ? new FormControl(assetTypeToEdit.label) : new FormControl(null),
-      description: assetTypeToEdit ? new FormControl(assetTypeToEdit.description) : new FormControl(null),
+      id: [],
+      name: ["", requiredTextValidator],
+      label: ["", requiredTextValidator],
+      description: ["", Validators.maxLength(255)]
     });
+    this.assetTypeForm.patchValue(assetTypeToEdit);
   }
 
   onCloseEditDialog(item: AssetType) {

@@ -17,23 +17,21 @@ under the License.
   <form [formGroup]="assetTypeForm">
     <div class="input-div">
       <label class="if-label">Asset type name</label>
-      <input type="text" pInputText formControlName="name" placeholder="Name" class="edit-asset-type-inputs" minlength="1" required />
+      <input type="text" pInputText formControlName="name" placeholder="Name" class="edit-asset-type-inputs" />
     </div>
     <div class="input-div">
       <label class="if-label">Asset type label</label>
-      <input type="text" pInputText formControlName="label" placeholder="Label" class="edit-asset-type-inputs" minlength="1" required />
+      <input type="text" pInputText formControlName="label" placeholder="Label" class="edit-asset-type-inputs" />
     </div>
     <div class="input-div">
       <label class="if-label">Description</label>
-      <textarea pInputTextarea class="edit-asset-type-inputs"  name="description" formControlName="description"
-                (input)="onChange(description.value)" #description
-                maxlength="300"></textarea>
-      <label class="textarea-character-count if-label">{{ descriptionLength }}/300</label>
+      <textarea pInputTextarea class="edit-asset-type-inputs" name="description" formControlName="description"></textarea>
+      <label class="textarea-character-count if-label">{{ assetTypeForm.get('description').value?.length }}/255</label>
     </div>
 
     <div class="edit-asset-type-footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">Save</button>
+      <button type="button" class="if-button button-confirm button-primary" (click)="onSave()" [disabled]="assetTypeForm.invalid">Save</button>
     </div>
   </form>
 </div>
