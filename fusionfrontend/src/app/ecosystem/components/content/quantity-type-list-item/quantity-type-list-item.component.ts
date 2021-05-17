@@ -17,8 +17,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
-import { QuantityService } from '../../../../store/quantity/quantity.service';
-import { Quantity } from '../../../../store/quantity/quantity.model';
+import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
+import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
+import { QuantityTypeCreateComponent } from '../quantity-type-create/quantity-type-create.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-quantity-type-list-item',
@@ -28,9 +31,16 @@ import { Quantity } from '../../../../store/quantity/quantity.model';
 export class QuantityTypeListItemComponent extends BaseListItemComponent implements OnInit {
 
   @Input()
-  item: Quantity;
+  item: QuantityType;
 
-  constructor(public route: ActivatedRoute, public router: Router, public quantityService: QuantityService) {
+  public ref: DynamicDialogRef;
+  public quantityTypeForm: FormGroup;
+
+  constructor(public route: ActivatedRoute,
+              public router: Router,
+              public quantityService: QuantityTypeService,
+              public dialogService: DialogService,
+              private formBuilder: FormBuilder) {
     super(route, router, quantityService);
   }
 

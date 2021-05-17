@@ -13,17 +13,22 @@
  * under the License.
  */
 
-import { ID } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { BaseQueryEntity } from '../basequery';
+import { QuantityType } from './quantity-type.model';
+import { QuantityTypeState, QuantityTypeStore } from './quantity-type.store';
 
-import { BaseEntity } from '../baseentity.model';
-import { Unit } from '../unit/unit.model';
+@Injectable({ providedIn: 'root' })
+export class QuantityTypeQuery extends BaseQueryEntity<QuantityTypeState, QuantityType> {
+  constructor(protected store: QuantityTypeStore) {
+    super(store);
+  }
 
-export class Quantity extends BaseEntity {
-  name: string;
-  description: string;
-  label: string;
-  unitIds: Set<number>;
-  units: Set<Unit>;
-  baseUnitId: ID;
-  baseUnit: Unit;
+  resetStore() {
+    this.store.reset();
+  }
+
+  resetError() {
+    this.store.setError(null);
+  }
 }

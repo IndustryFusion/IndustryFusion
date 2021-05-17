@@ -17,11 +17,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
-import { QuantityQuery } from '../../../../store/quantity/quantity.query';
-import { QuantityService } from '../../../../store/quantity/quantity.service';
+import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
+import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { QuantityTypeCreateComponent } from '../quantity-type-create/quantity-type-create.component';
-import { Quantity } from '../../../../store/quantity/quantity.model';
+import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -48,8 +48,8 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public quantityQuery: QuantityQuery,
-    public quantityService: QuantityService,
+    public quantityQuery: QuantityTypeQuery,
+    public quantityService: QuantityTypeService,
     public dialogService: DialogService,
     private formBuilder: FormBuilder) {
       super(route, router, quantityQuery, quantityService);
@@ -67,7 +67,7 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
     this.quantityQuery.resetError();
   }
 
-  createQuantityTypeForm(formBuilder: FormBuilder): void {
+  private createQuantityTypeForm(formBuilder: FormBuilder): void {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.quantityTypeForm = formBuilder.group({
       id: [],
@@ -86,10 +86,10 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
       header: `Create new Quantity Type`,
     });
 
-    ref.onClose.subscribe((quantityType: Quantity) => this.onCloseCreateDialog(quantityType));
+    ref.onClose.subscribe((quantityType: QuantityType) => this.onCreateQuantityType(quantityType));
   }
 
-  private onCloseCreateDialog(quantityType: Quantity) {
+  private onCreateQuantityType(quantityType: QuantityType) {
     if (quantityType) {
       this.quantityService.editItem(quantityType.id, quantityType).subscribe();
       /*this.updateUI(quantityType);*/

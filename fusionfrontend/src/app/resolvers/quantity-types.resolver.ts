@@ -19,14 +19,14 @@ import { Resolve } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
-import { Quantity } from '../store/quantity/quantity.model';
-import { QuantityService } from '../store/quantity/quantity.service';
+import { QuantityType } from '../store/quantity-type/quantity-type.model';
+import { QuantityTypeService } from '../store/quantity-type/quantity-type.service';
 
 @Injectable({ providedIn: 'root' })
-export class QuantityTypesResolver implements Resolve<Quantity[]> {
-  constructor(private quantityTypeService: QuantityService) { }
+export class QuantityTypesResolver implements Resolve<QuantityType[]> {
+  constructor(private quantityTypeService: QuantityTypeService) { }
 
-  resolve(): Observable<Quantity[]> {
+  resolve(): Observable<QuantityType[]> {
     return this.quantityTypeService.getItems();
   }
 }

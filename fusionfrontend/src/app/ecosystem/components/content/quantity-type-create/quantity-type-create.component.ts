@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-import { Quantity } from '../../../../store/quantity/quantity.model';
+import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { Unit } from 'src/app/store/unit/unit.model';
 import { Observable } from 'rxjs';
 import { UnitQuery } from 'src/app/store/unit/unit.query';
@@ -33,7 +33,7 @@ export class QuantityTypeCreateComponent implements OnInit {
   public units$: Observable<Unit[]>;
 
   @Output() dismissModalSignal = new EventEmitter<boolean>();
-  @Output() confirmModalSignal = new EventEmitter<Quantity>();
+  @Output() confirmModalSignal = new EventEmitter<QuantityType>();
 
   constructor(private unitQuery: UnitQuery,
               public ref: DynamicDialogRef,
@@ -50,7 +50,7 @@ export class QuantityTypeCreateComponent implements OnInit {
 
   onSave() {
     if (this.quantityTypeForm.valid) {
-      const quantityType = new Quantity();
+      const quantityType = new QuantityType();
       quantityType.name  = this.quantityTypeForm.get('name')?.value;
       quantityType.label = this.quantityTypeForm.get('label')?.value;
       quantityType.description = this.quantityTypeForm.get('description')?.value;

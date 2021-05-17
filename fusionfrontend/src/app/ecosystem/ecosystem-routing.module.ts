@@ -63,7 +63,7 @@ const routes: Routes = [
         assetTypes: AssetTypesResolver,
         metrics: MetricsResolver,
         units: UnitsResolver,
-        quantity: QuantityTypesResolver,
+        quantityTypes: QuantityTypesResolver,
       }
     },
     {
@@ -126,11 +126,11 @@ const routes: Routes = [
     }]
   },
   {
-    path: 'ecosystemmanager/quantity',
+    path: 'ecosystemmanager/quantitytypes',
     component: QuantityTypesPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      quantity: QuantityTypesResolver,
+      quantityTypes: QuantityTypesResolver,
       units: UnitsResolver,
     },
     data: {
@@ -147,7 +147,7 @@ const routes: Routes = [
     component: UnitsPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      quantity: QuantityTypesResolver,
+      quantityTypes: QuantityTypesResolver,
       units: UnitsResolver,
     },
     data: {
