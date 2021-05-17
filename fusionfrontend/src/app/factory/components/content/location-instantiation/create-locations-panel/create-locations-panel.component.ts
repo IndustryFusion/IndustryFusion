@@ -41,7 +41,6 @@ export class CreateLocationsPanelComponent implements OnInit {
   stopCreateLocation = new EventEmitter<boolean>();
 
   searchText: string;
-
   countries: SelectItem[];
   locationTypes: SelectItem[];
   selectedCountry: string;
@@ -57,11 +56,7 @@ export class CreateLocationsPanelComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ngOnChange() {
-
-  }
-
-  continueCreation(): void {
+  createLocation(): void {
     if (this.editMode) {
       this.updateLocationEvent.emit(true);
     } else {

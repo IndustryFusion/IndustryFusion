@@ -42,8 +42,7 @@ export class LocationInstantiationComponent implements OnInit {
   locationForm: FormGroup;
   formChange: Subscription;
 
-  location: Location;
-  initialLocation: Location = {
+  location: Location = {
     id: null,
     companyId: 0,
     roomIds: null,
@@ -60,7 +59,7 @@ export class LocationInstantiationComponent implements OnInit {
     type: null
   }
 
-  editMode: boolean = false;
+  editMode = false;
 
   constructor(private formBuilder: FormBuilder) {
   }
@@ -70,7 +69,7 @@ export class LocationInstantiationComponent implements OnInit {
       this.editMode = true;
       this.createFormGroupWithBuilderAndModel(this.formBuilder, this.locationToEdit);
     } else {
-      this.createFormGroupWithBuilderAndModel(this.formBuilder, this.initialLocation);
+      this.createFormGroupWithBuilderAndModel(this.formBuilder, this.location);
     }
   }
 

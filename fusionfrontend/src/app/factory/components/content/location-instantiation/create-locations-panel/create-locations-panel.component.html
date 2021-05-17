@@ -23,14 +23,14 @@ under the License.
         <ng-template #editFactoryHeading>Edit Factory site</ng-template>
       </h3>
 
-      <div class="p-grid input-div">
-        <div class="p-col-6 p-grid p-dir-col">
+      <div class="p-grid">
+        <div class="p-col-5 p-grid p-dir-col input-div">
           <label class="p-col">Factory name</label>
           <input type="text" pInputText formControlName="name" placeholder="Name" class="location-input p-col">
         </div>
-        <div class="p-col-4 p-grid p-dir-col">
+        <div class="p-col-4 p-grid p-dir-col input-div">
           <label class="p-col">Factory type</label>
-          <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type" class="p-col"></p-dropdown>
+          <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type" class="p-col factory-dropdown"></p-dropdown>
         </div>
       </div>
 
@@ -62,18 +62,17 @@ under the License.
           </div>
         </div>
 
-        <app-locations-map class="p-col-8 p-dir-col map-style"[location]="location"></app-locations-map>
+        <app-locations-map class="p-col-8 p-dir-col map-style"[height]=500 [location]="location"></app-locations-map>
 
       </div>
     </div>
   </div>
 
-
   <p-footer>
     <div class="footer-btns">
       <button type="button" class="if-button button-secondary button-modal footer-btn"
         (click)="cancel()">Cancel</button>
-    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="continueCreation()">
+    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="createLocation()">
       <div *ngIf="editMode then editFactoryButtonText else createFactoryButtonText"></div>
       <ng-template #createFactoryButtonText>Create</ng-template>
       <ng-template #editFactoryButtonText>Update</ng-template>

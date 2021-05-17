@@ -16,7 +16,7 @@ export class LocationsListItemComponent implements OnInit {
   @Output()
   updateLocationEvent = new EventEmitter<Location>();
 
-  modalsActive: boolean = false;
+  modalsActive = false;
   menuActions: MenuItem[];
   routerLink: string[];
 
