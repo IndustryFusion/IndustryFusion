@@ -13,28 +13,92 @@
  * under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
-import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AssetTypeEditComponent } from '../asset-type-edit/asset-type-edit.component';
+
 
 @Component({
   selector: 'app-asset-type-list-item',
   templateUrl: './asset-type-list-item.component.html',
-  styleUrls: ['./asset-type-list-item.component.scss']
+  styleUrls: ['./asset-type-list-item.component.scss'],
+  providers: [DialogService]
 })
-export class AssetTypeListItemComponent extends BaseListItemComponent implements OnInit {
+export class AssetTypeListItemComponent extends BaseListItemComponent implements OnInit, OnDestroy {
 
   @Input()
-  item: AssetType;
+  public item: AssetTypeDetails;
 
-  constructor(public route: ActivatedRoute, public router: Router, public assetTypeService: AssetTypeService) {
+  public assetTypeForm: FormGroup;
+  public ref: DynamicDialogRef;
+
+  constructor(public route: ActivatedRoute,
+              public router: Router,
+              public assetTypeService: AssetTypeService,
+              private formBuilder: FormBuilder,
+              public dialogService: DialogService) {
     super(route, router, assetTypeService);
   }
 
   ngOnInit() {
+    this.createAssetTypeForm(this.formBuilder, this.item);
   }
 
+  showEditDialog() {
+      this.assetTypeService.setActive(this.item.id);
+      const ref = this.dialogService.open(AssetTypeEditComponent, {
+        data: {
+          assetTypeForm: this.assetTypeForm
+        },
+        header: `Edit Asset type (${this.assetTypeForm.get('name').value})`,
+      });
+
+      ref.onClose.subscribe((assetType: AssetType) => this.onCloseEditDialog(assetType));
+  }
+
+  createAssetTypeForm(formBuilder: FormBuilder, assetTypeToEdit: AssetTypeDetails) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.assetTypeForm = formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      label: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)]
+    });
+    this.assetTypeForm.patchValue(assetTypeToEdit);
+  }
+
+  onCloseEditDialog(item: AssetType) {
+    if (item) {
+      this.assetTypeService.editItem(item.id, item).subscribe();
+      this.updateUI(item);
+    }
+    this.assetTypeService.setActive(this.item.id);
+  }
+
+  updateUI(assetType: AssetType) {
+    const assetTypeDetails: AssetTypeDetails = new AssetTypeDetails();
+
+    assetTypeDetails.id = this.item.id;
+    assetTypeDetails.name = assetType.name;
+    assetTypeDetails.label = assetType.label;
+    assetTypeDetails.description = assetType.description;
+    assetTypeDetails.templateCount = this.item.templateCount;
+    assetTypeDetails.assetSeriesCount = this.item.assetSeriesCount;
+    assetTypeDetails.assetCount = this.item.assetCount;
+
+    this.item = assetTypeDetails;
+  }
+
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
+  }
 }

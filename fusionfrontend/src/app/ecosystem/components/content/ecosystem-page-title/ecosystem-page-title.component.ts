@@ -13,9 +13,7 @@
  * under the License.
  */
 
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ecosystem-page-title',
@@ -24,35 +22,10 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class EcosystemPageTitleComponent implements OnInit {
 
-  subtitle: string;
+  @Input()
+  ecoSystemManagerSubTitle: string;
 
-  constructor(private router: Router, private location: Location) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.resolveSubTitle(this.location.path());
-    this.router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
-        this.resolveSubTitle(val.urlAfterRedirects);
-      }
-    });
-  }
-
-  resolveSubTitle(path: string) {
-    if (path.match('\/(assettypes$|assettypes\/+)')) {
-      this.subtitle = 'Asset Types';
-    }
-    if (path.match('\/(assettypetemplate$|assettypetemplate\/+)')) {
-      this.subtitle = 'Asset Type Templates';
-    }
-    if (path.match('\/(metrics$|metrics\/+)')) {
-      this.subtitle = 'Metrics & Attributes';
-    }
-    if (path.match('\/(quantity$|quantity\/+)')) {
-      this.subtitle = 'Quantity Types';
-    }
-    if (path.match('\/(units$|units\/+)')) {
-      this.subtitle = 'Units';
-    }
-  }
-
+  ngOnInit() { }
 }

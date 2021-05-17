@@ -25,7 +25,7 @@ export class StatusService {
 
   determineStatus(fields: Field[], asset: Asset): Status {
     if (fields.length <= 0) {
-      return ({ gotData: false, type: 'nofields', statusValue: 'none'})
+      return ({ gotData: false, type: 'nofields', statusValue: 'none'});
     }
     let gotAnyValues = false;
     fields.forEach( field => {
@@ -94,7 +94,7 @@ export class StatusService {
             } else {
               return 'mldBetriebOff';
             }
-          break;
+            break;
           default:
             return null;
         }

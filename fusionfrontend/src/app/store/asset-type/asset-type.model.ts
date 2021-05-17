@@ -12,7 +12,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { BaseEntity } from '../baseentity.model';
 
 export class AssetType extends BaseEntity {

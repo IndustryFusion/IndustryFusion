@@ -1,0 +1,13 @@
+@import 'base/typography';
+@import "abstract/variables";
+
+.if-label {
+  text-align: left;
+  //font: normal normal normal 16px/20px Muli;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+  letter-spacing: 0;
+  color: #666666;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}

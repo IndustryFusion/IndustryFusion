@@ -15,31 +15,39 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
+import io.fusion.fusionbackend.dto.AssetTypeDetailsDto;
 import io.fusion.fusionbackend.dto.AssetTypeDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeMapper;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
+import io.fusion.fusionbackend.service.AssetTypeDetailsService;
 import io.fusion.fusionbackend.service.AssetTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+
+import java.util.List;
 import java.util.Set;
 
 @RestController
 @IsEcosystemUser
 public class AssetTypeRestService {
     private final AssetTypeService assetTypeService;
+    private final AssetTypeDetailsService assetTypeDetailsService;
     private final AssetTypeMapper assetTypeMapper;
 
     @Autowired
-    public AssetTypeRestService(AssetTypeService assetTypeService, AssetTypeMapper assetTypeMapper) {
+    public AssetTypeRestService(AssetTypeService assetTypeService,
+                                AssetTypeDetailsService assetTypeDetailsService,
+                                AssetTypeMapper assetTypeMapper) {
         this.assetTypeService = assetTypeService;
+        this.assetTypeDetailsService = assetTypeDetailsService;
         this.assetTypeMapper = assetTypeMapper;
     }
 
@@ -54,6 +62,16 @@ public class AssetTypeRestService {
         return assetTypeMapper.toDto(
                 assetTypeService.getAssetType(assetTypeId),
                 embedChildren);
+    }
+
+    @GetMapping(path = "/assettypes/details")
+    public List<AssetTypeDetailsDto> getAssetTypesDetails() {
+        return assetTypeDetailsService.getAllAssetTypesDetails();
+    }
+
+    @GetMapping(path = "/assettypes/details/{assetTypeId}")
+    public AssetTypeDetailsDto getAssetTypeDetails(@PathVariable final Long assetTypeId) {
+        return assetTypeDetailsService.getAssetTypeDetails(assetTypeId);
     }
 
     @PostMapping(path = "/assettypes")

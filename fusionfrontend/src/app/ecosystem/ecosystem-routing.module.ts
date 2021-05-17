@@ -34,6 +34,11 @@ import { UnitsResolver } from '../resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
 import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
+import { Role } from '../services/roles.model';
+import { EcosystemManagerPageType } from './ecosystem.routing.model';
+import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
+import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
+import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 
 const routes: Routes = [
   {
@@ -42,6 +47,10 @@ const routes: Routes = [
     canActivate: [MainAuthGuardGuard],
     resolve: {
       templates: AssetTypeTemplatesResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
     },
     children: [{
       path: '',
@@ -67,11 +76,36 @@ const routes: Routes = [
     component: AssetTypesPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      assetTypes: AssetTypesResolver,
+      assetTypes: AssetTypeDetailsResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
     },
     children: [{
       path: '',
       component: AssetTypeListComponent,
+    },
+    {
+      path: ':id/edit',
+      component: AssetTypeEditComponent
+    }]
+  },
+  {
+    path: 'ecosystemmanager/assettypes/:assettypeId',
+    component: AssetTypePageComponent,
+    canActivate: [MainAuthGuardGuard],
+    resolve: {
+      assetTypes: AssetTypesResolver,
+      templates: AssetTypeTemplatesResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_DETAIL],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
+    children: [{
+      path: '',
+      component: AssetTypeTemplateListComponent, // TODO
     }]
   },
   {
@@ -81,6 +115,10 @@ const routes: Routes = [
     resolve: {
       metrics: MetricsResolver,
       units: UnitsResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.METRIC_ATTRIBUTE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
     },
     children: [{
       path: '',
@@ -95,6 +133,10 @@ const routes: Routes = [
       quantity: QuantityTypesResolver,
       units: UnitsResolver,
     },
+    data: {
+      pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
     children: [{
       path: '',
       component: QuantityTypeListComponent,
@@ -107,6 +149,10 @@ const routes: Routes = [
     resolve: {
       quantity: QuantityTypesResolver,
       units: UnitsResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.UNIT_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER]
     },
     children: [{
       path: '',

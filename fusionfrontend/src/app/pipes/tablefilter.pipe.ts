@@ -31,7 +31,7 @@ export class ArrayFilterPipe implements PipeTransform {
               const index = fields.findIndex(findField => findField === element[attribute]);
               return (0 <= index);
             }
-            )
+            );
           }
         }
       }

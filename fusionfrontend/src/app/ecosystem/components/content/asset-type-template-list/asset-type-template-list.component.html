@@ -22,10 +22,8 @@ under the License.
     </clr-alert-item>
   </clr-alert>
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="title">{{ (items$ | async).length | i18nPlural: titleMapping }}</div>
-    <button class="button-create" (click)="createItem()">
-      <clr-icon shape="plus"></clr-icon> Create Asset type template
-    </button>
+    <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
+    <app-create-button [text]="'Create Asset type template'" (createItem)="onCreate()"></app-create-button>
   </div>
   <div>
     <div class="list-container">

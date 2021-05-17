@@ -1,0 +1,29 @@
+@import 'base/typography';
+@import "abstract/variables";
+
+.p-dialog .p-inputtext {
+  background: $basic-white 0 0% no-repeat padding-box;
+  border: 2px solid $highlighted;
+  border-radius: 10px;
+  opacity: 1;
+
+  font-weight: normal;
+  letter-spacing: 0;
+  color: $highlighted;
+  text-align: left;
+  font-size: $bigger-font-size;
+}
+
+.p-dialog .p-inputtextarea {
+  background: $basic-white 0 0% no-repeat padding-box;
+  border: none !important;
+  border-radius: 10px;
+  min-height: 80px;
+  opacity: 1;
+
+  font-weight: normal;
+  letter-spacing: 0;
+  color: $highlighted;
+  text-align: left;
+  font-size: $bigger-font-size;
+}

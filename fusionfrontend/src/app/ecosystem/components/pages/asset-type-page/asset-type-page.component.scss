@@ -1,0 +1,63 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'abstract/variables';
+@import 'base/typography';
+
+.wrapper {
+  margin: 0 80px;
+}
+
+.asset-type {
+  display: flex;
+  height: max-content;
+  /*height: 150px;*/
+  width: 100%;
+  margin: 4.44% 0;
+  background: $grey-background;
+  padding: 0.57% 7.71%;
+
+  .asset-type-info  {
+
+    h3 {
+      font-size: $big-font-size;
+      font-weight: bolder;
+
+    }
+
+    .asset-type-label {
+      margin: 20px 0;
+
+      p {
+        color: $basic-grey;
+        font-size: $regular-font-size;
+        margin: 2px;
+      }
+    }
+
+    .asset-type-description {
+      margin: 10px 0;
+
+      textarea {
+        color: $basic-grey;
+        font-size: $regular-font-size;
+        border: none;
+        background: none;
+        resize: none;
+        height: 80px;
+      }
+    }
+  }
+}

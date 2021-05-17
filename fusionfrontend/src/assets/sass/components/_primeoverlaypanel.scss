@@ -1,11 +1,11 @@
 
 .assetSearchPanel  {
-    .ui-overlaypanel {
+    .p-overlaypanel {
         border-radius: 8px;
         width: 300px;
     }
 
-    .ui-overlaypanel .ui-overlaypanel-close {
+    .p-overlaypanel .p-overlaypanel-close {
         background-color: white;
         color: black;
         position: absolute;
@@ -16,7 +16,7 @@
 }
 
 .dashboardFilterPanel {
-    .ui-overlaypanel {
+    .p-overlaypanel {
         border-radius: 8px;
         width: 500px;
     }

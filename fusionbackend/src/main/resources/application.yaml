@@ -25,9 +25,9 @@ spring:
     password: postgres
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     open-in-view: false
     database: postgresql
 
@@ -40,7 +40,7 @@ keycloak:
   principal-attribute: preferred_username
   verify-token-audience: true
   credentials:
-    secret: 7c4c8779-41a0-4a50-8753-78da442c151d
+    secret: <secret must be set>
   bearer-only: true
   use-resource-role-mappings: true
 

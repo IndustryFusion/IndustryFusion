@@ -72,7 +72,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
           return fieldCopy;
         });
       })
-    )
+    );
 
     this.status$ = this.mergedFields$.pipe(
       map((fields) => {

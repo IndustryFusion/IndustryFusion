@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   factorySubTitle: string;
 
   @Input()
-  dashboardSubTitle: string;
+  ecoSystemManagerSubTitle: string;
 
   @Input()
   user: User;
@@ -63,6 +63,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isManager(manager: ManagerType) {
     return this.route && this.route.match(`\/${manager}\/`);
+  }
+
+  isDashboards() {
+    return this.route && this.route.match(`\/${'dashboards'}\/`);
   }
 
   isHome() {

@@ -84,5 +84,4 @@ export class AssetTypeService implements RestService<AssetType> {
   setActive(assetTypeId: ID) {
     this.assetTypeStore.setActive(assetTypeId);
   }
-
 }

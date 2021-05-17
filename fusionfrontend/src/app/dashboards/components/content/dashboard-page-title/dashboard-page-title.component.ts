@@ -13,7 +13,9 @@
  * under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-page-title',
@@ -21,12 +23,27 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./dashboard-page-title.component.scss']
 })
 export class DashboardPageTitleComponent implements OnInit {
-  @Input()
+
   dashboardSubTitle: string;
 
-  constructor() { }
+  constructor(private router: Router, private location: Location) { }
 
   ngOnInit(): void {
+    this.resolveSubTitle(this.location.path());
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        this.resolveSubTitle(val.urlAfterRedirects);
+      }
+    });
+  }
+
+  resolveSubTitle(path: string) {
+    if (path.match('^\/dashboards\/companies\/[0-9]\/maintenance+$')) {
+      this.dashboardSubTitle = 'Maintenance';
+    }
+    else if (path.match('^\/dashboards\/companies\/[0-9]\/equipment+$')) {
+      this.dashboardSubTitle = 'Equipment';
+ }
   }
 
 }

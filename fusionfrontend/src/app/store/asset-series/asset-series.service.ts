@@ -62,7 +62,7 @@ export class AssetSeriesService {
     return this.http.post<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, null, this.httpOptions)
       .pipe(tap(entity => {
           this.assetSeriesStore.upsert(entity.id, entity);
-          this.assetSeriesDetailsStore.invalidateCacheParentId('company-' + entity.companyId)
+          this.assetSeriesDetailsStore.invalidateCacheParentId('company-' + entity.companyId);
         }));
   }
 
@@ -85,7 +85,7 @@ export class AssetSeriesService {
       .pipe(
         tap(entity => {
           this.assetSeriesStore.upsert(assetSeriesId, entity);
-          this.assetSeriesDetailsStore.invalidateCacheParentId('company-' + entity.companyId)
+          this.assetSeriesDetailsStore.invalidateCacheParentId('company-' + entity.companyId);
         }));
   }
 

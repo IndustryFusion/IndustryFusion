@@ -15,7 +15,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -67,6 +67,13 @@ import { AssetTypeTemplateMetricRowComponent } from './components/content/asset-
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content/asset-type-template-create-step-sumary/asset-type-template-create-step-sumary.component';
 import { Ng2CompleterModule } from 'ng2-completer';
+import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
+import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
+import { CreateButtonComponent } from '../components/ui/create-button/create-button.component';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -107,7 +114,10 @@ import { Ng2CompleterModule } from 'ng2-completer';
     AssetTypeTemplateCreateStepThreeComponent,
     AssetTypeTemplateCreateStepFourComponent,
     AssetTypeTemplateMetricRowComponent,
-    AssetTypeTemplateCreateStepSumaryComponent
+    AssetTypeTemplateCreateStepSumaryComponent,
+    AssetTypePageComponent,
+    AssetTypeEditComponent,
+    CreateButtonComponent,
   ],
   imports: [
     CommonModule,
@@ -115,7 +125,12 @@ import { Ng2CompleterModule } from 'ng2-completer';
     ClarityModule,
     FontAwesomeModule,
     FormsModule,
-    Ng2CompleterModule
+    Ng2CompleterModule,
+    ReactiveFormsModule,
+    DialogModule,
+    TableModule,
+    InputTextModule,
+    InputTextareaModule
   ],
   exports: [
     EcosystemSubHeaderComponent,

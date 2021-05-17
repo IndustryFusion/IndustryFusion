@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MetricsAttributesPageComponent } from './metrics-attributes-page.component';
 
@@ -21,7 +21,7 @@ describe('MetricsAttributesPageComponent', () => {
   let component: MetricsAttributesPageComponent;
   let fixture: ComponentFixture<MetricsAttributesPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MetricsAttributesPageComponent ]
     })

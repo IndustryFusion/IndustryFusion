@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { QuantityTypesPageComponent } from './quantity-types-page.component';
 
@@ -21,7 +21,7 @@ describe('QuantityTypesPageComponent', () => {
   let component: QuantityTypesPageComponent;
   let fixture: ComponentFixture<QuantityTypesPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ QuantityTypesPageComponent ]
     })

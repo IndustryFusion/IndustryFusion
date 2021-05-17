@@ -64,5 +64,4 @@ public class AssetTypeService {
 
         return targetAssetType;
     }
-
 }
