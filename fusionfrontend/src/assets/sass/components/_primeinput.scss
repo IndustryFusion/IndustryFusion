@@ -3,7 +3,7 @@
 
 .p-dialog .p-inputtext {
   background: $basic-white 0 0% no-repeat padding-box;
-  border: 2px solid $highlighted;
+  border: 2px solid $light-grey;
   border-radius: 10px;
   opacity: 1;
 
@@ -12,11 +12,20 @@
   color: $highlighted;
   text-align: left;
   font-size: $bigger-font-size;
+
+  &:hover {
+    border: 2px solid $basic-grey;
+    box-shadow: none !important;
+  }
+  &:focus {
+    border: 2px solid $highlighted;
+    box-shadow: none !important;
+  }
 }
 
 .p-dialog .p-inputtextarea {
   background: $basic-white 0 0% no-repeat padding-box;
-  border: none !important;
+  border: 2px solid $light-grey;
   border-radius: 10px;
   min-height: 80px;
   opacity: 1;
@@ -26,4 +35,23 @@
   color: $highlighted;
   text-align: left;
   font-size: $bigger-font-size;
+
+  &:hover {
+    border: 2px solid #95989A;
+    box-shadow: none !important;
+  }
+  &:focus {
+    border: 2px solid $highlighted;
+    box-shadow: none !important;
+  }
+}
+
+.p-dialog .textarea-character-count {
+  font-size: 12px;
+  font-weight: normal;
+  padding-right: 18.0%;
+  padding-top: -25px;
+  padding-bottom: 0;
+  pointer-events:none;
+  text-align: end;
 }
