@@ -29,9 +29,8 @@ under the License.
 <div class="list-item" [ngClass]="{'selected': selected}">
   <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}"><input type="checkbox" [(ngModel)]="selected" (click)="select()" /></div>
   <div class="list-item-cell bold black" [style.width.%]="30">{{ item.name }}</div>
-  <div class="list-item-cell grey" [style.width.%]="20">{{ item.description }}</div>
-  <div class="list-item-cell grey" [style.width.%]="20">{{ item.baseUnit?.name }}</div>
-  <div class="list-item-cell grey" [style.width.%]="20">18.12.2019</div>
+  <div class="list-item-cell grey" [style.width.%]="30">{{ item.description }}</div>
+  <div class="list-item-cell grey" [style.width.%]="30">{{ item.baseUnit?.name }}</div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
     <clr-dropdown>
       <button clrDropdownTrigger aria-label="Quantity type dropdown menu" class="grey">

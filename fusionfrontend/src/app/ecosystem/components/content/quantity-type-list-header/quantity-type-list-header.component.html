@@ -16,7 +16,6 @@ under the License.
 <div class="list-header">
   <div class="list-header-item" [style.width.%]="5"></div>
   <div class="list-header-item" [style.width.%]="30" (click)="sort('name')">Quantity name <fa-icon *ngIf="sortField === 'name'" [icon]="faSort"></fa-icon></div>
-  <div class="list-header-item" [style.width.%]="20" (click)="sort('version')">Description <fa-icon *ngIf="sortField === 'version'" [icon]="faSort"></fa-icon></div>
-  <div class="list-header-item" [style.width.%]="20" (click)="sort('date')">Base unit <fa-icon *ngIf="sortField === 'date'" [icon]="faSort"></fa-icon></div>
-  <div class="list-header-item" [style.width.%]="20" (click)="sort('date')">Date created <fa-icon *ngIf="sortField === 'date'" [icon]="faSort"></fa-icon></div>
+  <div class="list-header-item" [style.width.%]="30" (click)="sort('version')">Description <fa-icon *ngIf="sortField === 'version'" [icon]="faSort"></fa-icon></div>
+  <div class="list-header-item" [style.width.%]="30" (click)="sort('date')">Base unit <fa-icon *ngIf="sortField === 'date'" [icon]="faSort"></fa-icon></div>
 </div>
