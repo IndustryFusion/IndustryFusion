@@ -25,44 +25,45 @@ under the License.
 
       <div class="p-grid">
         <div class="p-col-5 p-grid p-dir-col input-div">
-          <label class="p-col">Factory name</label>
+          <label class="p-col if-label">Factory name</label>
           <input type="text" pInputText formControlName="name" placeholder="Name" class="location-input p-col">
         </div>
         <div class="p-col-4 p-grid p-dir-col input-div">
-          <label class="p-col">Factory type</label>
-          <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type" class="p-col factory-dropdown"></p-dropdown>
+          <label class="p-col if-label">Factory type</label>
+          <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type"
+                      class="p-col factory-dropdown"></p-dropdown>
         </div>
       </div>
 
       <div class="p-grid">
         <div class="p-col-4 p-dir-col">
           <h3 class="headings">Enter address details</h3>
-        
+
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col">Street</label>
+            <label class="p-col if-label">Street</label>
             <input type="text" formControlName="line1" placeholder="Street" class="zip-code-input p-col">
           </div>
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col">Additional address</label>
+            <label class="p-col if-label">Additional address</label>
             <input type="text" formControlName="line2" placeholder="Additional address" class="zip-code-input p-col">
           </div>
-    
+
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col">ZIP</label>
+            <label class="p-col if-label">ZIP</label>
             <input type="text" formControlName="zip" placeholder="Zip code" class="zip-code-input p-col">
           </div>
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col">City</label>
+            <label class="p-col if-label">City</label>
             <input type="text" pInputText formControlName="city" placeholder="City" class="zip-code-input p-col">
           </div>
-    
+
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col">Country</label>
+            <label class="p-col if-label">Country</label>
             <input type="text" formControlName="country" placeholder="Country" class="zip-code-input p-col">
           </div>
         </div>
 
-        <app-locations-map class="p-col-8 p-dir-col map-style"[height]=500 [location]="location"></app-locations-map>
+        <app-locations-map class="p-col-8 p-dir-col map-style" [height]=500 [location]="location"></app-locations-map>
 
       </div>
     </div>
@@ -71,12 +72,13 @@ under the License.
   <p-footer>
     <div class="footer-btns">
       <button type="button" class="if-button button-secondary button-modal footer-btn"
-        (click)="cancel()">Cancel</button>
-    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="createLocation()">
-      <div *ngIf="editMode then editFactoryButtonText else createFactoryButtonText"></div>
-      <ng-template #createFactoryButtonText>Create</ng-template>
-      <ng-template #editFactoryButtonText>Update</ng-template>
-    </button>
+              (click)="cancel()">Cancel
+      </button>
+      <button type="button" class="if-button button-primary button-modal footer-btn" (click)="createLocation()">
+        <div *ngIf="editMode then editFactoryButtonText else createFactoryButtonText"></div>
+        <ng-template #createFactoryButtonText>Create</ng-template>
+        <ng-template #editFactoryButtonText>Update</ng-template>
+      </button>
     </div>
   </p-footer>
 </p-dialog>
