@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class QuantityTypeDto {
     private String name;
     private String description;
     private String label;
+    private QuantityDataType dataType;
     @Builder.Default
     private Set<Long> unitIds = new LinkedHashSet<>();
     @Builder.Default

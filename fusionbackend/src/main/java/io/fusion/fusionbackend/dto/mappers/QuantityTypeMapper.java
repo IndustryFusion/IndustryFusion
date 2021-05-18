@@ -17,6 +17,8 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.QuantityTypeDto;
 import io.fusion.fusionbackend.model.QuantityType;
+import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -28,10 +30,13 @@ import java.util.stream.Collectors;
 @Component
 public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, QuantityTypeDto> {
     private final UnitMapper unitMapper;
+    private final UnitService unitService;
 
     @Autowired
-    public QuantityTypeMapper(@Lazy UnitMapper unitMapper) {
+    public QuantityTypeMapper(@Lazy UnitMapper unitMapper,
+                              @Lazy UnitService unitService) {
         this.unitMapper = unitMapper;
+        this.unitService = unitService;
     }
 
     private QuantityTypeDto toDtoShallow(QuantityType entity) {
@@ -43,6 +48,7 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
+                .dataType(entity.getDataType())
                 .unitIds(EntityDtoMapper.getSetOfEntityIds(entity.getUnits()))
                 .baseUnitId(EntityDtoMapper.getEntityId(entity.getBaseUnit()))
                 .build();
@@ -57,6 +63,7 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
+                .dataType(entity.getDataType())
                 .units(unitMapper.toDtoSet(entity.getUnits()))
                 .baseUnit(unitMapper.toDto(entity.getBaseUnit(), false))
                 .build();
@@ -75,11 +82,18 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         if (dto == null) {
             return null;
         }
+        Unit baseUnit = this.unitMapper.toEntity(dto.getBaseUnit());
+        if (baseUnit == null) {
+            baseUnit = this.unitService.getUnit(dto.getBaseUnitId());
+        }
+
         return QuantityType.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())
+                .dataType(dto.getDataType())
+                .baseUnit(baseUnit)
                 .build();
     }
 
