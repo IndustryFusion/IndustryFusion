@@ -1,20 +1,29 @@
 .dropdown-filter .p-dropdown {
-  background-color: hsl(198, 0%, 95%) !important;
+  width: 100%;
+  background-color: $basic-white !important;
+  border: 2px solid $basic-white;
   border-radius: 8px;
-  border-color: white;
-  margin-left: 5px;
-  margin-right: 40px;
 
   .p-dropdown-label {
     font-weight: bold !important;
-    color: black;
+    border: none;
+    color: $basic-black;
     margin-left: 10px;
-    background-color:hsl(198, 0%, 95%) !important;
-    }
+    background-color: $basic-white !important;
+  }
 
-    .p-dropdown-trigger {
-      background-color:hsl(198, 0%, 95%) !important;
-      color: black !important;
-      margin-right: 5px;
-    }
+  .p-dropdown-trigger {
+    background-color: $basic-white !important;
+    color: $basic-black !important;
+    margin-right: 5px;
+  }
+
+  &:hover {
+    border: 2px solid #95989A;
+    box-shadow: none !important;
+  }
+  &:focus {
+    border: 2px solid $highlighted;
+    box-shadow: none !important;
+  }
 }
