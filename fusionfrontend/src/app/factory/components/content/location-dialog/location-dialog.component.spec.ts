@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateLocationsPanelComponent } from './create-locations-panel.component';
+import { LocationDialogComponent } from './location-dialog.component';
 
-describe('CreateLocationsPanelComponent', () => {
-  let component: CreateLocationsPanelComponent;
-  let fixture: ComponentFixture<CreateLocationsPanelComponent>;
+describe('LocationDialogComponent', () => {
+  let component: LocationDialogComponent;
+  let fixture: ComponentFixture<LocationDialogComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CreateLocationsPanelComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ LocationDialogComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateLocationsPanelComponent);
+    fixture = TestBed.createComponent(LocationDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

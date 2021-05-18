@@ -243,6 +243,7 @@ export class LocationsMapComponent implements OnInit, OnChanges {
     private router: Router) { }
 
   ngOnInit(): void {
+    console.log(this.location);
     this.geocoder = new google.maps.Geocoder();
   }
 
@@ -251,8 +252,9 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('change', this.location);
     if (changes.location) {
-      this.placeMarkerForLocation()
+      this.placeMarkerForLocation();
     }
   }
 
@@ -264,17 +266,19 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   }
 
   findLocation(address) {
-    if (!this.geocoder) this.geocoder = new google.maps.Geocoder()
+    if (!this.geocoder) {
+      this.geocoder = new google.maps.Geocoder();
+    }
     this.geocoder.geocode({
       address
     }, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
         this.location.latitude = results[0].geometry.location.lat();
         this.location.longitude = results[0].geometry.location.lng();
-      } else {
-        alert('Sorry, this search produced no results.');
+      // } else {
+      //   alert('Sorry, this search produced no results.');
       }
-    })
+    });
   }
 
 }

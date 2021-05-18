@@ -41,7 +41,8 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
   companyId: ID;
   selectedLocation: ID;
 
-  constructor(private companyQuery: CompanyQuery,
+  constructor(
+    private companyQuery: CompanyQuery,
     private factoryResolver: FactoryResolver,
     private locationService: LocationService,
     private locationQuery: LocationQuery,

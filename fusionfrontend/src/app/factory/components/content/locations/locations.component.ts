@@ -21,11 +21,15 @@ import { LocationWithAssetCount } from 'src/app/store/location/location.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
 import { Location } from 'src/app/store/location/location.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LocationDialogComponent } from '../location-dialog/location-dialog.component';
 
 @Component({
   selector: 'app-locations',
   templateUrl: './locations.component.html',
-  styleUrls: ['./locations.component.scss']
+  styleUrls: ['./locations.component.scss'],
+  providers: [DialogService]
 })
 export class LocationsComponent implements OnInit, OnDestroy {
 
@@ -42,33 +46,61 @@ export class LocationsComponent implements OnInit, OnDestroy {
     { [k: string]: string } = { '=0': 'No factories', '=1': '# Factory site', other: '# Factory sites' };
   sortField: string;
   sortType: string;
-  modalsActive = false;
 
-  constructor(private companyQuery: CompanyQuery,
+  location: Location;
+  public locationForm: FormGroup;
+  public ref: DynamicDialogRef;
+
+
+  constructor(
+    private companyQuery: CompanyQuery,
     private locationQuery: LocationQuery,
-    private factoryComposedQuery: FactoryComposedQuery) { }
+    private factoryComposedQuery: FactoryComposedQuery,
+    private formBuilder: FormBuilder,
+    public dialogService: DialogService) { }
 
   ngOnInit() {
     this.isLoading$ = this.locationQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
-
     this.locations$ = this.factoryComposedQuery.selectLocationsOfCompanyWithAssetCount(this.companyId);
-  }
-
-  ngOnDestroy() {
-  }
-
-  openModal() {
-    this.modalsActive = true;
-  }
-
-  closeModal(event: boolean) {
-    this.modalsActive = event;
+    this.createLocationForm(this.formBuilder, this.location);
   }
 
   onSort(field: [string, string]) {
     this.sortField = field[0];
     this.sortType = field[1];
+  }
+
+  showCreateDialog() {
+    const ref = this.dialogService.open(LocationDialogComponent, {
+      data: {
+        locationForm: this.locationForm,
+      },
+      header: `Create new Location`,
+    });
+
+    ref.onClose.subscribe((location: Location) => this.onCloseCreateDialog(location));
+  }
+
+  createLocationForm(formBuilder: FormBuilder, locationToCreate: Location) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    this.locationForm = formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      line1: [],
+      line2: [],
+      city: [],
+      zip: [],
+      country: [],
+      type: ['', requiredTextValidator]
+    });
+    this.locationForm.patchValue(locationToCreate);
+  }
+
+  onCloseCreateDialog(location: Location) {
+    if (location) {
+      this.locationCreated(location);
+    }
   }
 
   locationCreated(location: Location): void {
@@ -77,5 +109,11 @@ export class LocationsComponent implements OnInit, OnDestroy {
 
   locationUpdated(location: Location): void {
     this.updateLocationEvent.emit(location);
+  }
+
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 }

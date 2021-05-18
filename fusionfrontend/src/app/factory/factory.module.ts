@@ -60,8 +60,7 @@ import { AssetInstantiationDescriptionModalComponent } from './components/conten
 import { AssetInstantiationPairedModalComponent } from './components/content/asset-instantiation/asset-instantiation-paired-modal/asset-instantiation-paired-modal.component';
 import { AssetInstantiationLocationAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-location-assignment-modal/asset-instantiation-location-assignment-modal.component';
 import { AssetInstantiationRoomAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-room-assignment-modal/asset-instantiation-room-assignment-modal.component';
-import { CreateLocationsPanelComponent } from './components/content/location-instantiation/create-locations-panel/create-locations-panel.component'
-import { LocationInstantiationComponent } from './components/content/location-instantiation/location-instantiation.component'
+import { LocationDialogComponent } from './components/content/location-dialog/location-dialog.component';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
@@ -106,8 +105,7 @@ import { MenuModule } from 'primeng/menu';
     AssetInstantiationPairedModalComponent,
     AssetInstantiationLocationAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
-    CreateLocationsPanelComponent,
-    LocationInstantiationComponent,
+    LocationDialogComponent
   ],
   imports: [
     CommonModule,
