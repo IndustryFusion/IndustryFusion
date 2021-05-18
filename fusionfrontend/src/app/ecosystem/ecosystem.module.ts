@@ -51,7 +51,7 @@ import { UnitListComponent } from './components/content/unit-list/unit-list.comp
 import { UnitListHeaderComponent } from './components/content/unit-list-header/unit-list-header.component';
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
-import { QuantityTypeCreateComponent } from './components/content/quantity-type-create/quantity-type-create.component';
+import { QuantityTypeUpdateComponent } from './components/content/quantity-type-update/quantity-type-update.component';
 import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
 import { MetricCreateComponent } from './components/content/metric-create/metric-create.component';
 // tslint:disable-next-line:max-line-length
@@ -107,7 +107,7 @@ import { DropdownModule } from 'primeng/dropdown';
     UnitListHeaderComponent,
     UnitListItemComponent,
     AssetTypeCreateComponent,
-    QuantityTypeCreateComponent,
+    QuantityTypeUpdateComponent,
     UnitCreateComponent,
     MetricCreateComponent,
     AssetTypeTemplateCreateStepOneComponent,

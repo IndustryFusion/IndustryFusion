@@ -24,11 +24,14 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-quantity-type-create',
-  templateUrl: './quantity-type-create.component.html',
-  styleUrls: ['./quantity-type-create.component.scss']
+  templateUrl: './quantity-type-update.component.html',
+  styleUrls: ['./quantity-type-update.component.scss']
 })
-export class QuantityTypeCreateComponent implements OnInit {
 
+// Create and Edit Quantity Type
+export class QuantityTypeUpdateComponent implements OnInit {
+
+  public isEditing = true;
   public quantityTypeForm: FormGroup;
   public units$: Observable<Unit[]>;
 
@@ -41,6 +44,7 @@ export class QuantityTypeCreateComponent implements OnInit {
 
   ngOnInit() {
     this.quantityTypeForm = this.config.data.quantityTypeForm;
+    this.isEditing = this.config.data.isEditing;
     this.units$ = this.unitQuery.selectAll();
   }
 
@@ -48,16 +52,17 @@ export class QuantityTypeCreateComponent implements OnInit {
     this.ref.close();
   }
 
-  onSave() {
+  onSubmit() {
     if (this.quantityTypeForm.valid) {
       const quantityType = new QuantityType();
+      if (this.isEditing) {
+        quantityType.id  = this.quantityTypeForm.get('id')?.value;
+      }
       quantityType.name  = this.quantityTypeForm.get('name')?.value;
       quantityType.label = this.quantityTypeForm.get('label')?.value;
       quantityType.description = this.quantityTypeForm.get('description')?.value;
       quantityType.baseUnitId = this.quantityTypeForm.get('baseUnitId')?.value;
       this.ref.close(quantityType);
-    } else {
-      this.ref.close();
     }
   }
 }

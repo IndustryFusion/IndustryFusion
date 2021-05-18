@@ -14,7 +14,7 @@ under the License.
 -->
 
 <div class="create-quantity-type">
-  <form>
+  <form [formGroup]="quantityTypeForm">
     <div class="input-div">
       <label class="if-label">Quantity Type name</label>
       <input type="text" pInputText class="create-quantity-type-inputs" formControlName="name" />
@@ -28,23 +28,16 @@ under the License.
       <textarea pInputTextarea class="create-quantity-type-inputs" formControlName="description"></textarea>
       <label class="textarea-character-count if-label">{{ quantityTypeForm.get('description').value?.length }}/255</label>
     </div>
-
-    <div class="input-div">
+    <div class="input-div dropdown-filter">
       <label class="if-label">Base unit</label>
-      <p-dropdown [options]="(units$ | async)" formControlName="baseUnitId" optionLabel="name" optionValue="code" class="create-quantity-type-inputs">
+      <p-dropdown [options]="(units$ | async)" formControlName="baseUnitId" optionLabel="name" optionValue="id" class="create-quantity-type-inputs" #baseUnitDropdown
+                  placeholder="Select a base unit" filter="true" resetFilterOnHide="true">
       </p-dropdown>
     </div>
-    <!--
-    <clr-select-container>
-      <label>Base unit</label>
-      <select clrSelect class="create-item-inputs" name="baseUnitId" [(ngModel)]="baseUnitId">
-        <option *ngFor="let unit of (units$ | async)" [ngValue]="unit.id">{{ unit.name }}</option>
-      </select>
-    </clr-select-container>
--->
+
     <div class="create-quantity-type-footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">Save</button>
+      <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()" [disabled]="quantityTypeForm.invalid">{{isEditing ? 'Save' : 'Create'}}</button>
     </div>
   </form>
 </div>

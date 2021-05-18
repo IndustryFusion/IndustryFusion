@@ -20,7 +20,7 @@ import { BaseListComponent } from '../base/base-list/base-list.component';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { QuantityTypeCreateComponent } from '../quantity-type-create/quantity-type-create.component';
+import { QuantityTypeUpdateComponent } from '../quantity-type-update/quantity-type-update.component';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -57,7 +57,6 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
 
   ngOnInit() {
     super.ngOnInit();
-    this.createQuantityTypeForm(this.formBuilder);
   }
 
   ngOnDestroy() {
@@ -73,15 +72,18 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
       id: [],
       name: ['', requiredTextValidator],
       label: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
-      baseUnitId: [0, Validators.required]
+      description: ['', requiredTextValidator],
+      baseUnitId: [null, Validators.required]
     });
   }
 
   showCreateDialog() {
-    const ref = this.dialogService.open(QuantityTypeCreateComponent, {
+    this.createQuantityTypeForm(this.formBuilder);
+
+    const ref = this.dialogService.open(QuantityTypeUpdateComponent, {
       data: {
         quantityTypeForm: this.quantityTypeForm,
+        isEditing: false
       },
       header: `Create new Quantity Type`,
     });
@@ -91,8 +93,8 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
 
   private onCreateQuantityType(quantityType: QuantityType) {
     if (quantityType) {
-      this.quantityService.editItem(quantityType.id, quantityType).subscribe();
-      /*this.updateUI(quantityType);*/
+      this.quantityService.createItem(quantityType).subscribe();
+      // TODO (js): update GUI
     }
   }
 }

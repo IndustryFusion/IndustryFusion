@@ -13,15 +13,17 @@
  * under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { QuantityTypeCreateComponent } from '../quantity-type-create/quantity-type-create.component';
+import { QuantityTypeUpdateComponent } from '../quantity-type-update/quantity-type-update.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UnitQuery } from '../../../../store/unit/unit.query';
+import { Unit } from '../../../../store/unit/unit.model';
 
 @Component({
   selector: 'app-quantity-type-list-item',
@@ -31,13 +33,14 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class QuantityTypeListItemComponent extends BaseListItemComponent implements OnInit {
 
   @Input()
-  item: QuantityType;
+  public item: QuantityType;
 
   public ref: DynamicDialogRef;
   public quantityTypeForm: FormGroup;
 
   constructor(public route: ActivatedRoute,
               public router: Router,
+              public unitQuery: UnitQuery,
               public quantityService: QuantityTypeService,
               public dialogService: DialogService,
               private formBuilder: FormBuilder) {
@@ -45,6 +48,57 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
   }
 
   ngOnInit() {
+    super.ngOnInit();
   }
 
+  private createQuantityTypeForm(formBuilder: FormBuilder): void {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    this.quantityTypeForm = formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      label: ['', requiredTextValidator],
+      description: ['', requiredTextValidator],
+      baseUnitId: [null, Validators.required]
+    });
+    this.quantityTypeForm.patchValue(this.item);
+    this.quantityTypeForm.get('baseUnitId').setValue(this.item.baseUnit?.id);
+  }
+
+  public showEditDialog() {
+    this.createQuantityTypeForm(this.formBuilder);
+    const ref = this.dialogService.open(QuantityTypeUpdateComponent, {
+      data: {
+        quantityTypeForm: this.quantityTypeForm,
+        isEditing: true
+      },
+      header: `Edit Quantity Type`,
+    });
+
+    ref.onClose.subscribe((quantityType: QuantityType) => this.onCloseEditDialog(quantityType));
+  }
+
+  private onCloseEditDialog(quantityType: QuantityType) {
+    if (quantityType) {
+      this.quantityService.editItem(quantityType.id, quantityType).subscribe();
+      this.updateUI(quantityType);
+    }
+    this.quantityService.setActive(this.item.id);
+  }
+
+  private updateUI(quantityType: QuantityType) {
+    let baseUnit: Unit;
+    this.unitQuery.selectUnitWithId(quantityType.baseUnitId).subscribe(x => baseUnit = x);
+
+    const newItem = new QuantityType();
+    newItem.id = quantityType.id;
+    newItem.name = quantityType.name;
+    newItem.label = quantityType.label;
+    newItem.description = quantityType.description;
+    newItem.baseUnit = baseUnit;
+    newItem.baseUnitId = quantityType.baseUnitId;
+    newItem.unitIds = this.item.unitIds;
+    newItem.units = this.item.units;
+
+    this.item = newItem;
+  }
 }
