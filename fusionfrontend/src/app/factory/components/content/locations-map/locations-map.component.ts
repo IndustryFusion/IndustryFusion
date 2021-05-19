@@ -242,7 +242,6 @@ export class LocationsMapComponent implements OnInit, OnChanges {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.geocoder = new google.maps.Geocoder();
     if (this.modalMode) {
       this.zoom = 7;
       this.height = 460;
