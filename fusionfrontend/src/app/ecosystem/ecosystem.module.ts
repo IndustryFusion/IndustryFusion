@@ -75,6 +75,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
+import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +120,7 @@ import { DropdownModule } from 'primeng/dropdown';
     AssetTypePageComponent,
     AssetTypeEditComponent,
     CreateButtonComponent,
+    QuantityTypePageComponent,
   ],
   imports: [
     CommonModule,

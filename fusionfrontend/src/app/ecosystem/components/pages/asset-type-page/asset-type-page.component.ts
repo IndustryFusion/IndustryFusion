@@ -56,7 +56,6 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
 
   resolve(activatedRoute: ActivatedRoute): void {
     const assetTypeId = activatedRoute.snapshot.paramMap.get('assettypeId');
-    console.log('assetTypeId', assetTypeId);
     if (assetTypeId != null) {
       this.assetType$ = this.assetTypeQuery.selectAssetType(assetTypeId);
       this.assetTypeId = assetTypeId;
