@@ -18,10 +18,10 @@ under the License.
     <div [formGroup]="locationForm">
       <div class="p-grid">
         <div class="p-col-7 p-grid p-dir-col factory-div">
-          <label class="p-col if-label input-label">Factory name</label>
+          <label class="p-col if-label">Factory name</label>
           <input type="text" pInputText formControlName="name" placeholder="Name" class="location-input p-col">
         </div>
-        <div class="p-col-4 p-grid p-dir-col input-div">
+        <div class="p-col-4 p-grid p-dir-col factory-div">
           <label class="p-col if-label">Factory type</label>
           <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type"
                       class="p-col factory-dropdown"></p-dropdown>
@@ -29,30 +29,31 @@ under the License.
       </div>
 
       <div class="p-grid">
+
         <div class="p-col-4 p-dir-col">
           <h3 class="headings">Enter address details</h3>
 
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label input-label">Street</label>
-            <input type="text" formControlName="line1" placeholder="Street" class="address-input p-col">
+            <label class="p-col if-label">Street</label>
+            <input type="text" pInputText formControlName="line1" placeholder="Street" class="address-input p-col">
           </div>
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label input-label">Additional address</label>
-            <input type="text" formControlName="line2" placeholder="Additional address" class="address-input p-col">
+            <label class="p-col if-label">Additional address</label>
+            <input type="text" pInputText formControlName="line2" placeholder="Additional address" class="address-input p-col">
           </div>
 
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label input-label">ZIP</label>
-            <input type="text" formControlName="zip" placeholder="Zip code" class="address-input p-col">
+            <label class="p-col if-label">ZIP</label>
+            <input type="text" pInputText formControlName="zip" placeholder="Zip code" class="address-input p-col">
           </div>
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label input-label">City</label>
+            <label class="p-col if-label">City</label>
             <input type="text" pInputText formControlName="city" placeholder="City" class="address-input p-col">
           </div>
 
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label input-label">Country</label>
-            <input type="text" formControlName="country" placeholder="Country" class="address-input p-col">
+            <label class="p-col if-label">Country</label>
+            <input type="text" pInputText formControlName="country" placeholder="Country" class="address-input p-col">
           </div>
         </div>
 
@@ -66,7 +67,8 @@ under the License.
     <button type="button" class="if-button button-secondary button-modal footer-btn"
             (click)="onCancel()">Cancel
     </button>
-    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="onSave()" [disabled]="locationForm.invalid">
+    <button type="button" class="if-button button-primary button-modal footer-btn" (click)="onSave()"
+            [disabled]="locationForm.invalid">
       Save
     </button>
   </div>

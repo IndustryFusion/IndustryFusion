@@ -65,6 +65,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { MenuModule } from 'primeng/menu';
     DropdownModule,
     ButtonModule,
     MenuModule,
+    InputTextModule,
   ],
   exports: [
     FactorySubHeaderComponent,

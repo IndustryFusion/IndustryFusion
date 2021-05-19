@@ -30,14 +30,12 @@
   align-items: center;
 
   .p-dropdown-label {
-    width: 100%;
-    border-color: black;
-    color: black;
-    margin-left: 15px;
+    border: none;
   }
 }
 
 .footer-btns {
+  text-align: right;
   margin: 50px 50px 40px auto !important;
 }
 
@@ -46,46 +44,34 @@
 }
 
 .headings {
-  //margin-left: 10%;
   font-weight: bold !important;
 }
 
 .input-div {
-  width: 25%;
-  margin: 8px 5% auto 0;
-  border: none;
-  border-radius: 10px;
+  min-width: 100%;
+  margin-top: 8px;
+  padding-right: 10%;
 }
 
 .factory-div {
   width: 45%;
-  margin: 8px 5% auto 0;
+  margin-top: 8px;
+  margin-right: 5%;
   border: none;
-  border-radius: 10px;
 }
 
 .location-input {
-  border: none;
   height: 55px !important;
-  //width: 550px;
-  border-radius: 10px;
 }
 
 .address-input {
-  width: auto !important;
+  min-width: 100%;
   margin-right: 24px;
-  border: none;
   height: 55px !important;
-  border-radius: 10px !important;
-}
-
-.input-label {
-  margin-left: -10px;
 }
 
 .factory-dropdown {
   padding: 0px;
-  margin-left: 7px;
 }
 
 .map-style {
