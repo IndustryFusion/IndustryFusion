@@ -17,7 +17,6 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.QuantityTypeDto;
 import io.fusion.fusionbackend.model.QuantityType;
-import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -64,7 +63,7 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
                 .description(entity.getDescription())
                 .label(entity.getLabel())
                 .dataType(entity.getDataType())
-                .units(unitMapper.toDtoSet(entity.getUnits()))
+                .units(unitMapper.toDtoSet(entity.getUnits(), false))
                 .baseUnit(unitMapper.toDto(entity.getBaseUnit(), false))
                 .build();
     }
@@ -82,10 +81,6 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         if (dto == null) {
             return null;
         }
-        Unit baseUnit = this.unitMapper.toEntity(dto.getBaseUnit());
-        if (baseUnit == null) {
-            baseUnit = this.unitService.getUnit(dto.getBaseUnitId());
-        }
 
         return QuantityType.builder()
                 .id(dto.getId())
@@ -93,7 +88,6 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
                 .description(dto.getDescription())
                 .label(dto.getLabel())
                 .dataType(dto.getDataType())
-                .baseUnit(baseUnit)
                 .build();
     }
 
