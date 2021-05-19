@@ -1,5 +1,5 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -7,7 +7,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -63,7 +63,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.locationQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
     this.locations$ = this.factoryComposedQuery.selectLocationsOfCompanyWithAssetCount(this.companyId);
-    this.createLocationForm(this.formBuilder, this.location);
+    this.createLocationForm(this.formBuilder);
   }
 
   onSort(field: [string, string]) {
@@ -78,29 +78,28 @@ export class LocationsComponent implements OnInit, OnDestroy {
       },
       header: `Create new Location`,
       width: '70%',
-      contentStyle: {"padding-left": "6%", "padding-right": "6%"},
+      contentStyle: { 'padding-left': '6%', 'padding-right': '6%' },
     });
 
     ref.onClose.subscribe((location: Location) => {
       this.onCloseCreateDialog(location);
-      this.createLocationForm(this.formBuilder, new Location());
+      this.createLocationForm(this.formBuilder);
       this.location = new Location();
     });
   }
 
-  createLocationForm(formBuilder: FormBuilder, locationToCreate: Location) {
+  createLocationForm(formBuilder: FormBuilder) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.locationForm = formBuilder.group({
-      id: [],
+      id: [null],
       name: ['', requiredTextValidator],
-      line1: [],
-      line2: [],
-      city: [],
-      zip: [],
-      country: [],
-      type: ['', requiredTextValidator]
+      line1: [''],
+      line2: [''],
+      city: ['', requiredTextValidator],
+      zip: [''],
+      country: ['', requiredTextValidator],
+      type: [null, requiredTextValidator]
     });
-    this.locationForm.patchValue(locationToCreate);
   }
 
   onCloseCreateDialog(location: Location) {

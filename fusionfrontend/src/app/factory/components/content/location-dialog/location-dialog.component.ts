@@ -50,9 +50,7 @@ export class LocationDialogComponent implements OnInit {
       debounceTime(500)
     ).subscribe(() => {
       this.location = { ...this.location, ...this.locationForm.value };
-      console.log(this.location);
     });
-
   }
 
   onCancel() {
@@ -72,8 +70,6 @@ export class LocationDialogComponent implements OnInit {
       this.location.country = this.locationForm.get('country')?.value;
 
       this.ref.close(this.location);
-    } else {
-      this.ref.close();
     }
   }
 

@@ -132,9 +132,10 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     InputTextModule,
     InputTextareaModule
   ],
-  exports: [
-    EcosystemSubHeaderComponent,
-    EcosystemPageTitleComponent
-  ]
+    exports: [
+        EcosystemSubHeaderComponent,
+        EcosystemPageTitleComponent,
+        CreateButtonComponent
+    ]
 })
 export class EcosystemModule { }

@@ -65,7 +65,8 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
-import {InputTextModule} from "primeng/inputtext";
+import { InputTextModule } from 'primeng/inputtext';
+import { EcosystemModule } from '../ecosystem/ecosystem.module';
 
 @NgModule({
   declarations: [
@@ -108,23 +109,24 @@ import {InputTextModule} from "primeng/inputtext";
     AssetInstantiationRoomAssignmentModalComponent,
     LocationDialogComponent
   ],
-  imports: [
-    CommonModule,
-    FactoryRoutingModule,
-    ClarityModule,
-    AgmCoreModule.forRoot({
-      apiKey: environment.googleMapsClientId
-    }),
-    ChartsModule,
-    FormsModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    DialogModule,
-    DropdownModule,
-    ButtonModule,
-    MenuModule,
-    InputTextModule,
-  ],
+    imports: [
+        CommonModule,
+        FactoryRoutingModule,
+        ClarityModule,
+        AgmCoreModule.forRoot({
+            apiKey: environment.googleMapsClientId
+        }),
+        ChartsModule,
+        FormsModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        DialogModule,
+        DropdownModule,
+        ButtonModule,
+        MenuModule,
+        InputTextModule,
+        EcosystemModule,
+    ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

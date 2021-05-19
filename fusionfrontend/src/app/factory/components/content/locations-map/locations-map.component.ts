@@ -231,8 +231,8 @@ export class LocationsMapComponent implements OnInit, OnChanges {
 
   @ViewChild('AgmMap', { static: true })
   agmMap: AgmMap;
-  defaultLat = 50;
-  defaultLng = 10;
+  defaultLatitude = 50;
+  defaultLongitude = 10;
   height = 330;
   zoom = 5;
   private geocoder: any;
@@ -246,8 +246,8 @@ export class LocationsMapComponent implements OnInit, OnChanges {
     if (this.modalMode) {
       this.zoom = 7;
       this.height = 460;
-      this.defaultLat = 48.5;
-    };
+      this.defaultLatitude = 48.5;
+    }
   }
 
   navigateToLocation(id: ID): void {
@@ -255,19 +255,13 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.modalMode && changes.location) {
-      this.placeMarkerForLocation();
-    }
-  }
-
-  placeMarkerForLocation() {
-    if (this.location.zip || this.location.city) {
+    if (this.modalMode && changes.location && (this.location.zip || this.location.city)) {
       const address = this.location.line1 + ' ' + this.location.zip + ' ' + this.location.city + ' ' + this.location.country;
-      this.findLocation(address);
+      this.placeMarkerForLocation(address);
     }
   }
 
-  findLocation(address) {
+  placeMarkerForLocation(address) {
     if (!this.geocoder) {
       this.geocoder = new google.maps.Geocoder();
     }
@@ -277,8 +271,8 @@ export class LocationsMapComponent implements OnInit, OnChanges {
       if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
         this.location.latitude = results[0].geometry.location.lat();
         this.location.longitude = results[0].geometry.location.lng();
-        this.defaultLat = results[0].geometry.location.lat();
-        this.defaultLng = results[0].geometry.location.lng();
+        this.defaultLatitude = results[0].geometry.location.lat();
+        this.defaultLongitude = results[0].geometry.location.lng();
       }
     });
   }

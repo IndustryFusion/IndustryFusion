@@ -16,7 +16,7 @@ under the License.
 <div class="wrapper">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div class="title">{{ (locations$ | async)?.length | i18nPlural: locationMapping }}</div>
-    <button class="if-button button-secondary" (click)="showCreateDialog()">Create new location</button>
+    <app-create-button (createItem)="showCreateDialog()" [text]="'Create factory site'"></app-create-button>
   </div>
   <div>
     <div class="list-container">

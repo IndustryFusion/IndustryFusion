@@ -45,7 +45,7 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
       },
       header: `Update Location ${this.locationForm.get('name').value}`,
       width: '70%',
-      contentStyle: {"padding-left": "4%", "padding-right": "4%"},
+      contentStyle: { 'padding-left': '4%', 'padding-right': '4%' },
     });
 
     ref.onClose.subscribe((location: Location) => this.onCloseCreateDialog(location));
@@ -55,16 +55,16 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.locationForm = formBuilder.group({
       id: [],
-      companyId: [this.location.companyId ? this.location.companyId : ''],
-      name: [this.location.name ? this.location.name : '', requiredTextValidator],
-      line1: [this.location.line1 ? this.location.line1 : ''],
-      line2: [this.location.line2 ? this.location.line2 : ''],
-      city: [this.location.city ? this.location.city : ''],
-      zip: [this.location.zip ? this.location.zip : ''],
-      country: [this.location.country ? this.location.country : ''],
-      latitude: [this.location.latitude ? this.location.latitude : ''],
-      longitude: [this.location.longitude ? this.location.longitude : ''],
-      type: [this.location.type ? this.location.type : null, requiredTextValidator]
+      companyId: [null],
+      name: ['', requiredTextValidator],
+      line1: [''],
+      line2: [''],
+      city: ['', requiredTextValidator],
+      zip: [''],
+      country: ['', requiredTextValidator],
+      latitude: [0],
+      longitude: [0],
+      type: [null, requiredTextValidator]
     });
     this.locationForm.patchValue(locationToCreate);
   }
