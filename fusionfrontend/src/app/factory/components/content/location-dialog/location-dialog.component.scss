@@ -18,9 +18,6 @@
 @import 'components/primedialog';
 @import 'components/primedropdown';
 
-:host ::ng-deep .p-dialog .p-content {
-  width: 75% !important;
-}
 
 :host ::ng-deep .p-dropdown {
   border-radius: 10px !important;

@@ -34,7 +34,7 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   @Input()
   location: Location;
   @Input()
-  height: number;
+  modalMode = false;
 
   mapType = 'terrain';
 
@@ -233,6 +233,7 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   agmMap: AgmMap;
   defaultLat = 50;
   defaultLng = 10;
+  height = 330;
   zoom = 5;
   private geocoder: any;
 
@@ -242,6 +243,11 @@ export class LocationsMapComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.geocoder = new google.maps.Geocoder();
+    if (this.modalMode) {
+      this.zoom = 7;
+      this.height = 460;
+      this.defaultLat = 48.5;
+    };
   }
 
   navigateToLocation(id: ID): void {
@@ -249,7 +255,7 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.location) {
+    if (this.modalMode && changes.location) {
       this.placeMarkerForLocation();
     }
   }
@@ -271,6 +277,8 @@ export class LocationsMapComponent implements OnInit, OnChanges {
       if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
         this.location.latitude = results[0].geometry.location.lat();
         this.location.longitude = results[0].geometry.location.lng();
+        this.defaultLat = results[0].geometry.location.lat();
+        this.defaultLng = results[0].geometry.location.lng();
       }
     });
   }
