@@ -44,8 +44,9 @@ public class LocationRestService {
     }
 
     @GetMapping(path = "/companies/{companyId}/locations")
-    public Set<LocationDto> getLocations(@PathVariable final Long companyId) {
-        return locationMapper.toDtoSet(locationService.getLocationsByCompany(companyId));
+    public Set<LocationDto> getLocations(@PathVariable final Long companyId,
+                                         @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return locationMapper.toDtoSet(locationService.getLocationsByCompany(companyId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}")

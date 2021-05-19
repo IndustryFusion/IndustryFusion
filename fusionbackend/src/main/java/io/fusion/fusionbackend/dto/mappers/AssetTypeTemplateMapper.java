@@ -62,7 +62,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .id(entity.getId())
                 .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
                 .build();
-        dto.setFieldTargets(fieldTargetMapper.toDtoSet(entity.getFieldTargets()));
+        dto.setFieldTargets(fieldTargetMapper.toDtoSet(entity.getFieldTargets(), false));
         dto.setAssetType(assetTypeMapper.toDto(entity.getAssetType(), false));
 
         baseAssetMapper.copyToDto(entity, dto);
@@ -93,7 +93,10 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     }
 
     @Override
-    public Set<AssetTypeTemplateDto> toDtoSet(Set<AssetTypeTemplate> entitySet) {
+    public Set<AssetTypeTemplateDto> toDtoSet(Set<AssetTypeTemplate> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

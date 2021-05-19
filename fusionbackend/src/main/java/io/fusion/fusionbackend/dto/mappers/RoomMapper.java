@@ -54,7 +54,7 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         return RoomDto.builder()
                 .id(entity.getId())
                 .locationId(EntityDtoMapper.getEntityId(entity.getLocation()))
-                .assets(assetMapper.toDtoSet(entity.getAssets()))
+                .assets(assetMapper.toDtoSet(entity.getAssets(), false))
                 .name(entity.getName())
                 .imageKey(entity.getImageKey())
                 .description(entity.getDescription())
@@ -83,7 +83,10 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
     }
 
     @Override
-    public Set<RoomDto> toDtoSet(Set<Room> entitySet) {
+    public Set<RoomDto> toDtoSet(Set<Room> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

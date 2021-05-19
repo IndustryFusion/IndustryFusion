@@ -46,8 +46,8 @@ public class AssetTypeTemplateRestService {
     }
 
     @GetMapping(path = "/assettypetemplates")
-    public Set<AssetTypeTemplateDto> getAssetTypeTemplates() {
-        return assetTypeTemplateMapper.toDtoSet(assetTypeTemplateService.getAssetTypeTemplates());
+    public Set<AssetTypeTemplateDto> getAssetTypeTemplates(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetTypeTemplateMapper.toDtoSet(assetTypeTemplateService.getAssetTypeTemplates(), embedChildren);
     }
 
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}")

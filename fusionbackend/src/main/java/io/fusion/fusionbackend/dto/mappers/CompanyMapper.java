@@ -57,8 +57,8 @@ public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
         return CompanyDto.builder()
                 .id(entity.getId())
                 .type(entity.getType())
-                .locations(locationMapper.toDtoSet(entity.getLocations()))
-                .assets(assetMapper.toDtoSet(entity.getAssets()))
+                .locations(locationMapper.toDtoSet(entity.getLocations(), false))
+                .assets(assetMapper.toDtoSet(entity.getAssets(), false))
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .imageKey(entity.getImageKey())
@@ -88,7 +88,10 @@ public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
     }
 
     @Override
-    public Set<CompanyDto> toDtoSet(Set<Company> entitySet) {
+    public Set<CompanyDto> toDtoSet(Set<Company> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

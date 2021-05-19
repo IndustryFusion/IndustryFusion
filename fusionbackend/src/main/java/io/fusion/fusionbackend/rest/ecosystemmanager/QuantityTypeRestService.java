@@ -45,8 +45,8 @@ public class QuantityTypeRestService {
     }
 
     @GetMapping(path = "/quantitytypes")
-    public Set<QuantityTypeDto> getAllQuantityTypes() {
-        return quantityTypeMapper.toDtoSet(quantityTypeService.getAllQuantityTypes());
+    public Set<QuantityTypeDto> getAllQuantityTypes(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return quantityTypeMapper.toDtoSet(quantityTypeService.getAllQuantityTypes(), embedChildren);
     }
 
     @GetMapping(path = "/quantitytypes/{quantityTypeId}")

@@ -27,8 +27,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class FieldDetailsMapper implements EntityDtoMapper<FieldInstance, FieldDetailsDto> {
-    private FieldDetailsDto toDtoDeep(FieldInstance entity) {
+public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, FieldDetailsDto> {
+
+     @Override
+     protected FieldDetailsDto toDtoDeep(FieldInstance entity) {
         if (entity == null) {
             return null;
         }
@@ -66,29 +68,8 @@ public class FieldDetailsMapper implements EntityDtoMapper<FieldInstance, FieldD
                 .build();
     }
 
-
-    @Override
-    public FieldDetailsDto toDto(FieldInstance entity, boolean embedChildren) {
-        return toDtoDeep(entity);
-    }
-
-    @Override
-    public FieldInstance toEntity(FieldDetailsDto dto) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Set<FieldDetailsDto> toDtoSet(Set<FieldInstance> entitySet) {
-        return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
     @Override
     public Set<Long> toEntityIdSet(Set<FieldInstance> entitySet) {
         return EntityDtoMapper.getSetOfEntityIds(entitySet);
-    }
-
-    @Override
-    public Set<FieldInstance> toEntitySet(Set<FieldDetailsDto> dtoSet) {
-        throw new UnsupportedOperationException();
     }
 }

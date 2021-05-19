@@ -45,8 +45,8 @@ public class FieldRestService {
     }
 
     @GetMapping(path = "/fields")
-    public Set<FieldDto> getFields() {
-        return fieldMapper.toDtoSet(fieldService.getAllFields());
+    public Set<FieldDto> getFields(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return fieldMapper.toDtoSet(fieldService.getAllFields(), embedChildren);
     }
 
     @GetMapping(path = "/fields/{fieldId}")

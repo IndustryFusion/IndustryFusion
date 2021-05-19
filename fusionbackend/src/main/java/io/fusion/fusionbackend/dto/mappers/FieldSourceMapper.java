@@ -93,7 +93,10 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
     }
 
     @Override
-    public Set<FieldSourceDto> toDtoSet(Set<FieldSource> entitySet) {
+    public Set<FieldSourceDto> toDtoSet(Set<FieldSource> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

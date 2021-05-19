@@ -92,8 +92,11 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
     }
 
     @Override
-    public Set<QuantityTypeDto> toDtoSet(Set<QuantityType> entitySet) {
-        return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+    public Set<QuantityTypeDto> toDtoSet(Set<QuantityType> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
+        return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
