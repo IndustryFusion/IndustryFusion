@@ -54,7 +54,8 @@ public class FactoryAssetFieldRestService {
                                                                 @PathVariable final Long locationId,
                                                                 @PathVariable final Long roomId,
                                                                 @PathVariable final Long assetId,
-                                                                @RequestParam(defaultValue = "false") final boolean embedChildren) {
+                                                                @RequestParam(defaultValue = "false")
+                                                                    final boolean embedChildren) {
         return fieldInstanceMapper.toDtoSet(
                 assetService.getFieldInstancesCheckFullPath(companyId, locationId, roomId, assetId), embedChildren);
     }

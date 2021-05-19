@@ -22,15 +22,13 @@ import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, FieldDetailsDto> {
 
-     @Override
-     protected FieldDetailsDto toDtoDeep(FieldInstance entity) {
+    @Override
+    protected FieldDetailsDto toDtoDeep(FieldInstance entity) {
         if (entity == null) {
             return null;
         }

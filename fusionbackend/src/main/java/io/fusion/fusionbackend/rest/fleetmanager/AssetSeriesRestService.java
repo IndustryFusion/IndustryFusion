@@ -55,10 +55,13 @@ public class AssetSeriesRestService {
         return assetSeriesMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId), embedChildren);
     }
 
+    @SuppressWarnings("checkstyle:LineLength")
     @GetMapping(path = "/companies/{companyId}/assetseriesdetails")
     public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(@PathVariable final Long companyId,
-                                                               @RequestParam(defaultValue = "true") final boolean embedChildren) {
-        return assetSeriesDetailsMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId), embedChildren);
+                                                               @RequestParam(defaultValue = "true")
+                                                               final boolean embedChildren) {
+        return assetSeriesDetailsMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId),
+                embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")
