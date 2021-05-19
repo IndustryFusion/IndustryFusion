@@ -36,7 +36,6 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   @Input()
   height: number;
 
-
   mapType = 'terrain';
 
   companyId: ID;
@@ -237,13 +236,11 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   zoom = 5;
   private geocoder: any;
 
-
   constructor(
     private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
-    console.log(this.location);
     this.geocoder = new google.maps.Geocoder();
   }
 
@@ -252,14 +249,13 @@ export class LocationsMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('change', this.location);
     if (changes.location) {
       this.placeMarkerForLocation();
     }
   }
 
   placeMarkerForLocation() {
-    if (this.location.line1 && this.location.zip && this.location.city && this.location.country) {
+    if (this.location.zip || this.location.city) {
       const address = this.location.line1 + ' ' + this.location.zip + ' ' + this.location.city + ' ' + this.location.country;
       this.findLocation(address);
     }
@@ -272,11 +268,9 @@ export class LocationsMapComponent implements OnInit, OnChanges {
     this.geocoder.geocode({
       address
     }, (results, status) => {
-      if (status === google.maps.GeocoderStatus.OK) {
+      if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
         this.location.latitude = results[0].geometry.location.lat();
         this.location.longitude = results[0].geometry.location.lng();
-      // } else {
-      //   alert('Sorry, this search produced no results.');
       }
     });
   }

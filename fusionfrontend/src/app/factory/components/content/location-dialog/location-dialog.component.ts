@@ -47,7 +47,7 @@ export class LocationDialogComponent implements OnInit {
     this.locationForm = this.config.data.locationForm;
     this.location = { ...this.location, ...this.locationForm.value };
     this.formChange = this.locationForm.valueChanges.pipe(
-      debounceTime(1000)
+      debounceTime(500)
     ).subscribe(() => {
       this.location = { ...this.location, ...this.locationForm.value };
       console.log(this.location);

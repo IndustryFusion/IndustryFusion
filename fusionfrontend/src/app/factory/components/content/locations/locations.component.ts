@@ -48,8 +48,8 @@ export class LocationsComponent implements OnInit, OnDestroy {
   sortType: string;
 
   location: Location;
-  public locationForm: FormGroup;
-  public ref: DynamicDialogRef;
+  locationForm: FormGroup;
+  ref: DynamicDialogRef;
 
 
   constructor(
@@ -77,9 +77,15 @@ export class LocationsComponent implements OnInit, OnDestroy {
         locationForm: this.locationForm,
       },
       header: `Create new Location`,
+      width: '70%',
+      contentStyle: {"padding-left": "6%", "padding-right": "6%"},
     });
 
-    ref.onClose.subscribe((location: Location) => this.onCloseCreateDialog(location));
+    ref.onClose.subscribe((location: Location) => {
+      this.onCloseCreateDialog(location);
+      this.createLocationForm(this.formBuilder, new Location());
+      this.location = new Location();
+    });
   }
 
   createLocationForm(formBuilder: FormBuilder, locationToCreate: Location) {
@@ -99,6 +105,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
 
   onCloseCreateDialog(location: Location) {
     if (location) {
+      location.companyId = this.companyId;
       this.locationCreated(location);
     }
   }

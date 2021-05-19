@@ -21,8 +21,8 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
 
   menuActions: MenuItem[];
   routerLink: string[];
-  public locationForm: FormGroup;
-  public ref: DynamicDialogRef;
+  locationForm: FormGroup;
+  ref: DynamicDialogRef;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,9 +42,10 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
     const ref = this.dialogService.open(LocationDialogComponent, {
       data: {
         locationForm: this.locationForm,
-        location: this.location
       },
-      header: `Create new Location (${this.locationForm.get('name').value}`,
+      header: `Update Location ${this.locationForm.get('name').value}`,
+      width: '70%',
+      contentStyle: {"padding-left": "4%", "padding-right": "4%"},
     });
 
     ref.onClose.subscribe((location: Location) => this.onCloseCreateDialog(location));
@@ -54,12 +55,15 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.locationForm = formBuilder.group({
       id: [],
+      companyId: [this.location.companyId ? this.location.companyId : ''],
       name: [this.location.name ? this.location.name : '', requiredTextValidator],
       line1: [this.location.line1 ? this.location.line1 : ''],
       line2: [this.location.line2 ? this.location.line2 : ''],
       city: [this.location.city ? this.location.city : ''],
       zip: [this.location.zip ? this.location.zip : ''],
       country: [this.location.country ? this.location.country : ''],
+      latitude: [this.location.latitude ? this.location.latitude : ''],
+      longitude: [this.location.longitude ? this.location.longitude : ''],
       type: [this.location.type ? this.location.type : null, requiredTextValidator]
     });
     this.locationForm.patchValue(locationToCreate);
