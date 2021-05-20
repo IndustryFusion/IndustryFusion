@@ -36,7 +36,7 @@ export class QuantityTypeService implements RestService<QuantityType> {
 
   getItems(): Observable<QuantityType[]> {
     const path = `quantitytypes`;
-    return this.http.get<QuantityType[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+    return this.http.get<QuantityType[]>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
       .pipe(tap(entities => {
         this.quantityStore.upsertMany(entities);
       }));
@@ -52,16 +52,26 @@ export class QuantityTypeService implements RestService<QuantityType> {
 
   createItem(item: QuantityType): Observable<QuantityType> {
     const path = `quantitytypes`;
-    return this.http.post<QuantityType>(`${environment.apiUrlPrefix}/${path}`, item, this.httpOptions)
+    return this.http.post<QuantityType>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, item, this.httpOptions)
       .pipe(
         tap(entity => {
           this.quantityStore.upsert(entity.id, entity);
         }));
   }
 
+  editBaseUnit(id: ID, baseUnitId: ID): Observable<QuantityType> {
+    const path = `quantitytypes/${id}`;
+    const putPath = `${environment.apiUrlPrefix}/${path}?baseUnitId=${baseUnitId}`;
+    return this.http.put<QuantityType>(putPath, this.httpOptions)
+      .pipe(
+        tap(entity => {
+          this.quantityStore.upsert(id, entity);
+        }));
+  }
+
   editItem(id: ID, item: QuantityType): Observable<QuantityType> {
     const path = `quantitytypes/${id}`;
-    return this.http.patch<QuantityType>(`${environment.apiUrlPrefix}/${path}`, item, this.httpOptions)
+    return this.http.patch<QuantityType>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, item, this.httpOptions)
       .pipe(
         tap(entity => {
           this.quantityStore.upsert(id, entity);

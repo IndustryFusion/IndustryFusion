@@ -57,10 +57,11 @@ public class QuantityTypeRestService {
     }
 
     @PostMapping(path = "/quantitytypes")
-    public QuantityTypeDto createQuantityType(@RequestBody final QuantityTypeDto quantityTypeDto) {
+    public QuantityTypeDto createQuantityType(@RequestBody final QuantityTypeDto quantityTypeDto,
+                                              @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return quantityTypeMapper.toDto(
                 quantityTypeService.createQuantityType(quantityTypeMapper.toEntity(quantityTypeDto)),
-                false);
+                embedChildren);
     }
 
     @PatchMapping(path = "/quantitytypes/{quantityTypeId}")
@@ -80,6 +81,6 @@ public class QuantityTypeRestService {
     public QuantityTypeDto setBaseUnit(@PathVariable final Long quantityTypeId,
                                        @RequestParam final Long baseUnitId) {
         return quantityTypeMapper.toDto(quantityTypeService.setQuantityTypeBaseUnit(quantityTypeId, baseUnitId),
-                false);
+                true);
     }
 }

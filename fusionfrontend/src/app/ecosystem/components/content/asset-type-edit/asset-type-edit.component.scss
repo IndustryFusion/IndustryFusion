@@ -42,7 +42,3 @@
     padding-bottom: 24px;
   }
 }
-
-:host ::ng-deep .p-dialog { // TODO (jsy): not working
-  width: 51.25% !important;
-}

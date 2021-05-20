@@ -96,7 +96,6 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
   private onCreateQuantityType(quantityType: QuantityType) {
     if (quantityType) {
       this.quantityService.createItem(quantityType).subscribe();
-      // TODO (js): update GUI
     }
   }
 }

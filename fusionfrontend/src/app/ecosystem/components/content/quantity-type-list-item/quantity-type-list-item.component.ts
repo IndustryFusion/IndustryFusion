@@ -22,8 +22,6 @@ import { QuantityType } from '../../../../store/quantity-type/quantity-type.mode
 import { QuantityTypeDialogComponent } from '../quantity-type-dialog/quantity-type-dialog.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UnitQuery } from '../../../../store/unit/unit.query';
-import { Unit } from '../../../../store/unit/unit.model';
 import { QuantityDataType } from '../../../../store/field/field.model';
 
 @Component({
@@ -41,7 +39,6 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
 
   constructor(public route: ActivatedRoute,
               public router: Router,
-              public unitQuery: UnitQuery,
               public quantityService: QuantityTypeService,
               public dialogService: DialogService,
               private formBuilder: FormBuilder) {
@@ -82,26 +79,8 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
   private onCloseEditDialog(quantityType: QuantityType) {
     if (quantityType) {
       this.quantityService.editItem(quantityType.id, quantityType).subscribe();
-      this.updateUI(quantityType);
+      this.quantityService.editBaseUnit(quantityType.id, quantityType.baseUnitId).subscribe();
     }
     this.quantityService.setActive(this.item.id);
-  }
-
-  private updateUI(quantityType: QuantityType) {
-    let baseUnit: Unit;
-    this.unitQuery.selectUnitWithId(quantityType.baseUnitId).subscribe(x => baseUnit = x);
-
-    const newItem = new QuantityType();
-    newItem.id = quantityType.id;
-    newItem.name = quantityType.name;
-    newItem.label = quantityType.label;
-    newItem.dataType = quantityType.dataType;
-    newItem.description = quantityType.description;
-    newItem.baseUnit = baseUnit;
-    newItem.baseUnitId = quantityType.baseUnitId;
-    newItem.unitIds = this.item.unitIds;
-    newItem.units = this.item.units;
-
-    this.item = newItem;
   }
 }
