@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { QuantityTypeUpdateComponent } from './quantity-type-update.component';
+import { QuantityTypeDialogComponent } from './quantity-type-dialog.component';
 
 describe('QuantityTypeUpdateComponent', () => {
-  let component: QuantityTypeUpdateComponent;
-  let fixture: ComponentFixture<QuantityTypeUpdateComponent>;
+  let component: QuantityTypeDialogComponent;
+  let fixture: ComponentFixture<QuantityTypeDialogComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuantityTypeUpdateComponent ]
+      declarations: [ QuantityTypeDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuantityTypeUpdateComponent);
+    fixture = TestBed.createComponent(QuantityTypeDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

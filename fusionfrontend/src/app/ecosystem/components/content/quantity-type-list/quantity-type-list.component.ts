@@ -20,9 +20,10 @@ import { BaseListComponent } from '../base/base-list/base-list.component';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { QuantityTypeUpdateComponent } from '../quantity-type-update/quantity-type-update.component';
+import { QuantityTypeDialogComponent } from '../quantity-type-dialog/quantity-type-dialog.component';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { QuantityDataType } from '../../../../store/field/field.model';
 
 @Component({
   selector: 'app-quantity-type-list',
@@ -73,14 +74,15 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
       name: ['', requiredTextValidator],
       label: ['', requiredTextValidator],
       description: ['', requiredTextValidator],
-      baseUnitId: [null, Validators.required]
+      baseUnitId: [null, Validators.required],
+      dataType: [QuantityDataType.CATEGORICAL, Validators.required]
     });
   }
 
   showCreateDialog() {
     this.createQuantityTypeForm(this.formBuilder);
 
-    const ref = this.dialogService.open(QuantityTypeUpdateComponent, {
+    const ref = this.dialogService.open(QuantityTypeDialogComponent, {
       data: {
         quantityTypeForm: this.quantityTypeForm,
         isEditing: false

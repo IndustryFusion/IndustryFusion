@@ -21,19 +21,23 @@ import { Observable } from 'rxjs';
 import { UnitQuery } from 'src/app/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
+import { QuantityDataType } from '../../../../store/field/field.model';
 
 @Component({
   selector: 'app-quantity-type-create',
-  templateUrl: './quantity-type-update.component.html',
-  styleUrls: ['./quantity-type-update.component.scss']
+  templateUrl: './quantity-type-dialog.component.html',
+  styleUrls: ['./quantity-type-dialog.component.scss']
 })
 
-// Create and Edit Quantity Type
-export class QuantityTypeUpdateComponent implements OnInit {
+export class QuantityTypeDialogComponent implements OnInit {
 
   public isEditing = true;
+  public existsDataType: boolean;
   public quantityTypeForm: FormGroup;
   public units$: Observable<Unit[]>;
+
+  public valueCategorical = QuantityDataType.CATEGORICAL;
+  public valueNumeric = QuantityDataType.NUMERIC;
 
   @Output() dismissModalSignal = new EventEmitter<boolean>();
   @Output() confirmModalSignal = new EventEmitter<QuantityType>();
@@ -45,6 +49,7 @@ export class QuantityTypeUpdateComponent implements OnInit {
   ngOnInit() {
     this.quantityTypeForm = this.config.data.quantityTypeForm;
     this.isEditing = this.config.data.isEditing;
+    this.existsDataType = this.quantityTypeForm.get('dataType').value != null;
     this.units$ = this.unitQuery.selectAll();
   }
 
@@ -62,7 +67,12 @@ export class QuantityTypeUpdateComponent implements OnInit {
       quantityType.label = this.quantityTypeForm.get('label')?.value;
       quantityType.description = this.quantityTypeForm.get('description')?.value;
       quantityType.baseUnitId = this.quantityTypeForm.get('baseUnitId')?.value;
+      quantityType.dataType = this.quantityTypeForm.get('dataType')?.value;
       this.ref.close(quantityType);
     }
+  }
+
+  radioChecked() {
+
   }
 }

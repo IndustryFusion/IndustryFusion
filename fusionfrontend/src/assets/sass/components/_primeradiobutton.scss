@@ -26,6 +26,10 @@
       border-color: $basic-white;
       background: $basic-black;
     }
+
+    &.p-disabled {
+      border-color: $basic-grey !important;
+    }
   }
 
   .p-radiobutton-label {
@@ -34,6 +38,11 @@
     text-align: left;
     letter-spacing: 0;
     color: $highlighted;
+    margin-left: 2px;
     opacity: 1;
+
+    &.p-disabled {
+      color: $basic-grey !important;
+    }
   }
 }

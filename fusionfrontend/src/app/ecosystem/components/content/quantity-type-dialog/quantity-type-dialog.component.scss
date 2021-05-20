@@ -13,11 +13,12 @@
  * under the License.
  */
 
-@import 'src/assets/sass/components/buttons';
+@import "components/buttons";
+@import "components/radiobuttons";
 @import "abstract/variables";
 
-.create-quantity-type {
-  .create-quantity-type-footer {
+.quantity-type-dialog {
+  .quantity-type-dialog-footer {
     margin-top: 8.1%;
     margin-bottom: 5%;
     text-align: right;
@@ -33,7 +34,7 @@
     text-align: end;
   }
 
-  .create-quantity-type-inputs {
+  .quantity-type-dialog-inputs {
     width: 82.0%;
   }
 
@@ -41,4 +42,12 @@
     display: grid;
     padding-bottom: 24px;
   }
+
+  .dialog-grid {
+    display: inline-flex;
+  }
+  .dialog-grid-col {
+    padding-left: 35px;
+  }
 }
+

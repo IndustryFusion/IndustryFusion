@@ -19,11 +19,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { QuantityTypeUpdateComponent } from '../quantity-type-update/quantity-type-update.component';
+import { QuantityTypeDialogComponent } from '../quantity-type-dialog/quantity-type-dialog.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UnitQuery } from '../../../../store/unit/unit.query';
 import { Unit } from '../../../../store/unit/unit.model';
+import { QuantityDataType } from '../../../../store/field/field.model';
 
 @Component({
   selector: 'app-quantity-type-list-item',
@@ -58,7 +59,8 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
       name: ['', requiredTextValidator],
       label: ['', requiredTextValidator],
       description: ['', requiredTextValidator],
-      baseUnitId: [null, Validators.required]
+      baseUnitId: [null, Validators.required],
+      dataType: [QuantityDataType.CATEGORICAL, Validators.required]
     });
     this.quantityTypeForm.patchValue(this.item);
     this.quantityTypeForm.get('baseUnitId').setValue(this.item.baseUnit?.id);
@@ -66,7 +68,7 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
 
   public showEditDialog() {
     this.createQuantityTypeForm(this.formBuilder);
-    const ref = this.dialogService.open(QuantityTypeUpdateComponent, {
+    const ref = this.dialogService.open(QuantityTypeDialogComponent, {
       data: {
         quantityTypeForm: this.quantityTypeForm,
         isEditing: true
@@ -93,6 +95,7 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
     newItem.id = quantityType.id;
     newItem.name = quantityType.name;
     newItem.label = quantityType.label;
+    newItem.dataType = quantityType.dataType;
     newItem.description = quantityType.description;
     newItem.baseUnit = baseUnit;
     newItem.baseUnitId = quantityType.baseUnitId;
