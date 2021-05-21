@@ -57,8 +57,8 @@ public class UnitRestService {
 
     @PostMapping(path = "/quantitytypes/{quantityTypeId}/units")
     public UnitDto createUnitOfQuantityType(@PathVariable final Long quantityTypeId,
-                                            @RequestBody final UnitDto companyDto) {
-        return unitMapper.toDto(unitService.createUnit(quantityTypeId, unitMapper.toEntity(companyDto)),
+                                            @RequestBody final UnitDto unitDto) {
+        return unitMapper.toDto(unitService.createUnit(quantityTypeId, unitMapper.toEntity(unitDto)),
                 false);
     }
 
