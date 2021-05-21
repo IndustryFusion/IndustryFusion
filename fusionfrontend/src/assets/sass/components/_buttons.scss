@@ -49,6 +49,29 @@
   }
 }
 
+.if-button-cancel {
+  padding-top: 17px;
+  padding-bottom: 16px;
+  padding-right: 78px;
+  padding-left: 78px;
+
+  margin-right: 16px;
+
+  text-align: center;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  letter-spacing: 0;
+  color: #000000;
+  text-transform: uppercase;
+
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 44px;
+  opacity: 1;
+  cursor: pointer;
+}
+
 .close-modal-btn {
   border: none;
   float: right;

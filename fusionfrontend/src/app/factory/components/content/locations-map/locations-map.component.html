@@ -14,25 +14,41 @@ under the License.
 -->
 
 <agm-map
+    [style.height.px]='height'
     [mapTypeId]='mapType'
-    [fitBounds]='true'
     [styles]='styles'
     [disableDefaultUI]='true'
-    [maxZoom]='9'
+    [latitude]='defaultLatitude'
+    [longitude]='defaultLongitude'
+    [zoom]='zoom'
     >
 
-    <agm-marker
-        *ngFor="let location of locations; let i = index"
-        [agmFitBounds]="true"
-        [latitude]="location.latitude"
-        [longitude]="location.longitude"
-        [iconUrl]="
-        {
-            url: 'assets/icons/custom-marker.png'
-        }
-        "
-        (markerClick)="navigateToLocation(location.id)"
-        >
-    </agm-marker>
-
+    <ng-container *ngIf="location">
+        <agm-marker
+            [agmFitBounds]="true"
+            [latitude]="location.latitude"
+            [longitude]="location.longitude"
+            [iconUrl]="
+            {
+                url: 'assets/icons/custom-marker.png'
+            }
+            "
+            >
+        </agm-marker>
+    </ng-container>
+    <ng-container *ngIf="locations">
+        <agm-marker
+            *ngFor="let location of locations; let i = index"
+            [agmFitBounds]="true"
+            [latitude]="location.latitude"
+            [longitude]="location.longitude"
+            [iconUrl]="
+            {
+                url: 'assets/icons/custom-marker.png'
+            }
+            "
+            (markerClick)="navigateToLocation(location.id)"
+            >
+        </agm-marker>
+    </ng-container>
 </agm-map>

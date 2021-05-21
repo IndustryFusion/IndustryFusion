@@ -39,6 +39,7 @@
     "ng2-charts": "^2.4.2",
     "ng2-completer": "^9.0.1",
     "ngx-take-until-destroy": "^5.4.0",
+    "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primeng": "11.4.0",
     "rxjs": "^6.5.4",

@@ -13,15 +13,13 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { Component, EventEmitter, OnInit, Output, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Location } from 'src/app/store/location/location.model';
 import { ID } from '@datorama/akita';
-import { CompanyQuery } from 'src/app/store/company/company.query';
 import { AgmMap } from '@agm/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
+declare var google: any;
 
 @Component({
   selector: 'app-locations-map',
@@ -29,12 +27,18 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./locations-map.component.scss']
 })
 
-export class LocationsMapComponent implements OnInit, OnDestroy {
-  private unSubscribe$ = new Subject<void>();
+export class LocationsMapComponent implements OnInit, OnChanges {
+
+  @Input()
+  locations: Location[];
+  @Input()
+  location: Location;
+  @Input()
+  modalMode = false;
 
   mapType = 'terrain';
+
   companyId: ID;
-  locations: Location[];
   @Output() selectedLocation = new EventEmitter<ID>();
 
   styles =
@@ -227,29 +231,49 @@ export class LocationsMapComponent implements OnInit, OnDestroy {
 
   @ViewChild('AgmMap', { static: true })
   agmMap: AgmMap;
+  defaultLatitude = 50;
+  defaultLongitude = 10;
+  height = 330;
+  zoom = 5;
+  private geocoder: any;
 
-  constructor(private companyQuery: CompanyQuery,
-              private locationQuery: LocationQuery,
-              private route: ActivatedRoute,
-              private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
-    this.companyId = this.companyQuery.getActiveId();
-    this.locationQuery.selectLocationsOfCompany(this.companyId)
-      .pipe(
-        takeUntil(this.unSubscribe$)
-      ).subscribe(
-        res => {
-          this.locations = res;
-        });
+    if (this.modalMode) {
+      this.zoom = 7;
+      this.height = 460;
+      this.defaultLatitude = 48.5;
+    }
   }
 
   navigateToLocation(id: ID): void {
     this.router.navigate(['locations', id], { relativeTo: this.route });
   }
 
-  ngOnDestroy(): void {
-    this.unSubscribe$.next();
-    this.unSubscribe$.complete();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.modalMode && changes.location && (this.location.zip || this.location.city)) {
+      const address = this.location.line1 + ' ' + this.location.zip + ' ' + this.location.city + ' ' + this.location.country;
+      this.placeMarkerForLocation(address);
+    }
   }
+
+  placeMarkerForLocation(address) {
+    if (!this.geocoder) {
+      this.geocoder = new google.maps.Geocoder();
+    }
+    this.geocoder.geocode({
+      address
+    }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+        this.location.latitude = results[0].geometry.location.lat();
+        this.location.longitude = results[0].geometry.location.lng();
+        this.defaultLatitude = results[0].geometry.location.lat();
+        this.defaultLongitude = results[0].geometry.location.lng();
+      }
+    });
+  }
+
 }

@@ -138,9 +138,10 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
     DropdownModule,
     RadioButtonModule
   ],
-  exports: [
-    EcosystemSubHeaderComponent,
-    EcosystemPageTitleComponent
-  ]
+    exports: [
+        EcosystemSubHeaderComponent,
+        EcosystemPageTitleComponent,
+        CreateButtonComponent
+    ]
 })
 export class EcosystemModule { }

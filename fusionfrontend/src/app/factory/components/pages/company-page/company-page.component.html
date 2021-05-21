@@ -13,6 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-locations-map (selectedLocation)="setSelectedLocation($event)"></app-locations-map>
+<app-locations-map [locations]="locations" (selectedLocation)="setSelectedLocation($event)"></app-locations-map>
 
-<app-locations></app-locations>
+<app-locations (createLocationEvent)="locationCreated($event)" (updateLocationEvent)="locationUpdated($event)">
+</app-locations>

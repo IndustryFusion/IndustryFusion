@@ -48,6 +48,22 @@ export class LocationService {
       })));
   }
 
+  createLocation(location: Location): Observable<Location> {
+    const path = `companies/${location.companyId}/locations`;
+    return this.http.post<Location>(`${environment.apiUrlPrefix}/${path}`, location, this.httpOptions)
+      .pipe(tap(entity => {
+        this.locationStore.upsertCached(entity);
+      }));
+  }
+
+  updateLocation(location: Location): Observable<Location> {
+    const path = `companies/${location.companyId}/locations/${location.id}`;
+    return this.http.patch<Location>(`${environment.apiUrlPrefix}/${path}`, location, this.httpOptions)
+      .pipe(tap(entity => {
+        this.locationStore.upsertCached(entity);
+      }));
+  }
+
   setActive(locationId: ID) {
     this.locationStore.setActive(locationId);
   }

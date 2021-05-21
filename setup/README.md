@@ -33,7 +33,7 @@ Software needed to be installed on your system:
 ## Prepare Infrastructure: Database and Authentication
 
 ### Database: Postgresql
-ToDo (fkn): Es existiert eine docker-compose-Datei mit anderer Image-Konfiguration. Klären! Was ist in der Produktion?
+ToDo (IF-200): Es existiert eine docker-compose-Datei mit anderer Image-Konfiguration. Klären! Was ist in der Produktion?
 
 #### Run Docker Container
 
@@ -48,8 +48,8 @@ for the second time use:
 ```
 
 ### Authentication: Keycloak 
-- ToDo (fkn): Auch über docker-compose abbilden.
-- ToDo (fkn): Es gibt auch die Möglichkeit die Initialisierung gleich beim Container-Start zu machen. Siehe https://github.com/keycloak/keycloak-containers/blob/12.0.4/server/README.md
+- ToDo (IF-200): Auch über docker-compose abbilden.
+- ToDo (IF-200): Es gibt auch die Möglichkeit die Initialisierung gleich beim Container-Start zu machen. Siehe https://github.com/keycloak/keycloak-containers/blob/12.0.4/server/README.md
 
 Do the steps based on the [keycloak setup instructions](keycloaksetup.md)
 
@@ -67,7 +67,7 @@ The project is [hosted on GitHub](https://github.com/IndustryFusion/IndustryFusi
 1. Select POM File of the root folder (IndustryFusion/pom.xml) and click "OK"
 1. Run `mvn install` from terminal or the Maven tool window within the fusionfrontend module to automatically install node, yarn and the node modules to the "target" folder.
 
-ToDo (fkn): Build schlägt aktuell beim fusion-aggregator fehl
+ToDo (IF-201): Build schlägt aktuell beim fusion-aggregator fehl
 
 ## Configure Intellij 
 
@@ -96,7 +96,7 @@ Example:
    ![Run Configuration Frontend](images/Intellij_run_configuration_frontend.png)   
 1. Copy attachment of LastPass note "Shared-IndustryFusion > Frontend environment.dev.ts" to `fusionfrontend/src/environments/environment.dev.ts`. Do not forget to rename it correctly!
 
-Todo (fkn): Besser nicht die ganze Datei, sondern nur die einzelnen Keys in LastPass ablegen
+Todo (IF-202): Besser nicht die ganze Datei, sondern nur die einzelnen Keys in LastPass ablegen
 
 ### Install Plugins
 1. Choose menu "File > Settings..."
@@ -118,7 +118,11 @@ Todo (fkn): Besser nicht die ganze Datei, sondern nur die einzelnen Keys in Last
 
 
 # Optional: Import Postman collection
-ToDo (fkn): Für was werden/wurden die Postman-Collections verwendet?
+
+ToDo (IF-205): Update chapter. See user story for details. 
+
+The postman collection are currently not used for development and has been created in the past for semi-automatic 
+tests. 
 
 [Get Postman!](https://www.getpostman.com/)
 
@@ -126,7 +130,8 @@ Download and import [fusion.postman_collection.json](https://github.com/Industry
 
 # Using Kubernetes (K8S / K3S)
 
-ToDo (fkn): Update für dieses Kapitel notwendig und auslagern in eigene MD-Datei
+ToDo (IF-204): Update für dieses Kapitel notwendig und auslagern in eigene MD-Datei. Überlegen wie die lokale
+            Kubernetes-Zielumgebung aussehen soll und auf welcher Kubernetes-Implementierung wir aufsetzen. 
 
 ### Create linux host if running on Windows or Mac
 This step is only necessary if running on Windows or Mac. If on linux skip to next step.

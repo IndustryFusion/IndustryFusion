@@ -20,6 +20,11 @@ import { CompanyQuery } from 'src/app/store/company/company.query';
 import { ID } from '@datorama/akita';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
+import { LocationService } from 'src/app/store/location/location.service';
+import { Location } from 'src/app/store/location/location.model';
+import { LocationQuery } from 'src/app/store/location/location.query';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-company-page',
@@ -27,24 +32,62 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./company-page.component.scss']
 })
 export class CompanyPageComponent implements OnInit, OnDestroy {
+
+  private unSubscribe$ = new Subject<void>();
+
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
+  locations: Location[];
+  companyId: ID;
   selectedLocation: ID;
 
-  constructor(private companyQuery: CompanyQuery,
-              private factoryResolver: FactoryResolver,
-              private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private companyQuery: CompanyQuery,
+    private factoryResolver: FactoryResolver,
+    private locationService: LocationService,
+    private locationQuery: LocationQuery,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.isLoading$ = this.companyQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.companyQuery.selectActive();
+    this.companyId = this.companyQuery.getActiveId();
+    this.locationQuery.selectLocationsOfCompany(this.companyId)
+    .pipe(
+      takeUntil(this.unSubscribe$)
+    ).subscribe(
+      res => {
+        this.locations = res;
+      });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
+    this.unSubscribe$.next();
+    this.unSubscribe$.complete();
   }
 
   setSelectedLocation(id: ID) {
     this.selectedLocation = id;
+  }
+
+  locationCreated(location: Location) {
+    const createLocation$ = this.locationService.createLocation(location);
+    createLocation$.subscribe(
+      res => {
+        console.log('[company page] created location: ' + res.name);
+      },
+      error => console.log(error)
+    );
+  }
+
+  locationUpdated(location: Location) {
+    const createLocation$ = this.locationService.updateLocation(location);
+    createLocation$.subscribe(
+      res => {
+        console.log('[company page] updated location: ' + res.name);
+      },
+      error => console.log(error)
+    );
   }
 }

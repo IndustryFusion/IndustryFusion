@@ -14,8 +14,20 @@
  */
 
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import 'abstract/variables';
+@import 'base/typography';
 
 .wrapper {
   margin: 0 80px;
   padding-bottom: 50px;
+
+  .list-header {
+    .if-button {
+      padding: 14px 20px 12px;
+      margin-bottom: 5px;
+      font-size: $regular-font-size;
+      line-height: $regular-line-height;
+      border-radius: 22px;
+    }
+  }
 }
