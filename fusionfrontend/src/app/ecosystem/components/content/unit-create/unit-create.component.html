@@ -13,31 +13,33 @@ specific language governing permissions and limitations
 under the License.
 -->
 <div class="create-unit">
-  <form>
+  <form [formGroup]="unitForm">
     <div class="p-grid p-dir-col input-div">
       <label class="if-label p-col">Unit name</label>
-      <input type="text" pInputText name="name" placeholder="Unit name" [(ngModel)]="name" class="p-col"/>
+      <input type="text" pInputText placeholder="Unit name" formControlName="name" class="p-col"/>
     </div>
     <div class="p-grid input-div">
       <div class="p-col-6 p-grid">
         <label class="if-label p-col">Symbol</label>
-        <input type="text" pInputText name="symbol" placeholder="Symbol" [(ngModel)]="symbol"
+        <input type="text" pInputText placeholder="Symbol" formControlName="symbol"
                class="p-col symbol-input"/>
       </div>
       <div style="flex: 1"></div>
       <div class="p-col-6 p-grid">
-        <label class="if-label p-col">Quantity</label>
-        <p-dropdown [options]="quantityTypes$ | async" optionLabel="name" dataKey="id"
+        <label class="if-label p-col">Quantity *</label>
+        <p-dropdown [options]="quantityTypes$ | async" optionLabel="name" formControlName="type" placeholder="Quantity"
                     class="p-col quantity-dropdown"></p-dropdown>
       </div>
     </div>
     <div class="p-grid p-dir-col input-div">
       <label class="if-label p-col">Conversion to base unit</label>
-      <textarea pInputTextarea [(ngModel)]="description" name="description" class="p-col"></textarea>
+      <textarea pInputTextarea formControlName="conversion" class="p-col"></textarea>
     </div>
-    <div class="footer-btns">
+    <div class="footer-buttons">
       <button type="button" class="if-button-cancel" (click)="dismissModal()">Cancel</button>
-      <button type="button" class="if-button button-primary" (click)="confirmModal()">Create</button>
+      <button type="button" class="if-button button-primary" (click)="confirmModal()" [disabled]="unitForm.invalid">
+        Create
+      </button>
     </div>
   </form>
 </div>

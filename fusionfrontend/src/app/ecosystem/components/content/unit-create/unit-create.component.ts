@@ -14,12 +14,12 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {ID} from '@datorama/akita';
 import {Observable} from 'rxjs';
 import {Quantity} from 'src/app/store/quantity/quantity.model';
-import {Unit} from 'src/app/store/unit/unit.model';
 import {QuantityQuery} from 'src/app/store/quantity/quantity.query';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {FormGroup} from "@angular/forms";
+import {Unit} from "../../../../store/unit/unit.model";
 
 @Component({
   selector: 'app-unit-create',
@@ -28,12 +28,7 @@ import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 })
 export class UnitCreateComponent implements OnInit {
 
-  name: string;
-  description: string;
-  label: string;
-  symbol: string;
-  quantityTypeId: ID;
-
+  unitForm: FormGroup;
   quantityTypes$: Observable<Quantity[]>;
 
   constructor(private quantityQuery: QuantityQuery, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
@@ -41,6 +36,7 @@ export class UnitCreateComponent implements OnInit {
 
   ngOnInit() {
     this.quantityTypes$ = this.quantityQuery.selectAll();
+    this.unitForm = this.config.data?.unitForm;
   }
 
   dismissModal() {
@@ -49,11 +45,11 @@ export class UnitCreateComponent implements OnInit {
 
   confirmModal() {
     const unit = new Unit();
-    unit.name = this.name;
-    unit.description = this.description;
-    unit.label = this.label;
-    unit.symbol = this.symbol;
-    unit.quantityTypeId = this.quantityTypeId;
+    unit.name = this.unitForm.get('name')?.value;
+    unit.symbol = this.unitForm.get('symbol')?.value;
+    unit.description = this.unitForm.get('conversion')?.value;
+    unit.quantityType = this.unitForm.get('type')?.value;
+    unit.quantityTypeId = this.unitForm.get('type')?.value?.id;
     this.ref.close(unit);
   }
 

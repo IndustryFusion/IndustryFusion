@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {BaseListComponent} from '../base/base-list/base-list.component';
@@ -22,6 +22,7 @@ import {UnitService} from '../../../../store/unit/unit.service';
 import {Unit} from '../../../../store/unit/unit.model';
 import {DialogService} from "primeng/dynamicdialog";
 import {UnitCreateComponent} from "../unit-create/unit-create.component";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-unit-list',
@@ -41,7 +42,7 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
     other: '# units selected'
   };
 
-  constructor(public route: ActivatedRoute, public router: Router, public unitQuery: UnitQuery, public unitService: UnitService, public dialogService: DialogService) {
+  constructor(public route: ActivatedRoute, public router: Router, public unitQuery: UnitQuery, public unitService: UnitService, public dialogService: DialogService, public formBuilder: FormBuilder) {
     super(route, router, unitQuery, unitService);
   }
 
@@ -54,8 +55,24 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
   }
 
   showDialog() {
-    this.dialogService.open(UnitCreateComponent, {
-      header: "Create new Unit", width: '50%'
+    const unitForm = this.createDialogFormGroup();
+    const ref = this.dialogService.open(UnitCreateComponent, {
+      header: "Create new Unit", width: '50%', data: {unitForm: unitForm}
+    });
+    ref.onClose.subscribe((unit) => {
+      if (unit) {
+        this.onConfirmModal(unit);
+      }
+    });
+  }
+
+  createDialogFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      id: [],
+      name: ['', Validators.maxLength(255)],
+      symbol: ['', Validators.maxLength(255)],
+      type: [null, Validators.required],
+      conversion: ['', Validators.maxLength(255)]
     });
   }
 
