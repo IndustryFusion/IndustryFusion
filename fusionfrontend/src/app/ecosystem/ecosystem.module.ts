@@ -76,6 +76,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     AssetTypePageComponent,
     AssetTypeEditComponent,
     CreateButtonComponent,
+    QuantityTypePageComponent,
   ],
   imports: [
     CommonModule,
