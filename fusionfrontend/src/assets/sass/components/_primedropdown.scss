@@ -22,6 +22,28 @@
     border: 2px solid #95989A;
     box-shadow: none !important;
   }
+
+  &:focus {
+    border: 2px solid $highlighted;
+    box-shadow: none !important;
+  }
+}
+
+.p-dialog .p-dropdown {
+  border-radius: 10px !important;
+  border: none;
+  align-items: center;
+  min-width: 100%;
+  border: 2px solid $basic-white;
+
+  .p-dropdown-label {
+    border: none;
+  }
+
+  &:hover {
+    border: 2px solid #95989A;
+    box-shadow: none !important;
+  }
   &:focus {
     border: 2px solid $highlighted;
     box-shadow: none !important;

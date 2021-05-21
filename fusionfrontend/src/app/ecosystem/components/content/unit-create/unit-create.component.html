@@ -12,40 +12,32 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
-<div class="backdrop"></div>
-<div class="create-item">
-  <button class="button-close" (click)="dismissModal()">
-    <clr-icon size="19" shape="times"></clr-icon>
-  </button>
-  <div class="create-item-title">Create new Unit</div>
-  <div class="create-item-subtitle">Create new Unit</div>
-  <form clrForm clrLayout="vertical">
-    <clr-input-container>
-      <label>Unit name</label>
-      <input clrInput class="create-item-inputs" name="name" [(ngModel)]="name" />
-    </clr-input-container>
-    <clr-input-container>
-      <label>Unit label</label>
-      <input clrInput class="create-item-inputs" name="label" [(ngModel)]="label" />
-    </clr-input-container>
-    <clr-input-container>
-      <label>Symbol</label>
-      <input clrInput class="create-item-inputs" name="symbol" [(ngModel)]="symbol" />
-    </clr-input-container>
-    <clr-select-container>
-      <label>Quantity type</label>
-      <select clrSelect class="create-item-inputs" name="quantityTypeId" [(ngModel)]="quantityTypeId">
-        <option *ngFor="let quantityType of (quantityTypes$ | async)" [ngValue]="quantityType.id">{{ quantityType.name }}</option>
-      </select>
-    </clr-select-container>
-    <clr-textarea-container>
-      <label>Description</label>
-      <textarea clrTextarea class="create-item-inputs" [(ngModel)]="description" name="description"></textarea>
-    </clr-textarea-container>
-    <div class="create-item-footer">
-      <button type="button" class="if-button-cancel" type="submit" (click)="dismissModal()">Cancel</button>
-      <button type="button" class="button-confirm" (click)="confirmModal()">Create</button>
+<div class="create-unit">
+  <form>
+    <div class="p-grid p-dir-col input-div">
+      <label class="if-label p-col">Unit name</label>
+      <input type="text" pInputText name="name" placeholder="Unit name" [(ngModel)]="name" class="p-col"/>
+    </div>
+    <div class="p-grid input-div">
+      <div class="p-col-6 p-grid">
+        <label class="if-label p-col">Symbol</label>
+        <input type="text" pInputText name="symbol" placeholder="Symbol" [(ngModel)]="symbol"
+               class="p-col symbol-input"/>
+      </div>
+      <div style="flex: 1"></div>
+      <div class="p-col-6 p-grid">
+        <label class="if-label p-col">Quantity</label>
+        <p-dropdown [options]="quantityTypes$ | async" optionLabel="name" dataKey="id"
+                    class="p-col quantity-dropdown"></p-dropdown>
+      </div>
+    </div>
+    <div class="p-grid p-dir-col input-div">
+      <label class="if-label p-col">Conversion to base unit</label>
+      <textarea pInputTextarea [(ngModel)]="description" name="description" class="p-col"></textarea>
+    </div>
+    <div class="footer-btns">
+      <button type="button" class="if-button-cancel" (click)="dismissModal()">Cancel</button>
+      <button type="button" class="if-button button-primary" (click)="confirmModal()">Create</button>
     </div>
   </form>
 </div>

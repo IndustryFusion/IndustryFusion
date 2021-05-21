@@ -13,12 +13,13 @@
  * under the License.
  */
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
-import { Quantity } from 'src/app/store/quantity/quantity.model';
-import { Unit } from 'src/app/store/unit/unit.model';
-import { QuantityQuery } from 'src/app/store/quantity/quantity.query';
+import {Component, OnInit} from '@angular/core';
+import {ID} from '@datorama/akita';
+import {Observable} from 'rxjs';
+import {Quantity} from 'src/app/store/quantity/quantity.model';
+import {Unit} from 'src/app/store/unit/unit.model';
+import {QuantityQuery} from 'src/app/store/quantity/quantity.query';
+import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
   selector: 'app-unit-create',
@@ -35,16 +36,16 @@ export class UnitCreateComponent implements OnInit {
 
   quantityTypes$: Observable<Quantity[]>;
 
-  @Output() dismissModalSignal = new EventEmitter<boolean>();
-  @Output() confirmModalSignal = new EventEmitter<Unit>();
-
-  constructor(private quantityQuarey: QuantityQuery) { }
-
-  ngOnInit() {
-    this.quantityTypes$ = this.quantityQuarey.selectAll();
+  constructor(private quantityQuery: QuantityQuery, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
   }
 
-  dismissModal() { this.dismissModalSignal.emit(true); }
+  ngOnInit() {
+    this.quantityTypes$ = this.quantityQuery.selectAll();
+  }
+
+  dismissModal() {
+    this.ref.close();
+  }
 
   confirmModal() {
     const unit = new Unit();
@@ -53,7 +54,7 @@ export class UnitCreateComponent implements OnInit {
     unit.label = this.label;
     unit.symbol = this.symbol;
     unit.quantityTypeId = this.quantityTypeId;
-    this.confirmModalSignal.emit(unit);
+    this.ref.close(unit);
   }
 
 }

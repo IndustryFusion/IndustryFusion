@@ -74,6 +74,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import {DropdownModule} from "primeng/dropdown";
 
 @NgModule({
   declarations: [
@@ -130,7 +131,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     DialogModule,
     TableModule,
     InputTextModule,
-    InputTextareaModule
+    InputTextareaModule,
+    DropdownModule
   ],
     exports: [
         EcosystemSubHeaderComponent,

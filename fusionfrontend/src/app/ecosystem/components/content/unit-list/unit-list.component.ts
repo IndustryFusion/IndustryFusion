@@ -13,32 +13,35 @@
  * under the License.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { BaseListComponent } from '../base/base-list/base-list.component';
-import { UnitQuery } from '../../../../store/unit/unit.query';
-import { UnitService } from '../../../../store/unit/unit.service';
-import { Unit } from '../../../../store/unit/unit.model';
+import {BaseListComponent} from '../base/base-list/base-list.component';
+import {UnitQuery} from '../../../../store/unit/unit.query';
+import {UnitService} from '../../../../store/unit/unit.service';
+import {Unit} from '../../../../store/unit/unit.model';
+import {DialogService} from "primeng/dynamicdialog";
+import {UnitCreateComponent} from "../unit-create/unit-create.component";
 
 @Component({
   selector: 'app-unit-list',
   templateUrl: './unit-list.component.html',
-  styleUrls: ['./unit-list.component.scss']
+  styleUrls: ['./unit-list.component.scss'],
+  providers: [DialogService]
 })
 export class UnitListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
   titleMapping:
-  { [k: string]: string} = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
+    { [k: string]: string } = {'=0': 'No Units', '=1': '# Unit', other: '# Units'};
 
   editBarMapping:
     { [k: string]: string } = {
-      '=0': 'No units selected',
-      '=1': '# unit selected',
-      other: '# units selected'
-    };
+    '=0': 'No units selected',
+    '=1': '# unit selected',
+    other: '# units selected'
+  };
 
-  constructor(public route: ActivatedRoute, public router: Router, public unitQuery: UnitQuery, public unitService: UnitService) {
+  constructor(public route: ActivatedRoute, public router: Router, public unitQuery: UnitQuery, public unitService: UnitService, public dialogService: DialogService) {
     super(route, router, unitQuery, unitService);
   }
 
@@ -48,6 +51,12 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
 
   ngOnDestroy() {
     this.unitQuery.resetError();
+  }
+
+  showDialog() {
+    this.dialogService.open(UnitCreateComponent, {
+      header: "Create new Unit", width: '50%'
+    });
   }
 
   onConfirmModal(unit: Unit) {
