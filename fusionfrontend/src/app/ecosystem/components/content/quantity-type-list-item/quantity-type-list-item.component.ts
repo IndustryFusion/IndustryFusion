@@ -78,8 +78,8 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
 
   private onCloseEditDialog(quantityType: QuantityType) {
     if (quantityType) {
-      this.quantityService.editItem(quantityType.id, quantityType).subscribe();
-      this.quantityService.editBaseUnit(quantityType.id, quantityType.baseUnitId).subscribe();
+      this.quantityService.editItem(quantityType.id, quantityType).subscribe(
+        () => this.quantityService.editBaseUnit(quantityType.id, quantityType.baseUnitId).subscribe());
     }
     this.quantityService.setActive(this.item.id);
   }

@@ -44,7 +44,7 @@ export class QuantityTypeService implements RestService<QuantityType> {
 
   getItem(id: ID): Observable<QuantityType> {
     const path = `quantitytypes/${id}`;
-    return this.http.get<QuantityType>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+    return this.http.get<QuantityType>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
       .pipe(tap(entity => {
         this.quantityStore.upsert(id, entity);
       }));

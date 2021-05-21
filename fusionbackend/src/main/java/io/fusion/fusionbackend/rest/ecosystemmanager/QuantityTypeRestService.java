@@ -60,8 +60,8 @@ public class QuantityTypeRestService {
     public QuantityTypeDto createQuantityType(@RequestBody final QuantityTypeDto quantityTypeDto,
                                               @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return quantityTypeMapper.toDto(
-                quantityTypeService.createQuantityType(quantityTypeMapper.toEntity(quantityTypeDto)),
-                embedChildren);
+                quantityTypeService.createQuantityType(quantityTypeMapper.toEntity(quantityTypeDto),
+                        quantityTypeDto.getBaseUnitId()), embedChildren);
     }
 
     @PatchMapping(path = "/quantitytypes/{quantityTypeId}")

@@ -71,8 +71,4 @@ export class QuantityTypeDialogComponent implements OnInit {
       this.ref.close(quantityType);
     }
   }
-
-  radioChecked() {
-
-  }
 }
