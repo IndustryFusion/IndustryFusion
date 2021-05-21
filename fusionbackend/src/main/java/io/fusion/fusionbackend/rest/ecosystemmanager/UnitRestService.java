@@ -65,8 +65,8 @@ public class UnitRestService {
     @PatchMapping(path = "/quantitytypes/{quantityTypeId}/units/{unitId}")
     public UnitDto updateUnitOfQuantityType(@PathVariable final Long quantityTypeId,
                                             @PathVariable final Long unitId,
-                                            @RequestBody final UnitDto companyDto) {
-        return unitMapper.toDto(unitService.updateUnit(quantityTypeId, unitId, unitMapper.toEntity(companyDto)),
+                                            @RequestBody final UnitDto unitDto) {
+        return unitMapper.toDto(unitService.updateUnit(quantityTypeId, unitId, unitMapper.toEntity(unitDto)),
                 false);
     }
 
