@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { QuantityTypeDialogComponent } from './quantity-type-dialog.component';
 
-describe('QuantityTypeUpdateComponent', () => {
+describe('QuantityTypeDialogComponent', () => {
   let component: QuantityTypeDialogComponent;
   let fixture: ComponentFixture<QuantityTypeDialogComponent>;
 

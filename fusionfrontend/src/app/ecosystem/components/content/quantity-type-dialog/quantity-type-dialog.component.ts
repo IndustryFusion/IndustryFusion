@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { Unit } from 'src/app/store/unit/unit.model';
@@ -38,9 +38,6 @@ export class QuantityTypeDialogComponent implements OnInit {
 
   public valueCategorical = QuantityDataType.CATEGORICAL;
   public valueNumeric = QuantityDataType.NUMERIC;
-
-  @Output() dismissModalSignal = new EventEmitter<boolean>();
-  @Output() confirmModalSignal = new EventEmitter<QuantityType>();
 
   constructor(private unitQuery: UnitQuery,
               public ref: DynamicDialogRef,

@@ -62,7 +62,7 @@ export class AssetTypeTemplateMetricRowComponent implements OnInit {
   getQuantityTypeName(id: ID) {
     const unit = this.unitQuery.getEntity(id);
     const quantityType = this.quantityQuery.getEntity(unit.quantityTypeId);
-    return quantityType.name;
+    return quantityType?.name;
   }
 
   getUnitSymbol(id: ID) {

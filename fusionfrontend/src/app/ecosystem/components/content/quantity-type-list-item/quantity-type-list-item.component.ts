@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
@@ -29,7 +29,7 @@ import { QuantityDataType } from '../../../../store/field/field.model';
   templateUrl: './quantity-type-list-item.component.html',
   styleUrls: ['./quantity-type-list-item.component.scss']
 })
-export class QuantityTypeListItemComponent extends BaseListItemComponent implements OnInit {
+export class QuantityTypeListItemComponent extends BaseListItemComponent implements OnInit, OnDestroy {
 
   @Input()
   public item: QuantityType;
@@ -49,6 +49,12 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
     super.ngOnInit();
   }
 
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
+  }
+
   private createQuantityTypeForm(formBuilder: FormBuilder): void {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.quantityTypeForm = formBuilder.group({
@@ -65,6 +71,8 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
 
   public showEditDialog() {
     this.createQuantityTypeForm(this.formBuilder);
+    this.quantityService.setActive(this.item.id);
+
     const ref = this.dialogService.open(QuantityTypeDialogComponent, {
       data: {
         quantityTypeForm: this.quantityTypeForm,
@@ -81,6 +89,5 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
       this.quantityService.editItem(quantityType.id, quantityType).subscribe(
         () => this.quantityService.editBaseUnit(quantityType.id, quantityType.baseUnitId).subscribe());
     }
-    this.quantityService.setActive(this.item.id);
   }
 }

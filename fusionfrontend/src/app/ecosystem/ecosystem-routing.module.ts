@@ -106,7 +106,7 @@ const routes: Routes = [
     },
     children: [{
       path: '',
-      component: AssetTypeTemplateListComponent, // TODO
+      component: AssetTypeTemplateListComponent,
     }]
   },
   {
