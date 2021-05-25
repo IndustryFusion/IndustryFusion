@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.UnitDto;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.service.QuantityTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -28,10 +29,12 @@ import java.util.stream.Collectors;
 @Component
 public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
     private final QuantityTypeMapper quantityTypeMapper;
+    private final QuantityTypeService quantityTypeService;
 
     @Autowired
-    public UnitMapper(@Lazy QuantityTypeMapper quantityTypeMapper) {
+    public UnitMapper(@Lazy QuantityTypeMapper quantityTypeMapper, QuantityTypeService quantityTypeService) {
         this.quantityTypeMapper = quantityTypeMapper;
+        this.quantityTypeService = quantityTypeService;
     }
 
     private UnitDto toDtoShallow(Unit entity) {
@@ -74,13 +77,18 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         if (dto == null) {
             return null;
         }
-        return Unit.builder()
+        Unit unit = Unit.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())
                 .symbol(dto.getSymbol())
                 .build();
+
+        if (dto.getQuantityType() != null) {
+            unit.setQuantityType(quantityTypeService.getQuantityType(dto.getQuantityType().getId()));
+        }
+        return unit;
     }
 
     @Override
