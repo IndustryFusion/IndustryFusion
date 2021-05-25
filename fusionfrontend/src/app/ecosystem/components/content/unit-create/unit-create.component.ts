@@ -30,6 +30,7 @@ export class UnitCreateComponent implements OnInit {
 
   unitForm: FormGroup;
   quantityTypes$: Observable<Quantity[]>;
+  editMode: boolean = false;
 
   constructor(private quantityQuery: QuantityQuery, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
   }
@@ -37,6 +38,7 @@ export class UnitCreateComponent implements OnInit {
   ngOnInit() {
     this.quantityTypes$ = this.quantityQuery.selectAll();
     this.unitForm = this.config.data?.unitForm;
+    this.editMode = this.config.data?.editMode;
   }
 
   dismissModal() {
@@ -46,10 +48,11 @@ export class UnitCreateComponent implements OnInit {
   confirmModal() {
     const unit = new Unit();
     unit.name = this.unitForm.get('name')?.value;
+    unit.label = this.unitForm.get('label')?.value;
     unit.symbol = this.unitForm.get('symbol')?.value;
     unit.description = this.unitForm.get('conversion')?.value;
-    unit.quantityType = this.unitForm.get('type')?.value;
-    unit.quantityTypeId = this.unitForm.get('type')?.value?.id;
+    unit.quantityTypeId = this.unitForm.get('type')?.value;
+
     this.ref.close(unit);
   }
 

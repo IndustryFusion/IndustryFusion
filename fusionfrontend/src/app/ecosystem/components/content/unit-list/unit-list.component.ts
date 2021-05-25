@@ -70,6 +70,7 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
     return this.formBuilder.group({
       id: [],
       name: ['', Validators.maxLength(255)],
+      label: ['', Validators.maxLength(255)],
       symbol: ['', Validators.maxLength(255)],
       type: [null, Validators.required],
       conversion: ['', Validators.maxLength(255)]
@@ -78,7 +79,6 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
 
   onConfirmModal(unit: Unit) {
     this.unitService.createUnit(unit.quantityTypeId, unit).subscribe();
-    this.shouldShowCreateItem = false;
   }
 
   deleteItems() {
