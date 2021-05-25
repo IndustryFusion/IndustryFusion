@@ -87,7 +87,10 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
     }
 
     @Override
-    public Set<FieldDto> toDtoSet(Set<Field> entitySet) {
+    public Set<FieldDto> toDtoSet(Set<Field> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

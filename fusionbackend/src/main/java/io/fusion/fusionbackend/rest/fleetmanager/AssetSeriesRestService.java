@@ -50,13 +50,18 @@ public class AssetSeriesRestService {
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries")
-    public Set<AssetSeriesDto> getAssetSeriesSet(@PathVariable final Long companyId) {
-        return assetSeriesMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId));
+    public Set<AssetSeriesDto> getAssetSeriesSet(@PathVariable final Long companyId,
+                                                 @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetSeriesMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId), embedChildren);
     }
 
+    @SuppressWarnings("checkstyle:LineLength")
     @GetMapping(path = "/companies/{companyId}/assetseriesdetails")
-    public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(@PathVariable final Long companyId) {
-        return assetSeriesDetailsMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId));
+    public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(@PathVariable final Long companyId,
+                                                               @RequestParam(defaultValue = "true")
+                                                               final boolean embedChildren) {
+        return assetSeriesDetailsMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId),
+                embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")

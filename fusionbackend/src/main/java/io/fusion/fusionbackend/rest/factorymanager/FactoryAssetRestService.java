@@ -53,15 +53,17 @@ public class FactoryAssetRestService {
 
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/assets")
     public Set<AssetDto> getAssetsOfLocation(@PathVariable final Long companyId,
-                                             @PathVariable final Long locationId) {
-        return assetMapper.toDtoSet(assetService.getAssetsByLocation(companyId, locationId));
+                                             @PathVariable final Long locationId,
+                                             @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetMapper.toDtoSet(assetService.getAssetsByLocation(companyId, locationId), embedChildren);
     }
 
     // AssetDetails path
     @GetMapping(path = "companies/{companyId}/assetdetails")
-    public Set<AssetDetailsDto> getAssetDetails(@PathVariable final Long companyId) {
+    public Set<AssetDetailsDto> getAssetDetails(@PathVariable final Long companyId,
+                                                @RequestParam(defaultValue = "true") final boolean embedChildren) {
         Set<Asset> assetSet = assetService.getAssetsByCompany(companyId);
-        return assetDetailsMapper.toDtoSet(assetSet);
+        return assetDetailsMapper.toDtoSet(assetSet, embedChildren);
     }
 
     @GetMapping(path = "assetdetails/{assetDetailsId}")
@@ -75,8 +77,9 @@ public class FactoryAssetRestService {
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets")
     public Set<AssetDto> getAssets(@PathVariable final Long companyId,
                                    @PathVariable final Long locationId,
-                                   @PathVariable final Long roomId) {
-        return assetMapper.toDtoSet(assetService.getAssetsCheckFullPath(companyId, locationId, roomId));
+                                   @PathVariable final Long roomId,
+                                   @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetMapper.toDtoSet(assetService.getAssetsCheckFullPath(companyId, locationId, roomId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
@@ -125,8 +128,9 @@ public class FactoryAssetRestService {
 
     // Company direct path
     @GetMapping(path = "/companies/{companyId}/assets")
-    public Set<AssetDto> getCompanyAssets(@PathVariable final Long companyId) {
-        return assetMapper.toDtoSet(assetService.getAssetsByCompany(companyId));
+    public Set<AssetDto> getCompanyAssets(@PathVariable final Long companyId,
+                                          @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetMapper.toDtoSet(assetService.getAssetsByCompany(companyId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assets/{assetId}")

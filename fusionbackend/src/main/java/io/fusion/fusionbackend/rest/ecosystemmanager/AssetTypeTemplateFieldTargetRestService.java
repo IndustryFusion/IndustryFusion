@@ -45,8 +45,9 @@ public class AssetTypeTemplateFieldTargetRestService {
     }
 
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fieldtargets")
-    public Set<FieldTargetDto> getFieldTargets(@PathVariable final Long assetTypeTemplateId) {
-        return fieldTargetMapper.toDtoSet(assetTypeTemplateService.getFieldTargets(assetTypeTemplateId));
+    public Set<FieldTargetDto> getFieldTargets(@PathVariable final Long assetTypeTemplateId,
+                                               @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return fieldTargetMapper.toDtoSet(assetTypeTemplateService.getFieldTargets(assetTypeTemplateId), embedChildren);
     }
 
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fieldtargets/{fieldTargetId}")

@@ -16,7 +16,7 @@
 import { ID } from '@datorama/akita';
 
 import { BaseEntity } from '../baseentity.model';
-import { Quantity } from '../quantity/quantity.model';
+import { QuantityType } from '../quantity-type/quantity-type.model';
 
 export class Unit extends BaseEntity {
   name: string;
@@ -24,5 +24,5 @@ export class Unit extends BaseEntity {
   symbol: string;
   label: string;
   quantityTypeId: ID;
-  quantityType: Quantity;
+  quantityType: QuantityType;
 }

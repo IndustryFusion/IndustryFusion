@@ -43,6 +43,7 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
+                .dataType(entity.getDataType())
                 .unitIds(EntityDtoMapper.getSetOfEntityIds(entity.getUnits()))
                 .baseUnitId(EntityDtoMapper.getEntityId(entity.getBaseUnit()))
                 .build();
@@ -57,7 +58,8 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
-                .units(unitMapper.toDtoSet(entity.getUnits()))
+                .dataType(entity.getDataType())
+                .units(unitMapper.toDtoSet(entity.getUnits(), false))
                 .baseUnit(unitMapper.toDto(entity.getBaseUnit(), false))
                 .build();
     }
@@ -75,16 +77,21 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         if (dto == null) {
             return null;
         }
+
         return QuantityType.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())
+                .dataType(dto.getDataType())
                 .build();
     }
 
     @Override
-    public Set<QuantityTypeDto> toDtoSet(Set<QuantityType> entitySet) {
+    public Set<QuantityTypeDto> toDtoSet(Set<QuantityType> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

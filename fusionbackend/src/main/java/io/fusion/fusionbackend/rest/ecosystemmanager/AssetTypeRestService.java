@@ -52,8 +52,8 @@ public class AssetTypeRestService {
     }
 
     @GetMapping(path = "/assettypes")
-    public Set<AssetTypeDto> getAssetTypes() {
-        return assetTypeMapper.toDtoSet(assetTypeService.getAllAssetTypes());
+    public Set<AssetTypeDto> getAssetTypes(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetTypeMapper.toDtoSet(assetTypeService.getAllAssetTypes(), embedChildren);
     }
 
     @GetMapping(path = "/assettypes/{assetTypeId}")

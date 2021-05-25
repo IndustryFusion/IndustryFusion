@@ -38,6 +38,10 @@ public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto>
                 .build();
     }
 
+    private AssetTypeDto toDtoDeep(final AssetType entity) {
+        return toDtoShallow(entity);
+    }
+
     @Override
     public AssetTypeDto toDto(AssetType entity, boolean embedChildren) {
         return toDtoShallow(entity);
@@ -58,7 +62,10 @@ public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto>
     }
 
     @Override
-    public Set<AssetTypeDto> toDtoSet(Set<AssetType> entitySet) {
+    public Set<AssetTypeDto> toDtoSet(Set<AssetType> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

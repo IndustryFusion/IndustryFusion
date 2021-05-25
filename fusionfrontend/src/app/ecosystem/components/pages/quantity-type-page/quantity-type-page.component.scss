@@ -13,17 +13,4 @@
  * under the License.
  */
 
-import { ID } from '@datorama/akita';
-
-import { BaseEntity } from '../baseentity.model';
-import { Unit } from '../unit/unit.model';
-
-export class Quantity extends BaseEntity {
-  name: string;
-  description: string;
-  label: string;
-  unitIds: Set<number>;
-  units: Set<Unit>;
-  baseUnitId: ID;
-  baseUnit: Unit;
-}
+@import 'components/detailpage';

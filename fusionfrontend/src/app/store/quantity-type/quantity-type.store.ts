@@ -14,10 +14,10 @@
  */
 
 import { ActiveState, EntityState, EntityStore, StoreConfig, ID } from '@datorama/akita';
-import { Quantity } from './quantity.model';
+import { QuantityType } from './quantity-type.model';
 import { Injectable } from '@angular/core';
 
-export interface QuantityState extends EntityState<Quantity, ID>, ActiveState { }
+export interface QuantityTypeState extends EntityState<QuantityType, ID>, ActiveState { }
 
 const initialState = {
   active: null
@@ -25,7 +25,7 @@ const initialState = {
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'quantity', resettable: true })
-export class QuantityStore extends EntityStore<QuantityState, Quantity> {
+export class QuantityTypeStore extends EntityStore<QuantityTypeState, QuantityType> {
 
   constructor() {
     super(initialState);

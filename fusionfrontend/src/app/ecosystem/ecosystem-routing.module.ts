@@ -39,6 +39,7 @@ import { EcosystemManagerPageType } from './ecosystem.routing.model';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
+import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 
 const routes: Routes = [
   {
@@ -63,7 +64,7 @@ const routes: Routes = [
         assetTypes: AssetTypesResolver,
         metrics: MetricsResolver,
         units: UnitsResolver,
-        quantity: QuantityTypesResolver,
+        quantityTypes: QuantityTypesResolver,
       }
     },
     {
@@ -126,11 +127,11 @@ const routes: Routes = [
     }]
   },
   {
-    path: 'ecosystemmanager/quantity',
+    path: 'ecosystemmanager/quantitytypes',
     component: QuantityTypesPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      quantity: QuantityTypesResolver,
+      quantityTypes: QuantityTypesResolver,
       units: UnitsResolver,
     },
     data: {
@@ -143,11 +144,28 @@ const routes: Routes = [
     }]
   },
   {
+    path: 'ecosystemmanager/quantitytypes/:quantitytypeId',
+    component: QuantityTypePageComponent,
+    canActivate: [MainAuthGuardGuard],
+    resolve: {
+      quantityTypes: QuantityTypesResolver,
+      units: UnitsResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_DETAIL],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
+    children: [{
+      path: '',
+      component: UnitListComponent,
+    }]
+  },
+  {
     path: 'ecosystemmanager/units',
     component: UnitsPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      quantity: QuantityTypesResolver,
+      quantityTypes: QuantityTypesResolver,
       units: UnitsResolver,
     },
     data: {

@@ -16,9 +16,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { Quantity } from 'src/app/store/quantity/quantity.model';
+import { QuantityType } from 'src/app/store/quantity-type/quantity-type.model';
 import { Unit } from 'src/app/store/unit/unit.model';
-import { QuantityQuery } from 'src/app/store/quantity/quantity.query';
+import { QuantityTypeQuery } from 'src/app/store/quantity-type/quantity-type.query';
 
 @Component({
   selector: 'app-unit-create',
@@ -33,12 +33,12 @@ export class UnitCreateComponent implements OnInit {
   symbol: string;
   quantityTypeId: ID;
 
-  quantityTypes$: Observable<Quantity[]>;
+  quantityTypes$: Observable<QuantityType[]>;
 
   @Output() dismissModalSignal = new EventEmitter<boolean>();
   @Output() confirmModalSignal = new EventEmitter<Unit>();
 
-  constructor(private quantityQuarey: QuantityQuery) { }
+  constructor(private quantityQuarey: QuantityTypeQuery) { }
 
   ngOnInit() {
     this.quantityTypes$ = this.quantityQuarey.selectAll();

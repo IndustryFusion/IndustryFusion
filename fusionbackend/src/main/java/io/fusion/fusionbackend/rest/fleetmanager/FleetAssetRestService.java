@@ -45,8 +45,9 @@ public class FleetAssetRestService {
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/")
     public Set<AssetDto> getAssets(@PathVariable final Long companyId,
-                                   @PathVariable final Long assetSeriesId) {
-        return assetMapper.toDtoSet(assetService.getAssetsOverAssetSeries(companyId, assetSeriesId));
+                                   @PathVariable final Long assetSeriesId,
+                                   @RequestParam(defaultValue = "true") final boolean embedChildren) {
+        return assetMapper.toDtoSet(assetService.getAssetsOverAssetSeries(companyId, assetSeriesId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}")

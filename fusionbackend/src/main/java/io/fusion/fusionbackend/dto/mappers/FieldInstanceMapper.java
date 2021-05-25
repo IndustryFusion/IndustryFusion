@@ -89,7 +89,10 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
     }
 
     @Override
-    public Set<FieldInstanceDto> toDtoSet(Set<FieldInstance> entitySet) {
+    public Set<FieldInstanceDto> toDtoSet(Set<FieldInstance> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

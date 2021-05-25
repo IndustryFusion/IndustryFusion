@@ -44,8 +44,8 @@ public class UnitRestService {
     }
 
     @GetMapping(path = "/quantitytypes/{quantityTypeId}/units")
-    public Set<UnitDto> getUnitsOfQuantityType() {
-        return unitMapper.toDtoSet(unitService.getAllUnits());
+    public Set<UnitDto> getUnitsOfQuantityType(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return unitMapper.toDtoSet(unitService.getAllUnits(), embedChildren);
     }
 
     @GetMapping(path = "/quantitytypes/{quantityTypeId}/units/{unitId}")

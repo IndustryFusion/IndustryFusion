@@ -14,19 +14,21 @@
  */
 
 import { Injectable } from '@angular/core';
-
-import { Resolve } from '@angular/router';
-
-import { Observable } from 'rxjs';
-
-import { QuantityType } from '../store/quantity-type/quantity-type.model';
-import { QuantityTypeService } from '../store/quantity-type/quantity-type.service';
+import { BaseQueryEntity } from '../basequery';
+import { QuantityType } from './quantity-type.model';
+import { QuantityTypeState, QuantityTypeStore } from './quantity-type.store';
 
 @Injectable({ providedIn: 'root' })
-export class QuantityTypesResolver implements Resolve<QuantityType[]> {
-  constructor(private quantityTypeService: QuantityTypeService) { }
+export class QuantityTypeQuery extends BaseQueryEntity<QuantityTypeState, QuantityType> {
+  constructor(protected store: QuantityTypeStore) {
+    super(store);
+  }
 
-  resolve(): Observable<QuantityType[]> {
-    return this.quantityTypeService.getItems();
+  resetStore() {
+    this.store.reset();
+  }
+
+  resetError() {
+    this.store.setError(null);
   }
 }

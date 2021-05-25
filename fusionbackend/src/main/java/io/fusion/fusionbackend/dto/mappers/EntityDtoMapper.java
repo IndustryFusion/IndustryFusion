@@ -26,7 +26,7 @@ public interface EntityDtoMapper<T, U> {
 
     T toEntity(U dto);
 
-    Set<U> toDtoSet(Set<T> entitySet);
+    Set<U> toDtoSet(Set<T> entitySet, boolean embedChildren);
 
     Set<Long> toEntityIdSet(Set<T> entitySet);
 

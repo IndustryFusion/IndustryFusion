@@ -84,7 +84,10 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
     }
 
     @Override
-    public Set<UnitDto> toDtoSet(Set<Unit> entitySet) {
+    public Set<UnitDto> toDtoSet(Set<Unit> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

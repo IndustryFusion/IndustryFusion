@@ -13,13 +13,14 @@
  * under the License.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
 import { UnitQuery } from '../../../../store/unit/unit.query';
 import { UnitService } from '../../../../store/unit/unit.service';
 import { Unit } from '../../../../store/unit/unit.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-unit-list',
@@ -27,6 +28,9 @@ import { Unit } from '../../../../store/unit/unit.model';
   styleUrls: ['./unit-list.component.scss']
 })
 export class UnitListComponent extends BaseListComponent implements OnInit, OnDestroy {
+
+  @Input()
+  optionalItems$: Observable<Unit[]>;
 
   titleMapping:
   { [k: string]: string} = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
@@ -44,6 +48,10 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
 
   ngOnInit() {
     super.ngOnInit();
+
+    if (this.optionalItems$ != null) {
+      this.items$ = this.optionalItems$;
+    }
   }
 
   ngOnDestroy() {
