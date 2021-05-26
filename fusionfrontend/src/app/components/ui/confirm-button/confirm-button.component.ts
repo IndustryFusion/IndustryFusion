@@ -13,17 +13,16 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-create-button',
-  templateUrl: './create-button.component.html',
-  styleUrls: ['./create-button.component.scss']
+  selector: 'app-confirm-button',
+  templateUrl: './confirm-button.component.html',
+  styleUrls: ['./confirm-button.component.scss']
 })
-export class CreateButtonComponent implements OnInit {
+export class ConfirmButtonComponent implements OnInit {
 
-  @Input() text: string;
-  @Output() createItem = new EventEmitter<void>();
+  @Output() confirmItem = new EventEmitter<void>();
 
   constructor() { }
 
@@ -31,6 +30,6 @@ export class CreateButtonComponent implements OnInit {
   }
 
   onClick() {
-    this.createItem.emit();
+    this.confirmItem.emit();
   }
 }
