@@ -13,24 +13,22 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+@import 'abstract/variables';
+@import 'base/typography';
 
-@Component({
-  selector: 'app-create-button',
-  templateUrl: './create-button.component.html',
-  styleUrls: ['./create-button.component.scss']
-})
-export class CreateButtonComponent implements OnInit {
+.if-trash-button {
+  color: $basic-white;
+  font-weight: bolder;
+  font-size: 0.9em;
 
-  @Input() text: string;
-  @Output() createItem = new EventEmitter<void>();
+  background: #C42326 0 0 no-repeat padding-box;
+  border-radius: 10px;
+  border: none;
+  opacity: 1;
 
-  constructor() { }
+  height: 56px;
+  width: 56px;
+  cursor: pointer;
 
-  ngOnInit(): void {
-  }
-
-  onClick() {
-    this.createItem.emit();
-  }
+  margin: 8px 4px;
 }

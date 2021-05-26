@@ -70,6 +70,7 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 import { CreateButtonComponent } from '../components/ui/create-button/create-button.component';
+import { TrashButtonComponent } from '../components/ui/trash-button/trash-button.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -77,6 +78,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
+import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
+import { CheckboxModule } from 'primeng/checkbox';
+import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 
 @NgModule({
   declarations: [
@@ -121,6 +125,9 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
     AssetTypePageComponent,
     AssetTypeEditComponent,
     CreateButtonComponent,
+    TrashButtonComponent,
+    EditButtonComponent,
+    ConfirmButtonComponent,
     QuantityTypePageComponent,
   ],
   imports: [
@@ -136,7 +143,8 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
     InputTextModule,
     InputTextareaModule,
     DropdownModule,
-    RadioButtonModule
+    RadioButtonModule,
+    CheckboxModule
   ],
     exports: [
         EcosystemSubHeaderComponent,
