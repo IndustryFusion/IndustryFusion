@@ -20,6 +20,12 @@ import { FieldTarget, FieldType } from '../../../../store/field-target/field-tar
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
 import { FieldTargetService } from '../../../../store/field-target/field-target.service';
+import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
+import { MetricsResolver } from '../../../../resolvers/metrics.resolver';
+import { UnitsResolver } from '../../../../resolvers/units.resolver';
+import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
+import { FormGroup } from '@angular/forms';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-type-template-create',
@@ -28,16 +34,33 @@ import { FieldTargetService } from '../../../../store/field-target/field-target.
 })
 export class AssetTypeTemplateCreateComponent implements OnInit {
 
-  step = 1;
-  assetType: ID;
-  assteTypeTemplate: AssetTypeTemplate;
-  error: any;
+  public assetTypeTemplateForm: FormGroup;
 
-  constructor(private assetTypeTemplateService: AssetTypeTemplateService, private fieldTargetService: FieldTargetService) { }
+  public step = 1;
+  public assetType: ID;
+  public assetTypeTemplate: AssetTypeTemplate;
+  public error: any;
+
+  constructor(private assetTypeTemplateService: AssetTypeTemplateService,
+              private fieldTargetService: FieldTargetService,
+              private assetTypesResolver: AssetTypesResolver,
+              private metricsResolver: MetricsResolver,
+              private unitsResolver: UnitsResolver,
+              private quantityTypesResolver: QuantityTypesResolver,
+              public ref: DynamicDialogRef,
+              public config: DynamicDialogConfig) { }
 
   ngOnInit() {
-    this.assteTypeTemplate = new AssetTypeTemplate();
-    this.assteTypeTemplate.fieldTargets = [];
+    this.assetTypesResolver.resolve().subscribe();
+    this.metricsResolver.resolve().subscribe();
+    this.unitsResolver.resolve().subscribe();
+    this.quantityTypesResolver.resolve().subscribe();
+    console.log('done');
+
+    this.assetTypeTemplateForm = this.config.data.assetTypeTemplateForm;
+
+    this.assetTypeTemplate = new AssetTypeTemplate();
+    this.assetTypeTemplate.fieldTargets = [];
   }
 
   onStepChange(step: number) {
@@ -50,25 +73,25 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
   }
 
   onNameSelect(name: string) {
-    this.assteTypeTemplate.name = name;
+    this.assetTypeTemplate.name = name;
   }
 
   onDescriptionSelect(description: string) {
-    this.assteTypeTemplate.description = description;
+    this.assetTypeTemplate.description = description;
   }
 
   onMetricsSelect(metrics: FieldTarget[]) {
-    this.assteTypeTemplate.fieldTargets =  this.getAttributes().concat(metrics);
+    this.assetTypeTemplate.fieldTargets =  this.getAttributes().concat(metrics);
   }
 
   onAttributesSelect(attributes: FieldTarget[]) {
-    this.assteTypeTemplate.fieldTargets =  this.getMetrics().concat(attributes);
+    this.assetTypeTemplate.fieldTargets =  this.getMetrics().concat(attributes);
   }
 
   onSaveTemplate() {
-    this.assetTypeTemplateService.createTemplate(this.assteTypeTemplate, this.assetType).subscribe(
+    this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, this.assetType).subscribe(
       (template) => {
-        this.assteTypeTemplate.fieldTargets.forEach((fieldTarget) => {
+        this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
           this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
         });
       }
@@ -76,11 +99,11 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
   }
 
   getMetrics(): FieldTarget[] {
-    return this.assteTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.METRIC);
+    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.METRIC);
   }
 
   getAttributes(): FieldTarget[] {
-    return this.assteTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.ATTRIBUTE);
+    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.ATTRIBUTE);
   }
 
   onCloseError() {

@@ -13,15 +13,16 @@
  * under the License.
  */
 
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ID } from '@datorama/akita';
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import { FormGroup } from '@angular/forms';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
 
 @Component({
   selector: 'app-asset-type-template-create-step-one',
@@ -31,43 +32,38 @@ import { AssetTypeService } from '../../../../store/asset-type/asset-type.servic
 export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
 
   @Output() stepChange = new EventEmitter<number>();
-  @Output() assetTypeSelect = new EventEmitter<ID>();
-  @Output() nameSelect = new EventEmitter<string>();
-  @Output() descriptionSelect = new EventEmitter<string>();
-  @Output() errorSignal = new EventEmitter<string>();
 
-  assetTypes$: Observable<AssetType[]>;
-  assetType: ID;
-  startConfiguration: string;
-  name: string;
-  description: string;
+  public assetTypes$: Observable<AssetType[]>;
+  public assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
 
-  shouldShowCreateAssetType = false;
+  @Input()
+  @Output()
+  public assetTypeTemplateForm: FormGroup;
+
+  public shouldShowCreateAssetType = false; // TODO: Call with dynamic prime dialog
 
   constructor(private assetTypeQuery: AssetTypeQuery,
-              private route: ActivatedRoute,
-              private router: Router,
+              private assetTypeTemplateQuery: AssetTypeTemplateQuery,
+              public ref: DynamicDialogRef,
               private assetTypeService: AssetTypeService) { }
 
   ngOnInit() {
     this.assetTypes$ = this.assetTypeQuery.selectAll();
+    this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll();
+
+    // TODO: Not working, getEntity yields undefined from ID 1
+    const assetType = this.assetTypeQuery.getEntity(this.assetTypeTemplateForm.get('assetTypeId')?.value);
+    this.replaceTemplateNameFromAssetType(assetType);
   }
 
-  changeStep() {
-    if (this.assetType && this.startConfiguration) {
-      this.assetTypeSelect.emit(this.assetType);
-      if (this.startConfiguration === 'blankPage') {
-        this.nameSelect.emit(this.name);
-        this.descriptionSelect.emit(this.description);
-      }
+  nextStep() {
+    if (this.assetTypeTemplateForm?.valid) {
       this.stepChange.emit(2);
-    } else {
-      this.errorSignal.emit('Asset type is required. Choosing option is required.');
     }
   }
 
-  cancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  onCancel() {
+    this.ref.close();
   }
 
   createAssetTypeModal() {
@@ -83,4 +79,15 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
     this.shouldShowCreateAssetType = false;
   }
 
+  onChangeAssetType($event: any) {
+    const assetType = this.assetTypeQuery.getEntity($event.value);
+    this.replaceTemplateNameFromAssetType(assetType);
+  }
+
+  private replaceTemplateNameFromAssetType(assetType: AssetType) {
+    if (assetType) {
+      this.assetTypeTemplateForm.get('name')?.setValue(assetType.name + ' v.');
+      this.assetTypeTemplateForm.get('description')?.setValue(assetType.description);
+    }
+  }
 }

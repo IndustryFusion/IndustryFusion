@@ -13,47 +13,64 @@ specific language governing permissions and limitations
 under the License.
 -->
 <app-asset-type-create *ngIf="shouldShowCreateAssetType" (dismissModalSignal)="onDismissModal()"
-  (confirmModalSignal)="onConfirmModal($event)"></app-asset-type-create>
+  (confirmModalSignal)="onConfirmModal($event)"></app-asset-type-create> <!--TODO: call dialog-->
+
 <div>
   <div class="content">
-    <div class="title">Create or update AssetType Template</div>
-    <div class="selection">
-      <!-- <ng2-completer class="select-asset-input" [datasource]="dataService" [minSearchLength]="0" (selected)="onAssetTypeSelect($event)"></ng2-completer> -->
-      <clr-select-container>
-        <label>Select Asset type</label>
-        <select clrSelect class="select-asset-input" name="assetType" [(ngModel)]="assetType">
-          <option *ngFor="let assetType of (assetTypes$ | async)" [ngValue]="assetType.id">{{ assetType.name }}</option>
-        </select>
-      </clr-select-container>
-      <button type="button" class="button-create" (click)="createAssetTypeModal()">
-        <clr-icon shape="plus"></clr-icon>Create new
-      </button>
-    </div>
-    <clr-radio-container clrInline class="select-starting-configuration">
-      <label>Do you want to start with a blank page or update an existing template?</label>
-      <clr-radio-wrapper>
-        <input type="radio" clrRadio name="blankPage" required value="blankPage" [(ngModel)]="startConfiguration" />
-        <label>Blank page</label>
-      </clr-radio-wrapper>
-      <clr-radio-wrapper>
-        <input type="radio" clrRadio name="existingTemplate" required value="existingTemplate"
-          [(ngModel)]="startConfiguration" />
-        <label>Existing template</label>
-      </clr-radio-wrapper>
-    </clr-radio-container>
-    <div *ngIf="startConfiguration === 'blankPage'">
-      <clr-input-container>
-        <label>Asset Type Template name</label>
-        <input clrInput class="select-asset-input" name="name" [(ngModel)]="name" />
-      </clr-input-container>
-      <clr-textarea-container>
-        <label>Description</label>
-        <textarea clrTextarea class="select-asset-input" [(ngModel)]="description" name="description"></textarea>
-      </clr-textarea-container>
-    </div>
+    <div class="title">Create or update Asset Type Template</div>
+    <form [formGroup]="assetTypeTemplateForm">
+      <div class="selection">
+        <div class="input-div dropdown-filter">
+          <label class="if-label">Select Asset type</label>
+          <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
+                      class="select-asset-input" filter="true" resetFilterOnHide="true" (onChange)="onChangeAssetType($event)">
+          </p-dropdown>
+        </div>
+
+        <button type="button" class="button-create" (click)="createAssetTypeModal()">
+          <clr-icon shape="plus"></clr-icon>Create Asset type
+        </button>
+      </div>
+
+      <div class="input-div">
+        <label class="if-label">Create new template or update an existing one?</label>
+        <div class="dialog-grid">
+          <div>
+            <p-radioButton [value]="false" label="Create new" formControlName="useExistingTemplate"
+                           inputId="group1"></p-radioButton>
+          </div>
+          <div class="dialog-grid-col">
+            <p-radioButton [value]="true" label="Use existing template"
+                           formControlName="useExistingTemplate" inputId="group2"></p-radioButton>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="assetTypeTemplateForm.get('useExistingTemplate')?.value === true">
+        <div class="input-div dropdown-filter">
+          <label class="if-label">Select Asset Type Template</label>
+          <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name" optionValue="id"
+                      class="select-asset-input" filter="true" resetFilterOnHide="true">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="input-div">
+        <label class="if-label">Asset Type Template name</label>
+        <input type="text" pInputText class="select-asset-input" formControlName="name" />
+      </div>
+
+      <div class="input-div">
+        <label class="if-label">Description</label>
+        <textarea pInputTextarea class="select-asset-input" formControlName="description"></textarea>
+        <label class="textarea-character-count if-label">{{ assetTypeTemplateForm.get('description')?.value.length }}/255</label>
+      </div>
+
+    </form>
   </div>
   <div class="footer">
-    <button type="button" class="if-button-cancel" (click)="cancel()">Cancel</button>
-    <button type="button" class="button-confirm" (click)="changeStep()">Start</button>
+    <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+    <button type="button" class="if-button button-confirm button-primary" [disabled]="assetTypeTemplateForm.invalid"
+            (click)="nextStep()">Start</button>
   </div>
 </div>

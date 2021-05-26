@@ -11,3 +11,15 @@
   padding-top: 8px;
   padding-bottom: 8px;
 }
+
+.if-label-bold {
+  text-align: left;
+  //font: normal normal normal 16px/20px Muli;
+  font-weight: bold;
+  font-size: $bigger-font-size;
+  line-height: $bigger-line-height;
+  letter-spacing: 0;
+  color: $highlighted;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
