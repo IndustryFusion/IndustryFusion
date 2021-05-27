@@ -12,38 +12,46 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<app-metric-create *ngIf="shouldShowCreateMetric" (dismissModalSignal)="onDismissModal()"
-(confirmModalSignal)="onConfirmModal($event)"></app-metric-create>
+<app-metric-create *ngIf="shouldShowCreateAttribute" (dismissModalSignal)="onDismissModal()"
+                   (confirmModalSignal)="onConfirmModal($event)"></app-metric-create>  <!-- TODO: Call metric create dialog-->
+
 <div class="content">
   <div class="title">
-    <div>
-      Edit Attributes
-    </div>
-    <div>
-      Template Version - v.4
-    </div>
+    <div> Add Attributes </div>
+    <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
-  <div *ngIf="selectedMetrics && selectedMetrics.length > 0" class="metrics-list">
-    <app-asset-type-template-metric-row *ngFor="let metric of selectedMetrics" [fieldTarget]="metric"
-      (confirmSignal)="onConfirm(metric)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(metric)">
+
+  <div *ngIf="selectedAttributes && selectedAttributes.length > 0" class="metrics-list">
+    <app-asset-type-template-metric-row *ngFor="let attribute of selectedAttributes" [fieldTarget]="attribute"
+                                        (confirmSignal)="onConfirm(attribute)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(attribute)">
     </app-asset-type-template-metric-row>
   </div>
-  <div class="selection" *ngIf="shouldAddMetric">
-    <clr-select-container>
-      <select clrSelect class="select-asset-input" name="metric" [(ngModel)]="metric"
-        (ngModelChange)="onChange($event)">
-        <option *ngFor="let metric of (metrics$ | async)" [ngValue]="metric">{{ metric.name }}</option>
-      </select>
-    </clr-select-container>
-    <button type="button" class="button-create" (click)="createMetricModal()">
-      <clr-icon shape="plus"></clr-icon>Create new
-    </button>
-  </div>
-  <button type="button" class="button-add" (click)="addMetric()">
+
+  <form [formGroup]="assetTypeTemplateForm">
+    <div class="selection" *ngIf="shouldAddAttribute">
+      <div class="input-div dropdown-filter">
+        <label class="if-label">Select Metric</label>
+        <p-dropdown [options]="(metricsAndAttributes$ | async)" formControlName="metric" optionLabel="name"
+                    class="select-asset-input" filter="true" resetFilterOnHide="true"
+                    placeholder="Select attribute..." (onChange)="onChangeAttribute($event.value)">
+        </p-dropdown>
+      </div>
+      <button type="button" class="button-create" (click)="createAttributeModal()">
+        <clr-icon shape="plus"></clr-icon>Create Attribute
+      </button>
+    </div>
+  </form>
+
+  <button type="button" class="button-add" (click)="addAttribute()">
     <clr-icon shape="plus"></clr-icon>Add Attribute
   </button>
 </div>
+
 <div class="footer">
-  <button type="button" class="if-button-cancel" type="submit" (click)="changeStep(2)">Back</button>
-  <button type="button" class="button-confirm" (click)="changeStep(4)">Next</button>
+  <button type="button" type="submit" class="if-button button-cancel" (click)="prevStep()"
+          [disabled]="assetTypeTemplateForm.invalid || this.confirmedAttributes.length !== this.selectedAttributes.length">Back</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="nextStep()"
+          [disabled]="assetTypeTemplateForm.invalid || this.confirmedAttributes.length !== this.selectedAttributes.length">
+    Next</button>
 </div>
+

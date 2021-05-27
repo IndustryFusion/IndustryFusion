@@ -48,7 +48,6 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
 
   public ref: DynamicDialogRef;
   public assetTypeTemplateForm: FormGroup;
-  checked: boolean = true;
 
   constructor(
     public route: ActivatedRoute,
@@ -72,7 +71,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.assetTypeTemplateForm = formBuilder.group({
       name: ['', requiredTextValidator],
-      description: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
       useExistingTemplate: [false, Validators.required],
       assetTypeId: [undefined, Validators.required],
       assetTypeTemplateId: [undefined],

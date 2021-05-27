@@ -33,25 +33,25 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() metricSelect = new EventEmitter<FieldTarget[]>();
-  @Output() errorSignal = new EventEmitter<string>();
 
   @Input()
   @Output()
   public assetTypeTemplateForm: FormGroup;
 
-  shouldAddMetric = false;
-  metrics$: Observable<Metric[]>;
-  confirmedMetrics: Array<FieldTarget> = [];
-  selectedMetrics: Array<FieldTarget> = [];
-  //metric: Metric;
+  public shouldAddMetric = false;
+  public metricsAndAttributes$: Observable<Metric[]>;
+  public confirmedMetrics: Array<FieldTarget> = [];
+  public selectedMetrics: Array<FieldTarget> = [];
+  // metric: Metric;
 
-  shouldShowCreateMetric = false;
+  shouldShowCreateMetric = false; // TODO: Call with dynamic prime dialog
 
   constructor(private metricQuery: MetricQuery, private metricService: MetricService) {
   }
 
   ngOnInit() {
-    this.metrics$ = this.metricQuery.selectAll(); // TODO: Does this also yields attributes? filter using fieldType of field_target
+    this.metricsAndAttributes$ = this.metricQuery.selectAll();
+    // TODO: Does this also yields attributes? filter using fieldType of field_target
 
     if (this.inputMetrics) {
       this.selectedMetrics = this.selectedMetrics.concat(this.inputMetrics);
@@ -72,11 +72,9 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   }
 
   private changeStep(step: number) {
-    if (this.confirmedMetrics.length === this.selectedMetrics.length) {
+    if (this.confirmedMetrics.length === this.selectedMetrics.length && this.assetTypeTemplateForm?.valid) {
       this.metricSelect.emit(this.confirmedMetrics);
       this.stepChange.emit(step);
-    } else {
-      this.errorSignal.emit('All metrics needs to be CONFIRMED.');
     }
   }
 
@@ -92,7 +90,7 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedMetrics.push(fieldTarget);
     this.shouldAddMetric = false;
-    //this.metric = undefined;
+    // this.metric = undefined;
   }
 
   onConfirm(fieldTarget: FieldTarget) {

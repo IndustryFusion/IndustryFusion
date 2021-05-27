@@ -25,6 +25,7 @@ import { FieldTarget } from '../../../../store/field-target/field-target.model';
   templateUrl: './asset-type-template-metric-row.component.html',
   styleUrls: ['./asset-type-template-metric-row.component.scss']
 })
+// TODO: rename to ...FieldRow...
 export class AssetTypeTemplateMetricRowComponent implements OnInit {
 
   @Input() fieldTarget: FieldTarget;
@@ -42,7 +43,7 @@ export class AssetTypeTemplateMetricRowComponent implements OnInit {
     if (this.confirmed === undefined) {
       this.confirmed = false;
     }
-    this.accuracyDigitsInfo = `1.0-${this.fieldTarget.field.accuracy.toString()}`;
+    this.accuracyDigitsInfo = `1.${this.fieldTarget.field.accuracy.toString()}-${this.fieldTarget.field.accuracy.toString()}`;
   }
 
   onConfirm() {

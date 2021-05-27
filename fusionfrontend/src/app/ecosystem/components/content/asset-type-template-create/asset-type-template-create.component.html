@@ -49,14 +49,15 @@ under the License.
     </ul>
   </div>
   <app-asset-type-template-create-step-one *ngIf="step === 1" (stepChange)="onStepChange($event)"
-     [assetTypeTemplateForm]="assetTypeTemplateForm">
+                                           [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-one>
   <app-asset-type-template-create-step-two *ngIf="step === 2" (stepChange)="onStepChange($event)"
-                                           [assetTypeTemplateForm]="assetTypeTemplateForm"
-    (metricSelect)="onMetricsSelect($event)" (errorSignal)="onError($event)" [inputMetrics]="getMetrics()">
+    (metricSelect)="onMetricsSelect($event)" [inputMetrics]="getMetrics()"
+                                           [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-two>
   <app-asset-type-template-create-step-three *ngIf="step === 3" (stepChange)="onStepChange($event)"
-    (attributeSelect)="onAttributesSelect($event)" (errorSignal)="onError($event)" [inputMetrics]="getAttributes()">
+    (attributeSelect)="onAttributesSelect($event)" [inputMetrics]="getAttributes()"
+                                             [assetTypeTemplateForm]="assetTypeTemplateForm">>
   </app-asset-type-template-create-step-three>
   <app-asset-type-template-create-step-four *ngIf="step === 4" (stepChange)="onStepChange($event)"
     [metrics]="getMetrics()" [attributes]="getAttributes()" (saveTemplate)="onSaveTemplate()">
