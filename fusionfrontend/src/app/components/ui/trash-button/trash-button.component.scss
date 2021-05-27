@@ -31,4 +31,8 @@
   cursor: pointer;
 
   margin: 8px 4px;
+
+  &:hover {
+    background: #d56365 0 0 no-repeat padding-box;
+  }
 }
