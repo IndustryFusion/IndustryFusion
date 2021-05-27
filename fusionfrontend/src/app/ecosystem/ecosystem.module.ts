@@ -81,6 +81,7 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
+import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
     EcosystemPageTitleComponent,
     MetricsAttributesPageComponent,
     QuantityTypesPageComponent,
+    UnitPageComponent,
     UnitsPageComponent,
     AssetTypesPageComponent,
     AssetTypeListComponent,

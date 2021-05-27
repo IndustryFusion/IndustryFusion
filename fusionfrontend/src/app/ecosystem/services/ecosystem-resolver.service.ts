@@ -20,6 +20,7 @@ import { AssetTypeQuery } from '../../store/asset-type/asset-type.query';
 import { AssetType } from '../../store/asset-type/asset-type.model';
 import { EcosystemManagerPageType, RouteData } from '../ecosystem.routing.model';
 import { QuantityTypeQuery } from '../../store/quantity-type/quantity-type.query';
+import { UnitQuery } from '../../store/unit/unit.query';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,8 @@ export class EcoSystemManagerResolver {
   public ecoSystemManagerSubTitle$: Subject<string>;
 
   constructor(private assetTypeQuery: AssetTypeQuery,
-              private quantityTypeQuery: QuantityTypeQuery) {
+              private quantityTypeQuery: QuantityTypeQuery,
+              private unitQuery: UnitQuery) {
     this.assetType$ = this.assetTypeQuery.selectActive();
     this.ecoSystemManagerSubTitle$ = new BehaviorSubject('Apps');
   }
@@ -39,7 +41,7 @@ export class EcoSystemManagerResolver {
     if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_DETAIL)) {
       this.assetTypeQuery
         .waitForActive()
-        .subscribe(assetType => this.ecoSystemManagerSubTitle$.next('Asset Types > ' + assetType.name));
+        .subscribe(assetType => this.ecoSystemManagerSubTitle$.next(`Asset Types > ${assetType.name}`));
     }
     else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Asset Types');
@@ -56,10 +58,15 @@ export class EcoSystemManagerResolver {
     else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_DETAIL)) {
       this.quantityTypeQuery
         .waitForActive()
-        .subscribe(quantityType => this.ecoSystemManagerSubTitle$.next('Quantity Types > ' + quantityType.name));
+        .subscribe(quantityType => this.ecoSystemManagerSubTitle$.next(`Quantity Types > ${quantityType.name}`));
     }
     else if (pageTypes.includes(EcosystemManagerPageType.UNIT_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Units');
+    }
+    else if (pageTypes.includes(EcosystemManagerPageType.UNIT_DETAIL)) {
+      this.unitQuery
+        .waitForActive()
+        .subscribe(unit => this.ecoSystemManagerSubTitle$.next(`Units > ${unit.name}`));
     }
     else {
       this.ecoSystemManagerSubTitle$.next('Apps');
