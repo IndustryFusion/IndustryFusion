@@ -30,19 +30,15 @@ import { FormGroup } from '@angular/forms';
 })
 export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
 
+  @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() metricSelect = new EventEmitter<FieldTarget[]>();
-
-  @Input()
-  @Output()
-  public assetTypeTemplateForm: FormGroup;
 
   public shouldAddMetric = false;
   public metricsAndAttributes$: Observable<Metric[]>;
   public confirmedMetrics: Array<FieldTarget> = [];
   public selectedMetrics: Array<FieldTarget> = [];
-  // metric: Metric;
 
   shouldShowCreateMetric = false; // TODO: Call with dynamic prime dialog
 
@@ -90,7 +86,7 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedMetrics.push(fieldTarget);
     this.shouldAddMetric = false;
-    // this.metric = undefined;
+    this.assetTypeTemplateForm.get('metric').setValue(undefined);
   }
 
   onConfirm(fieldTarget: FieldTarget) {

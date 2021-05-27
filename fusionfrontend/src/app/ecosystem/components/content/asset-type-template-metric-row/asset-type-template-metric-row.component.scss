@@ -20,6 +20,19 @@
   display: flex;
   align-items: center;
 
+  .col-10 {
+    width: 10%;
+  }
+
+  .col-15 {
+    width: 15%;
+  }
+
+  .col-25 {
+    width: 25%;
+    margin-right: 5%;
+  }
+
   .info-text {
     color: $inactive;
     text-align: left;
@@ -42,6 +55,8 @@
 
   .edit-col {
     display: flex;
+    justify-content: end;
+    width: 20%;
 
     .edit-button {
       margin-left: 80px;

@@ -31,11 +31,8 @@ import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/as
 })
 export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
 
-  @Input()
-  public assetTypeTemplateForm: FormGroup;
-
-  @Output()
-  public stepChange = new EventEmitter<number>();
+  @Input() assetTypeTemplateForm: FormGroup;
+  @Output() stepChange = new EventEmitter<number>();
 
   public assetTypes$: Observable<AssetType[]>;
   public assetTypeTemplates$: Observable<AssetTypeTemplate[]>;

@@ -30,7 +30,7 @@ under the License.
   <form [formGroup]="assetTypeTemplateForm">
     <div class="selection" *ngIf="shouldAddAttribute">
       <div class="input-div dropdown-filter">
-        <label class="if-label">Select Metric</label>
+        <label class="if-label">Select Attribute</label>
         <p-dropdown [options]="(metricsAndAttributes$ | async)" formControlName="metric" optionLabel="name"
                     class="select-asset-input" filter="true" resetFilterOnHide="true"
                     placeholder="Select attribute..." (onChange)="onChangeAttribute($event.value)">
@@ -48,7 +48,8 @@ under the License.
 </div>
 
 <div class="footer">
-  <button type="button" type="submit" class="if-button button-cancel" (click)="prevStep()"
+  <!--TODO: Type=submit or normal? in all pages-->
+  <button type="submit" class="if-button button-cancel" (click)="prevStep()"
           [disabled]="assetTypeTemplateForm.invalid || this.confirmedAttributes.length !== this.selectedAttributes.length">Back</button>
   <button type="button" class="if-button button-confirm button-primary" (click)="nextStep()"
           [disabled]="assetTypeTemplateForm.invalid || this.confirmedAttributes.length !== this.selectedAttributes.length">

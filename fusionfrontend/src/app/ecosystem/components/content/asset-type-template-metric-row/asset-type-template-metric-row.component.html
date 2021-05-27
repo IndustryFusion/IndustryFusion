@@ -13,19 +13,19 @@ specific language governing permissions and limitations
 under the License.
 -->
 <div class="metric-row">
-  <div [style.width.%]="25" [style.margin-right.%]="5">
+  <div class="col-25">
     <input type="text" pInputText class="metric-row-inputs" *ngIf="!confirmed"
            [placeholder]="fieldTarget.field.name " [(ngModel)]="fieldTarget.name" name="name" />
     <div *ngIf="confirmed" class="confirmed-name">{{ fieldTarget.name }}</div>
   </div>
-  <div class="info-text" [style.width.%]="15" >{{ getQuantityTypeName(fieldTarget.field.unitId) }}</div>
-  <div class="info-text" [style.width.%]="10" >{{ getUnitSymbol(fieldTarget.field.unitId) }}</div>
-  <div class="info-text" [style.width.%]="10" >{{ 0.000000 | number : accuracyDigitsInfo }}</div>
-  <div class="info-text" [style.width.%]="15" >
+  <div class="info-text col-15">{{ getQuantityTypeName(fieldTarget.field.unitId) }}</div>
+  <div class="info-text col-10">{{ getUnitSymbol(fieldTarget.field.unitId) }}</div>
+  <div class="info-text col-10">{{ 0.000000 | number : accuracyDigitsInfo }}</div>
+  <div class="info-text col-15">
     <p-checkbox value="option" label="Mandatory" name="mandatory" [(ngModel)]="fieldTarget.mandatory"
                 [disabled]="confirmed" [inputId]="fieldTarget.id"></p-checkbox>
   </div>
-  <div class="edit-col" [style.width.%]="20">
+  <div class="edit-col">
     <app-confirm-button (confirmItem)="onConfirm()" *ngIf="!confirmed"></app-confirm-button>
     <app-edit-button class="edit-button" (editItem)="onEdit()" *ngIf="confirmed"></app-edit-button>
     <app-trash-button (deleteItem)="onDelete()"></app-trash-button>

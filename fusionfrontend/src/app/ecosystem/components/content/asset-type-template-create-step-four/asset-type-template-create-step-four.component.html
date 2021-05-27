@@ -14,15 +14,11 @@ under the License.
 -->
 <div class="content">
   <div class="title">
-    <div>
-      Review Metrics & Attributes
-    </div>
-    <div>
-      Template Version - v.4
-    </div>
+    <div> Review Metrics </div>
+    <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
-  <div class="subtitle">Metrics</div>
-  <div *ngIf="metrics && metrics.length > 0" class="metrics-list">
+
+  <div *ngIf="metrics && metrics.length > 0" class="metrics-list metrics-padding">
     <app-asset-type-template-metric-row *ngFor="let metric of metrics" [fieldTarget]="metric"
       (editSignal)="changeStep(2)" (deleteSignal)="changeStep(2)" confirmed="true">
     </app-asset-type-template-metric-row>
@@ -30,8 +26,8 @@ under the License.
   <button type="button" class="button-add" (click)="changeStep(2)">
     <clr-icon shape="plus"></clr-icon>Add Metric
   </button>
-  <div class="subtitle">Attributes</div>
-  <div *ngIf="attributes && attributes.length > 0" class="metrics-list">
+  <div class="subtitle">Review Attributes</div>
+  <div *ngIf="attributes && attributes.length > 0" class="metrics-list metrics-padding">
     <app-asset-type-template-metric-row *ngFor="let metric of attributes" [fieldTarget]="metric"
       (editSignal)="changeStep(3)" (deleteSignal)="changeStep(3)" confirmed="true">
     </app-asset-type-template-metric-row>
@@ -41,6 +37,7 @@ under the License.
   </button>
 </div>
 <div class="footer">
-  <button type="button" class="if-button-cancel" type="submit" (click)="cancel()">Cancel</button>
-  <button type="button" class="button-confirm" (click)="save(5)">Save Template</button>
+  <button type="submit" class="if-button button-cancel" (click)="onCancel()">Back</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onSave(5)">Save & Close Template</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onSave(5)" [disabled]="true">Publish</button>
 </div>

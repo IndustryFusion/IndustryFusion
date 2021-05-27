@@ -17,6 +17,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
+import { FormGroup } from '@angular/forms';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-type-template-create-step-four',
@@ -30,7 +32,9 @@ export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
   @Output() stepChange = new EventEmitter<number>();
   @Output() saveTemplate = new EventEmitter();
 
-  constructor(public route: ActivatedRoute, public router: Router) { }
+  @Input() assetTypeTemplateForm: FormGroup;
+
+  constructor(public route: ActivatedRoute, public router: Router, public ref: DynamicDialogRef) { }
 
   ngOnInit() { }
 
@@ -38,13 +42,13 @@ export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
     this.stepChange.emit(step);
   }
 
-  save(step: number) {
+  onSave(step: number) {
     this.saveTemplate.emit();
     this.changeStep(step);
   }
 
-  cancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  onCancel() {
+    this.ref.close();
   }
 
 }

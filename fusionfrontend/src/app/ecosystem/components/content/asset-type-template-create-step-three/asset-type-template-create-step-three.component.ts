@@ -31,19 +31,15 @@ import { FormGroup } from '@angular/forms';
 })
 export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
 
+  @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() attributeSelect = new EventEmitter<FieldTarget[]>();
-
-  @Input()
-  @Output()
-  public assetTypeTemplateForm: FormGroup;
 
   shouldAddAttribute = false;
   metricsAndAttributes$: Observable<Metric[]>;
   confirmedAttributes: Array<FieldTarget> = [];
   selectedAttributes: Array<FieldTarget> = [];
-  // metric: Metric;
 
   shouldShowCreateAttribute = false;
 
@@ -90,7 +86,7 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedAttributes.push(fieldTarget);
     this.shouldAddAttribute = false;
-    // this.metric = undefined;
+    this.assetTypeTemplateForm.get('metric').setValue(undefined);
   }
 
   onConfirm(fieldTarget: FieldTarget) {

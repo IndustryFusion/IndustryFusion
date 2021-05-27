@@ -70,7 +70,7 @@
     flex-direction: row;
 
     .button-create {
-      padding-top: 16px;
+      padding-top: 13px;
       padding-bottom: 17px;
       padding-right: 42px;
       padding-left: 40px;
@@ -98,7 +98,11 @@
   }
 
   .metrics-list {
-    margin-top: 80px;
+    margin-top: 40px;
+  }
+
+  .metrics-padding {
+    margin-left: 3%;
   }
 
   .button-add {
@@ -124,7 +128,7 @@
 }
 
 .footer {
-  margin-top: 100px;
+  margin-top: 80px;
   margin-bottom: 64px;
   display: flex;
   justify-content: flex-end;
