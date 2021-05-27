@@ -80,8 +80,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { CheckboxModule } from 'primeng/checkbox';
-import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
+import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 
 @NgModule({
   declarations: [

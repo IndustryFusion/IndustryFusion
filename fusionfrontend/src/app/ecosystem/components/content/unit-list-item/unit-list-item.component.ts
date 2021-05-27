@@ -20,7 +20,7 @@ import { BaseListItemComponent } from '../base/base-list-item/base-list-item.com
 import { UnitService } from '../../../../store/unit/unit.service';
 import { Unit } from '../../../../store/unit/unit.model';
 import { UnitCreateComponent } from '../unit-create/unit-create.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 
@@ -35,7 +35,7 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
   item: Unit;
 
   constructor(public route: ActivatedRoute, public router: Router, public unitService: UnitService,
-              public quantityService: QuantityTypeService, public dialogService: DialogService,
+              public quantityTypeService: QuantityTypeService, public dialogService: DialogService,
               public formBuilder: FormBuilder) {
     super(route, router, unitService);
   }
@@ -48,34 +48,18 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
   }
 
   editItem(): void {
-    this.showDialog();
-  }
-
-  showDialog(): void {
-    const unitForm = this.createDialogFormGroup(this.item);
-    const ref = this.dialogService.open(UnitCreateComponent, {
-      header: 'Edit Unit', width: '50%', data: { unitForm, editMode: true }
+    const dialogRef = this.dialogService.open(UnitCreateComponent, {
+      header: 'Edit Unit', width: '50%', data: { unit: this.item, editMode: true }
     });
-    ref.onClose.subscribe((unit) => {
+    dialogRef.onClose.subscribe((unit) => {
       this.updateUnitIfPresent(unit);
-    });
-  }
-
-  createDialogFormGroup(unit: Unit): FormGroup {
-    return this.formBuilder.group({
-      id: [unit.id],
-      name: [unit.name, Validators.maxLength(255)],
-      label: [unit.label, Validators.maxLength(255)],
-      symbol: [unit.symbol, Validators.maxLength(255)],
-      type: [unit.quantityTypeId, Validators.required],
-      conversion: [unit.description, Validators.maxLength(255)]
     });
   }
 
   updateUnitIfPresent(unit: Unit): void {
     if (unit) {
       const patchedUnit = { ...this.item, ...unit };
-      this.quantityService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
+      this.quantityTypeService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
         patchedUnit.quantityType = quantityType;
         this.unitService.editUnit(this.item.quantityTypeId, this.item.id, patchedUnit).subscribe();
       });

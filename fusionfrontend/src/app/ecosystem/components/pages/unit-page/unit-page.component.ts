@@ -23,11 +23,15 @@ import { QuantityType } from '../../../../store/quantity-type/quantity-type.mode
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
+import { DialogService } from 'primeng/dynamicdialog';
+import { first } from 'rxjs/operators';
+import { UnitCreateComponent } from '../../content/unit-create/unit-create.component';
 
 @Component({
   selector: 'app-unit-page',
   templateUrl: './unit-page.component.html',
   styleUrls: ['./unit-page.component.scss'],
+  providers: [DialogService],
 })
 export class UnitPageComponent implements OnInit {
 
@@ -35,7 +39,7 @@ export class UnitPageComponent implements OnInit {
   quantityType$: Observable<QuantityType>;
 
   constructor(private activatedRoute: ActivatedRoute, private ecoSystemManagerResolver: EcoSystemManagerResolver,
-              private unitService: UnitService, private unitQuery: UnitQuery,
+              private unitService: UnitService, private unitQuery: UnitQuery, private dialogService: DialogService,
               private quantityTypeService: QuantityTypeService, private quantityTypeQuery: QuantityTypeQuery) {
   }
 
@@ -56,4 +60,24 @@ export class UnitPageComponent implements OnInit {
     }
   }
 
+  showDialog() {
+    this.unit$.pipe(first()).subscribe((unit) => {
+      const dialogRef = this.dialogService.open(UnitCreateComponent, {
+        header: 'Edit Unit', width: '50%', data: { unit, editMode: true }
+      });
+      dialogRef.onClose.subscribe((modifiedUnit) => {
+        this.updateUnitIfPresent(unit, modifiedUnit);
+      });
+    });
+  }
+
+  updateUnitIfPresent(unit: Unit, modifiedUnit: Unit): void {
+    if (unit && modifiedUnit) {
+      const patchedUnit = { ...unit, ...modifiedUnit };
+      this.quantityTypeService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
+        patchedUnit.quantityType = quantityType;
+        this.unitService.editUnit(unit.quantityTypeId, unit.id, patchedUnit).subscribe();
+      });
+    }
+  }
 }

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
@@ -22,7 +22,7 @@ import { UnitService } from '../../../../store/unit/unit.service';
 import { Unit } from '../../../../store/unit/unit.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UnitCreateComponent } from '../unit-create/unit-create.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -64,30 +64,18 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
   }
 
   showDialog() {
-    const unitForm = this.createDialogFormGroup();
     const ref = this.dialogService.open(UnitCreateComponent, {
-      header: 'Create new Unit', width: '50%', data: { unitForm }
+      header: 'Create new Unit', width: '50%', data: { unit: null, editMode: false }
     });
     ref.onClose.subscribe((unit) => {
-      if (unit) {
-        this.onConfirmModal(unit);
-      }
-    });
-  }
-
-  createDialogFormGroup(): FormGroup {
-    return this.formBuilder.group({
-      id: [],
-      name: ['', Validators.maxLength(255)],
-      label: ['', Validators.maxLength(255)],
-      symbol: ['', Validators.maxLength(255)],
-      type: [null, Validators.required],
-      conversion: ['', Validators.maxLength(255)]
+      this.onConfirmModal(unit);
     });
   }
 
   onConfirmModal(unit: Unit) {
-    this.unitService.createUnit(unit.quantityTypeId, unit).subscribe();
+    if (unit) {
+      this.unitService.createUnit(unit.quantityTypeId, unit).subscribe();
+    }
   }
 
   deleteItems() {

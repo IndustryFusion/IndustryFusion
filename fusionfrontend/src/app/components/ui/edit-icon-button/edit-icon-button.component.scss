@@ -13,25 +13,32 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+@import 'abstract/variables';
+@import 'base/typography';
 
-@Component({
-  selector: 'app-edit-button',
-  templateUrl: './edit-button.component.html',
-  styleUrls: ['./edit-button.component.scss']
-})
-export class EditButtonComponent implements OnInit {
+.if-edit-button {
+  color: $basic-black;
+  font-weight: bolder;
 
-  @Input() text: string;
-  @Output() editItem = new EventEmitter<void>();
+  background: $basic-white 0 0 no-repeat padding-box;
+  border-radius: 10px;
+  border: none;
+  opacity: 1;
 
-  constructor() {
-  }
+  height: 56px;
+  width: 56px;
+  cursor: pointer;
 
-  ngOnInit(): void {
-  }
+  margin: 8px 4px;
 
-  onClick() {
-    this.editItem.emit();
+  clr-icon {
+    height: 24px;
+    width: 24px;
+    color: $regular-grey;
+
+    &:hover {
+      color: $basic-black !important;
+    }
   }
 }
+

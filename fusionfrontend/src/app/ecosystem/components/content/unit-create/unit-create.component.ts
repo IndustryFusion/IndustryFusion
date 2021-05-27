@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Unit } from 'src/app/store/unit/unit.model';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
@@ -28,22 +28,35 @@ import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type
 })
 export class UnitCreateComponent implements OnInit {
 
+  unit: Unit;
   unitForm: FormGroup;
   quantityTypes$: Observable<QuantityType[]>;
   editMode = false;
 
-  constructor(private quantityQuery: QuantityTypeQuery, public ref: DynamicDialogRef,
-              public config: DynamicDialogConfig) {
+  constructor(private quantityQuery: QuantityTypeQuery, public dialogRef: DynamicDialogRef,
+              public config: DynamicDialogConfig, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
     this.quantityTypes$ = this.quantityQuery.selectAll();
-    this.unitForm = this.config.data?.unitForm;
+    this.unit = this.config.data?.unit;
     this.editMode = this.config.data?.editMode;
+    this.unitForm = this.createDialogFormGroup(this.unit);
+  }
+
+  createDialogFormGroup(unit: Unit): FormGroup {
+    return this.formBuilder.group({
+      id: [unit?.id],
+      name: [unit?.name, Validators.maxLength(255)],
+      label: [unit?.label, Validators.maxLength(255)],
+      symbol: [unit?.symbol, Validators.maxLength(255)],
+      type: [unit?.quantityTypeId, Validators.required],
+      conversion: [unit?.description, Validators.maxLength(255)]
+    });
   }
 
   dismissModal() {
-    this.ref.close();
+    this.dialogRef.close();
   }
 
   confirmModal() {
@@ -54,7 +67,7 @@ export class UnitCreateComponent implements OnInit {
     unit.description = this.unitForm.get('conversion')?.value;
     unit.quantityTypeId = this.unitForm.get('type')?.value;
 
-    this.ref.close(unit);
+    this.dialogRef.close(unit);
   }
 
 }

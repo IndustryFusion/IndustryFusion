@@ -16,29 +16,22 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-.if-edit-button {
-  color: $basic-black;
-  font-weight: bolder;
+:host ::ng-deep .button-edit {
+  font-style: normal;
+  font-weight: bold;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+  text-align: left;
 
-  background: $basic-white 0 0 no-repeat padding-box;
+  letter-spacing: 0;
+  color: $basic-white;
+
+  background: $highlighted 0 0% no-repeat padding-box;
+  border: 1px solid #95989A;
   border-radius: 10px;
-  border: none;
   opacity: 1;
 
-  height: 56px;
-  width: 56px;
+  //height: 2.96%;
+  padding: 8px 32px 8px 16px;
   cursor: pointer;
-
-  margin: 8px 4px;
-
-  clr-icon {
-    height: 24px;
-    width: 24px;
-    color: $regular-grey;
-
-    &:hover {
-      color: $basic-black !important;
-    }
-  }
 }
-
