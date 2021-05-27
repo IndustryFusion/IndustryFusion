@@ -14,13 +14,6 @@ under the License.
 -->
 
 <div>
-  <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
-    <clr-alert-item>
-      <span class="alert-text">
-        {{ error }}
-      </span>
-    </clr-alert-item>
-  </clr-alert>
   <div class="timeline">
     <ul class="clr-timeline clr-timeline-horizontal">
       <li class="clr-timeline-step">
@@ -48,6 +41,7 @@ under the License.
       </li>
     </ul>
   </div>
+
   <app-asset-type-template-create-step-one *ngIf="step === 1" (stepChange)="onStepChange($event)"
                                            [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-one>
@@ -63,5 +57,7 @@ under the License.
     [metrics]="getMetrics()" [attributes]="getAttributes()" (saveTemplate)="onSaveTemplate()"
                                             [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-four>
-  <app-asset-type-template-create-step-sumary *ngIf="step === 5"></app-asset-type-template-create-step-sumary>
+  <app-asset-type-template-create-step-finished *ngIf="step === 5" [assetTypeTemplateForm]="assetTypeTemplateForm">
+
+  </app-asset-type-template-create-step-finished>
 </div>

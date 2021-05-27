@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetTypeTemplateCreateStepSumaryComponent } from './asset-type-template-create-step-sumary.component';
+import { AssetTypeTemplateCreateStepFinishedComponent } from './asset-type-template-create-step-finished.component';
 
 describe('AssetTypeTemplateCreateStepSumaryComponent', () => {
-  let component: AssetTypeTemplateCreateStepSumaryComponent;
-  let fixture: ComponentFixture<AssetTypeTemplateCreateStepSumaryComponent>;
+  let component: AssetTypeTemplateCreateStepFinishedComponent;
+  let fixture: ComponentFixture<AssetTypeTemplateCreateStepFinishedComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetTypeTemplateCreateStepSumaryComponent ]
+      declarations: [ AssetTypeTemplateCreateStepFinishedComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeTemplateCreateStepSumaryComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplateCreateStepFinishedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

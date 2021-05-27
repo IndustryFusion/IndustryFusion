@@ -65,7 +65,7 @@ import { AssetTypeTemplateCreateStepFourComponent } from './components/content/a
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateMetricRowComponent } from './components/content/asset-type-template-metric-row/asset-type-template-metric-row.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content/asset-type-template-create-step-sumary/asset-type-template-create-step-sumary.component';
+import { AssetTypeTemplateCreateStepFinishedComponent } from './components/content/asset-type-template-create-step-finished/asset-type-template-create-step-finished.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
@@ -121,7 +121,7 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
     AssetTypeTemplateCreateStepThreeComponent,
     AssetTypeTemplateCreateStepFourComponent,
     AssetTypeTemplateMetricRowComponent,
-    AssetTypeTemplateCreateStepSumaryComponent,
+    AssetTypeTemplateCreateStepFinishedComponent,
     AssetTypePageComponent,
     AssetTypeEditComponent,
     CreateButtonComponent,

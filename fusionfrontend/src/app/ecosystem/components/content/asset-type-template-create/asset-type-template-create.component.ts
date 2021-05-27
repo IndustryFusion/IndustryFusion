@@ -14,7 +14,6 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ID } from '@datorama/akita';
 
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
@@ -35,11 +34,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class AssetTypeTemplateCreateComponent implements OnInit {
 
   public assetTypeTemplateForm: FormGroup;
-
   public step = 1;
-  public assetType: ID;
   public assetTypeTemplate: AssetTypeTemplate;
-  public error: any;
 
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
               private fieldTargetService: FieldTargetService,
@@ -62,21 +58,16 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets = [];
   }
 
+  getMetrics(): FieldTarget[] {
+    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.METRIC);
+  }
+
+  getAttributes(): FieldTarget[] {
+    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.ATTRIBUTE);
+  }
+
   onStepChange(step: number) {
-    this.error = undefined;
     this.step = step;
-  }
-
-  onAssetTypeSelect(id: ID) {
-    this.assetType = id;
-  }
-
-  onNameSelect(name: string) {
-    this.assetTypeTemplate.name = name;
-  }
-
-  onDescriptionSelect(description: string) {
-    this.assetTypeTemplate.description = description;
   }
 
   onMetricsSelect(metrics: FieldTarget[]) {
@@ -88,28 +79,23 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
   }
 
   onSaveTemplate() {
-    this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, this.assetType).subscribe(
-      (template) => {
-        this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
-          this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
-        });
-      }
-    );
-  }
+    const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
 
-  getMetrics(): FieldTarget[] {
-    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.METRIC);
-  }
+    if (assetTypeId && this.assetTypeTemplate.fieldTargets) {
+      this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
+      this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
+      this.assetTypeTemplate.imageKey = null;
+      this.assetTypeTemplate.assetTypeId = assetTypeId;
+      // this.assetTypeTemplate.assetType = xxx;
+      // this.assetTypeTemplate.fieldTargetIds = this.assetTypeTemplate.fieldTargets.map(x => x.id);
 
-  getAttributes(): FieldTarget[] {
-    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.ATTRIBUTE);
-  }
-
-  onCloseError() {
-    this.error = undefined;
-  }
-
-  onError(error: string) {
-    this.error = error;
+      this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, assetTypeId).subscribe(
+        (template) => {
+          this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
+            this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
+          });
+        }
+      );
+    }
   }
 }

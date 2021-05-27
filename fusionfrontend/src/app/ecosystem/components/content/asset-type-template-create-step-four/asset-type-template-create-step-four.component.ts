@@ -13,8 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
@@ -27,14 +26,13 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
 
+  @Input() assetTypeTemplateForm: FormGroup;
   @Input() metrics: Array<FieldTarget>;
   @Input() attributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() saveTemplate = new EventEmitter();
 
-  @Input() assetTypeTemplateForm: FormGroup;
-
-  constructor(public route: ActivatedRoute, public router: Router, public ref: DynamicDialogRef) { }
+  constructor(public ref: DynamicDialogRef) { }
 
   ngOnInit() { }
 

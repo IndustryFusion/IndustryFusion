@@ -13,22 +13,25 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
-  selector: 'app-asset-type-template-create-step-sumary',
-  templateUrl: './asset-type-template-create-step-sumary.component.html',
-  styleUrls: ['./asset-type-template-create-step-sumary.component.scss']
+  selector: 'app-asset-type-template-create-step-finished',
+  templateUrl: './asset-type-template-create-step-finished.component.html',
+  styleUrls: ['./asset-type-template-create-step-finished.component.scss']
 })
-export class AssetTypeTemplateCreateStepSumaryComponent implements OnInit {
+export class AssetTypeTemplateCreateStepFinishedComponent implements OnInit {
 
-  constructor(public route: ActivatedRoute, public router: Router) { }
+  @Input() assetTypeTemplateForm: FormGroup;
+
+  constructor(public ref: DynamicDialogRef) { }
 
   ngOnInit() {
   }
 
-  return() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  onFinish() {
+    this.ref.close();
   }
 }
