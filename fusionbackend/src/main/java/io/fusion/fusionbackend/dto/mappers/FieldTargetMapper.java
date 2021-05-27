@@ -41,6 +41,10 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
                 .build();
     }
 
+    private FieldTargetDto toDtoDeep(final FieldTarget fieldTarget) {
+        return toDtoShallow(fieldTarget);
+    }
+
     @Override
     public FieldTargetDto toDto(FieldTarget entity, boolean embedChildren) {
         return toDtoShallow(entity);
@@ -62,7 +66,10 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
     }
 
     @Override
-    public Set<FieldTargetDto> toDtoSet(Set<FieldTarget> entitySet) {
+    public Set<FieldTargetDto> toDtoSet(Set<FieldTarget> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

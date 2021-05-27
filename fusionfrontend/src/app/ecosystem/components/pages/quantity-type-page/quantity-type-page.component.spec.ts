@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuantityTypeCreateComponent } from './quantity-type-create.component';
+import { QuantityTypePageComponent } from './quantity-type-page.component';
 
-describe('QuantityTypeCreateComponent', () => {
-  let component: QuantityTypeCreateComponent;
-  let fixture: ComponentFixture<QuantityTypeCreateComponent>;
+describe('QuantityTypePageComponent', () => {
+  let component: QuantityTypePageComponent;
+  let fixture: ComponentFixture<QuantityTypePageComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ QuantityTypeCreateComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ QuantityTypePageComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuantityTypeCreateComponent);
+    fixture = TestBed.createComponent(QuantityTypePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

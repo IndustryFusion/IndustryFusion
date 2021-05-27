@@ -51,7 +51,7 @@ import { UnitListComponent } from './components/content/unit-list/unit-list.comp
 import { UnitListHeaderComponent } from './components/content/unit-list-header/unit-list-header.component';
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
-import { QuantityTypeCreateComponent } from './components/content/quantity-type-create/quantity-type-create.component';
+import { QuantityTypeDialogComponent } from './components/content/quantity-type-dialog/quantity-type-dialog.component';
 import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
 import { MetricCreateComponent } from './components/content/metric-create/metric-create.component';
 // tslint:disable-next-line:max-line-length
@@ -70,11 +70,17 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 import { CreateButtonComponent } from '../components/ui/create-button/create-button.component';
+import { TrashButtonComponent } from '../components/ui/trash-button/trash-button.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
+import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
+import { CheckboxModule } from 'primeng/checkbox';
+import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +113,7 @@ import { DropdownModule } from 'primeng/dropdown';
     UnitListHeaderComponent,
     UnitListItemComponent,
     AssetTypeCreateComponent,
-    QuantityTypeCreateComponent,
+    QuantityTypeDialogComponent,
     UnitCreateComponent,
     MetricCreateComponent,
     AssetTypeTemplateCreateStepOneComponent,
@@ -119,6 +125,10 @@ import { DropdownModule } from 'primeng/dropdown';
     AssetTypePageComponent,
     AssetTypeEditComponent,
     CreateButtonComponent,
+    TrashButtonComponent,
+    EditButtonComponent,
+    ConfirmButtonComponent,
+    QuantityTypePageComponent,
   ],
   imports: [
     CommonModule,
@@ -132,7 +142,9 @@ import { DropdownModule } from 'primeng/dropdown';
     TableModule,
     InputTextModule,
     InputTextareaModule,
-    DropdownModule
+    DropdownModule,
+    RadioButtonModule,
+    CheckboxModule
   ],
   exports: [
     EcosystemSubHeaderComponent,

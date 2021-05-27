@@ -45,13 +45,15 @@ public class RoomRestService {
 
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms")
     public Set<RoomDto> getRooms(@PathVariable final Long companyId,
-                                 @PathVariable final Long locationId) {
-        return roomMapper.toDtoSet(roomService.getRoomsCheckFullPath(companyId, locationId));
+                                 @PathVariable final Long locationId,
+                                 @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return roomMapper.toDtoSet(roomService.getRoomsCheckFullPath(companyId, locationId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/rooms")
-    public Set<RoomDto> getRoomsOfCompany(@PathVariable final Long companyId) {
-        return roomMapper.toDtoSet(roomService.getRoomsOfCompany(companyId));
+    public Set<RoomDto> getRoomsOfCompany(@PathVariable final Long companyId,
+                                          @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return roomMapper.toDtoSet(roomService.getRoomsOfCompany(companyId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}")

@@ -17,7 +17,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ID } from '@datorama/akita';
 
 import { UnitQuery } from '../../../../store/unit/unit.query';
-import { QuantityQuery } from '../../../../store/quantity/quantity.query';
+import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
 
 @Component({
@@ -34,7 +34,7 @@ export class AssetTypeTemplateMetricRowComponent implements OnInit {
 
   @Input() confirmed: boolean;
 
-  constructor(private unitQuery: UnitQuery, private quantityQuery: QuantityQuery) { }
+  constructor(private unitQuery: UnitQuery, private quantityQuery: QuantityTypeQuery) { }
 
   ngOnInit() {
     if (this.confirmed === undefined) {
@@ -61,8 +61,8 @@ export class AssetTypeTemplateMetricRowComponent implements OnInit {
 
   getQuantityTypeName(id: ID) {
     const unit = this.unitQuery.getEntity(id);
-    const quantity = this.quantityQuery.getEntity(unit.quantityTypeId);
-    return quantity.name;
+    const quantityType = this.quantityQuery.getEntity(unit.quantityTypeId);
+    return quantityType?.name;
   }
 
   getUnitSymbol(id: ID) {

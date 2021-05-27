@@ -22,7 +22,7 @@ import { Unit } from '../../../../store/unit/unit.model';
 import { UnitCreateComponent } from '../unit-create/unit-create.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
-import { QuantityService } from '../../../../store/quantity/quantity.service';
+import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 
 @Component({
   selector: 'app-unit-list-item',
@@ -35,7 +35,7 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
   item: Unit;
 
   constructor(public route: ActivatedRoute, public router: Router, public unitService: UnitService,
-              public quantityService: QuantityService, public dialogService: DialogService,
+              public quantityService: QuantityTypeService, public dialogService: DialogService,
               public formBuilder: FormBuilder) {
     super(route, router, unitService);
   }

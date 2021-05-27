@@ -47,8 +47,9 @@ public class AssetSeriesFieldSourceRestService {
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/fieldsources")
     public Set<FieldSourceDto> getFieldSources(@PathVariable final Long companyId,
-                                               @PathVariable final Long assetSeriesId) {
-        return fieldSourceMapper.toDtoSet(assetSeriesService.getFieldSources(companyId, assetSeriesId));
+                                               @PathVariable final Long assetSeriesId,
+                                               @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return fieldSourceMapper.toDtoSet(assetSeriesService.getFieldSources(companyId, assetSeriesId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/fieldsources/{fieldSourceId}")

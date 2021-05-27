@@ -19,16 +19,17 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AssetTypeQuery } from '../../store/asset-type/asset-type.query';
 import { AssetType } from '../../store/asset-type/asset-type.model';
 import { EcosystemManagerPageType, RouteData } from '../ecosystem.routing.model';
+import { QuantityTypeQuery } from '../../store/quantity-type/quantity-type.query';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EcoSystemManagerResolver {
   public assetType$: Observable<AssetType>;
-  public assetTypes$: Observable<AssetType[]>;
   public ecoSystemManagerSubTitle$: Subject<string>;
 
-  constructor(private assetTypeQuery: AssetTypeQuery) {
+  constructor(private assetTypeQuery: AssetTypeQuery,
+              private quantityTypeQuery: QuantityTypeQuery) {
     this.assetType$ = this.assetTypeQuery.selectActive();
     this.ecoSystemManagerSubTitle$ = new BehaviorSubject('Apps');
   }
@@ -51,6 +52,11 @@ export class EcoSystemManagerResolver {
     }
     else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Quantity Types');
+    }
+    else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_DETAIL)) {
+      this.quantityTypeQuery
+        .waitForActive()
+        .subscribe(quantityType => this.ecoSystemManagerSubTitle$.next('Quantity Types > ' + quantityType.name));
     }
     else if (pageTypes.includes(EcosystemManagerPageType.UNIT_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Units');

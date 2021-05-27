@@ -53,15 +53,18 @@ public class FactoryAssetFieldRestService {
     public Set<FieldInstanceDto> getFieldInstancesCheckFullPath(@PathVariable final Long companyId,
                                                                 @PathVariable final Long locationId,
                                                                 @PathVariable final Long roomId,
-                                                                @PathVariable final Long assetId) {
+                                                                @PathVariable final Long assetId,
+                                                                @RequestParam(defaultValue = "false")
+                                                                    final boolean embedChildren) {
         return fieldInstanceMapper.toDtoSet(
-                assetService.getFieldInstancesCheckFullPath(companyId, locationId, roomId, assetId));
+                assetService.getFieldInstancesCheckFullPath(companyId, locationId, roomId, assetId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")
     public Set<FieldInstanceDto> getFieldInstances(@PathVariable final Long companyId,
-                                                   @PathVariable final Long assetId) {
-        return fieldInstanceMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId));
+                                                   @PathVariable final Long assetId,
+                                                   @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return fieldInstanceMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
@@ -78,8 +81,9 @@ public class FactoryAssetFieldRestService {
     // the FieldDetailsDto refers to the Field model in the Frontend
     @GetMapping(path = "companies/{companyId}/assets/{assetId}/fields")
     public Set<FieldDetailsDto> getFieldDetails(@PathVariable final Long companyId,
-                                                @PathVariable final Long assetId) {
-        return fieldDetailsMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId));
+                                                @PathVariable final Long assetId,
+                                                @RequestParam(defaultValue = "true") final boolean embedChildren) {
+        return fieldDetailsMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId), embedChildren);
     }
 
 

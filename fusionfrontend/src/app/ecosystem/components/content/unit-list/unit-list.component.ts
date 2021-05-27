@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
@@ -23,6 +23,7 @@ import { Unit } from '../../../../store/unit/unit.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UnitCreateComponent } from '../unit-create/unit-create.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-unit-list',
@@ -31,6 +32,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   providers: [DialogService]
 })
 export class UnitListComponent extends BaseListComponent implements OnInit, OnDestroy {
+
+  @Input()
+  optionalItems$: Observable<Unit[]>;
 
   titleMapping:
     { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
@@ -49,6 +53,10 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
 
   ngOnInit() {
     super.ngOnInit();
+
+    if (this.optionalItems$ != null) {
+      this.items$ = this.optionalItems$;
+    }
   }
 
   ngOnDestroy() {

@@ -72,5 +72,8 @@ public class QuantityType extends BaseEntity {
         if (sourceField.getDataType() != null) {
             setDataType(sourceField.getDataType());
         }
+        if (sourceField.getBaseUnit() != null) {
+            setBaseUnit(sourceField.getBaseUnit());
+        }
     }
 }

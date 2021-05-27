@@ -13,7 +13,7 @@
  * under the License.
  */
 
-@import 'src/assets/sass/components/buttons';
+@import 'components/buttons';
 @import "abstract/variables";
 
 .edit-asset-type {
@@ -21,16 +21,6 @@
     margin-top: 8.1%;
      margin-bottom: 5%;
     text-align: right;
-  }
-
-  .textarea-character-count {
-    font-size: 12px;
-    font-weight: normal;
-    padding-right: 18.0%;
-    padding-top: -25px;
-    padding-bottom: 0;
-    pointer-events:none;
-    text-align: end;
   }
 
   .edit-asset-type-inputs {
@@ -41,8 +31,4 @@
     display: grid;
     padding-bottom: 24px;
   }
-}
-
-:host ::ng-deep .p-dialog { // TODO (jsy): not working
-  width: 51.25% !important;
 }

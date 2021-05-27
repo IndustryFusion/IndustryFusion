@@ -40,8 +40,8 @@ public class UnitRepositoryRestService {
     }
 
     @GetMapping(path = "/units")
-    public Set<UnitDto> getAllUnits() {
-        return unitMapper.toDtoSet(unitService.getAllUnits());
+    public Set<UnitDto> getAllUnits(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return unitMapper.toDtoSet(unitService.getAllUnits(), embedChildren);
     }
 
     @GetMapping(path = "/units/{unitId}")

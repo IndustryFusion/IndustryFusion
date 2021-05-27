@@ -1,0 +1,48 @@
+@import 'base/typography';
+@import "abstract/variables";
+
+.p-dialog {
+  .p-radiobutton {
+    .p-radiobutton-icon {
+      background-color: $basic-black;
+      height: 8px;
+      width: 8px;
+    }
+  }
+
+  .p-radiobutton-box {
+    width: $radiobutton-width;
+    height: $radiobutton-height;
+    opacity: 1;
+    border-color: $basic-black !important;
+    box-shadow: none !important;
+    margin-top: 2px;
+
+    &.p-highlight {
+      border-color: $basic-black;
+      background: $basic-white;
+    }
+    &:hover {
+      border-color: $basic-white;
+      background: $basic-black;
+    }
+
+    &.p-disabled {
+      border-color: $basic-grey !important;
+    }
+  }
+
+  .p-radiobutton-label {
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+    text-align: left;
+    letter-spacing: 0;
+    color: $highlighted;
+    margin-left: 2px;
+    opacity: 1;
+
+    &.p-disabled {
+      color: $basic-grey !important;
+    }
+  }
+}

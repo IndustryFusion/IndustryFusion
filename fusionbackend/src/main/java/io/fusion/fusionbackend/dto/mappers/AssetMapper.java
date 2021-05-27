@@ -111,7 +111,10 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     }
 
     @Override
-    public Set<AssetDto> toDtoSet(Set<Asset> entitySet) {
+    public Set<AssetDto> toDtoSet(Set<Asset> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

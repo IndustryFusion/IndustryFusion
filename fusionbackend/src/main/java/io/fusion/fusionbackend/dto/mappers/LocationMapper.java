@@ -62,7 +62,7 @@ public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
                 .id(entity.getId())
                 .type(entity.getType())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
-                .rooms(roomMapper.toDtoSet(entity.getRooms()))
+                .rooms(roomMapper.toDtoSet(entity.getRooms(), false))
                 .name(entity.getName())
                 .line1(entity.getLine1())
                 .line2(entity.getLine2())
@@ -103,7 +103,10 @@ public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
     }
 
     @Override
-    public Set<LocationDto> toDtoSet(Set<Location> entitySet) {
+    public Set<LocationDto> toDtoSet(Set<Location> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

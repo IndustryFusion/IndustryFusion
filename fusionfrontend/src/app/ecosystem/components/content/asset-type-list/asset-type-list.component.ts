@@ -51,8 +51,4 @@ export class AssetTypeListComponent extends BaseListComponent implements OnInit,
   ngOnDestroy() {
     this.assetTypeDetailsQuery.resetError();
   }
-
-  folderView() {
-    // TODO
-  }
 }

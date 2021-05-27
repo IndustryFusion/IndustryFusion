@@ -47,8 +47,13 @@ public class QuantityTypeService {
         return quantityTypeRepository.findById(quantityTypeId).orElseThrow(ResourceNotFoundException::new);
     }
 
-    public QuantityType createQuantityType(final QuantityType unit) {
-        return quantityTypeRepository.save(unit);
+    public QuantityType createQuantityType(final QuantityType newQuantityType, final Long baseUnitId) {
+        final QuantityType persistedQuantityType = quantityTypeRepository.save(newQuantityType);
+        if (baseUnitId != null && baseUnitId > 0) {
+            return setQuantityTypeBaseUnit(persistedQuantityType.getId(), baseUnitId);
+        } else {
+            return persistedQuantityType;
+        }
     }
 
     public QuantityType updateQuantityType(final Long unitId, final QuantityType sourceQuantityType) {

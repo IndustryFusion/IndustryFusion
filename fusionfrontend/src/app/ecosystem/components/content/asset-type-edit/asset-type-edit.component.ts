@@ -46,8 +46,6 @@ export class AssetTypeEditComponent implements OnInit {
       assetType.label = this.assetTypeForm.get('label')?.value;
       assetType.description = this.assetTypeForm.get('description')?.value;
       this.ref.close(assetType);
-    } else {
-      this.ref.close();
     }
   }
 }

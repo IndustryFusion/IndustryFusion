@@ -13,9 +13,6 @@
  * under the License.
  */
 
-
-
-
   /** colors **/
   $basic-grey: #95989A;
   $light-grey: #F8F8F8;
@@ -24,6 +21,8 @@
   $basic-black: #000000;
 
   $highlighted: $basic-black;
+  $inactive: #95989A;
+  $regular-grey: #666666;
 
   /** backgrounds **/
   $grey-background: $light-grey 50% 50% no-repeat padding-box;
@@ -37,5 +36,8 @@
   $checkbox-height: 16px;
   $checkbox-width: 16px;
 
+  /** radiobutton size **/
+  $radiobutton-height: 12px;
+  $radiobutton-width: 12px;
 
 

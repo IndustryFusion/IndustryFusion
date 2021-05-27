@@ -13,6 +13,8 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 :host ::ng-deep .quantity-dropdown {
   min-width: 100% !important;
   padding-top: 0;

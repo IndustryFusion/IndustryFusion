@@ -25,9 +25,6 @@ under the License.
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
   <div class="title">{{ (items$ | async).length | i18nPlural: titleMapping }}</div>
   <div>
-    <button class="button-create folder-view" (click)="folderView()">
-      <clr-icon shape="folder" class="is-solid"></clr-icon> Folder View
-    </button>
     <app-create-button [text]="'Create Asset type'" (createItem)="createItemModal()"></app-create-button>
   </div>
 </div>

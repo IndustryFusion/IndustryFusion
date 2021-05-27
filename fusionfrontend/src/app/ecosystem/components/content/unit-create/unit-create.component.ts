@@ -15,11 +15,11 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Quantity } from 'src/app/store/quantity/quantity.model';
-import { QuantityQuery } from 'src/app/store/quantity/quantity.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { Unit } from '../../../../store/unit/unit.model';
+import { Unit } from 'src/app/store/unit/unit.model';
+import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
+import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 
 @Component({
   selector: 'app-unit-create',
@@ -29,10 +29,11 @@ import { Unit } from '../../../../store/unit/unit.model';
 export class UnitCreateComponent implements OnInit {
 
   unitForm: FormGroup;
-  quantityTypes$: Observable<Quantity[]>;
+  quantityTypes$: Observable<QuantityType[]>;
   editMode = false;
 
-  constructor(private quantityQuery: QuantityQuery, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
+  constructor(private quantityQuery: QuantityTypeQuery, public ref: DynamicDialogRef,
+              public config: DynamicDialogConfig) {
   }
 
   ngOnInit() {
