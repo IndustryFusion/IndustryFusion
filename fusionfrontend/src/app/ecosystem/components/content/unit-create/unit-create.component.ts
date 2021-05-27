@@ -13,13 +13,13 @@
  * under the License.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {Quantity} from 'src/app/store/quantity/quantity.model';
-import {QuantityQuery} from 'src/app/store/quantity/quantity.query';
-import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {FormGroup} from "@angular/forms";
-import {Unit} from "../../../../store/unit/unit.model";
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Quantity } from 'src/app/store/quantity/quantity.model';
+import { QuantityQuery } from 'src/app/store/quantity/quantity.query';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormGroup } from '@angular/forms';
+import { Unit } from '../../../../store/unit/unit.model';
 
 @Component({
   selector: 'app-unit-create',
@@ -30,7 +30,7 @@ export class UnitCreateComponent implements OnInit {
 
   unitForm: FormGroup;
   quantityTypes$: Observable<Quantity[]>;
-  editMode: boolean = false;
+  editMode = false;
 
   constructor(private quantityQuery: QuantityQuery, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
   }

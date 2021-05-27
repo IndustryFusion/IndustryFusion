@@ -13,16 +13,16 @@
  * under the License.
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {BaseListItemComponent} from '../base/base-list-item/base-list-item.component';
-import {UnitService} from '../../../../store/unit/unit.service';
-import {Unit} from '../../../../store/unit/unit.model';
-import {UnitCreateComponent} from "../unit-create/unit-create.component";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {DialogService} from "primeng/dynamicdialog";
-import {QuantityService} from "../../../../store/quantity/quantity.service";
+import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
+import { UnitService } from '../../../../store/unit/unit.service';
+import { Unit } from '../../../../store/unit/unit.model';
+import { UnitCreateComponent } from '../unit-create/unit-create.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogService } from 'primeng/dynamicdialog';
+import { QuantityService } from '../../../../store/quantity/quantity.service';
 
 @Component({
   selector: 'app-unit-list-item',
@@ -34,7 +34,9 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
   @Input()
   item: Unit;
 
-  constructor(public route: ActivatedRoute, public router: Router, public unitService: UnitService, public quantityService: QuantityService, public dialogService: DialogService, public formBuilder: FormBuilder) {
+  constructor(public route: ActivatedRoute, public router: Router, public unitService: UnitService,
+              public quantityService: QuantityService, public dialogService: DialogService,
+              public formBuilder: FormBuilder) {
     super(route, router, unitService);
   }
 
@@ -52,7 +54,7 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
   showDialog(): void {
     const unitForm = this.createDialogFormGroup(this.item);
     const ref = this.dialogService.open(UnitCreateComponent, {
-      header: "Edit Unit", width: '50%', data: {unitForm: unitForm, editMode: true}
+      header: 'Edit Unit', width: '50%', data: { unitForm, editMode: true }
     });
     ref.onClose.subscribe((unit) => {
       this.updateUnitIfPresent(unit);
@@ -72,11 +74,11 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
 
   updateUnitIfPresent(unit: Unit): void {
     if (unit) {
-      let patchedUnit = {...this.item, ...unit}
+      const patchedUnit = { ...this.item, ...unit };
       this.quantityService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
         patchedUnit.quantityType = quantityType;
         this.unitService.editUnit(this.item.quantityTypeId, this.item.id, patchedUnit).subscribe();
-      })
+      });
     }
   }
 

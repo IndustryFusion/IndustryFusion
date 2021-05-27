@@ -13,16 +13,16 @@
  * under the License.
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {BaseListComponent} from '../base/base-list/base-list.component';
-import {UnitQuery} from '../../../../store/unit/unit.query';
-import {UnitService} from '../../../../store/unit/unit.service';
-import {Unit} from '../../../../store/unit/unit.model';
-import {DialogService} from "primeng/dynamicdialog";
-import {UnitCreateComponent} from "../unit-create/unit-create.component";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { BaseListComponent } from '../base/base-list/base-list.component';
+import { UnitQuery } from '../../../../store/unit/unit.query';
+import { UnitService } from '../../../../store/unit/unit.service';
+import { Unit } from '../../../../store/unit/unit.model';
+import { DialogService } from 'primeng/dynamicdialog';
+import { UnitCreateComponent } from '../unit-create/unit-create.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-unit-list',
@@ -33,7 +33,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class UnitListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
   titleMapping:
-    { [k: string]: string } = {'=0': 'No Units', '=1': '# Unit', other: '# Units'};
+    { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
 
   editBarMapping:
     { [k: string]: string } = {
@@ -42,7 +42,8 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
     other: '# units selected'
   };
 
-  constructor(public route: ActivatedRoute, public router: Router, public unitQuery: UnitQuery, public unitService: UnitService, public dialogService: DialogService, public formBuilder: FormBuilder) {
+  constructor(public route: ActivatedRoute, public router: Router, public unitQuery: UnitQuery,
+              public unitService: UnitService, public dialogService: DialogService, public formBuilder: FormBuilder) {
     super(route, router, unitQuery, unitService);
   }
 
@@ -57,7 +58,7 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
   showDialog() {
     const unitForm = this.createDialogFormGroup();
     const ref = this.dialogService.open(UnitCreateComponent, {
-      header: "Create new Unit", width: '50%', data: {unitForm: unitForm}
+      header: 'Create new Unit', width: '50%', data: { unitForm }
     });
     ref.onClose.subscribe((unit) => {
       if (unit) {
