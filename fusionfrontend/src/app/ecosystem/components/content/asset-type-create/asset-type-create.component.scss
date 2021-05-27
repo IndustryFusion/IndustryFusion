@@ -13,6 +13,8 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 .backdrop {
   position: fixed;
   top: 0;
@@ -49,7 +51,7 @@
     font-size: 16px;
     line-height: 20px;
     letter-spacing: 0;
-    color: #666666;
+    color: $regular-grey;
     opacity: 1;
 
     margin-top: 16px;

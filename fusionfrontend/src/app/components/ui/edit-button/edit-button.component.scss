@@ -34,6 +34,11 @@
   clr-icon {
     height: 24px;
     width: 24px;
+    color: $regular-grey;
+
+    &:hover {
+      color: $basic-black !important;
+    }
   }
 }
 
