@@ -34,12 +34,15 @@ export class AssetTypeTemplateMetricRowComponent implements OnInit {
 
   @Input() confirmed: boolean;
 
+  public accuracyDigitsInfo: string;
+
   constructor(private unitQuery: UnitQuery, private quantityQuery: QuantityTypeQuery) { }
 
   ngOnInit() {
     if (this.confirmed === undefined) {
       this.confirmed = false;
     }
+    this.accuracyDigitsInfo = `1.0-${this.fieldTarget.field.accuracy.toString()}`;
   }
 
   onConfirm() {
@@ -61,12 +64,15 @@ export class AssetTypeTemplateMetricRowComponent implements OnInit {
 
   getQuantityTypeName(id: ID) {
     const unit = this.unitQuery.getEntity(id);
-    const quantityType = this.quantityQuery.getEntity(unit.quantityTypeId);
+    const quantityType = this.quantityQuery.getEntity(unit?.quantityTypeId);
     return quantityType?.name;
   }
 
   getUnitSymbol(id: ID) {
     const unit = this.unitQuery.getEntity(id);
-    return unit.symbol;
+    if (unit && unit.symbol.length > 0) {
+      return unit.symbol;
+    }
+    return '–';
   }
 }

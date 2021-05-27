@@ -48,6 +48,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
 
   public ref: DynamicDialogRef;
   public assetTypeTemplateForm: FormGroup;
+  checked: boolean = true;
 
   constructor(
     public route: ActivatedRoute,
@@ -73,8 +74,9 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
       name: ['', requiredTextValidator],
       description: ['', requiredTextValidator],
       useExistingTemplate: [false, Validators.required],
-      assetTypeId: [1, Validators.required],
-      assetTypeTemplateId: [null]
+      assetTypeId: [undefined, Validators.required],
+      assetTypeTemplateId: [undefined],
+      metric: [undefined]
     });
   }
 

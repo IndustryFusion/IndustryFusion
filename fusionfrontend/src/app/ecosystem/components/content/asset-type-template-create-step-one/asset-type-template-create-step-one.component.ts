@@ -31,14 +31,14 @@ import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/as
 })
 export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
 
-  @Output() stepChange = new EventEmitter<number>();
+  @Input()
+  public assetTypeTemplateForm: FormGroup;
+
+  @Output()
+  public stepChange = new EventEmitter<number>();
 
   public assetTypes$: Observable<AssetType[]>;
   public assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
-
-  @Input()
-  @Output()
-  public assetTypeTemplateForm: FormGroup;
 
   public shouldShowCreateAssetType = false; // TODO: Call with dynamic prime dialog
 
@@ -50,10 +50,6 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
   ngOnInit() {
     this.assetTypes$ = this.assetTypeQuery.selectAll();
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll();
-
-    // TODO: Not working, getEntity yields undefined from ID 1
-    const assetType = this.assetTypeQuery.getEntity(this.assetTypeTemplateForm.get('assetTypeId')?.value);
-    this.replaceTemplateNameFromAssetType(assetType);
   }
 
   nextStep() {
@@ -87,7 +83,6 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
   private replaceTemplateNameFromAssetType(assetType: AssetType) {
     if (assetType) {
       this.assetTypeTemplateForm.get('name')?.setValue(assetType.name + ' v.');
-      this.assetTypeTemplateForm.get('description')?.setValue(assetType.description);
     }
   }
 }

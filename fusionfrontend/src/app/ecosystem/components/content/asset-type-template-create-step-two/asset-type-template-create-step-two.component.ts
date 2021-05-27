@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -21,6 +21,7 @@ import { Metric } from '../../../../store/metric/metric.model';
 import { MetricQuery } from '../../../../store/metric/metric.query';
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
 import { MetricService } from '../../../../store/metric/metric.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-type-template-create-step-two',
@@ -34,18 +35,23 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   @Output() metricSelect = new EventEmitter<FieldTarget[]>();
   @Output() errorSignal = new EventEmitter<string>();
 
+  @Input()
+  @Output()
+  public assetTypeTemplateForm: FormGroup;
+
   shouldAddMetric = false;
   metrics$: Observable<Metric[]>;
   confirmedMetrics: Array<FieldTarget> = [];
   selectedMetrics: Array<FieldTarget> = [];
-  metric: Metric;
+  //metric: Metric;
 
   shouldShowCreateMetric = false;
 
-  constructor(private metricQuery: MetricQuery, private metricService: MetricService) { }
+  constructor(private metricQuery: MetricQuery, private metricService: MetricService) {
+  }
 
   ngOnInit() {
-    this.metrics$ = this.metricQuery.selectAll();
+    this.metrics$ = this.metricQuery.selectAll(); // TODO: Does this also yields attributes? filter using fieldType of field_target
 
     if (this.inputMetrics) {
       this.selectedMetrics = this.selectedMetrics.concat(this.inputMetrics);
@@ -57,7 +63,15 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     return this.confirmedMetrics.indexOf(metric) !== -1;
   }
 
-  changeStep(step: number) {
+  prevStep() {
+    this.changeStep(1);
+  }
+
+  nextStep() {
+    this.changeStep(3);
+  }
+
+  private changeStep(step: number) {
     if (this.confirmedMetrics.length === this.selectedMetrics.length) {
       this.metricSelect.emit(this.confirmedMetrics);
       this.stepChange.emit(step);
@@ -70,7 +84,7 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     this.shouldAddMetric = true;
   }
 
-  onChange(value: Metric) {
+  onChangeMetric(value: Metric) {
     const fieldTarget = new FieldTarget();
     fieldTarget.fieldType = FieldType.METRIC;
     fieldTarget.field = value;
@@ -78,7 +92,7 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedMetrics.push(fieldTarget);
     this.shouldAddMetric = false;
-    this.metric = undefined;
+    //this.metric = undefined;
   }
 
   onConfirm(fieldTarget: FieldTarget) {
@@ -86,14 +100,14 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   }
 
   onEdit(fieldTarget: FieldTarget) {
-    const index  = this.confirmedMetrics.indexOf(fieldTarget);
+    const index = this.confirmedMetrics.indexOf(fieldTarget);
     if (index > -1) {
       this.confirmedMetrics.splice(index, 1);
     }
   }
 
   onDelete(fieldTarget: FieldTarget) {
-    const index  = this.confirmedMetrics.indexOf(fieldTarget);
+    const index = this.confirmedMetrics.indexOf(fieldTarget);
     if (index > -1) {
       this.confirmedMetrics.splice(index, 1);
     }

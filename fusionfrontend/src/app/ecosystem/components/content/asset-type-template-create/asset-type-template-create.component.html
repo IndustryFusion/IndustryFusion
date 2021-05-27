@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="wrapper">
+<div>
   <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
     <clr-alert-item>
       <span class="alert-text">
@@ -52,6 +52,7 @@ under the License.
      [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-one>
   <app-asset-type-template-create-step-two *ngIf="step === 2" (stepChange)="onStepChange($event)"
+                                           [assetTypeTemplateForm]="assetTypeTemplateForm"
     (metricSelect)="onMetricsSelect($event)" (errorSignal)="onError($event)" [inputMetrics]="getMetrics()">
   </app-asset-type-template-create-step-two>
   <app-asset-type-template-create-step-three *ngIf="step === 3" (stepChange)="onStepChange($event)"

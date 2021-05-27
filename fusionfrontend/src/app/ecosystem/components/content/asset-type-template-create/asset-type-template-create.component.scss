@@ -70,8 +70,8 @@
     flex-direction: row;
 
     .button-create {
-      padding-top: 17px;
-      padding-bottom: 16px;
+      padding-top: 16px;
+      padding-bottom: 17px;
       padding-right: 42px;
       padding-left: 40px;
 
@@ -94,7 +94,7 @@
   }
 
   .select-asset-input {
-    width: 40vw;
+    width: 50vw;
   }
 
   .metrics-list {
@@ -102,22 +102,22 @@
   }
 
   .button-add {
-    margin-top: 40px;
-
+    height: 56px;
     width: 100%;
 
-    padding-top: 17px;
-    padding-bottom: 16px;
+    padding-top: 16px;
+    padding-bottom: 17px;
+    margin-top: 24px;
 
     text-align: center;
     font-weight: bold;
-    font-size: 18px;
-    line-height: 23px;
+    font-size: $bigger-font-size;
+    line-height: $big-line-height;
     letter-spacing: 0;
-    color: #000000;
+    color: $highlighted;
 
     background: #FFFFFF 0 0 no-repeat padding-box;
-    box-shadow: 0 3px 6px #00000029;
+    border: none !important;
     border-radius: 10px;
     opacity: 1;
   }

@@ -55,7 +55,6 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
     this.metricsResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
-    console.log('done');
 
     this.assetTypeTemplateForm = this.config.data.assetTypeTemplateForm;
 

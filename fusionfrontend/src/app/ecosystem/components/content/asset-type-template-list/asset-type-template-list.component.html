@@ -13,6 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<p-checkbox [(ngModel)]="checked" binary="true" label="Mandatory" name="mandatory" ></p-checkbox>
+
 <div class="wrapper">
   <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
     <clr-alert-item>
