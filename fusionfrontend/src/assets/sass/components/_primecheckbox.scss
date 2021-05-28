@@ -1,0 +1,47 @@
+@import 'base/typography';
+@import 'abstract/variables';
+
+.p-checkbox .p-checkbox-box {
+  border-radius: 0 !important;
+  border-color: $basic-black !important;
+  width: 19px;
+  height: 19px;
+  box-shadow: none !important;
+  opacity: 1;
+
+  &.p-disabled {
+    border-color: $inactive !important;
+
+    .pi-check {
+      background: $inactive 0 0 no-repeat padding-box !important;
+      border-color: $inactive !important;
+    }
+  }
+
+  &.p-highlight {
+    &:not([p-disabled]) {
+      background: $highlighted 0 0 no-repeat padding-box !important;
+    }
+    &.p-disabled {
+      background: $inactive 0 0 no-repeat padding-box !important;
+    }
+  }
+}
+
+p-checkbox .p-checkbox-label {
+  color: $inactive !important;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+  letter-spacing: 0;
+  text-align: left;
+  opacity: 1;
+
+  &.p-checkbox-label-active {
+    color: $highlighted !important;
+    font-weight: 600;
+  }
+
+  &.p-disabled {
+    color: $inactive !important;
+  }
+}
