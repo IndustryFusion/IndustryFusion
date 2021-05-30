@@ -20,14 +20,6 @@
   border: none !important;
 }
 
-.has() .table-dropdown-menu {
-  visibility: hidden;
-}
-
-.has():hover table-dropdown-menu {
-  visibility: visible;
-}
-
 .table-dropdown-menu {
   ::ng-deep .p-menu {
     width: 200px;

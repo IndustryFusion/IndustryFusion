@@ -19,3 +19,10 @@
   padding-left: 20px;
 }
 
+.list-item .table-dropdown-menu {
+  visibility: hidden;
+}
+
+.list-item:hover .table-dropdown-menu {
+  visibility: visible;
+}

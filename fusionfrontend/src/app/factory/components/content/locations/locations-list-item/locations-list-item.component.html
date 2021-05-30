@@ -21,7 +21,7 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="routerLink">{{location.country}}</div>
   <div class="list-item-cell grey" [style.width.%]="7" [routerLink]="routerLink">{{location.assetCount}}</div>
   <div class="list-item-cell grey" [style.width.%]="7" [routerLink]="routerLink">41</div>
-  <div class="list-item-cell grey" [style.width.%]="5">
+  <div class="list-item-cell grey table-dropdown-menu" [style.width.%]="5">
     <app-item-options-menu (editItem)="showCreateDialog()"  (deleteItem)="deleteItem()"></app-item-options-menu>
   </div>
 </div>
