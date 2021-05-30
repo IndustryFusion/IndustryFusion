@@ -64,10 +64,7 @@ under the License.
   </div>
 
   <div class="footer-btns">
-    <button type="button" class="if-button-cancel" (click)="onCancel()">Cancel</button>
-    <button type="button" class="if-button button-confirm button-primary" (click)="onSave()"
-            [disabled]="locationForm.invalid">
-      Save
-    </button>
+    <app-modal-cancel-button (cancelItem)="onCancel()"></app-modal-cancel-button>
+    <app-modal-save-button (click)="onSave()" [disabled]="locationForm.invalid"></app-modal-save-button>
   </div>
 </div>

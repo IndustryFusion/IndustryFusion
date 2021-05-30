@@ -1,0 +1,33 @@
+@import 'base/typography';
+@import "abstract/variables";
+
+if-button {
+  padding: 17px 78px 16px;
+
+  text-align: center;
+  font-weight: 500;
+  font-size: $bigger-font-size;
+  line-height: $big-line-height;
+  letter-spacing: 0;
+  color: $basic-black;
+
+  text-transform: uppercase;
+
+  background: $white-background;
+  border-radius: 44px;
+  opacity: 1;
+  cursor: pointer;
+  margin-right: 16px;
+
+
+  &.button-primary {
+    font-weight: bold;
+    color: $basic-white;
+    background: $black-background;
+    box-shadow: $dark-box-shadow;
+  }
+
+  &:disabled {
+    background: $basic-grey;
+  }
+}

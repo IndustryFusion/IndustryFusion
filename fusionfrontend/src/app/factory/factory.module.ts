@@ -67,6 +67,8 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
 import { EcosystemModule } from '../ecosystem/ecosystem.module';
+import { ModalCancelButtonComponent } from '../components/ui/modal-cancel-button/modal-cancel-button.component';
+import { ModalSaveButtonComponent } from '../components/ui/modal-save-button/modal-save-button.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +109,9 @@ import { EcosystemModule } from '../ecosystem/ecosystem.module';
     AssetInstantiationPairedModalComponent,
     AssetInstantiationLocationAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
-    LocationDialogComponent
+    LocationDialogComponent,
+    ModalCancelButtonComponent,
+    ModalSaveButtonComponent,
   ],
     imports: [
         CommonModule,
@@ -130,7 +134,8 @@ import { EcosystemModule } from '../ecosystem/ecosystem.module';
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
-    ArraysortextendedPipe
+    ArraysortextendedPipe,
+    ModalCancelButtonComponent
   ]
 })
 export class FactoryModule { }
