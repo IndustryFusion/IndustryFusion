@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { LocationWithAssetCount } from 'src/app/store/location/location.model';
 import { Location } from 'src/app/store/location/location.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,7 +18,6 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
   @Output()
   updateLocationEvent = new EventEmitter<Location>();
 
-  menuActions: MenuItem[];
   routerLink: string[];
   locationForm: FormGroup;
   ref: DynamicDialogRef;
@@ -27,10 +25,6 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     public dialogService: DialogService) {
-    this.menuActions = [
-      { label: 'Edit', icon: 'pi pi-pencil', command: (_) => { this.showCreateDialog(); } },
-      { label: 'Delete', icon: 'pi pi-trash', command: (_) => { } },
-    ];
   }
 
   ngOnInit(): void {
@@ -73,6 +67,9 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
     if (location) {
       this.locationUpdated(location);
     }
+  }
+
+  deleteItem() {
   }
 
   locationUpdated(location: Location): void {

@@ -68,6 +68,7 @@ import { MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
 import { EcosystemModule } from '../ecosystem/ecosystem.module';
 import { ModalCancelButtonComponent } from '../components/ui/modal-cancel-button/modal-cancel-button.component';
+import { ItemOptionsMenuComponent } from '../components/ui/item-options-menu/item-options-menu.component';
 import { ModalSaveButtonComponent } from '../components/ui/modal-save-button/modal-save-button.component';
 
 @NgModule({
@@ -111,6 +112,7 @@ import { ModalSaveButtonComponent } from '../components/ui/modal-save-button/mod
     AssetInstantiationRoomAssignmentModalComponent,
     LocationDialogComponent,
     ModalCancelButtonComponent,
+    ItemOptionsMenuComponent,
     ModalSaveButtonComponent,
   ],
     imports: [
