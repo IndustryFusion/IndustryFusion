@@ -50,7 +50,8 @@ under the License.
     </div>
     <app-quantity-type-list-header (sortEvent)="onSort($event)"></app-quantity-type-list-header>
     <app-quantity-type-list-item *ngFor="let item of (items$ | async) | sort:sortField" [item]="item"
-      (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)" [selected]="isSelected(item.id)">
+      (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)" [selected]="isSelected(item.id)"
+                                 appQuantityTypeEditDialog>
     </app-quantity-type-list-item>
   </div>
 </div>
