@@ -14,12 +14,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Unit } from 'src/app/store/unit/unit.model';
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 
 @Component({
   selector: 'app-unit-create',
@@ -30,15 +27,12 @@ export class UnitCreateComponent implements OnInit {
 
   unit: Unit;
   unitForm: FormGroup;
-  quantityTypes$: Observable<QuantityType[]>;
   editMode = false;
 
-  constructor(private quantityQuery: QuantityTypeQuery, public dialogRef: DynamicDialogRef,
-              public config: DynamicDialogConfig, private formBuilder: FormBuilder) {
+  constructor(public dialogRef: DynamicDialogRef, public config: DynamicDialogConfig, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.quantityTypes$ = this.quantityQuery.selectAll();
     this.unit = this.config.data?.unit;
     this.editMode = this.config.data?.editMode;
     this.unitForm = this.createDialogFormGroup(this.unit);
@@ -50,22 +44,18 @@ export class UnitCreateComponent implements OnInit {
       name: [unit?.name, Validators.maxLength(255)],
       label: [unit?.label, Validators.maxLength(255)],
       symbol: [unit?.symbol, Validators.maxLength(255)],
-      type: [unit?.quantityTypeId, Validators.required],
-      conversion: [unit?.description, Validators.maxLength(255)]
     });
   }
 
-  dismissModal() {
+  dismissModal(): void {
     this.dialogRef.close();
   }
 
-  confirmModal() {
+  confirmModal(): void {
     const unit = new Unit();
     unit.name = this.unitForm.get('name')?.value;
     unit.label = this.unitForm.get('label')?.value;
     unit.symbol = this.unitForm.get('symbol')?.value;
-    unit.description = this.unitForm.get('conversion')?.value;
-    unit.quantityTypeId = this.unitForm.get('type')?.value;
 
     this.dialogRef.close(unit);
   }
