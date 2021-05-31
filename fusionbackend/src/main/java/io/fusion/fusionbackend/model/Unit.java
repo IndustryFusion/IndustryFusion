@@ -49,15 +49,11 @@ public class Unit extends BaseEntity {
 
     private String name;
     private String label;
-    private String description;
     private String symbol;
 
     public void copyFrom(final Unit sourceUnit) {
         if (sourceUnit.getName() != null) {
             setName(sourceUnit.getName());
-        }
-        if (sourceUnit.getDescription() != null) {
-            setDescription(sourceUnit.getDescription());
         }
         if (sourceUnit.getSymbol() != null) {
             setSymbol(sourceUnit.getSymbol());

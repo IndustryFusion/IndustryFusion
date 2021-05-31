@@ -18,17 +18,14 @@ under the License.
     <h3>
       {{ (unit$ | async)?.name }}
     </h3>
-    <div class="if-detail-page-label" *ngIf="(unit$ | async)?.label">
-      <p>Label: {{ (unit$ | async)?.label }}</p>
-    </div>
     <div class="if-detail-page-label" *ngIf="(unit$ | async)?.symbol">
       <p>Symbol: {{ (unit$ | async)?.symbol }}</p>
     </div>
+    <div class="if-detail-page-label" *ngIf="(unit$ | async)?.label">
+      <p>Label: {{ (unit$ | async)?.label }}</p>
+    </div>
     <div class="if-detail-page-label">
       <p>Quantity Type: {{ (quantityType$ | async)?.name }}</p>
-    </div>
-    <div class="if-detail-page-description" *ngIf="(unit$ | async)?.description">
-      <textarea [disabled]="true">{{ (unit$ | async)?.description }}</textarea>
     </div>
   </div>
   <div class="p-col-2" class="edit-button">

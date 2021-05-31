@@ -18,13 +18,23 @@ under the License.
       <label class="if-label p-col">Unit name</label>
       <input type="text" pInputText placeholder="Unit name" formControlName="name" class="p-col"/>
     </div>
+    <div class="p-grid input-div">
+      <div class="p-col-6 p-grid">
+        <label class="if-label p-col">Symbol</label>
+        <input type="text" pInputText placeholder="Symbol" formControlName="symbol"
+               class="p-col symbol-input"/>
+      </div>
+      <div class="stretch-box"></div>
+      <div class="p-col-6 p-grid">
+        <label class="if-label p-col">Quantity *</label>
+        <p-dropdown [options]="quantityTypes$ | async" optionLabel="name" optionValue="id" formControlName="type"
+                    placeholder="Quantity"
+                    class="p-col quantity-dropdown"></p-dropdown>
+      </div>
+    </div>
     <div class="p-grid p-dir-col input-div">
       <label class="if-label p-col">Label</label>
       <input type="text" pInputText placeholder="Label" formControlName="label" class="p-col"/>
-    </div>
-    <div class="p-grid p-dir-col input-div">
-      <label class="if-label p-col">Symbol</label>
-      <input type="text" pInputText placeholder="Symbol" formControlName="symbol" class="p-col symbol-input"/>
     </div>
     <div class="footer-buttons">
       <button type="button" class="if-button-cancel" (click)="dismissModal()">Cancel</button>

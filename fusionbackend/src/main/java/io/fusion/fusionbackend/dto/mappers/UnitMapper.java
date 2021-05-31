@@ -45,7 +45,6 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
                 .id(entity.getId())
                 .name(entity.getName())
                 .label(entity.getLabel())
-                .description(entity.getDescription())
                 .symbol(entity.getSymbol())
                 .quantityTypeId(EntityDtoMapper.getEntityId(entity.getQuantityType()))
                 .build();
@@ -58,7 +57,6 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         return UnitDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .description(entity.getDescription())
                 .label(entity.getLabel())
                 .quantityType(quantityTypeMapper.toDto(entity.getQuantityType(), false))
                 .build();
@@ -80,7 +78,6 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         Unit unit = Unit.builder()
                 .id(dto.getId())
                 .name(dto.getName())
-                .description(dto.getDescription())
                 .label(dto.getLabel())
                 .symbol(dto.getSymbol())
                 .build();

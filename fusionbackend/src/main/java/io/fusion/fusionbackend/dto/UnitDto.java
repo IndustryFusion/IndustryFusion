@@ -26,7 +26,6 @@ import lombok.experimental.SuperBuilder;
 public class UnitDto {
     private Long id;
     private String name;
-    private String description;
     private String symbol;
     private String label;
     private Long quantityTypeId;
