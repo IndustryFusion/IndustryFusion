@@ -21,7 +21,7 @@ under the License.
   </clr-alert-item>
 </clr-alert>
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-  <div class="title">{{ (items$ | async).length | i18nPlural: titleMapping }}</div>
+  <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
   <app-edit-button (editItem)="showDialog()" text="Create Unit"></app-edit-button>
 </div>
 <div>
