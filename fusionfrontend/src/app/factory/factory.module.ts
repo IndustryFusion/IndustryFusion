@@ -67,7 +67,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
 import { EcosystemModule } from '../ecosystem/ecosystem.module';
-import { ItemOptionsMenuComponent } from '../components/ui/item-options-menu/item-options-menu.component';
+import { IFCommon } from '../common/i-f-common.module';
 
 @NgModule({
   declarations: [
@@ -109,9 +109,9 @@ import { ItemOptionsMenuComponent } from '../components/ui/item-options-menu/ite
     AssetInstantiationLocationAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
     LocationDialogComponent,
-    ItemOptionsMenuComponent,
   ],
     imports: [
+        IFCommon,
         CommonModule,
         FactoryRoutingModule,
         ClarityModule,
