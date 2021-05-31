@@ -32,10 +32,11 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
     this.createLocationForm(this.formBuilder, this.location);
   }
 
-  showCreateDialog() {
+  showEditDialog() {
     const ref = this.dialogService.open(LocationDialogComponent, {
       data: {
         locationForm: this.locationForm,
+        editMode: true
       },
       header: `Update Location ${this.locationForm.get('name').value}`,
       width: '70%',

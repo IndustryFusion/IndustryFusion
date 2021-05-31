@@ -33,6 +33,7 @@ export class LocationDialogComponent implements OnInit {
   locationTypes: SelectItem[];
   formChange: Subscription;
   location: Location;
+  editMode: boolean;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -45,6 +46,7 @@ export class LocationDialogComponent implements OnInit {
 
   ngOnInit() {
     this.locationForm = this.config.data.locationForm;
+    this.editMode = this.config.data.editMode;
     this.location = { ...this.location, ...this.locationForm.value };
     this.formChange = this.locationForm.valueChanges.pipe(
       debounceTime(500)
