@@ -65,11 +65,37 @@
   color: #000000;
   text-transform: uppercase;
 
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 6px #00000029;
+  background: #FFFFFF 0 0 no-repeat padding-box;
+  box-shadow: 0 3px 6px #00000029;
   border-radius: 44px;
   opacity: 1;
   cursor: pointer;
+}
+
+.if-button-edit {
+  color: $basic-white;
+  font-weight: bolder;
+
+  background: $basic-black 0 0 no-repeat padding-box;
+  border-radius: 10px;
+  border: none !important;
+  opacity: 1;
+
+  height: 56px;
+  width: 108px;
+  cursor: pointer;
+
+  margin: 8px 4px;
+
+  clr-icon {
+    height: 24px;
+    width: 24px;
+    color: $basic-white;
+  }
+
+  &:hover {
+    background: $hover-grey;
+  }
 }
 
 .close-modal-btn {
