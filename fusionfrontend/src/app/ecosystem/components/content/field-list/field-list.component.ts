@@ -21,7 +21,6 @@ import { FieldQuery } from '../../../../store/field/field-query.service';
 import { FieldService } from '../../../../store/field/field.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
-import { FieldType } from '../../../../store/field-details/field-details.model';
 import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
 import { Field } from '../../../../store/field/field.model';
 
@@ -84,7 +83,6 @@ export class FieldListComponent extends BaseListComponent implements OnInit, OnD
       label: ['', requiredTextValidator],
       description: ['', Validators.maxLength(255)],
       baseUnit: [null, Validators.required],
-      dataType: [FieldType.METRIC, Validators.required],
       quantityTypeId: [null, Validators.required],
       symbol: ['', [Validators.required, Validators.maxLength(1), Validators.maxLength(4)]] // TODO: Max symbol length
     });

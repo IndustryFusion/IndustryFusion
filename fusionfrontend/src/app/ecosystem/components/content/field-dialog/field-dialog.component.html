@@ -16,21 +16,7 @@ under the License.
 <div class="field-dialog">
   <form [formGroup]="fieldForm">
     <div class="input-div">
-      <label class="if-label">Choose type</label>
-      <div class="dialog-grid">
-        <div>
-          <p-radioButton name="dataType" value="{{ valueField }}" label="{{ valueField | titlecase }}" formControlName="dataType"
-                         inputId="dataType0" [disabled]="isEditing && existsDataType"></p-radioButton>
-        </div>
-        <div class="dialog-grid-col">
-          <p-radioButton name="dataType" value="{{ valueAttribute }}" label="{{ valueAttribute | titlecase }}" formControlName="dataType"
-                         inputId="dataType1" [disabled]="isEditing && existsDataType"></p-radioButton>
-        </div>
-      </div>
-    </div>
-
-    <div class="input-div">
-      <label class="if-label">{{ fieldForm.get('dataType')?.value | titlecase }} name</label>
+      <label class="if-label">Name</label>
       <input type="text" pInputText class="field-dialog-inputs" formControlName="name" />
     </div>
     <div class="input-div">

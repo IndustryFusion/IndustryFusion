@@ -23,7 +23,6 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
-import { FieldType } from '../../../../store/field-details/field-details.model';
 import { Field } from '../../../../store/field/field.model';
 
 @Component({
@@ -34,14 +33,9 @@ import { Field } from '../../../../store/field/field.model';
 export class FieldDialogComponent implements OnInit {
 
   public isEditing = true;
-  public existsDataType: boolean;
   public fieldForm: FormGroup;
   public units$: Observable<Unit[]>;
   public quantityTypes$: Observable<QuantityType[]>;
-
-  public valueField = FieldType.METRIC;
-  public valueAttribute = FieldType.ATTRIBUTE;
-
 
   constructor(private unitQuery: UnitQuery,
               private quantityTypeQuery: QuantityTypeQuery,
@@ -51,7 +45,6 @@ export class FieldDialogComponent implements OnInit {
   ngOnInit() {
     this.fieldForm = this.config.data.fieldForm;
     this.isEditing = this.config.data.isEditing;
-    this.existsDataType = this.fieldForm.get('dataType').value != null;
     this.units$ = this.unitQuery.selectAll();
     this.quantityTypes$ = this.quantityTypeQuery.selectAll();
   }
