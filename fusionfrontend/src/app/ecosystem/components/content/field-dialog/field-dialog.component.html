@@ -44,17 +44,6 @@ under the License.
       </div>
     </div>
 
-    <h1>Define Data type</h1>
-
-
-    <div class="input-div dropdown-filter">
-      <label class="if-label">Quantity type</label>
-      <p-dropdown [options]="(units$ | async)" formControlName="unitId" optionLabel="name" optionValue="id" class="field-dialog-inputs" #baseUnitDropdown
-                  placeholder="Select a base unit" filter="true" resetFilterOnHide="true">
-      </p-dropdown>
-    </div>
-
-
     <div class="field-dialog-footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
       <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()" [disabled]="fieldForm.invalid">{{isEditing ? 'Save' : 'Create'}}</button>
