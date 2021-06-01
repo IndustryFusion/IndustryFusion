@@ -13,18 +13,19 @@
  * under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { BaseListHeaderComponent } from '../base/base-list-header/base-list-header.component';
 
-import { MetricService } from '../store/metric/metric.service';
-import { Metric } from '../store/metric/metric.model';
+@Component({
+  selector: 'app-field-list-header',
+  templateUrl: './field-list-header.component.html',
+  styleUrls: ['./field-list-header.component.scss']
+})
+export class FieldListHeaderComponent extends BaseListHeaderComponent implements OnInit {
 
-@Injectable({ providedIn: 'root' })
-export class MetricsResolver implements Resolve<Metric[]> {
-  constructor(private metricService: MetricService) { }
+  constructor() { super(); }
 
-  resolve(): Observable<Metric[]> {
-    return this.metricService.getItems();
+  ngOnInit() {
   }
+
 }

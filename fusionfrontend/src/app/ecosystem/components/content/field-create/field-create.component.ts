@@ -20,14 +20,14 @@ import { Observable } from 'rxjs';
 
 import { Unit } from '../../../../store/unit/unit.model';
 import { UnitQuery } from '../../../../store/unit/unit.query';
-import { Metric } from '../../../../store/metric/metric.model';
+import { Field } from '../../../../store/field/field.model';
 
 @Component({
-  selector: 'app-metric-create',
-  templateUrl: './metric-create.component.html',
-  styleUrls: ['./metric-create.component.scss']
+  selector: 'app-field-create',
+  templateUrl: './field-create.component.html',
+  styleUrls: ['./field-create.component.scss']
 })
-export class MetricCreateComponent implements OnInit {
+export class FieldCreateComponent implements OnInit {
 
   name: string;
   description: string;
@@ -38,7 +38,7 @@ export class MetricCreateComponent implements OnInit {
   units$: Observable<Unit[]>;
 
   @Output() dismissModalSignal = new EventEmitter<boolean>();
-  @Output() confirmModalSignal = new EventEmitter<Metric>();
+  @Output() confirmModalSignal = new EventEmitter<Field>();
 
   constructor(private unitQuarey: UnitQuery) { }
 
@@ -49,7 +49,7 @@ export class MetricCreateComponent implements OnInit {
   dismissModal() { this.dismissModalSignal.emit(true); }
 
   confirmModal() {
-    const metric = new Metric();
+    const metric = new Field();
     metric.name = this.name;
     metric.description = this.description;
     metric.label = this.label;

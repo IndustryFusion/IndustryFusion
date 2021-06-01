@@ -13,15 +13,22 @@
  * under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { ActiveState, EntityState, EntityStore, StoreConfig, ID } from '@datorama/akita';
+import { Field } from './field.model';
+import { Injectable } from '@angular/core';
 
-import { FieldService } from './field.service';
+export interface FieldState extends EntityState<Field, ID>, ActiveState { }
 
-describe('FieldService', () => {
-  beforeEach(() => TestBed.configureTestingModule({ }));
+const initialState = {
+  active: null
+};
 
-  it('should be created', () => {
-    const service: FieldService = TestBed.inject(FieldService);
-    expect(service).toBeTruthy();
-  });
-});
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'field', resettable: true })
+export class FieldStore extends EntityStore<FieldState, Field> {
+
+  constructor() {
+    super(initialState);
+  }
+
+}

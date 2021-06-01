@@ -13,15 +13,15 @@
  * under the License.
  */
 
-import { BaseEntity } from '../baseentity.model';
-import { ID } from '@datorama/akita';
+import { TestBed } from '@angular/core/testing';
 
-export class Metric extends BaseEntity {
-  name: string;
-  description: string;
-  label: string;
-  accuracy: number;
-  value: string;
-  unitId: ID;
-  unit: any;
-}
+import { FieldDetailsService } from './field-details.service';
+
+describe('FieldDetailsService', () => {
+  beforeEach(() => TestBed.configureTestingModule({ }));
+
+  it('should be created', () => {
+    const service: FieldDetailsService = TestBed.inject(FieldDetailsService);
+    expect(service).toBeTruthy();
+  });
+});

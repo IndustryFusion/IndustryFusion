@@ -15,12 +15,12 @@
 
 import { Injectable } from '@angular/core';
 import { BaseQueryEntity } from '../basequery';
-import { Metric } from './metric.model';
-import { MetricState, MetricStore } from './metric.store';
+import { Field } from './field.model';
+import { FieldState, FieldStore } from './field-store.service';
 
 @Injectable({ providedIn: 'root' })
-export class MetricQuery extends BaseQueryEntity<MetricState, Metric> {
-  constructor(protected store: MetricStore) {
+export class FieldQuery extends BaseQueryEntity<FieldState, Field> {
+  constructor(protected store: FieldStore) {
     super(store);
   }
 

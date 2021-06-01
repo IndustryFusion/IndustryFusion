@@ -14,18 +14,20 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { BaseListHeaderComponent } from '../base/base-list-header/base-list-header.component';
+import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-metric-list-header',
-  templateUrl: './metric-list-header.component.html',
-  styleUrls: ['./metric-list-header.component.scss']
+  selector: 'app-fields-attributes-page',
+  templateUrl: './fields-attributes-page.component.html',
+  styleUrls: ['./fields-attributes-page.component.scss']
 })
-export class MetricListHeaderComponent extends BaseListHeaderComponent implements OnInit {
+export class FieldsAttributesPageComponent implements OnInit {
 
-  constructor() { super(); }
+  constructor(private ecoSystemManagerResolver: EcoSystemManagerResolver, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.ecoSystemManagerResolver.resolve(this.activatedRoute);
   }
 
 }

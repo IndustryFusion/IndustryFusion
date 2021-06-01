@@ -13,22 +13,29 @@
  * under the License.
  */
 
-import { ActiveState, EntityState, EntityStore, StoreConfig, ID } from '@datorama/akita';
-import { Metric } from './metric.model';
-import { Injectable } from '@angular/core';
+import { BaseEntity } from '../baseentity.model';
+import { ID } from '@datorama/akita';
 
-export interface MetricState extends EntityState<Metric, ID>, ActiveState { }
+export class FieldDetails extends BaseEntity {
+  assetId: ID;
+  externalId: string;
+  fieldType: FieldType;
+  mandatory: boolean;
+  name: string;
+  description: string;
+  type: string;
+  unit: string;
+  accuracy: number;
+  value: string;
+  quantityDataType: QuantityDataType;
+}
 
-const initialState = {
-  active: null
-};
+export enum FieldType {
+  ATTRIBUTE = 'ATTRIBUTE',
+  METRIC = 'METRIC'
+}
 
-@Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'metric', resettable: true })
-export class MetricStore extends EntityStore<MetricState, Metric> {
-
-  constructor() {
-    super(initialState);
-  }
-
+export enum QuantityDataType {
+  CATEGORICAL = 'CATEGORICAL',
+  NUMERIC = 'NUMERIC'
 }

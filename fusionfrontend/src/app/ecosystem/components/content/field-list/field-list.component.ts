@@ -17,15 +17,15 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
-import { MetricQuery } from '../../../../store/metric/metric.query';
-import { MetricService } from '../../../../store/metric/metric.service';
+import { FieldQuery } from '../../../../store/field/field-query.service';
+import { FieldService } from '../../../../store/field/field.service';
 
 @Component({
-  selector: 'app-metric-list',
-  templateUrl: './metric-list.component.html',
-  styleUrls: ['./metric-list.component.scss']
+  selector: 'app-field-list',
+  templateUrl: './field-list.component.html',
+  styleUrls: ['./field-list.component.scss']
 })
-export class MetricListComponent extends BaseListComponent implements OnInit, OnDestroy {
+export class FieldListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
   titleMapping:
   { [k: string]: string} = { '=0': 'No Metrics & Attributes', '=1': '# Metric & Attribute', other: '# Metrics & Attributes' };
@@ -37,7 +37,7 @@ export class MetricListComponent extends BaseListComponent implements OnInit, On
       other: '# metrics or attributes selected'
     };
 
-  constructor(public route: ActivatedRoute, public router: Router, public metricQuery: MetricQuery, public metricService: MetricService) {
+  constructor(public route: ActivatedRoute, public router: Router, public metricQuery: FieldQuery, public metricService: FieldService) {
     super(route, router, metricQuery, metricService);
   }
 
@@ -46,7 +46,7 @@ export class MetricListComponent extends BaseListComponent implements OnInit, On
   }
 
   ngOnDestroy() {
-    this.metricQuery.resetError();
+    this.fieldQuery.resetError();
   }
 
 }

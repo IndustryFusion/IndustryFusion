@@ -12,8 +12,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<app-metric-create *ngIf="shouldShowCreateMetric" (dismissModalSignal)="onDismissModal()"
-  (confirmModalSignal)="onConfirmModal($event)"></app-metric-create>
+<app-field-create *ngIf="shouldShowCreateMetric" (dismissModalSignal)="onDismissModal()"
+                  (confirmModalSignal)="onConfirmModal($event)"></app-field-create>
 <div class="content">
   <div class="title">
     <div>
@@ -23,7 +23,7 @@ under the License.
       Template Version - v.4
     </div>
   </div>
-  <div *ngIf="selectedMetrics && selectedMetrics.length > 0" class="metrics-list">
+  <div *ngIf="selectedMetrics && selectedMetrics.length > 0" class="fields-list">
     <app-asset-type-template-metric-row *ngFor="let metric of selectedMetrics" [fieldTarget]="metric"
       (confirmSignal)="onConfirm(metric)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)"
       [confirmed]="isConfirmed(metric)"></app-asset-type-template-metric-row>

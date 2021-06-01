@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { MetricListItemComponent } from './metric-list-item.component';
+import { FieldListItemComponent } from './field-list-item.component';
 
-describe('MetricListItemComponent', () => {
-  let component: MetricListItemComponent;
-  let fixture: ComponentFixture<MetricListItemComponent>;
+describe('FieldListItemComponent', () => {
+  let component: FieldListItemComponent;
+  let fixture: ComponentFixture<FieldListItemComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MetricListItemComponent ]
+      declarations: [ FieldListItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MetricListItemComponent);
+    fixture = TestBed.createComponent(FieldListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

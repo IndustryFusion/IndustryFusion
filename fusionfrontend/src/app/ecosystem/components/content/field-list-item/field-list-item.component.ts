@@ -17,21 +17,21 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
-import { MetricService } from '../../../../store/metric/metric.service';
-import { Metric } from '../../../../store/metric/metric.model';
+import { FieldService } from '../../../../store/field/field.service';
+import { Field } from '../../../../store/field/field.model';
 
 @Component({
-  selector: 'app-metric-list-item',
-  templateUrl: './metric-list-item.component.html',
-  styleUrls: ['./metric-list-item.component.scss']
+  selector: 'app-field-list-item',
+  templateUrl: './field-list-item.component.html',
+  styleUrls: ['./field-list-item.component.scss']
 })
-export class MetricListItemComponent extends BaseListItemComponent implements OnInit {
+export class FieldListItemComponent extends BaseListItemComponent implements OnInit {
 
   @Input()
-  item: Metric;
+  item: Field;
 
-  constructor(public route: ActivatedRoute, public router: Router, public metricService: MetricService) {
-    super(route, router, metricService);
+  constructor(public route: ActivatedRoute, public router: Router, public fieldService: FieldService) {
+    super(route, router, fieldService);
   }
 
   ngOnInit() {

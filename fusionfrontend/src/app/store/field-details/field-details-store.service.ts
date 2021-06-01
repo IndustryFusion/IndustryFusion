@@ -14,21 +14,22 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
-import { BaseQueryEntityCached } from '../basequerycached';
-import { Field } from './field.model';
-import { FieldState, FieldStore } from './field.store';
+import { FieldDetails } from './field-details.model';
+import { ActiveState, EntityState, StoreConfig, ID } from '@datorama/akita';
+import { CachedStore } from '../cachedstore';
+
+export interface FieldDetailsState extends EntityState<FieldDetails, ID>, ActiveState { }
+
+const initialState = {
+  active: null
+};
 
 @Injectable({ providedIn: 'root' })
-export class FieldQuery extends BaseQueryEntityCached<FieldState, Field> {
-  constructor(protected store: FieldStore) {
-    super(store);
+@StoreConfig({ name: 'field' })
+export class FieldDetailsStore extends CachedStore<FieldDetailsState, FieldDetails> {
+
+  constructor() {
+    super(initialState);
   }
 
-  selectFieldsOfAsset(assetId: ID): Observable<Field[]> {
-    return this.selectAll({
-      filterBy: entity => String(entity.assetId) === String(assetId)
-    });
-  }
 }

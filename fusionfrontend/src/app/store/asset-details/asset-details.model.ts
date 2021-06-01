@@ -14,7 +14,7 @@
  */
 
 import { Asset } from '../asset/asset.model';
-import { Field } from '../field/field.model';
+import { FieldDetails } from '../field-details/field-details.model';
 
 
 export class AssetDetails extends Asset {
@@ -41,5 +41,5 @@ export enum DashboardFilterModalType {
 }
 
 export class AssetDetailsWithFields extends AssetDetails {
-  fields: Field[];
+  fields: FieldDetails[];
 }

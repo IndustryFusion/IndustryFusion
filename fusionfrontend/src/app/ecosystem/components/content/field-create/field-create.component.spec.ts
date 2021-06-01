@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { MetricCreateComponent } from './metric-create.component';
+import { FieldCreateComponent } from './field-create.component';
 
 describe('MetricCreateComponent', () => {
-  let component: MetricCreateComponent;
-  let fixture: ComponentFixture<MetricCreateComponent>;
+  let component: FieldCreateComponent;
+  let fixture: ComponentFixture<FieldCreateComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MetricCreateComponent ]
+      declarations: [ FieldCreateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MetricCreateComponent);
+    fixture = TestBed.createComponent(FieldCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

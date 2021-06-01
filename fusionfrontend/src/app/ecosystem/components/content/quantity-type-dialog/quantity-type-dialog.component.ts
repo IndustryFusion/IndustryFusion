@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { UnitQuery } from 'src/app/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { QuantityDataType } from '../../../../store/field/field.model';
+import { QuantityDataType } from '../../../../store/field-details/field-details.model';
 
 @Component({
   selector: 'app-quantity-type-create',

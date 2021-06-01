@@ -20,14 +20,14 @@ import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-te
 import { AssetTypeTemplateListComponent } from './components/content/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypeTemplateEditComponent } from './components/content/asset-type-template-edit/asset-type-template-edit.component';
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
-import { MetricsAttributesPageComponent } from './components/pages/metrics-attributes-page/metrics-attributes-page.component';
+import { FieldsAttributesPageComponent } from './components/pages/fields-attributes-page/fields-attributes-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
 import { AssetTypeTemplatesResolver } from '../resolvers/asset-type-templates.resolver';
 import { AssetTypesResolver } from '../resolvers/asset-types.resolver';
 import { AssetTypeListComponent } from './components/content/asset-type-list/asset-type-list.component';
-import { MetricListComponent } from './components/content/metric-list/metric-list.component';
-import { MetricsResolver } from '../resolvers/metrics.resolver';
+import { FieldListComponent } from './components/content/field-list/field-list.component';
+import { FieldsResolver } from '../resolvers/fields-resolver';
 import { QuantityTypesResolver } from '../resolvers/quantity-types.resolver';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
 import { UnitsResolver } from '../resolvers/units.resolver';
@@ -62,7 +62,7 @@ const routes: Routes = [
       component: AssetTypeTemplateCreateComponent,
       resolve: {
         assetTypes: AssetTypesResolver,
-        metrics: MetricsResolver,
+        metrics: FieldsResolver,
         units: UnitsResolver,
         quantityTypes: QuantityTypesResolver,
       }
@@ -110,20 +110,20 @@ const routes: Routes = [
     }]
   },
   {
-    path: 'ecosystemmanager/metrics',
-    component: MetricsAttributesPageComponent,
+    path: 'ecosystemmanager/fields',
+    component: FieldsAttributesPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      metrics: MetricsResolver,
+      metrics: FieldsResolver,
       units: UnitsResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.METRIC_ATTRIBUTE_LIST],
+      pageTypes: [EcosystemManagerPageType.FIELD_ATTRIBUTE_LIST],
       roles: [Role.ECOSYSTEM_MANAGER]
     },
     children: [{
       path: '',
-      component: MetricListComponent,
+      component: FieldListComponent,
     }]
   },
   {

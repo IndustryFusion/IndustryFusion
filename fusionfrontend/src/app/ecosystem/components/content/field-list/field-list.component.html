@@ -20,8 +20,8 @@ under the License.
     </span>
   </clr-alert-item>
 </clr-alert>
-<app-metric-create *ngIf="shouldShowCreateItem" (dismissModalSignal)="onDismissModal()"
-  (confirmModalSignal)="onConfirmModal($event)"></app-metric-create>
+<app-field-create *ngIf="shouldShowCreateItem" (dismissModalSignal)="onDismissModal()"
+                  (confirmModalSignal)="onConfirmModal($event)"></app-field-create>
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
   <div class="title">{{ (items$ | async).length | i18nPlural: titleMapping }}</div>
   <div>
@@ -51,9 +51,9 @@ under the License.
         </button>
       </div>
     </div>
-    <app-metric-list-header (sortEvent)="onSort($event)"></app-metric-list-header>
-    <app-metric-list-item *ngFor="let item of (items$ | async) | sort:sortField" [item]="item"
-      (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)" [selected]="isSelected(item.id)">
-    </app-metric-list-item>
+    <app-field-list-header (sortEvent)="onSort($event)"></app-field-list-header>
+    <app-field-list-item *ngFor="let item of (items$ | async) | sort:sortField" [item]="item"
+                         (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)" [selected]="isSelected(item.id)">
+    </app-field-list-item>
   </div>
 </div>

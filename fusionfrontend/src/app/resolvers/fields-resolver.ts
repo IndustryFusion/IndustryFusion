@@ -14,22 +14,17 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Field } from './field.model';
-import { ActiveState, EntityState, StoreConfig, ID } from '@datorama/akita';
-import { CachedStore } from '../cachedstore';
+import { Resolve } from '@angular/router';
+import { Observable } from 'rxjs';
 
-export interface FieldState extends EntityState<Field, ID>, ActiveState { }
-
-const initialState = {
-  active: null
-};
+import { FieldService } from '../store/field/field.service';
+import { Field } from '../store/field/field.model';
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'field' })
-export class FieldStore extends CachedStore<FieldState, Field> {
+export class FieldsResolver implements Resolve<Field[]> {
+  constructor(private fieldService: FieldService) { }
 
-  constructor() {
-    super(initialState);
+  resolve(): Observable<Field[]> {
+    return this.fieldService.getItems();
   }
-
 }

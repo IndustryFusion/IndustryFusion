@@ -47,7 +47,7 @@ export class EcoSystemManagerResolver {
     else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Asset Type Templates');
     }
-    else if (pageTypes.includes(EcosystemManagerPageType.METRIC_ATTRIBUTE_LIST)) {
+    else if (pageTypes.includes(EcosystemManagerPageType.FIELD_ATTRIBUTE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Metrics & Attributes');
     }
     else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_LIST)) {
