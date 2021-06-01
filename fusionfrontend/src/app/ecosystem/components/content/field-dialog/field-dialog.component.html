@@ -33,7 +33,8 @@ under the License.
       <div class="dialog-grid">
         <div class="dropdown-filter">
           <label class="if-label">Data type</label>
-          <p-dropdown [options]="(quantityTypes$ | async)" formControlName="quantityTypeId" optionLabel="name" optionValue="id" class="field-dialog-inputs" #baseUnitDropdown
+          <p-dropdown [options]="(quantityTypes$ | async)" formControlName="quantityTypeId" optionLabel="name"
+                      optionValue="id" class="field-dialog-inputs" #baseUnitDropdown
                       placeholder="Select a quantity type">
           </p-dropdown>
         </div>
@@ -42,6 +43,13 @@ under the License.
           <input type="text" pInputText class="field-dialog-inputs" formControlName="symbol" />
         </div>
       </div>
+
+      <div class="dropdown-filter field-dialog-inputs">
+        <label class="if-label">Accuracy</label>
+        <p-dropdown [options]="accuracyItems" formControlName="accuracy"
+                    class="field-dialog-inputs" placeholder="Select accuracy format"></p-dropdown>
+      </div>
+
     </div>
 
     <div class="field-dialog-footer">

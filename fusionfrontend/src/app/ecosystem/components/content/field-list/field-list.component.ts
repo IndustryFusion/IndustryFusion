@@ -82,6 +82,7 @@ export class FieldListComponent extends BaseListComponent implements OnInit, OnD
       name: ['', requiredTextValidator],
       label: ['', requiredTextValidator],
       description: ['', Validators.maxLength(255)],
+      accuracy: [0],
       baseUnit: [null, Validators.required],
       quantityTypeId: [null, Validators.required],
       symbol: ['', [Validators.required, Validators.maxLength(1), Validators.maxLength(4)]] // TODO: Max symbol length
