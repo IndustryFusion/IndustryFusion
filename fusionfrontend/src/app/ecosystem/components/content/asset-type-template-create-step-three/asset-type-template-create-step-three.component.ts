@@ -41,7 +41,7 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   selectedMetrics: Array<FieldTarget> = [];
   metric: Field;
 
-  shouldShowCreateMetric = false;
+  shouldShowCreateField = false;
 
   constructor(private metricQuery: FieldQuery, private metricService: FieldService) { }
 
@@ -106,16 +106,16 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   }
 
   createMetricModal() {
-    this.shouldShowCreateMetric = true;
+    this.shouldShowCreateField = true;
   }
 
   onDismissModal() {
-    this.shouldShowCreateMetric = false;
+    this.shouldShowCreateField = false;
   }
 
   onConfirmModal(item: Field) {
     this.metricService.createItem(item).subscribe({
-      complete: () => this.shouldShowCreateMetric = false
+      complete: () => this.shouldShowCreateField = false
     });
   }
 

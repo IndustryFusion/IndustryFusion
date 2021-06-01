@@ -13,32 +13,45 @@
  * under the License.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
 import { FieldQuery } from '../../../../store/field/field-query.service';
 import { FieldService } from '../../../../store/field/field.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogService } from 'primeng/dynamicdialog';
+import { FieldType } from '../../../../store/field-details/field-details.model';
+import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
+import { Field } from '../../../../store/field/field.model';
 
 @Component({
   selector: 'app-field-list',
   templateUrl: './field-list.component.html',
-  styleUrls: ['./field-list.component.scss']
+  styleUrls: ['./field-list.component.scss'],
+  providers: [DialogService]
 })
 export class FieldListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
-  titleMapping:
+  public titleMapping:
   { [k: string]: string} = { '=0': 'No Metrics & Attributes', '=1': '# Metric & Attribute', other: '# Metrics & Attributes' };
 
-  editBarMapping:
+  public editBarMapping:
     { [k: string]: string } = {
       '=0': 'No metrics & attributes selected',
       '=1': '# metric or attribute selected',
       other: '# metrics or attributes selected'
     };
 
-  constructor(public route: ActivatedRoute, public router: Router, public metricQuery: FieldQuery, public metricService: FieldService) {
-    super(route, router, metricQuery, metricService);
+  private fieldForm: FormGroup;
+
+  constructor(public route: ActivatedRoute,
+              public router: Router,
+              public fieldQuery: FieldQuery,
+              public fieldService: FieldService,
+              public dialogService: DialogService,
+              private formBuilder: FormBuilder) {
+    super(route, router, fieldQuery, fieldService);
   }
 
   ngOnInit() {
@@ -47,6 +60,42 @@ export class FieldListComponent extends BaseListComponent implements OnInit, OnD
 
   ngOnDestroy() {
     this.fieldQuery.resetError();
+  }
+
+  showCreateDialog() {
+    this.createFieldForm(this.formBuilder);
+    const ref = this.dialogService.open(FieldDialogComponent, {
+      data: {
+        fieldForm: this.fieldForm,
+        isEditing: false
+      },
+      header: `Create new Metric or Attribute`,
+    });
+
+    ref.onClose.subscribe((field: Field) => this.onCloseCreateDialog(field));
+  }
+
+  createFieldForm(formBuilder: FormBuilder) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.fieldForm = formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      label: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      baseUnit: [null, Validators.required],
+      dataType: [FieldType.METRIC, Validators.required],
+      quantityTypeId: [null, Validators.required],
+      symbol: ['', [Validators.required, Validators.maxLength(1), Validators.maxLength(4)]] // TODO: Max symbol length
+    });
+  }
+
+  onCloseCreateDialog(item: Field) {
+    if (item) {
+      this.fieldService.createItem(item).subscribe();
+      this.fieldService.setActive(item.id);
+      // this.updateUI(item);
+    }
   }
 
 }

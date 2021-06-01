@@ -116,6 +116,7 @@ const routes: Routes = [
     resolve: {
       metrics: FieldsResolver,
       units: UnitsResolver,
+      quantityTypes: QuantityTypesResolver,
     },
     data: {
       pageTypes: [EcosystemManagerPageType.FIELD_ATTRIBUTE_LIST],
