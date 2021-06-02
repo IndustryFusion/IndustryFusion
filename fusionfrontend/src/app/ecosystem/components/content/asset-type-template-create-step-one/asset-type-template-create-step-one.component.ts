@@ -23,6 +23,7 @@ import { FormGroup } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-type-template-create-step-one',
@@ -75,6 +76,8 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
   onChangeAssetType($event: any) {
     const assetType = this.assetTypeQuery.getEntity($event.value);
     this.replaceTemplateNameFromAssetType(assetType);
+    this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll().
+      pipe(map( a => a.filter(value => value.assetTypeId === assetType.id)));
   }
 
   private replaceTemplateNameFromAssetType(assetType: AssetType) {
