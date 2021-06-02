@@ -22,7 +22,7 @@ under the License.
   <div class="info-text col-10">{{ getUnitSymbol(fieldTarget.field.unitId) }}</div>
   <div class="info-text col-10">{{ 0.000000 | number : accuracyDigitsInfo }}</div>
   <div class="info-text col-15">
-    <p-checkbox value="option" label="Mandatory" name="mandatory" [(ngModel)]="fieldTarget.mandatory"
+    <p-checkbox [value]="fieldTarget.mandatory" binary="true" label="Mandatory" name="mandatory" [(ngModel)]="fieldTarget.mandatory"
                 [disabled]="confirmed" [inputId]="fieldTarget.id"></p-checkbox>
   </div>
   <div class="edit-col">
