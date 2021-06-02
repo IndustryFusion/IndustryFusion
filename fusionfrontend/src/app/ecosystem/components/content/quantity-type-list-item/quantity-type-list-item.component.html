@@ -38,7 +38,7 @@ under the License.
         <clr-icon shape="ellipsis-horizontal"></clr-icon>
       </button>
       <clr-dropdown-menu class="dropdown-menu" clrPosition="bottom-right" *clrIfOpen>
-        <div aria-label="Edit item" clrDropdownItem (click)="showEditDialog()">
+        <div aria-label="Edit item" clrDropdownItem (click)="showEditDialog()" appQuantityTypeEditDialog [item]="item">
           <clr-icon shape="note"></clr-icon>
           Edit
         </div>

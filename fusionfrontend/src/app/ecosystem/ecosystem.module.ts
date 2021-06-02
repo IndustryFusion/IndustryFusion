@@ -51,7 +51,7 @@ import { UnitListComponent } from './components/content/unit-list/unit-list.comp
 import { UnitListHeaderComponent } from './components/content/unit-list-header/unit-list-header.component';
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
-import { QuantityTypeDialogComponent } from './components/content/quantity-type-dialog/quantity-type-dialog.component';
+import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
 import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
 import { MetricCreateComponent } from './components/content/metric-create/metric-create.component';
 // tslint:disable-next-line:max-line-length
@@ -81,6 +81,8 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
+import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [
@@ -113,7 +115,7 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
     UnitListHeaderComponent,
     UnitListItemComponent,
     AssetTypeCreateComponent,
-    QuantityTypeDialogComponent,
+    QuantityTypeDialogContentComponent,
     UnitCreateComponent,
     MetricCreateComponent,
     AssetTypeTemplateCreateStepOneComponent,
@@ -129,6 +131,7 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
     EditButtonComponent,
     ConfirmButtonComponent,
     QuantityTypePageComponent,
+    QuantityTypeEditDialogDirective,
   ],
   imports: [
     CommonModule,
@@ -150,6 +153,9 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
         EcosystemSubHeaderComponent,
         EcosystemPageTitleComponent,
         CreateButtonComponent
-    ]
+    ],
+  providers: [
+    DialogService
+  ]
 })
 export class EcosystemModule { }

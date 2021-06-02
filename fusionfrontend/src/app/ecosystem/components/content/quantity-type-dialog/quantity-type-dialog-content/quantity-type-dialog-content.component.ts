@@ -15,21 +15,21 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
+import { QuantityType } from '../../../../../store/quantity-type/quantity-type.model';
 import { Unit } from 'src/app/store/unit/unit.model';
 import { Observable } from 'rxjs';
 import { UnitQuery } from 'src/app/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { QuantityDataType } from '../../../../store/field/field.model';
+import { QuantityDataType } from '../../../../../store/field/field.model';
 
 @Component({
-  selector: 'app-quantity-type-create',
-  templateUrl: './quantity-type-dialog.component.html',
-  styleUrls: ['./quantity-type-dialog.component.scss']
+  selector: 'app-quantity-type-dialog-content',
+  templateUrl: './quantity-type-dialog-content.component.html',
+  styleUrls: ['./quantity-type-dialog-content.component.scss']
 })
 
-export class QuantityTypeDialogComponent implements OnInit {
+export class QuantityTypeDialogContentComponent implements OnInit {
 
   public isEditing = true;
   public existsDataType: boolean;
