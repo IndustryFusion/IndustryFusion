@@ -19,6 +19,7 @@
   min-width: 100% !important;
   padding-top: 0;
   padding-bottom: 0;
+  padding-right: 0;
 }
 
 :host ::ng-deep .symbol-input {
@@ -35,6 +36,10 @@
 
   .input-div {
     padding-bottom: 24px;
+  }
+
+  .stretch-box {
+    flex: 1;
   }
 
 }

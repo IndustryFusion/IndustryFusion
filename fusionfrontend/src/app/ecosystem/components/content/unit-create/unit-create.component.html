@@ -16,29 +16,28 @@ under the License.
   <form [formGroup]="unitForm">
     <div class="p-grid p-dir-col input-div">
       <label class="if-label p-col">Unit name</label>
-      <input type="text" pInputText placeholder="Unit name" formControlName="name" class="p-col"/>
+      <input class="p-col" formControlName="name" pInputText placeholder="Unit name" type="text"/>
     </div>
     <div class="p-grid input-div">
       <div class="p-col-6 p-grid">
         <label class="if-label p-col">Symbol</label>
-        <input type="text" pInputText placeholder="Symbol" formControlName="symbol"
-               class="p-col symbol-input"/>
+        <input class="p-col symbol-input" formControlName="symbol" pInputText placeholder="Symbol"
+               type="text"/>
       </div>
       <div class="stretch-box"></div>
       <div class="p-col-6 p-grid">
-        <label class="if-label p-col">Quantity *</label>
-        <p-dropdown [options]="quantityTypes$ | async" optionLabel="name" optionValue="id" formControlName="type"
-                    placeholder="Quantity"
-                    class="p-col quantity-dropdown"></p-dropdown>
+        <label class="if-label p-col">Quantity Type *</label>
+        <p-dropdown [options]="quantityTypes$ | async" class="p-col quantity-dropdown" formControlName="type"
+                    optionLabel="name" optionValue="id" placeholder="Quantity"></p-dropdown>
       </div>
     </div>
     <div class="p-grid p-dir-col input-div">
       <label class="if-label p-col">Label</label>
-      <input type="text" pInputText placeholder="Label" formControlName="label" class="p-col"/>
+      <input class="p-col" formControlName="label" pInputText placeholder="Label" type="text"/>
     </div>
     <div class="footer-buttons">
-      <button type="button" class="if-button-cancel" (click)="dismissModal()">Cancel</button>
-      <button type="button" class="if-button button-primary" (click)="confirmModal()" [disabled]="unitForm.invalid">
+      <button (click)="dismissModal()" class="if-button-cancel" type="button">Cancel</button>
+      <button (click)="confirmModal()" [disabled]="unitForm.invalid" class="if-button button-primary" type="button">
         {{ editMode ? 'Update' : 'Create'}}
       </button>
     </div>

@@ -20,6 +20,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Date;
+
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -28,6 +30,7 @@ public class UnitDto {
     private String name;
     private String symbol;
     private String label;
+    private Date createdDate;
     private Long quantityTypeId;
     private QuantityTypeDto quantityType;
 

@@ -28,6 +28,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
+import java.util.Date;
 
 @Entity
 @NamedEntityGraph(name = "Unit.allChildrenDeep",
@@ -50,6 +51,7 @@ public class Unit extends BaseEntity {
     private String name;
     private String label;
     private String symbol;
+    private Date createdDate;
 
     public void copyFrom(final Unit sourceUnit) {
         if (sourceUnit.getName() != null) {
@@ -60,6 +62,9 @@ public class Unit extends BaseEntity {
         }
         if (sourceUnit.getLabel() != null) {
             setLabel(sourceUnit.getLabel());
+        }
+        if (sourceUnit.getCreatedDate() != null) {
+            setCreatedDate(sourceUnit.getCreatedDate());
         }
         if (sourceUnit.getQuantityType() != null) {
             setQuantityType(sourceUnit.getQuantityType());

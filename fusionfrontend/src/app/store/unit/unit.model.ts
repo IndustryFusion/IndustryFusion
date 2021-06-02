@@ -22,6 +22,7 @@ export class Unit extends BaseEntity {
   name: string;
   symbol: string;
   label: string;
+  createdDate: Date;
   quantityTypeId: ID;
   quantityType: QuantityType;
 }

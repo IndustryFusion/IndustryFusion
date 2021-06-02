@@ -16,36 +16,37 @@ under the License.
 <div *ngIf="shouldShowDeleteItem">
   <div class="backdrop"></div>
   <div class="delete-modal">
-    <button class="button-close" (click)="shouldShowDeleteItem = false">
-      <clr-icon [style.width.px]="19" [style.height.px]="19" shape="times"></clr-icon>
+    <button (click)="shouldShowDeleteItem = false" class="button-close">
+      <clr-icon [style.height.px]="19" [style.width.px]="19" shape="times"></clr-icon>
     </button>
     <div class="delete-modal-title">Delete item?</div>
     <div class="delete-modal-footer">
-      <button type="button" class="if-button-cancel" (click)="shouldShowDeleteItem = false">Cancel</button>
-      <button type="button" class="button-confirm" (click)="deleteItem()">Ok</button>
+      <button (click)="shouldShowDeleteItem = false" class="if-button-cancel" type="button">Cancel</button>
+      <button (click)="deleteItem()" class="button-confirm" type="button">Ok</button>
     </div>
   </div>
 </div>
-<div class="list-item" [ngClass]="{'selected': selected}">
-  <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}"><input type="checkbox"
+<div [ngClass]="{'selected': selected}" class="list-item">
+  <div [ngClass]="{'hidden': !selected}" [style.width.%]="5" class="list-item-cell check"><input (click)="select()"
                                                                                                  [(ngModel)]="selected"
-                                                                                                 (click)="select()"/>
+                                                                                                 type="checkbox"/>
   </div>
-  <div class="list-item-cell bold black" [style.width.%]="30" [routerLink]="item.id">{{ item.name }}</div>
-  <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="item.id">{{ item.symbol }}</div>
-  <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="item.id">{{ item.quantityType?.name }}</div>
-  <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="item.id">18.12.2019</div>
-  <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
+  <div [routerLink]="item.id" [style.width.%]="30" class="list-item-cell bold black">{{ item.name }}</div>
+  <div [routerLink]="item.id" [style.width.%]="20" class="list-item-cell grey">{{ item.symbol }}</div>
+  <div [routerLink]="item.id" [style.width.%]="20" class="list-item-cell grey">{{ item.quantityType?.name }}</div>
+  <div [routerLink]="item.id" [style.width.%]="20"
+       class="list-item-cell grey">{{ item.createdDate | date:'dd.MM.yyyy'}}</div>
+  <div [ngClass]="{'hidden': !selected}" [style.width.%]="5" class="list-item-cell grey">
     <clr-dropdown>
-      <button clrDropdownTrigger aria-label="Unit dropdown menu" class="grey">
+      <button aria-label="Unit dropdown menu" class="grey" clrDropdownTrigger>
         <clr-icon shape="ellipsis-horizontal"></clr-icon>
       </button>
-      <clr-dropdown-menu class="dropdown-menu" clrPosition="bottom-right" *clrIfOpen>
-        <div aria-label="Edit item" clrDropdownItem (click)="editItem()">
+      <clr-dropdown-menu *clrIfOpen class="dropdown-menu" clrPosition="bottom-right">
+        <div (click)="editItem()" aria-label="Edit item" clrDropdownItem>
           <clr-icon shape="note"></clr-icon>
           Edit
         </div>
-        <div aria-label="Delete item" clrDropdownItem (click)="showDeleteItem()">
+        <div (click)="showDeleteItem()" aria-label="Delete item" clrDropdownItem>
           <clr-icon shape="trash"></clr-icon>
           Delete
         </div>
