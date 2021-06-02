@@ -21,8 +21,6 @@ import { Unit } from '../../../../store/unit/unit.model';
 import { UnitQuery } from '../../../../store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { Field } from '../../../../store/field/field.model';
 import { SelectItem } from 'primeng/api';
 
@@ -36,11 +34,9 @@ export class FieldDialogComponent implements OnInit {
   public isEditing = true;
   public fieldForm: FormGroup;
   public units$: Observable<Unit[]>;
-  public quantityTypes$: Observable<QuantityType[]>;
   public accuracyItems: SelectItem[];
 
   constructor(private unitQuery: UnitQuery,
-              private quantityTypeQuery: QuantityTypeQuery,
               public ref: DynamicDialogRef,
               public config: DynamicDialogConfig) { }
 
@@ -48,7 +44,6 @@ export class FieldDialogComponent implements OnInit {
     this.fieldForm = this.config.data.fieldForm;
     this.isEditing = this.config.data.isEditing;
     this.units$ = this.unitQuery.selectAll();
-    this.quantityTypes$ = this.quantityTypeQuery.selectAll();
 
     this.accuracyItems = [
       { label: '0', value: 0 },

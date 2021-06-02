@@ -29,27 +29,10 @@ under the License.
       <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}/255</label>
     </div>
 
-    <div class="input-div">
-      <div class="dialog-grid">
-        <div class="dropdown-filter">
-          <label class="if-label">Data type</label>
-          <p-dropdown [options]="(quantityTypes$ | async)" formControlName="quantityTypeId" optionLabel="name"
-                      optionValue="id" class="field-dialog-inputs" #baseUnitDropdown
-                      placeholder="Select a quantity type">
-          </p-dropdown>
-        </div>
-        <div class="input-div">
-          <label class="if-label">Symbol</label>
-          <input type="text" pInputText class="field-dialog-inputs" formControlName="symbol" />
-        </div>
-      </div>
-
-      <div class="dropdown-filter field-dialog-inputs">
-        <label class="if-label">Accuracy</label>
-        <p-dropdown [options]="accuracyItems" formControlName="accuracy"
-                    class="field-dialog-inputs" placeholder="Select accuracy format"></p-dropdown>
-      </div>
-
+    <div class="dropdown-filter field-dialog-inputs">
+      <label class="if-label">Accuracy</label>
+      <p-dropdown [options]="accuracyItems" formControlName="accuracy"
+                  class="field-dialog-inputs" placeholder="Select accuracy format"></p-dropdown>
     </div>
 
     <div class="field-dialog-footer">
