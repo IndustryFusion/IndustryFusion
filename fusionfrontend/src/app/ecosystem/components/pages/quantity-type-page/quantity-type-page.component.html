@@ -17,9 +17,7 @@ under the License.
   <div class="if-detail-page-div">
     <div class="row clr-justify-content-between clr-align-items-center">
       <h3> {{ (quantityType$ | async)?.name }} </h3>
-      <button class="if-button-edit" appQuantityTypeEditDialog [item]="quantityType$ | async">
-        <clr-icon shape="note"></clr-icon> Edit
-      </button>
+      <app-edit-details-button appQuantityTypeEditDialog [item]="quantityType$ | async"></app-edit-details-button>
     </div>
 
     <div class="if-detail-page-label">

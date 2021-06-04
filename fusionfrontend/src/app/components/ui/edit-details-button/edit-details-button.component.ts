@@ -13,16 +13,23 @@
  * under the License.
  */
 
-@import "../../../../../ecosystem/components/content/base/base-list-item/base-list-item.component.scss";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-.list-item {
-  padding-left: 20px;
-}
+@Component({
+  selector: 'app-edit-details-button',
+  templateUrl: './edit-details-button.component.html',
+  styleUrls: ['./edit-details-button.component.scss']
+})
+export class EditDetailsButtonComponent implements OnInit {
 
-.list-item .table-dropdown-menu {
-  visibility: hidden;
-}
+  @Output() editItem = new EventEmitter<void>();
 
-.list-item:hover .table-dropdown-menu {
-  visibility: visible;
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onClick() {
+    this.editItem.emit();
+  }
 }

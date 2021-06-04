@@ -32,20 +32,6 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="30">000</div>
   <div class="list-item-cell grey" [style.width.%]="30">18.12.2019</div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
-    <clr-dropdown>
-      <button clrDropdownTrigger aria-label="Field dropdown menu" class="grey">
-        <clr-icon shape="ellipsis-horizontal"></clr-icon>
-      </button>
-      <clr-dropdown-menu class="dropdown-menu" clrPosition="bottom-right" *clrIfOpen>
-        <div aria-label="Edit item" clrDropdownItem (click)="editItem()">
-          <clr-icon shape="note"></clr-icon>
-          Edit
-        </div>
-        <div aria-label="Delete item"  clrDropdownItem (click)="showDeleteItem()">
-          <clr-icon shape="trash"></clr-icon>
-          Delete
-        </div>
-      </clr-dropdown-menu>
-    </clr-dropdown>
+    <app-item-options-menu (editItem)="editItem()"  (deleteItem)="showDeleteItem()"></app-item-options-menu>
   </div>
 </div>

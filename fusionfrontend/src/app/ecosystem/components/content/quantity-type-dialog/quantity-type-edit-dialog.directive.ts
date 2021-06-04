@@ -22,7 +22,8 @@ import { QuantityTypeService } from '../../../../store/quantity-type/quantity-ty
 import { QuantityDataType } from '../../../../store/field-details/field-details.model';
 
 @Directive({
-  selector: '[appQuantityTypeEditDialog]'
+  selector: '[appQuantityTypeEditDialog]',
+  providers: [DialogService]
 })
 export class QuantityTypeEditDialogDirective implements OnDestroy {
 
@@ -35,11 +36,7 @@ export class QuantityTypeEditDialogDirective implements OnDestroy {
               private formBuilder: FormBuilder,
               public quantityService: QuantityTypeService) { }
 
-  @HostListener('click') onClicked() {
-    this.showEditDialog();
-  }
-
-  @HostListener('editClicked') onEditClicked() {
+  @HostListener('editItem') onClicked() {
     this.showEditDialog();
   }
 
