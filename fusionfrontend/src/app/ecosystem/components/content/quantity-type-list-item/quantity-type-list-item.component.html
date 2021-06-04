@@ -33,7 +33,7 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="item.id">{{ item.dataType | lowercase }}</div>
   <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="item.id">{{ item.baseUnit?.name }}</div>
   <div class="list-item-cell grey table-dropdown-menu" [style.width.%]="5">
-    <app-item-options-menu (editItem)="showEditDialog()" appQuantityTypeEditDialog [item]="item"
+    <app-item-options-menu appQuantityTypeEditDialog [item]="item"
                            (deleteItem)="showDeleteItem()"></app-item-options-menu>
   </div>
 </div>

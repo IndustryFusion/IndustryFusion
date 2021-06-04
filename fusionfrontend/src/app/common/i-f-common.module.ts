@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { TrashButtonComponent } from '../components/ui/trash-button/trash-button.component';
 import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
+import { EditDetailsButtonComponent } from '../components/ui/edit-details-button/edit-details-button.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-
     TrashButtonComponent,
     EditButtonComponent,
     ConfirmButtonComponent,
+    EditDetailsButtonComponent
   ],
   imports: [
     ClrIconModule,
@@ -28,6 +30,7 @@ import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-
     TrashButtonComponent,
     EditButtonComponent,
     ConfirmButtonComponent,
+    EditDetailsButtonComponent
   ]
 })
 export class IFCommon { }
