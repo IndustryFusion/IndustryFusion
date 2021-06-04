@@ -12,14 +12,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
+
 <div class="metric-row">
-  <div class="col-25">
+  <div class="col-20 col-margin">
     <input type="text" pInputText class="metric-row-inputs" *ngIf="!confirmed"
            [placeholder]="fieldTarget.field.name " [(ngModel)]="fieldTarget.name" name="name" />
     <div *ngIf="confirmed" class="confirmed-name">{{ fieldTarget.name }}</div>
   </div>
   <div class="info-text col-15">{{ getQuantityTypeName(fieldTarget.field.unitId) }}</div>
-  <div class="info-text col-10">{{ getUnitSymbol(fieldTarget.field.unitId) }}</div>
+  <div class="info-text col-5">{{ getUnitSymbol(fieldTarget.field.unitId) }}</div>
   <div class="info-text col-10">{{ 0.000000 | number : accuracyDigitsInfo }}</div>
   <div class="info-text col-15">
     <p-checkbox [value]="fieldTarget.mandatory" binary="true" label="Mandatory" name="mandatory" [(ngModel)]="fieldTarget.mandatory"

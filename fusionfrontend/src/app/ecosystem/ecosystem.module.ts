@@ -81,6 +81,7 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
+import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template-field-header/asset-type-template-field-header.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +130,7 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
     EditButtonComponent,
     ConfirmButtonComponent,
     QuantityTypePageComponent,
+    AssetTypeTemplateFieldHeaderComponent,
   ],
   imports: [
     CommonModule,

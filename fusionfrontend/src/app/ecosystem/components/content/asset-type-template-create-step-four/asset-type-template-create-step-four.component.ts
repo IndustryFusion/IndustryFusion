@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
@@ -24,7 +24,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
   templateUrl: './asset-type-template-create-step-four.component.html',
   styleUrls: ['./asset-type-template-create-step-four.component.scss']
 })
-export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
+export class AssetTypeTemplateCreateStepFourComponent implements OnInit, OnDestroy {
 
   @Input() assetTypeTemplateForm: FormGroup;
   @Input() metrics: Array<FieldTarget>;
@@ -36,8 +36,12 @@ export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
 
   ngOnInit() { }
 
-  changeStep(step: number) {
-    this.stepChange.emit(step);
+  onBackToAttributes() {
+    this.changeStep(3);
+  }
+
+  onBackToMetrics() {
+    this.changeStep(2);
   }
 
   onSave(step: number) {
@@ -45,8 +49,12 @@ export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
     this.changeStep(step);
   }
 
-  onCancel() {
-    this.ref.close();
+  private changeStep(step: number) {
+    this.stepChange.emit(step);
+  }
+
+  ngOnDestroy() {
+    this.ref?.close();
   }
 
 }
