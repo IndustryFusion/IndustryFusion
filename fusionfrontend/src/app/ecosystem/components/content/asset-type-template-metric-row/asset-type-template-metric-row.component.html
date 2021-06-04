@@ -16,9 +16,10 @@ under the License.
 <div class="metric-row">
   <div class="col-20 col-margin">
     <input type="text" pInputText class="metric-row-inputs" *ngIf="!confirmed"
-           [placeholder]="fieldTarget.field.name " [(ngModel)]="fieldTarget.name" name="name" />
-    <div *ngIf="confirmed" class="confirmed-name">{{ fieldTarget.name }}</div>
+           [placeholder]="'Custom Metric name'" [(ngModel)]="fieldTarget.name" name="name" />
+    <div *ngIf="confirmed" class="confirmed-name confirmed-padding">{{ fieldTarget.name }}</div>
   </div>
+  <div class="info-text col-15 col-margin confirmed-name">{{ fieldTarget.field.name }}</div>
   <div class="info-text col-15">{{ getQuantityTypeName(fieldTarget.field.unitId) }}</div>
   <div class="info-text col-5">{{ getUnitSymbol(fieldTarget.field.unitId) }}</div>
   <div class="info-text col-10">{{ 0.000000 | number : accuracyDigitsInfo }}</div>

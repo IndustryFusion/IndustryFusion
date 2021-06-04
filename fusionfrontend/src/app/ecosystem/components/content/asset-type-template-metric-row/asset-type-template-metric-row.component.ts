@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 
 import { UnitQuery } from '../../../../store/unit/unit.query';
@@ -43,14 +43,16 @@ export class AssetTypeTemplateMetricRowComponent implements OnInit {
     if (this.confirmed === undefined) {
       this.confirmed = false;
     }
+    if (!this.fieldTarget.label) {
+      this.fieldTarget.name = '';
+    }
+    this.fieldTarget.description = this.fieldTarget.field.description;
+    this.fieldTarget.label = this.fieldTarget.field.label;
     this.accuracyDigitsInfo = `1.${this.fieldTarget.field.accuracy.toString()}-${this.fieldTarget.field.accuracy.toString()}`;
   }
 
   onConfirm() {
     this.confirmed = true;
-    if (!this.fieldTarget.name) {
-      this.fieldTarget.name = this.fieldTarget.field.name;
-    }
     this.confirmSignal.emit(this.fieldTarget);
   }
 
