@@ -13,9 +13,23 @@
  * under the License.
  */
 
-@import 'components/detailpage';
-@import '../../content/base/base-list/base-list.component.scss';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-.wrapper {
-  margin: 0 4.17%;
+@Component({
+  selector: 'app-trash-button',
+  templateUrl: './trash-button.component.html',
+  styleUrls: ['./trash-button.component.scss']
+})
+export class TrashButtonComponent implements OnInit {
+
+  @Output() deleteItem = new EventEmitter<void>();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onClick() {
+    this.deleteItem.emit();
+  }
 }

@@ -13,6 +13,8 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 .item {
     width: 180px;
     cursor: pointer;
@@ -33,7 +35,7 @@
         text-align: center;
         font: Regular 18px/23px Muli;
         letter-spacing: 0;
-        color: #666666;
+        color: $regular-grey;
         opacity: 1;
     }
 

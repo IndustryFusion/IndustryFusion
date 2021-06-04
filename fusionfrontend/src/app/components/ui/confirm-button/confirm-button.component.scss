@@ -13,9 +13,35 @@
  * under the License.
  */
 
-@import 'components/detailpage';
-@import '../../content/base/base-list/base-list.component.scss';
+@import 'abstract/variables';
+@import 'base/typography';
 
-.wrapper {
-  margin: 0 4.17%;
+.check-size {
+  font-size: 0.7rem;
+}
+
+.if-button-confirm {
+  font-style: normal;
+  font-weight: bold;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+  text-align: left;
+
+  letter-spacing: 0;
+  color: $basic-white;
+
+  background: $highlighted 0 0 no-repeat padding-box;
+  border-radius: 10px;
+  border: none;
+  opacity: 1;
+
+  height: 56px;
+  padding: 8px 32px 8px 32px;
+  cursor: pointer;
+
+  margin: 8px 4px;
+
+  &:hover {
+    background: $hover-grey;
+  }
 }

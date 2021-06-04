@@ -22,11 +22,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class CreateButtonComponent implements OnInit {
 
-  @Input()
-  text: string;
-
-  @Output()
-  createItem = new EventEmitter<void>();
+  @Input() text: string;
+  @Output() createItem = new EventEmitter<void>();
 
   constructor() { }
 

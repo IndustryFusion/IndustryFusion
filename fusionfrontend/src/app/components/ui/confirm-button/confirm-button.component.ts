@@ -13,9 +13,23 @@
  * under the License.
  */
 
-@import 'components/detailpage';
-@import '../../content/base/base-list/base-list.component.scss';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-.wrapper {
-  margin: 0 4.17%;
+@Component({
+  selector: 'app-confirm-button',
+  templateUrl: './confirm-button.component.html',
+  styleUrls: ['./confirm-button.component.scss']
+})
+export class ConfirmButtonComponent implements OnInit {
+
+  @Output() confirmItem = new EventEmitter<void>();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onClick() {
+    this.confirmItem.emit();
+  }
 }

@@ -13,9 +13,24 @@
  * under the License.
  */
 
-@import 'components/detailpage';
-@import '../../content/base/base-list/base-list.component.scss';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-.wrapper {
-  margin: 0 4.17%;
+@Component({
+  selector: 'app-edit-button',
+  templateUrl: './edit-button.component.html',
+  styleUrls: ['./edit-button.component.scss']
+})
+export class EditButtonComponent implements OnInit {
+
+  @Output() editItem = new EventEmitter<void>();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onClick() {
+    this.editItem.emit();
+  }
+
 }

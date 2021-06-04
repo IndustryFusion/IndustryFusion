@@ -13,9 +13,32 @@
  * under the License.
  */
 
-@import 'components/detailpage';
-@import '../../content/base/base-list/base-list.component.scss';
+@import 'abstract/variables';
+@import 'base/typography';
 
-.wrapper {
-  margin: 0 4.17%;
+.if-edit-button {
+  color: $basic-black;
+  font-weight: bolder;
+
+  background: $basic-white 0 0 no-repeat padding-box;
+  border-radius: 10px;
+  border: none;
+  opacity: 1;
+
+  height: 56px;
+  width: 56px;
+  cursor: pointer;
+
+  margin: 8px 4px;
+
+  clr-icon {
+    height: 24px;
+    width: 24px;
+    color: $regular-grey;
+
+    &:hover {
+      color: $basic-black !important;
+    }
+  }
 }
+

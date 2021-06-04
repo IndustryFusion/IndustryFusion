@@ -58,6 +58,9 @@
     line-height: 20px;
     font-weight: 400;
     letter-spacing: 0;
+    padding-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .bold {
