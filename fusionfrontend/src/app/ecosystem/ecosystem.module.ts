@@ -80,9 +80,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { CheckboxModule } from 'primeng/checkbox';
-import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
-import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
-import { DialogService } from 'primeng/dynamicdialog';
+import { IFCommon } from '../common/i-f-common.module';
 
 @NgModule({
   declarations: [
@@ -134,6 +132,7 @@ import { DialogService } from 'primeng/dynamicdialog';
     QuantityTypeEditDialogDirective,
   ],
   imports: [
+    IFCommon,
     CommonModule,
     EcosystemRoutingModule,
     ClarityModule,
@@ -149,13 +148,9 @@ import { DialogService } from 'primeng/dynamicdialog';
     RadioButtonModule,
     CheckboxModule
   ],
-    exports: [
-        EcosystemSubHeaderComponent,
-        EcosystemPageTitleComponent,
-        CreateButtonComponent
-    ],
-  providers: [
-    DialogService
+  exports: [
+    EcosystemSubHeaderComponent,
+    EcosystemPageTitleComponent,
   ]
 })
 export class EcosystemModule { }
