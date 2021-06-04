@@ -53,7 +53,7 @@ import { UnitListItemComponent } from './components/content/unit-list-item/unit-
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
 import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
 import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
-import { FieldDialogComponent } from './components/content/field-dialog/field-dialog.component';
+import { FieldDialogContentComponent } from './components/content/field-dialog/field-dialog-content/field-dialog-content.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepOneComponent } from './components/content/asset-type-template-create-step-one/asset-type-template-create-step-one.component';
 // tslint:disable-next-line:max-line-length
@@ -79,6 +79,8 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
+import { DialogService } from 'primeng/dynamicdialog';
+import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 
 @NgModule({
   declarations: [
@@ -113,7 +115,7 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
     AssetTypeCreateComponent,
     QuantityTypeDialogContentComponent,
     UnitCreateComponent,
-    FieldDialogComponent,
+    FieldDialogContentComponent,
     AssetTypeTemplateCreateStepOneComponent,
     AssetTypeTemplateCreateStepTwoComponent,
     AssetTypeTemplateCreateStepThreeComponent,
@@ -124,6 +126,7 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
     AssetTypeEditComponent,
     QuantityTypePageComponent,
     QuantityTypeEditDialogDirective,
+    FieldDialogDirective
   ],
   imports: [
     IFCommon,
@@ -145,6 +148,9 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
   exports: [
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent,
+  ],
+  providers: [
+    DialogService
   ]
 })
 export class EcosystemModule { }

@@ -17,19 +17,19 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Unit } from '../../../../store/unit/unit.model';
-import { UnitQuery } from '../../../../store/unit/unit.query';
+import { Unit } from '../../../../../store/unit/unit.model';
+import { UnitQuery } from '../../../../../store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { Field } from '../../../../store/field/field.model';
+import { Field } from '../../../../../store/field/field.model';
 import { SelectItem } from 'primeng/api';
 
 @Component({
-  selector: 'app-field-dialog',
-  templateUrl: './field-dialog.component.html',
-  styleUrls: ['./field-dialog.component.scss']
+  selector: 'app-field-dialog-content',
+  templateUrl: './field-dialog-content.component.html',
+  styleUrls: ['./field-dialog-content.component.scss']
 })
-export class FieldDialogComponent implements OnInit {
+export class FieldDialogContentComponent implements OnInit {
 
   public isEditing = true;
   public fieldForm: FormGroup;

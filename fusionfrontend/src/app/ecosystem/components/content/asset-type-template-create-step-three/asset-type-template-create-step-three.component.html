@@ -12,7 +12,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<app-field-dialog *ngIf="shouldShowCreateField"></app-field-dialog>
+<app-field-dialog-content *ngIf="shouldShowCreateField"></app-field-dialog-content>
 <div class="content">
   <div class="title">
     <div>
@@ -43,6 +43,6 @@ under the License.
   </button>
 </div>
 <div class="footer">
-  <button type="button" class="if-button-cancel" type="submit" (click)="changeStep(2)">Back</button>
+  <button type="button" class="if-button-cancel" (click)="changeStep(2)">Back</button>
   <button type="button" class="button-confirm" (click)="changeStep(4)">Next</button>
 </div>
