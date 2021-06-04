@@ -23,18 +23,18 @@ under the License.
   </div>
   <div class="subtitle">Metrics</div>
   <div *ngIf="metrics && metrics.length > 0" class="fields-list">
-    <app-asset-type-template-metric-row *ngFor="let metric of metrics" [fieldTarget]="metric"
-      (editSignal)="changeStep(2)" (deleteSignal)="changeStep(2)" confirmed="true">
-    </app-asset-type-template-metric-row>
+    <app-asset-type-template-field-row *ngFor="let metric of metrics" [fieldTarget]="metric"
+                                       (editSignal)="changeStep(2)" (deleteSignal)="changeStep(2)" confirmed="true">
+    </app-asset-type-template-field-row>
   </div>
   <button type="button" class="button-add" (click)="changeStep(2)">
     <clr-icon shape="plus"></clr-icon>Add Metric
   </button>
   <div class="subtitle">Attributes</div>
   <div *ngIf="attributes && attributes.length > 0" class="fields-list">
-    <app-asset-type-template-metric-row *ngFor="let metric of attributes" [fieldTarget]="metric"
-      (editSignal)="changeStep(3)" (deleteSignal)="changeStep(3)" confirmed="true">
-    </app-asset-type-template-metric-row>
+    <app-asset-type-template-field-row *ngFor="let metric of attributes" [fieldTarget]="metric"
+                                       (editSignal)="changeStep(3)" (deleteSignal)="changeStep(3)" confirmed="true">
+    </app-asset-type-template-field-row>
   </div>
   <button type="button" class="button-add" (click)="changeStep(3)">
     <clr-icon shape="plus"></clr-icon>Add Attribute

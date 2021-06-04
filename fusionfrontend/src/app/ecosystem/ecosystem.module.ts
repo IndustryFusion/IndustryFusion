@@ -63,7 +63,7 @@ import { AssetTypeTemplateCreateStepThreeComponent } from './components/content/
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepFourComponent } from './components/content/asset-type-template-create-step-four/asset-type-template-create-step-four.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateMetricRowComponent } from './components/content/asset-type-template-metric-row/asset-type-template-metric-row.component';
+import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template-field-row/asset-type-template-field-row.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content/asset-type-template-create-step-sumary/asset-type-template-create-step-sumary.component';
 import { Ng2CompleterModule } from 'ng2-completer';
@@ -122,7 +122,7 @@ import { DialogService } from 'primeng/dynamicdialog';
     AssetTypeTemplateCreateStepTwoComponent,
     AssetTypeTemplateCreateStepThreeComponent,
     AssetTypeTemplateCreateStepFourComponent,
-    AssetTypeTemplateMetricRowComponent,
+    AssetTypeTemplateFieldRowComponent,
     AssetTypeTemplateCreateStepSumaryComponent,
     AssetTypePageComponent,
     AssetTypeEditComponent,

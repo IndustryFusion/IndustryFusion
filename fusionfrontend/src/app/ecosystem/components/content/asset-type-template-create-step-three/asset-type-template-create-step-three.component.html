@@ -23,9 +23,9 @@ under the License.
     </div>
   </div>
   <div *ngIf="selectedMetrics && selectedMetrics.length > 0" class="fields-list">
-    <app-asset-type-template-metric-row *ngFor="let metric of selectedMetrics" [fieldTarget]="metric"
-      (confirmSignal)="onConfirm(metric)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(metric)">
-    </app-asset-type-template-metric-row>
+    <app-asset-type-template-field-row *ngFor="let metric of selectedMetrics" [fieldTarget]="metric"
+                                       (confirmSignal)="onConfirm(metric)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(metric)">
+    </app-asset-type-template-field-row>
   </div>
   <div class="selection" *ngIf="shouldAddMetric">
     <clr-select-container>

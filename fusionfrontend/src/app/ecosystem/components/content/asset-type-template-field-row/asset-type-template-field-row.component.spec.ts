@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetTypeTemplateMetricRowComponent } from './asset-type-template-metric-row.component';
+import { AssetTypeTemplateFieldRowComponent } from './asset-type-template-field-row.component';
 
 describe('AssetTypeTemplateMetricRowComponent', () => {
-  let component: AssetTypeTemplateMetricRowComponent;
-  let fixture: ComponentFixture<AssetTypeTemplateMetricRowComponent>;
+  let component: AssetTypeTemplateFieldRowComponent;
+  let fixture: ComponentFixture<AssetTypeTemplateFieldRowComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetTypeTemplateMetricRowComponent ]
+      declarations: [ AssetTypeTemplateFieldRowComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeTemplateMetricRowComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplateFieldRowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -21,11 +21,11 @@ import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
 
 @Component({
-  selector: 'app-asset-type-template-metric-row',
-  templateUrl: './asset-type-template-metric-row.component.html',
-  styleUrls: ['./asset-type-template-metric-row.component.scss']
+  selector: 'app-asset-type-template-field-row',
+  templateUrl: './asset-type-template-field-row.component.html',
+  styleUrls: ['./asset-type-template-field-row.component.scss']
 })
-export class AssetTypeTemplateMetricRowComponent implements OnInit {
+export class AssetTypeTemplateFieldRowComponent implements OnInit {
 
   @Input() fieldTarget: FieldTarget;
   @Output() confirmSignal = new EventEmitter<FieldTarget>();
