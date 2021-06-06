@@ -22,14 +22,18 @@ import { Company } from 'src/app/store/company/company.model';
 import { Location } from 'src/app/store/location/location.model';
 import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields, AssetModalType } from '../../../../store/asset-details/asset-details.model';
-import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AssetWithFields } from '../../../../store/asset/asset.model';
+import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
 
 @Component({
   selector: 'app-assets-list',
   templateUrl: './assets-list.component.html',
-  styleUrls: ['./assets-list.component.scss']
+  styleUrls: ['./assets-list.component.scss'],
+  providers: [DialogService]
 })
 export class AssetsListComponent implements OnChanges {
   @Input()
@@ -57,6 +61,17 @@ export class AssetsListComponent implements OnChanges {
   @Output()
   assetDetailsSelected = new EventEmitter<AssetDetails>();
 
+  @Output()
+  createAssetEvent = new EventEmitter<AssetWithFields>();
+  @Output()
+  updateAssetEvent = new EventEmitter<AssetWithFields>();
+
+  asset: AssetWithFields;
+  assetForm: FormGroup;
+  companyId: ID;
+  ref: DynamicDialogRef;
+
+
   isLoading$: Observable<boolean>;
   selectedIds: Set<ID> = new Set();
   filterDict: { [key: string]: string[]; };
@@ -66,9 +81,6 @@ export class AssetsListComponent implements OnChanges {
   assetsLocations: Set<string> = new Set<string>();
   assetsManufacturers: Set<string> = new Set<string>();
   moveAssetModal = false;
-  modalsActive = false;
-  assetModalTypes = AssetModalType;
-  modalTypeActive: AssetModalType;
 
   assetsMapping:
     { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
@@ -80,13 +92,16 @@ export class AssetsListComponent implements OnChanges {
       other: '# Assets selected'
     };
 
-
-  assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
-
   constructor(
     private assetService: AssetService,
     private assetDetailsService: AssetDetailsService,
-    private routingLocation: loc) { }
+    private routingLocation: loc,
+    private formBuilder: FormBuilder,
+    public dialogService: DialogService) { }
+
+  onInit() {
+    this.createAssetSeriesForm(this.formBuilder);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if ((changes.rooms || changes.assetsWithDetailsAndFields) && this.assetsWithDetailsAndFields && this.rooms) {
@@ -102,6 +117,37 @@ export class AssetsListComponent implements OnChanges {
     }
   }
 
+  showCreateDialog() {
+    const ref = this.dialogService.open(AssetInstantiationComponent, {
+      data: {
+        assetForm: this.assetForm,
+        assetSeries: this.assetSeries,
+        rooms: this.rooms,
+        activeModalType: AssetModalType.startInitialitation
+      },
+    });
+
+    ref.onClose.subscribe((asset: AssetWithFields) => {
+      this.onCloseCreateDialog(asset);
+      this.createAssetSeriesForm(this.formBuilder);
+      this.asset = new AssetWithFields();
+    });
+  }
+
+  createAssetSeriesForm(formBuilder: FormBuilder) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    this.assetForm = formBuilder.group({
+      id: [null],
+      name: ['', requiredTextValidator],
+      description: [''],
+      assetSeriesName: ['', requiredTextValidator],
+      manufacturer: ['', requiredTextValidator],
+      category: ['', requiredTextValidator],
+      locationName: ['', requiredTextValidator],
+      roomName: ['']
+    });
+  }
+
   containsId(roomId: ID) {
     let containsId = false;
     this.assetsRoomIds.forEach(assetsRoomId => {
@@ -110,6 +156,17 @@ export class AssetsListComponent implements OnChanges {
       }
     });
     return containsId;
+  }
+
+  onCloseCreateDialog(asset: AssetWithFields) {
+    if (asset) {
+      asset.companyId = this.companyId;
+      this.assetCreated(asset);
+    }
+  }
+
+  assetCreated(asset: AssetWithFields): void {
+    this.createAssetEvent.emit(asset);
   }
 
   isSelected(id: ID) {
@@ -172,10 +229,6 @@ export class AssetsListComponent implements OnChanges {
 
   forwardAssetDetails(event: AssetDetails) {
     this.assetDetailsSelected.emit(event);
-  }
-
-  assetInstantiationStopped(event: boolean) {
-    this.modalsActive = event;
   }
 
   deleteAsset(event: AssetDetailsWithFields) {

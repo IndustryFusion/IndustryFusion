@@ -13,30 +13,41 @@
  * under the License.
  */
 
-.start-modal {
-  padding: 15px;
+.asset-item {
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
 
-  .start-panel-row{
-    margin-bottom: 12px;
+.asset-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 60px;
+  overflow: hidden;
+}
 
-    .asset-img {
-      .asset-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 60px;
-        overflow: hidden;
-      }
-    }
+.column-class {
+  align-self: center
+}
 
-    .start-panel-column {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      column-gap: 15px;;
+.asset-name {
+  font-size: 22px;
+  padding-top: 0;
+  padding-bottom: 2px;
+}
 
-      .start-button {
-        margin: 0px;
-      }
-    }
-  }
+.asset-information {
+  font-size: 16px;
+  color: #95989A;
+  padding-top: 0;
+  padding-bottom: 2px;
+}
+
+.onboaring-text {
+  font-size: 16px;
+  color: #2CA9CE;
+}
+
+.start-button {
+  border: none;
+  background-color: white;
 }

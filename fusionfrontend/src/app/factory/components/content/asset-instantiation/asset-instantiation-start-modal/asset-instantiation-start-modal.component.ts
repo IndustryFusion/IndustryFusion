@@ -29,9 +29,6 @@ export class AssetInstantiationStartModalComponent implements OnInit {
   @Output()
   clickedStartEvent = new EventEmitter<AssetSeriesDetails>();
 
-  @Output()
-  stoppedAssetAssignment = new EventEmitter<boolean>();
-
   constructor() { }
 
   ngOnInit(): void {
@@ -41,9 +38,4 @@ export class AssetInstantiationStartModalComponent implements OnInit {
     this.clickedStartEvent.emit(assetSerie);
   }
 
-  closeModal(event: boolean) {
-    if (event) {
-      this.stoppedAssetAssignment.emit(event);
-    }
-  }
 }

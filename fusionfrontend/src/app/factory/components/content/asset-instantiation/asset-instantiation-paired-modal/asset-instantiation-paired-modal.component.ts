@@ -25,25 +25,19 @@ export class AssetInstantiationPairedModalComponent implements OnInit {
 
   @Input()
   assetSeries: AssetSeriesDetails;
-
   @Output()
   clickedCustomizeEvent = new EventEmitter<boolean>();
+  pairingProcess = true;
 
-  @Output()
-  stoppedAssetAssignment = new EventEmitter<boolean>();
 
   constructor() { }
 
   ngOnInit(): void {
+    setTimeout(() => this.pairingProcess = false, 1000);
   }
 
   emitCustomizeEvent(event: boolean) {
     this.clickedCustomizeEvent.emit(event);
   }
 
-  closeModal(event: boolean) {
-    if (event) {
-      this.stoppedAssetAssignment.emit(event);
-    }
-  }
 }

@@ -13,15 +13,15 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { Room } from '../../../../store/room/room.model';
 import { Location } from '../../../../store/location/location.model';
 import { AssetDetails, AssetModalType } from '../../../../store/asset-details/asset-details.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ID } from '@datorama/akita';
-import { AssetDetailsQuery } from 'src/app/store/asset-details/asset-details.query';
 import { Observable } from 'rxjs';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-instantiation',
@@ -30,36 +30,20 @@ import { Observable } from 'rxjs';
 })
 export class AssetInstantiationComponent implements OnInit, OnChanges {
 
-  @Input()
+  assetForm: FormGroup;
   assetSeries: AssetSeriesDetails[];
-
-  @Input()
   locations: Location[];
-
-  @Input()
   rooms: Room[];
-
-  @Input()
   location: Location;
-
-  @Input()
-  modalsActive;
-
-  @Input()
-  initializeModalType: AssetModalType;
-
-  @Input()
+  activeModalType: AssetModalType;
   assetDetailsID: ID;
 
   @Output()
   closedEvent = new EventEmitter<boolean>();
-
   @Output()
   assetSeriesSelectedEvent = new EventEmitter<AssetSeriesDetails>();
-
   @Output()
   assetDetailsEvent = new EventEmitter<AssetDetails>();
-
   @Output()
   stoppedAssetAssignment = new EventEmitter<boolean>();
 
@@ -76,21 +60,23 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
   descriptionControl = 'description';
   locationControl = 'location';
   roomNameControl = 'roomName';
+  formControls = ['assetSeriesName', 'manufacturer', 'category', 'name', 'description'];
 
   constructor(
-    private assetDetailsQuery: AssetDetailsQuery,
-    private formBuilder: FormBuilder) { }
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+  ) { }
 
   ngOnInit(): void {
-    this.modalTypeActive = this.initializeModalType;
-    if (this.assetDetailsID) {
-      this.assetToEdit = this.assetDetailsQuery.getEntity(this.assetDetailsID);
-      if (this.location) {
-        this.selectedLocation = this.location;
-      } else {
-        this.selectedLocation = this.locations.filter(location => location.name === this.assetToEdit.locationName).pop();
-      }
-      this.createAssetDetailsForm(this.formBuilder, this.assetToEdit);
+    this.assetForm = this.config.data.assetForm;
+    this.assetSeries = this.config.data.assetSeries;
+    this.rooms = this.config.data.rooms;
+    this.activeModalType = this.config.data.activeModalType;
+
+    if (this.location) {
+      this.selectedLocation = this.location;
+    } else {
+      // this.selectedLocation = this.locations.filter(location => location.name === this.assetForm.get("locationName").pop();
     }
   }
 
@@ -100,69 +86,53 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
     }
   }
 
-  createAssetDetailsForm(formBuilder: FormBuilder, assetToEdit: AssetDetails) {
-    this.assetDetailsForm = formBuilder.group({
-      assetSeriesName: assetToEdit ? new FormControl(assetToEdit.assetSeriesName) : new FormControl(null),
-      manufacturer: assetToEdit ? new FormControl(assetToEdit.manufacturer) : new FormControl(null),
-      category: assetToEdit ? new FormControl(assetToEdit.category, Validators.required) : new FormControl(null, Validators.required),
-      customName: assetToEdit ? new FormControl(assetToEdit.name) : new FormControl(null),
-      description: assetToEdit ? new FormControl(assetToEdit.description) : new FormControl(null),
-      location: assetToEdit ? new FormControl(assetToEdit.locationName, Validators.required) : new FormControl(null, Validators.required),
-      roomName: assetToEdit ? new FormControl(assetToEdit.roomName , Validators.required) : new FormControl(null, Validators.required),
-    });
-  }
-
   clickedStartInstantiation(event: AssetSeriesDetails) {
     if (event) {
       this.selectedAssetSeries = event;
-      this.modalTypeActive = this.assetModalTypes.customizeAsset;
+      this.activeModalType = this.assetModalTypes.pairAsset;
       this.setAssetSeriesDetails();
-      this.assetSeriesSelectedEvent.emit(this.selectedAssetSeries);
+      // this.assetSeriesSelectedEvent.emit(this.selectedAssetSeries);
     }
   }
 
   setAssetSeriesDetails() {
-    this.assetToEdit.assetSeriesName = this.selectedAssetSeries.name;
-    this.assetToEdit.manufacturer = this.selectedAssetSeries.manufacturer;
-    this.assetToEdit.category = this.selectedAssetSeries.category;
+    this.assetForm.controls[this.formControls[0]].setValue(this.selectedAssetSeries.name);
+    this.assetForm.controls[this.formControls[1]].setValue(this.selectedAssetSeries.manufacturer);
+    this.assetForm.controls[this.formControls[2]].setValue(this.selectedAssetSeries.category);
 
-    this.assetToEdit.name = this.selectedAssetSeries.name;
-    this.assetToEdit.description = this.selectedAssetSeries.category;
-    this.createAssetDetailsForm(this.formBuilder, this.assetToEdit);
+    this.assetForm.controls[this.formControls[3]].setValue(this.selectedAssetSeries.name);
+    this.assetForm.controls[this.formControls[4]].setValue(this.selectedAssetSeries.category);
   }
 
   clickedCustomize(event: boolean) {
     if (event) {
-      this.modalTypeActive = this.assetModalTypes.addDescription;
+      this.activeModalType = this.assetModalTypes.customizeAsset;
     }
   }
 
   clickedButtonOnDescription(event: boolean) {
     if (event) {
-      this.modalTypeActive = this.assetModalTypes.locationAssignment;
+      this.activeModalType = this.assetModalTypes.locationAssignment;
       this.instantiatedAsset.name = this.assetDetailsForm.controls[this.customNameControl].value;
       this.instantiatedAsset.description = this.assetDetailsForm.controls[this.descriptionControl].value;
       this.instantiatedAsset.id = this.assetToEdit.id ? this.assetToEdit.id : null;
-    } else {
-      this.closeModal(true);
     }
   }
 
   finishedLocationAssignmentEvent(event: [boolean, Location]) {
     if (event[0]) {
-      this.modalTypeActive = this.assetModalTypes.roomAssigntment;
+      this.activeModalType = this.assetModalTypes.roomAssignment;
       this.instantiatedAsset.locationName = this.assetDetailsForm.controls[this.locationControl].value;
       this.selectedLocation = event[1];
       this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === event[1].id);
       this.instantiatedAsset.id = this.assetToEdit.id ? this.assetToEdit.id : null;
     } else {
-      this.modalTypeActive = this.assetModalTypes.addDescription;
+      this.activeModalType = this.assetModalTypes.customizeAsset;
     }
   }
 
   finishInstantiation(event: [boolean, Room]) {
     if (event[0]) {
-      this.modalTypeActive = null;
       this.instantiatedAsset.roomName = this.assetDetailsForm.controls[this.roomNameControl].value;
       this.instantiatedAsset.roomId = event[1].id;
       this.instantiatedAsset.locationName = this.selectedLocation ? this.selectedLocation.name : this.location.name;
@@ -174,11 +144,4 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
     }
   }
 
-  closeModal(event: boolean) {
-    if (event) {
-      this.modalsActive = false;
-      this.modalTypeActive = this.initializeModalType;
-      this.stoppedAssetAssignment.emit(this.modalsActive);
-    }
-  }
 }

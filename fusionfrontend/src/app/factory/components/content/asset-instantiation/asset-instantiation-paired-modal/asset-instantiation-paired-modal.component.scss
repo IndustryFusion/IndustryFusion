@@ -13,50 +13,42 @@
  * under the License.
  */
 
-.paired-panel {
-  padding: 30px 30px 0px 30px;
-  display: grid;
-  grid-template-areas:
-    'item1 item1 item1 . item2 .'
-    'item1 item1 item1 item3 item3 item3'
-    'item4 item4 item4 item4 item4 item4';
-  column-gap: 100px;
-  row-gap: 15px;
+.asset-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 60px;
+  overflow: hidden;
+}
 
-  .item-1 {
-    grid-area: item1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.column-class {
+  align-self: center
+}
 
-    .asset-img {
-      .asset-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 60px;
-        overflow: hidden;
-      }
-    }
-  }
+.asset-name {
+  font-size: 22px;
+  padding-top: 0;
+  padding-bottom: 2px;
+}
 
-  .item-2 {
-    grid-area: item2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.pairing-column {
+  text-align: center;
+}
 
-  .item-3 {
-    grid-area: item3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.text-styling {
+  font-size: 16px;
+  color: #95989A;
+  padding-top: 0;
+  padding-bottom: 2px;
+}
 
-  .item-4 {
-    grid-area: item4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
+.button-div {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.customize-button {
+  text-align: center;
+  width: 320px;
+  border: none;
 }

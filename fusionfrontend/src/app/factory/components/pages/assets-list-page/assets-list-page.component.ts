@@ -26,8 +26,9 @@ import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 import { ID } from '@datorama/akita';
 import { FactoryManagerPageType, RouteData } from 'src/app/factory/factory-routing.model';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
-import { AssetService } from '../../../../store/asset/asset.service';
+import { AssetSeriesDetails } from 'src/app/store/asset-series-details/asset-series-details.model';
+import { AssetService } from 'src/app/store/asset/asset.service';
+import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
 
 
 @Component({
@@ -56,11 +57,14 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+  ) { }
 
   ngOnInit() {
     this.isLoading$ = this.locationQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
+    this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.company$ = this.factoryResolver.company$;
     this.locations$ = this.factoryResolver.locations$;
     this.location$ = this.factoryResolver.location$;

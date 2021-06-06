@@ -27,10 +27,10 @@ export class AssetDetails extends Asset {
 
 export enum AssetModalType  {
   startInitialitation = 1,
-  customizeAsset = 2,
-  addDescription = 3,
+  pairAsset,
+  customizeAsset = 3,
   locationAssignment = 4,
-  roomAssigntment = 5
+  roomAssignment = 5
 }
 
 export enum DashboardFilterModalType {

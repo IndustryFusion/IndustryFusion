@@ -13,44 +13,25 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="modal" style="background-color: rgba(128,128,128,0.5);">
-  <div class="modal-dialog" style="width: max-content;">
-    <div class="modal-content" class="start-modal" style="background-color: hsl(198, 0%, 95%);">
-      <button type="button" (click)="closeModal(true)" class="close-modal-btn">
-        <clr-icon shape="times" size="20"></clr-icon>
-      </button>
-      <div class="modal-body" style="padding: 30px;">
-        <div class="start-panel">
-          <ng-container>
-            <div *ngFor="let assetSerie of assetSeries">
-              <div class="clr-row start-panel-row">
-                <div class="clr-col-md-6">
-                  <div class="clr-row clr-justify-content-start">
-                    <div class="clr-col-4 start-panel-column">
-                      <div class="asset-img">
-                        <img class="asset-image" src="assets/img/{{assetSerie.imageKey}}">
-                      </div>
-                    </div>
-                    <div class="clr-col-8 start-panel-column">
-                      <div class="col-wrapper">
-                        <span>{{assetSerie.name}}</span> <br>
-                        <span>{{assetSerie.manufacturer}}</span> <br>
-                        <span>{{assetSerie.category}}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="clr-col-md-3 start-panel-column">
-                  <span>Ready for onboarding!</span>
-                </div>
-                <div class="clr-col-md-3 start-panel-column">
-                  <button type="button" class="if-button button-primary button-modal" (click)="emitStartInstantiationEvent(assetSerie)">Start</button>
-                </div>
-              </div>
-            </div>
-          </ng-container>
+<div>
+  <ng-container>
+    <div *ngFor="let assetSerie of assetSeries">
+      <div class="p-grid asset-item">
+        <div class="p-col-2 p-dir-col column-class">
+          <img class="asset-image" src="assets/img/{{assetSerie.imageKey}}" alt="AssetSeries Image">
+        </div>
+        <div class="p-col-4 p-grid p-dir-col column-class">
+          <span class="p-col asset-name">{{assetSerie.name}}</span>
+          <span class="p-col asset-information">{{assetSerie.category}}</span>
+          <span class="p-col asset-information">{{assetSerie.manufacturer}}</span>
+        </div>
+        <div class="p-col-3 p-dir-col column-class">
+          <span class="onboaring-text">Ready for onboarding!</span>
+        </div>
+        <div class="p-col-3 p-dir-col column-class">
+          <button type="button" class="if-button button-secondary start-button" (click)="emitStartInstantiationEvent(assetSerie)">Start</button>
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
