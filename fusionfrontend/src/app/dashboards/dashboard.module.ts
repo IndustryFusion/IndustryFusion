@@ -29,12 +29,9 @@ import { MaintenancePageComponent } from 'src/app/dashboards/components/pages/ma
 import { MaintenanceListComponent } from './components/content/maintenance-list/maintenance-list.component';
 import { MaintenanceProgressbarComponent } from './components/content/maintenance-list/maintenance-progressbar/maintenance-progressbar.component';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { DropdownModule } from 'primeng/dropdown';
-import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
+import { IFCommon } from '../common/i-f-common.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +42,7 @@ import { TableModule } from 'primeng/table';
     MaintenanceProgressbarComponent,
   ],
     imports: [
+        IFCommon,
         CommonModule,
         DashboardRoutingModule,
         ClarityModule,
@@ -56,11 +54,7 @@ import { TableModule } from 'primeng/table';
         FontAwesomeModule,
         ReactiveFormsModule,
         ProgressBarModule,
-        DialogModule,
-        InputTextModule,
         OverlayPanelModule,
-        DropdownModule,
-        CheckboxModule,
         TableModule
       ],
   exports: [

@@ -61,12 +61,6 @@ import { AssetInstantiationPairedModalComponent } from './components/content/ass
 import { AssetInstantiationLocationAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-location-assignment-modal/asset-instantiation-location-assignment-modal.component';
 import { AssetInstantiationRoomAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-room-assignment-modal/asset-instantiation-room-assignment-modal.component';
 import { LocationDialogComponent } from './components/content/location-dialog/location-dialog.component';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { ButtonModule } from 'primeng/button';
-import { MenuModule } from 'primeng/menu';
-import { InputTextModule } from 'primeng/inputtext';
-import { EcosystemModule } from '../ecosystem/ecosystem.module';
 import { IFCommon } from '../common/i-f-common.module';
 
 @NgModule({
@@ -122,12 +116,6 @@ import { IFCommon } from '../common/i-f-common.module';
         FormsModule,
         FontAwesomeModule,
         ReactiveFormsModule,
-        DialogModule,
-        DropdownModule,
-        ButtonModule,
-        MenuModule,
-        InputTextModule,
-        EcosystemModule,
     ],
   exports: [
     FactorySubHeaderComponent,
