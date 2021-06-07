@@ -13,11 +13,13 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<section class="if-detail-page-section unit-details p-grid">
-  <div class="if-detail-page-div p-col-10">
-    <h3>
-      {{ (unit$ | async)?.name }}
-    </h3>
+<section class="if-detail-page-section unit-details">
+  <div class="if-detail-page-div">
+    <div class="row clr-justify-content-between clr-align-items-center">
+      <h3> {{ (unit$ | async)?.name }} </h3>
+      <app-edit-details-button (click)="showDialog()"></app-edit-details-button>
+    </div>
+
     <div *ngIf="(unit$ | async)?.symbol" class="if-detail-page-label">
       <p>Symbol: {{ (unit$ | async)?.symbol }}</p>
     </div>
@@ -30,8 +32,5 @@ under the License.
     <div class="if-detail-page-label">
       <p>Quantity Type: {{ (quantityType$ | async)?.name }}</p>
     </div>
-  </div>
-  <div class="p-col-2" class="edit-button">
-    <app-edit-button (editItem)="showDialog()" [text]="'Edit'"></app-edit-button>
   </div>
 </section>

@@ -16,11 +16,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-edit-icon-button',
-  templateUrl: './edit-icon-button.component.html',
-  styleUrls: ['./edit-icon-button.component.scss']
+  selector: 'app-edit-button',
+  templateUrl: './edit-button.component.html',
+  styleUrls: ['./edit-button.component.scss']
 })
-export class EditIconButtonComponent implements OnInit {
+export class EditButtonComponent implements OnInit {
 
   @Output() editItem = new EventEmitter<void>();
 

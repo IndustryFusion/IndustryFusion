@@ -5,9 +5,9 @@ import { ClrIconModule } from '@clr/angular';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { TrashButtonComponent } from '../components/ui/trash-button/trash-button.component';
-import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { EditDetailsButtonComponent } from '../components/ui/edit-details-button/edit-details-button.component';
+import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 
 
 @NgModule({
@@ -15,8 +15,8 @@ import { EditDetailsButtonComponent } from '../components/ui/edit-details-button
     CreateButtonComponent,
     ItemOptionsMenuComponent,
     TrashButtonComponent,
-    EditButtonComponent,
     ConfirmButtonComponent,
+    EditButtonComponent,
     EditDetailsButtonComponent
   ],
   imports: [
@@ -28,9 +28,10 @@ import { EditDetailsButtonComponent } from '../components/ui/edit-details-button
     CreateButtonComponent,
     ItemOptionsMenuComponent,
     TrashButtonComponent,
-    EditButtonComponent,
     ConfirmButtonComponent,
+    EditButtonComponent,
     EditDetailsButtonComponent
   ]
 })
-export class IFCommon { }
+export class IFCommon {
+}

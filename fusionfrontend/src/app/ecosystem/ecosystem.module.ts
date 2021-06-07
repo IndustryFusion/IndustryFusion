@@ -80,7 +80,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
-import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
 
 @NgModule({
   declarations: [
