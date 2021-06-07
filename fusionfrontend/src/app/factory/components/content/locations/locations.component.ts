@@ -75,6 +75,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
     const ref = this.dialogService.open(LocationDialogComponent, {
       data: {
         locationForm: this.locationForm,
+        editMode: false
       },
       header: `Create new Location`,
       width: '70%',

@@ -13,6 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<button class="if-edit-button" (click)="onClick()">
-  <clr-icon shape="note"></clr-icon>
-</button>
+<div class="table-dropdown-menu">
+  <p-menu #menu [popup]="true" [model]="menuActions"></p-menu>
+  <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event);"
+          class="table-dropdown-menu-button"></button>
+</div>

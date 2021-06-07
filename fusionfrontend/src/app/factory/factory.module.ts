@@ -67,6 +67,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
 import { EcosystemModule } from '../ecosystem/ecosystem.module';
+import { IFCommon } from '../common/i-f-common.module';
 
 @NgModule({
   declarations: [
@@ -107,9 +108,10 @@ import { EcosystemModule } from '../ecosystem/ecosystem.module';
     AssetInstantiationPairedModalComponent,
     AssetInstantiationLocationAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
-    LocationDialogComponent
+    LocationDialogComponent,
   ],
     imports: [
+        IFCommon,
         CommonModule,
         FactoryRoutingModule,
         ClarityModule,
@@ -130,7 +132,7 @@ import { EcosystemModule } from '../ecosystem/ecosystem.module';
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
-    ArraysortextendedPipe
+    ArraysortextendedPipe,
   ]
 })
 export class FactoryModule { }

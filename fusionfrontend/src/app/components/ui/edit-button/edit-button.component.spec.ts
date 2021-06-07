@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditButtonComponent } from './edit-button.component';
+import { EditIconButtonComponent } from './edit-icon-button.component';
 
-describe('CreateButtonComponent', () => {
-  let component: EditButtonComponent;
-  let fixture: ComponentFixture<EditButtonComponent>;
+describe('EditButtonComponent', () => {
+  let component: EditIconButtonComponent;
+  let fixture: ComponentFixture<EditIconButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditButtonComponent ]
+      declarations: [ EditIconButtonComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditButtonComponent);
+    fixture = TestBed.createComponent(EditIconButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

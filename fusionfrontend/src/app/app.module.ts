@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,9 +32,9 @@ import { EcosystemModule } from './ecosystem/ecosystem.module';
 import { SettingsModule } from './settings/settings.module';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './services/token.interceptor';
 import { DashboardModule } from './dashboards/dashboard.module';
+import { IFCommon } from './common/i-f-common.module';
 
 @NgModule({
   declarations: [
@@ -47,6 +47,7 @@ import { DashboardModule } from './dashboards/dashboard.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    IFCommon,
     FactoryModule,
     FleetModule,
     EcosystemModule,

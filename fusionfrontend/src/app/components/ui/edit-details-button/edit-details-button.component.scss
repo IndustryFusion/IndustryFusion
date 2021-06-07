@@ -12,26 +12,3 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-
-@Component({
-  selector: 'app-edit-icon-button',
-  templateUrl: './edit-icon-button.component.html',
-  styleUrls: ['./edit-icon-button.component.scss']
-})
-export class EditIconButtonComponent implements OnInit {
-
-  @Output() editItem = new EventEmitter<void>();
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-
-  onClick() {
-    this.editItem.emit();
-  }
-
-}

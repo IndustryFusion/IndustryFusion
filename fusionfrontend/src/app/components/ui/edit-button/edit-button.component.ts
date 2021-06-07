@@ -13,16 +13,15 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-edit-button',
-  templateUrl: './edit-button.component.html',
-  styleUrls: ['./edit-button.component.scss']
+  selector: 'app-edit-icon-button',
+  templateUrl: './edit-icon-button.component.html',
+  styleUrls: ['./edit-icon-button.component.scss']
 })
-export class EditButtonComponent implements OnInit {
+export class EditIconButtonComponent implements OnInit {
 
-  @Input() text: string;
   @Output() editItem = new EventEmitter<void>();
 
   constructor() {
@@ -34,4 +33,5 @@ export class EditButtonComponent implements OnInit {
   onClick() {
     this.editItem.emit();
   }
+
 }
