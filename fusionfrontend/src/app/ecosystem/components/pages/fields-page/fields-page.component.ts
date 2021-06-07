@@ -18,11 +18,11 @@ import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.s
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-fields-attributes-page',
-  templateUrl: './fields-attributes-page.component.html',
-  styleUrls: ['./fields-attributes-page.component.scss']
+  selector: 'app-fields-page',
+  templateUrl: './fields-page.component.html',
+  styleUrls: ['./fields-page.component.scss']
 })
-export class FieldsAttributesPageComponent implements OnInit {
+export class FieldsPageComponent implements OnInit {
 
   constructor(private ecoSystemManagerResolver: EcoSystemManagerResolver, private activatedRoute: ActivatedRoute) { }
 

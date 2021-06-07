@@ -30,7 +30,7 @@ import { AssetTypeTemplateEditComponent } from './components/content/asset-type-
 import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
 import { EcosystemPageTitleComponent } from './components/content/ecosystem-page-title/ecosystem-page-title.component';
-import { FieldsAttributesPageComponent } from './components/pages/fields-attributes-page/fields-attributes-page.component';
+import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
@@ -93,7 +93,7 @@ import { FieldDialogDirective } from './components/content/field-dialog/field-di
     AssetTypeTemplateCreateComponent,
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent,
-    FieldsAttributesPageComponent,
+    FieldsPageComponent,
     QuantityTypesPageComponent,
     UnitsPageComponent,
     AssetTypesPageComponent,

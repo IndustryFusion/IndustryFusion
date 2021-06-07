@@ -20,7 +20,7 @@ import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-te
 import { AssetTypeTemplateListComponent } from './components/content/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypeTemplateEditComponent } from './components/content/asset-type-template-edit/asset-type-template-edit.component';
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
-import { FieldsAttributesPageComponent } from './components/pages/fields-attributes-page/fields-attributes-page.component';
+import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
 import { AssetTypeTemplatesResolver } from '../resolvers/asset-type-templates.resolver';
@@ -111,7 +111,7 @@ const routes: Routes = [
   },
   {
     path: 'ecosystemmanager/fields',
-    component: FieldsAttributesPageComponent,
+    component: FieldsPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
       metrics: FieldsResolver,
@@ -119,7 +119,7 @@ const routes: Routes = [
       quantityTypes: QuantityTypesResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.FIELD_ATTRIBUTE_LIST],
+      pageTypes: [EcosystemManagerPageType.FIELD_LIST],
       roles: [Role.ECOSYSTEM_MANAGER]
     },
     children: [{
