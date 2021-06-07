@@ -37,6 +37,6 @@ under the License.
   <div [routerLink]="item.id" [style.width.%]="20"
        class="list-item-cell grey">{{ item.createdDate | date:'dd.MM.yyyy'}}</div>
   <div [ngClass]="{'hidden': !selected}" [style.width.%]="5" class="list-item-cell grey">
-    <app-item-options-menu (editItem)="editItem()"  (deleteItem)="showDeleteItem()"></app-item-options-menu>
+    <app-item-options-menu (deleteItem)="showDeleteItem()" (editItem)="editItem()"></app-item-options-menu>
   </div>
 </div>

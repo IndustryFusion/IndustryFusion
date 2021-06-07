@@ -54,7 +54,7 @@ export class UnitPageComponent implements OnInit {
       this.unitService.setActive(unitId);
       this.unit$ = this.unitQuery.selectActive();
       this.unit$.subscribe((unit) => {
-        this.quantityTypeService.setActive(unit.quantityTypeId);
+        this.quantityTypeService.setActive(unit?.quantityTypeId);
         this.quantityType$ = this.quantityTypeQuery.selectActive();
       });
     }
