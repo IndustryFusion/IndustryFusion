@@ -20,14 +20,21 @@ under the License.
       <app-edit-details-button appFieldDialog [item]="field$ | async"></app-edit-details-button>
     </div>
 
-    <div class="if-detail-page-label">
-      <p> {{ (field$ | async)?.label }} </p>
+    <div class="row">
+      <label class="label-column"> Label </label>
+      <label class="if-detail-page-label"> {{ (field$ | async)?.label }} </label>
     </div>
-    <div class="if-detail-page-description">
-      <textarea [disabled]="true"> {{ (field$ | async)?.description  }} </textarea>
+
+    <div class="row">
+      <div class="label-column"> Description </div>
+      <div class="if-detail-page-description">
+        <textarea [disabled]="true"> {{ (field$ | async)?.description  }} </textarea>
+      </div>
     </div>
-    <div class="if-detail-page-label ">
-      <p>Accuracy: {{ (field$ | async)?.accuracy | accuracyformat }}</p>
+
+    <div class="row">
+      <label class="label-column"> Accuracy </label>
+      <label class="if-detail-page-label "> {{ (field$ | async)?.accuracy | accuracyformat }} </label>
     </div>
   </div>
 </section>
