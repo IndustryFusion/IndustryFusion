@@ -81,6 +81,8 @@ import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
+import { FieldPageComponent } from './components/pages/field-page/field-page.component';
+import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 
 @NgModule({
   declarations: [
@@ -126,7 +128,9 @@ import { FieldDialogDirective } from './components/content/field-dialog/field-di
     AssetTypeEditComponent,
     QuantityTypePageComponent,
     QuantityTypeEditDialogDirective,
-    FieldDialogDirective
+    FieldDialogDirective,
+    FieldPageComponent,
+    AccuracyFormatPipe,
   ],
   imports: [
     IFCommon,

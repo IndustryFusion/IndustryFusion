@@ -27,10 +27,12 @@ under the License.
   </div>
 </div>
 <div class="list-item" [ngClass]="{'selected': selected}">
-  <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}"><input type="checkbox" [(ngModel)]="selected" (click)="select()" /></div>
-  <div class="list-item-cell bold black" [style.width.%]="30">{{ item.name }}</div>
-  <div class="list-item-cell grey" [style.width.%]="30">000</div>
-  <div class="list-item-cell grey" [style.width.%]="30">18.12.2019</div>
+  <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
+    <input type="checkbox" [(ngModel)]="selected" (click)="select()" />
+  </div>
+  <div class="list-item-cell bold black" [style.width.%]="30" [routerLink]="item.id">{{ item.name }}</div>
+  <div class="list-item-cell grey" [style.width.%]="30" [routerLink]="item.id">000</div>
+  <div class="list-item-cell grey" [style.width.%]="30" [routerLink]="item.id">18.12.2019</div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
     <app-item-options-menu appFieldDialog [item]="item" (deleteItem)="showDeleteItem()"></app-item-options-menu>
   </div>

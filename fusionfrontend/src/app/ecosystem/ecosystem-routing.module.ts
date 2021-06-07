@@ -40,6 +40,7 @@ import { AssetTypePageComponent } from './components/pages/asset-type-page/asset
 import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
+import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 
 const routes: Routes = [
   {
@@ -126,6 +127,18 @@ const routes: Routes = [
       path: '',
       component: FieldListComponent,
     }]
+  },
+  {
+    path: 'ecosystemmanager/fields/:fieldId',
+    component: FieldPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    resolve: {
+      fields: FieldsResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.FIELD_DETAIL],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    }
   },
   {
     path: 'ecosystemmanager/quantitytypes',
