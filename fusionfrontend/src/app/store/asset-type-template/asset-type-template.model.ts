@@ -24,6 +24,7 @@ export class AssetTypeTemplate extends BaseEntity {
   imageKey: string;
   assetTypeId: ID;
   assetType: AssetType;
+  published: boolean;
   fieldTargetIds: Array<ID>;
   fieldTargets: Array<any>;
 }

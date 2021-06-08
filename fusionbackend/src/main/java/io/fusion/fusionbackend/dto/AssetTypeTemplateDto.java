@@ -33,6 +33,7 @@ public class AssetTypeTemplateDto extends BaseAssetDto {
     private Long id;
     private Long assetTypeId;
     private AssetTypeDto assetType;
+    private Boolean published;
     @Builder.Default
     protected Set<Long> fieldTargetIds = new LinkedHashSet<>();
     @Builder.Default

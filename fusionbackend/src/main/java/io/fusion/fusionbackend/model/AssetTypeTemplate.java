@@ -47,12 +47,13 @@ import java.util.Set;
                 @NamedSubgraph(name = "assetSeriesChildren", attributeNodes = {
                         @NamedAttributeNode("fieldSources")})})
 @Table(name = "asset_type_template")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 public class AssetTypeTemplate extends BaseAsset {
+
     @OneToMany(mappedBy = "assetTypeTemplate")
     @Builder.Default
     private Set<AssetSeries> assetSeries = new LinkedHashSet<>();
@@ -64,4 +65,14 @@ public class AssetTypeTemplate extends BaseAsset {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
     private AssetType assetType;
+
+    private Boolean published;
+
+    public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
+        super.copyFrom(sourceAssetTypeTemplate);
+
+        if (sourceAssetTypeTemplate.getPublished() != null) {
+            setPublished(sourceAssetTypeTemplate.getPublished());
+        }
+    }
 }
