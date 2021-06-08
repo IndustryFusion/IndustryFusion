@@ -72,6 +72,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
     this.assetTypeTemplateForm = formBuilder.group({
       name: ['', requiredTextValidator],
       description: ['', Validators.maxLength(255)],
+      published: [false],
       useExistingTemplate: [false, Validators.required],
       assetTypeId: [undefined, Validators.required],
       assetTypeTemplateId: [undefined],

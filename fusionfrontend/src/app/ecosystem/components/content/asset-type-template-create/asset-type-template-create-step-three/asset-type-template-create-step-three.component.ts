@@ -32,7 +32,7 @@ import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.m
 export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
 
   @Input() assetTypeTemplateForm: FormGroup;
-  @Input() inputMetrics: Array<FieldTarget>;
+  @Input() inputAttributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() attributeSelect = new EventEmitter<FieldTarget[]>();
 
@@ -46,9 +46,9 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   ngOnInit() {
     this.metricsAndAttributes$ = this.metricQuery.selectAll();
 
-    if (this.inputMetrics) {
-      this.selectedAttributes = this.selectedAttributes.concat(this.inputMetrics);
-      this.confirmedAttributes = this.confirmedAttributes.concat(this.inputMetrics);
+    if (this.inputAttributes) {
+      this.selectedAttributes = this.selectedAttributes.concat(this.inputAttributes);
+      this.confirmedAttributes = this.confirmedAttributes.concat(this.inputAttributes);
     }
   }
 

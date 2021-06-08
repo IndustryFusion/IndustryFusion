@@ -98,6 +98,7 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
     if (assetTypeId && this.assetTypeTemplate.fieldTargets) {
       this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
+      this.assetTypeTemplate.published = this.assetTypeTemplateForm.get('published')?.value;
       this.assetTypeTemplate.imageKey = null;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
 
