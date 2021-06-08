@@ -19,7 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { UnitService } from '../../../../store/unit/unit.service';
 import { Unit } from '../../../../store/unit/unit.model';
-import { UnitCreateComponent } from '../unit-create/unit-create.component';
+import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
 import { FormBuilder } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
@@ -48,7 +48,7 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
   }
 
   editItem(): void {
-    const dialogRef = this.dialogService.open(UnitCreateComponent, {
+    const dialogRef = this.dialogService.open(UnitDialogComponent, {
       header: 'Edit Unit', width: '50%', data: { unit: this.item, editMode: true }
     });
     dialogRef.onClose.subscribe((unit) => {

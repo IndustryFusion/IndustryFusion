@@ -22,19 +22,21 @@ import { QuantityType } from '../../../../store/quantity-type/quantity-type.mode
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 
 @Component({
-  selector: 'app-unit-create',
-  templateUrl: './unit-create.component.html',
-  styleUrls: ['./unit-create.component.scss']
+  selector: 'app-unit-dialog',
+  templateUrl: './unit-dialog.component.html',
+  styleUrls: ['./unit-dialog.component.scss']
 })
-export class UnitCreateComponent implements OnInit {
+export class UnitDialogComponent implements OnInit {
 
   unit: Unit;
   unitForm: FormGroup;
   quantityTypes$: Observable<QuantityType[]>;
   editMode = false;
 
-  constructor(private quantityQuery: QuantityTypeQuery, public dialogRef: DynamicDialogRef,
-              public config: DynamicDialogConfig, private formBuilder: FormBuilder) {
+  constructor(private quantityQuery: QuantityTypeQuery,
+              public dialogRef: DynamicDialogRef,
+              public config: DynamicDialogConfig,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -50,7 +52,7 @@ export class UnitCreateComponent implements OnInit {
       name: [unit?.name, Validators.maxLength(255)],
       label: [unit?.label, Validators.maxLength(255)],
       symbol: [unit?.symbol, Validators.maxLength(255)],
-      type: [unit?.quantityTypeId, Validators.required],
+      quantityTypeId: [unit?.quantityTypeId, Validators.required],
     });
   }
 
@@ -63,7 +65,7 @@ export class UnitCreateComponent implements OnInit {
     unit.name = this.unitForm.get('name')?.value;
     unit.label = this.unitForm.get('label')?.value;
     unit.symbol = this.unitForm.get('symbol')?.value;
-    unit.quantityTypeId = this.unitForm.get('type')?.value;
+    unit.quantityTypeId = this.unitForm.get('quantityTypeId')?.value;
 
     this.dialogRef.close(unit);
   }

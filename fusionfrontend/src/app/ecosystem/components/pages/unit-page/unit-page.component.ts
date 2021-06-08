@@ -25,7 +25,7 @@ import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { first } from 'rxjs/operators';
-import { UnitCreateComponent } from '../../content/unit-create/unit-create.component';
+import { UnitDialogComponent } from '../../content/unit-dialog/unit-dialog.component';
 
 @Component({
   selector: 'app-unit-page',
@@ -38,9 +38,13 @@ export class UnitPageComponent implements OnInit {
   unit$: Observable<Unit>;
   quantityType$: Observable<QuantityType>;
 
-  constructor(private activatedRoute: ActivatedRoute, private ecoSystemManagerResolver: EcoSystemManagerResolver,
-              private unitService: UnitService, private unitQuery: UnitQuery, private dialogService: DialogService,
-              private quantityTypeService: QuantityTypeService, private quantityTypeQuery: QuantityTypeQuery) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private ecoSystemManagerResolver: EcoSystemManagerResolver,
+              private unitService: UnitService,
+              private unitQuery: UnitQuery,
+              private dialogService: DialogService,
+              private quantityTypeService: QuantityTypeService,
+              private quantityTypeQuery: QuantityTypeQuery) {
   }
 
   ngOnInit(): void {
@@ -62,9 +66,10 @@ export class UnitPageComponent implements OnInit {
 
   showDialog() {
     this.unit$.pipe(first()).subscribe((unit) => {
-      const dialogRef = this.dialogService.open(UnitCreateComponent, {
+      const dialogRef = this.dialogService.open(UnitDialogComponent, {
         header: 'Edit Unit', width: '50%', data: { unit, editMode: true }
       });
+
       dialogRef.onClose.subscribe((modifiedUnit) => {
         this.updateUnitIfPresent(unit, modifiedUnit);
       });

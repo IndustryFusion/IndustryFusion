@@ -21,7 +21,7 @@ import { UnitQuery } from '../../../../store/unit/unit.query';
 import { UnitService } from '../../../../store/unit/unit.service';
 import { Unit } from '../../../../store/unit/unit.model';
 import { DialogService } from 'primeng/dynamicdialog';
-import { UnitCreateComponent } from '../unit-create/unit-create.component';
+import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -64,7 +64,7 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
   }
 
   showDialog() {
-    const ref = this.dialogService.open(UnitCreateComponent, {
+    const ref = this.dialogService.open(UnitDialogComponent, {
       header: 'Create new Unit', width: '50%', data: { unit: null, editMode: false }
     });
     ref.onClose.subscribe((unit) => {
