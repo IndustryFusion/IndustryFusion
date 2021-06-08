@@ -15,24 +15,24 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
-import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
-import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
-import { FieldTargetService } from '../../../../store/field-target/field-target.service';
-import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
-import { MetricsResolver } from '../../../../resolvers/metrics.resolver';
-import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
+import { FieldTarget, FieldType } from '../../../../../store/field-target/field-target.model';
+import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
+import { FieldTargetService } from '../../../../../store/field-target/field-target.service';
+import { AssetTypesResolver } from '../../../../../resolvers/asset-types.resolver';
+import { MetricsResolver } from '../../../../../resolvers/metrics.resolver';
+import { UnitsResolver } from '../../../../../resolvers/units.resolver';
+import { QuantityTypesResolver } from '../../../../../resolvers/quantity-types.resolver';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
+import { AssetTypeTemplateComposedQuery } from '../../../../../store/composed/asset-type-template-composed.query';
 
 @Component({
-  selector: 'app-asset-type-template-create',
-  templateUrl: './asset-type-template-create.component.html',
-  styleUrls: ['./asset-type-template-create.component.scss']
+  selector: 'app-asset-type-template-create-dialog',
+  templateUrl: './asset-type-template-create-dialog.component.html',
+  styleUrls: ['./asset-type-template-create-dialog.component.scss']
 })
-export class AssetTypeTemplateCreateComponent implements OnInit {
+export class AssetTypeTemplateCreateDialogComponent implements OnInit {
 
   public assetTypeTemplateForm: FormGroup;
   public step = 1;

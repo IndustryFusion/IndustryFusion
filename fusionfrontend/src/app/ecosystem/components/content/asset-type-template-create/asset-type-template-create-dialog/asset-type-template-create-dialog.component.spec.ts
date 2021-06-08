@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetTypeTemplateCreateComponent } from './asset-type-template-create.component';
+import { AssetTypeTemplateCreateDialogComponent } from './asset-type-template-create-dialog.component';
 
-describe('AssetTypeTemplateCreateComponent', () => {
-  let component: AssetTypeTemplateCreateComponent;
-  let fixture: ComponentFixture<AssetTypeTemplateCreateComponent>;
+describe('AssetTypeTemplateCreateDialogComponent', () => {
+  let component: AssetTypeTemplateCreateDialogComponent;
+  let fixture: ComponentFixture<AssetTypeTemplateCreateDialogComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetTypeTemplateCreateComponent ]
+      declarations: [ AssetTypeTemplateCreateDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeTemplateCreateComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplateCreateDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { FieldTarget } from '../../../../store/field-target/field-target.model';
+import { FieldTarget } from '../../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -43,9 +43,13 @@ export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
     this.changeStep(2);
   }
 
-  onSave(step: number) {
+  onSave() {
     this.saveTemplate.emit();
-    this.changeStep(step);
+    this.changeStep(5);
+  }
+
+  onGoToPublish() {
+    this.changeStep(6);
   }
 
   private changeStep(step: number) {

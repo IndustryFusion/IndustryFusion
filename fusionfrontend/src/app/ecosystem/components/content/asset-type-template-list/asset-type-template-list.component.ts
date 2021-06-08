@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetTypeTemplateCreateComponent } from '../asset-type-template-create/asset-type-template-create.component';
+import { AssetTypeTemplateCreateDialogComponent } from '../asset-type-template-create/asset-type-template-create-dialog/asset-type-template-create-dialog.component';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -82,7 +82,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   onCreate() {
     this.createAssetTypeTemplateForm(this.formBuilder);
 
-    this.ref = this.dialogService.open(AssetTypeTemplateCreateComponent, {
+    this.ref = this.dialogService.open(AssetTypeTemplateCreateDialogComponent, {
       data: {
         assetTypeTemplateForm: this.assetTypeTemplateForm,
         isEditing: false

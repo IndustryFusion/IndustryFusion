@@ -16,12 +16,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AssetType } from '../../../../store/asset-type/asset-type.model';
-import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
+import { AssetType } from '../../../../../store/asset-type/asset-type.model';
+import { AssetTypeQuery } from '../../../../../store/asset-type/asset-type.query';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
-import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
+import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { map } from 'rxjs/operators';
 
 @Component({

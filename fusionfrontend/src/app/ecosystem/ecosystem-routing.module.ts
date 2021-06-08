@@ -32,7 +32,7 @@ import { QuantityTypesResolver } from '../resolvers/quantity-types.resolver';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
 import { UnitsResolver } from '../resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
-import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
+import { AssetTypeTemplateCreateDialogComponent } from './components/content/asset-type-template-create/asset-type-template-create-dialog/asset-type-template-create-dialog.component';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { Role } from '../services/roles.model';
 import { EcosystemManagerPageType } from './ecosystem.routing.model';
@@ -59,7 +59,7 @@ const routes: Routes = [
     },
     {
       path: 'create',
-      component: AssetTypeTemplateCreateComponent,
+      component: AssetTypeTemplateCreateDialogComponent,
       resolve: {
         assetTypes: AssetTypesResolver,
         metrics: MetricsResolver,

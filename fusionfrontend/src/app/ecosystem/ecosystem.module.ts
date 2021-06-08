@@ -27,7 +27,7 @@ import { AssetTypeTemplateListHeaderComponent } from './components/content/asset
 import { AssetTypeTemplateListItemComponent } from './components/content/asset-type-template-list-item/asset-type-template-list-item.component';
 import { AssetTypeTemplateListComponent } from './components/content/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypeTemplateEditComponent } from './components/content/asset-type-template-edit/asset-type-template-edit.component';
-import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
+import { AssetTypeTemplateCreateDialogComponent } from './components/content/asset-type-template-create/asset-type-template-create-dialog/asset-type-template-create-dialog.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
 import { EcosystemPageTitleComponent } from './components/content/ecosystem-page-title/ecosystem-page-title.component';
 import { MetricsAttributesPageComponent } from './components/pages/metrics-attributes-page/metrics-attributes-page.component';
@@ -55,17 +55,17 @@ import { QuantityTypeDialogContentComponent } from './components/content/quantit
 import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
 import { MetricCreateComponent } from './components/content/metric-create/metric-create.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepOneComponent } from './components/content/asset-type-template-create-step-one/asset-type-template-create-step-one.component';
+import { AssetTypeTemplateCreateStepOneComponent } from './components/content/asset-type-template-create/asset-type-template-create-step-one/asset-type-template-create-step-one.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepTwoComponent } from './components/content/asset-type-template-create-step-two/asset-type-template-create-step-two.component';
+import { AssetTypeTemplateCreateStepTwoComponent } from './components/content/asset-type-template-create/asset-type-template-create-step-two/asset-type-template-create-step-two.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepThreeComponent } from './components/content/asset-type-template-create-step-three/asset-type-template-create-step-three.component';
+import { AssetTypeTemplateCreateStepThreeComponent } from './components/content/asset-type-template-create/asset-type-template-create-step-three/asset-type-template-create-step-three.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepFourComponent } from './components/content/asset-type-template-create-step-four/asset-type-template-create-step-four.component';
+import { AssetTypeTemplateCreateStepFourComponent } from './components/content/asset-type-template-create/asset-type-template-create-step-four/asset-type-template-create-step-four.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateMetricRowComponent } from './components/content/asset-type-template-metric-row/asset-type-template-metric-row.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepFinishedComponent } from './components/content/asset-type-template-create-step-finished/asset-type-template-create-step-finished.component';
+import { AssetTypeTemplateCreateStepFinishedComponent } from './components/content/asset-type-template-create/asset-type-template-create-step-finished/asset-type-template-create-step-finished.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
@@ -80,6 +80,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
 import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template-field-header/asset-type-template-field-header.component';
+import { AssetTypeTemplateCreateStepPublishComponent } from './components/content/asset-type-template-create/asset-type-template-create-step-publish/asset-type-template-create-step-publish.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,7 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     ArraySortPipe,
     AssetTypeTemplateListComponent,
     AssetTypeTemplateEditComponent,
-    AssetTypeTemplateCreateComponent,
+    AssetTypeTemplateCreateDialogComponent,
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent,
     MetricsAttributesPageComponent,
@@ -126,6 +127,7 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     QuantityTypePageComponent,
     QuantityTypeEditDialogDirective,
     AssetTypeTemplateFieldHeaderComponent,
+    AssetTypeTemplateCreateStepPublishComponent,
   ],
   imports: [
     IFCommon,

@@ -17,10 +17,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Metric } from '../../../../store/metric/metric.model';
-import { FieldTarget } from '../../../../store/field-target/field-target.model';
-import { MetricQuery } from '../../../../store/metric/metric.query';
-import { FieldType } from '../../../../store/field/field.model';
+import { Metric } from '../../../../../store/metric/metric.model';
+import { FieldTarget } from '../../../../../store/field-target/field-target.model';
+import { MetricQuery } from '../../../../../store/metric/metric.query';
+import { FieldType } from '../../../../../store/field/field.model';
 import { FormGroup } from '@angular/forms';
 
 @Component({
