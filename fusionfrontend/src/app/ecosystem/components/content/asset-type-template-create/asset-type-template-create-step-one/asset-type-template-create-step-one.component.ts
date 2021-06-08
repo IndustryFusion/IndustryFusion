@@ -23,6 +23,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { map } from 'rxjs/operators';
+import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.model';
 
 @Component({
   selector: 'app-asset-type-template-create-step-one',
@@ -54,7 +55,7 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
 
   nextStep() {
     if (this.assetTypeTemplateForm?.valid) {
-      this.stepChange.emit(2);
+      this.stepChange.emit(AssetTypeTemplateDialogStepType.METRICS);
     }
   }
 

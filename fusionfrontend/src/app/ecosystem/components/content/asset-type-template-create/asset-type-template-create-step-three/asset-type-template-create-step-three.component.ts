@@ -22,6 +22,7 @@ import { FieldTarget } from '../../../../../store/field-target/field-target.mode
 import { MetricQuery } from '../../../../../store/metric/metric.query';
 import { FieldType } from '../../../../../store/field/field.model';
 import { FormGroup } from '@angular/forms';
+import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.model';
 
 @Component({
   selector: 'app-asset-type-template-create-step-three',
@@ -63,11 +64,11 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   }
 
   prevStep() {
-    this.changeStep(2);
+    this.changeStep(AssetTypeTemplateDialogStepType.METRICS);
   }
 
   nextStep() {
-    this.changeStep(4);
+    this.changeStep(AssetTypeTemplateDialogStepType.OVERVIEW);
   }
 
   addAttribute() {

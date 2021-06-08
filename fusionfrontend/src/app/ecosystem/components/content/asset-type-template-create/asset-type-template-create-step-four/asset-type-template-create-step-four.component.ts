@@ -17,6 +17,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { FieldTarget } from '../../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
+import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.model';
 
 @Component({
   selector: 'app-asset-type-template-create-step-four',
@@ -36,20 +37,20 @@ export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
   ngOnInit() { }
 
   onBackToAttributes() {
-    this.changeStep(3);
+    this.changeStep(AssetTypeTemplateDialogStepType.ATTRIBUTES);
   }
 
   onBackToMetrics() {
-    this.changeStep(2);
+    this.changeStep(AssetTypeTemplateDialogStepType.METRICS);
   }
 
   onSave() {
     this.saveTemplate.emit();
-    this.changeStep(5);
+    this.changeStep(AssetTypeTemplateDialogStepType.FINISHED);
   }
 
-  onGoToPublish() {
-    this.changeStep(6);
+  onGoToConfirmPublish() {
+    this.changeStep(AssetTypeTemplateDialogStepType.PUBLISH_CONFIRM);
   }
 
   private changeStep(step: number) {

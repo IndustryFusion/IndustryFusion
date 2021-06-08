@@ -21,6 +21,7 @@ import { Metric } from '../../../../../store/metric/metric.model';
 import { MetricQuery } from '../../../../../store/metric/metric.query';
 import { FieldTarget, FieldType } from '../../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
+import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.model';
 
 @Component({
   selector: 'app-asset-type-template-create-step-two',
@@ -56,11 +57,11 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   }
 
   prevStep() {
-    this.changeStep(1);
+    this.changeStep(AssetTypeTemplateDialogStepType.START);
   }
 
   nextStep() {
-    this.changeStep(3);
+    this.changeStep(AssetTypeTemplateDialogStepType.ATTRIBUTES);
   }
 
   private changeStep(step: number) {
