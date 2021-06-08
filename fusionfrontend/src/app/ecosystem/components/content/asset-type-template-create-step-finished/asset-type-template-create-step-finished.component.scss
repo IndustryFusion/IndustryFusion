@@ -31,3 +31,9 @@
   color: #000000;
   text-align: center;
 }
+
+:host ::ng-deep .is-solid {
+  size: 80px;
+  width: 80px;
+  height: 80px;
+}

@@ -20,7 +20,7 @@ under the License.
   </div>
 
   <div *ngIf="selectedAttributes && selectedAttributes.length > 0" class="metrics-list">
-    <app-asset-type-template-field-header></app-asset-type-template-field-header>
+    <app-asset-type-template-field-header [isMetric]="false"></app-asset-type-template-field-header>
     <app-asset-type-template-metric-row *ngFor="let attribute of selectedAttributes" [fieldTarget]="attribute"
                                         (confirmSignal)="onConfirm(attribute)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(attribute)">
     </app-asset-type-template-metric-row>

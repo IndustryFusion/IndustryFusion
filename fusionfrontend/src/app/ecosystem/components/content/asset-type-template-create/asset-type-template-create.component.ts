@@ -24,7 +24,7 @@ import { MetricsResolver } from '../../../../resolvers/metrics.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
 import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
 import { FormGroup } from '@angular/forms';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
 
 @Component({
@@ -45,7 +45,6 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
               private metricsResolver: MetricsResolver,
               private unitsResolver: UnitsResolver,
               private quantityTypesResolver: QuantityTypesResolver,
-              public ref: DynamicDialogRef,
               public config: DynamicDialogConfig) { }
 
   ngOnInit() {
@@ -104,7 +103,6 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
 
       this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, assetTypeId).subscribe(
         (template) => {
-          // TODO: only create field targets that were not existing? Or does ist add new id if existing?
           this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
             this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
           });

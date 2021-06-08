@@ -79,21 +79,10 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
     });
   }
 
-  private onCreateAssetTypeTemplate(assetTypeTemplate: AssetTypeTemplate) {
-    console.log(assetTypeTemplate);
-    // TODO (jsy)
-  }
-
   onCreate() {
-/*    if (this.route.snapshot.url.find(x => x.path === 'assettypes') != null) {
-      this.router.navigate(['../../assettypetemplate', 'create'], { relativeTo: this.route });
-    } else {
-      this.createItem();
-    }*/
-
     this.createAssetTypeTemplateForm(this.formBuilder);
 
-    const ref = this.dialogService.open(AssetTypeTemplateCreateComponent, {
+    this.ref = this.dialogService.open(AssetTypeTemplateCreateComponent, {
       data: {
         assetTypeTemplateForm: this.assetTypeTemplateForm,
         isEditing: false
@@ -101,8 +90,6 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
       header: `Asset Type Template Editor`,
       width: '90%'
     });
-
-    ref.onClose.subscribe((assetTypeTemplate: AssetTypeTemplate) => this.onCreateAssetTypeTemplate(assetTypeTemplate));
   }
 
   ngOnDestroy() {

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-asset-type-template-field-header',
@@ -21,6 +21,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./asset-type-template-field-header.component.scss']
 })
 export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
+
+  @Input() isMetric: boolean;
 
   constructor() { }
 
