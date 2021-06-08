@@ -33,6 +33,7 @@ import { TimelineComponent } from './components/content/timeline/timeline.compon
 import { AssetSeriesCreateStepTwoComponent } from './components/content/asset-series-create/asset-series-create-step-two/asset-series-create-step-two.component';
 import { AssetSeriesCreateStepTreeComponent } from './components/content/asset-series-create/asset-series-create-step-three/asset-series-create-step-tree.component';
 import { AssetSeriesCreateStepFourComponent } from './components/content/asset-series-create/asset-series-create-step-four/asset-series-create-step-four.component';
+import { IFCommon } from '../common/i-f-common.module';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { AssetSeriesCreateStepFourComponent } from './components/content/asset-s
     AssetSeriesCreateStepFourComponent,
   ],
   imports: [
+    IFCommon,
     CommonModule,
     FleetRoutingModule,
     ClarityModule,

@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuantityTypeDialogComponent } from './quantity-type-dialog.component';
+import { EditDetailsButtonComponent } from './edit-details-button.component';
 
-describe('QuantityTypeDialogComponent', () => {
-  let component: QuantityTypeDialogComponent;
-  let fixture: ComponentFixture<QuantityTypeDialogComponent>;
+describe('EditDetailsButtonComponent', () => {
+  let component: EditDetailsButtonComponent;
+  let fixture: ComponentFixture<EditDetailsButtonComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ QuantityTypeDialogComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ EditDetailsButtonComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuantityTypeDialogComponent);
+    fixture = TestBed.createComponent(EditDetailsButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

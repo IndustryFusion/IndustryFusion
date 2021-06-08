@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AssetSeriesCreateStepTreeComponent } from '../asset-series-create-step-three/asset-series-create-step-tree.component';
 
 describe('AssetSeriesCreateStepTreeComponent', () => {

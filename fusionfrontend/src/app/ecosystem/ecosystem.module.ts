@@ -51,7 +51,7 @@ import { UnitListComponent } from './components/content/unit-list/unit-list.comp
 import { UnitListHeaderComponent } from './components/content/unit-list-header/unit-list-header.component';
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
-import { QuantityTypeDialogComponent } from './components/content/quantity-type-dialog/quantity-type-dialog.component';
+import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
 import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
 import { MetricCreateComponent } from './components/content/metric-create/metric-create.component';
 // tslint:disable-next-line:max-line-length
@@ -69,8 +69,6 @@ import { AssetTypeTemplateCreateStepFinishedComponent } from './components/conte
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
-import { CreateButtonComponent } from '../components/ui/create-button/create-button.component';
-import { TrashButtonComponent } from '../components/ui/trash-button/trash-button.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -78,9 +76,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
-import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { CheckboxModule } from 'primeng/checkbox';
-import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
+import { IFCommon } from '../common/i-f-common.module';
+import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
 import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template-field-header/asset-type-template-field-header.component';
 
 @NgModule({
@@ -114,7 +112,7 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     UnitListHeaderComponent,
     UnitListItemComponent,
     AssetTypeCreateComponent,
-    QuantityTypeDialogComponent,
+    QuantityTypeDialogContentComponent,
     UnitCreateComponent,
     MetricCreateComponent,
     AssetTypeTemplateCreateStepOneComponent,
@@ -125,14 +123,12 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     AssetTypeTemplateCreateStepFinishedComponent,
     AssetTypePageComponent,
     AssetTypeEditComponent,
-    CreateButtonComponent,
-    TrashButtonComponent,
-    EditButtonComponent,
-    ConfirmButtonComponent,
     QuantityTypePageComponent,
+    QuantityTypeEditDialogDirective,
     AssetTypeTemplateFieldHeaderComponent,
   ],
   imports: [
+    IFCommon,
     CommonModule,
     EcosystemRoutingModule,
     ClarityModule,
@@ -148,10 +144,9 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     RadioButtonModule,
     CheckboxModule
   ],
-    exports: [
-        EcosystemSubHeaderComponent,
-        EcosystemPageTitleComponent,
-        CreateButtonComponent
-    ]
+  exports: [
+    EcosystemSubHeaderComponent,
+    EcosystemPageTitleComponent,
+  ]
 })
 export class EcosystemModule { }

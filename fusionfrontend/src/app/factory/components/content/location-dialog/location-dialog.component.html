@@ -65,9 +65,10 @@ under the License.
 
   <div class="footer-btns">
     <button type="button" class="if-button-cancel" (click)="onCancel()">Cancel</button>
-    <button type="button" class="if-button button-confirm button-primary" (click)="onSave()"
-            [disabled]="locationForm.invalid">
-      Save
+    <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="locationForm.invalid">
+      <div *ngIf="editMode then editFactoryButtonText else createFactoryButtonText"></div>
+      <ng-template #createFactoryButtonText>Create</ng-template>
+      <ng-template #editFactoryButtonText>Update</ng-template>
     </button>
   </div>
 </div>

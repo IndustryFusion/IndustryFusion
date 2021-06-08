@@ -14,3 +14,11 @@
  */
 
 @import '../base/base-list-item/base-list-item.component.scss';
+
+.list-item .table-dropdown-menu {
+  visibility: hidden;
+}
+
+.list-item:hover .table-dropdown-menu {
+  visibility: visible;
+}
