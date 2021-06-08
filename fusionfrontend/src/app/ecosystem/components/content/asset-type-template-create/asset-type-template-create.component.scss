@@ -133,3 +133,7 @@
   display: flex;
   justify-content: flex-end;
 }
+
+:host ::ng-deep .clr-timeline {
+  padding-left: 5.0rem !important;
+}

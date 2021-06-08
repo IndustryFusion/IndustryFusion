@@ -33,6 +33,7 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
 
   @Input() assetTypeTemplateForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
+  @Output() changeUseOfTemplate = new EventEmitter<number>();
 
   public assetTypes$: Observable<AssetType[]>;
   public assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
@@ -44,6 +45,11 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
   ngOnInit() {
     this.assetTypes$ = this.assetTypeQuery.selectAll();
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll();
+
+    const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
+    if (assetTypeId) {
+      this.onChangeAssetType(assetTypeId);
+    }
   }
 
   nextStep() {
@@ -56,8 +62,8 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
     this.ref.close();
   }
 
-  onChangeAssetType($event: any) {
-    const assetType = this.assetTypeQuery.getEntity($event.value);
+  onChangeAssetType(assetTypeId: number) {
+    const assetType = this.assetTypeQuery.getEntity(assetTypeId);
     this.replaceTemplateNameFromAssetType(assetType);
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll().
       pipe(map( a => a.filter(value => value.assetTypeId === assetType.id)));
@@ -67,5 +73,17 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
     if (assetType) {
       this.assetTypeTemplateForm.get('name')?.setValue(assetType.name + ' v.');
     }
+  }
+
+  onResetUseOfTemplate() {
+    this.changeUseOfTemplate.emit(null);
+  }
+
+  onChangeTemplate(id: number) {
+    this.changeUseOfTemplate.emit(id);
+  }
+
+  onUseOfTemplate() {
+    this.changeUseOfTemplate.emit(this.assetTypeTemplateForm.get('assetTypeTemplateId')?.value);
   }
 }

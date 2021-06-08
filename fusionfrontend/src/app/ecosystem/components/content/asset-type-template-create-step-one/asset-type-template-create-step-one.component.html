@@ -22,7 +22,7 @@ under the License.
           <label class="if-label">Select Asset type</label>
           <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
                       class="select-asset-input" filter="true" resetFilterOnHide="true"
-                      placeholder="Select Asset type..." (onChange)="onChangeAssetType($event)">
+                      placeholder="Select Asset type..." (onChange)="onChangeAssetType($event.value)">
           </p-dropdown>
         </div>
       </div>
@@ -32,11 +32,11 @@ under the License.
         <div class="dialog-grid">
           <div>
             <p-radioButton [value]="false" label="Create new" formControlName="useExistingTemplate"
-                           inputId="group1"></p-radioButton>
+                           inputId="group1" (onClick)="onResetUseOfTemplate()"></p-radioButton>
           </div>
           <div class="dialog-grid-col">
-            <p-radioButton [value]="true" label="Use existing template"
-                           formControlName="useExistingTemplate" inputId="group2"></p-radioButton>
+            <p-radioButton [value]="true" label="Use existing template" formControlName="useExistingTemplate"
+                           inputId="group2" (onClick)="onUseOfTemplate()"></p-radioButton>
           </div>
         </div>
       </div>
@@ -44,8 +44,9 @@ under the License.
       <div *ngIf="assetTypeTemplateForm.get('useExistingTemplate')?.value === true">
         <div class="input-div dropdown-filter">
           <label class="if-label">Select Asset Type Template</label>
-          <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name" optionValue="id"
-                      class="select-asset-input">
+          <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name"
+                      optionValue="id" placeholder="Select Asset type template..."
+                      class="select-asset-input" (onChange)="onChangeTemplate($event.value)">
           </p-dropdown>
         </div>
       </div>

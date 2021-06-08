@@ -25,6 +25,7 @@ import { UnitsResolver } from '../../../../resolvers/units.resolver';
 import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
 
 @Component({
   selector: 'app-asset-type-template-create',
@@ -38,6 +39,7 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
   public assetTypeTemplate: AssetTypeTemplate;
 
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
+              private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private fieldTargetService: FieldTargetService,
               private assetTypesResolver: AssetTypesResolver,
               private metricsResolver: MetricsResolver,
@@ -78,6 +80,19 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets =  this.getMetrics().concat(attributes);
   }
 
+  onChangeUseOfTemplate(assetTypeTemplateId: number) {
+    if (assetTypeTemplateId) {
+      this.fieldTargetService.getItems(assetTypeTemplateId).subscribe(() =>
+        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId).subscribe(
+          x => this.assetTypeTemplate.fieldTargets = x.fieldTargets
+        )
+      );
+    } else {
+      this.assetTypeTemplate.fieldTargets = [];
+      this.assetTypeTemplate.fieldTargetIds = [];
+    }
+  }
+
   onSaveTemplate() {
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
 
@@ -86,11 +101,10 @@ export class AssetTypeTemplateCreateComponent implements OnInit {
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.imageKey = null;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
-      // this.assetTypeTemplate.assetType = xxx;
-      // this.assetTypeTemplate.fieldTargetIds = this.assetTypeTemplate.fieldTargets.map(x => x.id);
 
       this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, assetTypeId).subscribe(
         (template) => {
+          // TODO: only create field targets that were not existing? Or does ist add new id if existing?
           this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
             this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
           });

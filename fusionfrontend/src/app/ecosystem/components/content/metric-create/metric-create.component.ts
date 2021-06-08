@@ -40,10 +40,10 @@ export class MetricCreateComponent implements OnInit {
   @Output() dismissModalSignal = new EventEmitter<boolean>();
   @Output() confirmModalSignal = new EventEmitter<Metric>();
 
-  constructor(private unitQuarey: UnitQuery) { }
+  constructor(private unitQuery: UnitQuery) { }
 
   ngOnInit() {
-    this.units$ = this.unitQuarey.selectAll();
+    this.units$ = this.unitQuery.selectAll();
   }
 
   dismissModal() { this.dismissModalSignal.emit(true); }

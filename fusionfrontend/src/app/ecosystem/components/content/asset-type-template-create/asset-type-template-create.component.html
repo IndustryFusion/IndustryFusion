@@ -43,6 +43,7 @@ under the License.
   </div>
 
   <app-asset-type-template-create-step-one *ngIf="step === 1" (stepChange)="onStepChange($event)"
+                                           (changeUseOfTemplate)="onChangeUseOfTemplate($event)"
                                            [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-one>
   <app-asset-type-template-create-step-two *ngIf="step === 2" (stepChange)="onStepChange($event)"
