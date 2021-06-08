@@ -33,10 +33,10 @@ under the License.
         <span class="checkmark"></span>
     </div>
   </div>
-  <div class="list-item-cell bold black" [style.width.%]="30">{{ item.name }}</div>
+  <div class="list-item-cell bold black" [style.width.%]="30">{{ item?.name }}</div>
   <div class="list-item-cell grey" [style.width.%]="15">000</div>
   <div class="list-item-cell grey" [style.width.%]="15">18.12.2019</div>
-  <div class="list-item-cell grey" [style.width.%]="30">Published</div>
+  <div class="list-item-cell grey" [style.width.%]="30">{{ item?.published ? 'published': 'draft' }}</div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
     <app-item-options-menu (editItem)="editItem()"  (deleteItem)="showDeleteItem()"></app-item-options-menu>
   </div>
