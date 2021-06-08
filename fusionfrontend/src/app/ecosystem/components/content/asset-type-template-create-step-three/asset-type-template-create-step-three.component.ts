@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -21,7 +21,6 @@ import { Metric } from '../../../../store/metric/metric.model';
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
 import { MetricQuery } from '../../../../store/metric/metric.query';
 import { FieldType } from '../../../../store/field/field.model';
-import { MetricService } from '../../../../store/metric/metric.service';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -41,13 +40,10 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   confirmedAttributes: Array<FieldTarget> = [];
   selectedAttributes: Array<FieldTarget> = [];
 
-  shouldShowCreateAttribute = false;
-
-  constructor(private metricQuery: MetricQuery, private metricService: MetricService) { }
+  constructor(private metricQuery: MetricQuery) { }
 
   ngOnInit() {
     this.metricsAndAttributes$ = this.metricQuery.selectAll();
-    // TODO: Does this also yields attributes? filter using fieldType of field_target
 
     if (this.inputMetrics) {
       this.selectedAttributes = this.selectedAttributes.concat(this.inputMetrics);
@@ -110,19 +106,5 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
     if (index1 > -1) {
       this.selectedAttributes.splice(index1, 1);
     }
-  }
-
-  createAttributeModal() {
-    this.shouldShowCreateAttribute = true;
-  }
-
-  onDismissModal() {
-    this.shouldShowCreateAttribute = false;
-  }
-
-  onConfirmModal(item: Metric) {
-    this.metricService.createItem(item).subscribe({
-      complete: () => this.shouldShowCreateAttribute = false
-    });
   }
 }

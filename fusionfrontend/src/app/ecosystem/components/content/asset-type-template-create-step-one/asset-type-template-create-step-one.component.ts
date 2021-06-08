@@ -18,7 +18,6 @@ import { Observable } from 'rxjs';
 
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
-import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
@@ -38,12 +37,9 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
   public assetTypes$: Observable<AssetType[]>;
   public assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
 
-  public shouldShowCreateAssetType = false; // TODO: Call with dynamic prime dialog
-
   constructor(private assetTypeQuery: AssetTypeQuery,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-              public ref: DynamicDialogRef,
-              private assetTypeService: AssetTypeService) { }
+              public ref: DynamicDialogRef) { }
 
   ngOnInit() {
     this.assetTypes$ = this.assetTypeQuery.selectAll();
@@ -58,19 +54,6 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
 
   onCancel() {
     this.ref.close();
-  }
-
-  createAssetTypeModal() {
-    this.shouldShowCreateAssetType = true;
-  }
-
-  onDismissModal() {
-    this.shouldShowCreateAssetType = false;
-  }
-
-  onConfirmModal(item: any) {
-    this.assetTypeService.createItem(item).subscribe();
-    this.shouldShowCreateAssetType = false;
   }
 
   onChangeAssetType($event: any) {

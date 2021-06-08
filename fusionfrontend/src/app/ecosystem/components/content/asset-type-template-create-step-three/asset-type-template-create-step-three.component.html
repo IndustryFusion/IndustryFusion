@@ -12,8 +12,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<app-metric-create *ngIf="shouldShowCreateAttribute" (dismissModalSignal)="onDismissModal()"
-                   (confirmModalSignal)="onConfirmModal($event)"></app-metric-create>  <!-- TODO: Call metric create dialog-->
 
 <div class="content">
   <div class="title">
@@ -37,9 +35,6 @@ under the License.
                     placeholder="Select attribute..." (onChange)="onChangeAttribute($event.value)">
         </p-dropdown>
       </div>
-      <button type="button" class="button-create" (click)="createAttributeModal()">
-        <clr-icon shape="plus"></clr-icon>Create Attribute
-      </button>
     </div>
   </form>
 

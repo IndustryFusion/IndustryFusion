@@ -20,7 +20,6 @@ import { Observable } from 'rxjs';
 import { Metric } from '../../../../store/metric/metric.model';
 import { MetricQuery } from '../../../../store/metric/metric.query';
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
-import { MetricService } from '../../../../store/metric/metric.service';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -40,14 +39,11 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   public confirmedMetrics: Array<FieldTarget> = [];
   public selectedMetrics: Array<FieldTarget> = [];
 
-  shouldShowCreateMetric = false; // TODO: Call with dynamic prime dialog
-
-  constructor(private metricQuery: MetricQuery, private metricService: MetricService) {
+  constructor(private metricQuery: MetricQuery) {
   }
 
   ngOnInit() {
     this.metricsAndAttributes$ = this.metricQuery.selectAll();
-    // TODO: Does this also yields attributes? filter using fieldType of field_target
 
     if (this.inputMetrics) {
       this.selectedMetrics = this.selectedMetrics.concat(this.inputMetrics);
@@ -110,19 +106,5 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     if (index1 > -1) {
       this.selectedMetrics.splice(index1, 1);
     }
-  }
-
-  createMetricModal() {
-    this.shouldShowCreateMetric = true;
-  }
-
-  onDismissModal() {
-    this.shouldShowCreateMetric = false;
-  }
-
-  onConfirmModal(item: Metric) {
-    this.metricService.createItem(item).subscribe({
-      complete: () => this.shouldShowCreateMetric = false
-    });
   }
 }

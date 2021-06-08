@@ -13,9 +13,6 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-metric-create *ngIf="shouldShowCreateMetric" (dismissModalSignal)="onDismissModal()"
-  (confirmModalSignal)="onConfirmModal($event)"></app-metric-create> <!-- TODO: Call metric create dialog-->
-
 <div class="content">
   <div class="title">
     <div> Add Metrics </div>
@@ -38,9 +35,6 @@ under the License.
                     placeholder="Select metric..." (onChange)="onChangeMetric($event.value)">
         </p-dropdown>
       </div>
-      <button type="button" class="button-create" (click)="createMetricModal()">
-        <clr-icon shape="plus"></clr-icon>Create Metric
-      </button>
     </div>
   </form>
 

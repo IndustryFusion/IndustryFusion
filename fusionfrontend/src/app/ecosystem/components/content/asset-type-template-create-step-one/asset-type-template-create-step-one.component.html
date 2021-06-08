@@ -12,8 +12,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<app-asset-type-create *ngIf="shouldShowCreateAssetType" (dismissModalSignal)="onDismissModal()"
-  (confirmModalSignal)="onConfirmModal($event)"></app-asset-type-create> <!--TODO: call dialog-->
 
 <div>
   <div class="content">
@@ -27,10 +25,6 @@ under the License.
                       placeholder="Select Asset type..." (onChange)="onChangeAssetType($event)">
           </p-dropdown>
         </div>
-
-        <button type="button" class="button-create" (click)="createAssetTypeModal()">
-          <clr-icon shape="plus"></clr-icon>Create Asset type
-        </button>
       </div>
 
       <div class="input-div">
