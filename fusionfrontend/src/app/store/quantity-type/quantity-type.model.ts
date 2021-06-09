@@ -17,7 +17,7 @@ import { ID } from '@datorama/akita';
 
 import { BaseEntity } from '../baseentity.model';
 import { Unit } from '../unit/unit.model';
-import { QuantityDataType } from '../field/field.model';
+import { QuantityDataType } from '../field-details/field-details.model';
 
 export class QuantityType extends BaseEntity {
   name: string;

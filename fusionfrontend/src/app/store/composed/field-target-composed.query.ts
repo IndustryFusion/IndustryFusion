@@ -19,15 +19,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FieldTargetQuery } from '../field-target/field-target.query';
 import { FieldTarget } from '../field-target/field-target.model';
-import { MetricQuery } from '../metric/metric.query';
+import { FieldQuery } from '../field/field-query.service';
 
 @Injectable({ providedIn: 'root' })
 export class FieldTargetComposedQuery {
 
   constructor(protected fieldTargetQuery: FieldTargetQuery,
-              private fieldQuery: MetricQuery) {
+              private fieldQuery: FieldQuery) {
   }
-
 
   selectAll(): Observable<FieldTarget[]> {
     return combineQueries([

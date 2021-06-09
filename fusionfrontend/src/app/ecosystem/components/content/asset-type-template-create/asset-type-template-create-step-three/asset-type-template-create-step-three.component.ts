@@ -17,10 +17,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Metric } from '../../../../../store/metric/metric.model';
+
 import { FieldTarget } from '../../../../../store/field-target/field-target.model';
-import { MetricQuery } from '../../../../../store/metric/metric.query';
-import { FieldType } from '../../../../../store/field/field.model';
+import { Field } from '../../../../../store/field/field.model';
+import { FieldQuery } from '../../../../../store/field/field-query.service';
+import { FieldType } from '../../../../../store/field-details/field-details.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.model';
 
@@ -37,14 +38,14 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   @Output() attributeSelect = new EventEmitter<FieldTarget[]>();
 
   shouldAddAttribute = false;
-  metricsAndAttributes$: Observable<Metric[]>;
+  fields: Observable<Field[]>;
   confirmedAttributes: Array<FieldTarget> = [];
   selectedAttributes: Array<FieldTarget> = [];
 
-  constructor(private metricQuery: MetricQuery) { }
+  constructor(private fieldQuery: FieldQuery) { }
 
   ngOnInit() {
-    this.metricsAndAttributes$ = this.metricQuery.selectAll();
+    this.fields = this.fieldQuery.selectAll();
 
     if (this.inputAttributes) {
       this.selectedAttributes = this.selectedAttributes.concat(this.inputAttributes);
@@ -75,11 +76,11 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
     this.shouldAddAttribute = true;
   }
 
-  onChangeAttribute(value: Metric) {
+  onChangeAttribute(field: Field) {
     const fieldTarget = new FieldTarget();
     fieldTarget.fieldType = FieldType.ATTRIBUTE;
-    fieldTarget.field = value;
-    fieldTarget.fieldId = value.id;
+    fieldTarget.field = field;
+    fieldTarget.fieldId = field.id;
     fieldTarget.mandatory = false;
     this.selectedAttributes.push(fieldTarget);
     this.shouldAddAttribute = false;

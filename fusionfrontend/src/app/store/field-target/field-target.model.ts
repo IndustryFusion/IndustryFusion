@@ -16,12 +16,12 @@
 import { ID } from '@datorama/akita';
 
 import { BaseEntity } from '../baseentity.model';
-import { Metric } from '../metric/metric.model';
+import { Field } from '../field/field.model';
 
 export class FieldTarget extends BaseEntity {
   assetTypeTemplateId: ID;
   fieldId: ID;
-  field: Metric;
+  field: Field;
   fieldType: FieldType;
   mandatory: boolean;
   label: string;

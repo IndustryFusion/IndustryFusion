@@ -13,9 +13,9 @@
  * under the License.
  */
 
-@import "src/assets/sass/base/typography";
-@import "src/assets/sass/abstract/variables";
-@import "src/assets/sass/components/buttons";
+@import 'base/typography';
+@import 'abstract/variables';
+@import 'components/buttons';
 
 .wrapper {
   display: flex;
@@ -97,11 +97,11 @@
     width: 50vw;
   }
 
-  .metrics-list {
+  .fields-list {
     margin-top: 40px;
   }
 
-  .metrics-padding {
+  .fields-padding {
     margin-left: 3%;
   }
 
@@ -136,4 +136,8 @@
 
 :host ::ng-deep .clr-timeline {
   padding-left: 5.0rem !important;
+}
+
+:host ::ng-deep clr-icon[shape="dot-circle"] {
+  color: $basic-black !important;
 }

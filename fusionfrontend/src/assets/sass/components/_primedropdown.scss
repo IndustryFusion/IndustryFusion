@@ -23,9 +23,13 @@
   }
 
   &:hover {
-    border: 2px solid #95989A;
+    border: 2px solid #95989A !important;
   }
   &:focus {
     border: 2px solid $highlighted;
+    border: 2px solid $highlighted !important;
+  }
+  &.p-focus {
+    border: 2px solid $highlighted !important;
   }
 }

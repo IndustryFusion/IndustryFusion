@@ -18,28 +18,28 @@ under the License.
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
 
-  <div *ngIf="metrics && metrics.length > 0" class="metrics-list metrics-padding">
+  <div *ngIf="metrics && metrics.length > 0" class="fields-list fields-padding">
     <app-asset-type-template-field-header [isMetric]="true"></app-asset-type-template-field-header>
-    <app-asset-type-template-metric-row *ngFor="let metric of metrics" [fieldTarget]="metric"
+    <app-asset-type-template-field-row *ngFor="let metric of metrics" [fieldTarget]="metric"
       (editSignal)="onBackToMetrics()" (deleteSignal)="onBackToMetrics()" confirmed="true">
-    </app-asset-type-template-metric-row>
+    </app-asset-type-template-field-row>
   </div>
   <button type="button" class="button-add" (click)="onBackToMetrics()">
     <clr-icon shape="plus"></clr-icon>Add Metric
   </button>
   <div class="subtitle">Review Attributes</div>
-  <div *ngIf="attributes && attributes.length > 0" class="metrics-list metrics-padding">
+  <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
     <app-asset-type-template-field-header [isMetric]="false"></app-asset-type-template-field-header>
-    <app-asset-type-template-metric-row *ngFor="let metric of attributes" [fieldTarget]="metric"
+    <app-asset-type-template-field-row *ngFor="let metric of attributes" [fieldTarget]="metric"
       (editSignal)="onBackToAttributes()" (deleteSignal)="onBackToAttributes()" confirmed="true">
-    </app-asset-type-template-metric-row>
+    </app-asset-type-template-field-row>
   </div>
   <button type="button" class="button-add" (click)="onBackToAttributes()">
     <clr-icon shape="plus"></clr-icon>Add Attribute
   </button>
 </div>
 <div class="footer">
-  <button type="submit" class="if-button button-cancel" (click)="onBackToAttributes()">Back</button>
+  <button type="button" class="if-button button-cancel" (click)="onBackToAttributes()">Back</button>
   <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">Save & Close Template</button>
   <button type="button" class="if-button button-confirm button-primary" (click)="onGoToConfirmPublish()">Publish</button>
 </div>

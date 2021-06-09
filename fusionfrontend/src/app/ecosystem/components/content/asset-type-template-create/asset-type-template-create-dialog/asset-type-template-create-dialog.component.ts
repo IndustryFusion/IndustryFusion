@@ -20,7 +20,7 @@ import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asse
 import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
 import { FieldTargetService } from '../../../../../store/field-target/field-target.service';
 import { AssetTypesResolver } from '../../../../../resolvers/asset-types.resolver';
-import { MetricsResolver } from '../../../../../resolvers/metrics.resolver';
+import { FieldsResolver } from '../../../../../resolvers/fields-resolver';
 import { UnitsResolver } from '../../../../../resolvers/units.resolver';
 import { QuantityTypesResolver } from '../../../../../resolvers/quantity-types.resolver';
 import { FormGroup } from '@angular/forms';
@@ -42,14 +42,14 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
               private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private fieldTargetService: FieldTargetService,
               private assetTypesResolver: AssetTypesResolver,
-              private metricsResolver: MetricsResolver,
+              private fieldsResolver: FieldsResolver,
               private unitsResolver: UnitsResolver,
               private quantityTypesResolver: QuantityTypesResolver,
               public config: DynamicDialogConfig) { }
 
   ngOnInit() {
     this.assetTypesResolver.resolve().subscribe();
-    this.metricsResolver.resolve().subscribe();
+    this.fieldsResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
 
@@ -60,11 +60,11 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
   }
 
   getMetrics(): FieldTarget[] {
-    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.METRIC);
+    return this.assetTypeTemplate.fieldTargets?.filter((field) => field.fieldType === FieldType.METRIC);
   }
 
   getAttributes(): FieldTarget[] {
-    return this.assetTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.ATTRIBUTE);
+    return this.assetTypeTemplate.fieldTargets?.filter((field) => field.fieldType === FieldType.ATTRIBUTE);
   }
 
   onStepChange(step: number) {

@@ -15,7 +15,7 @@
 
 import { ID } from '@datorama/akita';
 import { BaseEntity } from '../baseentity.model';
-import { Field } from '../field/field.model';
+import { FieldDetails } from '../field-details/field-details.model';
 
 export class Asset extends BaseEntity {
   companyId: ID;
@@ -38,5 +38,5 @@ export class Asset extends BaseEntity {
 }
 
 export class AssetWithFields extends Asset {
-  fields: Field[];
+  fields: FieldDetails[];
 }
