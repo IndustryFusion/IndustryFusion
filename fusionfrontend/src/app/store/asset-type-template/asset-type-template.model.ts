@@ -19,6 +19,7 @@ import { BaseEntity } from '../baseentity.model';
 import { AssetType } from '../asset-type/asset-type.model';
 
 export class AssetTypeTemplate extends BaseEntity {
+  version: bigint;
   name: string;
   description: string;
   imageKey: string;
