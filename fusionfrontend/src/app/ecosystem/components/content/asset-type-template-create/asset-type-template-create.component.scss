@@ -137,3 +137,7 @@
 :host ::ng-deep .clr-timeline {
   padding-left: 5.0rem !important;
 }
+
+:host ::ng-deep clr-icon[shape="dot-circle"] {
+  color: $basic-black !important;
+}
