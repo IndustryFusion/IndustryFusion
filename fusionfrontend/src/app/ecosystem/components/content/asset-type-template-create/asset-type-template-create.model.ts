@@ -14,7 +14,7 @@
  */
 
 export enum AssetTypeTemplateDialogStepType {
-  START=1,
+  START = 1,
   METRICS,
   ATTRIBUTES,
   OVERVIEW,

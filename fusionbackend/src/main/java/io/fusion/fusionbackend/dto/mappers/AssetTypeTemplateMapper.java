@@ -47,6 +47,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .id(entity.getId())
                 .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
                 .published(entity.getPublished())
+                .publishedDate(entity.getPublishedDate())
                 .build();
         dto.setFieldTargetIds(fieldTargetMapper.toEntityIdSet(entity.getFieldTargets()));
 
@@ -63,6 +64,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .id(entity.getId())
                 .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
                 .published(entity.getPublished())
+                .publishedDate(entity.getPublishedDate())
                 .build();
         dto.setFieldTargets(fieldTargetMapper.toDtoSet(entity.getFieldTargets(), false));
         dto.setAssetType(assetTypeMapper.toDto(entity.getAssetType(), false));
@@ -87,6 +89,8 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
         }
         AssetTypeTemplate entity = AssetTypeTemplate.builder()
                 .id(dto.getId())
+                .published(dto.getPublished())
+                .publishedDate(dto.getPublishedDate())
                 .build();
 
         baseAssetMapper.copyToEntity(dto, entity);

@@ -31,6 +31,7 @@ import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -67,12 +68,16 @@ public class AssetTypeTemplate extends BaseAsset {
     private AssetType assetType;
 
     private Boolean published;
+    private OffsetDateTime publishedDate;
 
     public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
         super.copyFrom(sourceAssetTypeTemplate);
 
         if (sourceAssetTypeTemplate.getPublished() != null) {
             setPublished(sourceAssetTypeTemplate.getPublished());
+        }
+        if (sourceAssetTypeTemplate.getPublishedDate() != null) {
+            setPublishedDate(sourceAssetTypeTemplate.getPublishedDate());
         }
     }
 }
