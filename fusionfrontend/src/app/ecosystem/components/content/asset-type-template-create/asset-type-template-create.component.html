@@ -51,7 +51,8 @@ under the License.
                                            [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-two>
   <app-asset-type-template-create-step-three *ngIf="step === 3" (stepChange)="onStepChange($event)"
-    (attributeSelect)="onAttributesSelect($event)" [inputMetrics]="getAttributes()"
+                                             (attributeSelect)="onAttributesSelect($event)"
+                                             [inputAttributes]="getAttributes()"
                                              [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-create-step-three>
   <app-asset-type-template-create-step-four *ngIf="step === 4" (stepChange)="onStepChange($event)"

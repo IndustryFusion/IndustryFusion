@@ -20,6 +20,7 @@ import { AssetTypeQuery } from '../../store/asset-type/asset-type.query';
 import { AssetType } from '../../store/asset-type/asset-type.model';
 import { EcosystemManagerPageType, RouteData } from '../ecosystem.routing.model';
 import { QuantityTypeQuery } from '../../store/quantity-type/quantity-type.query';
+import { FieldQuery } from '../../store/field/field-query.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class EcoSystemManagerResolver {
   public ecoSystemManagerSubTitle$: Subject<string>;
 
   constructor(private assetTypeQuery: AssetTypeQuery,
+              private fieldQuery: FieldQuery,
               private quantityTypeQuery: QuantityTypeQuery) {
     this.assetType$ = this.assetTypeQuery.selectActive();
     this.ecoSystemManagerSubTitle$ = new BehaviorSubject('Apps');
@@ -47,7 +49,7 @@ export class EcoSystemManagerResolver {
     else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Asset Type Templates');
     }
-    else if (pageTypes.includes(EcosystemManagerPageType.METRIC_ATTRIBUTE_LIST)) {
+    else if (pageTypes.includes(EcosystemManagerPageType.FIELD_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Metrics & Attributes');
     }
     else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_LIST)) {
@@ -57,6 +59,11 @@ export class EcoSystemManagerResolver {
       this.quantityTypeQuery
         .waitForActive()
         .subscribe(quantityType => this.ecoSystemManagerSubTitle$.next('Quantity Types > ' + quantityType.name));
+    }
+    else if (pageTypes.includes(EcosystemManagerPageType.FIELD_DETAIL)) {
+      this.fieldQuery
+        .waitForActive()
+        .subscribe(field => this.ecoSystemManagerSubTitle$.next('Metrics & Attributes > ' + field.name));
     }
     else if (pageTypes.includes(EcosystemManagerPageType.UNIT_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Units');

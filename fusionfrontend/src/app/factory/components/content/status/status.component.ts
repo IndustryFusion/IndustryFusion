@@ -20,7 +20,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { PointWithId } from 'src/app/services/oisp.model';
 import { OispService } from 'src/app/services/oisp.service';
 import { StatusService } from 'src/app/services/status.service';
-import { Field } from '../../../../store/field/field.model';
+import { FieldDetails } from '../../../../store/field-details/field-details.model';
 import { Status } from '../../../models/status.model';
 import { AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 
@@ -39,7 +39,7 @@ export class StatusComponent implements OnInit {
 
   status$: Observable<Status>;
   latestPoints$: Observable<PointWithId[]>;
-  mergedFields$: Observable<Field[]>;
+  mergedFields$: Observable<FieldDetails[]>;
 
   constructor(
     private oispService: OispService,

@@ -19,18 +19,18 @@ under the License.
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
 
-  <div *ngIf="selectedAttributes && selectedAttributes.length > 0" class="metrics-list">
+  <div *ngIf="selectedAttributes && selectedAttributes.length > 0" class="fields-list">
     <app-asset-type-template-field-header [isMetric]="false"></app-asset-type-template-field-header>
-    <app-asset-type-template-metric-row *ngFor="let attribute of selectedAttributes" [fieldTarget]="attribute"
+    <app-asset-type-template-field-row *ngFor="let attribute of selectedAttributes" [fieldTarget]="attribute"
                                         (confirmSignal)="onConfirm(attribute)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(attribute)">
-    </app-asset-type-template-metric-row>
+    </app-asset-type-template-field-row>
   </div>
 
   <form [formGroup]="assetTypeTemplateForm">
     <div class="selection" *ngIf="shouldAddAttribute">
       <div class="input-div dropdown-filter">
         <label class="if-label">Select Attribute</label>
-        <p-dropdown [options]="(metricsAndAttributes$ | async)" formControlName="metric" optionLabel="name"
+        <p-dropdown [options]="(fields | async)" formControlName="metric" optionLabel="name"
                     class="select-asset-input" filter="true" resetFilterOnHide="true"
                     placeholder="Select attribute..." (onChange)="onChangeAttribute($event.value)">
         </p-dropdown>
@@ -44,11 +44,9 @@ under the License.
 </div>
 
 <div class="footer">
-  <!--TODO: Type=submit or normal? in all pages-->
-  <button type="submit" class="if-button button-cancel" (click)="prevStep()"
+  <button type="button" class="if-button button-cancel" (click)="prevStep()"
           [disabled]="assetTypeTemplateForm.invalid || this.confirmedAttributes.length !== this.selectedAttributes.length">Back</button>
   <button type="button" class="if-button button-confirm button-primary" (click)="nextStep()"
           [disabled]="assetTypeTemplateForm.invalid || this.confirmedAttributes.length !== this.selectedAttributes.length">
     Next</button>
 </div>
-

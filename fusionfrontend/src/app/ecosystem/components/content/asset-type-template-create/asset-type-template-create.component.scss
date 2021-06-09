@@ -13,9 +13,9 @@
  * under the License.
  */
 
-@import "base/typography";
-@import "abstract/variables";
-@import "components/buttons";
+@import 'base/typography';
+@import 'abstract/variables';
+@import 'components/buttons';
 
 .wrapper {
   display: flex;
@@ -97,11 +97,11 @@
     width: 50vw;
   }
 
-  .metrics-list {
+  .fields-list {
     margin-top: 40px;
   }
 
-  .metrics-padding {
+  .fields-padding {
     margin-left: 3%;
   }
 

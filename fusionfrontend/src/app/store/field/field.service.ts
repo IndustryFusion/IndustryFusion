@@ -13,30 +13,81 @@
  * under the License.
  */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+import { RestService } from '../../services/rest.service';
 import { environment } from '../../../environments/environment';
 import { Field } from './field.model';
-import { FieldStore } from './field.store';
+import { FieldStore } from './field-store.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class FieldService {
+export class FieldService implements RestService<Field> {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   constructor(private fieldStore: FieldStore, private http: HttpClient) { }
 
-  getFieldsOfAsset(companyId: ID, assetId: ID): Observable<Field[]> {
-    const path = `companies/${companyId}/assets/${assetId}/fields`;
-    return this.fieldStore.cachedByParentId(assetId, this.http.get<Field[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+  getItems(): Observable<Field[]> {
+    const path = `fields`;
+    return this.http.get<Field[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
-        this.fieldStore.upsertManyByParentIdCached(assetId, entities);
-      })));
+        this.fieldStore.upsertMany(entities);
+      }));
+  }
+
+  getItem(id: ID): Observable<Field> {
+    const path = `fields/${id}`;
+    return this.http.get<Field>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+      .pipe(tap(entity => {
+        this.fieldStore.upsert(id, entity);
+      }));
+  }
+
+  createItem(item: Field): Observable<Field> {
+    const path = `fields`;
+    return this.http.post<Field>(`${environment.apiUrlPrefix}/${path}`, item,
+      { params: item.unitId ? { unitId: `${item.unitId}` } : undefined, ...this.httpOptions })
+      .pipe(
+        tap({
+          next: (entity) => {
+            this.fieldStore.upsert(entity.id, entity);
+          },
+          error: (error) => {
+            this.fieldStore.setError(error);
+          }
+        }));
+  }
+
+  editItem(id: ID, item: Field): Observable<Field> {
+    const path = `fields/${id}`;
+    return this.http.patch<Field>(`${environment.apiUrlPrefix}/${path}`, item, this.httpOptions)
+      .pipe(
+        tap(entity => {
+          this.fieldStore.upsert(id, entity);
+        }));
+  }
+
+  deleteItem(id: ID): Observable<any> {
+    const path = `fields/${id}`;
+    return this.http.delete(`${environment.apiUrlPrefix}/${path}`).pipe(tap({
+      complete: () => {
+        this.fieldStore.remove(id);
+      },
+      error: (error) => {
+        this.fieldStore.setError(error);
+      }
+    }));
+  }
+
+  setActive(id: ID) {
+    this.fieldStore.setActive(id);
   }
 }

@@ -22,7 +22,7 @@ import { AssetDetails, AssetDetailsWithFields } from '../asset-details/asset-det
 import { AssetDetailsQuery } from '../asset-details/asset-details.query';
 import { Asset, AssetWithFields } from '../asset/asset.model';
 import { AssetQuery } from '../asset/asset.query';
-import { FieldQuery } from '../field/field.query';
+import { FieldDetailsQuery } from '../field-details/field-details-query.service';
 import { LocationWithAssetCount } from '../location/location.model';
 import { LocationQuery } from '../location/location.query';
 import { Room } from '../room/room.model';
@@ -35,7 +35,7 @@ export class FactoryComposedQuery {
     protected roomQuery: RoomQuery,
     protected assetQuery: AssetQuery,
     protected assetDetailsQuery: AssetDetailsQuery,
-    protected fieldQuery: FieldQuery,
+    protected fieldQuery: FieldDetailsQuery,
     protected oispService: OispService) { }
 
   selectAssetsOfLocation(locationId: ID): Observable<Asset[]> {

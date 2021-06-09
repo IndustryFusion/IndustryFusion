@@ -22,7 +22,7 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { PointWithId } from 'src/app/services/oisp.model';
 import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { Field } from 'src/app/store/field/field.model';
+import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { Location } from 'src/app/store/location/location.model';
 import { Room } from 'src/app/store/room/room.model';
 
@@ -37,9 +37,9 @@ export class AssetPageComponent implements OnInit, OnDestroy {
   rooms$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   asset$: Observable<Asset>;
-  fields$: Observable<Field[]>;
+  fields$: Observable<FieldDetails[]>;
   latestPoints$: Observable<PointWithId[]>;
-  mergedFields$: Observable<Field[]>;
+  mergedFields$: Observable<FieldDetails[]>;
   assetsWithFields$: Observable<AssetWithFields[]>;
   companyId: ID;
   assetId: ID;

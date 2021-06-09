@@ -17,8 +17,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Metric } from '../../../../store/metric/metric.model';
-import { MetricQuery } from '../../../../store/metric/metric.query';
+import { Field } from '../../../../store/field/field.model';
+import { FieldQuery } from '../../../../store/field/field-query.service';
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 
@@ -35,15 +35,15 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   @Output() metricSelect = new EventEmitter<FieldTarget[]>();
 
   public shouldAddMetric = false;
-  public metricsAndAttributes$: Observable<Metric[]>;
+  public fields: Observable<Field[]>;
   public confirmedMetrics: Array<FieldTarget> = [];
   public selectedMetrics: Array<FieldTarget> = [];
 
-  constructor(private metricQuery: MetricQuery) {
+  constructor(private fieldQuery: FieldQuery) {
   }
 
   ngOnInit() {
-    this.metricsAndAttributes$ = this.metricQuery.selectAll();
+    this.fields = this.fieldQuery.selectAll();
 
     if (this.inputMetrics) {
       this.selectedMetrics = this.selectedMetrics.concat(this.inputMetrics);
@@ -74,11 +74,11 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     this.shouldAddMetric = true;
   }
 
-  onChangeMetric(value: Metric) {
+  onChangeMetric(field: Field) {
     const fieldTarget = new FieldTarget();
     fieldTarget.fieldType = FieldType.METRIC;
-    fieldTarget.field = value;
-    fieldTarget.fieldId = value.id;
+    fieldTarget.field = field;
+    fieldTarget.fieldId = field.id;
     fieldTarget.mandatory = false;
     this.selectedMetrics.push(fieldTarget);
     this.shouldAddMetric = false;
