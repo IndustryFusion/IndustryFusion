@@ -28,7 +28,7 @@ under the License.
     <clr-icon shape="plus"></clr-icon>Add Metric
   </button>
   <div class="subtitle">Review Attributes</div>
-  <div *ngIf="attributes && attributes.length > 0" class="fieldss-list fieldss-padding">
+  <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
     <app-asset-type-template-field-header [isMetric]="false"></app-asset-type-template-field-header>
     <app-asset-type-template-field-row *ngFor="let metric of attributes" [fieldTarget]="metric"
       (editSignal)="onBackToAttributes()" (deleteSignal)="onBackToAttributes()" confirmed="true">
