@@ -15,11 +15,11 @@
 
 import { Directive, HostListener, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { QuantityDataType } from '../../../../store/field/field.model';
 import { QuantityTypeDialogContentComponent } from './quantity-type-dialog-content/quantity-type-dialog-content.component';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
+import { QuantityDataType } from '../../../../store/field-details/field-details.model';
 
 @Directive({
   selector: '[appQuantityTypeEditDialog]',

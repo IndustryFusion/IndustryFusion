@@ -12,8 +12,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<app-metric-create *ngIf="shouldShowCreateMetric" (dismissModalSignal)="onDismissModal()"
-  (confirmModalSignal)="onConfirmModal($event)"></app-metric-create>
+<app-field-dialog-content *ngIf="shouldShowCreateField"></app-field-dialog-content>
 <div class="content">
   <div class="title">
     <div>
@@ -23,10 +22,10 @@ under the License.
       Template Version - v.4
     </div>
   </div>
-  <div *ngIf="selectedMetrics && selectedMetrics.length > 0" class="metrics-list">
-    <app-asset-type-template-metric-row *ngFor="let metric of selectedMetrics" [fieldTarget]="metric"
-      (confirmSignal)="onConfirm(metric)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)"
-      [confirmed]="isConfirmed(metric)"></app-asset-type-template-metric-row>
+  <div *ngIf="selectedMetrics && selectedMetrics.length > 0" class="fields-list">
+    <app-asset-type-template-field-row *ngFor="let metric of selectedMetrics" [fieldTarget]="metric"
+                                       (confirmSignal)="onConfirm(metric)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)"
+                                       [confirmed]="isConfirmed(metric)"></app-asset-type-template-field-row>
   </div>
   <div class="selection" *ngIf="shouldAddMetric">
     <clr-select-container>
@@ -44,6 +43,6 @@ under the License.
   </button>
 </div>
 <div class="footer">
-  <button type="button" class="if-button-cancel" type="submit" (click)="changeStep(1)">Back</button>
+  <button type="button" class="if-button-cancel" (click)="changeStep(1)">Back</button>
   <button type="button" class="button-confirm" (click)="changeStep(3)">Next</button>
 </div>

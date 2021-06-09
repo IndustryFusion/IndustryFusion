@@ -30,7 +30,7 @@ import { AssetTypeTemplateEditComponent } from './components/content/asset-type-
 import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
 import { EcosystemPageTitleComponent } from './components/content/ecosystem-page-title/ecosystem-page-title.component';
-import { MetricsAttributesPageComponent } from './components/pages/metrics-attributes-page/metrics-attributes-page.component';
+import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
@@ -41,9 +41,9 @@ import { AssetTypeListItemComponent } from './components/content/asset-type-list
 import { BaseListComponent } from './components/content/base/base-list/base-list.component';
 import { BaseListHeaderComponent } from './components/content/base/base-list-header/base-list-header.component';
 import { BaseListItemComponent } from './components/content/base/base-list-item/base-list-item.component';
-import { MetricListComponent } from './components/content/metric-list/metric-list.component';
-import { MetricListHeaderComponent } from './components/content/metric-list-header/metric-list-header.component';
-import { MetricListItemComponent } from './components/content/metric-list-item/metric-list-item.component';
+import { FieldListComponent } from './components/content/field-list/field-list.component';
+import { FieldListHeaderComponent } from './components/content/field-list-header/field-list-header.component';
+import { FieldListItemComponent } from './components/content/field-list-item/field-list-item.component';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
 import { QuantityTypeListHeaderComponent } from './components/content/quantity-type-list-header/quantity-type-list-header.component';
 import { QuantityTypeListItemComponent } from './components/content/quantity-type-list-item/quantity-type-list-item.component';
@@ -53,7 +53,7 @@ import { UnitListItemComponent } from './components/content/unit-list-item/unit-
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
 import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
 import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
-import { MetricCreateComponent } from './components/content/metric-create/metric-create.component';
+import { FieldDialogContentComponent } from './components/content/field-dialog/field-dialog-content/field-dialog-content.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepOneComponent } from './components/content/asset-type-template-create-step-one/asset-type-template-create-step-one.component';
 // tslint:disable-next-line:max-line-length
@@ -63,7 +63,7 @@ import { AssetTypeTemplateCreateStepThreeComponent } from './components/content/
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepFourComponent } from './components/content/asset-type-template-create-step-four/asset-type-template-create-step-four.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateMetricRowComponent } from './components/content/asset-type-template-metric-row/asset-type-template-metric-row.component';
+import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template-field-row/asset-type-template-field-row.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content/asset-type-template-create-step-sumary/asset-type-template-create-step-sumary.component';
 import { Ng2CompleterModule } from 'ng2-completer';
@@ -79,6 +79,10 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
+import { DialogService } from 'primeng/dynamicdialog';
+import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
+import { FieldPageComponent } from './components/pages/field-page/field-page.component';
+import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 
 @NgModule({
   declarations: [
@@ -91,7 +95,7 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
     AssetTypeTemplateCreateComponent,
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent,
-    MetricsAttributesPageComponent,
+    FieldsPageComponent,
     QuantityTypesPageComponent,
     UnitsPageComponent,
     AssetTypesPageComponent,
@@ -101,9 +105,9 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
     BaseListComponent,
     BaseListHeaderComponent,
     BaseListItemComponent,
-    MetricListComponent,
-    MetricListHeaderComponent,
-    MetricListItemComponent,
+    FieldListComponent,
+    FieldListHeaderComponent,
+    FieldListItemComponent,
     QuantityTypeListComponent,
     QuantityTypeListHeaderComponent,
     QuantityTypeListItemComponent,
@@ -113,17 +117,20 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
     AssetTypeCreateComponent,
     QuantityTypeDialogContentComponent,
     UnitCreateComponent,
-    MetricCreateComponent,
+    FieldDialogContentComponent,
     AssetTypeTemplateCreateStepOneComponent,
     AssetTypeTemplateCreateStepTwoComponent,
     AssetTypeTemplateCreateStepThreeComponent,
     AssetTypeTemplateCreateStepFourComponent,
-    AssetTypeTemplateMetricRowComponent,
+    AssetTypeTemplateFieldRowComponent,
     AssetTypeTemplateCreateStepSumaryComponent,
     AssetTypePageComponent,
     AssetTypeEditComponent,
     QuantityTypePageComponent,
     QuantityTypeEditDialogDirective,
+    FieldDialogDirective,
+    FieldPageComponent,
+    AccuracyFormatPipe,
   ],
   imports: [
     IFCommon,
@@ -145,6 +152,9 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
   exports: [
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent,
+  ],
+  providers: [
+    DialogService
   ]
 })
 export class EcosystemModule { }

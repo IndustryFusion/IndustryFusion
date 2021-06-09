@@ -19,7 +19,7 @@ import { Observable, of, EMPTY } from 'rxjs';
 import { catchError, map, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
-import { Field, FieldType } from '../store/field/field.model';
+import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
   Aggregator,
   Metrics,
@@ -43,7 +43,7 @@ export class OispService {
 
   constructor(private http: HttpClient) { }
 
-  getExternalIdForSingleField(field: Field, oispDevice: any): Field {
+  getExternalIdForSingleField(field: FieldDetails, oispDevice: any): FieldDetails {
     if (oispDevice.components) {
       const fieldCopy = Object.assign({ }, field);
       oispDevice.components.map((el) => {
@@ -128,7 +128,7 @@ export class OispService {
         }));
   }
 
-  getLastValueOfAllFields(asset: Asset, fields: Field[], secondsInPast: number): Observable<PointWithId[]> {
+  getLastValueOfAllFields(asset: Asset, fields: FieldDetails[], secondsInPast: number): Observable<PointWithId[]> {
     const path = `accounts/${environment.oispAccountId}/data/search`;
     const request: OispRequest = {
       from: -secondsInPast,
@@ -142,7 +142,7 @@ export class OispService {
     return oispPoints$;
   }
 
-  getValuesOfSingleField(asset: Asset, field: Field, secondsInPast: number, maxPoints?: string): Observable<PointWithId[]> {
+  getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: string): Observable<PointWithId[]> {
     const path = `accounts/${environment.oispAccountId}/data/search`;
     let oispPoints$: Observable<PointWithId[]>;
     if (!maxPoints) {
@@ -172,7 +172,7 @@ export class OispService {
   }
 
   getValuesOfSingleFieldByDates(asset: Asset,
-                                field: Field,
+                                field: FieldDetails,
                                 fromDate: number,
                                 toDate: number,
                                 maxPoints: string,

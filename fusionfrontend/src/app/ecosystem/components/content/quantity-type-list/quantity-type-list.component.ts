@@ -23,7 +23,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { QuantityTypeDialogContentComponent } from '../quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { QuantityDataType } from '../../../../store/field/field.model';
+import { QuantityDataType } from '../../../../store/field-details/field-details.model';
 
 @Component({
   selector: 'app-quantity-type-list',

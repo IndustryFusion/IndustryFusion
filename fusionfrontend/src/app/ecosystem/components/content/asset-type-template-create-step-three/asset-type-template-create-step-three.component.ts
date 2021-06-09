@@ -17,11 +17,11 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Metric } from '../../../../store/metric/metric.model';
+import { Field } from '../../../../store/field/field.model';
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
-import { MetricQuery } from '../../../../store/metric/metric.query';
-import { FieldType } from '../../../../store/field/field.model';
-import { MetricService } from '../../../../store/metric/metric.service';
+import { FieldQuery } from '../../../../store/field/field-query.service';
+import { FieldType } from '../../../../store/field-details/field-details.model';
+import { FieldService } from '../../../../store/field/field.service';
 
 @Component({
   selector: 'app-asset-type-template-create-step-three',
@@ -36,14 +36,14 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   @Output() errorSignal = new EventEmitter<string>();
 
   shouldAddMetric = false;
-  metrics$: Observable<Metric[]>;
+  metrics$: Observable<Field[]>;
   confirmedMetrics: Array<FieldTarget> = [];
   selectedMetrics: Array<FieldTarget> = [];
-  metric: Metric;
+  metric: Field;
 
-  shouldShowCreateMetric = false;
+  shouldShowCreateField = false;
 
-  constructor(private metricQuery: MetricQuery, private metricService: MetricService) { }
+  constructor(private metricQuery: FieldQuery, private metricService: FieldService) { }
 
   ngOnInit() {
     this.metrics$ = this.metricQuery.selectAll();
@@ -71,7 +71,7 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
     this.shouldAddMetric = true;
   }
 
-  onChange(value: Metric) {
+  onChange(value: Field) {
     const fieldTarget = new FieldTarget();
     fieldTarget.fieldType = FieldType.ATTRIBUTE;
     fieldTarget.field = value;
@@ -106,16 +106,16 @@ export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
   }
 
   createMetricModal() {
-    this.shouldShowCreateMetric = true;
+    this.shouldShowCreateField = true;
   }
 
   onDismissModal() {
-    this.shouldShowCreateMetric = false;
+    this.shouldShowCreateField = false;
   }
 
-  onConfirmModal(item: Metric) {
+  onConfirmModal(item: Field) {
     this.metricService.createItem(item).subscribe({
-      complete: () => this.shouldShowCreateMetric = false
+      complete: () => this.shouldShowCreateField = false
     });
   }
 
