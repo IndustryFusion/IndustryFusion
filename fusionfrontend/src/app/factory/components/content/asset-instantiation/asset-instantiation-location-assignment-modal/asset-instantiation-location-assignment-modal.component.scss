@@ -15,35 +15,60 @@
 
  @import 'abstract/variables';
  @import 'components/radiobuttons';
- //@import 'src/assets/sass/components/_button.scss';
- //@import 'components/buttons';
 
-.test {
-  color: grey;
+
+.heading {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
- .if-radiobutton {
-   display: flex;
-   justify-content: flex-start;
-   margin-right: 5px;
-   align-items: center;
- }
- 
- .fieldLabel {
-   margin-left: 3px;
- }
+.context-info {
+  font-size: 16px;
+  color: #666666;
+}
+
+.location-text {
+  font-size: 18px;
+  color: #95989A;
+}
+
+.location-search-input {
+  margin: 2% 0;
+  height: 56px;
+  width: 82.0%;
+}
+
+.search-input {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 .location-field {
-  padding: 15px;
+  width: 82.0%;
+  border-radius: 10px;
+  padding: 3.5% 3.5% 1.5% 3.5%;
+  margin-top: 1%;
   background-color: white;
- }
- 
+  font-size: 16px;
 
-.add-button {
-  padding-top: 10px;
-  border: none;
-  border-color: hsl(198, 0%, 95%);
-  font-size: 15px;
-  color: black;
-  cursor:pointer;
+  :hover {
+    cursor: pointer;
+  }
+
+  .if-radiobutton {
+    width: 18px;
+    height: 18px;
+    display: flex;
+  }
+
+  .location-info {
+    color: #95989A;
+    text-align: right;
+  }
+}
+
+.assign-location-dialog-footer {
+  margin-top: 8.1%;
+  margin-bottom: 5%;
+  text-align: right;
 }

@@ -13,30 +13,63 @@
  * under the License.
  */
 
+
 @import 'abstract/variables';
 @import 'components/radiobuttons';
 
-.if-radiobutton {
-  display: flex;
-  justify-content: flex-start;
-  margin-right: 5px;
-  align-items: center;
+
+.heading {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-.fieldLabel {
-  margin-left: 3px;
+.context-info {
+  font-size: 16px;
+  color: #666666;
+}
+
+.room-text {
+  font-size: 18px;
+  color: #95989A;
+}
+
+.room-search-input {
+  margin: 2% 0;
+  height: 56px;
+  width: 82.0%;
+}
+
+.search-input {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .room-field {
-  padding: 15px;
+  width: 82.0%;
+  border-radius: 10px;
+  padding: 3.5% 3.5% 1.5% 3.5%;
+  margin-top: 1%;
   background-color: white;
- }
+  font-size: 16px;
 
-.add-button {
-  padding-top: 10px;
-  border: none;
-  border-color: hsl(198, 0%, 95%);
-  font-size: 15px;
-  color: black;
-  cursor:pointer;
+  :hover {
+    cursor: pointer;
+  }
+
+  .if-radiobutton {
+    width: 18px;
+    height: 18px;
+    display: flex;
+  }
+
+  .room-info {
+    color: #95989A;
+    text-align: right;
+  }
+}
+
+.assign-room-dialog-footer {
+  margin-top: 8.1%;
+  margin-bottom: 5%;
+  text-align: right;
 }

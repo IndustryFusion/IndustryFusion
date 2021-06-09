@@ -26,7 +26,7 @@ export class AssetDetails extends Asset {
 }
 
 export enum AssetModalType  {
-  startInitialitation = 1,
+  startInitialization = 1,
   pairAsset,
   customizeAsset = 3,
   locationAssignment = 4,

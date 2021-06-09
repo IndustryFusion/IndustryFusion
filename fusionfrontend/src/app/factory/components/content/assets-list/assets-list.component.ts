@@ -97,10 +97,12 @@ export class AssetsListComponent implements OnChanges {
     private assetDetailsService: AssetDetailsService,
     private routingLocation: loc,
     private formBuilder: FormBuilder,
-    public dialogService: DialogService) { }
+    public dialogService: DialogService) {
+      this.createDetailsAssetForm(this.formBuilder);
+  }
 
   onInit() {
-    this.createAssetSeriesForm(this.formBuilder);
+    this.createDetailsAssetForm(this.formBuilder);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -122,19 +124,20 @@ export class AssetsListComponent implements OnChanges {
       data: {
         assetForm: this.assetForm,
         assetSeries: this.assetSeries,
+        locations: this.locations,
         rooms: this.rooms,
-        activeModalType: AssetModalType.startInitialitation
+        activeModalType: AssetModalType.startInitialization
       },
     });
 
-    ref.onClose.subscribe((asset: AssetWithFields) => {
-      this.onCloseCreateDialog(asset);
-      this.createAssetSeriesForm(this.formBuilder);
+    ref.onClose.subscribe(() => {
+      this.onCloseOnboardDialog();
+      this.createDetailsAssetForm(this.formBuilder);
       this.asset = new AssetWithFields();
     });
   }
 
-  createAssetSeriesForm(formBuilder: FormBuilder) {
+  createDetailsAssetForm(formBuilder: FormBuilder) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.assetForm = formBuilder.group({
       id: [null],
@@ -144,7 +147,7 @@ export class AssetsListComponent implements OnChanges {
       manufacturer: ['', requiredTextValidator],
       category: ['', requiredTextValidator],
       locationName: ['', requiredTextValidator],
-      roomName: ['']
+      room: ['', requiredTextValidator],
     });
   }
 
@@ -158,11 +161,7 @@ export class AssetsListComponent implements OnChanges {
     return containsId;
   }
 
-  onCloseCreateDialog(asset: AssetWithFields) {
-    if (asset) {
-      asset.companyId = this.companyId;
-      this.assetCreated(asset);
-    }
+  onCloseOnboardDialog() {
   }
 
   assetCreated(asset: AssetWithFields): void {

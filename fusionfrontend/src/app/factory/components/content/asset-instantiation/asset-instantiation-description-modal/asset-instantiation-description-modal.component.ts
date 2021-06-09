@@ -13,8 +13,9 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
 
 @Component({
   selector: 'app-asset-instantiation-description-modal',
@@ -25,25 +26,21 @@ export class AssetInstantiationDescriptionModalComponent implements OnInit {
 
   @Input()
   assetDetailsForm: FormGroup;
-
+  @Input()
+  assetSeries: AssetSeriesDetails;
   @Output()
-  clickedButtonEvent = new EventEmitter<boolean>();
-
-  @Output()
-  stoppedAssetAssignment = new EventEmitter<boolean>();
+  descriptionAddedEvent = new EventEmitter<boolean>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  emitClickedButtonEvent(event: boolean) {
-    this.clickedButtonEvent.emit(event);
+  onCancel() {
+    this.descriptionAddedEvent.emit(false);
   }
 
-  closeModal(event: boolean) {
-    if (event) {
-      this.stoppedAssetAssignment.emit(event);
-    }
+  onSubmit() {
+    this.descriptionAddedEvent.emit(true);
   }
 }

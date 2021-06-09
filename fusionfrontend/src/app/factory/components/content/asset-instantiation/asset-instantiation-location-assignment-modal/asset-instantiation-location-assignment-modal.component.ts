@@ -13,9 +13,8 @@
  * under the License.
  */
 
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Location } from '../../../../../store/location/location.model';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-instantiation-location-assignment-modal',
@@ -26,47 +25,31 @@ export class AssetInstantiationLocationAssignmentModalComponent implements OnIni
 
   @Input()
   locations: Location[];
-
   @Input()
   selectedLocation: Location;
-
-  @Input()
-  assetDetailsForm: FormGroup;
-
   @Output()
-  finishedLocationAssignmentEvent = new EventEmitter<[boolean, Location]>();
+  locationAssignedEvent = new EventEmitter<[boolean, Location]>();
 
-  @Output()
-  selectedLocationEvent = new EventEmitter<Location>();
-
-  @Output()
-  stoppedAssetAssignment = new EventEmitter<boolean>();
-
-  locationControlValidation = 'location';
+  filteredLocations: Location[];
+  searchText: string;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.filteredLocations = this.locations;
   }
 
-  radioChecked(location: Location) {
-    this.selectedLocation = location;
+  filterLocations() {
+    this.filteredLocations = this.locations.filter(location => location.name.toLowerCase()
+      .includes(this.searchText.toLowerCase()));
   }
 
-  emitClickedButtonEvent(event: boolean) {
-    if (event) {
-      if (this.assetDetailsForm.controls[this.locationControlValidation].valid) {
-        this.finishedLocationAssignmentEvent.emit([event, this.selectedLocation]);
-      }
-    } else {
-      this.finishedLocationAssignmentEvent.emit([event, null]);
-    }
+  nextButton() {
+    this.locationAssignedEvent.emit([true, this.selectedLocation]);
+
   }
 
-  closeModal(event: boolean) {
-    if (event) {
-      this.stoppedAssetAssignment.emit(event);
-    }
+  backButton() {
+    this.locationAssignedEvent.emit([false, null]);
   }
-
 }
