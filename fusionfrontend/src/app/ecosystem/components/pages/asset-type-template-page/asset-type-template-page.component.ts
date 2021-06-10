@@ -16,15 +16,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { ActivatedRoute } from '@angular/router';
-import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
-import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
-import { FieldTargetService } from '../../../../store/field-target/field-target.service';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssetTypeTemplateDialogPublishComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
-import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
-import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 
 @Component({
   selector: 'app-asset-type-template-page',
@@ -39,65 +30,4 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.ecoSystemManagerResolver.resolve(this.activatedRoute);
   }
 
-  private getMetrics(): FieldTarget[] {
-    return this.assetTypeTemplate.fieldTargets?.filter((field) => field.fieldType === FieldType.METRIC);
-  }
-
-  private getAttributes(): FieldTarget[] {
-    return this.assetTypeTemplate.fieldTargets?.filter((field) => field.fieldType === FieldType.ATTRIBUTE);
-  }
-
-  onEdit() {
-    this.editDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, { width: '60%' } );
-    this.editDialogRef.onClose.subscribe((edit: boolean) => this.onCloseUpdateDialog(edit));
-  }
-
-  private createAssetTypeTemplateForm(formBuilder: FormBuilder) {
-    // TODO: duplicated code, ineffective
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    this.assetTypeTemplateForm = formBuilder.group({
-      id: [],
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
-      published: [false],
-      useExistingTemplate: [false, Validators.required],
-      assetTypeId: [undefined, Validators.required],
-      assetTypeTemplateId: [],
-      metric: [],
-      draftVersion: []
-    });
-    this.assetTypeTemplateForm.patchValue(this.assetTypeTemplate);
-  }
-
-  onPublish() {
-    this.publishDialogRef = this.dialogService.open(AssetTypeTemplateDialogPublishComponent,
-      {
-        header: `Publish ${this.assetTypeTemplate.name}?`,
-        width: '70%',
-      }
-    );
-    this.publishDialogRef.onClose.subscribe((published: boolean) => this.onClosePublishDialog(published));
-  }
-
-  private onClosePublishDialog(published: boolean) {
-    if (published) {
-      this.assetTypeTemplate.published = true;
-      this.assetTypeTemplate.publishedDate = new Date();
-      this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
-    }
-  }
-
-  private onCloseUpdateDialog(edit: boolean) {
-    if (edit) {
-      this.createAssetTypeTemplateForm(this.formBuilder);
-      this.editDialogRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
-        {
-          data: { assetTypeTemplateForm: this.assetTypeTemplateForm, isEditing: true },
-          header: 'Asset Type Template Editor',
-          width: '70%',
-        }
-      );
-      this.editDialogRef.onClose.subscribe((published: boolean) => this.onClosePublishDialog(published));
-    }
-  }
 }

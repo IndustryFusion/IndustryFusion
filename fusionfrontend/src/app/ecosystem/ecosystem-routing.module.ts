@@ -31,7 +31,6 @@ import { QuantityTypesResolver } from '../resolvers/quantity-types.resolver';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
 import { UnitsResolver } from '../resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
-import { AssetTypeTemplateWizardMainComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { Role } from '../services/roles.model';
 import { EcosystemManagerPageType } from './ecosystem.routing.model';
@@ -56,20 +55,6 @@ const routes: Routes = [
     children: [{
       path: '',
       component: AssetTypeTemplateListComponent
-    },
-    { // TODO: to remove?
-      path: 'create',
-      component: AssetTypeTemplateWizardMainComponent,
-      resolve: {
-        assetTypes: AssetTypesResolver,
-        fields: FieldsResolver,
-        units: UnitsResolver,
-        quantityTypes: QuantityTypesResolver,
-      }
-    },
-    {
-      path: ':id/edit',
-      component: AssetTypeTemplateEditComponent
     }]
   },
   {
