@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetSeriesCreateStepOneComponent } from './asset-series-create-step-one.component';
+import { AssetTypeTemplateWizardStepPublishComponent } from './asset-type-template-wizard-step-publish.component';
 
-describe('AssetTypeTemplateWizardStepOneComponent', () => {
-  let component: AssetSeriesCreateStepOneComponent;
-  let fixture: ComponentFixture<AssetSeriesCreateStepOneComponent>;
+describe('AssetTypeTemplateWizardStepPublishComponent', () => {
+  let component: AssetTypeTemplateWizardStepPublishComponent;
+  let fixture: ComponentFixture<AssetTypeTemplateWizardStepPublishComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AssetSeriesCreateStepOneComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AssetTypeTemplateWizardStepPublishComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesCreateStepOneComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplateWizardStepPublishComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

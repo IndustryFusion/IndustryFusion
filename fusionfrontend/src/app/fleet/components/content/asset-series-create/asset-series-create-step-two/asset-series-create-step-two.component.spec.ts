@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetSeriesCreateStepTwoComponent } from './asset-series-create-step-two.component';
 
-describe('AssetTypeTemplateCreateStepOneComponent', () => {
+describe('AssetTypeTemplateWizardStepOneComponent', () => {
   let component: AssetSeriesCreateStepTwoComponent;
   let fixture: ComponentFixture<AssetSeriesCreateStepTwoComponent>;
 

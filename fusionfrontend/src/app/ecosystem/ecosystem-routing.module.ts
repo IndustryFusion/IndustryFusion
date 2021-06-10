@@ -17,8 +17,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
-import { AssetTypeTemplateListComponent } from './components/content/asset-type-template-list/asset-type-template-list.component';
-import { AssetTypeTemplateEditComponent } from './components/content/asset-type-template-edit/asset-type-template-edit.component';
+import { AssetTypeTemplateListComponent } from './components/content/asset-type-template/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
 import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
@@ -32,7 +31,7 @@ import { QuantityTypesResolver } from '../resolvers/quantity-types.resolver';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
 import { UnitsResolver } from '../resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
-import { AssetTypeTemplateCreateDialogComponent } from './components/content/asset-type-template-create/asset-type-template-create-dialog/asset-type-template-create-dialog.component';
+import { AssetTypeTemplateWizardMainComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { Role } from '../services/roles.model';
 import { EcosystemManagerPageType } from './ecosystem.routing.model';
@@ -58,9 +57,9 @@ const routes: Routes = [
       path: '',
       component: AssetTypeTemplateListComponent
     },
-    {
+    { // TODO: to remove?
       path: 'create',
-      component: AssetTypeTemplateCreateDialogComponent,
+      component: AssetTypeTemplateWizardMainComponent,
       resolve: {
         assetTypes: AssetTypesResolver,
         fields: FieldsResolver,

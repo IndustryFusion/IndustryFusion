@@ -13,10 +13,20 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'components/detailpage';
-@import 'src/app/ecosystem/components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
+import { Component, OnInit } from '@angular/core';
 
-.wrapper {
-  height: 100%;
+import { BaseListHeaderComponent } from '../../base/base-list-header/base-list-header.component';
+
+@Component({
+  selector: 'app-asset-type-template-list-header',
+  templateUrl: './asset-type-template-list-header.component.html',
+  styleUrls: ['./asset-type-template-list-header.component.scss']
+})
+export class AssetTypeTemplateListHeaderComponent extends BaseListHeaderComponent implements OnInit {
+
+  constructor() { super(); }
+
+  ngOnInit() {
+  }
+
 }

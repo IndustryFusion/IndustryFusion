@@ -13,10 +13,11 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'components/detailpage';
-@import 'src/app/ecosystem/components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
-
-.wrapper {
-  height: 100%;
+export enum AssetTypeTemplateWizardSteps {
+  START = 1,
+  METRICS,
+  ATTRIBUTES,
+  OVERVIEW,
+  FINISHED,
+  PUBLISH_CONFIRM
 }

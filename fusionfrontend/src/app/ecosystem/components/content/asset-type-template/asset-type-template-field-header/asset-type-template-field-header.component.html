@@ -1,0 +1,29 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="field-header" [ngStyle]="{'margin-bottom': editable === true ? '' :  '1.0rem'}">
+  <div class="if-label if-label-header col-margin" [ngClass]="editable === true ? 'col-20' : 'col-30'">
+    Custom {{ isMetric ? 'Metric' : 'Attribute' }} name
+  </div>
+  <div class="if-label if-label-header col-margin" [ngClass]="editable === true ? 'col-15' : 'col-20'">
+    {{ isMetric ? 'Metric' : 'Attribute' }} name
+  </div>
+  <div class="if-label if-label-header" [ngClass]="editable === true ? 'col-15' : 'col-20'"> Quantity type </div>
+  <div class="if-label if-label-header"  [ngClass]="editable === true ? 'col-5' : 'col-10'"> Unit </div>
+  <div class="if-label if-label-header col-10"> Accuracy </div>
+  <div class="if-label if-label-header" [ngClass]="editable === true ? 'col-15' : 'col-10'"> Mandatory? </div>
+  <div class="edit-col" *ngIf="editable === true"> </div>
+</div>
+

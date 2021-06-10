@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetSeriesCreateStepOneComponent } from './asset-series-create-step-one.component';
+import { AssetTypeTemplateWizardMainComponent } from './asset-type-template-wizard-main.component';
 
-describe('AssetTypeTemplateWizardStepOneComponent', () => {
-  let component: AssetSeriesCreateStepOneComponent;
-  let fixture: ComponentFixture<AssetSeriesCreateStepOneComponent>;
+describe('AssetTypeTemplateCreateDialogComponent', () => {
+  let component: AssetTypeTemplateWizardMainComponent;
+  let fixture: ComponentFixture<AssetTypeTemplateWizardMainComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetSeriesCreateStepOneComponent ]
+      declarations: [ AssetTypeTemplateWizardMainComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesCreateStepOneComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplateWizardMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

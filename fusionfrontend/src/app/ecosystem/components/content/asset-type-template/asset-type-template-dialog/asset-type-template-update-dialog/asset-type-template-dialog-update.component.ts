@@ -13,10 +13,27 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'components/detailpage';
-@import 'src/app/ecosystem/components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
+import { Component, OnInit } from '@angular/core';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
-.wrapper {
-  height: 100%;
+@Component({
+  selector: 'app-asset-type-template-dialog-update',
+  templateUrl: './asset-type-template-dialog-update.component.html',
+  styleUrls: ['./asset-type-template-dialog-update.component.scss']
+})
+export class AssetTypeTemplateDialogUpdateComponent implements OnInit {
+
+  constructor(public ref: DynamicDialogRef) {
+  }
+
+  ngOnInit(): void {
+  }
+
+  onCancel() {
+    this.ref?.close(false);
+  }
+
+  onUpdate() {
+    this.ref?.close(true);
+  }
 }
