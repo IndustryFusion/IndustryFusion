@@ -45,7 +45,8 @@ under the License.
 
 <div class="footer">
   <button type="button" class="if-button button-cancel" (click)="prevStep()"
-          [disabled]="assetTypeTemplateForm.invalid || this.confirmedMetrics.length !== this.selectedMetrics.length">Back</button>
+          [disabled]="assetTypeTemplateForm.invalid || this.confirmedMetrics.length !== this.selectedMetrics.length ||
+              isEditing">Back</button>
   <button type="button" class="if-button button-confirm button-primary" (click)="nextStep()"
           [disabled]="assetTypeTemplateForm.invalid || this.confirmedMetrics.length !== this.selectedMetrics.length">
     Next</button>

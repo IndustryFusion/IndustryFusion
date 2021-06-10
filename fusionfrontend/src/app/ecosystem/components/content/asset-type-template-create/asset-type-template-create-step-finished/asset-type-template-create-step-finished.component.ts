@@ -24,6 +24,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class AssetTypeTemplateCreateStepFinishedComponent implements OnInit {
 
+  @Input() isEditing: boolean;
   @Input() assetTypeTemplateForm: FormGroup;
 
   constructor(public ref: DynamicDialogRef) { }

@@ -24,8 +24,11 @@ import { FieldsResolver } from '../../../../../resolvers/fields-resolver';
 import { UnitsResolver } from '../../../../../resolvers/units.resolver';
 import { QuantityTypesResolver } from '../../../../../resolvers/quantity-types.resolver';
 import { FormGroup } from '@angular/forms';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplateComposedQuery } from '../../../../../store/composed/asset-type-template-composed.query';
+import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.model';
+import { ID } from '@datorama/akita';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-asset-type-template-create-dialog',
@@ -35,8 +38,12 @@ import { AssetTypeTemplateComposedQuery } from '../../../../../store/composed/as
 export class AssetTypeTemplateCreateDialogComponent implements OnInit {
 
   public assetTypeTemplateForm: FormGroup;
-  public step = 1;
+  public step: AssetTypeTemplateDialogStepType = AssetTypeTemplateDialogStepType.START;
   public assetTypeTemplate: AssetTypeTemplate;
+  public fieldTargetsUnedited: FieldTarget[];
+  public isEditing = false;
+
+  private changes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
               private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
@@ -45,7 +52,8 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
               private fieldsResolver: FieldsResolver,
               private unitsResolver: UnitsResolver,
               private quantityTypesResolver: QuantityTypesResolver,
-              public config: DynamicDialogConfig) { }
+              private ref: DynamicDialogRef,
+              private config: DynamicDialogConfig) { }
 
   ngOnInit() {
     this.assetTypesResolver.resolve().subscribe();
@@ -57,6 +65,17 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
 
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
+
+    if (this.config.data.isEditing) {
+      if (this.assetTypeTemplateForm.get('published')?.value === true) {
+        this.ref.close();
+        return;
+      }
+
+      this.isEditing = true;
+      this.step = AssetTypeTemplateDialogStepType.OVERVIEW;
+      this.onChangeUseOfTemplate(this.assetTypeTemplateForm.get('id')?.value);
+    }
   }
 
   getMetrics(): FieldTarget[] {
@@ -82,8 +101,17 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
   onChangeUseOfTemplate(assetTypeTemplateId: number) {
     if (assetTypeTemplateId) {
       this.fieldTargetService.getItems(assetTypeTemplateId).subscribe(() =>
-        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId).subscribe(
-          x => this.assetTypeTemplate.fieldTargets = x.fieldTargets
+        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId).subscribe(x =>
+          {
+            this.assetTypeTemplate.fieldTargets = x.fieldTargets;
+
+            // TODO: Should only be fired once...
+            if (this.isEditing) {
+              this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
+              console.log('copy old', this.assetTypeTemplate.fieldTargets);
+              console.log('Unedited', this.fieldTargetsUnedited);
+            }
+          }
         )
       );
     } else {
@@ -103,13 +131,79 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
       this.assetTypeTemplate.draftVersion = this.assetTypeTemplateForm.get('draftVersion')?.value;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
 
-      this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, assetTypeId).subscribe(
-        (template) => {
-          this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
-            this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
-          });
-        }
-      );
+      if (this.isEditing) {
+        this.assetTypeTemplate.id = this.assetTypeTemplateForm.get('id')?.value;
+        this.updateTemplate();
+      } else {
+        this.createTemplate(assetTypeId);
+      }
     }
+  }
+
+  private createTemplate(assetTypeId: ID) {
+    this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, assetTypeId).subscribe(
+      (template) => {
+        this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
+          this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
+        });
+      }
+    );
+  }
+
+  private updateTemplate() {
+    this.changes.subscribe(changes => {
+      if (changes) {
+        this.assetTypeTemplate.draftVersion++;
+        this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
+      }
+    });
+    this.addNewFieldTargets();
+    this.updateFieldTargets();
+    this.deleteRemovedFieldTargets();
+  }
+
+  private addNewFieldTargets() {
+    console.log('add', this.assetTypeTemplate.fieldTargets);
+    this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
+      if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) == null) {
+        console.log(fieldTarget.id);
+        this.fieldTargetService.createItem(this.assetTypeTemplate.id, fieldTarget).subscribe();
+        if (!this.changes.getValue()) {
+          this.changes.next(true);
+        }
+      }
+    });
+  }
+
+  private updateFieldTargets() {
+    console.log('update', this.assetTypeTemplate.fieldTargets);
+    this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
+      // Update all existing as version will only be incremented if changes occured
+      if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) != null) {
+        const oldVersion = fieldTarget.version;
+        this.fieldTargetService.editItem(this.assetTypeTemplate.id, fieldTarget)
+          .subscribe(newFieldTarget =>
+          {
+            if (newFieldTarget.version !== oldVersion && !this.changes.getValue()) {
+              this.changes.next(true);
+            }
+          }
+        );
+      }
+    });
+  }
+
+  private deleteRemovedFieldTargets() {
+    console.log('delete', this.fieldTargetsUnedited);
+    this.fieldTargetsUnedited.forEach((fieldTarget) => {
+      if (this.assetTypeTemplate.fieldTargets.find(target => fieldTarget.id === target.id) == null) {
+        console.log(fieldTarget);
+        // TODO: delete not working when references in field_source
+        this.fieldTargetService.deleteItem(this.assetTypeTemplate.id, fieldTarget.id).subscribe();
+        if (!this.changes.getValue()) {
+          this.changes.next(true);
+        }
+      }
+    });
   }
 }
