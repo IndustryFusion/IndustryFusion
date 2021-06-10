@@ -18,7 +18,7 @@ import { ChartDataSets, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable, timer } from 'rxjs';
-import { Field } from 'src/app/store/field/field.model';
+import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { Asset } from 'src/app/store/asset/asset.model';
 import { OispService } from 'src/app/services/oisp.service';
 import { Location as loc } from '@angular/common';
@@ -34,7 +34,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 })
 export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
-  field: Field;
+  field: FieldDetails;
 
   @Input()
   asset: Asset;

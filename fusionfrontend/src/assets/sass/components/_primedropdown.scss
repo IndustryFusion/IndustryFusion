@@ -3,6 +3,7 @@
   background-color: $basic-white !important;
   border: 2px solid $basic-white;
   border-radius: 8px;
+  box-shadow: none !important;
 
   .p-dropdown-label {
     font-weight: bold !important;
@@ -19,8 +20,7 @@
   }
 
   &:hover {
-    border: 2px solid #95989A;
-    box-shadow: none !important;
+    border: 2px solid #95989A !important;
   }
 
   &:focus {
@@ -45,7 +45,9 @@
     box-shadow: none !important;
   }
   &:focus {
-    border: 2px solid $highlighted;
-    box-shadow: none !important;
+    border: 2px solid $highlighted !important;
+  }
+  &.p-focus {
+    border: 2px solid $highlighted !important;
   }
 }

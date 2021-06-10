@@ -14,7 +14,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Field } from 'src/app/store/field/field.model';
+import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { Status } from '../factory/models/status.model';
 import { Asset } from 'src/app/store/asset/asset.model';
 
@@ -23,7 +23,7 @@ import { Asset } from 'src/app/store/asset/asset.model';
 })
 export class StatusService {
 
-  determineStatus(fields: Field[], asset: Asset): Status {
+  determineStatus(fields: FieldDetails[], asset: Asset): Status {
     if (fields.length <= 0) {
       return ({ gotData: false, type: 'nofields', statusValue: 'none'});
     }
@@ -60,7 +60,7 @@ export class StatusService {
     }
   }
 
-  getStatusValue(category: string, fields: Field[]): string {
+  getStatusValue(category: string, fields: FieldDetails[]): string {
     const assetStatusField = fields.filter(field => field.description === 'Asset status')[0];
     const assetWarningField = fields.filter(field => field.description === 'Warning')[0];
     const assetErrorField = fields.filter(field => field.description === 'Alarm')[0];
