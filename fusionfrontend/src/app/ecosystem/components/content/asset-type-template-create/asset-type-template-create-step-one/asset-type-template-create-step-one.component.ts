@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { AssetType } from '../../../../../store/asset-type/asset-type.model';
 import { AssetTypeQuery } from '../../../../../store/asset-type/asset-type.query';
 import { FormGroup } from '@angular/forms';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { map } from 'rxjs/operators';
@@ -39,9 +39,15 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
   public assetTypes$: Observable<AssetType[]>;
   public assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
 
+  public warningDialogRef: DynamicDialogRef;
+
   constructor(private assetTypeQuery: AssetTypeQuery,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-              public ref: DynamicDialogRef) { }
+              private assetTypesComposedQuery: AssetTypesComposedQuery,
+              public ref: DynamicDialogRef,
+              public dialogService: DialogService,
+              private router: Router,
+              public route: ActivatedRoute) { }
 
   ngOnInit() {
     this.assetTypes$ = this.assetTypeQuery.selectAll();
@@ -53,9 +59,28 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
     }
   }
 
-  nextStep() {
+  onStart() {
     if (this.assetTypeTemplateForm?.valid) {
       this.stepChange.emit(AssetTypeTemplateDialogStepType.METRICS);
+      this.existsDraft().then(assetTypeTemplateId => {
+        if (assetTypeTemplateId != null) {
+          this.showWarningDialog(assetTypeTemplateId);
+        } else {
+          this.stepChange.emit(AssetTypeTemplateDialogStepType.METRICS);
+        }
+      });
+    }
+  }
+
+  private showWarningDialog(assetTypeTemplateId: ID) {
+    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateCreateStepWarningComponent, { width: '70%' });
+    this.warningDialogRef.onClose.subscribe((result: boolean | null) => this.onCloseWarningDialog(result, assetTypeTemplateId));
+  }
+
+  onCloseWarningDialog(goToDetails: boolean | null, assetTypeTemplateId: ID) {
+    if (goToDetails != null && assetTypeTemplateId) {
+      this.ref.close();
+      this.router.navigate([assetTypeTemplateId], { relativeTo: this.route }).then();
     }
   }
 
@@ -74,6 +99,15 @@ export class AssetTypeTemplateCreateStepOneComponent implements OnInit {
     if (assetType) {
       this.assetTypeTemplateForm.get('name')?.setValue(assetType.name + ' v.');
     }
+  }
+
+  private existsDraft(): Promise<ID> {
+    const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
+
+    return new Promise<ID>(resolve => {
+      this.assetTypesComposedQuery.selectUnpublishedTemplatesOfAssetType(assetTypeId)
+        .subscribe(assetTypeTemplates => resolve(assetTypeTemplates.length < 1 ? null : assetTypeTemplates[0]?.id));
+    });
   }
 
   onResetUseOfTemplate() {
