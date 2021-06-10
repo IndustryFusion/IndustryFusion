@@ -14,12 +14,12 @@ under the License.
 -->
 
 <div class="content">
-  <div class="title">
+  <div class="title" *ngIf="assetTypeTemplateForm !== undefined">
     <div> Asset Type Template </div>
-    <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
+    <div> {{ assetTypeTemplateForm?.get('name')?.value }} </div>
   </div>
-  <div class="icon"><clr-icon shape="success-standard" class="is-solid"></clr-icon></div>
-  <div class="description">Publishingthis Asset TypeTemplate<br/>will lock it for further editing</div>
+  <div class="icon"><clr-icon shape="exclamation-circle" class="is-solid"></clr-icon></div>
+  <div class="description">Publishing this Asset TypeTemplate<br/>will lock it for further editing</div>
 </div>
 <div class="footer">
   <button type="submit" class="if-button button-cancel" (click)="onBack()">Back</button>

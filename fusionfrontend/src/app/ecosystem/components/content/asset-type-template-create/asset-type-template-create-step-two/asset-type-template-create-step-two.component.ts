@@ -30,6 +30,7 @@ import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.m
 })
 export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
 
+  @Input() isEditing: boolean;
   @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();

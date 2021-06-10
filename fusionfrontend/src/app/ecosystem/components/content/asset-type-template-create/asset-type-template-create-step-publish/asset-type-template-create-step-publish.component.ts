@@ -38,7 +38,7 @@ export class AssetTypeTemplateCreateStepPublishComponent implements OnInit {
   }
 
   onPublish() {
-    this.assetTypeTemplateForm.get('published')?.setValue(true);
+    this.assetTypeTemplateForm?.get('published')?.setValue(true);
     this.saveTemplate.emit();
     this.stepChange.emit(AssetTypeTemplateDialogStepType.FINISHED);
   }

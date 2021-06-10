@@ -24,6 +24,10 @@ import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asse
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { map } from 'rxjs/operators';
 import { AssetTypeTemplateDialogStepType } from '../asset-type-template-create.model';
+import { AssetTypesComposedQuery } from '../../../../../store/composed/asset-types-composed.query';
+import { AssetTypeTemplateCreateStepWarningComponent } from '../asset-type-template-create-step-warning/asset-type-template-create-step-warning.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-type-template-create-step-one',

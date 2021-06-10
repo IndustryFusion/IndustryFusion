@@ -12,12 +12,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
+
 <div class="content">
   <div class="title">
     <div> Review Metrics </div>
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
-
   <div *ngIf="metrics && metrics.length > 0" class="fields-list fields-padding">
     <app-asset-type-template-field-header [isMetric]="true"></app-asset-type-template-field-header>
     <app-asset-type-template-field-row *ngFor="let metric of metrics" [fieldTarget]="metric"
@@ -27,6 +27,7 @@ under the License.
   <button type="button" class="button-add" (click)="onBackToMetrics()">
     <clr-icon shape="plus"></clr-icon>Add Metric
   </button>
+
   <div class="subtitle">Review Attributes</div>
   <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
     <app-asset-type-template-field-header [isMetric]="false"></app-asset-type-template-field-header>
@@ -38,6 +39,7 @@ under the License.
     <clr-icon shape="plus"></clr-icon>Add Attribute
   </button>
 </div>
+
 <div class="footer">
   <button type="button" class="if-button button-cancel" (click)="onBackToAttributes()">Back</button>
   <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">Save & Close Template</button>

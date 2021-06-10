@@ -20,7 +20,6 @@ import { ClarityModule } from '@clr/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
-import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateListHeaderComponent } from './components/content/asset-type-template-list-header/asset-type-template-list-header.component';
 // tslint:disable-next-line:max-line-length
@@ -86,6 +85,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
+import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
 
 @NgModule({
   declarations: [
