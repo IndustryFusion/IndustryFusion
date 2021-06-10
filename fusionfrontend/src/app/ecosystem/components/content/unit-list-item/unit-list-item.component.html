@@ -32,9 +32,9 @@ under the License.
                                                                                                  type="checkbox"/>
   </div>
   <div [routerLink]="item.id" [style.width.%]="30" class="list-item-cell bold black">{{ item.name }}</div>
-  <div [routerLink]="item.id" [style.width.%]="20" class="list-item-cell grey">{{ item.symbol }}</div>
-  <div [routerLink]="item.id" [style.width.%]="20" class="list-item-cell grey">{{ item.quantityType?.name }}</div>
-  <div [routerLink]="item.id" [style.width.%]="20"
+  <div [routerLink]="item.id" [style.width.%]="15" class="list-item-cell grey">{{ item.symbol }}</div>
+  <div [routerLink]="item.id" [style.width.%]="30" class="list-item-cell grey">{{ item.quantityType?.name }}</div>
+  <div [routerLink]="item.id" [style.width.%]="15"
        class="list-item-cell grey">{{ item.createdDate | date:'dd.MM.yyyy'}}</div>
   <div [ngClass]="{'hidden': !selected}" [style.width.%]="5" class="list-item-cell grey">
     <app-item-options-menu (deleteItem)="showDeleteItem()" (editItem)="editItem()"></app-item-options-menu>

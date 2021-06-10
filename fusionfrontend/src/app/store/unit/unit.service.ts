@@ -36,7 +36,7 @@ export class UnitService implements RestService<Unit> {
 
   getItems(): Observable<Unit[]> {
     const path = `units`;
-    return this.http.get<Unit[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+    return this.http.get<Unit[]>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
       .pipe(tap(entities => {
         this.unitStore.upsertMany(entities);
       }));
@@ -44,7 +44,7 @@ export class UnitService implements RestService<Unit> {
 
   getItem(id: ID): Observable<Unit> {
     const path = `units/${id}`;
-    return this.http.get<Unit>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+    return this.http.get<Unit>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
       .pipe(tap(entity => {
         this.unitStore.upsert(id, entity);
       }));
