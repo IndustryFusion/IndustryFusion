@@ -19,6 +19,7 @@ import { BaseEntity } from '../baseentity.model';
 import { Field } from '../field/field.model';
 
 export class FieldTarget extends BaseEntity {
+  version: bigint;
   assetTypeTemplateId: ID;
   fieldId: ID;
   field: Field;

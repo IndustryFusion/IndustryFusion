@@ -76,7 +76,8 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
       useExistingTemplate: [false, Validators.required],
       assetTypeId: [undefined, Validators.required],
       assetTypeTemplateId: [undefined],
-      metric: [undefined]
+      metric: [undefined],
+      draftVersion: [1]
     });
   }
 

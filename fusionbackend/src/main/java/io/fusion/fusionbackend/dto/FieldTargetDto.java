@@ -26,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class FieldTargetDto {
     private Long id;
+    private Long version;
     private Long assetTypeTemplateId;
     private Long fieldId;
     private FieldDto field;

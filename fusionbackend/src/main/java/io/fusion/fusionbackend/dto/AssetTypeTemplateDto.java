@@ -37,6 +37,8 @@ public class AssetTypeTemplateDto extends BaseAssetDto {
     private AssetTypeDto assetType;
     private Boolean published;
     private OffsetDateTime publishedDate;
+    private Long draftVersion;
+
     @Builder.Default
     protected Set<Long> fieldTargetIds = new LinkedHashSet<>();
     @Builder.Default

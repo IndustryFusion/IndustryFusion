@@ -17,6 +17,7 @@ import { ID } from '@datorama/akita';
 
 import { BaseEntity } from '../baseentity.model';
 import { AssetType } from '../asset-type/asset-type.model';
+import { FieldTarget } from '../field-target/field-target.model';
 
 export class AssetTypeTemplate extends BaseEntity {
   version: bigint;
@@ -27,6 +28,7 @@ export class AssetTypeTemplate extends BaseEntity {
   assetType: AssetType;
   published: boolean;
   publishedDate: Date;
+  draftVersion: bigint;
   fieldTargetIds: Array<ID>;
-  fieldTargets: Array<any>;
+  fieldTargets: Array<FieldTarget>;
 }

@@ -69,6 +69,7 @@ public class AssetTypeTemplate extends BaseAsset {
 
     private Boolean published;
     private OffsetDateTime publishedDate;
+    private Long draftVersion;
 
     public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
         super.copyFrom(sourceAssetTypeTemplate);
@@ -78,6 +79,9 @@ public class AssetTypeTemplate extends BaseAsset {
         }
         if (sourceAssetTypeTemplate.getPublishedDate() != null) {
             setPublishedDate(sourceAssetTypeTemplate.getPublishedDate());
+        }
+        if (sourceAssetTypeTemplate.getDraftVersion() != null) {
+            setDraftVersion(sourceAssetTypeTemplate.getDraftVersion());
         }
     }
 }

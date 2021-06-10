@@ -31,6 +31,7 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
         }
         return FieldTargetDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .mandatory(entity.getMandatory())
                 .name(entity.getName())
                 .fieldType(entity.getFieldType())
@@ -57,6 +58,7 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
         }
         return FieldTarget.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .mandatory(dto.getMandatory())
                 .name(dto.getName())
                 .fieldType(dto.getFieldType())

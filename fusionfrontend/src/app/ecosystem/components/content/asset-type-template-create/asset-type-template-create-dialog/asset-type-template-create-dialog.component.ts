@@ -100,6 +100,7 @@ export class AssetTypeTemplateCreateDialogComponent implements OnInit {
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.published = this.assetTypeTemplateForm.get('published')?.value;
       this.assetTypeTemplate.imageKey = null;
+      this.assetTypeTemplate.draftVersion = this.assetTypeTemplateForm.get('draftVersion')?.value;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
 
       this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, assetTypeId).subscribe(
