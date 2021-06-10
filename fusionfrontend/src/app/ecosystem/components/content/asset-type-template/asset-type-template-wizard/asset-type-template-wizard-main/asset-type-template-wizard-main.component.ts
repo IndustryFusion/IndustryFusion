@@ -23,7 +23,7 @@ import { AssetTypesResolver } from '../../../../../../resolvers/asset-types.reso
 import { FieldsResolver } from '../../../../../../resolvers/fields-resolver';
 import { UnitsResolver } from '../../../../../../resolvers/units.resolver';
 import { QuantityTypesResolver } from '../../../../../../resolvers/quantity-types.resolver';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplateComposedQuery } from '../../../../../../store/composed/asset-type-template-composed.query';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
@@ -52,6 +52,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
               private fieldsResolver: FieldsResolver,
               private unitsResolver: UnitsResolver,
               private quantityTypesResolver: QuantityTypesResolver,
+              private formBuilder: FormBuilder,
               private ref: DynamicDialogRef,
               private config: DynamicDialogConfig) { }
 
@@ -61,7 +62,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
 
-    this.assetTypeTemplateForm = this.config.data.assetTypeTemplateForm;
+    this.createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate);
 
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
@@ -138,6 +139,22 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
         this.createTemplate(assetTypeId);
       }
     }
+  }
+
+  private createAssetTypeTemplateForm(formBuilder: FormBuilder, assetTypeTemplate: AssetTypeTemplate) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    this.assetTypeTemplateForm = formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      published: [false],
+      useExistingTemplate: [false, Validators.required],
+      assetTypeId: [undefined, Validators.required],
+      assetTypeTemplateId: [],
+      metric: [],
+      draftVersion: []
+    });
+    this.assetTypeTemplateForm.patchValue(assetTypeTemplate);
   }
 
   private createTemplate(assetTypeId: ID) {

@@ -13,8 +13,9 @@
 * under the License.
 */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { ItemOptionsMenuType } from './item-options-menu.type';
 
 @Component({
   selector: 'app-item-options-menu',
@@ -23,18 +24,36 @@ import { MenuItem } from 'primeng/api';
 })
 export class ItemOptionsMenuComponent implements OnInit {
 
+  @Input() type: ItemOptionsMenuType;
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
-  menuActions: MenuItem[];
+  public menuActions: MenuItem[];
 
   constructor() {
-    this.menuActions = [
-      { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.onEditClick(); } },
-      { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
-    ];
   }
 
   ngOnInit(): void {
+    switch (this.type) {
+      case ItemOptionsMenuType.DELETE:
+        this.menuActions = [
+          { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+        ];
+        break;
+
+      case ItemOptionsMenuType.UPDATE_DELETE:
+        this.menuActions = [
+          { label: 'Update', icon: 'pi pi-fw pi-refresh', command: (_) => { this.onEditClick(); } },
+          { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+        ];
+        break;
+
+      default:
+        this.menuActions = [
+          { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.onEditClick(); } },
+          { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+        ];
+        break;
+    }
   }
 
   onEditClick() {
@@ -44,6 +63,5 @@ export class ItemOptionsMenuComponent implements OnInit {
   onDeleteClick() {
     this.deleteItem.emit();
   }
-
 
 }
