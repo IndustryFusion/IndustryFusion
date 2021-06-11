@@ -52,7 +52,7 @@ export class UnitDialogComponent implements OnInit {
       name: [unit?.name, Validators.maxLength(255)],
       label: [unit?.label, Validators.maxLength(255)],
       symbol: [unit?.symbol, Validators.maxLength(255)],
-      quantityTypeId: [unit?.quantityTypeId, Validators.required],
+      quantityTypeId: [unit?.quantityType?.id, Validators.required],
     });
   }
 

@@ -73,7 +73,7 @@ export class UnitPageComponent implements OnInit {
       const patchedUnit = { ...unit, ...modifiedUnit };
       this.quantityTypeService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
         patchedUnit.quantityType = quantityType;
-        this.unitService.editUnit(unit.quantityTypeId, unit.id, patchedUnit).subscribe();
+        this.unitService.editUnit(unit.quantityType?.id, unit.id, patchedUnit).subscribe();
       });
     }
   }

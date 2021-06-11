@@ -16,7 +16,7 @@
 import { RestService } from 'src/app/services/rest.service';
 import { Injectable } from '@angular/core';
 import { Unit } from './unit.model';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { environment } from '../../../environments/environment';
@@ -32,7 +32,8 @@ export class UnitService implements RestService<Unit> {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private unitStore: UnitStore, private http: HttpClient) { }
+  constructor(private unitStore: UnitStore, private http: HttpClient) {
+  }
 
   getItems(): Observable<Unit[]> {
     const path = `units`;
@@ -80,7 +81,7 @@ export class UnitService implements RestService<Unit> {
 
   createUnit(quantityTypeId: ID, item: Unit): Observable<Unit> {
     const path = `quantitytypes/${quantityTypeId}/units`;
-    return this.http.post<Unit>(`${environment.apiUrlPrefix}/${path}`, item, this.httpOptions)
+    return this.http.post<Unit>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, item, this.httpOptions)
       .pipe(
         tap(entity => {
           this.unitStore.upsert(entity.id, entity);
@@ -89,7 +90,7 @@ export class UnitService implements RestService<Unit> {
 
   editUnit(quantityTypeId: ID, id: ID, item: Unit): Observable<Unit> {
     const path = `quantitytypes/${quantityTypeId}/units/${id}`;
-    return this.http.patch<Unit>(`${environment.apiUrlPrefix}/${path}`, item, this.httpOptions)
+    return this.http.patch<Unit>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, item, this.httpOptions)
       .pipe(
         tap(entity => {
           this.unitStore.upsert(id, entity);

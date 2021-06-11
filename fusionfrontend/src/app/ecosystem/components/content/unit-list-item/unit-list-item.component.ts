@@ -61,7 +61,7 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
       const patchedUnit = { ...this.item, ...unit };
       this.quantityTypeService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
         patchedUnit.quantityType = quantityType;
-        this.unitService.editUnit(this.item.quantityTypeId, this.item.id, patchedUnit).subscribe();
+        this.unitService.editUnit(this.item.quantityType.id, this.item.id, patchedUnit).subscribe();
       });
     }
   }
