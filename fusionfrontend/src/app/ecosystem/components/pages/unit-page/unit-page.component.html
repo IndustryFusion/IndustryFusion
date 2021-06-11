@@ -20,17 +20,22 @@ under the License.
       <app-edit-details-button (click)="showDialog()"></app-edit-details-button>
     </div>
 
-    <div *ngIf="(unit$ | async)?.symbol" class="if-detail-page-label">
-      <p>Symbol: {{ (unit$ | async)?.symbol }}</p>
+    <div *ngIf="(unit$ | async)?.symbol" class="row">
+      <label class="label-column"> Symbol </label>
+      <label class="if-detail-page-label"> {{ (unit$ | async)?.symbol }} </label>
     </div>
-    <div *ngIf="(unit$ | async)?.label" class="if-detail-page-label">
-      <p>Label: {{ (unit$ | async)?.label }}</p>
+    <div *ngIf="(unit$ | async)?.label" class="row">
+      <label class="label-column"> Label </label>
+      <label class="if-detail-page-label"> {{ (unit$ | async)?.label }} </label>
     </div>
-    <div *ngIf="(unit$ | async)?.createdDate" class="if-detail-page-label">
-      <p>Created: {{ (unit$ | async)?.createdDate | date:'dd.MM.yyyy' }}</p>
+    <div class="row" *ngIf="(unit$ | async)?.quantityType?.name">
+      <label class="label-column"> Quantity Type </label>
+      <label class="if-detail-page-label"> {{ (unit$ | async)?.quantityType?.name }} </label>
     </div>
-    <div class="if-detail-page-label">
-      <p>Quantity Type: {{ (quantityType$ | async)?.name }}</p>
+    <div *ngIf="(unit$ | async)?.createdDate" class="row">
+      <label class="label-column"> Created </label>
+      <label class="if-detail-page-label"> {{ (unit$ | async)?.createdDate | date:'dd.MM.yyyy'  }} </label>
     </div>
+
   </div>
 </section>

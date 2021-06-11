@@ -19,9 +19,7 @@ import { Unit } from '../../../../store/unit/unit.model';
 import { ActivatedRoute } from '@angular/router';
 import { UnitService } from '../../../../store/unit/unit.service';
 import { UnitQuery } from '../../../../store/unit/unit.query';
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
-import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { first } from 'rxjs/operators';
@@ -36,15 +34,13 @@ import { UnitDialogComponent } from '../../content/unit-dialog/unit-dialog.compo
 export class UnitPageComponent implements OnInit {
 
   unit$: Observable<Unit>;
-  quantityType$: Observable<QuantityType>;
 
   constructor(private activatedRoute: ActivatedRoute,
               private ecoSystemManagerResolver: EcoSystemManagerResolver,
               private unitService: UnitService,
               private unitQuery: UnitQuery,
               private dialogService: DialogService,
-              private quantityTypeService: QuantityTypeService,
-              private quantityTypeQuery: QuantityTypeQuery) {
+              private quantityTypeService: QuantityTypeService) {
   }
 
   ngOnInit(): void {
@@ -57,10 +53,6 @@ export class UnitPageComponent implements OnInit {
     if (unitId != null) {
       this.unitService.setActive(unitId);
       this.unit$ = this.unitQuery.selectActive();
-      this.unit$.subscribe((unit) => {
-        this.quantityTypeService.setActive(unit?.quantityTypeId);
-        this.quantityType$ = this.quantityTypeQuery.selectActive();
-      });
     }
   }
 
