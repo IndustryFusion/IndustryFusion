@@ -20,9 +20,9 @@ import { QuantityType } from '../quantity-type/quantity-type.model';
 
 export class Unit extends BaseEntity {
   name: string;
-  description: string;
   symbol: string;
   label: string;
+  createdDate: Date;
   quantityTypeId: ID;
   quantityType: QuantityType;
 }

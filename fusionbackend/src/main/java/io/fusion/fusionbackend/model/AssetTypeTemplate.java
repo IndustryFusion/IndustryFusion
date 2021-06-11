@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -67,7 +68,9 @@ public class AssetTypeTemplate extends BaseAsset {
     @JoinColumn(name = "asset_type_id", nullable = false)
     private AssetType assetType;
 
+    @Formula("published_date is not null")
     private Boolean published;
+
     private OffsetDateTime publishedDate;
     private Long draftVersion;
 

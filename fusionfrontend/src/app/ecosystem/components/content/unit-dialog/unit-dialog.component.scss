@@ -13,25 +13,33 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+@import "abstract/variables";
 
-@Component({
-  selector: 'app-edit-button',
-  templateUrl: './edit-button.component.html',
-  styleUrls: ['./edit-button.component.scss']
-})
-export class EditButtonComponent implements OnInit {
+:host ::ng-deep .quantity-dropdown {
+  min-width: 100% !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 0;
+}
 
-  @Output() editItem = new EventEmitter<void>();
+:host ::ng-deep .symbol-input {
+  min-width: 100% !important;
+}
 
-  constructor() {
+.create-unit {
+
+  .footer-buttons {
+    text-align: right;
+    margin-top: 50px;
+    margin-bottom: 30px;
   }
 
-  ngOnInit(): void {
+  .input-div {
+    padding-bottom: 24px;
   }
 
-  onClick() {
-    this.editItem.emit();
+  .stretch-box {
+    flex: 1;
   }
 
 }

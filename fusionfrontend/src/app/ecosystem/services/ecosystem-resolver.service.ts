@@ -20,6 +20,7 @@ import { AssetTypeQuery } from '../../store/asset-type/asset-type.query';
 import { AssetType } from '../../store/asset-type/asset-type.model';
 import { EcosystemManagerPageType, RouteData } from '../ecosystem.routing.model';
 import { QuantityTypeQuery } from '../../store/quantity-type/quantity-type.query';
+import { UnitQuery } from '../../store/unit/unit.query';
 import { FieldQuery } from '../../store/field/field-query.service';
 import { AssetTypeTemplateQuery } from '../../store/asset-type-template/asset-type-template.query';
 
@@ -31,6 +32,7 @@ export class EcoSystemManagerResolver {
   public ecoSystemManagerSubTitle$: Subject<string>;
 
   constructor(private assetTypeQuery: AssetTypeQuery,
+              private unitQuery: UnitQuery,
               private fieldQuery: FieldQuery,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
               private quantityTypeQuery: QuantityTypeQuery) {
@@ -43,7 +45,7 @@ export class EcoSystemManagerResolver {
     if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_DETAIL)) {
       this.assetTypeQuery
         .waitForActive()
-        .subscribe(assetType => this.ecoSystemManagerSubTitle$.next('Asset Types > ' + assetType.name));
+        .subscribe(assetType => this.ecoSystemManagerSubTitle$.next(`Asset Types > ${assetType.name}`));
     }
     else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Asset Types');
@@ -60,7 +62,7 @@ export class EcoSystemManagerResolver {
     else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_DETAIL)) {
       this.quantityTypeQuery
         .waitForActive()
-        .subscribe(quantityType => this.ecoSystemManagerSubTitle$.next('Quantity Types > ' + quantityType.name));
+        .subscribe(quantityType => this.ecoSystemManagerSubTitle$.next(`Quantity Types > ${quantityType.name}`));
     }
     else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL)) {
       this.assetTypeTemplateQuery
@@ -74,6 +76,11 @@ export class EcoSystemManagerResolver {
     }
     else if (pageTypes.includes(EcosystemManagerPageType.UNIT_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Units');
+    }
+    else if (pageTypes.includes(EcosystemManagerPageType.UNIT_DETAIL)) {
+      this.unitQuery
+        .waitForActive()
+        .subscribe(unit => this.ecoSystemManagerSubTitle$.next(`Units > ${unit.name}`));
     }
     else {
       this.ecoSystemManagerSubTitle$.next('Apps');

@@ -83,8 +83,7 @@ Example:
     1. `keycloak.credentials.secret`: Set it to the secret value, which has been generated during the keycloak set up.
 
 #### Import Sample Data
-1. Change temporary the setting `spring.jpa.hibernate.ddl-auto` in the `application-dev.yaml` from 'validate' to 'create'.
-1. Start the fusionbackend run configuration. This creates the database schema
+1. Start the fusionbackend run configuration. This creates the database schema based on Flyway migrations.
 1. Import sample data by using the file [demoinserts.sql (located on internal SharePoint)](https://iteratec.sharepoint.com/sites/m365_industryfusion_foundation/Freigegebene%20Dokumente/Entwicklung/demoinserts.sql).
 1. Stop the fusionbackend run configuration.
 1. Change back the setting `spring.jpa.hibernate.ddl-auto` in the `application-dev.yaml` from 'create' to 'validate'.

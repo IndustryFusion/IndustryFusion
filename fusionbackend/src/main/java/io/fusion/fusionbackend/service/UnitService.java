@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Set;
 
 @Service
@@ -67,6 +68,7 @@ public class UnitService {
         final QuantityType quantityType = quantityTypeService.getQuantityType(quantityTypeId);
 
         unit.setQuantityType(quantityType);
+        unit.setCreatedDate(new Date());
         quantityType.getUnits().add(unit);
         return unitRepository.save(unit);
     }
