@@ -33,6 +33,6 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="item.id">{{ item?.assetSeriesCount }}</div>
   <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="item.id">{{ item?.assetCount }}</div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
-    <app-item-options-menu (editItem)="showEditDialog()"  (deleteItem)="showDeleteItem()"></app-item-options-menu>
+    <app-item-options-menu (editItem)="showEditDialog()" (deleteItem)="showDeleteItem()"></app-item-options-menu>
   </div>
 </div>

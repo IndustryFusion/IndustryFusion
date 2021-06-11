@@ -13,15 +13,14 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogService } from 'primeng/dynamicdialog';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssetTypeEditComponent } from '../asset-type-edit/asset-type-edit.component';
+import { AssetTypeEditDialogComponent } from '../asset-type-edit/asset-type-edit-dialog.component';
 
 
 @Component({
@@ -30,62 +29,38 @@ import { AssetTypeEditComponent } from '../asset-type-edit/asset-type-edit.compo
   styleUrls: ['./asset-type-list-item.component.scss'],
   providers: [DialogService]
 })
-export class AssetTypeListItemComponent extends BaseListItemComponent implements OnInit, OnDestroy {
+export class AssetTypeListItemComponent extends BaseListItemComponent implements OnInit {
 
-  @Input()
-  public item: AssetTypeDetails;
-
-  public assetTypeForm: FormGroup;
-  public ref: DynamicDialogRef;
+  @Input()  item: AssetTypeDetails;
 
   constructor(public route: ActivatedRoute,
               public router: Router,
               public assetTypeService: AssetTypeService,
-              private formBuilder: FormBuilder,
-              public dialogService: DialogService) {
+              private dialogService: DialogService) {
     super(route, router, assetTypeService);
   }
 
   ngOnInit() {
+    super.ngOnInit();
   }
 
-  showEditDialog() {
-      this.createAssetTypeForm(this.formBuilder, this.item);
-      this.assetTypeService.setActive(this.item.id);
+  showEditDialog(): void {
+    const assetType: AssetType = AssetTypeListItemComponent.assetTypeFromDetails(this.item);
 
-      const ref = this.dialogService.open(AssetTypeEditComponent, {
-        data: {
-          assetTypeForm: this.assetTypeForm
-        },
-        header: `Edit Asset type (${this.assetTypeForm.get('name').value})`,
-      });
-
-      ref.onClose.subscribe((assetType: AssetType) => this.onCloseEditDialog(assetType));
-  }
-
-  createAssetTypeForm(formBuilder: FormBuilder, assetTypeToEdit: AssetTypeDetails) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-
-    this.assetTypeForm = formBuilder.group({
-      id: [],
-      name: ['', requiredTextValidator],
-      label: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)]
+    const ref = this.dialogService.open(AssetTypeEditDialogComponent, {
+      data: {
+        assetType
+      },
+      header: `Edit Asset type (${assetType?.name})`,
     });
-    this.assetTypeForm.patchValue(assetTypeToEdit);
-  }
 
-  onCloseEditDialog(item: AssetType) {
-    if (item) {
-      this.assetTypeService.editItem(item.id, item).subscribe();
-      this.updateUI(item);
-    }
+    ref.onClose.subscribe(value => this.updateUI(value));
   }
 
   updateUI(assetType: AssetType) {
-    const assetTypeDetails: AssetTypeDetails = new AssetTypeDetails();
+    const assetTypeDetails = new AssetTypeDetails();
 
-    assetTypeDetails.id = this.item.id;
+    assetTypeDetails.id = assetType.id;
     assetTypeDetails.name = assetType.name;
     assetTypeDetails.label = assetType.label;
     assetTypeDetails.description = assetType.description;
@@ -96,9 +71,13 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
     this.item = assetTypeDetails;
   }
 
-  ngOnDestroy() {
-    if (this.ref) {
-      this.ref.close();
-    }
+  private static assetTypeFromDetails(assetTypeDetails: AssetTypeDetails): AssetType {
+    const assetType: AssetType = new AssetType();
+    assetType.id = assetTypeDetails.id;
+    assetType.name = assetTypeDetails.name;
+    assetType.label = assetTypeDetails.label;
+    assetType.description = assetTypeDetails.description;
+
+    return assetType;
   }
 }

@@ -79,6 +79,8 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
 import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
 import { AssetTypeTemplateWizardWarningDialogComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { MenuModule } from 'primeng/menu';
+import { ButtonModule } from 'primeng/button';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';

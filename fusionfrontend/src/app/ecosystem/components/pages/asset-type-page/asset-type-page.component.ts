@@ -23,6 +23,8 @@ import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-t
 import { AssetTypesComposedQuery } from '../../../../store/composed/asset-types-composed.query';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import { AssetTypeEditDialogComponent } from '../../content/asset-type-edit/asset-type-edit-dialog.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-type-details-page',
@@ -41,7 +43,8 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
               private assetTypeService: AssetTypeService,
               private activatedRoute: ActivatedRoute,
               private assetTypesComposedQuery: AssetTypesComposedQuery,
-              private ecoSystemManagerResolver: EcoSystemManagerResolver) { }
+              private ecoSystemManagerResolver: EcoSystemManagerResolver,
+              public dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.assetTypeQuery.selectLoading();
@@ -61,5 +64,17 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
       this.assetTypeId = assetTypeId;
       this.assetTypeService.setActive(assetTypeId);
     }
+  }
+
+  showEditDialog(): void {
+    let assetType: AssetType;
+    this.assetType$.subscribe(x => assetType = x);
+
+    this.dialogService.open(AssetTypeEditDialogComponent, {
+      data: {
+        assetType
+      },
+      header: `Edit Asset type (${assetType?.name})`,
+    });
   }
 }
