@@ -394,49 +394,42 @@ class FusionbackendApplicationTests {
     void createPressureUnits() {
         UnitDto unitDto = UnitDto.builder()
                 .name("Pascal")
-                .description("Pascal unit")
                 .symbol("pa")
                 .build();
         unitIdPa = createAndTestUnit(quantityTypePressureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Pounds per square inch")
-                .description("PSI unit")
                 .symbol("psi")
                 .build();
         unitIdPsi = createAndTestUnit(quantityTypePressureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Meter")
-                .description("Meter unit")
                 .symbol("m")
                 .build();
         unitIdMeter = createAndTestUnit(quantityTypeMassId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Inch")
-                .description("Inch unit")
                 .symbol("in")
                 .build();
         unitIdInch = createAndTestUnit(quantityTypeMassId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Count")
-                .description("Count unit")
                 .symbol("")
                 .build();
         unitIdCount = createAndTestUnit(quantityTypeCountId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Celcius")
-                .description("Celcius unit")
                 .symbol("")
                 .build();
         unitIdCelcius = createAndTestUnit(quantityTypeTemperatureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Fahrenheit")
-                .description("Fahrenheit unit")
                 .symbol("")
                 .build();
         unitIdFahrenheit = createAndTestUnit(quantityTypeTemperatureId, unitDto);

@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { UnitCreateComponent } from './unit-create.component';
+import { UnitDialogComponent } from './unit-dialog.component';
 
-describe('UnitCreateComponent', () => {
-  let component: UnitCreateComponent;
-  let fixture: ComponentFixture<UnitCreateComponent>;
+describe('UnitDialogComponent', () => {
+  let component: UnitDialogComponent;
+  let fixture: ComponentFixture<UnitDialogComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UnitCreateComponent ]
+      declarations: [ UnitDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UnitCreateComponent);
+    fixture = TestBed.createComponent(UnitDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

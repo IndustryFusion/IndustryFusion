@@ -50,7 +50,7 @@ import { UnitListHeaderComponent } from './components/content/unit-list-header/u
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
 import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
-import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
+import { UnitDialogComponent } from './components/content/unit-dialog/unit-dialog.component';
 import { FieldDialogContentComponent } from './components/content/field-dialog/field-dialog-content/field-dialog-content.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateWizardStepOneComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-one/asset-type-template-wizard-step-one.component';
@@ -87,6 +87,7 @@ import { AssetTypeTemplateDialogPublishComponent } from './components/content/as
 import { AssetTypeTemplateDialogUpdateComponent } from './components/content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template-field-row/asset-type-template-field-row.component';
 import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template-field-header/asset-type-template-field-header.component';
+import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     EcosystemPageTitleComponent,
     FieldsPageComponent,
     QuantityTypesPageComponent,
+    UnitPageComponent,
     UnitsPageComponent,
     AssetTypesPageComponent,
     AssetTypeListComponent,
@@ -119,8 +121,8 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     UnitListItemComponent,
     AssetTypeCreateComponent,
     QuantityTypeDialogContentComponent,
-    UnitCreateComponent,
     FieldDialogContentComponent,
+    UnitDialogComponent,
     AssetTypeTemplateWizardStepOneComponent,
     AssetTypeTemplateWizardStepTwoComponent,
     AssetTypeTemplateWizardStepThreeComponent,
@@ -165,4 +167,5 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     DialogService
   ]
 })
-export class EcosystemModule { }
+export class EcosystemModule {
+}

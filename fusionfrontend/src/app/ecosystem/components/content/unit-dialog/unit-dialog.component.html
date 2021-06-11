@@ -1,0 +1,45 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<div class="create-unit">
+  <form [formGroup]="unitForm">
+    <div class="p-grid p-dir-col input-div">
+      <label class="if-label p-col">Unit name</label>
+      <input class="p-col" formControlName="name" pInputText placeholder="Unit name" type="text"/>
+    </div>
+    <div class="p-grid input-div">
+      <div class="p-col-6 p-grid">
+        <label class="if-label p-col">Symbol</label>
+        <input class="p-col symbol-input" formControlName="symbol" pInputText placeholder="Symbol"
+               type="text"/>
+      </div>
+      <div class="stretch-box"></div>
+      <div class="p-col-6 p-grid">
+        <label class="if-label p-col">Quantity Type *</label>
+        <p-dropdown [options]="quantityTypes$ | async" class="p-col quantity-dropdown" formControlName="quantityTypeId"
+                    optionLabel="name" optionValue="id" placeholder="Quantity type"></p-dropdown>
+      </div>
+    </div>
+    <div class="p-grid p-dir-col input-div">
+      <label class="if-label p-col">Label</label>
+      <input class="p-col" formControlName="label" pInputText placeholder="Label" type="text"/>
+    </div>
+    <div class="footer-buttons">
+      <button (click)="dismissModal()" class="if-button-cancel" type="button">Cancel</button>
+      <button (click)="confirmModal()" [disabled]="unitForm.invalid" class="if-button button-primary" type="button">
+        {{ editMode ? 'Update' : 'Create'}}
+      </button>
+    </div>
+  </form>
+</div>

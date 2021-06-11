@@ -38,6 +38,7 @@ import { AssetTypePageComponent } from './components/pages/asset-type-page/asset
 import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
+import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 
 const routes: Routes = [
@@ -174,11 +175,26 @@ const routes: Routes = [
       path: '',
       component: UnitListComponent,
     }]
-  }
+  },
+  {
+    path: 'ecosystemmanager/units/:unitId',
+    component: UnitPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    resolve: {
+      quantityTypes: QuantityTypesResolver,
+      units: UnitsResolver,
+    },
+    data: {
+      pageTypes: [EcosystemManagerPageType.UNIT_DETAIL],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
+    children: []
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class EcosystemRoutingModule { }
+export class EcosystemRoutingModule {
+}

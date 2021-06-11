@@ -57,17 +57,19 @@ public class UnitRestService {
 
     @PostMapping(path = "/quantitytypes/{quantityTypeId}/units")
     public UnitDto createUnitOfQuantityType(@PathVariable final Long quantityTypeId,
-                                            @RequestBody final UnitDto unitDto) {
+                                            @RequestBody final UnitDto unitDto,
+                                            @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return unitMapper.toDto(unitService.createUnit(quantityTypeId, unitMapper.toEntity(unitDto)),
-                false);
+                embedChildren);
     }
 
     @PatchMapping(path = "/quantitytypes/{quantityTypeId}/units/{unitId}")
     public UnitDto updateUnitOfQuantityType(@PathVariable final Long quantityTypeId,
                                             @PathVariable final Long unitId,
-                                            @RequestBody final UnitDto unitDto) {
+                                            @RequestBody final UnitDto unitDto,
+                                            @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return unitMapper.toDto(unitService.updateUnit(quantityTypeId, unitId, unitMapper.toEntity(unitDto)),
-                false);
+                embedChildren);
     }
 
     @DeleteMapping(path = "/quantitytypes/{quantityTypeId}/units/{unitId}")

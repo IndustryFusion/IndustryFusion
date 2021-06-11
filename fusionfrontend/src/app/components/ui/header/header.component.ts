@@ -30,11 +30,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private unSubscribe$ = new Subject<void>();
 
   @Input()
-  factorySubTitle: string;
-
+  factorySubTitle$: Subject<string>;
   @Input()
-  ecoSystemManagerSubTitle: string;
-
+  ecoSystemManagerSubTitle$: Subject<string>;
   @Input()
   user: User;
 

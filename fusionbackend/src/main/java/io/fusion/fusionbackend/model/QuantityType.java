@@ -47,7 +47,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class QuantityType extends BaseEntity {
     @Builder.Default
-    @OneToMany(mappedBy = "quantityType")
+    @OneToMany(mappedBy = "quantityType", fetch = FetchType.EAGER)
     private Set<Unit> units = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER)
