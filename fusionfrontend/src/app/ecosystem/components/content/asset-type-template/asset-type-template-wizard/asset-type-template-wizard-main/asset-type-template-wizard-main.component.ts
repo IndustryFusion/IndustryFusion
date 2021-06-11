@@ -157,7 +157,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       assetTypeId: [undefined, Validators.required],
       assetTypeTemplateId: [],
       metric: [],
-      draftVersion: []
+      draftVersion: [1]
     });
     this.assetTypeTemplateForm.patchValue(assetTypeTemplate);
   }

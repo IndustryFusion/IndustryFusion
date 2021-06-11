@@ -22,7 +22,7 @@ import { AssetTypeTemplateService } from '../../../../../store/asset-type-templa
 import { Observable } from 'rxjs';
 import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 
 @Component({
@@ -54,8 +54,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
     public router: Router,
     public assetTypeTemplateQuery: AssetTypeTemplateQuery,
     public assetTypeTemplateService: AssetTypeTemplateService,
-    public dialogService: DialogService,
-    private formBuilder: FormBuilder) {
+    public dialogService: DialogService) {
       super(route, router, assetTypeTemplateQuery, assetTypeTemplateService);
      }
 
@@ -67,26 +66,9 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
     }
   }
 
-  private createAssetTypeTemplateForm(formBuilder: FormBuilder) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    this.assetTypeTemplateForm = formBuilder.group({
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
-      published: [false],
-      useExistingTemplate: [false, Validators.required],
-      assetTypeId: [undefined, Validators.required],
-      assetTypeTemplateId: [undefined],
-      metric: [undefined],
-      draftVersion: [1]
-    });
-  }
-
   onCreate() {
-    this.createAssetTypeTemplateForm(this.formBuilder);
-
     this.ref = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
       data: {
-        assetTypeTemplateForm: this.assetTypeTemplateForm,
         isEditing: false
       },
       header: `Asset Type Template Editor`,
