@@ -14,22 +14,21 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AssetTypeTemplatesPageComponent } from './asset-type-templates-page.component';
 
-import { AssetTypeTemplatePageComponent } from './asset-type-template-page.component';
-
-describe('AssetTypeTemplateComponent', () => {
-  let component: AssetTypeTemplatePageComponent;
-  let fixture: ComponentFixture<AssetTypeTemplatePageComponent>;
+describe('AssetTypeTemplatesComponent', () => {
+  let component: AssetTypeTemplatesPageComponent;
+  let fixture: ComponentFixture<AssetTypeTemplatesPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetTypeTemplatePageComponent ]
+      declarations: [ AssetTypeTemplatesPageComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeTemplatePageComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplatesPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

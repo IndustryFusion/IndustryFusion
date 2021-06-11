@@ -13,6 +13,43 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="wrapper">
-  <router-outlet></router-outlet>
+<section class="if-detail-page-section">
+  <div class="if-detail-page-div">
+    <div class="row clr-justify-content-between clr-align-items-center">
+      <h3> Asset type template ({{ assetTypeTemplate?.name }}) </h3>
+      <div class="button-section">
+        <p class="if-label" style="display: inline-block" *ngIf="assetTypeTemplate?.published === true">
+          published on<br>
+          <label class="if-label if-label-medium">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</label>
+        </p>
+
+        <button class="if-button-update" (click)="onUpdate()" *ngIf="assetTypeTemplate?.published === false">
+          <i class="pi pi-refresh" style="font-size: 0.7rem"></i> Update
+        </button>
+        <button class="if-button-publish" (click)="onPublish()" *ngIf="assetTypeTemplate?.published === false">
+          <i class="pi pi-cloud-upload" style="font-size: 0.8rem"></i> Publish
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="content if-detail-page-div wrapper">
+  <div class="title">
+    <div> Metrics </div>
+  </div>
+  <div *ngIf="metrics && metrics.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-field-header [isMetric]="true" [editable]="false"></app-asset-type-template-field-header>
+    <app-asset-type-template-field-row *ngFor="let metric of metrics" [fieldTarget]="metric"
+                                       [confirmed]="true" [editable]="false">
+    </app-asset-type-template-field-row>
+  </div>
+
+  <div class="subtitle">Attributes</div>
+  <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-field-header [isMetric]="false" [editable]="false"></app-asset-type-template-field-header>
+    <app-asset-type-template-field-row *ngFor="let metric of attributes" [fieldTarget]="metric"
+                                       [confirmed]="true" [editable]="false">
+    </app-asset-type-template-field-row>
+  </div>
 </div>

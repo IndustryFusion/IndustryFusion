@@ -39,11 +39,12 @@ import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolv
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
+import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
 
 const routes: Routes = [
   {
     path: 'ecosystemmanager/assettypetemplate',
-    component: AssetTypeTemplatePageComponent,
+    component: AssetTypeTemplatesPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
       templates: AssetTypeTemplatesResolver,
@@ -55,6 +56,18 @@ const routes: Routes = [
     children: [{
       path: '',
       component: AssetTypeTemplateListComponent
+    },
+    {
+      path: ':id',
+      component: AssetTypeTemplatePageComponent,
+      resolve: {
+        assetTypes: AssetTypesResolver,
+        fields: FieldsResolver
+      },
+      data: {
+        pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL],
+        roles: [Role.ECOSYSTEM_MANAGER]
+      },
     }]
   },
   {
