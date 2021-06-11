@@ -20,15 +20,9 @@ under the License.
     </span>
   </clr-alert-item>
 </clr-alert>
-<app-unit-create *ngIf="shouldShowCreateItem" (dismissModalSignal)="onDismissModal()"
-  (confirmModalSignal)="onConfirmModal($event)"></app-unit-create>
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
   <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
-  <div>
-    <button class="button-create" (click)="createItemModal()">
-      <clr-icon shape="plus"></clr-icon> Create Unit
-    </button>
-  </div>
+  <app-create-button (createItem)="showDialog()" text="Create Unit"></app-create-button>
 </div>
 <div>
   <div class="list-container">
@@ -47,13 +41,15 @@ under the License.
       </div>
       <div class="list-edit-bar-last-item" [style.width.%]="35">
         <button class="btn btn-link button-white" (click)="deselectAllItems()">
-          <clr-icon shape="times"></clr-icon>Close
+          <clr-icon shape="times"></clr-icon>
+          Close
         </button>
       </div>
     </div>
     <app-unit-list-header (sortEvent)="onSort($event)"></app-unit-list-header>
     <app-unit-list-item *ngFor="let item of (items$ | async) | sort:sortField" [item]="item"
-      (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)" [selected]="isSelected(item.id)">
+                        (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)"
+                        [selected]="isSelected(item.id)">
     </app-unit-list-item>
   </div>
 </div>

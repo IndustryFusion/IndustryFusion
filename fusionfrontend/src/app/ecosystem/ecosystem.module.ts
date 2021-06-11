@@ -52,7 +52,7 @@ import { UnitListHeaderComponent } from './components/content/unit-list-header/u
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
 import { AssetTypeCreateComponent } from './components/content/asset-type-create/asset-type-create.component';
 import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
-import { UnitCreateComponent } from './components/content/unit-create/unit-create.component';
+import { UnitDialogComponent } from './components/content/unit-dialog/unit-dialog.component';
 import { FieldDialogContentComponent } from './components/content/field-dialog/field-dialog-content/field-dialog-content.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateCreateStepOneComponent } from './components/content/asset-type-template-create-step-one/asset-type-template-create-step-one.component';
@@ -83,6 +83,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
+import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
     EcosystemPageTitleComponent,
     FieldsPageComponent,
     QuantityTypesPageComponent,
+    UnitPageComponent,
     UnitsPageComponent,
     AssetTypesPageComponent,
     AssetTypeListComponent,
@@ -116,8 +118,8 @@ import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
     UnitListItemComponent,
     AssetTypeCreateComponent,
     QuantityTypeDialogContentComponent,
-    UnitCreateComponent,
     FieldDialogContentComponent,
+    UnitDialogComponent,
     AssetTypeTemplateCreateStepOneComponent,
     AssetTypeTemplateCreateStepTwoComponent,
     AssetTypeTemplateCreateStepThreeComponent,
@@ -157,4 +159,5 @@ import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
     DialogService
   ]
 })
-export class EcosystemModule { }
+export class EcosystemModule {
+}
