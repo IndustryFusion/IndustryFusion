@@ -29,6 +29,7 @@ import { AssetTypeTemplateComposedQuery } from '../../../../../../store/composed
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 import { ID } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-type-template-wizard-main',
@@ -101,16 +102,17 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
 
   onChangeUseOfTemplate(assetTypeTemplateId: number) {
     if (assetTypeTemplateId) {
-      this.fieldTargetService.getItems(assetTypeTemplateId).subscribe(() =>
-        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId).subscribe(x =>
+      this.fieldTargetService.getItems(assetTypeTemplateId)
+        .pipe(take(1))
+        .subscribe(() =>
+        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
+          .pipe(take(1))
+          .subscribe(x =>
           {
             this.assetTypeTemplate.fieldTargets = x.fieldTargets;
 
-            // TODO: Should only be fired once...
             if (this.isEditing) {
               this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
-              console.log('copy old', this.assetTypeTemplate.fieldTargets);
-              console.log('Unedited', this.fieldTargetsUnedited);
             }
           }
         )
@@ -180,10 +182,8 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   }
 
   private addNewFieldTargets() {
-    console.log('add', this.assetTypeTemplate.fieldTargets);
     this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
       if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) == null) {
-        console.log(fieldTarget.id);
         this.fieldTargetService.createItem(this.assetTypeTemplate.id, fieldTarget).subscribe();
         if (!this.changes.getValue()) {
           this.changes.next(true);
@@ -193,8 +193,8 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   }
 
   private updateFieldTargets() {
-    console.log('update', this.assetTypeTemplate.fieldTargets);
     this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
+
       // Update all existing as version will only be incremented if changes occured
       if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) != null) {
         const oldVersion = fieldTarget.version;
@@ -211,11 +211,8 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   }
 
   private deleteRemovedFieldTargets() {
-    console.log('delete', this.fieldTargetsUnedited);
     this.fieldTargetsUnedited.forEach((fieldTarget) => {
       if (this.assetTypeTemplate.fieldTargets.find(target => fieldTarget.id === target.id) == null) {
-        console.log(fieldTarget);
-        // TODO: delete not working when references in field_source
         this.fieldTargetService.deleteItem(this.assetTypeTemplate.id, fieldTarget.id).subscribe();
         if (!this.changes.getValue()) {
           this.changes.next(true);
