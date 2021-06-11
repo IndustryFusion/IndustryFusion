@@ -15,22 +15,27 @@
 
 import { Component, OnInit } from '@angular/core';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
+import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 
 @Component({
-  selector: 'app-asset-type-edit',
-  templateUrl: './asset-type-edit.component.html',
-  styleUrls: ['./asset-type-edit.component.scss']
+  selector: 'app-asset-type-edit-dialog',
+  templateUrl: './asset-type-edit-dialog.component.html',
+  styleUrls: ['./asset-type-edit-dialog.component.scss']
 })
-export class AssetTypeEditComponent implements OnInit {
+export class AssetTypeEditDialogComponent implements OnInit {
 
   public assetTypeForm: FormGroup;
 
-  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
+  constructor(private assetTypeService: AssetTypeService,
+              private formBuilder: FormBuilder,
+              public ref: DynamicDialogRef,
+              public config: DynamicDialogConfig) { }
 
   ngOnInit() {
-    this.assetTypeForm = this.config.data.assetTypeForm;
+    this.createAssetTypeForm(this.config.data.assetType);
     this.assetTypeForm.get('description').setValue(this.assetTypeForm.get('description').value);
   }
 
@@ -45,7 +50,27 @@ export class AssetTypeEditComponent implements OnInit {
       assetType.name = this.assetTypeForm.get('name')?.value;
       assetType.label = this.assetTypeForm.get('label')?.value;
       assetType.description = this.assetTypeForm.get('description')?.value;
+
+      this.assetTypeService.editItem(assetType.id, assetType).subscribe();
+      //  this.assetTypeDetailsService.getItem(assetType.id).subscribe();
+
       this.ref.close(assetType);
     }
   }
+
+  private createAssetTypeForm(assetTypeToEdit: AssetTypeDetails) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.assetTypeForm = this.formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      label: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)]
+    });
+
+    if (assetTypeToEdit) {
+      this.assetTypeForm.patchValue(assetTypeToEdit);
+    }
+  }
+
 }
