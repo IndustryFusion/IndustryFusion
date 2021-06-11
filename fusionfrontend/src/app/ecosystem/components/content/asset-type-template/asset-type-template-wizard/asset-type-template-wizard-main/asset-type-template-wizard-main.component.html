@@ -62,7 +62,8 @@ under the License.
   <app-asset-type-template-wizard-step-finished *ngIf="step === 5"
                                                 [assetTypeTemplateForm]="assetTypeTemplateForm" [isEditing]="isEditing">
   </app-asset-type-template-wizard-step-finished>
-  <app-asset-type-template-wizard-step-publish *ngIf="step === 6" (saveTemplate)="onSaveTemplate()"
+  <app-asset-type-template-wizard-step-publish *ngIf="step === 6" (stepChange)="onStepChange($event)"
+                                               (saveTemplate)="onSaveTemplate()"
                                                [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-wizard-step-publish>
 </div>

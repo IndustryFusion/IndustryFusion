@@ -22,6 +22,7 @@ import { AssetTypeTemplateService } from '../../../../../store/asset-type-templa
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
+import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 
 @Component({
   selector: 'app-asset-type-template-list-item',
@@ -35,6 +36,7 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
   public menuType: ItemOptionsMenuType;
 
   private updateWizardRef: DynamicDialogRef;
+  private warningDialogRef: DynamicDialogRef;
 
   constructor(public route: ActivatedRoute,
               public router: Router,
@@ -47,7 +49,16 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
     this.menuType = this.item.published ? ItemOptionsMenuType.DELETE : ItemOptionsMenuType.UPDATE_DELETE;
   }
 
-  showUpdateDialog() {
+  onUpdate() {
+    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, { width: '60%' } );
+    this.warningDialogRef.onClose.subscribe((callUpdateWizard: boolean) => {
+      if (callUpdateWizard) {
+        this.showUpdateWizard();
+      }
+    });
+  }
+
+  private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
       {
         data: { assetTypeTemplate: this.item, isEditing: true },
@@ -57,12 +68,12 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
     );
     this.updateWizardRef.onClose.subscribe((published: boolean) => {
         if (published) {
-          this.onPublishItem();
+          this.publishItem();
         }
     });
   }
 
-  private onPublishItem() {
+  private publishItem() {
     this.item.published = true;
     this.item.publishedDate = new Date();
     this.menuType = ItemOptionsMenuType.DELETE;

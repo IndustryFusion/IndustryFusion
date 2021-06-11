@@ -39,6 +39,8 @@ export class AssetTypeTemplateWizardStepPublishComponent implements OnInit {
 
   onPublish() {
     this.assetTypeTemplateForm?.get('published')?.setValue(true);
+    this.assetTypeTemplateForm?.get('publishedDate')?.setValue(new Date());
+    this.assetTypeTemplateForm?.get('wasPublished')?.setValue(true);
     this.saveTemplate.emit();
     this.stepChange.emit(AssetTypeTemplateWizardSteps.FINISHED);
   }

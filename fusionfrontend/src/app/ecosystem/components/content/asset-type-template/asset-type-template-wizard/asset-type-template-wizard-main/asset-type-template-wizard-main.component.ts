@@ -130,6 +130,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.published = this.assetTypeTemplateForm.get('published')?.value;
+      this.assetTypeTemplate.publishedDate = this.assetTypeTemplateForm.get('publishedDate')?.value;
       this.assetTypeTemplate.imageKey = null;
       this.assetTypeTemplate.draftVersion = this.assetTypeTemplateForm.get('draftVersion')?.value;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
@@ -150,6 +151,8 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       name: ['', requiredTextValidator],
       description: ['', Validators.maxLength(255)],
       published: [false],
+      publishedDate: [undefined],
+      wasPublished: [false],
       useExistingTemplate: [false, Validators.required],
       assetTypeId: [undefined, Validators.required],
       assetTypeTemplateId: [],
@@ -176,6 +179,11 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
         this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
       }
     });
+
+    if (this.assetTypeTemplateForm.get('wasPublished')?.value) {
+      this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
+    }
+
     this.addNewFieldTargets();
     this.updateFieldTargets();
     this.deleteRemovedFieldTargets();
