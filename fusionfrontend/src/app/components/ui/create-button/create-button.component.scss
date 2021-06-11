@@ -34,4 +34,8 @@
   //height: 2.96%;
   padding: 8px 32px 8px 16px;
   cursor: pointer;
+
+  &:hover {
+    background: $hover-grey;
+  }
 }

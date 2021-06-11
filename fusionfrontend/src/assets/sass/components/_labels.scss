@@ -15,6 +15,13 @@
 
 /** Use in addition to if-label **/
 
+.if-label-medium {
+  font-weight: 600;
+  font-size: $medium-font-size;
+  line-height: $bigger-line-height;
+  color: $highlighted !important;
+}
+
 .if-label-bold {
   font-weight: bold;
   font-size: $bigger-font-size;
