@@ -79,20 +79,6 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  createAssetFromAssetSeries(event: AssetSeriesDetails) {
-    const targetCompanyId = this.companyId;
-    const sourceCompanyId = event.companyId;
-    const assetSeriesId = event.id;
-    const createAsset$ = this.assetService.createAssetFromAssetSeries(targetCompanyId, assetSeriesId, sourceCompanyId);
-    createAsset$.subscribe(
-      id => {
-        console.log('[location page] created asset id: ' + id);
-        this.createdAssetDetailsId = id;
-      },
-      error => console.log(error)
-    );
-  }
-
   updateAssetData(event: AssetDetails) {
     event.id = event.id ? event.id : this.createdAssetDetailsId;
     event.companyId = this.companyId;

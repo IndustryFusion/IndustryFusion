@@ -15,7 +15,6 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Room } from '../../../../../store/room/room.model';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-instantiation-room-assignment-modal',
@@ -27,12 +26,10 @@ export class AssetInstantiationRoomAssignmentModalComponent implements OnInit {
   @Input()
   rooms: Room[];
   @Input()
-  assetDetailsForm: FormGroup;
-  @Output()
- roomAssignedEvent = new EventEmitter<[boolean, Room]>();
-
   selectedRoom: Room;
-  roomControlValidation = 'room';
+  @Output()
+  roomAssignedEvent = new EventEmitter<[boolean, Room]>();
+
   searchText;
   filteredRooms: Room[];
 

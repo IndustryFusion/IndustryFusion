@@ -14,17 +14,16 @@ under the License.
 -->
 <app-asset-instantiation-start-modal  *ngIf="activeModalType == assetModalTypes.startInitialization"
                                       [assetSeries]="assetSeries"
-                                      (clickedStartEvent)="clickedStartInstantiation($event)">
+                                      (assetOnboardingEvent)="onboardingStarted($event)">
 </app-asset-instantiation-start-modal>
 
 <app-asset-instantiation-paired-modal *ngIf="activeModalType == assetModalTypes.pairAsset"
-                                      [assetSeries]="selectedAssetSeries"
-                                      (clickedCustomizeEvent)="clickedCustomize($event)">
+                                      [assetDetailsForm]="assetDetailsForm"
+                                      (assetPairedEvent)="finishedPairing($event)">
 </app-asset-instantiation-paired-modal>
 
 <app-asset-instantiation-description-modal  *ngIf="activeModalType == assetModalTypes.customizeAsset"
                                             [assetDetailsForm]="assetDetailsForm"
-                                            [assetSeries]="selectedAssetSeries"
                                             (descriptionAddedEvent)="finishedAddDescription($event)">
 </app-asset-instantiation-description-modal>
 
@@ -36,7 +35,7 @@ under the License.
 
 <app-asset-instantiation-room-assignment-modal *ngIf="activeModalType == assetModalTypes.roomAssignment"
                                                 [rooms]="allRoomsOfLocation"
-                                                [assetDetailsForm]="assetDetailsForm"
+                                                [selectedRoom]="selectedRoom"
                                                 (roomAssignedEvent)="finishedAssetOnboaring($event)">
 </app-asset-instantiation-room-assignment-modal>
 

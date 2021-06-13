@@ -24,9 +24,9 @@ under the License.
     <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterRooms()">
   </span>
 
-  <div class="room-field" [formGroup]="assetDetailsForm">
+  <div class="room-field">
     <div *ngFor="let room of filteredRooms" class="p-field-checkbox p-grid">
-      <p-radioButton class="if-radiobutton p-col-2" [inputId]="room.id" [value]="room" formControlName="room"></p-radioButton>
+      <p-radioButton class="if-radiobutton p-col-2" [inputId]="room.id" [value]="room" [(ngModel)]="selectedRoom"></p-radioButton>
       <label class="p-col-5" [for]="room.id">{{room.name}}</label>
       <label class="room-info p-col-5" [for]="room.id">{{room.description}}</label>
     </div>
@@ -35,6 +35,6 @@ under the License.
   <div class="assign-room-dialog-footer">
     <button type="button" class="if-button button-secondary" (click)="onCancel()">Back</button>
     <button type="button" class="if-button button-secondary" (click)="onSubmit()"
-            [disabled]="assetDetailsForm.controls['room'].invalid">Finish</button>
+            [disabled]="!selectedRoom">Finish</button>
   </div>
 </div>

@@ -15,7 +15,6 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
 
 @Component({
   selector: 'app-asset-instantiation-description-modal',
@@ -26,8 +25,6 @@ export class AssetInstantiationDescriptionModalComponent implements OnInit {
 
   @Input()
   assetDetailsForm: FormGroup;
-  @Input()
-  assetSeries: AssetSeriesDetails;
   @Output()
   descriptionAddedEvent = new EventEmitter<boolean>();
 

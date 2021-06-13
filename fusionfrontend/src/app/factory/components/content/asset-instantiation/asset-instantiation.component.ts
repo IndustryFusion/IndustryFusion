@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { Room } from '../../../../store/room/room.model';
 import { Location } from '../../../../store/location/location.model';
@@ -26,14 +26,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
   templateUrl: './asset-instantiation.component.html',
   styleUrls: ['./asset-instantiation.component.scss']
 })
-export class AssetInstantiationComponent implements OnInit, OnChanges {
-  assetDetailsForm: FormGroup;
-  assetSeries: AssetSeriesDetails[];
-  locations: Location[];
-  rooms: Room[];
-  location: Location;
-  activeModalType: AssetModalType;
-
+export class AssetInstantiationComponent implements OnInit {
   @Output()
   closedEvent = new EventEmitter<boolean>();
   @Output()
@@ -43,10 +36,17 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
   @Output()
   stoppedAssetAssignment = new EventEmitter<boolean>();
 
+  assetDetailsForm: FormGroup;
+  assetDetails: AssetDetailsWithFields;
+  assetsToBeOnboarded: AssetDetailsWithFields[];
+  assetSeries: AssetSeriesDetails[];
   selectedAssetSeries: AssetSeriesDetails = new AssetSeriesDetails();
-  assetToBeOnboarded: AssetDetails = new AssetDetails();
-  allRoomsOfLocation: Room[];
+  locations: Location[];
   selectedLocation: Location;
+  rooms: Room[];
+  allRoomsOfLocation: Room[];
+  selectedRoom: Room;
+  activeModalType: AssetModalType;
   assetModalTypes = AssetModalType;
   formControls: string[];
 
@@ -56,44 +56,44 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.formControls = ['assetSeriesName', 'manufacturer', 'category', 'name', 'description', 'locationName'];
-    this.assetDetailsForm = this.config.data.assetForm;
+    this.formControls = ['assetSeriesName', 'manufacturer', 'category', 'name', 'description', 'locationName', 'roomId', 'roomName'];
+    this.assetDetailsForm = this.config.data.assetDetailsForm;
     this.assetSeries = this.config.data.assetSeries;
+    this.assetDetails = this.config.data.assetToBeEdited;
+    // this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
     this.locations = this.config.data.locations;
     this.rooms = this.config.data.rooms;
     this.activeModalType = this.config.data.activeModalType;
 
-    if (this.location) {
-      this.selectedLocation = this.location;
-    } else {
-      // this.selectedLocation = this.locations.filter(location => location.name === this.assetToBeOnboarded.get('locationName').pop();
+    if (this.assetDetailsForm.controls[this.formControls[5]].value !== null) {
+      this.selectedLocation = this.locations.filter(location => location.name === this.assetDetailsForm
+        .controls[this.formControls[5]].value)[0];
+    }
+    if (this.assetDetailsForm.controls[this.formControls[6]].value !== null) {
+      this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetailsForm.controls[this.formControls[6]].value)[0];
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.assetSeries) {
-      this.selectedAssetSeries = this.assetSeries[0];
-    }
-  }
-
-  clickedStartInstantiation(event: AssetSeriesDetails) {
+  onboardingStarted(event: AssetSeriesDetails) {
     if (event) {
       this.selectedAssetSeries = event;
+      //this.assetDetails = event;
       this.activeModalType = this.assetModalTypes.pairAsset;
       this.setAssetSeriesDetails();
     }
   }
 
   setAssetSeriesDetails() {
-    this.assetDetailsForm.controls[this.formControls[0]].setValue(this.selectedAssetSeries.name);
-    this.assetDetailsForm.controls[this.formControls[1]].setValue(this.selectedAssetSeries.manufacturer);
-    this.assetDetailsForm.controls[this.formControls[2]].setValue(this.selectedAssetSeries.category);
-
-    this.assetDetailsForm.controls[this.formControls[3]].setValue(this.selectedAssetSeries.name);
-    this.assetDetailsForm.controls[this.formControls[4]].setValue(this.selectedAssetSeries.category);
+    this.assetDetailsForm.controls[this.formControls[0]].setValue(this.assetDetails.assetSeriesName);
+    this.assetDetailsForm.controls[this.formControls[1]].setValue(this.assetDetails.manufacturer);
+    this.assetDetailsForm.controls[this.formControls[2]].setValue(this.assetDetails.category);
+    this.assetDetailsForm.controls[this.formControls[3]].setValue(this.assetDetails.name ?
+      this.assetDetails.name : this.assetDetails.assetSeriesName);
+    this.assetDetailsForm.controls[this.formControls[4]].setValue(this.assetDetails.description ?
+      this.assetDetails.description : this.assetDetails.category);
   }
 
-  clickedCustomize(event: boolean) {
+  finishedPairing(event: boolean) {
     if (event) {
       this.config.header = 'Assign name and description to asset';
       this.config.contentStyle = { 'padding-top': '1.5%' };
@@ -126,22 +126,29 @@ export class AssetInstantiationComponent implements OnInit, OnChanges {
   finishedAssetOnboaring(event: [boolean, Room]) {
     if (event[0]) {
       if (this.assetDetailsForm.valid) {
-        const assetDetailsWithField = new AssetDetailsWithFields();
-        assetDetailsWithField.id = this.assetDetailsForm.get('id')?.value;
-        assetDetailsWithField.name = this.assetDetailsForm.get('name')?.value;
-        assetDetailsWithField.description = this.assetDetailsForm.get('description')?.value;
-        assetDetailsWithField.assetSeriesName = this.assetDetailsForm.get('assetSeriesName')?.value;
-        assetDetailsWithField.manufacturer = this.assetDetailsForm.get('manufacturer')?.value;
-        assetDetailsWithField.category = this.assetDetailsForm.get('category')?.value;
-        assetDetailsWithField.locationName = this.assetDetailsForm.get('locationName')?.value;
-        assetDetailsWithField.roomId = this.assetDetailsForm.get('room')?.value.id;
-        assetDetailsWithField.roomName = this.assetDetailsForm.get('room')?.value.name;
-        console.log(assetDetailsWithField);
-        this.ref.close(assetDetailsWithField);
+        this.selectedRoom = event[1];
+        this.assetDetailsForm.controls[this.formControls[6]].setValue(this.selectedRoom.id);
+        this.assetDetailsForm.controls[this.formControls[7]].setValue(this.selectedRoom.name);
+        this.updateAssetDetailsObject();
+        this.ref.close(this.assetDetails);
       }
     } else {
       this.config.header = 'Assign asset to location';
       this.activeModalType = this.assetModalTypes.locationAssignment;
     }
   }
+
+  updateAssetDetailsObject() {
+    const assetFormValues = this.assetDetailsForm.value;
+    this.assetDetails.roomId = assetFormValues.roomId;
+    this.assetDetails.name = assetFormValues.name;
+    this.assetDetails.description = assetFormValues.description;
+    this.assetDetails.imageKey = assetFormValues.imageKey;
+    this.assetDetails.manufacturer = assetFormValues.manufacturer;
+    this.assetDetails.assetSeriesName = assetFormValues.assetSeriesName;
+    this.assetDetails.category = assetFormValues.category;
+    this.assetDetails.roomName = assetFormValues.roomName;
+    this.assetDetails.locationName = assetFormValues.locationName;
+  }
+
 }

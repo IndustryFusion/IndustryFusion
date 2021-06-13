@@ -14,7 +14,7 @@
  */
 
 import { Location as loc } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/store/asset/asset.service';
@@ -35,7 +35,7 @@ import { AssetInstantiationComponent } from '../asset-instantiation/asset-instan
   styleUrls: ['./assets-list.component.scss'],
   providers: [DialogService]
 })
-export class AssetsListComponent implements OnChanges {
+export class AssetsListComponent implements OnChanges, OnInit {
   @Input()
   company: Company;
   @Input()
@@ -57,20 +57,14 @@ export class AssetsListComponent implements OnChanges {
   @Output()
   toolBarClickEvent = new EventEmitter<string>();
   @Output()
-  assetSeriesSelected = new EventEmitter<AssetSeriesDetails>();
-  @Output()
   assetDetailsSelected = new EventEmitter<AssetDetails>();
-
   @Output()
-  createAssetEvent = new EventEmitter<AssetWithFields>();
-  @Output()
-  updateAssetEvent = new EventEmitter<AssetWithFields>();
+  updateAssetEvent = new EventEmitter<AssetDetails>();
 
   asset: AssetWithFields;
-  assetForm: FormGroup;
+  assetDetailsForm: FormGroup;
   companyId: ID;
   ref: DynamicDialogRef;
-
 
   isLoading$: Observable<boolean>;
   selectedIds: Set<ID> = new Set();
@@ -101,7 +95,7 @@ export class AssetsListComponent implements OnChanges {
       this.createDetailsAssetForm(this.formBuilder);
   }
 
-  onInit() {
+  ngOnInit() {
     this.createDetailsAssetForm(this.formBuilder);
   }
 
@@ -119,10 +113,11 @@ export class AssetsListComponent implements OnChanges {
     }
   }
 
-  showCreateDialog() {
+  showOnboardDialog() {
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
-        assetForm: this.assetForm,
+        assetDetailsForm: this.assetDetailsForm,
+        // assetsToBeOnboard: this.assetsWithDetailsAndFields,
         assetSeries: this.assetSeries,
         locations: this.locations,
         rooms: this.rooms,
@@ -130,24 +125,26 @@ export class AssetsListComponent implements OnChanges {
       },
     });
 
-    ref.onClose.subscribe(() => {
-      this.onCloseOnboardDialog();
-      this.createDetailsAssetForm(this.formBuilder);
-      this.asset = new AssetWithFields();
+    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+      if (assetFormValues) {
+        this.assetUpdated(assetFormValues);
+      }
     });
   }
 
   createDetailsAssetForm(formBuilder: FormBuilder) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    this.assetForm = formBuilder.group({
+    this.assetDetailsForm = formBuilder.group({
       id: [null],
+      roomId: ['', requiredTextValidator],
       name: ['', requiredTextValidator],
       description: [''],
-      assetSeriesName: ['', requiredTextValidator],
+      imageKey: [''],
       manufacturer: ['', requiredTextValidator],
+      assetSeriesName: ['', requiredTextValidator],
       category: ['', requiredTextValidator],
-      locationName: ['', requiredTextValidator],
-      room: ['', requiredTextValidator],
+      roomName: ['', requiredTextValidator],
+      locationName: ['', requiredTextValidator]
     });
   }
 
@@ -161,11 +158,9 @@ export class AssetsListComponent implements OnChanges {
     return containsId;
   }
 
-  onCloseOnboardDialog() {
-  }
-
-  assetCreated(asset: AssetWithFields): void {
-    this.createAssetEvent.emit(asset);
+  assetUpdated(asset: AssetDetails): void {
+    console.log(asset);
+    this.updateAssetEvent.emit(asset);
   }
 
   isSelected(id: ID) {
@@ -222,18 +217,15 @@ export class AssetsListComponent implements OnChanges {
     this.toolBarClickEvent.emit('GRID');
   }
 
-  forwardAssetSeriesSelected(event: AssetSeriesDetails) {
-    this.assetSeriesSelected.emit(event);
-  }
-
   forwardAssetDetails(event: AssetDetails) {
     this.assetDetailsSelected.emit(event);
   }
 
   deleteAsset(event: AssetDetailsWithFields) {
-    this.assetService.removeCompanyAsset(event.companyId, event.id).subscribe(() => {
-      this.assetsWithDetailsAndFields.splice(this.assetsWithDetailsAndFields.indexOf(event), 1);
-    });
+  //   this.assetService.removeCompanyAsset(event.companyId, event.id).subscribe(() => {
+  //     this.assetsWithDetailsAndFields.splice(this.assetsWithDetailsAndFields.indexOf(event), 1);
+  //   });
+    console.log(event);
   }
 }
 

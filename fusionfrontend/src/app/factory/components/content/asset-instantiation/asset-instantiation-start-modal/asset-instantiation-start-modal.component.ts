@@ -27,15 +27,14 @@ export class AssetInstantiationStartModalComponent implements OnInit {
   assetSeries: AssetSeriesDetails[];
 
   @Output()
-  clickedStartEvent = new EventEmitter<AssetSeriesDetails>();
+  assetOnboardingEvent = new EventEmitter<AssetSeriesDetails>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  emitStartInstantiationEvent(assetSerie?: AssetSeriesDetails) {
-    this.clickedStartEvent.emit(assetSerie);
+  onSubmit(assetToBeOnboarded?: AssetSeriesDetails) {
+    this.assetOnboardingEvent.emit(assetToBeOnboarded);
   }
-
 }

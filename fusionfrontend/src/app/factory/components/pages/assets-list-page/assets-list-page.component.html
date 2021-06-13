@@ -24,6 +24,5 @@ under the License.
                  [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
-                 (assetSeriesSelected)="createAssetFromAssetSeries($event)"
-                 (assetDetailsSelected)="updateAssetData($event)">
+                 (updateAssetEvent)="updateAssetData($event)">
 </app-assets-list>

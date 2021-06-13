@@ -15,21 +15,21 @@ under the License.
 
 <div>
   <ng-container>
-    <div *ngFor="let assetSerie of assetSeries">
+    <div *ngFor="let assetToBeOnboarded of assetSeries">
       <div class="p-grid asset-item">
         <div class="p-col-2 p-dir-col column-class">
-          <img class="asset-image" src="assets/img/{{assetSerie.imageKey}}" alt="AssetSeries Image">
+          <img class="asset-image" src="assets/img/{{assetToBeOnboarded.imageKey}}" alt="AssetSeries Image">
         </div>
         <div class="p-col-4 p-grid p-dir-col column-class">
-          <span class="p-col asset-name">{{assetSerie.name}}</span>
-          <span class="p-col asset-information">{{assetSerie.category}}</span>
-          <span class="p-col asset-information">{{assetSerie.manufacturer}}</span>
+          <span class="p-col asset-name">{{assetToBeOnboarded.name}}</span>
+          <span class="p-col asset-information">{{assetToBeOnboarded.category}}</span>
+          <span class="p-col asset-information">{{assetToBeOnboarded.manufacturer}}</span>
         </div>
         <div class="p-col-3 p-dir-col column-class">
           <span class="onboaring-text">Ready for onboarding!</span>
         </div>
         <div class="p-col-3 p-dir-col column-class">
-          <button type="button" class="if-button button-secondary start-button" (click)="emitStartInstantiationEvent(assetSerie)">Start</button>
+          <button type="button" class="if-button button-secondary" (click)="onSubmit(assetToBeOnboarded)">Start</button>
         </div>
       </div>
     </div>

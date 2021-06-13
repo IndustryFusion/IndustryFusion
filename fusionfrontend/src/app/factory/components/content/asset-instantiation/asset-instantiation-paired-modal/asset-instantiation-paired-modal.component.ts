@@ -14,7 +14,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-instantiation-paired-modal',
@@ -24,9 +24,9 @@ import { AssetSeriesDetails } from '../../../../../store/asset-series-details/as
 export class AssetInstantiationPairedModalComponent implements OnInit {
 
   @Input()
-  assetSeries: AssetSeriesDetails;
+  assetDetailsForm: FormGroup;
   @Output()
-  clickedCustomizeEvent = new EventEmitter<boolean>();
+  assetPairedEvent = new EventEmitter<boolean>();
   pairingProcess = true;
 
 
@@ -36,8 +36,8 @@ export class AssetInstantiationPairedModalComponent implements OnInit {
     setTimeout(() => this.pairingProcess = false, 1000);
   }
 
-  emitCustomizeEvent(event: boolean) {
-    this.clickedCustomizeEvent.emit(event);
+  onSubmit(event: boolean) {
+    this.assetPairedEvent.emit(event);
   }
 
 }
