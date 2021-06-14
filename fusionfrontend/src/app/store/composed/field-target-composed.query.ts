@@ -38,6 +38,8 @@ export class FieldTargetComposedQuery {
 
             for (let i = 0; i < fieldTargets.length; i++) {
               const fieldTarget = new FieldTarget();
+              fieldTarget.id = fieldTargets[i].id;
+              fieldTarget.version = fieldTargets[i].version;
               fieldTarget.assetTypeTemplateId = fieldTargets[i].assetTypeTemplateId;
               fieldTarget.fieldId = fieldTargets[i].fieldId;
               fieldTarget.field = fields.find(field => field.id === fieldTargets[i].fieldId);

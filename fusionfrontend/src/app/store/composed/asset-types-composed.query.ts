@@ -29,13 +29,22 @@ export class AssetTypesComposedQuery {
     protected assetTypeTemplateQuery: AssetTypeTemplateQuery) { }
 
   selectTemplatesOfAssetType(assetTypeId: ID): Observable<AssetTypeTemplate[]> {
-
     return combineQueries([
       this.assetTypeTemplateQuery.selectAll(),
       this.assetTypeQuery.selectAssetType(assetTypeId)])
       .pipe(
         map(([templates, assetType]) => {
           return templates.filter(template => String(assetType.id) === String(template.assetTypeId));
+        }));
+  }
+
+  selectUnpublishedTemplatesOfAssetType(assetTypeId: ID): Observable<AssetTypeTemplate[]> {
+    return combineQueries([
+      this.assetTypeTemplateQuery.selectAll(),
+      this.assetTypeQuery.selectAssetType(assetTypeId)])
+      .pipe(
+        map(([templates, assetType]) => {
+          return templates.filter(template => String(assetType.id) === String(template.assetTypeId) && !template.published);
         }));
   }
 }

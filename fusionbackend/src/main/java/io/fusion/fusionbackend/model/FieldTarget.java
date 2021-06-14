@@ -30,7 +30,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "field_target")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldtarget")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldtarget")
 @Getter
 @Setter
 @SuperBuilder
@@ -51,8 +51,20 @@ public class FieldTarget extends BaseEntity {
     private String label;
 
     public void copyFrom(final FieldTarget sourceFieldTarget) {
+        if (sourceFieldTarget.getFieldType() != null) {
+            setFieldType(sourceFieldTarget.getFieldType());
+        }
         if (sourceFieldTarget.getMandatory() != null) {
             setMandatory(sourceFieldTarget.getMandatory());
+        }
+        if (sourceFieldTarget.getName() != null) {
+            setName(sourceFieldTarget.getName());
+        }
+        if (sourceFieldTarget.getDescription() != null) {
+            setDescription(sourceFieldTarget.getDescription());
+        }
+        if (sourceFieldTarget.getLabel() != null) {
+            setLabel(sourceFieldTarget.getLabel());
         }
     }
 }

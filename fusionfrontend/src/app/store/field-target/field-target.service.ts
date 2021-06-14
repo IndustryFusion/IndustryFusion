@@ -52,4 +52,26 @@ export class FieldTargetService {
         })
       );
   }
+
+  editItem(assetTypeTemplateId: ID, fieldTarget: FieldTarget): Observable<FieldTarget> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets/${fieldTarget.id}`;
+    return this.http.patch<FieldTarget>(`${environment.apiUrlPrefix}/${path}`, fieldTarget, this.httpOptions)
+      .pipe(
+        tap(entity => {
+          this.fieldTargetStore.upsert(entity.id, entity);
+        }));
+  }
+
+  deleteItem(assetTypeTemplateId: ID, fieldTargetId: ID): Observable<any> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets/${fieldTargetId}`;
+    return this.http.delete(`${environment.apiUrlPrefix}/${path}`)
+      .pipe(tap({
+        complete: () => {
+          this.fieldTargetStore.remove(fieldTargetId);
+        },
+        error: (error) => {
+          this.fieldTargetStore.setError(error);
+        }
+      }));
+  }
 }

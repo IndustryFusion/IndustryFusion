@@ -20,14 +20,12 @@ import { ClarityModule } from '@clr/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
-import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateListHeaderComponent } from './components/content/asset-type-template-list-header/asset-type-template-list-header.component';
+import { AssetTypeTemplateListHeaderComponent } from './components/content/asset-type-template/asset-type-template-list-header/asset-type-template-list-header.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateListItemComponent } from './components/content/asset-type-template-list-item/asset-type-template-list-item.component';
-import { AssetTypeTemplateListComponent } from './components/content/asset-type-template-list/asset-type-template-list.component';
-import { AssetTypeTemplateEditComponent } from './components/content/asset-type-template-edit/asset-type-template-edit.component';
-import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
+import { AssetTypeTemplateListItemComponent } from './components/content/asset-type-template/asset-type-template-list-item/asset-type-template-list-item.component';
+import { AssetTypeTemplateListComponent } from './components/content/asset-type-template/asset-type-template-list/asset-type-template-list.component';
+import { AssetTypeTemplateWizardMainComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
 import { EcosystemPageTitleComponent } from './components/content/ecosystem-page-title/ecosystem-page-title.component';
 import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
@@ -55,17 +53,16 @@ import { QuantityTypeDialogContentComponent } from './components/content/quantit
 import { UnitDialogComponent } from './components/content/unit-dialog/unit-dialog.component';
 import { FieldDialogContentComponent } from './components/content/field-dialog/field-dialog-content/field-dialog-content.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepOneComponent } from './components/content/asset-type-template-create-step-one/asset-type-template-create-step-one.component';
+import { AssetTypeTemplateWizardStepOneComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-one/asset-type-template-wizard-step-one.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepTwoComponent } from './components/content/asset-type-template-create-step-two/asset-type-template-create-step-two.component';
+import { AssetTypeTemplateWizardStepTwoComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-two/asset-type-template-wizard-step-two.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepThreeComponent } from './components/content/asset-type-template-create-step-three/asset-type-template-create-step-three.component';
+import { AssetTypeTemplateWizardStepThreeComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-three/asset-type-template-wizard-step-three.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepFourComponent } from './components/content/asset-type-template-create-step-four/asset-type-template-create-step-four.component';
+import { AssetTypeTemplateWizardStepFourComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-four/asset-type-template-wizard-step-four.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template-field-row/asset-type-template-field-row.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepFinishedComponent } from './components/content/asset-type-template-create-step-finished/asset-type-template-create-step-finished.component';
+import { AssetTypeTemplateWizardStepFinishedComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-finished/asset-type-template-wizard-step-finished.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
@@ -79,11 +76,17 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
-import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template-field-header/asset-type-template-field-header.component';
+import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
+import { AssetTypeTemplateWizardWarningDialogComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
+import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
+import { AssetTypeTemplateDialogPublishComponent } from './components/content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
+import { AssetTypeTemplateDialogUpdateComponent } from './components/content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
+import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template-field-row/asset-type-template-field-row.component';
+import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template-field-header/asset-type-template-field-header.component';
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 
 @NgModule({
@@ -93,8 +96,7 @@ import { UnitPageComponent } from './components/pages/unit-page/unit-page.compon
     AssetTypeTemplateListItemComponent,
     ArraySortPipe,
     AssetTypeTemplateListComponent,
-    AssetTypeTemplateEditComponent,
-    AssetTypeTemplateCreateComponent,
+    AssetTypeTemplateWizardMainComponent,
     EcosystemSubHeaderComponent,
     EcosystemPageTitleComponent,
     FieldsPageComponent,
@@ -121,12 +123,14 @@ import { UnitPageComponent } from './components/pages/unit-page/unit-page.compon
     QuantityTypeDialogContentComponent,
     FieldDialogContentComponent,
     UnitDialogComponent,
-    AssetTypeTemplateCreateStepOneComponent,
-    AssetTypeTemplateCreateStepTwoComponent,
-    AssetTypeTemplateCreateStepThreeComponent,
-    AssetTypeTemplateCreateStepFourComponent,
+    AssetTypeTemplateWizardStepOneComponent,
+    AssetTypeTemplateWizardStepTwoComponent,
+    AssetTypeTemplateWizardStepThreeComponent,
+    AssetTypeTemplateWizardStepFourComponent,
     AssetTypeTemplateFieldRowComponent,
-    AssetTypeTemplateCreateStepFinishedComponent,
+    AssetTypeTemplateWizardStepFinishedComponent,
+    AssetTypeTemplateWizardWarningDialogComponent,
+    AssetTypeTemplateWizardStepPublishComponent,
     AssetTypePageComponent,
     AssetTypeEditComponent,
     QuantityTypePageComponent,
@@ -135,6 +139,8 @@ import { UnitPageComponent } from './components/pages/unit-page/unit-page.compon
     FieldDialogDirective,
     FieldPageComponent,
     AccuracyFormatPipe,
+    AssetTypeTemplateDialogPublishComponent,
+    AssetTypeTemplateDialogUpdateComponent,
   ],
   imports: [
     IFCommon,
