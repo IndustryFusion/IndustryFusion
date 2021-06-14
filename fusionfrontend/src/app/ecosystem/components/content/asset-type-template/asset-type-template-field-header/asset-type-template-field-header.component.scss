@@ -13,20 +13,41 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+@import "src/assets/sass/abstract/variables";
+@import "src/assets/sass/base/typography";
 
-@Component({
-  selector: 'app-asset-type-template-field-header',
-  templateUrl: './asset-type-template-field-header.component.html',
-  styleUrls: ['./asset-type-template-field-header.component.scss']
-})
-export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
+.field-header {
+  display: flex;
+  align-items: center;
 
-  @Input() isMetric: boolean;
-
-  constructor() { }
-
-  ngOnInit(): void {
+  .col-5 {
+    width: 5%;
   }
 
+  .col-10 {
+    width: 10%;
+  }
+
+  .col-15 {
+    width: 15%;
+  }
+
+  .col-20 {
+    width: 20%;
+  }
+
+  .col-30 {
+    width: 30%;
+  }
+
+  .col-margin {
+    margin-right: 2.5%;
+  }
+
+  .edit-col {
+    display: flex;
+    justify-content: end;
+    width: 20%;
+  }
 }
+

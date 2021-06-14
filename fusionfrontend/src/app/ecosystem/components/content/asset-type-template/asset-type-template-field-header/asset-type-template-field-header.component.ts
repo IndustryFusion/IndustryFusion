@@ -13,29 +13,24 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'base/typography';
+import { Component, Input, OnInit } from '@angular/core';
 
-:host ::ng-deep .button-create {
-  font-style: normal;
-  font-weight: bold;
-  font-size: $regular-font-size;
-  line-height: $regular-line-height;
-  text-align: left;
+@Component({
+  selector: 'app-asset-type-template-field-header',
+  templateUrl: './asset-type-template-field-header.component.html',
+  styleUrls: ['./asset-type-template-field-header.component.scss']
+})
+export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
 
-  letter-spacing: 0;
-  color: $basic-white;
+  @Input() editable: boolean;
+  @Input() isMetric: boolean;
 
-  background: $highlighted 0 0% no-repeat padding-box;
-  border: 1px solid #95989A;
-  border-radius: 10px;
-  opacity: 1;
+  constructor() { }
 
-  //height: 2.96%;
-  padding: 8px 32px 8px 16px;
-  cursor: pointer;
-
-  &:hover {
-    background: $hover-grey;
+  ngOnInit(): void {
+    if (this.editable === undefined) {
+      this.editable = true;
+    }
   }
+
 }

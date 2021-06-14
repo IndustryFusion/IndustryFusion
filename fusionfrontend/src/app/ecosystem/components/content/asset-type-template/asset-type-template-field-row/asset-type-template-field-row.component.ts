@@ -16,9 +16,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 
-import { UnitQuery } from '../../../../store/unit/unit.query';
-import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
-import { FieldTarget } from '../../../../store/field-target/field-target.model';
+import { UnitQuery } from '../../../../../store/unit/unit.query';
+import { QuantityTypeQuery } from '../../../../../store/quantity-type/quantity-type.query';
+import { FieldTarget } from '../../../../../store/field-target/field-target.model';
 
 @Component({
   selector: 'app-asset-type-template-field-row',
@@ -27,18 +27,23 @@ import { FieldTarget } from '../../../../store/field-target/field-target.model';
 })
 export class AssetTypeTemplateFieldRowComponent implements OnInit {
 
+  @Input() confirmed: boolean;
+  @Input() editable: boolean;
+
   @Input() fieldTarget: FieldTarget;
   @Output() confirmSignal = new EventEmitter<FieldTarget>();
   @Output() editSignal = new EventEmitter<FieldTarget>();
   @Output() deleteSignal = new EventEmitter<FieldTarget>();
 
-  @Input() confirmed: boolean;
 
   constructor(private unitQuery: UnitQuery, private quantityQuery: QuantityTypeQuery) { }
 
   ngOnInit() {
     if (this.confirmed === undefined) {
       this.confirmed = false;
+    }
+    if (this.editable === undefined) {
+      this.editable = true;
     }
     if (!this.fieldTarget.label) {
       this.fieldTarget.name = '';
