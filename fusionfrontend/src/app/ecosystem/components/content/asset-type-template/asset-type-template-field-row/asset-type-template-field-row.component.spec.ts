@@ -14,7 +14,7 @@
  */
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AssetTypeTemplateFieldRowComponent } from '../../asset-type-template-field-row/asset-type-template-field-row.component';
+import { AssetTypeTemplateFieldRowComponent } from './asset-type-template-field-row.component';
 
 describe('AssetTypeTemplateMetricRowComponent', () => {
   let component: AssetTypeTemplateFieldRowComponent;

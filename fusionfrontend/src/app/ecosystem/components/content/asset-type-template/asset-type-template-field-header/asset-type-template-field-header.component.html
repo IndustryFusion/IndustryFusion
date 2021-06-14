@@ -15,10 +15,10 @@ under the License.
 
 <div class="field-header" [ngStyle]="{'margin-bottom': editable === true ? '' :  '1.0rem'}">
   <div class="if-label if-label-header col-margin" [ngClass]="editable === true ? 'col-20' : 'col-30'">
-    Custom {{ isMetric ? 'Metric' : 'Attribute' }} name
+    Custom {{ type === FieldType.METRIC ? 'Metric' : 'Attribute' }} name
   </div>
   <div class="if-label if-label-header col-margin" [ngClass]="editable === true ? 'col-15' : 'col-20'">
-    {{ isMetric ? 'Metric' : 'Attribute' }} name
+    {{ type === FieldType.METRIC ? 'Metric' : 'Attribute' }} name
   </div>
   <div class="if-label if-label-header" [ngClass]="editable === true ? 'col-15' : 'col-20'"> Quantity type </div>
   <div class="if-label if-label-header"  [ngClass]="editable === true ? 'col-5' : 'col-10'"> Unit </div>

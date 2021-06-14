@@ -18,10 +18,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-import { FieldTarget } from '../../../../../../store/field-target/field-target.model';
+import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
 import { Field } from '../../../../../../store/field/field.model';
 import { FieldQuery } from '../../../../../../store/field/field-query.service';
-import { FieldType } from '../../../../../../store/field-details/field-details.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 
@@ -36,6 +35,8 @@ export class AssetTypeTemplateWizardStepThreeComponent implements OnInit {
   @Input() inputAttributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() attributeSelect = new EventEmitter<FieldTarget[]>();
+
+  public FieldType = FieldType;
 
   shouldAddAttribute = false;
   fields: Observable<Field[]>;
@@ -84,7 +85,7 @@ export class AssetTypeTemplateWizardStepThreeComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedAttributes.push(fieldTarget);
     this.shouldAddAttribute = false;
-    this.assetTypeTemplateForm.get('metric').setValue(undefined);
+    this.assetTypeTemplateForm.get('fieldTarget').setValue(undefined);
   }
 
   onConfirm(fieldTarget: FieldTarget) {

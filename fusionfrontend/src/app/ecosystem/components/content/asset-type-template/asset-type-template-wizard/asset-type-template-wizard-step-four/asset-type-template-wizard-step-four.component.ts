@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { FieldTarget } from '../../../../../../store/field-target/field-target.model';
+import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 
@@ -31,6 +31,8 @@ export class AssetTypeTemplateWizardStepFourComponent implements OnInit {
   @Input() attributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() saveTemplate = new EventEmitter();
+
+  public FieldType = FieldType;
 
   constructor() { }
 

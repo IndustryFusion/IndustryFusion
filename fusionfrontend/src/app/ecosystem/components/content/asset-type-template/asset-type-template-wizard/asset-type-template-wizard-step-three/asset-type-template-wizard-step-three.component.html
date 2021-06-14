@@ -20,7 +20,7 @@ under the License.
   </div>
 
   <div *ngIf="selectedAttributes && selectedAttributes.length > 0" class="fields-list">
-    <app-asset-type-template-field-header [isMetric]="false"></app-asset-type-template-field-header>
+    <app-asset-type-template-field-header [type]="FieldType.ATTRIBUTE"></app-asset-type-template-field-header>
     <app-asset-type-template-field-row *ngFor="let attribute of selectedAttributes" [fieldTarget]="attribute"
                                         (confirmSignal)="onConfirm(attribute)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(attribute)">
     </app-asset-type-template-field-row>
@@ -30,7 +30,7 @@ under the License.
     <div class="selection" *ngIf="shouldAddAttribute">
       <div class="input-div dropdown-filter">
         <label class="if-label">Select Attribute</label>
-        <p-dropdown [options]="(fields | async)" formControlName="metric" optionLabel="name"
+        <p-dropdown [options]="(fields | async)" formControlName="fieldTarget" optionLabel="name"
                     class="select-asset-input" filter="true" resetFilterOnHide="true"
                     placeholder="Select attribute..." (onChange)="onChangeAttribute($event.value)">
         </p-dropdown>

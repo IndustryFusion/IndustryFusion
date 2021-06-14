@@ -102,7 +102,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
 
   onChangeUseOfTemplate(assetTypeTemplateId: number) {
     if (assetTypeTemplateId) {
-      this.fieldTargetService.getItems(assetTypeTemplateId)
+      this.fieldTargetService.getItemsByAssetTypeTemplate(assetTypeTemplateId)
         .pipe(take(1))
         .subscribe(() =>
         this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
@@ -151,12 +151,12 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       name: ['', requiredTextValidator],
       description: ['', Validators.maxLength(255)],
       published: [false],
-      publishedDate: [undefined],
+      publishedDate: [],
       wasPublished: [false],
       useExistingTemplate: [false, Validators.required],
-      assetTypeId: [undefined, Validators.required],
+      assetTypeId: [null, Validators.required],
       assetTypeTemplateId: [],
-      metric: [],
+      fieldTarget: [],
       draftVersion: [1]
     });
     this.assetTypeTemplateForm.patchValue(assetTypeTemplate);

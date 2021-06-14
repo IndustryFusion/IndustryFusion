@@ -65,7 +65,6 @@ import { AssetTypeTemplateWizardStepFourComponent } from './components/content/a
 import { AssetTypeTemplateWizardStepFinishedComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-finished/asset-type-template-wizard-step-finished.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
-import { AssetTypeEditDialogComponent } from './components/content/asset-type-edit/asset-type-edit-dialog.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -91,6 +90,7 @@ import { AssetTypeTemplateDialogUpdateComponent } from './components/content/ass
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template/asset-type-template-field-row/asset-type-template-field-row.component';
 import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template/asset-type-template-field-header/asset-type-template-field-header.component';
+import { AssetTypeEditDialogComponent } from './components/content/asset-type-edit/asset-type-edit-dialog.component';
 
 @NgModule({
   declarations: [

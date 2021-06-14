@@ -41,6 +41,8 @@ export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
   public confirmedMetrics: Array<FieldTarget> = [];
   public selectedMetrics: Array<FieldTarget> = [];
 
+  public FieldType = FieldType;
+
   constructor(private fieldQuery: FieldQuery) {
   }
 
@@ -84,7 +86,7 @@ export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedMetrics.push(fieldTarget);
     this.shouldAddMetric = false;
-    this.assetTypeTemplateForm.get('metric').setValue(undefined);
+    this.assetTypeTemplateForm.get('fieldTarget').setValue(undefined);
   }
 
   onConfirm(fieldTarget: FieldTarget) {

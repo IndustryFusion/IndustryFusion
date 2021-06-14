@@ -33,7 +33,7 @@ export class FieldTargetService {
 
   }
 
-  getItems(assetTypeTemplateId: ID): Observable<FieldTarget[]> {
+  getItemsByAssetTypeTemplate(assetTypeTemplateId: ID): Observable<FieldTarget[]> {
     const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets`;
     return this.http.get<FieldTarget[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {

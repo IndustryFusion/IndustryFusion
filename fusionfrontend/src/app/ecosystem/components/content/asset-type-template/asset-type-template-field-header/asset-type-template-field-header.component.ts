@@ -14,6 +14,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
+import { FieldType } from '../../../../../store/field-target/field-target.model';
 
 @Component({
   selector: 'app-asset-type-template-field-header',
@@ -23,7 +24,9 @@ import { Component, Input, OnInit } from '@angular/core';
 export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
 
   @Input() editable: boolean;
-  @Input() isMetric: boolean;
+  @Input() type: FieldType;
+
+  public FieldType = FieldType;
 
   constructor() { }
 

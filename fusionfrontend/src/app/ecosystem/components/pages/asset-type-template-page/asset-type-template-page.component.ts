@@ -40,6 +40,8 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   private updateWizardRef: DynamicDialogRef;
   private warningDialogRef: DynamicDialogRef;
 
+  public FieldType = FieldType;
+
   constructor(private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private assetTypeTemplateService: AssetTypeTemplateService,
               private fieldTargetService: FieldTargetService,
@@ -52,7 +54,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.attributes = [];
 
     const assetTypeTemplateId = Number.parseInt(this.route.snapshot.url[0].toString(), 10);
-    this.fieldTargetService.getItems(assetTypeTemplateId).subscribe(() =>
+    this.fieldTargetService.getItemsByAssetTypeTemplate(assetTypeTemplateId).subscribe(() =>
       this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
         .subscribe(assetTypeTemplate => this.updateAssetTypeTemplate(assetTypeTemplate)));
 

@@ -23,7 +23,7 @@
   }
 
   &:hover {
-    border: 2px solid #95989A !important;
+    border: 2px solid $basic-grey !important;
   }
 
   &:focus {
@@ -34,7 +34,6 @@
 
 .p-dialog .p-dropdown {
   border-radius: 10px !important;
-  border: none;
   align-items: center;
   min-width: 100%;
   border: 2px solid $basic-white;
@@ -44,11 +43,10 @@
   }
 
   &:hover {
-    border: 2px solid #95989A;
+    border: 2px solid $basic-grey;
     box-shadow: none !important;
   }
   &:focus {
-    border: 2px solid $highlighted;
     border: 2px solid $highlighted !important;
   }
   &.p-focus {

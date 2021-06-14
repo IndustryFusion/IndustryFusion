@@ -23,8 +23,8 @@ import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-t
 import { AssetTypesComposedQuery } from '../../../../store/composed/asset-types-composed.query';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
-import { AssetTypeEditDialogComponent } from '../../content/asset-type-edit/asset-type-edit-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { AssetTypeEditDialogComponent } from '../../content/asset-type-edit/asset-type-edit-dialog.component';
 
 @Component({
   selector: 'app-asset-type-details-page',
