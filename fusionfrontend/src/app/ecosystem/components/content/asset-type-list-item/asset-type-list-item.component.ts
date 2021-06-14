@@ -40,6 +40,16 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
     super(route, router, assetTypeService);
   }
 
+  private static assetTypeFromDetails(assetTypeDetails: AssetTypeDetails): AssetType {
+    const assetType: AssetType = new AssetType();
+    assetType.id = assetTypeDetails.id;
+    assetType.name = assetTypeDetails.name;
+    assetType.label = assetTypeDetails.label;
+    assetType.description = assetTypeDetails.description;
+
+    return assetType;
+  }
+
   ngOnInit() {
     super.ngOnInit();
   }
@@ -69,15 +79,5 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
     assetTypeDetails.assetCount = this.item.assetCount;
 
     this.item = assetTypeDetails;
-  }
-
-  private static assetTypeFromDetails(assetTypeDetails: AssetTypeDetails): AssetType {
-    const assetType: AssetType = new AssetType();
-    assetType.id = assetTypeDetails.id;
-    assetType.name = assetTypeDetails.name;
-    assetType.label = assetTypeDetails.label;
-    assetType.description = assetTypeDetails.description;
-
-    return assetType;
   }
 }
