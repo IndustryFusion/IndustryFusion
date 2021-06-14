@@ -41,7 +41,6 @@ export class LocationPageComponent implements OnInit, OnDestroy {
   location$: Observable<Location>;
   rooms$: Observable<Room[]>;
   allRoomsOfLocation$: Observable<Room[]>;
-  assetSeries$: Observable<AssetSeriesDetails[]>;
   assets$: Observable<Asset[]>;
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
   selectedIds: ID[];
@@ -66,7 +65,6 @@ export class LocationPageComponent implements OnInit, OnDestroy {
     this.location$ = this.factoryResolver.location$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.allRoomsOfLocation$ = this.factoryResolver.allRoomsOfLocation$;
-    this.assetSeries$ = this.factoryResolver.assetSeries$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
@@ -77,21 +75,6 @@ export class LocationPageComponent implements OnInit, OnDestroy {
 
   selectTheAssets(selectedAssetIds: Set<ID>) {
     this.selectedIds = Array.from(selectedAssetIds.values());
-  }
-
-  createAssetFromAssetSeries(event: AssetSeriesDetails) {
-    this.selectedAssetSeries = event;
-    const targetCompanyId = this.companyId;
-    const sourceCompanyId = event.companyId;
-    const assetSeriesId = event.id;
-    const createAsset$ = this.assetService.createAssetFromAssetSeries(targetCompanyId, assetSeriesId, sourceCompanyId);
-    createAsset$.subscribe(
-      id => {
-        console.log('[location page] created asset id: ' + id);
-        this.createdAssetDetailsId = id;
-      },
-      error => console.log(error)
-    );
   }
 
   updateAssetData(event: AssetDetails) {

@@ -23,7 +23,6 @@ import { Location } from 'src/app/store/location/location.model';
 import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields, AssetModalType } from '../../../../store/asset-details/asset-details.model';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
@@ -42,8 +41,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
   locations: Location[];
   @Input()
   location: Location;
-  @Input()
-  assetSeries: AssetSeriesDetails[];
   @Input()
   assetsWithDetailsAndFields: AssetDetailsWithFields[];
   @Input()
@@ -117,8 +114,7 @@ export class AssetsListComponent implements OnChanges, OnInit {
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
-        // assetsToBeOnboard: this.assetsWithDetailsAndFields,
-        assetSeries: this.assetSeries,
+        assetsToBeOnboarded: this.assetsWithDetailsAndFields,
         locations: this.locations,
         rooms: this.rooms,
         activeModalType: AssetModalType.startInitialization

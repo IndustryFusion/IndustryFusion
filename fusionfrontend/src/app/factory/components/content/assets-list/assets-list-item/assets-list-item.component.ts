@@ -82,6 +82,8 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
         rooms: this.rooms,
         activeModalType: AssetModalType.customizeAsset
       },
+      header: 'Assign name and description to asset',
+      contentStyle: { 'padding-top': '1.5%' }
     });
 
     ref.onClose.subscribe((assetFormValues: AssetDetails) => {

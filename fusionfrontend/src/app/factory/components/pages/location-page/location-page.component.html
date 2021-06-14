@@ -15,11 +15,13 @@ under the License.
 
 <app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>
 
-<app-assets-list [company]="(company$ | async)" [locations]="(locations$ | async)" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [allRoomsOfLocation]="(allRoomsOfLocation$ | async)"
-                 [assetSeries]="(assetSeries$ | async)"
+<app-assets-list [company]="(company$ | async)"
+                 [locations]="(locations$ | async)"
+                 [location]="(location$ | async)" [rooms]="(rooms$ | async)"
+                 [allRoomsOfLocation]="(allRoomsOfLocation$ | async)"
                  [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
-                 (assetSeriesSelected)="createAssetFromAssetSeries($event)"
                  (assetDetailsSelected)="updateAssetData($event)">
 </app-assets-list>
+

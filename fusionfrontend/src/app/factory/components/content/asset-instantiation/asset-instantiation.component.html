@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 <app-asset-instantiation-start-modal  *ngIf="activeModalType == assetModalTypes.startInitialization"
-                                      [assetSeries]="assetSeries"
+                                      [assetsToBeOnboarded]="assetsToBeOnboarded"
                                       (assetOnboardingEvent)="onboardingStarted($event)">
 </app-asset-instantiation-start-modal>
 

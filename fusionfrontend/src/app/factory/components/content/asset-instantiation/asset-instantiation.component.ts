@@ -13,11 +13,11 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { Room } from '../../../../store/room/room.model';
 import { Location } from '../../../../store/location/location.model';
-import { AssetDetails, AssetDetailsWithFields, AssetModalType } from '../../../../store/asset-details/asset-details.model';
+import { AssetDetailsWithFields, AssetModalType } from '../../../../store/asset-details/asset-details.model';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -27,20 +27,10 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
   styleUrls: ['./asset-instantiation.component.scss']
 })
 export class AssetInstantiationComponent implements OnInit {
-  @Output()
-  closedEvent = new EventEmitter<boolean>();
-  @Output()
-  assetSeriesSelectedEvent = new EventEmitter<AssetSeriesDetails>();
-  @Output()
-  assetDetailsEvent = new EventEmitter<AssetDetails>();
-  @Output()
-  stoppedAssetAssignment = new EventEmitter<boolean>();
-
   assetDetailsForm: FormGroup;
   assetDetails: AssetDetailsWithFields;
   assetsToBeOnboarded: AssetDetailsWithFields[];
   assetSeries: AssetSeriesDetails[];
-  selectedAssetSeries: AssetSeriesDetails = new AssetSeriesDetails();
   locations: Location[];
   selectedLocation: Location;
   rooms: Room[];
@@ -60,7 +50,7 @@ export class AssetInstantiationComponent implements OnInit {
     this.assetDetailsForm = this.config.data.assetDetailsForm;
     this.assetSeries = this.config.data.assetSeries;
     this.assetDetails = this.config.data.assetToBeEdited;
-    // this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
+    this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
     this.locations = this.config.data.locations;
     this.rooms = this.config.data.rooms;
     this.activeModalType = this.config.data.activeModalType;
@@ -74,16 +64,15 @@ export class AssetInstantiationComponent implements OnInit {
     }
   }
 
-  onboardingStarted(event: AssetSeriesDetails) {
+  onboardingStarted(event: AssetDetailsWithFields) {
     if (event) {
-      this.selectedAssetSeries = event;
-      //this.assetDetails = event;
+      this.assetDetails = event;
       this.activeModalType = this.assetModalTypes.pairAsset;
-      this.setAssetSeriesDetails();
+      this.updateAssetForm();
     }
   }
 
-  setAssetSeriesDetails() {
+  updateAssetForm() {
     this.assetDetailsForm.controls[this.formControls[0]].setValue(this.assetDetails.assetSeriesName);
     this.assetDetailsForm.controls[this.formControls[1]].setValue(this.assetDetails.manufacturer);
     this.assetDetailsForm.controls[this.formControls[2]].setValue(this.assetDetails.category);

@@ -26,7 +26,6 @@ import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 import { ID } from '@datorama/akita';
 import { FactoryManagerPageType, RouteData } from 'src/app/factory/factory-routing.model';
-import { AssetSeriesDetails } from 'src/app/store/asset-series-details/asset-series-details.model';
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
 
@@ -42,7 +41,6 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   assets$: Observable<Asset[]>;
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
   locations$: Observable<Location[]>;
-  assetSeries$: Observable<AssetSeriesDetails[]>;
   location$: Observable<Location>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
@@ -71,7 +69,6 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
-    this.assetSeries$ = this.factoryResolver.assetSeries$;
     this.companyId = this.activatedRoute.snapshot.paramMap.get('companyId');
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
   }
