@@ -65,7 +65,7 @@ import { AssetTypeTemplateWizardStepFourComponent } from './components/content/a
 import { AssetTypeTemplateWizardStepFinishedComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-finished/asset-type-template-wizard-step-finished.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
-import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
+import { AssetTypeEditDialogComponent } from './components/content/asset-type-edit/asset-type-edit-dialog.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -79,6 +79,8 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
 import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
 import { AssetTypeTemplateWizardWarningDialogComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { MenuModule } from 'primeng/menu';
+import { ButtonModule } from 'primeng/button';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
@@ -134,7 +136,7 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     AssetTypeTemplateWizardWarningDialogComponent,
     AssetTypeTemplateWizardStepPublishComponent,
     AssetTypePageComponent,
-    AssetTypeEditComponent,
+    AssetTypeEditDialogComponent,
     QuantityTypePageComponent,
     QuantityTypeEditDialogDirective,
     AssetTypeTemplateFieldHeaderComponent,
@@ -159,7 +161,9 @@ import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asse
     InputTextareaModule,
     DropdownModule,
     RadioButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    MenuModule,
+    ButtonModule
   ],
   exports: [
     EcosystemSubHeaderComponent,

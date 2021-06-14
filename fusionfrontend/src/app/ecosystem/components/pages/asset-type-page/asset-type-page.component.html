@@ -17,7 +17,7 @@ under the License.
   <div class="if-detail-page-div">
     <div class="row clr-justify-content-between clr-align-items-center">
       <h3>  {{ (assetType$ | async)?.name }} </h3>
-      <app-edit-details-button></app-edit-details-button>
+      <app-edit-details-button (editItem)="showEditDialog()"></app-edit-details-button>
     </div>
 
     <div class="if-detail-page-div">

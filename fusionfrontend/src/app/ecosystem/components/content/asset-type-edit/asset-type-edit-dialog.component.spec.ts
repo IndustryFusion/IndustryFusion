@@ -15,21 +15,21 @@
 
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetTypeEditComponent } from './asset-type-edit.component';
+import { AssetTypeEditDialogComponent } from './asset-type-edit-dialog.component';
 
-describe('AssetTypeEditComponent', () => {
-  let component: AssetTypeEditComponent;
-  let fixture: ComponentFixture<AssetTypeEditComponent>;
+describe('AssetTypeEditDialogComponent', () => {
+  let component: AssetTypeEditDialogComponent;
+  let fixture: ComponentFixture<AssetTypeEditDialogComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetTypeEditComponent ]
+      declarations: [ AssetTypeEditDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeEditComponent);
+    fixture = TestBed.createComponent(AssetTypeEditDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
