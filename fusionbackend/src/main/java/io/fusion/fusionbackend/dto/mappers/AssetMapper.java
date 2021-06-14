@@ -44,7 +44,6 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         AssetDto dto = AssetDto.builder()
                 .id(entity.getId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
-                .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
                 .externalId(entity.getExternalId())
                 .controlSystemType(entity.getControlSystemType())

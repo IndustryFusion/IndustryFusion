@@ -28,12 +28,12 @@ under the License.
 </div>
 <div class="list-item" [ngClass]="{'selected': selected}">
   <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}"><input type="checkbox" [(ngModel)]="selected" (click)="select()" /></div>
-  <div class="list-item-cell bold black" [routerLink]="item.id" [style.width.%]="30">{{ item.name }}</div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.assetType}}</div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.templateVersion}}</div>
-  <div class="list-item-cell grey label-success" [routerLink]="item.id" [style.width.%]="20"><span class="badge badge-light-blue"></span> {{item.status}}</div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.instances}}</div>
-  <div class="list-item-cell grey"  [style.width.%]="5" [ngClass]="{'hidden': !selected}">
+  <div class="list-item-cell bold black" [style.width.%]="30">{{ item.name }}</div>
+  <div class="list-item-cell grey" [style.width.%]="20">{{item.assetType}}</div>
+  <div class="list-item-cell grey" [style.width.%]="20">{{item.templateVersion}}</div>
+  <div class="list-item-cell grey label-success" [style.width.%]="20"><span class="badge badge-light-blue"></span> {{item.status}}</div>
+  <div class="list-item-cell grey" [style.width.%]="20">{{item.instances}}</div>
+  <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
     <app-item-options-menu (editItem)="editItem()"  (deleteItem)="showDeleteItem()"></app-item-options-menu>
   </div>
 </div>

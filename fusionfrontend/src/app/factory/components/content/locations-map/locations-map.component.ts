@@ -247,8 +247,6 @@ export class LocationsMapComponent implements OnInit, OnChanges {
       this.height = 460;
       this.defaultLatitude = 48.5;
     }
-    console.log('this.location: ', this.location);
-    console.log('this.locations: ', this.locations);
   }
 
   navigateToLocation(id: ID): void {

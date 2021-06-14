@@ -17,6 +17,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
+import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from 'ng2-charts';
 
 import { FactoryRoutingModule } from './factory-routing.module';
@@ -26,6 +27,7 @@ import { LocationPageComponent } from './components/pages/location-page/location
 import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { AssetDetailsPageComponent } from './components/pages/asset-details-page/asset-details-page.component';
+import { LocationsMapComponent } from './components/content/locations-map/locations-map.component';
 import { LocationsComponent } from './components/content/locations/locations.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
@@ -51,6 +53,7 @@ import { AssetsListItemComponent } from './components/content/assets-list/assets
 import { AssetsListHeaderComponent } from './components/content/assets-list/assets-list-header/assets-list-header.component';
 import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
 import { ListFilterComponent } from './components/content/assets-list/list-filter/list-filter.component';
+import { environment } from 'src/environments/environment';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
@@ -75,6 +78,7 @@ import { IFCommon } from '../common/i-f-common.module';
     AssetsGridPageComponent,
     AssetsListPageComponent,
     AssetDetailsPageComponent,
+    LocationsMapComponent,
     LocationsComponent,
     CompanyInfoComponent,
     AssetsListComponent,
@@ -111,6 +115,9 @@ import { IFCommon } from '../common/i-f-common.module';
         CommonModule,
         FactoryRoutingModule,
         ClarityModule,
+        AgmCoreModule.forRoot({
+            apiKey: environment.googleMapsClientId
+        }),
         ChartsModule,
         FormsModule,
         FontAwesomeModule,

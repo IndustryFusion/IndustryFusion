@@ -23,12 +23,6 @@ import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-d
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { AssetSeriesStore } from '../../../../store/asset-series/asset-series.store';
 import { CompanyStore } from '../../../../store/company/company.store';
-import { DialogService } from 'primeng/dynamicdialog';
-import { AssetSeriesCreateComponent } from '../asset-series-create/asset-series-create.component';
-import { CompanyQuery } from '../../../../store/company/company.query';
-import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
-import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetSeries } from "../../../../store/asset-series/asset-series.model";
 
 @Component({
   selector: 'app-asset-series-list',
@@ -59,22 +53,16 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public router: Router,
     public companyStore: CompanyStore,
-    public companyQuery: CompanyQuery,
     public assetSeriesService: AssetSeriesService,
     public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
     public assetSeriesStore: AssetSeriesStore,
-    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    public  assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
-    public unitsResolver: UnitsResolver,
-    public dialogService: DialogService) {
+    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver) {
   }
 
   ngOnInit() {
     console.log('ngOnInit');
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
     this.items$ = this.assetSeriesDetailsQuery.selectAll();
-    this.assetTypeTemplatesResolver.resolve().subscribe();
-    this.unitsResolver.resolve().subscribe();
     this.assetSeriesDetailsQuery.selectError().pipe(tap((error) => {
       if (error) {
         this.error = error;
@@ -147,29 +135,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   public startAssetSeriesWizard(idString: string, startStep: number = 1) {
-    const dialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
-      data: {
-        companyId: this.companyQuery.getActiveId(),
-        assetSeriesId: idString,
-        step: startStep
-      },
-      width: '75%'
-    });
-
-    dialogRef.onClose.subscribe((value: AssetSeries) => {
-      if (value) {
-        this.updateAssetSeries(value);
-      }
-    });
-  }
-
-  updateAssetSeries(assetSeries: AssetSeries) {
-    if (assetSeries.id) {
-      this.assetSeriesService.editItem(assetSeries.id, assetSeries)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    } else {
-      this.assetSeriesService.createItem(assetSeries.companyId, assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    }
+    this.router.navigate(['edit'], { relativeTo: this.route, queryParams: { step: startStep, id: idString}});
   }
 }

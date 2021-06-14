@@ -55,10 +55,4 @@ export class AssetQuery extends BaseQueryEntity<AssetState, Asset> {
       filterBy: entity => String(entity.companyId) === String(companyId)
     });
   }
-
-  selectAssetsOfAssetSerie(assetSeriesId: ID): Observable<Asset[]> {
-    return this.selectAll({
-      filterBy: entity => String(entity.assetSeriesId) === String(assetSeriesId)
-    });
-  }
 }

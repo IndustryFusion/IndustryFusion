@@ -13,53 +13,49 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-series-list">
-  <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
-    <clr-alert-item>
+<clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
+  <clr-alert-item>
     <span class="alert-text">
       {{ getErrorMessage() }}
     </span>
-    </clr-alert-item>
-  </clr-alert>
-  <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
-    <div>
-      <button class="button-create" (click)="createItem()">
-        <clr-icon shape="plus"></clr-icon>
-        Create Asset Series
-      </button>
-    </div>
-  </div>
+  </clr-alert-item>
+</clr-alert>
+<div class="clr-row clr-justify-content-between clr-align-items-center list-header">
+  <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
   <div>
-    <div class="list-container">
-      <div class="list-edit-bar" *ngIf="selected.size > 0">
-        <div class="list-edit-bar-item" [style.width.%]="5">
-          <clr-icon shape="check-circle" size="20"></clr-icon>
-        </div>
-        <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
-        <div class="list-edit-bar-item" [style.width.%]="50">
-          <button *ngIf="selected.size == 1" class="btn btn-link button-white" (click)="modifyItems()">
-            <clr-icon shape="wrench"></clr-icon>
-          </button>
-          <button class="btn btn-link button-white" (click)="deleteItems()">
-            <clr-icon shape="trash"></clr-icon>
-          </button>
-        </div>
-        <div class="list-edit-bar-last-item" [style.width.%]="35">
-          <button class="btn btn-link button-white" (click)="deselectAllItems()">
-            <clr-icon shape="times"></clr-icon>
-            Close
-          </button>
-        </div>
+    <button class="button-create" (click)="createItem()">
+      <clr-icon shape="plus"></clr-icon> Create Asset Series
+    </button>
+  </div>
+</div>
+<div>
+  <div class="list-container">
+    <div class="list-edit-bar" *ngIf="selected.size > 0">
+      <div class="list-edit-bar-item" [style.width.%]="5">
+        <clr-icon shape="check-circle" size="20"></clr-icon>
       </div>
-      <app-asset-series-list-header (sortEvent)="onSort($event)"></app-asset-series-list-header>
-      <app-asset-series-list-item *ngFor="let item of (items$ | async)" [item]="item"
-                                  (itemSelected)="onItemSelect($event)"
-                                  (itemDeselected)="onItemDeselect($event)"
-                                  (itemEdit)="modifyItem($event)"
-                                  (itemDelete)="deleteItem($event)"
-                                  [selected]="isSelected(item.id)">
-      </app-asset-series-list-item>
+      <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
+      <div class="list-edit-bar-item" [style.width.%]="50">
+        <button *ngIf="selected.size == 1" class="btn btn-link button-white" (click)="modifyItems()">
+          <clr-icon shape="wrench"></clr-icon>
+        </button>
+        <button class="btn btn-link button-white" (click)="deleteItems()">
+          <clr-icon shape="trash"></clr-icon>
+        </button>
+      </div>
+      <div class="list-edit-bar-last-item" [style.width.%]="35">
+        <button class="btn btn-link button-white" (click)="deselectAllItems()">
+          <clr-icon shape="times"></clr-icon>Close
+        </button>
+      </div>
     </div>
+    <app-asset-series-list-header (sortEvent)="onSort($event)"></app-asset-series-list-header>
+    <app-asset-series-list-item *ngFor="let item of (items$ | async)" [item]="item"
+                              (itemSelected)="onItemSelect($event)"
+                              (itemDeselected)="onItemDeselect($event)"
+                                (itemEdit)="modifyItem($event)"
+                                (itemDelete)="deleteItem($event)"
+                              [selected]="isSelected(item.id)">
+    </app-asset-series-list-item>
   </div>
 </div>
