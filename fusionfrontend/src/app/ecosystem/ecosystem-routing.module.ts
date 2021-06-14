@@ -36,7 +36,6 @@ import { Role } from '../services/roles.model';
 import { EcosystemManagerPageType } from './ecosystem.routing.model';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
-import { AssetTypeEditDialogComponent } from './components/content/asset-type-edit/asset-type-edit-dialog.component';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
@@ -86,10 +85,6 @@ const routes: Routes = [
     children: [{
       path: '',
       component: AssetTypeListComponent,
-    },
-    {
-      path: ':id/edit',
-      component: AssetTypeEditDialogComponent
     }]
   },
   {

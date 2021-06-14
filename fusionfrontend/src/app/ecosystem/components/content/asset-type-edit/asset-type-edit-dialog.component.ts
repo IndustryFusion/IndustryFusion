@@ -52,7 +52,6 @@ export class AssetTypeEditDialogComponent implements OnInit {
       assetType.description = this.assetTypeForm.get('description')?.value;
 
       this.assetTypeService.editItem(assetType.id, assetType).subscribe();
-      //  this.assetTypeDetailsService.getItem(assetType.id).subscribe();
 
       this.ref.close(assetType);
     }
