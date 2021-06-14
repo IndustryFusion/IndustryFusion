@@ -63,7 +63,8 @@ const routes: Routes = [
       component: AssetTypeTemplatePageComponent,
       resolve: {
         assetTypes: AssetTypesResolver,
-        fields: FieldsResolver
+        fields: FieldsResolver,
+        units: UnitsResolver,
       },
       data: {
         pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL],

@@ -22,7 +22,6 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { AssetTypeEditDialogComponent } from '../asset-type-edit/asset-type-edit-dialog.component';
 
-
 @Component({
   selector: 'app-asset-type-list-item',
   templateUrl: './asset-type-list-item.component.html',

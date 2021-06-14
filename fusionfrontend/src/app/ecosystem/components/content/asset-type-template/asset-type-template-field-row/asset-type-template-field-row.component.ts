@@ -68,7 +68,7 @@ export class AssetTypeTemplateFieldRowComponent implements OnInit {
 
   getQuantityTypeName(id: ID) {
     const unit = this.unitQuery.getEntity(id);
-    const quantityType = this.quantityQuery.getEntity(unit?.quantityTypeId);
+    const quantityType = unit?.quantityType ? unit.quantityType : this.quantityQuery.getEntity(unit?.quantityTypeId);
     return quantityType?.name;
   }
 
