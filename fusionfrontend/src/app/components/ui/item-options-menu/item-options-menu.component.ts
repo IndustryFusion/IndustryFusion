@@ -33,6 +33,10 @@ export class ItemOptionsMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+   this.initMenuItems();
+  }
+
+  private initMenuItems() {
     switch (this.type) {
       case ItemOptionsMenuType.DELETE:
         this.menuActions = [
