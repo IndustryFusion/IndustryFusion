@@ -53,10 +53,12 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.metrics = [];
     this.attributes = [];
 
-    const assetTypeTemplateId = Number.parseInt(this.route.snapshot.url[0].toString(), 10);
-    this.fieldTargetService.getItemsByAssetTypeTemplate(assetTypeTemplateId).subscribe(() =>
-      this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
-        .subscribe(assetTypeTemplate => this.updateAssetTypeTemplate(assetTypeTemplate)));
+    const assetTypeTemplateId =  Number.parseInt(this.route.snapshot.paramMap.get('assetTypeTemplateId'), 10);
+    if (assetTypeTemplateId) {
+      this.fieldTargetService.getItemsByAssetTypeTemplate(assetTypeTemplateId).subscribe(() =>
+        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
+          .subscribe(assetTypeTemplate => this.updateAssetTypeTemplate(assetTypeTemplate)));
+    }
 
     this.assetTypeTemplateService.setActive(assetTypeTemplateId);
     this.ecoSystemManagerResolver.resolve(this.route);

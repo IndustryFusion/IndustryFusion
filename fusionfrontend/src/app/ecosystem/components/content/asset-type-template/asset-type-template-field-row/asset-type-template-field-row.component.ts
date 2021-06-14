@@ -27,8 +27,8 @@ import { FieldTarget } from '../../../../../store/field-target/field-target.mode
 })
 export class AssetTypeTemplateFieldRowComponent implements OnInit {
 
-  @Input() confirmed: boolean;
-  @Input() editable: boolean;
+  @Input() confirmed = false;
+  @Input() editable = true;
 
   @Input() fieldTarget: FieldTarget;
   @Output() confirmSignal = new EventEmitter<FieldTarget>();
@@ -39,12 +39,6 @@ export class AssetTypeTemplateFieldRowComponent implements OnInit {
   constructor(private unitQuery: UnitQuery, private quantityQuery: QuantityTypeQuery) { }
 
   ngOnInit() {
-    if (this.confirmed === undefined) {
-      this.confirmed = false;
-    }
-    if (this.editable === undefined) {
-      this.editable = true;
-    }
     if (!this.fieldTarget.label) {
       this.fieldTarget.name = '';
     }

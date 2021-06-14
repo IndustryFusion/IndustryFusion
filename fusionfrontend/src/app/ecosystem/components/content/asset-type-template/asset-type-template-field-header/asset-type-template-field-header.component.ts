@@ -23,7 +23,7 @@ import { FieldType } from '../../../../../store/field-target/field-target.model'
 })
 export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
 
-  @Input() editable: boolean;
+  @Input() editable = true;
   @Input() type: FieldType;
 
   public FieldType = FieldType;
@@ -31,9 +31,5 @@ export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if (this.editable === undefined) {
-      this.editable = true;
-    }
   }
-
 }

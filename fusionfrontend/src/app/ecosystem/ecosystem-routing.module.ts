@@ -58,7 +58,7 @@ const routes: Routes = [
       component: AssetTypeTemplateListComponent
     },
     {
-      path: ':id',
+      path: ':assetTypeTemplateId',
       component: AssetTypeTemplatePageComponent,
       resolve: {
         assetTypes: AssetTypesResolver,
