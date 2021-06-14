@@ -14,8 +14,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AssetTypeTemplateFieldHeaderComponent } from './asset-type-template-field-header.component';
+import { AssetTypeTemplateFieldHeaderComponent } from '../../asset-type-template-field-header/asset-type-template-field-header.component';
 
 describe('AssetTypeTemplateFieldHeaderComponent', () => {
   let component: AssetTypeTemplateFieldHeaderComponent;
