@@ -13,22 +13,20 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-asset-type-template-create-step-sumary',
-  templateUrl: './asset-type-template-create-step-sumary.component.html',
-  styleUrls: ['./asset-type-template-create-step-sumary.component.scss']
+  selector: 'app-asset-type-template-field-header',
+  templateUrl: './asset-type-template-field-header.component.html',
+  styleUrls: ['./asset-type-template-field-header.component.scss']
 })
-export class AssetTypeTemplateCreateStepSumaryComponent implements OnInit {
+export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
 
-  constructor(public route: ActivatedRoute, public router: Router) { }
+  @Input() isMetric: boolean;
 
-  ngOnInit() {
+  constructor() { }
+
+  ngOnInit(): void {
   }
 
-  return() {
-    this.router.navigate(['../'], { relativeTo: this.route });
-  }
 }

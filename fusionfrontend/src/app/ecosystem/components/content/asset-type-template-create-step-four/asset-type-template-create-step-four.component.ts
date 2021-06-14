@@ -13,10 +13,10 @@
  * under the License.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-type-template-create-step-four',
@@ -25,26 +25,31 @@ import { FieldTarget } from '../../../../store/field-target/field-target.model';
 })
 export class AssetTypeTemplateCreateStepFourComponent implements OnInit {
 
+  @Input() assetTypeTemplateForm: FormGroup;
   @Input() metrics: Array<FieldTarget>;
   @Input() attributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() saveTemplate = new EventEmitter();
 
-  constructor(public route: ActivatedRoute, public router: Router) { }
+  constructor() { }
 
   ngOnInit() { }
 
-  changeStep(step: number) {
-    this.stepChange.emit(step);
+  onBackToAttributes() {
+    this.changeStep(3);
   }
 
-  save(step: number) {
+  onBackToMetrics() {
+    this.changeStep(2);
+  }
+
+  onSave(step: number) {
     this.saveTemplate.emit();
     this.changeStep(step);
   }
 
-  cancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  private changeStep(step: number) {
+    this.stepChange.emit(step);
   }
 
 }

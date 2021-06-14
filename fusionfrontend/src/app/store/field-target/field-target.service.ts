@@ -14,7 +14,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -31,6 +31,14 @@ export class FieldTargetService {
 
   constructor(private fieldTargetStore: FieldTargetStore, private http: HttpClient) {
 
+  }
+
+  getItems(assetTypeTemplateId: ID): Observable<FieldTarget[]> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets`;
+    return this.http.get<FieldTarget[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+      .pipe(tap(entities => {
+        this.fieldTargetStore.upsertMany(entities);
+      }));
   }
 
   createItem(assetTypeTemplateId: ID, fieldTarget: FieldTarget): Observable<FieldTarget> {

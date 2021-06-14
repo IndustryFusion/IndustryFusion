@@ -13,14 +13,14 @@
  * under the License.
  */
 
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
 import { Field } from '../../../../store/field/field.model';
 import { FieldQuery } from '../../../../store/field/field-query.service';
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
-import { FieldService } from '../../../../store/field/field.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-type-template-create-step-two',
@@ -29,23 +29,21 @@ import { FieldService } from '../../../../store/field/field.service';
 })
 export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
 
+  @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() metricSelect = new EventEmitter<FieldTarget[]>();
-  @Output() errorSignal = new EventEmitter<string>();
 
-  shouldAddMetric = false;
-  metrics$: Observable<Field[]>;
-  confirmedMetrics: Array<FieldTarget> = [];
-  selectedMetrics: Array<FieldTarget> = [];
-  metric: Field;
+  public shouldAddMetric = false;
+  public fields: Observable<Field[]>;
+  public confirmedMetrics: Array<FieldTarget> = [];
+  public selectedMetrics: Array<FieldTarget> = [];
 
-  shouldShowCreateField = false;
-
-  constructor(private metricQuery: FieldQuery, private metricService: FieldService) { }
+  constructor(private fieldQuery: FieldQuery) {
+  }
 
   ngOnInit() {
-    this.metrics$ = this.metricQuery.selectAll();
+    this.fields = this.fieldQuery.selectAll();
 
     if (this.inputMetrics) {
       this.selectedMetrics = this.selectedMetrics.concat(this.inputMetrics);
@@ -57,12 +55,18 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     return this.confirmedMetrics.indexOf(metric) !== -1;
   }
 
-  changeStep(step: number) {
-    if (this.confirmedMetrics.length === this.selectedMetrics.length) {
+  prevStep() {
+    this.changeStep(1);
+  }
+
+  nextStep() {
+    this.changeStep(3);
+  }
+
+  private changeStep(step: number) {
+    if (this.confirmedMetrics.length === this.selectedMetrics.length && this.assetTypeTemplateForm?.valid) {
       this.metricSelect.emit(this.confirmedMetrics);
       this.stepChange.emit(step);
-    } else {
-      this.errorSignal.emit('All metrics needs to be CONFIRMED.');
     }
   }
 
@@ -70,15 +74,15 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     this.shouldAddMetric = true;
   }
 
-  onChange(value: Field) {
+  onChangeMetric(field: Field) {
     const fieldTarget = new FieldTarget();
     fieldTarget.fieldType = FieldType.METRIC;
-    fieldTarget.field = value;
-    fieldTarget.fieldId = value.id;
+    fieldTarget.field = field;
+    fieldTarget.fieldId = field.id;
     fieldTarget.mandatory = false;
     this.selectedMetrics.push(fieldTarget);
     this.shouldAddMetric = false;
-    this.metric = undefined;
+    this.assetTypeTemplateForm.get('metric').setValue(undefined);
   }
 
   onConfirm(fieldTarget: FieldTarget) {
@@ -86,14 +90,14 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
   }
 
   onEdit(fieldTarget: FieldTarget) {
-    const index  = this.confirmedMetrics.indexOf(fieldTarget);
+    const index = this.confirmedMetrics.indexOf(fieldTarget);
     if (index > -1) {
       this.confirmedMetrics.splice(index, 1);
     }
   }
 
   onDelete(fieldTarget: FieldTarget) {
-    const index  = this.confirmedMetrics.indexOf(fieldTarget);
+    const index = this.confirmedMetrics.indexOf(fieldTarget);
     if (index > -1) {
       this.confirmedMetrics.splice(index, 1);
     }
@@ -102,19 +106,5 @@ export class AssetTypeTemplateCreateStepTwoComponent implements OnInit {
     if (index1 > -1) {
       this.selectedMetrics.splice(index1, 1);
     }
-  }
-
-  createMetricModal() {
-    this.shouldShowCreateField = true;
-  }
-
-  onDismissModal() {
-    this.shouldShowCreateField = false;
-  }
-
-  onConfirmModal(item: Field) {
-    this.metricService.createItem(item).subscribe({
-      complete: () => this.shouldShowCreateField = false
-    });
   }
 }

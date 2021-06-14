@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 
 import { UnitQuery } from '../../../../store/unit/unit.query';
@@ -40,13 +40,15 @@ export class AssetTypeTemplateFieldRowComponent implements OnInit {
     if (this.confirmed === undefined) {
       this.confirmed = false;
     }
+    if (!this.fieldTarget.label) {
+      this.fieldTarget.name = '';
+    }
+    this.fieldTarget.description = this.fieldTarget.field?.description;
+    this.fieldTarget.label = this.fieldTarget.field?.label;
   }
 
   onConfirm() {
     this.confirmed = true;
-    if (!this.fieldTarget.name) {
-      this.fieldTarget.name = this.fieldTarget.field.name;
-    }
     this.confirmSignal.emit(this.fieldTarget);
   }
 
@@ -61,12 +63,15 @@ export class AssetTypeTemplateFieldRowComponent implements OnInit {
 
   getQuantityTypeName(id: ID) {
     const unit = this.unitQuery.getEntity(id);
-    const quantityType = this.quantityQuery.getEntity(unit.quantityTypeId);
+    const quantityType = this.quantityQuery.getEntity(unit?.quantityTypeId);
     return quantityType?.name;
   }
 
   getUnitSymbol(id: ID) {
     const unit = this.unitQuery.getEntity(id);
-    return unit.symbol;
+    if (unit && unit.symbol.length > 0) {
+      return unit.symbol;
+    }
+    return '–';
   }
 }

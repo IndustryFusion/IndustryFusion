@@ -65,7 +65,7 @@ import { AssetTypeTemplateCreateStepFourComponent } from './components/content/a
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template-field-row/asset-type-template-field-row.component';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateCreateStepSumaryComponent } from './components/content/asset-type-template-create-step-sumary/asset-type-template-create-step-sumary.component';
+import { AssetTypeTemplateCreateStepFinishedComponent } from './components/content/asset-type-template-create-step-finished/asset-type-template-create-step-finished.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeEditComponent } from './components/content/asset-type-edit/asset-type-edit.component';
@@ -79,6 +79,7 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
+import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template-field-header/asset-type-template-field-header.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
@@ -125,11 +126,12 @@ import { UnitPageComponent } from './components/pages/unit-page/unit-page.compon
     AssetTypeTemplateCreateStepThreeComponent,
     AssetTypeTemplateCreateStepFourComponent,
     AssetTypeTemplateFieldRowComponent,
-    AssetTypeTemplateCreateStepSumaryComponent,
+    AssetTypeTemplateCreateStepFinishedComponent,
     AssetTypePageComponent,
     AssetTypeEditComponent,
     QuantityTypePageComponent,
     QuantityTypeEditDialogDirective,
+    AssetTypeTemplateFieldHeaderComponent,
     FieldDialogDirective,
     FieldPageComponent,
     AccuracyFormatPipe,

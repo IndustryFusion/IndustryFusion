@@ -10,4 +10,20 @@
   color: $regular-grey;
   padding-top: 8px;
   padding-bottom: 8px;
+  opacity: 1;
+}
+
+/** Use in addition to if-label **/
+
+.if-label-bold {
+  font-weight: bold;
+  font-size: $bigger-font-size;
+  line-height: $bigger-line-height;
+  color: $highlighted !important;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.if-label-header {
+  color: #C1C1C1 !important;
 }

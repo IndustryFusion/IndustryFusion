@@ -27,7 +27,13 @@
 }
 
 .icon {
-  margin-top: 154px;
+  margin-top: 100px;
   color: #000000;
   text-align: center;
+}
+
+:host ::ng-deep .is-solid {
+  size: 80px;
+  width: 80px;
+  height: 80px;
 }

@@ -21,32 +21,41 @@ import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/as
 import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
 import { Observable } from 'rxjs';
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AssetTypeTemplateCreateComponent } from '../asset-type-template-create/asset-type-template-create.component';
 
 @Component({
   selector: 'app-asset-type-template-list',
   templateUrl: './asset-type-template-list.component.html',
-  styleUrls: ['./asset-type-template-list.component.scss']
+  styleUrls: ['./asset-type-template-list.component.scss'],
+  providers: [DialogService]
 })
 export class AssetTypeTemplateListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
   @Input()
   optionalItems$: Observable<AssetTypeTemplate[]>;
 
-  titleMapping:
+  public titleMapping:
     { [k: string]: string } = { '=0': 'No asset type templates.', '=1': '# Asset type template', other: '# Asset type templates' };
 
-  editBarMapping:
+  public editBarMapping:
     { [k: string]: string } = {
       '=0': 'No asset type templates selected',
       '=1': '# Asset type template selected',
       other: '# Asset type templates selected'
     };
 
+  public ref: DynamicDialogRef;
+  public assetTypeTemplateForm: FormGroup;
+
   constructor(
     public route: ActivatedRoute,
     public router: Router,
     public assetTypeTemplateQuery: AssetTypeTemplateQuery,
-    public assetTypeTemplateService: AssetTypeTemplateService) {
+    public assetTypeTemplateService: AssetTypeTemplateService,
+    public dialogService: DialogService,
+    private formBuilder: FormBuilder) {
       super(route, router, assetTypeTemplateQuery, assetTypeTemplateService);
      }
 
@@ -58,15 +67,35 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
     }
   }
 
+  private createAssetTypeTemplateForm(formBuilder: FormBuilder) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    this.assetTypeTemplateForm = formBuilder.group({
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      useExistingTemplate: [false, Validators.required],
+      assetTypeId: [undefined, Validators.required],
+      assetTypeTemplateId: [undefined],
+      metric: [undefined]
+    });
+  }
+
   onCreate() {
-    if (this.route.snapshot.url.find(x => x.path === 'assettypes') != null) {
-      this.router.navigate(['../../assettypetemplate', 'create'], { relativeTo: this.route });
-    } else {
-      this.createItem();
-    }
+    this.createAssetTypeTemplateForm(this.formBuilder);
+
+    this.ref = this.dialogService.open(AssetTypeTemplateCreateComponent, {
+      data: {
+        assetTypeTemplateForm: this.assetTypeTemplateForm,
+        isEditing: false
+      },
+      header: `Asset Type Template Editor`,
+      width: '90%'
+    });
   }
 
   ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
     this.assetTypeTemplateQuery.resetError();
   }
 }

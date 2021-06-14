@@ -1,3 +1,6 @@
+@import 'base/typography';
+@import 'abstract/variables';
+
 .dropdown-filter .p-dropdown {
   width: 100%;
   background-color: $basic-white !important;
@@ -45,6 +48,7 @@
     box-shadow: none !important;
   }
   &:focus {
+    border: 2px solid $highlighted;
     border: 2px solid $highlighted !important;
   }
   &.p-focus {

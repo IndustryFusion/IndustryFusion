@@ -14,16 +14,12 @@ under the License.
 -->
 <div class="content">
   <div class="title">
-    <div>
-      Review Metrics & Attributes
-    </div>
-    <div>
-      Template Version - v.4
-    </div>
+    <div> Asset Type Template </div>
+    <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
-  <div class="icon"><clr-icon shape="success-standard" class="is-solid" size="80"></clr-icon></div>
-  <div class="description">Your Asset Type Template was successfully created/updated</div>
+  <div class="icon"><clr-icon shape="success-standard" class="is-solid"></clr-icon></div>
+  <div class="description">Your Asset Type Template was<br/>successfully created</div>
 </div>
 <div class="footer">
-  <button type="button" class="button-confirm" (click)="return()">Return</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onFinish()">Finish</button>
 </div>

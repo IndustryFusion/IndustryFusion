@@ -13,10 +13,14 @@
  * under the License.
  */
 
+@import 'base/typography';
+@import 'abstract/variables';
+@import 'components/buttons';
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  background: #F8F8F8 0% 0% no-repeat padding-box;
+  background: #F8F8F8 0 0 no-repeat padding-box;
   height: 100%;
   padding: 0 80px;
   overflow: auto;
@@ -26,6 +30,11 @@
     width: 60%;
     align-self: center;
   }
+}
+
+.input-div {
+  display: grid;
+  padding-bottom: 24px;
 }
 
 .content {
@@ -56,83 +65,79 @@
   }
 
   .selection {
-    margin-top: 80px;
+    margin-top: 48px;
     display: flex;
     flex-direction: row;
 
     .button-create {
-      padding-top: 17px;
-      padding-bottom: 16px;
+      padding-top: 13px;
+      padding-bottom: 17px;
       padding-right: 42px;
       padding-left: 40px;
 
       margin-left: 16px;
+      margin-top: 33px;
+      height: 45px;
 
-      text-align: center;
+      text-align: left;
       font-weight: 500;
-      font-size: 18px;
-      line-height: 23px;
+      font-size: $bigger-font-size;
+      line-height: $big-line-height;
       letter-spacing: 0;
-      color: #95989A;
+      color: $basic-black;
 
-      background: #FFFFFF 0% 0% no-repeat padding-box;
+      background: #FFFFFF 0 0 no-repeat padding-box;
       border-radius: 10px;
+      border: none !important;
       opacity: 1;
     }
   }
 
   .select-asset-input {
-    width: 40vw;
+    width: 50vw;
   }
 
   .fields-list {
-    margin-top: 80px;
+    margin-top: 40px;
+  }
+
+  .fields-padding {
+    margin-left: 3%;
   }
 
   .button-add {
-    margin-top: 40px;
-
+    height: 56px;
     width: 100%;
 
-    padding-top: 17px;
-    padding-bottom: 16px;
+    padding-top: 16px;
+    padding-bottom: 17px;
+    margin-top: 24px;
 
     text-align: center;
     font-weight: bold;
-    font-size: 18px;
-    line-height: 23px;
+    font-size: $bigger-font-size;
+    line-height: $big-line-height;
     letter-spacing: 0;
-    color: #000000;
+    color: $highlighted;
 
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    box-shadow: 0px 3px 6px #00000029;
+    background: #FFFFFF 0 0 no-repeat padding-box;
+    border: none !important;
     border-radius: 10px;
     opacity: 1;
   }
 }
 
 .footer {
-  margin: 100px 0;
+  margin-top: 80px;
+  margin-bottom: 64px;
   display: flex;
   justify-content: flex-end;
+}
 
-  .button-confirm {
-    padding-top: 17px;
-    padding-bottom: 16px;
-    padding-right: 78px;
-    padding-left: 78px;
+:host ::ng-deep .clr-timeline {
+  padding-left: 5.0rem !important;
+}
 
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 23px;
-    letter-spacing: 0;
-    color: #FFFFFF;
-    text-transform: uppercase;
-
-    background: #000000 0% 0% no-repeat padding-box;
-    box-shadow: 0px 3px 6px #00000029;
-    border-radius: 44px;
-    opacity: 1;
-  }
+:host ::ng-deep clr-icon[shape="dot-circle"] {
+  color: $basic-black !important;
 }

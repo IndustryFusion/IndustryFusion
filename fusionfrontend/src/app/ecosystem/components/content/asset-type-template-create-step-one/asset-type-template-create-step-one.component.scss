@@ -18,3 +18,7 @@
 .select-starting-configuration {
   margin-top: 40px;
 }
+
+:host ::ng-deep .textarea-character-count {
+  padding-right: 33.0% !important;
+}

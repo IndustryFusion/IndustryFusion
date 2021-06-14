@@ -64,7 +64,7 @@ const routes: Routes = [
       component: AssetTypeTemplateCreateComponent,
       resolve: {
         assetTypes: AssetTypesResolver,
-        metrics: FieldsResolver,
+        fields: FieldsResolver,
         units: UnitsResolver,
         quantityTypes: QuantityTypesResolver,
       }
@@ -116,7 +116,7 @@ const routes: Routes = [
     component: FieldsPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      metrics: FieldsResolver,
+      fields: FieldsResolver,
       units: UnitsResolver,
       quantityTypes: QuantityTypesResolver,
     },

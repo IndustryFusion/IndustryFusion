@@ -14,12 +14,18 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ID } from '@datorama/akita';
 
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
 import { FieldTargetService } from '../../../../store/field-target/field-target.service';
+import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
+import { UnitsResolver } from '../../../../resolvers/units.resolver';
+import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
+import { FormGroup } from '@angular/forms';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
+import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 
 @Component({
   selector: 'app-asset-type-template-create',
@@ -28,66 +34,80 @@ import { FieldTargetService } from '../../../../store/field-target/field-target.
 })
 export class AssetTypeTemplateCreateComponent implements OnInit {
 
-  step = 1;
-  assetType: ID;
-  assteTypeTemplate: AssetTypeTemplate;
-  error: any;
+  public assetTypeTemplateForm: FormGroup;
+  public step = 1;
+  public assetTypeTemplate: AssetTypeTemplate;
 
-  constructor(private assetTypeTemplateService: AssetTypeTemplateService, private fieldTargetService: FieldTargetService) { }
+  constructor(private assetTypeTemplateService: AssetTypeTemplateService,
+              private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
+              private fieldTargetService: FieldTargetService,
+              private assetTypesResolver: AssetTypesResolver,
+              private fieldsResolver: FieldsResolver,
+              private unitsResolver: UnitsResolver,
+              private quantityTypesResolver: QuantityTypesResolver,
+              public config: DynamicDialogConfig) { }
 
   ngOnInit() {
-    this.assteTypeTemplate = new AssetTypeTemplate();
-    this.assteTypeTemplate.fieldTargets = [];
-  }
+    this.assetTypesResolver.resolve().subscribe();
+    this.fieldsResolver.resolve().subscribe();
+    this.unitsResolver.resolve().subscribe();
+    this.quantityTypesResolver.resolve().subscribe();
 
-  onStepChange(step: number) {
-    this.error = undefined;
-    this.step = step;
-  }
+    this.assetTypeTemplateForm = this.config.data.assetTypeTemplateForm;
 
-  onAssetTypeSelect(id: ID) {
-    this.assetType = id;
-  }
-
-  onNameSelect(name: string) {
-    this.assteTypeTemplate.name = name;
-  }
-
-  onDescriptionSelect(description: string) {
-    this.assteTypeTemplate.description = description;
-  }
-
-  onMetricsSelect(metrics: FieldTarget[]) {
-    this.assteTypeTemplate.fieldTargets =  this.getAttributes().concat(metrics);
-  }
-
-  onAttributesSelect(attributes: FieldTarget[]) {
-    this.assteTypeTemplate.fieldTargets =  this.getMetrics().concat(attributes);
-  }
-
-  onSaveTemplate() {
-    this.assetTypeTemplateService.createTemplate(this.assteTypeTemplate, this.assetType).subscribe(
-      (template) => {
-        this.assteTypeTemplate.fieldTargets.forEach((fieldTarget) => {
-          this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
-        });
-      }
-    );
+    this.assetTypeTemplate = new AssetTypeTemplate();
+    this.assetTypeTemplate.fieldTargets = [];
   }
 
   getMetrics(): FieldTarget[] {
-    return this.assteTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.METRIC);
+    return this.assetTypeTemplate.fieldTargets?.filter((field) => field.fieldType === FieldType.METRIC);
   }
 
   getAttributes(): FieldTarget[] {
-    return this.assteTypeTemplate.fieldTargets.filter((metric) => metric.fieldType === FieldType.ATTRIBUTE);
+    return this.assetTypeTemplate.fieldTargets?.filter((field) => field.fieldType === FieldType.ATTRIBUTE);
   }
 
-  onCloseError() {
-    this.error = undefined;
+  onStepChange(step: number) {
+    this.step = step;
   }
 
-  onError(error: string) {
-    this.error = error;
+  onMetricsSelect(metrics: FieldTarget[]) {
+    this.assetTypeTemplate.fieldTargets =  this.getAttributes().concat(metrics);
+  }
+
+  onAttributesSelect(attributes: FieldTarget[]) {
+    this.assetTypeTemplate.fieldTargets =  this.getMetrics().concat(attributes);
+  }
+
+  onChangeUseOfTemplate(assetTypeTemplateId: number) {
+    if (assetTypeTemplateId) {
+      this.fieldTargetService.getItems(assetTypeTemplateId).subscribe(() =>
+        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId).subscribe(
+          x => this.assetTypeTemplate.fieldTargets = x.fieldTargets
+        )
+      );
+    } else {
+      this.assetTypeTemplate.fieldTargets = [];
+      this.assetTypeTemplate.fieldTargetIds = [];
+    }
+  }
+
+  onSaveTemplate() {
+    const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
+
+    if (assetTypeId && this.assetTypeTemplate.fieldTargets) {
+      this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
+      this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
+      this.assetTypeTemplate.imageKey = null;
+      this.assetTypeTemplate.assetTypeId = assetTypeId;
+
+      this.assetTypeTemplateService.createTemplate(this.assetTypeTemplate, assetTypeId).subscribe(
+        (template) => {
+          this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
+            this.fieldTargetService.createItem(template.id, fieldTarget).subscribe();
+          });
+        }
+      );
+    }
   }
 }

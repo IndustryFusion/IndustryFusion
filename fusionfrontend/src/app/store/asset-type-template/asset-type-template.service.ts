@@ -43,8 +43,8 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
       }));
   }
 
-  getItem(templateId: ID): Observable<AssetTypeTemplate> {
-    const path = `assettypetemplates/${templateId}`;
+  getItem(templateId: ID, embedChildren: boolean = false): Observable<AssetTypeTemplate> {
+    const path = `assettypetemplates/${templateId}?embedChildren=${embedChildren}`;
     return this.http.get<AssetTypeTemplate>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assettypeTemplateStore.upsert(templateId, entity);

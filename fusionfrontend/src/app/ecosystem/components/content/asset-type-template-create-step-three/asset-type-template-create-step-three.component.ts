@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -21,7 +21,7 @@ import { Field } from '../../../../store/field/field.model';
 import { FieldTarget } from '../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../store/field/field-query.service';
 import { FieldType } from '../../../../store/field-details/field-details.model';
-import { FieldService } from '../../../../store/field/field.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-type-template-create-step-three',
@@ -30,93 +30,81 @@ import { FieldService } from '../../../../store/field/field.service';
 })
 export class AssetTypeTemplateCreateStepThreeComponent implements OnInit {
 
-  @Input() inputMetrics: Array<FieldTarget>;
+  @Input() assetTypeTemplateForm: FormGroup;
+  @Input() inputAttributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() attributeSelect = new EventEmitter<FieldTarget[]>();
-  @Output() errorSignal = new EventEmitter<string>();
 
-  shouldAddMetric = false;
-  metrics$: Observable<Field[]>;
-  confirmedMetrics: Array<FieldTarget> = [];
-  selectedMetrics: Array<FieldTarget> = [];
-  metric: Field;
+  shouldAddAttribute = false;
+  fields: Observable<Field[]>;
+  confirmedAttributes: Array<FieldTarget> = [];
+  selectedAttributes: Array<FieldTarget> = [];
 
-  shouldShowCreateField = false;
-
-  constructor(private metricQuery: FieldQuery, private metricService: FieldService) { }
+  constructor(private fieldQuery: FieldQuery) { }
 
   ngOnInit() {
-    this.metrics$ = this.metricQuery.selectAll();
+    this.fields = this.fieldQuery.selectAll();
 
-    if (this.inputMetrics) {
-      this.selectedMetrics = this.selectedMetrics.concat(this.inputMetrics);
-      this.confirmedMetrics = this.confirmedMetrics.concat(this.inputMetrics);
+    if (this.inputAttributes) {
+      this.selectedAttributes = this.selectedAttributes.concat(this.inputAttributes);
+      this.confirmedAttributes = this.confirmedAttributes.concat(this.inputAttributes);
     }
   }
 
   isConfirmed(metric: FieldTarget): boolean {
-    return this.confirmedMetrics.indexOf(metric) !== -1;
+    return this.confirmedAttributes.indexOf(metric) !== -1;
   }
 
-  changeStep(step: number) {
-    if (this.confirmedMetrics.length === this.selectedMetrics.length) {
-      this.attributeSelect.emit(this.confirmedMetrics);
+  private changeStep(step: number) {
+    if (this.confirmedAttributes.length === this.selectedAttributes.length  && this.assetTypeTemplateForm?.valid) {
+      this.attributeSelect.emit(this.confirmedAttributes);
       this.stepChange.emit(step);
-    } else {
-      this.errorSignal.emit('All metrics needs to be CONFIRMED.');
     }
   }
 
-  addMetric() {
-    this.shouldAddMetric = true;
+  prevStep() {
+    this.changeStep(2);
   }
 
-  onChange(value: Field) {
+  nextStep() {
+    this.changeStep(4);
+  }
+
+  addAttribute() {
+    this.shouldAddAttribute = true;
+  }
+
+  onChangeAttribute(field: Field) {
     const fieldTarget = new FieldTarget();
     fieldTarget.fieldType = FieldType.ATTRIBUTE;
-    fieldTarget.field = value;
-    fieldTarget.fieldId = value.id;
+    fieldTarget.field = field;
+    fieldTarget.fieldId = field.id;
     fieldTarget.mandatory = false;
-    this.selectedMetrics.push(fieldTarget);
-    this.shouldAddMetric = false;
-    this.metric = undefined;
+    this.selectedAttributes.push(fieldTarget);
+    this.shouldAddAttribute = false;
+    this.assetTypeTemplateForm.get('metric').setValue(undefined);
   }
 
   onConfirm(fieldTarget: FieldTarget) {
-    this.confirmedMetrics.push(fieldTarget);
+    this.confirmedAttributes.push(fieldTarget);
   }
 
   onEdit(fieldTarget: FieldTarget) {
-    const index  = this.confirmedMetrics.indexOf(fieldTarget);
+    const index  = this.confirmedAttributes.indexOf(fieldTarget);
     if (index > -1) {
-      this.confirmedMetrics.splice(index, 1);
+      this.confirmedAttributes.splice(index, 1);
     }
   }
 
   onDelete(fieldTarget: FieldTarget) {
-    const index  = this.confirmedMetrics.indexOf(fieldTarget);
+    const index  = this.confirmedAttributes.indexOf(fieldTarget);
     if (index > -1) {
-      this.confirmedMetrics.splice(index, 1);
+      this.confirmedAttributes.splice(index, 1);
     }
 
-    const index1 = this.selectedMetrics.indexOf(fieldTarget);
+    const index1 = this.selectedAttributes.indexOf(fieldTarget);
     if (index1 > -1) {
-      this.selectedMetrics.splice(index1, 1);
+      this.selectedAttributes.splice(index1, 1);
     }
   }
-
-  createMetricModal() {
-    this.shouldShowCreateField = true;
-  }
-
-  onDismissModal() {
-    this.shouldShowCreateField = false;
-  }
-
-  onConfirmModal(item: Field) {
-    this.metricService.createItem(item).subscribe({
-      complete: () => this.shouldShowCreateField = false
-    });
-  }
-
 }
