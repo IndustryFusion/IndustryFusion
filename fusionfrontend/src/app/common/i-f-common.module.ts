@@ -8,6 +8,11 @@ import { TrashButtonComponent } from '../components/ui/trash-button/trash-button
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { EditDetailsButtonComponent } from '../components/ui/edit-details-button/edit-details-button.component';
 import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
+import { LocationsMapComponent } from '../components/content/locations-map/locations-map.component';
+import { AgmCoreModule } from '@agm/core';
+import { environment } from '../../environments/environment';
+import { CommonModule } from "@angular/common";
+import { BrowserModule } from "@angular/platform-browser";
 
 
 @NgModule({
@@ -17,12 +22,18 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
     TrashButtonComponent,
     ConfirmButtonComponent,
     EditButtonComponent,
-    EditDetailsButtonComponent
+    EditDetailsButtonComponent,
+    LocationsMapComponent
   ],
   imports: [
+    CommonModule,
+    BrowserModule,
     ClrIconModule,
     MenuModule,
-    ButtonModule
+    ButtonModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsClientId
+    }),
   ],
   exports: [
     CreateButtonComponent,
@@ -30,7 +41,8 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
     TrashButtonComponent,
     ConfirmButtonComponent,
     EditButtonComponent,
-    EditDetailsButtonComponent
+    EditDetailsButtonComponent,
+    LocationsMapComponent
   ]
 })
 export class IFCommon {
