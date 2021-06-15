@@ -63,10 +63,27 @@ public class AssetTypeTemplateService {
     public AssetTypeTemplate createAssetTypeTemplate(final Long assetTypeId,
                                                      final AssetTypeTemplate assetTypeTemplate) {
         final AssetType assetType = assetTypeService.getAssetType(assetTypeId);
+        if (assetType != null && existsDraftToAssetType(assetType)) {
+            String exception = "It is forbidden to create a new asset type template draft if another one exists.";
+            throw new RuntimeException(exception);
+        }
 
         assetTypeTemplate.setAssetType(assetType);
 
         return assetTypeTemplateRepository.save(assetTypeTemplate);
+    }
+
+    private boolean existsDraftToAssetType(AssetType assetType) {
+        final Iterable<AssetTypeTemplate> assetTypeTemplatesOfAssetType = this.assetTypeTemplateRepository
+                .findAllByAssetType(assetType);
+
+        for (AssetTypeTemplate assetTypeTemplate : assetTypeTemplatesOfAssetType) {
+            if (!assetTypeTemplate.getPublished()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public AssetTypeTemplate updateAssetTypeTemplate(final Long assetTypeTemplateId,
