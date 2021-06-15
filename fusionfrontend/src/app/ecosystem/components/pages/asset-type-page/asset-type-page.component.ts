@@ -24,7 +24,8 @@ import { AssetTypesComposedQuery } from '../../../../store/composed/asset-types-
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 import { DialogService } from 'primeng/dynamicdialog';
-import { AssetTypeEditDialogComponent } from '../../content/asset-type-edit/asset-type-edit-dialog.component';
+import { AssetTypeDialogComponent } from '../../content/asset-type-dialog/asset-type-dialog.component';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-details-page',
@@ -70,9 +71,9 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
     let assetType: AssetType;
     this.assetType$.subscribe(x => assetType = x);
 
-    this.dialogService.open(AssetTypeEditDialogComponent, {
+    this.dialogService.open(AssetTypeDialogComponent, {
       data: {
-        assetType
+        assetType, dialogType: DialogType.EDIT
       },
       header: `Edit Asset type (${assetType?.name})`,
     });
