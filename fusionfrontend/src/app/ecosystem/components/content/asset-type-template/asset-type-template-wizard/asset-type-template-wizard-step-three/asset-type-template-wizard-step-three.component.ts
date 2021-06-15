@@ -85,7 +85,7 @@ export class AssetTypeTemplateWizardStepThreeComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedAttributes.push(fieldTarget);
     this.shouldAddAttribute = false;
-    this.assetTypeTemplateForm.get('fieldTarget').setValue(undefined);
+    this.assetTypeTemplateForm.get('fieldTarget').setValue(null);
   }
 
   onConfirm(fieldTarget: FieldTarget) {

@@ -68,29 +68,6 @@
     margin-top: 48px;
     display: flex;
     flex-direction: row;
-
-    .button-create {
-      padding-top: 13px;
-      padding-bottom: 17px;
-      padding-right: 42px;
-      padding-left: 40px;
-
-      margin-left: 16px;
-      margin-top: 33px;
-      height: 45px;
-
-      text-align: left;
-      font-weight: 500;
-      font-size: $bigger-font-size;
-      line-height: $big-line-height;
-      letter-spacing: 0;
-      color: $basic-black;
-
-      background: #FFFFFF 0 0 no-repeat padding-box;
-      border-radius: 10px;
-      border: none !important;
-      opacity: 1;
-    }
   }
 
   .select-asset-input {
@@ -105,7 +82,7 @@
     margin-left: 3%;
   }
 
-  .button-add {
+  .template-fields-button-add {
     height: 56px;
     width: 100%;
 

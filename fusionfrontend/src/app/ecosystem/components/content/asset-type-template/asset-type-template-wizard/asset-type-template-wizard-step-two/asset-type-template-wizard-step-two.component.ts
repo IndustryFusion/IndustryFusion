@@ -86,7 +86,7 @@ export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
     fieldTarget.mandatory = false;
     this.selectedMetrics.push(fieldTarget);
     this.shouldAddMetric = false;
-    this.assetTypeTemplateForm.get('fieldTarget').setValue(undefined);
+    this.assetTypeTemplateForm.get('fieldTarget').setValue(null);
   }
 
   onConfirm(fieldTarget: FieldTarget) {
