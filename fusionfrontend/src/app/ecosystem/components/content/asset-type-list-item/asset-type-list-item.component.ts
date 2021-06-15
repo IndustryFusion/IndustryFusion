@@ -63,21 +63,5 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
       },
       header: `Edit Asset type (${assetType?.name})`,
     });
-
-    ref.onClose.subscribe(value => this.updateUI(value));
-  }
-
-  updateUI(assetType: AssetType) {
-    const assetTypeDetails = new AssetTypeDetails();
-
-    assetTypeDetails.id = assetType.id;
-    assetTypeDetails.name = assetType.name;
-    assetTypeDetails.label = assetType.label;
-    assetTypeDetails.description = assetType.description;
-    assetTypeDetails.templateCount = this.item.templateCount;
-    assetTypeDetails.assetSeriesCount = this.item.assetSeriesCount;
-    assetTypeDetails.assetCount = this.item.assetCount;
-
-    this.item = assetTypeDetails;
   }
 }
