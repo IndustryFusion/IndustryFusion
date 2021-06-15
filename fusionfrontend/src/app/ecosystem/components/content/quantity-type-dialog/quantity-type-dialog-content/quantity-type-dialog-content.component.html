@@ -34,11 +34,11 @@ under the License.
       <div class="dialog-grid">
         <div>
           <p-radioButton name="dataType" value="{{ valueCategorical }}" label="Categorical" formControlName="dataType"
-                         inputId="dataType0" [disabled]="isEditing && existsDataType"></p-radioButton>
+                         inputId="dataType0" [disabled]="type === DialogType.EDIT && existsDataType"></p-radioButton>
         </div>
         <div class="dialog-grid-col">
           <p-radioButton name="dataType" value="{{ valueNumeric }}" label="Numeric" formControlName="dataType"
-                         inputId="dataType1" [disabled]="isEditing && existsDataType"></p-radioButton>
+                         inputId="dataType1" [disabled]="type === DialogType.EDIT && existsDataType"></p-radioButton>
         </div>
       </div>
     </div>
@@ -52,7 +52,8 @@ under the License.
 
     <div class="quantity-type-dialog-footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()" [disabled]="quantityTypeForm.invalid">{{isEditing ? 'Save' : 'Create'}}</button>
+      <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()"
+              [disabled]="quantityTypeForm.invalid">{{type === DialogType.EDIT ? 'Save' : 'Create'}}</button>
     </div>
   </form>
 </div>

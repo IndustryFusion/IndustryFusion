@@ -20,7 +20,7 @@ under the License.
   </div>
   <div class="icon"><clr-icon shape="success-standard" class="is-solid"></clr-icon></div>
   <div class="description">Your Asset Type Template was<br/>
-    successfully {{ isEditing? 'updated': 'created' }}</div>
+    successfully {{ type === DialogType.EDIT? 'updated': 'created' }}</div>
 </div>
 <div class="footer">
   <button type="button" class="if-button button-confirm button-primary" (click)="onFinish()">Finish</button>

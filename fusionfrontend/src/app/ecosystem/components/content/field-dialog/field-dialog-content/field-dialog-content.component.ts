@@ -23,6 +23,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { Field } from '../../../../../store/field/field.model';
 import { SelectItem } from 'primeng/api';
+import { DialogType } from 'src/app/common/models/dialog-type.model';
 
 @Component({
   selector: 'app-field-dialog-content',
@@ -31,10 +32,12 @@ import { SelectItem } from 'primeng/api';
 })
 export class FieldDialogContentComponent implements OnInit {
 
-  public isEditing = true;
+  public type: DialogType;
   public fieldForm: FormGroup;
   public units$: Observable<Unit[]>;
   public accuracyItems: SelectItem[];
+
+  public DialogType = DialogType;
 
   constructor(private unitQuery: UnitQuery,
               public ref: DynamicDialogRef,
@@ -42,7 +45,7 @@ export class FieldDialogContentComponent implements OnInit {
 
   ngOnInit() {
     this.fieldForm = this.config.data.fieldForm;
-    this.isEditing = this.config.data.isEditing;
+    this.type = this.config.data.type;
     this.units$ = this.unitQuery.selectAll();
 
     this.accuracyItems = [
@@ -61,7 +64,7 @@ export class FieldDialogContentComponent implements OnInit {
   onSubmit() {
     if (this.fieldForm.valid) {
       const field = new Field();
-      if (this.isEditing) {
+      if (this.type === DialogType.EDIT) {
         field.id  = this.fieldForm.get('id')?.value;
       }
       field.name  = this.fieldForm.get('name')?.value;

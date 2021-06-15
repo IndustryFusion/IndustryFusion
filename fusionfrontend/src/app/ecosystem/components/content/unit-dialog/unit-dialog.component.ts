@@ -20,6 +20,7 @@ import { Unit } from 'src/app/store/unit/unit.model';
 import { Observable } from 'rxjs';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-unit-dialog',
@@ -31,7 +32,9 @@ export class UnitDialogComponent implements OnInit {
   unit: Unit;
   unitForm: FormGroup;
   quantityTypes$: Observable<QuantityType[]>;
-  editMode = false;
+  type: DialogType;
+
+  public DialogType = DialogType;
 
   constructor(private quantityQuery: QuantityTypeQuery,
               public dialogRef: DynamicDialogRef,
@@ -42,7 +45,7 @@ export class UnitDialogComponent implements OnInit {
   ngOnInit() {
     this.quantityTypes$ = this.quantityQuery.selectAll();
     this.unit = this.config.data?.unit;
-    this.editMode = this.config.data?.editMode;
+    this.type = this.config.data?.type;
     this.unitForm = this.createDialogFormGroup(this.unit);
   }
 

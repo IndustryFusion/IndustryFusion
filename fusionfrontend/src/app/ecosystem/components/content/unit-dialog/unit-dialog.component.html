@@ -38,7 +38,7 @@ under the License.
     <div class="footer-buttons">
       <button (click)="dismissModal()" class="if-button-cancel" type="button">Cancel</button>
       <button (click)="confirmModal()" [disabled]="unitForm.invalid" class="if-button button-primary" type="button">
-        {{ editMode ? 'Update' : 'Create'}}
+        {{ type === DialogType.EDIT ? 'Save' : 'Create'}}
       </button>
     </div>
   </form>

@@ -24,6 +24,7 @@ import { QuantityTypeDialogContentComponent } from '../quantity-type-dialog/quan
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuantityDataType } from '../../../../store/field-details/field-details.model';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-quantity-type-list',
@@ -85,7 +86,7 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
     const ref = this.dialogService.open(QuantityTypeDialogContentComponent, {
       data: {
         quantityTypeForm: this.quantityTypeForm,
-        isEditing: false
+        type: DialogType.CREATE
       },
       header: `Create new Quantity Type`,
     });

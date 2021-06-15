@@ -24,6 +24,7 @@ import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.s
 import { DialogService } from 'primeng/dynamicdialog';
 import { first } from 'rxjs/operators';
 import { UnitDialogComponent } from '../../content/unit-dialog/unit-dialog.component';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-unit-page',
@@ -59,7 +60,8 @@ export class UnitPageComponent implements OnInit {
   showDialog() {
     this.unit$.pipe(first()).subscribe((unit) => {
       const dialogRef = this.dialogService.open(UnitDialogComponent, {
-        header: 'Edit Unit', width: '50%', data: { unit, editMode: true }
+        header: 'Edit Unit', width: '50%',
+        data: { unit, type: DialogType.EDIT }
       });
 
       dialogRef.onClose.subscribe((modifiedUnit) => {
