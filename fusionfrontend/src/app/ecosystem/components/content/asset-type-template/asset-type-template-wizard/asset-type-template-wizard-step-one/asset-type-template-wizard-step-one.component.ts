@@ -65,7 +65,6 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
 
   onStart() {
     if (this.assetTypeTemplateForm?.valid) {
-      this.stepChange.emit(AssetTypeTemplateWizardSteps.METRICS);
       this.existsDraft().then(assetTypeTemplateId => {
         if (assetTypeTemplateId != null) {
           this.showWarningDialog(assetTypeTemplateId);
@@ -85,6 +84,9 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
     if (goToDetails != null && assetTypeTemplateId) {
       this.ref.close();
       this.router.navigate([assetTypeTemplateId], { relativeTo: this.route }).then();
+    }
+    else {
+      this.stepChange.emit(AssetTypeTemplateWizardSteps.START);
     }
   }
 
