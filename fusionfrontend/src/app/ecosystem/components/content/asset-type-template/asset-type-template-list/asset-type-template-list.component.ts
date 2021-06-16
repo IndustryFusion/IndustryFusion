@@ -24,6 +24,7 @@ import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asse
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -33,8 +34,8 @@ import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wiz
 })
 export class AssetTypeTemplateListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
-  @Input()
-  optionalItems$: Observable<AssetTypeTemplate[]>;
+  @Input() optionalItems$: Observable<AssetTypeTemplate[]>;
+  @Input() parentAssetTypeId: ID | null;
 
   public titleMapping:
     { [k: string]: string } = { '=0': 'No asset type templates.', '=1': '# Asset type template', other: '# Asset type templates' };
@@ -69,7 +70,8 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   onCreate() {
     this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
       data: {
-        isEditing: false
+        isEditing: false,
+        preselectedAssetTypeId: this.parentAssetTypeId
       },
       header: `Asset Type Template Editor`,
       width: '90%'

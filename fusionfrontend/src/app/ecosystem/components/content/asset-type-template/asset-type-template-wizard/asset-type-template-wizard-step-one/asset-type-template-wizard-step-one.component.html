@@ -22,7 +22,8 @@ under the License.
           <label class="if-label">Select Asset type</label>
           <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
                       class="select-asset-input" filter="true" resetFilterOnHide="true"
-                      placeholder="Select Asset type..." (onChange)="onChangeAssetType($event.value)">
+                      placeholder="Select Asset type..." (onChange)="onChangeAssetType($event.value)"
+                      [disabled]="isAssetTypeLocked">
           </p-dropdown>
         </div>
       </div>
