@@ -19,6 +19,7 @@ import { FieldDetails } from '../field-details/field-details.model';
 
 export class Asset extends BaseEntity {
   companyId: ID;
+  assetSeriesId: ID;
   roomId: ID;
   externalId: string;
   controlSystemType: string;

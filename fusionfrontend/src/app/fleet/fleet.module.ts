@@ -34,6 +34,8 @@ import { AssetSeriesCreateStepTwoComponent } from './components/content/asset-se
 import { AssetSeriesCreateStepTreeComponent } from './components/content/asset-series-create/asset-series-create-step-three/asset-series-create-step-tree.component';
 import { AssetSeriesCreateStepFourComponent } from './components/content/asset-series-create/asset-series-create-step-four/asset-series-create-step-four.component';
 import { IFCommon } from '../common/i-f-common.module';
+import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
+import { TableModule } from "primeng/table";
 
 
 @NgModule({
@@ -51,6 +53,7 @@ import { IFCommon } from '../common/i-f-common.module';
     AssetSeriesCreateStepTreeComponent,
     TimelineComponent,
     AssetSeriesCreateStepFourComponent,
+    AssetSeriePageComponent,
   ],
   imports: [
     IFCommon,
@@ -60,6 +63,7 @@ import { IFCommon } from '../common/i-f-common.module';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    TableModule,
   ],
   exports: [
     FleetSubHeaderComponent,
