@@ -23,6 +23,7 @@ import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wiz
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
 import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-type-template-list-item',
@@ -66,17 +67,17 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
         width: '70%',
       }
     );
-    this.updateWizardRef.onClose.subscribe((published: boolean) => {
-        if (published) {
-          this.publishItem();
-        }
-    });
+    this.updateWizardRef.onClose.subscribe((assetTypeTemplateForm: FormGroup) =>
+      this.onCloseUpdateWizard(assetTypeTemplateForm));
   }
 
-  private publishItem() {
-    this.item.published = true;
-    this.item.publishedDate = new Date();
-    this.menuType = ItemOptionsMenuType.DELETE;
-    this.assetTypeTemplateService.editItem(this.item.id, this.item).subscribe();
+  private onCloseUpdateWizard(assetTypeTemplateForm: FormGroup) {
+    if (assetTypeTemplateForm && assetTypeTemplateForm.get('wasPublished')?.value) {
+      this.item.published = assetTypeTemplateForm.get('published')?.value;
+      this.item.publishedDate = assetTypeTemplateForm.get('publishedDate')?.value;
+      this.item.publishedVersion = assetTypeTemplateForm.get('publishedVersion')?.value;
+      this.menuType = ItemOptionsMenuType.DELETE;
+      this.assetTypeTemplateService.editItem(this.item.id, this.item).subscribe();
+    }
   }
 }

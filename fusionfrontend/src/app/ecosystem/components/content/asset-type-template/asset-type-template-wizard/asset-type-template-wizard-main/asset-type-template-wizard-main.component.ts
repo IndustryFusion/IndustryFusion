@@ -55,13 +55,34 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
               private ref: DynamicDialogRef,
               private config: DynamicDialogConfig) { }
 
+  public static createAssetTypeTemplateForm(formBuilder: FormBuilder, assetTypeTemplate: AssetTypeTemplate) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    const assetTypeTemplateForm = formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      published: [false],
+      publishedDate: [],
+      publishedVersion: [],
+      wasPublished: [false],
+      useExistingTemplate: [false, Validators.required],
+      assetTypeId: [null, Validators.required],
+      assetTypeTemplateId: [],
+      fieldTarget: [],
+    });
+    assetTypeTemplateForm.patchValue(assetTypeTemplate);
+
+    return assetTypeTemplateForm;
+  }
+
   ngOnInit() {
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
 
-    this.createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate);
+    this.assetTypeTemplateForm = AssetTypeTemplateWizardMainComponent
+      .createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate);
 
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
@@ -129,8 +150,8 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.published = this.assetTypeTemplateForm.get('published')?.value;
       this.assetTypeTemplate.publishedDate = this.assetTypeTemplateForm.get('publishedDate')?.value;
-      this.assetTypeTemplate.imageKey = null;
       this.assetTypeTemplate.publishedVersion = this.assetTypeTemplateForm.get('publishedVersion')?.value;
+      this.assetTypeTemplate.imageKey = null;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
 
       if (this.isEditing) {
@@ -140,24 +161,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
         this.createTemplate(assetTypeId);
       }
     }
-  }
-
-  private createAssetTypeTemplateForm(formBuilder: FormBuilder, assetTypeTemplate: AssetTypeTemplate) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    this.assetTypeTemplateForm = formBuilder.group({
-      id: [],
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
-      published: [false],
-      publishedDate: [],
-      wasPublished: [false],
-      useExistingTemplate: [false, Validators.required],
-      assetTypeId: [null, Validators.required],
-      assetTypeTemplateId: [],
-      fieldTarget: [],
-      publishedVersion: []
-    });
-    this.assetTypeTemplateForm.patchValue(assetTypeTemplate);
   }
 
   private createTemplate(assetTypeId: ID) {

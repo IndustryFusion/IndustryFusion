@@ -25,6 +25,7 @@ import { AssetTypeTemplateService } from '../../../../store/asset-type-template/
 import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-type-template-page',
@@ -91,18 +92,16 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.publishDialogRef = this.dialogService.open(AssetTypeTemplateDialogPublishComponent,
       {
         header: `Publish ${this.assetTypeTemplate.name}?`,
+        data: { assetTypeTemplate: this.assetTypeTemplate },
         width: '70%',
       }
     );
-    this.publishDialogRef.onClose.subscribe((published: boolean) => this.onClosePublishDialog(published));
+    this.publishDialogRef.onClose.subscribe((assetTypeTemplateForm: FormGroup) =>
+      this.onClosePublishDialog(assetTypeTemplateForm));
   }
 
-  private onClosePublishDialog(published: boolean) {
-    if (published) {
-      this.assetTypeTemplate.published = true;
-      this.assetTypeTemplate.publishedDate = new Date();
-      this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
-    }
+  private onClosePublishDialog(assetTypeTemplateForm: FormGroup) {
+    this.publishAssetTypeTemplate(assetTypeTemplateForm);
   }
 
   private showUpdateWizard() {
@@ -113,6 +112,20 @@ export class AssetTypeTemplatePageComponent implements OnInit {
         width: '70%',
       }
     );
-    this.updateWizardRef.onClose.subscribe((published: boolean) => this.onClosePublishDialog(published));
+    this.updateWizardRef.onClose.subscribe((assetTypeTemplateForm: FormGroup) =>
+      this.onCloseUpdateWizard(assetTypeTemplateForm));
+  }
+
+  private onCloseUpdateWizard(assetTypeTemplateForm: FormGroup) {
+    this.publishAssetTypeTemplate(assetTypeTemplateForm);
+  }
+
+  private publishAssetTypeTemplate(assetTypeTemplateForm: FormGroup) {
+    if (assetTypeTemplateForm && assetTypeTemplateForm.get('wasPublished')?.value) {
+      this.assetTypeTemplate.published = assetTypeTemplateForm.get('published')?.value;
+      this.assetTypeTemplate.publishedDate = assetTypeTemplateForm.get('publishedDate')?.value;
+      this.assetTypeTemplate.publishedVersion = assetTypeTemplateForm.get('publishedVersion')?.value;
+      this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
+    }
   }
 }

@@ -46,7 +46,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
       other: '# Asset type templates selected'
     };
 
-  public ref: DynamicDialogRef;
+  public createWizardRef: DynamicDialogRef;
   public assetTypeTemplateForm: FormGroup;
 
   constructor(
@@ -67,7 +67,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   }
 
   onCreate() {
-    this.ref = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
+    this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
       data: {
         isEditing: false
       },
@@ -77,8 +77,8 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   }
 
   ngOnDestroy() {
-    if (this.ref) {
-      this.ref.close();
+    if (this.createWizardRef) {
+      this.createWizardRef.close();
     }
     this.assetTypeTemplateQuery.resetError();
   }
