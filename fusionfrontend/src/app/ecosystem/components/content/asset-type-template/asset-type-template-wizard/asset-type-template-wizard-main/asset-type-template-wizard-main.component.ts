@@ -28,7 +28,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplateComposedQuery } from '../../../../../../store/composed/asset-type-template-composed.query';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 import { ID } from '@datorama/akita';
-import { BehaviorSubject } from 'rxjs';
+
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -43,8 +43,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   public assetTypeTemplate: AssetTypeTemplate;
   public fieldTargetsUnedited: FieldTarget[];
   public isEditing = false;
-
-  private changes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
               private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
@@ -173,13 +171,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   }
 
   private updateTemplate() {
-    this.changes.subscribe(changes => {
-      if (changes) {
-        this.assetTypeTemplate.publishedVersion++;
-        this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
-      }
-    });
-
     if (this.assetTypeTemplateForm.get('wasPublished')?.value) {
       this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
     }
@@ -193,9 +184,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
       if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) == null) {
         this.fieldTargetService.createItem(this.assetTypeTemplate.id, fieldTarget).subscribe();
-        if (!this.changes.getValue()) {
-          this.changes.next(true);
-        }
       }
     });
   }
@@ -203,17 +191,9 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   private updateFieldTargets() {
     this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
 
-      // Update all existing as version will only be incremented if changes occured
+      // Update all existing as version will only be incremented if changes occurred
       if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) != null) {
-        const oldVersion = fieldTarget.version;
-        this.fieldTargetService.editItem(this.assetTypeTemplate.id, fieldTarget)
-          .subscribe(newFieldTarget =>
-          {
-            if (newFieldTarget.version !== oldVersion && !this.changes.getValue()) {
-              this.changes.next(true);
-            }
-          }
-        );
+        this.fieldTargetService.editItem(this.assetTypeTemplate.id, fieldTarget).subscribe();
       }
     });
   }
@@ -222,9 +202,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.fieldTargetsUnedited.forEach((fieldTarget) => {
       if (this.assetTypeTemplate.fieldTargets.find(target => fieldTarget.id === target.id) == null) {
         this.fieldTargetService.deleteItem(this.assetTypeTemplate.id, fieldTarget.id).subscribe();
-        if (!this.changes.getValue()) {
-          this.changes.next(true);
-        }
       }
     });
   }
