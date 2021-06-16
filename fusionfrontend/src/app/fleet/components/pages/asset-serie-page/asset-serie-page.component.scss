@@ -13,12 +13,10 @@
  * under the License.
  */
 
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import 'components/detailpage';
 
-.folder-view {
-  margin-right: 16px;
-}
-
-.asset-series-list {
-  margin: 0 80px;
+.list-header {
+  font-size: $big-font-size;
+  font-weight: bolder;
+  margin: 1rem 5rem;
 }

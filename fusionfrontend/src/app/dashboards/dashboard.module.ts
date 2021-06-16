@@ -61,7 +61,7 @@ import { TableModule } from 'primeng/table';
         OverlayPanelModule,
         DropdownModule,
         CheckboxModule,
-        TableModule
+        TableModule,
       ],
   exports: [
     DashboardSubHeaderComponent,

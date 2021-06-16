@@ -31,6 +31,7 @@ import java.util.UUID;
 public class AssetDto extends BaseAssetDto {
     private Long id;
     private Long companyId;
+    private Long assetSeriesId;
     private Long roomId;
 
     private String externalId;
