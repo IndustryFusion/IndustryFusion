@@ -24,6 +24,7 @@ import { Location } from 'src/app/store/location/location.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LocationDialogComponent } from '../location-dialog/location-dialog.component';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-locations',
@@ -75,7 +76,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
     const ref = this.dialogService.open(LocationDialogComponent, {
       data: {
         locationForm: this.locationForm,
-        editMode: false
+        type: DialogType.CREATE
       },
       header: `Create new Location`,
       width: '70%',

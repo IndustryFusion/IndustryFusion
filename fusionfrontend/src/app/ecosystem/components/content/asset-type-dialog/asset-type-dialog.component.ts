@@ -19,15 +19,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
-  selector: 'app-asset-type-edit-dialog',
-  templateUrl: './asset-type-edit-dialog.component.html',
-  styleUrls: ['./asset-type-edit-dialog.component.scss']
+  selector: 'app-asset-type-dialog',
+  templateUrl: './asset-type-dialog.component.html',
+  styleUrls: ['./asset-type-dialog.component.scss']
 })
-export class AssetTypeEditDialogComponent implements OnInit {
+export class AssetTypeDialogComponent implements OnInit {
 
   public assetTypeForm: FormGroup;
+  public type: DialogType;
+
+  public DialogType = DialogType;
 
   constructor(private assetTypeService: AssetTypeService,
               private formBuilder: FormBuilder,
@@ -35,6 +39,7 @@ export class AssetTypeEditDialogComponent implements OnInit {
               public config: DynamicDialogConfig) { }
 
   ngOnInit() {
+    this.type = this.config.data.dialogType;
     this.createAssetTypeForm(this.config.data.assetType);
     this.assetTypeForm.get('description').setValue(this.assetTypeForm.get('description').value);
   }
@@ -51,7 +56,11 @@ export class AssetTypeEditDialogComponent implements OnInit {
       assetType.label = this.assetTypeForm.get('label')?.value;
       assetType.description = this.assetTypeForm.get('description')?.value;
 
-      this.assetTypeService.editItem(assetType.id, assetType).subscribe();
+      if (this.type === DialogType.CREATE) {
+        this.assetTypeService.createItem(assetType).subscribe();
+      } else if (this.type === DialogType.EDIT) {
+        this.assetTypeService.editItem(assetType.id, assetType).subscribe();
+      }
 
       this.ref.close(assetType);
     }

@@ -22,6 +22,7 @@ import { UnitQuery } from 'src/app/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { QuantityDataType } from '../../../../../store/field-details/field-details.model';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-quantity-type-dialog-content',
@@ -31,13 +32,14 @@ import { QuantityDataType } from '../../../../../store/field-details/field-detai
 
 export class QuantityTypeDialogContentComponent implements OnInit {
 
-  public isEditing = true;
+  public type: DialogType;
   public existsDataType: boolean;
   public quantityTypeForm: FormGroup;
   public units$: Observable<Unit[]>;
 
   public valueCategorical = QuantityDataType.CATEGORICAL;
   public valueNumeric = QuantityDataType.NUMERIC;
+  public DialogType = DialogType;
 
   constructor(private unitQuery: UnitQuery,
               public ref: DynamicDialogRef,
@@ -45,7 +47,7 @@ export class QuantityTypeDialogContentComponent implements OnInit {
 
   ngOnInit() {
     this.quantityTypeForm = this.config.data.quantityTypeForm;
-    this.isEditing = this.config.data.isEditing;
+    this.type = this.config.data.type;
     this.existsDataType = this.quantityTypeForm.get('dataType').value != null;
     this.units$ = this.unitQuery.selectAll();
   }
@@ -57,7 +59,7 @@ export class QuantityTypeDialogContentComponent implements OnInit {
   onSubmit() {
     if (this.quantityTypeForm.valid) {
       const quantityType = new QuantityType();
-      if (this.isEditing) {
+      if (this.type === DialogType.EDIT) {
         quantityType.id  = this.quantityTypeForm.get('id')?.value;
       }
       quantityType.name  = this.quantityTypeForm.get('name')?.value;

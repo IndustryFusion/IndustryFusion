@@ -25,6 +25,7 @@ import { AssetTypeTemplateService } from '../../../../store/asset-type-template/
 import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-page',
@@ -108,7 +109,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
       {
-        data: { assetTypeTemplate: this.assetTypeTemplate, isEditing: true },
+        data: { assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT },
         header: 'Asset Type Template Editor',
         width: '70%',
       }

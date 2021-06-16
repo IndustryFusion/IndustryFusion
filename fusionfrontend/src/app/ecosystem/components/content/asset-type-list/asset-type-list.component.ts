@@ -18,6 +18,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseListComponent } from '../base/base-list/base-list.component';
 import { AssetTypeDetailsService } from '../../../../store/asset-type-details/asset-type-details.service';
 import { AssetTypeDetailsQuery } from '../../../../store/asset-type-details/asset-type-details.query';
+import { AssetTypeDialogComponent } from '../asset-type-dialog/asset-type-dialog.component';
+import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-type-list',
@@ -40,7 +43,8 @@ export class AssetTypeListComponent extends BaseListComponent implements OnInit,
     public route: ActivatedRoute,
     public router: Router,
     public assetTypeDetailsQuery: AssetTypeDetailsQuery,
-    public assetTypeDetailsService: AssetTypeDetailsService) {
+    public assetTypeDetailsService: AssetTypeDetailsService,
+    private dialogService: DialogService) {
     super(route, router, assetTypeDetailsQuery, assetTypeDetailsService);
   }
 
@@ -50,5 +54,14 @@ export class AssetTypeListComponent extends BaseListComponent implements OnInit,
 
   ngOnDestroy() {
     this.assetTypeDetailsQuery.resetError();
+  }
+
+  showCreateDialog() {
+    this.dialogService.open(AssetTypeDialogComponent, {
+      data: {
+        dialogType: DialogType.CREATE
+      },
+      header: `Create new Asset Type`,
+    });
   }
 }

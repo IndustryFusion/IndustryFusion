@@ -19,6 +19,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FieldDialogContentComponent } from './field-dialog-content/field-dialog-content.component';
 import { Field } from '../../../../store/field/field.model';
 import { FieldService } from '../../../../store/field/field.service';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Directive({
   selector: '[appFieldDialog]'
@@ -29,19 +30,19 @@ export class FieldDialogDirective implements OnDestroy {
 
   public ref: DynamicDialogRef;
   private fieldForm: FormGroup;
-  private isEditDialog: boolean;
+  private type: DialogType;
 
   constructor(public dialogService: DialogService,
               private formBuilder: FormBuilder,
               public fieldService: FieldService) { }
 
   @HostListener('createItem') onCreateClicked() {
-    this.isEditDialog = false;
+    this.type = DialogType.CREATE;
     this.showDialog();
   }
 
   @HostListener('editItem') onEditClicked() {
-    this.isEditDialog = true;
+    this.type = DialogType.EDIT;
     this.showDialog();
   }
 
@@ -51,9 +52,9 @@ export class FieldDialogDirective implements OnDestroy {
     const ref = this.dialogService.open(FieldDialogContentComponent, {
       data: {
         fieldForm: this.fieldForm,
-        isEditing: this.isEditDialog
+        type: this.type
       },
-      header: this.isEditDialog ? 'Edit Metric or Attribute' : `Create new Metric or Attribute`,
+      header: this.type === DialogType.EDIT ? 'Edit Metric or Attribute' : `Create new Metric or Attribute`,
     });
 
     ref.onClose.subscribe((field: Field) => this.onCloseDialog(field));
@@ -71,14 +72,14 @@ export class FieldDialogDirective implements OnDestroy {
       unitId: [1, Validators.required],
     });
 
-    if (this.isEditDialog && this.item) {
+    if (this.type === DialogType.EDIT && this.item) {
       this.fieldForm.patchValue(this.item);
     }
   }
 
   onCloseDialog(field: Field) {
     if (field) {
-      if (this.isEditDialog) {
+      if (this.type === DialogType.EDIT) {
         this.fieldService.editItem(field.id, field).subscribe();
       } else {
         this.fieldService.createItem(field).subscribe();
