@@ -132,7 +132,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       this.assetTypeTemplate.published = this.assetTypeTemplateForm.get('published')?.value;
       this.assetTypeTemplate.publishedDate = this.assetTypeTemplateForm.get('publishedDate')?.value;
       this.assetTypeTemplate.imageKey = null;
-      this.assetTypeTemplate.draftVersion = this.assetTypeTemplateForm.get('draftVersion')?.value;
+      this.assetTypeTemplate.publishedVersion = this.assetTypeTemplateForm.get('publishedVersion')?.value;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
 
       if (this.isEditing) {
@@ -157,7 +157,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       assetTypeId: [null, Validators.required],
       assetTypeTemplateId: [],
       fieldTarget: [],
-      draftVersion: [1]
+      publishedVersion: []
     });
     this.assetTypeTemplateForm.patchValue(assetTypeTemplate);
   }
@@ -175,7 +175,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   private updateTemplate() {
     this.changes.subscribe(changes => {
       if (changes) {
-        this.assetTypeTemplate.draftVersion++;
+        this.assetTypeTemplate.publishedVersion++;
         this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
       }
     });
