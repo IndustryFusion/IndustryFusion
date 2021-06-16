@@ -23,7 +23,7 @@ import { BrowserModule } from '@angular/platform-browser';
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent
+    LocationsMapComponent,
   ],
   imports: [
     CommonModule,
@@ -42,7 +42,7 @@ import { BrowserModule } from '@angular/platform-browser';
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent
+    LocationsMapComponent,
   ]
 })
 export class IFCommon {

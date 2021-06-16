@@ -1,3 +1,5 @@
+@import "abstract/variables";
+
 clr-dg-row.datagrid-row {
   border-top: 0;
 }
@@ -20,8 +22,8 @@ h3.table-header{
   font-size: 16px;
   line-height: 20px;
   font-weight: 600;
-  color: #000000;
-  background-color: #F8F8F8;
+  color: $basic-black;
+  background-color: $light-grey;
   border: 0 none;
 
   &:first-child {
@@ -34,26 +36,26 @@ h3.table-header{
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
-  background-color: white;
+  background-color: $basic-white;
   border-color: transparent;
   text-align: left;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
   letter-spacing: 0;
-  color: #95989A;
+  color: $basic-grey;
   overflow: hidden;
 
 
   &:first-child {
     border-radius: 10px 0 0 10px;
-    color: #000000;
+    color: $basic-black;
   }
 }
 
 .p-paginator {
   height: 45px;
-  background-color: white;
+  background-color: $basic-white;
   border-color: transparent;
   border: none;
   margin-top: 5px;
@@ -73,11 +75,11 @@ h3.table-header{
     height: 38px;
     width: 38px;
     margin: 2px;
-    background-color: white !important;
-    color: black !important;
+    background-color: $basic-white !important;
+    color: $basic-black !important;
     font-size: 16px;
     font-weight: 600;
-    border-color: black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px;
     border-radius: 10px;
@@ -86,7 +88,7 @@ h3.table-header{
   }
 
   .p-widget {
-    border-color: black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
@@ -94,7 +96,7 @@ h3.table-header{
     .p-inputtext {
       height: 38px !important;
       font-weight: normal;
-      border-color: black;
+      border-color: $basic-black;
       border-width: 2px im !important;
       border-radius: 10px;
       width: 60px;
@@ -102,8 +104,8 @@ h3.table-header{
 
 
     .p-state-highlight {
-      background-color: white !important;
-      color: black !important;
+      background-color: $basic-white !important;
+      color: $basic-black !important;
       font-weight: bold;
       border-radius: 10px;
     }
@@ -117,8 +119,8 @@ h3.table-header{
     height: 38px;
     width: 38px;
     margin: 2px;
-    color: black;
-    border-color: black;
+    color: $basic-black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
@@ -128,8 +130,8 @@ h3.table-header{
     height: 38px;
     width: 38px;
     margin: 2px;
-    color: black;
-    border-color: black;
+    color: $basic-black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;

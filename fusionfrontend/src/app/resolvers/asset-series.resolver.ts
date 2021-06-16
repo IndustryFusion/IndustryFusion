@@ -27,7 +27,7 @@ export class AssetSeriesResolver implements Resolve<any>{
   resolve(route: ActivatedRouteSnapshot): void {
 
     this.companyService.getCompanies().subscribe();
-    const companyId = route.pathFromRoot[1].params.companyId;
+    const companyId = route.parent.params.companyId;
     this.companyService.setActive(companyId);
     if (companyId != null) {
       this.assetSeriesService.getAssetSeriesOfCompany(companyId).subscribe();
