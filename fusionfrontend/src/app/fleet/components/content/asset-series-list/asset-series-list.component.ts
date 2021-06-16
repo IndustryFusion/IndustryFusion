@@ -28,7 +28,7 @@ import { AssetSeriesCreateComponent } from '../asset-series-create/asset-series-
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetSeries } from "../../../../store/asset-series/asset-series.model";
+import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 
 @Component({
   selector: 'app-asset-series-list',

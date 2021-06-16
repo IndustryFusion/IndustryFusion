@@ -40,8 +40,8 @@ under the License.
         <agm-marker
             *ngFor="let location of locations; let i = index"
             [agmFitBounds]="true"
-            [latitude]="location.latitude"
-            [longitude]="location.longitude"
+            [latitude]="location?.latitude"
+            [longitude]="location?.longitude"
             [iconUrl]="
             {
                 url: 'assets/icons/custom-marker.png'

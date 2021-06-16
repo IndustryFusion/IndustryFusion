@@ -11,8 +11,8 @@ import { EditButtonComponent } from '../components/ui/edit-button/edit-button.co
 import { LocationsMapComponent } from '../components/content/locations-map/locations-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
-import { CommonModule } from "@angular/common";
-import { BrowserModule } from "@angular/platform-browser";
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({

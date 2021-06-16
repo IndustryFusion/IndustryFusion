@@ -35,7 +35,7 @@ import { AssetSeriesCreateStepTreeComponent } from './components/content/asset-s
 import { AssetSeriesCreateStepFourComponent } from './components/content/asset-series-create/asset-series-create-step-four/asset-series-create-step-four.component';
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
-import { TableModule } from "primeng/table";
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
