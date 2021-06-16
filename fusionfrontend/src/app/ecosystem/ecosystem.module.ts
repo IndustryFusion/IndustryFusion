@@ -91,6 +91,7 @@ import { UnitPageComponent } from './components/pages/unit-page/unit-page.compon
 import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template/asset-type-template-field-row/asset-type-template-field-row.component';
 import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template/asset-type-template-field-header/asset-type-template-field-header.component';
 import { AssetTypeEditDialogComponent } from './components/content/asset-type-edit/asset-type-edit-dialog.component';
+import { NameWithVersionPipe } from '../pipes/namewithversion.pipe';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { AssetTypeEditDialogComponent } from './components/content/asset-type-ed
     AccuracyFormatPipe,
     AssetTypeTemplateDialogPublishComponent,
     AssetTypeTemplateDialogUpdateComponent,
+    NameWithVersionPipe,
   ],
   imports: [
     IFCommon,

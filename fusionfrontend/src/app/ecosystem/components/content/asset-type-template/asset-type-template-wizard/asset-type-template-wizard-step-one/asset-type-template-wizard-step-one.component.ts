@@ -28,6 +28,7 @@ import { AssetTypesComposedQuery } from '../../../../../../store/composed/asset-
 import { AssetTypeTemplateWizardWarningDialogComponent } from '../asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
+import { NameWithVersionPipe } from '../../../../../../pipes/namewithversion.pipe';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-one',
@@ -52,6 +53,15 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
               public dialogService: DialogService,
               private router: Router,
               public route: ActivatedRoute) { }
+
+  private static addPublishedVersionToAssetTypeTemplateName(assetTypeTemplate: AssetTypeTemplate): AssetTypeTemplate {
+    const nameWithVersionPipe = new NameWithVersionPipe();
+    const newAssetTypeTemplate = { ...assetTypeTemplate };
+
+    newAssetTypeTemplate.name = nameWithVersionPipe.transform(assetTypeTemplate.name, assetTypeTemplate.publishedVersion);
+
+    return newAssetTypeTemplate;
+  }
 
   ngOnInit() {
     this.assetTypes$ = this.assetTypeQuery.selectAll();
@@ -98,12 +108,13 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
     const assetType = this.assetTypeQuery.getEntity(assetTypeId);
     this.replaceTemplateNameFromAssetType(assetType);
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll().
-      pipe(map( a => a.filter(value => value.assetTypeId === assetType.id)));
+      pipe(map( assetTypeTemplate => assetTypeTemplate.filter(value => value.assetTypeId === assetType.id)
+          .map(template => AssetTypeTemplateWizardStepOneComponent.addPublishedVersionToAssetTypeTemplateName(template))));
   }
 
   private replaceTemplateNameFromAssetType(assetType: AssetType) {
     if (assetType) {
-      this.assetTypeTemplateForm.get('name')?.setValue(assetType.name + ' v.');
+      this.assetTypeTemplateForm.get('name')?.setValue(assetType.name);
     }
   }
 
