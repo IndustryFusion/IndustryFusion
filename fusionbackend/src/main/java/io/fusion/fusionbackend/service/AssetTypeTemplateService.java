@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -88,12 +90,23 @@ public class AssetTypeTemplateService {
 
     public AssetTypeTemplate updateAssetTypeTemplate(final Long assetTypeTemplateId,
                                                      final AssetTypeTemplate sourceAssetTypeTemplate) {
-        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,
-                false);
+        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,false);
 
         targetAssetTypeTemplate.copyFrom(sourceAssetTypeTemplate);
 
         return targetAssetTypeTemplate;
+    }
+
+    public Long getNextPublishVersion(final Long assetTypeId) {
+        final List<AssetTypeTemplate> assetTypeTemplates = this.assetTypeTemplateRepository
+                .findAllByAssetTypeId(assetTypeId);
+        final Optional<Long> maxPublishedVersion = assetTypeTemplates.stream()
+                .filter(assetTypeTemplate -> assetTypeTemplate.getPublished()
+                    && assetTypeId.equals(assetTypeTemplate.getAssetType().getId()))
+                .map(AssetTypeTemplate::getPublishedVersion)
+                .max(Long::compare);
+
+        return maxPublishedVersion.isEmpty() ? 1 : maxPublishedVersion.get() + 1;
     }
 
     public void deleteAssetTypeTemplate(final Long assetTypeTemplateId) {

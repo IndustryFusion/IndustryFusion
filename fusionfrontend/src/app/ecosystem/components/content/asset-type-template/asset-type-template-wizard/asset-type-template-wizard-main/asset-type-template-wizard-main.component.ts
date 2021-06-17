@@ -28,7 +28,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplateComposedQuery } from '../../../../../../store/composed/asset-type-template-composed.query';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 import { ID } from '@datorama/akita';
-import { BehaviorSubject } from 'rxjs';
+
 import { take } from 'rxjs/operators';
 import { DialogType } from '../../../../../../common/models/dialog-type.model';
 
@@ -45,8 +45,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   public fieldTargetsUnedited: FieldTarget[];
   public type = DialogType.CREATE;
 
-  private changes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
               private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private fieldTargetService: FieldTargetService,
@@ -58,13 +56,34 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
               private ref: DynamicDialogRef,
               private config: DynamicDialogConfig) { }
 
+  public static createAssetTypeTemplateForm(formBuilder: FormBuilder, assetTypeTemplate: AssetTypeTemplate) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    const assetTypeTemplateForm = formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      published: [false],
+      publishedDate: [],
+      publishedVersion: [],
+      wasPublished: [false],
+      useExistingTemplate: [false, Validators.required],
+      assetTypeId: [null, Validators.required],
+      assetTypeTemplateId: [],
+      fieldTarget: [],
+    });
+    assetTypeTemplateForm.patchValue(assetTypeTemplate);
+
+    return assetTypeTemplateForm;
+  }
+
   ngOnInit() {
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
 
-    this.createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate);
+    this.assetTypeTemplateForm = AssetTypeTemplateWizardMainComponent
+      .createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate);
 
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
@@ -132,8 +151,8 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.published = this.assetTypeTemplateForm.get('published')?.value;
       this.assetTypeTemplate.publishedDate = this.assetTypeTemplateForm.get('publishedDate')?.value;
+      this.assetTypeTemplate.publishedVersion = this.assetTypeTemplateForm.get('publishedVersion')?.value;
       this.assetTypeTemplate.imageKey = null;
-      this.assetTypeTemplate.draftVersion = this.assetTypeTemplateForm.get('draftVersion')?.value;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
 
       if (this.type === DialogType.EDIT) {
@@ -143,24 +162,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
         this.createTemplate(assetTypeId);
       }
     }
-  }
-
-  private createAssetTypeTemplateForm(formBuilder: FormBuilder, assetTypeTemplate: AssetTypeTemplate) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    this.assetTypeTemplateForm = formBuilder.group({
-      id: [],
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
-      published: [false],
-      publishedDate: [],
-      wasPublished: [false],
-      useExistingTemplate: [false, Validators.required],
-      assetTypeId: [null, Validators.required],
-      assetTypeTemplateId: [],
-      fieldTarget: [],
-      draftVersion: [1]
-    });
-    this.assetTypeTemplateForm.patchValue(assetTypeTemplate);
   }
 
   private createTemplate(assetTypeId: ID) {
@@ -174,13 +175,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   }
 
   private updateTemplate() {
-    this.changes.subscribe(changes => {
-      if (changes) {
-        this.assetTypeTemplate.draftVersion++;
-        this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
-      }
-    });
-
     if (this.assetTypeTemplateForm.get('wasPublished')?.value) {
       this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
     }
@@ -194,9 +188,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
       if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) == null) {
         this.fieldTargetService.createItem(this.assetTypeTemplate.id, fieldTarget).subscribe();
-        if (!this.changes.getValue()) {
-          this.changes.next(true);
-        }
       }
     });
   }
@@ -204,17 +195,9 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   private updateFieldTargets() {
     this.assetTypeTemplate.fieldTargets.forEach((fieldTarget) => {
 
-      // Update all existing as version will only be incremented if changes occured
+      // Update all existing as version will only be incremented if changes occurred
       if (this.fieldTargetsUnedited.find(target => fieldTarget.id === target.id) != null) {
-        const oldVersion = fieldTarget.version;
-        this.fieldTargetService.editItem(this.assetTypeTemplate.id, fieldTarget)
-          .subscribe(newFieldTarget =>
-          {
-            if (newFieldTarget.version !== oldVersion && !this.changes.getValue()) {
-              this.changes.next(true);
-            }
-          }
-        );
+        this.fieldTargetService.editItem(this.assetTypeTemplate.id, fieldTarget).subscribe();
       }
     });
   }
@@ -223,9 +206,6 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.fieldTargetsUnedited.forEach((fieldTarget) => {
       if (this.assetTypeTemplate.fieldTargets.find(target => fieldTarget.id === target.id) == null) {
         this.fieldTargetService.deleteItem(this.assetTypeTemplate.id, fieldTarget.id).subscribe();
-        if (!this.changes.getValue()) {
-          this.changes.next(true);
-        }
       }
     });
   }

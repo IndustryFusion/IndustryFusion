@@ -28,7 +28,7 @@ export class AssetTypeTemplate extends BaseEntity {
   assetType: AssetType;
   published: boolean;
   publishedDate: Date;
-  draftVersion: bigint;
+  publishedVersion: bigint;
   fieldTargetIds: Array<ID>;
   fieldTargets: Array<FieldTarget>;
 }

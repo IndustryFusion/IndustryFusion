@@ -16,7 +16,7 @@ under the License.
 <section class="if-detail-page-section">
   <div class="if-detail-page-div">
     <div class="row clr-justify-content-between clr-align-items-center">
-      <h3> Asset type template ({{ assetTypeTemplate?.name }}) </h3>
+      <h3> Asset type template ({{ assetTypeTemplate?.name | nameWithVersion : assetTypeTemplate?.publishedVersion }}) </h3>
       <div class="button-section">
         <p class="if-label" style="display: inline-block" *ngIf="assetTypeTemplate?.published === true">
           published on<br>

@@ -89,6 +89,7 @@ import { AssetTypeTemplateDialogUpdateComponent } from './components/content/ass
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template/asset-type-template-field-row/asset-type-template-field-row.component';
 import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template/asset-type-template-field-header/asset-type-template-field-header.component';
+import { NameWithVersionPipe } from '../pipes/namewithversion.pipe';
 import { AssetTypeDialogComponent } from './components/content/asset-type-dialog/asset-type-dialog.component';
 
 @NgModule({
@@ -143,6 +144,7 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     AccuracyFormatPipe,
     AssetTypeTemplateDialogPublishComponent,
     AssetTypeTemplateDialogUpdateComponent,
+    NameWithVersionPipe,
   ],
   imports: [
     IFCommon,
