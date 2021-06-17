@@ -25,9 +25,12 @@ import { ItemOptionsMenuType } from './item-options-menu.type';
 export class ItemOptionsMenuComponent implements OnInit {
 
   @Input() type: ItemOptionsMenuType;
+  @Output() createItem = new EventEmitter<void>();
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
   public menuActions: MenuItem[];
+
+  public ItemOptionsMenuType = ItemOptionsMenuType;
 
   constructor() {
   }
@@ -37,27 +40,42 @@ export class ItemOptionsMenuComponent implements OnInit {
   }
 
   private initMenuItems() {
+    const editItem = { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.onEditClick(); } };
+    const deleteItem = { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } };
+
     switch (this.type) {
       case ItemOptionsMenuType.DELETE:
         this.menuActions = [
-          { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+          deleteItem
         ];
         break;
 
       case ItemOptionsMenuType.UPDATE_DELETE:
         this.menuActions = [
           { label: 'Update', icon: 'pi pi-fw pi-refresh', command: (_) => { this.onEditClick(); } },
-          { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+          deleteItem
+        ];
+        break;
+
+      case ItemOptionsMenuType.CREATE_ASSET_EDIT_DELETE:
+        this.menuActions = [
+          { label: 'Create new Asset Instance', icon: 'pi pi-fw pi-plus', command: (_) => { this.onCreateClick(); } },
+          editItem,
+          deleteItem
         ];
         break;
 
       default:
         this.menuActions = [
-          { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.onEditClick(); } },
-          { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+          editItem,
+          deleteItem
         ];
         break;
     }
+  }
+
+  onCreateClick() {
+    this.createItem.emit();
   }
 
   onEditClick() {

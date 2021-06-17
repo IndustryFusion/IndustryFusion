@@ -29,6 +29,8 @@ import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
+import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
+import { AssetWizardStep } from '../asset-wizard/asset-wizard-step/asset-wizard-step.model';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -88,6 +90,10 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
 
   createItem() {
     this.startAssetSeriesWizard('');
+  }
+
+  createAsset($event: ID) {
+    this.startAssetWizard($event);
   }
 
   onSort(field: string) {
@@ -151,6 +157,23 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
       data: {
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
+        step: startStep
+      },
+      width: '75%'
+    });
+
+    dialogRef.onClose.subscribe((value: AssetSeries) => {
+      if (value) {
+        this.updateAssetSeries(value);
+      }
+    });
+  }
+
+  public startAssetWizard(assetSeriesId: ID, startStep: AssetWizardStep = AssetWizardStep.START) {
+    const dialogRef = this.dialogService.open(AssetWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        prefilledAssetSeriesId: assetSeriesId,
         step: startStep
       },
       width: '75%'
