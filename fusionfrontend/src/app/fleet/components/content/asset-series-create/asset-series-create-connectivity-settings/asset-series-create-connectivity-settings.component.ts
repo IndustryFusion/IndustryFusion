@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-asset-series-create-step-three',
-  templateUrl: './asset-series-create-step-three.component.html',
-  styleUrls: ['./asset-series-create-step-three.component.scss']
+  selector: 'app-asset-series-create-connectivity-settings',
+  templateUrl: './asset-series-create-connectivity-settings.component.html',
+  styleUrls: ['./asset-series-create-connectivity-settings.component.scss']
 })
-export class AssetSeriesCreateStepTreeComponent implements OnInit {
+export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
   @Output() stepChange = new EventEmitter<number>();
   @Output() errorSignal = new EventEmitter<string>();

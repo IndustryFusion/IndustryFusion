@@ -22,10 +22,10 @@ under the License.
     </clr-alert-item>
   </clr-alert>
   <app-timeline class="timeline" [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
-  <app-asset-series-create-step-two *ngIf="step === 1" [assetSeries]="assetSeries">
-  </app-asset-series-create-step-two>
-  <app-asset-series-create-step-three *ngIf="step === 2" >
-  </app-asset-series-create-step-three>
+  <app-asset-series-create-general-information *ngIf="step === 1" [assetSeries]="assetSeries">
+  </app-asset-series-create-general-information>
+  <app-asset-series-create-connectivity-settings *ngIf="step === 2" >
+  </app-asset-series-create-connectivity-settings>
   <app-asset-series-create-attributes *ngIf="step === 3" [assetSeries]="assetSeries" [assetSeries$]="assetSeries$">
   </app-asset-series-create-attributes>
   <div class="footer">

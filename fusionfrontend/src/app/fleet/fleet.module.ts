@@ -29,9 +29,9 @@ import { AssetSeriesListItemComponent } from './components/content/asset-series-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
-import { AssetSeriesCreateStepTwoComponent } from './components/content/asset-series-create/asset-series-create-step-two/asset-series-create-step-two.component';
-import { AssetSeriesCreateStepTreeComponent } from './components/content/asset-series-create/asset-series-create-step-three/asset-series-create-step-tree.component';
-import { AssetSeriesCreateAttributesComponent } from './components/content/asset-series-create/asset-series-create-step-attributes/asset-series-create-attributes.component';
+import { AssetSeriesCreateGeneralInformationComponent } from './components/content/asset-series-create/asset-series-create-general-information/asset-series-create-general-information.component';
+import { AssetSeriesCreateConnectivitySettingsComponent } from './components/content/asset-series-create/asset-series-create-connectivity-settings/asset-series-create-connectivity-settings.component';
+import { AssetSeriesCreateAttributesComponent } from './components/content/asset-series-create/asset-series-create-attributes/asset-series-create-attributes.component';
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
@@ -48,8 +48,8 @@ import { DropdownModule } from 'primeng/dropdown';
     AssetSeriesListHeaderComponent,
     AssetSeriesListItemComponent,
     AssetSeriesCreateComponent,
-    AssetSeriesCreateStepTwoComponent,
-    AssetSeriesCreateStepTreeComponent,
+    AssetSeriesCreateGeneralInformationComponent,
+    AssetSeriesCreateConnectivitySettingsComponent,
     TimelineComponent,
     AssetSeriesCreateAttributesComponent,
     AssetSeriePageComponent,

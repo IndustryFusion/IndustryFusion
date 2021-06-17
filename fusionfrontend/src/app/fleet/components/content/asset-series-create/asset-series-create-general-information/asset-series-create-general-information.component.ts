@@ -23,11 +23,11 @@ import { ActivatedRoute } from '@angular/router';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 
 @Component({
-  selector: 'app-asset-series-create-step-two',
-  templateUrl: './asset-series-create-step-two.component.html',
-  styleUrls: ['./asset-series-create-step-two.component.scss']
+  selector: 'app-asset-series-create-general-information',
+  templateUrl: './asset-series-create-general-information.component.html',
+  styleUrls: ['./asset-series-create-general-information.component.scss']
 })
-export class AssetSeriesCreateStepTwoComponent implements OnInit {
+export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
 
   @Output() errorSignal = new EventEmitter<string>();
   @Input() assetSeries: AssetSeries = new AssetSeries();
