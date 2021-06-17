@@ -36,6 +36,12 @@ import { AssetSeriesCreateStepFourComponent } from './components/content/asset-s
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
+import { AssetWizardComponent } from './components/content/asset-wizard/asset-wizard.component';
+import { AssetWizardStepStartComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-start/asset-wizard-step-start.component';
+import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
+import { AssetWizardStepSemanticsComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-semantics/asset-wizard-step-semantics.component';
+import { AssetWizardStepCustomerComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-customer/asset-wizard-step-customer.component';
+import { AssetWizardStepFinishedComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-finished/asset-wizard-step-finished.component';
 
 
 @NgModule({
@@ -54,6 +60,12 @@ import { TableModule } from 'primeng/table';
     TimelineComponent,
     AssetSeriesCreateStepFourComponent,
     AssetSeriePageComponent,
+    AssetWizardComponent,
+    AssetWizardStepStartComponent,
+    AssetWizardStepNameplateComponent,
+    AssetWizardStepSemanticsComponent,
+    AssetWizardStepCustomerComponent,
+    AssetWizardStepFinishedComponent,
   ],
   imports: [
     IFCommon,
