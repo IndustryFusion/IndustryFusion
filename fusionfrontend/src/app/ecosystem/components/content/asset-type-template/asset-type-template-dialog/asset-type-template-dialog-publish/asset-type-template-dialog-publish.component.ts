@@ -15,7 +15,9 @@
 
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AssetTypeTemplateWizardMainComponent } from '../../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-type-template-dialog-publish',
@@ -24,21 +26,27 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class AssetTypeTemplateDialogPublishComponent implements OnInit, OnDestroy {
 
-  constructor(public ref: DynamicDialogRef) {
+  public assetTypeTemplateForm: FormGroup;
+
+  constructor(private formBuilder: FormBuilder,
+              private config: DynamicDialogConfig,
+              public ref: DynamicDialogRef) {
   }
 
   ngOnInit(): void {
+    this.assetTypeTemplateForm = AssetTypeTemplateWizardMainComponent
+      .createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate, null);
   }
 
   ngOnDestroy() {
-    this.ref?.close(false);
+    this.ref?.close(null);
   }
 
   onClose() {
-    this.ref?.close(false);
+    this.ref?.close(null);
   }
 
   onPublish() {
-    this.ref?.close(true);
+    this.ref?.close(this.assetTypeTemplateForm);
   }
 }

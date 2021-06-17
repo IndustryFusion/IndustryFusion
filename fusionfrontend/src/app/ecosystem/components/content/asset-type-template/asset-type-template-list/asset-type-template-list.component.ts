@@ -24,6 +24,7 @@ import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asse
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
+import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
@@ -34,8 +35,8 @@ import { DialogType } from '../../../../../common/models/dialog-type.model';
 })
 export class AssetTypeTemplateListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
-  @Input()
-  optionalItems$: Observable<AssetTypeTemplate[]>;
+  @Input() optionalItems$: Observable<AssetTypeTemplate[]>;
+  @Input() parentAssetTypeId: ID | null;
 
   public titleMapping:
     { [k: string]: string } = { '=0': 'No asset type templates.', '=1': '# Asset type template', other: '# Asset type templates' };
@@ -47,7 +48,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
       other: '# Asset type templates selected'
     };
 
-  public ref: DynamicDialogRef;
+  public createWizardRef: DynamicDialogRef;
   public assetTypeTemplateForm: FormGroup;
 
   constructor(
@@ -68,9 +69,10 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   }
 
   onCreate() {
-    this.ref = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
+    this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
       data: {
-        type: DialogType.CREATE
+        type: DialogType.CREATE,
+        preselectedAssetTypeId: this.parentAssetTypeId
       },
       header: `Asset Type Template Editor`,
       width: '90%'
@@ -78,8 +80,8 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   }
 
   ngOnDestroy() {
-    if (this.ref) {
-      this.ref.close();
+    if (this.createWizardRef) {
+      this.createWizardRef.close();
     }
     this.assetTypeTemplateQuery.resetError();
   }

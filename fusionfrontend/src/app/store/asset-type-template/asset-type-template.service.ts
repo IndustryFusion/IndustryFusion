@@ -51,6 +51,11 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
       }));
   }
 
+  getNextPublishVersion(assetTypeId: ID): Observable<bigint> {
+    const path = `/assettypetemplates/nextVersion/${assetTypeId}`;
+    return this.http.get<bigint>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
   createItem(template: AssetTypeTemplate): Observable<AssetTypeTemplate> {
     const path = `assettypetemplates`;
     return this.http.post<AssetTypeTemplate>(`${environment.apiUrlPrefix}/${path}`, template, this.httpOptions)

@@ -16,6 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
+import { AssetTypeTemplateService } from '../../../../../../store/asset-type-template/asset-type-template.service';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-publish',
@@ -28,7 +29,7 @@ export class AssetTypeTemplateWizardStepPublishComponent implements OnInit {
   @Output() stepChange = new EventEmitter<number>();
   @Output() saveTemplate = new EventEmitter();
 
-  constructor() { }
+  constructor(private assetTypeTemplateService: AssetTypeTemplateService) { }
 
   ngOnInit(): void {
   }
@@ -38,10 +39,19 @@ export class AssetTypeTemplateWizardStepPublishComponent implements OnInit {
   }
 
   onPublish() {
-    this.assetTypeTemplateForm?.get('published')?.setValue(true);
-    this.assetTypeTemplateForm?.get('publishedDate')?.setValue(new Date());
-    this.assetTypeTemplateForm?.get('wasPublished')?.setValue(true);
-    this.saveTemplate.emit();
-    this.stepChange.emit(AssetTypeTemplateWizardSteps.FINISHED);
+    this.assetTypeTemplateForm.get('published')?.setValue(true);
+    this.assetTypeTemplateForm.get('publishedDate')?.setValue(new Date());
+    this.assetTypeTemplateForm.get('wasPublished')?.setValue(true);
+    this.saveWithNextPublishVersion();
+  }
+
+  private saveWithNextPublishVersion(): void {
+      const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
+      this.assetTypeTemplateService.getNextPublishVersion(assetTypeId).subscribe(nextPublishedVersion => {
+        this.assetTypeTemplateForm.get('publishedVersion')?.setValue(nextPublishedVersion);
+
+        this.saveTemplate.emit();
+        this.stepChange.emit(AssetTypeTemplateWizardSteps.FINISHED);
+      });
   }
 }

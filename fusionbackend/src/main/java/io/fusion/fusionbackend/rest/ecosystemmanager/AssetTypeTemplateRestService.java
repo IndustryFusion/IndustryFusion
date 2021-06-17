@@ -59,6 +59,11 @@ public class AssetTypeTemplateRestService {
                 embedChildren);
     }
 
+    @GetMapping(path = "/assettypetemplates/nextVersion/{assetTypeId}")
+    public Long getNextAssetTypeTemplatePublishVersion(@PathVariable final Long assetTypeId) {
+        return assetTypeTemplateService.getNextPublishVersion(assetTypeId);
+    }
+
     @PostMapping(path = "/assettypetemplates")
     public AssetTypeTemplateDto createAssetTypeTemplate(@RequestParam final Long assetTypeId,
                                                         @RequestBody final AssetTypeTemplateDto assetTypeTemplateDto) {

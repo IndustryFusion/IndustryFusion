@@ -28,6 +28,7 @@ import { AssetTypesComposedQuery } from '../../../../../../store/composed/asset-
 import { AssetTypeTemplateWizardWarningDialogComponent } from '../asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
+import { NameWithVersionPipe } from '../../../../../../pipes/namewithversion.pipe';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-one',
@@ -37,6 +38,8 @@ import { ID } from '@datorama/akita';
 export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
 
   @Input() assetTypeTemplateForm: FormGroup;
+  @Input() isAssetTypeLocked: boolean;
+
   @Output() stepChange = new EventEmitter<number>();
   @Output() changeUseOfTemplate = new EventEmitter<number>();
 
@@ -53,13 +56,22 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
               private router: Router,
               public route: ActivatedRoute) { }
 
+  private static addPublishedVersionToAssetTypeTemplateName(assetTypeTemplate: AssetTypeTemplate): AssetTypeTemplate {
+    const nameWithVersionPipe = new NameWithVersionPipe();
+    const newAssetTypeTemplate = { ...assetTypeTemplate };
+
+    newAssetTypeTemplate.name = nameWithVersionPipe.transform(assetTypeTemplate.name, assetTypeTemplate.publishedVersion);
+
+    return newAssetTypeTemplate;
+  }
+
   ngOnInit() {
     this.assetTypes$ = this.assetTypeQuery.selectAll();
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll();
 
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
     if (assetTypeId) {
-      this.onChangeAssetType(assetTypeId);
+      this.updateAvailableAssetTypeTemplates(assetTypeId);
     }
   }
 
@@ -94,16 +106,23 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
     this.ref.close();
   }
 
-  onChangeAssetType(assetTypeId: number) {
+  onChangeAssetType(assetTypeId: number): void {
+    if (!this.isAssetTypeLocked) {
+      this.updateAvailableAssetTypeTemplates(assetTypeId);
+    }
+  }
+
+  private updateAvailableAssetTypeTemplates(assetTypeId: ID): void {
     const assetType = this.assetTypeQuery.getEntity(assetTypeId);
     this.replaceTemplateNameFromAssetType(assetType);
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll().
-      pipe(map( a => a.filter(value => value.assetTypeId === assetType.id)));
+    pipe(map( assetTypeTemplate => assetTypeTemplate.filter(value => value.assetTypeId === assetType.id)
+      .map(template => AssetTypeTemplateWizardStepOneComponent.addPublishedVersionToAssetTypeTemplateName(template))));
   }
 
-  private replaceTemplateNameFromAssetType(assetType: AssetType) {
+  private replaceTemplateNameFromAssetType(assetType: AssetType): void {
     if (assetType) {
-      this.assetTypeTemplateForm.get('name')?.setValue(assetType.name + ' v.');
+      this.assetTypeTemplateForm.get('name')?.setValue(assetType.name);
     }
   }
 
