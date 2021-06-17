@@ -25,6 +25,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { ID } from '@datorama/akita';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -70,7 +71,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   onCreate() {
     this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
       data: {
-        isEditing: false,
+        type: DialogType.CREATE
         preselectedAssetTypeId: this.parentAssetTypeId
       },
       header: `Asset Type Template Editor`,

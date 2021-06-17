@@ -22,6 +22,7 @@ import { FieldQuery } from '../../../../../../store/field/field-query.service';
 import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
+import { DialogType } from '../../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-two',
@@ -30,11 +31,13 @@ import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-step
 })
 export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
 
-  @Input() isEditing: boolean;
+  @Input() type: DialogType;
   @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
   @Output() metricSelect = new EventEmitter<FieldTarget[]>();
+
+  public DialogType = DialogType;
 
   public shouldAddMetric = false;
   public fields: Observable<Field[]>;

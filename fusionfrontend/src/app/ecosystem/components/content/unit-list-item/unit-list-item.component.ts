@@ -23,6 +23,7 @@ import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
 import { FormBuilder } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-unit-list-item',
@@ -49,7 +50,8 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
 
   editItem(): void {
     const dialogRef = this.dialogService.open(UnitDialogComponent, {
-      header: 'Edit Unit', width: '50%', data: { unit: this.item, editMode: true }
+      header: 'Edit Unit', width: '50%',
+      data: { unit: this.item, type: DialogType.EDIT }
     });
     dialogRef.onClose.subscribe((unit) => {
       this.updateUnitIfPresent(unit);

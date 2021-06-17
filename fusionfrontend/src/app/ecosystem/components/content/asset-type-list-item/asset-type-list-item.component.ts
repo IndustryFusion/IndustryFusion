@@ -20,7 +20,8 @@ import { AssetTypeService } from '../../../../store/asset-type/asset-type.servic
 import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
-import { AssetTypeEditDialogComponent } from '../asset-type-edit/asset-type-edit-dialog.component';
+import { AssetTypeDialogComponent } from '../asset-type-dialog/asset-type-dialog.component';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-list-item',
@@ -56,27 +57,11 @@ export class AssetTypeListItemComponent extends BaseListItemComponent implements
   showEditDialog(): void {
     const assetType: AssetType = AssetTypeListItemComponent.assetTypeFromDetails(this.item);
 
-    const ref = this.dialogService.open(AssetTypeEditDialogComponent, {
+    this.dialogService.open(AssetTypeDialogComponent, {
       data: {
-        assetType
+        assetType, dialogType: DialogType.EDIT
       },
       header: `Edit Asset type (${assetType?.name})`,
     });
-
-    ref.onClose.subscribe(value => this.updateUI(value));
-  }
-
-  updateUI(assetType: AssetType) {
-    const assetTypeDetails = new AssetTypeDetails();
-
-    assetTypeDetails.id = assetType.id;
-    assetTypeDetails.name = assetType.name;
-    assetTypeDetails.label = assetType.label;
-    assetTypeDetails.description = assetType.description;
-    assetTypeDetails.templateCount = this.item.templateCount;
-    assetTypeDetails.assetSeriesCount = this.item.assetSeriesCount;
-    assetTypeDetails.assetCount = this.item.assetCount;
-
-    this.item = assetTypeDetails;
   }
 }

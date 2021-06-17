@@ -24,6 +24,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
 import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { FormGroup } from '@angular/forms';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-list-item',
@@ -62,7 +63,7 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
   private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
       {
-        data: { assetTypeTemplate: this.item, isEditing: true },
+        data: { assetTypeTemplate: this.item, type: DialogType.EDIT },
         header: 'Asset Type Template Editor',
         width: '70%',
       }

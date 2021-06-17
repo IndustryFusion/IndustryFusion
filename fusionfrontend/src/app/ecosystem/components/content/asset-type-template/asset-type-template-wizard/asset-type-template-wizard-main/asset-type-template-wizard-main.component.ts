@@ -30,6 +30,7 @@ import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-step
 import { ID } from '@datorama/akita';
 
 import { take } from 'rxjs/operators';
+import { DialogType } from '../../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-wizard-main',
@@ -42,9 +43,9 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   public step: AssetTypeTemplateWizardSteps = AssetTypeTemplateWizardSteps.START;
   public assetTypeTemplate: AssetTypeTemplate;
   public fieldTargetsUnedited: FieldTarget[];
-  public isEditing = false;
   public isAssetTypeLocked = false;
-
+  public type = DialogType.CREATE;
+  
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
               private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private fieldTargetService: FieldTargetService,
@@ -92,13 +93,13 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
 
-    if (this.config.data.isEditing) {
+    if (this.config.data.type === DialogType.EDIT) {
       if (this.assetTypeTemplateForm.get('published')?.value === true) {
         this.ref.close();
         return;
       }
 
-      this.isEditing = true;
+      this.type = DialogType.EDIT;
       this.step = AssetTypeTemplateWizardSteps.OVERVIEW;
       this.onChangeUseOfTemplate(this.assetTypeTemplateForm.get('id')?.value);
     }
@@ -135,7 +136,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
           {
             this.assetTypeTemplate.fieldTargets = x.fieldTargets;
 
-            if (this.isEditing) {
+            if (this.type === DialogType.EDIT) {
               this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
             }
           }
@@ -159,10 +160,10 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       this.assetTypeTemplate.imageKey = null;
       this.assetTypeTemplate.assetTypeId = assetTypeId;
 
-      if (this.isEditing) {
+      if (this.type === DialogType.EDIT) {
         this.assetTypeTemplate.id = this.assetTypeTemplateForm.get('id')?.value;
         this.updateTemplate();
-      } else {
+      } else if (this.type === DialogType.CREATE)  {
         this.createTemplate(assetTypeId);
       }
     }

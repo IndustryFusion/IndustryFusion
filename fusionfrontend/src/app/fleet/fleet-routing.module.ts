@@ -25,6 +25,10 @@ import { AssetTypeTemplatesResolver } from '../resolvers/asset-type-templates.re
 import { FieldSourceResolver } from '../resolvers/field-source.resolver';
 import { UnitsResolver } from '../resolvers/units.resolver';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
+import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
+import { AssetResolver } from '../resolvers/asset.resolver';
+import { RoomResolver } from '../resolvers/room.resolver';
+import { LocationResolver } from '../resolvers/location.resolver';
 
 
 const routes: Routes = [
@@ -44,6 +48,16 @@ const routes: Routes = [
       path: '',
       component: AssetSeriesListComponent,
     },
+      {
+        path: ':assetSeriesId',
+        component: AssetSeriePageComponent,
+        resolve: {
+          assetSeries: AssetSeriesResolver,
+          asset: AssetResolver,
+          room: RoomResolver,
+          location: LocationResolver
+        }
+      },
       {
         path: 'edit',
         component: AssetSeriesCreateComponent,

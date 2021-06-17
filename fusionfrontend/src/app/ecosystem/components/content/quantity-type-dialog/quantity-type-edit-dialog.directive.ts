@@ -20,6 +20,7 @@ import { QuantityType } from '../../../../store/quantity-type/quantity-type.mode
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { QuantityDataType } from '../../../../store/field-details/field-details.model';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Directive({
   selector: '[appQuantityTypeEditDialog]',
@@ -47,7 +48,7 @@ export class QuantityTypeEditDialogDirective implements OnDestroy {
     const ref = this.dialogService.open(QuantityTypeDialogContentComponent, {
       data: {
         quantityTypeForm: this.quantityTypeForm,
-        isEditing: true
+        type: DialogType.EDIT
       },
       header: `Edit Quantity Type`,
     });

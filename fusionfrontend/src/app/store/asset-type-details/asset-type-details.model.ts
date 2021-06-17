@@ -16,8 +16,25 @@
 import { AssetType } from '../asset-type/asset-type.model';
 
 export class AssetTypeDetails extends AssetType {
-  name: string;
   templateCount: number;
   assetSeriesCount: number;
   assetCount: number;
+
+  public static fromAssetType(assetType: AssetType,
+                              templateCount: number,
+                              assetSeriesCount: number,
+                              assetCount: number): AssetTypeDetails  {
+    const assetTypeDetails = new AssetTypeDetails();
+
+    assetTypeDetails.id = assetType.id;
+    assetTypeDetails.name = assetType.name;
+    assetTypeDetails.label = assetType.label;
+    assetTypeDetails.description = assetType.description;
+
+    assetTypeDetails.templateCount = templateCount;
+    assetTypeDetails.assetSeriesCount = assetSeriesCount;
+    assetTypeDetails.assetCount = assetCount;
+
+    return assetTypeDetails;
+  }
 }

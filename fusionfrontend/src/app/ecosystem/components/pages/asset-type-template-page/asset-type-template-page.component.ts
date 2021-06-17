@@ -26,6 +26,7 @@ import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type
 import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { FormGroup } from '@angular/forms';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-page',
@@ -107,7 +108,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
       {
-        data: { assetTypeTemplate: this.assetTypeTemplate, isEditing: true },
+        data: { assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT },
         header: 'Asset Type Template Editor',
         width: '70%',
       }

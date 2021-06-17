@@ -20,6 +20,7 @@ import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-location-dialog',
@@ -33,7 +34,9 @@ export class LocationDialogComponent implements OnInit {
   locationTypes: SelectItem[];
   formChange: Subscription;
   location: Location;
-  editMode: boolean;
+  type: DialogType;
+
+  public DialogType = DialogType;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -46,7 +49,7 @@ export class LocationDialogComponent implements OnInit {
 
   ngOnInit() {
     this.locationForm = this.config.data.locationForm;
-    this.editMode = this.config.data.editMode;
+    this.type = this.config.data.type;
     this.location = { ...this.location, ...this.locationForm.value };
     this.formChange = this.locationForm.valueChanges.pipe(
       debounceTime(500)

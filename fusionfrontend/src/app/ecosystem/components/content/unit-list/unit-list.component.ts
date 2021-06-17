@@ -24,6 +24,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-unit-list',
@@ -65,7 +66,8 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
 
   showDialog() {
     const ref = this.dialogService.open(UnitDialogComponent, {
-      header: 'Create new Unit', width: '50%', data: { unit: null, editMode: false }
+      header: 'Create new Unit', width: '50%',
+      data: { unit: null, type: DialogType.CREATE }
     });
     ref.onClose.subscribe((unit) => {
       this.onConfirmModal(unit);

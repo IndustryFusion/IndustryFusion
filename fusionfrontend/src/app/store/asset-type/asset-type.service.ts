@@ -24,6 +24,9 @@ import { environment } from '../../../environments/environment';
 import { AssetType } from './asset-type.model';
 import { AssetTypeStore } from './asset-type.store';
 import { RestService } from 'src/app/services/rest.service';
+import { AssetTypeDetailsStore } from '../asset-type-details/asset-type-details.store';
+import { AssetTypeDetails } from '../asset-type-details/asset-type-details.model';
+import { AssetTypeDetailsQuery } from '../asset-type-details/asset-type-details.query';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +36,10 @@ export class AssetTypeService implements RestService<AssetType> {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private assetTypeStore: AssetTypeStore, private http: HttpClient) { }
+  constructor(private assetTypeStore: AssetTypeStore,
+              private assetTypeDetailsStore: AssetTypeDetailsStore,
+              private assetTypeDetailsQuery: AssetTypeDetailsQuery,
+              private http: HttpClient) { }
 
   getItems(): Observable<AssetType[]> {
     const path = `assettypes`;
@@ -57,6 +63,9 @@ export class AssetTypeService implements RestService<AssetType> {
       .pipe(
         tap(entity => {
           this.assetTypeStore.upsert(entity.id, entity);
+
+          const assetTypeDetails = AssetTypeDetails.fromAssetType(entity, 0, 0, 0);
+          this.assetTypeDetailsStore.upsert(assetTypeDetails.id, assetTypeDetails);
         }));
   }
 
@@ -66,7 +75,16 @@ export class AssetTypeService implements RestService<AssetType> {
       .pipe(
         tap(entity => {
           this.assetTypeStore.upsert(assetTypeId, entity);
+          this.upsertAssetTypeDetails(entity);
         }));
+  }
+
+  private upsertAssetTypeDetails(assetType: AssetType): void {
+    const assetTypeDetails = { ...this.assetTypeDetailsQuery.getEntity(assetType.id)};
+    assetTypeDetails.name = assetType.name;
+    assetTypeDetails.label = assetType.label;
+    assetTypeDetails.description = assetType.description;
+    this.assetTypeDetailsStore.upsert(assetTypeDetails.id, assetTypeDetails);
   }
 
   deleteItem(id: ID): Observable<any> {
@@ -74,6 +92,7 @@ export class AssetTypeService implements RestService<AssetType> {
     return this.http.delete(`${environment.apiUrlPrefix}/${path}`).pipe(tap({
       complete: () => {
         this.assetTypeStore.remove(id);
+        this.assetTypeDetailsStore.remove(id);
       },
       error: (error) => {
         this.assetTypeStore.setError(error);
