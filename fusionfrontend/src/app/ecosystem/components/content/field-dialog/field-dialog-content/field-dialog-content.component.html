@@ -37,7 +37,8 @@ under the License.
 
     <div class="field-dialog-footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()" [disabled]="fieldForm.invalid">{{isEditing ? 'Save' : 'Create'}}</button>
+      <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()"
+              [disabled]="fieldForm.invalid">{{type === DialogType.EDIT ? 'Save' : 'Create'}}</button>
     </div>
   </form>
 </div>

@@ -13,12 +13,22 @@
  * under the License.
  */
 
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import 'src/assets/sass/components/buttons';
+@import "src/assets/sass/abstract/variables";
 
-.folder-view {
-  margin-right: 16px;
-}
+.asset-type-dialog {
+   .edit-asset-type-footer {
+    margin-top: 8.1%;
+     margin-bottom: 5%;
+    text-align: right;
+  }
 
-.asset-series-list {
-  margin: 0 80px;
+  .asset-type-dialog-inputs {
+    width: 82.0%;
+  }
+
+  .input-div {
+    display: grid;
+    padding-bottom: 24px;
+  }
 }

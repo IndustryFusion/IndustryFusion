@@ -13,25 +13,26 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="edit-asset-type">
+<div class="asset-type-dialog">
   <form [formGroup]="assetTypeForm">
     <div class="input-div">
       <label class="if-label">Name</label>
-      <input type="text" pInputText formControlName="name" placeholder="Name" class="edit-asset-type-inputs" />
+      <input type="text" pInputText formControlName="name" placeholder="Name" class="asset-type-dialog-inputs" />
     </div>
     <div class="input-div">
       <label class="if-label">Label</label>
-      <input type="text" pInputText formControlName="label" placeholder="Label" class="edit-asset-type-inputs" />
+      <input type="text" pInputText formControlName="label" placeholder="Label" class="asset-type-dialog-inputs" />
     </div>
     <div class="input-div">
       <label class="if-label">Description</label>
-      <textarea pInputTextarea class="edit-asset-type-inputs" name="description" formControlName="description"></textarea>
+      <textarea pInputTextarea class="asset-type-dialog-inputs" name="description" formControlName="description"></textarea>
       <label class="textarea-character-count if-label">{{ assetTypeForm.get('description').value?.length }}/255</label>
     </div>
 
     <div class="edit-asset-type-footer">
       <button type="button" class="if-button if-button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" (click)="onSave()" [disabled]="assetTypeForm.invalid">Save</button>
+      <button type="button" class="if-button button-confirm button-primary" (click)="onSave()"
+              [disabled]="assetTypeForm.invalid">{{ type === DialogType.EDIT ? 'Save' : 'Create' }}</button>
     </div>
   </form>
 </div>

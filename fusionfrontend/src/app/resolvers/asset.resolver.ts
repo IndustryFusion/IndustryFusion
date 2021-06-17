@@ -16,13 +16,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
-import { AssetSeriesService } from '../store/asset-series/asset-series.service';
 import { CompanyService } from '../store/company/company.service';
+import { AssetService } from '../store/asset/asset.service';
 
 @Injectable({ providedIn: 'root' })
-export class AssetSeriesResolver implements Resolve<any>{
+export class AssetResolver implements Resolve<any>{
   constructor(private companyService: CompanyService,
-              private assetSeriesService: AssetSeriesService) { }
+              private assetService: AssetService) { }
 
   resolve(route: ActivatedRouteSnapshot): void {
 
@@ -30,11 +30,7 @@ export class AssetSeriesResolver implements Resolve<any>{
     const companyId = route.parent.params.companyId;
     this.companyService.setActive(companyId);
     if (companyId != null) {
-      this.assetSeriesService.getAssetSeriesOfCompany(companyId).subscribe();
-      if (route.paramMap.has('id')) {
-        const assetSeriesId = route.paramMap.get('id');
-        this.assetSeriesService.getItem(companyId, assetSeriesId).subscribe();
-      }
+      this.assetService.getAssetsOfCompany(companyId).subscribe();
     }
   }
 }

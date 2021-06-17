@@ -13,22 +13,10 @@
  * under the License.
  */
 
-@import 'src/assets/sass/components/buttons';
-@import "src/assets/sass/abstract/variables";
+@import 'components/detailpage';
 
-.edit-asset-type {
-   .edit-asset-type-footer {
-    margin-top: 8.1%;
-     margin-bottom: 5%;
-    text-align: right;
-  }
-
-  .edit-asset-type-inputs {
-    width: 82.0%;
-  }
-
-  .input-div {
-    display: grid;
-    padding-bottom: 24px;
-  }
+.list-header {
+  font-size: $big-font-size;
+  font-weight: bolder;
+  margin: 1rem 5rem;
 }

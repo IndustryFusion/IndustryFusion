@@ -16,6 +16,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogType } from '../../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-finished',
@@ -24,8 +25,10 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class AssetTypeTemplateWizardStepFinishedComponent implements OnInit {
 
-  @Input() isEditing: boolean;
+  @Input() type: DialogType;
   @Input() assetTypeTemplateForm: FormGroup;
+
+  public DialogType = DialogType;
 
   constructor(public ref: DynamicDialogRef) { }
 
