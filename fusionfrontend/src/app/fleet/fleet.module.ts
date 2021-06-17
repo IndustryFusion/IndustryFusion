@@ -27,15 +27,15 @@ import { AssetSeriesListHeaderComponent } from './components/content/asset-serie
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AssetSeriesListItemComponent } from './components/content/asset-series-list-item/asset-series-list-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AssetSeriesCreateStepOneComponent } from './components/content/asset-series-create/asset-series-create-step-one/asset-series-create-step-one.component';
 import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
 import { AssetSeriesCreateStepTwoComponent } from './components/content/asset-series-create/asset-series-create-step-two/asset-series-create-step-two.component';
 import { AssetSeriesCreateStepTreeComponent } from './components/content/asset-series-create/asset-series-create-step-three/asset-series-create-step-tree.component';
-import { AssetSeriesCreateStepFourComponent } from './components/content/asset-series-create/asset-series-create-step-four/asset-series-create-step-four.component';
+import { AssetSeriesCreateAttributesComponent } from './components/content/asset-series-create/asset-series-create-step-attributes/asset-series-create-attributes.component';
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @NgModule({
@@ -48,11 +48,10 @@ import { TableModule } from 'primeng/table';
     AssetSeriesListHeaderComponent,
     AssetSeriesListItemComponent,
     AssetSeriesCreateComponent,
-    AssetSeriesCreateStepOneComponent,
     AssetSeriesCreateStepTwoComponent,
     AssetSeriesCreateStepTreeComponent,
     TimelineComponent,
-    AssetSeriesCreateStepFourComponent,
+    AssetSeriesCreateAttributesComponent,
     AssetSeriePageComponent,
   ],
   imports: [
@@ -64,6 +63,7 @@ import { TableModule } from 'primeng/table';
     FormsModule,
     ReactiveFormsModule,
     TableModule,
+    DropdownModule,
   ],
   exports: [
     FleetSubHeaderComponent,

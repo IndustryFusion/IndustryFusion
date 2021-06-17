@@ -8,13 +8,15 @@ import { UnitQuery } from '../../../../../store/unit/unit.query';
 import { FieldSourceService } from '../../../../../store/field-source/field-source.service';
 import { FieldSourceComposedQuery } from '../../../../../store/composed/field-source-composed.query';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { FieldType } from '../../../../../store/field-target/field-target.model';
 
 @Component({
-  selector: 'app-asset-series-create-step-four',
-  templateUrl: './asset-series-create-step-four.component.html',
-  styleUrls: ['./asset-series-create-step-four.component.scss']
+  selector: 'app-asset-series-create-attributes',
+  templateUrl: './asset-series-create-attributes.component.html',
+  styleUrls: ['./asset-series-create-attributes.component.scss']
 })
-export class AssetSeriesCreateStepFourComponent implements OnInit {
+export class AssetSeriesCreateAttributesComponent implements OnInit {
 
   @Output() stepChange = new EventEmitter<number>();
   @Output() errorSignal = new EventEmitter<string>();
@@ -31,7 +33,10 @@ export class AssetSeriesCreateStepFourComponent implements OnInit {
     this.$loading = this.fieldSourceComposedQuery.selectLoading();
     const id: ID = activatedRoute.snapshot.queryParamMap.get('id');
     if (id) {
-      this.fieldSources$ = this.fieldSourceComposedQuery.selectFieldSourcesWithUnitsByAssetSeries(id);
+      this.fieldSources$ = this.fieldSourceComposedQuery.selectFieldSourcesWithUnitsAndFildTargetsByAssetSeries(id).pipe(
+        map(fieldSources => fieldSources.filter(
+          fieldSource => fieldSource.fieldTarget?.fieldType === FieldType.ATTRIBUTE))
+      );
     }
   }
 

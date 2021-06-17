@@ -149,6 +149,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   public startAssetSeriesWizard(idString: string, startStep: number = 1) {
     const dialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
       data: {
+        route: this.route,
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
         step: startStep

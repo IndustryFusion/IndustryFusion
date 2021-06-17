@@ -16,27 +16,22 @@ under the License.
 <div class="asset-series-create-step-two">
   <div class="content">
       <div id="colum left">
-        Asset implementation
-        <div class="title">2. Asset Info</div>
-        We will guide you through the process of asset implementation to get<br>
-        your asset ready to communicate in the world largest I4.0 ecosystem
-        <br><br>
-        <div class="title">Asset Information</div>
-        Select the category of your Asset.
+        <div class="title">General Information</div>
+
         <div *ngIf="assetSeries">
           <div class="clr-form-control">
-            <clr-select-container>
-              <label>Select asset type template</label>
-              <select [attr.disabled]="(id?.length > 0) ? '' : null"
-                      clrSelect
-                      name="assetTypeTemplate"
-                      placeholder="Asset category"
-                      (ngModelChange)="updateTypeTemplate($event)"
-                      [(ngModel)]="assetSeries.assetTypeTemplateId">
-                <option *ngFor="let assetTypeTemplate of (assetTypeTemplates$ | async)"
-                        [ngValue]="assetTypeTemplate.id">{{ assetTypeTemplate.name }}</option>
-              </select>
-            </clr-select-container>
+            <div>
+              <label>Select Asset Type Template</label>
+              <p-dropdown
+                [options]="assetTypeTemplates$ | async"
+                [optionLabel]="'name'"
+                [optionValue]="'id'"
+                name="assetTypeTemplate"
+                placeholder="Asset category"
+                (ngModelChange)="updateTypeTemplate($event)"
+                [(ngModel)]="assetSeries.assetTypeTemplateId">
+              </p-dropdown>
+            </div>
           </div>
 
           <div class="clr-form-control">
@@ -50,19 +45,12 @@ under the License.
             <input [(ngModel)]="assetSeries.description" placeholder="Asset instance name (IndustryFusion instanced series)">
           </div>
 
-          <div class="upload-button">
-            <div class="upload-pic">
-              <clr-icon shape="upload" size="48"></clr-icon>
-            </div>
-            <div class="title"> Upload picture</div>
-          </div>
         </div>
       </div>
       <div id="column right">
         <clr-icon shape="help" size="29"></clr-icon>
         <span class="if-hint" > How will my asset be displayed in a factory?</span>
         <div class="sample-asset-display">
-          <img src="/assets/img/asset.png" alt="asset-symbol">
           <div>
             <span class="title">Asset series name</span>
             <span>Asset instance name</span>

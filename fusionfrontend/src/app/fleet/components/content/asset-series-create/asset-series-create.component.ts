@@ -18,10 +18,12 @@ import { ID } from '@datorama/akita';
 
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { Observable } from 'rxjs';
 import { AssetSeriesComposedQuery } from '../../../../store/composed/asset-series-composed.query';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { FieldSourceResolver } from '../../../../resolvers/field-source.resolver';
+import { FieldTargetService } from '../../../../store/field-target/field-target.service';
 
 @Component({
   selector: 'app-asset-type-template-create',
@@ -29,18 +31,16 @@ import { AssetSeriesComposedQuery } from '../../../../store/composed/asset-serie
   styleUrls: ['./asset-series-create.component.scss']
 })
 export class AssetSeriesCreateComponent implements OnInit {
+  private route: ActivatedRoute;
 
   constructor(private assetSeriesService: AssetSeriesService,
               private assetSeriesQuery: AssetSeriesComposedQuery,
-              private route: ActivatedRoute,
               private router: Router,
-              formBuilder: FormBuilder
+              dialogConfig: DynamicDialogConfig,
+              private fieldSourceResolver: FieldSourceResolver,
+              private fieldTargetService: FieldTargetService,
   ) {
-
-    this.checkboxGroup = formBuilder.group({
-      isTermsChecked: [false, Validators.requiredTrue],
-      isPrivacyChecked: [false, Validators.requiredTrue],
-    });
+    this.route = dialogConfig.data.route;
 
   }
 
@@ -48,16 +48,19 @@ export class AssetSeriesCreateComponent implements OnInit {
   assetType: ID;
   companyId: ID;
   error: any;
-  checkboxGroup: FormGroup;
   toalSteps = 4;
   assetSeries$: Observable<AssetSeries>;
   assetSeries: AssetSeries = new AssetSeries();
 
   ngOnInit() {
-    this.companyId = this.route.parent.snapshot.params.companyId;
+    this.companyId = this.route.parent.snapshot.paramMap.get('companyId');
+
+    this.resolve();
+
     this.route.queryParamMap.subscribe(paramMap => {
       if (paramMap.has('id')) {
         this.assetSeries$ = this.assetSeriesQuery.selectAssetSeries(paramMap.get('id'));
+        this.resolve();
         this.assetSeries$.subscribe(assetSeries => this.assetSeries = assetSeries );
       }
       if (paramMap.has('step')) {
@@ -128,12 +131,18 @@ export class AssetSeriesCreateComponent implements OnInit {
     let result = true;
     switch (this.step) {
       case 1:
-        result = this.checkboxGroup.valid;
         break;
       case 2:
         result = this.assetSeries?.name !== undefined;
         break;
     }
     return result;
+  }
+
+  private resolve() {
+    this.fieldSourceResolver.resolve(this.route.snapshot);
+    if (this.assetSeries?.assetTypeTemplateId) {
+      this.fieldTargetService.getItemsByAssetTypeTemplate(this.assetSeries.assetTypeTemplateId).subscribe();
+    }
   }
 }

@@ -22,14 +22,12 @@ under the License.
     </clr-alert-item>
   </clr-alert>
   <app-timeline class="timeline" [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
-  <app-asset-series-create-step-one *ngIf="step === 1" (stepChange)="onStepChange($event)">
-  </app-asset-series-create-step-one>
-  <app-asset-series-create-step-two *ngIf="step === 2" [assetSeries]="assetSeries">
+  <app-asset-series-create-step-two *ngIf="step === 1" [assetSeries]="assetSeries">
   </app-asset-series-create-step-two>
-  <app-asset-series-create-step-three *ngIf="step === 3" >
+  <app-asset-series-create-step-three *ngIf="step === 2" >
   </app-asset-series-create-step-three>
-  <app-asset-series-create-step-four *ngIf="step === 4" [assetSeries]="assetSeries" [assetSeries$]="assetSeries$">
-  </app-asset-series-create-step-four>
+  <app-asset-series-create-attributes *ngIf="step === 3" [assetSeries]="assetSeries" [assetSeries$]="assetSeries$">
+  </app-asset-series-create-attributes>
   <div class="footer">
     <div *ngIf="step != 1">
       <button type="button" class="if-button button-secondary" (click)="back()">Back</button>
@@ -43,16 +41,6 @@ under the License.
       <button [disabled]="!readyToTakeNextStep()" type="button"
               class="if-button button-primary" (click)="nextStep()">Start
       </button>
-      <clr-checkbox-container [formGroup]="checkboxGroup">
-        <clr-checkbox-wrapper>
-          <input formControlName="isTermsChecked" type="checkbox" clrCheckbox value="option1" name="options"/>
-          <label>Agree to terms & conditions</label>
-        </clr-checkbox-wrapper>
-        <clr-checkbox-wrapper>
-          <input formControlName="isPrivacyChecked" type="checkbox" clrCheckbox value="option2" name="options"/>
-          <label>Agree to privacy policy</label>
-        </clr-checkbox-wrapper>
-      </clr-checkbox-container>
     </div>
   </div>
 </div>

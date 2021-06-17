@@ -16,28 +16,27 @@ under the License.
   <div class="content">
     <div style="width: 90%" id="column left">
       {{$loading | async}}
-      <div class="title">Data availability & mapping</div>
-      Select and map the data your "Asset Category" can deliver!
-      <br>
-      <br>
+      <div class="title">Attributes</div>
       <div  id="data" >
         <div >
           <div class="clr-row">
-            <span class="clr-col-3"></span>
-            <span class="clr-col-4">Data Address</span>
-            <span class="clr-col-3">Unit name</span>
+            <span class="clr-col-3">Custom Attribute name</span>
+            <span class="clr-col-3">Attribute name</span>
+            <span class="clr-col-3">Data Address</span>
+            <span class="clr-col-2">Unit name</span>
             <span class="clr-col-1">Unit symbol</span>
           </div>
           <div *ngFor="let fieldSource of (fieldSources$ | async)" class="clr-row">
-            <span class="clr-col-3 center"><label [for]="inputRegister">{{fieldSource.name}}</label></span>
-            <span class="clr-col-4">
+            <span class="clr-col-3 center"><label [for]="inputRegister">{{fieldSource.fieldTarget?.name}}</label></span>
+            <span class="clr-col-3 center"><label [for]="inputRegister">{{fieldSource.fieldTarget?.label}}</label></span>
+            <span class="clr-col-3">
               <div class="clr-form-control">
                 <input placeholder="Provide Register/Adress" #inputRegister
                        [ngModel]="fieldSource.register"
                        (blur)="updateRegister(inputRegister.value, fieldSource)">
               </div>
             </span>
-            <span class="clr-col-3">
+            <span class="clr-col-2">
               <select clrSelect name="connectivitySelect" #selectUnit (change)="updateUnit(selectUnit.selectedIndex, fieldSource)"
                       [ngModel]="fieldSource?.sourceUnit?.label">
                 <option *ngFor="let unit of getUnitsByQuantityType(fieldSource?.sourceUnit?.quantityTypeId)">
