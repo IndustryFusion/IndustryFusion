@@ -45,7 +45,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   public fieldTargetsUnedited: FieldTarget[];
   public isAssetTypeLocked = false;
   public type = DialogType.CREATE;
-  
+
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
               private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private fieldTargetService: FieldTargetService,
