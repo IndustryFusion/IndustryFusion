@@ -35,7 +35,7 @@ export class AssetTypeTemplateDialogPublishComponent implements OnInit, OnDestro
 
   ngOnInit(): void {
     this.assetTypeTemplateForm = AssetTypeTemplateWizardMainComponent
-      .createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate);
+      .createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate, null);
   }
 
   ngOnDestroy() {

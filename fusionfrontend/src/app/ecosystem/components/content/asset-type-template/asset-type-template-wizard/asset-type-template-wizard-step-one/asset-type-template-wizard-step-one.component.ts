@@ -38,6 +38,8 @@ import { NameWithVersionPipe } from '../../../../../../pipes/namewithversion.pip
 export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
 
   @Input() assetTypeTemplateForm: FormGroup;
+  @Input() isAssetTypeLocked: boolean;
+
   @Output() stepChange = new EventEmitter<number>();
   @Output() changeUseOfTemplate = new EventEmitter<number>();
 
@@ -69,7 +71,7 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
 
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
     if (assetTypeId) {
-      this.onChangeAssetType(assetTypeId);
+      this.updateAvailableAssetTypeTemplates(assetTypeId);
     }
   }
 
@@ -104,15 +106,21 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
     this.ref.close();
   }
 
-  onChangeAssetType(assetTypeId: number) {
+  onChangeAssetType(assetTypeId: number): void {
+    if (!this.isAssetTypeLocked) {
+      this.updateAvailableAssetTypeTemplates(assetTypeId);
+    }
+  }
+
+  private updateAvailableAssetTypeTemplates(assetTypeId: ID): void {
     const assetType = this.assetTypeQuery.getEntity(assetTypeId);
     this.replaceTemplateNameFromAssetType(assetType);
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll().
-      pipe(map( assetTypeTemplate => assetTypeTemplate.filter(value => value.assetTypeId === assetType.id)
-          .map(template => AssetTypeTemplateWizardStepOneComponent.addPublishedVersionToAssetTypeTemplateName(template))));
+    pipe(map( assetTypeTemplate => assetTypeTemplate.filter(value => value.assetTypeId === assetType.id)
+      .map(template => AssetTypeTemplateWizardStepOneComponent.addPublishedVersionToAssetTypeTemplateName(template))));
   }
 
-  private replaceTemplateNameFromAssetType(assetType: AssetType) {
+  private replaceTemplateNameFromAssetType(assetType: AssetType): void {
     if (assetType) {
       this.assetTypeTemplateForm.get('name')?.setValue(assetType.name);
     }

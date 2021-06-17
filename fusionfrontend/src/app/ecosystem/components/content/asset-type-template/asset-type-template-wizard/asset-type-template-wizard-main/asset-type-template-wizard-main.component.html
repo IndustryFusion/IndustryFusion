@@ -44,7 +44,8 @@ under the License.
 
   <app-asset-type-template-wizard-step-one *ngIf="step === 1" (stepChange)="onStepChange($event)"
                                            (changeUseOfTemplate)="onChangeUseOfTemplate($event)"
-                                           [assetTypeTemplateForm]="assetTypeTemplateForm">
+                                           [assetTypeTemplateForm]="assetTypeTemplateForm"
+                                           [isAssetTypeLocked]="isAssetTypeLocked">
   </app-asset-type-template-wizard-step-one>
   <app-asset-type-template-wizard-step-two *ngIf="step === 2" (stepChange)="onStepChange($event)"
                                            (metricSelect)="onMetricsSelect($event)" [inputMetrics]="getMetrics()"

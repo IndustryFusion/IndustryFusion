@@ -43,6 +43,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   public step: AssetTypeTemplateWizardSteps = AssetTypeTemplateWizardSteps.START;
   public assetTypeTemplate: AssetTypeTemplate;
   public fieldTargetsUnedited: FieldTarget[];
+  public isAssetTypeLocked = false;
   public type = DialogType.CREATE;
 
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
@@ -56,7 +57,9 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
               private ref: DynamicDialogRef,
               private config: DynamicDialogConfig) { }
 
-  public static createAssetTypeTemplateForm(formBuilder: FormBuilder, assetTypeTemplate: AssetTypeTemplate) {
+  public static createAssetTypeTemplateForm(formBuilder: FormBuilder,
+                                            assetTypeTemplate: AssetTypeTemplate,
+                                            preselectedAssetTypeIdOrNull: ID | null) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const assetTypeTemplateForm = formBuilder.group({
       id: [],
@@ -67,7 +70,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       publishedVersion: [],
       wasPublished: [false],
       useExistingTemplate: [false, Validators.required],
-      assetTypeId: [null, Validators.required],
+      assetTypeId: [preselectedAssetTypeIdOrNull, Validators.required],
       assetTypeTemplateId: [],
       fieldTarget: [],
     });
@@ -82,8 +85,10 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
 
-    this.assetTypeTemplateForm = AssetTypeTemplateWizardMainComponent
-      .createAssetTypeTemplateForm(this.formBuilder, this.config.data.assetTypeTemplate);
+    this.assetTypeTemplateForm = AssetTypeTemplateWizardMainComponent.createAssetTypeTemplateForm(this.formBuilder,
+        this.config.data.assetTypeTemplate,
+        this.config.data.preselectedAssetTypeId);
+    this.isAssetTypeLocked = this.config.data.preselectedAssetTypeId != null;
 
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
