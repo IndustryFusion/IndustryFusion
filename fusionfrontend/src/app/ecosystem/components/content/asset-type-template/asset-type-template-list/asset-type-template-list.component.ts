@@ -71,7 +71,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   onCreate() {
     this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
       data: {
-        type: DialogType.CREATE
+        type: DialogType.CREATE,
         preselectedAssetTypeId: this.parentAssetTypeId
       },
       header: `Asset Type Template Editor`,
