@@ -27,24 +27,6 @@
       width: 100%;
     }
 
-    .upload-button {
-      margin-top: 1.2rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .upload-pic {
-        background: transparent url('/assets/icons/upload-icon.svg') 0 0 no-repeat padding-box;
-        opacity: 1;
-        width: 5.2rem;
-        height: 5.2rem;
-        background-size: contain;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-
     .sample-asset-display {
       display: flex;
       margin-top: 1.5rem;

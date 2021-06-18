@@ -95,7 +95,6 @@ export class AssetWizardComponent implements OnInit {
 
   private prefillFormWithAssetSeries(assetSeriesId: ID): void {
     const assetSeries = this.assetSeriesQuery.getEntity(assetSeriesId);
-    console.log("Test123");
     if (assetSeries) {
       this.updateRelatedObjects(assetSeries);
       this.assetForm.get('name')?.setValue(assetSeries.name);
