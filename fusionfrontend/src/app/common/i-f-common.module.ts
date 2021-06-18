@@ -13,6 +13,11 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -29,13 +34,19 @@ import { BrowserModule } from '@angular/platform-browser';
     CommonModule,
     BrowserModule,
     ClrIconModule,
+    FontAwesomeModule,
+    FormsModule,
     MenuModule,
     ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
   ],
   exports: [
+    CommonModule,
     CreateButtonComponent,
     ItemOptionsMenuComponent,
     TrashButtonComponent,
@@ -43,6 +54,13 @@ import { BrowserModule } from '@angular/platform-browser';
     EditButtonComponent,
     EditDetailsButtonComponent,
     LocationsMapComponent,
+    FontAwesomeModule,
+    FormsModule,
+    MenuModule,
+    ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
   ]
 })
 export class IFCommon {

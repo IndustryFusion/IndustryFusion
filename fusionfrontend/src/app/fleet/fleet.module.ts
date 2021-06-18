@@ -14,7 +14,6 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { FleetRoutingModule } from './fleet-routing.module';
 import { FleetManagerPageComponentComponent } from './components/pages/fleet-manager-page-component/fleet-manager-page-component.component';
@@ -24,9 +23,8 @@ import { AssetSeriesPageComponent } from './components/pages/asset-series-page/a
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { ClarityModule } from '@clr/angular';
 import { AssetSeriesListHeaderComponent } from './components/content/asset-series-list-header/asset-series-list-header.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AssetSeriesListItemComponent } from './components/content/asset-series-list-item/asset-series-list-item.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AssetSeriesCreateStepOneComponent } from './components/content/asset-series-create/asset-series-create-step-one/asset-series-create-step-one.component';
 import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
@@ -37,11 +35,11 @@ import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
 import { AssetWizardComponent } from './components/content/asset-wizard/asset-wizard.component';
-import { AssetWizardStepStartComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-start/asset-wizard-step-start.component';
-import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
-import { AssetWizardStepSemanticsComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-semantics/asset-wizard-step-semantics.component';
-import { AssetWizardStepCustomerComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-customer/asset-wizard-step-customer.component';
-import { AssetWizardStepFinishedComponent } from './components/content/asset-wizard/asset-wizard-steps/asset-wizard-step-finished/asset-wizard-step-finished.component';
+import { AssetWizardStepStartComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-start/asset-wizard-step-start.component';
+import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
+import { AssetWizardStepSemanticsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-semantics/asset-wizard-step-semantics.component';
+import { AssetWizardStepCustomerComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer/asset-wizard-step-customer.component';
+import { AssetWizardStepFinishedComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-finished/asset-wizard-step-finished.component';
 
 
 @NgModule({
@@ -67,16 +65,13 @@ import { AssetWizardStepFinishedComponent } from './components/content/asset-wiz
     AssetWizardStepCustomerComponent,
     AssetWizardStepFinishedComponent,
   ],
-  imports: [
-    IFCommon,
-    CommonModule,
-    FleetRoutingModule,
-    ClarityModule,
-    FontAwesomeModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TableModule,
-  ],
+    imports: [
+        IFCommon,
+        FleetRoutingModule,
+        ClarityModule,
+        ReactiveFormsModule,
+        TableModule,
+    ],
   exports: [
     FleetSubHeaderComponent,
     FleetPageTitleComponent
