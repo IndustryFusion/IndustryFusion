@@ -14,16 +14,15 @@ under the License.
 -->
 
 <div class="field-header" [ngStyle]="{'margin-bottom': editable === true ? '' :  '1.0rem'}">
-  <div class="if-label if-label-header col-margin" [ngClass]="editable === true ? 'col-20' : 'col-30'">
+  <div class="if-label-small-header col-margin" [ngClass]="editable === true ? 'col-20' : 'col-30'">
     Custom {{ type === FieldType.METRIC ? 'Metric' : 'Attribute' }} name
   </div>
-  <div class="if-label if-label-header col-margin" [ngClass]="editable === true ? 'col-15' : 'col-20'">
+  <div class="if-label-small-header col-margin" [ngClass]="editable === true ? 'col-15' : 'col-20'">
     {{ type === FieldType.METRIC ? 'Metric' : 'Attribute' }} name
   </div>
-  <div class="if-label if-label-header" [ngClass]="editable === true ? 'col-15' : 'col-20'"> Quantity type </div>
-  <div class="if-label if-label-header"  [ngClass]="editable === true ? 'col-5' : 'col-10'"> Unit </div>
-  <div class="if-label if-label-header col-10"> Accuracy </div>
-  <div class="if-label if-label-header" [ngClass]="editable === true ? 'col-15' : 'col-10'"> Mandatory? </div>
+  <div class="if-label-small-header" [ngClass]="editable === true ? 'col-15' : 'col-20'"> Quantity type </div>
+  <div class="if-label-small-header" [ngClass]="editable === true ? 'col-5' : 'col-10'"> Unit </div>
+  <div class="if-label-small-header col-10"> Accuracy </div>
+  <div class="if-label-small-header" [ngClass]="editable === true ? 'col-15' : 'col-10'"> Mandatory? </div>
   <div class="edit-col" *ngIf="editable === true"> </div>
 </div>
-
