@@ -35,27 +35,5 @@ under the License.
   </div>
 </div>
 
-<clr-modal [(clrModalOpen)]="moveAssetModal">
-  <h3 class="modal-title">Assign asset to the room</h3>
-  <div class="modal-body">
-    <div *ngIf="location; else showError">
-    <p>Select room: </p>
-    <clr-dropdown>
-      <button class="btn btn-outline-primary" clrDropdownTrigger>
-        Rooms
-        <clr-icon shape="caret down"></clr-icon>
-      </button>
-      <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
-        <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
-          <button *ngFor="let room of allRoomsOfLocations" (click)="emitEditRoomEvent(room)" clrDropdownTrigger>{{room?.name}}</button>
-      </clr-dropdown-menu>
-    </clr-dropdown>
-    </div>
-    <ng-template #showError>
-      <p>
-        Functionality not available for this site yet.
-      </p>
-    </ng-template>
-  </div>
-  <div class="modal-footer"></div>
-</clr-modal>
+<p-confirmDialog class="confirm-dialog-style" rejectButtonStyleClass="if-button button-secondary"
+                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>

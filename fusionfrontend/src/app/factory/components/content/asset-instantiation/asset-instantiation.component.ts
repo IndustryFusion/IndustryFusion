@@ -71,11 +71,11 @@ export class AssetInstantiationComponent implements OnInit {
 
     if (this.activeModalMode === this.assetModalModes.editRoomForAssetMode) {
       this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetails.roomId).pop();
-      console.log(this.selectedLocation);
-      if (this.selectedLocation)
+      if (this.selectedLocation) {
         this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedRoom.locationId);
-      else
+      } else {
         this.allRoomsOfLocation = this.rooms;
+      }
     }
   }
 
@@ -118,19 +118,19 @@ export class AssetInstantiationComponent implements OnInit {
     if (event[0]) {
       this.config.header = 'Assign asset to room';
       this.activeModalType = this.assetModalTypes.roomAssignment;
-      this.assignLocation(event[1])
+      this.assignLocation(event[1]);
     } else {
       this.config.header = 'Assign name and description to asset';
       this.activeModalType = this.assetModalTypes.customizeAsset;
     }
   }
 
-  assignLocation(location?: Location) {
-    if (this.activeModalMode == this.assetModalModes.editRoomForAssetMode) {
+  assignLocation(selectedLocation?: Location) {
+    if (this.activeModalMode === this.assetModalModes.editRoomForAssetMode) {
       this.selectedLocation = this.locations.filter(location => location.id === this.selectedRoom.locationId)[0];
       this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedLocation.name);
-    } else if (location) {
-      this.selectedLocation = location;
+    } else if (selectedLocation) {
+      this.selectedLocation = selectedLocation;
       this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedLocation.id);
       this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedLocation.name);
     }
@@ -150,7 +150,7 @@ export class AssetInstantiationComponent implements OnInit {
   assignRoom(room: Room) {
     this.selectedRoom = room;
     this.assetDetailsForm.controls[this.formControls[6]].setValue(this.selectedRoom.id);
-    this.assetDetailsForm.controls[this.formControls[7]].setValue(this.selectedRoom.name)
+    this.assetDetailsForm.controls[this.formControls[7]].setValue(this.selectedRoom.name);
   }
 
   finishedAssetOnboaring() {

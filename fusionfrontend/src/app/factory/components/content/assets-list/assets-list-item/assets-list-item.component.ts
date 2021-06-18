@@ -9,12 +9,13 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
 import { MenuItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-assets-list-item',
   templateUrl: './assets-list-item.component.html',
   styleUrls: ['./assets-list-item.component.scss'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
 export class AssetsListItemComponent implements OnInit, OnChanges {
 
@@ -37,14 +38,11 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   @Output()
   assetDeselected = new EventEmitter<AssetDetailsWithFields>();
   @Output()
-  editRoom = new EventEmitter<Room>();
-  @Output()
   editAssetEvent = new EventEmitter<AssetDetails>();
   @Output()
   deleteAssetEvent = new EventEmitter<AssetDetailsWithFields>();
 
   showStatusCircle = false;
-  moveAssetModal = false;
   roomsOfLocation: Room[];
   assetDetailsForm: FormGroup;
   ref: DynamicDialogRef;
@@ -54,12 +52,13 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   constructor(
     private roomQuery: RoomQuery,
     private formBuilder: FormBuilder,
-    public dialogService: DialogService) {
+    public dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
       this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
       this.menuActions = [
         { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
         { label: 'Move item', icon: 'pi pw-fw pi-clone', command: (_) => { this.showEditRoomDialog(); } },
-        { label: 'Delete item', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+        { label: 'Delete item', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
       ];
   }
 
@@ -139,11 +138,6 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     !this.selected ? this.assetSelected.emit(this.assetWithDetailsAndFields) : this.assetDeselected.emit(this.assetWithDetailsAndFields);
   }
 
-  emitEditRoomEvent(room: Room) {
-    this.editRoom.emit(room);
-    this.moveAssetModal = false;
-  }
-
   getAssetLink(asset: Asset) {
     if (!asset) { return; }
     if (this.room) {
@@ -157,9 +151,20 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     }
   }
 
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the asset ' + this.assetWithDetailsAndFields.name + '?',
+      header: 'Delete Asset Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.onDeleteClick();
+      },
+      reject: () => {
+      }
+    });
+  }
+
   onDeleteClick() {
-    this.deleteAssetEvent.emit(null);
-    // this.assetDeleted.emit(this.assetWithDetailsAndFields);
-    // this.emitDeletedAsset.emit(this.assetWithDetailsAndFields);
+    this.deleteAssetEvent.emit(this.assetWithDetailsAndFields);
   }
 }

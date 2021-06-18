@@ -13,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     InputTextModule,
     InputTextareaModule,
     RadioButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    ConfirmDialogModule
   ]
 })
 export class IFCommon { }
