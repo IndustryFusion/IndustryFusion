@@ -20,7 +20,7 @@ under the License.
       <div class="button-section">
         <p class="if-label" style="display: inline-block" *ngIf="assetTypeTemplate?.published === true">
           published on<br>
-          <label class="if-label if-label-medium">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</label>
+          <label class="if-label">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</label>
         </p>
 
         <button class="if-button-update" (click)="onUpdate()" *ngIf="assetTypeTemplate?.published === false">

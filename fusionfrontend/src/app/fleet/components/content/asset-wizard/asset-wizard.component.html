@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div>
+<div class="if-wizard-wrapper">
   <div class="timeline">
     <ul class="clr-timeline clr-timeline-horizontal">
       <li class="clr-timeline-step">
@@ -42,7 +42,11 @@ under the License.
     </ul>
   </div>
 
-  <app-asset-wizard-step-start *ngIf="step === 1" (stepChange)="onStepChange($event)" [assetForm]="assetForm">
+  <app-asset-wizard-step-start *ngIf="step === 1" (stepChange)="onStepChange($event)"
+                               (changeAssetSeries)="onChangeAssetSeries($event)"
+                               [assetForm]="assetForm" [isAssetSeriesLocked]="isAssetSeriesLocked"
+                               [relatedAssetSeries]="relatedAssetSeries" [relatedAssetType]="relatedAssetType"
+                               [relatedCompany]="relatedCompany">
   </app-asset-wizard-step-start>
   <app-asset-wizard-step-nameplate *ngIf="step === 2" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
   </app-asset-wizard-step-nameplate>

@@ -22,6 +22,17 @@ import { AssetWizardStep } from './asset-wizard-step/asset-wizard-step.model';
 import { AssetSeriesResolver } from '../../../../resolvers/asset-series.resolver';
 import { AssetResolver } from '../../../../resolvers/asset.resolver';
 import { ActivatedRoute } from '@angular/router';
+import { ID } from '@datorama/akita';
+import { AssetSeriesQuery } from '../../../../store/asset-series/asset-series.query';
+import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
+import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
+import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
+import { Company } from '../../../../store/company/company.model';
+import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { CompanyQuery } from '../../../../store/company/company.query';
+import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
+import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -30,26 +41,42 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AssetWizardComponent implements OnInit {
 
+  public isLoading$: Observable<boolean>;
+
   public assetForm: FormGroup;
   public asset: Asset;
+  public relatedAssetSeries: AssetSeries = null;
+  public relatedCompany: Company = null;
+  public relatedAssetType: AssetType = null;
   public type = DialogType.CREATE;
   public step = AssetWizardStep.START;
   public isAssetSeriesLocked = false;
 
   constructor(private assetSeriesResolver: AssetSeriesResolver,
+              private assetSeriesQuery: AssetSeriesQuery,
               private assetResolver: AssetResolver,
+              private companyQuery: CompanyQuery,
+              private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
+              private assetTypeTemplateQuery: AssetTypeTemplateQuery,
+              private assetTypesResolver: AssetTypesResolver,
+              private assetTypeQuery: AssetTypeQuery,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
               private config: DynamicDialogConfig) { }
 
   ngOnInit(): void {
-    if (this.config.data.step) {
-      this.onStepChange(this.config.data.step);
-    }
+    this.resolveWizard();
+
     this.asset = { ...this.config.data.asset };
     this.createAssetForm();
 
     this.isAssetSeriesLocked = this.config.data.prefilledAssetSeriesId != null;
+    if (this.isAssetSeriesLocked) {
+      this.assetForm.get('assetSeriesId')?.disable();
+      this.isLoading$.subscribe(() => {
+        this.prefillFormWithAssetSeries(this.config.data.prefilledAssetSeriesId);
+      });
+    }
 
     if (this.config.data.step) {
       this.onStepChange(this.config.data.step);
@@ -60,9 +87,39 @@ export class AssetWizardComponent implements OnInit {
     this.step = step;
   }
 
-  private resolveForWizard() {
+  onChangeAssetSeries(assetSeriesId: ID): void {
+    if (!this.isAssetSeriesLocked) {
+      this.prefillFormWithAssetSeries(assetSeriesId);
+    }
+  }
+
+  private prefillFormWithAssetSeries(assetSeriesId: ID): void {
+    const assetSeries = this.assetSeriesQuery.getEntity(assetSeriesId);
+    console.log("Test123");
+    if (assetSeries) {
+      this.updateRelatedObjects(assetSeries);
+      this.assetForm.get('name')?.setValue(assetSeries.name);
+      this.assetForm.get('description')?.setValue(assetSeries.description);
+      this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
+      this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
+
+      // TODO: prefill connection string
+    }
+  }
+
+  private updateRelatedObjects(assetSeries: AssetSeries): void {
+    this.relatedAssetSeries = assetSeries;
+    this.relatedCompany = this.companyQuery.getActive();
+    const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
+    this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+  }
+
+  private resolveWizard(): void {
     this.assetSeriesResolver.resolve(this.activatedRoute.snapshot);
     this.assetResolver.resolve(this.activatedRoute.snapshot);
+    this.assetTypesResolver.resolve().subscribe();
+    this.isLoading$ = this.assetSeriesQuery.selectLoading();
+    this.assetTypeTemplatesResolver.resolve().subscribe();
   }
 
   private createAssetForm() {

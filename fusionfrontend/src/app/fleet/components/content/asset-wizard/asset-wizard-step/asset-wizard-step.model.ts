@@ -13,22 +13,10 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-
-@Component({
-  selector: 'app-asset-wizard-step-start',
-  templateUrl: './asset-wizard-step-start.component.html',
-  styleUrls: ['./asset-wizard-step-start.component.scss']
-})
-export class AssetWizardStepStartComponent implements OnInit {
-
-  @Input() assetForm: FormGroup;
-  @Output() stepChange = new EventEmitter<number>();
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export enum AssetWizardStep {
+  START = 1,
+  DIGITAL_NAMEPLATE,
+  SEMANTICS,
+  CUSTOMER_DATA,
+  FINISHED
 }
