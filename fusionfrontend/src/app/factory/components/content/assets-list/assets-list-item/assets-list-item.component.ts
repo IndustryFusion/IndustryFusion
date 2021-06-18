@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AssetDetailsWithFields } from '../../../../../store/asset-details/asset-details.model';
+import { AssetDetailsWithFields, AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
 import { RoomQuery } from '../../../../../store/room/room.query';
@@ -58,7 +58,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
       this.menuActions = [
         { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-        { label: 'Move item', icon: 'pi pw-fw pi-clone', command: (_) => { this.onChangeRoomClick(); } },
+        { label: 'Move item', icon: 'pi pw-fw pi-clone', command: (_) => { this.showEditRoomDialog(); } },
         { label: 'Delete item', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
       ];
   }
@@ -79,10 +79,35 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
         assetDetailsForm: this.assetDetailsForm,
         assetToBeEdited: this.assetWithDetailsAndFields,
         locations: this.locations,
+        location: this.location,
         rooms: this.rooms,
-        activeModalType: AssetModalType.customizeAsset
+        activeModalType: AssetModalType.customizeAsset,
+        activeModalMode: AssetModalMode.editAssetMode
       },
       header: 'Assign name and description to asset',
+      contentStyle: { 'padding-top': '1.5%' }
+    });
+
+    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+      if (assetFormValues) {
+        this.editAssetEvent.emit(assetFormValues);
+      }
+    });
+  }
+
+  showEditRoomDialog() {
+    const ref = this.dialogService.open(AssetInstantiationComponent, {
+      data: {
+        assetDetailsForm: this.assetDetailsForm,
+        assetToBeEdited: this.assetWithDetailsAndFields,
+        locations: this.locations,
+        location: this.location,
+        rooms: this.rooms,
+        editRoomMode: true,
+        activeModalType: AssetModalType.roomAssignment,
+        activeModalMode: AssetModalMode.editRoomForAssetMode
+      },
+      header: 'Assign asset to room',
       contentStyle: { 'padding-top': '1.5%' }
     });
 
@@ -130,9 +155,6 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     } else {
       return ['rooms', asset.roomId, 'assets', asset.id];
     }
-  }
-
-  onChangeRoomClick() {
   }
 
   onDeleteClick() {

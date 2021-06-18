@@ -36,7 +36,8 @@ under the License.
 <app-asset-instantiation-room-assignment-modal *ngIf="activeModalType == assetModalTypes.roomAssignment"
                                                 [rooms]="allRoomsOfLocation"
                                                 [selectedRoom]="selectedRoom"
-                                                (roomAssignedEvent)="finishedAssetOnboaring($event)">
+                                                [activeModalMode]="activeModalMode"
+                                                (roomAssignedEvent)="finishedRoomAssignment($event)">
 </app-asset-instantiation-room-assignment-modal>
 
 

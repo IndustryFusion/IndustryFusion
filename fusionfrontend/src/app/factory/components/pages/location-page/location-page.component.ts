@@ -26,7 +26,6 @@ import { LocationQuery } from 'src/app/store/location/location.query';
 import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 import { CompanyQuery } from '../../../../store/company/company.query';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { AssetService } from '../../../../store/asset/asset.service';
 
 @Component({
@@ -45,7 +44,6 @@ export class LocationPageComponent implements OnInit, OnDestroy {
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
   selectedIds: ID[];
   companyId: ID;
-  selectedAssetSeries: AssetSeriesDetails;
   createdAssetDetailsId: ID;
 
   constructor(

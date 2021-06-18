@@ -33,7 +33,7 @@ under the License.
   </div>
 
   <div class="assign-room-dialog-footer">
-    <button type="button" class="if-button button-secondary" (click)="onCancel()">Back</button>
+    <button *ngIf="activeModalMode != assetModalModes.editRoomForAssetMode" type="button" class="if-button button-secondary" (click)="onCancel()">Back</button>
     <button type="button" class="if-button button-secondary" (click)="onSubmit()"
             [disabled]="!selectedRoom">Finish</button>
   </div>

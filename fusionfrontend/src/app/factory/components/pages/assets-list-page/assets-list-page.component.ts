@@ -41,7 +41,6 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   assets$: Observable<Asset[]>;
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
   locations$: Observable<Location[]>;
-  location$: Observable<Location>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
   selectedIds: Array<ID>;
@@ -65,7 +64,6 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.company$ = this.factoryResolver.company$;
     this.locations$ = this.factoryResolver.locations$;
-    this.location$ = this.factoryResolver.location$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;

@@ -33,6 +33,12 @@ export enum AssetModalType  {
   roomAssignment = 5
 }
 
+export enum AssetModalMode  {
+  onboardAssetMode = 1,
+  editAssetMode,
+  editRoomForAssetMode = 3,
+}
+
 export enum DashboardFilterModalType {
   assetTypeFilterModal = 1,
   manufacturerFilterModal = 2,

@@ -21,7 +21,7 @@ import { AssetService } from 'src/app/store/asset/asset.service';
 import { Company } from 'src/app/store/company/company.model';
 import { Location } from 'src/app/store/location/location.model';
 import { Room } from 'src/app/store/room/room.model';
-import { AssetDetails, AssetDetailsWithFields, AssetModalType } from '../../../../store/asset-details/asset-details.model';
+import { AssetDetails, AssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/asset-details/asset-details.model';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -117,7 +117,8 @@ export class AssetsListComponent implements OnChanges, OnInit {
         assetsToBeOnboarded: this.assetsWithDetailsAndFields,
         locations: this.locations,
         rooms: this.rooms,
-        activeModalType: AssetModalType.startInitialization
+        activeModalType: AssetModalType.startInitialization,
+        activeModalMode: AssetModalMode.onboardAssetMode
       },
     });
 
@@ -213,14 +214,11 @@ export class AssetsListComponent implements OnChanges, OnInit {
     this.toolBarClickEvent.emit('GRID');
   }
 
-  forwardAssetDetails(event: AssetDetails) {
-    this.assetDetailsSelected.emit(event);
-  }
 
   deleteAsset(event: AssetDetailsWithFields) {
-  //   this.assetService.removeCompanyAsset(event.companyId, event.id).subscribe(() => {
-  //     this.assetsWithDetailsAndFields.splice(this.assetsWithDetailsAndFields.indexOf(event), 1);
-  //   });
+    this.assetService.removeCompanyAsset(event.companyId, event.id).subscribe(() => {
+      this.assetsWithDetailsAndFields.splice(this.assetsWithDetailsAndFields.indexOf(event), 1);
+    });
     console.log(event);
   }
 }
