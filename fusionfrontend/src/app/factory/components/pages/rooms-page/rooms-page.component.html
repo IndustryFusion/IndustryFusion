@@ -12,100 +12,150 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
+  <app-rooms-list [locations]="(locations$ | async)"
+                  (createRoomEvent)="createRoom($event)"
+                  (editRoomEvent)="editRoom($event)">
 
-<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>
-<div class="rooms-panel">
-  <div class="manage">
-    <button class="btn btn-sm btn-link" (click)="createRoomModal = true">
-      <clr-icon shape="plus"></clr-icon>Create room
-    </button>
-    <button class="btn btn-sm btn-link"  [routerLink]="['../']">
-      <clr-icon shape="view-list"></clr-icon>Assets list
-    </button>
-    <button class="btn btn-sm btn-link" (click)="goBack()">
-      <clr-icon shape="undo"></clr-icon> Go Back
-    </button>
-  </div>
-</div>
+    <!--[company]="(company$ | async)"-->
+<!--                  [locations]="(locations$ | async)"-->
+<!--                  [location]="(location$ | async)"-->
+<!--                  [rooms]="(rooms$ | async)"-->
+<!--                  [room]="(room$ | async)"-->
+<!--                  [assetSeries]="(assetSeries$ | async)"-->
+<!--                  [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"-->
+<!--                  (toolBarClickEvent)="toolbarClick($event)"-->
+<!--                  (selectedEvent)="selectTheAssets($event)"-->
+<!--                  (updateAssetEvent)="updateAssetData($event)"-->
+  </app-rooms-list>
 
-<div class="wrapper">
-  <h3 class="table-header" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>
+<!--<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>-->
+<!--<div class="rooms-panel">-->
+<!--  <div class="manage">-->
+<!--    <button class="btn btn-sm btn-link" (click)="createRoomModal = true">-->
+<!--      <clr-icon shape="plus"></clr-icon>Create room-->
+<!--    </button>-->
+<!--    <button class="btn btn-sm btn-link"  [routerLink]="['../']">-->
+<!--      <clr-icon shape="view-list"></clr-icon>Assets list-->
+<!--    </button>-->
+<!--    <button class="btn btn-sm btn-link" (click)="goBack()">-->
+<!--      <clr-icon shape="undo"></clr-icon> Go Back-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
 
-  <clr-datagrid>
-    <clr-dg-column>Room ID</clr-dg-column>
-    <clr-dg-column>Name</clr-dg-column>
-    <clr-dg-column>Assets</clr-dg-column>
-    <clr-dg-column>Description</clr-dg-column>
-    <clr-dg-column></clr-dg-column>
+<!--<div>-->
+<!--  <h3>Maintenance Dashboard</h3>-->
+<!--  <p-table class="list-container"-->
+<!--           [value]="rooms$ | async"-->
+<!--           [rowsPerPageOptions]="[5,10,50]"-->
+<!--           [rows]="10"-->
+<!--           [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">-->
+<!--    <ng-template pTemplate="header">-->
+<!--      <tr>-->
+<!--        <th [style.width.%]="5"></th>-->
+<!--        <th [style.width.%]="30">Room ID</th>-->
+<!--        <th [style.width.%]="30">Name</th>-->
+<!--        <th [style.width.%]="30">Asset</th>-->
+<!--        <th [style.width.%]="60">Description</th>-->
+<!--        <th [style.width.%]="5"></th>-->
+<!--      </tr>-->
+<!--    </ng-template>-->
 
-    <clr-dg-row *ngFor="let room of rooms$ | async" [clrDgItem]="room">
-      <clr-dg-cell [routerLink]="[room.id]">{{room.id}}</clr-dg-cell>
-      <clr-dg-cell [routerLink]="[room.id]">{{room.name}}</clr-dg-cell>
-      <clr-dg-cell [routerLink]="[room.id]">{{room.assetIds.length}}</clr-dg-cell>
-      <clr-dg-cell [routerLink]="[room.id]">{{room.description}}</clr-dg-cell>
-      <clr-dg-cell>
-        <span style="float: right; width: 10px">
-          <clr-dg-action-overflow>
-            <button class="action-item" (click)="editRoom(room.id)">Edit</button>
-            <button class="action-item" (click)="deleteRoom(room.id)">Delete</button>
-            <button class="action-item" (click)="openAssignAssetModal(room.id)">Assign assets to this room</button>
-          </clr-dg-action-overflow>
-        </span>
-      </clr-dg-cell>
-    </clr-dg-row>
+<!--    <ng-template pTemplate="body" let-room>-->
+<!--      <tr>-->
+<!--        <td [style.width.%]="5"></td>-->
+<!--        <td [style.width.%]="30">{{room.id}}</td>-->
+<!--        <td [style.width.%]="30">{{room.name}}</td>-->
+<!--        <td [style.width.%]="30">{{room.assetIds.length}}</td>-->
+<!--        <td [style.width.%]="60">{{room.description}}</td>-->
 
-  </clr-datagrid>
+<!--        <td [style.width.%]="5">-->
+<!--&lt;!&ndash;          OptionsMenu&ndash;&gt;-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    </ng-template>-->
 
-  <clr-modal [(clrModalOpen)]="assignToRoomModal">
+<!--  </p-table>-->
+<!--</div>-->
 
-    <h3 class="modal-title">Assign asset to room </h3>
-    <div class="modal-body">
-      <p>Move the following asset to this room:</p>
+<!--<div class="wrapper">-->
+<!--  <h3 class="table-header" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>-->
 
-      <clr-dropdown>
-        <button class="btn btn-outline-primary" clrDropdownTrigger>
-          Assets
-          <clr-icon shape="caret down"></clr-icon>
-        </button>
-        <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
-          <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
+<!--  <clr-datagrid>-->
+<!--    <clr-dg-column>Room ID</clr-dg-column>-->
+<!--    <clr-dg-column>Name</clr-dg-column>-->
+<!--    <clr-dg-column>Assets</clr-dg-column>-->
+<!--    <clr-dg-column>Description</clr-dg-column>-->
+<!--    <clr-dg-column></clr-dg-column>-->
 
-          <button *ngFor="let asset of assets$ | async" (click)="assignToRoom(asset.id)" clrDropdownTrigger>{{asset.name}}</button>
+<!--    <clr-dg-row *ngFor="let room of rooms$ | async" [clrDgItem]="room">-->
+<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.id}}</clr-dg-cell>-->
+<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.name}}</clr-dg-cell>-->
+<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.assetIds.length}}</clr-dg-cell>-->
+<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.description}}</clr-dg-cell>-->
+<!--      <clr-dg-cell>-->
+<!--        <span style="float: right; width: 10px">-->
+<!--          <clr-dg-action-overflow>-->
+<!--            <button class="action-item" (click)="editRoom(room.id)">Edit</button>-->
+<!--            <button class="action-item" (click)="deleteRoom(room.id)">Delete</button>-->
+<!--            <button class="action-item" (click)="openAssignAssetModal(room.id)">Assign assets to this room</button>-->
+<!--          </clr-dg-action-overflow>-->
+<!--        </span>-->
+<!--      </clr-dg-cell>-->
+<!--    </clr-dg-row>-->
 
-        </clr-dropdown-menu>
-      </clr-dropdown>
+<!--  </clr-datagrid>-->
 
+<!--  <clr-modal [(clrModalOpen)]="assignToRoomModal">-->
 
-    </div>
-    <div class="modal-footer">
-    </div>
-  </clr-modal>
+<!--    <h3 class="modal-title">Assign asset to room </h3>-->
+<!--    <div class="modal-body">-->
+<!--      <p>Move the following asset to this room:</p>-->
 
-  <clr-modal [(clrModalOpen)]="editRoomModal">
+<!--      <clr-dropdown>-->
+<!--        <button class="btn btn-outline-primary" clrDropdownTrigger>-->
+<!--          Assets-->
+<!--          <clr-icon shape="caret down"></clr-icon>-->
+<!--        </button>-->
+<!--        <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>-->
+<!--          <div class="dropdown-divider" role="separator" aria-hidden="true"></div>-->
 
-    <h3 class="modal-title">Edit room</h3>
-    <div class="modal-body">
+<!--          <button *ngFor="let asset of assets$ | async" (click)="assignToRoom(asset.id)" clrDropdownTrigger>{{asset.name}}</button>-->
 
-      <div *ngIf="activeRoom$">
-      <app-edit-room [activeRoom]="(activeRoom$ | async)" (modalOpened)="closeEditModal($event)"></app-edit-room>
-      </div>
-
-    </div>
-    <div class="modal-footer">
-    </div>
-  </clr-modal>
-
-  <clr-modal [(clrModalOpen)]="createRoomModal">
-    <h3 class="modal-title">Add new room to factory</h3>
-    <div class="modal-body">
-      <p>Create new categories to the Industry Fusion ecosystem for a standardized semantic description of assets.</p>
-
-      <app-create-room [company]="(company$ | async)" [location]="(location$ | async)" (modalOpened)="closeCreateModal($event)"></app-create-room>
-
-    </div>
-    <div class="modal-footer">
-    </div>
-  </clr-modal>
+<!--        </clr-dropdown-menu>-->
+<!--      </clr-dropdown>-->
 
 
-</div>
+<!--    </div>-->
+<!--    <div class="modal-footer">-->
+<!--    </div>-->
+<!--  </clr-modal>-->
+
+<!--  <clr-modal [(clrModalOpen)]="editRoomModal">-->
+
+<!--    <h3 class="modal-title">Edit room</h3>-->
+<!--    <div class="modal-body">-->
+
+<!--      <div *ngIf="activeRoom$">-->
+<!--      <app-edit-room [activeRoom]="(activeRoom$ | async)" (modalOpened)="closeEditModal($event)"></app-edit-room>-->
+<!--      </div>-->
+
+<!--    </div>-->
+<!--    <div class="modal-footer">-->
+<!--    </div>-->
+<!--  </clr-modal>-->
+
+<!--  <clr-modal [(clrModalOpen)]="createRoomModal">-->
+<!--    <h3 class="modal-title">Add new room to factory</h3>-->
+<!--    <div class="modal-body">-->
+<!--      <p>Create new categories to the Industry Fusion ecosystem for a standardized semantic description of assets.</p>-->
+
+<!--      <app-create-room [company]="(company$ | async)" [location]="(location$ | async)" (modalOpened)="closeCreateModal($event)"></app-create-room>-->
+
+<!--    </div>-->
+<!--    <div class="modal-footer">-->
+<!--    </div>-->
+<!--  </clr-modal>-->
+
+
+<!--</div>-->

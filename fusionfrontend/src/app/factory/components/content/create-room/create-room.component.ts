@@ -13,11 +13,11 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Room } from 'src/app/store/room/room.model';
-// import { RoomService } from 'src/app/store/room/room.service';
 import { Location } from 'src/app/store/location/location.model';
-import { Company } from 'src/app/store/company/company.model';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-create-room',
@@ -25,32 +25,29 @@ import { Company } from 'src/app/store/company/company.model';
   styleUrls: ['./create-room.component.scss']
 })
 export class CreateRoomComponent implements OnInit {
-  @Input()
+
+  roomForm: FormGroup;
+  room: Room;
+  rooms: Room[];
   location: Location;
-  @Input()
-  company: Company;
 
-  newRoomName: string;
-  newRoomDescription: string;
-  private room: Room = new Room();
-  @Output()
-  modalOpened = new EventEmitter<Room>();
-
-  constructor() { }
+  constructor(
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig) {
+  }
 
   ngOnInit() {
+    this.roomForm = this.config.data.roomForm;
+    this.rooms = this.config.data.rooms;
+    this.location = this.config.data.location;
+    this.room = this.config.data.room ? this.config.data.room : new Room();
   }
 
-  createRoom() {
-    this.room.name = this.newRoomName;
-    this.room.description = this.newRoomDescription;
-    this.room.locationId = this.location.id;
-    this.modalOpened.emit(this.room);
-    this.newRoomName = null;
-    this.newRoomDescription = null;
+  onCancel() {
+    this.ref.close();
   }
 
-  cancel() {
-    this.modalOpened.emit(null);
+  onSubmit() {
+    this.ref.close();
   }
 }

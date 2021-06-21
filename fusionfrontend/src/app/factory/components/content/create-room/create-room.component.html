@@ -13,20 +13,33 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<form clrForm clrLayout="vertical">
-  <clr-input-container>
-    <label>Room name</label>
-    <input clrInput type="text" [(ngModel)]="newRoomName" name="newRoomName" required/>
-    <clr-control-error>You must enter a room name.</clr-control-error>
-  </clr-input-container>
-  <clr-input-container>
-    <label>Room description</label>
-    <input clrInput type="text" [(ngModel)]="newRoomDescription" name="newRoomDescription" required/>
-    <clr-control-error>You must enter a room description.</clr-control-error>
-  </clr-input-container>
-  <div class="footer">
-    <button class="btn black industry-button" type="button" (click)="createRoom()">Submit</button>
-    <button class="btn white industry-button" type="button" (click)="cancel()">Cancel</button>
+<div>
+  <span class="context-info">Create a new room to the IndustryFusion facotrymanager for a better overview</span>
+
+  <div>
+    <form [formGroup]="roomForm">
+      <div class="p-grid asset-info">
+        <div class="p-col-6 p-grid p-flex-column">
+          <h4 class="asset-name p-col">{{roomForm.get('name').value}}</h4>
+          <span class="text-styling p-col">{{roomForm.get('description').value}}</span>
+        </div>
+      </div>
+      <div class="input-div">
+        <label class="if-label">Room name</label>
+        <input type="text" pInputText class="room-dialog-inputs" formControlName="name" placeholder="Enter a custom name here">
+      </div>
+      <div class="input-div">
+        <label class="if-label">Room description</label>
+        <textarea pInputTextarea class="room-dialog-textarea" formControlName="description"></textarea>
+        <label class="textarea-character-count if-label">{{ roomForm.get('description').value?.length }}/300</label>
+      </div>
+      <div class="room-dialog-footer">
+        <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
+        <button type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
+              || roomForm.controls['description'].invalid">Next</button>
+      </div>
+    </form>
   </div>
-</form>
+</div>
+
 

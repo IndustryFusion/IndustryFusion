@@ -59,6 +59,8 @@ import { AssetInstantiationLocationAssignmentModalComponent } from './components
 import { AssetInstantiationRoomAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-room-assignment-modal/asset-instantiation-room-assignment-modal.component';
 import { LocationDialogComponent } from './components/content/location-dialog/location-dialog.component';
 import { IFCommon } from '../common/i-f-common.module';
+import { TableModule } from 'primeng/table';
+import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +101,7 @@ import { IFCommon } from '../common/i-f-common.module';
     AssetInstantiationLocationAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
     LocationDialogComponent,
+    RoomsListComponent,
   ],
     imports: [
         IFCommon,
@@ -109,6 +112,7 @@ import { IFCommon } from '../common/i-f-common.module';
         FormsModule,
         FontAwesomeModule,
         ReactiveFormsModule,
+        TableModule,
     ],
   exports: [
     FactorySubHeaderComponent,
