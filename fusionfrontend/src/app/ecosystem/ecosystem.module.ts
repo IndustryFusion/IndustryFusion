@@ -165,10 +165,11 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     MenuModule,
     ButtonModule
   ],
-  exports: [
-    EcosystemSubHeaderComponent,
-    EcosystemPageTitleComponent,
-  ],
+    exports: [
+        EcosystemSubHeaderComponent,
+        EcosystemPageTitleComponent,
+        AccuracyFormatPipe,
+    ],
   providers: [
     DialogService
   ]

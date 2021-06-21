@@ -6,6 +6,7 @@ import { FieldSource } from '../../../../../store/field-source/field-source.mode
 import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
 import { FieldSourceService } from '../../../../../store/field-source/field-source.service';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../store/field/field-query.service';
 
 @Component({
   selector: 'app-asset-series-create-metrics',
@@ -24,6 +25,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
   private fieldSources: FieldSource[];
 
   constructor(private fieldSourceQuery: FieldSourceQuery,
+              private fieldQuery: FieldQuery,
               private fieldSourceService: FieldSourceService,
               private formBuilder: FormBuilder) {
     this.$loading = this.fieldSourceQuery.selectLoading();
@@ -34,6 +36,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
       id: [],
       sourceUnitName: [],
       sourceSensorLabel: [],
+      accuracy: [],
       name: [],
       register: ['', [Validators.required, Validators.max(255)]],
       saved: [true, Validators.requiredTrue],
@@ -43,6 +46,10 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
     group.get('sourceSensorLabel').patchValue(fieldSource.sourceSensorLabel);
     group.get('name').patchValue(fieldSource.name);
     group.get('register').patchValue(fieldSource.register);
+
+    const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+    group.get('accuracy').patchValue(field?.accuracy);
+
     return group;
   }
 
@@ -52,6 +59,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
         this.fillTable(value);
       }
       this.fieldSources = value;
+      console.log(value);
     });
     this.fieldSourceService.getFieldSourcesOfAssetSeries(this.assetSeries.companyId, this.assetSeries.id).subscribe();
   }

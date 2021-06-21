@@ -25,7 +25,7 @@ under the License.
           <span class="if-label if-label-header p-col-1">Accuracy</span>
           <span class="if-label if-label-header p-col"></span>
         </div>
-        <div *ngFor="let fieldSource of fieldSourcesFormArray.controls;" class="p-grid attribute-row">
+        <div *ngFor="let fieldSource of fieldSourcesFormArray?.controls;" class="p-grid attribute-row">
           <ng-container [formGroup]="fieldSource">
             <span class="p-col-2 "><label controlName="name"></label></span>
             <span class="p-col-2 "><label controlName="sourceSensorLabel"></label></span>
@@ -34,7 +34,9 @@ under the License.
               <label *ngIf="!isEditMode(fieldSource)"  controlName="register"></label>
           </span>
             <span class="p-col-1"><label controlName="sourceUnitName"></label></span>
-            <span class="p-col-1"><label controlName="sourceUnitName"></label></span>
+            <span class="p-col-1">
+              <label >{{fieldSource.get('accuracy').value | accuracyformat}}</label>
+            </span>
             <span class="p-col">
             <div class="edit-col">
               <app-confirm-button *ngIf="isEditMode(fieldSource)"

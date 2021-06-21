@@ -24,6 +24,7 @@ import { AssetSeriesComposedQuery } from '../../../../store/composed/asset-serie
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FieldSourceResolver } from '../../../../resolvers/field-source.resolver';
 import { FieldTargetService } from '../../../../store/field-target/field-target.service';
+import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 
 @Component({
   selector: 'app-asset-type-template-create',
@@ -39,6 +40,7 @@ export class AssetSeriesCreateComponent implements OnInit {
               private dynamicDialogRef: DynamicDialogRef,
               private fieldSourceResolver: FieldSourceResolver,
               private fieldTargetService: FieldTargetService,
+              private fieldsResolver: FieldsResolver
   ) {
     this.route = dialogConfig.data.route;
     this.companyId = this.route.parent.snapshot.paramMap.get('companyId');
@@ -123,5 +125,6 @@ export class AssetSeriesCreateComponent implements OnInit {
     if (this.assetSeries?.assetTypeTemplateId) {
       this.fieldTargetService.getItemsByAssetTypeTemplate(this.assetSeries.assetTypeTemplateId).subscribe();
     }
+    this.fieldsResolver.resolve().subscribe();
   }
 }
