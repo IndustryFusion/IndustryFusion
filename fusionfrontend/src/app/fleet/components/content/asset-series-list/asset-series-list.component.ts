@@ -70,7 +70,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
     this.items$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetTypeTemplatesResolver.resolve().subscribe();

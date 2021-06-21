@@ -59,7 +59,6 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
         this.fillTable(value);
       }
       this.fieldSources = value;
-      console.log(value);
     });
     this.fieldSourceService.getFieldSourcesOfAssetSeries(this.assetSeries.companyId, this.assetSeries.id).subscribe();
   }

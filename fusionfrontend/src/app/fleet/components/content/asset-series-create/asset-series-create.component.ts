@@ -57,7 +57,6 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   ngOnInit() {
     const assetSeriesId = this.dialogConfig.data.assetSeriesId;
-    console.log('assetSeriesId', assetSeriesId);
     this.assetSeries$ = this.assetSeriesQuery.selectAssetSeries(assetSeriesId);
     this.assetSeriesService.getItem(this.companyId, assetSeriesId)
       .subscribe(assetSeries => this.assetSeries = assetSeries);
