@@ -3,34 +3,22 @@
 
 .if-label {
   text-align: left;
-  //font: normal normal normal 16px/20px Muli;
-  font-size: $regular-font-size;
-  line-height: $regular-line-height;
+  font-weight: bold;
+  font-variant: normal;
+  font-style: normal;
+  font-size: $medium-font-size;
+  line-height: $medium-line-height;
   letter-spacing: 0;
-  color: $regular-grey;
+  color: $highlighted !important;
   padding-top: 8px;
   padding-bottom: 8px;
   opacity: 1;
 }
 
-/** Use in addition to if-label **/
-
-.if-label-medium {
-  font-weight: 600;
-  font-size: $medium-font-size;
-  line-height: $bigger-line-height;
-  color: $highlighted !important;
-}
-
-.if-label-bold {
-  font-weight: bold;
-  font-size: $bigger-font-size;
-  line-height: $bigger-line-height;
-  color: $highlighted !important;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.if-label-header {
+.if-label-small-header {
+  @extend .if-label;
+  font-weight: normal;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
   color: #C1C1C1 !important;
 }
