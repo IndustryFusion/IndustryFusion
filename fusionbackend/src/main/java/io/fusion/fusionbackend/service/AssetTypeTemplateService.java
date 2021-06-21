@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -63,20 +65,48 @@ public class AssetTypeTemplateService {
     public AssetTypeTemplate createAssetTypeTemplate(final Long assetTypeId,
                                                      final AssetTypeTemplate assetTypeTemplate) {
         final AssetType assetType = assetTypeService.getAssetType(assetTypeId);
+        if (assetType != null && existsDraftToAssetType(assetType)) {
+            String exception = "It is forbidden to create a new asset type template draft if another one exists.";
+            throw new RuntimeException(exception);
+        }
 
         assetTypeTemplate.setAssetType(assetType);
 
         return assetTypeTemplateRepository.save(assetTypeTemplate);
     }
 
+    private boolean existsDraftToAssetType(AssetType assetType) {
+        final Iterable<AssetTypeTemplate> assetTypeTemplatesOfAssetType = this.assetTypeTemplateRepository
+                .findAllByAssetType(assetType);
+
+        for (AssetTypeTemplate assetTypeTemplate : assetTypeTemplatesOfAssetType) {
+            if (!assetTypeTemplate.getPublished()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public AssetTypeTemplate updateAssetTypeTemplate(final Long assetTypeTemplateId,
                                                      final AssetTypeTemplate sourceAssetTypeTemplate) {
-        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,
-                false);
+        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,false);
 
         targetAssetTypeTemplate.copyFrom(sourceAssetTypeTemplate);
 
         return targetAssetTypeTemplate;
+    }
+
+    public Long getNextPublishVersion(final Long assetTypeId) {
+        final List<AssetTypeTemplate> assetTypeTemplates = this.assetTypeTemplateRepository
+                .findAllByAssetTypeId(assetTypeId);
+        final Optional<Long> maxPublishedVersion = assetTypeTemplates.stream()
+                .filter(assetTypeTemplate -> assetTypeTemplate.getPublished()
+                    && assetTypeId.equals(assetTypeTemplate.getAssetType().getId()))
+                .map(AssetTypeTemplate::getPublishedVersion)
+                .max(Long::compare);
+
+        return maxPublishedVersion.isEmpty() ? 1 : maxPublishedVersion.get() + 1;
     }
 
     public void deleteAssetTypeTemplate(final Long assetTypeTemplateId) {

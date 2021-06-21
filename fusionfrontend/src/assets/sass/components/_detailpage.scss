@@ -11,32 +11,49 @@
   background: $grey-background;
   padding: 0.57% 7.71%;
 
+  .row {
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-wrap:wrap;
+    flex-wrap:wrap;
+  }
+
   .if-detail-page-div  {
+
+    margin-top: 10px;
+    width: 100%;
 
     h3 {
       font-size: $big-font-size;
       font-weight: bolder;
-
+      margin: 0 0;
     }
 
     .if-detail-page-label {
-      margin: 20px 0;
+      margin: 8px 0;
 
-      p {
-        color: $basic-grey;
-        font-size: $regular-font-size;
-        margin: 2px;
-      }
+      color: $basic-grey;
+      font-size: $regular-font-size;
+    }
+
+    .label-column {
+      width: 12%;
+      color: $basic-black;
+      font-size: $regular-font-size;
+      font-weight: bold;
+      margin: 8px 0;
     }
 
     .if-detail-page-description {
-      margin: 10px 0;
+      margin: 4px 0 0 -5px;
 
       textarea {
         color: $basic-grey;
         font-size: $regular-font-size;
         border: none;
         background: none;
+        overflow: hidden;
         resize: none;
         height: 80px;
       }

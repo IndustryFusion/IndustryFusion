@@ -17,13 +17,18 @@ import { ID } from '@datorama/akita';
 
 import { BaseEntity } from '../baseentity.model';
 import { AssetType } from '../asset-type/asset-type.model';
+import { FieldTarget } from '../field-target/field-target.model';
 
 export class AssetTypeTemplate extends BaseEntity {
+  version: bigint;
   name: string;
   description: string;
   imageKey: string;
   assetTypeId: ID;
   assetType: AssetType;
+  published: boolean;
+  publishedDate: Date;
+  publishedVersion: bigint;
   fieldTargetIds: Array<ID>;
-  fieldTargets: Array<any>;
+  fieldTargets: Array<FieldTarget>;
 }

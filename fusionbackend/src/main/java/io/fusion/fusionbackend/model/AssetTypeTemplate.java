@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +32,7 @@ import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -47,12 +49,13 @@ import java.util.Set;
                 @NamedSubgraph(name = "assetSeriesChildren", attributeNodes = {
                         @NamedAttributeNode("fieldSources")})})
 @Table(name = "asset_type_template")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 public class AssetTypeTemplate extends BaseAsset {
+
     @OneToMany(mappedBy = "assetTypeTemplate")
     @Builder.Default
     private Set<AssetSeries> assetSeries = new LinkedHashSet<>();
@@ -64,4 +67,24 @@ public class AssetTypeTemplate extends BaseAsset {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
     private AssetType assetType;
+
+    @Formula("published_date is not null")
+    private Boolean published;
+
+    private OffsetDateTime publishedDate;
+    private Long publishedVersion;
+
+    public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
+        super.copyFrom(sourceAssetTypeTemplate);
+
+        if (sourceAssetTypeTemplate.getPublished() != null) {
+            setPublished(sourceAssetTypeTemplate.getPublished());
+        }
+        if (sourceAssetTypeTemplate.getPublishedDate() != null) {
+            setPublishedDate(sourceAssetTypeTemplate.getPublishedDate());
+        }
+        if (sourceAssetTypeTemplate.getPublishedVersion() != null) {
+            setPublishedVersion(sourceAssetTypeTemplate.getPublishedVersion());
+        }
+    }
 }

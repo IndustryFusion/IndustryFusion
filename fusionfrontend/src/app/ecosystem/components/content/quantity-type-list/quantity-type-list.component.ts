@@ -20,10 +20,11 @@ import { BaseListComponent } from '../base/base-list/base-list.component';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { QuantityTypeDialogComponent } from '../quantity-type-dialog/quantity-type-dialog.component';
+import { QuantityTypeDialogContentComponent } from '../quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { QuantityDataType } from '../../../../store/field/field.model';
+import { QuantityDataType } from '../../../../store/field-details/field-details.model';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-quantity-type-list',
@@ -82,10 +83,10 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
   showCreateDialog() {
     this.createQuantityTypeForm(this.formBuilder);
 
-    const ref = this.dialogService.open(QuantityTypeDialogComponent, {
+    const ref = this.dialogService.open(QuantityTypeDialogContentComponent, {
       data: {
         quantityTypeForm: this.quantityTypeForm,
-        isEditing: false
+        type: DialogType.CREATE
       },
       header: `Create new Quantity Type`,
     });

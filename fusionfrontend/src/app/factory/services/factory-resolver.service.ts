@@ -25,9 +25,9 @@ import { Company } from 'src/app/store/company/company.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { CompanyService } from 'src/app/store/company/company.service';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
-import { Field } from 'src/app/store/field/field.model';
-import { FieldQuery } from 'src/app/store/field/field.query';
-import { FieldService } from 'src/app/store/field/field.service';
+import { FieldDetails } from 'src/app/store/field-details/field-details.model';
+import { FieldDetailsQuery } from 'src/app/store/field-details/field-details-query.service';
+import { FieldDetailsService } from 'src/app/store/field-details/field-details.service';
 import { Location } from 'src/app/store/location/location.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { LocationService } from 'src/app/store/location/location.service';
@@ -57,7 +57,7 @@ export class FactoryResolver {
   public assetsWithFields$: Observable<AssetWithFields[]>;
   public asset$: Observable<Asset>;
   public assetWithFields$: Observable<AssetWithFields>;
-  public fields$: Observable<Field[]>;
+  public fields$: Observable<FieldDetails[]>;
   public factorySubTitle$: Subject<string>;
   public companies$: Observable<Company[]>;
 
@@ -73,8 +73,8 @@ export class FactoryResolver {
     private assetQuery: AssetQuery,
     private assetDetailsService: AssetDetailsService,
     private assetDetailsQuery: AssetDetailsQuery,
-    private fieldService: FieldService,
-    private fieldQuery: FieldQuery,
+    private fieldService: FieldDetailsService,
+    private fieldQuery: FieldDetailsQuery,
     private factoryComposedQuery: FactoryComposedQuery) {
 
     this.company$ = this.companyQuery.selectActive();

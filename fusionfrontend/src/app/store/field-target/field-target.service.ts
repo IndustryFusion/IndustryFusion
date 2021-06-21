@@ -14,7 +14,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -33,6 +33,14 @@ export class FieldTargetService {
 
   }
 
+  getItemsByAssetTypeTemplate(assetTypeTemplateId: ID): Observable<FieldTarget[]> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets`;
+    return this.http.get<FieldTarget[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+      .pipe(tap(entities => {
+        this.fieldTargetStore.upsertMany(entities);
+      }));
+  }
+
   createItem(assetTypeTemplateId: ID, fieldTarget: FieldTarget): Observable<FieldTarget> {
     const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets`;
     return this.http.post<FieldTarget>(`${environment.apiUrlPrefix}/${path}`, fieldTarget,
@@ -43,5 +51,27 @@ export class FieldTargetService {
           }
         })
       );
+  }
+
+  editItem(assetTypeTemplateId: ID, fieldTarget: FieldTarget): Observable<FieldTarget> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets/${fieldTarget.id}`;
+    return this.http.patch<FieldTarget>(`${environment.apiUrlPrefix}/${path}`, fieldTarget, this.httpOptions)
+      .pipe(
+        tap(entity => {
+          this.fieldTargetStore.upsert(entity.id, entity);
+        }));
+  }
+
+  deleteItem(assetTypeTemplateId: ID, fieldTargetId: ID): Observable<any> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/fieldtargets/${fieldTargetId}`;
+    return this.http.delete(`${environment.apiUrlPrefix}/${path}`)
+      .pipe(tap({
+        complete: () => {
+          this.fieldTargetStore.remove(fieldTargetId);
+        },
+        error: (error) => {
+          this.fieldTargetStore.setError(error);
+        }
+      }));
   }
 }

@@ -13,18 +13,34 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+
 <section class="if-detail-page-section">
   <div class="if-detail-page-div">
-    <h3>
-      {{ (quantityType$ | async)?.name }}
-    </h3>
-    <div class="if-detail-page-label">
-      <p>{{ (quantityType$ | async)?.label }}</p>
+    <div class="row clr-justify-content-between clr-align-items-center">
+      <h3> {{ (quantityType$ | async)?.name }} </h3>
+      <app-edit-details-button [item]="quantityType$ | async" appQuantityTypeEditDialog></app-edit-details-button>
     </div>
-    <div class="if-detail-page-description">
-      <textarea [disabled]="true">{{ (quantityType$ | async)?.description  }}</textarea>
+
+    <div class="row">
+      <label class="label-column"> Label </label>
+      <label class="if-detail-page-label"> {{ (quantityType$ | async)?.label }} </label>
+    </div>
+
+    <div class="row">
+      <label class="label-column"> Description </label>
+      <div class="if-detail-page-description">
+        <textarea [disabled]="true"> {{ (quantityType$ | async)?.description  }} </textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="label-column"> Base Unit </label>
+      <label class="if-detail-page-label "> {{ (quantityType$ | async)?.baseUnit?.name  }} </label>
     </div>
   </div>
 </section>
 
-<app-unit-list [optionalItems$]="units$"></app-unit-list>
+
+<div class="wrapper">
+  <app-unit-list [optionalItems$]="units$"></app-unit-list>
+</div>

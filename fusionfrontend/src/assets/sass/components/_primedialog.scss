@@ -45,6 +45,13 @@
   padding-top: 4.3%;
   padding-left: 8.1%;
   padding-right: 8.1%;
+
+  .dialog-grid {
+    display: inline-flex;
+  }
+  .dialog-grid-col {
+    padding-left: 35px;
+  }
 }
 
 .p-dialog {

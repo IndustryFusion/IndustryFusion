@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Field } from '../../../../../store/field/field.model';
+import { FieldDetails } from '../../../../../store/field-details/field-details.model';
 import { Observable, Subject, timer } from 'rxjs';
 import { PointWithId } from '../../../../../services/oisp.model';
 import { Asset } from '../../../../../store/asset/asset.model';
@@ -31,7 +31,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
-  field: Field;
+  field: FieldDetails;
 
   @Input()
   asset: Asset;

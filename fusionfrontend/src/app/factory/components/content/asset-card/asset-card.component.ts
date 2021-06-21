@@ -23,7 +23,7 @@ import { OispService } from 'src/app/services/oisp.service';
 import { StatusService } from 'src/app/services/status.service';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { Field } from 'src/app/store/field/field.model';
+import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 
 @Component({
@@ -39,7 +39,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   asset: AssetWithFields;
 
   latestPoints$: Observable<PointWithId[]>;
-  mergedFields$: Observable<Field[]>;
+  mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
   progress$: Observable<number>;
   progressColor$: Observable<string>;

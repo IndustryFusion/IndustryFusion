@@ -24,7 +24,8 @@ export class EditButtonComponent implements OnInit {
 
   @Output() editItem = new EventEmitter<void>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

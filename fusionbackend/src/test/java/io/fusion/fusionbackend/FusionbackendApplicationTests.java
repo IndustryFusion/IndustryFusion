@@ -15,30 +15,14 @@
 
 package io.fusion.fusionbackend;
 
-import io.fusion.fusionbackend.dto.AssetDto;
-import io.fusion.fusionbackend.dto.AssetSeriesDto;
-import io.fusion.fusionbackend.dto.AssetTypeDto;
-import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
-import io.fusion.fusionbackend.dto.BaseAssetDto;
-import io.fusion.fusionbackend.dto.CompanyDto;
-import io.fusion.fusionbackend.dto.FieldDto;
-import io.fusion.fusionbackend.dto.FieldTargetDto;
-import io.fusion.fusionbackend.dto.LocationDto;
-import io.fusion.fusionbackend.dto.QuantityTypeDto;
-import io.fusion.fusionbackend.dto.RoomDto;
-import io.fusion.fusionbackend.dto.UnitDto;
+import io.fusion.fusionbackend.dto.*;
 import io.fusion.fusionbackend.model.enums.CompanyType;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.LocationType;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.RepetitionInfo;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -394,49 +378,42 @@ class FusionbackendApplicationTests {
     void createPressureUnits() {
         UnitDto unitDto = UnitDto.builder()
                 .name("Pascal")
-                .description("Pascal unit")
                 .symbol("pa")
                 .build();
         unitIdPa = createAndTestUnit(quantityTypePressureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Pounds per square inch")
-                .description("PSI unit")
                 .symbol("psi")
                 .build();
         unitIdPsi = createAndTestUnit(quantityTypePressureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Meter")
-                .description("Meter unit")
                 .symbol("m")
                 .build();
         unitIdMeter = createAndTestUnit(quantityTypeMassId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Inch")
-                .description("Inch unit")
                 .symbol("in")
                 .build();
         unitIdInch = createAndTestUnit(quantityTypeMassId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Count")
-                .description("Count unit")
                 .symbol("")
                 .build();
         unitIdCount = createAndTestUnit(quantityTypeCountId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Celcius")
-                .description("Celcius unit")
                 .symbol("")
                 .build();
         unitIdCelcius = createAndTestUnit(quantityTypeTemperatureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Fahrenheit")
-                .description("Fahrenheit unit")
                 .symbol("")
                 .build();
         unitIdFahrenheit = createAndTestUnit(quantityTypeTemperatureId, unitDto);
@@ -590,6 +567,8 @@ class FusionbackendApplicationTests {
                 .name("Gas Supply")
                 .description("ATT Gas Supply")
                 .imageKey("genericgasimagekey")
+                .publishedDate(OffsetDateTime.now())
+                .published(true)
                 .build();
 
         assetTypeTemplateGasSupplyId = createAndTestAssetTypeTemplate(assetTypeGasSupplyId, assetTypeTemplate);
@@ -602,21 +581,38 @@ class FusionbackendApplicationTests {
                 .name("Laser Cutter")
                 .description("ATT Laser Cutter")
                 .imageKey("genericcutterimagekey")
+                .publishedDate(OffsetDateTime.now())
+                .published(true)
                 .build();
 
         assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(9)
     @Order(502)
     void createAssetTypeTemplateMultiple(final RepetitionInfo repetitionInfo) {
         AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
                 .name("Laser Cutter " + repetitionInfo.getCurrentRepetition())
                 .description("ATT Laser Cutter" + repetitionInfo.getCurrentRepetition())
                 .imageKey("genericcutterimagekey" + repetitionInfo.getCurrentRepetition())
+                .publishedDate(OffsetDateTime.now())
+                .published(true)
                 .build();
 
         createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
+    }
+
+    @Test
+    @Order(503)
+    void createAssetTypeTemplateDrafts_shouldFail() {
+        AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
+                .name("Laser Cutter")
+                .description("ATT Laser Cutter")
+                .imageKey("genericcutterimagekey")
+                .build();
+
+        assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
+        createAndTestAssetTypeTemplateExpectError(assetTypeLaserCutterId, assetTypeTemplate);
     }
 
     @Test
@@ -1080,8 +1076,25 @@ class FusionbackendApplicationTests {
                 .body("baseUnitId", equalTo(baseUnitId));
     }
 
+    private void createAndTestAssetTypeTemplateExpectError(final Integer assetTypeId,
+                                                   final AssetTypeTemplateDto assetTypeTemplate) {
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(assetTypeTemplate)
+            .header("Authorization", "Bearer " + accessTokenEcoMan)
+
+            .when()
+            .queryParam("assetTypeId", assetTypeId)
+            .post(baseUrl + "/assettypetemplates")
+
+            .then()
+            .statusCode(500);
+    }
+
     private Integer createAndTestAssetTypeTemplate(final Integer assetTypeId,
                                                    final AssetTypeTemplateDto assetTypeTemplate) {
+
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(assetTypeTemplate)

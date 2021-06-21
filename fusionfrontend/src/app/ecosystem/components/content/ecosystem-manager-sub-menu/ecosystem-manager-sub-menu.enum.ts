@@ -16,7 +16,7 @@
 export enum EcosystemManagerSubMenu {
   ASSET_TYPES = 'assettypes',
   ASSET_TYPE_TEMPLATE = 'assettypetemplate',
-  METRICS = 'metrics',
+  FIELDS = 'fields',
   QUANTITY_TYPES = 'quantitytypes',
   UNITS = 'units',
 }

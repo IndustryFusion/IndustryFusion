@@ -17,25 +17,11 @@ import { BaseEntity } from '../baseentity.model';
 import { ID } from '@datorama/akita';
 
 export class Field extends BaseEntity {
-  assetId: ID;
-  externalId: string;
-  fieldType: FieldType;
-  mandatory: boolean;
   name: string;
   description: string;
-  type: string;
-  unit: string;
+  label: string;
   accuracy: number;
   value: string;
-  quantityDataType: QuantityDataType;
-}
-
-export enum FieldType {
-  ATTRIBUTE = 'ATTRIBUTE',
-  METRIC = 'METRIC'
-}
-
-export enum QuantityDataType {
-  CATEGORICAL = 'CATEGORICAL',
-  NUMERIC = 'NUMERIC'
+  unitId: ID;
+  unit: any;
 }

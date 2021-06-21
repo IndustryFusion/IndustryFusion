@@ -19,7 +19,7 @@ import { combineLatest, Observable, Subject, zip } from 'rxjs';
 import { OispService } from 'src/app/services/oisp.service';
 import { PointWithId } from 'src/app/services/oisp.model';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
-import { Field, QuantityDataType, FieldType } from 'src/app/store/field/field.model';
+import { FieldDetails, QuantityDataType, FieldType } from 'src/app/store/field-details/field-details.model';
 import { ActivatedRoute } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
   asset$: Observable<AssetWithFields>;
   assetId: ID;
   latestPoints$: Observable<PointWithId[]>;
-  mergedFields$: Observable<Field[]>;
+  mergedFields$: Observable<FieldDetails[]>;
   hoursTillValue$: Observable<number>;
   maintenanceIntervalValue$: Observable<number>;
   timeSlotOptions = 'current';
@@ -174,15 +174,15 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
     console.log(event.target.value);
   }
 
-  hasTypeCategorical(field: Field): boolean {
+  hasTypeCategorical(field: FieldDetails): boolean {
     return field.quantityDataType === QuantityDataType.CATEGORICAL;
   }
 
-  hasTypeNumeric(field: Field): boolean {
+  hasTypeNumeric(field: FieldDetails): boolean {
     return field.quantityDataType === QuantityDataType.NUMERIC;
   }
 
-  isNotAttribute(field: Field) {
+  isNotAttribute(field: FieldDetails) {
     return (field.type !== FieldType.ATTRIBUTE);
   }
 

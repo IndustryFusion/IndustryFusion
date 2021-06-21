@@ -16,8 +16,11 @@
   background: $white-background;
   border: none;
   border-radius: 44px;
+  border: none;
   opacity: 1;
   cursor: pointer;
+
+  box-shadow: 0 3px 6px #00000029;
 
   &:not(:last-child) {
     margin-right: 16px;
@@ -73,6 +76,46 @@
   cursor: pointer;
 }
 
+.if-button-edit {
+  color: $basic-white;
+  font-style: normal;
+  font-weight: bold;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+  text-align: left;
+  letter-spacing: 0;
+
+  background: $basic-black 0 0 no-repeat padding-box;
+  border-radius: 10px;
+  border: none !important;
+  opacity: 1;
+
+  width: 120px;
+  cursor: pointer;
+  padding: 8px 32px 8px 32px;
+
+  clr-icon {
+    height: $regular-line-height;
+    width: $regular-line-height;
+    color: $basic-white;
+    margin-top: -4px;
+  }
+
+  &:hover {
+    background: $hover-grey;
+  }
+}
+
+.if-button-publish {
+  @extend .if-button-edit;
+  padding: 8px 16px 8px 19px !important;
+}
+
+.if-button-update {
+  @extend .if-button-edit;
+  padding: 8px 16px 8px 19px !important;
+}
+
 .close-modal-btn {
   border: none;
   float: right;
@@ -80,4 +123,8 @@
   font-size: 15px;
   color: black;
   cursor:pointer;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
 }

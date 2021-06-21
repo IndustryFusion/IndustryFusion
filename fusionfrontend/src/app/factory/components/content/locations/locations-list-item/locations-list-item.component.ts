@@ -4,6 +4,7 @@ import { Location } from 'src/app/store/location/location.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LocationDialogComponent } from '../../location-dialog/location-dialog.component';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-locations-list-item',
@@ -36,7 +37,7 @@ export class LocationsListItemComponent implements OnInit, OnDestroy {
     const ref = this.dialogService.open(LocationDialogComponent, {
       data: {
         locationForm: this.locationForm,
-        editMode: true
+        type: DialogType.EDIT
       },
       header: `Update Location ${this.locationForm.get('name').value}`,
       width: '70%',

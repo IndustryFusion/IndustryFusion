@@ -1,8 +1,12 @@
+@import 'base/typography';
+@import 'abstract/variables';
+
 .dropdown-filter .p-dropdown {
   width: 100%;
   background-color: $basic-white !important;
   border: 2px solid $basic-white;
   border-radius: 8px;
+  box-shadow: none !important;
 
   .p-dropdown-label {
     font-weight: bold !important;
@@ -19,11 +23,33 @@
   }
 
   &:hover {
-    border: 2px solid #95989A;
-    box-shadow: none !important;
+    border: 2px solid $basic-grey !important;
   }
+
   &:focus {
     border: 2px solid $highlighted;
     box-shadow: none !important;
+  }
+}
+
+.p-dialog .p-dropdown {
+  border-radius: 10px !important;
+  align-items: center;
+  min-width: 100%;
+  border: 2px solid $basic-white;
+
+  .p-dropdown-label {
+    border: none;
+  }
+
+  &:hover {
+    border: 2px solid $basic-grey;
+    box-shadow: none !important;
+  }
+  &:focus {
+    border: 2px solid $highlighted !important;
+  }
+  &.p-focus {
+    border: 2px solid $highlighted !important;
   }
 }

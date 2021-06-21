@@ -43,12 +43,17 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
       }));
   }
 
-  getItem(templateId: ID): Observable<AssetTypeTemplate> {
-    const path = `assettypetemplates/${templateId}`;
+  getItem(templateId: ID, embedChildren: boolean = false): Observable<AssetTypeTemplate> {
+    const path = `assettypetemplates/${templateId}?embedChildren=${embedChildren}`;
     return this.http.get<AssetTypeTemplate>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assettypeTemplateStore.upsert(templateId, entity);
       }));
+  }
+
+  getNextPublishVersion(assetTypeId: ID): Observable<bigint> {
+    const path = `/assettypetemplates/nextVersion/${assetTypeId}`;
+    return this.http.get<bigint>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
   createItem(template: AssetTypeTemplate): Observable<AssetTypeTemplate> {

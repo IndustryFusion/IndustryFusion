@@ -13,12 +13,17 @@
  * under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { UnitService } from '../../../../store/unit/unit.service';
 import { Unit } from '../../../../store/unit/unit.model';
+import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
+import { FormBuilder } from '@angular/forms';
+import { DialogService } from 'primeng/dynamicdialog';
+import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
+import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-unit-list-item',
@@ -30,7 +35,9 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
   @Input()
   item: Unit;
 
-  constructor(public route: ActivatedRoute, public router: Router, public unitService: UnitService) {
+  constructor(public route: ActivatedRoute, public router: Router, public unitService: UnitService,
+              public quantityTypeService: QuantityTypeService, public dialogService: DialogService,
+              public formBuilder: FormBuilder) {
     super(route, router, unitService);
   }
 
@@ -39,6 +46,26 @@ export class UnitListItemComponent extends BaseListItemComponent implements OnIn
 
   deleteItem() {
     this.unitService.deleteUnit(this.item.quantityTypeId, this.item.id).subscribe();
+  }
+
+  editItem(): void {
+    const dialogRef = this.dialogService.open(UnitDialogComponent, {
+      header: 'Edit Unit', width: '50%',
+      data: { unit: this.item, type: DialogType.EDIT }
+    });
+    dialogRef.onClose.subscribe((unit) => {
+      this.updateUnitIfPresent(unit);
+    });
+  }
+
+  updateUnitIfPresent(unit: Unit): void {
+    if (unit) {
+      const patchedUnit = { ...this.item, ...unit };
+      this.quantityTypeService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
+        patchedUnit.quantityType = quantityType;
+        this.unitService.editUnit(this.item.quantityType.id, this.item.id, patchedUnit).subscribe();
+      });
+    }
   }
 
 }
