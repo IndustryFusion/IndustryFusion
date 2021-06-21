@@ -36,7 +36,8 @@ import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
-import { LabelControlDirective } from './components/content/asset-series-create/asset-series-create-attributes/label-control.directive';
+import { LabelControlDirective } from './components/content/label-control/label-control.directive';
+import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { LabelControlDirective } from './components/content/asset-series-create/
     AssetSeriesCreateAttributesComponent,
     AssetSeriePageComponent,
     LabelControlDirective,
+    AssetSeriesCreateMetricsComponent,
   ],
   imports: [
     IFCommon,

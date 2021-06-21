@@ -15,25 +15,27 @@ under the License.
 <div class="asset-series-create-attributes">
   <div class="content">
     <div id="column left">
-      <div class="title">Attributes</div>
+      <div class="title">Metrics</div>
       <div id="data">
-        <div class="header-row p-grid">
-          <span class="if-label if-label-header p-col-3">Custom Attribute name</span>
-          <span class="if-label if-label-header p-col-3">Attribute name</span>
-          <span class="if-label if-label-header p-col">Value</span>
+        <div class="p-grid header-row">
+          <span class="if-label if-label-header p-col-2">Custom Metric name</span>
+          <span class="if-label if-label-header p-col-2">Metric name</span>
+          <span class="if-label if-label-header p-col">Data source</span>
           <span class="if-label if-label-header p-col-1">Unit</span>
+          <span class="if-label if-label-header p-col-1">Accuracy</span>
           <span class="if-label if-label-header p-col"></span>
         </div>
         <div *ngFor="let fieldSource of fieldSourcesFormArray.controls;" class="p-grid attribute-row">
           <ng-container [formGroup]="fieldSource">
-          <span class="p-col-3 "><label controlName="name"></label></span>
-          <span class="p-col-3 "><label controlName="sourceSensorLabel"></label></span>
-          <span class="p-col">
-              <input *ngIf="isEditMode(fieldSource)" class="value-input" placeholder="Value" formControlName="value">
-              <label *ngIf="!isEditMode(fieldSource)"  controlName="value"></label>
+            <span class="p-col-2 "><label controlName="name"></label></span>
+            <span class="p-col-2 "><label controlName="sourceSensorLabel"></label></span>
+            <span class="p-col">
+              <input *ngIf="isEditMode(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
+              <label *ngIf="!isEditMode(fieldSource)"  controlName="register"></label>
           </span>
-          <span class="p-col-1"><label controlName="sourceUnitName"></label></span>
-          <span class="p-col">
+            <span class="p-col-1"><label controlName="sourceUnitName"></label></span>
+            <span class="p-col-1"><label controlName="sourceUnitName"></label></span>
+            <span class="p-col">
             <div class="edit-col">
               <app-confirm-button *ngIf="isEditMode(fieldSource)"
                                   (confirmItem)="saveValue(fieldSource)">
@@ -41,8 +43,6 @@ under the License.
               <app-edit-button *ngIf="!isEditMode(fieldSource)" class="edit-button"
                                (editItem)="fieldSource.get('saved').patchValue(false)">
               </app-edit-button>
-              <app-trash-button (deleteItem)="removeValue(fieldSource)"
-                                [disabled]="!isEditMode(fieldSource)"></app-trash-button>
             </div>
           </span>
           </ng-container>

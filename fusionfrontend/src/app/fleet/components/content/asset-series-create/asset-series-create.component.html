@@ -28,6 +28,8 @@ under the License.
   </app-asset-series-create-connectivity-settings>
   <app-asset-series-create-attributes *ngIf="step === 3" [assetSeries]="assetSeries" [assetSeries$]="assetSeries$">
   </app-asset-series-create-attributes>
+  <app-asset-series-create-metrics *ngIf="step === 4" [assetSeries]="assetSeries" [assetSeries$]="assetSeries$">
+  </app-asset-series-create-metrics>
   <div class="footer">
     <div *ngIf="step != 1">
       <button type="button" class="if-button button-secondary" (click)="back()">Back</button>

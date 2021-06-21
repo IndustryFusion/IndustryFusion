@@ -49,7 +49,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   assetType: ID;
   companyId: ID;
   error: any;
-  toalSteps = 3;
+  toalSteps = 4;
   assetSeries$: Observable<AssetSeries>;
   assetSeries: AssetSeries = new AssetSeries();
 

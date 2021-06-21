@@ -1,18 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { FieldSourceService } from '../../../../../store/field-source/field-source.service';
-import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
+import { Observable } from 'rxjs';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FieldSource } from '../../../../../store/field-source/field-source.model';
+import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
+import { FieldSourceService } from '../../../../../store/field-source/field-source.service';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
 
 @Component({
-  selector: 'app-asset-series-create-attributes',
-  templateUrl: './asset-series-create-attributes.component.html',
-  styleUrls: ['./asset-series-create-attributes.component.scss']
+  selector: 'app-asset-series-create-metrics',
+  templateUrl: './asset-series-create-metrics.component.html',
+  styleUrls: ['./asset-series-create-metrics.component.scss']
 })
-export class AssetSeriesCreateAttributesComponent implements OnInit {
+export class AssetSeriesCreateMetricsComponent implements OnInit {
 
   @Output() stepChange = new EventEmitter<number>();
   @Output() errorSignal = new EventEmitter<string>();
@@ -35,14 +35,14 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
       sourceUnitName: [],
       sourceSensorLabel: [],
       name: [],
-      value: ['', [Validators.required, Validators.max(255)]],
+      register: ['', [Validators.required, Validators.max(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);
     group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
     group.get('sourceSensorLabel').patchValue(fieldSource.sourceSensorLabel);
     group.get('name').patchValue(fieldSource.name);
-    group.get('value').patchValue(fieldSource.value);
+    group.get('register').patchValue(fieldSource.register);
     return group;
   }
 
@@ -56,22 +56,17 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
     this.fieldSourceService.getFieldSourcesOfAssetSeries(this.assetSeries.companyId, this.assetSeries.id).subscribe();
   }
 
-  removeValue(group: AbstractControl) {
-    group.get('value').setValue(null);
-    this.saveValue(group);
-  }
-
   saveValue(group: AbstractControl) {
     let fieldSource = this.fieldSources.find(fieldsource => fieldsource.id === group.get('id').value);
     fieldSource = { ...fieldSource};
-    fieldSource.value = group.get('value').value;
+    fieldSource.register = group.get('register').value;
     this.fieldSourceService.editItem(this.assetSeries.companyId, fieldSource).subscribe();
     group.get('saved').patchValue(true);
   }
 
   private fillTable(fieldSources: FieldSource[]) {
     const formGroups = fieldSources
-      .filter(fieldSource => fieldSource.fieldTarget.fieldType === FieldType.ATTRIBUTE)
+      .filter(fieldSource => fieldSource.fieldTarget.fieldType === FieldType.METRIC)
       .map(fieldSource => this.createFieldSourceGroup(fieldSource));
     this.fieldSourcesFormArray = new FormArray(formGroups);
   }

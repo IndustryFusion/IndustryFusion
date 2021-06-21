@@ -31,7 +31,6 @@ span.center {
 .attribute-row {
   display: flex;
   align-items: center;
-
   span {
     color: $highlighted;
     text-align: left;
@@ -56,8 +55,10 @@ span.center {
       margin-left: 80px;
     }
   }
-}
-  .header-row {
-    margin-top: 40px
-  }
 
+
+}
+
+.header-row {
+  margin-top: 40px
+}
