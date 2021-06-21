@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
 import { ActivatedRoute } from '@angular/router';
-import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
+import {AssetTypeTemplate, PublicationState} from '../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
 import { FieldTargetService } from '../../../../store/field-target/field-target.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -43,6 +43,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   private warningDialogRef: DynamicDialogRef;
 
   public FieldType = FieldType;
+  public PublicationState = PublicationState;
 
   constructor(private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private assetTypeTemplateService: AssetTypeTemplateService,
@@ -123,7 +124,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
 
   private publishAssetTypeTemplate(assetTypeTemplateForm: FormGroup) {
     if (assetTypeTemplateForm && assetTypeTemplateForm.get('wasPublished')?.value) {
-      this.assetTypeTemplate.published = assetTypeTemplateForm.get('published')?.value;
+      this.assetTypeTemplate.publicationState = assetTypeTemplateForm.get('publicationState')?.value;
       this.assetTypeTemplate.publishedDate = assetTypeTemplateForm.get('publishedDate')?.value;
       this.assetTypeTemplate.publishedVersion = assetTypeTemplateForm.get('publishedVersion')?.value;
       this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();

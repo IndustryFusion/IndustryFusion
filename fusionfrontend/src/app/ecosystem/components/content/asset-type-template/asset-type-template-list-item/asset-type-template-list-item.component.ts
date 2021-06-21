@@ -17,7 +17,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../../base/base-list-item/base-list-item.component';
-import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplate, PublicationState} from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -48,7 +48,7 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
   }
 
   ngOnInit() {
-    this.menuType = this.item.published ? ItemOptionsMenuType.DELETE : ItemOptionsMenuType.UPDATE_DELETE;
+    this.menuType = this.item.publicationState === PublicationState.PUBLISHED ? ItemOptionsMenuType.DELETE : ItemOptionsMenuType.UPDATE_DELETE;
   }
 
   onUpdate() {
@@ -74,7 +74,7 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
 
   private onCloseUpdateWizard(assetTypeTemplateForm: FormGroup) {
     if (assetTypeTemplateForm && assetTypeTemplateForm.get('wasPublished')?.value) {
-      this.item.published = assetTypeTemplateForm.get('published')?.value;
+      this.item.publicationState = assetTypeTemplateForm.get('publicationState')?.value;
       this.item.publishedDate = assetTypeTemplateForm.get('publishedDate')?.value;
       this.item.publishedVersion = assetTypeTemplateForm.get('publishedVersion')?.value;
       this.menuType = ItemOptionsMenuType.DELETE;
