@@ -17,7 +17,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../../base/base-list-item/base-list-item.component';
-import { AssetTypeTemplate, PublicationState} from '../../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplate, PublicationState } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -48,7 +48,8 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
   }
 
   ngOnInit() {
-    this.menuType = this.item.publicationState === PublicationState.PUBLISHED ? ItemOptionsMenuType.DELETE : ItemOptionsMenuType.UPDATE_DELETE;
+    this.menuType = this.item.publicationState === PublicationState.PUBLISHED ?
+      ItemOptionsMenuType.DELETE : ItemOptionsMenuType.UPDATE_DELETE;
   }
 
   onUpdate() {

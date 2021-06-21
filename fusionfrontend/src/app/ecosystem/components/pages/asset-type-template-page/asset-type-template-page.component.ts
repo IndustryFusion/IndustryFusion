@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
 import { ActivatedRoute } from '@angular/router';
-import {AssetTypeTemplate, PublicationState} from '../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplate, PublicationState } from '../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
 import { FieldTargetService } from '../../../../store/field-target/field-target.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';

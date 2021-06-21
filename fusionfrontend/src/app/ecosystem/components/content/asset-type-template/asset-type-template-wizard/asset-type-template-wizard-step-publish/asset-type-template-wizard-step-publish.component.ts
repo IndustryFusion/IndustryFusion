@@ -17,7 +17,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 import { AssetTypeTemplateService } from '../../../../../../store/asset-type-template/asset-type-template.service';
-import {PublicationState} from "../../../../../../store/asset-type-template/asset-type-template.model";
+import { PublicationState } from '../../../../../../store/asset-type-template/asset-type-template.model';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-publish',
