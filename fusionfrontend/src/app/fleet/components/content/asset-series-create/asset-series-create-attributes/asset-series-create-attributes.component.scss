@@ -17,8 +17,6 @@
 
 
 div.content {
-
-  display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
@@ -28,4 +26,33 @@ span.center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.attribute-row {
+  display: flex;
+  align-items: center;
+  span {
+    color: $highlighted;
+    text-align: left;
+    //font: normal normal normal 18px/23px Multi;
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+    font-weight: bold;
+    letter-spacing: 0;
+    opacity: 1;
+  }
+
+  .confirmed-name {
+    color: $highlighted;
+  }
+
+  .edit-col {
+    display: flex;
+    justify-content: end;
+    width: 20%;
+
+    .edit-button {
+      margin-left: 80px;
+    }
+  }
 }

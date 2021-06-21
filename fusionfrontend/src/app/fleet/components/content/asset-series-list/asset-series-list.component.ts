@@ -143,18 +143,18 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString(), 2);
+    this.startAssetSeriesWizard(itemId.toString());
   }
 
-  public startAssetSeriesWizard(idString: string, startStep: number = 1) {
+  public startAssetSeriesWizard(idString: string) {
     const dialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
       data: {
         route: this.route,
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
-        step: startStep
       },
-      width: '75%'
+      width: '90%',
+      styleClass: 'no-padding',
     });
 
     dialogRef.onClose.subscribe((value: AssetSeries) => {

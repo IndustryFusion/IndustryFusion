@@ -17,11 +17,11 @@ import { Component, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { Observable } from 'rxjs';
 import { AssetSeriesComposedQuery } from '../../../../store/composed/asset-series-composed.query';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FieldSourceResolver } from '../../../../resolvers/field-source.resolver';
 import { FieldTargetService } from '../../../../store/field-target/field-target.service';
 
@@ -31,46 +31,34 @@ import { FieldTargetService } from '../../../../store/field-target/field-target.
   styleUrls: ['./asset-series-create.component.scss']
 })
 export class AssetSeriesCreateComponent implements OnInit {
-  private route: ActivatedRoute;
+  private readonly route: ActivatedRoute;
 
   constructor(private assetSeriesService: AssetSeriesService,
               private assetSeriesQuery: AssetSeriesComposedQuery,
-              private router: Router,
-              dialogConfig: DynamicDialogConfig,
+              private dialogConfig: DynamicDialogConfig,
+              private dynamicDialogRef: DynamicDialogRef,
               private fieldSourceResolver: FieldSourceResolver,
               private fieldTargetService: FieldTargetService,
   ) {
     this.route = dialogConfig.data.route;
-
+    this.companyId = this.route.parent.snapshot.paramMap.get('companyId');
+    this.resolve();
   }
 
   step = 1;
   assetType: ID;
   companyId: ID;
   error: any;
-  toalSteps = 4;
+  toalSteps = 3;
   assetSeries$: Observable<AssetSeries>;
   assetSeries: AssetSeries = new AssetSeries();
 
   ngOnInit() {
-    this.companyId = this.route.parent.snapshot.paramMap.get('companyId');
-
-    this.resolve();
-
-    this.route.queryParamMap.subscribe(paramMap => {
-      if (paramMap.has('id')) {
-        this.assetSeries$ = this.assetSeriesQuery.selectAssetSeries(paramMap.get('id'));
-        this.resolve();
-        this.assetSeries$.subscribe(assetSeries => this.assetSeries = assetSeries );
-      }
-      if (paramMap.has('step')) {
-        const paramStep = Number(paramMap.get('step'));
-        if (paramStep !== this.step) {
-          this.step = paramStep;
-          this.onStepChange(this.step);
-        }
-      }
-    });
+    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
+    console.log('assetSeriesId', assetSeriesId);
+    this.assetSeries$ = this.assetSeriesQuery.selectAssetSeries(assetSeriesId);
+    this.assetSeriesService.getItem(this.companyId, assetSeriesId)
+      .subscribe(assetSeries => this.assetSeries = assetSeries);
   }
 
   onStepChange(step: number) {
@@ -83,13 +71,6 @@ export class AssetSeriesCreateComponent implements OnInit {
     if (this.assetSeries?.id) {
       queryParams.id = this.assetSeries.id;
     }
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.route,
-        queryParams: { step: this.step, id: this.assetSeries?.id},
-        queryParamsHandling: 'merge'
-      });
   }
 
   onUpdateAssetSeries() {
@@ -113,17 +94,17 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   nextStep() {
     if (this.step === this.toalSteps) {
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.dynamicDialogRef.close();
     } else {
-      this.onStepChange(this.step + 1);
+      this.step++;
     }
   }
 
   back() {
     if (this.step === 1) {
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.dynamicDialogRef.close();
     } else {
-      this.onStepChange( this.step - 1);
+      this.step--;
     }
   }
 
@@ -131,8 +112,6 @@ export class AssetSeriesCreateComponent implements OnInit {
     let result = true;
     switch (this.step) {
       case 1:
-        break;
-      case 2:
         result = this.assetSeries?.name !== undefined;
         break;
     }

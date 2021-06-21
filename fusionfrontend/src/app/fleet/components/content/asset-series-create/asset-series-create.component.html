@@ -21,7 +21,7 @@ under the License.
       </span>
     </clr-alert-item>
   </clr-alert>
-  <app-timeline class="timeline" [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
+  <app-timeline [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
   <app-asset-series-create-general-information *ngIf="step === 1" [assetSeries]="assetSeries">
   </app-asset-series-create-general-information>
   <app-asset-series-create-connectivity-settings *ngIf="step === 2" >
