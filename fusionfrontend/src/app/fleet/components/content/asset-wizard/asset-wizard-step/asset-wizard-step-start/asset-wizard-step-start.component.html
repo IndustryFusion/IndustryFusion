@@ -17,7 +17,7 @@ under the License.
   <form [formGroup]="assetForm">
     <div class="content with-rows">
         <div id="column left">
-          <div class="title">General Information</div>
+          <div class="wizard-title">General Information</div>
 
             <div class="selection">
               <div class="input-div dropdown-filter">
@@ -31,7 +31,7 @@ under the License.
 
           <div class="input-div">
             <label class="if-label">Asset Instance name</label>
-            <input type="text" pInputText class="select-asset-input" formControlName="name" />
+            <input type="text" pInputText formControlName="name" />
           </div>
 
           <div class="input-div">
@@ -46,7 +46,7 @@ under the License.
           <div class="sample-asset-display">
             <img src="/assets/img/IndustryFusion-hive.png" alt="asset-symbol">
             <div>
-              <span class="title">{{ assetForm.get('name')?.value }}</span>
+              <span class="wizard-icon-title">{{ assetForm.get('name')?.value }}</span>
               <span class="if-detail-page-label">{{ relatedAssetSeries?.name }}</span>
               <span class="if-detail-page-label">{{ relatedAssetType?.name }}</span>
               <span class="if-detail-page-label">{{ relatedCompany?.name }}</span>

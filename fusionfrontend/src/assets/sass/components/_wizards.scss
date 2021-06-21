@@ -34,10 +34,11 @@
       justify-content: space-around;
     }
 
-    .title {
+    .wizard-icon-title {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
       font: normal normal bold $big-font-size/$huge-line-height Multi;
       text-align: left;
       font-weight: bold;
@@ -46,6 +47,17 @@
       letter-spacing: 0;
       color: $highlighted;
       opacity: 1;
+    }
+
+    .wizard-title {
+      @extend .wizard-icon-title;
+
+      margin-top: 0;
+      margin-bottom: 2.8rem;
+    }
+
+    .textarea-character-count {
+      padding-right: 0;
     }
 
     .subtitle {
@@ -61,10 +73,10 @@
     .input-div {
       display: grid;
       padding-bottom: 24px;
+      width: 82.0%;
     }
 
     .selection {
-      margin-top: 3rem;
       display: flex;
       flex-direction: row;
     }
