@@ -20,6 +20,7 @@ import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.repository.FieldTargetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,7 @@ public class AssetTypeTemplateService {
                 .findAllByAssetType(assetType);
 
         for (AssetTypeTemplate assetTypeTemplate : assetTypeTemplatesOfAssetType) {
-            if (!assetTypeTemplate.getPublished()) {
+            if (assetTypeTemplate.getPublicationState().equals(PublicationState.DRAFT)) {
                 return true;
             }
         }
@@ -90,7 +91,7 @@ public class AssetTypeTemplateService {
 
     public AssetTypeTemplate updateAssetTypeTemplate(final Long assetTypeTemplateId,
                                                      final AssetTypeTemplate sourceAssetTypeTemplate) {
-        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,false);
+        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
 
         targetAssetTypeTemplate.copyFrom(sourceAssetTypeTemplate);
 
@@ -101,8 +102,8 @@ public class AssetTypeTemplateService {
         final List<AssetTypeTemplate> assetTypeTemplates = this.assetTypeTemplateRepository
                 .findAllByAssetTypeId(assetTypeId);
         final Optional<Long> maxPublishedVersion = assetTypeTemplates.stream()
-                .filter(assetTypeTemplate -> assetTypeTemplate.getPublished()
-                    && assetTypeId.equals(assetTypeTemplate.getAssetType().getId()))
+                .filter(assetTypeTemplate -> assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)
+                        && assetTypeId.equals(assetTypeTemplate.getAssetType().getId()))
                 .map(AssetTypeTemplate::getPublishedVersion)
                 .max(Long::compare);
 
@@ -150,7 +151,7 @@ public class AssetTypeTemplateService {
     }
 
     public FieldTarget updateFieldTarget(final Long assetTypeTemplateId, final Long fieldTargetId,
-                                           final FieldTarget fieldTarget) {
+                                         final FieldTarget fieldTarget) {
         final FieldTarget targetFieldTarget = getFieldTarget(assetTypeTemplateId, fieldTargetId);
 
         targetFieldTarget.copyFrom(fieldTarget);
