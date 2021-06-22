@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -66,14 +67,31 @@ public class AssetTypeTemplateService {
     public AssetTypeTemplate createAssetTypeTemplate(final Long assetTypeId,
                                                      final AssetTypeTemplate assetTypeTemplate) {
         final AssetType assetType = assetTypeService.getAssetType(assetTypeId);
+
+        validate(assetTypeTemplate, assetType);
+
+        assetTypeTemplate.setAssetType(assetType);
+
+        return assetTypeTemplateRepository.save(assetTypeTemplate);
+    }
+
+    private void validate(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
+        if (assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)) {
+            Objects.requireNonNull(assetTypeTemplate.getPublishedDate(),
+                    "Published date must be set for publication state PUBLISHED");
+        } else if (assetTypeTemplate.getPublicationState().equals(PublicationState.DRAFT)) {
+            if (Objects.nonNull(assetTypeTemplate.getPublishedDate())) {
+                throw new RuntimeException("Published date not allowed for publication state DRAFT");
+            }
+        } else {
+            throw new RuntimeException("Unknown publication state: " + assetTypeTemplate.getPublicationState());
+        }
+
         if (assetType != null && existsDraftToAssetType(assetType)) {
             String exception = "It is forbidden to create a new asset type template draft if another one exists.";
             throw new RuntimeException(exception);
         }
 
-        assetTypeTemplate.setAssetType(assetType);
-
-        return assetTypeTemplateRepository.save(assetTypeTemplate);
     }
 
     private boolean existsDraftToAssetType(AssetType assetType) {
