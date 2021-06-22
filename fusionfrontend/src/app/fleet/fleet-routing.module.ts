@@ -19,11 +19,7 @@ import { FleetManagerPageComponentComponent } from './components/pages/fleet-man
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
 import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
-import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
 import { AssetSeriesResolver } from '../resolvers/asset-series.resolver';
-import { AssetTypeTemplatesResolver } from '../resolvers/asset-type-templates.resolver';
-import { FieldSourceResolver } from '../resolvers/field-source.resolver';
-import { UnitsResolver } from '../resolvers/units.resolver';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { AssetResolver } from '../resolvers/asset.resolver';
@@ -56,16 +52,6 @@ const routes: Routes = [
           asset: AssetResolver,
           room: RoomResolver,
           location: LocationResolver
-        }
-      },
-      {
-        path: 'edit',
-        component: AssetSeriesCreateComponent,
-        resolve: {
-          assetTypeTemplates: AssetTypeTemplatesResolver,
-          assetSeries: AssetSeriesResolver,
-          fieldSources: FieldSourceResolver,
-          units: UnitsResolver,
         }
       }
     ]

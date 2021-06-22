@@ -36,4 +36,8 @@
   &:hover {
     background: #d56365 0 0 no-repeat padding-box;
   }
+
+  &:disabled {
+    background: $disabled-button 0 0 no-repeat padding-box;
+  }
 }

@@ -38,7 +38,6 @@ export class AssetSeriesDetailsService {
     return this.assetSeriesStore.cachedByParentId(cacheKey,
       this.http.get<AssetSeriesDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
-        console.log(entities);
         this.assetSeriesStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }

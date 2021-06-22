@@ -70,7 +70,6 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
 
       this.assetsCombined$ = combineLatest([assets$, locations$, rooms$]).pipe(
         map((value => {
-          console.log(value);
           const assets: Asset[] = value[0];
           const locations: Location[] = value[1];
           const rooms: Room[] = value[2];
