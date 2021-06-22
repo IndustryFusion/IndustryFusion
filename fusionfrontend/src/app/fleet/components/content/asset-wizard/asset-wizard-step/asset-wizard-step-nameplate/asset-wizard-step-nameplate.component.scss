@@ -14,3 +14,15 @@
  */
 
 @import "../../asset-wizard.component";
+
+.asset-wizard-step-namepalate {
+  div.content {
+    .input-div {
+      //width: 80%;
+    }
+  }
+}
+
+:host ::ng-deep .textarea-character-count {
+  padding-right: 0 !important;
+}

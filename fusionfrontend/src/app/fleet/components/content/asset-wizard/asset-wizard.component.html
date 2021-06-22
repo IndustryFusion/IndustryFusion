@@ -16,18 +16,26 @@ under the License.
 <div class="if-wizard-wrapper">
   <div class="timeline">
     <ul class="clr-timeline clr-timeline-horizontal">
-      <li class="clr-timeline-step">
-        <clr-icon *ngIf="step === 1" shape="dot-circle" aria-label="Started"></clr-icon>
+      <ng-container *ngFor="let i of [1,2,3,4,5,6];">
+        <li class="clr-timeline-step">
+          <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
+          <clr-icon *ngIf="step < i" shape="circle" aria-label="Not started"></clr-icon>
+          <clr-icon *ngIf="step > i" shape="success-standard" aria-label="Finished"></clr-icon>
+          <div class="clr-timeline-step-body"></div>
+        </li>
+      </ng-container>
+      <!--<li class="clr-timeline-step">
+        <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
         <clr-icon *ngIf="step !== 1" shape="success-standard" aria-label="Finished"></clr-icon>
         <div class="clr-timeline-step-body"></div>
-      </li>
-      <li class="clr-timeline-step">
-        <clr-icon *ngIf="step === 2" shape="dot-circle" aria-label="Started"></clr-icon>
-        <clr-icon *ngIf="step < 2" shape="circle" aria-label="Not started"></clr-icon>
-        <clr-icon *ngIf="step > 2" shape="success-standard" aria-label="Finished"></clr-icon>
+      </li>-->
+   <!--   <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < i" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > i" shape="success-standard" aria-label="Finished"></clr-icon>
         <div class="clr-timeline-step-body"></div>
-      </li>
-      <li class="clr-timeline-step">
+      </li>-->
+      <!--<li class="clr-timeline-step">
         <clr-icon *ngIf="step === 3" shape="dot-circle" aria-label="Started"></clr-icon>
         <clr-icon *ngIf="step < 3" shape="circle" aria-label="Not started"></clr-icon>
         <clr-icon *ngIf="step > 3" shape="success-standard" aria-label="Finished"></clr-icon>
@@ -39,6 +47,18 @@ under the License.
         <clr-icon *ngIf="step > 4" shape="success-standard" aria-label="Finished"></clr-icon>
         <div class="clr-timeline-step-body"></div>
       </li>
+      <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === 5" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < 5" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > 5" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>
+      <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === 6" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < 6" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > 6" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>-->
     </ul>
   </div>
 

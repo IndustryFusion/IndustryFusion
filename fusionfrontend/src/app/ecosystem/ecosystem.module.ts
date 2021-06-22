@@ -64,7 +64,6 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { RadioButtonModule } from 'primeng/radiobutton';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
@@ -145,7 +144,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     ReactiveFormsModule,
     DialogModule,
     TableModule,
-    RadioButtonModule,
     CheckboxModule,
   ],
     exports: [

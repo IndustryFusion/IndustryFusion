@@ -13,6 +13,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<p-calendar formControlName="constructionDate" showIcon="true" showButtonBar="true"
+           [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2040"></p-calendar>
+
 <div class="asset-series-list">
   <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
     <clr-alert-item>

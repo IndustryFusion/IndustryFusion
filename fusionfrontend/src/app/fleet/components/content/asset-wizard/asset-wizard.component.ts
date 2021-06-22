@@ -101,8 +101,8 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('description')?.setValue(assetSeries.description);
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
-
-      // TODO: prefill connection string
+      this.assetForm.get('handbookKey')?.setValue(assetSeries.handbookKey);
+      this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
     }
   }
 
@@ -138,13 +138,13 @@ export class AssetWizardComponent implements OnInit {
       hasGateway: [],
       gatewayConnectivity: [null, Validators.maxLength(255)],
       guid: [],
-      ceCertified: [],
-      serialNumber: [null, Validators.maxLength(255)],
-      constructionDate: [],
+      ceCertified: [null, Validators.required],
+      serialNumber: [null, requiredTextValidator],
+      constructionDate: [null, Validators.required],
+      installationDate: [null, Validators.required],
       protectionClass: [null, Validators.maxLength(255)],
       handbookKey: [null, Validators.maxLength(255)],
       videoKey: [null, Validators.maxLength(255)],
-      installationDate: [],
       imageKey: [null, Validators.maxLength(255)]
     });
 

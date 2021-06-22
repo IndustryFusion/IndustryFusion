@@ -19,15 +19,15 @@ under the License.
         <div id="column left">
           <div class="wizard-title">General Information</div>
 
-            <div class="selection">
-              <div class="input-div dropdown-filter">
-                <label class="if-label">Select Asset Series Version</label>
-                <p-dropdown [options]="(assetSeries$ | async)" formControlName="assetSeriesId" optionLabel="name"
-                            optionValue="id" filter="true" resetFilterOnHide="true"
-                            placeholder="Select Asset Series Version..." (onChange)="onChangeAssetSeries($event.value)">
-                </p-dropdown>
-              </div>
+          <div class="selection">
+            <div class="input-div dropdown-filter">
+              <label class="if-label">Select Asset Series Version</label>
+              <p-dropdown [options]="(assetSeries$ | async)" formControlName="assetSeriesId" optionLabel="name"
+                          optionValue="id" filter="true" resetFilterOnHide="true"
+                          placeholder="Select Asset Series Version..." (onChange)="onChangeAssetSeries($event.value)">
+              </p-dropdown>
             </div>
+          </div>
 
           <div class="input-div">
             <label class="if-label">Asset Instance name</label>
@@ -56,7 +56,7 @@ under the License.
     </div>
     <div class="footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" [disabled]="assetForm.invalid"
+      <button type="button" class="if-button button-confirm button-primary" [disabled]="!assetForm.get('assetSeriesId')?.value"
               (click)="onStart()">Start</button>
     </div>
   </form>

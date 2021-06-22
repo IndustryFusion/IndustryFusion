@@ -19,6 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { FormsModule } from '@angular/forms';
     InputTextModule,
     DropdownModule,
     InputTextareaModule,
+    RadioButtonModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -64,6 +66,7 @@ import { FormsModule } from '@angular/forms';
     DropdownModule,
     InputTextareaModule,
     AccuracyFormatPipe,
+    RadioButtonModule,
   ]
 })
 export class IFCommon {

@@ -41,6 +41,7 @@ import { AssetWizardStepCustomerComponent } from './components/content/asset-wiz
 import { AssetWizardStepFinishedComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-finished/asset-wizard-step-finished.component';
 import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
+import { CalendarModule } from 'primeng/calendar';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { AssetSeriesCreateMetricsComponent } from './components/content/asset-se
         ClarityModule,
         ReactiveFormsModule,
         TableModule,
+        CalendarModule,
     ],
   exports: [
     FleetSubHeaderComponent,
