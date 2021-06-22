@@ -13,6 +13,7 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { BrowserModule } from '@angular/platform-browser';
     EditButtonComponent,
     EditDetailsButtonComponent,
     LocationsMapComponent,
+    AccuracyFormatPipe,
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,7 @@ import { BrowserModule } from '@angular/platform-browser';
     EditButtonComponent,
     EditDetailsButtonComponent,
     LocationsMapComponent,
+    AccuracyFormatPipe,
   ]
 })
 export class IFCommon {

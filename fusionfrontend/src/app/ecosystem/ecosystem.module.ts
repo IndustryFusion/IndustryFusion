@@ -81,7 +81,6 @@ import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
-import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
 import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
 import { AssetTypeTemplateDialogPublishComponent } from './components/content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
@@ -141,7 +140,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     AssetTypeTemplateFieldHeaderComponent,
     FieldDialogDirective,
     FieldPageComponent,
-    AccuracyFormatPipe,
     AssetTypeTemplateDialogPublishComponent,
     AssetTypeTemplateDialogUpdateComponent,
     NameWithVersionPipe,
@@ -168,7 +166,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     exports: [
         EcosystemSubHeaderComponent,
         EcosystemPageTitleComponent,
-        AccuracyFormatPipe,
     ],
   providers: [
     DialogService

@@ -153,7 +153,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
         assetSeriesId: idString,
       },
       width: '90%',
-      styleClass: 'no-padding',
     });
 
     dialogRef.onClose.subscribe((value: AssetSeries) => {

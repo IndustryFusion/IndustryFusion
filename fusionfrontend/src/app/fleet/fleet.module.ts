@@ -38,7 +38,6 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
-import { EcosystemModule } from '../ecosystem/ecosystem.module';
 
 
 @NgModule({
@@ -69,7 +68,6 @@ import { EcosystemModule } from '../ecosystem/ecosystem.module';
     ReactiveFormsModule,
     TableModule,
     DropdownModule,
-    EcosystemModule,
   ],
   exports: [
     FleetSubHeaderComponent,
