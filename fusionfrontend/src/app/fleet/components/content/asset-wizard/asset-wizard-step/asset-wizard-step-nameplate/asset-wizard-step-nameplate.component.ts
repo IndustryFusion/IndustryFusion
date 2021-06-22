@@ -29,12 +29,12 @@ export class AssetWizardStepNameplateComponent implements OnInit {
   @Output() stepChange = new EventEmitter<number>();
 
   public protectionClasses: SelectItem[];
-  public yearRange: String;
+  public yearRange: string;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.yearRange = `${new Date().getFullYear()-8}:${new Date().getFullYear()+2}`;
+    this.yearRange = `${ new Date().getFullYear() - 8 }:${ new Date().getFullYear() + 2}`;
     this.protectionClasses = [
       { label: 'IP20', value: 'IP20' },
       { label: 'IP21', value: 'IP21' },
@@ -58,6 +58,5 @@ export class AssetWizardStepNameplateComponent implements OnInit {
 
   onNext() {
     this.stepChange.emit(AssetWizardStep.DIGITAL_NAMEPLATE + 1);
-    console.log(this.assetForm.controls);
   }
 }
