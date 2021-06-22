@@ -76,6 +76,8 @@ public class AssetTypeTemplateService {
     }
 
     private void validate(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
+        Objects.requireNonNull(assetTypeTemplate.getPublicationState(), "Publication state must be set but is null.");
+
         if (assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)) {
             Objects.requireNonNull(assetTypeTemplate.getPublishedDate(),
                     "Published date must be set for publication state PUBLISHED");

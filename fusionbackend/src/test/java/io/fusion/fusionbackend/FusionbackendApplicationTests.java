@@ -610,6 +610,7 @@ class FusionbackendApplicationTests {
                 .name("Laser Cutter")
                 .description("ATT Laser Cutter")
                 .imageKey("genericcutterimagekey")
+                .publicationState(PublicationState.DRAFT)
                 .build();
 
         assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
