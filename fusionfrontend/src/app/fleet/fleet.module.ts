@@ -25,12 +25,11 @@ import { ClarityModule } from '@clr/angular';
 import { AssetSeriesListHeaderComponent } from './components/content/asset-series-list-header/asset-series-list-header.component';
 import { AssetSeriesListItemComponent } from './components/content/asset-series-list-item/asset-series-list-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AssetSeriesCreateStepOneComponent } from './components/content/asset-series-create/asset-series-create-step-one/asset-series-create-step-one.component';
 import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
-import { AssetSeriesCreateStepTwoComponent } from './components/content/asset-series-create/asset-series-create-step-two/asset-series-create-step-two.component';
-import { AssetSeriesCreateStepTreeComponent } from './components/content/asset-series-create/asset-series-create-step-three/asset-series-create-step-tree.component';
-import { AssetSeriesCreateStepFourComponent } from './components/content/asset-series-create/asset-series-create-step-four/asset-series-create-step-four.component';
+import { AssetSeriesCreateGeneralInformationComponent } from './components/content/asset-series-create/asset-series-create-general-information/asset-series-create-general-information.component';
+import { AssetSeriesCreateConnectivitySettingsComponent } from './components/content/asset-series-create/asset-series-create-connectivity-settings/asset-series-create-connectivity-settings.component';
+import { AssetSeriesCreateAttributesComponent } from './components/content/asset-series-create/asset-series-create-attributes/asset-series-create-attributes.component';
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
@@ -40,6 +39,8 @@ import { AssetWizardStepNameplateComponent } from './components/content/asset-wi
 import { AssetWizardStepSemanticsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-semantics/asset-wizard-step-semantics.component';
 import { AssetWizardStepCustomerComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer/asset-wizard-step-customer.component';
 import { AssetWizardStepFinishedComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-finished/asset-wizard-step-finished.component';
+import { LabelControlDirective } from './components/content/label-control/label-control.directive';
+import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 
 
 @NgModule({
@@ -52,12 +53,13 @@ import { AssetWizardStepFinishedComponent } from './components/content/asset-wiz
     AssetSeriesListHeaderComponent,
     AssetSeriesListItemComponent,
     AssetSeriesCreateComponent,
-    AssetSeriesCreateStepOneComponent,
-    AssetSeriesCreateStepTwoComponent,
-    AssetSeriesCreateStepTreeComponent,
+    AssetSeriesCreateGeneralInformationComponent,
+    AssetSeriesCreateConnectivitySettingsComponent,
     TimelineComponent,
-    AssetSeriesCreateStepFourComponent,
+    AssetSeriesCreateAttributesComponent,
     AssetSeriePageComponent,
+    LabelControlDirective,
+    AssetSeriesCreateMetricsComponent,
     AssetWizardComponent,
     AssetWizardStepStartComponent,
     AssetWizardStepNameplateComponent,

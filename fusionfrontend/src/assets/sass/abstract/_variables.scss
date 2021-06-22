@@ -14,16 +14,17 @@
  */
 
   /** colors **/
-  $basic-grey: #95989A;
-  $light-grey: #F8F8F8;
-  $dark-gray: #00000029;
   $basic-white: #FFFFFF;
+  $light-grey:  #F8F8F8;
+  $basic-grey:  #95989A;
+  $dark-gray:   #00000029;
   $basic-black: #000000;
 
   $highlighted: $basic-black;
-  $inactive: #95989A;
+  $inactive: $basic-grey;
   $regular-grey: #666666;
   $hover-grey: #333333;
+  $disabled-button: #E6E6E6;
 
   /** backgrounds **/
   $grey-background: $light-grey 50% 50% no-repeat padding-box;

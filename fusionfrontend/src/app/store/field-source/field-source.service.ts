@@ -37,7 +37,7 @@ export class FieldSourceService {
     const path = `companies/${companyId}/assetseries/${assetSeriesId}/fieldsources`;
     const cacheKey = 'assetseries-' + assetSeriesId;
     return this.fieldSourceStore.cachedByParentId(cacheKey,
-      this.http.get<FieldSource[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+      this.http.get<FieldSource[]>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
         .pipe(tap(entities => {
           this.fieldSourceStore.upsertManyCached(entities);
         })));

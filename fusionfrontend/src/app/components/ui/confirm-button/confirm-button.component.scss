@@ -40,6 +40,7 @@
   cursor: pointer;
 
   margin: 8px 4px;
+  white-space: nowrap;
 
   &:hover {
     background: $hover-grey;

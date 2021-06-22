@@ -20,11 +20,13 @@ import { FieldSourceQuery } from '../field-source/field-source.query';
 import { map } from 'rxjs/operators';
 import { UnitQuery } from '../unit/unit.query';
 import { FieldSource } from '../field-source/field-source.model';
+import { FieldTargetQuery } from '../field-target/field-target.query';
 
 @Injectable({ providedIn: 'root'})
 export class FieldSourceComposedQuery {
 
   constructor(private fieldSourceQuery: FieldSourceQuery,
+              private fieldTargetQuery: FieldTargetQuery,
               private unitQuery: UnitQuery) {
   }
 
@@ -45,15 +47,17 @@ export class FieldSourceComposedQuery {
     );
   }
 
-  selectFieldSourcesWithUnitsByAssetSeries(assetSeriesId: ID): Observable<FieldSource[]> {
+  selectFieldSourcesWithUnitsAndFildTargetsByAssetSeries(assetSeriesId: ID): Observable<FieldSource[]> {
     return combineQueries([
       this.fieldSourceQuery.getAllFieldSource(),
+      this.fieldTargetQuery.selectAll(),
       this.unitQuery.selectAll()
     ]).pipe(
-      map(([fieldSources, units]) => {
+      map(([fieldSources, fieldTargets, units]) => {
         fieldSources = fieldSources.map<FieldSource>(fieldSource => {
           fieldSource = { ...fieldSource};
           fieldSource.sourceUnit = units.find(unit => unit.id === fieldSource.sourceUnitId);
+          fieldSource.fieldTarget = fieldTargets.find(fieldTarget => fieldTarget.id === fieldSource.fieldTargetId);
           return fieldSource;
         });
         fieldSources = fieldSources.filter(fieldSource => {

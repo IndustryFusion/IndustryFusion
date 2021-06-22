@@ -13,6 +13,7 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -29,6 +30,7 @@ import { FormsModule } from '@angular/forms';
     EditButtonComponent,
     EditDetailsButtonComponent,
     LocationsMapComponent,
+    AccuracyFormatPipe,
   ],
   imports: [
     CommonModule,
@@ -61,6 +63,7 @@ import { FormsModule } from '@angular/forms';
     InputTextModule,
     DropdownModule,
     InputTextareaModule,
+    AccuracyFormatPipe,
   ]
 })
 export class IFCommon {

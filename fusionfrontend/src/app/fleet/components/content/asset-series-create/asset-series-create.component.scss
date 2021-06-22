@@ -15,20 +15,13 @@
 
 @import "abstract/variables";
 @import "base/typography";
+@import "components/labels";
 
 .wrapper {
   display: flex;
   flex-direction: column;
   background: $grey-background;
   height: 100%;
-  padding: 0 80px;
-  overflow: auto;
-}
-
-.timeline {
-  margin-top: 86px;
-  width: 60%;
-  align-self: center;
 }
 
 .content {
