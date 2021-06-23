@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +36,7 @@ public class AssetTypeTemplateDto extends BaseAssetDto {
     private Long version;
     private Long assetTypeId;
     private AssetTypeDto assetType;
-    private Boolean published;
+    private PublicationState publicationState;
     private OffsetDateTime publishedDate;
     private Long publishedVersion;
 
