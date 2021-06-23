@@ -18,7 +18,7 @@ import { combineQueries, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AssetTypeTemplateQuery } from '../asset-type-template/asset-type-template.query';
-import { AssetTypeTemplate } from '../asset-type-template/asset-type-template.model';
+import { AssetTypeTemplate, PublicationState } from '../asset-type-template/asset-type-template.model';
 import { AssetTypeQuery } from '../asset-type/asset-type.query';
 
 @Injectable({ providedIn: 'root' })
@@ -44,7 +44,8 @@ export class AssetTypesComposedQuery {
       this.assetTypeQuery.selectAssetType(assetTypeId)])
       .pipe(
         map(([templates, assetType]) => {
-          return templates.filter(template => String(assetType.id) === String(template.assetTypeId) && !template.published);
+          return templates.filter(template => String(assetType.id) === String(template.assetTypeId)
+            && template.publicationState === PublicationState.DRAFT);
         }));
   }
 }
