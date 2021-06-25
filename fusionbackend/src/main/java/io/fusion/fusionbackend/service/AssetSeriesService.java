@@ -62,10 +62,6 @@ public class AssetSeriesService {
         this.unitService = unitService;
     }
 
-    public Set<AssetSeries> getAssetSeriesSet() {
-        return assetSeriesRepository.findAll(AssetSeriesRepository.DEFAULT_SORT);
-    }
-
     public Set<AssetSeries> getAssetSeriesSetByCompany(final Long companyId) {
         return assetSeriesRepository.findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId);
     }
