@@ -28,13 +28,19 @@ under the License.
     <div class="row">
       <div class="label-column"> Description </div>
       <div class="if-detail-page-description">
-        <textarea [disabled]="true"> {{ (field$ | async)?.description  }} </textarea>
+        <textarea [disabled]="true">{{ (field$ | async)?.description  }}</textarea>
       </div>
     </div>
 
     <div class="row">
       <label class="label-column"> Accuracy </label>
       <label class="if-detail-page-label "> {{ (field$ | async)?.accuracy | accuracyformat }} </label>
+    </div>
+
+
+    <div class="row">
+      <div class="label-column"> Thresholds&nbsp;&amp;&nbsp;limits </div>
+      <label class="if-detail-page-label">{{ (field$ | async)?.thresholdType | titlecase }}</label>
     </div>
   </div>
 </section>
