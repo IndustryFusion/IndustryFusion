@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-trash-button',
@@ -23,6 +23,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class TrashButtonComponent implements OnInit {
 
   @Output() deleteItem = new EventEmitter<void>();
+
+  @Input()
+  disabled = false;
 
   constructor() { }
 

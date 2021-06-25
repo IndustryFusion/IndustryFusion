@@ -15,14 +15,16 @@
 
 package io.fusion.fusionbackend.model;
 
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -68,17 +70,16 @@ public class AssetTypeTemplate extends BaseAsset {
     @JoinColumn(name = "asset_type_id", nullable = false)
     private AssetType assetType;
 
-    @Formula("published_date is not null")
-    private Boolean published;
-
+    @Enumerated(EnumType.STRING)
+    private PublicationState publicationState;
     private OffsetDateTime publishedDate;
     private Long publishedVersion;
 
     public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
         super.copyFrom(sourceAssetTypeTemplate);
 
-        if (sourceAssetTypeTemplate.getPublished() != null) {
-            setPublished(sourceAssetTypeTemplate.getPublished());
+        if (sourceAssetTypeTemplate.getPublicationState() != null) {
+            setPublicationState(sourceAssetTypeTemplate.getPublicationState());
         }
         if (sourceAssetTypeTemplate.getPublishedDate() != null) {
             setPublishedDate(sourceAssetTypeTemplate.getPublishedDate());

@@ -47,7 +47,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .id(entity.getId())
                 .version(entity.getVersion())
                 .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
-                .published(entity.getPublished())
+                .publicationState(entity.getPublicationState())
                 .publishedDate(entity.getPublishedDate())
                 .publishedVersion(entity.getPublishedVersion())
                 .build();
@@ -66,7 +66,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .id(entity.getId())
                 .version(entity.getVersion())
                 .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
-                .published(entity.getPublished())
+                .publicationState(entity.getPublicationState())
                 .publishedDate(entity.getPublishedDate())
                 .publishedVersion(entity.getPublishedVersion())
                 .build();
@@ -94,7 +94,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
         AssetTypeTemplate entity = AssetTypeTemplate.builder()
                 .id(dto.getId())
                 .version(dto.getVersion())
-                .published(dto.getPublished())
+                .publicationState(dto.getPublicationState())
                 .publishedDate(dto.getPublishedDate())
                 .publishedVersion(dto.getPublishedVersion())
                 .build();

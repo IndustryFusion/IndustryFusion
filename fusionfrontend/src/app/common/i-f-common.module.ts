@@ -20,6 +20,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     EditButtonComponent,
     EditDetailsButtonComponent,
     LocationsMapComponent,
+    AccuracyFormatPipe,
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputTextareaModule,
     RadioButtonModule,
     CheckboxModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    AccuracyFormatPipe,
   ]
 })
-export class IFCommon { }
+export class IFCommon {
+}

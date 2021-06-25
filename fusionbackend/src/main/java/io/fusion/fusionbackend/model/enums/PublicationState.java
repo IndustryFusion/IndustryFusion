@@ -13,18 +13,9 @@
  * under the License.
  */
 
-@import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
+package io.fusion.fusionbackend.model.enums;
 
-.select-starting-configuration {
-  margin-top: 40px;
-}
-
-.asset-series-create-step-two-header {
-    padding: .6rem .9rem;
-}
-
-div.card {
-  background-color: transparent;
-  border-style: none;
-  box-shadow: none;
+public enum PublicationState {
+    DRAFT,
+    PUBLISHED
 }

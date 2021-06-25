@@ -29,7 +29,6 @@ export class AssetSeriesDetailsResolver implements Resolve<any>{
     const companyId = route.params.companyId;
     this.companyService.setActive(companyId);
     if (companyId != null) {
-      console.log('companyId', companyId);
       this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(companyId).subscribe();
     }
   }

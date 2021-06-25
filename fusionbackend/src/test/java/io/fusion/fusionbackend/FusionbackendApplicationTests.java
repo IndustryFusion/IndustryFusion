@@ -19,6 +19,7 @@ import io.fusion.fusionbackend.dto.*;
 import io.fusion.fusionbackend.model.enums.CompanyType;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.LocationType;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.groups.Tuple;
@@ -568,7 +569,7 @@ class FusionbackendApplicationTests {
                 .description("ATT Gas Supply")
                 .imageKey("genericgasimagekey")
                 .publishedDate(OffsetDateTime.now())
-                .published(true)
+                .publicationState(PublicationState.PUBLISHED)
                 .build();
 
         assetTypeTemplateGasSupplyId = createAndTestAssetTypeTemplate(assetTypeGasSupplyId, assetTypeTemplate);
@@ -582,7 +583,7 @@ class FusionbackendApplicationTests {
                 .description("ATT Laser Cutter")
                 .imageKey("genericcutterimagekey")
                 .publishedDate(OffsetDateTime.now())
-                .published(true)
+                .publicationState(PublicationState.PUBLISHED)
                 .build();
 
         assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
@@ -596,7 +597,7 @@ class FusionbackendApplicationTests {
                 .description("ATT Laser Cutter" + repetitionInfo.getCurrentRepetition())
                 .imageKey("genericcutterimagekey" + repetitionInfo.getCurrentRepetition())
                 .publishedDate(OffsetDateTime.now())
-                .published(true)
+                .publicationState(PublicationState.PUBLISHED)
                 .build();
 
         createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
@@ -609,6 +610,7 @@ class FusionbackendApplicationTests {
                 .name("Laser Cutter")
                 .description("ATT Laser Cutter")
                 .imageKey("genericcutterimagekey")
+                .publicationState(PublicationState.DRAFT)
                 .build();
 
         assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);

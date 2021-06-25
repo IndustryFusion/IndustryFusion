@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetSeriesCreateStepFourComponent } from './asset-series-create-step-four.component';
+import { AssetSeriesCreateAttributesComponent } from './asset-series-create-attributes.component';
 
 describe('AssetSeriesCreateStepFourComponent', () => {
-  let component: AssetSeriesCreateStepFourComponent;
-  let fixture: ComponentFixture<AssetSeriesCreateStepFourComponent>;
+  let component: AssetSeriesCreateAttributesComponent;
+  let fixture: ComponentFixture<AssetSeriesCreateAttributesComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetSeriesCreateStepFourComponent ]
+      declarations: [ AssetSeriesCreateAttributesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesCreateStepFourComponent);
+    fixture = TestBed.createComponent(AssetSeriesCreateAttributesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

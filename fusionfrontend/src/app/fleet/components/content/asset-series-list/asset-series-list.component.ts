@@ -70,7 +70,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
     this.items$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetTypeTemplatesResolver.resolve().subscribe();
@@ -143,17 +142,17 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString(), 2);
+    this.startAssetSeriesWizard(itemId.toString());
   }
 
-  public startAssetSeriesWizard(idString: string, startStep: number = 1) {
+  public startAssetSeriesWizard(idString: string) {
     const dialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
       data: {
+        route: this.route,
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
-        step: startStep
       },
-      width: '75%'
+      width: '90%',
     });
 
     dialogRef.onClose.subscribe((value: AssetSeries) => {

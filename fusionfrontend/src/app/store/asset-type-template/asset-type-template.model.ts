@@ -26,9 +26,14 @@ export class AssetTypeTemplate extends BaseEntity {
   imageKey: string;
   assetTypeId: ID;
   assetType: AssetType;
-  published: boolean;
+  publicationState: PublicationState;
   publishedDate: Date;
   publishedVersion: bigint;
   fieldTargetIds: Array<ID>;
   fieldTargets: Array<FieldTarget>;
+}
+
+export enum PublicationState {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED'
 }
