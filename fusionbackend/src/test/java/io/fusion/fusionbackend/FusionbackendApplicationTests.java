@@ -16,10 +16,7 @@
 package io.fusion.fusionbackend;
 
 import io.fusion.fusionbackend.dto.*;
-import io.fusion.fusionbackend.model.enums.CompanyType;
-import io.fusion.fusionbackend.model.enums.FieldType;
-import io.fusion.fusionbackend.model.enums.LocationType;
-import io.fusion.fusionbackend.model.enums.PublicationState;
+import io.fusion.fusionbackend.model.enums.*;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.groups.Tuple;
@@ -436,6 +433,7 @@ class FusionbackendApplicationTests {
                 .accuracy(2.2)
                 .name("Differenzdruck")
                 .description("Differenz Druck...")
+                .thresholdType(FieldThresholdType.OPTIONAL)
                 .build();
 
         fieldIdDifferenzDruck = createAndTestField(fieldDto, unitIdPa);
@@ -444,6 +442,7 @@ class FusionbackendApplicationTests {
                 .accuracy(2.2)
                 .name("Head temperature")
                 .description("Head temperature...")
+                .thresholdType(FieldThresholdType.OPTIONAL)
                 .build();
 
         fieldIdHeadTemperature = createAndTestField(fieldDto, unitIdCelcius);
@@ -452,6 +451,7 @@ class FusionbackendApplicationTests {
                 .accuracy(2.2)
                 .name("Number of heads")
                 .description("Number of heads...")
+                .thresholdType(FieldThresholdType.OPTIONAL)
                 .build();
 
         fieldIdHeadCount = createAndTestField(fieldDto, unitIdCount);
