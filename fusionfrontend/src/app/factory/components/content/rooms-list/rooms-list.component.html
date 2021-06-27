@@ -28,7 +28,7 @@ under the License.
 
 <div>
     <div class="p-grid p-jc-between header-line">
-      <h3 class="table-header p-col" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>
+      <h3 class="table-header p-col" *ngIf="rooms.length > 0">  {{ rooms.length }} Rooms</h3>
       <app-create-button class="p-col create-button" text="Create Room" (createItem)="showCreateDialog()"></app-create-button>
     </div>
 
@@ -46,7 +46,7 @@ under the License.
 <!--  </div>-->
 
   <p-table class="list-container"
-           [value]="rooms$ | async"
+           [value]="rooms"
            [rowsPerPageOptions]="[5,10,50]"
            [rows]="10"
            [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
@@ -70,7 +70,7 @@ under the License.
         <td [style.width.%]="20">{{room.name}}</td>
         <td [style.width.%]="15">{{room.assetIds.length}}</td>
         <td [style.width.%]="25">{{room.description}}</td>
-        <td [style.width.%]="20">{{locations[room.locationId].name}}</td>
+        <td [style.width.%]="20">{{locationsAndRoomsMap.get(room.id)}}</td>
         <td [style.width.%]="5">
           <div class="table-dropdown-menu">
             <p-menu #menu [popup]="true" [model]="menuActions"></p-menu>
@@ -78,40 +78,12 @@ under the License.
                     class="table-dropdown-menu-button"></button>
           </div>
         </td>
-<!--        <td [style.width.%]="5"></td>-->
       </tr>
     </ng-template>
 
   </p-table>
 </div>
 
-<!--<div class="wrapper">-->
-<!--  <h3 class="table-header" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>-->
-
-<!--  <clr-datagrid>-->
-<!--    <clr-dg-column>Room ID</clr-dg-column>-->
-<!--    <clr-dg-column>Name</clr-dg-column>-->
-<!--    <clr-dg-column>Assets</clr-dg-column>-->
-<!--    <clr-dg-column>Description</clr-dg-column>-->
-<!--    <clr-dg-column></clr-dg-column>-->
-
-<!--    <clr-dg-row *ngFor="let room of rooms$ | async" [clrDgItem]="room">-->
-<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.id}}</clr-dg-cell>-->
-<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.name}}</clr-dg-cell>-->
-<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.assetIds.length}}</clr-dg-cell>-->
-<!--      <clr-dg-cell [routerLink]="[room.id]">{{room.description}}</clr-dg-cell>-->
-<!--      <clr-dg-cell>-->
-<!--        <span style="float: right; width: 10px">-->
-<!--          <clr-dg-action-overflow>-->
-<!--            <button class="action-item" (click)="editRoom(room.id)">Edit</button>-->
-<!--            <button class="action-item" (click)="deleteRoom(room.id)">Delete</button>-->
-<!--            <button class="action-item" (click)="openAssignAssetModal(room.id)">Assign assets to this room</button>-->
-<!--          </clr-dg-action-overflow>-->
-<!--        </span>-->
-<!--      </clr-dg-cell>-->
-<!--    </clr-dg-row>-->
-
-<!--  </clr-datagrid>-->
 
 <!--  <clr-modal [(clrModalOpen)]="assignToRoomModal">-->
 
@@ -138,18 +110,3 @@ under the License.
 <!--    </div>-->
 <!--  </clr-modal>-->
 
-<!--  <clr-modal [(clrModalOpen)]="editRoomModal">-->
-
-<!--    <h3 class="modal-title">Edit room</h3>-->
-<!--    <div class="modal-body">-->
-
-<!--      <div *ngIf="activeRoom$">-->
-<!--        <app-edit-room [activeRoom]="(activeRoom$ | async)" (modalOpened)="closeEditModal($event)"></app-edit-room>-->
-<!--      </div>-->
-
-<!--    </div>-->
-<!--    <div class="modal-footer">-->
-<!--    </div>-->
-<!--  </clr-modal>-->
-
-<!--</div>-->

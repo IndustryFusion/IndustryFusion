@@ -26,7 +26,6 @@ import { RoomService } from 'src/app/store/room/room.service';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 // import { AssetService } from 'src/app/store/asset/asset.service';
-// import { Location as loc } from '@angular/common';
 import { Company } from 'src/app/store/company/company.model';
 // import { RoomQuery } from '../../../../store/room/room.query';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
@@ -48,16 +47,11 @@ export class RoomsPageComponent implements OnInit {
   locationId: ID;
   selectedRoomId: ID;
 
-  editRoomModal = false;
-  assignToRoomModal = false;
-  createRoomModal = false;
-
   constructor(private locationQuery: LocationQuery,
               private companyQuery: CompanyQuery,
               private roomService: RoomService,
               // private roomQuery: RoomQuery,
               // private assetQuery: AssetQuery,
-              // private routingLocation: loc,
               private factoryResolver: FactoryResolver,
               private activatedRoute: ActivatedRoute,
               private assetDetailsService: AssetDetailsService,
@@ -69,10 +63,14 @@ export class RoomsPageComponent implements OnInit {
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
     this.locations$ = this.factoryResolver.locations$;
-    this.rooms$ = this.factoryResolver.rooms$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
+    if (this.locationId) {
+      this.rooms$ = this.factoryResolver.allRoomsOfLocation$;
+    } else {
+      this.rooms$ = this.factoryResolver.rooms$;
+    }
   }
 
   // deleteRoom(roomId: ID) {
@@ -83,13 +81,7 @@ export class RoomsPageComponent implements OnInit {
   //       console.log('[rooms-page.component] Delete request successful', roomId);
   //     });
   // }
-  //
-  // editRoom(roomId: ID) {
-  //   this.roomService.setActive(roomId);
-  //   this.activeRoom$ = this.roomQuery.selectActive();
-  //   this.editRoomModal = true;
-  // }
-  //
+
   editRoom(event: Room) {
     if (event) {
       this.roomService.updateRoom(this.companyQuery.getActiveId(), event)
@@ -98,7 +90,6 @@ export class RoomsPageComponent implements OnInit {
         });
       this.assetDetailsService.updateRoomNames(event);
     }
-    this.editRoomModal = false;
   }
 
   createRoom(event: Room) {
@@ -108,14 +99,8 @@ export class RoomsPageComponent implements OnInit {
           console.log('[rooms-page.component] Post request successful', data);
         });
     }
-    this.createRoomModal = false;
   }
-  //
-  // openAssignAssetModal(roomId: ID) {
-  //   this.assignToRoomModal = true;
-  //   this.selectedRoomId = roomId;
-  // }
-  //
+
   // assignToRoom(assetId: ID) {
   //   const theAsset = this.assetQuery.getEntity(assetId);
   //   this.assetService.assignAssetToRoom(this.companyId, this.locationId, this.selectedRoomId, theAsset.roomId, assetId)

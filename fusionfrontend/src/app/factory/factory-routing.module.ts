@@ -65,6 +65,15 @@ const routes: Routes = [
     }
   },
   {
+    path: 'factorymanager/companies/:companyId/assets/rooms',
+    component: RoomsPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ROOM_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
     path: 'factorymanager/companies/:companyId/locations/:locationId/rooms',
     component: RoomsPageComponent,
     canActivate: [MainAuthGuardGuard],

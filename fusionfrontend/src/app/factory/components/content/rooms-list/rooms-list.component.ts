@@ -28,7 +28,7 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { Location as loc } from '@angular/common';
 import { Company } from 'src/app/store/company/company.model';
-import { RoomQuery } from '../../../../store/room/room.query';
+// import { RoomQuery } from '../../../../store/room/room.query';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -45,6 +45,8 @@ export class RoomsListComponent implements OnInit {
 
   @Input()
   locations: Location[];
+  @Input()
+  rooms: Room[];
 
   @Output()
   createRoomEvent = new EventEmitter<Room>();
@@ -62,13 +64,13 @@ export class RoomsListComponent implements OnInit {
   locationId: ID;
   selectedRoomId: ID;
 
-  editRoomModal = false;
   assignToRoomModal = false;
-  createRoomModal = false;
 
   ref: DynamicDialogRef;
   roomForm: FormGroup;
   menuActions: MenuItem[];
+
+  locationsAndRoomsMap = new Map();
 
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
@@ -76,7 +78,7 @@ export class RoomsListComponent implements OnInit {
   constructor(private locationQuery: LocationQuery,
               private companyQuery: CompanyQuery,
               private roomService: RoomService,
-              private roomQuery: RoomQuery,
+              // private roomQuery: RoomQuery,
               private assetQuery: AssetQuery,
               private routingLocation: loc,
               private factoryResolver: FactoryResolver,
@@ -94,6 +96,11 @@ export class RoomsListComponent implements OnInit {
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
+
+
+    this.rooms.forEach(room => {
+      this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+    })
 
     this.createRoomForm(this.formBuilder);
     this.menuActions = [
@@ -161,36 +168,10 @@ export class RoomsListComponent implements OnInit {
       });
   }
 
-  editRoom(roomId: ID) {
-    this.roomService.setActive(roomId);
-    this.activeRoom$ = this.roomQuery.selectActive();
-    this.editRoomModal = true;
-  }
-
-
-
-  closeEditModal($event: Room) {
-    if ($event) {
-      this.roomService.updateRoom(this.companyQuery.getActiveId(), $event)
-        .subscribe(data => {
-          console.log('[rooms-page.component] Patch request successful', data);
-        });
-      this.assetDetailsService.updateRoomNames($event);
-    }
-    this.editRoomModal = false;
-  }
-
-
-
-  closeCreateModal($event: Room) {
-    if ($event) {
-      this.roomService.createRoom(this.companyId, $event)
-        .subscribe(data => {
-          console.log('[rooms-page.component] Post request successful', data);
-        });
-    }
-    this.createRoomModal = false;
-  }
+  // editRoom(roomId: ID) {
+  //   this.roomService.setActive(roomId);
+  //   this.activeRoom$ = this.roomQuery.selectActive();
+  // }
 
   openAssignAssetModal(roomId: ID) {
     this.assignToRoomModal = true;

@@ -16,11 +16,9 @@ under the License.
 <div class="rooms-panel">
 
   <div class="manage">
-    <ng-template [ngIf]="location != null">
-      <button class="btn btn-sm btn-link" [routerLink]="getRoomsLink()">
-        <clr-icon class="home-icon" shape="home"></clr-icon>Manage rooms
-      </button>
-    </ng-template>
+    <button class="btn btn-sm btn-link" [routerLink]="getRoomsLink()">
+      <clr-icon class="home-icon" shape="home"></clr-icon>Manage rooms
+    </button>
     <button class="btn btn-sm btn-link" (click)="goBack()">
       <clr-icon shape="undo"></clr-icon> Go Back
     </button>
