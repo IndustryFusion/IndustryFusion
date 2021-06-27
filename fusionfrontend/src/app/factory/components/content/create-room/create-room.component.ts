@@ -27,9 +27,10 @@ import { FormGroup } from '@angular/forms';
 export class CreateRoomComponent implements OnInit {
 
   roomForm: FormGroup;
-  room: Room;
   rooms: Room[];
-  location: Location;
+  locations: Location[];
+  locationSelected: boolean;
+  editMode: boolean;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -39,8 +40,9 @@ export class CreateRoomComponent implements OnInit {
   ngOnInit() {
     this.roomForm = this.config.data.roomForm;
     this.rooms = this.config.data.rooms;
-    this.location = this.config.data.location;
-    this.room = this.config.data.room ? this.config.data.room : new Room();
+    this.locations = this.config.data.locations;
+    this.locationSelected = this.config.data.locationSelected;
+    this.editMode = this.config.data.editMode;
   }
 
   onCancel() {
@@ -48,6 +50,6 @@ export class CreateRoomComponent implements OnInit {
   }
 
   onSubmit() {
-    this.ref.close();
+    this.ref.close(<Room> this.roomForm.value);
   }
 }

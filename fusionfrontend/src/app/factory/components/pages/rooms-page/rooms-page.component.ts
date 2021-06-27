@@ -46,6 +46,7 @@ export class RoomsPageComponent implements OnInit {
   companyId: ID;
   locationId: ID;
   selectedRoomId: ID;
+  locationSelected: boolean;
 
   constructor(private locationQuery: LocationQuery,
               private companyQuery: CompanyQuery,
@@ -67,24 +68,27 @@ export class RoomsPageComponent implements OnInit {
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
     if (this.locationId) {
+      this.locationSelected = true;
       this.rooms$ = this.factoryResolver.allRoomsOfLocation$;
     } else {
+      this.locationSelected = false;
       this.rooms$ = this.factoryResolver.rooms$;
     }
   }
 
-  // deleteRoom(roomId: ID) {
+  deleteRoom(room: Room) {
+    console.log(room);
   //   const companyId = this.companyQuery.getActiveId();
   //   const locationId = this.locationQuery.getActiveId();
-  //   this.roomService.deleteRoom(companyId, locationId, roomId)
+  //   this.roomService.deleteRoom(companyId, locationId, room.id)
   //     .subscribe(() => {
-  //       console.log('[rooms-page.component] Delete request successful', roomId);
+  //       console.log('[rooms-page.component] Delete request successful', room.id);
   //     });
-  // }
+  }
 
   editRoom(event: Room) {
     if (event) {
-      this.roomService.updateRoom(this.companyQuery.getActiveId(), event)
+      this.roomService.updateRoom(this.companyId, event)
         .subscribe(data => {
           console.log('[rooms-page.component] Patch request successful', data);
         });
@@ -112,7 +116,4 @@ export class RoomsPageComponent implements OnInit {
   //   this.assignToRoomModal = false;
   // }
   //
-  // goBack() {
-  //   this.routingLocation.back();
-  // }
 }

@@ -28,7 +28,7 @@ under the License.
 
 <div>
     <div class="p-grid p-jc-between header-line">
-      <h3 class="table-header p-col" *ngIf="rooms.length > 0">  {{ rooms.length }} Rooms</h3>
+      <h3 class="table-header p-col" *ngIf="rooms.length > 0">{{ rooms.length | i18nPlural: roomMapping }}</h3>
       <app-create-button class="p-col create-button" text="Create Room" (createItem)="showCreateDialog()"></app-create-button>
     </div>
 
@@ -45,11 +45,8 @@ under the License.
 <!--    <app-create-button text="Create Room" (createItem)="showCreateDialog()"></app-create-button>-->
 <!--  </div>-->
 
-  <p-table class="list-container"
-           [value]="rooms"
-           [rowsPerPageOptions]="[5,10,50]"
-           [rows]="10"
-           [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
+  <p-table class="list-container" [value]="rooms" [rowsPerPageOptions]="[5,10,50]" [rows]="10" [paginator]="true"
+           [showCurrentPageReport]="true" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="5"></th>
@@ -73,8 +70,8 @@ under the License.
         <td [style.width.%]="20">{{locationsAndRoomsMap.get(room.id)}}</td>
         <td [style.width.%]="5">
           <div class="table-dropdown-menu">
-            <p-menu #menu [popup]="true" [model]="menuActions"></p-menu>
-            <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event);"
+            <p-menu #menu  [popup]="true" [model]="menuActions"></p-menu>
+            <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event); setActiveRow(room)"
                     class="table-dropdown-menu-button"></button>
           </div>
         </td>

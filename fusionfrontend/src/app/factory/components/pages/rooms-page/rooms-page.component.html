@@ -14,18 +14,9 @@ under the License.
 -->
   <app-rooms-list [locations]="(locations$ | async)"
                   [rooms]="(rooms$ | async)"
+                  [locationSelected] ="locationSelected"
                   (createRoomEvent)="createRoom($event)"
-                  (editRoomEvent)="editRoom($event)">
-
-    <!--[company]="(company$ | async)"-->
-<!--                  [locations]="(locations$ | async)"-->
-<!--                  [location]="(location$ | async)"-->
-<!--                  [rooms]="(rooms$ | async)"-->
-<!--                  [room]="(room$ | async)"-->
-<!--                  [assetSeries]="(assetSeries$ | async)"-->
-<!--                  [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"-->
-<!--                  (toolBarClickEvent)="toolbarClick($event)"-->
-<!--                  (selectedEvent)="selectTheAssets($event)"-->
-<!--                  (updateAssetEvent)="updateAssetData($event)"-->
+                  (editRoomEvent)="editRoom($event)"
+                  (deleteRoomEvent)="deleteRoom($event)">
   </app-rooms-list>
 

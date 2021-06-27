@@ -21,14 +21,9 @@ import { Asset } from 'src/app/store/asset/asset.model';
 import { Room } from 'src/app/store/room/room.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { RoomService } from 'src/app/store/room/room.service';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { ActivatedRoute } from '@angular/router';
-import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { Location as loc } from '@angular/common';
-import { Company } from 'src/app/store/company/company.model';
-// import { RoomQuery } from '../../../../store/room/room.query';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -47,18 +42,19 @@ export class RoomsListComponent implements OnInit {
   locations: Location[];
   @Input()
   rooms: Room[];
+  @Input()
+  locationSelected: boolean;
 
   @Output()
   createRoomEvent = new EventEmitter<Room>();
   @Output()
   editRoomEvent = new EventEmitter<Room>();
-
+  @Output()
+  deleteRoomEvent = new EventEmitter<Room>();
 
   isLoading$: Observable<boolean>;
-  company$: Observable<Company>;
   assets$: Observable<Asset[]>;
   rooms$: Observable<Room[]>;
-  activeRoom$: Observable<Room>;
 
   companyId: ID;
   locationId: ID;
@@ -70,6 +66,7 @@ export class RoomsListComponent implements OnInit {
   roomForm: FormGroup;
   menuActions: MenuItem[];
 
+  activeListItem: Room;
   locationsAndRoomsMap = new Map();
 
   roomMapping:
@@ -77,26 +74,18 @@ export class RoomsListComponent implements OnInit {
 
   constructor(private locationQuery: LocationQuery,
               private companyQuery: CompanyQuery,
-              private roomService: RoomService,
-              // private roomQuery: RoomQuery,
               private assetQuery: AssetQuery,
               private routingLocation: loc,
-              private factoryResolver: FactoryResolver,
-              private activatedRoute: ActivatedRoute,
               private assetDetailsService: AssetDetailsService,
               private assetService: AssetService,
               private formBuilder: FormBuilder,
               public dialogService: DialogService) { }
 
   ngOnInit() {
+    console.log(this.locationSelected)
     this.isLoading$ = this.companyQuery.selectLoading();
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.company$ = this.factoryResolver.company$;
-    this.rooms$ = this.factoryResolver.rooms$;
-    this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
-
 
     this.rooms.forEach(room => {
       this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
@@ -104,11 +93,14 @@ export class RoomsListComponent implements OnInit {
 
     this.createRoomForm(this.formBuilder);
     this.menuActions = [
-      { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-      { label: 'Move item', icon: 'pi pw-fw pi-sign-in', command: (_) => {  } },
-      { label: 'Delete item', icon: 'pi pw-fw pi-trash', command: (_) => {  } },
+      { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog() } },
+      { label: 'Assign Asset to room', icon: 'pi pw-fw pi-sign-in', command: (_) => {  } },
+      { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick() } },
     ];
+  }
 
+  setActiveRow(room?) {
+    this.activeListItem = room;
   }
 
   showCreateDialog() {
@@ -116,66 +108,57 @@ export class RoomsListComponent implements OnInit {
       data: {
         roomForm: this.roomForm,
         locations: this.locations,
-        rooms: this.rooms$,
+        rooms: this.rooms,
+        locationSelected: this.locationSelected,
+        editMode: false,
       },
       header: 'Add new room to factory',
       contentStyle: { 'padding-top': '1.5%' }
     });
 
     ref.onClose.subscribe((room: Room) => {
-      console.log(room);
-      // if (assetFormValues) {
-      //   this.assetUpdated(assetFormValues);
-      // }
+      this.createRoomEvent.emit(room);
+      this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
     });
   }
 
   showEditDialog() {
+    this.createRoomForm(this.formBuilder, this.activeListItem)
     const ref = this.dialogService.open(CreateRoomComponent, {
       data: {
         roomForm: this.roomForm,
         locations: this.locations,
-        rooms: this.rooms$,
+        rooms: this.rooms,
+        locationSelected: this.locationSelected,
+        editMode: true,
       },
       header: 'Edit room',
       contentStyle: { 'padding-top': '1.5%' }
     });
 
     ref.onClose.subscribe((room: Room) => {
-      console.log(room);
-      // if (assetFormValues) {
-      //   this.assetUpdated(assetFormValues);
-      // }
+      this.editRoomEvent.emit(room);
+      this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
     });
   }
 
-  createRoomForm(formBuilder: FormBuilder) {
+  createRoomForm(formBuilder: FormBuilder, room?: Room) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.roomForm = formBuilder.group({
       id: [null],
       description: ['', requiredTextValidator],
       name: ['', requiredTextValidator],
-      locationId: ['', requiredTextValidator]
+      locationId: [this.locationId ? this.locationId: '', requiredTextValidator],
+      assets: [[]],
+      assetIds: [[]]
     });
+    if(room) {
+      this.roomForm.patchValue(room);
+    }
   }
 
-  deleteRoom(roomId: ID) {
-    const companyId = this.companyQuery.getActiveId();
-    const locationId = this.locationQuery.getActiveId();
-    this.roomService.deleteRoom(companyId, locationId, roomId)
-      .subscribe(() => {
-        console.log('[rooms-page.component] Delete request successful', roomId);
-      });
-  }
-
-  // editRoom(roomId: ID) {
-  //   this.roomService.setActive(roomId);
-  //   this.activeRoom$ = this.roomQuery.selectActive();
-  // }
-
-  openAssignAssetModal(roomId: ID) {
-    this.assignToRoomModal = true;
-    this.selectedRoomId = roomId;
+  onDeleteClick() {
+    this.deleteRoomEvent.emit(this.activeListItem)
   }
 
   assignToRoom(assetId: ID) {
