@@ -16,7 +16,8 @@ under the License.
 <div class="if-wizard-wrapper">
   <div class="timeline">
     <ul class="clr-timeline clr-timeline-horizontal">
-      <ng-container *ngFor="let i of [1,2,3,4,5,6];">
+      <ng-container *ngFor="let i of [AssetWizardStep.START, AssetWizardStep.FINISHED, AssetWizardStep.CUSTOMER_DATA,
+                                      AssetWizardStep.SEMANTICS, AssetWizardStep.DIGITAL_NAMEPLATE];">
         <li class="clr-timeline-step">
           <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
           <clr-icon *ngIf="step < i" shape="circle" aria-label="Not started"></clr-icon>
@@ -62,18 +63,18 @@ under the License.
     </ul>
   </div>
 
-  <app-asset-wizard-step-start *ngIf="step === 1" (stepChange)="onStepChange($event)"
+  <app-asset-wizard-step-start *ngIf="step === AssetWizardStep.START" (stepChange)="onStepChange($event)"
                                (changeAssetSeries)="onChangeAssetSeries($event)"
                                [assetForm]="assetForm" [isAssetSeriesLocked]="isAssetSeriesLocked"
                                [relatedAssetSeries]="relatedAssetSeries" [relatedAssetType]="relatedAssetType"
                                [relatedCompany]="relatedCompany">
   </app-asset-wizard-step-start>
-  <app-asset-wizard-step-nameplate *ngIf="step === 2" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
   </app-asset-wizard-step-nameplate>
-  <app-asset-wizard-step-semantics *ngIf="step === 3" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-semantics *ngIf="step === AssetWizardStep.SEMANTICS" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
   </app-asset-wizard-step-semantics>
-  <app-asset-wizard-step-customer *ngIf="step === 4" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
   </app-asset-wizard-step-customer>
-  <app-asset-wizard-step-finished *ngIf="step === 5" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-finished *ngIf="step === AssetWizardStep.FINISHED" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
   </app-asset-wizard-step-finished>
 </div>

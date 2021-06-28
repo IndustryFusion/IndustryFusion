@@ -25,6 +25,7 @@ import { ItemOptionsMenuType } from './item-options-menu.type';
 export class ItemOptionsMenuComponent implements OnInit {
 
   @Input() type: ItemOptionsMenuType;
+  @Input() createItemName: string;
   @Output() createItem = new EventEmitter<void>();
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
@@ -57,9 +58,9 @@ export class ItemOptionsMenuComponent implements OnInit {
         ];
         break;
 
-      case ItemOptionsMenuType.CREATE_ASSET_EDIT_DELETE:
+      case ItemOptionsMenuType.CREATE_EDIT_DELETE:
         this.menuActions = [
-          { label: 'Create new Asset', icon: 'pi pi-fw pi-plus', command: (_) => { this.onCreateClick(); } },
+          { label: this.createItemName ? `Create new ${this.createItemName}` : 'Create', icon: 'pi pi-fw pi-plus', command: (_) => { this.onCreateClick(); } },
           editItem,
           deleteItem
         ];

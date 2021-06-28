@@ -52,6 +52,8 @@ export class AssetWizardComponent implements OnInit {
   public step = AssetWizardStep.START;
   public isAssetSeriesLocked = false;
 
+  public AssetWizardStep = AssetWizardStep;
+
   constructor(private assetSeriesResolver: AssetSeriesResolver,
               private assetSeriesQuery: AssetSeriesQuery,
               private assetResolver: AssetResolver,
