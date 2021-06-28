@@ -60,7 +60,8 @@ export class ItemOptionsMenuComponent implements OnInit {
 
       case ItemOptionsMenuType.CREATE_EDIT_DELETE:
         this.menuActions = [
-          { label: this.createItemName ? `Create new ${this.createItemName}` : 'Create', icon: 'pi pi-fw pi-plus', command: (_) => { this.onCreateClick(); } },
+          { label: this.createItemName ? `Create new ${this.createItemName}` : 'Create', icon: 'pi pi-fw pi-plus',
+            command: (_) => { this.onCreateClick(); } },
           editItem,
           deleteItem
         ];

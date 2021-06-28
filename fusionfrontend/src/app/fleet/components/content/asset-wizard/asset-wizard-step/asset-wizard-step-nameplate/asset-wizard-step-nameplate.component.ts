@@ -17,6 +17,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { SelectItem } from 'primeng/api';
+import { ProtectionClassService } from '../../../../../../services/protection-class.service';
 
 @Component({
   selector: 'app-asset-wizard-step-nameplate',
@@ -28,28 +29,18 @@ export class AssetWizardStepNameplateComponent implements OnInit {
   @Input() assetForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
 
-  public protectionClasses: SelectItem[];
+  public protectionClasses: SelectItem[] = [];
   public yearRange: string;
 
-  constructor() { }
+  constructor(private protectionClassService: ProtectionClassService ) { }
 
   ngOnInit(): void {
     this.yearRange = `${ new Date().getFullYear() - 8 }:${ new Date().getFullYear() + 2}`;
-    this.protectionClasses = [
-      { label: 'IP20', value: 'IP20' },
-      { label: 'IP21', value: 'IP21' },
-      { label: 'IP23', value: 'IP23' },
-      { label: 'IP40', value: 'IP40' },
-      { label: 'IP43', value: 'IP43' },
-      { label: 'IP44', value: 'IP44' },
-      { label: 'IP50', value: 'IP50' },
-      { label: 'IP54', value: 'IP54' },
-      { label: 'IP55', value: 'IP55' },
-      { label: 'IP56', value: 'IP56' },
-      { label: 'IP65', value: 'IP65' },
-      { label: 'IP67', value: 'IP67' },
-      { label: 'IP68', value: 'IP68' },
-    ];
+    this.protectionClassService.getProtectionClasses().subscribe(protectionClasses => {
+      protectionClasses.forEach(protectionClass => {
+        this.protectionClasses.push({ label: protectionClass, value: protectionClass });
+      });
+    });
   }
 
   onBack() {
