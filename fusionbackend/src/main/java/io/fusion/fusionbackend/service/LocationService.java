@@ -18,8 +18,10 @@ package io.fusion.fusionbackend.service;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Location;
+import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +32,13 @@ import java.util.Set;
 public class LocationService {
     private final LocationRepository locationRepository;
     private final CompanyService companyService;
+    private final RoomService roomService;
 
     @Autowired
-    public LocationService(LocationRepository locationRepository, CompanyService companyService) {
+    public LocationService(LocationRepository locationRepository, CompanyService companyService, @Lazy RoomService roomService) {
         this.locationRepository = locationRepository;
         this.companyService = companyService;
+        this.roomService = roomService;
     }
 
     public Set<Location> getLocationsByCompany(final Long companyId) {
@@ -55,8 +59,12 @@ public class LocationService {
 
         company.getLocations().add(location);
         location.setCompany(company);
+        Location newLocation = locationRepository.save(location);
 
-        return locationRepository.save(location);
+        Room noSpecificRoom = Room.builder().name("No specific room").description("No specific room").build();
+        roomService.createRoom(companyId, newLocation.getId(), noSpecificRoom);
+
+        return newLocation;
     }
 
     public Location updateLocation(final Long companyId, final Long locationId, final Location sourceLocation) {
