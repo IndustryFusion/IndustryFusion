@@ -13,22 +13,10 @@
  * under the License.
  */
 
-import { BaseEntity } from '../baseentity.model';
-import { ID } from '@datorama/akita';
+package io.fusion.fusionbackend.model.enums;
 
-export class Field extends BaseEntity {
-  name: string;
-  description: string;
-  label: string;
-  accuracy: number;
-  value: string;
-  unitId: ID;
-  unit: any;
-  thresholdType: FieldThresholdType;
-}
-
-export enum FieldThresholdType {
-  OPTIONAL = 'OPTIONAL',
-  MANDATORY = 'MANDATORY',
-  DISABLED = 'DISABLED',
+public enum FieldThresholdType {
+    OPTIONAL,
+    MANDATORY,
+    DISABLED
 }

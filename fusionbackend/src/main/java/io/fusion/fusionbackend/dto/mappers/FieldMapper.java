@@ -45,6 +45,7 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .accuracy(entity.getAccuracy())
                 .value(entity.getValue())
                 .unitId(EntityDtoMapper.getEntityId(entity.getUnit()))
+                .thresholdType(entity.getThresholdType())
                 .build();
     }
 
@@ -60,6 +61,7 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .accuracy(entity.getAccuracy())
                 .value(entity.getValue())
                 .unit(unitMapper.toDto(entity.getUnit(), false))
+                .thresholdType(entity.getThresholdType())
                 .build();
     }
 
@@ -83,6 +85,7 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .label(dto.getLabel())
                 .accuracy(dto.getAccuracy())
                 .value(dto.getValue())
+                .thresholdType(dto.getThresholdType())
                 .build();
     }
 

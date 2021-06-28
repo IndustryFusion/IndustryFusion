@@ -22,3 +22,15 @@
   line-height: $regular-line-height;
   color: #C1C1C1 !important;
 }
+
+.if-dialog-title {
+  @extend .if-label;
+
+  display: grid;
+  font-weight: bold;
+  font-size: $big-font-size;
+  line-height: $big-line-height;
+  color: $highlighted !important;
+  margin-top: 2.2rem;
+  padding-bottom: 1.1rem;
+}
