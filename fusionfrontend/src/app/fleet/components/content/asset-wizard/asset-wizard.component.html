@@ -16,8 +16,8 @@ under the License.
 <div class="if-wizard-wrapper">
   <div class="timeline">
     <ul class="clr-timeline clr-timeline-horizontal">
-      <ng-container *ngFor="let i of [AssetWizardStep.START, AssetWizardStep.FINISHED, AssetWizardStep.CUSTOMER_DATA,
-                                      AssetWizardStep.SEMANTICS, AssetWizardStep.DIGITAL_NAMEPLATE];">
+      <ng-container *ngFor="let i of [AssetWizardStep.START, AssetWizardStep.DIGITAL_NAMEPLATE, AssetWizardStep.SEMANTICS,
+                                    AssetWizardStep.CUSTOMER_DATA, AssetWizardStep.FINISHED];">
         <li class="clr-timeline-step">
           <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
           <clr-icon *ngIf="step < i" shape="circle" aria-label="Not started"></clr-icon>

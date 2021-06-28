@@ -76,7 +76,7 @@ export class AssetWizardComponent implements OnInit {
     if (this.isAssetSeriesLocked) {
       this.assetForm.get('assetSeriesId')?.disable();
       this.isLoading$.subscribe(() => {
-        this.prefillFormWithAssetSeries(this.config.data.prefilledAssetSeriesId);
+        this.prefillFormFromAssetSeries(this.config.data.prefilledAssetSeriesId);
       });
     }
 
@@ -91,11 +91,11 @@ export class AssetWizardComponent implements OnInit {
 
   onChangeAssetSeries(assetSeriesId: ID): void {
     if (!this.isAssetSeriesLocked) {
-      this.prefillFormWithAssetSeries(assetSeriesId);
+      this.prefillFormFromAssetSeries(assetSeriesId);
     }
   }
 
-  private prefillFormWithAssetSeries(assetSeriesId: ID): void {
+  private prefillFormFromAssetSeries(assetSeriesId: ID): void {
     const assetSeries = this.assetSeriesQuery.getEntity(assetSeriesId);
     if (assetSeries) {
       this.updateRelatedObjects(assetSeries);
