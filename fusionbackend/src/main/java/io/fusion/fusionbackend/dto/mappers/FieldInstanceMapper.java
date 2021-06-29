@@ -46,6 +46,9 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
                 .externalId(entity.getExternalId())
                 .sourceSensorLabel(entity.getSourceSensorLabel())
                 .value(entity.getValue())
+                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
+                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
+                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
                 .build();
     }
 
@@ -62,6 +65,9 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
                 .externalId(entity.getExternalId())
                 .sourceSensorLabel(entity.getSourceSensorLabel())
                 .value(entity.getValue())
+                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
+                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
+                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
                 .build();
     }
 

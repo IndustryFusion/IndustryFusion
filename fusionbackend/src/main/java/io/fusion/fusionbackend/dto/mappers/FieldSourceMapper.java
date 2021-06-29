@@ -49,6 +49,9 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .description(entity.getDescription())
                 .value(entity.getValue())
                 .register(entity.getRegister())
+                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
+                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
+                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
                 .build();
     }
 
@@ -66,6 +69,9 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .description(entity.getDescription())
                 .value(entity.getValue())
                 .register(entity.getRegister())
+                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
+                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
+                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
                 .build();
     }
 

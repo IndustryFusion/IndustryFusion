@@ -24,12 +24,13 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "field_instance")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldinstance")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldinstance")
 @Getter
 @Setter
 @SuperBuilder
@@ -42,6 +43,19 @@ public class FieldInstance extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "field_source_id", nullable = false)
     private FieldSource fieldSource;
+
+    // TODO: Validate with option of field->threshold_type
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "absolute_threshold_id")
+    private Threshold absoluteThreshold;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ideal_threshold_id")
+    private Threshold idealThreshold;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "critical_threshold_id")
+    private Threshold criticalThreshold;
 
     private String sourceSensorLabel;
     private String externalId;
@@ -64,6 +78,15 @@ public class FieldInstance extends BaseEntity {
         }
         if (sourceField.getSourceSensorLabel() != null) {
             setSourceSensorLabel(sourceField.getSourceSensorLabel());
+        }
+        if (sourceField.getAbsoluteThreshold() != null) {
+            setAbsoluteThreshold(sourceField.getAbsoluteThreshold());
+        }
+        if (sourceField.getIdealThreshold() != null) {
+            setIdealThreshold(sourceField.getIdealThreshold());
+        }
+        if (sourceField.getCriticalThreshold() != null) {
+            setCriticalThreshold(sourceField.getCriticalThreshold());
         }
     }
 }
