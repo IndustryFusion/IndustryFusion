@@ -18,7 +18,7 @@ under the License.
     <div class="wizard-title">Create or update Asset Type Template</div>
     <form [formGroup]="assetTypeTemplateForm">
       <div class="selection">
-        <div class="input-div dropdown-filter">
+        <div class="input-div">
           <label class="if-label">Select Asset type</label>
           <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
                       class="select-asset-input" filter="true" resetFilterOnHide="true"
@@ -43,7 +43,7 @@ under the License.
       </div>
 
       <div *ngIf="assetTypeTemplateForm.get('useExistingTemplate')?.value === true">
-        <div class="input-div dropdown-filter">
+        <div class="input-div">
           <label class="if-label">Select Asset Type Template</label>
           <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name"
                       optionValue="id" placeholder="Select Asset type template..."
