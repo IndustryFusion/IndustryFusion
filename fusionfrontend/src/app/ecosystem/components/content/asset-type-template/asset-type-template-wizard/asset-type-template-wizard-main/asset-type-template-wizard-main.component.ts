@@ -59,7 +59,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
 
   public static createAssetTypeTemplateForm(formBuilder: FormBuilder,
                                             assetTypeTemplate: AssetTypeTemplate,
-                                            preselectedAssetTypeIdOrNull: ID | null) {
+                                            prefilledAssetTypeIdOrNull: ID | null) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const assetTypeTemplateForm = formBuilder.group({
       id: [],
@@ -70,7 +70,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       publishedVersion: [],
       wasPublished: [false],
       useExistingTemplate: [false, Validators.required],
-      assetTypeId: [preselectedAssetTypeIdOrNull, Validators.required],
+      assetTypeId: [prefilledAssetTypeIdOrNull, Validators.required],
       assetTypeTemplateId: [],
       fieldTarget: [],
     });

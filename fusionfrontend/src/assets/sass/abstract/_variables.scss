@@ -24,6 +24,7 @@
   $inactive: $basic-grey;
   $regular-grey: #666666;
   $hover-grey: #333333;
+  $hover-grey-border: $basic-grey;
   $disabled-button: #E6E6E6;
 
   /** backgrounds **/
@@ -41,5 +42,3 @@
   /** radiobutton size **/
   $radiobutton-height: 12px;
   $radiobutton-width: 12px;
-
-

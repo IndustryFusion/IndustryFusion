@@ -16,7 +16,7 @@ under the License.
 <div class="list-header">
   <div class="list-header-item" [style.width.%]="5"></div>
   <div class="list-header-item" [style.width.%]="30" (click)="sort('name')">Asset type name <fa-icon *ngIf="sortField === 'name'" [icon]="faSort"></fa-icon></div>
-  <div class="list-header-item" [style.width.%]="20" (click)="sort('version')">Asset type templates <fa-icon *ngIf="sortField === 'version'" [icon]="faSort"></fa-icon></div>
-  <div class="list-header-item" [style.width.%]="20" (click)="sort('date')">Asset series <fa-icon *ngIf="sortField === 'date'" [icon]="faSort"></fa-icon></div>
-  <div class="list-header-item" [style.width.%]="20" (click)="sort('status')">Asset instances <fa-icon *ngIf="sortField === 'status'" [icon]="faSort"></fa-icon></div>
+  <div class="list-header-item" [style.width.%]="20" (click)="sort('templateCount')">Asset type templates <fa-icon *ngIf="sortField === 'templateCount'" [icon]="faSort"></fa-icon></div>
+  <div class="list-header-item" [style.width.%]="20" (click)="sort('assetSeriesCount')">Asset series <fa-icon *ngIf="sortField === 'assetSeriesCount'" [icon]="faSort"></fa-icon></div>
+  <div class="list-header-item" [style.width.%]="20" (click)="sort('assetCount')">Assets <fa-icon *ngIf="sortField === 'assetCount'" [icon]="faSort"></fa-icon></div>
 </div>

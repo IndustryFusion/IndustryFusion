@@ -21,7 +21,7 @@ export class AssetSeriesDetails extends BaseEntity {
    assetType: string;
    templateVersion: string;
    status: string;
-   instances: number;
+   assetCount: number;
    imageKey: string;
    manufacturer: string;
    category: string;

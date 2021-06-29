@@ -17,20 +17,6 @@
 @import 'abstract/variables';
 @import 'components/buttons';
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  background: #F8F8F8 0 0 no-repeat padding-box;
-  height: 100%;
-  padding: 0 80px;
-  overflow: auto;
-
-  .timeline {
-    margin-top: 86px;
-    width: 60%;
-    align-self: center;
-  }
-}
 
 .input-div {
   display: grid;
@@ -38,41 +24,6 @@
 }
 
 .content {
-
-  margin-top: 90px;
-
-  .title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 30px;
-    letter-spacing: 0;
-    color: #000000;
-    opacity: 1;
-  }
-
-  .subtitle {
-    margin-top: 80px;
-    text-align: left;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 30px;
-    letter-spacing: 0;
-    color: #000000;
-  }
-
-  .selection {
-    margin-top: 48px;
-    display: flex;
-    flex-direction: row;
-  }
-
-  .select-asset-input {
-    width: 50vw;
-  }
 
   .fields-list {
     margin-top: 40px;
@@ -97,7 +48,7 @@
     letter-spacing: 0;
     color: $highlighted;
 
-    background: #FFFFFF 0 0 no-repeat padding-box;
+    background: $basic-white 0 0 no-repeat padding-box;
     border: none !important;
     border-radius: 10px;
     opacity: 1;
@@ -109,12 +60,4 @@
   margin-bottom: 64px;
   display: flex;
   justify-content: flex-end;
-}
-
-:host ::ng-deep .clr-timeline {
-  padding-left: 5.0rem !important;
-}
-
-:host ::ng-deep clr-icon[shape="dot-circle"] {
-  color: $basic-black !important;
 }

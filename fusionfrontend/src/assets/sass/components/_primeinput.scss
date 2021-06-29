@@ -1,10 +1,11 @@
 @import 'base/typography';
 @import "abstract/variables";
 
-.p-dialog .p-inputtext {
+.p-inputtext {
   background: $basic-white 0 0% no-repeat padding-box;
   border: 2px solid $light-grey;
   border-radius: 10px;
+  box-shadow: none !important;
   opacity: 1;
 
   font-weight: normal;
@@ -14,20 +15,19 @@
   font-size: $bigger-font-size;
 
   &:hover {
-    border: 2px solid $basic-grey;
-    box-shadow: none !important;
+    border: 2px solid $hover-grey-border !important;
   }
   &:focus {
-    border: 2px solid $highlighted;
-    box-shadow: none !important;
+    border: 2px solid $highlighted !important;
   }
 }
 
-.p-dialog .p-inputtextarea {
+.p-inputtextarea {
   background: $basic-white 0 0% no-repeat padding-box;
   border: 2px solid $light-grey;
   border-radius: 10px;
   min-height: 85px;
+  box-shadow: none !important;
   opacity: 1;
 
   font-weight: normal;
@@ -37,12 +37,10 @@
   font-size: $bigger-font-size;
 
   &:hover {
-    border: 2px solid #95989A;
-    box-shadow: none !important;
+    border: 2px solid $hover-grey-border;
   }
   &:focus {
     border: 2px solid $highlighted;
-    box-shadow: none !important;
   }
 }
 

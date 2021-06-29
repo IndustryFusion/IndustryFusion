@@ -24,10 +24,7 @@ under the License.
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
     <div>
-      <button class="button-create" (click)="createItem()">
-        <clr-icon shape="plus"></clr-icon>
-        Create Asset Series
-      </button>
+      <app-create-button [text]="'Create Asset Series'" (createItem)="createAssetSeries()"></app-create-button>
     </div>
   </div>
   <div>
@@ -56,6 +53,7 @@ under the License.
       <app-asset-series-list-item *ngFor="let item of (items$ | async)" [item]="item"
                                   (itemSelected)="onItemSelect($event)"
                                   (itemDeselected)="onItemDeselect($event)"
+                                  (createAsset)="createAsset($event)"
                                   (itemEdit)="modifyItem($event)"
                                   (itemDelete)="deleteItem($event)"
                                   [selected]="isSelected(item.id)">

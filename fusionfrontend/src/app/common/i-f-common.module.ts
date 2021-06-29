@@ -14,6 +14,12 @@ import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 
 @NgModule({
@@ -31,13 +37,20 @@ import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
     CommonModule,
     BrowserModule,
     ClrIconModule,
+    FontAwesomeModule,
+    FormsModule,
     MenuModule,
     ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
+    RadioButtonModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
   ],
   exports: [
+    CommonModule,
     CreateButtonComponent,
     ItemOptionsMenuComponent,
     TrashButtonComponent,
@@ -45,7 +58,15 @@ import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
     EditButtonComponent,
     EditDetailsButtonComponent,
     LocationsMapComponent,
+    FontAwesomeModule,
+    FormsModule,
+    MenuModule,
+    ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
     AccuracyFormatPipe,
+    RadioButtonModule,
   ]
 })
 export class IFCommon {

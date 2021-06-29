@@ -21,14 +21,13 @@ import { ID } from '@datorama/akita';
 import { tap } from 'rxjs/operators';
 import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
-import { AssetSeriesStore } from '../../../../store/asset-series/asset-series.store';
-import { CompanyStore } from '../../../../store/company/company.store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesCreateComponent } from '../asset-series-create/asset-series-create.component';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
+import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -58,11 +57,9 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public companyStore: CompanyStore,
     public companyQuery: CompanyQuery,
     public assetSeriesService: AssetSeriesService,
     public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
-    public assetSeriesStore: AssetSeriesStore,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
     public  assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
     public unitsResolver: UnitsResolver,
@@ -85,8 +82,18 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     this.assetSeriesDetailsQuery.resetError();
   }
 
-  createItem() {
+  createAssetSeries() {
     this.startAssetSeriesWizard('');
+  }
+
+  createAsset(assetSeriesId: ID) {
+    this.dialogService.open(AssetWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        prefilledAssetSeriesId: assetSeriesId,
+      },
+      width: '75%'
+    });
   }
 
   onSort(field: string) {

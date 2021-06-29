@@ -14,10 +14,8 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
 // tslint:disable-next-line:max-line-length
@@ -66,10 +64,6 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { DropdownModule } from 'primeng/dropdown';
-import { RadioButtonModule } from 'primeng/radiobutton';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
@@ -77,8 +71,6 @@ import { QuantityTypeEditDialogDirective } from './components/content/quantity-t
 import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
 import { AssetTypeTemplateWizardWarningDialogComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { MenuModule } from 'primeng/menu';
-import { ButtonModule } from 'primeng/button';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
@@ -146,22 +138,13 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
   ],
   imports: [
     IFCommon,
-    CommonModule,
     EcosystemRoutingModule,
     ClarityModule,
-    FontAwesomeModule,
-    FormsModule,
     Ng2CompleterModule,
     ReactiveFormsModule,
     DialogModule,
     TableModule,
-    InputTextModule,
-    InputTextareaModule,
-    DropdownModule,
-    RadioButtonModule,
     CheckboxModule,
-    MenuModule,
-    ButtonModule
   ],
     exports: [
         EcosystemSubHeaderComponent,
