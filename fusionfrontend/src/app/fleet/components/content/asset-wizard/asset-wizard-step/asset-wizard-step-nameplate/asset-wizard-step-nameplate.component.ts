@@ -38,7 +38,8 @@ export class AssetWizardStepNameplateComponent implements OnInit {
     this.yearRange = `${ new Date().getFullYear() - 8 }:${ new Date().getFullYear() + 2}`;
     this.protectionClassService.getProtectionClasses().subscribe(protectionClasses => {
       protectionClasses.forEach(protectionClass => {
-        this.protectionClasses.push({ label: protectionClass, value: protectionClass });
+        this.protectionClasses.push({ label: protectionClass.toString(), value: protectionClass.toString() });
+        this.assetForm.get('protectionClass').setValue(this.assetForm.get('protectionClass')?.value);
       });
     });
   }
