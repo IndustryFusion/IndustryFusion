@@ -15,12 +15,23 @@
   opacity: 1;
 }
 
+// TODO: good naming?
+.if-label-normal-weight {
+  @extend .if-label;
+  font-weight: normal;
+}
+
 .if-label-small-header {
   @extend .if-label;
   font-weight: normal;
   font-size: $regular-font-size;
   line-height: $regular-line-height;
   color: #C1C1C1 !important;
+}
+
+.if-label-small {
+  @extend .if-label-small-header;
+  color: $inactive !important;
 }
 
 .if-dialog-title {

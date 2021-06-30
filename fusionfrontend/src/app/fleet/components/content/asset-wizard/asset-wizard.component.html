@@ -16,7 +16,8 @@ under the License.
 <div class="if-wizard-wrapper">
   <div class="timeline">
     <ul class="clr-timeline clr-timeline-horizontal">
-      <ng-container *ngFor="let i of [AssetWizardStep.START, AssetWizardStep.DIGITAL_NAMEPLATE, AssetWizardStep.SEMANTICS,
+      <ng-container *ngFor="let i of [AssetWizardStep.START, AssetWizardStep.DIGITAL_NAMEPLATE,
+                                    AssetWizardStep.METRICS_THRESHOLDS, AssetWizardStep.SEMANTICS,
                                     AssetWizardStep.CUSTOMER_DATA, AssetWizardStep.FINISHED];">
         <li class="clr-timeline-step">
           <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
@@ -71,6 +72,8 @@ under the License.
   </app-asset-wizard-step-start>
   <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
   </app-asset-wizard-step-nameplate>
+  <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  </app-asset-wizard-step-metrics-thresholds>
   <app-asset-wizard-step-semantics *ngIf="step === AssetWizardStep.SEMANTICS" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
   </app-asset-wizard-step-semantics>
   <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>

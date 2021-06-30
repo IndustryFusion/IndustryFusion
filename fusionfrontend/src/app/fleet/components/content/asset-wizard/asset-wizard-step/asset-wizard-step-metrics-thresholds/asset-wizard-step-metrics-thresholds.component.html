@@ -1,0 +1,251 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="field-dialog">
+  <form [formGroup]="assetForm">
+  <label class="if-dialog-title">Customize&nbsp;Metrics&nbsp;&amp;&nbsp;Thresholds</label>
+  <app-threshold-list-header></app-threshold-list-header>
+
+  <p-accordion>
+    <p-accordionTab>
+      <ng-template pTemplate="header">
+        <div class="p-grid">
+          <label class="if-label p-col-3">Custom Metric name</label>
+          <label class="if-label p-col-2">Metric name </label>
+          <label class="if-label-normal-weight p-col-2"> Data Source </label>
+          <label class="if-label-small-header p-col-1"> °C </label>
+          <label class="if-label-small-header p-col-3"> 0,00 </label>
+          <app-trash-button class="p-col-1" [disabled]="false"></app-trash-button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">Body Content</ng-template>
+    </p-accordionTab>
+
+    <p-accordionTab [selected]="true">
+
+      <ng-template pTemplate="header">
+        <div class="p-grid">
+          <label class="if-label p-col-3">Custom Metric name</label>
+          <label class="if-label p-col-2">Metric name </label>
+          <label class="if-label-normal-weight p-col-2"> Data Source </label>
+          <label class="if-label-small-header p-col-1"> °C </label>
+          <label class="if-label-small-header p-col-3"> 0,00 </label>
+          <app-trash-button class="p-col-1" [disabled]="true"></app-trash-button>
+        </div>
+      </ng-template>
+
+      <table id="customers" style="padding: 10px">
+        <thead>
+        <tr>
+          <th class="tree-line"></th>
+          <th class="tree-entry" style="width: 0.5rem;"></th>
+          <th style="width: 1rem;"></th>
+          <th style="width: 20%"></th>
+          <th style="width: 35%"></th>
+          <th style="width: 10%"></th>
+          <th style="width: 10%"></th>
+          <th style="width: 20%"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="height: 30px">
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td colspan="3"><label class="if-label-small">Absolute lower & upper limit *</label></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"> <div></div> </td>
+          <td class="tree-entry"> <div></div> </td>
+          <td></td>
+          <td class="label-thresholds">Absolute lower limit</td>
+          <td class="if-label-small">Short description</td>
+          <td>
+            <input class="threshold-input" type="text" pInputText [value]="-15">
+          </td>
+          <td>Unit</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"> <div></div> </td>
+          <td class="tree-entry"> <div></div> </td>
+          <td></td>
+          <td class="label-thresholds">Absolute upper limit</td>
+          <td class="if-label-small">Short description</td>
+          <td>
+            <input class="threshold-input" type="text" pInputText />
+          </td>
+          <td>Unit</td>
+          <td></td>
+        </tr>
+
+        <!--Ideal range (optional) -->
+
+        <tr style="height: 30px">
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td colspan="3"><label class="if-label-small">Ideal range (optional)</label></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"> <div></div> </td>
+          <td class="tree-entry"> <div></div> </td>
+          <td></td>
+          <td class="label-thresholds">Lower ideal threshold</td>
+          <td class="if-label-small">Short description</td>
+          <td>
+            <input class="threshold-input" type="text" pInputText [value]="-15">
+          </td>
+          <td>Unit</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"> <div></div> </td>
+          <td class="tree-entry"> <div></div> </td>
+          <td></td>
+          <td class="label-thresholds">Upper ideal threshold</td>
+          <td class="if-label-small">Short description</td>
+          <td>
+            <input class="threshold-input" type="text" pInputText />
+          </td>
+          <td>Unit</td>
+          <td></td>
+        </tr>
+
+        <!--Critical alert range (optional) -->
+
+
+        <tr style="height: 30px">
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td colspan="3"><label class="if-label-small">Critical alert range (optional)</label></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"><div></div></td>
+          <td class="tree-entry"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"> <div></div> </td>
+          <td class="tree-entry"> <div></div> </td>
+          <td></td>
+          <td class="label-thresholds">Lower critical alert threshold</td>
+          <td class="if-label-small">Short description</td>
+          <td>
+            <input class="threshold-input" type="text" pInputText [value]="-15">
+          </td>
+          <td>Unit</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="tree-line"> <div></div> </td>
+          <td class="tree-entry"> <div></div> </td>
+          <td></td>
+          <td class="label-thresholds">Upper critical alert threshold</td>
+          <td class="if-label-small">Short description</td>
+          <td>
+            <input class="threshold-input" type="text" pInputText />
+          </td>
+          <td>Unit</td>
+          <td></td>
+        </tr>
+
+        </tbody>
+      </table>
+
+    </p-accordionTab>
+  </p-accordion>
+  </form>
+</div>
+
+<!--
+<p-table [value]="products" id="customers" >
+  <ng-template pTemplate="header">
+    <tr>
+      <th class="test" style="width: 3px; padding:0px"></th>
+      <th class="test" style="width: 10px;"></th>
+      <th>Code</th>
+      <th>Name</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td class="tree" style="width: 3px; background: grey">
+        <div ></div>
+      </td>
+      <td class="tree" >
+        <div style="width: 10px; background: grey; height: 3px; "></div>
+      </td>
+      <td>{{product.value}}</td>
+      <td>{{product.name}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+-->

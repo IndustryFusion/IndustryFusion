@@ -13,11 +13,22 @@
  * under the License.
  */
 
-export enum AssetWizardStep {
-  START = 1,
-  DIGITAL_NAMEPLATE,
-  METRICS_THRESHOLDS,
-  SEMANTICS,
-  CUSTOMER_DATA,
-  FINISHED
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+
+@Component({
+  selector: 'app-asset-wizard-step-metrics-thresholds',
+  templateUrl: './asset-wizard-step-metrics-thresholds.component.html',
+  styleUrls: ['./asset-wizard-step-metrics-thresholds.component.scss']
+})
+export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
+
+  @Input() assetForm: FormGroup;
+  @Output() stepChange = new EventEmitter<number>();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

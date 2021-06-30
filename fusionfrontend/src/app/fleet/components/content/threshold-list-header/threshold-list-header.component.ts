@@ -13,11 +13,18 @@
  * under the License.
  */
 
-export enum AssetWizardStep {
-  START = 1,
-  DIGITAL_NAMEPLATE,
-  METRICS_THRESHOLDS,
-  SEMANTICS,
-  CUSTOMER_DATA,
-  FINISHED
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-threshold-list-header',
+  templateUrl: './threshold-list-header.component.html',
+  styleUrls: ['./threshold-list-header.component.scss']
+})
+export class ThresholdListHeaderComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

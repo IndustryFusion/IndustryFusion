@@ -42,6 +42,9 @@ import { AssetWizardStepFinishedComponent } from './components/content/asset-wiz
 import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 import { CalendarModule } from 'primeng/calendar';
+import { AccordionModule } from 'primeng/accordion';
+import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
+import { ThresholdListHeaderComponent } from './components/content/threshold-list-header/threshold-list-header.component';
 
 
 @NgModule({
@@ -67,6 +70,8 @@ import { CalendarModule } from 'primeng/calendar';
     AssetWizardStepSemanticsComponent,
     AssetWizardStepCustomerComponent,
     AssetWizardStepFinishedComponent,
+    AssetWizardStepMetricsThresholdsComponent,
+    ThresholdListHeaderComponent,
   ],
     imports: [
         IFCommon,
@@ -75,6 +80,7 @@ import { CalendarModule } from 'primeng/calendar';
         ReactiveFormsModule,
         TableModule,
         CalendarModule,
+        AccordionModule,
     ],
   exports: [
     FleetSubHeaderComponent,
