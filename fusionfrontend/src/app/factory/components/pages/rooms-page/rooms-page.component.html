@@ -29,7 +29,8 @@ under the License.
 </div>
 
 <div class="wrapper">
-  <h3 class="table-header" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>
+  <h3 *ngIf="(rooms$| async)?.length > 0"
+      class="table-header">  {{ (rooms$| async)?.length }} {{ (rooms$| async)?.length == 1 ? 'Room' : 'Rooms'}}</h3>
 
   <clr-datagrid>
     <clr-dg-column>Room ID</clr-dg-column>

@@ -35,7 +35,8 @@ public class LocationService {
     private final RoomService roomService;
 
     @Autowired
-    public LocationService(LocationRepository locationRepository, CompanyService companyService, @Lazy RoomService roomService) {
+    public LocationService(LocationRepository locationRepository, CompanyService companyService,
+                           @Lazy RoomService roomService) {
         this.locationRepository = locationRepository;
         this.companyService = companyService;
         this.roomService = roomService;

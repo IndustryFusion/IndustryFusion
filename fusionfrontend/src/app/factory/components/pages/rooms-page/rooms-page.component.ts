@@ -68,7 +68,7 @@ export class RoomsPageComponent implements OnInit {
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
     this.location$ = this.factoryResolver.location$;
-    this.rooms$ = this.factoryResolver.rooms$;
+    this.rooms$ = this.factoryResolver.allRoomsOfLocation$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
