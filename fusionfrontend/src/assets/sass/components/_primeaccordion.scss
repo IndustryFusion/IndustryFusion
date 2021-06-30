@@ -1,0 +1,40 @@
+@import 'base/typography';
+@import 'abstract/variables';
+
+.p-accordion .p-accordion-header-link {
+  border: none !important;
+}
+
+p-accordiontab a {
+  box-shadow: none !important;
+  background: none !important;
+  color: $basic-black !important;
+
+  padding: 0 !important;
+
+  &:hover {
+    color: $hover-grey !important;
+    text-decoration: none !important;
+  }
+}
+
+.p-accordion .p-accordion-content {
+  border: none;
+  background: none !important;
+}
+
+.p-accordion .p-accordion-toggle-icon {
+  position: absolute;
+  left: -1.3rem;
+
+  font-size: 0.8rem;
+
+  // overwrite to circled icons and change chevron directions
+  &.pi-chevron-right:before {
+    content: "\e929" !important;
+  }
+
+  &.pi-chevron-down:before {
+    content: "\e92b" !important;
+  }
+}
