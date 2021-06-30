@@ -23,28 +23,11 @@
 }
 
 .p-inputtextarea {
-  background: $basic-white 0 0% no-repeat padding-box;
-  border: 2px solid $light-grey;
-  border-radius: 10px;
+  @extend .p-inputtext;
   min-height: 85px;
-  box-shadow: none !important;
-  opacity: 1;
-
-  font-weight: normal;
-  letter-spacing: 0;
-  color: $highlighted;
-  text-align: left;
-  font-size: $bigger-font-size;
-
-  &:hover {
-    border: 2px solid $hover-grey-border;
-  }
-  &:focus {
-    border: 2px solid $highlighted;
-  }
 }
 
-.p-dialog .textarea-character-count {
+.textarea-character-count {
   font-size: 12px;
   font-weight: normal;
   padding-right: 18.0%;
