@@ -43,3 +43,11 @@
     font-size: 16px;
   }
 }
+
+.table-dropdown-menu-wide {
+  @extend .table-dropdown-menu;
+
+  ::ng-deep .p-menu {
+    width: 300px !important;
+  }
+}

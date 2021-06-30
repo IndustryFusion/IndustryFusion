@@ -21,7 +21,7 @@ import { Unit } from '../../../../../store/unit/unit.model';
 import { UnitQuery } from '../../../../../store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { Field } from '../../../../../store/field/field.model';
+import { Field, FieldThresholdType } from '../../../../../store/field/field.model';
 import { SelectItem } from 'primeng/api';
 import { DialogType } from 'src/app/common/models/dialog-type.model';
 
@@ -38,6 +38,7 @@ export class FieldDialogContentComponent implements OnInit {
   public accuracyItems: SelectItem[];
 
   public DialogType = DialogType;
+  public FieldThresholdType = FieldThresholdType;
 
   constructor(private unitQuery: UnitQuery,
               public ref: DynamicDialogRef,
@@ -72,6 +73,7 @@ export class FieldDialogContentComponent implements OnInit {
       field.description = this.fieldForm.get('description')?.value;
       field.unitId = this.fieldForm.get('unitId')?.value;
       field.accuracy = this.fieldForm.get('accuracy')?.value;
+      field.thresholdType = this.fieldForm.get('thresholdType')?.value;
       this.ref.close(field);
     }
   }

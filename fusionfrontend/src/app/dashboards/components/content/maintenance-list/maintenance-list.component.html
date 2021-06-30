@@ -68,7 +68,7 @@
     <div>
         <div *ngFor="let activeFilter of activeFilterSet" style="margin-bottom: 10px;">
             <div *ngIf="activeFilter.filterAttribute === assetType">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
+                <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.assetTypeFilterModal"
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid">
@@ -81,7 +81,7 @@
                 </button>
             </div>
             <div *ngIf="activeFilter.filterAttribute === manufacturer">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
+                <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.manufacturerFilterModal"
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid">
@@ -94,7 +94,7 @@
                 </button>
             </div>
             <div *ngIf="activeFilter.filterAttribute === factory">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
+                <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.factoryFilterModal"
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid" >
@@ -107,7 +107,7 @@
                 </button>
             </div>
             <div *ngIf="activeFilter.filterAttribute === maintenanceDue">
-                <p-dropdown class="dropdown-filter" [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
+                <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute" optionLabel="label"></p-dropdown>
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.maintenanceDueFilterModal"
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid">

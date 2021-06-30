@@ -14,10 +14,8 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
 // tslint:disable-next-line:max-line-length
@@ -138,11 +136,8 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
   ],
   imports: [
     IFCommon,
-    CommonModule,
     EcosystemRoutingModule,
     ClarityModule,
-    FontAwesomeModule,
-    FormsModule,
     Ng2CompleterModule,
     ReactiveFormsModule,
     TableModule,

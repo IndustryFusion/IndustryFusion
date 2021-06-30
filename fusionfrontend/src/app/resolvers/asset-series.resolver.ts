@@ -18,17 +18,23 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 import { AssetSeriesService } from '../store/asset-series/asset-series.service';
 import { CompanyService } from '../store/company/company.service';
+import { CompanyQuery } from '../store/company/company.query';
 
 @Injectable({ providedIn: 'root' })
 export class AssetSeriesResolver implements Resolve<any>{
   constructor(private companyService: CompanyService,
+              private companyQuery: CompanyQuery,
               private assetSeriesService: AssetSeriesService) { }
 
   resolve(route: ActivatedRouteSnapshot): void {
 
-    this.companyService.getCompanies().subscribe();
-    const companyId = route.parent.params.companyId;
-    this.companyService.setActive(companyId);
+    let companyId = this.companyQuery.getActiveId();
+    if (route.parent) {
+      this.companyService.getCompanies().subscribe();
+      companyId = route.parent.params.companyId;
+      this.companyService.setActive(companyId);
+    }
+
     if (companyId != null) {
       this.assetSeriesService.getAssetSeriesOfCompany(companyId).subscribe();
       if (route.paramMap.has('id')) {

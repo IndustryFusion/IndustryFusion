@@ -14,8 +14,7 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { ChartsModule } from 'ng2-charts';
 
@@ -45,7 +44,6 @@ import { PrecisionPipe } from '../pipes/precision.pipe';
 import { StatusComponent } from './components/content/status/status.component';
 import { LocationsListHeaderComponent } from './components/content/locations/locations-list-header/locations-list-header.component';
 import { LocationsListItemComponent } from './components/content/locations/locations-list-item/locations-list-item.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
 import { AssetsListItemComponent } from './components/content/assets-list/assets-list-item/assets-list-item.component';
 import { AssetsListHeaderComponent } from './components/content/assets-list/assets-list-header/assets-list-header.component';
@@ -102,12 +100,9 @@ import { IFCommon } from '../common/i-f-common.module';
   ],
     imports: [
         IFCommon,
-        CommonModule,
         FactoryRoutingModule,
         ClarityModule,
         ChartsModule,
-        FormsModule,
-        FontAwesomeModule,
         ReactiveFormsModule,
     ],
   exports: [

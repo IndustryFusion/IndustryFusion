@@ -14,8 +14,7 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from 'ng2-charts';
@@ -43,14 +42,12 @@ import { IFCommon } from '../common/i-f-common.module';
   ],
     imports: [
         IFCommon,
-        CommonModule,
         DashboardRoutingModule,
         ClarityModule,
         AgmCoreModule.forRoot({
             apiKey: environment.googleMapsClientId
         }),
         ChartsModule,
-        FormsModule,
         FontAwesomeModule,
         ReactiveFormsModule,
         ProgressBarModule,

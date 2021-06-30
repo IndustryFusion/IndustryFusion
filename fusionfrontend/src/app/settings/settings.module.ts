@@ -14,7 +14,6 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SettingsPageComponentComponent } from './components/pages/settings-page-component/settings-page-component.component';
 import { SettingsRoutingModule } from './settings-routing.module';
 
@@ -23,7 +22,6 @@ import { SettingsRoutingModule } from './settings-routing.module';
 @NgModule({
   declarations: [SettingsPageComponentComponent],
   imports: [
-    CommonModule,
     SettingsRoutingModule
   ]
 })

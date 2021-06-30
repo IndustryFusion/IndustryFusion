@@ -24,4 +24,11 @@ export class Field extends BaseEntity {
   value: string;
   unitId: ID;
   unit: any;
+  thresholdType: FieldThresholdType;
+}
+
+export enum FieldThresholdType {
+  OPTIONAL = 'OPTIONAL',
+  MANDATORY = 'MANDATORY',
+  DISABLED = 'DISABLED',
 }

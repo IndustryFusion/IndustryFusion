@@ -17,7 +17,7 @@ import { Directive, HostListener, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FieldDialogContentComponent } from './field-dialog-content/field-dialog-content.component';
-import { Field } from '../../../../store/field/field.model';
+import { Field, FieldThresholdType } from '../../../../store/field/field.model';
 import { FieldService } from '../../../../store/field/field.service';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 
@@ -70,6 +70,7 @@ export class FieldDialogDirective implements OnDestroy {
       description: ['', Validators.maxLength(255)],
       accuracy: [0],
       unitId: [1, Validators.required],
+      thresholdType: [FieldThresholdType.OPTIONAL, Validators.required]
     });
 
     if (this.type === DialogType.EDIT && this.item) {
