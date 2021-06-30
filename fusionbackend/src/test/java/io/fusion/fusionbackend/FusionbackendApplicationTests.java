@@ -327,7 +327,7 @@ class FusionbackendApplicationTests {
                 .extract().path("id");
 
         assertThat(locationIds)
-                .hasSize(12)
+                .hasSize(13)
                 .contains(roomWestStruumpFabId, roomEastStruumpFabId);
     }
 
