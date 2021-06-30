@@ -14,7 +14,7 @@ under the License.
 -->
 
 <div class="content">
-  <div class="title">
+  <div class="wizard-title">
     <div> Add Attributes </div>
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
@@ -28,7 +28,7 @@ under the License.
 
   <form [formGroup]="assetTypeTemplateForm">
     <div class="selection" *ngIf="shouldAddAttribute">
-      <div class="input-div dropdown-filter">
+      <div class="input-div">
         <label class="if-label">Select Attribute</label>
         <p-dropdown [options]="(fields | async)" formControlName="fieldTarget" optionLabel="name"
                     class="select-asset-input" filter="true" resetFilterOnHide="true"

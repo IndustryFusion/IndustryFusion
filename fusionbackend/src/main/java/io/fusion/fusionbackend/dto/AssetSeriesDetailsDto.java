@@ -29,7 +29,7 @@ public class AssetSeriesDetailsDto {
     private String assetType;
     private String templateVersion;
     private String status;
-    private Long instances;
+    private Long assetCount;
     private String imageKey;
     private String manufacturer;
     private String category;

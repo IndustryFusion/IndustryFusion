@@ -16,6 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { ID } from '@datorama/akita';
+import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-asset-series-list-item',
@@ -34,6 +35,9 @@ export class AssetSeriesListItemComponent implements OnInit {
   itemDeselected = new EventEmitter<ID>();
 
   @Output()
+  createAsset = new EventEmitter<ID>();
+
+  @Output()
   itemEdit = new EventEmitter<ID>();
 
   @Output()
@@ -44,10 +48,16 @@ export class AssetSeriesListItemComponent implements OnInit {
 
   shouldShowDeleteItem = false;
 
+  ItemOptionsMenuType = ItemOptionsMenuType;
+
   constructor() {
   }
 
   ngOnInit(): void {
+  }
+
+  createItem() {
+    this.createAsset.emit(this.item.id);
   }
 
   editItem() {
@@ -66,6 +76,4 @@ export class AssetSeriesListItemComponent implements OnInit {
   select() {
     !this.selected ? this.itemSelected.emit(this.item.id) : this.itemDeselected.emit(this.item.id);
   }
-
-
 }

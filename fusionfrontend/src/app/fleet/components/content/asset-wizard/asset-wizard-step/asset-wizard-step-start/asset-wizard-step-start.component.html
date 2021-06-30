@@ -1,0 +1,63 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="asset-wizard-step-start">
+  <form [formGroup]="assetForm">
+    <div class="content with-rows">
+        <div id="column left">
+          <div class="wizard-title">General Information</div>
+
+          <div class="selection">
+            <div class="input-div">
+              <label class="if-label">Select Asset Series Version</label>
+              <p-dropdown [options]="(assetSeries$ | async)" formControlName="assetSeriesId" optionLabel="name"
+                          optionValue="id" filter="true" resetFilterOnHide="true"
+                          placeholder="Select Asset Series Version..." (onChange)="onChangeAssetSeries($event.value)">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="input-div">
+            <label class="if-label">Asset name</label>
+            <input type="text" pInputText formControlName="name" />
+          </div>
+
+          <div class="input-div">
+            <label class="if-label">Description</label>
+            <textarea pInputTextarea formControlName="description"></textarea>
+            <label class="textarea-character-count if-label">{{ assetForm.get('description')?.value?.length }}/255</label>
+          </div>
+        </div>
+        <div id="column right">
+          <clr-icon shape="help" size="29"></clr-icon>
+          <span class="if-hint" > How will my asset be displayed in a factory?</span>
+          <div class="sample-asset-display">
+            <img src="/assets/img/IndustryFusion-hive.png" alt="asset-symbol">
+            <div>
+              <span class="wizard-icon-title">{{ assetForm.get('name')?.value }}</span>
+              <span class="if-detail-page-label">{{ relatedAssetSeries?.name }}</span>
+              <span class="if-detail-page-label">{{ relatedAssetType?.name }}</span>
+              <span class="if-detail-page-label">{{ relatedCompany?.name }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="footer">
+      <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="if-button button-confirm button-primary" [disabled]="!assetForm.get('assetSeriesId')?.value"
+              (click)="onStart()">Start</button>
+    </div>
+  </form>
+</div>

@@ -72,6 +72,8 @@ ToDo (IF-201): Build schlägt aktuell beim fusion-aggregator fehl
 ## Configure Intellij 
 
 1. Choose menu "File > Project Structure...". Assure that your local java 11 sdk is selected below "Project Settings > Project > Project SDK"
+1. In order to be able to review and comment on Github pull requests, you need to provide a *Personal Access Token*.
+   Therefore open the tab "Pull Requests" and choose "Log In with Token..." > "Generate". After having logged in, grant the "write:discussion" permission and hit "Generate token". Copy the generated token into IntelliJ.  
 
 ### fusionbackend (Spring Boot)
 
@@ -79,8 +81,8 @@ ToDo (IF-201): Build schlägt aktuell beim fusion-aggregator fehl
 1. Add "dev" to the section "Active profiles"    
 Example: 
    ![Run Configuration Backend](images/Intellij_run_configuration_backend.png)
-1. Copy `application.yaml` to `application-dev.yaml` and change the values of the following keys:
-    1. `keycloak.credentials.secret`: Set it to the secret value, which has been generated during the keycloak set up.
+1. You can create multiple config files based on the pattern `application-local*.yaml` to set different local values.
+1. Assure the key `keycloak.credentials.secret` is set to the secret value, which has been generated during the keycloak set up. Therefore, you can use a `application-local.yaml` file. **Take care to activate the "local" spring profile in the Intellij run configuration.** 
 
 #### Import Sample Data
 1. Start the fusionbackend run configuration. This creates the database schema based on Flyway migrations.
