@@ -11,7 +11,7 @@ export class AssetSeriesCreateFooterComponent implements OnInit {
 
   @Output() back = new EventEmitter<void>();
 
-  @Input() readyToTakeNextStep: () => boolean;
+  @Input() readyToTakeNextStep: boolean;
 
   @Output() nextStep = new EventEmitter<void>();
 

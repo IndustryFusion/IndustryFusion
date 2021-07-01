@@ -29,12 +29,19 @@ under the License.
     (updateTypeTemplate)="createAssetseriesOfAssetTypeTemplate($event)"
   >
   </app-asset-series-create-general-information>
-  <app-asset-series-create-connectivity-settings *ngIf="step === 2" >
+  <app-asset-series-create-connectivity-settings
+    *ngIf="step === 2" >
   </app-asset-series-create-connectivity-settings>
-  <app-asset-series-create-attributes *ngIf="step === 3" [assetSeries]="assetSeries">
+  <app-asset-series-create-attributes
+    *ngIf="step === 3"
+    [assetSeries]="assetSeries"
+    (valid)="attributesValid=$event">
   </app-asset-series-create-attributes>
-  <app-asset-series-create-metrics *ngIf="step === 4" [assetSeries]="assetSeries" >
+  <app-asset-series-create-metrics
+    *ngIf="step === 4"
+    [assetSeries]="assetSeries"
+    (valid)="metricsValid=$event">
   </app-asset-series-create-metrics>
-  <app-asset-series-create-footer [step]="step" (back)="back()" [readyToTakeNextStep]="readyToTakeNextStep"
+  <app-asset-series-create-footer [step]="step" (back)="back()" [readyToTakeNextStep]="readyToTakeNextStep()"
                                   (nextStep)="nextStep()" [toalSteps]="toalSteps"></app-asset-series-create-footer>
 </div>

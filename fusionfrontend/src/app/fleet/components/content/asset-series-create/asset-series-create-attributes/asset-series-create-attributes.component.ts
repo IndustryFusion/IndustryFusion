@@ -14,6 +14,7 @@ import { FieldType } from '../../../../../store/field-target/field-target.model'
 export class AssetSeriesCreateAttributesComponent implements OnInit {
 
   @Output() errorSignal = new EventEmitter<string>();
+  @Output() valid = new EventEmitter<boolean>();
   @Input() assetSeries: AssetSeries;
 
   fieldSourcesFormArray: FormArray;
@@ -61,6 +62,7 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
 
   private fillTable(fieldSources: FieldSource[]) {
     this.fieldSourcesFormArray = new FormArray([]);
+    this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {
       if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
         const formGroup = this.createFieldSourceGroup(i, fieldSources[i]);

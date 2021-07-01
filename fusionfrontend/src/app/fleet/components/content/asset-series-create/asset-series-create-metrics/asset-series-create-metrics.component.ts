@@ -15,6 +15,7 @@ import { FieldQuery } from '../../../../../store/field/field-query.service';
 export class AssetSeriesCreateMetricsComponent implements OnInit {
 
   @Output() errorSignal = new EventEmitter<string>();
+  @Output() valid = new EventEmitter<boolean>();
   @Input() assetSeries: AssetSeries;
 
   fieldSourcesFormArray: FormArray;
@@ -61,6 +62,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
 
   private fillTable(fieldSources: FieldSource[]) {
     this.fieldSourcesFormArray = new FormArray([]);
+    this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {
       if (fieldSources[i].fieldTarget.fieldType === FieldType.METRIC) {
         const formGroup = this.createFieldSourceGroup(i, fieldSources[i]);

@@ -36,6 +36,8 @@ export class AssetSeriesCreateComponent implements OnInit {
   toalSteps = 4;
   assetSeries: AssetSeries = new AssetSeries();
   mode: ViewMode = ViewMode.CREATE;
+  attributesValid: boolean;
+  metricsValid: boolean;
 
   constructor(private assetSeriesService: AssetSeriesService,
               fieldService: FieldService,
@@ -93,9 +95,18 @@ export class AssetSeriesCreateComponent implements OnInit {
     let result = true;
     switch (this.step) {
       case 1:
-        result = this.assetSeries?.name !== undefined;
+        result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0;
+        break;
+      case 2:
+        break;
+      case 3:
+        result = this.attributesValid;
+        break;
+      case 4:
+        result = this.metricsValid;
         break;
     }
+    console.log('readyToTakeNextStep ', this.step, ':', result);
     return result;
   }
 
