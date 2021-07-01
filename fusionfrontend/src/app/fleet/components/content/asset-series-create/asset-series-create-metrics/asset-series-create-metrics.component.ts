@@ -35,7 +35,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
       sourceSensorLabel: [],
       accuracy: [],
       name: [],
-      register: ['', [Validators.required, Validators.max(255)]],
+      register: ['', [Validators.max(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);
@@ -62,6 +62,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
 
   private fillTable(fieldSources: FieldSource[]) {
     this.fieldSourcesFormArray = new FormArray([]);
+    this.valid.emit(this.fieldSourcesFormArray.valid);
     this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {
       if (fieldSources[i].fieldTarget.fieldType === FieldType.METRIC) {

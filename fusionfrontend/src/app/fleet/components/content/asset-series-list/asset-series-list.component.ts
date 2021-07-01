@@ -152,7 +152,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   public startAssetSeriesWizard(idString: string) {
-    this.dialogService.open(AssetSeriesCreateComponent, {
+    const dynamicDialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
       data: {
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
@@ -160,6 +160,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
       width: '90%',
       header: 'AssetSeries Implementation',
     });
+    dynamicDialogRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
 }
