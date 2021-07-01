@@ -47,7 +47,7 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fieldSourceQuery.getAllFieldSource().subscribe(value => {
+    this.fieldSourceQuery.getAllFieldSources().subscribe(value => {
       if (!this.fieldSourcesFormArray || this.fieldSourcesFormArray?.length <= 0) {
         this.fillTable(value);
       }

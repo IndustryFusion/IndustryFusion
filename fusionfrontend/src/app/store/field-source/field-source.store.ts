@@ -25,7 +25,7 @@ const initialState = {
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'asset-series', resettable: true })
+@StoreConfig({ name: 'field-source', resettable: true })
 export class FieldSourceStore extends CachedStore<FieldSourceState, FieldSource> {
 
   constructor() {
