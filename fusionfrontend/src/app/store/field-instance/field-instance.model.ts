@@ -14,23 +14,20 @@
  */
 
 import { BaseEntity } from '../baseentity.model';
-import { FieldTarget } from '../field-target/field-target.model';
-import { Unit } from '../unit/unit.model';
 import { ID } from '@datorama/akita';
 import { Threshold } from '../threshold/threshold.model';
+import { FieldSource } from '../field-source/field-source.model';
 
-export class FieldSource  extends BaseEntity{
+export class FieldInstance extends BaseEntity{
 
   description: string;
+  externalId: string;
   name: string;
-  register: string;
   sourceSensorLabel: string;
   value: string;
-  assetSeriesId: ID;
-  fieldTargetId: ID;
-  fieldTarget: FieldTarget;
-  sourceUnitId: ID;
-  sourceUnit: Unit;
+  assetId: ID;
+  fieldSourceId: ID;
+  fieldSource: FieldSource;
   absoluteThresholdId: ID;
   absoluteThreshold: Threshold;
   idealThresholdId: ID;
