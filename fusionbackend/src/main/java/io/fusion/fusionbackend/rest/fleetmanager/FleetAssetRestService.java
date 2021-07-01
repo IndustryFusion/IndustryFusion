@@ -16,7 +16,9 @@
 package io.fusion.fusionbackend.rest.fleetmanager;
 
 import io.fusion.fusionbackend.dto.AssetDto;
+import io.fusion.fusionbackend.dto.FieldInstanceDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
+import io.fusion.fusionbackend.dto.mappers.FieldInstanceMapper;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,11 +39,15 @@ import java.util.Set;
 public class FleetAssetRestService {
     private final AssetService assetService;
     private final AssetMapper assetMapper;
+    private final FieldInstanceMapper fieldInstanceMapper;
 
     @Autowired
-    public FleetAssetRestService(AssetService assetService, AssetMapper assetMapper) {
+    public FleetAssetRestService(AssetService assetService,
+                                 AssetMapper assetMapper,
+                                 FieldInstanceMapper fieldInstanceMapper) {
         this.assetService = assetService;
         this.assetMapper = assetMapper;
+        this.fieldInstanceMapper = fieldInstanceMapper;
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/")
@@ -69,18 +76,67 @@ public class FleetAssetRestService {
                 false);
     }
 
-    @PostMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets")
-    public AssetDto createAssetFromAssetSeries(@PathVariable final Long companyId,
-                                               @PathVariable final Long assetSeriesId,
-                                               @RequestParam final Long targetCompanyId) {
-        return assetMapper.toDto(assetService.createAssetFromAssetSeries(companyId, assetSeriesId, targetCompanyId),
-                false);
-    }
-
     @PutMapping(path = "/companies/{companyId}/assets/{assetId}")
     public void moveAssetCompany(@PathVariable final Long companyId,
                                  @PathVariable final Long assetId,
                                  @RequestParam final Long targetCompanyId) {
         assetService.moveAssetCompany(companyId, assetId, targetCompanyId);
     }
+
+
+    // TODO: this should probably not be allowed
+    @PostMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")
+    public FieldInstanceDto createFieldInstance(@PathVariable final Long companyId,
+                                                @PathVariable final Long assetId,
+                                                @RequestBody final FieldInstanceDto fieldInstanceDto) {
+        return fieldInstanceMapper.toDto(
+                assetService.createFieldInstance(companyId, assetId,
+                        fieldInstanceMapper.toEntity(fieldInstanceDto)), false);
+    }
+
+    // TODO: what values should be allowed to be changed
+    @PatchMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
+    public FieldInstanceDto updateFieldInstance(@PathVariable final Long companyId,
+                                                @PathVariable final Long assetId,
+                                                @PathVariable final Long fieldInstanceId,
+                                                @RequestBody final FieldInstanceDto fieldInstanceDto) {
+        return fieldInstanceMapper.toDto(assetService.updateFieldInstance(companyId, assetId,
+                fieldInstanceId, fieldInstanceMapper.toEntity(fieldInstanceDto)), false);
+    }
+
+    // TODO: this should probably not be allowed
+    @DeleteMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
+    public void deleteFieldInstance(@PathVariable final Long companyId,
+                                    @PathVariable final Long assetId,
+                                    @PathVariable final Long fieldInstanceId) {
+        assetService.deleteFieldInstance(companyId, assetId, fieldInstanceId);
+    }
+
+    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}/fieldinstances")
+    public Set<FieldInstanceDto> getFieldInstancesCheckFullPath(@PathVariable final Long companyId,
+                                                                @PathVariable final Long locationId,
+                                                                @PathVariable final Long roomId,
+                                                                @PathVariable final Long assetId,
+                                                                @RequestParam(defaultValue = "false")
+                                                                final boolean embedChildren) {
+        return fieldInstanceMapper.toDtoSet(
+                assetService.getFieldInstancesCheckFullPath(companyId, locationId, roomId, assetId), embedChildren);
+    }
+
+    @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")
+    public Set<FieldInstanceDto> getFieldInstances(@PathVariable final Long companyId,
+                                                   @PathVariable final Long assetId,
+                                                   @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return fieldInstanceMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId), embedChildren);
+    }
+
+    @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
+    public FieldInstanceDto getFieldInstance(@PathVariable final Long companyId,
+                                             @PathVariable final Long assetId,
+                                             @PathVariable final Long fieldInstanceId,
+                                             @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return fieldInstanceMapper.toDto(
+                assetService.getFieldInstance(companyId, assetId, fieldInstanceId), embedChildren);
+    }
+
 }

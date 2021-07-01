@@ -37,7 +37,6 @@ import java.util.Set;
 @IsFactoryUser
 public class FactoryAssetFieldRestService {
     private final AssetService assetService;
-    private final FieldInstanceMapper fieldInstanceMapper;
     private final FieldDetailsMapper fieldDetailsMapper;
 
     @Autowired
@@ -45,37 +44,8 @@ public class FactoryAssetFieldRestService {
                                         FieldInstanceMapper fieldInstanceMapper,
                                         FieldDetailsMapper fieldDetailsMapper) {
         this.assetService = assetService;
-        this.fieldInstanceMapper = fieldInstanceMapper;
         this.fieldDetailsMapper = fieldDetailsMapper;
     }
-
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}/fieldinstances")
-    public Set<FieldInstanceDto> getFieldInstancesCheckFullPath(@PathVariable final Long companyId,
-                                                                @PathVariable final Long locationId,
-                                                                @PathVariable final Long roomId,
-                                                                @PathVariable final Long assetId,
-                                                                @RequestParam(defaultValue = "false")
-                                                                    final boolean embedChildren) {
-        return fieldInstanceMapper.toDtoSet(
-                assetService.getFieldInstancesCheckFullPath(companyId, locationId, roomId, assetId), embedChildren);
-    }
-
-    @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")
-    public Set<FieldInstanceDto> getFieldInstances(@PathVariable final Long companyId,
-                                                   @PathVariable final Long assetId,
-                                                   @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return fieldInstanceMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId), embedChildren);
-    }
-
-    @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
-    public FieldInstanceDto getFieldInstance(@PathVariable final Long companyId,
-                                             @PathVariable final Long assetId,
-                                             @PathVariable final Long fieldInstanceId,
-                                             @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return fieldInstanceMapper.toDto(
-                assetService.getFieldInstance(companyId, assetId, fieldInstanceId), embedChildren);
-    }
-
 
 
     // the FieldDetailsDto refers to the Field model in the Frontend
@@ -84,34 +54,5 @@ public class FactoryAssetFieldRestService {
                                                 @PathVariable final Long assetId,
                                                 @RequestParam(defaultValue = "true") final boolean embedChildren) {
         return fieldDetailsMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId), embedChildren);
-    }
-
-
-    // TODO: this should probably not be allowed
-    @PostMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")
-    public FieldInstanceDto createFieldInstance(@PathVariable final Long companyId,
-                                                @PathVariable final Long assetId,
-                                                @RequestBody final FieldInstanceDto fieldInstanceDto) {
-        return fieldInstanceMapper.toDto(
-                assetService.createFieldInstance(companyId, assetId,
-                        fieldInstanceMapper.toEntity(fieldInstanceDto)), false);
-    }
-
-    // TODO: what values should be allowed to be changed
-    @PatchMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
-    public FieldInstanceDto updateFieldInstance(@PathVariable final Long companyId,
-                                                @PathVariable final Long assetId,
-                                                @PathVariable final Long fieldInstanceId,
-                                                @RequestBody final FieldInstanceDto fieldInstanceDto) {
-        return fieldInstanceMapper.toDto(assetService.updateFieldInstance(companyId, assetId,
-                fieldInstanceId, fieldInstanceMapper.toEntity(fieldInstanceDto)), false);
-    }
-
-    // TODO: this should probably not be allowed
-    @DeleteMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
-    public void deleteField(@PathVariable final Long companyId,
-                            @PathVariable final Long assetId,
-                            @PathVariable final Long fieldInstanceId) {
-        assetService.deleteFieldInstance(companyId, assetId, fieldInstanceId);
     }
 }
