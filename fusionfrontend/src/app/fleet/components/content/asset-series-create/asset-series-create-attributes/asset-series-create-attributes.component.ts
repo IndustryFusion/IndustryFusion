@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { FieldSourceService } from '../../../../../store/field-source/field-source.service';
 import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
@@ -14,31 +13,29 @@ import { FieldType } from '../../../../../store/field-target/field-target.model'
 })
 export class AssetSeriesCreateAttributesComponent implements OnInit {
 
-  @Output() stepChange = new EventEmitter<number>();
   @Output() errorSignal = new EventEmitter<string>();
   @Input() assetSeries: AssetSeries;
-  @Input() assetSeries$: Observable<AssetSeries>;
 
   fieldSourcesFormArray: FormArray;
   $loading: Observable<boolean>;
-  private fieldSources: FieldSource[];
 
   constructor(private fieldSourceQuery: FieldSourceQuery,
-              private fieldSourceService: FieldSourceService,
               private formBuilder: FormBuilder) {
     this.$loading = this.fieldSourceQuery.selectLoading();
   }
 
-  private createFieldSourceGroup(fieldSource: FieldSource): FormGroup {
+  private createFieldSourceGroup(index: number, fieldSource: FieldSource): FormGroup {
     const group = this.formBuilder.group({
       id: [],
+      index: [],
       sourceUnitName: [],
       sourceSensorLabel: [],
       name: [],
-      value: ['', [Validators.required, Validators.max(255)]],
+      value: ['', [Validators.max(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);
+    group.get('index').patchValue(index);
     group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
     group.get('sourceSensorLabel').patchValue(fieldSource.sourceSensorLabel);
     group.get('name').patchValue(fieldSource.name);
@@ -47,13 +44,7 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fieldSourceQuery.getAllFieldSource().subscribe(value => {
-      if (!this.fieldSourcesFormArray || this.fieldSourcesFormArray?.length <= 0) {
-        this.fillTable(value);
-      }
-      this.fieldSources = value;
-    });
-    this.fieldSourceService.getFieldSourcesOfAssetSeries(this.assetSeries.companyId, this.assetSeries.id).subscribe();
+    this.fillTable(this.assetSeries.fieldSources);
   }
 
   removeValue(group: AbstractControl) {
@@ -62,18 +53,20 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
   }
 
   saveValue(group: AbstractControl) {
-    let fieldSource = this.fieldSources.find(fieldsource => fieldsource.id === group.get('id').value);
-    fieldSource = { ...fieldSource};
-    fieldSource.value = group.get('value').value;
-    this.fieldSourceService.editItem(this.assetSeries.companyId, fieldSource).subscribe();
+    const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('index').value] as FieldSource;
+    fieldSource.value  =  group.get('value').value;
+    this.assetSeries.fieldSources[group.get('index').value] = fieldSource;
     group.get('saved').patchValue(true);
   }
 
   private fillTable(fieldSources: FieldSource[]) {
-    const formGroups = fieldSources
-      .filter(fieldSource => fieldSource.fieldTarget.fieldType === FieldType.ATTRIBUTE)
-      .map(fieldSource => this.createFieldSourceGroup(fieldSource));
-    this.fieldSourcesFormArray = new FormArray(formGroups);
+    this.fieldSourcesFormArray = new FormArray([]);
+    for (let i = 0; i < fieldSources.length; i++) {
+      if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
+        const formGroup = this.createFieldSourceGroup(i, fieldSources[i]);
+        this.fieldSourcesFormArray.push(formGroup);
+      }
+    }
   }
 
   isEditMode(group: AbstractControl): boolean {

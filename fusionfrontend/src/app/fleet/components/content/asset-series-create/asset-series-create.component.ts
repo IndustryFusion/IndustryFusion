@@ -17,14 +17,10 @@ import { Component, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
-import { ActivatedRoute } from '@angular/router';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
-import { Observable } from 'rxjs';
-import { AssetSeriesComposedQuery } from '../../../../store/composed/asset-series-composed.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FieldSourceResolver } from '../../../../resolvers/field-source.resolver';
-import { FieldTargetService } from '../../../../store/field-target/field-target.service';
-import { FieldsResolver } from '../../../../resolvers/fields-resolver';
+import { ViewMode } from './view-mode.enum';
+import { FieldService } from '../../../../store/field/field.service';
 
 @Component({
   selector: 'app-asset-type-template-create',
@@ -32,57 +28,41 @@ import { FieldsResolver } from '../../../../resolvers/fields-resolver';
   styleUrls: ['./asset-series-create.component.scss']
 })
 export class AssetSeriesCreateComponent implements OnInit {
-  private readonly route: ActivatedRoute;
 
-  constructor(private assetSeriesService: AssetSeriesService,
-              private assetSeriesQuery: AssetSeriesComposedQuery,
-              private dialogConfig: DynamicDialogConfig,
-              private dynamicDialogRef: DynamicDialogRef,
-              private fieldSourceResolver: FieldSourceResolver,
-              private fieldTargetService: FieldTargetService,
-              private fieldsResolver: FieldsResolver
-  ) {
-    this.route = dialogConfig.data.route;
-    this.companyId = this.route.parent.snapshot.paramMap.get('companyId');
-    this.resolve();
-  }
-
-  step = 1;
   assetType: ID;
   companyId: ID;
   error: any;
+  step = 1;
   toalSteps = 4;
-  assetSeries$: Observable<AssetSeries>;
   assetSeries: AssetSeries = new AssetSeries();
+  mode: ViewMode = ViewMode.CREATE;
+
+  constructor(private assetSeriesService: AssetSeriesService,
+              fieldService: FieldService,
+              private dialogConfig: DynamicDialogConfig,
+              private dynamicDialogRef: DynamicDialogRef,
+  ) {
+    fieldService.getItems().subscribe();
+    this.companyId = dialogConfig.data.companyId;
+    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
+    if (assetSeriesId) {
+      this.mode = ViewMode.EDIT;
+    } else {
+      this.mode = ViewMode.CREATE;
+    }
+
+    if (this.mode === ViewMode.EDIT) {
+      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
+        .subscribe(assetSeries => this.assetSeries = assetSeries);
+    }
+  }
 
   ngOnInit() {
-    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
-    this.assetSeries$ = this.assetSeriesQuery.selectAssetSeries(assetSeriesId);
-    this.assetSeriesService.getItem(this.companyId, assetSeriesId)
-      .subscribe(assetSeries => this.assetSeries = assetSeries);
   }
 
-  onStepChange(step: number) {
-    this.error = undefined;
-    this.step = step;
-    if (this.assetSeries?.id || this.assetSeries?.assetTypeTemplateId) {
-      this.onUpdateAssetSeries();
-    }
-    const queryParams: any = { step: this.step};
-    if (this.assetSeries?.id) {
-      queryParams.id = this.assetSeries.id;
-    }
-  }
-
-  onUpdateAssetSeries() {
-    if (this.assetSeries.id) {
-      this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries)
-        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
-    } else {
-      this.assetSeries.companyId = this.companyId;
-      this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
-    }
+  createAssetseriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
+    this.assetSeriesService.getItemByAssetTypeTemplate(this.companyId, assetTypeTemplateId)
+          .subscribe(assetSeries => this.assetSeries = assetSeries);
   }
 
   onCloseError() {
@@ -95,7 +75,7 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   nextStep() {
     if (this.step === this.toalSteps) {
-      this.dynamicDialogRef.close();
+      this.saveAssetseries();
     } else {
       this.step++;
     }
@@ -119,11 +99,15 @@ export class AssetSeriesCreateComponent implements OnInit {
     return result;
   }
 
-  private resolve() {
-    this.fieldSourceResolver.resolve(this.route.snapshot);
-    if (this.assetSeries?.assetTypeTemplateId) {
-      this.fieldTargetService.getItemsByAssetTypeTemplate(this.assetSeries.assetTypeTemplateId).subscribe();
-    }
-    this.fieldsResolver.resolve().subscribe();
+
+  private saveAssetseries() {
+      if (this.assetSeries.id) {
+        this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
+        () => this.dynamicDialogRef.close()
+        );
+      } else {
+        this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
+          .subscribe(() => this.dynamicDialogRef.close());
+      }
   }
 }

@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -71,38 +73,32 @@ public class AssetSeriesService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public AssetSeries createAssetSeriesFromAssetTypeTemplate(final Long targetCompanyId,
-                                                              final Long assetTypeTemplateId) {
+    @Transactional
+    public AssetSeries createAssetSeries(final Long targetCompanyId, final Long assetTypeTemplateId,
+                                         final AssetSeries assetSeries) {
+
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
 
         final Company targetCompany = companyService.getCompany(targetCompanyId, false);
 
-        final AssetSeries newAssetSeries = AssetSeries.builder()
-                .build();
-        newAssetSeries.copyFrom(assetTypeTemplate);
+        assetSeries.setCompany(targetCompany);
+        assetSeries.setAssetTypeTemplate(assetTypeTemplate);
 
-        assetTypeTemplate.getAssetSeries().add(newAssetSeries);
-        newAssetSeries.setAssetTypeTemplate(assetTypeTemplate);
+        AssetSeries savedAssetSeries = assetSeriesRepository.save(assetSeries);
 
-        newAssetSeries.setCompany(targetCompany);
-        targetCompany.getAssetSeries().add(newAssetSeries);
-        final AssetSeries savedAssetSeries = assetSeriesRepository.save(newAssetSeries);
+        Set<FieldSource> fieldSourceSet = assetSeries.getFieldSources().stream().map(fieldSource -> {
+            fieldSource.setAssetSeries(savedAssetSeries);
+            Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
+            fieldSource.setSourceUnit(unit);
+            return fieldSource;
+        }).collect(Collectors.toSet());
 
-        List<FieldSource> newFieldSources = assetTypeTemplate.getFieldTargets().stream()
-                .map(fieldTarget ->
-                        FieldSource.builder()
-                                .fieldTarget(fieldTarget)
-                                .assetSeries(savedAssetSeries)
-                                .sourceUnit(fieldTarget.getField().getUnit())
-                                .build())
-                .collect(Collectors.toList());
-        List<FieldSource> savedFieldSources =
-                StreamSupport.stream(fieldSourceRepository.saveAll(newFieldSources).spliterator(), false)
-                        .collect(Collectors.toList());
-        newAssetSeries.getFieldSources().addAll(savedFieldSources);
+        Set<FieldSource> savedFieldSourceSet = new HashSet<>();
+        fieldSourceRepository.saveAll(fieldSourceSet).forEach(savedFieldSourceSet::add);
+        savedAssetSeries.setFieldSources(savedFieldSourceSet);
 
-        return newAssetSeries;
+        return savedAssetSeries;
     }
 
     public AssetSeries updateAssetSeries(final Long companyId, final Long assetSeriesId,

@@ -16,7 +16,8 @@ under the License.
   <div class="content">
     <div id="column left">
       <div class="title">Attributes</div>
-      <div id="data">
+      <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no attributes available</div>
+      <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
         <div class="header-row p-grid">
           <span class="if-label if-label-header p-col-3">Custom Attribute name</span>
           <span class="if-label if-label-header p-col-3">Attribute name</span>

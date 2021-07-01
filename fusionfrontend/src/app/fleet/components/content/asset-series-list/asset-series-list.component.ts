@@ -26,7 +26,6 @@ import { AssetSeriesCreateComponent } from '../asset-series-create/asset-series-
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
 
 @Component({
@@ -153,29 +152,13 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   public startAssetSeriesWizard(idString: string) {
-    const dialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
+    this.dialogService.open(AssetSeriesCreateComponent, {
       data: {
-        route: this.route,
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
       },
       width: '90%',
     });
-
-    dialogRef.onClose.subscribe((value: AssetSeries) => {
-      if (value) {
-        this.updateAssetSeries(value);
-      }
-    });
   }
 
-  updateAssetSeries(assetSeries: AssetSeries) {
-    if (assetSeries.id) {
-      this.assetSeriesService.editItem(assetSeries.id, assetSeries)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    } else {
-      this.assetSeriesService.createItem(assetSeries.companyId, assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    }
-  }
 }
