@@ -23,7 +23,7 @@ import { ViewMode } from './view-mode.enum';
 import { FieldService } from '../../../../store/field/field.service';
 
 @Component({
-  selector: 'app-asset-type-template-create',
+  selector: 'app-asset-series-create',
   templateUrl: './asset-series-create.component.html',
   styleUrls: ['./asset-series-create.component.scss']
 })

@@ -18,12 +18,12 @@ under the License.
       <div class="title">Metrics</div>
       <div id="data">
         <div class="p-grid header-row">
-          <span class="if-label if-label-header p-col-2">Custom Metric name</span>
-          <span class="if-label if-label-header p-col-2">Metric name</span>
-          <span class="if-label if-label-header p-col">Data source</span>
-          <span class="if-label if-label-header p-col-1">Unit</span>
-          <span class="if-label if-label-header p-col-1">Accuracy</span>
-          <span class="if-label if-label-header p-col"></span>
+          <span class="if-label-small-header p-col-2">Custom Metric name</span>
+          <span class="if-label-small-header p-col-2">Metric name</span>
+          <span class="if-label-small-header p-col">Data source</span>
+          <span class="if-label-small-header p-col-1">Unit</span>
+          <span class="if-label-small-header p-col-1">Accuracy</span>
+          <span class="if-label-small-header p-col"></span>
         </div>
         <div *ngFor="let fieldSource of fieldSourcesFormArray?.controls;" class="p-grid attribute-row">
           <ng-container [formGroup]="fieldSource">

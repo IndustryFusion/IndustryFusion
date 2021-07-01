@@ -158,6 +158,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
         assetSeriesId: idString,
       },
       width: '90%',
+      header: 'AssetSeries Implementation',
     });
   }
 

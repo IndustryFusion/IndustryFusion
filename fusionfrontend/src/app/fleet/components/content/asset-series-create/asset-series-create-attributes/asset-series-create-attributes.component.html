@@ -19,11 +19,11 @@ under the License.
       <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no attributes available</div>
       <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
         <div class="header-row p-grid">
-          <span class="if-label if-label-header p-col-3">Custom Attribute name</span>
-          <span class="if-label if-label-header p-col-3">Attribute name</span>
-          <span class="if-label if-label-header p-col">Value</span>
-          <span class="if-label if-label-header p-col-1">Unit</span>
-          <span class="if-label if-label-header p-col"></span>
+          <span class="if-label-small-header p-col-3">Custom Attribute name</span>
+          <span class="if-label-small-header p-col-3">Attribute name</span>
+          <span class="if-label-small-header p-col">Value</span>
+          <span class="if-label-small-header p-col-1">Unit</span>
+          <span class="if-label-small-header p-col"></span>
         </div>
         <div *ngFor="let fieldSource of fieldSourcesFormArray.controls;" class="p-grid attribute-row">
           <ng-container [formGroup]="fieldSource">

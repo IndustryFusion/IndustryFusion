@@ -33,12 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -87,11 +84,10 @@ public class AssetSeriesService {
 
         AssetSeries savedAssetSeries = assetSeriesRepository.save(assetSeries);
 
-        Set<FieldSource> fieldSourceSet = assetSeries.getFieldSources().stream().map(fieldSource -> {
+        Set<FieldSource> fieldSourceSet = assetSeries.getFieldSources().stream().peek(fieldSource -> {
             fieldSource.setAssetSeries(savedAssetSeries);
             Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
             fieldSource.setSourceUnit(unit);
-            return fieldSource;
         }).collect(Collectors.toSet());
 
         Set<FieldSource> savedFieldSourceSet = new HashSet<>();
@@ -105,7 +101,12 @@ public class AssetSeriesService {
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
+        sourceAssetSeries.getFieldSources().forEach(fieldSource -> {
+            updateFieldSource(companyId, assetSeriesId, fieldSource.getId(), fieldSource);
+        });
+
         targetAssetSeries.copyFrom(sourceAssetSeries);
+
 
         return targetAssetSeries;
     }
