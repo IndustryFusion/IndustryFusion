@@ -36,8 +36,11 @@ public class FieldSourceDto {
     private String value;
     private String register;
     private Long absoluteThresholdId;
+    private ThresholdDto absoluteThreshold;
     private Long idealThresholdId;
+    private ThresholdDto idealThreshold;
     private Long criticalThresholdId;
+    private ThresholdDto criticalThreshold;
 
     @JsonCreator
     public FieldSourceDto() {

@@ -16,12 +16,16 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.sun.xml.bind.v2.model.core.ID;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -33,6 +37,12 @@ public class AssetDto extends BaseAssetDto {
     private Long companyId;
     private Long assetSeriesId;
     private Long roomId;
+
+    @Builder.Default
+    private Set<Long> fieldInstanceIds = new LinkedHashSet<>();
+
+    @Builder.Default
+    private Set<FieldInstanceDto> fieldInstances = new LinkedHashSet<>();
 
     private String externalId;
     private String controlSystemType;

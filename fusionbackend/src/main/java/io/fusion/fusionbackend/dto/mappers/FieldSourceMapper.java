@@ -28,11 +28,15 @@ import java.util.stream.Collectors;
 public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSourceDto> {
     private final FieldTargetMapper fieldTargetMapper;
     private final UnitMapper unitMapper;
+    private final ThresholdMapper thresholdMapper;
 
     @Autowired
-    public FieldSourceMapper(FieldTargetMapper fieldTargetMapper, UnitMapper unitMapper) {
+    public FieldSourceMapper(FieldTargetMapper fieldTargetMapper,
+                             UnitMapper unitMapper,
+                             ThresholdMapper thresholdMapper) {
         this.fieldTargetMapper = fieldTargetMapper;
         this.unitMapper = unitMapper;
+        this.thresholdMapper = thresholdMapper;
     }
 
     private FieldSourceDto toDtoShallow(FieldSource entity) {
@@ -69,9 +73,9 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .description(entity.getDescription())
                 .value(entity.getValue())
                 .register(entity.getRegister())
-                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
-                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
-                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
+                .absoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false))
+                .idealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false))
+                .criticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false))
                 .build();
     }
 

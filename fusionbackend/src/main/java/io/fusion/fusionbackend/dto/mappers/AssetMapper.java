@@ -28,12 +28,15 @@ import java.util.stream.Collectors;
 @Component
 public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     private final BaseAssetMapper baseAssetMapper;
+    private final FieldInstanceMapper fieldInstanceMapper;
     private final RoomService roomService;
 
     @Autowired
     public AssetMapper(BaseAssetMapper baseAssetMapper,
+                       FieldInstanceMapper fieldInstanceMapper,
                        RoomService roomService) {
         this.baseAssetMapper = baseAssetMapper;
+        this.fieldInstanceMapper = fieldInstanceMapper;
         this.roomService = roomService;
     }
 
@@ -45,6 +48,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .id(entity.getId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
+                .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
                 .externalId(entity.getExternalId())
                 .controlSystemType(entity.getControlSystemType())
@@ -70,7 +74,36 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     }
 
     private AssetDto toDtoDeep(final Asset entity) {
-        return toDtoShallow(entity);
+        if (entity == null) {
+            return null;
+        }
+        AssetDto dto = AssetDto.builder()
+                .id(entity.getId())
+                .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
+                .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
+                .fieldInstances(this.fieldInstanceMapper.toDtoSet(entity.getFieldInstances(), true))
+                .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
+                .externalId(entity.getExternalId())
+                .controlSystemType(entity.getControlSystemType())
+                .hasGateway(entity.getHasGateway())
+                .gatewayConnectivity(entity.getGatewayConnectivity())
+                .guid(entity.getGuid())
+                .ceCertified(entity.getCeCertified())
+                .serialNumber(entity.getSerialNumber())
+                .constructionDate(entity.getConstructionDate())
+                .protectionClass(entity.getProtectionClass())
+                .handbookKey(entity.getHandbookKey())
+                .videoKey(entity.getVideoKey())
+                .installationDate(entity.getInstallationDate())
+                .build();
+
+        if (entity.getRoom() != null) {
+            dto.setRoomId(entity.getRoom().getId());
+        }
+
+        baseAssetMapper.copyToDto(entity, dto);
+
+        return dto;
     }
 
     @Override

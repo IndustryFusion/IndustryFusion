@@ -27,10 +27,13 @@ import java.util.stream.Collectors;
 @Component
 public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, FieldInstanceDto> {
     private final FieldSourceMapper fieldSourceMapper;
+    private final ThresholdMapper thresholdMapper;
 
     @Autowired
-    public FieldInstanceMapper(FieldSourceMapper fieldSourceMapper) {
+    public FieldInstanceMapper(FieldSourceMapper fieldSourceMapper,
+                               ThresholdMapper thresholdMapper) {
         this.fieldSourceMapper = fieldSourceMapper;
+        this.thresholdMapper = thresholdMapper;
     }
 
     private FieldInstanceDto toDtoShallow(FieldInstance entity) {
@@ -65,9 +68,9 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
                 .externalId(entity.getExternalId())
                 .sourceSensorLabel(entity.getSourceSensorLabel())
                 .value(entity.getValue())
-                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
-                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
-                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
+                .absoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false))
+                .idealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false))
+                .criticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false))
                 .build();
     }
 
