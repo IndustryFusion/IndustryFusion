@@ -82,18 +82,13 @@ public class AssetSeriesService {
         assetSeries.setCompany(targetCompany);
         assetSeries.setAssetTypeTemplate(assetTypeTemplate);
 
-        AssetSeries savedAssetSeries = assetSeriesRepository.save(assetSeries);
-
-        Set<FieldSource> fieldSourceSet = assetSeries.getFieldSources().stream().peek(fieldSource -> {
-            fieldSource.setAssetSeries(savedAssetSeries);
+        assetSeries.getFieldSources().stream().peek(fieldSource -> {
+            fieldSource.setAssetSeries(assetSeries);
             Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
             fieldSource.setSourceUnit(unit);
-        }).collect(Collectors.toSet());
+        });
 
-        Set<FieldSource> savedFieldSourceSet = new HashSet<>();
-        fieldSourceRepository.saveAll(fieldSourceSet).forEach(savedFieldSourceSet::add);
-        savedAssetSeries.setFieldSources(savedFieldSourceSet);
-
+        AssetSeries savedAssetSeries = assetSeriesRepository.save(assetSeries);
         return savedAssetSeries;
     }
 
