@@ -76,7 +76,11 @@ public class AssetSeriesRestService {
     public AssetSeriesDto createAssetSeriesFromAssetTypeTemplate(@PathVariable final Long companyId,
                                                                  @RequestBody final AssetSeriesDto assetSeriesDto) {
         return assetSeriesMapper.toDto(
-                assetSeriesService.createAssetSeries(companyId, assetSeriesDto.getAssetTypeTemplateId(), assetSeriesMapper.toEntity(assetSeriesDto)),
+                assetSeriesService.createAssetSeries(
+                        companyId,
+                        assetSeriesDto.getAssetTypeTemplateId(),
+                        assetSeriesMapper.toEntity(assetSeriesDto)
+                ),
                 false);
     }
 

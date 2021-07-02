@@ -61,7 +61,7 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
 
     private AssetSeriesDto toDtoDeep(final AssetSeries entity) {
         AssetSeriesDto assetSeriesDto = toDtoShallow(entity);
-        if (assetSeriesDto.getFieldSources() != null){
+        if (assetSeriesDto.getFieldSources() != null) {
             Set<FieldSourceDto> fieldSourceDtos = fieldSourceMapper.toDtoSet(entity.getFieldSources(), true);
             assetSeriesDto.setFieldSources(fieldSourceDtos);
         }
@@ -92,7 +92,7 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
 
         baseAssetMapper.copyToEntity(dto, entity);
 
-        if (dto.getFieldSources() != null){
+        if (dto.getFieldSources() != null) {
             Set<FieldSource> fieldSources = fieldSourceMapper.toEntitySet(dto.getFieldSources());
             entity.setFieldSources(fieldSources);
         }
