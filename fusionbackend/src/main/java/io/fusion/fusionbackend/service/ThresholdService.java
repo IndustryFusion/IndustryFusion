@@ -55,6 +55,17 @@ public class ThresholdService {
         return targetThreshold;
     }
 
+    public Threshold initThresholdDraft(Threshold sourceThreshold) {
+        if (sourceThreshold == null) {
+            return null;
+        }
+
+        return Threshold.builder()
+                .valueUpper(sourceThreshold.getValueUpper())
+                .valueLower(sourceThreshold.getValueLower())
+                .build();
+    }
+
     public void deleteThreshold(final Long thresholdId) {
         final Threshold threshold = getThreshold(thresholdId);
 

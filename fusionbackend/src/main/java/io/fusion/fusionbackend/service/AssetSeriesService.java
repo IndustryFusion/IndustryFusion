@@ -24,7 +24,9 @@ import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.repository.AssetSeriesRepository;
 import io.fusion.fusionbackend.repository.FieldSourceRepository;
 import org.slf4j.Logger;
@@ -44,6 +46,7 @@ public class AssetSeriesService {
     private final AssetSeriesRepository assetSeriesRepository;
     private final AssetTypeTemplateService assetTypeTemplateService;
     private final FieldSourceRepository fieldSourceRepository;
+    private final FieldSourceService fieldSourceService;
     private final CompanyService companyService;
     private final UnitService unitService;
 
@@ -53,11 +56,13 @@ public class AssetSeriesService {
     public AssetSeriesService(AssetSeriesRepository assetSeriesRepository,
                               AssetTypeTemplateService assetTypeTemplateService,
                               FieldSourceRepository fieldSourceRepository,
+                              FieldSourceService fieldSourceService,
                               CompanyService companyService,
                               UnitService unitService) {
         this.assetSeriesRepository = assetSeriesRepository;
         this.assetTypeTemplateService = assetTypeTemplateService;
         this.fieldSourceRepository = fieldSourceRepository;
+        this.fieldSourceService = fieldSourceService;
         this.companyService = companyService;
         this.unitService = unitService;
     }
@@ -103,6 +108,29 @@ public class AssetSeriesService {
         newAssetSeries.getFieldSources().addAll(savedFieldSources);
 
         return newAssetSeries;
+    }
+
+    public Asset initAssetDraft(final Long companyId, final Long assetSeriesId) {
+        final AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
+        final Company company = assetSeries.getCompany();
+
+        final Asset newAsset = Asset.builder()
+                .ceCertified(assetSeries.getCeCertified())
+                .handbookKey(assetSeries.getHandbookKey())
+                .protectionClass(assetSeries.getProtectionClass())
+                .videoKey(assetSeries.getVideoKey())
+                .build();
+        newAsset.copyFrom(assetSeries);
+
+        newAsset.setAssetSeries(assetSeries);
+        newAsset.setCompany(company);
+
+        List<FieldInstance> newFieldInstances = assetSeries.getFieldSources().stream()
+                .map(fieldSourceService::initFieldInstanceDraft)
+                .collect(Collectors.toList());
+        newAsset.getFieldInstances().addAll(newFieldInstances);
+
+        return newAsset;
     }
 
     public AssetSeries updateAssetSeries(final Long companyId, final Long assetSeriesId,

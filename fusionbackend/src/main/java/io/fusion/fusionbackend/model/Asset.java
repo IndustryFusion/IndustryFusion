@@ -114,5 +114,8 @@ public class Asset extends BaseAsset {
         if (sourceAsset.getRoom() != null) {
             setRoom(sourceAsset.getRoom());
         }
+        if (sourceAsset.getFieldInstances() != null) {
+            setFieldInstances(sourceAsset.getFieldInstances());
+        }
     }
 }

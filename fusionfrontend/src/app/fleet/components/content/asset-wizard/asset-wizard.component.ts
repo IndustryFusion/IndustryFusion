@@ -33,6 +33,7 @@ import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
 import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
 import { Observable } from 'rxjs';
+import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -56,6 +57,7 @@ export class AssetWizardComponent implements OnInit {
 
   constructor(private assetSeriesResolver: AssetSeriesResolver,
               private assetSeriesQuery: AssetSeriesQuery,
+              private assetSeriesService: AssetSeriesService,
               private assetResolver: AssetResolver,
               private companyQuery: CompanyQuery,
               private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
@@ -86,7 +88,16 @@ export class AssetWizardComponent implements OnInit {
   }
 
   onStepChange(step: number) {
-    this.step = step;
+    if (this.step === AssetWizardStep.START) {
+      this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeries.id).subscribe(
+        asset => {
+          this.asset = asset;
+          this.step = step;
+        }
+      );
+    } else {
+      this.step = step;
+    }
   }
 
   onChangeAssetSeries(assetSeriesId: ID): void {

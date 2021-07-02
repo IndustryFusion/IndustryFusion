@@ -22,6 +22,7 @@ import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { AssetSeriesDetailsStore } from '../asset-series-details/asset-series-details-store.service';
+import { Asset } from '../asset/asset.model';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,11 @@ export class AssetSeriesService {
           this.assetSeriesStore.upsert(entity.id, entity);
           this.assetSeriesDetailsStore.invalidateCacheParentId('company-' + entity.companyId);
         }));
+  }
+
+  initAssetDraft(companyId: ID, assetSeriesId: ID): Observable<Asset> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}/init-asset-draft`;
+    return this.http.get<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
   deleteItem(companyId: ID, assetSeriesId: ID): Observable<any> {
