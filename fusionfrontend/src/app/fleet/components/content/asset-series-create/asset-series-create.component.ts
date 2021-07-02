@@ -106,7 +106,6 @@ export class AssetSeriesCreateComponent implements OnInit {
         result = this.metricsValid;
         break;
     }
-    console.log('readyToTakeNextStep ', this.step, ':', result);
     return result;
   }
 
