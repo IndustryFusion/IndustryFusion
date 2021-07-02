@@ -56,14 +56,19 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     private confirmationService: ConfirmationService) {
       this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
       this.menuActions = [
-        { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-        { label: 'Move item', icon: 'pi pw-fw pi-clone', command: (_) => { this.showEditRoomDialog(); } },
-        { label: 'Delete item', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
+        { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
+        { label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => {
+          if (this.location) {
+            this.showAssignRoomWithLocationDialog();
+          } else {
+            this.showAssignRoomDialog();
+          }
+        } },
+        { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
       ];
   }
 
   ngOnInit(): void {
-    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -73,6 +78,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   showEditDialog() {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
@@ -83,8 +89,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
         activeModalType: AssetModalType.customizeAsset,
         activeModalMode: AssetModalMode.editAssetMode
       },
-      header: 'Assign name and description to asset',
-      contentStyle: { 'padding-top': '1.5%' }
+      header: 'General Information',
     });
 
     ref.onClose.subscribe((assetFormValues: AssetDetails) => {
@@ -94,7 +99,8 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     });
   }
 
-  showEditRoomDialog() {
+  showAssignRoomDialog() {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
@@ -102,12 +108,32 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
         locations: this.locations,
         location: this.location,
         rooms: this.rooms,
-        editRoomMode: true,
-        activeModalType: AssetModalType.roomAssignment,
+        activeModalType: AssetModalType.locationAssignment,
         activeModalMode: AssetModalMode.editRoomForAssetMode
       },
-      header: 'Assign asset to room',
-      contentStyle: { 'padding-top': '1.5%' }
+      header: 'Location Assignment',
+    });
+
+    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+      if (assetFormValues) {
+        this.editAssetEvent.emit(assetFormValues);
+      }
+    });
+  }
+
+  showAssignRoomWithLocationDialog() {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
+    const ref = this.dialogService.open(AssetInstantiationComponent, {
+      data: {
+        assetDetailsForm: this.assetDetailsForm,
+        assetToBeEdited: this.assetWithDetailsAndFields,
+        locations: this.locations,
+        location: this.location,
+        rooms: this.rooms,
+        activeModalType: AssetModalType.roomAssignment,
+        activeModalMode: AssetModalMode.editRoomWithPreselecedLocationMode
+      },
+      header: 'Room Assignment (' + this.location.name + ')',
     });
 
     ref.onClose.subscribe((assetFormValues: AssetDetails) => {

@@ -14,11 +14,7 @@ under the License.
 -->
 
 <div>
-  <span class="context-info">You can assign your assets to specific locations to create a topology in your factory.</span> <br>
-
-  <h3 class="heading">Your locations</h3>
-  <span class="location-text">Select the location where your asset is located</span> <br>
-
+  <div class="location-text">Select Location</div>
   <span class="p-input-icon-right location-search-input">
     <i class="pi pi-search"></i>
     <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterLocations()">
@@ -33,8 +29,8 @@ under the License.
   </div>
 
   <div class="assign-location-dialog-footer">
-    <button type="button" class="if-button button-secondary" (click)="backButton()">Back</button>
-    <button type="button" class="if-button button-secondary" (click)="nextButton()"
+    <button *ngIf="activeModalMode != assetModalModes.editRoomForAssetMode" type="button" class="if-button button-secondary" (click)="onBackButtonPressed()">Back</button>
+    <button type="button" class="if-button button-primary" (click)="onSubmit()"
             [disabled]="!selectedLocation">Next</button>
   </div>
 </div>

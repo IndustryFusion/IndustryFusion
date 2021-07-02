@@ -15,6 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Location } from '../../../../../store/location/location.model';
+import { AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
 
 @Component({
   selector: 'app-asset-instantiation-location-assignment-modal',
@@ -27,11 +28,14 @@ export class AssetInstantiationLocationAssignmentModalComponent implements OnIni
   locations: Location[];
   @Input()
   selectedLocation: Location;
+  @Input()
+  activeModalMode: AssetModalMode;
   @Output()
   locationAssignedEvent = new EventEmitter<[boolean, Location]>();
 
-  filteredLocations: Location[];
   searchText: string;
+  filteredLocations: Location[];
+  assetModalModes = AssetModalMode;
 
   constructor() { }
 
@@ -44,12 +48,12 @@ export class AssetInstantiationLocationAssignmentModalComponent implements OnIni
       .includes(this.searchText.toLowerCase()));
   }
 
-  nextButton() {
+  onSubmit() {
     this.locationAssignedEvent.emit([true, this.selectedLocation]);
 
   }
 
-  backButton() {
+  onBackButtonPressed() {
     this.locationAssignedEvent.emit([false, null]);
   }
 }

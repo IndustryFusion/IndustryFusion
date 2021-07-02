@@ -59,29 +59,24 @@ export class AssetInstantiationComponent implements OnInit {
     this.activeModalMode = this.config.data.activeModalMode;
     this.activeModalType = this.config.data.activeModalType;
 
-    if (this.activeModalMode === this.assetModalModes.editAssetMode) {
-      if (this.assetDetailsForm.controls[this.formControls[5]].value !== null) {
+    if (this.activeModalMode !== this.assetModalModes.onboardAssetMode) {
+      if (this.selectedLocation == null || this.assetDetailsForm.controls[this.formControls[5]].value !== null) {
         this.selectedLocation = this.locations.filter(location => location.name === this.assetDetailsForm
           .controls[this.formControls[5]].value)[0];
       }
       if (this.assetDetailsForm.controls[this.formControls[6]].value !== null) {
         this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetailsForm.controls[this.formControls[6]].value)[0];
       }
-    }
-
-    if (this.activeModalMode === this.assetModalModes.editRoomForAssetMode) {
-      this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetails.roomId).pop();
-      if (this.selectedLocation) {
-        this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedRoom.locationId);
-      } else {
-        this.allRoomsOfLocation = this.rooms;
-      }
+      this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedRoom.locationId);
     }
   }
 
   onboardingStarted(event: AssetDetailsWithFields) {
     if (event) {
       this.assetDetails = event;
+      this.config.header = 'Pairing Asset';
+      this.config.width = '51%';
+      this.config.contentStyle = { 'padding-top': '3%' };
       this.activeModalType = this.assetModalTypes.pairAsset;
       this.updateAssetForm();
     }
@@ -99,7 +94,7 @@ export class AssetInstantiationComponent implements OnInit {
 
   finishedPairing(event: boolean) {
     if (event) {
-      this.config.header = 'Assign name and description to asset';
+      this.config.header = 'General Information';
       this.config.contentStyle = { 'padding-top': '1.5%' };
       this.activeModalType = this.assetModalTypes.customizeAsset;
     }
@@ -107,7 +102,7 @@ export class AssetInstantiationComponent implements OnInit {
 
   finishedAddDescription(event: boolean) {
     if (event) {
-      this.config.header = 'Assign asset to location';
+      this.config.header = 'Location Assignment';
       this.activeModalType = this.assetModalTypes.locationAssignment;
     } else {
       this.ref.close();
@@ -116,24 +111,19 @@ export class AssetInstantiationComponent implements OnInit {
 
   finishedLocationAssignment(event: [boolean, Location]) {
     if (event[0]) {
-      this.config.header = 'Assign asset to room';
+      this.config.header = 'Room Assignment ('  + event[1].name + ')';
       this.activeModalType = this.assetModalTypes.roomAssignment;
       this.assignLocation(event[1]);
     } else {
-      this.config.header = 'Assign name and description to asset';
+      this.config.header = 'General Information';
       this.activeModalType = this.assetModalTypes.customizeAsset;
     }
   }
 
   assignLocation(selectedLocation?: Location) {
-    if (this.activeModalMode === this.assetModalModes.editRoomForAssetMode) {
-      this.selectedLocation = this.locations.filter(location => location.id === this.selectedRoom.locationId)[0];
-      this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedLocation.name);
-    } else if (selectedLocation) {
-      this.selectedLocation = selectedLocation;
-      this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedLocation.id);
-      this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedLocation.name);
-    }
+    this.selectedLocation = selectedLocation;
+    this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedLocation.id);
+    this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedLocation.name);
   }
 
   finishedRoomAssignment(event: [boolean, Room]) {
@@ -142,7 +132,7 @@ export class AssetInstantiationComponent implements OnInit {
       this.assignLocation();
       this.finishedAssetOnboaring();
     } else {
-      this.config.header = 'Assign asset to location';
+      this.config.header = 'Location Assignment';
       this.activeModalType = this.assetModalTypes.locationAssignment;
     }
   }

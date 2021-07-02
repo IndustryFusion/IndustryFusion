@@ -37,6 +37,7 @@ export enum AssetModalMode  {
   onboardAssetMode = 1,
   editAssetMode,
   editRoomForAssetMode = 3,
+  editRoomWithPreselecedLocationMode = 4,
 }
 
 export enum DashboardFilterModalType {

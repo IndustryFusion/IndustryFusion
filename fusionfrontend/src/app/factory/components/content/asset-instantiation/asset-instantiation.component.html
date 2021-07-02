@@ -30,14 +30,15 @@ under the License.
 <app-asset-instantiation-location-assignment-modal  *ngIf="activeModalType == assetModalTypes.locationAssignment"
                                                     [locations] = "locations"
                                                     [selectedLocation]="selectedLocation"
+                                                    [activeModalMode]="activeModalMode"
                                                     (locationAssignedEvent)="finishedLocationAssignment($event)">
 </app-asset-instantiation-location-assignment-modal>
 
 <app-asset-instantiation-room-assignment-modal *ngIf="activeModalType == assetModalTypes.roomAssignment"
-                                                [rooms]="allRoomsOfLocation"
-                                                [selectedRoom]="selectedRoom"
-                                                [activeModalMode]="activeModalMode"
-                                                (roomAssignedEvent)="finishedRoomAssignment($event)">
+                                               [rooms]="allRoomsOfLocation"
+                                               [selectedRoom]="selectedRoom"
+                                               [activeModalMode]="activeModalMode"
+                                               (roomAssignedEvent)="finishedRoomAssignment($event)">
 </app-asset-instantiation-room-assignment-modal>
 
 

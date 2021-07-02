@@ -120,6 +120,9 @@ export class AssetsListComponent implements OnChanges, OnInit {
         activeModalType: AssetModalType.startInitialization,
         activeModalMode: AssetModalMode.onboardAssetMode
       },
+      header: 'Select Asset for Onboarding',
+      width: '70%',
+      contentStyle: { 'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%' },
     });
 
     ref.onClose.subscribe((assetFormValues: AssetDetails) => {
@@ -156,7 +159,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
   }
 
   assetUpdated(asset: AssetDetails): void {
-    console.log(asset);
     this.updateAssetEvent.emit(asset);
   }
 
@@ -184,7 +186,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
 
   onFilter(filterDict: { [key: string]: string[]; }) {
     this.filterDict = Object.assign({ }, filterDict);
-    console.log(this.filterDict);
   }
 
   assignAsset(room: Room, asset: AssetDetailsWithFields) {
@@ -195,7 +196,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
         error => console.log(error)
       );
     this.assetDetailsService.updateRoom(asset.id, room.id);
-    this.moveAssetModal = false;
   }
 
   goBack() {
@@ -219,7 +219,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
     this.assetService.removeCompanyAsset(event.companyId, event.id).subscribe(() => {
       this.assetsWithDetailsAndFields.splice(this.assetsWithDetailsAndFields.indexOf(event), 1);
     });
-    console.log(event);
   }
 }
 

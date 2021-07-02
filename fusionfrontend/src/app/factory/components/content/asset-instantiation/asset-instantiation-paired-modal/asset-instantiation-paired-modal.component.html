@@ -19,14 +19,14 @@ under the License.
         <img class="asset-image" src="assets/img/{{assetDetailsForm.get('imageKey').value}}" alt="AssetSeries Image">
       </div>
       <div class="p-col-4 p-grid p-dir-col column-class">
-        <span class="p-col asset-name">{{assetDetailsForm.get('assetSeriesName').value}}</span>
+        <span class="p-col asset-name">{{assetDetailsForm.get('name').value}}</span>
         <span class="p-col text-styling">{{assetDetailsForm.get('category').value}}</span>
         <span class="p-col text-styling">{{assetDetailsForm.get('manufacturer').value}}</span>
       </div>
       <div class="p-col-6 p-dir-col column-class">
         <div *ngIf="pairingProcess" class="pairing-column">
           <div><i class="pi pi-spin pi-spinner"></i></div>
-          <span class="text-styling">Your asset is beeing paired paired!</span>
+          <span class="text-styling">Your asset is beeing paired!</span>
         </div>
         <div *ngIf="!pairingProcess" class="pairing-column">
           <div><i class="pi pi-check-circle"></i></div>
