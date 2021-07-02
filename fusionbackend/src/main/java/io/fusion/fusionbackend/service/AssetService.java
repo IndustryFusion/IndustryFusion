@@ -207,33 +207,6 @@ public class AssetService {
         return targetAsset;
     }
 
-    public Asset createAssetFromAssetSeries(final Long companyId, final Long assetSeriesId,
-                                            final Long targetCompanyId) {
-        final AssetSeries assetSeries = assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId);
-        final Company targetCompany = companyService.getCompany(targetCompanyId, false);
-
-        final Asset newAsset = Asset.builder()
-                .build();
-        newAsset.copyFrom(assetSeries);
-
-        assetSeries.getAssets().add(newAsset);
-        newAsset.setAssetSeries(assetSeries);
-        targetCompany.getAssets().add(newAsset);
-        newAsset.setCompany(targetCompany);
-        final Asset savedAsset = assetRepository.save(newAsset);
-
-        List<FieldInstance> newFieldInstances = assetSeries.getFieldSources().stream()
-                .map(fieldSource ->
-                        FieldInstance.builder().fieldSource(fieldSource).asset(savedAsset).build())
-                .collect(Collectors.toList());
-        List<FieldInstance> savedFieldInstances =
-                StreamSupport.stream(fieldInstanceRepository.saveAll(newFieldInstances).spliterator(), false)
-                        .collect(Collectors.toList());
-        newAsset.getFieldInstances().addAll(savedFieldInstances);
-
-        return savedAsset;
-    }
-
     public Set<FieldInstance> getFieldInstancesCheckFullPath(final Long companyId, final Long locationId,
                                                              final Long roomId, final Long assetId) {
         final Asset asset = getAssetCheckFullPath(companyId, locationId, roomId, assetId);
