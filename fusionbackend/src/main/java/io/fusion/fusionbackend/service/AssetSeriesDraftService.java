@@ -21,7 +21,6 @@ import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldSource;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
