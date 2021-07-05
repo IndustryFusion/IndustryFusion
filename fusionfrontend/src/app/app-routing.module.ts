@@ -18,6 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LaunchpadPageComponent } from './components/pages/launchpad-page/launchpad-page.component';
 import { MainAuthGuardGuard } from './services/main-auth-guard.guard';
+import { ErrorPageComponent } from './components/pages/error-page/error-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -50,6 +51,10 @@ const routes: Routes = [
     path: 'settings',
     redirectTo: '/settings/template',
     pathMatch: 'full'
+  },
+  {
+    path: 'error',
+    component: ErrorPageComponent
   }
 ];
 

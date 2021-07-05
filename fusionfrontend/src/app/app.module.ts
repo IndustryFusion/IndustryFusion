@@ -35,6 +35,8 @@ import { environment } from 'src/environments/environment';
 import { TokenInterceptor } from './services/token.interceptor';
 import { DashboardModule } from './dashboards/dashboard.module';
 import { IFCommon } from './common/i-f-common.module';
+import { ErrorInterceptor } from './services/error.interceptor';
+import { ErrorPageComponent } from './components/pages/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { IFCommon } from './common/i-f-common.module';
     HeaderComponent,
     LaunchpadPageComponent,
     LaunchpadItemComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +73,11 @@ import { IFCommon } from './common/i-f-common.module';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ]

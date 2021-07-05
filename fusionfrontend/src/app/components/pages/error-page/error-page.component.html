@@ -1,0 +1,17 @@
+<div class="wrapper">
+
+  <div class="error-title">
+    <clr-icon class="error-icon" shape="warning-standard"></clr-icon>
+    Oops. This did not work: {{ errorCode }}
+  </div>
+
+  <div *ngIf="errorDetails" class="error-details">
+    <div class="details-title">Details:</div>
+    <div>{{ errorDetails }}</div>
+  </div>
+
+  <div class="button-wrapper">
+    <button [routerLink]="'/home'" class="if-button button-primary" type="button">Back to main page</button>
+  </div>
+
+</div>
