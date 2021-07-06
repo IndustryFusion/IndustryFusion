@@ -68,17 +68,15 @@ public abstract class BaseEntity implements Serializable {
             return false;
         }
         BaseEntity that = (BaseEntity) o;
-        if  (id == null) return false;
+        if  (id == null) {
+            return false;
+        }
         return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        if  (id != null) {
-            return Objects.hash(id);
-        } else {
-            return super.hashCode();
-        }
+        return getClass().hashCode();
     }
 
     @Override
