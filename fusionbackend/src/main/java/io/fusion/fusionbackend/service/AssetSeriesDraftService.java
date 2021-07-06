@@ -19,6 +19,9 @@ import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldSource;
+import io.fusion.fusionbackend.model.enums.PublicationState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -30,6 +33,8 @@ public class AssetSeriesDraftService {
     private final AssetTypeTemplateService assetTypeTemplateService;
     private final CompanyService companyService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesDraftService.class);
+
     public AssetSeriesDraftService(AssetTypeTemplateService assetTypeTemplateService, CompanyService companyService) {
         this.assetTypeTemplateService = assetTypeTemplateService;
         this.companyService = companyService;
@@ -39,6 +44,12 @@ public class AssetSeriesDraftService {
                                                            final Long assetTypeTemplateId) {
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
+
+        if (!assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)){
+            LOG.debug("Can't create assetseries while assettyptemplate {} with id {} is in state {} not published",
+                    assetTypeTemplate.getName(), assetTypeTemplateId, assetTypeTemplate.getPublicationState());
+            throw new RuntimeException("Can't create assetseries while assettyptemplate not published");
+        }
 
         final Company targetCompany = companyService.getCompany(targetCompanyId, false);
 

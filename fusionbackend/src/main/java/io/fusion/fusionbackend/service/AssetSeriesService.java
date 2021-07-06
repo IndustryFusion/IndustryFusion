@@ -33,9 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -82,7 +80,7 @@ public class AssetSeriesService {
         assetSeries.setCompany(targetCompany);
         assetSeries.setAssetTypeTemplate(assetTypeTemplate);
 
-        assetSeries.getFieldSources().stream().peek(fieldSource -> {
+        assetSeries.getFieldSources().stream().forEach(fieldSource -> {
             fieldSource.setAssetSeries(assetSeries);
             Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
             fieldSource.setSourceUnit(unit);

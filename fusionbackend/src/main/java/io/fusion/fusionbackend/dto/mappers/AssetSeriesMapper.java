@@ -29,14 +29,14 @@ import java.util.stream.Collectors;
 @Component
 public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeriesDto> {
     private final BaseAssetMapper baseAssetMapper;
+    private final FieldSourceMapper fieldSourceMapper;
 
     @Autowired
-    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper) {
+    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper, FieldSourceMapper fieldSourceMapper) {
         this.baseAssetMapper = baseAssetMapper;
+        this.fieldSourceMapper = fieldSourceMapper;
     }
 
-    @Autowired
-    public FieldSourceMapper fieldSourceMapper;
 
     private AssetSeriesDto toDtoShallow(final AssetSeries entity) {
         if (entity == null) {

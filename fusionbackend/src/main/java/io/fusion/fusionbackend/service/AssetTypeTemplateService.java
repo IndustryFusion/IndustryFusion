@@ -23,6 +23,8 @@ import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.repository.FieldTargetRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Service
 @Transactional
@@ -39,6 +42,8 @@ public class AssetTypeTemplateService {
     private final AssetTypeService assetTypeService;
     private final FieldTargetRepository fieldTargetRepository;
     private final FieldService fieldService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AssetTypeTemplateService.class);
 
     @Autowired
     public AssetTypeTemplateService(AssetTypeTemplateRepository assetTypeTemplateRepository,
@@ -58,10 +63,15 @@ public class AssetTypeTemplateService {
     public AssetTypeTemplate getAssetTypeTemplate(final Long assetTypeTemplateId, final boolean deep) {
         if (deep) {
             return assetTypeTemplateRepository.findDeepById(assetTypeTemplateId)
-                    .orElseThrow(ResourceNotFoundException::new);
+                    .orElseThrow(getAssetTypeTemplateNotFoundException(assetTypeTemplateId));
         }
         return assetTypeTemplateRepository.findById(assetTypeTemplateId)
-                .orElseThrow(ResourceNotFoundException::new);
+                .orElseThrow(getAssetTypeTemplateNotFoundException(assetTypeTemplateId));
+    }
+
+    private Supplier<ResourceNotFoundException> getAssetTypeTemplateNotFoundException(Long assetTypeTemplateId) {
+        LOG.debug("AssetTypeTemplate with ID {} not found", assetTypeTemplateId);
+        return ResourceNotFoundException::new;
     }
 
     public AssetTypeTemplate createAssetTypeTemplate(final Long assetTypeId,

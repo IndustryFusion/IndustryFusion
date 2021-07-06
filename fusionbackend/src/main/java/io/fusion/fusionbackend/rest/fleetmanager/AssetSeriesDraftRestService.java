@@ -39,7 +39,7 @@ public class AssetSeriesDraftRestService {
         this.assetSeriesDraftService = assetSeriesDraftService;
     }
 
-    @GetMapping(path = "/companies/{companyId}/assettypetemplates/{assetTypeTemplateId}/init-asset-serie-draft/")
+    @GetMapping(path = "/companies/{companyId}/assettypetemplates/{assetTypeTemplateId}/init-asset-serie-draft")
     public AssetSeriesDto getAssetSeriesFromAssetTypeTemplate(
             @PathVariable final Long assetTypeTemplateId,
             @PathVariable final Long companyId,
