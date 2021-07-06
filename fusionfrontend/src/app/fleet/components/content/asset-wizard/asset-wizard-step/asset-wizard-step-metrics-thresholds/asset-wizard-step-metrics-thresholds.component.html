@@ -18,7 +18,7 @@ under the License.
   <app-threshold-list-header></app-threshold-list-header>
 
   <p-accordion>
-    <ng-container *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
+    <ng-container *ngFor="let fieldInstance of fieldInstancesFormArray?.controls; let i = index;">
       <ng-container [formGroup]="fieldInstance //noinspection InvalidExpressionResultType">
         <p-accordionTab>
           <ng-template pTemplate="header">
@@ -39,10 +39,10 @@ under the License.
                 <th class="tree-line"></th>
                 <th class="tree-entry" style="width: 0.5rem;"></th>
                 <th style="width: 1rem;"></th>
-                <th style="width: 52%"></th>
+                <th style="width: 53%"></th>
                 <th style="width: 10%"></th>
                 <th style="width: 10%"></th>
-                <th style="width: 21%"></th>
+                <th style="width: 20%"></th>
               </tr>
               </thead>
 
@@ -64,14 +64,6 @@ under the License.
                   <td></td>
                 </tr>
                 <tr>
-                  <td class="tree-line"><div></div></td>
-                  <td class="tree-entry"></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
                   <td class="tree-line"> <div></div> </td>
                   <td class="tree-entry"> <div></div> </td>
                   <td></td>
@@ -80,7 +72,7 @@ under the License.
                     <input class="threshold-input" type="text" pInputText (change)="onInputChange($event, type + 'Lower')"
                            [value]="fieldInstance.get('thresholds.' + type + 'Lower')?.value">
                   </td>
-                  <td>Unit</td>
+                  <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
                   <td></td>
                 </tr>
                 <tr>
@@ -92,7 +84,7 @@ under the License.
                     <input class="threshold-input" type="text" pInputText
                            [value]="fieldInstance.get('thresholds.' + type + 'Upper')?.value"/>
                   </td>
-                  <td>Unit</td>
+                  <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
                   <td></td>
                 </tr>
               </ng-container>
@@ -105,4 +97,9 @@ under the License.
     </ng-container>
   </p-accordion>
 
+  <div class="footer">
+    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
+    <button type="button" class="if-button button-confirm button-primary" [disabled]="fieldInstancesFormArray.invalid"
+            (click)="onNext()">Next</button>
+  </div>
 </div>

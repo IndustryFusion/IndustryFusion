@@ -22,6 +22,7 @@ import { FieldType } from '../../../../../../store/field-target/field-target.mod
 import { FieldQuery } from '../../../../../../store/field/field-query.service';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { ThresholdType } from '../../../../../../store/threshold/threshold.model';
+import { AssetWizardStep } from '../asset-wizard-step.model';
 
 @Component({
   selector: 'app-asset-wizard-step-metrics-thresholds',

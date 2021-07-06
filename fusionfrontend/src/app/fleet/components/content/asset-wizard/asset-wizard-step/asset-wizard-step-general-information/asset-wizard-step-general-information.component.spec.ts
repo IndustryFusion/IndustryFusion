@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetWizardStepSemanticsComponent } from './asset-wizard-step-semantics.component';
+import { AssetWizardStepGeneralInformationComponent } from './asset-wizard-step-general-information.component';
 
-describe('AssetWizardStepSemanticsComponent', () => {
-  let component: AssetWizardStepSemanticsComponent;
-  let fixture: ComponentFixture<AssetWizardStepSemanticsComponent>;
+describe('AssetWizardStepGeneralInformationComponent', () => {
+  let component: AssetWizardStepGeneralInformationComponent;
+  let fixture: ComponentFixture<AssetWizardStepGeneralInformationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetWizardStepSemanticsComponent ]
+      declarations: [ AssetWizardStepGeneralInformationComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetWizardStepSemanticsComponent);
+    fixture = TestBed.createComponent(AssetWizardStepGeneralInformationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

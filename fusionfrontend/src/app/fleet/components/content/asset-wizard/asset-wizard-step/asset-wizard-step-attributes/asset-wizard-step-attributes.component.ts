@@ -15,13 +15,14 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { AssetWizardStep } from '../asset-wizard-step.model';
 
 @Component({
-  selector: 'app-asset-wizard-step-semantics',
-  templateUrl: './asset-wizard-step-semantics.component.html',
-  styleUrls: ['./asset-wizard-step-semantics.component.scss']
+  selector: 'app-asset-wizard-step-attributes',
+  templateUrl: './asset-wizard-step-attributes.component.html',
+  styleUrls: ['./asset-wizard-step-attributes.component.scss']
 })
-export class AssetWizardStepSemanticsComponent implements OnInit {
+export class AssetWizardStepAttributesComponent implements OnInit {
 
   @Input() assetForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
@@ -29,6 +30,14 @@ export class AssetWizardStepSemanticsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onBack() {
+    this.stepChange.emit(AssetWizardStep.ATTRIBUTES - 1);
+  }
+
+  onNext() {
+    this.stepChange.emit(AssetWizardStep.ATTRIBUTES + 1);
   }
 
 }

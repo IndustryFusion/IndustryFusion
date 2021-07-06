@@ -52,7 +52,7 @@ export class AssetWizardComponent implements OnInit {
   public relatedCompany: Company = null;
   public relatedAssetType: AssetType = null;
   public type = DialogType.CREATE;
-  public step = AssetWizardStep.START;
+  public step = AssetWizardStep.GENERAL_INFORMATION;
   public isAssetSeriesLocked = false;
 
   public AssetWizardStep = AssetWizardStep;
@@ -92,7 +92,7 @@ export class AssetWizardComponent implements OnInit {
   }
 
   onStepChange(step: number) {
-    if (this.step === AssetWizardStep.START) {
+    if (this.step === AssetWizardStep.GENERAL_INFORMATION) {
       this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeries.id).subscribe(
         asset => {
           this.asset = asset;
