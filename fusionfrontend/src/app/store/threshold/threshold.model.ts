@@ -21,7 +21,7 @@ export class Threshold extends BaseEntity {
 }
 
 export enum ThresholdType {
-  ABSOLUTE,
-  IDEAL,
-  CRITICAL
+  ABSOLUTE = 'absolute',
+  IDEAL = 'ideal',
+  CRITICAL = 'critical',
 }

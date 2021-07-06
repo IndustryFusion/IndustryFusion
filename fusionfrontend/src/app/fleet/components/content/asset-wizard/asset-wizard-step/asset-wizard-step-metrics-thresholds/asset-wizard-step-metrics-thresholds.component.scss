@@ -16,6 +16,17 @@
 @import '../../asset-wizard.component';
 @import 'components/labels';
 
+.asset-wizard-step-metrics-thresholds {
+  .edit-col {
+    display: flex;
+    justify-content: end;
+    width: 20%;
+
+    .edit-button {
+      margin-left: 80px;
+    }
+  }
+}
 
 #customers {
 

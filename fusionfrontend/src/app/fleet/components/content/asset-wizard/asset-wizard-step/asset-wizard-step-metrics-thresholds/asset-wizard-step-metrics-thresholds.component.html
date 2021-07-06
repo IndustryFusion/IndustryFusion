@@ -13,239 +13,110 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="field-dialog">
-  <form [formGroup]="assetForm">
+<div class="asset-wizard-step-metrics-thresholds">
   <label class="if-dialog-title">Customize&nbsp;Metrics&nbsp;&amp;&nbsp;Thresholds</label>
   <app-threshold-list-header></app-threshold-list-header>
 
   <p-accordion>
-    <p-accordionTab>
-      <ng-template pTemplate="header">
-        <div class="p-grid">
-          <label class="if-label p-col-3">Custom Metric name</label>
-          <label class="if-label p-col-2">Metric name </label>
-          <label class="if-label-normal-weight p-col-2"> Data Source </label>
-          <label class="if-label-small-header p-col-1"> °C </label>
-          <label class="if-label-small-header p-col-3"> 0,00 </label>
-          <app-trash-button class="p-col-1" [disabled]="false"></app-trash-button>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="content">Body Content</ng-template>
-    </p-accordionTab>
+    <ng-container *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
+<!--      <ng-container [formGroup]="fieldInstance">-->
+        <p-accordionTab>
+          <ng-template pTemplate="header">
+            <div class="p-grid">
+              <label class="if-label p-col-3">
+                {{fieldInstance.get('name')?.value}}
+              </label>
+              <label class="if-label p-col-2">
+                {{fieldInstance.get('fieldName')?.value}}
+              </label>
+              <label class="if-label-normal-weight p-col-2">
+                {{fieldInstance.get('sourceRegister')?.value}}
+              </label>
+              <label class="if-label-small-header p-col-1">
+                {{fieldInstance.get('sourceUnitName')?.value}}
+              </label>
+              <label class="if-label-small-header p-col-3">{{fieldInstance.get('accuracy')?.value | accuracyformat}}</label>
+              <app-trash-button class="p-col-1" [disabled]="fieldInstance.get('mandatory')?.value"></app-trash-button>
+            </div>
+          </ng-template>
 
-    <p-accordionTab [selected]="true">
+          <ng-template pTemplate="content">
+            <table id="customers" style="padding: 10px">
+              <thead>
+                <tr>
+                  <th class="tree-line"></th>
+                  <th class="tree-entry" style="width: 0.5rem;"></th>
+                  <th style="width: 1rem;"></th>
+                  <th style="width: 25%"></th>
+                  <th style="width: 30%"></th>
+                  <th style="width: 10%"></th>
+                  <th style="width: 10%"></th>
+                  <th style="width: 18%"></th>
+                </tr>
+              </thead>
 
-      <ng-template pTemplate="header">
-        <div class="p-grid">
-          <label class="if-label p-col-3">Custom Metric name</label>
-          <label class="if-label p-col-2">Metric name </label>
-          <label class="if-label-normal-weight p-col-2"> Data Source </label>
-          <label class="if-label-small-header p-col-1"> °C </label>
-          <label class="if-label-small-header p-col-3"> 0,00 </label>
-          <app-trash-button class="p-col-1" [disabled]="true"></app-trash-button>
-        </div>
-      </ng-template>
+              <tbody>
+              <ng-container *ngFor="let type of [ThresholdType.ABSOLUTE, ThresholdType.IDEAL, ThresholdType.CRITICAL];">
+                <tr style="height: 30px">
+                  <td class="tree-line"><div></div></td>
+                  <td class="tree-entry"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="tree-line"><div></div></td>
+                  <td class="tree-entry"></td>
+                  <td colspan="3"><label class="if-label-small">{{getTypeTitle(type)}}</label></td>
+                  <td colspan="2"><label class="if-label-small-header"> {{type == ThresholdType.ABSOLUTE ? 'Threshold Value' : ''}}</label></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="tree-line"><div></div></td>
+                  <td class="tree-entry"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="tree-line"> <div></div> </td>
+                  <td class="tree-entry"> <div></div> </td>
+                  <td></td>
+                  <td class="label-thresholds">{{getLowerLimitTitle(type)}}</td>
+                  <td class="if-label-small">Short description text</td>
+                  <td>
+                    <input class="threshold-input" type="text" pInputText
+                          [value]="fieldInstance.get('thresholds.' + type + 'Lower')?.value">
+                  </td>
+                  <td>Unit</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="tree-line"> <div></div> </td>
+                  <td class="tree-entry"> <div></div> </td>
+                  <td></td>
+                  <td class="label-thresholds">{{getUpperLimitTitle(type)}}</td>
+                  <td class="if-label-small">Short description</td>
+                  <td>
+                    <input class="threshold-input" type="text" pInputText
+                           [value]="fieldInstance.get('thresholds.' + type + 'Upper')?.value"/>
+                  </td>
+                  <td>Unit</td>
+                  <td></td>
+                </tr>
+              </ng-container>
+              </tbody>
+            </table>
+          </ng-template>
 
-      <table id="customers" style="padding: 10px">
-        <thead>
-        <tr>
-          <th class="tree-line"></th>
-          <th class="tree-entry" style="width: 0.5rem;"></th>
-          <th style="width: 1rem;"></th>
-          <th style="width: 20%"></th>
-          <th style="width: 35%"></th>
-          <th style="width: 10%"></th>
-          <th style="width: 10%"></th>
-          <th style="width: 20%"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr style="height: 30px">
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td colspan="3"><label class="if-label-small">Absolute lower & upper limit *</label></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"> <div></div> </td>
-          <td class="tree-entry"> <div></div> </td>
-          <td></td>
-          <td class="label-thresholds">Absolute lower limit</td>
-          <td class="if-label-small">Short description</td>
-          <td>
-            <input class="threshold-input" type="text" pInputText [value]="-15">
-          </td>
-          <td>Unit</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"> <div></div> </td>
-          <td class="tree-entry"> <div></div> </td>
-          <td></td>
-          <td class="label-thresholds">Absolute upper limit</td>
-          <td class="if-label-small">Short description</td>
-          <td>
-            <input class="threshold-input" type="text" pInputText />
-          </td>
-          <td>Unit</td>
-          <td></td>
-        </tr>
+        </p-accordionTab>
+      </ng-container>
+<!--    </ng-container>-->
 
-        <!--Ideal range (optional) -->
-
-        <tr style="height: 30px">
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td colspan="3"><label class="if-label-small">Ideal range (optional)</label></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"> <div></div> </td>
-          <td class="tree-entry"> <div></div> </td>
-          <td></td>
-          <td class="label-thresholds">Lower ideal threshold</td>
-          <td class="if-label-small">Short description</td>
-          <td>
-            <input class="threshold-input" type="text" pInputText [value]="-15">
-          </td>
-          <td>Unit</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"> <div></div> </td>
-          <td class="tree-entry"> <div></div> </td>
-          <td></td>
-          <td class="label-thresholds">Upper ideal threshold</td>
-          <td class="if-label-small">Short description</td>
-          <td>
-            <input class="threshold-input" type="text" pInputText />
-          </td>
-          <td>Unit</td>
-          <td></td>
-        </tr>
-
-        <!--Critical alert range (optional) -->
-
-
-        <tr style="height: 30px">
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td colspan="3"><label class="if-label-small">Critical alert range (optional)</label></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"><div></div></td>
-          <td class="tree-entry"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"> <div></div> </td>
-          <td class="tree-entry"> <div></div> </td>
-          <td></td>
-          <td class="label-thresholds">Lower critical alert threshold</td>
-          <td class="if-label-small">Short description</td>
-          <td>
-            <input class="threshold-input" type="text" pInputText [value]="-15">
-          </td>
-          <td>Unit</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="tree-line"> <div></div> </td>
-          <td class="tree-entry"> <div></div> </td>
-          <td></td>
-          <td class="label-thresholds">Upper critical alert threshold</td>
-          <td class="if-label-small">Short description</td>
-          <td>
-            <input class="threshold-input" type="text" pInputText />
-          </td>
-          <td>Unit</td>
-          <td></td>
-        </tr>
-
-        </tbody>
-      </table>
-
-    </p-accordionTab>
   </p-accordion>
-  </form>
 </div>
-
-<!--
-<p-table [value]="products" id="customers" >
-  <ng-template pTemplate="header">
-    <tr>
-      <th class="test" style="width: 3px; padding:0px"></th>
-      <th class="test" style="width: 10px;"></th>
-      <th>Code</th>
-      <th>Name</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-product>
-    <tr>
-      <td class="tree" style="width: 3px; background: grey">
-        <div ></div>
-      </td>
-      <td class="tree" >
-        <div style="width: 10px; background: grey; height: 3px; "></div>
-      </td>
-      <td>{{product.value}}</td>
-      <td>{{product.name}}</td>
-    </tr>
-  </ng-template>
-</p-table>
--->

@@ -34,6 +34,8 @@ import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/as
 import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
 import { Observable } from 'rxjs';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
+import { AssetService } from '../../../../store/asset/asset.service';
+import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -59,10 +61,12 @@ export class AssetWizardComponent implements OnInit {
               private assetSeriesQuery: AssetSeriesQuery,
               private assetSeriesService: AssetSeriesService,
               private assetResolver: AssetResolver,
+              private assetService: AssetService,
               private companyQuery: CompanyQuery,
               private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
               private assetTypesResolver: AssetTypesResolver,
+              private fieldsResolver: FieldsResolver,
               private assetTypeQuery: AssetTypeQuery,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
@@ -130,7 +134,8 @@ export class AssetWizardComponent implements OnInit {
     this.assetSeriesResolver.resolve(this.activatedRoute.snapshot);
     this.assetResolver.resolve(this.activatedRoute.snapshot);
     this.assetTypesResolver.resolve().subscribe();
-    this.isLoading$ = this.assetSeriesQuery.selectLoading();
+    this.fieldsResolver.resolve().subscribe();
+    this.isLoading$ = this.assetSeriesQuery.selectLoading(); // TODO: is this correct?
     this.assetTypeTemplatesResolver.resolve().subscribe();
   }
 

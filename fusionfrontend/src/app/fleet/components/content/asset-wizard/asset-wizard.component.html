@@ -70,14 +70,15 @@ under the License.
                                [relatedAssetSeries]="relatedAssetSeries" [relatedAssetType]="relatedAssetType"
                                [relatedCompany]="relatedCompany">
   </app-asset-wizard-step-start>
-  <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE" (stepChange)="onStepChange($event)" [assetForm]="assetForm">
   </app-asset-wizard-step-nameplate>
-  <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS" (stepChange)="onStepChange($event)"
+                                            [asset]="asset">
   </app-asset-wizard-step-metrics-thresholds>
-  <app-asset-wizard-step-semantics *ngIf="step === AssetWizardStep.SEMANTICS" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-semantics *ngIf="step === AssetWizardStep.SEMANTICS" (stepChange)="onStepChange($event)" [assetForm]="assetForm">
   </app-asset-wizard-step-semantics>
-  <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA" (stepChange)="onStepChange($event)" [assetForm]="assetForm">
   </app-asset-wizard-step-customer>
-  <app-asset-wizard-step-finished *ngIf="step === AssetWizardStep.FINISHED" (stepChange)="onStepChange($event)" [assetForm]="assetForm">>
+  <app-asset-wizard-step-finished *ngIf="step === AssetWizardStep.FINISHED" (stepChange)="onStepChange($event)" [assetForm]="assetForm">
   </app-asset-wizard-step-finished>
 </div>
