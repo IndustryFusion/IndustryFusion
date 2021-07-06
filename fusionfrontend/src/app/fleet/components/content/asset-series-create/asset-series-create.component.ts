@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
@@ -40,6 +40,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   metricsValid: boolean;
 
   constructor(private assetSeriesService: AssetSeriesService,
+              private changeDetectorRef: ChangeDetectorRef,
               fieldService: FieldService,
               private dialogConfig: DynamicDialogConfig,
               private dynamicDialogRef: DynamicDialogRef,
@@ -119,5 +120,15 @@ export class AssetSeriesCreateComponent implements OnInit {
         this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
           .subscribe(() => this.dynamicDialogRef.close());
       }
+  }
+
+  setAttributesValid(isValid: boolean) {
+    this.attributesValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setMetricsValid(isValid: boolean) {
+    this.metricsValid = isValid;
+    this.changeDetectorRef.detectChanges();
   }
 }

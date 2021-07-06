@@ -35,12 +35,12 @@ under the License.
   <app-asset-series-create-attributes
     *ngIf="step === 3"
     [assetSeries]="assetSeries"
-    (valid)="attributesValid=$event">
+    (valid)="setAttributesValid($event)">
   </app-asset-series-create-attributes>
   <app-asset-series-create-metrics
     *ngIf="step === 4"
     [assetSeries]="assetSeries"
-    (valid)="metricsValid=$event">
+    (valid)="setMetricsValid($event)">
   </app-asset-series-create-metrics>
   <app-asset-series-create-footer [step]="step" (back)="back()" [readyToTakeNextStep]="readyToTakeNextStep()"
                                   (nextStep)="nextStep()" [toalSteps]="toalSteps"></app-asset-series-create-footer>

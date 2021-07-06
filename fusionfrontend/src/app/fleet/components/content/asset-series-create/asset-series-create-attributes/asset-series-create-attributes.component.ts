@@ -65,7 +65,6 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
 
   private fillTable(fieldSources: FieldSource[]) {
     this.fieldSourcesFormArray = new FormArray([]);
-    this.valid.emit(this.fieldSourcesFormArray.valid);
     this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {
       if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
@@ -73,6 +72,7 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
         this.fieldSourcesFormArray.push(formGroup);
       }
     }
+    this.valid.emit(this.fieldSourcesFormArray.valid);
   }
 
   isEditMode(group: AbstractControl): boolean {
