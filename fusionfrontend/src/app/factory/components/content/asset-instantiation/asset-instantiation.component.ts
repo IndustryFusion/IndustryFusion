@@ -114,8 +114,12 @@ export class AssetInstantiationComponent implements OnInit {
       this.activeModalType = this.assetModalTypes.roomAssignment;
       this.assignLocation(event);
     } else {
-      this.config.header = 'General Information';
-      this.activeModalType = this.assetModalTypes.customizeAsset;
+      if (this.activeModalMode !== this.assetModalModes.editRoomForAssetMode) {
+        this.config.header = 'General Information';
+        this.activeModalType = this.assetModalTypes.customizeAsset;
+      } else {
+        this.ref.close();
+      }
     }
   }
 
@@ -133,8 +137,12 @@ export class AssetInstantiationComponent implements OnInit {
       this.assignLocation();
       this.finishedAssetOnboaring();
     } else {
-      this.config.header = 'Location Assignment';
-      this.activeModalType = this.assetModalTypes.locationAssignment;
+      if (this.activeModalMode !== this.assetModalModes.editRoomWithPreselecedLocationMode) {
+        this.config.header = 'Location Assignment';
+        this.activeModalType = this.assetModalTypes.locationAssignment;
+      } else {
+        this.ref.close();
+      }
     }
   }
 

@@ -29,7 +29,8 @@ under the License.
   </div>
 
   <div class="assign-location-dialog-footer">
-    <button *ngIf="activeModalMode != assetModalModes.editRoomForAssetMode" type="button" class="if-button button-secondary" (click)="onBackButtonPressed()">Back</button>
+    <button type="button" class="if-button button-secondary" (click)="onBackButtonPressed()">
+      {{ activeModalMode != assetModalModes.editRoomForAssetMode ? 'Back' : 'Cancel'}}</button>
     <button type="button" class="if-button button-primary" (click)="onSubmit()"
             [disabled]="!selectedLocation">Next</button>
   </div>

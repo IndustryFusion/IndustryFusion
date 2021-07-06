@@ -29,8 +29,8 @@ under the License.
   </div>
 
   <div class="assign-room-dialog-footer">
-    <button type="button" *ngIf="activeModalMode != assetModalModes.editRoomWithPreselecedLocationMode"
-            class="if-button button-secondary" (click)="onCancel()">Back</button>
+    <button type="button" class="if-button button-secondary" (click)="onCancel()">
+      {{ activeModalMode == assetModalModes.editRoomWithPreselecedLocationMode ? 'Cancel' : 'Back' }}</button>
     <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="!selectedRoom">
       {{ activeModalMode != assetModalModes.onboardAssetMode ? 'Apply' : 'Onboard' }}</button>
   </div>
