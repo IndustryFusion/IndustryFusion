@@ -698,7 +698,7 @@ class FusionbackendApplicationTests {
                 .build();
 
         assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId, companyEcosystemId,
-                assetTypeTemplateLaserCutterId, assetSeries, accessTokenFleetManLaserly);
+                assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManLaserly);
     }
 
     @RepeatedTest(10)
@@ -1228,8 +1228,17 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .queryParam("assetTypeTemplateCompanyId", assetTypeTemplateCompanyId)
-                .queryParam("assetTypeTemplateId", assetTypeTemplateId)
+                .get(baseUrl + "/companies/" + companyId + "/assettypetemplates/" + assetTypeTemplateId + "/init-asset-serie-draft")
+
+                .then()
+                .statusCode(200);
+
+        response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .body(response.extract().body().asString())
                 .post(baseUrl + "/companies/" + companyId + "/assetseries")
 
                 .then()
