@@ -14,7 +14,7 @@
  */
 
 import { Location as loc } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/store/asset/asset.service';
@@ -22,7 +22,6 @@ import { Company } from 'src/app/store/company/company.model';
 import { Location } from 'src/app/store/location/location.model';
 import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/asset-details/asset-details.model';
-import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
@@ -34,7 +33,7 @@ import { AssetInstantiationComponent } from '../asset-instantiation/asset-instan
   styleUrls: ['./assets-list.component.scss'],
   providers: [DialogService]
 })
-export class AssetsListComponent implements OnChanges, OnInit {
+export class AssetsListComponent implements OnInit {
   @Input()
   company: Company;
   @Input()
@@ -56,7 +55,7 @@ export class AssetsListComponent implements OnChanges, OnInit {
   @Output()
   assetDetailsSelected = new EventEmitter<AssetDetails>();
   @Output()
-  updateAssetEvent = new EventEmitter<AssetDetails>();
+  updateAssetEvent = new EventEmitter<[Room, AssetDetails]>();
 
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
@@ -66,12 +65,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
   isLoading$: Observable<boolean>;
   selectedIds: Set<ID> = new Set();
   filterDict: { [key: string]: string[]; };
-  assetsRoomIds: Set<ID> = new Set<ID>();
-  assetRoomNamesAndIds: Set<[string, ID]> = new Set<[string, ID]>();
-  assetsCategories: Set<string> = new Set<string>();
-  assetsLocations: Set<string> = new Set<string>();
-  assetsManufacturers: Set<string> = new Set<string>();
-  moveAssetModal = false;
 
   assetsMapping:
     { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
@@ -85,7 +78,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
 
   constructor(
     private assetService: AssetService,
-    private assetDetailsService: AssetDetailsService,
     private routingLocation: loc,
     private formBuilder: FormBuilder,
     public dialogService: DialogService) {
@@ -94,20 +86,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.createDetailsAssetForm(this.formBuilder);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if ((changes.rooms || changes.assetsWithDetailsAndFields) && this.assetsWithDetailsAndFields && this.rooms) {
-      this.assetsWithDetailsAndFields.forEach(assetDetails => {
-        this.assetsCategories.add(assetDetails.category);
-        this.assetsLocations.add(assetDetails.locationName);
-        this.assetsManufacturers.add(assetDetails.manufacturer);
-        if (!this.containsId(assetDetails.roomId)) {
-          this.assetsRoomIds.add(assetDetails.roomId);
-          this.assetRoomNamesAndIds.add([assetDetails.roomName, assetDetails.roomId]);
-        }
-      });
-    }
   }
 
   showOnboardDialog() {
@@ -148,18 +126,14 @@ export class AssetsListComponent implements OnChanges, OnInit {
     });
   }
 
-  containsId(roomId: ID) {
-    let containsId = false;
-    this.assetsRoomIds.forEach(assetsRoomId => {
-      if (roomId === assetsRoomId) {
-        containsId = true;
-      }
-    });
-    return containsId;
+  assetUpdated(asset: AssetDetails): void {
+    const room = this.getOldRoomForAsset(asset);
+    this.updateAssetEvent.emit([room, asset]);
   }
 
-  assetUpdated(asset: AssetDetails): void {
-    this.updateAssetEvent.emit(asset);
+  getOldRoomForAsset(updatedAsset) {
+    const roomId = this.assetsWithDetailsAndFields.filter(asset => asset.id === updatedAsset.id)[0].roomId;
+    return this.rooms.filter(room => room.id === roomId)[0];
   }
 
   isSelected(id: ID) {
@@ -186,16 +160,6 @@ export class AssetsListComponent implements OnChanges, OnInit {
 
   onFilter(filterDict: { [key: string]: string[]; }) {
     this.filterDict = Object.assign({ }, filterDict);
-  }
-
-  assignAsset(room: Room, asset: AssetDetailsWithFields) {
-    if ((!this.company) || (!this.location)) { return; }
-    this.assetService.assignAssetToRoom(this.company.id, this.location.id, room.id, asset.roomId, asset.id)
-      .subscribe(
-        nextAsset => console.log('Asset with id: ' + nextAsset.id + ' reassigned to room ' + room.name),
-        error => console.log(error)
-      );
-    this.assetDetailsService.updateRoom(asset.id, room.id);
   }
 
   goBack() {

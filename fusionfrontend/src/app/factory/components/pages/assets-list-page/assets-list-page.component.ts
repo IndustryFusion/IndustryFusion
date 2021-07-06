@@ -28,6 +28,7 @@ import { ID } from '@datorama/akita';
 import { FactoryManagerPageType, RouteData } from 'src/app/factory/factory-routing.model';
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
+import { RoomService } from '../../../../store/room/room.service';
 
 
 @Component({
@@ -56,6 +57,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+    private roomService: RoomService,
   ) { }
 
   ngOnInit() {
@@ -74,12 +76,14 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  updateAssetData(event: AssetDetails) {
-    event.id = event.id ? event.id : this.createdAssetDetailsId;
-    event.companyId = this.companyId;
-    this.assetService.updateCompanyAsset(this.companyId, event).subscribe(
+  updateAssetData(event: [Room, AssetDetails]) {
+    event[1].id = event[1].id ? event[1].id : this.createdAssetDetailsId;
+    this.assetService.updateCompanyAsset(event[1].companyId, event[1]).subscribe(
       res => {
         console.log('[location page] updated asset with id: ' + res.id);
+        if (event[0].id !== event[1].roomId) {
+          this.roomService.updateRoomsAfterEditAsset(event[0].id, event[1]);
+        }
       },
       error => console.log(error)
     );

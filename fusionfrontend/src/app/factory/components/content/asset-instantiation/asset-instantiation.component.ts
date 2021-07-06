@@ -14,7 +14,6 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { Room } from '../../../../store/room/room.model';
 import { Location } from '../../../../store/location/location.model';
 import { AssetDetailsWithFields, AssetModalType, AssetModalMode } from '../../../../store/asset-details/asset-details.model';
@@ -30,7 +29,6 @@ export class AssetInstantiationComponent implements OnInit {
   assetDetailsForm: FormGroup;
   assetDetails: AssetDetailsWithFields;
   assetsToBeOnboarded: AssetDetailsWithFields[];
-  assetSeries: AssetSeriesDetails[];
   locations: Location[];
   selectedLocation: Location;
   rooms: Room[];
@@ -50,8 +48,7 @@ export class AssetInstantiationComponent implements OnInit {
   ngOnInit(): void {
     this.formControls = ['assetSeriesName', 'manufacturer', 'category', 'name', 'description', 'locationName', 'roomId', 'roomName'];
     this.assetDetailsForm = this.config.data.assetDetailsForm ? this.config.data.assetDetailsForm : null;
-    this.assetSeries = this.config.data.assetSeries;
-    this.assetDetails = this.config.data.assetToBeEdited;
+    this.assetDetails = { ...this.config.data.assetToBeEdited };
     this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
     this.locations = this.config.data.locations;
     this.selectedLocation = this.config.data.location;
@@ -121,7 +118,9 @@ export class AssetInstantiationComponent implements OnInit {
   }
 
   assignLocation(selectedLocation?: Location) {
-    this.selectedLocation = selectedLocation;
+    if (selectedLocation) {
+      this.selectedLocation = selectedLocation;
+    }
     this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedLocation.id);
     this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedLocation.name);
   }

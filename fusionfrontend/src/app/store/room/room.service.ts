@@ -21,6 +21,8 @@ import { ID } from '@datorama/akita';
 import { RoomStore } from './room.store';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Asset } from '../asset/asset.model';
+import { RoomQuery } from './room.query';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +33,9 @@ export class RoomService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private roomStore: RoomStore, private http: HttpClient) { }
+  constructor(private roomStore: RoomStore,
+              private http: HttpClient,
+              private roomQuery: RoomQuery) { }
 
   getRoomsOfCompany(companyId: ID): Observable<Room[]> {
     const path = `companies/${companyId}/rooms`;
@@ -82,6 +86,34 @@ export class RoomService {
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);
       }));
+  }
+
+
+  updateRoomsAfterEditAsset(oldAssetRoomId: ID, asset: Asset) {
+    this.roomStore.upsertCached(this.removeAssetFromOldRoom(oldAssetRoomId, asset));
+    this.roomStore.upsertCached(this.addAssetToNewRoom(asset));
+  }
+
+  removeAssetFromOldRoom(oldAssetRoomId, asset) {
+    const oldAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === oldAssetRoomId)[0] };
+    oldAssetRoom.assetIds = oldAssetRoom.assetIds.filter(assetId => assetId !== asset.id);
+    oldAssetRoom.assets = oldAssetRoom.assets.filter(arrayAsset => arrayAsset !== asset);
+
+    return oldAssetRoom;
+  }
+
+  addAssetToNewRoom(asset) {
+    const newAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === asset.roomId)[0] };
+    const assetIdsNewAssetRoom = [...newAssetRoom.assetIds];
+    const assetNewAssetRoom = [...newAssetRoom.assets];
+
+    assetIdsNewAssetRoom.push(asset.id);
+    assetNewAssetRoom.push(asset);
+
+    newAssetRoom.assetIds = assetIdsNewAssetRoom;
+    newAssetRoom.assets = assetNewAssetRoom;
+
+    return newAssetRoom;
   }
 
   setActive(roomId: ID) {

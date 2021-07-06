@@ -76,11 +76,4 @@ public class FleetAssetRestService {
         return assetMapper.toDto(assetService.createAssetFromAssetSeries(companyId, assetSeriesId, targetCompanyId),
                 false);
     }
-
-    @PutMapping(path = "/companies/{companyId}/assets/{assetId}")
-    public void moveAssetCompany(@PathVariable final Long companyId,
-                                 @PathVariable final Long assetId,
-                                 @RequestParam final Long targetCompanyId) {
-        assetService.moveAssetCompany(companyId, assetId, targetCompanyId);
-    }
 }
