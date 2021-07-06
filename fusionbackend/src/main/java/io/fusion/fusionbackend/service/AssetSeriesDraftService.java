@@ -45,7 +45,7 @@ public class AssetSeriesDraftService {
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
 
-        if (!assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)){
+        if (!assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)) {
             LOG.debug("Can't create assetseries while assettyptemplate {} with id {} is in state {} not published",
                     assetTypeTemplate.getName(), assetTypeTemplateId, assetTypeTemplate.getPublicationState());
             throw new RuntimeException("Can't create assetseries while assettyptemplate not published");
