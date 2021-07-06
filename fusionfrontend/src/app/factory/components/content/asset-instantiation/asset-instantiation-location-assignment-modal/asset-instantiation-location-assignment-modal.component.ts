@@ -31,7 +31,7 @@ export class AssetInstantiationLocationAssignmentModalComponent implements OnIni
   @Input()
   activeModalMode: AssetModalMode;
   @Output()
-  locationAssignedEvent = new EventEmitter<[boolean, Location]>();
+  locationAssignedEvent = new EventEmitter<Location>();
 
   searchText: string;
   filteredLocations: Location[];
@@ -49,11 +49,11 @@ export class AssetInstantiationLocationAssignmentModalComponent implements OnIni
   }
 
   onSubmit() {
-    this.locationAssignedEvent.emit([true, this.selectedLocation]);
+    this.locationAssignedEvent.emit(this.selectedLocation);
 
   }
 
   onBackButtonPressed() {
-    this.locationAssignedEvent.emit([false, null]);
+    this.locationAssignedEvent.emit(null);
   }
 }

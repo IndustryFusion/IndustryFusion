@@ -46,7 +46,8 @@ export class AssetInstantiationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.formControls = ['assetSeriesName', 'manufacturer', 'category', 'name', 'description', 'locationName', 'roomId', 'roomName'];
+    this.formControls = ['assetSeriesName', 'manufacturer', 'category', 'name', 'description', 'locationName',
+      'roomId', 'roomName'];
     this.assetDetailsForm = this.config.data.assetDetailsForm ? this.config.data.assetDetailsForm : null;
     this.assetDetails = { ...this.config.data.assetToBeEdited };
     this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
@@ -59,10 +60,11 @@ export class AssetInstantiationComponent implements OnInit {
     if (this.activeModalMode !== this.assetModalModes.onboardAssetMode) {
       if (this.selectedLocation == null || this.assetDetailsForm.controls[this.formControls[5]].value !== null) {
         this.selectedLocation = this.locations.filter(location => location.name === this.assetDetailsForm
-          .controls[this.formControls[5]].value)[0];
+          .controls[this.formControls[5]].value).pop();
       }
       if (this.assetDetailsForm.controls[this.formControls[6]].value !== null) {
-        this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetailsForm.controls[this.formControls[6]].value)[0];
+        this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetailsForm.
+          controls[this.formControls[6]].value).pop();
       }
       this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === this.selectedRoom.locationId);
     }
@@ -106,11 +108,11 @@ export class AssetInstantiationComponent implements OnInit {
     }
   }
 
-  finishedLocationAssignment(event: [boolean, Location]) {
-    if (event[0]) {
-      this.config.header = 'Room Assignment ('  + event[1].name + ')';
+  finishedLocationAssignment(event: Location) {
+    if (event) {
+      this.config.header = 'Room Assignment ('  + event.name + ')';
       this.activeModalType = this.assetModalTypes.roomAssignment;
-      this.assignLocation(event[1]);
+      this.assignLocation(event);
     } else {
       this.config.header = 'General Information';
       this.activeModalType = this.assetModalTypes.customizeAsset;
@@ -125,9 +127,9 @@ export class AssetInstantiationComponent implements OnInit {
     this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedLocation.name);
   }
 
-  finishedRoomAssignment(event: [boolean, Room]) {
-    if (event[0]) {
-      this.assignRoom(event[1]);
+  finishedRoomAssignment(event: Room) {
+    if (event) {
+      this.assignRoom(event);
       this.assignLocation();
       this.finishedAssetOnboaring();
     } else {

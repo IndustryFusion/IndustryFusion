@@ -202,14 +202,14 @@ public class AssetService {
     public Asset updateAsset(final Asset sourceAsset) {
         final Asset targetAsset = getAssetById(sourceAsset.getId());
         Room oldAssetRoom = targetAsset.getRoom();
+        Room newAssetRoom = this.roomService.getRoomById(sourceAsset.getRoom().getId());
 
         targetAsset.copyFrom(sourceAsset);
 
-        return updateRoom(oldAssetRoom, sourceAsset, targetAsset);
+        return updateRoom(oldAssetRoom, newAssetRoom, targetAsset);
     }
 
-    private Asset updateRoom(Room oldAssetRoom, Asset sourceAsset, Asset targetAsset) {
-        Room newAssetRoom = this.roomService.getRoomById(sourceAsset.getRoom().getId());
+    private Asset updateRoom(Room oldAssetRoom, Room newAssetRoom, Asset targetAsset) {
 
         targetAsset.setRoom(newAssetRoom);
         oldAssetRoom.getAssets().remove(targetAsset);

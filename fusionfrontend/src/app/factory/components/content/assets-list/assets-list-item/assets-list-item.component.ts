@@ -57,13 +57,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
       this.menuActions = [
         { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-        { label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => {
-          if (this.location) {
-            this.showAssignRoomWithLocationDialog();
-          } else {
-            this.showAssignRoomDialog();
-          }
-        } },
+        { label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => { this.openAssignRoomDialog(); } },
         { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
       ];
   }
@@ -99,29 +93,17 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     });
   }
 
-  showAssignRoomDialog() {
-    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
-    const ref = this.dialogService.open(AssetInstantiationComponent, {
-      data: {
-        assetDetailsForm: this.assetDetailsForm,
-        assetToBeEdited: this.assetWithDetailsAndFields,
-        locations: this.locations,
-        location: this.location,
-        rooms: this.rooms,
-        activeModalType: AssetModalType.locationAssignment,
-        activeModalMode: AssetModalMode.editRoomForAssetMode
-      },
-      header: 'Location Assignment',
-    });
-
-    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
-      if (assetFormValues) {
-        this.editAssetEvent.emit(assetFormValues);
-      }
-    });
+  openAssignRoomDialog() {
+    if (this.location) {
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedLocationMode,
+        'Room Assignment (' + this.location.name + ')');
+    } else {
+      this.showAssignRoomDialog(AssetModalType.locationAssignment, AssetModalMode.editRoomForAssetMode,
+        'Location Assignment');
+    }
   }
 
-  showAssignRoomWithLocationDialog() {
+  showAssignRoomDialog(assetModalType: AssetModalType, assetModalMode: AssetModalMode, header: string ) {
     this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
@@ -130,10 +112,10 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
         locations: this.locations,
         location: this.location,
         rooms: this.rooms,
-        activeModalType: AssetModalType.roomAssignment,
-        activeModalMode: AssetModalMode.editRoomWithPreselecedLocationMode
+        activeModalType: assetModalType,
+        activeModalMode: assetModalMode
       },
-      header: 'Room Assignment (' + this.location.name + ')',
+      header
     });
 
     ref.onClose.subscribe((assetFormValues: AssetDetails) => {

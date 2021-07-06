@@ -132,8 +132,8 @@ export class AssetsListComponent implements OnInit {
   }
 
   getOldRoomForAsset(updatedAsset) {
-    const roomId = this.assetsWithDetailsAndFields.filter(asset => asset.id === updatedAsset.id)[0].roomId;
-    return this.rooms.filter(room => room.id === roomId)[0];
+    const roomId = this.assetsWithDetailsAndFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
+    return this.rooms.filter(room => room.id === roomId).pop();
   }
 
   isSelected(id: ID) {

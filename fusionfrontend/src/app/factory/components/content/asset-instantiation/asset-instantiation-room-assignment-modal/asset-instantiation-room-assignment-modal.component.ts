@@ -31,7 +31,7 @@ export class AssetInstantiationRoomAssignmentModalComponent implements OnInit {
   @Input()
   activeModalMode: AssetModalMode;
   @Output()
-  roomAssignedEvent = new EventEmitter<[boolean, Room]>();
+  roomAssignedEvent = new EventEmitter<Room>();
 
   searchText;
   filteredRooms: Room[];
@@ -49,10 +49,10 @@ export class AssetInstantiationRoomAssignmentModalComponent implements OnInit {
   }
 
   onSubmit() {
-    this.roomAssignedEvent.emit([true, this.selectedRoom]);
+    this.roomAssignedEvent.emit(this.selectedRoom);
   }
 
   onCancel() {
-    this.roomAssignedEvent.emit([false, null]);
+    this.roomAssignedEvent.emit(null);
   }
 }

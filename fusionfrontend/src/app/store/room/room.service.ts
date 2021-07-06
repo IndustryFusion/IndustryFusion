@@ -95,7 +95,7 @@ export class RoomService {
   }
 
   removeAssetFromOldRoom(oldAssetRoomId, asset) {
-    const oldAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === oldAssetRoomId)[0] };
+    const oldAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === oldAssetRoomId).pop() };
     oldAssetRoom.assetIds = oldAssetRoom.assetIds.filter(assetId => assetId !== asset.id);
     oldAssetRoom.assets = oldAssetRoom.assets.filter(arrayAsset => arrayAsset !== asset);
 
@@ -103,7 +103,7 @@ export class RoomService {
   }
 
   addAssetToNewRoom(asset) {
-    const newAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === asset.roomId)[0] };
+    const newAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === asset.roomId).pop() };
     const assetIdsNewAssetRoom = [...newAssetRoom.assetIds];
     const assetNewAssetRoom = [...newAssetRoom.assets];
 
