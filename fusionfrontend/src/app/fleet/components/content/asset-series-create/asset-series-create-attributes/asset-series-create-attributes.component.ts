@@ -5,6 +5,7 @@ import { AssetSeries } from '../../../../../store/asset-series/asset-series.mode
 import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../store/field/field-query.service';
 
 @Component({
   selector: 'app-asset-series-create-attributes',
@@ -21,6 +22,7 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
   $loading: Observable<boolean>;
 
   constructor(private fieldSourceQuery: FieldSourceQuery,
+              private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
     this.$loading = this.fieldSourceQuery.selectLoading();
   }
@@ -30,7 +32,7 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
       id: [],
       index: [],
       sourceUnitName: [],
-      sourceSensorLabel: [],
+      fieldName: [],
       name: [],
       value: ['', [Validators.max(255)]],
       saved: [true, Validators.requiredTrue],
@@ -38,9 +40,10 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
     group.get('id').patchValue(fieldSource.id);
     group.get('index').patchValue(index);
     group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
-    group.get('sourceSensorLabel').patchValue(fieldSource.sourceSensorLabel);
     group.get('name').patchValue(fieldSource.name);
     group.get('value').patchValue(fieldSource.value);
+    const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+    group.get('fieldName').patchValue(field.name);
     return group;
   }
 
