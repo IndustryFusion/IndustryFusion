@@ -32,7 +32,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
       id: [],
       index: [],
       sourceUnitName: [],
-      sourceSensorLabel: [],
+      fieldName: [],
       accuracy: [],
       name: [],
       register: ['', [Validators.max(255)]],
@@ -41,12 +41,12 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
     group.get('id').patchValue(fieldSource.id);
     group.get('index').patchValue(index);
     group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
-    group.get('sourceSensorLabel').patchValue(fieldSource.sourceSensorLabel);
     group.get('name').patchValue(fieldSource.name);
     group.get('register').patchValue(fieldSource.register);
 
     const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
     group.get('accuracy').patchValue(field?.accuracy);
+    group.get('fieldName').patchValue(field.name);
 
     return group;
   }

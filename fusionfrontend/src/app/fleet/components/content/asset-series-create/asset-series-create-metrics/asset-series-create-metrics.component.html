@@ -28,7 +28,7 @@ under the License.
         <div *ngFor="let fieldSource of fieldSourcesFormArray?.controls;" class="p-grid attribute-row">
           <ng-container [formGroup]="fieldSource">
             <span class="p-col-2 "><label controlName="name"></label></span>
-            <span class="p-col-2 "><label controlName="sourceSensorLabel"></label></span>
+            <span class="p-col-2 "><label controlName="fieldName"></label></span>
             <span class="p-col">
               <input *ngIf="isEditMode(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
               <label *ngIf="!isEditMode(fieldSource)"  controlName="register"></label>
