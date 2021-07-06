@@ -39,7 +39,7 @@ import { AssetDetailsQuery } from '../../store/asset-details/asset-details.query
 import { AssetDetailsService } from '../../store/asset-details/asset-details.service';
 import { FactoryManagerPageType, RouteData } from '../factory-routing.model';
 import { AssetSeriesDetails } from '../../store/asset-series-details/asset-series-details.model';
-import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details-query.service';
+import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details.query';
 
 @Injectable({
   providedIn: 'root'

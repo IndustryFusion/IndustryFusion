@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsStore } from '../asset-series-details/asset-series-details-store.service';
+import { AssetSeriesDetailsStore } from '../asset-series-details/asset-series-details.store';
 import { Asset } from '../asset/asset.model';
 
 @Injectable({

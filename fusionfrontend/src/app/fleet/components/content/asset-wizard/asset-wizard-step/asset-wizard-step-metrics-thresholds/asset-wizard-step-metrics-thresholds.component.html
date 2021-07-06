@@ -19,22 +19,14 @@ under the License.
 
   <p-accordion>
     <ng-container *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
-<!--      <ng-container [formGroup]="fieldInstance">-->
+      <ng-container [formGroup]="fieldInstance //noinspection InvalidExpressionResultType">
         <p-accordionTab>
           <ng-template pTemplate="header">
             <div class="p-grid">
-              <label class="if-label p-col-3">
-                {{fieldInstance.get('name')?.value}}
-              </label>
-              <label class="if-label p-col-2">
-                {{fieldInstance.get('fieldName')?.value}}
-              </label>
-              <label class="if-label-normal-weight p-col-2">
-                {{fieldInstance.get('sourceRegister')?.value}}
-              </label>
-              <label class="if-label-small-header p-col-1">
-                {{fieldInstance.get('sourceUnitName')?.value}}
-              </label>
+              <label class="if-label p-col-3" displayControlValue="name"></label>
+              <label class="if-label p-col-2" displayControlValue="fieldName"></label>
+              <label class="if-label-normal-weight p-col-2" displayControlValue="sourceRegister"></label>
+              <label class="if-label-small-header p-col-1" displayControlValue="sourceUnitName"></label>
               <label class="if-label-small-header p-col-3">{{fieldInstance.get('accuracy')?.value | accuracyformat}}</label>
               <app-trash-button class="p-col-1" [disabled]="fieldInstance.get('mandatory')?.value"></app-trash-button>
             </div>
@@ -43,16 +35,15 @@ under the License.
           <ng-template pTemplate="content">
             <table id="customers" style="padding: 10px">
               <thead>
-                <tr>
-                  <th class="tree-line"></th>
-                  <th class="tree-entry" style="width: 0.5rem;"></th>
-                  <th style="width: 1rem;"></th>
-                  <th style="width: 25%"></th>
-                  <th style="width: 30%"></th>
-                  <th style="width: 10%"></th>
-                  <th style="width: 10%"></th>
-                  <th style="width: 18%"></th>
-                </tr>
+              <tr>
+                <th class="tree-line"></th>
+                <th class="tree-entry" style="width: 0.5rem;"></th>
+                <th style="width: 1rem;"></th>
+                <th style="width: 52%"></th>
+                <th style="width: 10%"></th>
+                <th style="width: 10%"></th>
+                <th style="width: 21%"></th>
+              </tr>
               </thead>
 
               <tbody>
@@ -63,21 +54,18 @@ under the License.
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
                 </tr>
                 <tr>
                   <td class="tree-line"><div></div></td>
                   <td class="tree-entry"></td>
-                  <td colspan="3"><label class="if-label-small">{{getTypeTitle(type)}}</label></td>
+                  <td colspan="2"><label class="if-label-small">{{getTypeTitle(type)}}</label></td>
                   <td colspan="2"><label class="if-label-small-header"> {{type == ThresholdType.ABSOLUTE ? 'Threshold Value' : ''}}</label></td>
                   <td></td>
                   <td></td>
-                  <td></td>
                 </tr>
                 <tr>
                   <td class="tree-line"><div></div></td>
                   <td class="tree-entry"></td>
-                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -88,10 +76,9 @@ under the License.
                   <td class="tree-entry"> <div></div> </td>
                   <td></td>
                   <td class="label-thresholds">{{getLowerLimitTitle(type)}}</td>
-                  <td class="if-label-small">Short description text</td>
                   <td>
-                    <input class="threshold-input" type="text" pInputText
-                          [value]="fieldInstance.get('thresholds.' + type + 'Lower')?.value">
+                    <input class="threshold-input" type="text" pInputText (change)="onInputChange($event, type + 'Lower')"
+                           [value]="fieldInstance.get('thresholds.' + type + 'Lower')?.value">
                   </td>
                   <td>Unit</td>
                   <td></td>
@@ -101,7 +88,6 @@ under the License.
                   <td class="tree-entry"> <div></div> </td>
                   <td></td>
                   <td class="label-thresholds">{{getUpperLimitTitle(type)}}</td>
-                  <td class="if-label-small">Short description</td>
                   <td>
                     <input class="threshold-input" type="text" pInputText
                            [value]="fieldInstance.get('thresholds.' + type + 'Upper')?.value"/>
@@ -116,7 +102,7 @@ under the License.
 
         </p-accordionTab>
       </ng-container>
-<!--    </ng-container>-->
-
+    </ng-container>
   </p-accordion>
+
 </div>

@@ -163,7 +163,7 @@ export class AssetWizardComponent implements OnInit {
       protectionClass: [null, Validators.maxLength(255)],
       handbookKey: [null, Validators.maxLength(255)],
       videoKey: [null, Validators.maxLength(255)],
-      imageKey: [null, Validators.maxLength(255)]
+      imageKey: [null, Validators.maxLength(255)],
     });
 
     if (this.asset) {
