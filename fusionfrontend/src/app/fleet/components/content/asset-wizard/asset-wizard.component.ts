@@ -36,6 +36,7 @@ import { Observable } from 'rxjs';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { AssetService } from '../../../../store/asset/asset.service';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
+import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -66,6 +67,7 @@ export class AssetWizardComponent implements OnInit {
               private assetResolver: AssetResolver,
               private assetService: AssetService,
               private companyQuery: CompanyQuery,
+              private quantityTypesResolver: QuantityTypesResolver,
               private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
               private assetTypesResolver: AssetTypesResolver,
@@ -140,6 +142,7 @@ export class AssetWizardComponent implements OnInit {
     this.fieldsResolver.resolve().subscribe();
     this.isLoading$ = this.assetSeriesQuery.selectLoading(); // TODO: is this correct?
     this.assetTypeTemplatesResolver.resolve().subscribe();
+    this.quantityTypesResolver.resolve().subscribe();
   }
 
   private createAssetForm() {

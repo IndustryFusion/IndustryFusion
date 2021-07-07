@@ -25,6 +25,8 @@ import { Threshold, ThresholdType } from '../../../../../../store/threshold/thre
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { FieldThresholdType } from '../../../../../../store/field/field.model';
 import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
+import { QuantityDataType } from 'src/app/store/field-details/field-details.model';
+import { QuantityTypeQuery } from '../../../../../../store/quantity-type/quantity-type.query';
 
 @Component({
   selector: 'app-asset-wizard-step-metrics-thresholds',
@@ -35,6 +37,7 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
   constructor(private fieldInstanceQuery: FieldInstanceQuery,
               private fieldQuery: FieldQuery,
+              private quantityTypeQuery: QuantityTypeQuery,
               private formBuilder: FormBuilder) {
     this.$loading = this.fieldInstanceQuery.selectLoading();
   }
@@ -45,6 +48,7 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
   @Output() errorSignal = new EventEmitter<string>();
 
   ThresholdType = ThresholdType;
+  QuantityDataType = QuantityDataType;
   FieldThresholdType = FieldThresholdType;
 
   fieldInstancesFormArray: FormArray;
@@ -92,21 +96,25 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
       accuracy: [],
       mandatory: [],
       fieldThresholdType: [],
+      quantityDataType: [],
       thresholds: this.createThresholdGroup(fieldInstance),
       valid: [true, Validators.requiredTrue],
     });
 
-    const field = this.fieldQuery.getEntity(fieldInstance.fieldSource?.fieldTarget?.fieldId);
+    const field = this.fieldQuery.getEntity(fieldInstance.fieldSource.fieldTarget.fieldId);
+    const quantityType = this.quantityTypeQuery.getEntity(fieldInstance.fieldSource.sourceUnit.quantityTypeId);
+    const quantityDataType = quantityType.dataType;
 
     group.get('id').patchValue(fieldInstance.id);
     group.get('index').patchValue(index);
     group.get('name').patchValue(fieldInstance.name);
-    group.get('fieldName').patchValue(field?.name);
-    group.get('sourceRegister').patchValue(fieldInstance.fieldSource?.register);
-    group.get('sourceUnitName').patchValue(fieldInstance.fieldSource?.sourceUnit?.name);
-    group.get('accuracy').patchValue(field?.accuracy);
-    group.get('mandatory').patchValue(fieldInstance.fieldSource?.fieldTarget.mandatory);
-    group.get('fieldThresholdType').patchValue(field?.thresholdType);
+    group.get('fieldName').patchValue(field.name);
+    group.get('sourceRegister').patchValue(fieldInstance.fieldSource.register);
+    group.get('sourceUnitName').patchValue(fieldInstance.fieldSource.sourceUnit.name);
+    group.get('accuracy').patchValue(field.accuracy);
+    group.get('mandatory').patchValue(fieldInstance.fieldSource.fieldTarget.mandatory);
+    group.get('fieldThresholdType').patchValue(field.thresholdType);
+    group.get('quantityDataType').patchValue(quantityDataType);
 
     return group;
   }
