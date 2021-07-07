@@ -57,6 +57,14 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   }
 
   onStart() {
-    this.stepChange.emit(AssetWizardStep.GENERAL_INFORMATION + 1);
+    if (this.readyForNextStep()) {
+      this.stepChange.emit(AssetWizardStep.GENERAL_INFORMATION + 1);
+    }
+  }
+
+  readyForNextStep(): boolean {
+    return this.assetForm.get('assetSeriesId').value != null
+      && this.assetForm.get('name').value
+      && this.assetForm.get('description').value;
   }
 }
