@@ -54,7 +54,14 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
   fieldInstancesFormArray: FormArray;
   $loading: Observable<boolean>;
 
-  private static getThresholdFromForm(thresholdGroup: AbstractControl, type: ThresholdType): Threshold {
+  private static getThresholdFromForm(thresholdGroup: AbstractControl,
+                                      type: ThresholdType,
+                                      quantityDataType: QuantityDataType): Threshold {
+    // As demoinsert data also have thresholds for non numeric data, force to remove them before saving
+    if (quantityDataType !== QuantityDataType.NUMERIC) {
+      return null;
+    }
+
     const lowerValue = thresholdGroup.get(type + 'Lower').value;
     const upperValue = thresholdGroup.get(type + 'Upper').value;
     const valueExist: boolean = lowerValue || upperValue;
@@ -186,14 +193,18 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
   private getFieldInstanceFromForm(metricGroup: AbstractControl): FieldInstance {
     const thresholdGroup = metricGroup.get('thresholds');
+    const quantityDataType = metricGroup.get('quantityDataType').value;
     const fieldInstance = this.asset.fieldInstances[metricGroup.get('index').value];
 
     return {
       ...fieldInstance,
       fieldSource: { ...fieldInstance.fieldSource },
-      absoluteThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup, ThresholdType.ABSOLUTE),
-      idealThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup, ThresholdType.IDEAL),
-      criticalThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup, ThresholdType.CRITICAL)
+      absoluteThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup,
+        ThresholdType.ABSOLUTE, quantityDataType),
+      idealThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup,
+        ThresholdType.IDEAL, quantityDataType),
+      criticalThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup,
+        ThresholdType.CRITICAL, quantityDataType)
     };
   }
 

@@ -83,6 +83,14 @@ public class FleetAssetRestService {
         assetService.moveAssetCompany(companyId, assetId, targetCompanyId);
     }
 
+    @PostMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets")
+    public AssetDto createAsset(@PathVariable final Long companyId,
+                                @PathVariable final Long assetSeriesId,
+                                @RequestBody final AssetDto assetDto) {
+        return assetMapper.toDto(
+                assetService.createAssetAggregate(companyId, assetSeriesId, assetMapper.toEntity(assetDto)),
+                true);
+    }
 
     // TODO: this should probably not be allowed
     @PostMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")

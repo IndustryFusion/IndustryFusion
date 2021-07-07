@@ -27,11 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -42,6 +39,7 @@ public class AssetService {
     private final AssetSeriesService assetSeriesService;
     private final CompanyService companyService;
     private final LocationService locationService;
+    private final FieldInstanceService fieldInstanceService;
 
     @Autowired
     public AssetService(AssetRepository assetRepository,
@@ -49,13 +47,15 @@ public class AssetService {
                         RoomService roomService,
                         AssetSeriesService assetSeriesService,
                         CompanyService companyService,
-                        LocationService locationService) {
+                        LocationService locationService,
+                        FieldInstanceService fieldInstanceService) {
         this.assetRepository = assetRepository;
         this.fieldInstanceRepository = fieldInstanceRepository;
         this.roomService = roomService;
         this.assetSeriesService = assetSeriesService;
         this.companyService = companyService;
         this.locationService = locationService;
+        this.fieldInstanceService = fieldInstanceService;
     }
 
     public Asset getAssetById(final Long assetId) {
@@ -133,6 +133,59 @@ public class AssetService {
         targetCompany.getAssets().add(asset);
 
         return asset;
+    }
+
+    @Transactional
+    public Asset createAssetAggregate(final Long companyId, final Long assetSeriesId, final Asset asset) {
+        final AssetSeries assetSeries = assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId);
+        final Company targetCompany = assetSeries.getCompany();
+
+        targetCompany.getAssets().add(asset);
+        asset.setCompany(targetCompany);
+        assetSeries.getAssets().add(asset);
+        asset.setAssetSeries(assetSeries);
+
+        asset.getFieldInstances().forEach(fieldInstance -> {
+            fieldInstance.setAsset(asset);
+            fieldInstance.setFieldSource(assetSeries.getFieldSources().stream()
+                    .filter(value -> value.getId().equals(fieldInstance.getFieldSource().getId()))
+                    .findFirst()
+                    .get()
+            );
+        });
+
+        validate(asset);
+
+        return assetRepository.save(asset);
+    }
+
+    public void validate(final Asset asset) {
+        if (asset.getCompany() == null) {
+            throw new RuntimeException("Company has to exist in an Asset");
+        }
+        if (asset.getFieldInstances() == null) {
+            throw new RuntimeException("FieldInstances has to exist in an Asset");
+        }
+        if (asset.getAssetSeries() == null) {
+            throw new RuntimeException("AssetSeries has to exist in an Asset");
+        }
+        if (asset.getInstallationDate() == null) {
+            throw new RuntimeException("InstallationDate has to exist in an Asset");
+        }
+        if (asset.getConstructionDate() == null) {
+            throw new RuntimeException("ConstructionDate has to exist in an Asset");
+        }
+        if (asset.getGuid() == null) {
+            throw new RuntimeException("GUID has to exist in an Asset");
+        }
+        if (asset.getProtectionClass() == null) {
+            throw new RuntimeException("ProtectionClass has to exist in an Asset");
+        }
+        if (asset.getName() == null) {
+            throw new RuntimeException("Asset must have a name");
+        }
+
+        asset.getFieldInstances().forEach(fieldInstanceService::validate);
     }
 
     public void deleteAsset(final Long companyId, final Long assetId) {

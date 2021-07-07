@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.model.Asset;
+import io.fusion.fusionbackend.service.CompanyService;
 import io.fusion.fusionbackend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,14 +31,17 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     private final BaseAssetMapper baseAssetMapper;
     private final FieldInstanceMapper fieldInstanceMapper;
     private final RoomService roomService;
+    private final CompanyService companyService;
 
     @Autowired
     public AssetMapper(BaseAssetMapper baseAssetMapper,
                        FieldInstanceMapper fieldInstanceMapper,
-                       RoomService roomService) {
+                       RoomService roomService,
+                       CompanyService companyService) {
         this.baseAssetMapper = baseAssetMapper;
         this.fieldInstanceMapper = fieldInstanceMapper;
         this.roomService = roomService;
+        this.companyService = companyService;
     }
 
     private AssetDto toDtoShallow(final Asset entity) {
@@ -74,29 +78,14 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     }
 
     private AssetDto toDtoDeep(final Asset entity) {
-        if (entity == null) {
+        AssetDto dto = toDtoShallow(entity);
+        if (dto == null) {
             return null;
         }
-        AssetDto dto = AssetDto.builder()
-                .id(entity.getId())
-                .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
-                .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
-                .fieldInstances(this.fieldInstanceMapper.toDtoSet(entity.getFieldInstances(), true))
-                .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
-                .externalId(entity.getExternalId())
-                .controlSystemType(entity.getControlSystemType())
-                .hasGateway(entity.getHasGateway())
-                .gatewayConnectivity(entity.getGatewayConnectivity())
-                .guid(entity.getGuid())
-                .ceCertified(entity.getCeCertified())
-                .serialNumber(entity.getSerialNumber())
-                .constructionDate(entity.getConstructionDate())
-                .protectionClass(entity.getProtectionClass())
-                .handbookKey(entity.getHandbookKey())
-                .videoKey(entity.getVideoKey())
-                .installationDate(entity.getInstallationDate())
-                .build();
 
+        if (entity.getFieldInstances() != null) {
+            dto.setFieldInstances(this.fieldInstanceMapper.toDtoSet(entity.getFieldInstances(), true));
+        }
         if (entity.getRoom() != null) {
             dto.setRoomId(entity.getRoom().getId());
         }
@@ -137,6 +126,9 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
 
         if (dto.getRoomId() != null) {
             entity.setRoom(roomService.getRoomById(dto.getRoomId()));
+        }
+        if (dto.getFieldInstances() != null) {
+            entity.setFieldInstances(fieldInstanceMapper.toEntitySet(dto.getFieldInstances()));
         }
 
         baseAssetMapper.copyToEntity(dto, entity);

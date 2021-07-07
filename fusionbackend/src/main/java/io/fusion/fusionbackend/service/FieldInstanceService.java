@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.FieldSource;
+import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import org.slf4j.Logger;
@@ -29,12 +30,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class FieldInstanceService {
     private final ThresholdService thresholdService;
+    private final UnitService unitService;
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
 
     @Autowired
-    public FieldSourceService(ThresholdService thresholdService) {
+    public FieldInstanceService(ThresholdService thresholdService, UnitService unitService) {
         this.thresholdService = thresholdService;
+        this.unitService = unitService;
     }
 
     public FieldInstance initFieldInstanceDraft(FieldSource fieldSource) {
@@ -66,8 +69,8 @@ public class FieldInstanceService {
         final boolean existPairwiseValues = this.existPairwiseValues(absoluteValuesCount, idealValuesCount,
                                                                         criticalValuesCount);
 
-        if (quantityDataType.equals(QuantityDataType.CATEGORICAL) && !existNoValues) {
-            return false;
+        if (!quantityDataType.equals(QuantityDataType.NUMERIC)) {
+            return existNoValues;
         }
 
         switch (fieldThresholdType) {
@@ -93,10 +96,8 @@ public class FieldInstanceService {
                 .getField()
                 .getThresholdType();
 
-        final QuantityDataType quantityDataType = fieldInstance.getFieldSource()
-                .getSourceUnit()
-                .getQuantityType()
-                .getDataType();
+        final Unit unit = unitService.getUnit(fieldInstance.getFieldSource().getSourceUnit().getId());
+        final QuantityDataType quantityDataType = unit.getQuantityType().getDataType();
 
         if (!areThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
             LOG.warn("Thresholds of field instance with id {} are not valid.\r\n"

@@ -62,7 +62,7 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
         return FieldInstanceDto.builder()
                 .id(entity.getId())
                 .assetId(EntityDtoMapper.getEntityId(entity.getAsset()))
-                .fieldSource(fieldSourceMapper.toDto(entity.getFieldSource(), false))
+                .fieldSource(fieldSourceMapper.toDto(entity.getFieldSource(), true))
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .externalId(entity.getExternalId())
@@ -87,7 +87,7 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
         if (dto == null) {
             return null;
         }
-        return FieldInstance.builder()
+        FieldInstance entity = FieldInstance.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
@@ -95,6 +95,21 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
                 .sourceSensorLabel(dto.getSourceSensorLabel())
                 .value(dto.getValue())
                 .build();
+
+        if (dto.getFieldSource() != null) {
+            entity.setFieldSource(fieldSourceMapper.toEntity(dto.getFieldSource()));
+        }
+        if (dto.getAbsoluteThreshold() != null) {
+            entity.setAbsoluteThreshold(thresholdMapper.toEntity(dto.getAbsoluteThreshold()));
+        }
+        if (dto.getIdealThreshold() != null) {
+            entity.setIdealThreshold(thresholdMapper.toEntity(dto.getIdealThreshold()));
+        }
+        if (dto.getCriticalThreshold() != null) {
+            entity.setCriticalThreshold(thresholdMapper.toEntity(dto.getCriticalThreshold()));
+        }
+
+        return entity;
     }
 
     @Override

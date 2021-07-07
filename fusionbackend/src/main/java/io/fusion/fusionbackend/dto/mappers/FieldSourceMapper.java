@@ -104,6 +104,9 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         if (dto.getFieldTarget() != null) {
             entity.setFieldTarget(fieldTargetMapper.toEntity(dto.getFieldTarget()));
         }
+        if (dto.getSourceUnit() != null) {
+            entity.setSourceUnit(unitMapper.toEntity(dto.getSourceUnit()));
+        }
         return entity;
     }
 

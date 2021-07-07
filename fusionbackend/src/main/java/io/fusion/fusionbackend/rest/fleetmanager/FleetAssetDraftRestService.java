@@ -18,7 +18,7 @@ package io.fusion.fusionbackend.rest.fleetmanager;
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
-import io.fusion.fusionbackend.service.AssetSeriesService;
+import io.fusion.fusionbackend.service.AssetDraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @IsFleetUser
-public class AssetSeriesDraftRestService {
-    private final AssetSeriesService assetSeriesService;
+public class FleetAssetDraftRestService {
+    private final AssetDraftService assetDraftService;
     private final AssetMapper assetMapper;
 
     @Autowired
-    public AssetSeriesDraftRestService(AssetSeriesService assetSeriesService,
-                                       AssetMapper assetMapper) {
-        this.assetSeriesService = assetSeriesService;
+    public FleetAssetDraftRestService(AssetDraftService assetDraftService,
+                                      AssetMapper assetMapper) {
+        this.assetDraftService = assetDraftService;
         this.assetMapper = assetMapper;
     }
 
@@ -43,6 +43,6 @@ public class AssetSeriesDraftRestService {
                                     @PathVariable final Long assetSeriesId,
                                     @RequestParam(defaultValue = "true") final boolean embedChildren) {
         return assetMapper.toDto(
-                assetSeriesService.initAssetDraft(companyId, assetSeriesId), embedChildren);
+                assetDraftService.initAssetDraft(companyId, assetSeriesId), embedChildren);
     }
 }

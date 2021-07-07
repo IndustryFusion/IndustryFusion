@@ -98,12 +98,7 @@ export class AssetWizardComponent implements OnInit {
 
   onStepChange(step: number) {
     if (this.step === AssetWizardStep.GENERAL_INFORMATION) {
-      this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeries.id).subscribe(
-        asset => {
-          this.asset = asset;
-          this.step = step;
-        }
-      );
+     this.refreshAssetFormCreateAssetDraft(step);
     } else {
       this.step = step;
     }
@@ -114,6 +109,61 @@ export class AssetWizardComponent implements OnInit {
       this.prefillFormFromAssetSeries(assetSeriesId);
     }
   }
+
+  private refreshAssetFormCreateAssetDraft(step: number) {
+    const assetName: string = this.assetForm.get('name').value;
+    const assetDescription: string = this.assetForm.get('description').value;
+
+    this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeries.id).subscribe(
+      asset => {
+        this.asset = asset;
+        this.asset.name = assetName;
+        this.asset.description = assetDescription;
+
+        this.createAssetForm();
+        this.step = step;
+      }
+    );
+  }
+
+  onSaveAsset(): void {
+    if (this.asset && this.assetForm.valid && this.asset.fieldInstances) {
+      this.asset.name = this.assetForm.get('name').value;
+      this.asset.description = this.assetForm.get('description').value;
+      this.asset.ceCertified = this.assetForm.get('ceCertified').value;
+      this.asset.externalId = this.assetForm.get('externalId').value;
+      this.asset.controlSystemType = this.assetForm.get('controlSystemType')?.value;
+      this.asset.hasGateway = this.assetForm.get('hasGateway')?.value;
+      this.asset.gatewayConnectivity = this.assetForm.get('gatewayConnectivity')?.value;
+      this.asset.guid = this.assetForm.get('guid')?.value;
+      this.asset.serialNumber = this.assetForm.get('serialNumber')?.value;
+      this.asset.constructionDate = this.assetForm.get('constructionDate')?.value;
+      this.asset.installationDate = this.assetForm.get('installationDate')?.value;
+      this.asset.protectionClass = this.assetForm.get('protectionClass').value;
+      this.asset.handbookKey = this.assetForm.get('handbookKey').value;
+      this.asset.videoKey = this.assetForm.get('videoKey')?.value;
+      this.asset.imageKey = this.assetForm.get('imageKey')?.value;
+
+      console.log('asset to save:', this.asset);
+
+      if (this.type === DialogType.EDIT) {
+
+      } else if (this.type === DialogType.CREATE) {
+        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeries.id, this.asset).subscribe();
+      }
+    }
+  }
+
+/*  onUpdateAssetSeries() {
+    if (this.assetSeries.id) {
+      this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries)
+        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
+    } else {
+      this.assetSeries.companyId = this.companyId;
+      this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries.assetTypeTemplateId)
+        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
+    }
+  }*/
 
   private prefillFormFromAssetSeries(assetSeriesId: ID): void {
     const assetSeries = this.assetSeriesQuery.getEntity(assetSeriesId);

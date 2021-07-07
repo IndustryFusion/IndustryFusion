@@ -27,6 +27,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "field_instance")
@@ -45,15 +46,15 @@ public class FieldInstance extends BaseEntity {
     private FieldSource fieldSource;
 
     // TODO: Validate with option of field->threshold_type
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "absolute_threshold_id")
     private Threshold absoluteThreshold;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "ideal_threshold_id")
     private Threshold idealThreshold;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "critical_threshold_id")
     private Threshold criticalThreshold;
 

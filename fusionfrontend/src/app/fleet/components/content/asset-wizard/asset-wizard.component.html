@@ -32,7 +32,8 @@ under the License.
   <app-asset-wizard-step-general-information *ngIf="step === AssetWizardStep.GENERAL_INFORMATION"
                                              (stepChange)="onStepChange($event)"
                                              (changeAssetSeries)="onChangeAssetSeries($event)"
-                                             [assetForm]="assetForm" [isAssetSeriesLocked]="isAssetSeriesLocked"
+                                             [assetForm]="assetForm"
+                                             [isAssetSeriesLocked]="isAssetSeriesLocked"
                                              [relatedAssetSeries]="relatedAssetSeries"
                                              [relatedAssetType]="relatedAssetType"
                                              [relatedCompany]="relatedCompany">
@@ -53,6 +54,6 @@ under the License.
                                   [assetForm]="assetForm">
   </app-asset-wizard-step-customer>
   <app-asset-wizard-step-finished *ngIf="step === AssetWizardStep.FINISHED" (stepChange)="onStepChange($event)"
-                                  [assetForm]="assetForm">
+                                  [assetForm]="assetForm" (saveAsset)="onSaveAsset()">
   </app-asset-wizard-step-finished>
 </div>
