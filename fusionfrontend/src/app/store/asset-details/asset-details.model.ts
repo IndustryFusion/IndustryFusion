@@ -26,11 +26,18 @@ export class AssetDetails extends Asset {
 }
 
 export enum AssetModalType  {
-  startInitialitation = 1,
-  customizeAsset = 2,
-  addDescription = 3,
+  startInitialization = 1,
+  pairAsset,
+  customizeAsset = 3,
   locationAssignment = 4,
-  roomAssigntment = 5
+  roomAssignment = 5
+}
+
+export enum AssetModalMode  {
+  onboardAssetMode = 1,
+  editAssetMode,
+  editRoomForAssetMode = 3,
+  editRoomWithPreselecedLocationMode = 4,
 }
 
 export enum DashboardFilterModalType {

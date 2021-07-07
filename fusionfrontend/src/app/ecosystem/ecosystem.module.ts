@@ -63,9 +63,7 @@ import { AssetTypeTemplateWizardStepFinishedComponent } from './components/conte
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
-import { CheckboxModule } from 'primeng/checkbox';
 import { IFCommon } from '../common/i-f-common.module';
 import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
 import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
@@ -142,9 +140,7 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     ClarityModule,
     Ng2CompleterModule,
     ReactiveFormsModule,
-    DialogModule,
     TableModule,
-    CheckboxModule,
   ],
     exports: [
         EcosystemSubHeaderComponent,

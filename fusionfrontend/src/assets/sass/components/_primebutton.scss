@@ -1,4 +1,12 @@
+@import 'base/typography';
+@import "abstract/variables";
+
 .p-button {
   box-shadow: none !important;
+
+  &:hover {
+    background-color: $basic-white !important;
+    color: $basic-black !important;
+  }
 }
 

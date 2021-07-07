@@ -70,8 +70,7 @@ public class FactoryAssetRestService {
     public AssetDetailsDto getSingleAssetDetails(@PathVariable final Long companyId,
                                                  @PathVariable final Long assetDetailsId,
                                                  @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        Asset asset = assetService.getAssetById(assetDetailsId);
-        return assetDetailsMapper.toDto(asset, embedChildren);
+        return assetDetailsMapper.toDto(assetService.getAssetById(assetDetailsId), embedChildren);
     }
 
     // Rooms path
@@ -141,12 +140,11 @@ public class FactoryAssetRestService {
         return assetMapper.toDto(assetService.getAssetByCompany(companyId, assetId), embedChildren);
     }
 
-    @PatchMapping(path = "/companies/{companyId}/assets/{assetId}")
+    @PutMapping(path = "/companies/{companyId}/assets/{assetId}")
     public AssetDto updateCompanyAsset(@PathVariable final Long companyId,
                                        @PathVariable final Long assetId,
                                        @RequestBody final AssetDto assetDto) {
         // TODO Open: what the factory manager can change on an asset
-        return assetMapper.toDto(assetService.updateCompanyAsset(companyId, assetId,
-                assetMapper.toEntity(assetDto)), false);
+        return assetMapper.toDto(assetService.updateAsset(assetMapper.toEntity(assetDto)), false);
     }
 }

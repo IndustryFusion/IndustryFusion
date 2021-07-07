@@ -114,16 +114,16 @@ export class AssetService {
   }
 
   updateCompanyAsset(companyId: ID, assetDetails: AssetDetails): Observable<Asset> {
-    const path = `companies/${companyId}/assets/${assetDetails.id}`;
+    const path = `companies/${assetDetails.companyId}/assets/${assetDetails.id}`;
     const asset: Asset = this.mapAssetDetailsToAsset(assetDetails);
-    return this.http.patch<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
+    return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(updatedAsset => {
             console.log('updated asset with id ' + updatedAsset.id);
             this.assetStore.upsertCached(updatedAsset);
-            const updatedAssetDetails = this.assetDetailsService.getAssetDetails(companyId, updatedAsset.id).pipe(
-              tap(entity => this.assetDetailsStore.upsertCached(entity) ));
-            return updatedAssetDetails;
+            return this.assetDetailsService.getAssetDetails(companyId, updatedAsset.id).pipe(tap(entity => {
+              this.assetDetailsStore.upsertCached(entity);
+            }));
           })
 
       );

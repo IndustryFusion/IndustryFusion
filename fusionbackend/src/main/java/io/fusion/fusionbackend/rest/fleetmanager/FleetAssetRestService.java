@@ -146,5 +146,4 @@ public class FleetAssetRestService {
         return fieldInstanceMapper.toDto(
                 assetService.getFieldInstance(companyId, assetId, fieldInstanceId), embedChildren);
     }
-
 }

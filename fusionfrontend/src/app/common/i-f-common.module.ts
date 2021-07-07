@@ -13,13 +13,16 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
-import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { RadioButtonModule } from 'primeng/radiobutton';
 
 
 @NgModule({
@@ -45,6 +48,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     DropdownModule,
     InputTextareaModule,
     RadioButtonModule,
+    DialogModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -65,6 +69,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     InputTextModule,
     DropdownModule,
     InputTextareaModule,
+    DialogModule,
+    RadioButtonModule,
+    CheckboxModule,
+    ConfirmDialogModule,
     AccuracyFormatPipe,
     RadioButtonModule,
   ]
