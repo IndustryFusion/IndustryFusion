@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Asset } from '../../../../store/asset/asset.model';
 import { DialogType } from '../../../../common/models/dialog-type.model';
@@ -55,9 +55,12 @@ export class AssetWizardComponent implements OnInit {
   public step = AssetWizardStep.GENERAL_INFORMATION;
   public isAssetSeriesLocked = false;
 
+  public metricsValid: boolean;
+
   public AssetWizardStep = AssetWizardStep;
 
   constructor(private assetSeriesResolver: AssetSeriesResolver,
+              private changeDetectorRef: ChangeDetectorRef,
               private assetSeriesQuery: AssetSeriesQuery,
               private assetSeriesService: AssetSeriesService,
               private assetResolver: AssetResolver,
@@ -169,5 +172,10 @@ export class AssetWizardComponent implements OnInit {
     if (this.asset) {
       this.assetForm.patchValue(this.asset);
     }
+  }
+
+  setMetricsValid(isValid: boolean) {
+    this.metricsValid = isValid;
+    this.changeDetectorRef.detectChanges();
   }
 }

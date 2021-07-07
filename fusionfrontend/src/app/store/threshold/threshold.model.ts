@@ -25,3 +25,39 @@ export enum ThresholdType {
   IDEAL = 'ideal',
   CRITICAL = 'critical',
 }
+
+// tslint:disable-next-line:no-namespace
+export namespace ThresholdType {
+  export function getTypeTitle(type: ThresholdType) {
+    switch (type) {
+      case ThresholdType.ABSOLUTE:
+        return 'Absolute lower & upper limit *';
+      case ThresholdType.IDEAL:
+        return 'Ideal range';
+      case ThresholdType.CRITICAL:
+        return 'Critical alert range';
+    }
+  }
+
+  export function getLowerLimitTitle(type: ThresholdType) {
+    switch (type) {
+      case ThresholdType.ABSOLUTE:
+        return 'Absolute lower limit';
+      case ThresholdType.IDEAL:
+        return 'Lower ideal threshold';
+      case ThresholdType.CRITICAL:
+        return 'Lower critical alert threshold';
+    }
+  }
+
+  export function getUpperLimitTitle(type: ThresholdType) {
+    switch (type) {
+      case ThresholdType.ABSOLUTE:
+        return 'Absolute upper limit';
+      case ThresholdType.IDEAL:
+        return 'Upper ideal threshold';
+      case ThresholdType.CRITICAL:
+        return 'Upper critical alert threshold';
+    }
+  }
+}

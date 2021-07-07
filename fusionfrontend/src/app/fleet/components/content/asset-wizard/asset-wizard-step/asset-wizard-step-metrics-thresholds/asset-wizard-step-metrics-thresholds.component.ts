@@ -14,7 +14,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { FieldInstance } from '../../../../../../store/field-instance/field-instance.model';
 import { FieldInstanceQuery } from '../../../../../../store/field-instance/field-instance.query';
@@ -34,7 +34,6 @@ import { CustomFormValidators } from '../../../../../../common/utils/custom-form
 export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
   constructor(private fieldInstanceQuery: FieldInstanceQuery,
-              // private fieldInstanceService: FieldInstanceService,
               private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
     this.$loading = this.fieldInstanceQuery.selectLoading();
@@ -67,6 +66,19 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
   ngOnInit(): void {
     this.fillTable(this.asset.fieldInstances);
+  }
+
+  private fillTable(fieldInstances: FieldInstance[]) {
+    this.fieldInstancesFormArray = new FormArray([]);
+    this.fieldInstancesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldInstancesFormArray.valid));
+
+    for (let i = 0; i < fieldInstances.length; i++) {
+      if (fieldInstances[i].fieldSource.fieldTarget.fieldType === FieldType.METRIC) {
+        const formGroup = this.createFieldInstanceGroup(i, fieldInstances[i]);
+        this.fieldInstancesFormArray.push(formGroup);
+      }
+    }
+    this.valid.emit(this.fieldInstancesFormArray.valid);
   }
 
   private createFieldInstanceGroup(index: number, fieldInstance: FieldInstance): FormGroup {
@@ -154,64 +166,39 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
     this.asset.fieldInstances.splice(indexToRemove, 1);
   }
 
-  private fillTable(fieldInstances: FieldInstance[]) {
-    this.fieldInstancesFormArray = new FormArray([]);
-    this.valid.emit(this.fieldInstancesFormArray.valid);
-    this.fieldInstancesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldInstancesFormArray.valid));
-
-    for (let i = 0; i < fieldInstances.length; i++) {
-      if (fieldInstances[i].fieldSource.fieldTarget.fieldType === FieldType.METRIC) {
-        const formGroup = this.createFieldInstanceGroup(i, fieldInstances[i]);
-        this.fieldInstancesFormArray.push(formGroup);
-      }
-    }
-
-    console.log('fieldInstancesFormArray:', this.fieldInstancesFormArray);
+  private readyToTakeNextStep(): boolean {
+    return this.fieldInstancesFormArray.valid;
   }
 
-  onInputChange(metricGroup: AbstractControl, $event: any, identifier: string): void {
-    if (metricGroup == null || $event == null || identifier == null || identifier.length < 1) {
-      return;
-    }
-
-  getTypeTitle(type: ThresholdType) {
-    switch (type) {
-      case ThresholdType.ABSOLUTE:
-        return 'Absolute lower & upper limit *';
-      case ThresholdType.IDEAL:
-        return 'Ideal range (optional)';
-      case ThresholdType.CRITICAL:
-        return 'Critical alert range (optional)';
-    }
-    /*for (const element: FormControl in (metricGroup.get('thresholds') as FormGroup).controls) {
-      element.
-    }*/
-    // metricGroup.get('thresholds').get(identifier).patchValue($event.target.value);
-    // metricGroup.get('thresholds').updateValueAndValidity();
-
-    const fieldInstance: FieldInstance = this.getFieldInstanceFromForm(metricGroup);
-    console.log(fieldInstance);
+  private saveValues() {
+    this.fieldInstancesFormArray.controls.forEach((metricGroup: FormControl) => {
+      this.asset.fieldInstances[metricGroup.get('index').value] = this.getFieldInstanceFromForm(metricGroup);
+    });
   }
 
-  getLowerLimitTitle(type: ThresholdType) {
-    switch (type) {
-      case ThresholdType.ABSOLUTE:
-        return 'Absolute lower limit';
-      case ThresholdType.IDEAL:
-        return 'Lower ideal threshold';
-      case ThresholdType.CRITICAL:
-        return 'Lower critical alert threshold';
+  private getFieldInstanceFromForm(metricGroup: AbstractControl): FieldInstance {
+    const thresholdGroup = metricGroup.get('thresholds');
+    const fieldInstance = this.asset.fieldInstances[metricGroup.get('index').value];
+
+    return {
+      ...fieldInstance,
+      fieldSource: { ...fieldInstance.fieldSource },
+      absoluteThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup, ThresholdType.ABSOLUTE),
+      idealThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup, ThresholdType.IDEAL),
+      criticalThreshold: AssetWizardStepMetricsThresholdsComponent.getThresholdFromForm(thresholdGroup, ThresholdType.CRITICAL)
+    };
+  }
+
+  onBack() {
+    if (this.readyToTakeNextStep()) {
+      this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS - 1);
     }
   }
 
-  getUpperLimitTitle(type: ThresholdType) {
-    switch (type) {
-      case ThresholdType.ABSOLUTE:
-        return 'Absolute upper limit';
-      case ThresholdType.IDEAL:
-        return 'Upper ideal threshold';
-      case ThresholdType.CRITICAL:
-        return 'Upper critical alert threshold';
+  onNext() {
+    if (this.readyToTakeNextStep()) {
+      this.saveValues();
+      this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS + 1);
     }
   }
 }
