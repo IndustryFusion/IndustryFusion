@@ -92,7 +92,7 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         if (dto == null) {
             return null;
         }
-        return FieldSource.builder()
+        FieldSource entity = FieldSource.builder()
                 .id(dto.getId())
                 .sourceSensorLabel(dto.getSourceSensorLabel())
                 .name(dto.getName())
@@ -100,6 +100,11 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .value(dto.getValue())
                 .register(dto.getRegister())
                 .build();
+
+        if (dto.getFieldTarget() != null) {
+            entity.setFieldTarget(fieldTargetMapper.toEntity(dto.getFieldTarget()));
+        }
+        return entity;
     }
 
     @Override

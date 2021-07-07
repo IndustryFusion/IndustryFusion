@@ -52,4 +52,9 @@ export class FieldInstanceService {
           this.fieldInstanceStore.upsert(entity.id, entity);
         }));
   }
+
+  areThresholdsValid(companyId: ID, fieldInstance: FieldInstance): Observable<boolean> {
+    const path = `/companies/${companyId}/fieldinstances/are-thresholds-valid`;
+    return this.http.post<boolean>(`${environment.apiUrlPrefix}/${path}`, fieldInstance, this.httpOptions);
+  }
 }
