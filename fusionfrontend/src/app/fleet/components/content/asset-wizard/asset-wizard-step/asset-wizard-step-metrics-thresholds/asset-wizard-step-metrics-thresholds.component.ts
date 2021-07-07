@@ -21,8 +21,10 @@ import { FieldInstanceQuery } from '../../../../../../store/field-instance/field
 import { FieldType } from '../../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../../store/field/field-query.service';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { ThresholdType } from '../../../../../../store/threshold/threshold.model';
+import { Threshold, ThresholdType } from '../../../../../../store/threshold/threshold.model';
 import { AssetWizardStep } from '../asset-wizard-step.model';
+import { FieldThresholdType } from '../../../../../../store/field/field.model';
+import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
 
 @Component({
   selector: 'app-asset-wizard-step-metrics-thresholds',
@@ -31,19 +33,36 @@ import { AssetWizardStep } from '../asset-wizard-step.model';
 })
 export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
+  constructor(private fieldInstanceQuery: FieldInstanceQuery,
+              // private fieldInstanceService: FieldInstanceService,
+              private fieldQuery: FieldQuery,
+              private formBuilder: FormBuilder) {
+    this.$loading = this.fieldInstanceQuery.selectLoading();
+  }
+
   @Input() asset: Asset;
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
+  @Output() errorSignal = new EventEmitter<string>();
 
   ThresholdType = ThresholdType;
+  FieldThresholdType = FieldThresholdType;
 
   fieldInstancesFormArray: FormArray;
   $loading: Observable<boolean>;
 
-  constructor(private fieldInstanceQuery: FieldInstanceQuery,
-              private fieldQuery: FieldQuery,
-              private formBuilder: FormBuilder) {
-    this.$loading = this.fieldInstanceQuery.selectLoading();
+  private static getThresholdFromForm(thresholdGroup: AbstractControl, type: ThresholdType): Threshold {
+    const lowerValue = thresholdGroup.get(type + 'Lower').value;
+    const upperValue = thresholdGroup.get(type + 'Upper').value;
+    const valueExist: boolean = lowerValue || upperValue;
+    if (!valueExist) {
+      return null;
+    }
+    const threshold: Threshold = new Threshold();
+    threshold.id = thresholdGroup.get('id').value;
+    threshold.valueUpper = upperValue;
+    threshold.valueLower = lowerValue;
+    return threshold;
   }
 
   ngOnInit(): void {
@@ -60,8 +79,9 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
       sourceUnitName: [],
       accuracy: [],
       mandatory: [],
+      fieldThresholdType: [],
       thresholds: this.createThresholdGroup(fieldInstance),
-      saved: [true, Validators.requiredTrue],
+      valid: [true, Validators.requiredTrue],
     });
 
     const field = this.fieldQuery.getEntity(fieldInstance.fieldSource?.fieldTarget?.fieldId);
@@ -74,54 +94,64 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
     group.get('sourceUnitName').patchValue(fieldInstance.fieldSource?.sourceUnit?.name);
     group.get('accuracy').patchValue(field?.accuracy);
     group.get('mandatory').patchValue(fieldInstance.fieldSource?.fieldTarget.mandatory);
+    group.get('fieldThresholdType').patchValue(field?.thresholdType);
 
     return group;
   }
 
   private createThresholdGroup(fieldInstance: FieldInstance): FormGroup {
-    const thresholdGroup = this.formBuilder.group({
-      absoluteLower: [],
-      absoluteUpper: [],
-      idealLower: [],
-      idealUpper: [],
-      criticalLower: [],
-      criticalUpper: [],
+    // Constraints: Pairwise (not) empty, absolute has to be filled if any other has values
+    const optionalThresholdNames = ['idealLower', 'idealUpper', 'criticalLower', 'criticalUpper'];
+    const thresholdForm = this.formBuilder.group({
+      id: [],
+      absoluteLower: [fieldInstance.absoluteThreshold?.valueLower,
+        [CustomFormValidators.requiredFloatingNumber(),
+          CustomFormValidators.requiredIfOtherNotEmpty('absoluteUpper'),
+          CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames)]],
+      absoluteUpper: [fieldInstance.absoluteThreshold?.valueUpper,
+        [CustomFormValidators.requiredFloatingNumber(),
+          CustomFormValidators.requiredIfOtherNotEmpty('absoluteLower'),
+          CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames)]],
+      idealLower: [fieldInstance.idealThreshold?.valueLower,
+        [CustomFormValidators.requiredFloatingNumber(),
+          CustomFormValidators.requiredIfOtherNotEmpty('idealUpper')]],
+      idealUpper: [fieldInstance.idealThreshold?.valueUpper,
+        [CustomFormValidators.requiredFloatingNumber(),
+          CustomFormValidators.requiredIfOtherNotEmpty('idealLower')]],
+      criticalLower: [fieldInstance.criticalThreshold?.valueLower,
+        [CustomFormValidators.requiredFloatingNumber(),
+          CustomFormValidators.requiredIfOtherNotEmpty('criticalUpper')]],
+      criticalUpper: [fieldInstance.criticalThreshold?.valueUpper,
+        [CustomFormValidators.requiredFloatingNumber(),
+          CustomFormValidators.requiredIfOtherNotEmpty('criticalLower')]],
     });
 
-    if (fieldInstance.absoluteThreshold) {
-      thresholdGroup.get('absoluteLower').patchValue(fieldInstance.absoluteThreshold.valueLower);
-      thresholdGroup.get('absoluteUpper').patchValue(fieldInstance.absoluteThreshold.valueUpper);
-    }
-    if (fieldInstance.idealThreshold) {
-      thresholdGroup.get('idealLower').patchValue(fieldInstance.idealThreshold.valueLower);
-      thresholdGroup.get('idealUpper').patchValue(fieldInstance.idealThreshold.valueUpper);
-    }
-    if (fieldInstance.criticalThreshold) {
-      thresholdGroup.get('criticalLower').patchValue(fieldInstance.criticalThreshold.valueLower);
-      thresholdGroup.get('criticalUpper').patchValue(fieldInstance.criticalThreshold.valueUpper);
-    }
+    thresholdForm.get('absoluteLower').valueChanges.subscribe(() => this.validateForm(thresholdForm));
+    thresholdForm.get('absoluteUpper').valueChanges.subscribe(() => this.validateForm(thresholdForm));
+    thresholdForm.get('idealUpper')   .valueChanges.subscribe(() => this.validateForm(thresholdForm));
+    thresholdForm.get('idealLower')   .valueChanges.subscribe(() => this.validateForm(thresholdForm));
+    thresholdForm.get('criticalUpper').valueChanges.subscribe(() => this.validateForm(thresholdForm));
+    thresholdForm.get('criticalLower').valueChanges.subscribe(() => this.validateForm(thresholdForm));
 
-    return thresholdGroup;
+    return thresholdForm;
   }
 
-  removeValue(group: AbstractControl) {
-    group.get('value').setValue(null);
-    this.saveValue(group);
+  validateForm(formGroup: FormGroup): void {
+    if (formGroup != null) {
+      Object.keys(formGroup.controls).forEach(controlsKey => {
+        formGroup.get(controlsKey).updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        formGroup.get(controlsKey).markAsDirty();
+      });
+    }
   }
 
-  saveValue(group: AbstractControl) {
-/*
-    let fieldInstance = this.fieldInstances.find(instance => instance.id === group.get('id').value);
-    fieldInstance = { ...fieldInstance};
-    fieldInstance.value = group.get('value').value;
-    this.fieldInstanceService.editItem(this.asset.companyId, fieldInstance).subscribe();
-    group.get('saved').patchValue(true);
-
-*/
-    const fieldInstance: FieldInstance = this.asset.fieldInstances[group.get('index').value] as FieldInstance;
-    fieldInstance.value = group.get('value').value;
-    this.asset.fieldInstances[group.get('index').value] = fieldInstance;
-    group.get('saved').patchValue(true);
+  removeMetric(metricGroup: AbstractControl): void {
+    if (metricGroup == null || metricGroup.get('mandatory') === null || metricGroup.get('mandatory').value === true) {
+      return;
+    }
+    const indexToRemove: number = metricGroup.get('index').value;
+    this.fieldInstancesFormArray.removeAt(indexToRemove);
+    this.asset.fieldInstances.splice(indexToRemove, 1);
   }
 
   private fillTable(fieldInstances: FieldInstance[]) {
@@ -139,9 +169,10 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
     console.log('fieldInstancesFormArray:', this.fieldInstancesFormArray);
   }
 
-  isEditMode(group: AbstractControl): boolean {
-    return !group.get('saved').value;
-  }
+  onInputChange(metricGroup: AbstractControl, $event: any, identifier: string): void {
+    if (metricGroup == null || $event == null || identifier == null || identifier.length < 1) {
+      return;
+    }
 
   getTypeTitle(type: ThresholdType) {
     switch (type) {
@@ -152,6 +183,14 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
       case ThresholdType.CRITICAL:
         return 'Critical alert range (optional)';
     }
+    /*for (const element: FormControl in (metricGroup.get('thresholds') as FormGroup).controls) {
+      element.
+    }*/
+    // metricGroup.get('thresholds').get(identifier).patchValue($event.target.value);
+    // metricGroup.get('thresholds').updateValueAndValidity();
+
+    const fieldInstance: FieldInstance = this.getFieldInstanceFromForm(metricGroup);
+    console.log(fieldInstance);
   }
 
   getLowerLimitTitle(type: ThresholdType) {

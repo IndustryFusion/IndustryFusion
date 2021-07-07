@@ -16,9 +16,16 @@
 
   &:hover {
     border: 2px solid $hover-grey-border !important;
+    &.ng-invalid {
+      border: 2px solid $error !important;
+    }
   }
+
   &:focus {
     border: 2px solid $highlighted !important;
+    &.ng-invalid {
+      border: 2px solid $error !important;
+    }
   }
 }
 
