@@ -243,6 +243,14 @@ public class AssetService {
         return targetAsset;
     }
 
+    public Asset transferFromFleetToFactory(final Long companyId, final Long targetCompanyId, final Long assetSeriesId, final Long assetId) {
+        final Asset targetAsset = getAssetOverAssetSeries(companyId, assetSeriesId, assetId);
+
+        targetAsset.setCompany(companyService.getCompany(targetCompanyId, false));
+
+        return targetAsset;
+    }
+
     public Asset updateRoomAsset(final Long companyId, final Long locationId, final Long roomId, final Long assetId,
                                  final Asset sourceAsset) {
         final Asset targetAsset = getAssetCheckFullPath(companyId, locationId, roomId, assetId);

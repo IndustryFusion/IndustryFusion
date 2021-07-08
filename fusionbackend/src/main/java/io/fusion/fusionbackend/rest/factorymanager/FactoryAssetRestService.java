@@ -125,6 +125,7 @@ public class FactoryAssetRestService {
     }
 
     // Company direct path
+    // TODO: Rename ...Company... to ...Factory...?
     @GetMapping(path = "/companies/{companyId}/assets")
     public Set<AssetDto> getCompanyAssets(@PathVariable final Long companyId,
                                           @RequestParam(defaultValue = "false") final boolean embedChildren) {

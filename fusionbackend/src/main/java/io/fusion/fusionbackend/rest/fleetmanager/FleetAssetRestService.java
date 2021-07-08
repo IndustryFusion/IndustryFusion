@@ -75,6 +75,17 @@ public class FleetAssetRestService {
                 false);
     }
 
+    @PatchMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}/company-transfer")
+    public AssetDto transferFleetAssetToFactory(@PathVariable final Long companyId,
+                                @PathVariable final Long assetSeriesId,
+                                @PathVariable final Long assetId,
+                                @RequestBody final Long targetCompanyId,
+                                @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetMapper.toDto(assetService.transferFromFleetToFactory(companyId, targetCompanyId,
+                assetSeriesId, assetId),
+                embedChildren);
+    }
+
     @PostMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets")
     public AssetDto createAsset(@PathVariable final Long companyId,
                                 @PathVariable final Long assetSeriesId,
