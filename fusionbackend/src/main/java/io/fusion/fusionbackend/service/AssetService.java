@@ -243,7 +243,8 @@ public class AssetService {
         return targetAsset;
     }
 
-    public Asset transferFromFleetToFactory(final Long companyId, final Long targetCompanyId, final Long assetSeriesId, final Long assetId) {
+    public Asset transferFromFleetToFactory(final Long companyId, final Long targetCompanyId, final Long assetSeriesId,
+                                            final Long assetId) {
         final Asset targetAsset = getAssetOverAssetSeries(companyId, assetSeriesId, assetId);
 
         targetAsset.setCompany(companyService.getCompany(targetCompanyId, false));

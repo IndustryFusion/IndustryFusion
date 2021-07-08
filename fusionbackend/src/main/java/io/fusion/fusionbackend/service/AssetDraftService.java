@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,10 +46,14 @@ public class AssetDraftService {
         final Company company = assetSeries.getCompany();
 
         final Asset newAsset = Asset.builder()
+                .name(assetSeries.getName())
+                .description(assetSeries.getDescription())
                 .ceCertified(assetSeries.getCeCertified())
                 .handbookKey(assetSeries.getHandbookKey())
                 .protectionClass(assetSeries.getProtectionClass())
                 .videoKey(assetSeries.getVideoKey())
+                .installationDate(OffsetDateTime.now())
+                .constructionDate(OffsetDateTime.now())
                 .build();
         newAsset.copyFrom(assetSeries);
 
