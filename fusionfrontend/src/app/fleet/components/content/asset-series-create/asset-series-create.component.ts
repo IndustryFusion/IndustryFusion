@@ -64,7 +64,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   createAssetseriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
-    this.assetSeriesService.getItemByAssetTypeTemplate(this.companyId, assetTypeTemplateId)
+    this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
           .subscribe(assetSeries => this.assetSeries = assetSeries);
   }
 

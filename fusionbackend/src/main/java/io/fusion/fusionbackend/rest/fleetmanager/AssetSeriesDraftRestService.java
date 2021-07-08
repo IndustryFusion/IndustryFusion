@@ -39,13 +39,13 @@ public class AssetSeriesDraftRestService {
         this.assetSeriesDraftService = assetSeriesDraftService;
     }
 
-    @GetMapping(path = "/companies/{companyId}/assettypetemplates/{assetTypeTemplateId}/init-asset-serie-draft")
-    public AssetSeriesDto getAssetSeriesFromAssetTypeTemplate(
+    @GetMapping(path = "/companies/{companyId}/assettypetemplates/{assetTypeTemplateId}/init-asset-series-draft")
+    public AssetSeriesDto initAssetSeriesDraftFromAssetTypeTemplate(
             @PathVariable final Long assetTypeTemplateId,
             @PathVariable final Long companyId,
             @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return assetSeriesMapper.toDto(
-                assetSeriesDraftService.getAssetSeriesFromAssetTypeTemplate(companyId, assetTypeTemplateId),
+                assetSeriesDraftService.fromAssetTypeTemplate(companyId, assetTypeTemplateId),
                 embedChildren);
     }
 

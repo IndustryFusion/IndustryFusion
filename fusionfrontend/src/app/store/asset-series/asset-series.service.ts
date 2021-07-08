@@ -69,8 +69,8 @@ export class AssetSeriesService {
         }));
   }
 
-  getItemByAssetTypeTemplate(companyId: ID, assetTypeTemplateId: ID): Observable<AssetSeries> {
-    const path = `/companies/${companyId}/assettypetemplates/${assetTypeTemplateId}/init-asset-serie-draft/?embedChildren=true`;
+  initDraftFromAssetTypeTemplate(companyId: ID, assetTypeTemplateId: ID): Observable<AssetSeries> {
+    const path = `/companies/${companyId}/assettypetemplates/${assetTypeTemplateId}/init-asset-series-draft/?embedChildren=true`;
 
     return this.http.get<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }

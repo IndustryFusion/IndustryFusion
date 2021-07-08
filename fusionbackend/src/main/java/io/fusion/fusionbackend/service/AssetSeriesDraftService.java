@@ -40,8 +40,8 @@ public class AssetSeriesDraftService {
         this.companyService = companyService;
     }
 
-    public AssetSeries getAssetSeriesFromAssetTypeTemplate(final Long targetCompanyId,
-                                                           final Long assetTypeTemplateId) {
+    public AssetSeries fromAssetTypeTemplate(final Long targetCompanyId,
+                                             final Long assetTypeTemplateId) {
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
 

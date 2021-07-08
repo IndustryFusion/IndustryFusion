@@ -1228,7 +1228,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/assettypetemplates/" + assetTypeTemplateId + "/init-asset-serie-draft")
+                .get(baseUrl + "/companies/" + companyId + "/assettypetemplates/" + assetTypeTemplateId + "/init-asset-series-draft")
 
                 .then()
                 .statusCode(200);
