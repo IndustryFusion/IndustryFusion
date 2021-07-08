@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { FieldSourceService } from '../../../../../store/field-source/field-source.service';
 import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../store/field/field-query.service';
 
 @Component({
   selector: 'app-asset-series-create-attributes',
@@ -14,46 +14,41 @@ import { FieldType } from '../../../../../store/field-target/field-target.model'
 })
 export class AssetSeriesCreateAttributesComponent implements OnInit {
 
-  @Output() stepChange = new EventEmitter<number>();
   @Output() errorSignal = new EventEmitter<string>();
+  @Output() valid = new EventEmitter<boolean>();
   @Input() assetSeries: AssetSeries;
-  @Input() assetSeries$: Observable<AssetSeries>;
 
   fieldSourcesFormArray: FormArray;
   $loading: Observable<boolean>;
-  private fieldSources: FieldSource[];
 
   constructor(private fieldSourceQuery: FieldSourceQuery,
-              private fieldSourceService: FieldSourceService,
+              private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
     this.$loading = this.fieldSourceQuery.selectLoading();
   }
 
-  private createFieldSourceGroup(fieldSource: FieldSource): FormGroup {
+  private createFieldSourceGroup(index: number, fieldSource: FieldSource): FormGroup {
     const group = this.formBuilder.group({
       id: [],
+      index: [],
       sourceUnitName: [],
-      sourceSensorLabel: [],
+      fieldName: [],
       name: [],
-      value: ['', [Validators.required, Validators.max(255)]],
+      value: ['', [Validators.max(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);
+    group.get('index').patchValue(index);
     group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
-    group.get('sourceSensorLabel').patchValue(fieldSource.sourceSensorLabel);
     group.get('name').patchValue(fieldSource.name);
     group.get('value').patchValue(fieldSource.value);
+    const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+    group.get('fieldName').patchValue(field.name);
     return group;
   }
 
   ngOnInit(): void {
-    this.fieldSourceQuery.getAllFieldSource().subscribe(value => {
-      if (!this.fieldSourcesFormArray || this.fieldSourcesFormArray?.length <= 0) {
-        this.fillTable(value);
-      }
-      this.fieldSources = value;
-    });
-    this.fieldSourceService.getFieldSourcesOfAssetSeries(this.assetSeries.companyId, this.assetSeries.id).subscribe();
+    this.fillTable(this.assetSeries.fieldSources);
   }
 
   removeValue(group: AbstractControl) {
@@ -62,18 +57,22 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
   }
 
   saveValue(group: AbstractControl) {
-    let fieldSource = this.fieldSources.find(fieldsource => fieldsource.id === group.get('id').value);
-    fieldSource = { ...fieldSource};
-    fieldSource.value = group.get('value').value;
-    this.fieldSourceService.editItem(this.assetSeries.companyId, fieldSource).subscribe();
+    const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('index').value] as FieldSource;
+    fieldSource.value  =  group.get('value').value;
+    this.assetSeries.fieldSources[group.get('index').value] = fieldSource;
     group.get('saved').patchValue(true);
   }
 
   private fillTable(fieldSources: FieldSource[]) {
-    const formGroups = fieldSources
-      .filter(fieldSource => fieldSource.fieldTarget.fieldType === FieldType.ATTRIBUTE)
-      .map(fieldSource => this.createFieldSourceGroup(fieldSource));
-    this.fieldSourcesFormArray = new FormArray(formGroups);
+    this.fieldSourcesFormArray = new FormArray([]);
+    this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
+    for (let i = 0; i < fieldSources.length; i++) {
+      if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
+        const formGroup = this.createFieldSourceGroup(i, fieldSources[i]);
+        this.fieldSourcesFormArray.push(formGroup);
+      }
+    }
+    this.valid.emit(this.fieldSourcesFormArray.valid);
   }
 
   isEditMode(group: AbstractControl): boolean {

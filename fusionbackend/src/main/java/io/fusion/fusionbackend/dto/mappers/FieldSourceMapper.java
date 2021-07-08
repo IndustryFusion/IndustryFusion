@@ -17,6 +17,8 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldSourceDto;
 import io.fusion.fusionbackend.model.FieldSource;
+import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -82,7 +84,7 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         if (dto == null) {
             return null;
         }
-        return FieldSource.builder()
+        FieldSource fieldSource = FieldSource.builder()
                 .id(dto.getId())
                 .sourceSensorLabel(dto.getSourceSensorLabel())
                 .name(dto.getName())
@@ -90,6 +92,14 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .value(dto.getValue())
                 .register(dto.getRegister())
                 .build();
+
+        FieldTarget fieldTarget = fieldTargetMapper.toEntity(dto.getFieldTarget());
+        fieldSource.setFieldTarget(fieldTarget);
+
+        Unit unit = unitMapper.toEntity(dto.getSourceUnit());
+        fieldSource.setSourceUnit(unit);
+
+        return fieldSource;
     }
 
     @Override

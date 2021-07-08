@@ -73,10 +73,14 @@ public class AssetSeriesRestService {
     }
 
     @PostMapping(path = "/companies/{companyId}/assetseries")
-    public AssetSeriesDto createAssetSeriesFromAssetTypeTemplate(@PathVariable final Long companyId,
-                                                                 @RequestParam final Long assetTypeTemplateId) {
+    public AssetSeriesDto createAssetSeries(@PathVariable final Long companyId,
+                                            @RequestBody final AssetSeriesDto assetSeriesDto) {
         return assetSeriesMapper.toDto(
-                assetSeriesService.createAssetSeriesFromAssetTypeTemplate(companyId, assetTypeTemplateId),
+                assetSeriesService.createAssetSeries(
+                        companyId,
+                        assetSeriesDto.getAssetTypeTemplateId(),
+                        assetSeriesMapper.toEntity(assetSeriesDto)
+                ),
                 false);
     }
 

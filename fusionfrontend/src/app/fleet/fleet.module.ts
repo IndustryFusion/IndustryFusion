@@ -42,6 +42,7 @@ import { AssetWizardStepFinishedComponent } from './components/content/asset-wiz
 import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 import { CalendarModule } from 'primeng/calendar';
+import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { CalendarModule } from 'primeng/calendar';
     AssetWizardStepSemanticsComponent,
     AssetWizardStepCustomerComponent,
     AssetWizardStepFinishedComponent,
+    AssetSeriesCreateFooterComponent,
   ],
     imports: [
         IFCommon,

@@ -68,12 +68,23 @@ public abstract class BaseEntity implements Serializable {
             return false;
         }
         BaseEntity that = (BaseEntity) o;
+        if  (id == null) {
+            return false;
+        }
         return Objects.equals(id, that.id);
     }
 
+
+    /* Fixing the entity identifier equals and hashCode
+        The problem with id as hashcode:
+        When the entity was first stored in the Set, the identifier was null. After the entity was persisted,
+        the identifier was assigned to a value that was automatically generated, hence the hashCode differs.
+        For this reason, the entity cannot be found in the Set after it got persisted.
+        https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 
     @Override
