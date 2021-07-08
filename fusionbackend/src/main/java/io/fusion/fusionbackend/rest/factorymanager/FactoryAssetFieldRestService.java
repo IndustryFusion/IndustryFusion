@@ -76,10 +76,7 @@ public class FactoryAssetFieldRestService {
                 assetService.getFieldInstance(companyId, assetId, fieldInstanceId), embedChildren);
     }
 
-
-
-    // the FieldDetailsDto refers to the Field model in the Frontend
-    @GetMapping(path = "companies/{companyId}/assets/{assetId}/fields")
+    @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fields")
     public Set<FieldDetailsDto> getFieldDetails(@PathVariable final Long companyId,
                                                 @PathVariable final Long assetId,
                                                 @RequestParam(defaultValue = "true") final boolean embedChildren) {

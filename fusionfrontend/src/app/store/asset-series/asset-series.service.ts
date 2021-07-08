@@ -70,7 +70,7 @@ export class AssetSeriesService {
   }
 
   initDraftFromAssetTypeTemplate(companyId: ID, assetTypeTemplateId: ID): Observable<AssetSeries> {
-    const path = `/companies/${companyId}/assettypetemplates/${assetTypeTemplateId}/init-asset-series-draft/?embedChildren=true`;
+    const path = `companies/${companyId}/assettypetemplates/${assetTypeTemplateId}/init-asset-series-draft/?embedChildren=true`;
 
     return this.http.get<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
