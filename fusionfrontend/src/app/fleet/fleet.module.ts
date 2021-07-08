@@ -45,6 +45,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
 import { ThresholdListHeaderComponent } from './components/content/threshold-list-header/threshold-list-header.component';
+import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { ThresholdListHeaderComponent } from './components/content/threshold-lis
     AssetWizardStepFinishedComponent,
     AssetWizardStepMetricsThresholdsComponent,
     ThresholdListHeaderComponent,
+    AssetSeriesCreateFooterComponent,
   ],
     imports: [
         IFCommon,

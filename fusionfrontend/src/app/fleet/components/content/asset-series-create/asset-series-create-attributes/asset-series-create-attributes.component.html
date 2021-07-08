@@ -16,18 +16,19 @@ under the License.
   <div class="content">
     <div id="column left">
       <div class="title">Attributes</div>
-      <div id="data">
+      <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no attributes available</div>
+      <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
         <div class="header-row p-grid">
-          <span class="if-label if-label-header p-col-3">Custom Attribute name</span>
-          <span class="if-label if-label-header p-col-3">Attribute name</span>
-          <span class="if-label if-label-header p-col">Value</span>
-          <span class="if-label if-label-header p-col-1">Unit</span>
-          <span class="if-label if-label-header p-col"></span>
+          <span class="if-label-small-header p-col-3">Custom Attribute name</span>
+          <span class="if-label-small-header p-col-3">Attribute name</span>
+          <span class="if-label-small-header p-col">Value</span>
+          <span class="if-label-small-header p-col-1">Unit</span>
+          <span class="if-label-small-header p-col"></span>
         </div>
         <div *ngFor="let fieldSource of fieldSourcesFormArray.controls;" class="p-grid attribute-row">
           <ng-container [formGroup]="fieldSource //noinspection InvalidExpressionResultType">
           <span class="p-col-3 "><label displayControlValue="name"></label></span>
-          <span class="p-col-3 "><label displayControlValue="sourceSensorLabel"></label></span>
+          <span class="p-col-3 "><label displayControlValue="fieldName"></label></span>
           <span class="p-col">
               <input *ngIf="isEditMode(fieldSource)" class="value-input" placeholder="Value" formControlName="value">
               <label *ngIf="!isEditMode(fieldSource)" displayControlValue="value"></label>

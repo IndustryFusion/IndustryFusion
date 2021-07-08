@@ -1,1 +1,14 @@
+@import "abstract/variables";
 
+.timeline {
+  display: flex;
+  justify-content: center;
+
+  ul {
+    width: 60%;
+  }
+
+  clr-icon[shape="dot-circle"] {
+    color: $basic-black !important;
+  }
+}
