@@ -16,18 +16,12 @@
 package io.fusion.fusionbackend.rest.factorymanager;
 
 import io.fusion.fusionbackend.dto.FieldDetailsDto;
-import io.fusion.fusionbackend.dto.FieldInstanceDto;
 import io.fusion.fusionbackend.dto.mappers.FieldDetailsMapper;
-import io.fusion.fusionbackend.dto.mappers.FieldInstanceMapper;
 import io.fusion.fusionbackend.rest.annotations.IsFactoryUser;
 import io.fusion.fusionbackend.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,14 +35,11 @@ public class FactoryAssetFieldRestService {
 
     @Autowired
     public FactoryAssetFieldRestService(AssetService assetService,
-                                        FieldInstanceMapper fieldInstanceMapper,
                                         FieldDetailsMapper fieldDetailsMapper) {
         this.assetService = assetService;
         this.fieldDetailsMapper = fieldDetailsMapper;
     }
 
-
-    // the FieldDetailsDto refers to the Field model in the Frontend
     @GetMapping(path = "companies/{companyId}/assets/{assetId}/fields")
     public Set<FieldDetailsDto> getFieldDetails(@PathVariable final Long companyId,
                                                 @PathVariable final Long assetId,

@@ -71,4 +71,11 @@ public class ThresholdService {
 
         thresholdRepository.delete(threshold);
     }
+
+    public static int getFilledValuesCount(Threshold threshold) {
+        if (threshold == null) {
+            return 0;
+        }
+        return ((threshold.getValueUpper() != null) ? 1 : 0) + ((threshold.getValueLower() != null) ? 1 : 0);
+    }
 }

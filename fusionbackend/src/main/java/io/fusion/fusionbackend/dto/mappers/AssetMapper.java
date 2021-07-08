@@ -17,7 +17,6 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.service.CompanyService;
 import io.fusion.fusionbackend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,17 +30,14 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     private final BaseAssetMapper baseAssetMapper;
     private final FieldInstanceMapper fieldInstanceMapper;
     private final RoomService roomService;
-    private final CompanyService companyService;
 
     @Autowired
     public AssetMapper(BaseAssetMapper baseAssetMapper,
                        FieldInstanceMapper fieldInstanceMapper,
-                       RoomService roomService,
-                       CompanyService companyService) {
+                       RoomService roomService) {
         this.baseAssetMapper = baseAssetMapper;
         this.fieldInstanceMapper = fieldInstanceMapper;
         this.roomService = roomService;
-        this.companyService = companyService;
     }
 
     private AssetDto toDtoShallow(final Asset entity) {
