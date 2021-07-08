@@ -52,7 +52,7 @@ import java.util.Set;
                 @NamedSubgraph(name = "assetSeriesChildren", attributeNodes = {
                         @NamedAttributeNode(value = "assets"),
                         @NamedAttributeNode(value = "fieldSources")})})
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_company")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_company")
 @Getter
 @Setter
 @SuperBuilder
@@ -79,6 +79,9 @@ public class Company extends BaseEntity {
     private String imageKey;
 
     public void copyFrom(final Company sourceCompany) {
+        if (sourceCompany.getType() != null) {
+            setType(sourceCompany.getType());
+        }
         if (sourceCompany.getDescription() != null) {
             setDescription(sourceCompany.getDescription());
         }

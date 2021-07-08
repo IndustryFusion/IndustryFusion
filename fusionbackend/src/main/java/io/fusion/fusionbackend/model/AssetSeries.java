@@ -40,7 +40,7 @@ import java.util.Set;
                 @NamedAttributeNode(value = "assets"),
                 @NamedAttributeNode(value = "fieldSources")})
 @Table(name = "asset_series")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_assetseries")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assetseries")
 @Getter
 @Setter
 @SuperBuilder
@@ -66,4 +66,37 @@ public class AssetSeries extends BaseAsset {
     protected String protectionClass;
     protected String handbookKey;
     protected String videoKey;
+
+    public void copyFrom(final AssetSeries sourceAssetSeries) {
+        if (sourceAssetSeries.getName() != null) {
+            setName(sourceAssetSeries.getName());
+        }
+        if (sourceAssetSeries.getDescription() != null) {
+            setDescription(sourceAssetSeries.getDescription());
+        }
+        if (sourceAssetSeries.getImageKey() != null) {
+            setImageKey(sourceAssetSeries.getImageKey());
+        }
+        if (sourceAssetSeries.getProtectionClass() != null) {
+            setProtectionClass(sourceAssetSeries.getProtectionClass());
+        }
+        if (sourceAssetSeries.getCeCertified() != null) {
+            setCeCertified(sourceAssetSeries.getCeCertified());
+        }
+        if (sourceAssetSeries.getHandbookKey() != null) {
+            setHandbookKey(sourceAssetSeries.getHandbookKey());
+        }
+        if (sourceAssetSeries.getVideoKey() != null) {
+            setVideoKey(sourceAssetSeries.getVideoKey());
+        }
+        if (sourceAssetSeries.getAssets() != null) {
+            setAssets(sourceAssetSeries.getAssets());
+        }
+        if (sourceAssetSeries.getCompany() != null) {
+            setCompany(sourceAssetSeries.getCompany());
+        }
+        if (sourceAssetSeries.getFieldSources() != null) {
+            setFieldSources(sourceAssetSeries.getFieldSources());
+        }
+    }
 }
