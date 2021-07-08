@@ -45,7 +45,7 @@ export class FieldInstanceService {
   }
 
   editItem(companyId: ID, fieldInstance: FieldInstance): Observable<FieldInstance> {
-    const path = `/companies/${companyId}/asset/${fieldInstance.assetId}/fieldinstances/${fieldInstance.id}`;
+    const path = `companies/${companyId}/asset/${fieldInstance.assetId}/fieldinstances/${fieldInstance.id}`;
     return this.http.patch<FieldInstance>(`${environment.apiUrlPrefix}/${path}`, fieldInstance, this.httpOptions)
       .pipe(
         tap(entity => {

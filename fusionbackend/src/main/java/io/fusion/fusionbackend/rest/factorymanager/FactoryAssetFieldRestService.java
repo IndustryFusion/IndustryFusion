@@ -40,7 +40,7 @@ public class FactoryAssetFieldRestService {
         this.fieldDetailsMapper = fieldDetailsMapper;
     }
 
-    @GetMapping(path = "companies/{companyId}/assets/{assetId}/fields")
+    @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fields")
     public Set<FieldDetailsDto> getFieldDetails(@PathVariable final Long companyId,
                                                 @PathVariable final Long assetId,
                                                 @RequestParam(defaultValue = "true") final boolean embedChildren) {
