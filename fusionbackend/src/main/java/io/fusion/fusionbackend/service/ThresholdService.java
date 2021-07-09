@@ -15,9 +15,7 @@
 
 package io.fusion.fusionbackend.service;
 
-import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Threshold;
-import io.fusion.fusionbackend.repository.ThresholdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,11 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ThresholdService {
-    private final ThresholdRepository thresholdRepository;
 
     @Autowired
-    public ThresholdService(ThresholdRepository thresholdRepository) {
-        this.thresholdRepository = thresholdRepository;
+    public ThresholdService() {
     }
 
     public Threshold initThresholdDraft(Threshold sourceThreshold) {
