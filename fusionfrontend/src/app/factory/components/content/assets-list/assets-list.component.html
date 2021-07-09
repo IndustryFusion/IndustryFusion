@@ -30,19 +30,8 @@ under the License.
 <div class="wrapper">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div class="title" >{{ assetsWithDetailsAndFields?.length | i18nPlural: assetsMapping }}</div>
-    <button class="if-button button-secondary" (click)="modalsActive = true">Initialize new asset</button>
+    <app-create-button text="Onboard new Asset" (createItem)="showOnboardDialog()"></app-create-button>
   </div>
-
-  <app-asset-instantiation [assetSeries]="assetSeries"
-                           [rooms]="rooms"
-                           [locations]="locations"
-                           [location]="location"
-                           [modalsActive]="modalsActive"
-                           [initializeModalType]="assetModalTypes.startInitialitation"
-                           (stoppedAssetAssignment)="assetInstantiationStopped($event)"
-                           (assetSeriesSelectedEvent)="forwardAssetSeriesSelected($event)"
-                           (assetDetailsEvent)="forwardAssetDetails($event)">
-  </app-asset-instantiation>
 
   <div>
     <div class="list-container">
@@ -78,9 +67,9 @@ under the License.
                             [locations]="locations"
                             [location]="location"
                             [selected]="isSelected(assetWithDetailsAndFields.id)"
-                            (assetDetailsEdited)="forwardAssetDetails($event)"
-                            (assetDeleted)="deleteAsset($event)"
-                            (assetSelected)="onAssetSelect($event)" (assetDeselected)="onAssetDeselect($event)" (editRoom)="assignAsset($event, assetWithDetailsAndFields)">
+                            (editAssetEvent)="assetUpdated($event)"
+                            (deleteAssetEvent)="deleteAsset($event)"
+                            (assetSelected)="onAssetSelect($event)" (assetDeselected)="onAssetDeselect($event)">
       </app-assets-list-item>
     </div>
   </div>

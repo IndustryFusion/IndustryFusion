@@ -16,3 +16,42 @@
 @import '../../../../../ecosystem/components/content/base/base-list-item/base-list-item.component.scss';
 @import 'abstract/variables';
 @import 'components/checkboxes';
+
+.table-dropdown-menu-button {
+  outline: none;
+  background-color: transparent !important;
+  color: #95989a !important;
+  border: none !important;
+}
+
+.table-dropdown-menu {
+  ::ng-deep .p-menu {
+    width: 200px;
+    border-radius: 10px !important;
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+    margin-top: 0.25em !important;
+  }
+
+  ::ng-deep .p-menuitem-link {
+    height: 40px !important;
+    font-size: 14px !important;
+    font-family: Metropolis, "Avenir Next", Helvetica, serif;
+    padding-left: 2em !important;
+    padding-right: 2em !important;
+    white-space: nowrap !important;
+  }
+
+
+  ::ng-deep .p-menuitem-icon {
+    font-size: 16px;
+  }
+}
+
+.confirm-dialog-style {
+  ::ng-deep .p-dialog .p-dialog-content {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+

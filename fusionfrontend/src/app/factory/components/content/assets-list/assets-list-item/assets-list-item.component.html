@@ -27,59 +27,13 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="getAssetLink(assetWithDetailsAndFields)">{{assetWithDetailsAndFields.locationName}}</div>
   <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="getAssetLink(assetWithDetailsAndFields)"> <app-status [asset]="assetWithDetailsAndFields" [showStatusCircle]="showStatusCircle"></app-status></div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
-    <clr-dropdown>
-      <button clrDropdownTrigger aria-label="Asset type template dropdown menu" class="grey">
-        <clr-icon shape="ellipsis-horizontal"></clr-icon>
-      </button>
-      <clr-dropdown-menu class="dropdown-menu" clrPosition="bottom-right" *clrIfOpen>
-        <div class="room-dropdown" aria-label="Edit item" clrDropdownItem (click)="modalsActive=true">
-          <clr-icon shape="pencil"></clr-icon>
-          Edit asset
-        </div>
-        <div class="room-dropdown" aria-label="Move item" clrDropdownItem (click)="openAssignmentModal()">
-          <clr-icon shape="note"></clr-icon>
-          Move to room
-        </div>
-        <div class="room-dropdown" aria-label="Delete item" clrDropdownItem (click)="deleteAsset()">
-          <clr-icon shape="trash"></clr-icon>
-          Delete asset
-        </div>
-      </clr-dropdown-menu>
-    </clr-dropdown>
+    <div class="table-dropdown-menu">
+      <p-menu #menu [popup]="true" [model]="menuActions"></p-menu>
+      <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event);"
+              class="table-dropdown-menu-button"></button>
+    </div>
   </div>
-  <app-asset-instantiation  [rooms]="rooms"
-                            [location]="location"
-                            [locations]="locations"
-                            [assetDetailsID]="assetWithDetailsAndFields.id"
-                            [modalsActive]="modalsActive"
-                            [initializeModalType]="assetModalTypes.addDescription"
-                            (stoppedAssetAssignment)="assetEditingStopped($event)"
-                            (assetDetailsEvent)="forwardAssetDetails($event)">
-  </app-asset-instantiation>
 </div>
 
-
-<clr-modal [(clrModalOpen)]="moveAssetModal">
-  <h3 class="modal-title">Assign asset to the room</h3>
-  <div class="modal-body">
-    <div *ngIf="location; else showError">
-    <p>Select room: </p>
-    <clr-dropdown>
-      <button class="btn btn-outline-primary" clrDropdownTrigger>
-        Rooms
-        <clr-icon shape="caret down"></clr-icon>
-      </button>
-      <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
-        <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
-          <button *ngFor="let room of allRoomsOfLocations" (click)="emitEditRoomEvent(room)" clrDropdownTrigger>{{room?.name}}</button>
-      </clr-dropdown-menu>
-    </clr-dropdown>
-    </div>
-    <ng-template #showError>
-      <p>
-        Functionality not available for this site yet.
-      </p>
-    </ng-template>
-  </div>
-  <div class="modal-footer"></div>
-</clr-modal>
+<p-confirmDialog class="confirm-dialog-style" rejectButtonStyleClass="if-button button-secondary"
+                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>

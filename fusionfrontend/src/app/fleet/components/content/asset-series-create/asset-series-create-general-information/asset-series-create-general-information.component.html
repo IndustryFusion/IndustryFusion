@@ -19,7 +19,6 @@ under the License.
         <div class="title">General Information</div>
 
         <div *ngIf="assetSeries">
-          <div class="clr-form-control">
             <div>
               <label class="if-label">Select Asset Type Template</label>
               <p-dropdown
@@ -28,22 +27,18 @@ under the License.
                 [optionValue]="'id'"
                 name="assetTypeTemplate"
                 placeholder="Select Asset Type Template..."
-                (ngModelChange)="updateTypeTemplate($event)"
-                [(ngModel)]="assetSeries.assetTypeTemplateId">
+                (ngModelChange)="updateTypeTemplate.emit($event)"
+                [(ngModel)]="assetSeries.assetTypeTemplateId"
+                [disabled]="mode != ViewMode.CREATE">
               </p-dropdown>
-            </div>
           </div>
 
           <div class="clr-form-control">
             <label class="if-label">Name the Asset or Series you want to implement</label>
-            <input [(ngModel)]="assetSeries.name"
+            <input [disabled]="!assetSeries" [(ngModel)]="assetSeries.name"
                    placeholder="Asset series name">
           </div>
 
-          <div class="clr-form-control">
-            <label class="if-label">What's the name of this concrete asset?</label>
-            <input [(ngModel)]="assetSeries.description" placeholder="Asset name (IndustryFusion instanced series)">
-          </div>
 
         </div>
       </div>

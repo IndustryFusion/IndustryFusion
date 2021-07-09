@@ -19,8 +19,9 @@ import { Observable } from 'rxjs';
 
 import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
-import { ActivatedRoute } from '@angular/router';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import { ViewMode } from '../view-mode.enum';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-series-create-general-information',
@@ -31,28 +32,24 @@ export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
 
   @Output() errorSignal = new EventEmitter<string>();
   @Input() assetSeries: AssetSeries = new AssetSeries();
+  @Output() assetSeriesChange = new EventEmitter<AssetSeries>();
+  @Input() mode: ViewMode = ViewMode.EDIT;
+  @Output() updateTypeTemplate = new EventEmitter<ID>();
 
   assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
 
   assetTypeTemplates: AssetTypeTemplate[];
 
-  id: string;
+  ViewMode = ViewMode;
 
   constructor(
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-    private route: ActivatedRoute
   ) {
     this.assetTypeTemplates = this.assetTypeTemplateQuery.getAll();
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.queryParamMap.get('id');
     this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll();
   }
 
-  updateTypeTemplate(id: any) {
-    const assetTypeTemplate = this.assetTypeTemplates.find(template => template.id === id);
-    this.assetSeries.name = assetTypeTemplate.name;
-    this.assetSeries.description = assetTypeTemplate.description;
-  }
 }

@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -57,7 +58,7 @@ public class AssetSeries extends BaseAsset {
     @Builder.Default
     private Set<Asset> assets = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "assetSeries")
+    @OneToMany(mappedBy = "assetSeries", cascade = {CascadeType.ALL})
     @Builder.Default
     private Set<FieldSource> fieldSources = new LinkedHashSet<>();
 

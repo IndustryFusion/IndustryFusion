@@ -44,7 +44,7 @@ export class FieldSourceService {
   }
 
   editItem(companyId: ID, fieldSource: FieldSource): Observable<FieldSource> {
-    const path = `/companies/${companyId}/assetseries/${fieldSource.assetSeriesId}/fieldsources/${fieldSource.id}`;
+    const path = `companies/${companyId}/assetseries/${fieldSource.assetSeriesId}/fieldsources/${fieldSource.id}`;
     return this.http.patch<FieldSource>(`${environment.apiUrlPrefix}/${path}`, fieldSource, this.httpOptions)
       .pipe(
         tap(entity => {
@@ -53,7 +53,7 @@ export class FieldSourceService {
   }
 
   updateUnit(companyId: ID, fieldSource: FieldSource): Observable<FieldSource> {
-    const path = `/companies/${companyId}/assetseries/${fieldSource.assetSeriesId}/fieldsources/${fieldSource.id}?unitId=${fieldSource.sourceUnitId}`;
+    const path = `companies/${companyId}/assetseries/${fieldSource.assetSeriesId}/fieldsources/${fieldSource.id}?unitId=${fieldSource.sourceUnitId}`;
     return this.http.put<FieldSource>(`${environment.apiUrlPrefix}/${path}`, fieldSource.sourceUnitId, this.httpOptions)
       .pipe(
         tap(() => {

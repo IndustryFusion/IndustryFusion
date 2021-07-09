@@ -1,16 +1,21 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AssetDetailsWithFields } from '../../../../../store/asset-details/asset-details.model';
+import { AssetDetailsWithFields, AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
 import { RoomQuery } from '../../../../../store/room/room.query';
 import { Location } from '../../../../../store/location/location.model';
 import { AssetDetails, AssetModalType } from 'src/app/store/asset-details/asset-details.model';
-
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
+import { MenuItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-assets-list-item',
   templateUrl: './assets-list-item.component.html',
-  styleUrls: ['./assets-list-item.component.scss']
+  styleUrls: ['./assets-list-item.component.scss'],
+  providers: [DialogService, ConfirmationService]
 })
 export class AssetsListItemComponent implements OnInit, OnChanges {
 
@@ -33,23 +38,29 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   @Output()
   assetDeselected = new EventEmitter<AssetDetailsWithFields>();
   @Output()
-  editRoom = new EventEmitter<Room>();
+  editAssetEvent = new EventEmitter<AssetDetails>();
   @Output()
-  assetDetailsEdited = new EventEmitter<AssetDetails>();
-  @Output()
-  assetDeleted = new EventEmitter<AssetDetailsWithFields>();
+  deleteAssetEvent = new EventEmitter<AssetDetailsWithFields>();
 
   showStatusCircle = false;
-  moveAssetModal = false;
   roomsOfLocation: Room[];
-  modalsActive = false;
-  assetModalTypes = AssetModalType;
-  modalTypeActive: AssetModalType;
+  assetDetailsForm: FormGroup;
+  ref: DynamicDialogRef;
+  menuActions: MenuItem[];
 
 
   constructor(
     private roomQuery: RoomQuery,
-    ) { }
+    private formBuilder: FormBuilder,
+    public dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
+      this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
+      this.menuActions = [
+        { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
+        { label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => { this.openAssignRoomDialog(); } },
+        { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
+      ];
+  }
 
   ngOnInit(): void {
   }
@@ -60,17 +71,79 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     }
   }
 
+  showEditDialog() {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
+    const ref = this.dialogService.open(AssetInstantiationComponent, {
+      data: {
+        assetDetailsForm: this.assetDetailsForm,
+        assetToBeEdited: this.assetWithDetailsAndFields,
+        locations: this.locations,
+        location: this.location,
+        rooms: this.rooms,
+        activeModalType: AssetModalType.customizeAsset,
+        activeModalMode: AssetModalMode.editAssetMode
+      },
+      header: 'General Information',
+    });
+
+    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+      if (assetFormValues) {
+        this.editAssetEvent.emit(assetFormValues);
+      }
+    });
+  }
+
+  openAssignRoomDialog() {
+    if (this.location) {
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedLocationMode,
+        'Room Assignment (' + this.location.name + ')');
+    } else {
+      this.showAssignRoomDialog(AssetModalType.locationAssignment, AssetModalMode.editRoomForAssetMode,
+        'Location Assignment');
+    }
+  }
+
+  showAssignRoomDialog(assetModalType: AssetModalType, assetModalMode: AssetModalMode, header: string ) {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
+    const ref = this.dialogService.open(AssetInstantiationComponent, {
+      data: {
+        assetDetailsForm: this.assetDetailsForm,
+        assetToBeEdited: this.assetWithDetailsAndFields,
+        locations: this.locations,
+        location: this.location,
+        rooms: this.rooms,
+        activeModalType: assetModalType,
+        activeModalMode: assetModalMode
+      },
+      header
+    });
+
+    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+      if (assetFormValues) {
+        this.editAssetEvent.emit(assetFormValues);
+      }
+    });
+  }
+
+  createDetailsAssetForm(formBuilder: FormBuilder, assetWithDetailsAndFields: AssetDetailsWithFields) {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    this.assetDetailsForm = formBuilder.group({
+      id: [null],
+      roomId: ['', requiredTextValidator],
+      name: ['', requiredTextValidator],
+      description: [''],
+      imageKey: [''],
+      manufacturer: ['', requiredTextValidator],
+      assetSeriesName: ['', requiredTextValidator],
+      category: ['', requiredTextValidator],
+      roomName: ['', requiredTextValidator],
+      locationName: ['', requiredTextValidator]
+    });
+    this.assetDetailsForm.patchValue(assetWithDetailsAndFields);
+  }
+
   select() {
     !this.selected ? this.assetSelected.emit(this.assetWithDetailsAndFields) : this.assetDeselected.emit(this.assetWithDetailsAndFields);
-  }
-
-  openAssignmentModal() {
-    this.moveAssetModal = true;
-  }
-
-  emitEditRoomEvent(room: Room) {
-    this.editRoom.emit(room);
-    this.moveAssetModal = false;
   }
 
   getAssetLink(asset: Asset) {
@@ -86,15 +159,20 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     }
   }
 
-  forwardAssetDetails(event: AssetDetails) {
-    this.assetDetailsEdited.emit(event);
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the asset ' + this.assetWithDetailsAndFields.name + '?',
+      header: 'Delete Asset Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.onDeleteClick();
+      },
+      reject: () => {
+      }
+    });
   }
 
-  assetEditingStopped(event: boolean) {
-    this.modalsActive = event;
-  }
-
-  deleteAsset() {
-    this.assetDeleted.emit(this.assetWithDetailsAndFields);
+  onDeleteClick() {
+    this.deleteAssetEvent.emit(this.assetWithDetailsAndFields);
   }
 }
