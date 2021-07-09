@@ -57,11 +57,11 @@ public class FieldInstanceService {
                 .build();
     }
 
-    public boolean areThresholdsValid(FieldInstance fieldInstance,
-                                      FieldThresholdType fieldThresholdType,
-                                      QuantityDataType quantityDataType) {
+    public boolean isThresholdsValid(FieldInstance fieldInstance,
+                                     FieldThresholdType fieldThresholdType,
+                                     QuantityDataType quantityDataType) {
 
-        if (!areThresholdsAllowed(quantityDataType)) {
+        if (!isThresholdsAllowed(quantityDataType)) {
             return hasNoThresholdValues(fieldInstance);
         }
 
@@ -78,7 +78,7 @@ public class FieldInstanceService {
         }
     }
 
-    private boolean areThresholdsAllowed(QuantityDataType quantityDataType) {
+    private boolean isThresholdsAllowed(QuantityDataType quantityDataType) {
         return quantityDataType.equals(QuantityDataType.NUMERIC);
     }
 
@@ -111,7 +111,7 @@ public class FieldInstanceService {
         final Unit unit = unitService.getUnit(fieldInstance.getFieldSource().getSourceUnit().getId());
         final QuantityDataType quantityDataType = unit.getQuantityType().getDataType();
 
-        if (!areThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
+        if (!isThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
             LOG.warn("Thresholds of field instance with id {} are not valid.\r\n"
                             + "Absolute Threshold: {}, ideal Threshold: {}, critical threshold: {}",
                     fieldInstance.getId(), fieldInstance.getAbsoluteThreshold(),
