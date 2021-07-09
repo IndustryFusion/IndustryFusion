@@ -34,14 +34,17 @@ import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
 import { AssetWizardComponent } from './components/content/asset-wizard/asset-wizard.component';
-import { AssetWizardStepStartComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-start/asset-wizard-step-start.component';
+import { AssetWizardStepGeneralInformationComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-general-information/asset-wizard-step-general-information.component';
 import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
-import { AssetWizardStepSemanticsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-semantics/asset-wizard-step-semantics.component';
+import { AssetWizardStepAttributesComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-attributes/asset-wizard-step-attributes.component';
 import { AssetWizardStepCustomerComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer/asset-wizard-step-customer.component';
 import { AssetWizardStepFinishedComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-finished/asset-wizard-step-finished.component';
 import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 import { CalendarModule } from 'primeng/calendar';
+import { AccordionModule } from 'primeng/accordion';
+import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
+import { ThresholdListHeaderComponent } from './components/content/threshold-list-header/threshold-list-header.component';
 import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
 
 
@@ -63,11 +66,13 @@ import { AssetSeriesCreateFooterComponent } from './components/content/asset-ser
     LabelControlDirective,
     AssetSeriesCreateMetricsComponent,
     AssetWizardComponent,
-    AssetWizardStepStartComponent,
+    AssetWizardStepGeneralInformationComponent,
     AssetWizardStepNameplateComponent,
-    AssetWizardStepSemanticsComponent,
+    AssetWizardStepAttributesComponent,
     AssetWizardStepCustomerComponent,
     AssetWizardStepFinishedComponent,
+    AssetWizardStepMetricsThresholdsComponent,
+    ThresholdListHeaderComponent,
     AssetSeriesCreateFooterComponent,
   ],
     imports: [
@@ -77,6 +82,7 @@ import { AssetSeriesCreateFooterComponent } from './components/content/asset-ser
         ReactiveFormsModule,
         TableModule,
         CalendarModule,
+        AccordionModule,
     ],
   exports: [
     FleetSubHeaderComponent,

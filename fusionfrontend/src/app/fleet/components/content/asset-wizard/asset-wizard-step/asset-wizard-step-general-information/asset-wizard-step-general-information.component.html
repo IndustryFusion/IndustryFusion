@@ -56,7 +56,7 @@ under the License.
     </div>
     <div class="footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" [disabled]="!assetForm.get('assetSeriesId')?.value"
+      <button type="button" class="if-button button-confirm button-primary" [disabled]="!readyForNextStep()"
               (click)="onStart()">Start</button>
     </div>
   </form>

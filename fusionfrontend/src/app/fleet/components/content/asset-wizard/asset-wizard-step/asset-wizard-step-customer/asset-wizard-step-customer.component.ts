@@ -15,6 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { AssetWizardStep } from '../asset-wizard-step.model';
 
 @Component({
   selector: 'app-asset-wizard-step-customer',
@@ -29,6 +30,14 @@ export class AssetWizardStepCustomerComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onBack() {
+    this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA - 1);
+  }
+
+  onNext() {
+    this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA + 1);
   }
 
 }

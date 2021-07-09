@@ -13,20 +13,20 @@
  * under the License.
  */
 
-import { Injectable } from '@angular/core';
 import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
-import { AssetSeriesDetails } from './asset-series-details.model';
+import { Injectable } from '@angular/core';
 import { CachedStore } from '../cachedstore';
+import { FieldInstance } from './field-instance.model';
 
-export interface AssetSeriesDetailsState extends EntityState<AssetSeriesDetails, ID>, ActiveState { }
+export interface FieldInstanceState extends EntityState<FieldInstance, ID>, ActiveState { }
 
 const initialState = {
   active: null
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'asset-series', resettable: true })
-export class AssetSeriesDetailsStore extends CachedStore<AssetSeriesDetailsState, AssetSeriesDetails> {
+@StoreConfig({ name: 'field-instance', resettable: true })
+export class FieldInstanceStore extends CachedStore<FieldInstanceState, FieldInstance> {
 
   constructor() {
     super(initialState);

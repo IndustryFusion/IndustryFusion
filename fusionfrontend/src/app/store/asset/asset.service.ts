@@ -18,7 +18,7 @@ import { Asset } from './asset.model';
 import { AssetStore } from './asset.store';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, map } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { environment } from '../../../environments/environment';
 import { RoomService } from '../room/room.service';
@@ -95,6 +95,19 @@ export class AssetService {
       }));
   }
 
+  createAsset(companyId: ID, assetSeriesId: ID, asset: Asset): Observable<ID> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}/assets`;
+    return this.http.post<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
+      .pipe(
+        switchMap(savedAsset => {
+          this.assetStore.upsertCached(savedAsset);
+          const assetDetails = this.assetDetailsService.getAssetDetails(savedAsset.companyId, savedAsset.id).pipe(tap(entity => {
+            this.assetDetailsStore.upsertCached(entity);
+          }));
+          return assetDetails.pipe(map(entity => entity.id));
+        })
+    );
+  }
 
   setActive(assetId: ID) {
     this.assetStore.setActive(assetId);

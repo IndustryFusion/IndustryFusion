@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { AssetSeriesDetails } from './asset-series-details.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AssetSeriesDetailsStore } from './asset-series-details-store.service';
+import { AssetSeriesDetailsStore } from './asset-series-details.store';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';

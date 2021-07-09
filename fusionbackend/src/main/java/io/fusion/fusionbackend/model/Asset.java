@@ -20,8 +20,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
 import javax.persistence.Entity;
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -38,7 +38,7 @@ import java.util.UUID;
 @NamedEntityGraph(name = "Asset.allChildren",
         attributeNodes = {
                 @NamedAttributeNode(value = "fieldInstances")})
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_asset")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_asset")
 @Getter
 @Setter
 @SuperBuilder
@@ -56,7 +56,7 @@ public class Asset extends BaseAsset {
     @JoinColumn(name = "asset_series_id", nullable = false)
     private AssetSeries assetSeries;
 
-    @OneToMany(mappedBy = "asset")
+    @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
 
@@ -113,6 +113,9 @@ public class Asset extends BaseAsset {
         }
         if (sourceAsset.getRoom() != null) {
             setRoom(sourceAsset.getRoom());
+        }
+        if (sourceAsset.getFieldInstances() != null) {
+            setFieldInstances(sourceAsset.getFieldInstances());
         }
     }
 }
