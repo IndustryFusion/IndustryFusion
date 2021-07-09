@@ -45,7 +45,7 @@ import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.reso
 })
 export class AssetWizardComponent implements OnInit {
 
-  public isLoading$: Observable<boolean>;
+  private isAssetSeriesLoading$: Observable<boolean>;
 
   public assetForm: FormGroup;
   public asset: Asset;
@@ -86,7 +86,7 @@ export class AssetWizardComponent implements OnInit {
     this.isAssetSeriesLocked = this.config.data.prefilledAssetSeriesId != null;
     if (this.isAssetSeriesLocked) {
       this.assetForm.get('assetSeriesId')?.disable();
-      this.isLoading$.subscribe(() => {
+      this.isAssetSeriesLoading$.subscribe(() => {
         this.prefillFormFromAssetSeries(this.config.data.prefilledAssetSeriesId);
       });
     }
@@ -144,8 +144,6 @@ export class AssetWizardComponent implements OnInit {
       this.asset.videoKey = this.assetForm.get('videoKey')?.value;
       this.asset.imageKey = this.assetForm.get('imageKey')?.value;
 
-      console.log('asset to save:', this.asset);
-
       if (this.type === DialogType.EDIT) {
 
       } else if (this.type === DialogType.CREATE) {
@@ -153,17 +151,6 @@ export class AssetWizardComponent implements OnInit {
       }
     }
   }
-
-/*  onUpdateAssetSeries() {
-    if (this.assetSeries.id) {
-      this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries)
-        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
-    } else {
-      this.assetSeries.companyId = this.companyId;
-      this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
-    }
-  }*/
 
   private prefillFormFromAssetSeries(assetSeriesId: ID): void {
     const assetSeries = this.assetSeriesQuery.getEntity(assetSeriesId);
@@ -190,7 +177,7 @@ export class AssetWizardComponent implements OnInit {
     this.assetResolver.resolve(this.activatedRoute.snapshot);
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
-    this.isLoading$ = this.assetSeriesQuery.selectLoading(); // TODO: is this correct?
+    this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
   }

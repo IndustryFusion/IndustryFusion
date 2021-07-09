@@ -57,17 +57,16 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
   private static getThresholdFromForm(thresholdGroup: AbstractControl,
                                       type: ThresholdType,
                                       quantityDataType: QuantityDataType): Threshold {
-    // As demoinsert data also have thresholds for non numeric data, force to remove them before saving
-    if (quantityDataType !== QuantityDataType.NUMERIC) {
-      return null;
-    }
 
     const lowerValue = thresholdGroup.get(type + 'Lower').value;
     const upperValue = thresholdGroup.get(type + 'Upper').value;
     const valueExist: boolean = lowerValue || upperValue;
-    if (!valueExist) {
+
+    // As demoinsert data also have thresholds for non numeric data, force to remove them before saving
+    if (quantityDataType !== QuantityDataType.NUMERIC || !valueExist) {
       return null;
     }
+
     const threshold: Threshold = new Threshold();
     threshold.id = thresholdGroup.get('id').value;
     threshold.valueUpper = upperValue;

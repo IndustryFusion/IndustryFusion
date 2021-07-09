@@ -59,7 +59,7 @@
   }
 
   td.tree-line {
-    background: #B9B9B9;
+    background: $tree-line-grey;
   }
 
   .tree-entry {
@@ -69,7 +69,7 @@
 
   td.tree-entry div {
     width: 10px;
-    background: #B9B9B9;
+    background: $tree-line-grey;
     min-height: 2px;
   }
 
@@ -84,10 +84,6 @@
 .threshold-input {
   width: 4rem;
 }
-
-/*:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:first-child {
-  border-radius: 0 !important;
-}*/
 
 :host ::ng-deep .p-grid {
   width: 100% !important;
