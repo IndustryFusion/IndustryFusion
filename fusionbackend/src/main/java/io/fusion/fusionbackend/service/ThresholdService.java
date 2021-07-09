@@ -49,4 +49,19 @@ public class ThresholdService {
         }
         return ((threshold.getValueUpper() != null) ? 1 : 0) + ((threshold.getValueLower() != null) ? 1 : 0);
     }
+
+    public static boolean hasPairwiseValues(Threshold threshold) {
+        final int thresholdValuesCount = ThresholdService.getFilledValuesCount(threshold);
+        return thresholdValuesCount == 0 || thresholdValuesCount == 2;
+    }
+
+    public static boolean hasBothValues(Threshold threshold) {
+        final int thresholdValuesCount = ThresholdService.getFilledValuesCount(threshold);
+        return thresholdValuesCount == 2;
+    }
+
+    public static boolean hasNoValue(Threshold threshold) {
+        final int thresholdValuesCount = ThresholdService.getFilledValuesCount(threshold);
+        return thresholdValuesCount == 0;
+    }
 }

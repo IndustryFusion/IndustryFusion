@@ -61,34 +61,41 @@ public class FieldInstanceService {
                                       FieldThresholdType fieldThresholdType,
                                       QuantityDataType quantityDataType) {
 
-        final int absoluteThresholdValuesCount = ThresholdService
-                .getFilledValuesCount(fieldInstance.getAbsoluteThreshold());
-        final int idealThresholdValuesCount = ThresholdService
-                .getFilledValuesCount(fieldInstance.getIdealThreshold());
-        final int criticalThresholdValuesCount = ThresholdService
-                .getFilledValuesCount(fieldInstance.getCriticalThreshold());
-
-        final boolean existNoThresholdValues = absoluteThresholdValuesCount == 0 && idealThresholdValuesCount == 0
-                && criticalThresholdValuesCount == 0;
-        final boolean existPairwiseValues = this.existPairwiseValues(absoluteThresholdValuesCount,
-                idealThresholdValuesCount, criticalThresholdValuesCount);
-        final boolean existBothAbsoluteThresholdValuesAndPairwiseValues = absoluteThresholdValuesCount == 2
-                && existPairwiseValues;
-
-        if (!quantityDataType.equals(QuantityDataType.NUMERIC)) {
-            return existNoThresholdValues;
+        if (!areThresholdsAllowed(quantityDataType)) {
+            return hasNoThresholdValues(fieldInstance);
         }
 
         switch (fieldThresholdType) {
             case MANDATORY:
-                return existBothAbsoluteThresholdValuesAndPairwiseValues;
+                return hasPairwiseValues(fieldInstance) && hasBothMandatoryThresholdValues(fieldInstance);
             case OPTIONAL:
-                return existNoThresholdValues || existBothAbsoluteThresholdValuesAndPairwiseValues;
+                return hasNoThresholdValues(fieldInstance)
+                        || hasPairwiseValues(fieldInstance) && hasBothMandatoryThresholdValues(fieldInstance);
             case DISABLED:
-                return existNoThresholdValues;
+                return hasNoThresholdValues(fieldInstance);
             default:
                 return false;
         }
+    }
+
+    private boolean areThresholdsAllowed(QuantityDataType quantityDataType) {
+        return quantityDataType.equals(QuantityDataType.NUMERIC);
+    }
+
+    private boolean hasNoThresholdValues(final FieldInstance fieldInstance) {
+        return ThresholdService.hasNoValue(fieldInstance.getAbsoluteThreshold())
+                && ThresholdService.hasNoValue(fieldInstance.getIdealThreshold())
+                && ThresholdService.hasNoValue(fieldInstance.getCriticalThreshold());
+    }
+
+    private boolean hasBothMandatoryThresholdValues(final FieldInstance fieldInstance) {
+        return ThresholdService.hasBothValues(fieldInstance.getAbsoluteThreshold());
+    }
+
+    private boolean hasPairwiseValues(final FieldInstance fieldInstance) {
+        return ThresholdService.hasPairwiseValues(fieldInstance.getAbsoluteThreshold())
+                && ThresholdService.hasPairwiseValues(fieldInstance.getIdealThreshold())
+                && ThresholdService.hasPairwiseValues(fieldInstance.getCriticalThreshold());
     }
 
     public void validate(FieldInstance fieldInstance) {
@@ -111,13 +118,5 @@ public class FieldInstanceService {
                     fieldInstance.getIdealThreshold(), fieldInstance.getCriticalThreshold());
             throw new RuntimeException("Thresholds are not valid in every field instance");
         }
-    }
-
-    private boolean existPairwiseValues(final int absoluteValuesCount,
-                                        final int idealValuesCount,
-                                        final int criticalValuesCount) {
-        return (absoluteValuesCount == 0 || absoluteValuesCount == 2)
-                && (idealValuesCount == 0 || idealValuesCount == 2)
-                && (criticalValuesCount == 0 || criticalValuesCount == 2);
     }
 }
