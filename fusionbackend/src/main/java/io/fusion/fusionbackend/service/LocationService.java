@@ -34,6 +34,9 @@ public class LocationService {
     private final CompanyService companyService;
     private final RoomService roomService;
 
+    private final String noSpecificRoomName = "No specific room";
+    private final String noSpecificRoomDescription = "No specific room";
+
     @Autowired
     public LocationService(LocationRepository locationRepository, CompanyService companyService,
                            @Lazy RoomService roomService) {
@@ -62,7 +65,8 @@ public class LocationService {
         location.setCompany(company);
         Location newLocation = locationRepository.save(location);
 
-        Room noSpecificRoom = Room.builder().name("No specific room").description("No specific room").build();
+        Room noSpecificRoom =
+                Room.builder().name(noSpecificRoomName).description(noSpecificRoomDescription).build();
         roomService.createRoom(companyId, newLocation.getId(), noSpecificRoom);
 
         return newLocation;

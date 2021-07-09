@@ -14,7 +14,7 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Company } from 'src/app/store/company/company.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { ID } from '@datorama/akita';
@@ -24,7 +24,7 @@ import { LocationService } from 'src/app/store/location/location.service';
 import { Location } from 'src/app/store/location/location.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { RoomService } from '../../../../store/room/room.service';
 
 @Component({
   selector: 'app-company-page',
@@ -33,20 +33,21 @@ import { Subject } from 'rxjs';
 })
 export class CompanyPageComponent implements OnInit, OnDestroy {
 
-  private unSubscribe$ = new Subject<void>();
-
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
   locations: Location[];
   companyId: ID;
   selectedLocation: ID;
+  private unSubscribe$ = new Subject<void>();
 
   constructor(
     private companyQuery: CompanyQuery,
     private factoryResolver: FactoryResolver,
     private locationService: LocationService,
+    private roomService: RoomService,
     private locationQuery: LocationQuery,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.isLoading$ = this.companyQuery.selectLoading();
@@ -54,9 +55,9 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
     this.company$ = this.companyQuery.selectActive();
     this.companyId = this.companyQuery.getActiveId();
     this.locationQuery.selectLocationsOfCompany(this.companyId)
-    .pipe(
-      takeUntil(this.unSubscribe$)
-    ).subscribe(
+      .pipe(
+        takeUntil(this.unSubscribe$)
+      ).subscribe(
       res => {
         this.locations = res;
       });
@@ -74,8 +75,9 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
   locationCreated(location: Location) {
     const createLocation$ = this.locationService.createLocation(location);
     createLocation$.subscribe(
-      res => {
-        console.log('[company page] created location: ' + res.name);
+      newLocation => {
+        console.log('[company page] created location: ' + newLocation?.name);
+        this.roomService.getRoomsOfLocation(this.companyId, newLocation.id).subscribe();
       },
       error => console.log(error)
     );
