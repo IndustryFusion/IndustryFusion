@@ -41,7 +41,7 @@ export class RoomsPageComponent implements OnInit {
   company$: Observable<Company>;
   assets$: Observable<Asset[]>;
   location$: Observable<Location>;
-  rooms$: Observable<Room[]>;
+  allRoomsOfLocation$: Observable<Room[]>;
   activeRoom$: Observable<Room>;
 
   companyId: ID;
@@ -68,7 +68,7 @@ export class RoomsPageComponent implements OnInit {
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
     this.location$ = this.factoryResolver.location$;
-    this.rooms$ = this.factoryResolver.rooms$;
+    this.allRoomsOfLocation$ = this.factoryResolver.allRoomsOfLocation$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();

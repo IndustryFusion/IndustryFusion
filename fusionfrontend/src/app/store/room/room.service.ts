@@ -46,9 +46,9 @@ export class RoomService {
       })));
   }
 
-  getRooms(companyId: ID, locationId: ID): Observable<Room[]> {
+  getRoomsOfLocation(companyId: ID, locationId: ID): Observable<Room[]> {
     const path = `companies/${companyId}/locations/${locationId}/rooms`;
-    const cacheKey = 'location-' + companyId;
+    const cacheKey = 'location-' + locationId;
     return this.roomStore.cachedByParentId(cacheKey, this.http.get<Room[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.roomStore.upsertManyByParentIdCached(cacheKey, entities);

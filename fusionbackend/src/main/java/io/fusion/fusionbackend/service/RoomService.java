@@ -20,6 +20,7 @@ import io.fusion.fusionbackend.model.Location;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class RoomService {
     private final LocationService locationService;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, LocationService locationService) {
+    public RoomService(RoomRepository roomRepository, @Lazy LocationService locationService) {
         this.roomRepository = roomRepository;
         this.locationService = locationService;
     }
