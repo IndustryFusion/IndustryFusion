@@ -2,22 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router) {
+  constructor(private messageService: MessageService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error) => {
-        this.router.navigate(['/error'], { state: { code: error.status, details: error.message } });
+        const errorMessage = error.error?.message ? error.error.message : error.message;
+        this.messageService.add(({ severity: 'error', summary: 'Error', detail: errorMessage, life: 500000 }));
         return throwError(error.message);
       })
     );
   }
-
 }

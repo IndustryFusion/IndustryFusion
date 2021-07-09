@@ -23,6 +23,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -49,6 +51,7 @@ import { FormsModule } from '@angular/forms';
     InputTextareaModule,
     RadioButtonModule,
     DialogModule,
+    ToastModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -75,6 +78,9 @@ import { FormsModule } from '@angular/forms';
     ConfirmDialogModule,
     AccuracyFormatPipe,
     RadioButtonModule,
+  ],
+  providers: [
+    MessageService
   ]
 })
 export class IFCommon {

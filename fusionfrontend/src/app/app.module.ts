@@ -36,7 +36,7 @@ import { TokenInterceptor } from './services/token.interceptor';
 import { DashboardModule } from './dashboards/dashboard.module';
 import { IFCommon } from './common/i-f-common.module';
 import { ErrorInterceptor } from './services/error.interceptor';
-import { ErrorPageComponent } from './components/pages/error-page/error-page.component';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,6 @@ import { ErrorPageComponent } from './components/pages/error-page/error-page.com
     HeaderComponent,
     LaunchpadPageComponent,
     LaunchpadItemComponent,
-    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +58,8 @@ import { ErrorPageComponent } from './components/pages/error-page/error-page.com
     AkitaNgRouterStoreModule,
     ClarityModule,
     BrowserAnimationsModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    ToastModule
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -82,7 +82,8 @@ import { ErrorPageComponent } from './components/pages/error-page/error-page.com
     }
   ]
 })
-export class AppModule { }
+export class AppModule {
+}
 
 function initializeKeycloak(keycloak: KeycloakService, location: Location) {
   return () =>
