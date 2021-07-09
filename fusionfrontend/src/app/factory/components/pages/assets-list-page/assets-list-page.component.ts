@@ -26,8 +26,9 @@ import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 import { ID } from '@datorama/akita';
 import { FactoryManagerPageType, RouteData } from 'src/app/factory/factory-routing.model';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
-import { AssetService } from '../../../../store/asset/asset.service';
+import { AssetService } from 'src/app/store/asset/asset.service';
+import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
+import { RoomService } from '../../../../store/room/room.service';
 
 
 @Component({
@@ -41,8 +42,6 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   assets$: Observable<Asset[]>;
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
   locations$: Observable<Location[]>;
-  assetSeries$: Observable<AssetSeriesDetails[]>;
-  location$: Observable<Location>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
   selectedIds: Array<ID>;
@@ -56,18 +55,20 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+    private roomService: RoomService,
+  ) { }
 
   ngOnInit() {
     this.isLoading$ = this.locationQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
+    this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.company$ = this.factoryResolver.company$;
     this.locations$ = this.factoryResolver.locations$;
-    this.location$ = this.factoryResolver.location$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
-    this.assetSeries$ = this.factoryResolver.assetSeries$;
     this.companyId = this.activatedRoute.snapshot.paramMap.get('companyId');
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
   }
@@ -75,26 +76,14 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  createAssetFromAssetSeries(event: AssetSeriesDetails) {
-    const targetCompanyId = this.companyId;
-    const sourceCompanyId = event.companyId;
-    const assetSeriesId = event.id;
-    const createAsset$ = this.assetService.createAssetFromAssetSeries(targetCompanyId, assetSeriesId, sourceCompanyId);
-    createAsset$.subscribe(
-      id => {
-        console.log('[location page] created asset id: ' + id);
-        this.createdAssetDetailsId = id;
-      },
-      error => console.log(error)
-    );
-  }
-
-  updateAssetData(event: AssetDetails) {
-    event.id = event.id ? event.id : this.createdAssetDetailsId;
-    event.companyId = this.companyId;
-    this.assetService.updateCompanyAsset(this.companyId, event).subscribe(
+  updateAssetData(event: [Room, AssetDetails]) {
+    event[1].id = event[1].id ? event[1].id : this.createdAssetDetailsId;
+    this.assetService.updateCompanyAsset(event[1].companyId, event[1]).subscribe(
       res => {
         console.log('[location page] updated asset with id: ' + res.id);
+        if (event[0].id !== event[1].roomId) {
+          this.roomService.updateRoomsAfterEditAsset(event[0].id, event[1]);
+        }
       },
       error => console.log(error)
     );

@@ -25,7 +25,7 @@ const initialState = {
 };
 
 @Injectable({ providedIn: 'root'})
-@StoreConfig({ name: 'fieldTarget', resettable: true})
+@StoreConfig({ name: 'field-target', resettable: true})
 export class FieldTargetStore extends EntityStore<FieldTargetState, FieldTarget> {
 
   constructor() {

@@ -50,8 +50,8 @@ export class AssetDetailsService {
       })));
   }
 
-  getAssetDetails(assetDetailsId: ID): Observable<AssetDetails> {
-    const path = `assetdetails/${assetDetailsId}`;
+  getAssetDetails(companyId: ID, assetDetailsId: ID): Observable<AssetDetails> {
+    const path = `companies/${companyId}/assetdetails/${assetDetailsId}`;
     return this.http.get<AssetDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 

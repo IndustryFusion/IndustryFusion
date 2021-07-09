@@ -25,11 +25,11 @@ import { Company } from '../../../../../../store/company/company.model';
 import { AssetType } from '../../../../../../store/asset-type/asset-type.model';
 
 @Component({
-  selector: 'app-asset-wizard-step-start',
-  templateUrl: './asset-wizard-step-start.component.html',
-  styleUrls: ['./asset-wizard-step-start.component.scss']
+  selector: 'app-asset-wizard-step-general-information',
+  templateUrl: './asset-wizard-step-general-information.component.html',
+  styleUrls: ['./asset-wizard-step-general-information.component.scss']
 })
-export class AssetWizardStepStartComponent implements OnInit {
+export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
   @Input() assetForm: FormGroup;
   @Input() relatedAssetSeries: AssetSeries;
@@ -57,6 +57,14 @@ export class AssetWizardStepStartComponent implements OnInit {
   }
 
   onStart() {
-    this.stepChange.emit(AssetWizardStep.START + 1);
+    if (this.readyForNextStep()) {
+      this.stepChange.emit(AssetWizardStep.GENERAL_INFORMATION + 1);
+    }
+  }
+
+  readyForNextStep(): boolean {
+    return this.assetForm.get('assetSeriesId').value != null
+      && this.assetForm.get('name').value
+      && this.assetForm.get('description').value;
   }
 }

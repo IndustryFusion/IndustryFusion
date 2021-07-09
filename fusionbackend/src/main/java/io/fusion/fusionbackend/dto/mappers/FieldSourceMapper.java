@@ -17,6 +17,8 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldSourceDto;
 import io.fusion.fusionbackend.model.FieldSource;
+import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +30,15 @@ import java.util.stream.Collectors;
 public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSourceDto> {
     private final FieldTargetMapper fieldTargetMapper;
     private final UnitMapper unitMapper;
+    private final ThresholdMapper thresholdMapper;
 
     @Autowired
-    public FieldSourceMapper(FieldTargetMapper fieldTargetMapper, UnitMapper unitMapper) {
+    public FieldSourceMapper(FieldTargetMapper fieldTargetMapper,
+                             UnitMapper unitMapper,
+                             ThresholdMapper thresholdMapper) {
         this.fieldTargetMapper = fieldTargetMapper;
         this.unitMapper = unitMapper;
+        this.thresholdMapper = thresholdMapper;
     }
 
     private FieldSourceDto toDtoShallow(FieldSource entity) {
@@ -49,6 +55,9 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .description(entity.getDescription())
                 .value(entity.getValue())
                 .register(entity.getRegister())
+                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
+                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
+                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
                 .build();
     }
 
@@ -66,6 +75,9 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .description(entity.getDescription())
                 .value(entity.getValue())
                 .register(entity.getRegister())
+                .absoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false))
+                .idealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false))
+                .criticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false))
                 .build();
     }
 
@@ -82,7 +94,7 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         if (dto == null) {
             return null;
         }
-        return FieldSource.builder()
+        FieldSource fieldSource = FieldSource.builder()
                 .id(dto.getId())
                 .sourceSensorLabel(dto.getSourceSensorLabel())
                 .name(dto.getName())
@@ -90,6 +102,14 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
                 .value(dto.getValue())
                 .register(dto.getRegister())
                 .build();
+
+        FieldTarget fieldTarget = fieldTargetMapper.toEntity(dto.getFieldTarget());
+        fieldSource.setFieldTarget(fieldTarget);
+
+        Unit unit = unitMapper.toEntity(dto.getSourceUnit());
+        fieldSource.setSourceUnit(unit);
+
+        return fieldSource;
     }
 
     @Override

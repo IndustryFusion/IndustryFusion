@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetWizardStepStartComponent } from './asset-wizard-step-start.component';
+import { AssetWizardStepMetricsThresholdsComponent } from './asset-wizard-step-metrics-thresholds.component';
 
-describe('AssetWizardStepStartComponent', () => {
-  let component: AssetWizardStepStartComponent;
-  let fixture: ComponentFixture<AssetWizardStepStartComponent>;
+describe('AssetWizardStepMetricsThresholdsComponent', () => {
+  let component: AssetWizardStepMetricsThresholdsComponent;
+  let fixture: ComponentFixture<AssetWizardStepMetricsThresholdsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetWizardStepStartComponent ]
+      declarations: [ AssetWizardStepMetricsThresholdsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetWizardStepStartComponent);
+    fixture = TestBed.createComponent(AssetWizardStepMetricsThresholdsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

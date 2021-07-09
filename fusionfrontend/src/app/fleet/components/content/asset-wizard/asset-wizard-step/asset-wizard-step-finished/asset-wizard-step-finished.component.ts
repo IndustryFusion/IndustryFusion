@@ -25,10 +25,12 @@ export class AssetWizardStepFinishedComponent implements OnInit {
 
   @Input() assetForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
+  @Output() saveAsset = new EventEmitter<void>();
 
   constructor() { }
 
   ngOnInit(): void {
+    this.saveAsset.emit();
   }
 
 }

@@ -33,10 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -71,45 +68,38 @@ public class AssetSeriesService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public AssetSeries createAssetSeriesFromAssetTypeTemplate(final Long targetCompanyId,
-                                                              final Long assetTypeTemplateId) {
+    @Transactional
+    public AssetSeries createAssetSeries(final Long targetCompanyId, final Long assetTypeTemplateId,
+                                         final AssetSeries assetSeries) {
+
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
 
         final Company targetCompany = companyService.getCompany(targetCompanyId, false);
 
-        final AssetSeries newAssetSeries = AssetSeries.builder()
-                .build();
-        newAssetSeries.copyFrom(assetTypeTemplate);
+        assetSeries.setCompany(targetCompany);
+        assetSeries.setAssetTypeTemplate(assetTypeTemplate);
 
-        assetTypeTemplate.getAssetSeries().add(newAssetSeries);
-        newAssetSeries.setAssetTypeTemplate(assetTypeTemplate);
+        assetSeries.getFieldSources().stream().forEach(fieldSource -> {
+            fieldSource.setAssetSeries(assetSeries);
+            Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
+            fieldSource.setSourceUnit(unit);
+        });
 
-        newAssetSeries.setCompany(targetCompany);
-        targetCompany.getAssetSeries().add(newAssetSeries);
-        final AssetSeries savedAssetSeries = assetSeriesRepository.save(newAssetSeries);
-
-        List<FieldSource> newFieldSources = assetTypeTemplate.getFieldTargets().stream()
-                .map(fieldTarget ->
-                        FieldSource.builder()
-                                .fieldTarget(fieldTarget)
-                                .assetSeries(savedAssetSeries)
-                                .sourceUnit(fieldTarget.getField().getUnit())
-                                .build())
-                .collect(Collectors.toList());
-        List<FieldSource> savedFieldSources =
-                StreamSupport.stream(fieldSourceRepository.saveAll(newFieldSources).spliterator(), false)
-                        .collect(Collectors.toList());
-        newAssetSeries.getFieldSources().addAll(savedFieldSources);
-
-        return newAssetSeries;
+        AssetSeries savedAssetSeries = assetSeriesRepository.save(assetSeries);
+        return savedAssetSeries;
     }
 
     public AssetSeries updateAssetSeries(final Long companyId, final Long assetSeriesId,
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
+        sourceAssetSeries.getFieldSources().forEach(fieldSource -> {
+            updateFieldSource(companyId, assetSeriesId, fieldSource.getId(), fieldSource);
+        });
+
         targetAssetSeries.copyFrom(sourceAssetSeries);
+
 
         return targetAssetSeries;
     }

@@ -14,8 +14,7 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from 'ng2-charts';
@@ -29,12 +28,9 @@ import { MaintenancePageComponent } from 'src/app/dashboards/components/pages/ma
 import { MaintenanceListComponent } from './components/content/maintenance-list/maintenance-list.component';
 import { MaintenanceProgressbarComponent } from './components/content/maintenance-list/maintenance-progressbar/maintenance-progressbar.component';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { DropdownModule } from 'primeng/dropdown';
-import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
+import { IFCommon } from '../common/i-f-common.module';
 
 @NgModule({
   declarations: [
@@ -45,23 +41,18 @@ import { TableModule } from 'primeng/table';
     MaintenanceProgressbarComponent,
   ],
     imports: [
-        CommonModule,
+        IFCommon,
         DashboardRoutingModule,
         ClarityModule,
         AgmCoreModule.forRoot({
             apiKey: environment.googleMapsClientId
         }),
         ChartsModule,
-        FormsModule,
         FontAwesomeModule,
         ReactiveFormsModule,
         ProgressBarModule,
-        DialogModule,
-        InputTextModule,
         OverlayPanelModule,
-        DropdownModule,
-        CheckboxModule,
-        TableModule,
+        TableModule
       ],
   exports: [
     DashboardSubHeaderComponent,

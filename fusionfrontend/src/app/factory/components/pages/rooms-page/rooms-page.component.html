@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>
+<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(allRoomsOfLocation$ | async)" [assets]="(assets$ | async)"></app-company-info>
 <div class="rooms-panel">
   <div class="manage">
     <button class="btn btn-sm btn-link" (click)="createRoomModal = true">
@@ -29,7 +29,8 @@ under the License.
 </div>
 
 <div class="wrapper">
-  <h3 class="table-header" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>
+  <h3 *ngIf="(allRoomsOfLocation$| async)?.length > 0"
+      class="table-header">  {{ (allRoomsOfLocation$| async)?.length }} {{ (allRoomsOfLocation$| async)?.length == 1 ? 'Room' : 'Rooms'}}</h3>
 
   <clr-datagrid>
     <clr-dg-column>Room ID</clr-dg-column>
@@ -38,7 +39,7 @@ under the License.
     <clr-dg-column>Description</clr-dg-column>
     <clr-dg-column></clr-dg-column>
 
-    <clr-dg-row *ngFor="let room of rooms$ | async" [clrDgItem]="room">
+    <clr-dg-row *ngFor="let room of allRoomsOfLocation$ | async" [clrDgItem]="room">
       <clr-dg-cell [routerLink]="[room.id]">{{room.id}}</clr-dg-cell>
       <clr-dg-cell [routerLink]="[room.id]">{{room.name}}</clr-dg-cell>
       <clr-dg-cell [routerLink]="[room.id]">{{room.assetIds.length}}</clr-dg-cell>

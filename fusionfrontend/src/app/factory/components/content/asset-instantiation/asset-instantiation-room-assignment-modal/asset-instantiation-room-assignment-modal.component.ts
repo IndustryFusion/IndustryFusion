@@ -13,9 +13,9 @@
  * under the License.
  */
 
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Room } from '../../../../../store/room/room.model';
-import { FormGroup } from '@angular/forms';
+import { AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
 
 @Component({
   selector: 'app-asset-instantiation-room-assignment-modal',
@@ -26,42 +26,33 @@ export class AssetInstantiationRoomAssignmentModalComponent implements OnInit {
 
   @Input()
   rooms: Room[];
-
   @Input()
-  assetDetailsForm: FormGroup;
-
-  @Output()
-  closedRoomAssignmentModalEvent = new EventEmitter<[boolean, Room]>();
-
-  @Output()
-  stoppedAssetAssignment = new EventEmitter<boolean>();
-
   selectedRoom: Room;
-  noSpecificRoom = 'NoSpecificRoom';
-  roomControlValidation = 'roomName';
+  @Input()
+  activeModalMode: AssetModalMode;
+  @Output()
+  roomAssignedEvent = new EventEmitter<Room>();
+
+  searchText;
+  filteredRooms: Room[];
+  assetModalModes = AssetModalMode;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.filteredRooms = this.rooms;
   }
 
-  radioChecked(room?: Room) {
-    this.selectedRoom = room;
+  filterRooms() {
+    this.filteredRooms = this.rooms.filter(room => room.name.toLowerCase()
+      .includes(this.searchText.toLowerCase()));
   }
 
-  clickedFinish(event: boolean) {
-    if (event) {
-      if (this.assetDetailsForm.controls[this.roomControlValidation].valid) {
-        this.closedRoomAssignmentModalEvent.emit([event, this.selectedRoom]);
-      }
-    } else {
-      this.closedRoomAssignmentModalEvent.emit([event, null]);
-    }
+  onSubmit() {
+    this.roomAssignedEvent.emit(this.selectedRoom);
   }
 
-  closeModal(event: boolean) {
-    if (event) {
-      this.stoppedAssetAssignment.emit(event);
-    }
+  onCancel() {
+    this.roomAssignedEvent.emit(null);
   }
 }

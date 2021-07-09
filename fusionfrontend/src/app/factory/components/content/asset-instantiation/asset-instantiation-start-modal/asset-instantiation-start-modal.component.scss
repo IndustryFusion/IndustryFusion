@@ -13,30 +13,56 @@
  * under the License.
  */
 
-.start-modal {
-  padding: 15px;
+@import 'abstract/variables';
+@import 'base/typography';
 
-  .start-panel-row{
-    margin-bottom: 12px;
+.asset-item {
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
 
-    .asset-img {
-      .asset-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 60px;
-        overflow: hidden;
-      }
-    }
+.asset-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 60px;
+  overflow: hidden;
+}
 
-    .start-panel-column {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      column-gap: 15px;;
+.column-class {
+  align-self: center;
+}
 
-      .start-button {
-        margin: 0px;
-      }
-    }
-  }
+.asset-name {
+  font-size: $big-font-size;
+  font-weight: bold;
+  padding-top: 0;
+  padding-bottom: 2px;
+}
+
+.asset-information {
+  font-size: $medium-font-size;
+  color: #95989A;
+  padding-top: 0;
+  padding-bottom: 2px;
+}
+
+.onboaring-text {
+  text-align: center;
+  font-size: $medium-font-size;
+  color: $onboarding-text;
+}
+
+.no-asset-to-pair-div {
+  text-align: center;
+  padding: 5%;
+}
+
+.no-assets-icon {
+  font-size: $big-font-size !important;
+  padding-bottom: 3%;
+}
+
+.text-styling {
+  font-size: $big-font-size;
+  color: $basic-black;
 }

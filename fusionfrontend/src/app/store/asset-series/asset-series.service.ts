@@ -21,7 +21,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsStore } from '../asset-series-details/asset-series-details-store.service';
+import { AssetSeriesDetailsStore } from '../asset-series-details/asset-series-details.store';
+import { Asset } from '../asset/asset.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,23 +48,37 @@ export class AssetSeriesService {
   }
 
   getItem(companyId: ID, assetSeriesId: ID): Observable<AssetSeries> {
-    const path = `companies/${companyId}/assetseries/${assetSeriesId}`;
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}?embedChildren=true`;
     return this.http.get<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assetSeriesStore.upsert(assetSeriesId, entity);
       }));
   }
 
-  createItem(companyId: ID, assetTypeTemplateId: ID): Observable<AssetSeries> {
+  getAssetSeries(companyId: ID, assetSeriesId: ID): Observable<AssetSeries> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}?embedChildren=true`;
+    return this.http.get<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
+  createItem(companyId: ID, assetSeries: AssetSeries): Observable<AssetSeries> {
     const path = `companies/${companyId}/assetseries`;
 
-    this.httpOptions.params = this.httpOptions.params.set('assetTypeTemplateId', assetTypeTemplateId.toString());
-
-    return this.http.post<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, null, this.httpOptions)
+    return this.http.post<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, assetSeries, this.httpOptions)
       .pipe(tap(entity => {
           this.assetSeriesStore.upsert(entity.id, entity);
           this.assetSeriesDetailsStore.invalidateCacheParentId('company-' + entity.companyId);
         }));
+  }
+
+  initDraftFromAssetTypeTemplate(companyId: ID, assetTypeTemplateId: ID): Observable<AssetSeries> {
+    const path = `companies/${companyId}/assettypetemplates/${assetTypeTemplateId}/init-asset-series-draft/?embedChildren=true`;
+
+    return this.http.get<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
+  initAssetDraft(companyId: ID, assetSeriesId: ID): Observable<Asset> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}/init-asset-draft`;
+    return this.http.get<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
   deleteItem(companyId: ID, assetSeriesId: ID): Observable<any> {

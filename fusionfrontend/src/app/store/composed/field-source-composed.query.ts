@@ -33,7 +33,7 @@ export class FieldSourceComposedQuery {
 
   selectFieldSourcesWithUnits(): Observable<FieldSource[]> {
     return combineQueries([
-      this.fieldSourceQuery.getAllFieldSource(),
+      this.fieldSourceQuery.getAllFieldSources(),
       this.unitQuery.selectAll()
     ]).pipe(
       map(([fieldSources, units]) => {
@@ -49,7 +49,7 @@ export class FieldSourceComposedQuery {
 
   selectFieldSourcesWithUnitsAndFildTargetsByAssetSeries(assetSeriesId: ID): Observable<FieldSource[]> {
     return combineQueries([
-      this.fieldSourceQuery.getAllFieldSource(),
+      this.fieldSourceQuery.getAllFieldSources(),
       this.fieldTargetQuery.selectAll(),
       this.unitQuery.selectAll()
     ]).pipe(

@@ -16,10 +16,13 @@
 import { ID } from '@datorama/akita';
 import { BaseEntity } from '../baseentity.model';
 import { FieldDetails } from '../field-details/field-details.model';
+import { FieldInstance } from '../field-instance/field-instance.model';
 
 export class Asset extends BaseEntity {
   companyId: ID;
   assetSeriesId: ID;
+  fieldInstanceIds: Array<ID>;
+  fieldInstances: Array<FieldInstance>;
   roomId: ID;
   externalId: string;
   controlSystemType: string;

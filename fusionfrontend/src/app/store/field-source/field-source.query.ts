@@ -26,7 +26,7 @@ export class FieldSourceQuery extends BaseQueryEntity<FieldSourceState, FieldSou
     super(store);
   }
 
-  getAllFieldSource(): Observable<FieldSource[]> {
+  getAllFieldSources(): Observable<FieldSource[]> {
     return this.selectAll();
   }
 

@@ -33,7 +33,7 @@ export class AssetSeriesComposedQuery {
   selectAssetSeries(assetSeriesId: ID): Observable<AssetSeries> {
     return combineQueries([
       this.assetSeriesQuery.selectEntity(assetSeriesId),
-      this.fieldSourceQuery.getAllFieldSource()
+      this.fieldSourceQuery.getAllFieldSources()
     ]).pipe(
           map(([assetSeries, fieldSources]) => {
             assetSeries = { ...assetSeries};

@@ -25,7 +25,7 @@ const initialState = {
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'assetDetails' })
+@StoreConfig({ name: 'asset-details' })
 export class AssetDetailsStore extends CachedStore<AssetDetailsState, AssetDetails> {
 
   constructor() {

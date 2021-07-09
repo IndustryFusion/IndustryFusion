@@ -24,7 +24,7 @@ const initialState = {
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'quantity', resettable: true })
+@StoreConfig({ name: 'quantity-type', resettable: true })
 export class QuantityTypeStore extends EntityStore<QuantityTypeState, QuantityType> {
 
   constructor() {

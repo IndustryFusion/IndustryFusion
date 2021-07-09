@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,19 +57,18 @@ public class FactoryAssetRestService {
         return assetMapper.toDtoSet(assetService.getAssetsByLocation(companyId, locationId), embedChildren);
     }
 
-    // AssetDetails path
-    @GetMapping(path = "companies/{companyId}/assetdetails")
+    @GetMapping(path = "/companies/{companyId}/assetdetails")
     public Set<AssetDetailsDto> getAssetDetails(@PathVariable final Long companyId,
                                                 @RequestParam(defaultValue = "true") final boolean embedChildren) {
         Set<Asset> assetSet = assetService.getAssetsByCompany(companyId);
         return assetDetailsMapper.toDtoSet(assetSet, embedChildren);
     }
 
-    @GetMapping(path = "assetdetails/{assetDetailsId}")
-    public AssetDetailsDto getSingleAssetDetails(@PathVariable final Long assetDetailsId) {
-        Asset asset = assetService.getAssetById(assetDetailsId);
-        AssetDetailsDto assetDetailsDto = assetDetailsMapper.toDto(asset, false);
-        return assetDetailsDto;
+    @GetMapping(path = "/companies/{companyId}/assetdetails/{assetDetailsId}")
+    public AssetDetailsDto getSingleAssetDetails(@PathVariable final Long companyId,
+                                                 @PathVariable final Long assetDetailsId,
+                                                 @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetDetailsMapper.toDto(assetService.getAssetById(assetDetailsId), embedChildren);
     }
 
     // Rooms path
@@ -112,7 +110,7 @@ public class FactoryAssetRestService {
     }
 
     @DeleteMapping(path = "/companies/{companyId}/assets/{assetId}")
-    public void removeAssetFromRoom(@PathVariable final Long companyId,
+    public void deleteAsset(@PathVariable final Long companyId,
                                         @PathVariable final Long assetId) {
         assetService.deleteAsset(companyId, assetId);
     }
@@ -127,6 +125,7 @@ public class FactoryAssetRestService {
     }
 
     // Company direct path
+    // TODO: Rename ...Company... to ...Factory...?
     @GetMapping(path = "/companies/{companyId}/assets")
     public Set<AssetDto> getCompanyAssets(@PathVariable final Long companyId,
                                           @RequestParam(defaultValue = "false") final boolean embedChildren) {
@@ -140,21 +139,11 @@ public class FactoryAssetRestService {
         return assetMapper.toDto(assetService.getAssetByCompany(companyId, assetId), embedChildren);
     }
 
-    @PatchMapping(path = "/companies/{companyId}/assets/{assetId}")
+    @PutMapping(path = "/companies/{companyId}/assets/{assetId}")
     public AssetDto updateCompanyAsset(@PathVariable final Long companyId,
                                        @PathVariable final Long assetId,
                                        @RequestBody final AssetDto assetDto) {
         // TODO Open: what the factory manager can change on an asset
-        return assetMapper.toDto(assetService.updateCompanyAsset(companyId, assetId,
-                assetMapper.toEntity(assetDto)), false);
-    }
-
-    // AssetSeries path
-    @PostMapping(path = "/companies/{targetCompanyId}/assetseries/{assetSeriesId}/company/{sourceCompanyId}")
-    public AssetDto createAssetFromAssetSeries(@PathVariable final Long targetCompanyId,
-                                               @PathVariable final Long assetSeriesId,
-                                               @PathVariable final Long sourceCompanyId) {
-        return assetMapper.toDto(assetService.createAssetFromAssetSeries(sourceCompanyId, assetSeriesId,
-                targetCompanyId), false);
+        return assetMapper.toDto(assetService.updateAsset(assetMapper.toEntity(assetDto)), false);
     }
 }

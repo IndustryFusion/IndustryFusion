@@ -33,6 +33,12 @@ public class FieldInstanceDto {
     private String externalId;
     private String sourceSensorLabel;
     private String value;
+    private Long absoluteThresholdId;
+    private ThresholdDto absoluteThreshold;
+    private Long idealThresholdId;
+    private ThresholdDto idealThreshold;
+    private Long criticalThresholdId;
+    private ThresholdDto criticalThreshold;
 
     @JsonCreator
     public FieldInstanceDto() {

@@ -95,17 +95,17 @@ export class AssetService {
       }));
   }
 
-  createAssetFromAssetSeries(targetCompanyId: ID, assetSeriesId: ID, sourceCompanyId: ID): Observable<ID> {
-    const path = `companies/${targetCompanyId}/assetseries/${assetSeriesId}/company/${sourceCompanyId}`;
-    return this.http.post<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).pipe(
-      switchMap(asset => {
-        console.log('new asset id ' + asset.id);
-        this.assetStore.upsertCached(asset);
-        const assetDetails = this.assetDetailsService.getAssetDetails(asset.id).pipe(tap(entity => {
-          this.assetDetailsStore.upsertCached(entity);
-        }));
-        return assetDetails.pipe(map(entity => entity.id));
-      })
+  createAsset(companyId: ID, assetSeriesId: ID, asset: Asset): Observable<ID> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}/assets`;
+    return this.http.post<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
+      .pipe(
+        switchMap(savedAsset => {
+          this.assetStore.upsertCached(savedAsset);
+          const assetDetails = this.assetDetailsService.getAssetDetails(savedAsset.companyId, savedAsset.id).pipe(tap(entity => {
+            this.assetDetailsStore.upsertCached(entity);
+          }));
+          return assetDetails.pipe(map(entity => entity.id));
+        })
     );
   }
 
@@ -114,17 +114,16 @@ export class AssetService {
   }
 
   updateCompanyAsset(companyId: ID, assetDetails: AssetDetails): Observable<Asset> {
-    const path = `companies/${companyId}/assets/${assetDetails.id}`;
+    const path = `companies/${assetDetails.companyId}/assets/${assetDetails.id}`;
     const asset: Asset = this.mapAssetDetailsToAsset(assetDetails);
-    return this.http.patch<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
+    return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(updatedAsset => {
             console.log('updated asset with id ' + updatedAsset.id);
             this.assetStore.upsertCached(updatedAsset);
-            const updatedAssetDetails = this.assetDetailsService.getAssetDetails(updatedAsset.id).pipe(tap(entity => {
+            return this.assetDetailsService.getAssetDetails(companyId, updatedAsset.id).pipe(tap(entity => {
               this.assetDetailsStore.upsertCached(entity);
             }));
-            return updatedAssetDetails;
           })
 
       );

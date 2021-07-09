@@ -15,7 +15,7 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details-query.service';
+import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { tap } from 'rxjs/operators';
@@ -26,7 +26,6 @@ import { AssetSeriesCreateComponent } from '../asset-series-create/asset-series-
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
 
 @Component({
@@ -153,29 +152,15 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   public startAssetSeriesWizard(idString: string) {
-    const dialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
+    const dynamicDialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
       data: {
-        route: this.route,
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
       },
       width: '90%',
+      header: 'AssetSeries Implementation',
     });
-
-    dialogRef.onClose.subscribe((value: AssetSeries) => {
-      if (value) {
-        this.updateAssetSeries(value);
-      }
-    });
+    dynamicDialogRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  updateAssetSeries(assetSeries: AssetSeries) {
-    if (assetSeries.id) {
-      this.assetSeriesService.editItem(assetSeries.id, assetSeries)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    } else {
-      this.assetSeriesService.createItem(assetSeries.companyId, assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    }
-  }
 }
