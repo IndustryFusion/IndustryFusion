@@ -319,31 +319,4 @@ public class AssetService {
                 .findAny()
                 .orElseThrow(ResourceNotFoundException::new);
     }
-
-    public FieldInstance createFieldInstance(final Long companyId, final Long assetId,
-                                             final FieldInstance fieldInstance) {
-        final Asset assetSeries = getAssetByCompany(companyId, assetId);
-
-        assetSeries.getFieldInstances().add(fieldInstance);
-
-        return fieldInstanceRepository.save(fieldInstance);
-    }
-
-    public FieldInstance updateFieldInstance(final Long companyId, final Long assetId, final Long fieldInstanceId,
-                                             final FieldInstance fieldInstance) {
-        final FieldInstance targetFieldInstance = getFieldInstance(companyId, assetId, fieldInstanceId);
-
-        targetFieldInstance.copyFrom(fieldInstance);
-
-        return targetFieldInstance;
-    }
-
-    public void deleteFieldInstance(final Long companyId, final Long assetId, final Long fieldInstanceId) {
-        final Asset assetSeries = getAssetByCompany(companyId, assetId);
-        final FieldInstance fieldInstance = getFieldInstance(assetSeries, fieldInstanceId);
-
-        assetSeries.getFieldInstances().remove(fieldInstance);
-
-        fieldInstanceRepository.delete(fieldInstance);
-    }
 }

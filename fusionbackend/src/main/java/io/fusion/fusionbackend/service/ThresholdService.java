@@ -15,15 +15,12 @@
 
 package io.fusion.fusionbackend.service;
 
-import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Threshold;
 import io.fusion.fusionbackend.repository.ThresholdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
 
 @Service
 @Transactional
@@ -35,26 +32,6 @@ public class ThresholdService {
         this.thresholdRepository = thresholdRepository;
     }
 
-    public Set<Threshold> getAllThresholds() {
-        return Sets.newLinkedHashSet(thresholdRepository.findAll(ThresholdRepository.DEFAULT_SORT));
-    }
-
-    public Threshold getThreshold(final Long thresholdId) {
-        return thresholdRepository.findById(thresholdId).orElseThrow(ResourceNotFoundException::new);
-    }
-
-    public Threshold createThreshold(final Threshold threshold) {
-        return thresholdRepository.save(threshold);
-    }
-
-    public Threshold updateThreshold(final Long thresholdId, final Threshold sourceThreshold) {
-        final Threshold targetThreshold = getThreshold(thresholdId);
-
-        targetThreshold.copyFrom(sourceThreshold);
-
-        return targetThreshold;
-    }
-
     public Threshold initThresholdDraft(Threshold sourceThreshold) {
         if (sourceThreshold == null) {
             return null;
@@ -64,12 +41,6 @@ public class ThresholdService {
                 .valueUpper(sourceThreshold.getValueUpper())
                 .valueLower(sourceThreshold.getValueLower())
                 .build();
-    }
-
-    public void deleteThreshold(final Long thresholdId) {
-        final Threshold threshold = getThreshold(thresholdId);
-
-        thresholdRepository.delete(threshold);
     }
 
     public static int getFilledValuesCount(Threshold threshold) {

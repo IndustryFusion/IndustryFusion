@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,34 +92,6 @@ public class FleetAssetRestService {
         return assetMapper.toDto(
                 assetService.createAssetAggregate(companyId, assetSeriesId, assetMapper.toEntity(assetDto)),
                 true);
-    }
-
-    // TODO: this should probably not be allowed
-    @PostMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")
-    public FieldInstanceDto createFieldInstance(@PathVariable final Long companyId,
-                                                @PathVariable final Long assetId,
-                                                @RequestBody final FieldInstanceDto fieldInstanceDto) {
-        return fieldInstanceMapper.toDto(
-                assetService.createFieldInstance(companyId, assetId,
-                        fieldInstanceMapper.toEntity(fieldInstanceDto)), false);
-    }
-
-    // TODO: what values should be allowed to be changed
-    @PatchMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
-    public FieldInstanceDto updateFieldInstance(@PathVariable final Long companyId,
-                                                @PathVariable final Long assetId,
-                                                @PathVariable final Long fieldInstanceId,
-                                                @RequestBody final FieldInstanceDto fieldInstanceDto) {
-        return fieldInstanceMapper.toDto(assetService.updateFieldInstance(companyId, assetId,
-                fieldInstanceId, fieldInstanceMapper.toEntity(fieldInstanceDto)), false);
-    }
-
-    // TODO: this should probably not be allowed
-    @DeleteMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")
-    public void deleteFieldInstance(@PathVariable final Long companyId,
-                                    @PathVariable final Long assetId,
-                                    @PathVariable final Long fieldInstanceId) {
-        assetService.deleteFieldInstance(companyId, assetId, fieldInstanceId);
     }
 
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}/fieldinstances")
