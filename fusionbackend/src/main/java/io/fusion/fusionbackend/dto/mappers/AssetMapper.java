@@ -28,12 +28,15 @@ import java.util.stream.Collectors;
 @Component
 public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     private final BaseAssetMapper baseAssetMapper;
+    private final FieldInstanceMapper fieldInstanceMapper;
     private final RoomService roomService;
 
     @Autowired
     public AssetMapper(BaseAssetMapper baseAssetMapper,
+                       FieldInstanceMapper fieldInstanceMapper,
                        RoomService roomService) {
         this.baseAssetMapper = baseAssetMapper;
+        this.fieldInstanceMapper = fieldInstanceMapper;
         this.roomService = roomService;
     }
 
@@ -45,6 +48,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .id(entity.getId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
+                .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
                 .externalId(entity.getExternalId())
                 .controlSystemType(entity.getControlSystemType())
@@ -70,7 +74,21 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     }
 
     private AssetDto toDtoDeep(final Asset entity) {
-        return toDtoShallow(entity);
+        AssetDto dto = toDtoShallow(entity);
+        if (dto == null) {
+            return null;
+        }
+
+        if (entity.getFieldInstances() != null) {
+            dto.setFieldInstances(this.fieldInstanceMapper.toDtoSet(entity.getFieldInstances(), true));
+        }
+        if (entity.getRoom() != null) {
+            dto.setRoomId(entity.getRoom().getId());
+        }
+
+        baseAssetMapper.copyToDto(entity, dto);
+
+        return dto;
     }
 
     @Override
@@ -104,6 +122,9 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
 
         if (dto.getRoomId() != null) {
             entity.setRoom(roomService.getRoomById(dto.getRoomId()));
+        }
+        if (dto.getFieldInstances() != null) {
+            entity.setFieldInstances(fieldInstanceMapper.toEntitySet(dto.getFieldInstances()));
         }
 
         baseAssetMapper.copyToEntity(dto, entity);

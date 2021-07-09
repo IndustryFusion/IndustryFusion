@@ -28,6 +28,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.UUID;
+import java.util.HashSet;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -674,7 +676,7 @@ class FusionbackendApplicationTests {
                 .name("Airist Gas Supply")
                 .description("Airist Gas Supply")
                 .ceCertified(true)
-                .protectionClass("1c")
+                .protectionClass("IP20")
                 .imageKey("airisgasimagekey")
                 .handbookKey("airistgashandbookkey")
                 .videoKey("airistgasvideokey")
@@ -749,16 +751,24 @@ class FusionbackendApplicationTests {
                 .imageKey("gskey")
                 .hasGateway(true)
                 .ceCertified(true)
+                .installationDate(OffsetDateTime.now())
+                .constructionDate(OffsetDateTime.now())
+                .guid(UUID.randomUUID())
+                .protectionClass("IP20")
+                .fieldInstances(new HashSet<>())
                 .build();
 
-        assetRoomEastStruumpFabId = createAndTestAsset(companyAiristMachId, assetSeriesAiristGasSupplyId,
-                companyStruumpFabId, asset, accessTokenFleetManAirist);
+        assetRoomEastStruumpFabId = createAndTestFleetAsset(companyAiristMachId, assetSeriesAiristGasSupplyId,
+                asset, accessTokenFleetManAirist);
 
-        assignAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetRoomEastStruumpFabId);
+        transferFleetAssetToFactoryAsset(assetRoomEastStruumpFabId, assetSeriesAiristGasSupplyId,
+                                              companyAiristMachId, companyStruumpFabId, accessTokenFleetManAirist);
+
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetRoomEastStruumpFabId);
     }
 
     @Test
-    @Order(701)
+    @Order(702)
     void createAssetInRoomWestInAiristFab() {
         AssetDto asset = AssetDto.builder()
                 .name("FiberLaser Compact")
@@ -770,14 +780,17 @@ class FusionbackendApplicationTests {
                 .ceCertified(true)
                 .build();
 
-        assetRoomWestStruumpFabId = createAndTestAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
-                companyStruumpFabId, asset, accessTokenFleetManLaserly);
+        assetRoomWestStruumpFabId = createAndTestFleetAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
+                asset, accessTokenFleetManLaserly);
 
-        assignAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomWestStruumpFabId, assetRoomWestStruumpFabId);
+        transferFleetAssetToFactoryAsset(assetRoomWestStruumpFabId, assetSeriesLaserlyLaserCutterId,
+                companyLaserlyMachId, companyStruumpFabId, accessTokenFleetManLaserly);
+
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomWestStruumpFabId, assetRoomWestStruumpFabId);
     }
 
     @RepeatedTest(10)
-    @Order(702)
+    @Order(706)
     void createAssetsInRoomMultiple(final RepetitionInfo repetitionInfo) {
         AssetDto asset = AssetDto.builder()
                 .name("Laser machine " + repetitionInfo.getCurrentRepetition())
@@ -787,10 +800,13 @@ class FusionbackendApplicationTests {
                 .imageKey("gskey" + repetitionInfo.getCurrentRepetition())
                 .hasGateway(repetitionInfo.getCurrentRepetition() % 2 == 0)
                 .build();
-        final Integer assetId = createAndTestAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
-                companyStruumpFabId, asset, accessTokenFleetManLaserly);
+        final Integer assetId = createAndTestFleetAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
+                asset, accessTokenFleetManLaserly);
 
-        assignAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetId);
+        transferFleetAssetToFactoryAsset(assetId, assetSeriesLaserlyLaserCutterId,
+                companyLaserlyMachId, companyStruumpFabId, accessTokenFleetManLaserly);
+
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetId);
     }
 
     @Test
@@ -1204,6 +1220,12 @@ class FusionbackendApplicationTests {
         }
     }
 
+    private void validateAssetDto(ValidatableResponse response, AssetDto dto) {
+        response.body("controlSystemType", equalTo(dto.getControlSystemType()));
+        response.body("hasGateway", equalTo(dto.getHasGateway()));
+        response.body("gatewayConnectivity", equalTo(dto.getGatewayConnectivity()));
+    }
+
     private void validateFieldDto(ValidatableResponse response, FieldDto dto) {
         if (dto.getName() != null) {
             response.body("name", equalTo(dto.getName()));
@@ -1274,24 +1296,64 @@ class FusionbackendApplicationTests {
         return newAssetSeriesId;
     }
 
-    private Integer createAndTestAsset(final Integer companyId, final Integer assetSeriesId,
-                                       final Integer targetCompanyId, final AssetDto asset,
-                                       final String accessToken) {
+    private void transferFleetAssetToFactoryAsset(final Integer assetId,
+                                                  final Integer assetSeriesId,
+                                                  final Integer fleetCompanyId,
+                                                  final Integer factoryCompanyId,
+                                                  final String accessTokenFleet) {
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .body(factoryCompanyId)
+                .header("Authorization", "Bearer " + accessTokenFleet)
+
+                .when()
+                .patch(baseUrl + "/companies/" + fleetCompanyId + "/assetseries/" + assetSeriesId + "/assets/" + assetId + "/company-transfer")
+
+                .then()
+                .statusCode(200);
+
+        response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleet)
+
+                .when()
+                .get(baseUrl + "/companies/" + fleetCompanyId + "/assetseries/" + assetSeriesId + "/assets/" + assetId)
+
+                .then()
+                .statusCode(200);
+
+        AssetDto asset = response.extract().body().as(AssetDto.class);
+
+        response.body("companyId", equalTo(factoryCompanyId));
+    }
+
+    private Integer createAndTestFleetAsset(final Integer companyId, final Integer assetSeriesId,
+                                            final AssetDto asset, final String accessToken) {
 
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .post(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId +
-                        "/assets?targetCompanyId=" + targetCompanyId)
+                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/init-asset-draft")
+
+                .then()
+                .statusCode(200);
+
+        response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .body(response.extract().body().asString())
+                .post(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets")
 
                 .then()
                 .statusCode(200);
 
         Integer newAssetId = response.extract().path("id");
 
-        response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .body(asset)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1300,12 +1362,7 @@ class FusionbackendApplicationTests {
                 .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + newAssetId)
 
                 .then()
-                .statusCode(200)
-                .body("controlSystemType", equalTo(asset.getControlSystemType()))
-                .body("hasGateway", equalTo(asset.getHasGateway()))
-                .body("gatewayConnectivity", equalTo(asset.getGatewayConnectivity()));
-
-        validateBaseAssetDto(response, asset);
+                .statusCode(200);
 
         response = given()
                 .contentType(ContentType.JSON)
@@ -1315,18 +1372,16 @@ class FusionbackendApplicationTests {
                 .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + newAssetId)
 
                 .then()
-                .statusCode(200)
-                .body("controlSystemType", equalTo(asset.getControlSystemType()))
-                .body("hasGateway", equalTo(asset.getHasGateway()))
-                .body("gatewayConnectivity", equalTo(asset.getGatewayConnectivity()));
+                .statusCode(200);
 
         validateBaseAssetDto(response, asset);
+        validateAssetDto(response, asset);
 
         return newAssetId;
     }
 
-    private void assignAssetToRoomAndTest(final Integer companyId, final Integer locationId, final Integer roomId,
-                                          final Integer assetId) {
+    private void assignFactoryAssetToRoomAndTest(final Integer companyId, final Integer locationId, final Integer roomId,
+                                                 final Integer assetId) {
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)

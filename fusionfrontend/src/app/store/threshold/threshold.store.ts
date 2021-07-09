@@ -13,22 +13,22 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { ActiveState, EntityState, EntityStore, ID, StoreConfig } from '@datorama/akita';
+import { Threshold } from './threshold.model';
+import { Injectable } from '@angular/core';
 
-@Component({
-  selector: 'app-asset-wizard-step-semantics',
-  templateUrl: './asset-wizard-step-semantics.component.html',
-  styleUrls: ['./asset-wizard-step-semantics.component.scss']
-})
-export class AssetWizardStepSemanticsComponent implements OnInit {
+export interface ThresholdState extends EntityState<Threshold, ID>, ActiveState { }
 
-  @Input() assetForm: FormGroup;
-  @Output() stepChange = new EventEmitter<number>();
+const initialState = {
+  active: null
+};
 
-  constructor() { }
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'threshold', resettable: true })
+export class ThresholdStore extends EntityStore<ThresholdState, Threshold> {
 
-  ngOnInit(): void {
+  constructor() {
+    super(initialState);
   }
 
 }

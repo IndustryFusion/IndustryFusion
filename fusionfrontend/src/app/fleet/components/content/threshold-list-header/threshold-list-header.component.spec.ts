@@ -14,22 +14,21 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ThresholdListHeaderComponent } from './threshold-list-header.component';
 
-import { AssetWizardStepSemanticsComponent } from './asset-wizard-step-semantics.component';
-
-describe('AssetWizardStepSemanticsComponent', () => {
-  let component: AssetWizardStepSemanticsComponent;
-  let fixture: ComponentFixture<AssetWizardStepSemanticsComponent>;
+describe('ThresholdListHeaderComponent', () => {
+  let component: ThresholdListHeaderComponent;
+  let fixture: ComponentFixture<ThresholdListHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetWizardStepSemanticsComponent ]
+      declarations: [ ThresholdListHeaderComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetWizardStepSemanticsComponent);
+    fixture = TestBed.createComponent(ThresholdListHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

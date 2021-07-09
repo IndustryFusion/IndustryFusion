@@ -17,6 +17,8 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldTargetDto;
 import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.service.FieldService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -25,6 +27,13 @@ import java.util.stream.Collectors;
 
 @Component
 public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTargetDto> {
+    private final FieldService fieldService;
+
+    @Autowired
+    public FieldTargetMapper(FieldService fieldService) {
+        this.fieldService = fieldService;
+    }
+
     private FieldTargetDto toDtoShallow(FieldTarget entity) {
         if (entity == null) {
             return null;
@@ -56,7 +65,7 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
         if (dto == null) {
             return null;
         }
-        return FieldTarget.builder()
+        FieldTarget entity = FieldTarget.builder()
                 .id(dto.getId())
                 .version(dto.getVersion())
                 .mandatory(dto.getMandatory())
@@ -65,6 +74,12 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
                 .label(dto.getLabel())
                 .description(dto.getDescription())
                 .build();
+
+        if (dto.getFieldId() != null) {
+            entity.setField(fieldService.getField(dto.getFieldId(), false));
+        }
+
+        return entity;
     }
 
     @Override

@@ -15,7 +15,7 @@
 
 import { Injectable } from '@angular/core';
 import { ID, QueryEntity } from '@datorama/akita';
-import { AssetSeriesDetailsStore, AssetSeriesDetailsState } from './asset-series-details-store.service';
+import { AssetSeriesDetailsStore, AssetSeriesDetailsState } from './asset-series-details.store';
 import { Observable } from 'rxjs';
 import { AssetSeriesDetails } from './asset-series-details.model';
 
