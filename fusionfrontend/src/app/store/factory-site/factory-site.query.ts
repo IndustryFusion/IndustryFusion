@@ -18,7 +18,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { BaseQueryEntity } from '../basequery';
 import { FactorySite } from './factory-site.model';
-import { FactorySiteState, FactorySiteStore } from './factory-site-store.service';
+import { FactorySiteState, FactorySiteStore } from './factory-site.store';
 
 @Injectable({ providedIn: 'root' })
 export class FactorySiteQuery extends BaseQueryEntity<FactorySiteState, FactorySite> {

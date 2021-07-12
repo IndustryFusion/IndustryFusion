@@ -29,7 +29,7 @@ import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { FieldDetailsQuery } from 'src/app/store/field-details/field-details-query.service';
 import { FieldDetailsService } from 'src/app/store/field-details/field-details.service';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site-query.service';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { FactorySiteService } from 'src/app/store/factory-site/factory-site.service';
 import { Room } from 'src/app/store/room/room.model';
 import { RoomQuery } from 'src/app/store/room/room.query';

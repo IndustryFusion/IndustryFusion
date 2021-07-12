@@ -18,7 +18,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FactorySiteWithAssetCount } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site-query.service';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';

@@ -18,7 +18,7 @@ import { FactorySite } from './factory-site.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { FactorySiteStore } from './factory-site-store.service';
+import { FactorySiteStore } from './factory-site.store';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 

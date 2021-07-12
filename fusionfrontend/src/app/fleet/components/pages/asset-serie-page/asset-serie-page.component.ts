@@ -23,7 +23,7 @@ import { AssetSeriesQuery } from '../../../../store/asset-series/asset-series.qu
 import { FactorySite } from '../../../../store/factory-site/factory-site.model';
 import { AssetQuery } from '../../../../store/asset/asset.query';
 import { Asset } from '../../../../store/asset/asset.model';
-import { FactorySiteQuery } from '../../../../store/factory-site/factory-site-query.service';
+import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
 import { Room } from '../../../../store/room/room.model';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { map } from 'rxjs/operators';

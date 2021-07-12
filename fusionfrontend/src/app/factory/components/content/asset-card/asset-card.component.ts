@@ -24,7 +24,7 @@ import { StatusService } from 'src/app/services/status.service';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site-query.service';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 
 @Component({
   selector: 'app-asset-card',

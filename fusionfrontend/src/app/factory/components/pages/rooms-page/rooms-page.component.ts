@@ -19,7 +19,7 @@ import { ID } from '@datorama/akita';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Asset } from 'src/app/store/asset/asset.model';
 import { Room } from 'src/app/store/room/room.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site-query.service';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { RoomService } from 'src/app/store/room/room.service';
 import { AssetQuery } from 'src/app/store/asset/asset.query';

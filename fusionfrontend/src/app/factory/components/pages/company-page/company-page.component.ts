@@ -22,7 +22,7 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { ActivatedRoute } from '@angular/router';
 import { FactorySiteService } from 'src/app/store/factory-site/factory-site.service';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site-query.service';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { takeUntil } from 'rxjs/operators';
 import { RoomService } from '../../../../store/room/room.service';
 
