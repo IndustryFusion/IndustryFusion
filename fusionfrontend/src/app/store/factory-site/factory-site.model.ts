@@ -13,22 +13,31 @@
  * under the License.
  */
 
-import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
-import { BaseQueryEntity } from '../basequery';
-import { Location } from './location.model';
-import { LocationState, LocationStore } from './location.store';
+import { BaseEntity } from '../baseentity.model';
+import { Room } from '../room/room.model';
 
-@Injectable({ providedIn: 'root' })
-export class LocationQuery extends BaseQueryEntity<LocationState, Location> {
-  constructor(protected store: LocationStore) {
-    super(store);
-  }
+export class FactorySite extends BaseEntity {
+  companyId: ID;
+  roomIds: Array<ID>;
+  rooms: Array<Room>;
+  name: string;
+  line1: string;
+  line2: string;
+  city: string;
+  zip: string;
+  country: string;
+  imageKey: string;
+  latitude: number;
+  longitude: number;
+  type: FactorySiteType;
+}
 
-  selectLocationsOfCompany(companyId: ID): Observable<Location[]> {
-    return this.selectAll({
-      filterBy: entity => String(entity.companyId) === String(companyId)
-    });
-  }
+export class FactorySiteWithAssetCount extends FactorySite {
+  assetCount: number;
+}
+
+export enum FactorySiteType {
+  HEADQUARTER = 'HEADQUARTER',
+  FABRICATION = 'FABRICATION'
 }

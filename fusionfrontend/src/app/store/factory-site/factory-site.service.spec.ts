@@ -13,23 +13,15 @@
  * under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { Location } from './location.model';
-import { ActiveState, EntityState, StoreConfig, ID } from '@datorama/akita';
-import { CachedStore } from '../cachedstore';
+import { TestBed } from '@angular/core/testing';
 
-export interface LocationState extends EntityState<Location, ID>, ActiveState { }
+import { FactorySiteService } from './factory-site.service';
 
-const initialState = {
-  active: null
-};
+describe('FactorySiteService', () => {
+  beforeEach(() => TestBed.configureTestingModule({ }));
 
-@Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'location' })
-export class LocationStore extends CachedStore<LocationState, Location> {
-
-  constructor() {
-    super(initialState);
-  }
-
-}
+  it('should be created', () => {
+    const service: FactorySiteService = TestBed.inject(FactorySiteService);
+    expect(service).toBeTruthy();
+  });
+});
