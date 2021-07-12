@@ -197,26 +197,35 @@ header {
   opacity: 1;
 
   .p-toast-message {
-    border-radius: 25px;
+    border-radius: 30px;
   }
 
   .p-toast-message-content {
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem !important;
   }
 
-  .p-toast-message.p-toast-message-error {
+  .p-toast-message.p-toast-message-info {
     background-color: $basic-black;
   }
 
   .p-toast-message-icon {
     padding: 5px;
+    color: $error !important;
+  }
+
+  .p-toast-icon-close {
+    color: $light-grey !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
   }
 }
 
 ::ng-deep .p-toast-top-center {
   width: 70% !important;
+  max-width: 900px;
   left: auto !important;
   right: 50%;
   transform: translateX(50%);
+  top: auto !important;
+  margin-top: 20px;
 }
