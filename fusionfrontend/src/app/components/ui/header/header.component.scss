@@ -170,62 +170,69 @@ header {
   }
 }
 
-::ng-deep .p-toast-message-text {
-  max-width: 85% !important;
-  margin-left: 20px !important;
-}
+.error-toast {
 
-::ng-deep .p-toast-summary {
-  font-size: $medium-font-size;
-  color: $basic-white;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
+  ::ng-deep .p-toast {
+    opacity: 1;
 
-::ng-deep .p-toast-detail {
-  font-size: $regular-font-size;
-  color: $light-grey;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-  max-width: 100%;
-  margin: 0 !important;
-}
+    .p-toast-message {
+      border-radius: 30px;
+    }
 
-::ng-deep .p-toast {
-  opacity: 1;
+    .p-toast-message-text {
+      max-width: 85% !important;
+      margin-left: 20px !important;
+    }
 
-  .p-toast-message {
-    border-radius: 30px;
+    .p-toast-summary {
+      font-size: $medium-font-size;
+      color: $light-grey;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .p-toast-detail {
+      font-size: $regular-font-size;
+      color: $basic-grey;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      max-width: 100%;
+      margin: 0 !important;
+    }
+
+    .p-toast-message-content {
+      padding: 0.25rem 0.5rem 0.25rem 0.5rem !important;
+      align-items: center;
+    }
+
+    .p-toast-message-info {
+      background-color: $basic-black;
+    }
+
+    .p-toast-message-icon {
+      padding-left: 5px;
+      margin-right: 10px;
+      color: $error !important;
+    }
+
+    .p-toast-icon-close {
+      color: $light-grey !important;
+      min-width: 40px !important;
+      min-height: 40px !important;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
 
-  .p-toast-message-content {
-    padding: 0.25rem 0.5rem 0.25rem 0.5rem !important;
+  ::ng-deep .p-toast-top-center {
+    width: 70% !important;
+    max-width: 900px;
+    left: auto !important;
+    right: 50%;
+    top: auto !important;
+    transform: translateX(50%);
+    margin-top: 20px;
   }
-
-  .p-toast-message.p-toast-message-info {
-    background-color: $basic-black;
-  }
-
-  .p-toast-message-icon {
-    padding: 5px;
-    color: $error !important;
-  }
-
-  .p-toast-icon-close {
-    color: $light-grey !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-  }
-}
-
-::ng-deep .p-toast-top-center {
-  width: 70% !important;
-  max-width: 900px;
-  left: auto !important;
-  right: 50%;
-  transform: translateX(50%);
-  top: auto !important;
-  margin-top: 20px;
 }

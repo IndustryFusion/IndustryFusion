@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  ERROR_TOAST_DURATION = 500000;
+  ERROR_TOAST_DURATION = 5000;
 
   constructor(private messageService: MessageService) {
   }
