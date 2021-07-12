@@ -94,7 +94,8 @@ public class FleetAssetRestService {
                 true);
     }
 
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}/fieldinstances")
+    @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}/"
+            + "fieldinstances")
     public Set<FieldInstanceDto> getFieldInstancesCheckFullPath(@PathVariable final Long companyId,
                                                                 @PathVariable final Long factorySiteId,
                                                                 @PathVariable final Long roomId,

@@ -43,7 +43,7 @@ public class RoomRestService {
         this.roomMapper = roomMapper;
     }
 
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms")
+    @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms")
     public Set<RoomDto> getRooms(@PathVariable final Long companyId,
                                  @PathVariable final Long factorySiteId,
                                  @RequestParam(defaultValue = "false") final boolean embedChildren) {
@@ -56,7 +56,7 @@ public class RoomRestService {
         return roomMapper.toDtoSet(roomService.getRoomsOfCompany(companyId), embedChildren);
     }
 
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}")
+    @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}")
     public RoomDto getRoom(@PathVariable final Long companyId,
                            @PathVariable final Long factorySiteId,
                            @PathVariable final Long roomId,
@@ -65,14 +65,14 @@ public class RoomRestService {
                 embedChildren);
     }
 
-    @PostMapping(path = "/companies/{companyId}/locations/{locationId}/rooms")
+    @PostMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms")
     public RoomDto createRoom(@PathVariable final Long companyId,
                               @PathVariable final Long factorySiteId,
                               @RequestBody final RoomDto roomDto) {
         return roomMapper.toDto(roomService.createRoom(companyId, factorySiteId, roomMapper.toEntity(roomDto)), false);
     }
 
-    @PatchMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}")
+    @PatchMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}")
     public RoomDto updateRoom(@PathVariable final Long companyId,
                               @PathVariable final Long factorySiteId,
                               @PathVariable final Long roomId,
@@ -81,7 +81,7 @@ public class RoomRestService {
                 roomMapper.toEntity(roomDto)), false);
     }
 
-    @DeleteMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}")
+    @DeleteMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}")
     public void deleteRoom(@PathVariable final Long companyId,
                            @PathVariable final Long factorySiteId,
                            @PathVariable final Long roomId) {

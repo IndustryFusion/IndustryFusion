@@ -72,7 +72,7 @@ public class FactoryAssetRestService {
     }
 
     // Rooms path
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets")
+    @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets")
     public Set<AssetDto> getAssets(@PathVariable final Long companyId,
                                    @PathVariable final Long factorySiteId,
                                    @PathVariable final Long roomId,
@@ -81,7 +81,7 @@ public class FactoryAssetRestService {
                 embedChildren);
     }
 
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
+    @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto getAsset(@PathVariable final Long companyId,
                              @PathVariable final Long factorySiteId,
                              @PathVariable final Long roomId,
@@ -91,7 +91,7 @@ public class FactoryAssetRestService {
                 embedChildren);
     }
 
-    @PatchMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
+    @PatchMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto updateAsset(@PathVariable final Long companyId,
                                 @PathVariable final Long factorySiteId,
                                 @PathVariable final Long roomId,
@@ -102,7 +102,7 @@ public class FactoryAssetRestService {
                 assetMapper.toEntity(assetDto)), false);
     }
 
-    @DeleteMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
+    @DeleteMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto removeAssetFromRoom(@PathVariable final Long companyId,
                                         @PathVariable final Long factorySiteId,
                                         @PathVariable final Long roomId,
@@ -117,7 +117,7 @@ public class FactoryAssetRestService {
     }
 
 
-    @PutMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
+    @PutMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto assignAssetToRoom(@PathVariable final Long companyId,
                                       @PathVariable final Long factorySiteId,
                                       @PathVariable final Long roomId,
