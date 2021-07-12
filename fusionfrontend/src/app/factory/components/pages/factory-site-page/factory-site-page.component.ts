@@ -21,25 +21,25 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { Asset } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { Company } from 'src/app/store/company/company.model';
-import { Location } from 'src/app/store/location/location.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site-query.service';
 import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetService } from '../../../../store/asset/asset.service';
 
 @Component({
-  selector: 'app-location-page',
-  templateUrl: './location-page.component.html',
-  styleUrls: ['./location-page.component.scss']
+  selector: 'app-factory-site-page',
+  templateUrl: './factory-site-page.component.html',
+  styleUrls: ['./factory-site-page.component.scss']
 })
-export class LocationPageComponent implements OnInit, OnDestroy {
+export class FactorySitePageComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
-  locations$: Observable<Location[]>;
-  location$: Observable<Location>;
+  factorySites$: Observable<FactorySite[]>;
+  factorySite$: Observable<FactorySite>;
   rooms$: Observable<Room[]>;
-  allRoomsOfLocation$: Observable<Room[]>;
+  allRoomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
   selectedIds: ID[];
@@ -48,7 +48,7 @@ export class LocationPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyQuery: CompanyQuery,
-    private locationQuery: LocationQuery,
+    private factorySiteQuery: FactorySiteQuery,
     private assetQuery: AssetQuery,
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
@@ -56,13 +56,13 @@ export class LocationPageComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.isLoading$ = this.locationQuery.selectLoading();
+    this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
-    this.locations$ = this.factoryResolver.locations$;
-    this.location$ = this.factoryResolver.location$;
+    this.factorySites$ = this.factoryResolver.factorySites$;
+    this.factorySite$ = this.factoryResolver.factorySite$;
     this.rooms$ = this.factoryResolver.rooms$;
-    this.allRoomsOfLocation$ = this.factoryResolver.allRoomsOfLocation$;
+    this.allRoomsOfFactorySite$ = this.factoryResolver.allRoomsOfFactorySite$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
@@ -80,7 +80,7 @@ export class LocationPageComponent implements OnInit, OnDestroy {
     event.companyId = this.companyId;
     this.assetService.updateCompanyAsset(this.companyId, event).subscribe(
       res => {
-        console.log('[location page] updated asset with id: ' + res.id);
+        console.log('[factory site page] updated asset with id: ' + res.id);
       },
       error => console.log(error)
     );

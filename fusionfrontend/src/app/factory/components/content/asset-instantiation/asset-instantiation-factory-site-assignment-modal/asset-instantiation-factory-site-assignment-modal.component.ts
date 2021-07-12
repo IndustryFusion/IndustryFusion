@@ -14,46 +14,46 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Location } from '../../../../../store/location/location.model';
+import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
 import { AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
 
 @Component({
-  selector: 'app-asset-instantiation-location-assignment-modal',
-  templateUrl: './asset-instantiation-location-assignment-modal.component.html',
-  styleUrls: ['./asset-instantiation-location-assignment-modal.component.scss']
+  selector: 'app-asset-instantiation-factory-site-assignment-modal',
+  templateUrl: './asset-instantiation-factory-site-assignment-modal.component.html',
+  styleUrls: ['./asset-instantiation-factory-site-assignment-modal.component.scss']
 })
-export class AssetInstantiationLocationAssignmentModalComponent implements OnInit {
+export class AssetInstantiationFactorySiteAssignmentModalComponent implements OnInit {
 
   @Input()
-  locations: Location[];
+  factorySites: FactorySite[];
   @Input()
-  selectedLocation: Location;
+  selectedFactorySite: FactorySite;
   @Input()
   activeModalMode: AssetModalMode;
   @Output()
-  locationAssignedEvent = new EventEmitter<Location>();
+  factorySitesAssignedEvent = new EventEmitter<FactorySite>();
 
   searchText: string;
-  filteredLocations: Location[];
+  filteredFactorySite: FactorySite[];
   assetModalModes = AssetModalMode;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.filteredLocations = this.locations;
+    this.filteredFactorySite = this.factorySites;
   }
 
-  filterLocations() {
-    this.filteredLocations = this.locations.filter(location => location.name.toLowerCase()
+  filterFactorySites() {
+    this.filteredFactorySite = this.factorySites.filter(factorySite => factorySite.name.toLowerCase()
       .includes(this.searchText.toLowerCase()));
   }
 
   onSubmit() {
-    this.locationAssignedEvent.emit(this.selectedLocation);
+    this.factorySitesAssignedEvent.emit(this.selectedFactorySite);
 
   }
 
   onBackButtonPressed() {
-    this.locationAssignedEvent.emit(null);
+    this.factorySitesAssignedEvent.emit(null);
   }
 }

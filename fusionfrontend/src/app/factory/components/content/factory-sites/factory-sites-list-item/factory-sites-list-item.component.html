@@ -14,12 +14,12 @@ under the License.
 -->
 
 <div class="list-item">
-  <div class="list-item-cell bold black" [style.width.%]="16" [routerLink]="routerLink">{{location.name}}</div>
-  <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="routerLink">{{location.line1}}</div>
-  <div class="list-item-cell grey" [style.width.%]="10" [routerLink]="routerLink">{{location.zip}}</div>
-  <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="routerLink">{{location.city}}</div>
-  <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="routerLink">{{location.country}}</div>
-  <div class="list-item-cell grey" [style.width.%]="7" [routerLink]="routerLink">{{location.assetCount}}</div>
+  <div class="list-item-cell bold black" [style.width.%]="16" [routerLink]="routerLink">{{factorySite.name}}</div>
+  <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="routerLink">{{factorySite.line1}}</div>
+  <div class="list-item-cell grey" [style.width.%]="10" [routerLink]="routerLink">{{factorySite.zip}}</div>
+  <div class="list-item-cell grey" [style.width.%]="20" [routerLink]="routerLink">{{factorySite.city}}</div>
+  <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="routerLink">{{factorySite.country}}</div>
+  <div class="list-item-cell grey" [style.width.%]="7" [routerLink]="routerLink">{{factorySite.assetCount}}</div>
   <div class="list-item-cell grey" [style.width.%]="7" [routerLink]="routerLink">41</div>
   <div class="list-item-cell grey table-dropdown-menu" [style.width.%]="5">
     <app-item-options-menu (editItem)="showEditDialog()"  (deleteItem)="deleteItem()"></app-item-options-menu>

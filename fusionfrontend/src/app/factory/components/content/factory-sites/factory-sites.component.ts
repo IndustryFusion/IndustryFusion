@@ -17,54 +17,54 @@ import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/cor
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { LocationWithAssetCount } from 'src/app/store/location/location.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySiteWithAssetCount } from 'src/app/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site-query.service';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LocationDialogComponent } from '../location-dialog/location-dialog.component';
+import { FactorySiteDialogComponent } from '../factory-site-dialog/factory-site-dialog.component';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
-  selector: 'app-locations',
-  templateUrl: './locations.component.html',
-  styleUrls: ['./locations.component.scss'],
+  selector: 'app-factory-sites',
+  templateUrl: './factory-sites.component.html',
+  styleUrls: ['./factory-sites.component.scss'],
   providers: [DialogService]
 })
-export class LocationsComponent implements OnInit, OnDestroy {
+export class FactorySitesComponent implements OnInit, OnDestroy {
 
   @Output()
-  createLocationEvent = new EventEmitter<Location>();
+  createFactorySiteEvent = new EventEmitter<FactorySite>();
 
   @Output()
-  updateLocationEvent = new EventEmitter<Location>();
+  updateFactorySiteEvent = new EventEmitter<FactorySite>();
 
   isLoading$: Observable<boolean>;
   companyId: ID;
-  locations$: Observable<LocationWithAssetCount[]>;
-  locationMapping:
+  factorySites$: Observable<FactorySiteWithAssetCount[]>;
+  factorySiteMapping:
     { [k: string]: string } = { '=0': 'No factories', '=1': '# Factory site', other: '# Factory sites' };
   sortField: string;
   sortType: string;
 
-  location: Location;
-  locationForm: FormGroup;
+  factorySite: FactorySite;
+  factorySiteForm: FormGroup;
   ref: DynamicDialogRef;
 
 
   constructor(
     private companyQuery: CompanyQuery,
-    private locationQuery: LocationQuery,
+    private factorySiteQuery: FactorySiteQuery,
     private factoryComposedQuery: FactoryComposedQuery,
     private formBuilder: FormBuilder,
     public dialogService: DialogService) { }
 
   ngOnInit() {
-    this.isLoading$ = this.locationQuery.selectLoading();
+    this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
-    this.locations$ = this.factoryComposedQuery.selectLocationsOfCompanyWithAssetCount(this.companyId);
-    this.createLocationForm(this.formBuilder);
+    this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCount(this.companyId);
+    this.createFactorySiteForm(this.formBuilder);
   }
 
   onSort(field: [string, string]) {
@@ -73,26 +73,26 @@ export class LocationsComponent implements OnInit, OnDestroy {
   }
 
   showCreateDialog() {
-    const ref = this.dialogService.open(LocationDialogComponent, {
+    const ref = this.dialogService.open(FactorySiteDialogComponent, {
       data: {
-        locationForm: this.locationForm,
+        factorySiteForm: this.factorySiteForm,
         type: DialogType.CREATE
       },
-      header: `Create new Location`,
+      header: `Create new Factory Site`,
       width: '70%',
       contentStyle: { 'padding-left': '6%', 'padding-right': '6%' },
     });
 
-    ref.onClose.subscribe((location: Location) => {
-      this.onCloseCreateDialog(location);
-      this.createLocationForm(this.formBuilder);
-      this.location = new Location();
+    ref.onClose.subscribe((factorySite: FactorySite) => {
+      this.onCloseCreateDialog(factorySite);
+      this.createFactorySiteForm(this.formBuilder);
+      this.factorySite = new FactorySite();
     });
   }
 
-  createLocationForm(formBuilder: FormBuilder) {
+  createFactorySiteForm(formBuilder: FormBuilder) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    this.locationForm = formBuilder.group({
+    this.factorySiteForm = formBuilder.group({
       id: [null],
       name: ['', requiredTextValidator],
       line1: [''],
@@ -104,19 +104,19 @@ export class LocationsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onCloseCreateDialog(location: Location) {
-    if (location) {
-      location.companyId = this.companyId;
-      this.locationCreated(location);
+  onCloseCreateDialog(factorySite: FactorySite) {
+    if (factorySite) {
+      factorySite.companyId = this.companyId;
+      this.factorySiteCreated(factorySite);
     }
   }
 
-  locationCreated(location: Location): void {
-    this.createLocationEvent.emit(location);
+  factorySiteCreated(factorySite: FactorySite): void {
+    this.createFactorySiteEvent.emit(factorySite);
   }
 
-  locationUpdated(location: Location): void {
-    this.updateLocationEvent.emit(location);
+  factorySiteUpdated(factorySite: FactorySite): void {
+    this.updateFactorySiteEvent.emit(factorySite);
   }
 
   ngOnDestroy() {

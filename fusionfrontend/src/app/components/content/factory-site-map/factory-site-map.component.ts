@@ -14,7 +14,7 @@
  */
 
 import { Component, EventEmitter, OnInit, Output, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { ID } from '@datorama/akita';
 import { AgmMap } from '@agm/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,24 +22,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 declare var google: any;
 
 @Component({
-  selector: 'app-locations-map',
-  templateUrl: './locations-map.component.html',
-  styleUrls: ['./locations-map.component.scss']
+  selector: 'app-factory-site-map',
+  templateUrl: './factory-site-map.component.html',
+  styleUrls: ['./factory-site-map.component.scss']
 })
 
-export class LocationsMapComponent implements OnInit, OnChanges {
+export class FactorySiteMapComponent implements OnInit, OnChanges {
 
   @Input()
-  locations: Location[];
+  factorySites: FactorySite[];
   @Input()
-  location: Location;
+  factorySite: FactorySite;
   @Input()
   modalMode = false;
 
   mapType = 'terrain';
 
   companyId: ID;
-  @Output() selectedLocation = new EventEmitter<ID>();
+  @Output() selectedFactorySite = new EventEmitter<ID>();
 
   styles =
     [
@@ -249,18 +249,18 @@ export class LocationsMapComponent implements OnInit, OnChanges {
     }
   }
 
-  navigateToLocation(id: ID): void {
-    this.router.navigate(['locations', id], { relativeTo: this.route });
+  navigateToFactorySite(id: ID): void {
+    this.router.navigate(['factory-sites', id], { relativeTo: this.route });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.modalMode && changes.location && (this.location.zip || this.location.city)) {
-      const address = this.location.line1 + ' ' + this.location.zip + ' ' + this.location.city + ' ' + this.location.country;
-      this.placeMarkerForLocation(address);
+    if (this.modalMode && changes.factorySite && (this.factorySite.zip || this.factorySite.city)) {
+      const address = this.factorySite.line1 + ' ' + this.factorySite.zip + ' ' + this.factorySite.city + ' ' + this.factorySite.country;
+      this.placeMarkerForFactorySite(address);
     }
   }
 
-  placeMarkerForLocation(address) {
+  placeMarkerForFactorySite(address) {
     if (!this.geocoder) {
       this.geocoder = new google.maps.Geocoder();
     }
@@ -268,8 +268,8 @@ export class LocationsMapComponent implements OnInit, OnChanges {
       address
     }, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-        this.location.latitude = results[0].geometry.location.lat();
-        this.location.longitude = results[0].geometry.location.lng();
+        this.factorySite.latitude = results[0].geometry.location.lat();
+        this.factorySite.longitude = results[0].geometry.location.lng();
         this.defaultLatitude = results[0].geometry.location.lat();
         this.defaultLongitude = results[0].geometry.location.lng();
       }

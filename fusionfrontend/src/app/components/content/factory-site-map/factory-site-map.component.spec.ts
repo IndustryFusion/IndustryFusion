@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { LocationDialogComponent } from './location-dialog.component';
+import { FactorySiteMapComponent } from './factory-site-map.component';
 
-describe('LocationDialogComponent', () => {
-  let component: LocationDialogComponent;
-  let fixture: ComponentFixture<LocationDialogComponent>;
+describe('FactorySiteMapComponent', () => {
+  let component: FactorySiteMapComponent;
+  let fixture: ComponentFixture<FactorySiteMapComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ LocationDialogComponent ]
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ FactorySiteMapComponent ]
     })
     .compileComponents();
-  });
+  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocationDialogComponent);
+    fixture = TestBed.createComponent(FactorySiteMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

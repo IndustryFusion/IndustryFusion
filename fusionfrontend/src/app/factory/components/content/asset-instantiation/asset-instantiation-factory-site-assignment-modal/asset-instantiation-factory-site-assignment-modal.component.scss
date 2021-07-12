@@ -16,12 +16,12 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-.location-text {
+.factory-site-text {
   font-size: $medium-font-size;
   color: $basic-black;
 }
 
-.location-search-input {
+.factory-site-search-input {
   height: 56px;
   width: 82.0%;
 }
@@ -31,7 +31,7 @@
   height: 100% !important;
 }
 
-.location-field {
+.factory-site-field {
   width: 82.0%;
   border-radius: 10px;
   padding: 3.5% 3.5% 1.5% 3.5%;
@@ -49,13 +49,13 @@
     display: flex;
   }
 
-  .location-info {
+  .factory-site-info {
     color: $basic-grey;
     text-align: right;
   }
 }
 
-.assign-location-dialog-footer {
+.assign-factory-site-dialog-footer {
   margin-top: 8.1%;
   margin-bottom: 5%;
   text-align: right;

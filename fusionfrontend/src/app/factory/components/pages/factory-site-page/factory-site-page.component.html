@@ -13,15 +13,14 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>
+<app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>
 
 <app-assets-list [company]="(company$ | async)"
-                 [locations]="(locations$ | async)"
-                 [location]="(location$ | async)" [rooms]="(rooms$ | async)"
-                 [allRoomsOfLocation]="(allRoomsOfLocation$ | async)"
+                 [factorySites]="(factorySites$ | async)"
+                 [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)"
+                 [allRoomsOfFactorySite]="(allRoomsOfFactorySite$ | async)"
                  [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
                  (assetDetailsSelected)="updateAssetData($event)">
 </app-assets-list>
-

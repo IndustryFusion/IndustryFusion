@@ -4,11 +4,11 @@ import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-locations-list-header',
-  templateUrl: './locations-list-header.component.html',
-  styleUrls: ['./locations-list-header.component.scss']
+  selector: 'app-factory-sites-list-header',
+  templateUrl: './factory-sites-list-header.component.html',
+  styleUrls: ['./factory-sites-list-header.component.scss']
 })
-export class LocationsListHeaderComponent implements OnInit {
+export class FactorySitesListHeaderComponent implements OnInit {
 
   faSort = faSort;
   faAngleUp = faAngleUp;

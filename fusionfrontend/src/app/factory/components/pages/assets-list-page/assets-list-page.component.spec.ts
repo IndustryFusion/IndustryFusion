@@ -16,7 +16,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AssetsListPageComponent } from './assets-list-page.component';
 
-describe('LocationPageComponent', () => {
+describe('AssetsListPageComponent', () => {
   let component: AssetsListPageComponent;
   let fixture: ComponentFixture<AssetsListPageComponent>;
 

@@ -23,11 +23,11 @@ under the License.
     [zoom]='zoom'
     >
 
-    <ng-container *ngIf="location">
+    <ng-container *ngIf="factorySite">
         <agm-marker
             [agmFitBounds]="true"
-            [latitude]="location.latitude"
-            [longitude]="location.longitude"
+            [latitude]="factorySite.latitude"
+            [longitude]="factorySite.longitude"
             [iconUrl]="
             {
                 url: 'assets/icons/custom-marker.png'
@@ -36,18 +36,18 @@ under the License.
             >
         </agm-marker>
     </ng-container>
-    <ng-container *ngIf="locations">
+    <ng-container *ngIf="factorySites">
         <agm-marker
-            *ngFor="let location of locations; let i = index"
+            *ngFor="let factorySite of factorySites; let i = index"
             [agmFitBounds]="true"
-            [latitude]="location?.latitude"
-            [longitude]="location?.longitude"
+            [latitude]="factorySite?.latitude"
+            [longitude]="factorySite?.longitude"
             [iconUrl]="
             {
                 url: 'assets/icons/custom-marker.png'
             }
             "
-            (markerClick)="navigateToLocation(location.id)"
+            (markerClick)="navigateToFactorySite(factorySite.id)"
             >
         </agm-marker>
     </ng-container>

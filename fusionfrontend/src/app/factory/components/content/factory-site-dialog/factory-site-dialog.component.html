@@ -15,15 +15,15 @@ under the License.
 
 <div>
   <div>
-    <div [formGroup]="locationForm">
+    <div [formGroup]="factorySiteForm">
       <div class="p-grid">
         <div class="p-col-7 p-grid p-dir-col factory-div">
           <label class="p-col if-label">Factory name</label>
-          <input type="text" pInputText formControlName="name" placeholder="Name" class="location-input p-col">
+          <input type="text" pInputText formControlName="name" placeholder="Name" class="factory-site-input p-col">
         </div>
         <div class="p-col-4 p-grid p-dir-col factory-div">
           <label class="p-col if-label">Factory type</label>
-          <p-dropdown [options]="locationTypes" formControlName="type" placeholder="Factory type"
+          <p-dropdown [options]="factorySiteTypes" formControlName="type" placeholder="Factory type"
                       class="p-col factory-dropdown"></p-dropdown>
         </div>
       </div>
@@ -57,7 +57,7 @@ under the License.
           </div>
         </div>
 
-        <app-locations-map class="p-col-8 p-dir-col map-style" [modalMode]=true [location]="location"></app-locations-map>
+        <app-factory-site-map class="p-col-8 p-dir-col map-style" [modalMode]=true [factorySite]="factorySite"></app-factory-site-map>
 
       </div>
     </div>
@@ -65,7 +65,7 @@ under the License.
 
   <div class="footer-btns">
     <button type="button" class="if-button-cancel" (click)="onCancel()">Cancel</button>
-    <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="locationForm.invalid">
+    <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="factorySiteForm.invalid">
       <div *ngIf="type === DialogType.EDIT then editFactoryButtonText else createFactoryButtonText"></div>
       <ng-template #createFactoryButtonText>Create</ng-template>
       <ng-template #editFactoryButtonText>Update</ng-template>

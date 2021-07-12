@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { LocationsListHeaderComponent } from './locations-list-header.component';
+import { FactorySitesListItemComponent } from './factory-sites-list-item.component';
 
-describe('LocationsListHeaderComponent', () => {
-  let component: LocationsListHeaderComponent;
-  let fixture: ComponentFixture<LocationsListHeaderComponent>;
+describe('FactorySitesListItemComponent', () => {
+  let component: FactorySitesListItemComponent;
+  let fixture: ComponentFixture<FactorySitesListItemComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocationsListHeaderComponent ]
+      declarations: [ FactorySitesListItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocationsListHeaderComponent);
+    fixture = TestBed.createComponent(FactorySitesListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

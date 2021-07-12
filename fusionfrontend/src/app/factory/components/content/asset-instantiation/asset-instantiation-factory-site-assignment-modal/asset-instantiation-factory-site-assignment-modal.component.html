@@ -14,24 +14,24 @@ under the License.
 -->
 
 <div>
-  <div class="location-text">Select Location</div>
-  <span class="p-input-icon-right location-search-input">
+  <div class="factory-site-text">Select Factory Site</div>
+  <span class="p-input-icon-right factory-site-search-input">
     <i class="pi pi-search"></i>
-    <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterLocations()">
+    <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterFactorySites()">
   </span>
 
-  <div class="location-field">
-    <div *ngFor="let location of filteredLocations" class="p-field-checkbox p-grid">
-    <p-radioButton class="if-radiobutton p-col-2" [inputId]="location.id" [value]="location" [(ngModel)]="selectedLocation"></p-radioButton>
-      <label class="p-col-5" [for]="location.id">{{location.name}}</label>
-      <label class="location-info p-col-5" [for]="location.id">{{location.city}}</label>
+  <div class="factory-site-field">
+    <div *ngFor="let factorySite of filteredFactorySite" class="p-field-checkbox p-grid">
+    <p-radioButton class="if-radiobutton p-col-2" [inputId]="factorySite.id" [value]="factorySite" [(ngModel)]="selectedFactorySite"></p-radioButton>
+      <label class="p-col-5" [for]="factorySite.id">{{factorySite.name}}</label>
+      <label class="factory-site-info p-col-5" [for]="factorySite.id">{{factorySite.city}}</label>
     </div>
   </div>
 
-  <div class="assign-location-dialog-footer">
+  <div class="assign-factory-site-dialog-footer">
     <button type="button" class="if-button button-secondary" (click)="onBackButtonPressed()">
       {{ activeModalMode != assetModalModes.editRoomForAssetMode ? 'Back' : 'Cancel'}}</button>
     <button type="button" class="if-button button-primary" (click)="onSubmit()"
-            [disabled]="!selectedLocation">Next</button>
+            [disabled]="!selectedFactorySite">Next</button>
   </div>
 </div>

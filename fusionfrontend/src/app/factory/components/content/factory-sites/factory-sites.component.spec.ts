@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { LocationsComponent } from './locations.component';
+import { FactorySitesComponent } from './factory-sites.component';
 
-describe('LocationsComponent', () => {
-  let component: LocationsComponent;
-  let fixture: ComponentFixture<LocationsComponent>;
+describe('FactorySitesComponent', () => {
+  let component: FactorySitesComponent;
+  let fixture: ComponentFixture<FactorySitesComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocationsComponent ]
+      declarations: [ FactorySitesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocationsComponent);
+    fixture = TestBed.createComponent(FactorySitesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
