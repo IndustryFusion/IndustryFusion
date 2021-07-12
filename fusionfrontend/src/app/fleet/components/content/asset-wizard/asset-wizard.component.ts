@@ -202,7 +202,7 @@ export class AssetWizardComponent implements OnInit {
       ceCertified: [null, Validators.required],
       serialNumber: [null, requiredTextValidator],
       constructionDate: [null, Validators.required],
-      installationDate: [null, Validators.required],
+      installationDate: [null],
       protectionClass: [null, Validators.maxLength(255)],
       handbookKey: [null, Validators.maxLength(255)],
       videoKey: [null, Validators.maxLength(255)],
@@ -211,6 +211,8 @@ export class AssetWizardComponent implements OnInit {
 
     if (this.asset) {
       this.assetForm.patchValue(this.asset);
+      this.assetForm.get('constructionDate').setValue(null);
+      this.assetForm.get('installationDate').setValue(null);
     }
   }
 

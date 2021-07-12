@@ -751,7 +751,7 @@ class FusionbackendApplicationTests {
                 .imageKey("gskey")
                 .hasGateway(true)
                 .ceCertified(true)
-                .installationDate(OffsetDateTime.now())
+                .installationDate(null)
                 .constructionDate(OffsetDateTime.now())
                 .guid(UUID.randomUUID())
                 .protectionClass("IP20")
@@ -1301,7 +1301,7 @@ class FusionbackendApplicationTests {
                                                   final Integer fleetCompanyId,
                                                   final Integer factoryCompanyId,
                                                   final String accessTokenFleet) {
-        ValidatableResponse response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .body(factoryCompanyId)
                 .header("Authorization", "Bearer " + accessTokenFleet)
@@ -1312,7 +1312,7 @@ class FusionbackendApplicationTests {
                 .then()
                 .statusCode(200);
 
-        response = given()
+        ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFleet)
 
@@ -1321,8 +1321,6 @@ class FusionbackendApplicationTests {
 
                 .then()
                 .statusCode(200);
-
-        AssetDto asset = response.extract().body().as(AssetDto.class);
 
         response.body("companyId", equalTo(factoryCompanyId));
     }
