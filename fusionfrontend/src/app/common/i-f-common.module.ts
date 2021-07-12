@@ -23,6 +23,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
@@ -35,7 +36,7 @@ import { MessageService } from 'primeng/api';
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent,
+    FactorySiteMapComponent,
     AccuracyFormatPipe,
   ],
   imports: [
@@ -64,7 +65,7 @@ import { MessageService } from 'primeng/api';
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent,
+    FactorySiteMapComponent,
     FontAwesomeModule,
     FormsModule,
     MenuModule,

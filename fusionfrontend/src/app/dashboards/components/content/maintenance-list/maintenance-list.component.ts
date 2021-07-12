@@ -17,7 +17,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { AssetDetailsWithFields, DashboardFilterModalType } from 'src/app/store/asset-details/asset-details.model';
 import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 import { SelectItem } from 'primeng/api';
 
@@ -44,7 +44,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   @Input()
   assetDetailsWithFields: AssetDetailsWithFields[];
   @Input()
-  locations: Location[];
+  factorySites: FactorySite[];
   @Input()
   companies: Company[];
   @Input()
@@ -68,7 +68,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   dashboardFilterTypeActice: DashboardFilterModalType;
   selectedAssetTypes: AssetType[] = [];
   selectedCompanies: Company[] = [];
-  selectedLocations: Location[] = [];
+  selectedFactorySites: FactorySite[] = [];
   maintenanceValues = [ SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY,  LONGTERM_PRIORITY ];
   selectedMaintenanceDue = [];
   searchText = '';
@@ -118,7 +118,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
           this.selectedCompanies = [];
  }
         else if (filter.filterAttribute === this.factory) {
-          this.selectedLocations = [];
+          this.selectedFactorySites = [];
  }
         else if (filter.filterAttribute === this.maintenanceDue) {
           this.selectedMaintenanceDue = [];
@@ -133,7 +133,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.activeFilterSet.clear();
     this.selectedAssetTypes = [];
     this.selectedCompanies = [];
-    this.selectedLocations = [];
+    this.selectedFactorySites = [];
     this.selectedMaintenanceDue = [];
     this.filterAssets();
   }
@@ -144,14 +144,14 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.manufacturerFilterModal) {
       this.selectedCompanies = [];
     } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.factoryFilterModal) {
-      this.selectedLocations = [];
+      this.selectedFactorySites = [];
     } else if (this.dashboardFilterTypeActice ===  DashboardFilterModalType.maintenanceDueFilterModal) {
       this.selectedMaintenanceDue = [];
     }
   }
 
   filterAssets() {
-    const locationNames = this.selectedLocations.map(location => location.name);
+    const factorySiteNames = this.selectedFactorySites.map(factorySite => factorySite.name);
     const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
     const companyNames = this.selectedCompanies.map(company => company.description);
     this.displayedAssets = this.assetDetailsWithFields;
@@ -159,8 +159,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     if (this.searchText) {
       this.displayedAssets = this.displayedAssets.filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
     }
-    if (locationNames.length > 0) {
-      this.displayedAssets = this.displayedAssets.filter(asset => locationNames.includes(asset.locationName));
+    if (factorySiteNames.length > 0) {
+      this.displayedAssets = this.displayedAssets.filter(asset => factorySiteNames.includes(asset.factorySiteName));
     }
     if (assetTypeNames.length > 0) {
       this.displayedAssets = this.displayedAssets.filter(asset => assetTypeNames.includes(asset.category));

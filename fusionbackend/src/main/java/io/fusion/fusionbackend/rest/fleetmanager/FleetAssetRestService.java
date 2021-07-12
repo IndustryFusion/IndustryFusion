@@ -94,15 +94,16 @@ public class FleetAssetRestService {
                 true);
     }
 
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}/fieldinstances")
+    @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}/"
+            + "fieldinstances")
     public Set<FieldInstanceDto> getFieldInstancesCheckFullPath(@PathVariable final Long companyId,
-                                                                @PathVariable final Long locationId,
+                                                                @PathVariable final Long factorySiteId,
                                                                 @PathVariable final Long roomId,
                                                                 @PathVariable final Long assetId,
                                                                 @RequestParam(defaultValue = "false")
                                                                 final boolean embedChildren) {
         return fieldInstanceMapper.toDtoSet(
-                assetService.getFieldInstancesCheckFullPath(companyId, locationId, roomId, assetId), embedChildren);
+                assetService.getFieldInstancesCheckFullPath(companyId, factorySiteId, roomId, assetId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")

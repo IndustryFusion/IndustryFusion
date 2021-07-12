@@ -18,7 +18,7 @@ import { BaseEntity } from '../baseentity.model';
 import { Asset } from '../asset/asset.model';
 
 export class Room extends BaseEntity {
-  locationId: ID;
+  factorySiteId: ID;
   name: string;
   description: string;
   assetIds: Array<ID>;

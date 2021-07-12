@@ -36,7 +36,7 @@
                 <td [style.width.%]="30">{{asset.name}}</td>
                 <td [style.width.%]="30">{{asset.category}}</td>
                 <td [style.width.%]="20">{{asset.manufacturer}}</td>
-                <td [style.width.%]="20">{{asset.locationName}}</td>
+                <td [style.width.%]="20">{{asset.factorySiteName}}</td>
                 <td [style.width.%]="60">
                     <app-maintenance-progressbar [asset]=asset></app-maintenance-progressbar>
                 </td>
@@ -98,7 +98,7 @@
                 <button (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.factoryFilterModal"
                     class="open-filterpanel-btn">
                     <div class="filter-panel-btn-grid" >
-                        <span class="filter-panel-btn-grid-text">{{ selectedLocations.length | i18nPlural: selectedValueMapping }}</span>
+                        <span class="filter-panel-btn-grid-text">{{ selectedFactorySites.length | i18nPlural: selectedValueMapping }}</span>
                         <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
                     </div>
                 </button>
@@ -145,14 +145,14 @@
             </div>
         </div>
         <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.factoryFilterModal">
-            <div class="panel-heading">Select Location</div>
-            <div *ngFor="let location of locations">
-                <p-checkbox name="locationsValues" value="location" [value]="location" [(ngModel)]="selectedLocations" [inputId]="location.id"></p-checkbox>
-                <label style="margin-left: 7px;" [for]="location.id">{{location.name}}</label>
+            <div class="panel-heading">Select Factory Site</div>
+            <div *ngFor="let factorySite of factorySites">
+                <p-checkbox name="factorySitesValues" value="factorySite" [value]="factorySite" [(ngModel)]="selectedFactorySites" [inputId]="factorySite.id"></p-checkbox>
+                <label style="margin-left: 7px;" [for]="factorySite.id">{{factorySite.name}}</label>
             </div>
         </div>
         <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.maintenanceDueFilterModal">
-            <div class="panel-heading">Select Location</div>
+            <div class="panel-heading">Select Factory Site</div>
             <div>
                 <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[0] }}" [(ngModel)]="selectedMaintenanceDue"></p-checkbox>
                 <label style="margin-left: 7px;">{{ maintenanceValues[0] }}</label>

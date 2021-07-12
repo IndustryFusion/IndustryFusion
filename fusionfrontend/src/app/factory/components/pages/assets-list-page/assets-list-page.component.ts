@@ -20,8 +20,8 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { Asset } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { Company } from 'src/app/store/company/company.model';
-import { Location } from 'src/app/store/location/location.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 import { ID } from '@datorama/akita';
@@ -41,7 +41,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   company$: Observable<Company>;
   assets$: Observable<Asset[]>;
   assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
-  locations$: Observable<Location[]>;
+  factorySites$: Observable<FactorySite[]>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
   selectedIds: Array<ID>;
@@ -50,7 +50,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private locationQuery: LocationQuery,
+    private factorySiteQuery: FactorySiteQuery,
     private assetQuery: AssetQuery,
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
@@ -61,11 +61,11 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.isLoading$ = this.locationQuery.selectLoading();
+    this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.company$ = this.factoryResolver.company$;
-    this.locations$ = this.factoryResolver.locations$;
+    this.factorySites$ = this.factoryResolver.factorySites$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
@@ -80,7 +80,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     event[1].id = event[1].id ? event[1].id : this.createdAssetDetailsId;
     this.assetService.updateCompanyAsset(event[1].companyId, event[1]).subscribe(
       res => {
-        console.log('[location page] updated asset with id: ' + res.id);
+        console.log('[factory site page] updated asset with id: ' + res.id);
         if (event[0].id !== event[1].roomId) {
           this.roomService.updateRoomsAfterEditAsset(event[0].id, event[1]);
         }

@@ -20,10 +20,10 @@ import { combineLatest } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { AssetSeriesQuery } from '../../../../store/asset-series/asset-series.query';
-import { Location } from '../../../../store/location/location.model';
+import { FactorySite } from '../../../../store/factory-site/factory-site.model';
 import { AssetQuery } from '../../../../store/asset/asset.query';
 import { Asset } from '../../../../store/asset/asset.model';
-import { LocationQuery } from '../../../../store/location/location.query';
+import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
 import { Room } from '../../../../store/room/room.model';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { map } from 'rxjs/operators';
@@ -39,14 +39,14 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
   assetSerie$: Observable<AssetSeries>;
 
   isLoading$: Observable<boolean>;
-  locations$: Observable<Location[]>;
-  assetsCombined$: Observable<{ id: ID; asset: Asset; location: Location }[]>;
+  factorySites$: Observable<FactorySite[]>;
+  assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite }[]>;
 
   constructor(private assetSeriesQuery: AssetSeriesQuery,
               private assetQuery: AssetQuery,
               private activatedRoute: ActivatedRoute,
               private roomQuery: RoomQuery,
-              private locationQuery: LocationQuery) {
+              private factorySiteQuery: FactorySiteQuery) {
   }
 
   ngOnInit(): void {
@@ -66,28 +66,28 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
 
       const assets$ = this.assetQuery.selectAssetsOfAssetSerie(assetSeriesId);
       const rooms$ = this.roomQuery.selectAll();
-      const locations$ = this.locationQuery.selectAll();
+      const factorySites$ = this.factorySiteQuery.selectAll();
 
-      this.assetsCombined$ = combineLatest([assets$, locations$, rooms$]).pipe(
+      this.assetsCombined$ = combineLatest([assets$, factorySites$, rooms$]).pipe(
         map((value => {
           const assets: Asset[] = value[0];
-          const locations: Location[] = value[1];
+          const factorySites: FactorySite[] = value[1];
           const rooms: Room[] = value[2];
-          const combined: { id: ID, asset: Asset, location: Location}[] = [];
+          const combined: { id: ID, asset: Asset, factorySite: FactorySite}[] = [];
           for (const asset of assets) {
-              const location: Location = locations.find(
-                locationValue => locationValue.id === rooms.find(
+              const factorySite: FactorySite = factorySites.find(
+                factorySiteValue => factorySiteValue.id === rooms.find(
                   roomValue => roomValue.id === asset.roomId
-                ).locationId
+                ).factorySiteId
               );
-              combined.push({ id: asset.id, asset, location});
+              combined.push({ id: asset.id, asset, factorySite });
             }
           return combined;
         })
       ));
 
-      this.locations$ = this.assetsCombined$.pipe(
-        map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.location))
+      this.factorySites$ = this.assetsCombined$.pipe(
+        map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.factorySite))
       );
     }
   }

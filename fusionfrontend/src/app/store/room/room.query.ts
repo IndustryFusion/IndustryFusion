@@ -26,9 +26,9 @@ export class RoomQuery extends BaseQueryEntity<RoomState, Room> {
     super(store);
   }
 
-  selectRoomsOfLocation(locationId: ID): Observable<Room[]> {
+  selectRoomsOfFactorySite(factorySiteId: ID): Observable<Room[]> {
     return this.selectAll({
-      filterBy: entity => String(entity.locationId) === String(locationId)
+      filterBy: entity => String(entity.factorySiteId) === String(factorySiteId)
     });
   }
 

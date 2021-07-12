@@ -16,10 +16,11 @@
 import { ID } from '@datorama/akita';
 import { BaseEntity } from '../baseentity.model';
 import { Asset } from '../asset/asset.model';
+import { FactorySite } from '../factory-site/factory-site.model';
 
 export class Company extends BaseEntity {
-  locationIds: Array<ID>;
-  locations: Array<Location>;
+  factorySiteIds: Array<ID>;
+  factorySites: Array<FactorySite>;
   assetIds: Array<ID>;
   assets: Array<Asset>;
   name: string;

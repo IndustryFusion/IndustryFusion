@@ -24,7 +24,7 @@ import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
-import { LocationResolver } from '../resolvers/location.resolver';
+import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
 
 
 const routes: Routes = [
@@ -51,7 +51,7 @@ const routes: Routes = [
           assetSeries: AssetSeriesResolver,
           asset: AssetResolver,
           room: RoomResolver,
-          location: LocationResolver
+          factorySite: FactorySiteResolver
         }
       }
     ]
