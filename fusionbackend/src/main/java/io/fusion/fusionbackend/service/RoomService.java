@@ -16,7 +16,7 @@
 package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
-import io.fusion.fusionbackend.model.Location;
+import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,70 +30,72 @@ import java.util.Set;
 @Transactional
 public class RoomService {
     private final RoomRepository roomRepository;
-    private final LocationService locationService;
+    private final FactorySiteService factorySiteService;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, @Lazy LocationService locationService) {
+    public RoomService(RoomRepository roomRepository, @Lazy FactorySiteService factorySiteService) {
         this.roomRepository = roomRepository;
-        this.locationService = locationService;
+        this.factorySiteService = factorySiteService;
     }
 
-    public Set<Room> getRoomsByLocation(final Long locationId) {
-        return roomRepository.findAllByLocationId(RoomRepository.DEFAULT_SORT, locationId);
+    public Set<Room> getRoomsByFactorySite(final Long factorySiteId) {
+        return roomRepository.findAllByfactorySiteId(RoomRepository.DEFAULT_SORT, factorySiteId);
     }
 
-    public Room getRoomByLocation(final Long locationId, final Long roomId, final boolean deep) {
+    public Room getRoomByFactorySite(final Long factorySiteId, final Long roomId, final boolean deep) {
         if (deep) {
-            return roomRepository.findDeepByLocationIdAndId(locationId, roomId)
+            return roomRepository.findDeepByfactorySiteIdAndId(factorySiteId, roomId)
                     .orElseThrow(ResourceNotFoundException::new);
         }
-        return roomRepository.findByLocationIdAndId(locationId, roomId).orElseThrow(ResourceNotFoundException::new);
+        return roomRepository.findByfactorySiteIdAndId(factorySiteId, roomId)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     public Room getRoomById(final Long roomId) {
         return roomRepository.findById(roomId).orElseThrow(ResourceNotFoundException::new);
     }
 
-    public Set<Room> getRoomsCheckFullPath(final Long companyId, final Long locationId) {
-        locationService.getLocationByCompany(companyId, locationId, false); // Make sure location belongs to company
-        return getRoomsByLocation(locationId);
+    public Set<Room> getRoomsCheckFullPath(final Long companyId, final Long factorySiteId) {
+        // Make sure factory site belongs to company
+        factorySiteService.getFactorySiteByCompany(companyId, factorySiteId, false);
+        return getRoomsByFactorySite(factorySiteId);
     }
 
     public Set<Room> getRoomsOfCompany(final Long companyId) {
         return roomRepository.findAllByCompanyId(RoomRepository.DEFAULT_SORT, companyId);
     }
 
-    public Room getRoomCheckFullPath(final Long companyId, final Long locationId, final Long roomId,
+    public Room getRoomCheckFullPath(final Long companyId, final Long factorySiteId, final Long roomId,
                                      final boolean deep) {
-        final Room foundRoom = getRoomByLocation(locationId, roomId, deep);
-        if (!foundRoom.getLocation().getCompany().getId().equals(companyId)) {
+        final Room foundRoom = getRoomByFactorySite(factorySiteId, roomId, deep);
+        if (!foundRoom.getFactorySite().getCompany().getId().equals(companyId)) {
             throw new ResourceNotFoundException();
         }
         return foundRoom;
     }
 
-    public Room createRoom(final Long companyId, final Long locationId, final Room room) {
-        final Location location = locationService.getLocationByCompany(companyId, locationId, false);
+    public Room createRoom(final Long companyId, final Long factorySiteId, final Room room) {
+        final FactorySite factorySite = factorySiteService.getFactorySiteByCompany(companyId, factorySiteId, false);
 
-        location.getRooms().add(room);
-        room.setLocation(location);
+        factorySite.getRooms().add(room);
+        room.setFactorySite(factorySite);
 
         return roomRepository.save(room);
     }
 
-    public Room updateRoom(final Long companyId, final Long locationId, final Long roomId, final Room sourceRoom) {
-        final Room targetRoom = getRoomCheckFullPath(companyId, locationId, roomId, false);
+    public Room updateRoom(final Long companyId, final Long factorySiteId, final Long roomId, final Room sourceRoom) {
+        final Room targetRoom = getRoomCheckFullPath(companyId, factorySiteId, roomId, false);
 
         targetRoom.copyFrom(sourceRoom);
 
         return targetRoom;
     }
 
-    public void deleteRoom(final Long companyId, final Long locationId, final Long roomId) {
-        final Room room = getRoomCheckFullPath(companyId, locationId, roomId, false);
+    public void deleteRoom(final Long companyId, final Long factorySiteId, final Long roomId) {
+        final Room room = getRoomCheckFullPath(companyId, factorySiteId, roomId, false);
 
-        room.getLocation().getRooms().remove(room);
-        room.setLocation(null);
+        room.getFactorySite().getRooms().remove(room);
+        room.setFactorySite(null);
 
         roomRepository.delete(room);
     }

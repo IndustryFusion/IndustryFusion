@@ -43,15 +43,15 @@ import java.util.Set;
         subgraphs = {
                 @NamedSubgraph(name = "assetChildren", attributeNodes = {
                         @NamedAttributeNode("fieldInstances")})})
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_room")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_room")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 public class Room extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    @JoinColumn(name = "factory_site_id", nullable = false)
+    private FactorySite factorySite;
 
     @OneToMany(mappedBy = "room")
     @Builder.Default

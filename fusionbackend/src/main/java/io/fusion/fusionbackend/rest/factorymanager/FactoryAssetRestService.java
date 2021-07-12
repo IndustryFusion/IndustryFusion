@@ -50,11 +50,11 @@ public class FactoryAssetRestService {
         this.assetDetailsMapper = assetDetailsMapper;
     }
 
-    @GetMapping(path = "/companies/{companyId}/locations/{locationId}/assets")
-    public Set<AssetDto> getAssetsOfLocation(@PathVariable final Long companyId,
-                                             @PathVariable final Long locationId,
-                                             @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return assetMapper.toDtoSet(assetService.getAssetsByLocation(companyId, locationId), embedChildren);
+    @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/assets")
+    public Set<AssetDto> getAssetsOfFactorySite(@PathVariable final Long companyId,
+                                                @PathVariable final Long factorySiteId,
+                                                @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetMapper.toDtoSet(assetService.getAssetsByFactorySite(companyId, factorySiteId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetdetails")
@@ -74,39 +74,40 @@ public class FactoryAssetRestService {
     // Rooms path
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets")
     public Set<AssetDto> getAssets(@PathVariable final Long companyId,
-                                   @PathVariable final Long locationId,
+                                   @PathVariable final Long factorySiteId,
                                    @PathVariable final Long roomId,
                                    @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return assetMapper.toDtoSet(assetService.getAssetsCheckFullPath(companyId, locationId, roomId), embedChildren);
+        return assetMapper.toDtoSet(assetService.getAssetsCheckFullPath(companyId, factorySiteId, roomId),
+                embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto getAsset(@PathVariable final Long companyId,
-                             @PathVariable final Long locationId,
+                             @PathVariable final Long factorySiteId,
                              @PathVariable final Long roomId,
                              @PathVariable final Long assetId,
                              @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return assetMapper.toDto(assetService.getAssetCheckFullPath(companyId, locationId, roomId, assetId),
+        return assetMapper.toDto(assetService.getAssetCheckFullPath(companyId, factorySiteId, roomId, assetId),
                 embedChildren);
     }
 
     @PatchMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto updateAsset(@PathVariable final Long companyId,
-                                @PathVariable final Long locationId,
+                                @PathVariable final Long factorySiteId,
                                 @PathVariable final Long roomId,
                                 @PathVariable final Long assetId,
                                 @RequestBody final AssetDto assetDto) {
         // TODO Open: what the factory manager can change on an asset
-        return assetMapper.toDto(assetService.updateRoomAsset(companyId, locationId, roomId, assetId,
+        return assetMapper.toDto(assetService.updateRoomAsset(companyId, factorySiteId, roomId, assetId,
                 assetMapper.toEntity(assetDto)), false);
     }
 
     @DeleteMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto removeAssetFromRoom(@PathVariable final Long companyId,
-                                        @PathVariable final Long locationId,
+                                        @PathVariable final Long factorySiteId,
                                         @PathVariable final Long roomId,
                                         @PathVariable final Long assetId) {
-        return assetMapper.toDto(assetService.removeAssetFromRoom(companyId, locationId, roomId, assetId), false);
+        return assetMapper.toDto(assetService.removeAssetFromRoom(companyId, factorySiteId, roomId, assetId), false);
     }
 
     @DeleteMapping(path = "/companies/{companyId}/assets/{assetId}")
@@ -118,10 +119,10 @@ public class FactoryAssetRestService {
 
     @PutMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/{assetId}")
     public AssetDto assignAssetToRoom(@PathVariable final Long companyId,
-                                      @PathVariable final Long locationId,
+                                      @PathVariable final Long factorySiteId,
                                       @PathVariable final Long roomId,
                                       @PathVariable final Long assetId) {
-        return assetMapper.toDto(assetService.moveAssetToRoom(companyId, locationId, roomId, assetId), false);
+        return assetMapper.toDto(assetService.moveAssetToRoom(companyId, factorySiteId, roomId, assetId), false);
     }
 
     // Company direct path

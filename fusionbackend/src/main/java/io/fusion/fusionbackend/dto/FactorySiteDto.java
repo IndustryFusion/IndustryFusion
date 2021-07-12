@@ -16,7 +16,7 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.fusion.fusionbackend.model.enums.LocationType;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +28,7 @@ import java.util.Set;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class LocationDto {
+public class FactorySiteDto {
     private Long id;
     private Long companyId;
 
@@ -46,9 +46,9 @@ public class LocationDto {
     private Double latitude;
     private Double longitude;
     private String imageKey;
-    private LocationType type;
+    private FactorySiteType type;
 
     @JsonCreator
-    public LocationDto() {
+    public FactorySiteDto() {
     }
 }

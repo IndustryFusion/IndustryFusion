@@ -15,7 +15,7 @@
 
 package io.fusion.fusionbackend.model;
 
-import io.fusion.fusionbackend.model.enums.LocationType;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -38,30 +39,31 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@NamedEntityGraph(name = "Location.allChildren",
+@Table(name = "factory_site")
+@NamedEntityGraph(name = "FactorySite.allChildren",
         attributeNodes = {
                 @NamedAttributeNode(value = "rooms")})
-@NamedEntityGraph(name = "Location.allChildrenDeep",
+@NamedEntityGraph(name = "FactorySite.allChildrenDeep",
         attributeNodes = {
                 @NamedAttributeNode(value = "rooms", subgraph = "roomChildren")},
         subgraphs = {
                 @NamedSubgraph(name = "roomChildren", attributeNodes = {
                         @NamedAttributeNode("assets")})})
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_location")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_factory_site")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class Location extends BaseEntity {
+public class FactorySite extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private LocationType type;
+    private FactorySiteType type;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
-    @OneToMany(mappedBy = "location")
+    @OneToMany(mappedBy = "factorySite")
     @Builder.Default
     private Set<Room> rooms = new LinkedHashSet<>();
 
@@ -75,33 +77,33 @@ public class Location extends BaseEntity {
     private Double longitude;
     private String imageKey;
 
-    public void copyFrom(final Location sourceLocation) {
-        if (sourceLocation.getName() != null) {
-            setName(sourceLocation.getName());
+    public void copyFrom(final FactorySite sourceFactorySite) {
+        if (sourceFactorySite.getName() != null) {
+            setName(sourceFactorySite.getName());
         }
-        if (sourceLocation.getLine1() != null) {
-            setLine1(sourceLocation.getLine1());
+        if (sourceFactorySite.getLine1() != null) {
+            setLine1(sourceFactorySite.getLine1());
         }
-        if (sourceLocation.getLine2() != null) {
-            setLine2(sourceLocation.getLine2());
+        if (sourceFactorySite.getLine2() != null) {
+            setLine2(sourceFactorySite.getLine2());
         }
-        if (sourceLocation.getCity() != null) {
-            setCity(sourceLocation.getCity());
+        if (sourceFactorySite.getCity() != null) {
+            setCity(sourceFactorySite.getCity());
         }
-        if (sourceLocation.getZip() != null) {
-            setZip(sourceLocation.getZip());
+        if (sourceFactorySite.getZip() != null) {
+            setZip(sourceFactorySite.getZip());
         }
-        if (sourceLocation.getCountry() != null) {
-            setCountry(sourceLocation.getCountry());
+        if (sourceFactorySite.getCountry() != null) {
+            setCountry(sourceFactorySite.getCountry());
         }
-        if (sourceLocation.getLatitude() != null) {
-            setLatitude(sourceLocation.getLatitude());
+        if (sourceFactorySite.getLatitude() != null) {
+            setLatitude(sourceFactorySite.getLatitude());
         }
-        if (sourceLocation.getLongitude() != null) {
-            setLongitude(sourceLocation.getLongitude());
+        if (sourceFactorySite.getLongitude() != null) {
+            setLongitude(sourceFactorySite.getLongitude());
         }
-        if (sourceLocation.getImageKey() != null) {
-            setImageKey(sourceLocation.getImageKey());
+        if (sourceFactorySite.getImageKey() != null) {
+            setImageKey(sourceFactorySite.getImageKey());
         }
     }
 }

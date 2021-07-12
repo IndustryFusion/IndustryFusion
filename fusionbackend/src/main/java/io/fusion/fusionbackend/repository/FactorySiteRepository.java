@@ -15,7 +15,7 @@
 
 package io.fusion.fusionbackend.repository;
 
-import io.fusion.fusionbackend.model.Location;
+import io.fusion.fusionbackend.model.FactorySite;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -23,15 +23,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.Optional;
 import java.util.Set;
 
-public interface LocationRepository extends PagingAndSortingRepository<Location, Long> {
+public interface FactorySiteRepository extends PagingAndSortingRepository<FactorySite, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "Location.allChildren")
-    Set<Location> findAllByCompanyId(Sort sort, Long companyId);
+    @EntityGraph(value = "FactorySite.allChildren")
+    Set<FactorySite> findAllByCompanyId(Sort sort, Long companyId);
 
-    @EntityGraph(value = "Location.allChildren")
-    Optional<Location> findByCompanyIdAndId(Long companyId, Long locationId);
+    @EntityGraph(value = "FactorySite.allChildren")
+    Optional<FactorySite> findByCompanyIdAndId(Long companyId, Long factorySiteId);
 
-    @EntityGraph(value = "Location.allChildrenDeep")
-    Optional<Location> findDeepByCompanyIdAndId(Long companyId, Long locationId);
+    @EntityGraph(value = "FactorySite.allChildrenDeep")
+    Optional<FactorySite> findDeepByCompanyIdAndId(Long companyId, Long factorySiteId);
 }

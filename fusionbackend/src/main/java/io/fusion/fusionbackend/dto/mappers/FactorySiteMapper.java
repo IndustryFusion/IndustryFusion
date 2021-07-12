@@ -15,8 +15,8 @@
 
 package io.fusion.fusionbackend.dto.mappers;
 
-import io.fusion.fusionbackend.dto.LocationDto;
-import io.fusion.fusionbackend.model.Location;
+import io.fusion.fusionbackend.dto.FactorySiteDto;
+import io.fusion.fusionbackend.model.FactorySite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,19 +25,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
+public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySiteDto> {
     private final RoomMapper roomMapper;
 
     @Autowired
-    public LocationMapper(RoomMapper roomMapper) {
+    public FactorySiteMapper(RoomMapper roomMapper) {
         this.roomMapper = roomMapper;
     }
 
-    private LocationDto toDtoShallow(final Location entity) {
+    private FactorySiteDto toDtoShallow(final FactorySite entity) {
         if (entity == null) {
             return null;
         }
-        return LocationDto.builder()
+        return FactorySiteDto.builder()
                 .id(entity.getId())
                 .type(entity.getType())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
@@ -54,11 +54,11 @@ public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
                 .build();
     }
 
-    private LocationDto toDtoDeep(final Location entity) {
+    private FactorySiteDto toDtoDeep(final FactorySite entity) {
         if (entity == null) {
             return null;
         }
-        return LocationDto.builder()
+        return FactorySiteDto.builder()
                 .id(entity.getId())
                 .type(entity.getType())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
@@ -76,7 +76,7 @@ public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
     }
 
     @Override
-    public LocationDto toDto(Location entity, boolean embedChildren) {
+    public FactorySiteDto toDto(FactorySite entity, boolean embedChildren) {
         if (embedChildren) {
             return toDtoDeep(entity);
         }
@@ -84,11 +84,11 @@ public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
     }
 
     @Override
-    public Location toEntity(LocationDto dto) {
+    public FactorySite toEntity(FactorySiteDto dto) {
         if (dto == null) {
             return null;
         }
-        return Location.builder()
+        return FactorySite.builder()
                 .id(dto.getId())
                 .type(dto.getType())
                 .name(dto.getName())
@@ -103,7 +103,7 @@ public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
     }
 
     @Override
-    public Set<LocationDto> toDtoSet(Set<Location> entitySet, boolean embedChildren) {
+    public Set<FactorySiteDto> toDtoSet(Set<FactorySite> entitySet, boolean embedChildren) {
         if (embedChildren) {
             return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
         }
@@ -111,12 +111,12 @@ public class LocationMapper implements EntityDtoMapper<Location, LocationDto> {
     }
 
     @Override
-    public Set<Long> toEntityIdSet(Set<Location> entitySet) {
+    public Set<Long> toEntityIdSet(Set<FactorySite> entitySet) {
         return EntityDtoMapper.getSetOfEntityIds(entitySet);
     }
 
     @Override
-    public Set<Location> toEntitySet(Set<LocationDto> dtoSet) {
+    public Set<FactorySite> toEntitySet(Set<FactorySiteDto> dtoSet) {
         return dtoSet.stream().map(this::toEntity).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
