@@ -17,12 +17,12 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 import { CompanyService } from '../store/company/company.service';
-import { LocationService } from '../store/location/location.service';
+import { FactorySiteService } from '../store/factory-site/factory-site.service';
 
 @Injectable({ providedIn: 'root' })
-export class LocationResolver implements Resolve<any>{
+export class FactorySiteResolver implements Resolve<any>{
   constructor(private companyService: CompanyService,
-              private locationService: LocationService) { }
+              private factorySiteService: FactorySiteService) { }
 
   resolve(route: ActivatedRouteSnapshot): void {
 
@@ -30,7 +30,7 @@ export class LocationResolver implements Resolve<any>{
     const companyId = route.parent.params.companyId;
     this.companyService.setActive(companyId);
     if (companyId != null) {
-      this.locationService.getLocations(companyId).subscribe();
+      this.factorySiteService.getFactorySites(companyId).subscribe();
     }
   }
 }
