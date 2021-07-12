@@ -31,7 +31,7 @@ public class AssetDetailsDto extends AssetDto {
     private String assetSeriesName;
     private String category;
     private String roomName;
-    private String locationName;
+    private String factorySiteName;
 
     @JsonCreator
     public AssetDetailsDto() {

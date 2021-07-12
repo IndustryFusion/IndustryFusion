@@ -24,7 +24,7 @@ import { StatusService } from 'src/app/services/status.service';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 
 @Component({
   selector: 'app-asset-card',
@@ -48,7 +48,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyQuery: CompanyQuery,
-    private locationQuery: LocationQuery,
+    private factorySiteQuery: FactorySiteQuery,
     private oispService: OispService,
     private statusService: StatusService,
     private router: Router) { }
@@ -142,11 +142,11 @@ export class AssetCardComponent implements OnInit, OnDestroy {
 
   goToDetails() {
     const companyId = this.companyQuery.getActiveId();
-    const locationId = this.locationQuery.getActiveId();
+    const factorySiteId = this.factorySiteQuery.getActiveId();
     const roomId = this.asset.roomId;
     const assetId = this.asset.id;
     this.router.navigateByUrl(
-      `factorymanager/companies/${companyId}/locations/${locationId}/rooms/${roomId}/assets/${assetId}/asset-details`
+      `factorymanager/companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/${assetId}/asset-details`
     );
   }
 

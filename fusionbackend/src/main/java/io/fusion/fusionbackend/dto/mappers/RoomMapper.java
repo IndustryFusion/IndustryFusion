@@ -39,7 +39,7 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         }
         return RoomDto.builder()
                 .id(entity.getId())
-                .locationId(EntityDtoMapper.getEntityId(entity.getLocation()))
+                .factorySiteId(EntityDtoMapper.getEntityId(entity.getFactorySite()))
                 .assetIds(EntityDtoMapper.getSetOfEntityIds(entity.getAssets()))
                 .name(entity.getName())
                 .imageKey(entity.getImageKey())
@@ -53,7 +53,7 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         }
         return RoomDto.builder()
                 .id(entity.getId())
-                .locationId(EntityDtoMapper.getEntityId(entity.getLocation()))
+                .factorySiteId(EntityDtoMapper.getEntityId(entity.getFactorySite()))
                 .assets(assetMapper.toDtoSet(entity.getAssets(), false))
                 .name(entity.getName())
                 .imageKey(entity.getImageKey())

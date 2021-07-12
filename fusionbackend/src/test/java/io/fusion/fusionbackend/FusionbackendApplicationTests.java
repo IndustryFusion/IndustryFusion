@@ -55,8 +55,8 @@ class FusionbackendApplicationTests {
     private static Integer companySteelgradeFabId;
     private static Integer companyStruumpFabId;
 
-    private static Integer locationStruumpHqId;
-    private static Integer locationStruumpFabId;
+    private static Integer factorySiteStruumpHqId;
+    private static Integer factorySiteStruumpFabId;
 
     private static Integer roomWestStruumpFabId;
     private static Integer roomEastStruumpFabId;
@@ -213,10 +213,10 @@ class FusionbackendApplicationTests {
 
     @Test
     @Order(300)
-    void createLocationStruumpHq() {
-        LocationDto location = LocationDto.builder()
+    void createFactorySiteStruumpHq() {
+        FactorySiteDto factorySite = FactorySiteDto.builder()
                 .name("World Headquarter")
-                .type(LocationType.HEADQUARTER)
+                .type(FactorySiteType.HEADQUARTER)
                 .line1("Sudetenstr. 1001")
                 .line2("Rückgebäude")
                 .city("Gräfelfing")
@@ -226,15 +226,15 @@ class FusionbackendApplicationTests {
                 .longitude(11.604835)
                 .build();
 
-        locationStruumpHqId = createAndTestLocation(companyStruumpFabId, location);
+        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
     @Order(301)
-    void createLocationStruumpFab() {
-        LocationDto location = LocationDto.builder()
+    void createFactorySiteStruumpFab() {
+        FactorySiteDto factorySite = FactorySiteDto.builder()
                 .name("Landau")
-                .type(LocationType.FABRICATION)
+                .type(FactorySiteType.FABRICATION)
                 .line1("Kerrystr. 2001")
                 .line2("Hinterhof")
                 .city("Lindau")
@@ -244,15 +244,15 @@ class FusionbackendApplicationTests {
                 .longitude(11.679882)
                 .build();
 
-        locationStruumpFabId = createAndTestLocation(companyStruumpFabId, location);
+        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @RepeatedTest(10)
     @Order(305)
-    void createLocationMultiple(final RepetitionInfo repetitionInfo) {
-        LocationDto location = LocationDto.builder()
+    void createFactorySiteMultiple(final RepetitionInfo repetitionInfo) {
+        FactorySiteDto factorySite = FactorySiteDto.builder()
                 .name("Spandau Random " + repetitionInfo.getCurrentRepetition())
-                .type(LocationType.FABRICATION)
+                .type(FactorySiteType.FABRICATION)
                 .line1("Clarestr. 2001")
                 .line2("Hintermhof")
                 .city("Spandau")
@@ -261,26 +261,26 @@ class FusionbackendApplicationTests {
                 .latitude(48.024522)
                 .longitude(11.679882)
                 .build();
-        createAndTestLocation(companyStruumpFabId, location);
+        createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
     @Order(309)
-    void testGetAllCompanyLocations() {
-        List<Integer> locationIds = given()
+    void testGetAllCompanyFactorySites() {
+        List<Integer> factorySiteIds = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites")
 
                 .then()
                 .statusCode(200)
                 .extract().path("id");
 
-        assertThat(locationIds)
+        assertThat(factorySiteIds)
                 .hasSize(12)
-                .contains(locationStruumpFabId, locationStruumpHqId);
+                .contains(factorySiteStruumpFabId, factorySiteStruumpHqId);
     }
 
     @Test
@@ -291,7 +291,7 @@ class FusionbackendApplicationTests {
                 .description("Shop floor east room")
                 .build();
 
-        roomEastStruumpFabId = createAndTestRoom(companyStruumpFabId, locationStruumpFabId, room);
+        roomEastStruumpFabId = createAndTestRoom(companyStruumpFabId, factorySiteStruumpFabId, room);
     }
 
     @Test
@@ -302,7 +302,7 @@ class FusionbackendApplicationTests {
                 .description("Shop floor west room")
                 .build();
 
-        roomWestStruumpFabId = createAndTestRoom(companyStruumpFabId, locationStruumpFabId, room);
+        roomWestStruumpFabId = createAndTestRoom(companyStruumpFabId, factorySiteStruumpFabId, room);
     }
 
     @RepeatedTest(10)
@@ -311,25 +311,25 @@ class FusionbackendApplicationTests {
         RoomDto room = RoomDto.builder()
                 .name("Shop Floor " + repetitionInfo.getCurrentRepetition())
                 .build();
-        createAndTestRoom(companyStruumpFabId, locationStruumpFabId, room);
+        createAndTestRoom(companyStruumpFabId, factorySiteStruumpFabId, room);
     }
 
     @Test
     @Order(409)
-    void testGetAllLocationRooms() {
-        List<Integer> locationIds = given()
+    void testGetAllFactorySiteRooms() {
+        List<Integer> factorySiteIds = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations/" + locationStruumpFabId + "/rooms")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites/" + factorySiteStruumpFabId + "/rooms")
 
                 .then()
                 .statusCode(200)
                 .extract().path("id");
 
-        assertThat(locationIds)
-                .hasSize(12)
+        assertThat(factorySiteIds)
+                .hasSize(13)
                 .contains(roomWestStruumpFabId, roomEastStruumpFabId);
     }
 
@@ -751,7 +751,7 @@ class FusionbackendApplicationTests {
                 .imageKey("gskey")
                 .hasGateway(true)
                 .ceCertified(true)
-                .installationDate(OffsetDateTime.now())
+                .installationDate(null)
                 .constructionDate(OffsetDateTime.now())
                 .guid(UUID.randomUUID())
                 .protectionClass("IP20")
@@ -764,7 +764,7 @@ class FusionbackendApplicationTests {
         transferFleetAssetToFactoryAsset(assetRoomEastStruumpFabId, assetSeriesAiristGasSupplyId,
                                               companyAiristMachId, companyStruumpFabId, accessTokenFleetManAirist);
 
-        assignFactoryAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetRoomEastStruumpFabId);
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomEastStruumpFabId, assetRoomEastStruumpFabId);
     }
 
     @Test
@@ -786,7 +786,7 @@ class FusionbackendApplicationTests {
         transferFleetAssetToFactoryAsset(assetRoomWestStruumpFabId, assetSeriesLaserlyLaserCutterId,
                 companyLaserlyMachId, companyStruumpFabId, accessTokenFleetManLaserly);
 
-        assignFactoryAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomWestStruumpFabId, assetRoomWestStruumpFabId);
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomWestStruumpFabId, assetRoomWestStruumpFabId);
     }
 
     @RepeatedTest(10)
@@ -806,7 +806,7 @@ class FusionbackendApplicationTests {
         transferFleetAssetToFactoryAsset(assetId, assetSeriesLaserlyLaserCutterId,
                 companyLaserlyMachId, companyStruumpFabId, accessTokenFleetManLaserly);
 
-        assignFactoryAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetId);
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomEastStruumpFabId, assetId);
     }
 
     @Test
@@ -835,7 +835,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations/" + locationStruumpFabId + "/rooms/" + roomEastStruumpFabId + "/assets")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites/" + factorySiteStruumpFabId + "/rooms/" + roomEastStruumpFabId + "/assets")
 
                 .then()
                 .statusCode(200)
@@ -848,13 +848,13 @@ class FusionbackendApplicationTests {
 
     @Test
     @Order(709)
-    void testGetAllLocationAssets() {
+    void testGetAllFactorySiteAssets() {
         List<Integer> assetIds = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations/" + locationStruumpFabId + "/assets")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites/" + factorySiteStruumpFabId + "/assets")
 
                 .then()
                 .statusCode(200)
@@ -904,60 +904,60 @@ class FusionbackendApplicationTests {
     // TODO: test create with entityDto with ID
     // TODO: Test fields in assettypetemplate, series, assets
 
-    private Integer createAndTestLocation(final Integer companyId, final LocationDto location) {
+    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
-                .body(location)
+                .body(factorySite)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .post(baseUrl + "/companies/" + companyId + "/locations")
+                .post(baseUrl + "/companies/" + companyId + "/factorysites")
 
                 .then()
                 .statusCode(200)
-                .body("name", equalTo(location.getName()))
-                .body("line1", equalTo(location.getLine1()))
-                .body("line2", equalTo(location.getLine2()))
-                .body("city", equalTo(location.getCity()))
-                .body("zip", equalTo(location.getZip()))
-                .body("country", equalTo(location.getCountry()));
+                .body("name", equalTo(factorySite.getName()))
+                .body("line1", equalTo(factorySite.getLine1()))
+                .body("line2", equalTo(factorySite.getLine2()))
+                .body("city", equalTo(factorySite.getCity()))
+                .body("zip", equalTo(factorySite.getZip()))
+                .body("country", equalTo(factorySite.getCountry()));
 
         Float longitude = response.extract().path("longitude");
         Float latitude = response.extract().path("latitude");
-        assertThat(longitude.doubleValue()).isCloseTo(location.getLongitude(), within(0.001));
-        assertThat(latitude.doubleValue()).isCloseTo(location.getLatitude(), within(0.001));
+        assertThat(longitude.doubleValue()).isCloseTo(factorySite.getLongitude(), within(0.001));
+        assertThat(latitude.doubleValue()).isCloseTo(factorySite.getLatitude(), within(0.001));
         String type = response.extract().path("type");
-        assertThat(type).isEqualTo(location.getType().name());
+        assertThat(type).isEqualTo(factorySite.getType().name());
 
-        Integer newLocationId = response.extract().path("id");
+        Integer newfactorySiteId = response.extract().path("id");
 
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/locations/" + newLocationId)
+                .get(baseUrl + "/companies/" + companyId + "/factorysites/" + newfactorySiteId)
 
                 .then()
                 .statusCode(200)
-                .body("name", equalTo(location.getName()))
-                .body("line1", equalTo(location.getLine1()))
-                .body("line2", equalTo(location.getLine2()))
-                .body("city", equalTo(location.getCity()))
-                .body("zip", equalTo(location.getZip()))
-                .body("country", equalTo(location.getCountry()));
+                .body("name", equalTo(factorySite.getName()))
+                .body("line1", equalTo(factorySite.getLine1()))
+                .body("line2", equalTo(factorySite.getLine2()))
+                .body("city", equalTo(factorySite.getCity()))
+                .body("zip", equalTo(factorySite.getZip()))
+                .body("country", equalTo(factorySite.getCountry()));
 
-        return newLocationId;
+        return newfactorySiteId;
     }
 
-    private Integer createAndTestRoom(final Integer companyId, final Integer locationId, final RoomDto room) {
+    private Integer createAndTestRoom(final Integer companyId, final Integer factorySiteId, final RoomDto room) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(room)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .post(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms")
+                .post(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms")
 
                 .then()
                 .statusCode(200)
@@ -971,7 +971,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms/" + newRoomId)
+                .get(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + newRoomId)
 
                 .then()
                 .statusCode(200)
@@ -1301,7 +1301,7 @@ class FusionbackendApplicationTests {
                                                   final Integer fleetCompanyId,
                                                   final Integer factoryCompanyId,
                                                   final String accessTokenFleet) {
-        ValidatableResponse response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .body(factoryCompanyId)
                 .header("Authorization", "Bearer " + accessTokenFleet)
@@ -1312,7 +1312,7 @@ class FusionbackendApplicationTests {
                 .then()
                 .statusCode(200);
 
-        response = given()
+        ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFleet)
 
@@ -1321,8 +1321,6 @@ class FusionbackendApplicationTests {
 
                 .then()
                 .statusCode(200);
-
-        AssetDto asset = response.extract().body().as(AssetDto.class);
 
         response.body("companyId", equalTo(factoryCompanyId));
     }
@@ -1380,14 +1378,14 @@ class FusionbackendApplicationTests {
         return newAssetId;
     }
 
-    private void assignFactoryAssetToRoomAndTest(final Integer companyId, final Integer locationId, final Integer roomId,
+    private void assignFactoryAssetToRoomAndTest(final Integer companyId, final Integer factorySiteId, final Integer roomId,
                                                  final Integer assetId) {
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .put(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms/" + roomId + "/assets/" + assetId)
+                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId)
 
                 .then()
                 .statusCode(200);
@@ -1397,7 +1395,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms/" + roomId +
+                .get(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId +
                         "/assets/" + assetId)
 
                 .then()

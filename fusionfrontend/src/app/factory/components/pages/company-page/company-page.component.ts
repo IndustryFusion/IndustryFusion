@@ -14,17 +14,17 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Company } from 'src/app/store/company/company.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { ID } from '@datorama/akita';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
-import { LocationService } from 'src/app/store/location/location.service';
-import { Location } from 'src/app/store/location/location.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySiteService } from 'src/app/store/factory-site/factory-site.service';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { RoomService } from '../../../../store/room/room.service';
 
 @Component({
   selector: 'app-company-page',
@@ -33,32 +33,33 @@ import { Subject } from 'rxjs';
 })
 export class CompanyPageComponent implements OnInit, OnDestroy {
 
-  private unSubscribe$ = new Subject<void>();
-
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
-  locations: Location[];
+  factorySites: FactorySite[];
   companyId: ID;
-  selectedLocation: ID;
+  selectedFactorySite: ID;
+  private unSubscribe$ = new Subject<void>();
 
   constructor(
     private companyQuery: CompanyQuery,
     private factoryResolver: FactoryResolver,
-    private locationService: LocationService,
-    private locationQuery: LocationQuery,
-    private activatedRoute: ActivatedRoute) { }
+    private factorySiteService: FactorySiteService,
+    private factorySiteQuery: FactorySiteQuery,
+    private roomService: RoomService,
+    private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.isLoading$ = this.companyQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.companyQuery.selectActive();
     this.companyId = this.companyQuery.getActiveId();
-    this.locationQuery.selectLocationsOfCompany(this.companyId)
-    .pipe(
-      takeUntil(this.unSubscribe$)
-    ).subscribe(
+    this.factorySiteQuery.selectFactorySitesOfCompany(this.companyId)
+      .pipe(
+        takeUntil(this.unSubscribe$)
+      ).subscribe(
       res => {
-        this.locations = res;
+        this.factorySites = res;
       });
   }
 
@@ -67,25 +68,26 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
     this.unSubscribe$.complete();
   }
 
-  setSelectedLocation(id: ID) {
-    this.selectedLocation = id;
+  setSelectedFactorySite(id: ID) {
+    this.selectedFactorySite = id;
   }
 
-  locationCreated(location: Location) {
-    const createLocation$ = this.locationService.createLocation(location);
-    createLocation$.subscribe(
-      res => {
-        console.log('[company page] created location: ' + res.name);
+  factorySiteCreated(factorySite: FactorySite) {
+    const createFactorySite$ = this.factorySiteService.createFactorySite(factorySite);
+    createFactorySite$.subscribe(
+      newFactorySite => {
+        console.log('[company page] created factory site: ' + newFactorySite?.name);
+        this.roomService.getRoomsOfFactorySite(this.companyId, newFactorySite.id).subscribe();
       },
       error => console.log(error)
     );
   }
 
-  locationUpdated(location: Location) {
-    const createLocation$ = this.locationService.updateLocation(location);
-    createLocation$.subscribe(
+  factorySiteUpdated(factorySite: FactorySite) {
+    const createFactorySite$ = this.factorySiteService.updateFactorySite(factorySite);
+    createFactorySite$.subscribe(
       res => {
-        console.log('[company page] updated location: ' + res.name);
+        console.log('[company page] updated factory site: ' + res.name);
       },
       error => console.log(error)
     );

@@ -3,7 +3,7 @@ import { AssetDetailsWithFields, AssetModalMode } from '../../../../../store/ass
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
 import { RoomQuery } from '../../../../../store/room/room.query';
-import { Location } from '../../../../../store/location/location.model';
+import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
 import { AssetDetails, AssetModalType } from 'src/app/store/asset-details/asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -24,13 +24,13 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   @Input()
   rooms: Room[];
   @Input()
-  allRoomsOfLocations: Room[];
+  allRoomsOfFactorySite: Room[];
   @Input()
   room: Room;
   @Input()
-  locations: Location[];
+  factorySites: FactorySite[];
   @Input()
-  location: Location;
+  factorySite: FactorySite;
   @Input()
   selected = false;
   @Output()
@@ -43,7 +43,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   deleteAssetEvent = new EventEmitter<AssetDetailsWithFields>();
 
   showStatusCircle = false;
-  roomsOfLocation: Room[];
+  roomsOfFactorySite: Room[];
   assetDetailsForm: FormGroup;
   ref: DynamicDialogRef;
   menuActions: MenuItem[];
@@ -66,8 +66,8 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ((changes.location && this.location)) {
-      this.roomsOfLocation = this.location.rooms;
+    if ((changes.factorySite && this.factorySite)) {
+      this.roomsOfFactorySite = this.factorySite.rooms;
     }
   }
 
@@ -77,8 +77,8 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       data: {
         assetDetailsForm: this.assetDetailsForm,
         assetToBeEdited: this.assetWithDetailsAndFields,
-        locations: this.locations,
-        location: this.location,
+        factorySites: this.factorySites,
+        factorySite: this.factorySite,
         rooms: this.rooms,
         activeModalType: AssetModalType.customizeAsset,
         activeModalMode: AssetModalMode.editAssetMode
@@ -94,12 +94,12 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   openAssignRoomDialog() {
-    if (this.location) {
-      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedLocationMode,
-        'Room Assignment (' + this.location.name + ')');
+    if (this.factorySite) {
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
+        'Room Assignment (' + this.factorySite.name + ')');
     } else {
-      this.showAssignRoomDialog(AssetModalType.locationAssignment, AssetModalMode.editRoomForAssetMode,
-        'Location Assignment');
+      this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,
+        'Factory Site Assignment');
     }
   }
 
@@ -109,8 +109,8 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       data: {
         assetDetailsForm: this.assetDetailsForm,
         assetToBeEdited: this.assetWithDetailsAndFields,
-        locations: this.locations,
-        location: this.location,
+        factorySites: this.factorySites,
+        factorySite: this.factorySite,
         rooms: this.rooms,
         activeModalType: assetModalType,
         activeModalMode: assetModalMode
@@ -137,7 +137,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       assetSeriesName: ['', requiredTextValidator],
       category: ['', requiredTextValidator],
       roomName: ['', requiredTextValidator],
-      locationName: ['', requiredTextValidator]
+      factorySiteName: ['', requiredTextValidator]
     });
     this.assetDetailsForm.patchValue(assetWithDetailsAndFields);
   }
@@ -150,10 +150,10 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     if (!asset) { return; }
     if (this.room) {
       return ['assets', asset.id];
-    } else if (!this.location) {
+    } else if (!this.factorySite) {
       const room: Room = this.roomQuery.getEntity(asset.roomId);
       if (!room) { return; }
-      return ['..', 'locations', room.locationId, 'rooms', asset.roomId, 'assets', asset.id];
+      return ['..', 'factorysites', room.factorySiteId, 'rooms', asset.roomId, 'assets', asset.id];
     } else {
       return ['rooms', asset.roomId, 'assets', asset.id];
     }

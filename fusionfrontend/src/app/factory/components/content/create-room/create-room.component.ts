@@ -16,7 +16,7 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { Room } from 'src/app/store/room/room.model';
 // import { RoomService } from 'src/app/store/room/room.service';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 
 @Component({
@@ -26,7 +26,7 @@ import { Company } from 'src/app/store/company/company.model';
 })
 export class CreateRoomComponent implements OnInit {
   @Input()
-  location: Location;
+  factorySite: FactorySite;
   @Input()
   company: Company;
 
@@ -44,7 +44,7 @@ export class CreateRoomComponent implements OnInit {
   createRoom() {
     this.room.name = this.newRoomName;
     this.room.description = this.newRoomDescription;
-    this.room.locationId = this.location.id;
+    this.room.factorySiteId = this.factorySite.id;
     this.modalOpened.emit(this.room);
     this.newRoomName = null;
     this.newRoomDescription = null;

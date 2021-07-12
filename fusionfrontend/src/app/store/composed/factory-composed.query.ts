@@ -23,52 +23,55 @@ import { AssetDetailsQuery } from '../asset-details/asset-details.query';
 import { Asset, AssetWithFields } from '../asset/asset.model';
 import { AssetQuery } from '../asset/asset.query';
 import { FieldDetailsQuery } from '../field-details/field-details-query.service';
-import { LocationWithAssetCount } from '../location/location.model';
-import { LocationQuery } from '../location/location.query';
+import { FactorySiteWithAssetCount } from '../factory-site/factory-site.model';
+import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
 import { RoomQuery } from '../room/room.query';
 
 @Injectable({ providedIn: 'root' })
 export class FactoryComposedQuery {
   constructor(
-    protected locationQuery: LocationQuery,
+    protected factorySiteQuery: FactorySiteQuery,
     protected roomQuery: RoomQuery,
     protected assetQuery: AssetQuery,
     protected assetDetailsQuery: AssetDetailsQuery,
     protected fieldQuery: FieldDetailsQuery,
     protected oispService: OispService) { }
 
-  selectAssetsOfLocation(locationId: ID): Observable<Asset[]> {
+  selectAssetsOfFactorySite(factorySiteId: ID): Observable<Asset[]> {
     return combineQueries([
       this.assetQuery.selectAll(),
-      this.roomQuery.selectRoomsOfLocation(locationId)])
+      this.roomQuery.selectRoomsOfFactorySite(factorySiteId)])
       .pipe(
         map(([assets, rooms]) => {
           return assets.filter(asset => rooms.find(room => String(room.id) === String(asset.roomId)));
         }));
   }
 
-  selectLocationsOfCompanyWithAssetCount(companyId: ID): Observable<LocationWithAssetCount[]> {
+  selectFactorySitesOfCompanyWithAssetCount(companyId: ID): Observable<FactorySiteWithAssetCount[]> {
     return combineQueries([
-      this.locationQuery.selectLocationsOfCompany(companyId),
+      this.factorySiteQuery.selectFactorySitesOfCompany(companyId),
       this.selectRoomsOfCompany(companyId),
       this.assetQuery.selectAssetsOfCompany(companyId)])
       .pipe(
-        map(([locations, rooms, assets]) => locations.map(location => {
-          const assetCount =
-            assets.filter(
-              asset => String(rooms.find(room => String(room.id) === String(asset.roomId))?.locationId) === String(location.id)).length;
-          return Object.assign({ assetCount }, location);
-        }))
+        map(([factorySites, rooms, assets]) =>
+          factorySites.map(factorySite => {
+            const assetCount =
+              assets.filter(
+                asset => String(rooms.find(room => String(room.id) === String(asset.roomId))?.factorySiteId)
+                  === String(factorySite.id)).length;
+            return Object.assign({ assetCount }, factorySite);
+          }))
       );
   }
 
   selectRoomsOfCompany(companyId: ID): Observable<Room[]> {
     return combineQueries([
       this.roomQuery.selectAll(),
-      this.locationQuery.selectLocationsOfCompany(companyId)])
+      this.factorySiteQuery.selectFactorySitesOfCompany(companyId)])
       .pipe(
-        map(([rooms, locations]) => rooms.filter(room => locations.find(location => String(location.id) === String(room.locationId)))));
+        map(([rooms, factorySites]) =>
+          rooms.filter(room => factorySites.find(factorySite => String(factorySite.id) === String(room.factorySiteId)))));
   }
 
   selectFieldsOfSelectedAssets(): Observable<AssetWithFields[]> {
@@ -99,10 +102,10 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectAssetDetailsOfLocation(locationId: ID): Observable<AssetDetails[]> {
+  selectAssetDetailsOfFactorySite(factorySiteId: ID): Observable<AssetDetails[]> {
     return combineQueries([
       this.assetDetailsQuery.selectAll(),
-      this.roomQuery.selectRoomsOfLocation(locationId)])
+      this.roomQuery.selectRoomsOfFactorySite(factorySiteId)])
      .pipe(
         map(([assetDetailsArray, rooms]) => {
           return assetDetailsArray.filter(assetDetails => rooms.find(room => String(room.id) === String(assetDetails.roomId)));
@@ -110,9 +113,9 @@ export class FactoryComposedQuery {
   }
 
 
-  selectFieldsOfAssetsDetailsByLocationId(locationId: ID): Observable<AssetDetailsWithFields[]> {
+  selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId: ID): Observable<AssetDetailsWithFields[]> {
     return combineQueries([
-      this.selectAssetDetailsOfLocation(locationId),
+      this.selectAssetDetailsOfFactorySite(factorySiteId),
       this.fieldQuery.selectAll()
     ]).pipe(
       map(([assetsDetails, fields]) =>
@@ -165,8 +168,8 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectAssetDetailsWithFieldsOfLocationAndJoinWithOispData(locationId): Observable<AssetDetailsWithFields[]> {
-    return this.selectFieldsOfAssetsDetailsByLocationId(locationId).pipe(
+  selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId): Observable<AssetDetailsWithFields[]> {
+    return this.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId).pipe(
       mergeMap(assets =>
         forkJoin(
           assets.map(asset => this.oispService.getAssetDetailsFieldsExternalIds(asset)

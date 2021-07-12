@@ -28,9 +28,9 @@ import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.qu
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { FieldDetailsQuery } from 'src/app/store/field-details/field-details-query.service';
 import { FieldDetailsService } from 'src/app/store/field-details/field-details.service';
-import { Location } from 'src/app/store/location/location.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
-import { LocationService } from 'src/app/store/location/location.service';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
+import { FactorySiteService } from 'src/app/store/factory-site/factory-site.service';
 import { Room } from 'src/app/store/room/room.model';
 import { RoomQuery } from 'src/app/store/room/room.query';
 import { RoomService } from 'src/app/store/room/room.service';
@@ -46,10 +46,10 @@ import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-
 })
 export class FactoryResolver {
   public company$: Observable<Company>;
-  public locations$: Observable<Location[]>;
-  public location$: Observable<Location>;
+  public factorySites$: Observable<FactorySite[]>;
+  public factorySite$: Observable<FactorySite>;
   public rooms$: Observable<Room[]>;
-  public allRoomsOfLocation$: Observable<Room[]>;
+  public allRoomsOfFactorySite$: Observable<Room[]>;
   public room$: Observable<Room>;
   public assetSeries$: Observable<AssetSeriesDetails[]>;
   public assets$: Observable<Asset[]>;
@@ -64,8 +64,8 @@ export class FactoryResolver {
   constructor(
     private companyService: CompanyService,
     private companyQuery: CompanyQuery,
-    private locationService: LocationService,
-    private locationQuery: LocationQuery,
+    private factorySiteService: FactorySiteService,
+    private factorySiteQuery: FactorySiteQuery,
     private roomService: RoomService,
     private roomQuery: RoomQuery,
     private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
@@ -78,7 +78,7 @@ export class FactoryResolver {
     private factoryComposedQuery: FactoryComposedQuery) {
 
     this.company$ = this.companyQuery.selectActive();
-    this.location$ = this.locationQuery.selectActive();
+    this.factorySite$ = this.factorySiteQuery.selectActive();
     this.room$ = this.roomQuery.selectActive();
     this.asset$ = this.assetQuery.selectActive();
     this.factorySubTitle$ = new BehaviorSubject('Apps');
@@ -91,13 +91,13 @@ export class FactoryResolver {
     this.companyService.setActive(companyId);
     if (companyId != null) {
       this.companyService.getCompany(companyId).subscribe();
-      this.locationService.getLocations(companyId).subscribe();
+      this.factorySiteService.getFactorySites(companyId).subscribe();
       this.roomService.getRoomsOfCompany(companyId).subscribe();
       this.assetService.getAssetsOfCompany(companyId).subscribe();
       this.assetDetailsService.getAssetDetailsOfCompany(companyId).subscribe();
 
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
-      this.locations$ = this.locationQuery.selectLocationsOfCompany(companyId);
+      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompany(companyId);
       this.rooms$ = this.roomQuery.selectAllRooms();
       this.assets$ = this.assetQuery.selectAssetsOfCompany(companyId);
       this.assetDetailsQuery.selectAssetDetailsOfCompany(companyId).pipe(
@@ -107,21 +107,22 @@ export class FactoryResolver {
       ).subscribe();
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinFieldsOfAssetsDetailsWithOispData();
     }
-    const locationId = activatedRoute.snapshot.paramMap.get('locationId');
-    this.locationService.setActive(locationId);
-    if (locationId != null) {
-      this.locations$ = this.locationQuery.selectLocationsOfCompany(companyId);
+    const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
+    this.factorySiteService.setActive(factorySiteId);
+    if (factorySiteId != null) {
+      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompany(companyId);
       this.rooms$ = this.roomQuery.selectAllRooms();
-      this.allRoomsOfLocation$ = this.roomQuery.selectRoomsOfLocation(locationId);
+      this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
-      this.assets$ = this.factoryComposedQuery.selectAssetsOfLocation(locationId);
-      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectAssetDetailsWithFieldsOfLocationAndJoinWithOispData(locationId);
+      this.assets$ = this.factoryComposedQuery.selectAssetsOfFactorySite(factorySiteId);
+      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery
+        .selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId);
     }
     const roomId = activatedRoute.snapshot.paramMap.get('roomId');
     this.roomService.setActive(roomId);
     if (roomId != null) {
       this.rooms$ = this.roomQuery.selectActive().pipe(map(room => Array(room)));
-      this.allRoomsOfLocation$ = this.roomQuery.selectRoomsOfLocation(locationId);
+      this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assets$ = this.assetQuery.selectAssetsOfRoom(roomId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId);
     }
@@ -157,20 +158,20 @@ export class FactoryResolver {
         .waitForActive()
         .subscribe(asset => this.factorySubTitle$.next('Assets > ' + asset.name));
     } else if (
-      pageTypes.includes(FactoryManagerPageType.LOCATION_DETAIL)
+      pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL)
       && pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)
       && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
       this.roomQuery
         .waitForActive()
         .subscribe(room => this.factorySubTitle$.next('Rooms > ' + room.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.LOCATION_DETAIL) && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.locationQuery
+    } else if (pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL) && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
+      this.factorySiteQuery
         .waitForActive()
-        .subscribe(location => this.factorySubTitle$.next('Assets > ' + location.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.LOCATION_DETAIL) && pageTypes.includes(FactoryManagerPageType.ROOM_LIST)) {
-      this.locationQuery
+        .subscribe(factorySite => this.factorySubTitle$.next('Assets > ' + factorySite.name));
+    } else if (pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL) && pageTypes.includes(FactoryManagerPageType.ROOM_LIST)) {
+      this.factorySiteQuery
         .waitForActive()
-        .subscribe(location => this.factorySubTitle$.next('Rooms > ' + location.name));
+        .subscribe(factorySite => this.factorySubTitle$.next('Rooms > ' + factorySite.name));
     } else if (pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
       this.roomQuery
         .waitForActive()

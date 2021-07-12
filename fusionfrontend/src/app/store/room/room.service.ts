@@ -46,17 +46,17 @@ export class RoomService {
       })));
   }
 
-  getRooms(companyId: ID, locationId: ID): Observable<Room[]> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms`;
-    const cacheKey = 'location-' + companyId;
+  getRoomsOfFactorySite(companyId: ID, factorySiteId: ID): Observable<Room[]> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms`;
+    const cacheKey = 'factorysite-' + factorySiteId;
     return this.roomStore.cachedByParentId(cacheKey, this.http.get<Room[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.roomStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }
 
-  getRoom(companyId: ID, locationId: ID, roomId: ID, refresh: boolean = false): Observable<Room> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}`;
+  getRoom(companyId: ID, factorySiteId: ID, roomId: ID, refresh: boolean = false): Observable<Room> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}`;
     if (refresh) { this.roomStore.invalidateCacheId(roomId); }
     return this.roomStore.cachedById(roomId, this.http.get<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
@@ -65,15 +65,15 @@ export class RoomService {
   }
 
   createRoom(companyId: ID, room: Room): Observable<Room> {
-    const path = `companies/${companyId}/locations/${room.locationId}/rooms`;
+    const path = `companies/${companyId}/factorysites/${room.factorySiteId}/rooms`;
     return this.http.post<Room>(`${environment.apiUrlPrefix}/${path}`, room, this.httpOptions)
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);
       }));
   }
 
-  deleteRoom(companyId: ID, locationId: ID, roomId: ID) {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}`;
+  deleteRoom(companyId: ID, factorySiteId: ID, roomId: ID) {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}`;
     return this.http.delete<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(() => {
         this.roomStore.removeCached(roomId);
@@ -81,7 +81,7 @@ export class RoomService {
   }
 
   updateRoom(companyId: ID, room: Room): Observable<Room> {
-    const path = `companies/${companyId}/locations/${room.locationId}/rooms/${room.id}`;
+    const path = `companies/${companyId}/factorysites/${room.factorySiteId}/rooms/${room.id}`;
     return this.http.patch<Room>(`${environment.apiUrlPrefix}/${path}`, room, this.httpOptions)
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);

@@ -38,7 +38,7 @@ public class AssetService {
     private final RoomService roomService;
     private final AssetSeriesService assetSeriesService;
     private final CompanyService companyService;
-    private final LocationService locationService;
+    private final FactorySiteService factorySiteService;
     private final FieldInstanceService fieldInstanceService;
 
     @Autowired
@@ -47,14 +47,14 @@ public class AssetService {
                         RoomService roomService,
                         AssetSeriesService assetSeriesService,
                         CompanyService companyService,
-                        LocationService locationService,
+                        FactorySiteService factorySiteService,
                         FieldInstanceService fieldInstanceService) {
         this.assetRepository = assetRepository;
         this.fieldInstanceRepository = fieldInstanceRepository;
         this.roomService = roomService;
         this.assetSeriesService = assetSeriesService;
         this.companyService = companyService;
-        this.locationService = locationService;
+        this.factorySiteService = factorySiteService;
         this.fieldInstanceService = fieldInstanceService;
     }
 
@@ -83,26 +83,27 @@ public class AssetService {
         return assetRepository.findAllByCompanyId(AssetRepository.DEFAULT_SORT, companyId);
     }
 
-    public Set<Asset> getAssetsByLocation(final Long companyId, final Long locationId) {
-        locationService.getLocationByCompany(companyId, locationId, false); // Make sure location belongs to company
-        return assetRepository.findAllByLocationId(AssetRepository.DEFAULT_SORT, locationId);
+    public Set<Asset> getAssetsByFactorySite(final Long companyId, final Long factorySiteId) {
+        // Make sure factory site belongs to company
+        factorySiteService.getFactorySiteByCompany(companyId, factorySiteId, false);
+        return assetRepository.findAllByFactorySiteId(AssetRepository.DEFAULT_SORT, factorySiteId);
     }
 
     public Asset getAssetByCompany(final Long companyId, final Long assetId) {
         return assetRepository.findByCompanyIdAndId(companyId, assetId).orElseThrow(ResourceNotFoundException::new);
     }
 
-    public Set<Asset> getAssetsCheckFullPath(final Long companyId, final Long locationId, final Long roomId) {
-        // Make sure room and location belongs to company
-        roomService.getRoomCheckFullPath(companyId, locationId, roomId, false);
+    public Set<Asset> getAssetsCheckFullPath(final Long companyId, final Long factorySiteId, final Long roomId) {
+        // Make sure room and factory site belongs to company
+        roomService.getRoomCheckFullPath(companyId, factorySiteId, roomId, false);
         return getAssetsByRoom(roomId);
     }
 
-    public Asset getAssetCheckFullPath(final Long companyId, final Long locationId, final Long roomId,
+    public Asset getAssetCheckFullPath(final Long companyId, final Long factorySiteId, final Long roomId,
                                        final Long assetId) {
         final Asset foundAsset = getAssetByRoom(roomId, assetId);
-        if (!foundAsset.getRoom().getLocation().getId().equals(locationId)
-                || !foundAsset.getRoom().getLocation().getCompany().getId().equals(companyId)) {
+        if (!foundAsset.getRoom().getFactorySite().getId().equals(factorySiteId)
+                || !foundAsset.getRoom().getFactorySite().getCompany().getId().equals(companyId)) {
             throw new ResourceNotFoundException();
         }
         return foundAsset;
@@ -169,9 +170,6 @@ public class AssetService {
         if (asset.getAssetSeries() == null) {
             throw new RuntimeException("AssetSeries has to exist in an Asset");
         }
-        if (asset.getInstallationDate() == null) {
-            throw new RuntimeException("InstallationDate has to exist in an Asset");
-        }
         if (asset.getConstructionDate() == null) {
             throw new RuntimeException("ConstructionDate has to exist in an Asset");
         }
@@ -206,9 +204,9 @@ public class AssetService {
         assetRepository.delete(asset);
     }
 
-    public Asset removeAssetFromRoom(final Long companyId, final Long locationId, final Long roomId,
+    public Asset removeAssetFromRoom(final Long companyId, final Long factorySiteId, final Long roomId,
                                      final Long assetId) {
-        final Asset asset = getAssetCheckFullPath(companyId, locationId, roomId, assetId);
+        final Asset asset = getAssetCheckFullPath(companyId, factorySiteId, roomId, assetId);
         final Room room = asset.getRoom();
 
         room.getAssets().remove(asset);
@@ -217,9 +215,12 @@ public class AssetService {
         return asset;
     }
 
-    public Asset moveAssetToRoom(final Long companyId, final Long locationId, final Long roomId, final Long assetId) {
+    public Asset moveAssetToRoom(final Long companyId,
+                                 final Long factorySiteId,
+                                 final Long roomId,
+                                 final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
-        final Room room = roomService.getRoomCheckFullPath(companyId, locationId, roomId, false);
+        final Room room = roomService.getRoomCheckFullPath(companyId, factorySiteId, roomId, false);
 
         final Room currentAssetRoom = asset.getRoom();
 
@@ -252,9 +253,9 @@ public class AssetService {
         return targetAsset;
     }
 
-    public Asset updateRoomAsset(final Long companyId, final Long locationId, final Long roomId, final Long assetId,
+    public Asset updateRoomAsset(final Long companyId, final Long factorySiteId, final Long roomId, final Long assetId,
                                  final Asset sourceAsset) {
-        final Asset targetAsset = getAssetCheckFullPath(companyId, locationId, roomId, assetId);
+        final Asset targetAsset = getAssetCheckFullPath(companyId, factorySiteId, roomId, assetId);
 
         targetAsset.copyFrom(sourceAsset);
 
@@ -280,9 +281,9 @@ public class AssetService {
         return targetAsset;
     }
 
-    public Set<FieldInstance> getFieldInstancesCheckFullPath(final Long companyId, final Long locationId,
+    public Set<FieldInstance> getFieldInstancesCheckFullPath(final Long companyId, final Long factorySiteId,
                                                              final Long roomId, final Long assetId) {
-        final Asset asset = getAssetCheckFullPath(companyId, locationId, roomId, assetId);
+        final Asset asset = getAssetCheckFullPath(companyId, factorySiteId, roomId, assetId);
         return asset.getFieldInstances();
     }
 

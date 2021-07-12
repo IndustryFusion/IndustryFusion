@@ -23,7 +23,7 @@ under the License.
   </div>
 
 </section>
-<app-locations-map [locations]="locations$ | async" ></app-locations-map>
+<app-factory-site-map [factorySites]="factorySites$ | async"></app-factory-site-map>
 
 <div class="list-header">
   {{ (assetsCombined$ | async)?.length }} Asset <span *ngIf="(assetsCombined$ | async)?.length > 1">s</span>
@@ -47,11 +47,11 @@ under the License.
   <ng-template pTemplate="body" let-assetsCombined>
     <tr>
       <td >{{assetsCombined.asset?.name}}</td>
-      <td >{{assetsCombined.location?.name}}</td>
-      <td >{{assetsCombined.location?.line1}} {{assetsCombined.location?.line2}}</td>
-      <td >{{assetsCombined.location?.zip}}</td>
-      <td >{{assetsCombined.location?.city}}</td>
-      <td >{{assetsCombined.location?.country}}</td>
+      <td >{{assetsCombined.factorySite?.name}}</td>
+      <td >{{assetsCombined.factorySite?.line1}} {{assetsCombined.factorySite?.line2}}</td>
+      <td >{{assetsCombined.factorySite?.zip}}</td>
+      <td >{{assetsCombined.factorySite?.city}}</td>
+      <td >{{assetsCombined.factorySite?.country}}</td>
       <td >{{assetsCombined.asset?.installationDate | date}}</td>
     </tr>
   </ng-template>

@@ -36,4 +36,3 @@ export class MainAuthGuardGuard extends KeycloakAuthGuard implements CanActivate
     return Promise.resolve(requiredRoles.some((role) => this.roles.includes(Role[role])));
   }
 }
-

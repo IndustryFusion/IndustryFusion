@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)" *ngIf="(location$ | async) != null"></app-company-info>
+<app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)" *ngIf="(factorySite$ | async) != null"></app-company-info>
 
 <div class="go-back-panel">
   <div class="goback">

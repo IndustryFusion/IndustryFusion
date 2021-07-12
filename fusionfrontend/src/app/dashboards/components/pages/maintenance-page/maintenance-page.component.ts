@@ -19,7 +19,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
@@ -37,7 +37,7 @@ export class MaintenancePageComponent implements OnInit {
   companyId: ID;
   assetDetailsWithFields$: Observable<AssetDetailsWithFields[]>;
   assetTypes$: Observable<AssetType[]>;
-  locations$: Observable<Location[]>;
+  factorySites$: Observable<FactorySite[]>;
   companies$: Observable<Company[]>;
   assetDetailsWithFields: AssetDetailsWithFields[];
   companies: Company[];
@@ -51,7 +51,7 @@ export class MaintenancePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
-    this.locations$ = this.factoryResolver.locations$;
+    this.factorySites$ = this.factoryResolver.factorySites$;
     this.companies$ = this.companyQuery.selectAll();
     this.companies$.subscribe(res => {
       this.companies = res;
