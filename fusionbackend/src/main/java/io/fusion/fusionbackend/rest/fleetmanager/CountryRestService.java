@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @RestController
-@IsFleetUser
 public class CountryRestService {
     private final CountryMapper countryMapper;
     private final CountryService countryService;

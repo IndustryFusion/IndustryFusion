@@ -27,17 +27,19 @@ import java.util.stream.Collectors;
 @Component
 public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySiteDto> {
     private final RoomMapper roomMapper;
+    private final CountryMapper countryMapper;
 
     @Autowired
-    public FactorySiteMapper(RoomMapper roomMapper) {
+    public FactorySiteMapper(RoomMapper roomMapper, CountryMapper countryMapper) {
         this.roomMapper = roomMapper;
+        this.countryMapper = countryMapper;
     }
 
     private FactorySiteDto toDtoShallow(final FactorySite entity) {
         if (entity == null) {
             return null;
         }
-        return FactorySiteDto.builder()
+        FactorySiteDto dto = FactorySiteDto.builder()
                 .id(entity.getId())
                 .type(entity.getType())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
@@ -47,11 +49,17 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
                 .line2(entity.getLine2())
                 .city(entity.getCity())
                 .zip(entity.getZip())
-                .country(entity.getCountry())
+                .countryId(EntityDtoMapper.getEntityId(entity.getCountry()))
                 .longitude(entity.getLongitude())
                 .latitude(entity.getLatitude())
                 .imageKey(entity.getImageKey())
                 .build();
+
+        if (entity.getCountry() != null) {
+            dto.setCountry(countryMapper.toDto(entity.getCountry(), false));
+        }
+
+        return dto;
     }
 
     private FactorySiteDto toDtoDeep(final FactorySite entity) {
@@ -68,7 +76,7 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
                 .line2(entity.getLine2())
                 .city(entity.getCity())
                 .zip(entity.getZip())
-                .country(entity.getCountry())
+                .country(countryMapper.toDto(entity.getCountry(), false))
                 .longitude(entity.getLongitude())
                 .latitude(entity.getLatitude())
                 .imageKey(entity.getImageKey())
@@ -88,7 +96,7 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
         if (dto == null) {
             return null;
         }
-        return FactorySite.builder()
+        final FactorySite entity = FactorySite.builder()
                 .id(dto.getId())
                 .type(dto.getType())
                 .name(dto.getName())
@@ -96,10 +104,15 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
                 .line2(dto.getLine2())
                 .city(dto.getCity())
                 .zip(dto.getZip())
-                .country(dto.getCountry())
                 .longitude(dto.getLongitude())
                 .latitude(dto.getLatitude())
                 .build();
+
+        if (dto.getCountry() != null) {
+            entity.setCountry(countryMapper.toEntity(dto.getCountry()));
+        }
+
+        return entity;
     }
 
     @Override

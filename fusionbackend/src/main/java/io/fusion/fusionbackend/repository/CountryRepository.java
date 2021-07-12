@@ -24,10 +24,4 @@ import java.util.Optional;
 
 public interface CountryRepository extends PagingAndSortingRepository<Country, Long> {
     Sort DEFAULT_SORT = Sort.by("name").ascending();
-
-    @EntityGraph(value = "Country.allChildren")
-    Iterable<Country> findAll(Sort sort);
-
-    @EntityGraph(value = "Country.allChildren")
-    Optional<Country> findById(Long id);
 }

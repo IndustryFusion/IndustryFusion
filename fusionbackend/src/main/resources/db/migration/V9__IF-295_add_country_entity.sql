@@ -10,3 +10,13 @@ create table if not exists country
     version bigint,
     name varchar(255) not null
 );
+
+alter table factory_site
+    drop column country;
+
+alter table factory_site
+    add country_id bigint not null;
+
+alter table factory_site
+    add constraint factory_site_country__fk
+        foreign key (country_id) references country (id);

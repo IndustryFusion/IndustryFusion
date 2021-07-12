@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.FactorySiteRepository;
@@ -33,16 +34,18 @@ public class FactorySiteService {
     private final FactorySiteRepository factorySiteRepository;
     private final CompanyService companyService;
     private final RoomService roomService;
+    private final CountryService countryService;
 
     private final String noSpecificRoomName = "No specific room";
     private final String noSpecificRoomDescription = "No specific room";
 
     @Autowired
     public FactorySiteService(FactorySiteRepository factorySiteRepository, CompanyService companyService,
-                              @Lazy RoomService roomService) {
+                              @Lazy RoomService roomService, @Lazy CountryService countryService) {
         this.factorySiteRepository = factorySiteRepository;
         this.companyService = companyService;
         this.roomService = roomService;
+        this.countryService = countryService;
     }
 
     public Set<FactorySite> getFactorySitesByCompany(final Long companyId) {
@@ -60,9 +63,11 @@ public class FactorySiteService {
 
     public FactorySite createFactorySite(final Long companyId, final FactorySite factorySite) {
         final Company company = companyService.getCompany(companyId, false);
+        final Country country = countryService.getCountry(factorySite.getCountry().getId());
 
         company.getFactorySites().add(factorySite);
         factorySite.setCompany(company);
+        factorySite.setCountry(country);
         FactorySite newFactorySite = factorySiteRepository.save(factorySite);
 
         Room noSpecificRoom =
