@@ -13,4 +13,38 @@
  * under the License.
  */
 
-@import "../../asset-wizard.component";
+@import '../../asset-wizard.component';
+
+.asset-wizard-step-attributes {
+  .attributes-list-header {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem !important;
+  }
+
+  .attributes-list-content {
+  }
+
+  .value-input {
+    height: 2rem;
+  }
+}
+
+:host ::ng-deep .p-grid {
+  width: 100% !important;
+  align-items: baseline;
+}
+
+:host ::ng-deep app-trash-button {
+  padding: 2px !important;
+}
+
+:host ::ng-deep .p-accordion-content {
+  padding-top: 0 !important;
+  margin-top: -2.1rem !important;
+  margin-left: -1.2rem !important;
+}
+
+:host ::ng-deep .p-inputtext {
+  text-align: center !important;
+}

@@ -30,25 +30,27 @@ under the License.
   </div>
 
   <app-asset-wizard-step-general-information *ngIf="step === AssetWizardStep.GENERAL_INFORMATION"
-                                             (stepChange)="onStepChange($event)"
-                                             (changeAssetSeries)="onChangeAssetSeries($event)"
                                              [assetForm]="assetForm"
                                              [isAssetSeriesLocked]="isAssetSeriesLocked"
                                              [relatedAssetSeries]="relatedAssetSeries"
                                              [relatedAssetType]="relatedAssetType"
-                                             [relatedCompany]="relatedCompany">
+                                             [relatedCompany]="relatedCompany"
+                                             (stepChange)="onStepChange($event)"
+                                             (changeAssetSeries)="onChangeAssetSeries($event)">
   </app-asset-wizard-step-general-information>
   <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE"
-                                   (stepChange)="onStepChange($event)"
-                                   [assetForm]="assetForm">
+                                   [assetForm]="assetForm"
+                                   (stepChange)="onStepChange($event)">
   </app-asset-wizard-step-nameplate>
   <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS"
+                                            [asset]="asset"
                                             (stepChange)="onStepChange($event)"
-                                            (valid)="setMetricsValid($event)"
-                                            [asset]="asset">
+                                            (valid)="setMetricsValid($event)">
   </app-asset-wizard-step-metrics-thresholds>
-  <app-asset-wizard-step-attributes *ngIf="step === AssetWizardStep.ATTRIBUTES" (stepChange)="onStepChange($event)"
-                                    [assetForm]="assetForm">
+  <app-asset-wizard-step-attributes *ngIf="step === AssetWizardStep.ATTRIBUTES"
+                                    [asset]="asset"
+                                    (stepChange)="onStepChange($event)"
+                                    (valid)="setAttributesValid($event)">
   </app-asset-wizard-step-attributes>
   <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA" (stepChange)="onStepChange($event)"
                                   [assetForm]="assetForm">

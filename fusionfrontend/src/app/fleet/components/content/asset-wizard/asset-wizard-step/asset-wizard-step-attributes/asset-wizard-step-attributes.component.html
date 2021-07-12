@@ -1,7 +1,35 @@
-<label class="if-dialog-title">Customize&nbsp;Attributes</label>
+<div class="asset-wizard-step-attributes">
+  <label class="if-dialog-title">Customize&nbsp;Attributes</label>
 
-<div class="footer">
-  <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-  <button type="button" class="if-button button-confirm button-primary" [disabled]="assetForm.invalid"
-          (click)="onNext()">Next</button>
+  <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">no attributes available</div>
+  <div *ngIf="(fieldInstancesFormArray?.controls?.length > 0)">
+    <div class="attributes-list-header p-grid">
+      <div class="if-label-small-header p-col-3"> Custom Attribute name </div>
+      <div class="if-label-small-header p-col-3"> Attribute name </div>
+      <div class="if-label-small-header p-col-2"> Value </div>
+      <div class="if-label-small-header p-col-1"> Unit </div>
+      <div class="if-label-small-header p-col-2"> </div>
+      <div class="if-label-small-header p-col-1"> </div>
+    </div>
+
+    <div class="attributes-list-content" *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
+      <ng-container [formGroup]="fieldInstance //noinspection InvalidExpressionResultType">
+        <div class="p-grid">
+          <label class="if-label p-col-3" displayControlValue="name"></label>
+          <label class="if-label p-col-3" displayControlValue="fieldName"></label>
+          <input class="value-input p-col-2" type="number" pInputText formControlName="value">
+          <label class="if-label-normal-weight p-col-1" displayControlValue="sourceUnitName"></label>
+          <label class="if-label-small-header p-col-2"></label>
+          <app-trash-button class="p-col-1" [disabled]="fieldInstance.get('mandatory')?.value"
+                            (click)="removeAttribute(fieldInstance)"></app-trash-button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="footer">
+    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
+    <button type="button" class="if-button button-confirm button-primary" [disabled]="fieldInstancesFormArray.invalid"
+            (click)="onNext()">Next</button>
+  </div>
 </div>
