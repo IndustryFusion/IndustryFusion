@@ -17,7 +17,14 @@ under the License.
   <label class="if-dialog-title">Customize&nbsp;Metrics&nbsp;&amp;&nbsp;Thresholds</label>
   <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">no metrics available</div>
   <div *ngIf="(fieldInstancesFormArray?.controls?.length > 0)">
-    <app-threshold-list-header></app-threshold-list-header>
+    <div class="threshold-list-header p-grid">
+      <div class="if-label-small-header p-col-3"> Custom Metric name </div>
+      <div class="if-label-small-header p-col-2"> Metric name </div>
+      <div class="if-label-small-header p-col-2"> Data Source </div>
+      <div class="if-label-small-header p-col-1"> Unit </div>
+      <div class="if-label-small-header p-col-3"> Accuracy </div>
+      <div class="if-label-small-header p-col-1"> </div>
+    </div>
 
     <p-accordion>
       <ng-container *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
@@ -49,7 +56,7 @@ under the License.
               </ng-template>
 
               <ng-template pTemplate="content">
-                <table id="customers" style="padding: 10px">
+                <table id="thresholdTreeTable" style="padding: 10px">
                   <thead>
                   <tr>
                     <th class="tree-line"></th>
@@ -85,8 +92,8 @@ under the License.
                       <td></td>
                       <td class="label-thresholds">{{ThresholdType.getLowerLimitTitle(type)}}</td>
                       <td>
-                        <input class="threshold-input" type="text" pInputText
-                               [formControl]="fieldInstance.get('thresholds.' + type + 'Lower')">
+                        <input class="threshold-input" type="number" pInputText
+                               [formControl]="fieldInstance.get('thresholds.' + type + 'Lower') //noinspection InvalidExpressionResultType">
                       </td>
                       <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
                       <td></td>
@@ -97,8 +104,8 @@ under the License.
                       <td></td>
                       <td class="label-thresholds">{{ThresholdType.getUpperLimitTitle(type)}}</td>
                       <td>
-                        <input class="threshold-input" type="text" pInputText
-                               [formControl]="fieldInstance.get('thresholds.' + type + 'Upper')">
+                        <input class="threshold-input" type="number" pInputText
+                               [formControl]="fieldInstance.get('thresholds.' + type + 'Upper') //noinspection InvalidExpressionResultType">
                       </td>
                       <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
                       <td></td>
