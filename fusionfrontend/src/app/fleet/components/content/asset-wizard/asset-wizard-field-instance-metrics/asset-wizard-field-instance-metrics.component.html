@@ -36,7 +36,7 @@ under the License.
               <label class="if-label-small-header p-col-1" displayControlValue="sourceUnitName"></label>
               <label class="if-label-small-header p-col-2">{{fieldInstance.get('accuracy')?.value | accuracyformat}}</label>
               <div class="p-col-2">
-                <app-edit-button *ngIf="editEnabled === false" (click)="onClickEdit()" ></app-edit-button>
+                <app-edit-button *ngIf="isReview === true" (click)="onClickEdit()" ></app-edit-button>
                 <app-trash-button [disabled]="fieldInstance.get('mandatory')?.value"
                                   (click)="removeMetric(fieldInstance)"></app-trash-button>
               </div>
@@ -53,7 +53,7 @@ under the License.
                   <label class="if-label-small-header p-col-1" displayControlValue="sourceUnitName"></label>
                   <label class="if-label-small-header p-col-2">{{fieldInstance.get('accuracy')?.value | accuracyformat}}</label>
                   <div class="p-col-2 edit-col">
-                    <app-edit-button *ngIf="editEnabled === false" (click)="onClickEdit()" ></app-edit-button>
+                    <app-edit-button *ngIf="isReview === true" (click)="onClickEdit()" ></app-edit-button>
                     <app-trash-button [disabled]="fieldInstance.get('mandatory')?.value"
                                       (click)="removeMetric(fieldInstance)"></app-trash-button>
                   </div>

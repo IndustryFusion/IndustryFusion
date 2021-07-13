@@ -29,9 +29,9 @@ import { FieldQuery } from '../../../../../store/field/field-query.service';
 export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
 
   @Input() asset: Asset;
-  @Input() editEnabled = true;
-  @Output() valid = new EventEmitter<boolean>();
-  @Output() edit = new EventEmitter<void>();
+  @Input() isReview = false;
+  @Output() changeIsValid = new EventEmitter<boolean>();
+  @Output() backToEditPage = new EventEmitter<void>();
 
   fieldInstancesFormArray: FormArray;
 
@@ -45,7 +45,7 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
 
   private fillTable(fieldInstances: FieldInstance[]) {
     this.fieldInstancesFormArray = new FormArray([]);
-    this.fieldInstancesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldInstancesFormArray.valid));
+    this.fieldInstancesFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.fieldInstancesFormArray.valid));
 
     for (let i = 0; i < fieldInstances.length; i++) {
       if (fieldInstances[i].fieldSource.fieldTarget.fieldType === FieldType.ATTRIBUTE) {
@@ -53,7 +53,7 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
         this.fieldInstancesFormArray.push(formGroup);
       }
     }
-    this.valid.emit(this.fieldInstancesFormArray.valid);
+    this.changeIsValid.emit(this.fieldInstancesFormArray.valid);
   }
 
   private createFieldInstanceGroup(index: number, fieldInstance: FieldInstance): FormGroup {
@@ -82,8 +82,8 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
   }
 
   public removeAttribute(attributeGroup: AbstractControl): void {
-    if (!this.editEnabled) {
-      this.edit.emit();
+    if (this.isReview) {
+      this.backToEditPage.emit();
       return;
     }
     if (attributeGroup == null
@@ -117,6 +117,6 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
   }
 
   public onClickEdit() {
-    this.edit.emit();
+    this.backToEditPage.emit();
   }
 }

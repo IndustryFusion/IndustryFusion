@@ -30,16 +30,16 @@ under the License.
         <div class="p-grid">
           <label class="if-label p-col-3" displayControlValue="name"></label>
           <label class="if-label p-col-3" displayControlValue="fieldName"></label>
-          <input *ngIf="editEnabled === true" class="value-input p-col-2" type="number" pInputText formControlName="value">
-          <label *ngIf="editEnabled === false" class="p-col-2" displayControlValue="value"></label>
+          <input *ngIf="isReview === false" class="value-input p-col-2" type="number" pInputText formControlName="value">
+          <label *ngIf="isReview === true" class="p-col-2" displayControlValue="value"></label>
           <label class="if-label-normal-weight p-col-1" displayControlValue="sourceUnitName"></label>
 
-          <ng-container *ngIf="editEnabled === true">
+          <ng-container *ngIf="isReview === false">
             <label class="if-label-small-header p-col-2"></label>
             <app-trash-button class="p-col-1" [disabled]="fieldInstance.get('mandatory')?.value"
                               (click)="removeAttribute(fieldInstance)"></app-trash-button>
           </ng-container>
-          <ng-container *ngIf="editEnabled === false">
+          <ng-container *ngIf="isReview === true">
             <label class="if-label-small-header p-col-1"></label>
             <div class="p-col-2">
               <app-edit-button (click)="onClickEdit()" ></app-edit-button>

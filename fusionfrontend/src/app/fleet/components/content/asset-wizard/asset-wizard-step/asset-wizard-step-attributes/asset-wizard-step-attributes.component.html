@@ -16,7 +16,7 @@ under the License.
 <div class="asset-wizard-step-attributes">
   <label class="if-dialog-title">Customize&nbsp;Attributes</label>
 
- <app-asset-wizard-field-instance-attributes [asset]="asset" [editEnabled]="true" (valid)="onSetValid($event)">
+ <app-asset-wizard-field-instance-attributes [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)">
  </app-asset-wizard-field-instance-attributes>
 
   <div class="footer">

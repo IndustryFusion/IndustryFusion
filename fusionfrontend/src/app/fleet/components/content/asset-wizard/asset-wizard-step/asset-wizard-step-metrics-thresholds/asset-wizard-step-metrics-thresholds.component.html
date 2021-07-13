@@ -16,7 +16,7 @@ under the License.
 <div class="asset-wizard-step-metrics-thresholds">
   <label class="if-dialog-title">Customize&nbsp;Metrics&nbsp;&amp;&nbsp;Thresholds</label>
 
-  <app-asset-wizard-field-instance-metrics [asset]="asset" [editEnabled]="true" (valid)="onSetValid($event)">
+  <app-asset-wizard-field-instance-metrics [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)">
   </app-asset-wizard-field-instance-metrics>
 
   <div class="footer">

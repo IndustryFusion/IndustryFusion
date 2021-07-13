@@ -33,9 +33,9 @@ import { QuantityTypeQuery } from '../../../../../store/quantity-type/quantity-t
 export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
 
   @Input() asset: Asset;
-  @Input() editEnabled = true;
-  @Output() valid = new EventEmitter<boolean>();
-  @Output() edit = new EventEmitter<void>();
+  @Input() isReview = false;
+  @Output() changeIsValid = new EventEmitter<boolean>();
+  @Output() backToEditPage = new EventEmitter<void>();
 
   ThresholdType = ThresholdType;
   QuantityDataType = QuantityDataType;
@@ -48,10 +48,11 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
 
     const lowerValue = thresholdGroup.get(type + 'Lower').value;
     const upperValue = thresholdGroup.get(type + 'Upper').value;
-    const valueExist: boolean = lowerValue || upperValue;
+    const hasValue: boolean = lowerValue || upperValue;
+    const isNumeric: boolean = quantityDataType === QuantityDataType.NUMERIC;
 
     // As demoinsert data also have thresholds for non numeric data, force to remove them before saving
-    if (quantityDataType !== QuantityDataType.NUMERIC || !valueExist) {
+    if (!isNumeric || !hasValue) {
       return null;
     }
 
@@ -73,7 +74,7 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
 
   private fillTable(fieldInstances: FieldInstance[]) {
     this.fieldInstancesFormArray = new FormArray([]);
-    this.fieldInstancesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldInstancesFormArray.valid));
+    this.fieldInstancesFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.fieldInstancesFormArray.valid));
 
     for (let i = 0; i < fieldInstances.length; i++) {
       if (fieldInstances[i].fieldSource.fieldTarget.fieldType === FieldType.METRIC) {
@@ -81,7 +82,7 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
         this.fieldInstancesFormArray.push(formGroup);
       }
     }
-    this.valid.emit(this.fieldInstancesFormArray.valid);
+    this.changeIsValid.emit(this.fieldInstancesFormArray.valid);
   }
 
   private createFieldInstanceGroup(index: number, fieldInstance: FieldInstance): FormGroup {
@@ -165,8 +166,8 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
   }
 
   removeMetric(metricGroup: AbstractControl): void {
-    if (!this.editEnabled) {
-      this.edit.emit();
+    if (this.isReview) {
+      this.backToEditPage.emit();
       return;
     }
     if (metricGroup == null || metricGroup.get('mandatory') === null || metricGroup.get('mandatory').value === true) {
@@ -203,6 +204,6 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
   }
 
   public onClickEdit() {
-    this.edit.emit();
+    this.backToEditPage.emit();
   }
 }
