@@ -58,7 +58,7 @@ under the License.
                                 (stepChange)="onStepChange($event)">
   </app-asset-wizard-step-review>
   <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
-                                  [assetForm]="assetForm"
+                                  [asset]="asset"
                                   (stepChange)="onStepChange($event)">
   </app-asset-wizard-step-customer>
   <app-asset-wizard-step-finished *ngIf="step === AssetWizardStep.FINISHED"

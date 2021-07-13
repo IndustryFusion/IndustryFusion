@@ -14,8 +14,12 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWizardStep } from '../asset-wizard-step.model';
+import { CountryQuery } from '../../../../../../store/country/country.query';
+import { SelectItem } from 'primeng/api';
+import { Asset } from '../../../../../../store/asset/asset.model';
+import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
 
 @Component({
   selector: 'app-asset-wizard-step-customer',
@@ -24,19 +28,49 @@ import { AssetWizardStep } from '../asset-wizard-step.model';
 })
 export class AssetWizardStepCustomerComponent implements OnInit {
 
-  @Input() assetForm: FormGroup;
+  @Input() asset: Asset;
   @Output() stepChange = new EventEmitter<number>();
 
-  constructor() { }
+  public countries: SelectItem[] = [];
+  public factorySiteForm: FormGroup;
 
-  ngOnInit(): void {
+  constructor(private countryQuery: CountryQuery,
+              private formBuilder: FormBuilder) {
   }
 
-  onBack() {
+  ngOnInit(): void {
+    this.countryQuery.selectCountries().subscribe(
+      countries => {
+        for (const country of countries) {
+          this.countries.push({ label: country.name, value: country.id });
+        }
+      }
+    );
+
+    this.createFactorySiteForm();
+  }
+
+  private createFactorySiteForm() {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    const companyId = this.asset.companyId;
+    const countryIdGermany = this.countries.find(item => item.label === 'Germany').value;
+
+    this.factorySiteForm = this.formBuilder.group({
+      id: [],
+      name: [null, requiredTextValidator],
+      street: [null, Validators.maxLength(255)],
+      zip: [null, requiredTextValidator],
+      city: [null, [Validators.maxLength(255), CustomFormValidators.requiredZip]],
+      countryId: [countryIdGermany, Validators.required],
+      companyId: [companyId, Validators.required]
+    });
+  }
+
+  public onBack(): void {
     this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA - 1);
   }
 
-  onNext() {
+  public onNext(): void {
     this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA + 1);
   }
 

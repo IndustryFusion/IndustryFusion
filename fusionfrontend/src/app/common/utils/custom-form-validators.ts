@@ -17,9 +17,14 @@ import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 
 export class CustomFormValidators {
   static FLOAT_REGEX = /^[+-]?([0-9]*[.])?[0-9]+$/;
+  static ZIP = /^[0-9]{2,6}$/;
 
   public static requiredFloatingNumber(): ValidatorFn {
     return CustomFormValidators.namedPattern(CustomFormValidators.FLOAT_REGEX, 'floatingNumber');
+  }
+
+  public static requiredZip(): ValidatorFn {
+    return CustomFormValidators.namedPattern(CustomFormValidators.ZIP, 'zipCode');
   }
 
   /**

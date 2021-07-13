@@ -91,6 +91,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
         companyId: this.companyQuery.getActiveId(),
         prefilledAssetSeriesId: assetSeriesId,
       },
+      header: 'Digital Twin Creator for Assets',
       width: '75%'
     });
   }

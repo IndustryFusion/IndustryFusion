@@ -37,6 +37,7 @@ import { AssetSeriesService } from '../../../../store/asset-series/asset-series.
 import { AssetService } from '../../../../store/asset/asset.service';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
+import { CountryResolver } from '../../../../resolvers/country.resolver';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -74,13 +75,14 @@ export class AssetWizardComponent implements OnInit {
               private assetTypesResolver: AssetTypesResolver,
               private fieldsResolver: FieldsResolver,
               private assetTypeQuery: AssetTypeQuery,
+              private countryResolver: CountryResolver,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private config: DynamicDialogConfig) { }
+              private config: DynamicDialogConfig) {
+    this.resolveWizard();
+  }
 
   ngOnInit(): void {
-    this.resolveWizard();
-
     this.asset = { ...this.config.data.asset };
     this.createAssetForm();
 
@@ -181,6 +183,7 @@ export class AssetWizardComponent implements OnInit {
     this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
+    this.countryResolver.resolve().subscribe();
   }
 
   private createAssetForm() {
