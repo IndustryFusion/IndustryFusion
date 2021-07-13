@@ -15,116 +15,13 @@ under the License.
 
 <div class="asset-wizard-step-metrics-thresholds">
   <label class="if-dialog-title">Customize&nbsp;Metrics&nbsp;&amp;&nbsp;Thresholds</label>
-  <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">no metrics available</div>
-  <div *ngIf="(fieldInstancesFormArray?.controls?.length > 0)">
-    <div class="threshold-list-header p-grid">
-      <div class="if-label-small-header p-col-3"> Custom Metric name </div>
-      <div class="if-label-small-header p-col-2"> Metric name </div>
-      <div class="if-label-small-header p-col-2"> Data Source </div>
-      <div class="if-label-small-header p-col-1"> Unit </div>
-      <div class="if-label-small-header p-col-3"> Accuracy </div>
-      <div class="if-label-small-header p-col-1"> </div>
-    </div>
 
-    <p-accordion>
-      <ng-container *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
-        <ng-container [formGroup]="fieldInstance //noinspection InvalidExpressionResultType">
-          <ng-container *ngIf="fieldInstance.get('quantityDataType')?.value !== QuantityDataType.NUMERIC">
-            <div class="p-grid">
-              <label class="if-label p-col-3" displayControlValue="name"></label>
-              <label class="if-label p-col-2" displayControlValue="fieldName"></label>
-              <label class="if-label-normal-weight p-col-2" displayControlValue="sourceRegister"></label>
-              <label class="if-label-small-header p-col-1" displayControlValue="sourceUnitName"></label>
-              <label class="if-label-small-header p-col-3">{{fieldInstance.get('accuracy')?.value | accuracyformat}}</label>
-              <app-trash-button class="p-col-1" [disabled]="fieldInstance.get('mandatory')?.value"
-                                (click)="removeMetric(fieldInstance)"></app-trash-button>
-            </div>
-          </ng-container>
-
-          <ng-container *ngIf="fieldInstance.get('quantityDataType')?.value === QuantityDataType.NUMERIC">
-            <p-accordionTab [disabled]="fieldInstance.get('fieldThresholdType')?.value === FieldThresholdType.DISABLED" >
-              <ng-template pTemplate="header">
-                <div class="p-grid">
-                  <label class="if-label p-col-3" displayControlValue="name"></label>
-                  <label class="if-label p-col-2" displayControlValue="fieldName"></label>
-                  <label class="if-label-normal-weight p-col-2" displayControlValue="sourceRegister"></label>
-                  <label class="if-label-small-header p-col-1" displayControlValue="sourceUnitName"></label>
-                  <label class="if-label-small-header p-col-3">{{fieldInstance.get('accuracy')?.value | accuracyformat}}</label>
-                  <app-trash-button class="p-col-1" [disabled]="fieldInstance.get('mandatory')?.value"
-                                    (click)="removeMetric(fieldInstance)"></app-trash-button>
-                </div>
-              </ng-template>
-
-              <ng-template pTemplate="content">
-                <table id="thresholdTreeTable" style="padding: 10px">
-                  <thead>
-                  <tr>
-                    <th class="tree-line"></th>
-                    <th class="tree-entry" style="width: 0.5rem;"></th>
-                    <th style="width: 1rem;"></th>
-                    <th style="width: 53%"></th>
-                    <th style="width: 10%"></th>
-                    <th style="width: 10%"></th>
-                    <th style="width: 20%"></th>
-                  </tr>
-                  </thead>
-
-                  <tbody>
-                  <ng-container *ngFor="let type of [ThresholdType.ABSOLUTE, ThresholdType.IDEAL, ThresholdType.CRITICAL];">
-                    <tr style="height: 30px">
-                      <td class="tree-line"><div></div></td>
-                      <td class="tree-entry"></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td class="tree-line"><div></div></td>
-                      <td class="tree-entry"></td>
-                      <td colspan="2"><label class="if-label-small">{{ThresholdType.getTypeTitle(type)}}</label></td>
-                      <td colspan="2"><label class="if-label-small-header"> {{type == ThresholdType.ABSOLUTE ? 'Threshold Value' : ''}}</label></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td class="tree-line"> <div></div> </td>
-                      <td class="tree-entry"> <div></div> </td>
-                      <td></td>
-                      <td class="label-thresholds">{{ThresholdType.getLowerLimitTitle(type)}}</td>
-                      <td>
-                        <input class="threshold-input" type="number" pInputText
-                               [formControl]="fieldInstance.get('thresholds.' + type + 'Lower') //noinspection InvalidExpressionResultType">
-                      </td>
-                      <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td class="tree-line"> <div></div> </td>
-                      <td class="tree-entry"> <div></div> </td>
-                      <td></td>
-                      <td class="label-thresholds">{{ThresholdType.getUpperLimitTitle(type)}}</td>
-                      <td>
-                        <input class="threshold-input" type="number" pInputText
-                               [formControl]="fieldInstance.get('thresholds.' + type + 'Upper') //noinspection InvalidExpressionResultType">
-                      </td>
-                      <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
-                      <td></td>
-                    </tr>
-                  </ng-container>
-                  </tbody>
-                </table>
-              </ng-template>
-
-            </p-accordionTab>
-          </ng-container>
-        </ng-container>
-      </ng-container>
-    </p-accordion>
-  </div>
+  <app-asset-wizard-field-instance-metrics [asset]="asset" (valid)="onSetValid($event)"></app-asset-wizard-field-instance-metrics>
 
   <div class="footer">
-    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-    <button type="button" class="if-button button-confirm button-primary" [disabled]="fieldInstancesFormArray?.invalid"
+    <button type="button" class="if-button button-cancel" [disabled]="!readyToTakeNextStep"
+            (click)="onBack()">Back</button>
+    <button type="button" class="if-button button-confirm button-primary" [disabled]="!readyToTakeNextStep"
             (click)="onNext()">Next</button>
   </div>
 </div>
