@@ -13,18 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+@import '../../asset-wizard.component';
 
-@Component({
-  selector: 'app-threshold-list-header',
-  templateUrl: './threshold-list-header.component.html',
-  styleUrls: ['./threshold-list-header.component.scss']
-})
-export class ThresholdListHeaderComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+.asset-wizard-step-overview {
 }
