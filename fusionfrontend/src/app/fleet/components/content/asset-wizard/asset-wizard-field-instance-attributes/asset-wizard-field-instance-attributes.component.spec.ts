@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetWizardFieldInstanceAttributesComponent } from './asset-wizard-field-instance-attributes.component';
 
-describe('AssetSeriesCreateStepFourComponent', () => {
+describe('AssetWizardFieldInstanceAttributesComponent', () => {
   let component: AssetWizardFieldInstanceAttributesComponent;
   let fixture: ComponentFixture<AssetWizardFieldInstanceAttributesComponent>;
 
