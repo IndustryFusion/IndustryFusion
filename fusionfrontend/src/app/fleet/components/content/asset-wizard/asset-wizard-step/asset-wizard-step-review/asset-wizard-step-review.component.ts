@@ -19,11 +19,11 @@ import { Asset } from '../../../../../../store/asset/asset.model';
 import { AssetWizardFieldInstanceMetricsComponent } from '../../asset-wizard-field-instance-metrics/asset-wizard-field-instance-metrics.component';
 
 @Component({
-  selector: 'app-asset-wizard-step-overview',
-  templateUrl: './asset-wizard-step-overview.component.html',
-  styleUrls: ['./asset-wizard-step-overview.component.scss']
+  selector: 'app-asset-wizard-step-review',
+  templateUrl: './asset-wizard-step-review.component.html',
+  styleUrls: ['./asset-wizard-step-review.component.scss']
 })
-export class AssetWizardStepOverviewComponent implements OnInit {
+export class AssetWizardStepReviewComponent implements OnInit {
 
   @ViewChild(AssetWizardFieldInstanceMetricsComponent) metricsChild: AssetWizardFieldInstanceMetricsComponent;
 
@@ -38,11 +38,11 @@ export class AssetWizardStepOverviewComponent implements OnInit {
   }
 
   onBack() {
-     this.stepChange.emit(AssetWizardStep.OVERVIEW - 1);
+     this.stepChange.emit(AssetWizardStep.REVIEW - 1);
   }
 
   onNext() {
-     this.stepChange.emit(AssetWizardStep.OVERVIEW + 1);
+     this.stepChange.emit(AssetWizardStep.REVIEW + 1);
   }
 
   onBackToAttributes() {

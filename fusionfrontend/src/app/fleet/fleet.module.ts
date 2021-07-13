@@ -45,7 +45,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
 import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
-import { AssetWizardStepOverviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-overview/asset-wizard-step-overview.component';
+import { AssetWizardStepReviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-review/asset-wizard-step-review.component';
 import { AssetWizardFieldInstanceMetricsComponent } from './components/content/asset-wizard/asset-wizard-field-instance-metrics/asset-wizard-field-instance-metrics.component';
 import { AssetWizardFieldInstanceAttributesComponent } from './components/content/asset-wizard/asset-wizard-field-instance-attributes/asset-wizard-field-instance-attributes.component';
 
@@ -75,7 +75,7 @@ import { AssetWizardFieldInstanceAttributesComponent } from './components/conten
     AssetWizardStepFinishedComponent,
     AssetWizardStepMetricsThresholdsComponent,
     AssetSeriesCreateFooterComponent,
-    AssetWizardStepOverviewComponent,
+    AssetWizardStepReviewComponent,
     AssetWizardFieldInstanceMetricsComponent,
     AssetWizardFieldInstanceAttributesComponent,
   ],

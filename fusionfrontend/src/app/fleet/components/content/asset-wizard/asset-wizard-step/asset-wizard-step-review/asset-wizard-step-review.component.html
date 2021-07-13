@@ -16,12 +16,12 @@ under the License.
 <div class="asset-wizard-step-overview">
   <label class="if-dialog-title">Review&nbsp;Metrics</label>
 
-  <app-asset-wizard-field-instance-metrics [asset]="asset" [editEnabled]="false"
-                                           (edit)="onBackToMetrics()"></app-asset-wizard-field-instance-metrics>
+  <app-asset-wizard-field-instance-metrics [asset]="asset" [isReview]="true"
+                                           (backToEditPage)="onBackToMetrics()"></app-asset-wizard-field-instance-metrics>
 
   <label class="if-dialog-title">Review&nbsp;Attributes</label>
-  <app-asset-wizard-field-instance-attributes [asset]="asset" [editEnabled]="false"
-                                              (edit)="onBackToAttributes()"></app-asset-wizard-field-instance-attributes>
+  <app-asset-wizard-field-instance-attributes [asset]="asset" [isReview]="true"
+                                              (backToEditPage)="onBackToAttributes()"></app-asset-wizard-field-instance-attributes>
 
   <div class="footer">
     <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
