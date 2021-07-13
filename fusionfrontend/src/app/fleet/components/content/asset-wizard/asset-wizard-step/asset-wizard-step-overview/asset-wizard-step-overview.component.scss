@@ -13,12 +13,7 @@
  * under the License.
  */
 
-export enum AssetWizardStep {
-  GENERAL_INFORMATION = 1,
-  DIGITAL_NAMEPLATE,
-  METRICS_THRESHOLDS,
-  ATTRIBUTES,
-  OVERVIEW,
-  CUSTOMER_DATA,
-  FINISHED
+@import '../../asset-wizard.component';
+
+.asset-wizard-step-overview {
 }
