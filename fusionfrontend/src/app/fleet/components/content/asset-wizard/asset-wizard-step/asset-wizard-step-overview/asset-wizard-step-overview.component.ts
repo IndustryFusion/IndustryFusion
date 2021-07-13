@@ -45,4 +45,10 @@ export class AssetWizardStepOverviewComponent implements OnInit {
      this.stepChange.emit(AssetWizardStep.OVERVIEW + 1);
   }
 
+  onBackToAttributes() {
+    this.stepChange.emit(AssetWizardStep.ATTRIBUTES);
+  }
+  onBackToMetrics() {
+    this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS);
+  }
 }

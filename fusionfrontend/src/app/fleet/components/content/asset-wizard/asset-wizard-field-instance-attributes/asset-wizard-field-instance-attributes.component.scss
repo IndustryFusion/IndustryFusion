@@ -29,6 +29,11 @@
   .value-input {
     height: 2rem;
   }
+
+  .edit-col {
+    display: flex;
+    justify-content: end;
+  }
 }
 
 :host ::ng-deep .p-grid {
@@ -37,6 +42,10 @@
 }
 
 :host ::ng-deep app-trash-button {
+  padding: 2px !important;
+}
+
+:host ::ng-deep app-edit-button {
   padding: 2px !important;
 }
 

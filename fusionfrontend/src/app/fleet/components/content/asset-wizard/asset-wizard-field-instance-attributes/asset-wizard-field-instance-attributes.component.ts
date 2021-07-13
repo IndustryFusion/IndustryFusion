@@ -29,7 +29,9 @@ import { FieldQuery } from '../../../../../store/field/field-query.service';
 export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
 
   @Input() asset: Asset;
+  @Input() editEnabled = true;
   @Output() valid = new EventEmitter<boolean>();
+  @Output() edit = new EventEmitter<void>();
 
   fieldInstancesFormArray: FormArray;
 
@@ -80,7 +82,12 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
   }
 
   public removeAttribute(attributeGroup: AbstractControl): void {
-    if (attributeGroup == null || attributeGroup.get('mandatory') === null || attributeGroup.get('mandatory').value === true) {
+    if (!this.editEnabled) {
+      this.edit.emit();
+      return;
+    }
+    if (attributeGroup == null
+      || attributeGroup.get('mandatory') === null || attributeGroup.get('mandatory').value === true) {
       return;
     }
     const indexToRemove: number = attributeGroup.get('index').value;
@@ -107,5 +114,9 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
         this.asset.fieldInstances[attributeGroup.get('index').value] = this.getFieldInstanceFromForm(attributeGroup);
       });
     }
+  }
+
+  public onClickEdit() {
+    this.edit.emit();
   }
 }

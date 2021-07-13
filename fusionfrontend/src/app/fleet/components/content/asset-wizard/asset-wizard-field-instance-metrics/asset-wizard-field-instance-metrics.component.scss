@@ -16,8 +16,14 @@
 @import '../asset-wizard.component';
 @import 'components/labels';
 
-#thresholdTreeTable {
+.asset-wizard-field-instance-metrics {
+  .edit-col {
+    display: flex;
+    justify-content: end;
+  }
+}
 
+#thresholdTreeTable {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   font-size: $regular-font-size;
@@ -79,6 +85,10 @@
 }
 
 :host ::ng-deep app-trash-button {
+  padding: 2px !important;
+}
+
+:host ::ng-deep app-edit-button {
   padding: 2px !important;
 }
 

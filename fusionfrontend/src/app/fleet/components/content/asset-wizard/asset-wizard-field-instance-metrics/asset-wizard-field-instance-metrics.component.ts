@@ -33,7 +33,9 @@ import { QuantityTypeQuery } from '../../../../../store/quantity-type/quantity-t
 export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
 
   @Input() asset: Asset;
+  @Input() editEnabled = true;
   @Output() valid = new EventEmitter<boolean>();
+  @Output() edit = new EventEmitter<void>();
 
   ThresholdType = ThresholdType;
   QuantityDataType = QuantityDataType;
@@ -163,6 +165,10 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
   }
 
   removeMetric(metricGroup: AbstractControl): void {
+    if (!this.editEnabled) {
+      this.edit.emit();
+      return;
+    }
     if (metricGroup == null || metricGroup.get('mandatory') === null || metricGroup.get('mandatory').value === true) {
       return;
     }
@@ -194,5 +200,9 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
       criticalThreshold: AssetWizardFieldInstanceMetricsComponent.getThresholdFromForm(thresholdGroup,
         ThresholdType.CRITICAL, quantityDataType)
     };
+  }
+
+  public onClickEdit() {
+    this.edit.emit();
   }
 }
