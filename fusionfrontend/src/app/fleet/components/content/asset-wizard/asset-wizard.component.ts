@@ -57,6 +57,7 @@ export class AssetWizardComponent implements OnInit {
   public isAssetSeriesLocked = false;
 
   public metricsValid: boolean;
+  public attributesValid: boolean;
 
   public AssetWizardStep = AssetWizardStep;
 
@@ -218,6 +219,11 @@ export class AssetWizardComponent implements OnInit {
 
   setMetricsValid(isValid: boolean) {
     this.metricsValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setAttributesValid(isValid: boolean) {
+    this.attributesValid = isValid;
     this.changeDetectorRef.detectChanges();
   }
 }

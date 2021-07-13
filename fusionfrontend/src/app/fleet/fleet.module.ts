@@ -44,8 +44,10 @@ import { AssetSeriesCreateMetricsComponent } from './components/content/asset-se
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
-import { ThresholdListHeaderComponent } from './components/content/threshold-list-header/threshold-list-header.component';
 import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
+import { AssetWizardStepReviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-review/asset-wizard-step-review.component';
+import { AssetWizardFieldInstanceMetricsComponent } from './components/content/asset-wizard/asset-wizard-field-instance-metrics/asset-wizard-field-instance-metrics.component';
+import { AssetWizardFieldInstanceAttributesComponent } from './components/content/asset-wizard/asset-wizard-field-instance-attributes/asset-wizard-field-instance-attributes.component';
 
 
 @NgModule({
@@ -72,8 +74,10 @@ import { AssetSeriesCreateFooterComponent } from './components/content/asset-ser
     AssetWizardStepCustomerComponent,
     AssetWizardStepFinishedComponent,
     AssetWizardStepMetricsThresholdsComponent,
-    ThresholdListHeaderComponent,
     AssetSeriesCreateFooterComponent,
+    AssetWizardStepReviewComponent,
+    AssetWizardFieldInstanceMetricsComponent,
+    AssetWizardFieldInstanceAttributesComponent,
   ],
     imports: [
         IFCommon,
