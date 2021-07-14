@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.service.draft;
 import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.Room;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +38,10 @@ public class RoomDraftService {
         return Room.getUnspecificRoomInstance();
     }
 
-    public Room initUnspecificRoomDraftWithFactorySite(final Long companyId, final Country country) {
+    public Room initUnspecificRoomDraftWithFactorySite(final Long companyId, final Country country,
+                                                       final FactorySiteType factorySiteType) {
         Room transientRoom = initUnspecificRoomDraft();
-        FactorySite transientFactorySite = factorySiteDraftService.initDraft(companyId, country);
+        FactorySite transientFactorySite = factorySiteDraftService.initDraft(companyId, country, factorySiteType);
         transientRoom.setFactorySite(transientFactorySite);
         return transientRoom;
     }

@@ -19,6 +19,7 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FactorySite;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import io.fusion.fusionbackend.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class FactorySiteDraftService {
         this.companyService = companyService;
     }
 
-    public FactorySite initDraft(final Long companyId, final Country country) {
+    public FactorySite initDraft(final Long companyId, final Country country, final FactorySiteType factorySiteType) {
         if (country == null) {
             throw new ResourceNotFoundException();
         }
@@ -44,6 +45,7 @@ public class FactorySiteDraftService {
 
         transientFactorySite.setCompany(company);
         transientFactorySite.setCountry(country);
+        transientFactorySite.setType(factorySiteType);
 
         return transientFactorySite;
     }

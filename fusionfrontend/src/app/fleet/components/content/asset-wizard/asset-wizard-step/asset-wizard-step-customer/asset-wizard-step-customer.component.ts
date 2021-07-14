@@ -20,6 +20,7 @@ import { CountryQuery } from '../../../../../../store/country/country.query';
 import { SelectItem } from 'primeng/api';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
+import { FactorySite, FactorySiteType } from '../../../../../../store/factory-site/factory-site.model';
 
 @Component({
   selector: 'app-asset-wizard-step-customer',
@@ -30,6 +31,8 @@ export class AssetWizardStepCustomerComponent implements OnInit {
 
   @Input() asset: Asset;
   @Output() stepChange = new EventEmitter<number>();
+  @Output() createAsset = new EventEmitter<void>();
+  @Output() valid = new EventEmitter<boolean>();
 
   public countries: SelectItem[] = [];
   public factorySiteForm: FormGroup;
@@ -52,26 +55,53 @@ export class AssetWizardStepCustomerComponent implements OnInit {
 
   private createFactorySiteForm() {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    const companyId = this.asset.companyId;
     const countryIdGermany = this.countries.find(item => item.label === 'Germany').value;
 
     this.factorySiteForm = this.formBuilder.group({
       id: [],
+      companyId: [null, Validators.required],
       name: [null, requiredTextValidator],
-      street: [null, Validators.maxLength(255)],
-      zip: [null, requiredTextValidator],
-      city: [null, [Validators.maxLength(255), CustomFormValidators.requiredZip]],
+      line1: ['', Validators.maxLength(255)],
+      line2: ['', Validators.maxLength(255)],
+      zip: [null, [Validators.maxLength(255), CustomFormValidators.requiredZip]],
+      city: [null, requiredTextValidator],
       countryId: [countryIdGermany, Validators.required],
-      companyId: [companyId, Validators.required]
+      type: [null, Validators.required],
+      imageKey: [null],
     });
+
+    if (this.asset.room?.factorySite) {
+      this.factorySiteForm.patchValue(this.asset.room.factorySite);
+    }
+    this.factorySiteForm.get('type').setValue(FactorySiteType.FLEETMANAGER);
+  }
+
+  public isReadyForNextStep(): boolean {
+    return this.factorySiteForm.valid;
   }
 
   public onBack(): void {
     this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA - 1);
   }
 
-  public onNext(): void {
-    this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA + 1);
+  public onSave(): void {
+    if (this.isReadyForNextStep()) {
+      this.valid.emit(this.factorySiteForm.valid);
+      this.saveFactorySite();
+      this.createAsset.emit();
+    }
+  }
+
+  private saveFactorySite() {
+    if (this.factorySiteForm.valid) {
+
+      const country = this.countryQuery.getEntity(this.factorySiteForm.get('countryId').value);
+      this.asset.room.factorySite = { ...this.factorySiteForm.getRawValue() as FactorySite };
+      this.asset.room.factorySite.country = { ...country};
+
+      console.log(this.asset.room.factorySite);
+      console.log('Fertiges Asset: ', this.asset);
+    }
   }
 
 }

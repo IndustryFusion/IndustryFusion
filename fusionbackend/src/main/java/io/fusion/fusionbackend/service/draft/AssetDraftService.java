@@ -21,6 +21,7 @@ import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.Room;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import io.fusion.fusionbackend.repository.CountryRepository;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import io.fusion.fusionbackend.service.FieldInstanceService;
@@ -58,7 +59,8 @@ public class AssetDraftService {
         final Company company = assetSeries.getCompany();
 
         final Country countryGermany = countryRepository.findCountryByName("Germany").get();
-        final Room unspecificRoom = roomDraftService.initUnspecificRoomDraftWithFactorySite(companyId, countryGermany);
+        final Room unspecificRoom = roomDraftService.initUnspecificRoomDraftWithFactorySite(companyId, countryGermany,
+                                        FactorySiteType.FLEETMANAGER);
 
         final Asset transientAsset = Asset.builder()
                 .name(assetSeries.getName())

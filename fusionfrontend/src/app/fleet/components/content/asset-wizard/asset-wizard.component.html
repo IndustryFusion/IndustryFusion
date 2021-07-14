@@ -59,7 +59,8 @@ under the License.
   </app-asset-wizard-step-review>
   <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
                                   [asset]="asset"
-                                  (stepChange)="onStepChange($event)">
+                                  (stepChange)="onStepChange($event)" (createAsset)="onSaveAsset()"
+                                  (valid)="setCustomerDataValid($event)">
   </app-asset-wizard-step-customer>
   <app-asset-wizard-step-finished *ngIf="step === AssetWizardStep.FINISHED"
                                   [assetForm]="assetForm"

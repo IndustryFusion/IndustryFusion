@@ -17,7 +17,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Asset } from '../../../../store/asset/asset.model';
 import { DialogType } from '../../../../common/models/dialog-type.model';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetWizardStep } from './asset-wizard-step/asset-wizard-step.model';
 import { AssetSeriesResolver } from '../../../../resolvers/asset-series.resolver';
 import { AssetResolver } from '../../../../resolvers/asset.resolver';
@@ -59,6 +59,7 @@ export class AssetWizardComponent implements OnInit {
 
   public metricsValid: boolean;
   public attributesValid: boolean;
+  public customerDataValid: boolean;
 
   public AssetWizardStep = AssetWizardStep;
 
@@ -78,7 +79,8 @@ export class AssetWizardComponent implements OnInit {
               private countryResolver: CountryResolver,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private config: DynamicDialogConfig) {
+              private config: DynamicDialogConfig,
+              private ref: DynamicDialogRef) {
     this.resolveWizard();
   }
 
@@ -101,7 +103,7 @@ export class AssetWizardComponent implements OnInit {
 
   onStepChange(step: number) {
     if (this.step === AssetWizardStep.GENERAL_INFORMATION) {
-     this.refreshAssetFormCreateAssetDraft(step);
+     this.initAssetDraftAndUpdateForm(step);
     } else {
       this.step = step;
     }
@@ -113,7 +115,7 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  private refreshAssetFormCreateAssetDraft(step: number) {
+  private initAssetDraftAndUpdateForm(step: number) {
     const assetName: string = this.assetForm.get('name').value;
     const assetDescription: string = this.assetForm.get('description').value;
 
@@ -123,6 +125,7 @@ export class AssetWizardComponent implements OnInit {
         this.asset.name = assetName;
         this.asset.description = assetDescription;
 
+        console.log('asset', asset);
         this.createAssetForm();
         this.step = step;
       }
@@ -130,7 +133,8 @@ export class AssetWizardComponent implements OnInit {
   }
 
   onSaveAsset(): void {
-    if (this.asset && this.assetForm.valid && this.asset.fieldInstances) {
+    if (this.asset && this.assetForm.valid && this.asset.fieldInstances && this.asset.room
+        && this.metricsValid && this.attributesValid && this.customerDataValid) {
       this.asset.name = this.assetForm.get('name').value;
       this.asset.description = this.assetForm.get('description').value;
       this.asset.ceCertified = this.assetForm.get('ceCertified').value;
@@ -152,6 +156,11 @@ export class AssetWizardComponent implements OnInit {
       } else if (this.type === DialogType.CREATE) {
         this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeries.id, this.asset).subscribe();
       }
+
+      this.ref.close(this.asset);
+
+    } else {
+      this.ref.close();
     }
   }
 
@@ -228,5 +237,9 @@ export class AssetWizardComponent implements OnInit {
   setAttributesValid(isValid: boolean) {
     this.attributesValid = isValid;
     this.changeDetectorRef.detectChanges();
+  }
+
+  setCustomerDataValid(isValid: boolean) {
+    this.customerDataValid = isValid;
   }
 }

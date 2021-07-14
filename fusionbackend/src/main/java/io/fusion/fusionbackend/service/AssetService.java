@@ -155,6 +155,13 @@ public class AssetService {
             );
         });
 
+        if (asset.getRoom() != null && asset.getRoom().getFactorySite() != null) {
+            final Room newRoom = roomService.createRoomAndFactorySite(companyId, asset.getRoom(),
+                    asset.getRoom().getFactorySite());
+            asset.setRoom(newRoom);
+            newRoom.getAssets().add(asset);
+        }
+
         validate(asset);
 
         return assetRepository.save(asset);

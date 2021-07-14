@@ -25,7 +25,7 @@ under the License.
 
       <div class="input-div">
         <label class="if-label">Street</label>
-        <input type="text" pInputText formControlName="street" />
+        <input type="text" pInputText formControlName="line1" />
       </div>
 
       <div class="input-div">
@@ -54,7 +54,7 @@ under the License.
     <div class="footer">
       <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
       <button type="button" class="if-button button-confirm button-primary" [disabled]="factorySiteForm.invalid"
-              (click)="onNext()">Next</button>
+              (click)="onSave()">Create Digital Twin</button>
     </div>
   </form>
 </div>

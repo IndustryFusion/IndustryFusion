@@ -54,5 +54,6 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
   public onSetValid(isValid: boolean): void {
     this.readyToTakeNextStep = isValid;
+    this.valid.emit(isValid);
   }
 }
