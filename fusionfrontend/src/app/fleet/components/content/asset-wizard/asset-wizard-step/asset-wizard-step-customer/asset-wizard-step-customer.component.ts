@@ -19,7 +19,6 @@ import { AssetWizardStep } from '../asset-wizard-step.model';
 import { CountryQuery } from '../../../../../../store/country/country.query';
 import { SelectItem } from 'primeng/api';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
 import { FactorySite, FactorySiteType } from '../../../../../../store/factory-site/factory-site.model';
 
 @Component({
@@ -54,17 +53,16 @@ export class AssetWizardStepCustomerComponent implements OnInit {
   }
 
   private createFactorySiteForm() {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const countryIdGermany = this.countries.find(item => item.label === 'Germany').value;
 
     this.factorySiteForm = this.formBuilder.group({
       id: [],
       companyId: [null, Validators.required],
-      name: [null, requiredTextValidator],
+      name: [null, Validators.maxLength(255)],
       line1: ['', Validators.maxLength(255)],
       line2: ['', Validators.maxLength(255)],
-      zip: [null, [Validators.maxLength(255), CustomFormValidators.requiredZip]],
-      city: [null, requiredTextValidator],
+      zip: [null, [Validators.maxLength(255)]],
+      city: [null, Validators.maxLength(255)],
       countryId: [countryIdGermany, Validators.required],
       type: [null, Validators.required],
       imageKey: [null],
@@ -92,15 +90,22 @@ export class AssetWizardStepCustomerComponent implements OnInit {
     }
   }
 
+  private hasData(factorySite: FactorySite): boolean {
+    return factorySite.zip != null || factorySite.city != null || factorySite.name != null
+      || factorySite.line1 != null || factorySite.id != null;
+  }
+
   private saveFactorySite() {
     if (this.factorySiteForm.valid) {
 
-      const country = this.countryQuery.getEntity(this.factorySiteForm.get('countryId').value);
       this.asset.room.factorySite = { ...this.factorySiteForm.getRawValue() as FactorySite };
-      this.asset.room.factorySite.country = { ...country};
 
-      console.log(this.asset.room.factorySite);
-      console.log('Fertiges Asset: ', this.asset);
+      if (this.hasData(this.asset.room.factorySite)) {
+        const country = this.countryQuery.getEntity(this.factorySiteForm.get('countryId').value);
+        this.asset.room.factorySite.country = { ...country};
+      } else {
+        this.asset.room = null;
+      }
     }
   }
 
