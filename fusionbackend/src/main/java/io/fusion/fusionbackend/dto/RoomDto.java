@@ -30,6 +30,7 @@ import java.util.Set;
 public class RoomDto {
     private Long id;
     private Long factorySiteId;
+    private FactorySiteDto factorySite;
 
     @Builder.Default
     private Set<Long> assetIds = new LinkedHashSet<>();

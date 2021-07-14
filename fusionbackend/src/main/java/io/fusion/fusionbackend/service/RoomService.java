@@ -83,6 +83,20 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
+    public Room createRoomAndFactorySite(final Long companyId, final Room room, final FactorySite factorySite) {
+        final FactorySite newFactorySite = factorySiteService.createFactorySite(companyId,
+                factorySite.getCountry().getId(), factorySite);
+        newFactorySite.getRooms().add(room);
+        room.setFactorySite(newFactorySite);
+
+        return roomRepository.save(room);
+    }
+
+    public Room createUnspecificRoom(final Long companyId, final Long factorySiteId) {
+        Room newUnspecificRoom = Room.getUnspecificRoomInstance();
+        return createRoom(companyId, factorySiteId, newUnspecificRoom);
+    }
+
     public Room updateRoom(final Long companyId, final Long factorySiteId, final Long roomId, final Room sourceRoom) {
         final Room targetRoom = getRoomCheckFullPath(companyId, factorySiteId, roomId, false);
 

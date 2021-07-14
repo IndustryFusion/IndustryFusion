@@ -19,7 +19,6 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FactorySite;
-import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.FactorySiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -35,9 +34,6 @@ public class FactorySiteService {
     private final CompanyService companyService;
     private final RoomService roomService;
     private final CountryService countryService;
-
-    private final String noSpecificRoomName = "No specific room";
-    private final String noSpecificRoomDescription = "No specific room";
 
     @Autowired
     public FactorySiteService(FactorySiteRepository factorySiteRepository, CompanyService companyService,
@@ -62,7 +58,8 @@ public class FactorySiteService {
     }
 
     @Transactional
-    public FactorySite createFactorySite(final Long companyId, final Long countryId, final FactorySite factorySite) {
+    public FactorySite createFactorySiteWithUnspecificRoom(final Long companyId, final Long countryId,
+                                                           final FactorySite factorySite) {
         final Company company = companyService.getCompany(companyId, false);
         final Country country = countryService.getCountry(countryId);
 
@@ -71,13 +68,21 @@ public class FactorySiteService {
         factorySite.setCountry(country);
         FactorySite newFactorySite = factorySiteRepository.save(factorySite);
 
-        Room newNoSpecificRoom = Room.builder()
-                        .name(noSpecificRoomName)
-                        .description(noSpecificRoomDescription)
-                        .build();
-        roomService.createRoom(companyId, newFactorySite.getId(), newNoSpecificRoom);
+        roomService.createUnspecificRoom(companyId, newFactorySite.getId());
 
         return newFactorySite;
+    }
+
+    @Transactional
+    public FactorySite createFactorySite(final Long companyId, final Long countryId, final FactorySite factorySite) {
+        final Company company = companyService.getCompany(companyId, false);
+        final Country country = countryService.getCountry(countryId);
+
+        company.getFactorySites().add(factorySite);
+        factorySite.setCompany(company);
+        factorySite.setCountry(country);
+
+        return factorySiteRepository.save(factorySite);
     }
 
     public FactorySite updateFactorySite(final Long companyId, final Long factorySiteId,

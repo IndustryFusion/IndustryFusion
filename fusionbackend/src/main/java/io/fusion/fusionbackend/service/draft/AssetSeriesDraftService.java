@@ -13,13 +13,15 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.service;
+package io.fusion.fusionbackend.service.draft;
 
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.enums.PublicationState;
+import io.fusion.fusionbackend.service.AssetTypeTemplateService;
+import io.fusion.fusionbackend.service.CompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

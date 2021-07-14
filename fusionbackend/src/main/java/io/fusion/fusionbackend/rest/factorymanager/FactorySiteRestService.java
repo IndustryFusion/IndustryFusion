@@ -61,7 +61,10 @@ public class FactorySiteRestService {
     @PostMapping(path = "/companies/{companyId}/factorysites")
     public FactorySiteDto createFactorySite(@PathVariable final Long companyId,
                                          @RequestBody final FactorySiteDto factorySiteDto) {
-        return factorySiteMapper.toDto(factorySiteService.createFactorySite(companyId, factorySiteDto.getCountryId(),
+        final Long countryId = factorySiteDto.getCountry() != null ? factorySiteDto.getCountry().getId()
+                : factorySiteDto.getCountryId();
+
+        return factorySiteMapper.toDto(factorySiteService.createFactorySiteWithUnspecificRoom(companyId, countryId,
                 factorySiteMapper.toEntity(factorySiteDto)),
                 false);
     }
