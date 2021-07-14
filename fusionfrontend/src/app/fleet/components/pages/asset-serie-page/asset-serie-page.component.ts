@@ -15,8 +15,7 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { AssetSeriesQuery } from '../../../../store/asset-series/asset-series.query';
@@ -78,7 +77,7 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
               const factorySite: FactorySite = factorySites.find(
                 factorySiteValue => factorySiteValue.id === rooms.find(
                   roomValue => roomValue.id === asset.roomId
-                ).factorySiteId
+                )?.factorySiteId
               );
               combined.push({ id: asset.id, asset, factorySite });
             }
@@ -87,8 +86,11 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
       ));
 
       this.factorySites$ = this.assetsCombined$.pipe(
-        map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.factorySite))
+        map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.factorySite)
+          .filter(factorySite => factorySite != null))
       );
+
+      this.factorySites$.subscribe(factorySites => console.log('factorySites', factorySites));
     }
   }
 }

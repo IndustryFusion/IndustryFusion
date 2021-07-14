@@ -26,7 +26,7 @@ under the License.
 <app-factory-site-map [factorySites]="factorySites$ | async"></app-factory-site-map>
 
 <div class="list-header">
-  {{ (assetsCombined$ | async)?.length }} Asset <span *ngIf="(assetsCombined$ | async)?.length > 1">s</span>
+  {{ (assetsCombined$ | async)?.length }} Asset<span *ngIf="(assetsCombined$ | async)?.length > 1">s</span>
 </div>
 <p-table class="list-container"
          [value]="assetsCombined$ | async"
@@ -51,7 +51,7 @@ under the License.
       <td >{{assetsCombined.factorySite?.line1}} {{assetsCombined.factorySite?.line2}}</td>
       <td >{{assetsCombined.factorySite?.zip}}</td>
       <td >{{assetsCombined.factorySite?.city}}</td>
-      <td >{{assetsCombined.factorySite?.country}}</td>
+      <td >{{assetsCombined.factorySite?.country?.name}}</td>
       <td >{{assetsCombined.asset?.installationDate | date}}</td>
     </tr>
   </ng-template>
