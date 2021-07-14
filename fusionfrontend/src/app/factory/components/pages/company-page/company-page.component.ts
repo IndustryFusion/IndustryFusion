@@ -54,7 +54,7 @@ export class CompanyPageComponent implements OnInit, OnDestroy {
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.companyQuery.selectActive();
     this.companyId = this.companyQuery.getActiveId();
-    this.factorySiteQuery.selectFactorySitesOfCompany(this.companyId)
+    this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(this.companyId)
       .pipe(
         takeUntil(this.unSubscribe$)
       ).subscribe(

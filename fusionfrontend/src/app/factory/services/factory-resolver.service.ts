@@ -103,7 +103,7 @@ export class FactoryResolver {
       this.assetDetailsService.getAssetDetailsOfCompany(companyId).subscribe();
 
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
-      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompany(companyId);
+      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
       this.rooms$ = this.roomQuery.selectAllRooms();
       this.assets$ = this.assetQuery.selectAssetsOfCompany(companyId);
       this.assetDetailsQuery.selectAssetDetailsOfCompany(companyId).pipe(
@@ -116,7 +116,7 @@ export class FactoryResolver {
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
-      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompany(companyId);
+      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
       this.rooms$ = this.roomQuery.selectAllRooms();
       this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();

@@ -73,7 +73,7 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
-    this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCount(this.companyId);
+    this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCountInFactoryManager(this.companyId);
     this.createFactorySiteForm(this.formBuilder);
   }
 

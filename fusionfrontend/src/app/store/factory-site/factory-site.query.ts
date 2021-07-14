@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { BaseQueryEntity } from '../basequery';
-import { FactorySite } from './factory-site.model';
+import { FactorySite, FactorySiteType } from './factory-site.model';
 import { FactorySiteState, FactorySiteStore } from './factory-site.store';
 
 @Injectable({ providedIn: 'root' })
@@ -26,9 +26,10 @@ export class FactorySiteQuery extends BaseQueryEntity<FactorySiteState, FactoryS
     super(store);
   }
 
-  selectFactorySitesOfCompany(companyId: ID): Observable<FactorySite[]> {
+  selectFactorySitesOfCompanyInFactoryManager(companyId: ID): Observable<FactorySite[]> {
     return this.selectAll({
       filterBy: entity => String(entity.companyId) === String(companyId)
+        && entity.type !== FactorySiteType.FLEETMANAGER
     });
   }
 }

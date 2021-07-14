@@ -41,5 +41,6 @@ export class FactorySiteWithAssetCount extends FactorySite {
 
 export enum FactorySiteType {
   HEADQUARTER = 'HEADQUARTER',
-  FABRICATION = 'FABRICATION'
+  FABRICATION = 'FABRICATION',
+  FLEETMANAGER = 'FLEETMANAGER',
 }
