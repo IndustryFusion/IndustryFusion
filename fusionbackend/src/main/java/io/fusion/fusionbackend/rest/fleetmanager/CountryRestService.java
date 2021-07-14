@@ -17,7 +17,6 @@ package io.fusion.fusionbackend.rest.fleetmanager;
 
 import io.fusion.fusionbackend.dto.CountryDto;
 import io.fusion.fusionbackend.dto.mappers.CountryMapper;
-import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
