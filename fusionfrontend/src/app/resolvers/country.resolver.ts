@@ -24,6 +24,6 @@ export class CountryResolver implements Resolve<Country[]> {
   constructor(private countryService: CountryService) { }
 
   resolve(): Observable<Country[]> {
-    return this.countryService.getItems();
+    return this.countryService.getCountries();
   }
 }

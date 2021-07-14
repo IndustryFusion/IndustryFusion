@@ -61,18 +61,21 @@ public class FactorySiteService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public FactorySite createFactorySite(final Long companyId, final FactorySite factorySite) {
+    @Transactional
+    public FactorySite createFactorySite(final Long companyId, final Long countryId, final FactorySite factorySite) {
         final Company company = companyService.getCompany(companyId, false);
-        final Country country = countryService.getCountry(factorySite.getCountry().getId());
+        final Country country = countryService.getCountry(countryId);
 
         company.getFactorySites().add(factorySite);
         factorySite.setCompany(company);
         factorySite.setCountry(country);
         FactorySite newFactorySite = factorySiteRepository.save(factorySite);
 
-        Room noSpecificRoom =
-                Room.builder().name(noSpecificRoomName).description(noSpecificRoomDescription).build();
-        roomService.createRoom(companyId, newFactorySite.getId(), noSpecificRoom);
+        Room newNoSpecificRoom = Room.builder()
+                        .name(noSpecificRoomName)
+                        .description(noSpecificRoomDescription)
+                        .build();
+        roomService.createRoom(companyId, newFactorySite.getId(), newNoSpecificRoom);
 
         return newFactorySite;
     }

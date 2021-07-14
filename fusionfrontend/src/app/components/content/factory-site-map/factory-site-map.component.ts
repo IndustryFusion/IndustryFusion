@@ -255,7 +255,8 @@ export class FactorySiteMapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.modalMode && changes.factorySite && (this.factorySite.zip || this.factorySite.city)) {
-      const address = this.factorySite.line1 + ' ' + this.factorySite.zip + ' ' + this.factorySite.city + ' ' + this.factorySite.country;
+      const address = this.factorySite.line1 + ' ' + this.factorySite.zip + ' ' + this.factorySite.city + ' '
+        + this.factorySite.country.name;
       this.placeMarkerForFactorySite(address);
     }
   }

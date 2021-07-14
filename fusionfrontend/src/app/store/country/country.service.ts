@@ -17,7 +17,7 @@ export class CountryService {
   constructor(private countryStore: CountryStore, private http: HttpClient) {
   }
 
-  getItems(): Observable<Country[]> {
+  getCountries(): Observable<Country[]> {
     const path = `countries`;
     return this.http.get<Country[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
@@ -25,7 +25,7 @@ export class CountryService {
       }));
   }
 
-  getItem(countryId: ID): Observable<Country> {
+  getCountry(countryId: ID): Observable<Country> {
     const path = `countries/${countryId}`;
     return this.http.get<Country>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {

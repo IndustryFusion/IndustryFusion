@@ -16,6 +16,7 @@
 import { ID } from '@datorama/akita';
 import { BaseEntity } from '../baseentity.model';
 import { Room } from '../room/room.model';
+import { Country } from '../country/country.model';
 
 export class FactorySite extends BaseEntity {
   companyId: ID;
@@ -26,7 +27,8 @@ export class FactorySite extends BaseEntity {
   line2: string;
   city: string;
   zip: string;
-  country: string;
+  countryId: ID;
+  country: Country;
   imageKey: string;
   latitude: number;
   longitude: number;

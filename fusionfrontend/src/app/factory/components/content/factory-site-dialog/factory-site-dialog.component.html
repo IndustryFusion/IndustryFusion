@@ -53,7 +53,10 @@ under the License.
 
           <div class="input-div p-grid p-dir-col">
             <label class="p-col if-label">Country</label>
-            <input type="text" pInputText formControlName="country" placeholder="Country" class="address-input p-col">
+            <p-dropdown class="" [options]="countries" formControlName="countryId"
+                        filter="true" resetFilterOnHide="true"
+                        placeholder="Select a country...">
+            </p-dropdown>
           </div>
         </div>
 
