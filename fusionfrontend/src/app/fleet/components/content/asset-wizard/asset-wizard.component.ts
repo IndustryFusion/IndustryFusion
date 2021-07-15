@@ -133,7 +133,7 @@ export class AssetWizardComponent implements OnInit {
   }
 
   onSaveAsset(): void {
-    if (this.asset && this.assetForm.valid && this.asset.fieldInstances && this.asset.room
+    if (this.asset && this.assetForm.valid && this.asset.fieldInstances
         && this.metricsValid && this.attributesValid && this.customerDataValid) {
       this.asset.name = this.assetForm.get('name').value;
       this.asset.description = this.assetForm.get('description').value;

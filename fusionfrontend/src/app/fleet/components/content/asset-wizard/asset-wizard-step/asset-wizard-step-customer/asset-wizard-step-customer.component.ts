@@ -91,7 +91,7 @@ export class AssetWizardStepCustomerComponent implements OnInit {
     }
   }
 
-  private hasData(): boolean {
+  private hasNotMandatoryData(): boolean {
     const factorySite: FactorySite =  this.asset.room.factorySite;
     return factorySite.zip != null || factorySite.city != null || factorySite.name != null
       || factorySite.line1 != null || factorySite.id != null;
@@ -102,7 +102,7 @@ export class AssetWizardStepCustomerComponent implements OnInit {
 
       this.asset.room.factorySite = { ...this.factorySiteForm.getRawValue() as FactorySite };
 
-      if (this.hasData()) {
+      if (this.hasNotMandatoryData()) {
         const country = this.countryQuery.getEntity(this.factorySiteForm.get('countryId').value);
         this.asset.room.factorySite.country = { ...country};
 
@@ -111,6 +111,7 @@ export class AssetWizardStepCustomerComponent implements OnInit {
           (coordinate: Coordinate)  => this.setCoordinateAndCreateAsset(coordinate));
       } else {
         this.asset.room = null;
+        this.createAsset.emit();
       }
     }
   }

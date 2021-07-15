@@ -25,6 +25,7 @@ import { RoomService } from '../room/room.service';
 import { AssetDetailsStore } from '../asset-details/asset-details.store';
 import { AssetDetailsService } from '../asset-details/asset-details.service';
 import { AssetDetails } from '../asset-details/asset-details.model';
+import { FactorySiteService } from '../factory-site/factory-site.service';
 
 
 @Injectable({
@@ -38,6 +39,7 @@ export class AssetService {
   constructor(private assetStore: AssetStore,
               private assetDetailsService: AssetDetailsService,
               private assetDetailsStore: AssetDetailsStore,
+              private factorySiteService: FactorySiteService,
               private roomService: RoomService,
               private http: HttpClient) { }
 
@@ -101,9 +103,18 @@ export class AssetService {
       .pipe(
         switchMap(savedAsset => {
           this.assetStore.upsertCached(savedAsset);
-          const assetDetails = this.assetDetailsService.getAssetDetails(savedAsset.companyId, savedAsset.id).pipe(tap(entity => {
+
+          const assetDetails = this.assetDetailsService.getAssetDetails(savedAsset.companyId, savedAsset.id)
+            .pipe(tap(entity => {
             this.assetDetailsStore.upsertCached(entity);
           }));
+
+         // this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId).subscribe();
+          if (savedAsset.room) {
+            this.factorySiteService.getFactorySite(savedAsset.companyId, savedAsset.room.factorySite.id).subscribe();
+            this.roomService.getRoom(savedAsset.companyId, savedAsset.room.factorySite.id, savedAsset.roomId, false)
+              .subscribe();
+          }
           return assetDetails.pipe(map(entity => entity.id));
         })
     );
