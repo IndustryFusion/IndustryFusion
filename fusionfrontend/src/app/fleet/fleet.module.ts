@@ -48,6 +48,7 @@ import { AssetSeriesCreateFooterComponent } from './components/content/asset-ser
 import { AssetWizardStepReviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-review/asset-wizard-step-review.component';
 import { AssetWizardFieldInstanceMetricsComponent } from './components/content/asset-wizard/asset-wizard-field-instance-metrics/asset-wizard-field-instance-metrics.component';
 import { AssetWizardFieldInstanceAttributesComponent } from './components/content/asset-wizard/asset-wizard-field-instance-attributes/asset-wizard-field-instance-attributes.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import { AssetWizardFieldInstanceAttributesComponent } from './components/conten
         TableModule,
         CalendarModule,
         AccordionModule,
+        AgmCoreModule,
     ],
   exports: [
     FleetSubHeaderComponent,

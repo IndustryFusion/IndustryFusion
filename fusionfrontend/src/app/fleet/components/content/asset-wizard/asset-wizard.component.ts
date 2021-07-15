@@ -160,7 +160,7 @@ export class AssetWizardComponent implements OnInit {
       this.ref.close(this.asset);
 
     } else {
-      this.ref.close();
+      throw new Error('Asset Wizard is not valid');
     }
   }
 
@@ -213,7 +213,7 @@ export class AssetWizardComponent implements OnInit {
       gatewayConnectivity: [null, Validators.maxLength(255)],
       guid: [],
       ceCertified: [null, Validators.required],
-      serialNumber: [null, requiredTextValidator],
+      serialNumber: [null, Validators.maxLength(255)],
       constructionDate: [null, Validators.required],
       installationDate: [null],
       protectionClass: [null, Validators.maxLength(255)],

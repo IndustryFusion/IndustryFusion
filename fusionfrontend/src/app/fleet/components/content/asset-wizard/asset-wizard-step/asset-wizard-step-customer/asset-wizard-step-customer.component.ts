@@ -20,6 +20,7 @@ import { CountryQuery } from '../../../../../../store/country/country.query';
 import { SelectItem } from 'primeng/api';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { FactorySite, FactorySiteType } from '../../../../../../store/factory-site/factory-site.model';
+import { Coordinate, GeocoderService } from '../../../../../../services/geocoder.service';
 
 @Component({
   selector: 'app-asset-wizard-step-customer',
@@ -37,6 +38,7 @@ export class AssetWizardStepCustomerComponent implements OnInit {
   public factorySiteForm: FormGroup;
 
   constructor(private countryQuery: CountryQuery,
+              private geocoderService: GeocoderService,
               private formBuilder: FormBuilder) {
   }
 
@@ -85,28 +87,40 @@ export class AssetWizardStepCustomerComponent implements OnInit {
   public onSave(): void {
     if (this.isReadyForNextStep()) {
       this.valid.emit(this.factorySiteForm.valid);
-      this.saveFactorySite();
-      this.createAsset.emit();
+      this.save();
     }
   }
 
-  private hasData(factorySite: FactorySite): boolean {
+  private hasData(): boolean {
+    const factorySite: FactorySite =  this.asset.room.factorySite;
     return factorySite.zip != null || factorySite.city != null || factorySite.name != null
       || factorySite.line1 != null || factorySite.id != null;
   }
 
-  private saveFactorySite() {
+  private save() {
     if (this.factorySiteForm.valid) {
 
       this.asset.room.factorySite = { ...this.factorySiteForm.getRawValue() as FactorySite };
 
-      if (this.hasData(this.asset.room.factorySite)) {
+      if (this.hasData()) {
         const country = this.countryQuery.getEntity(this.factorySiteForm.get('countryId').value);
         this.asset.room.factorySite.country = { ...country};
+
+        const factorySite = this.asset.room.factorySite;
+        this.geocoderService.getGeocode(factorySite.line1, factorySite.zip, factorySite.city, factorySite.country.name,
+          (coordinate: Coordinate)  => this.setCoordinateAndCreateAsset(coordinate));
       } else {
         this.asset.room = null;
       }
     }
   }
 
+  private setCoordinateAndCreateAsset(coordinate: Coordinate) {
+    console.log('coordinate', coordinate);
+    this.asset.room.factorySite.latitude = coordinate.latitude;
+    this.asset.room.factorySite.longitude = coordinate.longitude;
+
+    console.log('factorySite', this.asset.room.factorySite);
+    this.createAsset.emit();
+  }
 }

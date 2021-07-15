@@ -13,13 +13,12 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { ID } from '@datorama/akita';
 import { AgmMap } from '@agm/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-declare var google: any;
+import { Coordinate, GeocoderService } from '../../../services/geocoder.service';
 
 @Component({
   selector: 'app-factory-site-map',
@@ -235,11 +234,11 @@ export class FactorySiteMapComponent implements OnInit, OnChanges {
   defaultLongitude = 10;
   height = 330;
   zoom = 5;
-  private geocoder: any;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private geocoderService: GeocoderService) { }
 
   ngOnInit(): void {
     if (this.modalMode) {
@@ -255,26 +254,23 @@ export class FactorySiteMapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.modalMode && changes.factorySite && (this.factorySite.zip || this.factorySite.city)) {
-      const address = this.factorySite.line1 + ' ' + this.factorySite.zip + ' ' + this.factorySite.city + ' '
-        + this.factorySite.country.name;
-      this.placeMarkerForFactorySite(address);
+      this.placeMarkerForFactorySite(this.factorySite);
     }
   }
 
-  placeMarkerForFactorySite(address) {
-    if (!this.geocoder) {
-      this.geocoder = new google.maps.Geocoder();
-    }
-    this.geocoder.geocode({
-      address
-    }, (results, status) => {
-      if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-        this.factorySite.latitude = results[0].geometry.location.lat();
-        this.factorySite.longitude = results[0].geometry.location.lng();
-        this.defaultLatitude = results[0].geometry.location.lat();
-        this.defaultLongitude = results[0].geometry.location.lng();
-      }
-    });
+  placeMarkerForFactorySite(factorySite: FactorySite) {
+    this.geocoderService.getGeocode(factorySite.line1,
+          factorySite.zip,
+          factorySite.city,
+          factorySite.country.name,
+      (coordinate: Coordinate) => {
+        console.log('coordinate', coordinate);
+        this.factorySite.latitude = coordinate.latitude;
+        this.factorySite.longitude = coordinate.longitude;
+        console.log('factorySite', this.factorySite);
+        this.defaultLatitude = coordinate.latitude;
+        this.defaultLongitude = coordinate.longitude;
+      });
   }
 
 }
