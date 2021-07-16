@@ -18,7 +18,7 @@ import { Asset } from './asset.model';
 import { AssetStore } from './asset.store';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { environment } from '../../../environments/environment';
 import { RoomService } from '../room/room.service';
@@ -26,6 +26,7 @@ import { AssetDetailsStore } from '../asset-details/asset-details.store';
 import { AssetDetailsService } from '../asset-details/asset-details.service';
 import { AssetDetails } from '../asset-details/asset-details.model';
 import { FactorySiteService } from '../factory-site/factory-site.service';
+import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
 
 
 @Injectable({
@@ -37,6 +38,7 @@ export class AssetService {
   };
 
   constructor(private assetStore: AssetStore,
+              private assetSeriesDetailsService: AssetSeriesDetailsService,
               private assetDetailsService: AssetDetailsService,
               private assetDetailsStore: AssetDetailsStore,
               private factorySiteService: FactorySiteService,
@@ -109,7 +111,7 @@ export class AssetService {
             this.assetDetailsStore.upsertCached(entity);
           }));
 
-         // this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId).subscribe();
+          this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId, true).subscribe();
           if (savedAsset.room) {
             this.factorySiteService.getFactorySite(savedAsset.companyId, savedAsset.room.factorySite.id).subscribe();
             this.roomService.getRoom(savedAsset.companyId, savedAsset.room.factorySite.id, savedAsset.roomId, false)
