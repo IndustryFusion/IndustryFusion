@@ -124,8 +124,6 @@ export class AssetWizardComponent implements OnInit {
         this.asset = asset;
         this.asset.name = assetName;
         this.asset.description = assetDescription;
-
-        console.log('asset', asset);
         this.createAssetForm();
         this.step = step;
       }

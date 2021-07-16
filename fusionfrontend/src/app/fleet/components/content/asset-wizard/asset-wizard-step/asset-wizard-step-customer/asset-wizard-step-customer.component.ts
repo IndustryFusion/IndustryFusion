@@ -117,11 +117,8 @@ export class AssetWizardStepCustomerComponent implements OnInit {
   }
 
   private setCoordinateAndCreateAsset(coordinate: Coordinate) {
-    console.log('coordinate', coordinate);
     this.asset.room.factorySite.latitude = coordinate.latitude;
     this.asset.room.factorySite.longitude = coordinate.longitude;
-
-    console.log('factorySite', this.asset.room.factorySite);
     this.createAsset.emit();
   }
 }

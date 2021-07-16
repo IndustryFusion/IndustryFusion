@@ -264,10 +264,8 @@ export class FactorySiteMapComponent implements OnInit, OnChanges {
           factorySite.city,
           factorySite.country.name,
       (coordinate: Coordinate) => {
-        console.log('coordinate', coordinate);
         this.factorySite.latitude = coordinate.latitude;
         this.factorySite.longitude = coordinate.longitude;
-        console.log('factorySite', this.factorySite);
         this.defaultLatitude = coordinate.latitude;
         this.defaultLongitude = coordinate.longitude;
       });

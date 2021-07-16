@@ -89,8 +89,6 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
         map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.factorySite)
           .filter(factorySite => factorySite != null))
       );
-
-      this.factorySites$.subscribe(factorySites => console.log('factorySites', factorySites));
     }
   }
 }
