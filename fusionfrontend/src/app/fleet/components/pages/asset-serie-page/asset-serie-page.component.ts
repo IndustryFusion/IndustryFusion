@@ -26,6 +26,9 @@ import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.qu
 import { Room } from '../../../../store/room/room.model';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { map } from 'rxjs/operators';
+import { AssetWizardComponent } from '../../content/asset-wizard/asset-wizard.component';
+import { CompanyQuery } from '../../../../store/company/company.query';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-serie-page',
@@ -45,7 +48,10 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
               private assetQuery: AssetQuery,
               private activatedRoute: ActivatedRoute,
               private roomQuery: RoomQuery,
-              private factorySiteQuery: FactorySiteQuery) {
+              private companyQuery: CompanyQuery,
+              private dialogService: DialogService,
+              private factorySiteQuery: FactorySiteQuery,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -90,5 +96,18 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
           .filter(factorySite => factorySite != null))
       );
     }
+  }
+
+  createAssetFromAssetSeries() {
+    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        prefilledAssetSeriesId: this.assetSerieId,
+      },
+      header: 'Digital Twin Creator for Assets',
+      width: '75%'
+    });
+
+    assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
   }
 }
