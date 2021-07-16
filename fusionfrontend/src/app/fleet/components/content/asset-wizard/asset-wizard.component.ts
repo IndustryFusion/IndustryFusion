@@ -57,6 +57,7 @@ export class AssetWizardComponent implements OnInit {
   public isAssetSeriesLocked = false;
 
   public metricsValid: boolean;
+  public attributesValid: boolean;
 
   public AssetWizardStep = AssetWizardStep;
 
@@ -202,7 +203,7 @@ export class AssetWizardComponent implements OnInit {
       ceCertified: [null, Validators.required],
       serialNumber: [null, requiredTextValidator],
       constructionDate: [null, Validators.required],
-      installationDate: [null, Validators.required],
+      installationDate: [null],
       protectionClass: [null, Validators.maxLength(255)],
       handbookKey: [null, Validators.maxLength(255)],
       videoKey: [null, Validators.maxLength(255)],
@@ -211,11 +212,18 @@ export class AssetWizardComponent implements OnInit {
 
     if (this.asset) {
       this.assetForm.patchValue(this.asset);
+      this.assetForm.get('constructionDate').setValue(null);
+      this.assetForm.get('installationDate').setValue(null);
     }
   }
 
   setMetricsValid(isValid: boolean) {
     this.metricsValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setAttributesValid(isValid: boolean) {
+    this.attributesValid = isValid;
     this.changeDetectorRef.detectChanges();
   }
 }

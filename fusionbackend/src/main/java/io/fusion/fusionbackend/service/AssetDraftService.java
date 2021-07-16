@@ -52,7 +52,7 @@ public class AssetDraftService {
                 .handbookKey(assetSeries.getHandbookKey())
                 .protectionClass(assetSeries.getProtectionClass())
                 .videoKey(assetSeries.getVideoKey())
-                .installationDate(OffsetDateTime.now())
+                .installationDate(null)
                 .constructionDate(OffsetDateTime.now())
                 .build();
         newAsset.copyFrom(assetSeries);

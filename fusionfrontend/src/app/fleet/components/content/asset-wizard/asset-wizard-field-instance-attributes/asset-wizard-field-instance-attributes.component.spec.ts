@@ -13,22 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ThresholdListHeaderComponent } from './threshold-list-header.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-describe('ThresholdListHeaderComponent', () => {
-  let component: ThresholdListHeaderComponent;
-  let fixture: ComponentFixture<ThresholdListHeaderComponent>;
+import { AssetWizardFieldInstanceAttributesComponent } from './asset-wizard-field-instance-attributes.component';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ThresholdListHeaderComponent ]
+describe('AssetWizardFieldInstanceAttributesComponent', () => {
+  let component: AssetWizardFieldInstanceAttributesComponent;
+  let fixture: ComponentFixture<AssetWizardFieldInstanceAttributesComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ AssetWizardFieldInstanceAttributesComponent ]
     })
     .compileComponents();
-  });
+  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ThresholdListHeaderComponent);
+    fixture = TestBed.createComponent(AssetWizardFieldInstanceAttributesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

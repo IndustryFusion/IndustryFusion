@@ -170,9 +170,6 @@ public class AssetService {
         if (asset.getAssetSeries() == null) {
             throw new RuntimeException("AssetSeries has to exist in an Asset");
         }
-        if (asset.getInstallationDate() == null) {
-            throw new RuntimeException("InstallationDate has to exist in an Asset");
-        }
         if (asset.getConstructionDate() == null) {
             throw new RuntimeException("ConstructionDate has to exist in an Asset");
         }
