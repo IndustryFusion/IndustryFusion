@@ -53,7 +53,7 @@ under the License.
     </div>
     <div class="footer">
       <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-      <button type="button" class="if-button button-confirm button-primary" [disabled]="factorySiteForm.invalid"
+      <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
               (click)="onSave()">Create Digital Twin</button>
     </div>
   </form>

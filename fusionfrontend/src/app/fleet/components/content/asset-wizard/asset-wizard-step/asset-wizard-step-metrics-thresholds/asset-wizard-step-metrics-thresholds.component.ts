@@ -31,29 +31,29 @@ export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
-  public readyToTakeNextStep = false;
+  public isReadyForNextStep = false;
 
   constructor() {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  public onBack(): void {
-    if (this.readyToTakeNextStep) {
+  onBack(): void {
+    if (this.isReadyForNextStep) {
       this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS - 1);
     }
   }
 
-  public onNext(): void {
-    if (this.readyToTakeNextStep) {
+  onNext(): void {
+    if (this.isReadyForNextStep) {
       this.metricsChild.saveValues();
       this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS + 1);
     }
   }
 
-  public onSetValid(isValid: boolean): void {
-    this.readyToTakeNextStep = isValid;
+  onSetValid(isValid: boolean): void {
+    this.isReadyForNextStep = isValid;
     this.valid.emit(isValid);
   }
 }

@@ -54,7 +54,7 @@ export class AssetWizardStepCustomerComponent implements OnInit {
     this.createFactorySiteForm();
   }
 
-  private createFactorySiteForm() {
+  private createFactorySiteForm(): void {
     const countryIdGermany = this.countries.find(item => item.label === 'Germany').value;
 
     this.factorySiteForm = this.formBuilder.group({
@@ -74,21 +74,6 @@ export class AssetWizardStepCustomerComponent implements OnInit {
       this.factorySiteForm.patchValue(this.asset.room.factorySite);
     }
     this.factorySiteForm.get('type').setValue(FactorySiteType.FLEETMANAGER);
-  }
-
-  public isReadyForNextStep(): boolean {
-    return this.factorySiteForm.valid;
-  }
-
-  public onBack(): void {
-    this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA - 1);
-  }
-
-  public onSave(): void {
-    if (this.isReadyForNextStep()) {
-      this.valid.emit(this.factorySiteForm.valid);
-      this.save();
-    }
   }
 
   private hasNotMandatoryData(): boolean {
@@ -120,5 +105,20 @@ export class AssetWizardStepCustomerComponent implements OnInit {
     this.asset.room.factorySite.latitude = coordinate.latitude;
     this.asset.room.factorySite.longitude = coordinate.longitude;
     this.createAsset.emit();
+  }
+
+  isReadyForNextStep(): boolean {
+    return this.factorySiteForm.valid;
+  }
+
+  onBack(): void {
+    this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA - 1);
+  }
+
+  onSave(): void {
+    if (this.isReadyForNextStep()) {
+      this.valid.emit(this.factorySiteForm.valid);
+      this.save();
+    }
   }
 }

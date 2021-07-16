@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-wizard-step-start">
+<div class="asset-wizard-step-general-information">
   <form [formGroup]="assetForm">
     <div class="content with-rows">
         <div id="column left">
@@ -56,7 +56,7 @@ under the License.
     </div>
     <div class="footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" [disabled]="!readyForNextStep()"
+      <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
               (click)="onStart()">Start</button>
     </div>
   </form>

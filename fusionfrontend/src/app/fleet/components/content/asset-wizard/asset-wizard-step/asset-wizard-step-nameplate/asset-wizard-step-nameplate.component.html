@@ -74,7 +74,7 @@ under the License.
     </div>
     <div class="footer">
       <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-      <button type="button" class="if-button button-confirm button-primary" [disabled]="assetForm.invalid"
+      <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
               (click)="onNext()">Next</button>
     </div>
   </form>

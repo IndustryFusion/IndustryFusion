@@ -37,19 +37,19 @@ export class AssetWizardStepReviewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onBack() {
+  onBack(): void {
      this.stepChange.emit(AssetWizardStep.REVIEW - 1);
   }
 
-  onNext() {
+  onNext(): void {
      this.stepChange.emit(AssetWizardStep.REVIEW + 1);
   }
 
-  onBackToAttributes() {
+  onBackToAttributes(): void {
     this.stepChange.emit(AssetWizardStep.ATTRIBUTES);
   }
 
-  onBackToMetrics() {
+  onBackToMetrics(): void {
     this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS);
   }
 }

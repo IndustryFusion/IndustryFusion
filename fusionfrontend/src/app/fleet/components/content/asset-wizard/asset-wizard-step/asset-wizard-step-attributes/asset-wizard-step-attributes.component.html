@@ -20,9 +20,9 @@ under the License.
  </app-asset-wizard-field-instance-attributes>
 
   <div class="footer">
-    <button type="button" class="if-button button-cancel" [disabled]="!readyToTakeNextStep"
+    <button type="button" class="if-button button-cancel" [disabled]="!isReadyForNextStep"
             (click)="onBack()">Back</button>
-    <button type="button" class="if-button button-confirm button-primary" [disabled]="!readyToTakeNextStep"
+    <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep"
             (click)="onNext()">Next</button>
   </div>
 </div>

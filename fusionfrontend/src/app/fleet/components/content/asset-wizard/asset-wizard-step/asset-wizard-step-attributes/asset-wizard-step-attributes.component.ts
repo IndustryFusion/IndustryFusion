@@ -31,7 +31,7 @@ export class AssetWizardStepAttributesComponent implements OnInit {
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
-  public readyToTakeNextStep = false;
+  public isReadyForNextStep = false;
 
   constructor() {
   }
@@ -40,20 +40,20 @@ export class AssetWizardStepAttributesComponent implements OnInit {
   }
 
   public onBack(): void {
-    if (this.readyToTakeNextStep) {
+    if (this.isReadyForNextStep) {
       this.stepChange.emit(AssetWizardStep.ATTRIBUTES - 1);
     }
   }
 
   public onNext(): void {
-    if (this.readyToTakeNextStep) {
+    if (this.isReadyForNextStep) {
       this.attributesChild.saveValues();
       this.stepChange.emit(AssetWizardStep.ATTRIBUTES + 1);
     }
   }
 
   public onSetValid(isValid: boolean): void {
-    this.readyToTakeNextStep = isValid;
+    this.isReadyForNextStep = isValid;
     this.valid.emit(isValid);
   }
 
