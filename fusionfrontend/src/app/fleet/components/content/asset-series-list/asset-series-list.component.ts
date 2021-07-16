@@ -27,7 +27,6 @@ import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
 import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
-import { AssetSeriesDetailsService } from '../../../../store/asset-series-details/asset-series-details.service';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -60,7 +59,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     public companyQuery: CompanyQuery,
     public assetSeriesService: AssetSeriesService,
     public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
-    public assetSeriesDetailsService: AssetSeriesDetailsService,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
     public  assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
     public unitsResolver: UnitsResolver,

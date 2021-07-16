@@ -90,7 +90,6 @@ export class AssetWizardComponent implements OnInit {
 
     this.isAssetSeriesLocked = this.config.data.prefilledAssetSeriesId != null;
     if (this.isAssetSeriesLocked) {
-      this.assetForm.get('assetSeriesId')?.disable();
       this.isAssetSeriesLoading$.subscribe(() => {
         this.prefillFormFromAssetSeries(this.config.data.prefilledAssetSeriesId);
       });
@@ -158,7 +157,7 @@ export class AssetWizardComponent implements OnInit {
       this.ref.close(this.asset);
 
     } else {
-      throw new Error('Asset Wizard is not valid');
+      throw new Error('[Asset Wizard]: Error at saving asset');
     }
   }
 
@@ -172,14 +171,20 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookKey')?.setValue(assetSeries.handbookKey);
       this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
+    } else {
+      throw new Error('[Asset wizard]: Related asset series not found');
     }
   }
 
   private updateRelatedObjects(assetSeries: AssetSeries): void {
     this.relatedAssetSeries = assetSeries;
     this.relatedCompany = this.companyQuery.getActive();
-    const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
-    this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+    this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
+      if (!isLoading) {
+        const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
+        this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+      }
+    });
   }
 
   private resolveWizard(): void {
@@ -187,10 +192,10 @@ export class AssetWizardComponent implements OnInit {
     this.assetResolver.resolve(this.activatedRoute.snapshot);
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
-    this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
     this.countryResolver.resolve().subscribe();
+    this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
   }
 
   private createAssetForm() {
