@@ -27,9 +27,9 @@ const routes: Routes = [
     canActivate: [MainAuthGuardGuard]
   },
   {
-    path: 'ecosystemmanager',
-    redirectTo: '/ecosystemmanager/assettypetemplate',
-    pathMatch: 'full'
+     path: 'ecosystemmanager',
+     redirectTo: '/ecosystemmanager/assettypetemplate',
+     pathMatch: 'full'
   },
   {
     path: 'factorymanager',
@@ -50,12 +50,11 @@ const routes: Routes = [
     path: 'settings',
     redirectTo: '/settings/template',
     pathMatch: 'full'
-  },
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }
