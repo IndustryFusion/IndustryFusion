@@ -42,6 +42,6 @@ under the License.
     [assetSeries]="assetSeries"
     (valid)="setMetricsValid($event)">
   </app-asset-series-create-metrics>
-  <app-asset-series-create-footer [step]="step" (back)="back()" [readyToTakeNextStep]="readyToTakeNextStep()"
+  <app-asset-series-create-footer [step]="step" (back)="back()" [isReadyForNextStep]="isReadyForNextStep()"
                                   (nextStep)="nextStep()" [toalSteps]="toalSteps"></app-asset-series-create-footer>
 </div>
