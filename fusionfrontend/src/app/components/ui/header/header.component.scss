@@ -186,6 +186,7 @@ header {
 
     .p-toast-summary {
       font-size: $medium-font-size;
+      line-height: 140%;
       color: $light-grey;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -194,6 +195,7 @@ header {
 
     .p-toast-detail {
       font-size: $regular-font-size;
+      line-height: 140%;
       color: $basic-grey;
       overflow: hidden;
       text-overflow: ellipsis;
