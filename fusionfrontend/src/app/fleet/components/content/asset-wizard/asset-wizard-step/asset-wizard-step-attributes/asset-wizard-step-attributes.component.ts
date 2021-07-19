@@ -16,7 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { AssetWizardFieldInstanceAttributesComponent } from '../../asset-wizard-field-instance-attributes/asset-wizard-field-instance-attributes.component';
+import { AssetWizardSharedAttributesComponent } from '../../asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
 
 @Component({
   selector: 'app-asset-wizard-step-attributes',
@@ -25,7 +25,7 @@ import { AssetWizardFieldInstanceAttributesComponent } from '../../asset-wizard-
 })
 export class AssetWizardStepAttributesComponent implements OnInit {
 
-  @ViewChild(AssetWizardFieldInstanceAttributesComponent) attributesChild: AssetWizardFieldInstanceAttributesComponent;
+  @ViewChild(AssetWizardSharedAttributesComponent) attributesChild: AssetWizardSharedAttributesComponent;
 
   @Input() asset: Asset;
   @Output() valid = new EventEmitter<boolean>();

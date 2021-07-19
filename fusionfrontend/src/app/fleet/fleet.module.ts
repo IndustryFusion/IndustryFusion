@@ -45,8 +45,8 @@ import { AccordionModule } from 'primeng/accordion';
 import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
 import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
 import { AssetWizardStepReviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-review/asset-wizard-step-review.component';
-import { AssetWizardFieldInstanceMetricsComponent } from './components/content/asset-wizard/asset-wizard-field-instance-metrics/asset-wizard-field-instance-metrics.component';
-import { AssetWizardFieldInstanceAttributesComponent } from './components/content/asset-wizard/asset-wizard-field-instance-attributes/asset-wizard-field-instance-attributes.component';
+import { AssetWizardSharedMetricsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
+import { AssetWizardSharedAttributesComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
 import { AgmCoreModule } from '@agm/core';
 
 
@@ -75,8 +75,10 @@ import { AgmCoreModule } from '@agm/core';
     AssetWizardStepMetricsThresholdsComponent,
     AssetSeriesCreateFooterComponent,
     AssetWizardStepReviewComponent,
-    AssetWizardFieldInstanceMetricsComponent,
-    AssetWizardFieldInstanceAttributesComponent,
+    AssetWizardSharedMetricsComponent,
+    AssetWizardSharedAttributesComponent,
+    AssetWizardStepSubsystemsComponent,
+    AssetWizardSharedSubsystemsComponent,
   ],
     imports: [
         IFCommon,

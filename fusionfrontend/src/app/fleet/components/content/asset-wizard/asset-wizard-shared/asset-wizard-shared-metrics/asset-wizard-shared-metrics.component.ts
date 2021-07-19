@@ -15,22 +15,22 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Threshold, ThresholdType } from '../../../../../store/threshold/threshold.model';
-import { FieldInstance } from '../../../../../store/field-instance/field-instance.model';
-import { CustomFormValidators } from '../../../../../common/utils/custom-form-validators';
+import { Threshold, ThresholdType } from '../../../../../../store/threshold/threshold.model';
+import { FieldInstance } from '../../../../../../store/field-instance/field-instance.model';
+import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
 import { QuantityDataType } from 'src/app/store/field-details/field-details.model';
 import { FieldThresholdType } from 'src/app/store/field/field.model';
-import { Asset } from '../../../../../store/asset/asset.model';
-import { FieldType } from '../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../store/field/field-query.service';
-import { QuantityTypeQuery } from '../../../../../store/quantity-type/quantity-type.query';
+import { Asset } from '../../../../../../store/asset/asset.model';
+import { FieldType } from '../../../../../../store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../../store/field/field-query.service';
+import { QuantityTypeQuery } from '../../../../../../store/quantity-type/quantity-type.query';
 
 @Component({
-  selector: 'app-asset-wizard-field-instance-metrics',
-  templateUrl: './asset-wizard-field-instance-metrics.component.html',
-  styleUrls: ['./asset-wizard-field-instance-metrics.component.scss']
+  selector: 'app-asset-wizard-shared-metrics',
+  templateUrl: './asset-wizard-shared-metrics.component.html',
+  styleUrls: ['./asset-wizard-shared-metrics.component.scss']
 })
-export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
+export class AssetWizardSharedMetricsComponent implements OnInit {
 
   @Input() asset: Asset;
   @Input() isReview = false;
@@ -205,11 +205,11 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
     return {
       ...fieldInstance,
       fieldSource: { ...fieldInstance.fieldSource },
-      absoluteThreshold: AssetWizardFieldInstanceMetricsComponent.getThresholdFromForm(thresholdGroup,
+      absoluteThreshold: AssetWizardSharedMetricsComponent.getThresholdFromForm(thresholdGroup,
         ThresholdType.ABSOLUTE, quantityDataType),
-      idealThreshold: AssetWizardFieldInstanceMetricsComponent.getThresholdFromForm(thresholdGroup,
+      idealThreshold: AssetWizardSharedMetricsComponent.getThresholdFromForm(thresholdGroup,
         ThresholdType.IDEAL, quantityDataType),
-      criticalThreshold: AssetWizardFieldInstanceMetricsComponent.getThresholdFromForm(thresholdGroup,
+      criticalThreshold: AssetWizardSharedMetricsComponent.getThresholdFromForm(thresholdGroup,
         ThresholdType.CRITICAL, quantityDataType)
     };
   }

@@ -15,8 +15,8 @@ under the License.
 
 <label class="if-dialog-title">Customize&nbsp;Attributes</label>
 
-<app-asset-wizard-field-instance-attributes [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)">
-</app-asset-wizard-field-instance-attributes>
+<app-asset-wizard-shared-attributes [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)">
+</app-asset-wizard-shared-attributes>
 
 <div class="footer">
   <button type="button" class="if-button button-cancel" [disabled]="!isReadyForNextStep"

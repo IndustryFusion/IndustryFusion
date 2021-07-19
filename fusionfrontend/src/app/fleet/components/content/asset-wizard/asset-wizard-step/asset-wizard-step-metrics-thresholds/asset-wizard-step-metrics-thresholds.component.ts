@@ -16,7 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { AssetWizardStep } from '../asset-wizard-step.model';
-import { AssetWizardFieldInstanceMetricsComponent } from '../../asset-wizard-field-instance-metrics/asset-wizard-field-instance-metrics.component';
+import { AssetWizardSharedMetricsComponent } from '../../asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
 
 @Component({
   selector: 'app-asset-wizard-step-metrics-thresholds',
@@ -25,7 +25,7 @@ import { AssetWizardFieldInstanceMetricsComponent } from '../../asset-wizard-fie
 })
 export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
-  @ViewChild(AssetWizardFieldInstanceMetricsComponent) metricsChild: AssetWizardFieldInstanceMetricsComponent;
+  @ViewChild(AssetWizardSharedMetricsComponent) metricsChild: AssetWizardSharedMetricsComponent;
 
   @Input() asset: Asset;
   @Output() valid = new EventEmitter<boolean>();

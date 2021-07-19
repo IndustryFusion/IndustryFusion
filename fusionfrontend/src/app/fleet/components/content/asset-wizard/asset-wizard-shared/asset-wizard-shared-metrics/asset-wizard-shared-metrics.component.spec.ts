@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetWizardFieldInstanceAttributesComponent } from './asset-wizard-field-instance-attributes.component';
+import { AssetWizardSharedMetricsComponent } from './asset-wizard-shared-metrics.component';
 
-describe('AssetWizardFieldInstanceAttributesComponent', () => {
-  let component: AssetWizardFieldInstanceAttributesComponent;
-  let fixture: ComponentFixture<AssetWizardFieldInstanceAttributesComponent>;
+describe('AssetWizardSharedMetricsComponent', () => {
+  let component: AssetWizardSharedMetricsComponent;
+  let fixture: ComponentFixture<AssetWizardSharedMetricsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetWizardFieldInstanceAttributesComponent ]
+      declarations: [ AssetWizardSharedMetricsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetWizardFieldInstanceAttributesComponent);
+    fixture = TestBed.createComponent(AssetWizardSharedMetricsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

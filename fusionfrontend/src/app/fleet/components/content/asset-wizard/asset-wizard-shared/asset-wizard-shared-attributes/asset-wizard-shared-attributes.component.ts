@@ -15,18 +15,18 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FieldInstance } from '../../../../../store/field-instance/field-instance.model';
-import { CustomFormValidators } from '../../../../../common/utils/custom-form-validators';
-import { Asset } from '../../../../../store/asset/asset.model';
-import { FieldType } from '../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../store/field/field-query.service';
+import { FieldInstance } from '../../../../../../store/field-instance/field-instance.model';
+import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
+import { Asset } from '../../../../../../store/asset/asset.model';
+import { FieldType } from '../../../../../../store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../../store/field/field-query.service';
 
 @Component({
-  selector: 'app-asset-wizard-field-instance-attributes',
-  templateUrl: './asset-wizard-field-instance-attributes.component.html',
-  styleUrls: ['./asset-wizard-field-instance-attributes.component.scss']
+  selector: 'app-asset-wizard-shared-attributes',
+  templateUrl: './asset-wizard-shared-attributes.component.html',
+  styleUrls: ['./asset-wizard-shared-attributes.component.scss']
 })
-export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
+export class AssetWizardSharedAttributesComponent implements OnInit {
 
   @Input() asset: Asset;
   @Input() isReview = false;
