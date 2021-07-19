@@ -13,50 +13,49 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-wizard-step-customer">
-  <form [formGroup]="factorySiteForm">
-    <div class="content">
-      <label class="wizard-title">Enter&nbsp;Customer&nbsp;Data</label>
+<form [formGroup]="factorySiteForm">
+  <div class="content">
+    <label class="wizard-title">Enter&nbsp;Customer&nbsp;Data</label>
 
-      <div class="input-div">
-        <label class="if-label">Enterprise name</label>
-        <input type="text" pInputText formControlName="name" />
-      </div>
+    <div class="input-div">
+      <label class="if-label">Enterprise name</label>
+      <input type="text" pInputText formControlName="name" />
+    </div>
 
-      <div class="input-div">
-        <label class="if-label">Street</label>
-        <input type="text" pInputText formControlName="line1" />
-      </div>
+    <div class="input-div">
+      <label class="if-label">Street</label>
+      <input type="text" pInputText formControlName="line1" />
+    </div>
 
-      <div class="input-div">
-        <div class="dialog-grid">
-          <div class="input-div">
-            <label class="if-label">ZIP</label>
-            <input type="text" pInputText inputmode="numeric" formControlName="zip" />
-          </div>
-          <div class="input-div dialog-grid-col">
-            <label class="if-label">City</label>
-            <input type="text" pInputText formControlName="city" />
-          </div>
+    <div class="input-div">
+      <div class="dialog-grid">
+        <div class="input-div">
+          <label class="if-label">ZIP</label>
+          <input type="text" pInputText inputmode="numeric" formControlName="zip" />
         </div>
-      </div>
-
-      <div class="selection">
-        <div class="input-div dropdown-filter">
-          <label class="if-label">Country</label>
-          <p-dropdown [options]="countries" formControlName="countryId"
-                      filter="true" resetFilterOnHide="true"
-                      placeholder="Select a country...">
-          </p-dropdown>
+        <div class="input-div dialog-grid-col">
+          <label class="if-label">City</label>
+          <input type="text" pInputText formControlName="city" />
         </div>
       </div>
     </div>
-    <div class="footer">
-      <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-      <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
-              (click)="onSave()">Create Digital Twin</button>
-    </div>
-  </form>
-</div>
 
+    <div class="selection">
+      <div class="input-div dropdown-filter">
+        <label class="if-label">Country</label>
+        <p-dropdown [options]="countries" formControlName="countryId"
+                    filter="true" resetFilterOnHide="true"
+                    placeholder="Select a country...">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
+    <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
+            (click)="onSave()">Create Digital Twin</button>
+  </div>
+</form>
+
+<!--Ensures that google can be resolved in GeocoderService-->
 <agm-map [hidden]="true"></agm-map>
