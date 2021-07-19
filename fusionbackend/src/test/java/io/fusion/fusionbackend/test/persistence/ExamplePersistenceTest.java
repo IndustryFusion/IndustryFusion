@@ -39,11 +39,7 @@ public class ExamplePersistenceTest {
         asset.setAssetSeries(assetSeries);
         assetSeries.getAssets().add(asset);
         asset.setCompany(company.build());
-        testEntityManager.persist(asset);
-
-
-//        testEntityManager.flush();
-
+        testEntityManager.persistAndFlush(asset);
 
         Asset foundAsset = testEntityManager.find(asset.getClass(), asset.getId());
         Assertions.assertNotNull(foundAsset);
