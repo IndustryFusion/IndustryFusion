@@ -2,11 +2,8 @@ package io.fusion.fusionbackend.test.persistence;
 
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.Company;
-import io.fusion.fusionbackend.test.persistence.builder.Builder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static io.fusion.fusionbackend.test.persistence.builder.AssetBuilder.anAsset;
@@ -16,9 +13,8 @@ import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplate
 import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PersistenceTests {
+
+public class PersistenceTests extends PersistenceTestsBase{
 
 
     @Autowired
@@ -49,12 +45,4 @@ public class PersistenceTests {
         assertNotNull(foundAsset);
     }
 
-    // TODO 19.07.2021: Should be extracted to be used in different TestClasses
-    private <T> Builder<T> persisted(final Builder<T> builder) {
-        return () -> {
-            T entity = builder.build();
-            testEntityManager.persist(entity);
-            return entity;
-        };
-    }
 }
