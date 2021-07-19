@@ -17,11 +17,11 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-header{
+header {
   height: 160px;
   display: block;
 
-  section{
+  section {
     border-bottom: 1px solid $light-grey;
     padding: 0 24px;
   }
@@ -82,15 +82,15 @@ header{
   }
 }
 
-.page-header{
-  h1{
+.page-header {
+  h1 {
     margin: 0;
     text-align: center;
     font-size: $big-font-size;
     font-weight: bolder;
   }
 
-  h2{
+  h2 {
     margin: 0;
     text-align: center;
     font-size: $bigger-font-size;
@@ -99,12 +99,13 @@ header{
   }
 }
 
-.toolbox{
+.toolbox {
   display: flex;
   align-items: center;
   list-style: none;
   justify-content: flex-end;
-  li{
+
+  li {
     border-radius: 44px;
     background: $light-grey 50% 50% no-repeat padding-box;
     height: 56px;
@@ -116,24 +117,28 @@ header{
     &.message {
       background-image: url('/assets/img/message-toolbox.png');
     }
+
     &.user {
       background-image: url('/assets/img/avatar.png');
       align-items: center;
       height: 80px;
       width: 80px;
     }
-    &.user-name{
+
+    &.user-name {
       color: black;
       background: none;
       height: auto;
       width: auto;
-      clr-icon{
+
+      clr-icon {
         height: 16px;
         width: 16px;
         margin: 0;
       }
     }
-    clr-icon{
+
+    clr-icon {
       height: 32px;
       width: 32px;
       fill: $basic-grey;
@@ -159,8 +164,77 @@ header{
       &.active {
         color: black;
         background: transparent linear-gradient(92deg, #8AC9C1 0%, #0089D8 100%) 0 100% no-repeat padding-box;
-        background-size:100% 5px ;
+        background-size: 100% 5px;
       }
     }
+  }
+}
+
+.error-toast {
+
+  ::ng-deep .p-toast {
+    opacity: 1;
+
+    .p-toast-message {
+      border-radius: 30px;
+    }
+
+    .p-toast-message-text {
+      max-width: 85% !important;
+      margin-left: 20px !important;
+    }
+
+    .p-toast-summary {
+      font-size: $medium-font-size;
+      line-height: 140%;
+      color: $light-grey;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .p-toast-detail {
+      font-size: $regular-font-size;
+      line-height: 140%;
+      color: $basic-grey;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      max-width: 100%;
+      margin: 0 !important;
+    }
+
+    .p-toast-message-content {
+      padding: 0.25rem 0.5rem 0.25rem 0.5rem !important;
+      align-items: center;
+    }
+
+    .p-toast-message-info {
+      background-color: $basic-black;
+    }
+
+    .p-toast-message-icon {
+      padding-left: 5px;
+      margin-right: 10px;
+      color: $error !important;
+    }
+
+    .p-toast-icon-close {
+      color: $light-grey !important;
+      min-width: 40px !important;
+      min-height: 40px !important;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
+
+  ::ng-deep .p-toast-top-center {
+    width: 70% !important;
+    max-width: 900px;
+    left: auto !important;
+    right: 50%;
+    top: auto !important;
+    transform: translateX(50%);
+    margin-top: 20px;
   }
 }
