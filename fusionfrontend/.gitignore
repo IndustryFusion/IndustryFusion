@@ -54,3 +54,4 @@ Thumbs.db
 
 # Development Config
 /src/environments/environment.dev.ts
+/src/environments/environments.dev*.ts
