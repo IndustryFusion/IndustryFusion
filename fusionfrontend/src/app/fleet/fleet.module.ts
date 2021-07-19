@@ -37,7 +37,7 @@ import { AssetWizardComponent } from './components/content/asset-wizard/asset-wi
 import { AssetWizardStepGeneralInformationComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-general-information/asset-wizard-step-general-information.component';
 import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
 import { AssetWizardStepAttributesComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-attributes/asset-wizard-step-attributes.component';
-import { AssetWizardStepCustomerComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer/asset-wizard-step-customer.component';
+import { AssetWizardStepCustomerDataComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer-data/asset-wizard-step-customer-data.component';
 import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 import { CalendarModule } from 'primeng/calendar';
@@ -71,7 +71,7 @@ import { AgmCoreModule } from '@agm/core';
     AssetWizardStepGeneralInformationComponent,
     AssetWizardStepNameplateComponent,
     AssetWizardStepAttributesComponent,
-    AssetWizardStepCustomerComponent,
+    AssetWizardStepCustomerDataComponent,
     AssetWizardStepMetricsThresholdsComponent,
     AssetSeriesCreateFooterComponent,
     AssetWizardStepReviewComponent,

@@ -23,11 +23,11 @@ import { FactorySite, FactorySiteType } from '../../../../../../store/factory-si
 import { Coordinate, GeocoderService } from '../../../../../../services/geocoder.service';
 
 @Component({
-  selector: 'app-asset-wizard-step-customer',
-  templateUrl: './asset-wizard-step-customer.component.html',
-  styleUrls: ['./asset-wizard-step-customer.component.scss']
+  selector: 'app-asset-wizard-step-customer-data',
+  templateUrl: './asset-wizard-step-customer-data.component.html',
+  styleUrls: ['./asset-wizard-step-customer-data.component.scss']
 })
-export class AssetWizardStepCustomerComponent implements OnInit {
+export class AssetWizardStepCustomerDataComponent implements OnInit {
 
   @Input() asset: Asset;
   @Output() stepChange = new EventEmitter<number>();
