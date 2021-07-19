@@ -49,17 +49,19 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
 
     for (let i = 0; i < fieldInstances.length; i++) {
       if (fieldInstances[i].fieldSource.fieldTarget.fieldType === FieldType.ATTRIBUTE) {
-        const formGroup = this.createFieldInstanceGroup(i, fieldInstances[i]);
+        const formGroup = this.createFieldInstanceGroup(i, this.fieldInstancesFormArray.length, fieldInstances[i]);
         this.fieldInstancesFormArray.push(formGroup);
       }
     }
     this.changeIsValid.emit(this.fieldInstancesFormArray.valid);
   }
 
-  private createFieldInstanceGroup(index: number, fieldInstance: FieldInstance): FormGroup {
+  private createFieldInstanceGroup(indexFieldInstances: number, indexInArray: number,
+                                   fieldInstance: FieldInstance): FormGroup {
     const group = this.formBuilder.group({
       id: [],
-      index: [],
+      indexFieldInstances: [],
+      indexInArray: [],
       name: [],
       fieldName: [],
       value: [CustomFormValidators.requiredFloatingNumber()],
@@ -71,7 +73,8 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
     const field = this.fieldQuery.getEntity(fieldInstance.fieldSource.fieldTarget.fieldId);
 
     group.get('id').patchValue(fieldInstance.id);
-    group.get('index').patchValue(index);
+    group.get('indexFieldInstances').patchValue(indexFieldInstances);
+    group.get('indexInArray').patchValue(indexInArray);
     group.get('name').patchValue(fieldInstance.name);
     group.get('fieldName').patchValue(field.name);
     group.get('value').patchValue(fieldInstance.value);
@@ -90,9 +93,18 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
       || attributeGroup.get('mandatory') === null || attributeGroup.get('mandatory').value === true) {
       return;
     }
-    const indexToRemove: number = attributeGroup.get('index').value;
-    this.fieldInstancesFormArray.removeAt(indexToRemove);
-    this.asset.fieldInstances.splice(indexToRemove, 1);
+
+    const indexFieldInstances: number = attributeGroup.get('indexFieldInstances').value;
+    const indexInArray: number = attributeGroup.get('indexInArray').value;
+    this.fieldInstancesFormArray.removeAt(indexInArray);
+    this.asset.fieldInstances.splice(indexFieldInstances, 1);
+
+    for (let i = indexInArray; i < this.fieldInstancesFormArray.length; i++) {
+      const indexInArrayElement = this.fieldInstancesFormArray.at(i).get('indexInArray');
+      const indexInFieldInstancesElement = this.fieldInstancesFormArray.at(i).get('indexFieldInstances');
+      indexInArrayElement.setValue(indexInArrayElement.value - 1);
+      indexInFieldInstancesElement.setValue(indexInFieldInstancesElement.value - 1);
+    }
   }
 
   private getFieldInstanceFromForm(attributeGroup: AbstractControl): FieldInstance {

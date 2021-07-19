@@ -48,6 +48,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
     this.assetSeries$ = this.assetSeriesQuery.selectAll();
     if (this.isAssetSeriesLocked) {
       this.assetForm.get('assetSeriesId')?.disable();
+      this.assetForm.get('assetSeriesId').setValue(this.relatedAssetSeries.id);
     }
   }
 
