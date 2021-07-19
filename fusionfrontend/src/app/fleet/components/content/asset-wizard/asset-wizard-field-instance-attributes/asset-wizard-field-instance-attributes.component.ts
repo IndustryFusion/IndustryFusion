@@ -108,7 +108,7 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
   }
 
   private getFieldInstanceFromForm(attributeGroup: AbstractControl): FieldInstance {
-    const fieldInstance = this.asset.fieldInstances[attributeGroup.get('index').value];
+    const fieldInstance = this.asset.fieldInstances[attributeGroup.get('indexFieldInstances').value];
 
     return {
       ...fieldInstance,
@@ -123,7 +123,7 @@ export class AssetWizardFieldInstanceAttributesComponent implements OnInit {
   public saveValues() {
     if (this.fieldInstancesFormArray.valid) {
       this.fieldInstancesFormArray.controls.forEach((attributeGroup: FormControl) => {
-        this.asset.fieldInstances[attributeGroup.get('index').value] = this.getFieldInstanceFromForm(attributeGroup);
+        this.asset.fieldInstances[attributeGroup.get('indexFieldInstances').value] = this.getFieldInstanceFromForm(attributeGroup);
       });
     }
   }
