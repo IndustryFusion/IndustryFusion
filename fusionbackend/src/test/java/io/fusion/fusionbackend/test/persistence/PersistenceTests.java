@@ -1,50 +1,51 @@
 package io.fusion.fusionbackend.test.persistence;
 
 import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import static io.fusion.fusionbackend.test.persistence.AssetBuilder.anAsset;
 import static io.fusion.fusionbackend.test.persistence.AssetSeriesBuilder.anAssetSeries;
 import static io.fusion.fusionbackend.test.persistence.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.AssetTypeTemplateBuilder.anAssetTypeTemplate;
 import static io.fusion.fusionbackend.test.persistence.CompanyBuilder.aCompany;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ExamplePersistenceTest {
+public class PersistenceTests {
 
 
     @Autowired
     private TestEntityManager testEntityManager;
 
     @Test
-    public void name() {
+    void persistCompany() {
+        Company company = aCompany().build();
 
-        Builder<Company> company = persisted(aCompany());
+        Company foundCompany = testEntityManager.persistAndFlush(company);
 
-        AssetSeries assetSeries = persisted(anAssetSeries()
-                .forCompany(company)
-                .basedOnTemplate(persisted(anAssetTypeTemplate()
-                        .forType(persisted(anAssetType())))))
+        assertNotNull(foundCompany);
+    }
+
+    @Test
+    public void persistAsset() {
+
+        Asset asset = anAsset()
+                .basedOnSeries(persisted(anAssetSeries()
+                        .forCompany(persisted(aCompany()))
+                        .basedOnTemplate(persisted(anAssetTypeTemplate()
+                                .forType(persisted(anAssetType()))))))
+                .forCompany(persisted(aCompany()))
                 .build();
 
-        Asset asset = new Asset();
-        asset.setName("Testasset");
-        asset.setAssetSeries(assetSeries);
-        assetSeries.getAssets().add(asset);
-        asset.setCompany(company.build());
-        testEntityManager.persistAndFlush(asset);
+        Asset foundAsset = testEntityManager.persistFlushFind(asset);
 
-        Asset foundAsset = testEntityManager.find(asset.getClass(), asset.getId());
-        Assertions.assertNotNull(foundAsset);
-
-
+        assertNotNull(foundAsset);
     }
 
     // TODO 19.07.2021: Should be extracted to be used in different TestClasses
