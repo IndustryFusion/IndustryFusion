@@ -1,4 +1,4 @@
-package io.fusion.fusionbackend.test.persistence;
+package io.fusion.fusionbackend.test.persistence.builder;
 
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
@@ -8,6 +8,9 @@ public class AssetSeriesBuilder implements Builder<AssetSeries> {
 
     private Builder<Company> companyBuilder = CompanyBuilder.aCompany();
     private Builder<AssetTypeTemplate> assetTypeTemplateBuilder = AssetTypeTemplateBuilder.anAssetTypeTemplate();
+
+    private AssetSeriesBuilder() {
+    }
 
     public static AssetSeriesBuilder anAssetSeries() {
         return new AssetSeriesBuilder();

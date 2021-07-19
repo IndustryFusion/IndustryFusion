@@ -1,4 +1,4 @@
-package io.fusion.fusionbackend.test.persistence;
+package io.fusion.fusionbackend.test.persistence.builder;
 
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;

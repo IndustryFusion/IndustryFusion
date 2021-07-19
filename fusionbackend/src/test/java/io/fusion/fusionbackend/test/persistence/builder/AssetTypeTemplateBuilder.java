@@ -1,4 +1,4 @@
-package io.fusion.fusionbackend.test.persistence;
+package io.fusion.fusionbackend.test.persistence.builder;
 
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
@@ -6,6 +6,9 @@ import io.fusion.fusionbackend.model.AssetTypeTemplate;
 public class AssetTypeTemplateBuilder implements Builder<AssetTypeTemplate> {
 
     private Builder<AssetType> assetTypeBuilder = AssetTypeBuilder.anAssetType();
+
+    private AssetTypeTemplateBuilder() {
+    }
 
     public static AssetTypeTemplateBuilder anAssetTypeTemplate() {
         return new AssetTypeTemplateBuilder();
@@ -17,8 +20,6 @@ public class AssetTypeTemplateBuilder implements Builder<AssetTypeTemplate> {
     }
 
     @Override
-
-
     public AssetTypeTemplate build() {
         AssetTypeTemplate assetTypeTemplate = new AssetTypeTemplate();
         assetTypeTemplate.setAssetType(assetTypeBuilder.build());

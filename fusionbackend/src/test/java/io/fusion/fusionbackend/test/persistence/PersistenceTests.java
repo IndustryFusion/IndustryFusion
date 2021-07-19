@@ -2,17 +2,18 @@ package io.fusion.fusionbackend.test.persistence;
 
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.test.persistence.builder.Builder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import static io.fusion.fusionbackend.test.persistence.AssetBuilder.anAsset;
-import static io.fusion.fusionbackend.test.persistence.AssetSeriesBuilder.anAssetSeries;
-import static io.fusion.fusionbackend.test.persistence.AssetTypeBuilder.anAssetType;
-import static io.fusion.fusionbackend.test.persistence.AssetTypeTemplateBuilder.anAssetTypeTemplate;
-import static io.fusion.fusionbackend.test.persistence.CompanyBuilder.aCompany;
+import static io.fusion.fusionbackend.test.persistence.builder.AssetBuilder.anAsset;
+import static io.fusion.fusionbackend.test.persistence.builder.AssetSeriesBuilder.anAssetSeries;
+import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
+import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplateBuilder.anAssetTypeTemplate;
+import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
