@@ -45,7 +45,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
               private wizardRef: DynamicDialogRef) { }
 
   ngOnInit(): void {
-    this.assetSeries$ = this.assetSeriesQuery.selectAll(); // TODO: necessary to filter results by company?
+    this.assetSeries$ = this.assetSeriesQuery.selectAll();
     if (this.isAssetSeriesLocked) {
       this.assetForm.get('assetSeriesId')?.disable();
     }
