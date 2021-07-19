@@ -5,7 +5,7 @@ import io.fusion.fusionbackend.model.AssetTypeTemplate;
 
 public class AssetTypeTemplateBuilder implements Builder<AssetTypeTemplate> {
 
-    private Builder<AssetType> assetTypeBuilder;
+    private Builder<AssetType> assetTypeBuilder = AssetTypeBuilder.anAssetType();
 
     public static AssetTypeTemplateBuilder anAssetTypeTemplate() {
         return new AssetTypeTemplateBuilder();

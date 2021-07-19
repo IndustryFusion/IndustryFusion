@@ -2,9 +2,7 @@ package io.fusion.fusionbackend.test.persistence;
 
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
-import io.fusion.fusionbackend.model.enums.CompanyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import static io.fusion.fusionbackend.test.persistence.AssetSeriesBuilder.anAssetSeries;
 import static io.fusion.fusionbackend.test.persistence.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.AssetTypeTemplateBuilder.anAssetTypeTemplate;
+import static io.fusion.fusionbackend.test.persistence.CompanyBuilder.aCompany;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -26,27 +26,19 @@ public class ExamplePersistenceTest {
     @Test
     public void name() {
 
-        AssetTypeTemplate assetTypeTemplate = anAssetTypeTemplate()
-                .forType(persisted(anAssetType()))
+        Builder<Company> company = persisted(aCompany());
+
+        AssetSeries assetSeries = persisted(anAssetSeries()
+                .forCompany(company)
+                .basedOnTemplate(persisted(anAssetTypeTemplate()
+                        .forType(persisted(anAssetType())))))
                 .build();
-        testEntityManager.persist(assetTypeTemplate);
-
-        Company company = new Company();
-        company.setType(CompanyType.ECOSYSTEM_MANAGER);
-        testEntityManager.persist(company);
-
-        AssetSeries assetSeries = new AssetSeries();
-        assetSeries.setAssetTypeTemplate(assetTypeTemplate);
-        assetSeries.setCompany(company);
-        company.getAssetSeries().add(assetSeries);
-        assetTypeTemplate.getAssetSeries().add(assetSeries);
-        testEntityManager.persist(assetSeries);
 
         Asset asset = new Asset();
         asset.setName("Testasset");
         asset.setAssetSeries(assetSeries);
         assetSeries.getAssets().add(asset);
-        asset.setCompany(company);
+        asset.setCompany(company.build());
         testEntityManager.persist(asset);
 
 
