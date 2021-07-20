@@ -23,6 +23,8 @@ import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -49,6 +51,7 @@ import { FactorySiteMapComponent } from '../components/content/factory-site-map/
     InputTextareaModule,
     RadioButtonModule,
     DialogModule,
+    ToastModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -75,6 +78,9 @@ import { FactorySiteMapComponent } from '../components/content/factory-site-map/
     ConfirmDialogModule,
     AccuracyFormatPipe,
     RadioButtonModule,
+  ],
+  providers: [
+    MessageService
   ]
 })
 export class IFCommon {

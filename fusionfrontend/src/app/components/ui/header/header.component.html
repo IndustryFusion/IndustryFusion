@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<header class="" *ngIf="show">
+<header *ngIf="show">
   <section class="main-header">
     <ul class="navigation">
       <li (click)="onHomeClick()">
@@ -46,8 +46,8 @@ under the License.
         <clr-icon shape="cog"></clr-icon>
       </li>
       <li class="message"></li>
-      <li class="user" *ngIf="user"></li>
-      <li class="user-name" *ngIf="user">
+      <li *ngIf="user" class="user"></li>
+      <li *ngIf="user" class="user-name">
         Michel-Markuse
         <clr-icon class="user-name-more" shape="caret" style="transform: rotate(180deg);"></clr-icon>
       </li>
@@ -58,6 +58,7 @@ under the License.
     <app-factory-sub-header *ngIf="isManager(ManagerType.FACTORY_MANAGER)"></app-factory-sub-header>
     <app-fleet-sub-header *ngIf="isManager(ManagerType.FLEET_MANAGER);"></app-fleet-sub-header>
     <app-dashboard-sub-header *ngIf=" isDashboards();"></app-dashboard-sub-header>
+    <p-toast position="top-center" class="error-toast"></p-toast>
   </section>
 
 </header>
