@@ -16,7 +16,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { AssetWizardSharedAttributesComponent } from '../../asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
+import { AssetWizardSharedSubsystemsComponent } from '../../asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
+import { FactoryAssetDetails } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FleetAssetDetailsQuery } from '../../../../../../store/fleet-asset-details/fleet-asset-details.query';
+import { Observable } from 'rxjs';
+import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
 
 @Component({
   selector: 'app-asset-wizard-step-subsystems',
@@ -25,18 +29,22 @@ import { AssetWizardSharedAttributesComponent } from '../../asset-wizard-shared/
 })
 export class AssetWizardStepSubsystemsComponent implements OnInit {
 
-  @ViewChild(AssetWizardSharedAttributesComponent) attributesChild: AssetWizardSharedAttributesComponent;
+  @ViewChild(AssetWizardSharedSubsystemsComponent) subsystemsChild: AssetWizardSharedSubsystemsComponent;
 
   @Input() asset: Asset;
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
+  public assetDetails$: Observable<FactoryAssetDetails[]>;
   public isReadyForNextStep = false;
+  public isAddingMode = false;
 
-  constructor() {
+  constructor(private fleetAssetDetailsQuery: FleetAssetDetailsQuery) {
   }
 
   ngOnInit(): void {
+    this.assetDetails$ = this.fleetAssetDetailsQuery.selectAssetDetailsOfCompanyExcludingAssetSerie(this.asset.companyId,
+      this.asset.assetSeriesId);
   }
 
   public onBack(): void {
@@ -47,7 +55,7 @@ export class AssetWizardStepSubsystemsComponent implements OnInit {
 
   public onNext(): void {
     if (this.isReadyForNextStep) {
-      this.attributesChild.saveValues();
+      this.subsystemsChild.saveValues();
       this.stepChange.emit(AssetWizardStep.SUBSYSTEMS + 1);
     }
   }
@@ -57,4 +65,12 @@ export class AssetWizardStepSubsystemsComponent implements OnInit {
     this.valid.emit(isValid);
   }
 
+  public startAddingMode(): void {
+    this.isAddingMode = true;
+  }
+
+  public addSubsystem(assetDetails: FleetAssetDetails): void {
+    this.subsystemsChild.addSubsystem(assetDetails);
+    this.isAddingMode = false;
+  }
 }

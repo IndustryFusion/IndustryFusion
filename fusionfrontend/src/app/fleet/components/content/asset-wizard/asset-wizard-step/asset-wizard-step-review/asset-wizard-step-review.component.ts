@@ -28,7 +28,6 @@ export class AssetWizardStepReviewComponent implements OnInit {
   @ViewChild(AssetWizardSharedMetricsComponent) metricsChild: AssetWizardSharedMetricsComponent;
 
   @Input() asset: Asset;
-  @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
   constructor() {

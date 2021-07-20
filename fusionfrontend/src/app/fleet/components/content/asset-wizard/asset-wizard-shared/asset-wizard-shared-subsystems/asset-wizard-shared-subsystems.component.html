@@ -15,6 +15,7 @@ under the License.
 
 <div class="asset-wizard-subsystems">
 
+  <div *ngIf="!(subsystemFormArray?.controls?.length > 0) && isReview === true">no subsystems available</div>
   <div *ngIf="subsystemFormArray?.controls?.length > 0" class="fields-list">
     <div class="threshold-list-header p-grid">
       <div class="if-label-small-header p-col-4"> Subsystem name </div>
@@ -48,17 +49,4 @@ under the License.
       </form>
     </ng-container>
   </div>
-
-  <div class="selection" *ngIf="isAddingMode === true">
-    <div class="input-div">
-      <p-dropdown [options]="(assetDetails$ | async)" optionLabel="name"
-                  class="select-asset-input" filter="true" resetFilterOnHide="true"
-                  placeholder="Search Subsystems (Assets)..." (onChange)="addSubsystem($event.value)">
-      </p-dropdown>
-    </div>
-  </div>
-
-  <button type="button" class="template-fields-button-add" (click)="startAddingMode()">
-    <clr-icon shape="plus"></clr-icon>Add Subsystem
-  </button>
 </div>

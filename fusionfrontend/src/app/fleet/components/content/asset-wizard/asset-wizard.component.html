@@ -57,12 +57,11 @@ under the License.
     <app-asset-wizard-step-subsystems *ngIf="step === AssetWizardStep.SUBSYSTEMS"
                                       [asset]="asset"
                                       (stepChange)="onStepChange($event)"
-                                      (valid)="setAttributesValid($event)">
+                                      (valid)="setSubsystemValid($event)">
     </app-asset-wizard-step-subsystems>
     <app-asset-wizard-step-review *ngIf="step === AssetWizardStep.REVIEW"
                                   [asset]="asset"
-                                  (stepChange)="onStepChange($event)"
-                                  (valid)="setSubsystemValid($event)">
+                                  (stepChange)="onStepChange($event)">
     </app-asset-wizard-step-review>
     <app-asset-wizard-step-customer-data *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
                                          [asset]="asset"

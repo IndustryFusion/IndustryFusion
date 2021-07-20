@@ -18,6 +18,19 @@ under the License.
 <app-asset-wizard-shared-subsystems [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)">
 </app-asset-wizard-shared-subsystems>
 
+<div class="selection" *ngIf="isAddingMode === true">
+  <div class="input-div">
+    <p-dropdown [options]="(assetDetails$ | async)" optionLabel="name"
+                class="select-asset-input" filter="true" resetFilterOnHide="true"
+                placeholder="Search Subsystems (Assets)..." (onChange)="addSubsystem($event.value)">
+    </p-dropdown>
+  </div>
+</div>
+
+<button type="button" class="template-fields-button-add" (click)="startAddingMode()">
+  <clr-icon shape="plus"></clr-icon>Add Subsystem
+</button>
+
 <div class="footer">
   <button type="button" class="if-button button-cancel" [disabled]="!isReadyForNextStep"
           (click)="onBack()">Back</button>

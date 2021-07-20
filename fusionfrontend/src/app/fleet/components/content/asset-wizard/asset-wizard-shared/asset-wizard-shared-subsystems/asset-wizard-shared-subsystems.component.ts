@@ -14,10 +14,10 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { Observable } from 'rxjs';
-import { FactoryAssetDetails } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
+import { AssetQuery } from '../../../../../../store/asset/asset.query';
+import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
 import { FleetAssetDetailsQuery } from '../../../../../../store/fleet-asset-details/fleet-asset-details.query';
 
 @Component({
@@ -33,23 +33,32 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
   @Output() backToEditPage = new EventEmitter<void>();
 
   subsystemFormArray: FormArray;
-  isAddingMode = false;
-  public assetDetails$: Observable<FactoryAssetDetails[]>;
 
   constructor(private formBuilder: FormBuilder,
-              private fleetAssetDetailsQuery: FleetAssetDetailsQuery) {
+              private fleetAssetDetailsQuery: FleetAssetDetailsQuery,
+              private assetQuery: AssetQuery) {
   }
 
   ngOnInit(): void {
-    this.assetDetails$ = this.fleetAssetDetailsQuery.selectAssetDetailsOfCompanyExcludingAssetSerie(this.asset.companyId,
-      this.asset.assetSeriesId);
+    if (!this.asset.subsystems) {
+      this.asset.subsystems = new Array<Asset>();
+    }
+    this.fillTable(this.asset.subsystems);
+  }
 
+  private fillTable(subsystems: Asset[]) {
     this.subsystemFormArray = new FormArray([]);
     this.subsystemFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.subsystemFormArray.valid));
     this.changeIsValid.emit(this.subsystemFormArray.valid);
+
+    for (const subsystem of subsystems) {
+      const assetDetails: FleetAssetDetails = this.fleetAssetDetailsQuery.getEntity(subsystem.id);
+      this.addSubsystem(assetDetails);
+    }
+    this.changeIsValid.emit(this.subsystemFormArray.valid);
   }
 
-  public addSubsystem(assetDetails: FactoryAssetDetails): void {
+  public addSubsystem(assetDetails: FleetAssetDetails): void {
     const subsystemGroup = this.formBuilder.group({
       id: [assetDetails.id, Validators.required],
       index: [this.subsystemFormArray.length],
@@ -59,7 +68,6 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
     });
 
     this.subsystemFormArray.push(subsystemGroup);
-    this.isAddingMode = false;
   }
 
   removeSubsystem(subsystemGroup: AbstractControl): void {
@@ -79,11 +87,20 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
     }
   }
 
-  public onClickEdit() {
-    this.backToEditPage.emit();
+  private getSubsystemFromForm(subsystemGroup: FormControl): Asset {
+    return this.assetQuery.getEntity(subsystemGroup.get('id').value);
   }
 
-  public startAddingMode(): void {
-    this.isAddingMode = true;
+  public saveValues() {
+    if (this.subsystemFormArray.valid) {
+       this.asset.subsystems = new Array<Asset>();
+       this.subsystemFormArray.controls.forEach((subsystemGroup: FormControl) => {
+         this.asset.subsystems.push(this.getSubsystemFromForm(subsystemGroup));
+       });
+    }
+  }
+
+  public onClickEdit() {
+    this.backToEditPage.emit();
   }
 }
