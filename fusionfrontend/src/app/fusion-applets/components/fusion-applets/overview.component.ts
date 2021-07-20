@@ -16,6 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OispService } from '../../../services/oisp.service';
 import { Rule, RuleStatus } from '../../../services/oisp.model';
+import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-overview',
@@ -23,6 +24,7 @@ import { Rule, RuleStatus } from '../../../services/oisp.model';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   rules: Rule[];
 
@@ -51,5 +53,17 @@ export class OverviewComponent implements OnInit {
       this.rules[rowIndex] = updatedRule;
       }
     );
+  }
+
+  createItem() {
+
+  }
+
+  editItem() {
+
+  }
+
+  showDeleteItem() {
+
   }
 }
