@@ -13,18 +13,16 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-wizard-step-overview">
-  <label class="if-dialog-title">Review&nbsp;Metrics</label>
+<label class="if-dialog-title">Review&nbsp;Metrics</label>
 
-  <app-asset-wizard-field-instance-metrics [asset]="asset" [isReview]="true"
-                                           (backToEditPage)="onBackToMetrics()"></app-asset-wizard-field-instance-metrics>
+<app-asset-wizard-shared-metrics [asset]="asset" [isReview]="true"
+                                 (backToEditPage)="onBackToMetrics()"></app-asset-wizard-shared-metrics>
 
-  <label class="if-dialog-title">Review&nbsp;Attributes</label>
-  <app-asset-wizard-field-instance-attributes [asset]="asset" [isReview]="true"
-                                              (backToEditPage)="onBackToAttributes()"></app-asset-wizard-field-instance-attributes>
+<label class="if-dialog-title">Review&nbsp;Attributes</label>
+<app-asset-wizard-shared-attributes [asset]="asset" [isReview]="true"
+                                    (backToEditPage)="onBackToAttributes()"></app-asset-wizard-shared-attributes>
 
-  <div class="footer">
-    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-    <button type="button" class="if-button button-confirm button-primary" (click)="onNext()">Next</button>
-  </div>
+<div class="footer">
+  <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onNext()">Next</button>
 </div>

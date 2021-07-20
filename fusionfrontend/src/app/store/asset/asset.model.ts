@@ -17,6 +17,7 @@ import { ID } from '@datorama/akita';
 import { BaseEntity } from '../baseentity.model';
 import { FieldDetails } from '../field-details/field-details.model';
 import { FieldInstance } from '../field-instance/field-instance.model';
+import { Room } from '../room/room.model';
 
 export class Asset extends BaseEntity {
   companyId: ID;
@@ -24,6 +25,7 @@ export class Asset extends BaseEntity {
   fieldInstanceIds: Array<ID>;
   fieldInstances: Array<FieldInstance>;
   roomId: ID;
+  room: Room;
   externalId: string;
   controlSystemType: string;
   hasGateway: boolean;

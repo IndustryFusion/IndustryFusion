@@ -13,8 +13,8 @@
  * under the License.
  */
 
-@import '../asset-wizard.component';
-@import 'components/labels';
+@import 'src/app/fleet/components/content/asset-wizard/asset-wizard.component';
+@import 'src/assets/sass/components/labels';
 
 .asset-wizard-field-instance-attributes {
   .attributes-list-header {

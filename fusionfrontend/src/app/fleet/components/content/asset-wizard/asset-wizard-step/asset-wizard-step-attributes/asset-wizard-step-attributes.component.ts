@@ -16,7 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { AssetWizardFieldInstanceAttributesComponent } from '../../asset-wizard-field-instance-attributes/asset-wizard-field-instance-attributes.component';
+import { AssetWizardSharedAttributesComponent } from '../../asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
 
 @Component({
   selector: 'app-asset-wizard-step-attributes',
@@ -25,13 +25,13 @@ import { AssetWizardFieldInstanceAttributesComponent } from '../../asset-wizard-
 })
 export class AssetWizardStepAttributesComponent implements OnInit {
 
-  @ViewChild(AssetWizardFieldInstanceAttributesComponent) attributesChild: AssetWizardFieldInstanceAttributesComponent;
+  @ViewChild(AssetWizardSharedAttributesComponent) attributesChild: AssetWizardSharedAttributesComponent;
 
   @Input() asset: Asset;
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
-  public readyToTakeNextStep = false;
+  public isReadyForNextStep = false;
 
   constructor() {
   }
@@ -40,20 +40,21 @@ export class AssetWizardStepAttributesComponent implements OnInit {
   }
 
   public onBack(): void {
-    if (this.readyToTakeNextStep) {
+    if (this.isReadyForNextStep) {
       this.stepChange.emit(AssetWizardStep.ATTRIBUTES - 1);
     }
   }
 
   public onNext(): void {
-    if (this.readyToTakeNextStep) {
+    if (this.isReadyForNextStep) {
       this.attributesChild.saveValues();
       this.stepChange.emit(AssetWizardStep.ATTRIBUTES + 1);
     }
   }
 
   public onSetValid(isValid: boolean): void {
-    this.readyToTakeNextStep = isValid;
+    this.isReadyForNextStep = isValid;
+    this.valid.emit(isValid);
   }
 
 }

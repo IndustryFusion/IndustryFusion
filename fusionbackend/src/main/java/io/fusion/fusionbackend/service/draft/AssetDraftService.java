@@ -13,12 +13,18 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.service;
+package io.fusion.fusionbackend.service.draft;
 
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FieldInstance;
+import io.fusion.fusionbackend.model.Room;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
+import io.fusion.fusionbackend.repository.CountryRepository;
+import io.fusion.fusionbackend.service.AssetSeriesService;
+import io.fusion.fusionbackend.service.FieldInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,41 +38,51 @@ import java.util.stream.Collectors;
 @Transactional
 public class AssetDraftService {
     private final FieldInstanceService fieldInstanceService;
+    private final RoomDraftService roomDraftService;
     private final AssetSeriesService assetSeriesService;
+    private final CountryRepository countryRepository;
 
     @Autowired
     public AssetDraftService(FieldInstanceService fieldInstanceService,
-                             AssetSeriesService assetSeriesService) {
+                             RoomDraftService roomDraftService,
+                             AssetSeriesService assetSeriesService,
+                             CountryRepository countryRepository) {
         this.fieldInstanceService = fieldInstanceService;
+        this.roomDraftService = roomDraftService;
         this.assetSeriesService = assetSeriesService;
+        this.countryRepository = countryRepository;
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Asset initAssetDraft(final Long companyId, final Long assetSeriesId) {
         final AssetSeries assetSeries = this.assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId);
         final Company company = assetSeries.getCompany();
 
-        final Asset newAsset = Asset.builder()
+        final Country countryGermany = countryRepository.findCountryByName("Germany").get();
+        final Room unspecificRoom = roomDraftService.initUnspecificRoomDraftWithFactorySite(companyId, countryGermany,
+                                        FactorySiteType.FLEETMANAGER);
+
+        final Asset transientAsset = Asset.builder()
                 .name(assetSeries.getName())
                 .description(assetSeries.getDescription())
                 .ceCertified(assetSeries.getCeCertified())
                 .handbookKey(assetSeries.getHandbookKey())
                 .protectionClass(assetSeries.getProtectionClass())
+                .imageKey(assetSeries.getImageKey())
                 .videoKey(assetSeries.getVideoKey())
                 .installationDate(null)
                 .constructionDate(OffsetDateTime.now())
+                .room(unspecificRoom)
+                .company(company)
+                .assetSeries(assetSeries)
+                .guid(UUID.randomUUID())
                 .build();
-        newAsset.copyFrom(assetSeries);
-
-        newAsset.setAssetSeries(assetSeries);
-        newAsset.setCompany(company);
-
-        newAsset.setGuid(UUID.randomUUID());
 
         List<FieldInstance> newFieldInstances = assetSeries.getFieldSources().stream()
                 .map(fieldInstanceService::initFieldInstanceDraft)
                 .collect(Collectors.toList());
-        newAsset.getFieldInstances().addAll(newFieldInstances);
+        transientAsset.getFieldInstances().addAll(newFieldInstances);
 
-        return newAsset;
+        return transientAsset;
     }
 }

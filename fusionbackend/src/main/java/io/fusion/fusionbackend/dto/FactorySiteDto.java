@@ -42,7 +42,10 @@ public class FactorySiteDto {
     private String line2;
     private String city;
     private String zip;
-    private String country;
+
+    private Long countryId;
+    private CountryDto country;
+
     private Double latitude;
     private Double longitude;
     private String imageKey;

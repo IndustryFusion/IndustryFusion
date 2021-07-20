@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetWizardStepFinishedComponent } from './asset-wizard-step-finished.component';
+import { AssetWizardStepCustomerDataComponent } from './asset-wizard-step-customer-data.component';
 
-describe('AssetWizardStepFinishedComponent', () => {
-  let component: AssetWizardStepFinishedComponent;
-  let fixture: ComponentFixture<AssetWizardStepFinishedComponent>;
+describe('AssetWizardStepCustomerComponent', () => {
+  let component: AssetWizardStepCustomerDataComponent;
+  let fixture: ComponentFixture<AssetWizardStepCustomerDataComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetWizardStepFinishedComponent ]
+      declarations: [ AssetWizardStepCustomerDataComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetWizardStepFinishedComponent);
+    fixture = TestBed.createComponent(AssetWizardStepCustomerDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

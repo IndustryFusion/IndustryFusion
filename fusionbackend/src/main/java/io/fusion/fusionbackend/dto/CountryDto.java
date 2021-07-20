@@ -13,4 +13,21 @@
  * under the License.
  */
 
-@import "../../asset-wizard.component";
+package io.fusion.fusionbackend.dto;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
+@AllArgsConstructor
+public class CountryDto {
+    private Long id;
+    private String name;
+
+    @JsonCreator
+    public CountryDto() {
+    }
+}

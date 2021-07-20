@@ -15,22 +15,22 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Threshold, ThresholdType } from '../../../../../store/threshold/threshold.model';
-import { FieldInstance } from '../../../../../store/field-instance/field-instance.model';
-import { CustomFormValidators } from '../../../../../common/utils/custom-form-validators';
+import { Threshold, ThresholdType } from '../../../../../../store/threshold/threshold.model';
+import { FieldInstance } from '../../../../../../store/field-instance/field-instance.model';
+import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
 import { QuantityDataType } from 'src/app/store/field-details/field-details.model';
 import { FieldThresholdType } from 'src/app/store/field/field.model';
-import { Asset } from '../../../../../store/asset/asset.model';
-import { FieldType } from '../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../store/field/field-query.service';
-import { QuantityTypeQuery } from '../../../../../store/quantity-type/quantity-type.query';
+import { Asset } from '../../../../../../store/asset/asset.model';
+import { FieldType } from '../../../../../../store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../../store/field/field-query.service';
+import { QuantityTypeQuery } from '../../../../../../store/quantity-type/quantity-type.query';
 
 @Component({
-  selector: 'app-asset-wizard-field-instance-metrics',
-  templateUrl: './asset-wizard-field-instance-metrics.component.html',
-  styleUrls: ['./asset-wizard-field-instance-metrics.component.scss']
+  selector: 'app-asset-wizard-shared-metrics',
+  templateUrl: './asset-wizard-shared-metrics.component.html',
+  styleUrls: ['./asset-wizard-shared-metrics.component.scss']
 })
-export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
+export class AssetWizardSharedMetricsComponent implements OnInit {
 
   @Input() asset: Asset;
   @Input() isReview = false;
@@ -78,17 +78,19 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
 
     for (let i = 0; i < fieldInstances.length; i++) {
       if (fieldInstances[i].fieldSource.fieldTarget.fieldType === FieldType.METRIC) {
-        const formGroup = this.createFieldInstanceGroup(i, fieldInstances[i]);
+        const formGroup = this.createFieldInstanceGroup(i, this.fieldInstancesFormArray.length, fieldInstances[i]);
         this.fieldInstancesFormArray.push(formGroup);
       }
     }
     this.changeIsValid.emit(this.fieldInstancesFormArray.valid);
   }
 
-  private createFieldInstanceGroup(index: number, fieldInstance: FieldInstance): FormGroup {
+  private createFieldInstanceGroup(indexFieldInstances: number, indexInArray: number,
+                                   fieldInstance: FieldInstance): FormGroup {
     const group = this.formBuilder.group({
       id: [],
-      index: [],
+      indexFieldInstances: [],
+      indexInArray: [],
       name: [],
       fieldName: [],
       sourceRegister: [],
@@ -106,7 +108,8 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
     const quantityDataType = quantityType.dataType;
 
     group.get('id').patchValue(fieldInstance.id);
-    group.get('index').patchValue(index);
+    group.get('indexFieldInstances').patchValue(indexFieldInstances);
+    group.get('indexInArray').patchValue(indexInArray);
     group.get('name').patchValue(fieldInstance.name);
     group.get('fieldName').patchValue(field.name);
     group.get('sourceRegister').patchValue(fieldInstance.fieldSource.register);
@@ -173,15 +176,23 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
     if (metricGroup == null || metricGroup.get('mandatory') === null || metricGroup.get('mandatory').value === true) {
       return;
     }
-    const indexToRemove: number = metricGroup.get('index').value;
-    this.fieldInstancesFormArray.removeAt(indexToRemove);
-    this.asset.fieldInstances.splice(indexToRemove, 1);
+    const indexFieldInstances: number = metricGroup.get('indexFieldInstances').value;
+    const indexInArray: number = metricGroup.get('indexInArray').value;
+    this.fieldInstancesFormArray.removeAt(indexInArray);
+    this.asset.fieldInstances.splice(indexFieldInstances, 1);
+
+    for (let i = indexInArray; i < this.fieldInstancesFormArray.length; i++) {
+      const indexInArrayElement = this.fieldInstancesFormArray.at(i).get('indexInArray');
+      const indexInFieldInstancesElement = this.fieldInstancesFormArray.at(i).get('indexFieldInstances');
+      indexInArrayElement.setValue(indexInArrayElement.value - 1);
+      indexInFieldInstancesElement.setValue(indexInFieldInstancesElement.value - 1);
+    }
   }
 
   public saveValues() {
     if (this.fieldInstancesFormArray.valid) {
       this.fieldInstancesFormArray.controls.forEach((metricGroup: FormControl) => {
-        this.asset.fieldInstances[metricGroup.get('index').value] = this.getFieldInstanceFromForm(metricGroup);
+        this.asset.fieldInstances[metricGroup.get('indexFieldInstances').value] = this.getFieldInstanceFromForm(metricGroup);
       });
     }
   }
@@ -189,16 +200,16 @@ export class AssetWizardFieldInstanceMetricsComponent implements OnInit {
   private getFieldInstanceFromForm(metricGroup: AbstractControl): FieldInstance {
     const thresholdGroup = metricGroup.get('thresholds');
     const quantityDataType = metricGroup.get('quantityDataType').value;
-    const fieldInstance = this.asset.fieldInstances[metricGroup.get('index').value];
+    const fieldInstance = this.asset.fieldInstances[metricGroup.get('indexFieldInstances').value];
 
     return {
       ...fieldInstance,
       fieldSource: { ...fieldInstance.fieldSource },
-      absoluteThreshold: AssetWizardFieldInstanceMetricsComponent.getThresholdFromForm(thresholdGroup,
+      absoluteThreshold: AssetWizardSharedMetricsComponent.getThresholdFromForm(thresholdGroup,
         ThresholdType.ABSOLUTE, quantityDataType),
-      idealThreshold: AssetWizardFieldInstanceMetricsComponent.getThresholdFromForm(thresholdGroup,
+      idealThreshold: AssetWizardSharedMetricsComponent.getThresholdFromForm(thresholdGroup,
         ThresholdType.IDEAL, quantityDataType),
-      criticalThreshold: AssetWizardFieldInstanceMetricsComponent.getThresholdFromForm(thresholdGroup,
+      criticalThreshold: AssetWizardSharedMetricsComponent.getThresholdFromForm(thresholdGroup,
         ThresholdType.CRITICAL, quantityDataType)
     };
   }

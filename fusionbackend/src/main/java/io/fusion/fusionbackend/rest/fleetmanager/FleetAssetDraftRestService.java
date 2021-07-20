@@ -18,7 +18,7 @@ package io.fusion.fusionbackend.rest.fleetmanager;
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
-import io.fusion.fusionbackend.service.AssetDraftService;
+import io.fusion.fusionbackend.service.draft.AssetDraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -72,7 +72,11 @@ public class FactorySite extends BaseEntity {
     private String line2;
     private String city;
     private String zip;
-    private String country;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
+
     private Double latitude;
     private Double longitude;
     private String imageKey;

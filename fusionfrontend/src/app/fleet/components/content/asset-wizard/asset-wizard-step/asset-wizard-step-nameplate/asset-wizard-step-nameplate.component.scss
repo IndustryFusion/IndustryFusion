@@ -13,13 +13,7 @@
  * under the License.
  */
 
-@import "../../asset-wizard.component";
-
-.asset-wizard-step-namepalate {
-  div.content {
-
-  }
-}
+@import '../../asset-wizard.component';
 
 :host ::ng-deep .textarea-character-count {
   padding-right: 0 !important;

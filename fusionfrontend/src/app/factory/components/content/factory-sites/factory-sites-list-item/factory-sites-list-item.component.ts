@@ -57,7 +57,7 @@ export class FactorySitesListItemComponent implements OnInit, OnDestroy {
       line2: [''],
       city: ['', requiredTextValidator],
       zip: [''],
-      country: ['', requiredTextValidator],
+      countryId: [null, Validators.required],
       latitude: [0],
       longitude: [0],
       type: [null, requiredTextValidator]

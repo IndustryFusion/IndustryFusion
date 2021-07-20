@@ -86,13 +86,16 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   createAsset(assetSeriesId: ID) {
-    this.dialogService.open(AssetWizardComponent, {
+    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
       data: {
         companyId: this.companyQuery.getActiveId(),
         prefilledAssetSeriesId: assetSeriesId,
       },
+      header: 'Digital Twin Creator for Assets',
       width: '75%'
     });
+
+    assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
   onSort(field: string) {

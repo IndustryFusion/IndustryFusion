@@ -18,8 +18,7 @@ under the License.
     <ul class="clr-timeline clr-timeline-horizontal">
       <ng-container *ngFor="let i of [AssetWizardStep.GENERAL_INFORMATION, AssetWizardStep.DIGITAL_NAMEPLATE,
                                     AssetWizardStep.METRICS_THRESHOLDS, AssetWizardStep.ATTRIBUTES,
-                                    AssetWizardStep.REVIEW, AssetWizardStep.CUSTOMER_DATA,
-                                    AssetWizardStep.FINISHED];">
+                                    AssetWizardStep.REVIEW, AssetWizardStep.CUSTOMER_DATA];">
         <li class="clr-timeline-step">
           <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
           <clr-icon *ngIf="step < i" shape="circle" aria-label="Not started"></clr-icon>
@@ -30,40 +29,38 @@ under the License.
     </ul>
   </div>
 
-  <app-asset-wizard-step-general-information *ngIf="step === AssetWizardStep.GENERAL_INFORMATION"
-                                             [assetForm]="assetForm"
-                                             [isAssetSeriesLocked]="isAssetSeriesLocked"
-                                             [relatedAssetSeries]="relatedAssetSeries"
-                                             [relatedAssetType]="relatedAssetType"
-                                             [relatedCompany]="relatedCompany"
-                                             (stepChange)="onStepChange($event)"
-                                             (changeAssetSeries)="onChangeAssetSeries($event)">
-  </app-asset-wizard-step-general-information>
-  <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE"
-                                   [assetForm]="assetForm"
-                                   (stepChange)="onStepChange($event)">
-  </app-asset-wizard-step-nameplate>
-  <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS"
-                                            [asset]="asset"
-                                            (stepChange)="onStepChange($event)"
-                                            (valid)="setMetricsValid($event)">
-  </app-asset-wizard-step-metrics-thresholds>
-  <app-asset-wizard-step-attributes *ngIf="step === AssetWizardStep.ATTRIBUTES"
-                                    [asset]="asset"
-                                    (stepChange)="onStepChange($event)"
-                                    (valid)="setAttributesValid($event)">
-  </app-asset-wizard-step-attributes>
-  <app-asset-wizard-step-review *ngIf="step === AssetWizardStep.REVIEW"
-                                [asset]="asset"
-                                (stepChange)="onStepChange($event)">
-  </app-asset-wizard-step-review>
-  <app-asset-wizard-step-customer *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
-                                  [assetForm]="assetForm"
+  <div class="content">
+    <app-asset-wizard-step-general-information *ngIf="step === AssetWizardStep.GENERAL_INFORMATION"
+                                               [assetForm]="assetForm"
+                                               [isAssetSeriesLocked]="isAssetSeriesLocked"
+                                               [relatedAssetSeries]="relatedAssetSeries"
+                                               [relatedAssetType]="relatedAssetType"
+                                               [relatedCompany]="relatedCompany"
+                                               (stepChange)="onStepChange($event)"
+                                               (changeAssetSeries)="onChangeAssetSeries($event)">
+    </app-asset-wizard-step-general-information>
+    <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE"
+                                     [assetForm]="assetForm"
+                                     (stepChange)="onStepChange($event)">
+    </app-asset-wizard-step-nameplate>
+    <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS"
+                                              [asset]="asset"
+                                              (stepChange)="onStepChange($event)"
+                                              (valid)="setMetricsValid($event)">
+    </app-asset-wizard-step-metrics-thresholds>
+    <app-asset-wizard-step-attributes *ngIf="step === AssetWizardStep.ATTRIBUTES"
+                                      [asset]="asset"
+                                      (stepChange)="onStepChange($event)"
+                                      (valid)="setAttributesValid($event)">
+    </app-asset-wizard-step-attributes>
+    <app-asset-wizard-step-review *ngIf="step === AssetWizardStep.REVIEW"
+                                  [asset]="asset"
                                   (stepChange)="onStepChange($event)">
-  </app-asset-wizard-step-customer>
-  <app-asset-wizard-step-finished *ngIf="step === AssetWizardStep.FINISHED"
-                                  [assetForm]="assetForm"
-                                  (stepChange)="onStepChange($event)"
-                                  (saveAsset)="onSaveAsset()">
-  </app-asset-wizard-step-finished>
+    </app-asset-wizard-step-review>
+    <app-asset-wizard-step-customer-data *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
+                                         [asset]="asset"
+                                         (stepChange)="onStepChange($event)" (createAsset)="onSaveAsset()"
+                                         (valid)="setCustomerDataValid($event)">
+    </app-asset-wizard-step-customer-data>
+  </div>
 </div>
