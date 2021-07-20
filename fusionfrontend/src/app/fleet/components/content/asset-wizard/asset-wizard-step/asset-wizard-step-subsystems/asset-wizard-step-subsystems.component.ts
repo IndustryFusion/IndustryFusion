@@ -16,20 +16,22 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { AssetWizardSharedMetricsComponent } from '../../asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
+import { AssetWizardSharedAttributesComponent } from '../../asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
 
 @Component({
-  selector: 'app-asset-wizard-step-review',
-  templateUrl: './asset-wizard-step-review.component.html',
-  styleUrls: ['./asset-wizard-step-review.component.scss']
+  selector: 'app-asset-wizard-step-subsystems',
+  templateUrl: './asset-wizard-step-subsystems.component.html',
+  styleUrls: ['./asset-wizard-step-subsystems.component.scss']
 })
-export class AssetWizardStepReviewComponent implements OnInit {
+export class AssetWizardStepSubsystemsComponent implements OnInit {
 
-  @ViewChild(AssetWizardSharedMetricsComponent) metricsChild: AssetWizardSharedMetricsComponent;
+  @ViewChild(AssetWizardSharedAttributesComponent) attributesChild: AssetWizardSharedAttributesComponent;
 
   @Input() asset: Asset;
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
+
+  public isReadyForNextStep = false;
 
   constructor() {
   }
@@ -37,23 +39,22 @@ export class AssetWizardStepReviewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onBack(): void {
-     this.stepChange.emit(AssetWizardStep.REVIEW - 1);
+  public onBack(): void {
+    if (this.isReadyForNextStep) {
+      this.stepChange.emit(AssetWizardStep.SUBSYSTEMS - 1);
+    }
   }
 
-  onNext(): void {
-     this.stepChange.emit(AssetWizardStep.REVIEW + 1);
+  public onNext(): void {
+    if (this.isReadyForNextStep) {
+      this.attributesChild.saveValues();
+      this.stepChange.emit(AssetWizardStep.SUBSYSTEMS + 1);
+    }
   }
 
-  onBackToAttributes(): void {
-    this.stepChange.emit(AssetWizardStep.ATTRIBUTES);
+  public onSetValid(isValid: boolean): void {
+    this.isReadyForNextStep = isValid;
+    this.valid.emit(isValid);
   }
 
-  onBackToMetrics(): void {
-    this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS);
-  }
-
-  onBackToSubsystems(): void {
-    this.stepChange.emit(AssetWizardStep.SUBSYSTEMS);
-  }
 }

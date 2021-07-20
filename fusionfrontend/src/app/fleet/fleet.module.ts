@@ -48,6 +48,10 @@ import { AssetWizardStepReviewComponent } from './components/content/asset-wizar
 import { AssetWizardSharedMetricsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
 import { AssetWizardSharedAttributesComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
 import { AgmCoreModule } from '@agm/core';
+// tslint:disable-next-line:max-line-length
+import { AssetWizardStepSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-subsystems/asset-wizard-step-subsystems.component';
+// tslint:disable-next-line:max-line-length
+import { AssetWizardSharedSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
 
 
 @NgModule({
@@ -77,6 +81,8 @@ import { AgmCoreModule } from '@agm/core';
     AssetWizardStepReviewComponent,
     AssetWizardSharedMetricsComponent,
     AssetWizardSharedAttributesComponent,
+    AssetWizardStepSubsystemsComponent,
+    AssetWizardSharedSubsystemsComponent,
   ],
     imports: [
         IFCommon,

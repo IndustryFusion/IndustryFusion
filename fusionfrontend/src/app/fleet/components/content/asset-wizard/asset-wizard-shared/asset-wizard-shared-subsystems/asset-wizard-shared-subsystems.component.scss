@@ -13,12 +13,33 @@
  * under the License.
  */
 
-export enum AssetWizardStep {
-  GENERAL_INFORMATION = 1,
-  SUBSYSTEMS,
-  DIGITAL_NAMEPLATE,
-  METRICS_THRESHOLDS,
-  ATTRIBUTES,
-  REVIEW,
-  CUSTOMER_DATA
+@import 'src/app/fleet/components/content/asset-wizard/asset-wizard.component';
+@import 'src/assets/sass/components/labels';
+
+.asset-wizard-subsystems {
+  .asset-icon {
+    display: flex;
+
+    img {
+      width: 2rem;
+      height: 2rem;
+      margin-top: 9px;
+      background: grey;
+      border-radius: 45px;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+:host ::ng-deep .p-grid {
+  width: 100% !important;
+  align-items: baseline;
+}
+
+:host ::ng-deep app-trash-button {
+  padding: 2px !important;
+}
+
+:host ::ng-deep app-edit-button {
+  padding: 2px !important;
 }

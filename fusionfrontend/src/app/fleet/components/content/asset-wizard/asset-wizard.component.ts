@@ -60,6 +60,7 @@ export class AssetWizardComponent implements OnInit {
 
   public metricsValid: boolean;
   public attributesValid: boolean;
+  public subsystemsValid: boolean;
   public customerDataValid: boolean;
 
   public AssetWizardStep = AssetWizardStep;
@@ -133,7 +134,7 @@ export class AssetWizardComponent implements OnInit {
 
   onSaveAsset(): void {
     if (this.asset && this.assetForm.valid && this.asset.fieldInstances
-        && this.metricsValid && this.attributesValid && this.customerDataValid) {
+        && this.metricsValid && this.attributesValid && this.subsystemsValid && this.customerDataValid) {
       this.asset.name = this.assetForm.get('name').value;
       this.asset.description = this.assetForm.get('description').value;
       this.asset.ceCertified = this.assetForm.get('ceCertified').value;
@@ -247,5 +248,9 @@ export class AssetWizardComponent implements OnInit {
 
   setCustomerDataValid(isValid: boolean) {
     this.customerDataValid = isValid;
+  }
+
+  setSubsystemValid(isValid: boolean) {
+    this.subsystemsValid = isValid;
   }
 }
