@@ -13,19 +13,19 @@
  * under the License.
  */
 
-import { Component, Input } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FusionAppletsComponent } from './components/fusion-applets/fusion-applets.component';
 
-import { HomeItemClass, LaunchpadItem } from './launchpad-item.model';
+const routes: Routes = [
+  {
+    path: 'fusion-applets',
+    component: FusionAppletsComponent,
+  }
+];
 
-@Component({
-    selector: 'app-launchpad-item',
-    templateUrl: './launchpad-item.component.html',
-    styleUrls: ['./launchpad-item.component.scss']
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class LaunchpadItemComponent {
-
-  HomeItemClass = HomeItemClass;
-
-    @Input()
-    item: LaunchpadItem;
-}
+export class FusionAppletsRoutingModule { }
