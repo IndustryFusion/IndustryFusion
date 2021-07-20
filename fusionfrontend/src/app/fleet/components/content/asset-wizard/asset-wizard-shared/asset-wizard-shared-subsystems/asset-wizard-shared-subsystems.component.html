@@ -19,27 +19,25 @@ under the License.
   <div *ngIf="subsystemFormArray?.controls?.length > 0" class="fields-list">
     <div class="threshold-list-header p-grid">
       <div class="if-label-small-header p-col-4"> Subsystem name </div>
-      <div class="if-label-small-header p-col-2"> Asset type </div>
+      <div class="if-label-small-header p-col-3"> Asset type </div>
       <div class="if-label-small-header p-col-3"> Manufacturer </div>
       <div class="if-label-small-header p-col-2"> </div>
-      <div class="if-label-small-header p-col-1"> </div>
     </div>
 
     <ng-container *ngFor="let subsystem of subsystemFormArray?.controls;">
       <form [formGroup]="subsystem //noinspection InvalidExpressionResultType">
-        <div class="p-grid">
+        <div class="p-grid subsystem-row">
           <div class="p-col-4 asset-icon">
             <img src="/assets/img/IndustryFusion-hive.png" alt="asset-symbol">
             <label class="if-label" displayControlValue="name"></label>
           </div>
-          <label class="if-label-normal-weight p-col-2" displayControlValue="assetTypeName"></label>
+          <label class="if-label-normal-weight p-col-3" displayControlValue="assetTypeName"></label>
           <label class="if-label-normal-weight p-col-3" displayControlValue="manufacturer"></label>
           <ng-container *ngIf="isReview === false">
-            <label class="p-col-2"></label>
+            <label class="p-col-1"></label>
             <app-trash-button class="p-col-1" (click)="removeSubsystem(subsystem)"></app-trash-button>
           </ng-container>
           <ng-container *ngIf="isReview === true">
-            <label class="p-col-1"></label>
             <div class="p-col-2">
               <app-edit-button (click)="onClickEdit()" ></app-edit-button>
               <app-trash-button class="p-col-1" (click)="removeSubsystem(subsystem)"></app-trash-button>

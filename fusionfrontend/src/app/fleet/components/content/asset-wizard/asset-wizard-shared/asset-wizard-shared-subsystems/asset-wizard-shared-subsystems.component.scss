@@ -19,16 +19,27 @@
 .asset-wizard-subsystems {
   .asset-icon {
     display: flex;
+    align-items: center;
 
     img {
       width: 2rem;
       height: 2rem;
-      margin-top: 9px;
+      /*margin-top: 9px;*/
       background: grey;
       border-radius: 45px;
       margin-right: 0.5rem;
     }
   }
+
+  .subsystem-row {
+    display: flex;
+    align-items: center;
+    justify-content: center
+  }
+}
+
+:host ::ng-deep .if-label-normal-weight {
+  overflow-wrap: anywhere;
 }
 
 :host ::ng-deep .p-grid {
