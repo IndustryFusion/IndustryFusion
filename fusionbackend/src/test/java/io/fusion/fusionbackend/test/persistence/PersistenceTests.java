@@ -11,10 +11,11 @@ import static io.fusion.fusionbackend.test.persistence.builder.AssetSeriesBuilde
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplateBuilder.anAssetTypeTemplate;
 import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class PersistenceTests extends PersistenceTestsBase{
+public class PersistenceTests extends PersistenceTestsBase {
 
 
     @Autowired
@@ -45,4 +46,30 @@ public class PersistenceTests extends PersistenceTestsBase{
         assertNotNull(foundAsset);
     }
 
+    @Test
+    void persistAssetWithSubsystem() {
+
+        Asset subsystem = persisted(anAsset()
+                .basedOnSeries(persisted(anAssetSeries()
+                        .forCompany(persisted(aCompany()))
+                        .basedOnTemplate(persisted(anAssetTypeTemplate()
+                                .forType(persisted(anAssetType()))))))
+                .forCompany(persisted(aCompany())))
+                .build();
+
+        Asset parent = persisted(anAsset()
+                .basedOnSeries(persisted(anAssetSeries()
+                        .forCompany(persisted(aCompany()))
+                        .basedOnTemplate(persisted(anAssetTypeTemplate()
+                                .forType(persisted(anAssetType()))))))
+                .forCompany(persisted(aCompany())))
+                .build();
+
+
+        parent.getSubsystems().add(subsystem);
+
+        Asset foundParent = testEntityManager.persistFlushFind(parent);
+
+        assertEquals(1, foundParent.getSubsystems().size());
+    }
 }

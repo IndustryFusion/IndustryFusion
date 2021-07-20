@@ -20,16 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import javax.persistence.Entity;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -59,6 +53,10 @@ public class Asset extends BaseAsset {
     @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
+
+    @OneToMany
+    @JoinColumn(name = "subsystem_parent_id")
+    private Set<Asset> subsystems = new HashSet<>();
 
     private String externalId;
     private String controlSystemType;
@@ -116,6 +114,9 @@ public class Asset extends BaseAsset {
         }
         if (sourceAsset.getFieldInstances() != null) {
             setFieldInstances(sourceAsset.getFieldInstances());
+        }
+        if (sourceAsset.getSubsystems() != null) {
+            setSubsystems(sourceAsset.getSubsystems());
         }
     }
 }
