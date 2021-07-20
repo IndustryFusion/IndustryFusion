@@ -61,7 +61,7 @@ class FusionbackendApplicationTests {
     private static Integer roomWestStruumpFabId;
     private static Integer roomEastStruumpFabId;
 
-    private static Integer countryGermanyId;
+    private static Integer countryGermanyId = 80;
 
     private static Integer assetRoomWestStruumpFabId;
     private static Integer assetRoomEastStruumpFabId;
@@ -215,12 +215,12 @@ class FusionbackendApplicationTests {
 
     @Test
     @Order(299)
-    void testCreateCountryGermany() {
+    void testCreateTestCountry() {
         CountryDto country = CountryDto.builder()
-                .name("Germany")
+                .name("Testcountry")
                 .build();
 
-        countryGermanyId = createAndTestCountry(country);
+        createAndTestCountry(country);
     }
 
     @Test
