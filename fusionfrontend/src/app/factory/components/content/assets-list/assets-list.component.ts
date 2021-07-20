@@ -21,7 +21,7 @@ import { AssetService } from 'src/app/store/asset/asset.service';
 import { Company } from 'src/app/store/company/company.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
-import { AssetDetails, AssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetails, FactoryAssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
@@ -41,7 +41,7 @@ export class AssetsListComponent implements OnInit {
   @Input()
   factorySite: FactorySite;
   @Input()
-  assetsWithDetailsAndFields: AssetDetailsWithFields[];
+  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   @Input()
   rooms: Room[];
   @Input()
@@ -53,9 +53,9 @@ export class AssetsListComponent implements OnInit {
   @Output()
   toolBarClickEvent = new EventEmitter<string>();
   @Output()
-  assetDetailsSelected = new EventEmitter<AssetDetails>();
+  assetDetailsSelected = new EventEmitter<FactoryAssetDetails>();
   @Output()
-  updateAssetEvent = new EventEmitter<[Room, AssetDetails]>();
+  updateAssetEvent = new EventEmitter<[Room, FactoryAssetDetails]>();
 
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
@@ -92,7 +92,7 @@ export class AssetsListComponent implements OnInit {
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
-        assetsToBeOnboarded: this.assetsWithDetailsAndFields,
+        assetsToBeOnboarded: this.factoryAssetDetailsWithFields,
         factorySites: this.factorySites,
         rooms: this.rooms,
         activeModalType: AssetModalType.startInitialization,
@@ -103,7 +103,7 @@ export class AssetsListComponent implements OnInit {
       contentStyle: { 'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%' },
     });
 
-    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+    ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
       if (assetFormValues) {
         this.assetUpdated(assetFormValues);
       }
@@ -126,13 +126,13 @@ export class AssetsListComponent implements OnInit {
     });
   }
 
-  assetUpdated(asset: AssetDetails): void {
+  assetUpdated(asset: FactoryAssetDetails): void {
     const room = this.getOldRoomForAsset(asset);
     this.updateAssetEvent.emit([room, asset]);
   }
 
   getOldRoomForAsset(updatedAsset) {
-    const roomId = this.assetsWithDetailsAndFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
+    const roomId = this.factoryAssetDetailsWithFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
     return this.rooms.filter(room => room.id === roomId).pop();
   }
 
@@ -140,12 +140,12 @@ export class AssetsListComponent implements OnInit {
     return this.selectedIds.has(id);
   }
 
-  onAssetSelect(asset: AssetDetailsWithFields) {
+  onAssetSelect(asset: FactoryAssetDetailsWithFields) {
     this.selectedIds.add(asset.id);
     this.emitSelectEvent();
   }
 
-  onAssetDeselect(asset: AssetDetailsWithFields) {
+  onAssetDeselect(asset: FactoryAssetDetailsWithFields) {
     this.selectedIds.delete(asset.id);
     this.emitSelectEvent();
   }
@@ -179,9 +179,9 @@ export class AssetsListComponent implements OnInit {
   }
 
 
-  deleteAsset(event: AssetDetailsWithFields) {
+  deleteAsset(event: FactoryAssetDetailsWithFields) {
     this.assetService.removeCompanyAsset(event.companyId, event.id).subscribe(() => {
-      this.assetsWithDetailsAndFields.splice(this.assetsWithDetailsAndFields.indexOf(event), 1);
+      this.factoryAssetDetailsWithFields.splice(this.factoryAssetDetailsWithFields.indexOf(event), 1);
     });
   }
 }

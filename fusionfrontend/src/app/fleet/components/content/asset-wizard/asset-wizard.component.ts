@@ -38,6 +38,7 @@ import { AssetService } from '../../../../store/asset/asset.service';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
 import { CountryResolver } from '../../../../resolvers/country.resolver';
+import { FleetAssetDetailsResolver } from '../../../../resolvers/fleet-asset-details.resolver';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -68,6 +69,7 @@ export class AssetWizardComponent implements OnInit {
               private assetSeriesQuery: AssetSeriesQuery,
               private assetSeriesService: AssetSeriesService,
               private assetResolver: AssetResolver,
+              private fleetAssetDetailsResolver: FleetAssetDetailsResolver,
               private assetService: AssetService,
               private companyQuery: CompanyQuery,
               private quantityTypesResolver: QuantityTypesResolver,
@@ -190,6 +192,7 @@ export class AssetWizardComponent implements OnInit {
   private resolveWizard(): void {
     this.assetSeriesResolver.resolve(this.activatedRoute.snapshot);
     this.assetResolver.resolve(this.activatedRoute.snapshot);
+    this.fleetAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
     this.assetTypeTemplatesResolver.resolve().subscribe();

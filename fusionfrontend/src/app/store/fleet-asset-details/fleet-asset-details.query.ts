@@ -14,35 +14,23 @@
  */
 
 import { Injectable } from '@angular/core';
-/*import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';*/
 import { BaseQueryEntity } from '../basequery';
-import { AssetDetails } from './asset-details.model';
-import { AssetDetailsState, AssetDetailsStore } from './asset-details.store';
+import { FleetAssetDetails } from './fleet-asset-details.model';
+import { FleetAssetDetailsState, FleetAssetDetailsStore } from './fleet-asset-details.store';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class AssetDetailsQuery extends BaseQueryEntity<AssetDetailsState, AssetDetails> {
+export class FleetAssetDetailsQuery extends BaseQueryEntity<FleetAssetDetailsState, FleetAssetDetails> {
 
-  constructor(protected store: AssetDetailsStore) {
+  constructor(protected store: FleetAssetDetailsStore) {
     super(store);
   }
 
-  selectAssetDetailsOfCompany(companyId: ID): Observable<AssetDetails[]> {
+  selectAssetDetailsOfCompanyExcludingAssetSerie(companyId: ID, assetSeriesId: ID): Observable<FleetAssetDetails[]> {
     return this.selectAll({
       filterBy: entity => String(entity.companyId) === String(companyId)
+        && String(entity.assetSeriesId) !== String(assetSeriesId)
     });
-  }
-
-
-  selectAssetDetailsOfRoom(roomId: ID): Observable<AssetDetails[]> {
-    return this.selectAll({
-      filterBy: entity => String(entity.roomId) === String(roomId)
-    });
-  }
-
-  selectAssetDetailsByID(assetDetailsId: ID): Observable<AssetDetails> {
-    return this.selectEntity(assetDetailsId);
   }
 }

@@ -15,10 +15,13 @@
 
 package io.fusion.fusionbackend.rest.fleetmanager;
 
+import io.fusion.fusionbackend.dto.AssetDetailsDto;
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.dto.FieldInstanceDto;
+import io.fusion.fusionbackend.dto.mappers.AssetDetailsMapper;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldInstanceMapper;
+import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +41,18 @@ public class FleetAssetRestService {
     private final AssetService assetService;
     private final AssetMapper assetMapper;
     private final FieldInstanceMapper fieldInstanceMapper;
+    private final AssetDetailsMapper assetDetailsMapper;
+
 
     @Autowired
     public FleetAssetRestService(AssetService assetService,
                                  AssetMapper assetMapper,
-                                 FieldInstanceMapper fieldInstanceMapper) {
+                                 FieldInstanceMapper fieldInstanceMapper,
+                                 AssetDetailsMapper assetDetailsMapper) {
         this.assetService = assetService;
         this.assetMapper = assetMapper;
         this.fieldInstanceMapper = fieldInstanceMapper;
+        this.assetDetailsMapper = assetDetailsMapper;
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/")
@@ -62,6 +69,13 @@ public class FleetAssetRestService {
                              @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return assetMapper.toDto(assetService.getAssetOverAssetSeries(companyId, assetSeriesId, assetId),
                 embedChildren);
+    }
+
+    @GetMapping(path = "/companies/{companyId}/fleetassetdetails")
+    public Set<AssetDetailsDto> getAssetDetails(@PathVariable final Long companyId,
+                                                @RequestParam(defaultValue = "true") final boolean embedChildren) {
+        Set<Asset> assetSet = assetService.getAssetsByCompany(companyId);
+        return assetDetailsMapper.toDtoSet(assetSet, embedChildren);
     }
 
     @PatchMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}")

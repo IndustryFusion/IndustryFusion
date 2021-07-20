@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 const MAXIMAL_MAINTENANCE_VALUE = 1500;
@@ -15,7 +15,7 @@ const DAYS_PER_MONTH = 30.4167;
 export class MaintenanceProgressbarComponent implements OnInit {
 
   @Input()
-  asset: AssetDetailsWithFields;
+  asset: FactoryAssetDetailsWithFields;
 
   maintenanceFieldIndex: number;
   maintenanceDurationHours: number;
@@ -42,4 +42,3 @@ export class MaintenanceProgressbarComponent implements OnInit {
   }
 
 }
-

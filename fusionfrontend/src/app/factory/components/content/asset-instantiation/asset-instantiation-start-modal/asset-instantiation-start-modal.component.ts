@@ -14,7 +14,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AssetDetailsWithFields } from '../../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 
 @Component({
   selector: 'app-asset-instantiation-start-modal',
@@ -24,17 +24,17 @@ import { AssetDetailsWithFields } from '../../../../../store/asset-details/asset
 export class AssetInstantiationStartModalComponent implements OnInit {
 
   @Input()
-  assetsToBeOnboarded: AssetDetailsWithFields[];
+  assetsToBeOnboarded: FactoryAssetDetailsWithFields[];
 
   @Output()
-  assetOnboardingEvent = new EventEmitter<AssetDetailsWithFields>();
+  assetOnboardingEvent = new EventEmitter<FactoryAssetDetailsWithFields>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  onSubmit(assetToBeOnboarded?: AssetDetailsWithFields) {
+  onSubmit(assetToBeOnboarded?: FactoryAssetDetailsWithFields) {
     this.assetOnboardingEvent.emit(assetToBeOnboarded);
   }
 }

@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { AssetDetailsWithFields } from 'src/app/store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/store/company/company.model';
@@ -35,11 +35,11 @@ const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 export class MaintenancePageComponent implements OnInit {
 
   companyId: ID;
-  assetDetailsWithFields$: Observable<AssetDetailsWithFields[]>;
+  factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   assetTypes$: Observable<AssetType[]>;
   factorySites$: Observable<FactorySite[]>;
   companies$: Observable<Company[]>;
-  assetDetailsWithFields: AssetDetailsWithFields[];
+  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   companies: Company[];
 
   constructor(
@@ -59,15 +59,15 @@ export class MaintenancePageComponent implements OnInit {
     });
     this.assetTypes$ = this.assetTypesResolver.resolve();
 
-    this.assetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
-    this.assetDetailsWithFields$.subscribe(res => {
-      this.assetDetailsWithFields = res;
+    this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.factoryAssetDetailsWithFields$.subscribe(res => {
+      this.factoryAssetDetailsWithFields = res;
       this.sortAssetsByMaintenanceValue();
     });
   }
 
   sortAssetsByMaintenanceValue() {
-    this.assetDetailsWithFields.sort((a, b) => {
+    this.factoryAssetDetailsWithFields.sort((a, b) => {
       const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       if (indexA !== -1 && indexB !== -1) {
