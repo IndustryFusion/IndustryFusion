@@ -25,7 +25,6 @@ export class Asset extends BaseEntity {
   fieldInstanceIds: Array<ID>;
   fieldInstances: Array<FieldInstance>;
   subsystemIds: Array<ID>;
-  subsystems: Array<Asset>;
   roomId: ID;
   room: Room;
   externalId: string;

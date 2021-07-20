@@ -16,9 +16,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Asset } from '../../../../../../store/asset/asset.model';
-import { AssetQuery } from '../../../../../../store/asset/asset.query';
 import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
 import { FleetAssetDetailsQuery } from '../../../../../../store/fleet-asset-details/fleet-asset-details.query';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-wizard-shared-subsystems',
@@ -35,24 +35,23 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
   subsystemFormArray: FormArray;
 
   constructor(private formBuilder: FormBuilder,
-              private fleetAssetDetailsQuery: FleetAssetDetailsQuery,
-              private assetQuery: AssetQuery) {
+              private fleetAssetDetailsQuery: FleetAssetDetailsQuery) {
   }
 
   ngOnInit(): void {
-    if (!this.asset.subsystems) {
-      this.asset.subsystems = new Array<Asset>();
+    if (!this.asset.subsystemIds) {
+      this.asset.subsystemIds = new Array<ID>();
     }
-    this.fillTable(this.asset.subsystems);
+    this.fillTable(this.asset.subsystemIds);
   }
 
-  private fillTable(subsystems: Asset[]) {
+  private fillTable(subsystemIds: ID[]) {
     this.subsystemFormArray = new FormArray([]);
     this.subsystemFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.subsystemFormArray.valid));
     this.changeIsValid.emit(this.subsystemFormArray.valid);
 
-    for (const subsystem of subsystems) {
-      const assetDetails: FleetAssetDetails = this.fleetAssetDetailsQuery.getEntity(subsystem.id);
+    for (const subsystemId of subsystemIds) {
+      const assetDetails: FleetAssetDetails = this.fleetAssetDetailsQuery.getEntity(subsystemId);
       this.addSubsystem(assetDetails);
     }
     this.changeIsValid.emit(this.subsystemFormArray.valid);
@@ -87,15 +86,11 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
     }
   }
 
-  private getSubsystemFromForm(subsystemGroup: FormControl): Asset {
-    return this.assetQuery.getEntity(subsystemGroup.get('id').value);
-  }
-
   public saveValues() {
     if (this.subsystemFormArray.valid) {
-       this.asset.subsystems = new Array<Asset>();
+       this.asset.subsystemIds = new Array<ID>();
        this.subsystemFormArray.controls.forEach((subsystemGroup: FormControl) => {
-         this.asset.subsystems.push(this.getSubsystemFromForm(subsystemGroup));
+         this.asset.subsystemIds.push(subsystemGroup.get('id').value);
        });
     }
   }
