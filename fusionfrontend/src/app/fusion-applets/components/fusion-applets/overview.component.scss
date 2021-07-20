@@ -13,24 +13,26 @@
  * under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './components/fusion-applets/overview.component';
+@import 'abstract/variables';
 
-const routes: Routes = [
-  {
-    path: 'fusion-applets',
-    children: [
-      {
-        path: 'overview',
-        component: OverviewComponent,
-      }
-    ]
-  }
-];
+.if-badge{
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  min-width: .75rem;
+  background: #8c8c8c;
+  height: .75rem;
+  line-height: normal;
+  border-radius: .5rem;
+  font-size: .5rem;
+  padding: 0 .2rem;
+  margin-right: .3rem;
+  white-space: nowrap;
+  text-align: center;
+  color: #fff;
+}
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class FusionAppletsRoutingModule { }
+.if-badge-active{
+  background: $status-active;
+}

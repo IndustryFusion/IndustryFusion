@@ -16,7 +16,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, EMPTY } from 'rxjs';
-import { catchError, map, startWith } from 'rxjs/operators';
+import { catchError, map, startWith, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
@@ -27,7 +27,7 @@ import {
   OispRequest,
   OispRequestWithAggregation,
   OispResponse,
-  PointWithId, Sampling,
+  PointWithId, Rule, Sampling,
   Series
 } from './oisp.model';
 import { AssetDetailsWithFields } from '../store/asset-details/asset-details.model';
@@ -74,6 +74,13 @@ export class OispService {
     );
   }
 
+  getAllRules(): Observable<Rule[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules`;
+    return this.http.get<Rule[]>(url, this.httpOptions).pipe(
+      tap(value => console.log(value))
+    );
+  }
+
   getAssetDetailsFieldsExternalIds(assetDetails: AssetDetailsWithFields): Observable<AssetDetailsWithFields> {
     if (!assetDetails) { return EMPTY; }
     const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/devices/${assetDetails.externalId}`;
@@ -106,7 +113,7 @@ export class OispService {
     return this.http.post<OispResponse>(`${environment.oispApiUrlPrefix}/${path}`, request, this.httpOptions)
       .pipe(
         catchError(() => {
-          console.log('[oisp service] caught error while searching for oispPoints');
+          console.error('[oisp service] caught error while searching for oispPoints');
           return EMPTY;
         }),
         map((entity) => {

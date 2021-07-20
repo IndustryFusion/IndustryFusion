@@ -48,7 +48,7 @@ const routes: Routes = [
   },
   {
     path: 'fusion-applets',
-    redirectTo: '/fusion-applets',
+    redirectTo: '/fusion-applets/overview',
     pathMatch: 'full'
   },
   {

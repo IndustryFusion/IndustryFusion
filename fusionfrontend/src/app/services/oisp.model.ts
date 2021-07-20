@@ -77,3 +77,22 @@ export class PointWithIdAndDate {
   date: Date;
   value: string;
 }
+
+export class Rule {
+  externalId: number;
+  name: string;
+  description: string;
+  owner: string;
+  naturalLanguage: string;
+  type: string;
+  creationDate: Date;
+  lastUpdateDate: Date;
+  resetType: string;
+  priority: string;
+  status: string;
+  population: { };
+  conditions: {
+    operator: string,
+    values: string[]
+  };
+}

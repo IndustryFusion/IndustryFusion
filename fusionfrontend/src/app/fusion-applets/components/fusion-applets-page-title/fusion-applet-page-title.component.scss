@@ -13,24 +13,20 @@
  * under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './components/fusion-applets/overview.component';
+@import 'abstract/variables';
+@import 'base/typography';
 
-const routes: Routes = [
-  {
-    path: 'fusion-applets',
-    children: [
-      {
-        path: 'overview',
-        component: OverviewComponent,
-      }
-    ]
-  }
-];
+h1 {
+  margin: 0;
+  text-align: center;
+  font-size: $big-font-size;
+  font-weight: bolder;
+}
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class FusionAppletsRoutingModule { }
+h2 {
+  margin: 0;
+  text-align: center;
+  font-size: $bigger-font-size;
+  line-height: 23px;
+  color: $basic-grey;
+}
