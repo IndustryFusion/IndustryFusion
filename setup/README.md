@@ -73,7 +73,9 @@ ToDo (IF-201): Build schlägt aktuell beim fusion-aggregator fehl
 
 1. Choose menu "File > Project Structure...". Assure that your local java 11 sdk is selected below "Project Settings > Project > Project SDK"
 1. In order to be able to review and comment on Github pull requests, you need to provide a *Personal Access Token*.
-   Therefore open the tab "Pull Requests" and choose "Log In with Token..." > "Generate". After having logged in, grant the "write:discussion" permission and hit "Generate token". Copy the generated token into IntelliJ.  
+    1. Option 1: Initial set-up: Open the tab "Pull Requests" and choose "Log In with Token...".  
+    1. Option 2: Already set-upped: Go to `File | Settings | Version Control | GitHub` and delete the old login and add a new one with "Log In with Token ...".
+    1. Final token generation: Choose "Generate". After having logged in, grant the "write:discussion" permission and hit "Generate token". Copy the generated token into IntelliJ.
 
 ### fusionbackend (Spring Boot)
 

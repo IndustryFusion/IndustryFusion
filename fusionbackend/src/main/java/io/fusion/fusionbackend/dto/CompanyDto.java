@@ -32,9 +32,9 @@ public class CompanyDto {
     private Long id;
 
     @Builder.Default
-    private Set<Long> locationIds = new LinkedHashSet<>();
+    private Set<Long> factorySiteIds = new LinkedHashSet<>();
     @Builder.Default
-    private Set<LocationDto> locations = new LinkedHashSet<>();
+    private Set<FactorySiteDto> factorySites = new LinkedHashSet<>();
 
     @Builder.Default
     private Set<Long> assetIds = new LinkedHashSet<>();

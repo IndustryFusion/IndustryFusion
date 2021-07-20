@@ -16,7 +16,7 @@ under the License.
 <div class="rooms-panel">
 
   <div class="manage">
-    <ng-template [ngIf]="location != null">
+    <ng-template [ngIf]="factorySite != null">
       <button class="btn btn-sm btn-link" [routerLink]="getRoomsLink()">
         <clr-icon class="home-icon" shape="home"></clr-icon>Manage rooms
       </button>
@@ -62,10 +62,10 @@ under the License.
       <app-assets-list-item *ngFor="let assetWithDetailsAndFields of assetsWithDetailsAndFields | tablefilter:filterDict"
                             [assetWithDetailsAndFields]="assetWithDetailsAndFields"
                             [rooms]="rooms"
-                            [allRoomsOfLocations]="allRoomsOfLocation"
+                            [allRoomsOfFactorySite]="allRoomsOfFactorySite"
                             [room]="room"
-                            [locations]="locations"
-                            [location]="location"
+                            [factorySites]="factorySites"
+                            [factorySite]="factorySite"
                             [selected]="isSelected(assetWithDetailsAndFields.id)"
                             (editAssetEvent)="assetUpdated($event)"
                             (deleteAssetEvent)="deleteAsset($event)"

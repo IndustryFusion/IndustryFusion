@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AssetWizardStepAttributesComponent } from './asset-wizard-step-attributes.component';
 
-describe('AssetWizardStepSemanticsComponent', () => {
+describe('AssetWizardStepAttributesComponent', () => {
   let component: AssetWizardStepAttributesComponent;
   let fixture: ComponentFixture<AssetWizardStepAttributesComponent>;
 

@@ -97,4 +97,7 @@ Do this to add an OISP realm with 2 clients and a concrete user that will be use
 
 ### Adjust Admin User
 1. Within the Master-Realm, edit the _admin_ user.
-1. Add an existing e-mail address. 
+1. Add an existing e-mail address.
+
+## Development-Cluster
+Within the Kubernetes development cluster, an additional OAuth client is configured. This configuration is exported to the file [keycloak-client_fusion-frontend-development.json](keycloak-client_fusion-frontend-development.json) and can be used for a reconfiguration or new setup of other clusters. 

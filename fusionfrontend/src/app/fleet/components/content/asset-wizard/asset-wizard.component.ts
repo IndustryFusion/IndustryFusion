@@ -17,7 +17,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Asset } from '../../../../store/asset/asset.model';
 import { DialogType } from '../../../../common/models/dialog-type.model';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetWizardStep } from './asset-wizard-step/asset-wizard-step.model';
 import { AssetSeriesResolver } from '../../../../resolvers/asset-series.resolver';
 import { AssetResolver } from '../../../../resolvers/asset.resolver';
@@ -37,6 +37,7 @@ import { AssetSeriesService } from '../../../../store/asset-series/asset-series.
 import { AssetService } from '../../../../store/asset/asset.service';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
+import { CountryResolver } from '../../../../resolvers/country.resolver';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -57,6 +58,8 @@ export class AssetWizardComponent implements OnInit {
   public isAssetSeriesLocked = false;
 
   public metricsValid: boolean;
+  public attributesValid: boolean;
+  public customerDataValid: boolean;
 
   public AssetWizardStep = AssetWizardStep;
 
@@ -73,19 +76,20 @@ export class AssetWizardComponent implements OnInit {
               private assetTypesResolver: AssetTypesResolver,
               private fieldsResolver: FieldsResolver,
               private assetTypeQuery: AssetTypeQuery,
+              private countryResolver: CountryResolver,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private config: DynamicDialogConfig) { }
+              private config: DynamicDialogConfig,
+              private ref: DynamicDialogRef) {
+    this.resolveWizard();
+  }
 
   ngOnInit(): void {
-    this.resolveWizard();
-
     this.asset = { ...this.config.data.asset };
     this.createAssetForm();
 
     this.isAssetSeriesLocked = this.config.data.prefilledAssetSeriesId != null;
     if (this.isAssetSeriesLocked) {
-      this.assetForm.get('assetSeriesId')?.disable();
       this.isAssetSeriesLoading$.subscribe(() => {
         this.prefillFormFromAssetSeries(this.config.data.prefilledAssetSeriesId);
       });
@@ -98,7 +102,7 @@ export class AssetWizardComponent implements OnInit {
 
   onStepChange(step: number) {
     if (this.step === AssetWizardStep.GENERAL_INFORMATION) {
-     this.refreshAssetFormCreateAssetDraft(step);
+     this.initAssetDraftAndUpdateForm(step);
     } else {
       this.step = step;
     }
@@ -110,7 +114,7 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  private refreshAssetFormCreateAssetDraft(step: number) {
+  private initAssetDraftAndUpdateForm(step: number) {
     const assetName: string = this.assetForm.get('name').value;
     const assetDescription: string = this.assetForm.get('description').value;
 
@@ -119,7 +123,6 @@ export class AssetWizardComponent implements OnInit {
         this.asset = asset;
         this.asset.name = assetName;
         this.asset.description = assetDescription;
-
         this.createAssetForm();
         this.step = step;
       }
@@ -127,7 +130,8 @@ export class AssetWizardComponent implements OnInit {
   }
 
   onSaveAsset(): void {
-    if (this.asset && this.assetForm.valid && this.asset.fieldInstances) {
+    if (this.asset && this.assetForm.valid && this.asset.fieldInstances
+        && this.metricsValid && this.attributesValid && this.customerDataValid) {
       this.asset.name = this.assetForm.get('name').value;
       this.asset.description = this.assetForm.get('description').value;
       this.asset.ceCertified = this.assetForm.get('ceCertified').value;
@@ -149,6 +153,11 @@ export class AssetWizardComponent implements OnInit {
       } else if (this.type === DialogType.CREATE) {
         this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeries.id, this.asset).subscribe();
       }
+
+      this.ref.close(this.asset);
+
+    } else {
+      throw new Error('[Asset Wizard]: Error at saving asset');
     }
   }
 
@@ -162,14 +171,20 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookKey')?.setValue(assetSeries.handbookKey);
       this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
+    } else {
+      throw new Error('[Asset wizard]: Related asset series not found');
     }
   }
 
   private updateRelatedObjects(assetSeries: AssetSeries): void {
     this.relatedAssetSeries = assetSeries;
     this.relatedCompany = this.companyQuery.getActive();
-    const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
-    this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+    this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
+      if (!isLoading) {
+        const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
+        this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+      }
+    });
   }
 
   private resolveWizard(): void {
@@ -177,9 +192,10 @@ export class AssetWizardComponent implements OnInit {
     this.assetResolver.resolve(this.activatedRoute.snapshot);
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
-    this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
+    this.countryResolver.resolve().subscribe();
+    this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
   }
 
   private createAssetForm() {
@@ -200,9 +216,9 @@ export class AssetWizardComponent implements OnInit {
       gatewayConnectivity: [null, Validators.maxLength(255)],
       guid: [],
       ceCertified: [null, Validators.required],
-      serialNumber: [null, requiredTextValidator],
+      serialNumber: [null, Validators.maxLength(255)],
       constructionDate: [null, Validators.required],
-      installationDate: [null, Validators.required],
+      installationDate: [null],
       protectionClass: [null, Validators.maxLength(255)],
       handbookKey: [null, Validators.maxLength(255)],
       videoKey: [null, Validators.maxLength(255)],
@@ -211,11 +227,22 @@ export class AssetWizardComponent implements OnInit {
 
     if (this.asset) {
       this.assetForm.patchValue(this.asset);
+      this.assetForm.get('constructionDate').setValue(null);
+      this.assetForm.get('installationDate').setValue(null);
     }
   }
 
   setMetricsValid(isValid: boolean) {
     this.metricsValid = isValid;
     this.changeDetectorRef.detectChanges();
+  }
+
+  setAttributesValid(isValid: boolean) {
+    this.attributesValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setCustomerDataValid(isValid: boolean) {
+    this.customerDataValid = isValid;
   }
 }

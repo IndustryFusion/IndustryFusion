@@ -16,10 +16,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Asset } from 'src/app/store/asset/asset.model';
 import { Room } from 'src/app/store/room/room.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { RoomService } from 'src/app/store/room/room.service';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
@@ -40,19 +40,19 @@ export class RoomsPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
   assets$: Observable<Asset[]>;
-  location$: Observable<Location>;
-  allRoomsOfLocation$: Observable<Room[]>;
+  factorySite$: Observable<FactorySite>;
+  allRoomsOfFactorySite$: Observable<Room[]>;
   activeRoom$: Observable<Room>;
 
   companyId: ID;
-  locationId: ID;
+  factorySiteId: ID;
   selectedRoomId: ID;
 
   editRoomModal = false;
   assignToRoomModal = false;
   createRoomModal = false;
 
-  constructor(private locationQuery: LocationQuery,
+  constructor(private factorySiteQuery: FactorySiteQuery,
               private companyQuery: CompanyQuery,
               private roomService: RoomService,
               private roomQuery: RoomQuery,
@@ -67,17 +67,17 @@ export class RoomsPageComponent implements OnInit {
     this.isLoading$ = this.companyQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
-    this.location$ = this.factoryResolver.location$;
-    this.allRoomsOfLocation$ = this.factoryResolver.allRoomsOfLocation$;
+    this.factorySite$ = this.factoryResolver.factorySite$;
+    this.allRoomsOfFactorySite$ = this.factoryResolver.allRoomsOfFactorySite$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
-    this.locationId = this.locationQuery.getActiveId();
+    this.factorySiteId = this.factorySiteQuery.getActiveId();
   }
 
   deleteRoom(roomId: ID) {
     const companyId = this.companyQuery.getActiveId();
-    const locationId = this.locationQuery.getActiveId();
-    this.roomService.deleteRoom(companyId, locationId, roomId)
+    const factorySiteId = this.factorySiteQuery.getActiveId();
+    this.roomService.deleteRoom(companyId, factorySiteId, roomId)
       .subscribe(() => {
         console.log('[rooms-page.component] Delete request successful', roomId);
       });
@@ -117,7 +117,7 @@ export class RoomsPageComponent implements OnInit {
 
   assignToRoom(assetId: ID) {
     const theAsset = this.assetQuery.getEntity(assetId);
-    this.assetService.assignAssetToRoom(this.companyId, this.locationId, this.selectedRoomId, theAsset.roomId, assetId)
+    this.assetService.assignAssetToRoom(this.companyId, this.factorySiteId, this.selectedRoomId, theAsset.roomId, assetId)
       .subscribe(
         asset => { console.log('[rooms-page.component] asset: ' + asset.name + ' assigned'); },
         error => { console.log(error); }

@@ -37,15 +37,17 @@ import { AssetWizardComponent } from './components/content/asset-wizard/asset-wi
 import { AssetWizardStepGeneralInformationComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-general-information/asset-wizard-step-general-information.component';
 import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
 import { AssetWizardStepAttributesComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-attributes/asset-wizard-step-attributes.component';
-import { AssetWizardStepCustomerComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer/asset-wizard-step-customer.component';
-import { AssetWizardStepFinishedComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-finished/asset-wizard-step-finished.component';
+import { AssetWizardStepCustomerDataComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer-data/asset-wizard-step-customer-data.component';
 import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
-import { ThresholdListHeaderComponent } from './components/content/threshold-list-header/threshold-list-header.component';
 import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
+import { AssetWizardStepReviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-review/asset-wizard-step-review.component';
+import { AssetWizardSharedMetricsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
+import { AssetWizardSharedAttributesComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -69,11 +71,12 @@ import { AssetSeriesCreateFooterComponent } from './components/content/asset-ser
     AssetWizardStepGeneralInformationComponent,
     AssetWizardStepNameplateComponent,
     AssetWizardStepAttributesComponent,
-    AssetWizardStepCustomerComponent,
-    AssetWizardStepFinishedComponent,
+    AssetWizardStepCustomerDataComponent,
     AssetWizardStepMetricsThresholdsComponent,
-    ThresholdListHeaderComponent,
     AssetSeriesCreateFooterComponent,
+    AssetWizardStepReviewComponent,
+    AssetWizardSharedMetricsComponent,
+    AssetWizardSharedAttributesComponent,
   ],
     imports: [
         IFCommon,
@@ -83,6 +86,7 @@ import { AssetSeriesCreateFooterComponent } from './components/content/asset-ser
         TableModule,
         CalendarModule,
         AccordionModule,
+        AgmCoreModule,
     ],
   exports: [
     FleetSubHeaderComponent,

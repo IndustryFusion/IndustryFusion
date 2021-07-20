@@ -22,14 +22,14 @@ export class AssetDetails extends Asset {
   assetSeriesName: string;
   category: string;
   roomName: string;
-  locationName: string;
+  factorySiteName: string;
 }
 
 export enum AssetModalType  {
   startInitialization = 1,
   pairAsset,
   customizeAsset = 3,
-  locationAssignment = 4,
+  factorySiteAssignment = 4,
   roomAssignment = 5
 }
 
@@ -37,7 +37,7 @@ export enum AssetModalMode  {
   onboardAssetMode = 1,
   editAssetMode,
   editRoomForAssetMode = 3,
-  editRoomWithPreselecedLocationMode = 4,
+  editRoomWithPreselecedFactorySiteMode = 4,
 }
 
 export enum DashboardFilterModalType {

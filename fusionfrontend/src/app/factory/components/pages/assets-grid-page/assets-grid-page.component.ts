@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
 
 @Component({
@@ -30,7 +30,7 @@ import { Room } from 'src/app/store/room/room.model';
 })
 export class AssetsGridPageComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
-  location$: Observable<Location>;
+  factorySite$: Observable<FactorySite>;
   rooms$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   assetsWithFields$: Observable<AssetWithFields[]>;
@@ -44,7 +44,7 @@ export class AssetsGridPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading$ = this.assetQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
-    this.location$ = this.factoryResolver.location$;
+    this.factorySite$ = this.factoryResolver.factorySite$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.assets$ = this.factoryResolver.assets$;
     this.assetsWithFields$ = this.factoryResolver.assetsWithFields$;

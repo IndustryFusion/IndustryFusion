@@ -45,26 +45,30 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
               private wizardRef: DynamicDialogRef) { }
 
   ngOnInit(): void {
-    this.assetSeries$ = this.assetSeriesQuery.selectAll(); // TODO: filter results
-  }
-
-  onChangeAssetSeries(assetSeriesId: ID) {
-    this.changeAssetSeries.emit(assetSeriesId);
-  }
-
-  onCancel() {
-    this.wizardRef?.close();
-  }
-
-  onStart() {
-    if (this.readyForNextStep()) {
-      this.stepChange.emit(AssetWizardStep.GENERAL_INFORMATION + 1);
+    this.assetSeries$ = this.assetSeriesQuery.selectAll();
+    if (this.isAssetSeriesLocked) {
+      this.assetForm.get('assetSeriesId')?.disable();
+      this.assetForm.get('assetSeriesId').setValue(this.relatedAssetSeries.id);
     }
   }
 
-  readyForNextStep(): boolean {
+  onChangeAssetSeries(assetSeriesId: ID): void {
+    this.changeAssetSeries.emit(assetSeriesId);
+  }
+
+  isReadyForNextStep(): boolean {
     return this.assetForm.get('assetSeriesId').value != null
       && this.assetForm.get('name').value
       && this.assetForm.get('description').value;
+  }
+
+  onCancel(): void {
+    this.wizardRef?.close();
+  }
+
+  onStart(): void {
+    if (this.isReadyForNextStep()) {
+      this.stepChange.emit(AssetWizardStep.GENERAL_INFORMATION + 1);
+    }
   }
 }

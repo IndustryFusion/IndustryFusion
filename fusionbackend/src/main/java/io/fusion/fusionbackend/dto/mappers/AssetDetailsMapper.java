@@ -34,13 +34,13 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
         String assetSeriesName = null;
         String category = null;
         String roomName = null;
-        String locationName = null;
+        String factorySiteName = null;
 
         if (entity.getRoom() != null) {
             Room room = entity.getRoom();
             roomName = room.getName();
-            if (room.getLocation() != null) {
-                locationName = room.getLocation().getName();
+            if (room.getFactorySite() != null) {
+                factorySiteName = room.getFactorySite().getName();
             }
         }
 
@@ -73,7 +73,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .manufacturer(manufacturer)
                 .category(category)
                 .roomName(roomName)
-                .locationName(locationName)
+                .factorySiteName(factorySiteName)
                 .assetSeriesName(assetSeriesName)
                 .name(entity.getName())
 

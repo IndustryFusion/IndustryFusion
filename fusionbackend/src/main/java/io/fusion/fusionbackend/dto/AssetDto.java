@@ -36,6 +36,7 @@ public class AssetDto extends BaseAssetDto {
     private Long companyId;
     private Long assetSeriesId;
     private Long roomId;
+    private RoomDto room;
 
     @Builder.Default
     private Set<Long> fieldInstanceIds = new LinkedHashSet<>();

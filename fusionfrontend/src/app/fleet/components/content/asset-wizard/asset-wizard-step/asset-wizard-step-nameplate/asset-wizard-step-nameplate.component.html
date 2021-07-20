@@ -13,69 +13,67 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-wizard-step-namepalate">
-  <form [formGroup]="assetForm">
-    <div class="content">
-      <div class="wizard-title">Create Digital Namepalate</div>
+<form [formGroup]="assetForm">
+  <div class="content">
+    <div class="wizard-title">Create Digital Namepalate</div>
 
-      <div class="input-div">
-        <label class="if-label">Serial Number</label>
-        <input type="text" pInputText formControlName="serialNumber" />
-      </div>
+    <div class="input-div">
+      <label class="if-label">Serial Number</label>
+      <input type="text" pInputText formControlName="serialNumber" />
+    </div>
 
-      <div class="input-div">
-        <div class="dialog-grid">
-          <div class="input-div">
-            <label class="if-label">Construction Date</label>
-            <p-calendar formControlName="constructionDate" showIcon="true" showButtonBar="true"
-            yearNavigator="true" [yearRange]="yearRange" dateFormat="dd.mm.yy"></p-calendar>
-          </div>
-          <div class="input-div dialog-grid-col">
-            <label class="if-label">Installation Date</label>
-            <p-calendar formControlName="installationDate" showIcon="true" showButtonBar="true"
-                        yearNavigator="true" [yearRange]="yearRange" dateFormat="dd.mm.yy"></p-calendar>
-          </div>
-        </div>
-      </div>
-
-      <div class="input-div">
-        <label class="if-label">CE Certification</label>
-        <div class="dialog-grid">
-          <div>
-            <p-radioButton [value]="true" label="Yes" formControlName="ceCertified"
-                           inputId="certified1"></p-radioButton>
-          </div>
-          <div class="dialog-grid-col">
-            <p-radioButton [value]="false" label="No" formControlName="ceCertified"
-                           inputId="certified2"></p-radioButton>
-          </div>
-        </div>
-      </div>
-
-      <div class="selection">
+    <div class="input-div">
+      <div class="dialog-grid">
         <div class="input-div">
-          <label class="if-label">Protection Class</label>
-          <p-dropdown [options]="protectionClasses" formControlName="protectionClass"
-                      filter="true" resetFilterOnHide="true"
-                      placeholder="Select a protection class...">
-          </p-dropdown>
+          <label class="if-label">Construction Date</label>
+          <p-calendar formControlName="constructionDate" showIcon="true" showButtonBar="true"
+          yearNavigator="true" [yearRange]="yearRange" dateFormat="dd.mm.yy"></p-calendar>
+        </div>
+        <div class="input-div dialog-grid-col">
+          <label class="if-label">Installation Date</label>
+          <p-calendar formControlName="installationDate" showIcon="true" showButtonBar="true"
+                      yearNavigator="true" [yearRange]="yearRange" dateFormat="dd.mm.yy"></p-calendar>
         </div>
       </div>
+    </div>
 
-      <div class="input-div">
-        <label class="if-label">Asset Handbook</label>
-        <input type="text" pInputText formControlName="handbookKey" />
-      </div>
-
-      <div class="input-div">
-        <label class="if-label">Asset Video</label>
-        <input type="text" pInputText formControlName="videoKey" />
+    <div class="input-div">
+      <label class="if-label">CE Certification</label>
+      <div class="dialog-grid">
+        <div>
+          <p-radioButton [value]="true" label="Yes" formControlName="ceCertified"
+                         inputId="certified1"></p-radioButton>
+        </div>
+        <div class="dialog-grid-col">
+          <p-radioButton [value]="false" label="No" formControlName="ceCertified"
+                         inputId="certified2"></p-radioButton>
+        </div>
       </div>
     </div>
-    <div class="footer">
-      <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-      <button type="button" class="if-button button-confirm button-primary" [disabled]="assetForm.invalid"
-              (click)="onNext()">Next</button>
+
+    <div class="selection">
+      <div class="input-div">
+        <label class="if-label">Protection Class</label>
+        <p-dropdown [options]="protectionClasses" formControlName="protectionClass"
+                    filter="true" resetFilterOnHide="true"
+                    placeholder="Select a protection class...">
+        </p-dropdown>
+      </div>
     </div>
-  </form>
-</div>
+
+    <div class="input-div">
+      <label class="if-label">Asset Handbook</label>
+      <input type="text" pInputText formControlName="handbookKey" />
+    </div>
+
+    <div class="input-div">
+      <label class="if-label">Asset Video</label>
+      <input type="text" pInputText formControlName="videoKey" />
+    </div>
+  </div>
+  <div class="footer">
+    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
+    <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
+            (click)="onNext()">Next</button>
+  </div>
+</form>

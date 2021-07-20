@@ -92,7 +92,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     }
   }
 
-  readyToTakeNextStep(): boolean {
+  isReadyForNextStep(): boolean {
     let result = true;
     switch (this.step) {
       case 1:

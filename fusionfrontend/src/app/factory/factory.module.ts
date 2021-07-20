@@ -21,11 +21,10 @@ import { ChartsModule } from 'ng2-charts';
 import { FactoryRoutingModule } from './factory-routing.module';
 import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
 import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
-import { LocationPageComponent } from './components/pages/location-page/location-page.component';
+import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
 import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { AssetDetailsPageComponent } from './components/pages/asset-details-page/asset-details-page.component';
-import { LocationsComponent } from './components/content/locations/locations.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
 import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
@@ -42,8 +41,6 @@ import { FactoryPageTitleComponent } from './components/content/factory-page-tit
 import { FactorySubHeaderComponent } from './components/content/factory-sub-header/factory-sub-header.component';
 import { PrecisionPipe } from '../pipes/precision.pipe';
 import { StatusComponent } from './components/content/status/status.component';
-import { LocationsListHeaderComponent } from './components/content/locations/locations-list-header/locations-list-header.component';
-import { LocationsListItemComponent } from './components/content/locations/locations-list-item/locations-list-item.component';
 import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
 import { AssetsListItemComponent } from './components/content/assets-list/assets-list-item/assets-list-item.component';
 import { AssetsListHeaderComponent } from './components/content/assets-list/assets-list-header/assets-list-header.component';
@@ -53,21 +50,25 @@ import { AssetInstantiationComponent } from './components/content/asset-instanti
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
 import { AssetInstantiationPairedModalComponent } from './components/content/asset-instantiation/asset-instantiation-paired-modal/asset-instantiation-paired-modal.component';
-import { AssetInstantiationLocationAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-location-assignment-modal/asset-instantiation-location-assignment-modal.component';
+import { AssetInstantiationFactorySiteAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-factory-site-assignment-modal/asset-instantiation-factory-site-assignment-modal.component';
 import { AssetInstantiationRoomAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-room-assignment-modal/asset-instantiation-room-assignment-modal.component';
-import { LocationDialogComponent } from './components/content/location-dialog/location-dialog.component';
+import { FactorySiteDialogComponent } from './components/content/factory-site-dialog/factory-site-dialog.component';
 import { IFCommon } from '../common/i-f-common.module';
+import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
+// tslint:disable-next-line:max-line-length
+import { FactorySitesListItemComponent } from './components/content/factory-sites/factory-sites-list-item/factory-sites-list-item.component';
+import { FactorySitesListHeaderComponent } from './components/content/factory-sites/factory-sites-list-header/factory-sites-list-header.component';
 
 @NgModule({
   declarations: [
     CompaniesPageComponent,
     CompanyPageComponent,
-    LocationPageComponent,
+    FactorySitePageComponent,
     AssetPageComponent,
     AssetsGridPageComponent,
     AssetsListPageComponent,
     AssetDetailsPageComponent,
-    LocationsComponent,
+    FactorySitesComponent,
     CompanyInfoComponent,
     AssetsListComponent,
     FusionFormatPipe,
@@ -85,8 +86,8 @@ import { IFCommon } from '../common/i-f-common.module';
     EditRoomComponent,
     AssetTablesComponent,
     StatusComponent,
-    LocationsListHeaderComponent,
-    LocationsListItemComponent,
+    FactorySitesListHeaderComponent,
+    FactorySitesListItemComponent,
     AssetsListItemComponent,
     AssetsListHeaderComponent,
     ListFilterComponent,
@@ -94,9 +95,9 @@ import { IFCommon } from '../common/i-f-common.module';
     AssetInstantiationStartModalComponent,
     AssetInstantiationDescriptionModalComponent,
     AssetInstantiationPairedModalComponent,
-    AssetInstantiationLocationAssignmentModalComponent,
+    AssetInstantiationFactorySiteAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
-    LocationDialogComponent,
+    FactorySiteDialogComponent,
   ],
     imports: [
         IFCommon,

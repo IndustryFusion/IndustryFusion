@@ -13,9 +13,10 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AssetWizardStep } from '../asset-wizard-step.model';
+import { Asset } from '../../../../../../store/asset/asset.model';
+import { AssetWizardSharedAttributesComponent } from '../../asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
 
 @Component({
   selector: 'app-asset-wizard-step-attributes',
@@ -24,20 +25,36 @@ import { AssetWizardStep } from '../asset-wizard-step.model';
 })
 export class AssetWizardStepAttributesComponent implements OnInit {
 
-  @Input() assetForm: FormGroup;
+  @ViewChild(AssetWizardSharedAttributesComponent) attributesChild: AssetWizardSharedAttributesComponent;
+
+  @Input() asset: Asset;
+  @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
-  constructor() { }
+  public isReadyForNextStep = false;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
-  onBack() {
-    this.stepChange.emit(AssetWizardStep.ATTRIBUTES - 1);
+  public onBack(): void {
+    if (this.isReadyForNextStep) {
+      this.stepChange.emit(AssetWizardStep.ATTRIBUTES - 1);
+    }
   }
 
-  onNext() {
-    this.stepChange.emit(AssetWizardStep.ATTRIBUTES + 1);
+  public onNext(): void {
+    if (this.isReadyForNextStep) {
+      this.attributesChild.saveValues();
+      this.stepChange.emit(AssetWizardStep.ATTRIBUTES + 1);
+    }
+  }
+
+  public onSetValid(isValid: boolean): void {
+    this.isReadyForNextStep = isValid;
+    this.valid.emit(isValid);
   }
 
 }

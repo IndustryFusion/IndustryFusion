@@ -16,9 +16,11 @@
 import { ID } from '@datorama/akita';
 import { BaseEntity } from '../baseentity.model';
 import { Asset } from '../asset/asset.model';
+import { FactorySite } from '../factory-site/factory-site.model';
 
 export class Room extends BaseEntity {
-  locationId: ID;
+  factorySiteId: ID;
+  factorySite: FactorySite;
   name: string;
   description: string;
   assetIds: Array<ID>;

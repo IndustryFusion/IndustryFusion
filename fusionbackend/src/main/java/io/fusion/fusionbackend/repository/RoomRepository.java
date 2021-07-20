@@ -28,15 +28,15 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
     @EntityGraph(value = "Room.allChildren")
-    Set<Room> findAllByLocationId(Sort sort, Long locationId);
+    Set<Room> findAllByfactorySiteId(Sort sort, Long factorySiteId);
 
     @EntityGraph(value = "Room.allChildren")
-    Optional<Room> findByLocationIdAndId(Long locationId, Long roomId);
+    Optional<Room> findByfactorySiteIdAndId(Long factorySiteId, Long roomId);
 
     @EntityGraph(value = "Room.allChildrenDeep")
-    Optional<Room> findDeepByLocationIdAndId(Long locationId, Long roomId);
+    Optional<Room> findDeepByfactorySiteIdAndId(Long factorySiteId, Long roomId);
 
     @EntityGraph(value = "Room.allChildren")
-    @Query("from Room r where r.location.company.id = :companyId")
+    @Query("from Room r where r.factorySite.company.id = :companyId")
     Set<Room> findAllByCompanyId(Sort sort, Long companyId);
 }

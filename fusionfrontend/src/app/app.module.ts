@@ -36,6 +36,8 @@ import { TokenInterceptor } from './services/token.interceptor';
 import { DashboardModule } from './dashboards/dashboard.module';
 import { IFCommon } from './common/i-f-common.module';
 import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
+import { ErrorInterceptor } from './services/error.interceptor';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,8 @@ import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
     AkitaNgRouterStoreModule,
     ClarityModule,
     BrowserAnimationsModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    ToastModule
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -73,10 +76,16 @@ import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
     }
   ]
 })
-export class AppModule { }
+export class AppModule {
+}
 
 function initializeKeycloak(keycloak: KeycloakService, location: Location) {
   return () =>

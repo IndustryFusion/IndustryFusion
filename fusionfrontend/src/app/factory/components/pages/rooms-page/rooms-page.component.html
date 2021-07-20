@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(allRoomsOfLocation$ | async)" [assets]="(assets$ | async)"></app-company-info>
+<app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [rooms]="(allRoomsOfFactorySite$ | async)" [assets]="(assets$ | async)"></app-company-info>
 <div class="rooms-panel">
   <div class="manage">
     <button class="btn btn-sm btn-link" (click)="createRoomModal = true">
@@ -29,8 +29,8 @@ under the License.
 </div>
 
 <div class="wrapper">
-  <h3 *ngIf="(allRoomsOfLocation$| async)?.length > 0"
-      class="table-header">  {{ (allRoomsOfLocation$| async)?.length }} {{ (allRoomsOfLocation$| async)?.length == 1 ? 'Room' : 'Rooms'}}</h3>
+  <h3 *ngIf="(allRoomsOfFactorySite$| async)?.length > 0"
+      class="table-header">  {{ (allRoomsOfFactorySite$| async)?.length }} {{ (allRoomsOfFactorySite$| async)?.length == 1 ? 'Room' : 'Rooms'}}</h3>
 
   <clr-datagrid>
     <clr-dg-column>Room ID</clr-dg-column>
@@ -39,7 +39,7 @@ under the License.
     <clr-dg-column>Description</clr-dg-column>
     <clr-dg-column></clr-dg-column>
 
-    <clr-dg-row *ngFor="let room of allRoomsOfLocation$ | async" [clrDgItem]="room">
+    <clr-dg-row *ngFor="let room of allRoomsOfFactorySite$ | async" [clrDgItem]="room">
       <clr-dg-cell [routerLink]="[room.id]">{{room.id}}</clr-dg-cell>
       <clr-dg-cell [routerLink]="[room.id]">{{room.name}}</clr-dg-cell>
       <clr-dg-cell [routerLink]="[room.id]">{{room.assetIds.length}}</clr-dg-cell>
@@ -101,7 +101,7 @@ under the License.
     <div class="modal-body">
       <p>Create new categories to the Industry Fusion ecosystem for a standardized semantic description of assets.</p>
 
-      <app-create-room [company]="(company$ | async)" [location]="(location$ | async)" (modalOpened)="closeCreateModal($event)"></app-create-room>
+      <app-create-room [company]="(company$ | async)" [factorySite]="(factorySite$ | async)" (modalOpened)="closeCreateModal($event)"></app-create-room>
 
     </div>
     <div class="modal-footer">

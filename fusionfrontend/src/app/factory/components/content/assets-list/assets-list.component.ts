@@ -19,7 +19,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { Company } from 'src/app/store/company/company.model';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/asset-details/asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -37,15 +37,15 @@ export class AssetsListComponent implements OnInit {
   @Input()
   company: Company;
   @Input()
-  locations: Location[];
+  factorySites: FactorySite[];
   @Input()
-  location: Location;
+  factorySite: FactorySite;
   @Input()
   assetsWithDetailsAndFields: AssetDetailsWithFields[];
   @Input()
   rooms: Room[];
   @Input()
-  allRoomsOfLocation: Room[];
+  allRoomsOfFactorySite: Room[];
   @Input()
   room: Room;
   @Output()
@@ -93,7 +93,7 @@ export class AssetsListComponent implements OnInit {
       data: {
         assetDetailsForm: this.assetDetailsForm,
         assetsToBeOnboarded: this.assetsWithDetailsAndFields,
-        locations: this.locations,
+        factorySites: this.factorySites,
         rooms: this.rooms,
         activeModalType: AssetModalType.startInitialization,
         activeModalMode: AssetModalMode.onboardAssetMode
@@ -122,7 +122,7 @@ export class AssetsListComponent implements OnInit {
       assetSeriesName: ['', requiredTextValidator],
       category: ['', requiredTextValidator],
       roomName: ['', requiredTextValidator],
-      locationName: ['', requiredTextValidator]
+      factorySiteName: ['', requiredTextValidator]
     });
   }
 

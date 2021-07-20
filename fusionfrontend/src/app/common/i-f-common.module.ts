@@ -8,7 +8,6 @@ import { TrashButtonComponent } from '../components/ui/trash-button/trash-button
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { EditDetailsButtonComponent } from '../components/ui/edit-details-button/edit-details-button.component';
 import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
-import { LocationsMapComponent } from '../components/content/locations-map/locations-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
@@ -23,6 +22,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -33,7 +35,7 @@ import { FormsModule } from '@angular/forms';
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent,
+    FactorySiteMapComponent,
     AccuracyFormatPipe,
   ],
   imports: [
@@ -49,6 +51,7 @@ import { FormsModule } from '@angular/forms';
     InputTextareaModule,
     RadioButtonModule,
     DialogModule,
+    ToastModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -61,7 +64,7 @@ import { FormsModule } from '@angular/forms';
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent,
+    FactorySiteMapComponent,
     FontAwesomeModule,
     FormsModule,
     MenuModule,
@@ -75,6 +78,9 @@ import { FormsModule } from '@angular/forms';
     ConfirmDialogModule,
     AccuracyFormatPipe,
     RadioButtonModule,
+  ],
+  providers: [
+    MessageService
   ]
 })
 export class IFCommon {
