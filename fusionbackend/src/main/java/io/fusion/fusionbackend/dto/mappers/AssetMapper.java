@@ -124,11 +124,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .installationDate(dto.getInstallationDate())
                 .build();
 
-        if (dto.getRoom() != null) {
-            entity.setRoom(roomMapper.toEntity(dto.getRoom()));
-        } else if (dto.getRoomId() != null) {
-            entity.setRoom(roomService.getRoomById(dto.getRoomId()));
-        }
+        addRoomToEntity(dto, entity);
         if (dto.getFieldInstances() != null) {
             entity.setFieldInstances(fieldInstanceMapper.toEntitySet(dto.getFieldInstances()));
         }
@@ -136,6 +132,18 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         baseAssetMapper.copyToEntity(dto, entity);
 
         return entity;
+    }
+
+    private void addRoomToEntity(final AssetDto dto, final Asset entity) {
+        if (dto.getRoom() != null && dto.getRoomId() != null && !dto.getRoomId().equals(dto.getRoom().getId())) {
+            throw new IllegalArgumentException("Id of room is different to roomId");
+        }
+
+        if (dto.getRoom() != null) {
+            entity.setRoom(roomMapper.toEntity(dto.getRoom()));
+        } else if (dto.getRoomId() != null) {
+            entity.setRoom(roomService.getRoomById(dto.getRoomId()));
+        }
     }
 
     @Override
