@@ -16,7 +16,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, EMPTY } from 'rxjs';
-import { catchError, map, startWith, tap } from 'rxjs/operators';
+import { catchError, map, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
@@ -27,7 +27,7 @@ import {
   OispRequest,
   OispRequestWithAggregation,
   OispResponse,
-  PointWithId, Rule, Sampling,
+  PointWithId, Rule, RuleStatus, Sampling,
   Series
 } from './oisp.model';
 import { AssetDetailsWithFields } from '../store/asset-details/asset-details.model';
@@ -76,9 +76,13 @@ export class OispService {
 
   getAllRules(): Observable<Rule[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules`;
-    return this.http.get<Rule[]>(url, this.httpOptions).pipe(
-      tap(value => console.log(value))
-    );
+    return this.http.get<Rule[]>(url, this.httpOptions);
+  }
+
+  setRuleStatus(ruleId: any, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/${ruleId}/status`;
+    const body = { status};
+    return this.http.put<Rule>(url, body, this.httpOptions);
   }
 
   getAssetDetailsFieldsExternalIds(assetDetails: AssetDetailsWithFields): Observable<AssetDetailsWithFields> {

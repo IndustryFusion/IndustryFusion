@@ -16,22 +16,29 @@ under the License.
 <p-table [value]="rules">
   <ng-template pTemplate="header">
     <tr>
-      <th></th>
-      <th>AppletName</th>
-      <th>Condition Summary</th>
+      <th [style.width.%]="5" ></th>
+      <th [style.width.%]="20" >AppletName</th>
+      <th [style.width.%]="40" >Condition Summary</th>
       <th></th>
       <th>Status</th>
-      <th></th>
+      <th [style.width.%]="5" ></th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-rule>
+  <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
     <tr>
-      <td></td>
-      <td>{{rule.name}}</td>
-      <td>{{rule.naturalLanguage}}</td>
-      <td><p-inputSwitch [ngModel]="isActive(rule.status)"></p-inputSwitch></td>
+      <td [style.width.%]="5" ></td>
+      <td [style.width.%]="20">
+        <span class="if-label">{{rule.name}}</span> <br>
+        {{rule.description}}
+      </td>
+      <td [style.width.%]="40">{{rule.naturalLanguage}}</td>
+      <td><p-inputSwitch
+        *ngIf="!isDraft(rule.status)"
+        (ngModelChange)="changeStatus(rowIndex, $event)"
+        [ngModel]="isActive(rule.status)"
+      ></p-inputSwitch></td>
       <td><span class="if-badge" [ngClass]="{'if-badge-active': isActive(rule.status)}"></span> {{rule.status}}</td>
-      <td></td>
+      <td [style.width.%]="5" ></td>
     </tr>
   </ng-template>
 </p-table>

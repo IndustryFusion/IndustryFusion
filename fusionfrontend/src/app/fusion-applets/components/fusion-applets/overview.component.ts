@@ -15,7 +15,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { OispService } from '../../../services/oisp.service';
-import { Rule } from '../../../services/oisp.model';
+import { Rule, RuleStatus } from '../../../services/oisp.model';
 
 @Component({
   selector: 'app-overview',
@@ -29,11 +29,27 @@ export class OverviewComponent implements OnInit {
   constructor(private oispService: OispService) { }
 
   ngOnInit(): void {
-    this.oispService.getAllRules().subscribe(rules => this.rules = rules.filter(rule => rule.status !== 'Archived')
-    );
+    this.oispService.getAllRules().subscribe(rules => this.rules = rules);
   }
 
   isActive(status: string): boolean {
-    return status === 'Active';
+    return status === RuleStatus.Active;
+  }
+
+  isDraft(status: string) {
+    return status === RuleStatus.Draft;
+  }
+
+  changeStatus(rowIndex: number, isActive: any) {
+    let status: RuleStatus;
+    if (isActive) {
+      status = RuleStatus.Active;
+    } else {
+      status = RuleStatus.OnHold;
+    }
+    this.oispService.setRuleStatus(this.rules[rowIndex].id, status).subscribe( updatedRule => {
+      this.rules[rowIndex] = updatedRule;
+      }
+    );
   }
 }

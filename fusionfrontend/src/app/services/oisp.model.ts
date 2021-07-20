@@ -79,7 +79,8 @@ export class PointWithIdAndDate {
 }
 
 export class Rule {
-  externalId: number;
+  id: string;
+  externalId: string;
   name: string;
   description: string;
   owner: string;
@@ -89,10 +90,17 @@ export class Rule {
   lastUpdateDate: Date;
   resetType: string;
   priority: string;
-  status: string;
+  status: RuleStatus;
   population: { };
   conditions: {
     operator: string,
     values: string[]
   };
+}
+
+export enum RuleStatus {
+  Active = 'Active',
+  Draft = 'Draft',
+  OnHold = 'On-hold',
+  Archived = 'Archived'
 }
