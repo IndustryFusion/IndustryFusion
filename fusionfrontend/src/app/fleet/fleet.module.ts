@@ -77,8 +77,6 @@ import { AgmCoreModule } from '@agm/core';
     AssetWizardStepReviewComponent,
     AssetWizardSharedMetricsComponent,
     AssetWizardSharedAttributesComponent,
-    AssetWizardStepSubsystemsComponent,
-    AssetWizardSharedSubsystemsComponent,
   ],
     imports: [
         IFCommon,
