@@ -17,5 +17,6 @@ package io.fusion.fusionbackend.model.enums;
 
 public enum FactorySiteType {
     HEADQUARTER,
-    FABRICATION
+    FABRICATION,
+    FLEETMANAGER
 }

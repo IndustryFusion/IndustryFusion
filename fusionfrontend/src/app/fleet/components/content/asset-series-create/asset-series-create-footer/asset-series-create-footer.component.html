@@ -1,14 +1,14 @@
 <div class="footer">
     <div *ngIf="step != 1">
         <button type="button" class="if-button button-secondary" (click)="back.emit()">Back</button>
-        <button [disabled]="!readyToTakeNextStep" type="button" class="if-button button-primary" (click)="nextStep.emit()">
+        <button [disabled]="!isReadyForNextStep" type="button" class="if-button button-primary" (click)="nextStep.emit()">
             <span *ngIf="step === toalSteps; else normalNext">Finish</span>
             <ng-template #normalNext>Next</ng-template>
         </button>
     </div>
     <div *ngIf="step==1">
         <button type="button" class="if-button button-secondary" (click)="back.emit()">Cancel</button>
-        <button [disabled]="!readyToTakeNextStep" type="button"
+        <button [disabled]="!isReadyForNextStep" type="button"
                 class="if-button button-primary" (click)="nextStep.emit()">Start
         </button>
     </div>

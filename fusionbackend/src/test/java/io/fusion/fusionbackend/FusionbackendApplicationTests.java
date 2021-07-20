@@ -61,6 +61,8 @@ class FusionbackendApplicationTests {
     private static Integer roomWestStruumpFabId;
     private static Integer roomEastStruumpFabId;
 
+    private static Integer countryGermanyId;
+
     private static Integer assetRoomWestStruumpFabId;
     private static Integer assetRoomEastStruumpFabId;
 
@@ -212,6 +214,16 @@ class FusionbackendApplicationTests {
     }
 
     @Test
+    @Order(299)
+    void testCreateCountryGermany() {
+        CountryDto country = CountryDto.builder()
+                .name("Germany")
+                .build();
+
+        countryGermanyId = createAndTestCountry(country);
+    }
+
+    @Test
     @Order(300)
     void createFactorySiteStruumpHq() {
         FactorySiteDto factorySite = FactorySiteDto.builder()
@@ -221,12 +233,11 @@ class FusionbackendApplicationTests {
                 .line2("Rückgebäude")
                 .city("Gräfelfing")
                 .zip("90011")
-                .country("Germany")
                 .latitude(48.127936)
                 .longitude(11.604835)
                 .build();
 
-        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite);
+        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
     }
 
     @Test
@@ -239,12 +250,11 @@ class FusionbackendApplicationTests {
                 .line2("Hinterhof")
                 .city("Lindau")
                 .zip("10011")
-                .country("Germany")
                 .latitude(48.024522)
                 .longitude(11.679882)
                 .build();
 
-        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite);
+        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
     }
 
     @RepeatedTest(10)
@@ -257,11 +267,10 @@ class FusionbackendApplicationTests {
                 .line2("Hintermhof")
                 .city("Spandau")
                 .zip("10011")
-                .country("Germany")
                 .latitude(48.024522)
                 .longitude(11.679882)
                 .build();
-        createAndTestFactorySite(companyStruumpFabId, factorySite);
+        createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
     }
 
     @Test
@@ -900,11 +909,56 @@ class FusionbackendApplicationTests {
         return newCompanyId;
     }
 
+    private Integer createAndTestCountry(final CountryDto country) {
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .body(country)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+
+                .when()
+                .post(baseUrl + "/countries")
+
+                .then()
+                .statusCode(200)
+                .body("name", equalTo(country.getName()));
+
+        Integer newCountryId = response.extract().path("id");
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+
+                .when()
+                .get(baseUrl + "/countries/" + newCountryId)
+
+                .then()
+                .statusCode(200)
+                .body("name", equalTo(country.getName()));
+
+        return newCountryId;
+    }
+
     // TODO: test getter with embed
     // TODO: test create with entityDto with ID
     // TODO: Test fields in assettypetemplate, series, assets
 
-    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite) {
+    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite,
+                                             final Integer countryId) {
+
+        if (factorySite.getCountry() == null) {
+            ValidatableResponse response = given()
+                    .contentType(ContentType.JSON)
+                    .header("Authorization", "Bearer " + accessTokenFabManStruump)
+
+                    .when()
+                    .get(baseUrl + "/countries/" + countryId)
+
+                    .then()
+                    .statusCode(200);
+
+            factorySite.setCountry(response.extract().body().as(CountryDto.class));
+        }
+
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(factorySite)
@@ -919,8 +973,7 @@ class FusionbackendApplicationTests {
                 .body("line1", equalTo(factorySite.getLine1()))
                 .body("line2", equalTo(factorySite.getLine2()))
                 .body("city", equalTo(factorySite.getCity()))
-                .body("zip", equalTo(factorySite.getZip()))
-                .body("country", equalTo(factorySite.getCountry()));
+                .body("zip", equalTo(factorySite.getZip()));
 
         Float longitude = response.extract().path("longitude");
         Float latitude = response.extract().path("latitude");
@@ -944,8 +997,8 @@ class FusionbackendApplicationTests {
                 .body("line1", equalTo(factorySite.getLine1()))
                 .body("line2", equalTo(factorySite.getLine2()))
                 .body("city", equalTo(factorySite.getCity()))
-                .body("zip", equalTo(factorySite.getZip()))
-                .body("country", equalTo(factorySite.getCountry()));
+                .body("zip", equalTo(factorySite.getZip()));
+        // TODO: Check country
 
         return newfactorySiteId;
     }

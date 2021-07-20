@@ -13,18 +13,20 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { FactorySiteWithAssetCount } from 'src/app/store/factory-site/factory-site.model';
+import { FactorySite, FactorySiteWithAssetCount } from 'src/app/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FactorySiteDialogComponent } from '../factory-site-dialog/factory-site-dialog.component';
 import { DialogType } from '../../../../common/models/dialog-type.model';
+import { FactoryResolver } from '../../../services/factory-resolver.service';
+import { ActivatedRoute } from '@angular/router';
+import { Country } from '../../../../store/country/country.model';
 
 @Component({
   selector: 'app-factory-sites',
@@ -52,18 +54,26 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   factorySiteForm: FormGroup;
   ref: DynamicDialogRef;
 
+  private countries$: Observable<Country[]>;
+
 
   constructor(
+    private factoryResolver: FactoryResolver,
+    activatedRoute: ActivatedRoute,
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private factoryComposedQuery: FactoryComposedQuery,
     private formBuilder: FormBuilder,
-    public dialogService: DialogService) { }
+    public dialogService: DialogService) {
+
+    this.factoryResolver.resolve(activatedRoute);
+    this.countries$ = this.factoryResolver.countries$;
+  }
 
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
-    this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCount(this.companyId);
+    this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCountInFactoryManager(this.companyId);
     this.createFactorySiteForm(this.formBuilder);
   }
 
@@ -90,8 +100,11 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     });
   }
 
-  createFactorySiteForm(formBuilder: FormBuilder) {
+  async createFactorySiteForm(formBuilder: FormBuilder) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    const countryIdGermany = await this.countries$.toPromise()
+      .then(countries => countries.find(item => item.name === 'Germany').id);
+
     this.factorySiteForm = formBuilder.group({
       id: [null],
       name: ['', requiredTextValidator],
@@ -99,7 +112,7 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
       line2: [''],
       city: ['', requiredTextValidator],
       zip: [''],
-      country: ['', requiredTextValidator],
+      countryId: [countryIdGermany, Validators.required],
       type: [null, requiredTextValidator]
     });
   }

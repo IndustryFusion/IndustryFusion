@@ -15,8 +15,7 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { AssetSeriesQuery } from '../../../../store/asset-series/asset-series.query';
@@ -27,6 +26,9 @@ import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.qu
 import { Room } from '../../../../store/room/room.model';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { map } from 'rxjs/operators';
+import { AssetWizardComponent } from '../../content/asset-wizard/asset-wizard.component';
+import { CompanyQuery } from '../../../../store/company/company.query';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-serie-page',
@@ -46,7 +48,10 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
               private assetQuery: AssetQuery,
               private activatedRoute: ActivatedRoute,
               private roomQuery: RoomQuery,
-              private factorySiteQuery: FactorySiteQuery) {
+              private companyQuery: CompanyQuery,
+              private dialogService: DialogService,
+              private factorySiteQuery: FactorySiteQuery,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -78,7 +83,7 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
               const factorySite: FactorySite = factorySites.find(
                 factorySiteValue => factorySiteValue.id === rooms.find(
                   roomValue => roomValue.id === asset.roomId
-                ).factorySiteId
+                )?.factorySiteId
               );
               combined.push({ id: asset.id, asset, factorySite });
             }
@@ -87,8 +92,22 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
       ));
 
       this.factorySites$ = this.assetsCombined$.pipe(
-        map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.factorySite))
+        map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.factorySite)
+          .filter(factorySite => factorySite != null))
       );
     }
+  }
+
+  createAssetFromAssetSeries() {
+    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        prefilledAssetSeriesId: this.assetSerieId,
+      },
+      header: 'Digital Twin Creator for Assets',
+      width: '75%'
+    });
+
+    assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
   }
 }

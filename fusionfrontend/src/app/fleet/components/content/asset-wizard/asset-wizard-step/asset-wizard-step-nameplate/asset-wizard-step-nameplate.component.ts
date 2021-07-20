@@ -44,11 +44,17 @@ export class AssetWizardStepNameplateComponent implements OnInit {
     });
   }
 
-  onBack() {
+  isReadyForNextStep(): boolean {
+    return this.assetForm.valid;
+  }
+
+  onBack(): void {
     this.stepChange.emit(AssetWizardStep.DIGITAL_NAMEPLATE - 1);
   }
 
-  onNext() {
-    this.stepChange.emit(AssetWizardStep.DIGITAL_NAMEPLATE + 1);
+  onNext(): void {
+    if (this.isReadyForNextStep()) {
+      this.stepChange.emit(AssetWizardStep.DIGITAL_NAMEPLATE + 1);
+    }
   }
 }

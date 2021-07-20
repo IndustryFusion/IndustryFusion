@@ -40,6 +40,8 @@ import { AssetDetailsService } from '../../store/asset-details/asset-details.ser
 import { FactoryManagerPageType, RouteData } from '../factory-routing.model';
 import { AssetSeriesDetails } from '../../store/asset-series-details/asset-series-details.model';
 import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details.query';
+import { Country } from '../../store/country/country.model';
+import { CountryResolver } from '../../resolvers/country.resolver';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +62,7 @@ export class FactoryResolver {
   public fields$: Observable<FieldDetails[]>;
   public factorySubTitle$: Subject<string>;
   public companies$: Observable<Company[]>;
+  public countries$: Observable<Country[]>;
 
   constructor(
     private companyService: CompanyService,
@@ -75,7 +78,8 @@ export class FactoryResolver {
     private assetDetailsQuery: AssetDetailsQuery,
     private fieldService: FieldDetailsService,
     private fieldQuery: FieldDetailsQuery,
-    private factoryComposedQuery: FactoryComposedQuery) {
+    private factoryComposedQuery: FactoryComposedQuery,
+    private countryResolver: CountryResolver) {
 
     this.company$ = this.companyQuery.selectActive();
     this.factorySite$ = this.factorySiteQuery.selectActive();
@@ -85,6 +89,8 @@ export class FactoryResolver {
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
+    this.countries$ = this.countryResolver.resolve();
+
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
     const companyId = activatedRoute.snapshot.paramMap.get('companyId');
@@ -97,7 +103,7 @@ export class FactoryResolver {
       this.assetDetailsService.getAssetDetailsOfCompany(companyId).subscribe();
 
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
-      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompany(companyId);
+      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
       this.rooms$ = this.roomQuery.selectAllRooms();
       this.assets$ = this.assetQuery.selectAssetsOfCompany(companyId);
       this.assetDetailsQuery.selectAssetDetailsOfCompany(companyId).pipe(
@@ -110,7 +116,7 @@ export class FactoryResolver {
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
-      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompany(companyId);
+      this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
       this.rooms$ = this.roomQuery.selectAllRooms();
       this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();

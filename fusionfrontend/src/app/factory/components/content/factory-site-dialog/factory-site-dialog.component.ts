@@ -21,6 +21,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { DialogType } from '../../../../common/models/dialog-type.model';
+import { CountryQuery } from '../../../../store/country/country.query';
 
 @Component({
   selector: 'app-factory-site-dialog',
@@ -32,6 +33,7 @@ export class FactorySiteDialogComponent implements OnInit {
 
   factorySiteForm: FormGroup;
   factorySiteTypes: SelectItem[];
+  countries: SelectItem[] = [];
   formChange: Subscription;
   factorySite: FactorySite;
   type: DialogType;
@@ -40,7 +42,8 @@ export class FactorySiteDialogComponent implements OnInit {
 
   constructor(
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig) {
+    public config: DynamicDialogConfig,
+    private countryQuery: CountryQuery) {
     this.factorySiteTypes = [
       { label: 'Headquarter', value: FactorySiteType.HEADQUARTER },
       { label: 'Fabrication', value: FactorySiteType.FABRICATION },
@@ -51,11 +54,14 @@ export class FactorySiteDialogComponent implements OnInit {
     this.factorySiteForm = this.config.data.factorySiteForm;
     this.type = this.config.data.type;
     this.factorySite = { ...this.factorySite, ...this.factorySiteForm.value };
+    this.factorySite.country = this.countryQuery.getEntity(this.factorySite.countryId);
     this.formChange = this.factorySiteForm.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(() => {
       this.factorySite = { ...this.factorySite, ...this.factorySiteForm.value };
+      this.factorySite.country = this.countryQuery.getEntity(this.factorySite.countryId);
     });
+    this.createCountriesItems();
   }
 
   onCancel() {
@@ -72,10 +78,20 @@ export class FactorySiteDialogComponent implements OnInit {
       this.factorySite.line2 = this.factorySiteForm.get('line2')?.value;
       this.factorySite.zip = this.factorySiteForm.get('zip')?.value;
       this.factorySite.city = this.factorySiteForm.get('city')?.value;
-      this.factorySite.country = this.factorySiteForm.get('country')?.value;
+      this.factorySite.countryId = this.factorySiteForm.get('countryId')?.value;
 
       this.ref.close(this.factorySite);
     }
+  }
+
+  private createCountriesItems() {
+    this.countryQuery.selectCountries().subscribe(
+      countries => {
+        for (const country of countries) {
+          this.countries.push({ label: country.name, value: country.id });
+        }
+      }
+    );
   }
 
 }

@@ -16,7 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { AssetWizardStep } from '../asset-wizard-step.model';
-import { AssetWizardFieldInstanceMetricsComponent } from '../../asset-wizard-field-instance-metrics/asset-wizard-field-instance-metrics.component';
+import { AssetWizardSharedMetricsComponent } from '../../asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
 
 @Component({
   selector: 'app-asset-wizard-step-metrics-thresholds',
@@ -25,34 +25,35 @@ import { AssetWizardFieldInstanceMetricsComponent } from '../../asset-wizard-fie
 })
 export class AssetWizardStepMetricsThresholdsComponent implements OnInit {
 
-  @ViewChild(AssetWizardFieldInstanceMetricsComponent) metricsChild: AssetWizardFieldInstanceMetricsComponent;
+  @ViewChild(AssetWizardSharedMetricsComponent) metricsChild: AssetWizardSharedMetricsComponent;
 
   @Input() asset: Asset;
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
-  public readyToTakeNextStep = false;
+  public isReadyForNextStep = false;
 
   constructor() {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  public onBack(): void {
-    if (this.readyToTakeNextStep) {
+  onBack(): void {
+    if (this.isReadyForNextStep) {
       this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS - 1);
     }
   }
 
-  public onNext(): void {
-    if (this.readyToTakeNextStep) {
+  onNext(): void {
+    if (this.isReadyForNextStep) {
       this.metricsChild.saveValues();
       this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS + 1);
     }
   }
 
-  public onSetValid(isValid: boolean): void {
-    this.readyToTakeNextStep = isValid;
+  onSetValid(isValid: boolean): void {
+    this.isReadyForNextStep = isValid;
+    this.valid.emit(isValid);
   }
 }

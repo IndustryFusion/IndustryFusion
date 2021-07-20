@@ -61,6 +61,13 @@ public class Room extends BaseEntity {
     private String imageKey;
     private String description;
 
+    public static Room getUnspecificRoomInstance() {
+        Room unspecificRoom = new Room();
+        unspecificRoom.name = "No specific room";
+        unspecificRoom.description = "No specific room";
+        return unspecificRoom;
+    }
+
     public void copyFrom(final Room sourceRoom) {
         if (sourceRoom.getName() != null) {
             setName(sourceRoom.getName());
