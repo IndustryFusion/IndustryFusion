@@ -17,10 +17,9 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { AssetWizardSharedSubsystemsComponent } from '../../asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
-import { FactoryAssetDetails } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
 import { FleetAssetDetailsQuery } from '../../../../../../store/fleet-asset-details/fleet-asset-details.query';
-import { Observable } from 'rxjs';
 import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-wizard-step-subsystems',
@@ -35,16 +34,18 @@ export class AssetWizardStepSubsystemsComponent implements OnInit {
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
-  public assetDetails$: Observable<FactoryAssetDetails[]>;
+  public fleetAssetDetails: FleetAssetDetails[];
+  public removedFleetAssetDetails: FleetAssetDetails[];
   public isReadyForNextStep = false;
   public isAddingMode = false;
 
   constructor(private fleetAssetDetailsQuery: FleetAssetDetailsQuery) {
+    this.removedFleetAssetDetails = [];
   }
 
   ngOnInit(): void {
-    this.assetDetails$ = this.fleetAssetDetailsQuery.selectAssetDetailsOfCompanyExcludingAssetSerie(this.asset.companyId,
-      this.asset.assetSeriesId);
+    this.fleetAssetDetailsQuery.selectAssetDetailsOfCompanyExcludingAssetSerie(this.asset.companyId,
+      this.asset.assetSeriesId).subscribe(assetDetails => this.fleetAssetDetails = assetDetails);
   }
 
   public onBack(): void {
@@ -69,8 +70,17 @@ export class AssetWizardStepSubsystemsComponent implements OnInit {
     this.isAddingMode = true;
   }
 
-  public addSubsystem(assetDetails: FleetAssetDetails): void {
-    this.subsystemsChild.addSubsystem(assetDetails);
+  public addSubsystem(fleetAssetDetails: FleetAssetDetails): void {
+    this.subsystemsChild.addSubsystem(fleetAssetDetails);
+    this.removedFleetAssetDetails.push(fleetAssetDetails);
+    this.fleetAssetDetails.splice(this.fleetAssetDetails.indexOf(fleetAssetDetails), 1);
     this.isAddingMode = false;
+  }
+
+  public onSubsystemRemoved(subsystemId: ID): void {
+    const fleetAssetDetails = this.removedFleetAssetDetails.find((item: FleetAssetDetails) => item.id === subsystemId);
+    this.fleetAssetDetails.push(fleetAssetDetails);
+    this.fleetAssetDetails.sort((a, b) => (a.id as number) - (b.id as number));
+    this.removedFleetAssetDetails.splice(this.removedFleetAssetDetails.indexOf(fleetAssetDetails), 1);
   }
 }

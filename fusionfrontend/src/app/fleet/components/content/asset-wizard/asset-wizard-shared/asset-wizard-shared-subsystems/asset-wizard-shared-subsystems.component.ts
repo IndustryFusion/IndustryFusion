@@ -31,6 +31,7 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
   @Input() isReview = false;
   @Output() changeIsValid = new EventEmitter<boolean>();
   @Output() backToEditPage = new EventEmitter<void>();
+  @Output() subsystemRemoved = new EventEmitter<ID>();
 
   subsystemFormArray: FormArray;
 
@@ -45,7 +46,7 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
     this.fillTable(this.asset.subsystemIds);
   }
 
-  private fillTable(subsystemIds: ID[]) {
+  private fillTable(subsystemIds: ID[]): void {
     this.subsystemFormArray = new FormArray([]);
     this.subsystemFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.subsystemFormArray.valid));
     this.changeIsValid.emit(this.subsystemFormArray.valid);
@@ -69,13 +70,14 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
     this.subsystemFormArray.push(subsystemGroup);
   }
 
-  removeSubsystem(subsystemGroup: AbstractControl): void {
+  public removeSubsystem(subsystemGroup: AbstractControl): void {
     if (this.isReview) {
       this.backToEditPage.emit();
       return;
     }
 
     if (subsystemGroup != null) {
+      const subsystemId = subsystemGroup.get('id').value;
       const indexToRemove = subsystemGroup.get('index').value;
       this.subsystemFormArray.removeAt(indexToRemove);
 
@@ -83,10 +85,12 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
         const indexElement = this.subsystemFormArray.at(i).get('index');
         indexElement.setValue(indexElement.value - 1);
       }
+
+      this.subsystemRemoved.emit(subsystemId);
     }
   }
 
-  public saveValues() {
+  public saveValues(): void {
     if (this.subsystemFormArray.valid) {
        this.asset.subsystemIds = new Array<ID>();
        this.subsystemFormArray.controls.forEach((subsystemGroup: FormControl) => {
@@ -95,7 +99,7 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
     }
   }
 
-  public onClickEdit() {
+  public onClickEdit(): void {
     this.backToEditPage.emit();
   }
 }

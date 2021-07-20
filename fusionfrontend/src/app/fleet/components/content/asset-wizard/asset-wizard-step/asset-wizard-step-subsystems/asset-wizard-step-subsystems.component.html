@@ -15,12 +15,13 @@ under the License.
 
 <label class="if-dialog-title">Add&nbsp;Subsystems</label>
 
-<app-asset-wizard-shared-subsystems [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)">
+<app-asset-wizard-shared-subsystems [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)"
+     (subsystemRemoved)="onSubsystemRemoved($event)">
 </app-asset-wizard-shared-subsystems>
 
 <div class="selection" *ngIf="isAddingMode === true">
   <div class="input-div">
-    <p-dropdown [options]="(assetDetails$ | async)" optionLabel="name"
+    <p-dropdown [options]="fleetAssetDetails" optionLabel="name"
                 class="select-asset-input" filter="true" resetFilterOnHide="true"
                 placeholder="Search Subsystems (Assets)..." (onChange)="addSubsystem($event.value)">
     </p-dropdown>
