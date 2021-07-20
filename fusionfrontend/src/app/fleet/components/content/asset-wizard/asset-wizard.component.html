@@ -18,8 +18,7 @@ under the License.
     <ul class="clr-timeline clr-timeline-horizontal">
       <ng-container *ngFor="let i of [AssetWizardStep.GENERAL_INFORMATION, AssetWizardStep.DIGITAL_NAMEPLATE,
                                     AssetWizardStep.METRICS_THRESHOLDS, AssetWizardStep.ATTRIBUTES,
-                                    AssetWizardStep.SUBSYSTEMS, AssetWizardStep.REVIEW,
-                                    AssetWizardStep.CUSTOMER_DATA];">
+                                    AssetWizardStep.REVIEW, AssetWizardStep.CUSTOMER_DATA];">
         <li class="clr-timeline-step">
           <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
           <clr-icon *ngIf="step < i" shape="circle" aria-label="Not started"></clr-icon>
@@ -54,15 +53,9 @@ under the License.
                                       (stepChange)="onStepChange($event)"
                                       (valid)="setAttributesValid($event)">
     </app-asset-wizard-step-attributes>
-    <app-asset-wizard-step-subsystems *ngIf="step === AssetWizardStep.SUBSYSTEMS"
-                                      [asset]="asset"
-                                      (stepChange)="onStepChange($event)"
-                                      (valid)="setAttributesValid($event)">
-    </app-asset-wizard-step-subsystems>
     <app-asset-wizard-step-review *ngIf="step === AssetWizardStep.REVIEW"
                                   [asset]="asset"
-                                  (stepChange)="onStepChange($event)"
-                                  (valid)="setSubsystemValid($event)">
+                                  (stepChange)="onStepChange($event)">
     </app-asset-wizard-step-review>
     <app-asset-wizard-step-customer-data *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
                                          [asset]="asset"

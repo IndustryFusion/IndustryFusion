@@ -52,8 +52,4 @@ export class AssetWizardStepReviewComponent implements OnInit {
   onBackToMetrics(): void {
     this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS);
   }
-
-  onBackToSubsystems(): void {
-    this.stepChange.emit(AssetWizardStep.SUBSYSTEMS);
-  }
 }
