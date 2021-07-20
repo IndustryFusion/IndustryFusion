@@ -44,6 +44,9 @@ public class CountryService {
     }
 
     public Country createCountry(final Country country) {
+        if (countryRepository.findCountryByName(country.getName()).isPresent()) {
+            throw new RuntimeException("A country with the same name already exists");
+        }
         return countryRepository.save(country);
     }
 
