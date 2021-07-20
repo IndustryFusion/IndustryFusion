@@ -21,6 +21,11 @@ public class AssetBuilder implements Builder<Asset> {
         return this;
     }
 
+    public AssetBuilder forCompany(Builder<Company> companyBuilder) {
+        this.companyBuilder = companyBuilder;
+        return this;
+    }
+
     @Override
     public Asset build() {
         Asset asset = new Asset();
@@ -34,10 +39,5 @@ public class AssetBuilder implements Builder<Asset> {
         company.getAssets().add(asset);
 
         return asset;
-    }
-
-    public AssetBuilder forCompany(Builder<Company> companyBuilder) {
-        this.companyBuilder = companyBuilder;
-        return this;
     }
 }
