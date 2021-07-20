@@ -14,21 +14,29 @@
  */
 
   /** colors **/
-  $basic-white: #FFFFFF;
-  $light-grey:  #F8F8F8;
-  $basic-grey:  #95989A;
-  $dark-gray:   #00000029;
-  $basic-black: #000000;
+  $basic-white:   #FFFFFF;
+  $light-grey:    #F8F8F8;
+  $dark-white:    #E6E6E6;
+  $middle-grey:   #B9B9B9;
+  $basic-grey:    #95989A;
+  $regular-grey:  #666666;
+  $dark-grey:     #333333;
+  $dark-gray:     #00000029;
+  $basic-black:   #000000;
 
-  $tree-line-grey: #B9B9B9;
-  $error: #A73737;
+  $fusion-blue: #2CA9CE;
+  $fusion-red: #A73737;
+
+  /** function colors **/
+  $tree-line-grey: $middle-grey;
+  $error: $fusion-red;
   $highlighted: $basic-black;
   $inactive: $basic-grey;
-  $regular-grey: #666666;
-  $hover-grey: #333333;
+  $hover-grey: $dark-grey;
   $hover-grey-border: $basic-grey;
-  $disabled-button: #E6E6E6;
-  $onboarding-text: #2CA9CE;
+  $disabled-button: $dark-white;
+  $onboarding-text: $fusion-blue;
+  $status-active: $fusion-blue;
 
   /** backgrounds **/
   $grey-background: $light-grey 50% 50% no-repeat padding-box;
