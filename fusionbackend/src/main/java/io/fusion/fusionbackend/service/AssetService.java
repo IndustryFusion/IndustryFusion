@@ -198,7 +198,7 @@ public class AssetService {
     private void validateSubsystems(Asset asset) {
         for (Asset subsystem : asset.getSubsystems()) {
             if (subsystem.getId().equals(asset.getId())) {
-                throw new RuntimeException("A asset is not allowed to be a subsystem of itself.");
+                throw new RuntimeException("An asset is not allowed to be a subsystem of itself.");
             }
             if (subsystem.getAssetSeries().getId().equals(asset.getAssetSeries().getId())) {
                 throw new RuntimeException("A subsystem has to be of another asset series than the parent asset.");
