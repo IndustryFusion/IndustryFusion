@@ -20,6 +20,17 @@ import { AssetDetailsWithFields, AssetModalType, AssetModalMode } from '../../..
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
+enum FormAttributes {
+  assetSeriesName = 'assetSeriesName',
+  manufacturer = 'manufacturer',
+  category = 'category',
+  name = 'name',
+  description = 'description',
+  factorySiteName = 'factorySiteName',
+  roomId = 'roomId',
+  roomName = 'roomName'
+}
+
 @Component({
   selector: 'app-asset-instantiation',
   templateUrl: './asset-instantiation.component.html',
@@ -38,7 +49,6 @@ export class AssetInstantiationComponent implements OnInit {
   assetModalTypes = AssetModalType;
   activeModalMode: AssetModalMode;
   assetModalModes = AssetModalMode;
-  formControls: string[];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -46,8 +56,6 @@ export class AssetInstantiationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.formControls = ['assetSeriesName', 'manufacturer', 'category', 'name', 'description', 'factorySiteName',
-      'roomId', 'roomName'];
     this.assetDetailsForm = this.config.data.assetDetailsForm ? this.config.data.assetDetailsForm : null;
     this.assetDetails = { ...this.config.data.assetToBeEdited };
     this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
@@ -58,13 +66,13 @@ export class AssetInstantiationComponent implements OnInit {
     this.activeModalType = this.config.data.activeModalType;
 
     if (this.activeModalMode !== this.assetModalModes.onboardAssetMode) {
-      if (this.selectedFactorySite == null || this.assetDetailsForm.controls[this.formControls[5]].value !== null) {
+      if (this.selectedFactorySite == null || this.assetDetailsForm.controls[FormAttributes.factorySiteName].value !== null) {
         this.selectedFactorySite = this.factorySites.filter(factorySite => factorySite.name === this.assetDetailsForm
-          .controls[this.formControls[5]].value).pop();
+          .controls[FormAttributes.factorySiteName].value).pop();
       }
-      if (this.assetDetailsForm.controls[this.formControls[6]].value !== null) {
+      if (this.assetDetailsForm.controls[FormAttributes.roomId].value !== null) {
         this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetailsForm.
-          controls[this.formControls[6]].value).pop();
+          controls[FormAttributes.roomId].value).pop();
       }
       this.allRoomsOfFactorySite = this.rooms.filter(room => room.factorySiteId === this.selectedRoom.factorySiteId);
     }
@@ -82,12 +90,12 @@ export class AssetInstantiationComponent implements OnInit {
   }
 
   updateAssetForm() {
-    this.assetDetailsForm.controls[this.formControls[0]].setValue(this.assetDetails.assetSeriesName);
-    this.assetDetailsForm.controls[this.formControls[1]].setValue(this.assetDetails.manufacturer);
-    this.assetDetailsForm.controls[this.formControls[2]].setValue(this.assetDetails.category);
-    this.assetDetailsForm.controls[this.formControls[3]].setValue(this.assetDetails.name ?
+    this.assetDetailsForm.controls[FormAttributes.assetSeriesName].setValue(this.assetDetails.assetSeriesName);
+    this.assetDetailsForm.controls[FormAttributes.manufacturer].setValue(this.assetDetails.manufacturer);
+    this.assetDetailsForm.controls[FormAttributes.category].setValue(this.assetDetails.category);
+    this.assetDetailsForm.controls[FormAttributes.name].setValue(this.assetDetails.name ?
       this.assetDetails.name : this.assetDetails.assetSeriesName);
-    this.assetDetailsForm.controls[this.formControls[4]].setValue(this.assetDetails.description ?
+    this.assetDetailsForm.controls[FormAttributes.description].setValue(this.assetDetails.description ?
       this.assetDetails.description : this.assetDetails.category);
   }
 
@@ -128,14 +136,14 @@ export class AssetInstantiationComponent implements OnInit {
       this.selectedFactorySite = selectedFactorySite;
     }
     this.allRoomsOfFactorySite = this.rooms.filter(room => room.factorySiteId === this.selectedFactorySite.id);
-    this.assetDetailsForm.controls[this.formControls[5]].setValue(this.selectedFactorySite.name);
+    this.assetDetailsForm.controls[FormAttributes.factorySiteName].setValue(this.selectedFactorySite.name);
   }
 
-  finishedRoomAssignment(event: Room) {
-    if (event) {
-      this.assignRoom(event);
+  finishedRoomAssignment(room: Room) {
+    if (room) {
+      this.assignRoom(room);
       this.assignFactorySite();
-      this.finishedAssetOnboaring();
+      this.finishedAssetOnboarding();
     } else {
       if (this.activeModalMode !== this.assetModalModes.editRoomWithPreselecedFactorySiteMode) {
         this.config.header = 'Factory Site Assignment';
@@ -148,11 +156,11 @@ export class AssetInstantiationComponent implements OnInit {
 
   assignRoom(room: Room) {
     this.selectedRoom = room;
-    this.assetDetailsForm.controls[this.formControls[6]].setValue(this.selectedRoom.id);
-    this.assetDetailsForm.controls[this.formControls[7]].setValue(this.selectedRoom.name);
+    this.assetDetailsForm.controls[FormAttributes.roomId].setValue(this.selectedRoom.id);
+    this.assetDetailsForm.controls[FormAttributes.roomName].setValue(this.selectedRoom.name);
   }
 
-  finishedAssetOnboaring() {
+  finishedAssetOnboarding() {
     if (this.assetDetailsForm.valid) {
       this.updateAssetDetailsObject();
       this.ref.close(this.assetDetails);
