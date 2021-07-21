@@ -15,7 +15,7 @@
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, EMPTY } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { catchError, map, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
@@ -27,10 +27,12 @@ import {
   OispRequest,
   OispRequestWithAggregation,
   OispResponse,
-  PointWithId, Sampling,
+  PointWithId,
+  Sampling,
   Series
 } from './oisp.model';
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
+import { KeycloakService } from 'keycloak-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -41,14 +43,15 @@ export class OispService {
   };
   private defaultPoints: PointWithId[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private keycloakService: KeycloakService) {
+  }
 
   getExternalIdForSingleField(field: FieldDetails, oispDevice: any): FieldDetails {
     if (oispDevice.components) {
       const fieldCopy = Object.assign({ }, field);
       oispDevice.components.map((el) => {
         if (el.name === field.externalId) {
-          fieldCopy.externalId =  el.cid;
+          fieldCopy.externalId = el.cid;
         }
       });
       return fieldCopy;
@@ -58,34 +61,38 @@ export class OispService {
   }
 
   getAssetFieldsExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
-    if (!asset) { return EMPTY; }
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/devices/${asset.externalId}`;
+    if (!asset) {
+      return EMPTY;
+    }
+    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${asset.externalId}`;
 
     return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
       catchError(() => {
-        console.log('[oisp service] caught error while searching for external Ids');
+        console.warn('[oisp service] caught error while searching for external Ids');
         return of(asset);
       }),
       startWith(asset),
       map((response) => {
-        const newFields = asset.fields.map( field => this.getExternalIdForSingleField(field, response));
+        const newFields = asset.fields.map(field => this.getExternalIdForSingleField(field, response));
         return Object.assign(asset, { fields: newFields });
       })
     );
   }
 
   getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    if (!assetDetails) { return EMPTY; }
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/devices/${assetDetails.externalId}`;
+    if (!assetDetails) {
+      return EMPTY;
+    }
+    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${assetDetails.externalId}`;
 
     return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
       catchError(() => {
-        console.log('[oisp service] caught error while searching for external Ids');
+        console.warn('[oisp service] caught error while searching for external Ids');
         return of(assetDetails);
       }),
       startWith(assetDetails),
       map((response) => {
-        const newFields = assetDetails.fields.map( field => this.getExternalIdForSingleField(field, response));
+        const newFields = assetDetails.fields.map(field => this.getExternalIdForSingleField(field, response));
         return Object.assign(assetDetails, { fields: newFields });
       })
     );
@@ -106,7 +113,7 @@ export class OispService {
     return this.http.post<OispResponse>(`${environment.oispApiUrlPrefix}/${path}`, request, this.httpOptions)
       .pipe(
         catchError(() => {
-          console.log('[oisp service] caught error while searching for oispPoints');
+          console.warn('[oisp service] caught error while searching for oispPoints');
           return EMPTY;
         }),
         map((entity) => {
@@ -119,7 +126,7 @@ export class OispService {
               // returns all values for one field
               const seriesId = entity.series[0].componentId;
               const points = entity.series[0].points
-                .map((point) => ({ id: seriesId, ts: point.ts, value: point.value}));
+                .map((point) => ({ id: seriesId, ts: point.ts, value: point.value }));
               return points;
             }
           } else {
@@ -129,13 +136,13 @@ export class OispService {
   }
 
   getLastValueOfAllFields(asset: Asset, fields: FieldDetails[], secondsInPast: number): Observable<PointWithId[]> {
-    const path = `accounts/${environment.oispAccountId}/data/search`;
+    const path = `accounts/${this.getOispAccountId()}/data/search`;
     const request: OispRequest = {
       from: -secondsInPast,
       targetFilter: { deviceList: [asset.externalId] },
       metrics: fields
-          .filter(field => field.fieldType === FieldType.METRIC)
-          .map( field => ({ id: field.externalId, op: 'none' }))
+        .filter(field => field.fieldType === FieldType.METRIC)
+        .map(field => ({ id: field.externalId, op: 'none' }))
     };
 
     const oispPoints$ = this.getOispPoints(path, request, true);
@@ -143,7 +150,7 @@ export class OispService {
   }
 
   getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: string): Observable<PointWithId[]> {
-    const path = `accounts/${environment.oispAccountId}/data/search`;
+    const path = `accounts/${this.getOispAccountId()}/data/search`;
     let oispPoints$: Observable<PointWithId[]>;
     if (!maxPoints) {
       let metrics: Metrics;
@@ -153,7 +160,6 @@ export class OispService {
         targetFilter: { deviceList: [asset.externalId] },
         metrics: [metrics]
       };
-      console.log('[oisp] request: ' + request);
       oispPoints$ = this.getOispPoints(path, request, false);
     } else {
       let metricsWithAggregation: MetricsWithAggregation;
@@ -165,7 +171,6 @@ export class OispService {
         targetFilter: { deviceList: [asset.externalId] },
         metrics: [metricsWithAggregation]
       };
-      console.log('[oisp] request: ' + request);
       oispPoints$ = this.getOispPoints(path, request, false);
     }
     return oispPoints$;
@@ -178,10 +183,10 @@ export class OispService {
                                 maxPoints: string,
                                 samplingUnit?: string,
                                 samplingValue?: number): Observable<PointWithId[]> {
-    const path = `accounts/${environment.oispAccountId}/data/search`;
+    const path = `accounts/${this.getOispAccountId()}/data/search`;
     let metricsWithAggregation: MetricsWithAggregation;
     if (samplingUnit) {
-      const mySampling: Sampling = ({ unit: samplingUnit, value: samplingValue});
+      const mySampling: Sampling = ({ unit: samplingUnit, value: samplingValue });
       const myAggregator: Aggregator = ({ name: 'avg', sampling: mySampling });
       metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
       const request: OispRequestWithAggregation = {
@@ -190,7 +195,6 @@ export class OispService {
         targetFilter: { deviceList: [asset.externalId] },
         metrics: [metricsWithAggregation]
       };
-      console.log('[oisp] request: ' + request);
       return this.getOispPoints(path, request, false);
     } else {
       const myAggregator: Aggregator = ({ name: 'avg' });
@@ -202,9 +206,21 @@ export class OispService {
         targetFilter: { deviceList: [asset.externalId] },
         metrics: [metricsWithAggregation]
       };
-      console.log('[oisp] request: ' + request);
       return this.getOispPoints(path, request, false);
     }
+  }
+
+  private getOispAccountId(): string {
+    const token = (this.keycloakService.getKeycloakInstance().tokenParsed as any);
+    let oispAccountId = '';
+
+    if (token.accounts && token.accounts.length > 0) {
+      oispAccountId = token.accounts[0].id;
+    } else {
+      console.warn('cannot retrieve OISP accountId, subsequent calls to OISP will hence most likely fail!');
+    }
+
+    return oispAccountId;
   }
 
 }
