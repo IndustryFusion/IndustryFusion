@@ -33,6 +33,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
   @Input() assetForm: FormGroup;
   @Input() relatedAssetSeries: AssetSeries;
+  @Input() relatedAssetSeriesId: ID;
   @Input() relatedCompany: Company;
   @Input() relatedAssetType: AssetType;
   @Input() isAssetSeriesLocked: boolean;
@@ -48,7 +49,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
     this.assetSeries$ = this.assetSeriesQuery.selectAll();
     if (this.isAssetSeriesLocked) {
       this.assetForm.get('assetSeriesId')?.disable();
-      this.assetForm.get('assetSeriesId').setValue(this.relatedAssetSeries.id);
+      this.assetForm.get('assetSeriesId').setValue(this.relatedAssetSeriesId);
     }
   }
 
