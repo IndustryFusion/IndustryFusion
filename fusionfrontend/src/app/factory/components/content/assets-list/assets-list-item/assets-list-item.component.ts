@@ -118,9 +118,9 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       header
     });
 
-    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
-      if (assetFormValues) {
-        this.editAssetEvent.emit(assetFormValues);
+    ref.onClose.subscribe((newAssetDetails: AssetDetails) => {
+      if (newAssetDetails) {
+        this.editAssetEvent.emit(newAssetDetails);
       }
     });
   }
