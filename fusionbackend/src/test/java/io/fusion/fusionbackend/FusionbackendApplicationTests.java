@@ -802,10 +802,13 @@ class FusionbackendApplicationTests {
     @Test
     @Order(703)
     void createAssetWithSubsystem() {
-        AssetDto subsystem = AssetDto.builder().build();
+        AssetDto subsystem = AssetDto.builder()
+                .assetSeriesId(assetSeriesAiristGasSupplyId.longValue())
+                .companyId(companyAiristMachId.longValue())
+                .build();
 
         addSubsystemToParentAndTest(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId, assetRoomWestStruumpFabId,
-                subsystem, accessTokenFleetManLaserly);
+                subsystem, accessTokenFleetManAirist, accessTokenFleetManLaserly);
 
     }
 
@@ -1446,13 +1449,14 @@ class FusionbackendApplicationTests {
                                              final Integer assetSeriesId,
                                              final Integer parentAssetId,
                                              final AssetDto newSubsystem,
-                                             final String accessToken) {
+                                             final String subsystemAccessToken,
+                                             final String parentAccessToken) {
 
-        Integer newSubsystemId = persistNewAsset(companyId, assetSeriesId, newSubsystem, accessToken);
+        Integer newSubsystemId = persistNewAsset(companyId, newSubsystem, subsystemAccessToken);
 
-        addSubstemToParent(companyId, assetSeriesId, parentAssetId, accessToken, newSubsystemId);
+        addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
-        validateSubsystemExists(companyId, assetSeriesId, parentAssetId, accessToken, newSubsystemId);
+        validateSubsystemExists(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
     }
 
@@ -1495,13 +1499,13 @@ class FusionbackendApplicationTests {
                 .statusCode(200);
     }
 
-    private Integer persistNewAsset(Integer companyId, Integer assetSeriesId, AssetDto newSubsystem, String accessToken) {
+    private Integer persistNewAsset(Integer companyId, AssetDto newSubsystem, String accessToken) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/init-asset-draft")
+                .get(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/init-asset-draft")
 
                 .then()
                 .statusCode(200);
@@ -1512,7 +1516,7 @@ class FusionbackendApplicationTests {
 
                 .when()
                 .body(response.extract().body().asString())
-                .post(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets")
+                .post(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets")
 
                 .then()
                 .statusCode(200)
@@ -1524,7 +1528,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + newSubsystemId)
+                .patch(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets/" + newSubsystemId)
 
                 .then()
                 .statusCode(200);
