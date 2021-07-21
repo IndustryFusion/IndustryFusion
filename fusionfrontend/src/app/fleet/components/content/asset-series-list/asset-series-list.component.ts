@@ -36,7 +36,7 @@ import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
 export class AssetSeriesListComponent implements OnInit, OnDestroy {
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No asset series.', '=1': '# Asset series', other: '# Asset series' };
+    { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
 
   editBarMapping:
     { [k: string]: string } = {
