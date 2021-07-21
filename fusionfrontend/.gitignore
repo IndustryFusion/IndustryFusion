@@ -53,5 +53,4 @@ testem.log
 Thumbs.db
 
 # Development Config
-/src/environments/environment.dev.ts
-/src/environments/environments.dev*.ts
+/src/environments/environment.dev*.ts
