@@ -30,7 +30,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 export class AssetTypeListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No asset types.', '=1': '# Asset type', other: '# Asset types' };
+    { [k: string]: string } = { '=0': 'No Asset types', '=1': '# Asset type', other: '# Asset types' };
 
   editBarMapping:
     { [k: string]: string } = {
