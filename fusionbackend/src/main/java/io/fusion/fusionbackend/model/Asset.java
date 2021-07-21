@@ -62,8 +62,9 @@ public class Asset extends BaseAsset {
     @Builder.Default
     private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "subsystem_parent_id")
+    @Builder.Default
     private Set<Asset> subsystems = new HashSet<>();
 
     private String externalId;

@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.model.Asset;
+import io.fusion.fusionbackend.service.AssetService;
 import io.fusion.fusionbackend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -32,16 +33,20 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     private final FieldInstanceMapper fieldInstanceMapper;
     private final RoomService roomService;
     private final RoomMapper roomMapper;
+    private final AssetService assetService;
+
 
     @Autowired
     public AssetMapper(BaseAssetMapper baseAssetMapper,
                        FieldInstanceMapper fieldInstanceMapper,
                        RoomService roomService,
-                       @Lazy RoomMapper roomMapper) {
+                       @Lazy RoomMapper roomMapper,
+                       AssetService assetService) {
         this.baseAssetMapper = baseAssetMapper;
         this.fieldInstanceMapper = fieldInstanceMapper;
         this.roomService = roomService;
         this.roomMapper = roomMapper;
+        this.assetService = assetService;
     }
 
     private AssetDto toDtoShallow(final Asset entity) {
@@ -66,6 +71,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .handbookKey(entity.getHandbookKey())
                 .videoKey(entity.getVideoKey())
                 .installationDate(entity.getInstallationDate())
+                .subsystemIds(toEntityIdSet(entity.getSubsystems()))
                 .build();
 
         if (entity.getRoom() != null) {
@@ -129,9 +135,20 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
             entity.setFieldInstances(fieldInstanceMapper.toEntitySet(dto.getFieldInstances()));
         }
 
+        addSubsystemsToEntity(dto, entity);
+
         baseAssetMapper.copyToEntity(dto, entity);
 
         return entity;
+    }
+
+    private void addSubsystemsToEntity(AssetDto dto, Asset entity) {
+        if (dto.getSubsystemIds() != null) {
+            dto.getSubsystemIds().forEach(id -> {
+                Asset asset = assetService.getAssetById(id);
+                entity.getSubsystems().add(asset);
+            });
+        }
     }
 
     private void addRoomToEntity(final AssetDto dto, final Asset entity) {
