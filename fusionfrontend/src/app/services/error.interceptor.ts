@@ -8,6 +8,9 @@ import { MessageService } from 'primeng/api';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
+  private prevErrorSummary = '';
+  private prevErrorTime = new Date('1.1.2000').getTime();
+
   constructor(private messageService: MessageService) {
   }
 
@@ -16,12 +19,20 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error) => {
         const errorSummary = `Error: ${error.error?.message ? error.error.message : error.message}`;
         const errorMessage = error.error?.error ? `${error.error?.error} (${error.error?.status})` : error.statusText;
-        this.messageService.add(({
-          severity: 'info',
-          summary: errorSummary,
-          detail: errorMessage,
-          sticky: true,
-        }));
+
+        const secondsToPrevError = Math.abs((new Date().getTime() - this.prevErrorTime) / 1000);
+        if (errorSummary !== this.prevErrorSummary || secondsToPrevError > 5) {
+          this.messageService.add(({
+            severity: 'info',
+            summary: errorSummary,
+            detail: errorMessage,
+            sticky: true,
+          }));
+
+          this.prevErrorSummary = errorSummary;
+          this.prevErrorTime = Date.now();
+        }
+
         return throwError(error.message);
       })
     );
