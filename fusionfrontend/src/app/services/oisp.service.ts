@@ -79,6 +79,11 @@ export class OispService {
     return this.http.get<Rule[]>(url, this.httpOptions);
   }
 
+  getRule(ruleId: string): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/${ruleId}`;
+    return this.http.get<Rule>(url, this.httpOptions);
+  }
+
   createRuleDraft(ruleDraft: Rule): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/draft`;
     return this.http.put<Rule>(url, ruleDraft, this.httpOptions);

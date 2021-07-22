@@ -16,6 +16,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './components/fusion-applets/overview.component';
+import { FusionAppletPageComponent } from './components/fusion-applet-page/fusion-applet-page.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'overview',
         component: OverviewComponent,
+      },
+      {
+        path: ':fusionAppletId',
+        component: FusionAppletPageComponent,
       }
     ]
   }

@@ -19,6 +19,7 @@ import { Rule, RuleStatus } from '../../../services/oisp.model';
 import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { CreateFusionAppletComponent } from '../create-fusion-applet/create-fusion-applet.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -33,7 +34,11 @@ export class OverviewComponent implements OnInit {
   public titleMapping:
     { [k: string]: string } = { '=0': 'No Applet', '=1': '# Applet', other: '# Applets' };
 
-  constructor(private oispService: OispService, private dialogService: DialogService) { }
+  constructor(
+    private oispService: OispService,
+    private dialogService: DialogService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.oispService.getAllRules().subscribe(rules => this.rules = rules);
@@ -73,8 +78,8 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  editItem() {
-
+  editItem(rowIndex: number) {
+    this.router.navigate(['fusion-applets', this.rules[rowIndex].id]);
   }
 
   deleteItem(rowIndex: number) {

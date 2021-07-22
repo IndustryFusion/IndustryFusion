@@ -25,8 +25,8 @@ under the License.
 <p-table #table [value]="rules">
   <ng-template pTemplate="header">
     <tr>
-      <th [style.width.%]="20">AppletName</th>
-      <th [style.width.%]="45">Condition Summary</th>
+      <th [style.width.%]="25">AppletName</th>
+      <th [style.width.%]="40">Condition Summary</th>
       <th [style.width.%]="10"></th>
       <th [style.width.%]="15">Status</th>
       <th [style.width.%]="5"></th>
@@ -34,11 +34,11 @@ under the License.
   </ng-template>
   <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
     <tr>
-      <td [style.width.%]="20">
+      <td [style.width.%]="25">
         <span class="if-label">{{rule.name}}</span> <br>
         {{rule.description}}
       </td>
-      <td [style.width.%]="45">{{rule.naturalLanguage}}</td>
+      <td [style.width.%]="40">{{rule.naturalLanguage}}</td>
       <td [style.width.%]="10">
         <p-inputSwitch
           [disabled]="!canActivated(rule.status)"
@@ -51,11 +51,11 @@ under the License.
       </td>
       <td [style.width.%]="5">
         <app-item-options-menu
-          [type]="getMenuOptionsByStatus(rule.status)"
-          [appendTo]="table"
           (createItem)="createItem()"
-          (editItem)="editItem()"
-          (deleteItem)="deleteItem(rowIndex)">
+          (deleteItem)="deleteItem(rowIndex)"
+          (editItem)="editItem(rowIndex)"
+          [appendTo]="table"
+          [type]="getMenuOptionsByStatus(rule.status)">
         </app-item-options-menu>
       </td>
     </tr>
