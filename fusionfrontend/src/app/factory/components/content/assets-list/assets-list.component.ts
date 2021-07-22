@@ -13,7 +13,6 @@
  * under the License.
  */
 
-import { Location as loc } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -21,7 +20,12 @@ import { AssetService } from 'src/app/store/asset/asset.service';
 import { Company } from 'src/app/store/company/company.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
-import { AssetDetails, AssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/asset-details/asset-details.model';
+import {
+  AssetDetails,
+  AssetDetailsWithFields,
+  AssetModalMode,
+  AssetModalType
+} from '../../../../store/asset-details/asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
@@ -78,7 +82,6 @@ export class AssetsListComponent implements OnInit {
 
   constructor(
     private assetService: AssetService,
-    private routingLocation: loc,
     private formBuilder: FormBuilder,
     public dialogService: DialogService) {
       this.createDetailsAssetForm(this.formBuilder);
@@ -160,10 +163,6 @@ export class AssetsListComponent implements OnInit {
 
   onFilter(filterDict: { [key: string]: string[]; }) {
     this.filterDict = Object.assign({ }, filterDict);
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 
   getRoomsLink() {
