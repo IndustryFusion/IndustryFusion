@@ -77,12 +77,14 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   }
 
   updateAssetData(event: [Room, FactoryAssetDetails]) {
-    event[1].id = event[1].id ? event[1].id : this.createdAssetDetailsId;
-    this.assetService.updateCompanyAsset(event[1].companyId, event[1]).subscribe(
-      res => {
-        console.log('[factory site page] updated asset with id: ' + res.id);
-        if (event[0].id !== event[1].roomId) {
-          this.roomService.updateRoomsAfterEditAsset(event[0].id, event[1]);
+    const oldRoom: Room = event[0];
+    const assetDetails: FactoryAssetDetails = event[1];
+
+    assetDetails.id = assetDetails.id ? assetDetails.id : this.createdAssetDetailsId;
+    this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(
+      () => {
+        if (oldRoom.id !== assetDetails.roomId) {
+          this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
         }
       },
       error => console.log(error)

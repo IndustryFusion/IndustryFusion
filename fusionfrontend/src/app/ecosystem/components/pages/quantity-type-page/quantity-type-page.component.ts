@@ -20,8 +20,8 @@ import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type
 import { Observable } from 'rxjs';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
-import { QuantityTypesComposedQuery } from '../../../../store/composed/quantity-types-composed.query';
 import { Unit } from '../../../../store/unit/unit.model';
+import { UnitQuery } from '../../../../store/unit/unit.query';
 
 @Component({
   selector: 'app-quantity-type-page',
@@ -36,7 +36,7 @@ export class QuantityTypePageComponent implements OnInit {
 
   constructor(private quantityTypeQuery: QuantityTypeQuery,
               private quantityTypeService: QuantityTypeService,
-              private quantityTypesComposedQuery: QuantityTypesComposedQuery,
+              private unitQuery: UnitQuery,
               private activatedRoute: ActivatedRoute,
               private ecoSystemManagerResolver: EcoSystemManagerResolver) { }
 
@@ -51,7 +51,7 @@ export class QuantityTypePageComponent implements OnInit {
     if (quantityTypeId != null) {
       this.quantityTypeService.setActive(quantityTypeId);
       this.quantityType$ = this.quantityTypeQuery.selectActive();
-      this.units$ = this.quantityTypesComposedQuery.selectUnitsOfQuantityType(quantityTypeId);
+      this.units$ = this.unitQuery.selectUnitsOfQuantityType(quantityTypeId);
     }
   }
 }

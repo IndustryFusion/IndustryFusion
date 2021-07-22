@@ -26,7 +26,6 @@ import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { AssetService } from 'src/app/store/asset/asset.service';
-import { Location as loc } from '@angular/common';
 import { Company } from 'src/app/store/company/company.model';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
@@ -57,7 +56,6 @@ export class RoomsPageComponent implements OnInit {
               private roomService: RoomService,
               private roomQuery: RoomQuery,
               private assetQuery: AssetQuery,
-              private routingLocation: loc,
               private factoryResolver: FactoryResolver,
               private activatedRoute: ActivatedRoute,
               private assetDetailsService: FactoryAssetDetailsService,
@@ -124,9 +122,5 @@ export class RoomsPageComponent implements OnInit {
       );
     this.assetDetailsService.updateRoom(assetId, this.selectedRoomId);
     this.assignToRoomModal = false;
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 }

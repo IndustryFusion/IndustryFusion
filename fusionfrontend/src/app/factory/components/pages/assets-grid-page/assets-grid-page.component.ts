@@ -13,7 +13,6 @@
  * under the License.
  */
 
-import { Location as loc } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -37,7 +36,6 @@ export class AssetsGridPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetQuery: AssetQuery,
-    private routingLocation: loc,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute) { }
 
@@ -51,9 +49,5 @@ export class AssetsGridPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 }

@@ -13,7 +13,6 @@
  * under the License.
  */
 
-import { Location as loc } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -78,7 +77,6 @@ export class AssetsListComponent implements OnInit {
 
   constructor(
     private assetService: AssetService,
-    private routingLocation: loc,
     private formBuilder: FormBuilder,
     public dialogService: DialogService) {
       this.createDetailsAssetForm(this.formBuilder);
@@ -126,9 +124,9 @@ export class AssetsListComponent implements OnInit {
     });
   }
 
-  assetUpdated(asset: FactoryAssetDetails): void {
-    const room = this.getOldRoomForAsset(asset);
-    this.updateAssetEvent.emit([room, asset]);
+  assetUpdated(newAssetDetails: FactoryAssetDetails): void {
+    const oldRoom = this.getOldRoomForAsset(newAssetDetails);
+    this.updateAssetEvent.emit([oldRoom, newAssetDetails]);
   }
 
   getOldRoomForAsset(updatedAsset) {
@@ -160,10 +158,6 @@ export class AssetsListComponent implements OnInit {
 
   onFilter(filterDict: { [key: string]: string[]; }) {
     this.filterDict = Object.assign({ }, filterDict);
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 
   getRoomsLink() {

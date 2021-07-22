@@ -22,5 +22,6 @@ under the License.
                  [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
-                 (assetDetailsSelected)="updateAssetData($event)">
+                 (assetDetailsSelected)="updateAssetData($event)"
+                 (updateAssetEvent)="updateRoom($event)">
 </app-assets-list>
