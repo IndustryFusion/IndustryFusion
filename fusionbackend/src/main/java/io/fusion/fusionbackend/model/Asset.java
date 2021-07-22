@@ -49,7 +49,7 @@ import java.util.UUID;
 @NamedNativeQuery(
         name = "Asset.findSubsystemCandidates",
         query = "select * from asset where subsystem_parent_id is null"
-                + " and company_id = ?",
+                + " and asset_series_id != ? and company_id = ? ",
         resultClass = Asset.class)
 public class Asset extends BaseAsset {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

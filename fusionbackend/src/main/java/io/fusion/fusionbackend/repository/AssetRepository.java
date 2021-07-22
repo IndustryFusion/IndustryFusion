@@ -49,5 +49,5 @@ public interface AssetRepository extends PagingAndSortingRepository<Asset, Long>
     @Query("from Asset asset where asset.room.factorySite.id = ?1")
     Set<Asset> findAllByFactorySiteId(Sort sort, Long factorySiteId);
 
-    Set<Asset> findSubsystemCandidates(Long companyId);
+    Set<Asset> findSubsystemCandidates(Long parentAssetSeriesId, Long companyId);
 }
