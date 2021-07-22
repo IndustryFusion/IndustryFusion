@@ -84,33 +84,33 @@ export class OispService {
   }
 
   getAllRules(): Observable<Rule[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules`;
     return this.http.get<Rule[]>(url, this.httpOptions);
   }
 
   getRule(ruleId: string): Observable<Rule> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/${ruleId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
     return this.http.get<Rule>(url, this.httpOptions);
   }
 
   cloneRule(ruleId: string): Observable<Rule> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/clone/${ruleId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/clone/${ruleId}`;
     return this.http.post<Rule>(url, null, this.httpOptions);
   }
 
   createRuleDraft(ruleDraft: Rule): Observable<Rule> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/draft`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/draft`;
     return this.http.put<Rule>(url, ruleDraft, this.httpOptions);
   }
 
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/${ruleId}/status`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}/status`;
     const body = { status};
     return this.http.put<Rule>(url, body, this.httpOptions);
   }
 
   deleteRule(ruleId: string): Observable<any> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/delete_rule_with_alerts/${ruleId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/delete_rule_with_alerts/${ruleId}`;
     return this.http.delete(url, this.httpOptions);
   }
 
