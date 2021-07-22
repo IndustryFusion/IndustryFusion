@@ -52,9 +52,10 @@ export class UnitDialogComponent implements OnInit {
   }
 
   createDialogFormGroup(unit: Unit): FormGroup {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const unitGroup = this.formBuilder.group({
       id: [unit?.id],
-      name: [unit?.name, Validators.maxLength(255)],
+      name: [unit?.name, requiredTextValidator],
       label: [unit?.label, Validators.maxLength(255)],
       symbol: [unit?.symbol, Validators.maxLength(255)],
       quantityTypeId: [unit?.quantityType?.id, Validators.required],
