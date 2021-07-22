@@ -126,9 +126,9 @@ export class AssetsListComponent implements OnInit {
     });
   }
 
-  assetUpdated(asset: AssetDetails): void {
-    const room = this.getOldRoomForAsset(asset);
-    this.updateAssetEvent.emit([room, asset]);
+  assetUpdated(newAssetDetails: AssetDetails): void {
+    const oldRoom = this.getOldRoomForAsset(newAssetDetails);
+    this.updateAssetEvent.emit([oldRoom, newAssetDetails]);
   }
 
   getOldRoomForAsset(updatedAsset) {

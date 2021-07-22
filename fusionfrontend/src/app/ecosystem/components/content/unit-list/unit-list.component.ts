@@ -25,6 +25,7 @@ import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DialogType } from '../../../../common/models/dialog-type.model';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-unit-list',
@@ -34,8 +35,8 @@ import { DialogType } from '../../../../common/models/dialog-type.model';
 })
 export class UnitListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
-  @Input()
-  optionalItems$: Observable<Unit[]>;
+  @Input() itemsFromParent$: Observable<Unit[]>;
+  @Input() parentQuantityTypeId: ID | null;
 
   titleMapping:
     { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
@@ -55,8 +56,8 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
   ngOnInit() {
     super.ngOnInit();
 
-    if (this.optionalItems$ != null) {
-      this.items$ = this.optionalItems$;
+    if (this.itemsFromParent$ != null) {
+      this.items$ = this.itemsFromParent$;
     }
   }
 
@@ -64,10 +65,10 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
     this.unitQuery.resetError();
   }
 
-  showDialog() {
+  openCreateDialog() {
     const ref = this.dialogService.open(UnitDialogComponent, {
       header: 'Create new Unit', width: '50%',
-      data: { unit: null, type: DialogType.CREATE }
+      data: { unit: null, type: DialogType.CREATE, prefilledQuantityTypeId: this.parentQuantityTypeId }
     });
     ref.onClose.subscribe((unit) => {
       this.onConfirmModal(unit);
