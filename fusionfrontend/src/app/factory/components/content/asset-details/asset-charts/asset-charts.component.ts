@@ -13,17 +13,15 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnInit, ViewChild, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
-import { Observable, timer } from 'rxjs';
+import { Observable, Subject, timer } from 'rxjs';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { Asset } from 'src/app/store/asset/asset.model';
 import { OispService } from 'src/app/services/oisp.service';
-import { Location as loc } from '@angular/common';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
 import { PointWithId } from '../../../../../services/oisp.model';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
@@ -163,8 +161,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
   constructor(
-    private oispService: OispService,
-    private routingLocation: loc) { }
+    private oispService: OispService) { }
 
   ngOnInit() {
     this.lineChartData[0].label = this.field.description;
@@ -304,9 +301,5 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   public changeLabel() {
     this.lineChartLabels[2] = ['1st Line', '2nd Line'];
     this.chart.update();
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 }

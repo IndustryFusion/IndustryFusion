@@ -13,7 +13,6 @@
  * under the License.
  */
 
-import { Location as loc } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
@@ -46,7 +45,6 @@ export class AssetPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetQuery: AssetQuery,
-    private routingLocation: loc,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute) { }
 
@@ -62,9 +60,5 @@ export class AssetPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 }
