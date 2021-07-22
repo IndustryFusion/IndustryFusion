@@ -27,6 +27,7 @@ import { Room } from 'src/app/store/room/room.model';
 import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetService } from '../../../../store/asset/asset.service';
+import { RoomService } from '../../../../store/room/room.service';
 
 @Component({
   selector: 'app-factory-site-page',
@@ -52,6 +53,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     private assetQuery: AssetQuery,
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
+    private roomService: RoomService,
     private router: Router,
     private activatedRoute: ActivatedRoute) { }
 
@@ -79,10 +81,8 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     event.id = event.id ? event.id : this.createdAssetDetailsId;
     event.companyId = this.companyId;
     this.assetService.updateCompanyAsset(this.companyId, event).subscribe(
-      res => {
-        console.log('[factory site page] updated asset with id: ' + res.id);
-      },
-      error => console.log(error)
+      () => { },
+      error => console.error(error)
     );
   }
 
@@ -91,5 +91,20 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
       this.assetQuery.setSelectedAssetIds(this.selectedIds);
       this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
     }
+  }
+
+  updateRoom(event: [Room, AssetDetails]) {
+    const oldRoom: Room = event[0];
+    const assetDetails: AssetDetails = event[1];
+
+    assetDetails.id = assetDetails.id ? assetDetails.id : this.createdAssetDetailsId;
+    this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(
+      () => {
+        if (oldRoom.id !== assetDetails.roomId) {
+          this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
+        }
+      },
+      error => console.log(error)
+    );
   }
 }
