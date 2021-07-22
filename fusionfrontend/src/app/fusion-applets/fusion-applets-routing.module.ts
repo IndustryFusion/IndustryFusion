@@ -16,7 +16,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './components/fusion-applets/overview.component';
-import { FusionAppletPageComponent } from './components/fusion-applet-page/fusion-applet-page.component';
+import { FusionAppletDetailComponent } from './components/fusion-applet-detail/fusion-applet-detail.component';
+import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
+import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,21 @@ const routes: Routes = [
       {
         path: ':fusionAppletId',
         component: FusionAppletPageComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'detail',
+            pathMatch: 'full'
+          },
+          {
+            path: 'detail',
+            component: FusionAppletDetailComponent
+          },
+          {
+            path: 'editor',
+            component: FusionAppletEditorComponent
+          }
+        ]
       }
     ]
   }

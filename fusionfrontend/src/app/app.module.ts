@@ -61,7 +61,7 @@ import { ToastModule } from 'primeng/toast';
     ClarityModule,
     BrowserAnimationsModule,
     KeycloakAngularModule,
-    ToastModule
+    ToastModule,
   ],
   bootstrap: [AppComponent],
   providers: [

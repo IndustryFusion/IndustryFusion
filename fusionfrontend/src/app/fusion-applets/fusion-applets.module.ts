@@ -24,7 +24,10 @@ import { IFCommon } from '../common/i-f-common.module';
 import { CreateFusionAppletComponent } from './components/create-fusion-applet/create-fusion-applet.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EnumHelpers } from '../common/utils/enum-helpers';
-import { FusionAppletPageComponent } from './components/fusion-applet-page/fusion-applet-page.component';
+import { FusionAppletDetailComponent } from './components/fusion-applet-detail/fusion-applet-detail.component';
+import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
+import { FusionAppletsSubHeaderComponent } from './components/fusion-applets-sub-header/fusion-applets-sub-header.component';
+import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
 
 
 
@@ -33,7 +36,10 @@ import { FusionAppletPageComponent } from './components/fusion-applet-page/fusio
     OverviewComponent,
     FusionAppletPageTitleComponent,
     CreateFusionAppletComponent,
+    FusionAppletDetailComponent,
     FusionAppletPageComponent,
+    FusionAppletsSubHeaderComponent,
+    FusionAppletEditorComponent,
   ],
     imports: [
         CommonModule,
@@ -45,6 +51,7 @@ import { FusionAppletPageComponent } from './components/fusion-applet-page/fusio
     ],
   exports: [
     FusionAppletPageTitleComponent,
+    FusionAppletsSubHeaderComponent,
   ],
   providers: [
     EnumHelpers

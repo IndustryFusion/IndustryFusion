@@ -85,6 +85,7 @@ export class OverviewComponent implements OnInit {
   deleteItem(rowIndex: number) {
     this.oispService.deleteRule(this.rules[rowIndex].id).subscribe(() => {
       this.rules[rowIndex].status = RuleStatus.Deleted;
+      this.rules = this.rules.slice();
     });
   }
 

@@ -14,9 +14,6 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Rule } from '../../../services/oisp.model';
-import { OispService } from '../../../services/oisp.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-fusion-applet-page',
@@ -24,16 +21,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./fusion-applet-page.component.scss']
 })
 export class FusionAppletPageComponent implements OnInit {
-  rule: Rule;
 
-  constructor(private oispService: OispService, activatedRoute: ActivatedRoute) {
-    const fusionAppletId = activatedRoute.snapshot.paramMap.get('fusionAppletId');
-    this.oispService.getRule(fusionAppletId).subscribe(rule => this.rule = rule);
-  }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  showEditDialog() {
-  }
 }
