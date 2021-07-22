@@ -81,10 +81,8 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     event.id = event.id ? event.id : this.createdAssetDetailsId;
     event.companyId = this.companyId;
     this.assetService.updateCompanyAsset(this.companyId, event).subscribe(
-      res => {
-        console.log('[factory site page] updated asset with id: ' + res.id);
-      },
-      error => console.log(error)
+      () => { },
+      error => console.error(error)
     );
   }
 
