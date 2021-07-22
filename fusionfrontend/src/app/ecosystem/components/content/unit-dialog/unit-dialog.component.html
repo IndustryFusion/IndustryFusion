@@ -28,7 +28,7 @@ under the License.
       <div class="p-col-6 p-grid">
         <label class="if-label p-col">Quantity Type *</label>
         <p-dropdown [options]="quantityTypes$ | async" class="p-col quantity-dropdown" formControlName="quantityTypeId"
-                    optionLabel="name" optionValue="id" placeholder="Quantity type"></p-dropdown>
+                    optionLabel="name" optionValue="id" placeholder="Quantity type" [disabled]="isQuantityTypeLocked"></p-dropdown>
       </div>
     </div>
     <div class="p-grid p-dir-col input-div">

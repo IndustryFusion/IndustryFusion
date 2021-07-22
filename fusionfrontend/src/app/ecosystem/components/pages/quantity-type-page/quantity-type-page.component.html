@@ -42,5 +42,5 @@ under the License.
 
 
 <div class="wrapper">
-  <app-unit-list [optionalItems$]="units$"></app-unit-list>
+  <app-unit-list [optionalItems$]="units$" [parentQuantityTypeId]="(quantityType$ | async)?.id"></app-unit-list>
 </div>

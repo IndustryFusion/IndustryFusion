@@ -35,6 +35,7 @@ export class UnitDialogComponent implements OnInit {
   type: DialogType;
 
   public DialogType = DialogType;
+  public isQuantityTypeLocked: boolean;
 
   constructor(private quantityQuery: QuantityTypeQuery,
               public dialogRef: DynamicDialogRef,
@@ -46,17 +47,23 @@ export class UnitDialogComponent implements OnInit {
     this.quantityTypes$ = this.quantityQuery.selectAll();
     this.unit = this.config.data?.unit;
     this.type = this.config.data?.type;
+    this.isQuantityTypeLocked = this.config.data.prefilledQuantityTypeId != null;
     this.unitForm = this.createDialogFormGroup(this.unit);
   }
 
   createDialogFormGroup(unit: Unit): FormGroup {
-    return this.formBuilder.group({
+    const unitGroup = this.formBuilder.group({
       id: [unit?.id],
       name: [unit?.name, Validators.maxLength(255)],
       label: [unit?.label, Validators.maxLength(255)],
       symbol: [unit?.symbol, Validators.maxLength(255)],
       quantityTypeId: [unit?.quantityType?.id, Validators.required],
     });
+
+    if (this.isQuantityTypeLocked) {
+      unitGroup.get('quantityTypeId').patchValue(this.config.data.prefilledQuantityTypeId);
+    }
+    return unitGroup;
   }
 
   dismissModal(): void {
