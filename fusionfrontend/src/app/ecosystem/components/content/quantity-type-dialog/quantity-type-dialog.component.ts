@@ -58,6 +58,7 @@ export class QuantityTypeDialogComponent implements OnInit {
       this.quantityTypeService.setActive(this.config.data.quantityType.id);
     }
     this.existsDataType = this.quantityTypeForm.get('dataType').value != null;
+    this.showBaseUnitWarning = this.quantityTypeForm.get('baseUnitId').value === null;
   }
 
   onCancel() {
@@ -69,9 +70,9 @@ export class QuantityTypeDialogComponent implements OnInit {
     this.quantityTypeForm = this.formBuilder.group({
       id: [],
       name: ['', requiredTextValidator],
-      label: ['', requiredTextValidator],
-      description: ['', requiredTextValidator],
-      baseUnitId: [null, Validators.required],
+      label: ['', Validators.maxLength(255)],
+      description: ['', Validators.maxLength(255)],
+      baseUnitId: [],
       dataType: [QuantityDataType.CATEGORICAL, Validators.required]
     });
 

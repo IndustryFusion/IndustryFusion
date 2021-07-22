@@ -16,7 +16,7 @@ under the License.
 <div class="quantity-type-dialog">
   <form [formGroup]="quantityTypeForm">
     <div class="input-div">
-      <label class="if-label">Name</label>
+      <label class="if-label">Name&nbsp;*</label>
       <input type="text" pInputText class="quantity-type-dialog-inputs" formControlName="name" />
     </div>
     <div class="input-div">
@@ -30,7 +30,7 @@ under the License.
     </div>
 
     <div class="input-div">
-      <label class="if-label">Data Type</label>
+      <label class="if-label">Data&nbsp;Type&nbsp;*</label>
       <div class="dialog-grid">
         <div>
           <p-radioButton name="dataType" value="{{ valueCategorical }}" label="Categorical" formControlName="dataType"
