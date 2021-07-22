@@ -37,6 +37,9 @@ public class AssetSeriesBuilder implements Builder<AssetSeries> {
     public AssetSeries build() {
         AssetSeries assetSeries = new AssetSeries();
 
+        if (company == null) {
+            company = CompanyBuilder.aCompany().build();
+        }
         assetSeries.setCompany(company);
         company.getAssetSeries().add(assetSeries);
 

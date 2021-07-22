@@ -28,6 +28,7 @@ public class PersistenceTests extends PersistenceTestsBase {
         Company foundCompany = testEntityManager.persistAndFlush(company);
 
         assertNotNull(foundCompany);
+        assertEquals(company, foundCompany);
     }
 
     @Test
