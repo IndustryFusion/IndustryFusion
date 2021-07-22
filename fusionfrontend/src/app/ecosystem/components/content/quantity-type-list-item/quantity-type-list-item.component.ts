@@ -13,24 +13,29 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
+import { QuantityTypeDialogComponent } from '../quantity-type-dialog/quantity-type-dialog.component';
+import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-quantity-type-list-item',
   templateUrl: './quantity-type-list-item.component.html',
   styleUrls: ['./quantity-type-list-item.component.scss']
 })
-export class QuantityTypeListItemComponent extends BaseListItemComponent implements OnInit {
+export class QuantityTypeListItemComponent extends BaseListItemComponent implements OnInit, OnDestroy {
 
-  @Input() public item: QuantityType;
-  @Output() editClicked = new EventEmitter<void>();
+  @Input() item: QuantityType;
 
-  constructor(public route: ActivatedRoute,
+  private ref: DynamicDialogRef;
+
+  constructor(public dialogService: DialogService,
+              public route: ActivatedRoute,
               public router: Router,
               public quantityService: QuantityTypeService) {
     super(route, router, quantityService);
@@ -40,7 +45,19 @@ export class QuantityTypeListItemComponent extends BaseListItemComponent impleme
     super.ngOnInit();
   }
 
-  showEditDialog() {
-    this.editClicked.emit();
+  public showEditDialog() {
+    this.ref = this.dialogService.open(QuantityTypeDialogComponent, {
+      data: {
+        quantityType: this.item,
+        type: DialogType.EDIT
+      },
+      header: `Edit Quantity Type`,
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 }
