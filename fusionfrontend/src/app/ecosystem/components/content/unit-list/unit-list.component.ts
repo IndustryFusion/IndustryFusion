@@ -35,7 +35,7 @@ import { ID } from '@datorama/akita';
 })
 export class UnitListComponent extends BaseListComponent implements OnInit, OnDestroy {
 
-  @Input() optionalItems$: Observable<Unit[]>;
+  @Input() itemsFromParent$: Observable<Unit[]>;
   @Input() parentQuantityTypeId: ID | null;
 
   titleMapping:
@@ -56,8 +56,8 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
   ngOnInit() {
     super.ngOnInit();
 
-    if (this.optionalItems$ != null) {
-      this.items$ = this.optionalItems$;
+    if (this.itemsFromParent$ != null) {
+      this.items$ = this.itemsFromParent$;
     }
   }
 

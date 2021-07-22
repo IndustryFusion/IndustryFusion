@@ -26,8 +26,10 @@ export class UnitQuery extends BaseQueryEntity<UnitState, Unit> {
     super(store);
   }
 
-  selectUnitWithId(id: ID): Observable<Unit> {
-    return this.selectEntity(id);
+  selectUnitsOfQuantityType(quantityTypeId: ID): Observable<Unit[]> {
+    return this.selectAll({
+      filterBy: unit => String(unit.quantityTypeId) === String(quantityTypeId)
+    });
   }
 
   resetStore() {
