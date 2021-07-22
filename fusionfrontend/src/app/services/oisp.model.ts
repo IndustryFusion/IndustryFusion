@@ -85,22 +85,56 @@ export class Rule {
   description: string;
   owner: string;
   naturalLanguage: string;
-  type: string;
+  type: RuleType;
   creationDate: Date;
   lastUpdateDate: Date;
-  resetType: string;
+  resetType: RuleResetType;
   priority: string;
   status: RuleStatus;
+  synchronizationStatus: SynchronizationStatus;
   population: { };
   conditions: {
     operator: string,
     values: string[]
   };
+  actions: RuleAction[];
+}
+
+export class RuleAction {
+  type: RuleActionType;
+  target: string[];
 }
 
 export enum RuleStatus {
   Active = 'Active',
   Draft = 'Draft',
   OnHold = 'On-hold',
-  Archived = 'Archived'
+  Archived = 'Archived',
+  Deleted = 'Deleted',
+}
+
+export enum RulePrority {
+  Low = 'Low',
+  Medium = 'Medium',
+  High = 'High',
+}
+
+export enum RuleType {
+  Regular = 'Regular',
+}
+
+export enum RuleResetType {
+  Manual = 'Manual',
+  Automatic = 'Automatic',
+}
+
+export enum SynchronizationStatus {
+  NotSync = 'NotSync',
+  Sync = 'Sync',
+}
+
+export enum RuleActionType {
+  mail = 'mail',
+  http = 'http',
+  actuation = 'actuation',
 }

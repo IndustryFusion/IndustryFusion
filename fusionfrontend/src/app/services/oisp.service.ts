@@ -79,10 +79,20 @@ export class OispService {
     return this.http.get<Rule[]>(url, this.httpOptions);
   }
 
-  setRuleStatus(ruleId: any, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
+  createRuleDraft(ruleDraft: Rule): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/draft`;
+    return this.http.put<Rule>(url, ruleDraft, this.httpOptions);
+  }
+
+  setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/${ruleId}/status`;
     const body = { status};
     return this.http.put<Rule>(url, body, this.httpOptions);
+  }
+
+  deleteRule(ruleId: string): Observable<any> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/delete_rule_with_alerts/${ruleId}`;
+    return this.http.delete(url, this.httpOptions);
   }
 
   getAssetDetailsFieldsExternalIds(assetDetails: AssetDetailsWithFields): Observable<AssetDetailsWithFields> {

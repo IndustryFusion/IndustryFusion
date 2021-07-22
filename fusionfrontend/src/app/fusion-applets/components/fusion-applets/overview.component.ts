@@ -17,6 +17,8 @@ import { Component, OnInit } from '@angular/core';
 import { OispService } from '../../../services/oisp.service';
 import { Rule, RuleStatus } from '../../../services/oisp.model';
 import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
+import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { CreateFusionAppletComponent } from '../create-fusion-applet/create-fusion-applet.component';
 
 @Component({
   selector: 'app-overview',
@@ -28,7 +30,10 @@ export class OverviewComponent implements OnInit {
 
   rules: Rule[];
 
-  constructor(private oispService: OispService) { }
+  public titleMapping:
+    { [k: string]: string } = { '=0': 'No Applet', '=1': '# Applet', other: '# Applets' };
+
+  constructor(private oispService: OispService, private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.oispService.getAllRules().subscribe(rules => this.rules = rules);
@@ -38,8 +43,9 @@ export class OverviewComponent implements OnInit {
     return status === RuleStatus.Active;
   }
 
-  isDraft(status: string) {
-    return status === RuleStatus.Draft;
+  canActivated(status: RuleStatus) {
+    const canActivatedStatus = [RuleStatus.Active, RuleStatus.Archived, RuleStatus.OnHold];
+    return canActivatedStatus.includes(status);
   }
 
   changeStatus(rowIndex: number, isActive: any) {
@@ -56,14 +62,34 @@ export class OverviewComponent implements OnInit {
   }
 
   createItem() {
-
+    const dialogConfig: DynamicDialogConfig = {
+      header: 'Create Applet'
+    };
+    const dynamicDialogRef = this.dialogService.open(CreateFusionAppletComponent, dialogConfig);
+    dynamicDialogRef.onClose.subscribe(result => {
+      if (result) {
+        this.oispService.createRuleDraft(result).subscribe(newRule => this.rules.push(newRule));
+      }
+    });
   }
 
   editItem() {
 
   }
 
-  showDeleteItem() {
+  deleteItem(rowIndex: number) {
+    this.oispService.deleteRule(this.rules[rowIndex].id).subscribe(() => {
+      this.rules[rowIndex].status = RuleStatus.Deleted;
+    });
+  }
 
+  getMenuOptionsByStatus(status: RuleStatus): ItemOptionsMenuType[] {
+    let result: ItemOptionsMenuType[];
+    if (status === RuleStatus.Deleted) {
+      result = [ItemOptionsMenuType.CLONE];
+    } else {
+      result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.CLONE, ItemOptionsMenuType.DELETE];
+    }
+    return result;
   }
 }
