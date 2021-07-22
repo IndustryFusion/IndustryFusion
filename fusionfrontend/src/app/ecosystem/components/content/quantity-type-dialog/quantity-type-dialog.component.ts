@@ -42,6 +42,9 @@ export class QuantityTypeDialogComponent implements OnInit {
   public valueNumeric = QuantityDataType.NUMERIC;
   public DialogType = DialogType;
 
+  public noBaseUnitWarning = 'No base unit selected';
+  public showBaseUnitWarning: boolean;
+
   constructor(private unitQuery: UnitQuery,
               private formBuilder: FormBuilder,
               public ref: DynamicDialogRef,
@@ -103,5 +106,9 @@ export class QuantityTypeDialogComponent implements OnInit {
 
       this.ref.close(quantityType);
     }
+  }
+
+  hideBaseUnitWarning(): void {
+    this.showBaseUnitWarning = false;
   }
 }
