@@ -17,9 +17,9 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { AssetWizardSharedSubsystemsComponent } from '../../asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
-import { FleetAssetDetailsQuery } from '../../../../../../store/fleet-asset-details/fleet-asset-details.query';
 import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
 import { ID } from '@datorama/akita';
+import { FleetAssetDetailsService } from '../../../../../../store/fleet-asset-details/fleet-asset-details.service';
 
 @Component({
   selector: 'app-asset-wizard-step-subsystems',
@@ -39,12 +39,12 @@ export class AssetWizardStepSubsystemsComponent implements OnInit {
   public isReadyForNextStep = false;
   public isAddingMode = false;
 
-  constructor(private fleetAssetDetailsQuery: FleetAssetDetailsQuery) {
+  constructor(private fleetAssetDetailsService: FleetAssetDetailsService) {
     this.removedFleetAssetDetails = [];
   }
 
   ngOnInit(): void {
-    this.fleetAssetDetailsQuery.selectAssetDetailsOfCompanyExcludingAssetSerie(this.asset.companyId,
+    this.fleetAssetDetailsService.getSubsystemCandidates(this.asset.companyId,
       this.asset.assetSeriesId).subscribe(assetDetails => this.fleetAssetDetails = assetDetails);
   }
 

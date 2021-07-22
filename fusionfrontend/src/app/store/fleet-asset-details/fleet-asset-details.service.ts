@@ -43,4 +43,9 @@ export class FleetAssetDetailsService {
         this.fleetAssetDetailsStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }
+
+  getSubsystemCandidates(companyId: ID, assetSeriesId: ID): Observable<FleetAssetDetails[]> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}/subsystemcandidates`;
+    return this.http.get<FleetAssetDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
 }

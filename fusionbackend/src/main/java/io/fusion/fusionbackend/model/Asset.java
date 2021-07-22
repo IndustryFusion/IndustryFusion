@@ -64,7 +64,7 @@ public class Asset extends BaseAsset {
     @JoinColumn(name = "asset_series_id", nullable = false)
     private AssetSeries assetSeries;
 
-    @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "asset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default
     private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
 

@@ -72,9 +72,9 @@ public class FleetAssetRestService {
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/subsystemcandidates")
-    public Set<AssetDto> getAsset(@PathVariable final Long companyId,
+    public Set<AssetDetailsDto> getSubsystemCandidates(@PathVariable final Long companyId,
                                   @PathVariable final Long assetSeriesId) {
-        return assetMapper.toDtoSet(assetService.findSubsystemCandidates(companyId, assetSeriesId), false);
+        return assetDetailsMapper.toDtoSet(assetService.findSubsystemCandidates(companyId, assetSeriesId), true);
     }
 
     @GetMapping(path = "/companies/{companyId}/fleetassetdetails")

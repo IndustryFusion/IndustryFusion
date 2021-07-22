@@ -17,20 +17,11 @@ import { Injectable } from '@angular/core';
 import { BaseQueryEntity } from '../basequery';
 import { FleetAssetDetails } from './fleet-asset-details.model';
 import { FleetAssetDetailsState, FleetAssetDetailsStore } from './fleet-asset-details.store';
-import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FleetAssetDetailsQuery extends BaseQueryEntity<FleetAssetDetailsState, FleetAssetDetails> {
 
   constructor(protected store: FleetAssetDetailsStore) {
     super(store);
-  }
-
-  selectAssetDetailsOfCompanyExcludingAssetSerie(companyId: ID, assetSeriesId: ID): Observable<FleetAssetDetails[]> {
-    return this.selectAll({
-      filterBy: entity => String(entity.companyId) === String(companyId)
-        && String(entity.assetSeriesId) !== String(assetSeriesId)
-    });
   }
 }
