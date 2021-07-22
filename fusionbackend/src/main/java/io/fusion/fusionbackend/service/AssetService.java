@@ -342,4 +342,8 @@ public class AssetService {
                 .findAny()
                 .orElseThrow(ResourceNotFoundException::new);
     }
+
+    public Set<Asset> findSubsystemCandidates(Long companyId, Long assetSeriesId) {
+        return assetRepository.findSubsystemCandidates(companyId);
+    }
 }

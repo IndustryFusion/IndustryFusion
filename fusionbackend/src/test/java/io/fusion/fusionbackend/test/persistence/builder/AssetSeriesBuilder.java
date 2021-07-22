@@ -6,8 +6,8 @@ import io.fusion.fusionbackend.model.Company;
 
 public class AssetSeriesBuilder implements Builder<AssetSeries> {
 
-    private Builder<Company> companyBuilder = CompanyBuilder.aCompany();
     private Builder<AssetTypeTemplate> assetTypeTemplateBuilder = AssetTypeTemplateBuilder.anAssetTypeTemplate();
+    private Company company;
 
     private AssetSeriesBuilder() {
     }
@@ -17,7 +17,13 @@ public class AssetSeriesBuilder implements Builder<AssetSeries> {
     }
 
     public AssetSeriesBuilder forCompany(Builder<Company> companyBuilder) {
-        this.companyBuilder = companyBuilder;
+        this.company = companyBuilder.build();
+        return this;
+
+    }
+
+    public AssetSeriesBuilder forCompany(Company company) {
+        this.company = company;
         return this;
 
     }
@@ -31,7 +37,6 @@ public class AssetSeriesBuilder implements Builder<AssetSeries> {
     public AssetSeries build() {
         AssetSeries assetSeries = new AssetSeries();
 
-        Company company = companyBuilder.build();
         assetSeries.setCompany(company);
         company.getAssetSeries().add(assetSeries);
 

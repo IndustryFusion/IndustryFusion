@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
@@ -45,6 +46,11 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
+@NamedNativeQuery(
+        name = "Asset.findSubsystemCandidates",
+        query = "select * from asset where subsystem_parent_id is null"
+                + " and company_id = ?",
+        resultClass = Asset.class)
 public class Asset extends BaseAsset {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "company_id", nullable = false)

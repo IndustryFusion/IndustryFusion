@@ -71,6 +71,12 @@ public class FleetAssetRestService {
                 embedChildren);
     }
 
+    @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/subsystemcandidates")
+    public Set<AssetDto> getAsset(@PathVariable final Long companyId,
+                                  @PathVariable final Long assetSeriesId) {
+        return assetMapper.toDtoSet(assetService.findSubsystemCandidates(companyId, assetSeriesId), false);
+    }
+
     @GetMapping(path = "/companies/{companyId}/fleetassetdetails")
     public Set<AssetDetailsDto> getAssetDetails(@PathVariable final Long companyId,
                                                 @RequestParam(defaultValue = "true") final boolean embedChildren) {
@@ -90,10 +96,10 @@ public class FleetAssetRestService {
 
     @PatchMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}/company-transfer")
     public AssetDto transferFleetAssetToFactory(@PathVariable final Long companyId,
-                                @PathVariable final Long assetSeriesId,
-                                @PathVariable final Long assetId,
-                                @RequestBody final Long targetCompanyId,
-                                @RequestParam(defaultValue = "false") final boolean embedChildren) {
+                                                @PathVariable final Long assetSeriesId,
+                                                @PathVariable final Long assetId,
+                                                @RequestBody final Long targetCompanyId,
+                                                @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return assetMapper.toDto(assetService.transferFromFleetToFactory(companyId, targetCompanyId,
                 assetSeriesId, assetId),
                 embedChildren);
@@ -114,8 +120,7 @@ public class FleetAssetRestService {
                                                                 @PathVariable final Long factorySiteId,
                                                                 @PathVariable final Long roomId,
                                                                 @PathVariable final Long assetId,
-                                                                @RequestParam(defaultValue = "false")
-                                                                final boolean embedChildren) {
+                                                                @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return fieldInstanceMapper.toDtoSet(
                 assetService.getFieldInstancesCheckFullPath(companyId, factorySiteId, roomId, assetId), embedChildren);
     }
