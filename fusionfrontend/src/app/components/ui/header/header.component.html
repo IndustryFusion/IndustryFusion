@@ -16,6 +16,9 @@ under the License.
 <header *ngIf="show">
   <section class="main-header">
     <ul class="navigation">
+      <li (click)="onBackClick()">
+        <div class="icon back"></div>
+      </li>
       <li (click)="onHomeClick()">
         <div class="icon home"></div>
       </li>
