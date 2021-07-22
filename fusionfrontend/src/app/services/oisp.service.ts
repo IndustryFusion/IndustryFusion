@@ -84,6 +84,11 @@ export class OispService {
     return this.http.get<Rule>(url, this.httpOptions);
   }
 
+  cloneRule(ruleId: string): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/clone/${ruleId}`;
+    return this.http.post<Rule>(url, null, this.httpOptions);
+  }
+
   createRuleDraft(ruleDraft: Rule): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${environment.oispAccountId}/rules/draft`;
     return this.http.put<Rule>(url, ruleDraft, this.httpOptions);

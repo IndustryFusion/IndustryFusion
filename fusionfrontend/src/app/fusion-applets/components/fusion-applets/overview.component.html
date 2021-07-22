@@ -52,6 +52,7 @@ under the License.
       <td [style.width.%]="5">
         <app-item-options-menu
           (createItem)="createItem()"
+          (cloneItem)="cloneItem(rowIndex)"
           (deleteItem)="deleteItem(rowIndex)"
           (editItem)="editItem(rowIndex)"
           [appendTo]="table"

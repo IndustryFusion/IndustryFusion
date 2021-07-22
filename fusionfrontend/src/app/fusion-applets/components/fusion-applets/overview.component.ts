@@ -88,13 +88,28 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  cloneItem(rowIndex: number) {
+    this.oispService.cloneRule(this.rules[rowIndex].id).subscribe(clone => {
+      this.rules.splice(rowIndex + 1, 0, clone);
+    });
+  }
+
   getMenuOptionsByStatus(status: RuleStatus): ItemOptionsMenuType[] {
     let result: ItemOptionsMenuType[];
-    if (status === RuleStatus.Deleted) {
-      result = [ItemOptionsMenuType.CLONE];
-    } else {
-      result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.CLONE, ItemOptionsMenuType.DELETE];
+    switch (status) {
+      case RuleStatus.Active:
+      case RuleStatus.Archived:
+      case RuleStatus.OnHold:
+        result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.CLONE, ItemOptionsMenuType.DELETE];
+        break;
+      case RuleStatus.Deleted:
+        result = [ItemOptionsMenuType.CLONE];
+        break;
+      case RuleStatus.Draft:
+        result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.DELETE];
+        break;
     }
+
     return result;
   }
 }
