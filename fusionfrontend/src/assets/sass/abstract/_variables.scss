@@ -21,6 +21,7 @@
   $basic-black: #000000;
   $saturated-red: #C42326;
   $light-red: #d56365;
+  $yellow: #FBC02D;
 
   $tree-line-grey: #B9B9B9;
   $error: #A73737;
@@ -33,6 +34,7 @@
   $onboarding-text: #2CA9CE;
   $trash-button: $saturated-red;
   $trash-button-hover: $light-red;
+  $warning: $yellow;
 
   /** backgrounds **/
   $grey-background: $light-grey 50% 50% no-repeat padding-box;
