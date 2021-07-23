@@ -13,9 +13,9 @@
  * under the License.
  */
 
-@import "src/assets/sass/components/buttons";
-@import "src/assets/sass/components/radiobuttons";
-@import "src/assets/sass/abstract/variables";
+@import "components/buttons";
+@import "components/radiobuttons";
+@import "abstract/variables";
 
 .quantity-type-dialog {
   .quantity-type-dialog-footer {
@@ -38,7 +38,7 @@
     padding-bottom: 1rem;
     padding-top: 0.3rem;
     margin-left: 0.3rem;
-    color: #FBC02D;
+    color: $warning;
 
     .pi-exclamation-circle {
       margin-top: 2px;
