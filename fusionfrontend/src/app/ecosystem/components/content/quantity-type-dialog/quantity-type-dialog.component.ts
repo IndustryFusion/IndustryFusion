@@ -87,15 +87,7 @@ export class QuantityTypeDialogComponent implements OnInit {
 
   onSubmit() {
     if (this.quantityTypeForm.valid) {
-      const quantityType = new QuantityType();
-      if (this.type === DialogType.EDIT) {
-        quantityType.id  = this.quantityTypeForm.get('id')?.value;
-      }
-      quantityType.name  = this.quantityTypeForm.get('name')?.value;
-      quantityType.label = this.quantityTypeForm.get('label')?.value;
-      quantityType.description = this.quantityTypeForm.get('description')?.value;
-      quantityType.baseUnitId = this.quantityTypeForm.get('baseUnitId')?.value;
-      quantityType.dataType = this.quantityTypeForm.get('dataType')?.value;
+      const quantityType = this.quantityTypeForm.getRawValue() as QuantityType;
 
       if (this.type === DialogType.EDIT) {
         this.quantityTypeService.editItem(quantityType.id, quantityType).subscribe(

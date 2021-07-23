@@ -54,13 +54,17 @@ export class UnitDialogComponent implements OnInit {
   createDialogFormGroup(unit: Unit): FormGroup {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const unitGroup = this.formBuilder.group({
-      id: [unit?.id],
-      name: [unit?.name, requiredTextValidator],
-      label: [unit?.label, Validators.maxLength(255)],
-      symbol: [unit?.symbol, Validators.maxLength(255)],
-      quantityTypeId: [unit?.quantityType?.id, Validators.required],
+      id: [],
+      name: [null, requiredTextValidator],
+      label: [null, Validators.maxLength(255)],
+      symbol: [null, Validators.maxLength(255)],
+      quantityTypeId: [null, Validators.required],
     });
 
+    if (unit) {
+      unitGroup.patchValue(unit);
+      unitGroup.get('quantityTypeId').patchValue(unit.quantityType?.id);
+    }
     if (this.isQuantityTypeLocked) {
       unitGroup.get('quantityTypeId').patchValue(this.config.data.prefilledQuantityTypeId);
     }
@@ -72,12 +76,7 @@ export class UnitDialogComponent implements OnInit {
   }
 
   confirmModal(): void {
-    const unit = new Unit();
-    unit.name = this.unitForm.get('name')?.value;
-    unit.label = this.unitForm.get('label')?.value;
-    unit.symbol = this.unitForm.get('symbol')?.value;
-    unit.quantityTypeId = this.unitForm.get('quantityTypeId')?.value;
-
+    const unit = this.unitForm.getRawValue() as Unit;
     this.dialogRef.close(unit);
   }
 
