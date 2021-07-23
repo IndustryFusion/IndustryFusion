@@ -151,25 +151,13 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   filterAssets() {
-    const factorySiteNames = this.selectedFactorySites.map(factorySite => factorySite.name);
-    const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
-    const companyNames = this.selectedCompanies.map(company => company.description);
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
 
-    if (this.searchText) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets
-        .filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
-    }
-    if (factorySiteNames.length > 0) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets
-        .filter(asset => factorySiteNames.includes(asset.factorySiteName));
-    }
-    if (assetTypeNames.length > 0) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => assetTypeNames.includes(asset.category));
-    }
-    if (companyNames.length > 0) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => companyNames.includes(asset.manufacturer));
-    }
+    this.filterBySearchText();
+    this.filterByFactorySite();
+    this.filterByAssetType();
+    this.filterByCompany();
+
     if (this.selectedMaintenanceDue.length > 0) {
       if (this.selectedMaintenanceDue.length === 2) {
         this.filterAssetsByTwoMaintenanceValues();
@@ -177,6 +165,35 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       else if (this.selectedMaintenanceDue.length === 1) {
         this.filterAssetsByOneMaintenanceValue();
  }
+    }
+  }
+
+  private filterBySearchText() {
+    if (this.searchText) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets
+        .filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
+    }
+  }
+
+  private filterByCompany() {
+    const companyNames = this.selectedCompanies.map(company => company.description);
+    if (companyNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => companyNames.includes(asset.manufacturer));
+    }
+  }
+
+  private filterByAssetType() {
+    const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
+    if (assetTypeNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => assetTypeNames.includes(asset.category));
+    }
+  }
+
+  private filterByFactorySite() {
+    const factorySiteNames = this.selectedFactorySites.map(factorySite => factorySite.name);
+    if (factorySiteNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets
+        .filter(asset => factorySiteNames.includes(asset.factorySiteName));
     }
   }
 
