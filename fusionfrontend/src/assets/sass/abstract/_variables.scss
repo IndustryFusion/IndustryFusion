@@ -19,6 +19,8 @@
   $basic-grey:  #95989A;
   $dark-gray:   #00000029;
   $basic-black: #000000;
+  $saturated-red: #C42326;
+  $light-red: #d56365;
   $yellow: #FBC02D;
 
   $tree-line-grey: #B9B9B9;
@@ -30,6 +32,8 @@
   $hover-grey-border: $basic-grey;
   $disabled-button: #E6E6E6;
   $onboarding-text: #2CA9CE;
+  $trash-button: $saturated-red;
+  $trash-button-hover: $light-red;
   $warning: $yellow;
 
   /** backgrounds **/

@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../../../../store/room/room.model';
 import { FactorySite } from '../../../../store/factory-site/factory-site.model';
-import { AssetDetailsWithFields, AssetModalType, AssetModalMode } from '../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields, AssetModalType, AssetModalMode } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -38,8 +38,8 @@ enum FormAttributes {
 })
 export class AssetInstantiationComponent implements OnInit {
   assetDetailsForm: FormGroup;
-  assetDetails: AssetDetailsWithFields;
-  assetsToBeOnboarded: AssetDetailsWithFields[];
+  assetDetails: FactoryAssetDetailsWithFields;
+  assetsToBeOnboarded: FactoryAssetDetailsWithFields[];
   factorySites: FactorySite[];
   selectedFactorySite: FactorySite;
   rooms: Room[];
@@ -78,7 +78,7 @@ export class AssetInstantiationComponent implements OnInit {
     }
   }
 
-  onboardingStarted(event: AssetDetailsWithFields) {
+  onboardingStarted(event: FactoryAssetDetailsWithFields) {
     if (event) {
       this.assetDetails = event;
       this.config.header = 'Pairing Asset';

@@ -13,30 +13,14 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'base/typography';
+import { Asset } from '../asset/asset.model';
 
-.if-trash-button {
-  color: $basic-white;
-  font-weight: bolder;
-  font-size: 0.9em;
 
-  background: $trash-button 0 0 no-repeat padding-box;
-  border-radius: 10px;
-  border: none;
-  opacity: 1;
-
-  height: 56px;
-  width: 56px;
-  cursor: pointer;
-
-  margin: 8px 4px;
-
-  &:hover {
-    background: $trash-button-hover 0 0 no-repeat padding-box;
-  }
-
-  &:disabled {
-    background: $disabled-button 0 0 no-repeat padding-box;
-  }
+export class FleetAssetDetails extends Asset {
+  manufacturer: string;
+  assetSeriesName: string;
+  assetTypeName: string;
+  category: string;
+  roomName: string;
+  factorySiteName: string;
 }

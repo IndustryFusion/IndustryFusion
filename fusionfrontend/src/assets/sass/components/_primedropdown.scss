@@ -33,12 +33,15 @@
 
   .p-inputtext {
     border: none !important;
+    &:not(.p-dropdown-filter) {
+      margin-left: 2.0rem;
+    }
   }
 
   .p-dropdown-trigger {
     background-color: $basic-white !important;
     color: $basic-black !important;
-    margin-right: 5px;
+    position: absolute;
   }
 
   p-dropdownitem {

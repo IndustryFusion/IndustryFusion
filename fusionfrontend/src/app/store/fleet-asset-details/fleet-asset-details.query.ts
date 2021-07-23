@@ -13,19 +13,15 @@
  * under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { BaseQueryEntity } from '../basequery';
+import { FleetAssetDetails } from './fleet-asset-details.model';
+import { FleetAssetDetailsState, FleetAssetDetailsStore } from './fleet-asset-details.store';
 
-import { AssetDetailsService } from './asset-details.service';
+@Injectable({ providedIn: 'root' })
+export class FleetAssetDetailsQuery extends BaseQueryEntity<FleetAssetDetailsState, FleetAssetDetails> {
 
-describe('AssetDetailsService', () => {
-  let service: AssetDetailsService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({ });
-    service = TestBed.inject(AssetDetailsService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  constructor(protected store: FleetAssetDetailsStore) {
+    super(store);
+  }
+}

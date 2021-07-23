@@ -6,8 +6,9 @@ import io.fusion.fusionbackend.model.Company;
 
 public class AssetBuilder implements Builder<Asset> {
 
-    private Builder<AssetSeries> assetSeriesBuilder = AssetSeriesBuilder.anAssetSeries();
-    private Builder<Company> companyBuilder = CompanyBuilder.aCompany();
+    private Asset parentAsset;
+    private Company company;
+    private AssetSeries assetSeries;
 
     private AssetBuilder() {
     }
@@ -17,7 +18,27 @@ public class AssetBuilder implements Builder<Asset> {
     }
 
     public AssetBuilder basedOnSeries(Builder<AssetSeries> assetSeriesBuilder) {
-        this.assetSeriesBuilder = assetSeriesBuilder;
+        this.assetSeries = assetSeriesBuilder.build();
+        return this;
+    }
+
+    public AssetBuilder basedOnSeries(AssetSeries assetSeries) {
+        this.assetSeries = assetSeries;
+        return this;
+    }
+
+    public AssetBuilder forCompany(Builder<Company> companyBuilder) {
+        this.company = companyBuilder.build();
+        return this;
+    }
+
+    public AssetBuilder forCompany(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public AssetBuilder asSubsystemOf(Asset parentAsset) {
+        this.parentAsset = parentAsset;
         return this;
     }
 
@@ -25,19 +46,22 @@ public class AssetBuilder implements Builder<Asset> {
     public Asset build() {
         Asset asset = new Asset();
 
-        AssetSeries assetSeries = assetSeriesBuilder.build();
+        if (assetSeries == null) {
+            assetSeries = AssetSeriesBuilder.anAssetSeries().build();
+        }
         asset.setAssetSeries(assetSeries);
         assetSeries.getAssets().add(asset);
 
-        Company company = companyBuilder.build();
+        if (company == null) {
+            company = CompanyBuilder.aCompany().build();
+        }
         asset.setCompany(company);
         company.getAssets().add(asset);
 
-        return asset;
-    }
+        if (parentAsset != null) {
+            parentAsset.getSubsystems().add(asset);
+        }
 
-    public AssetBuilder forCompany(Builder<Company> companyBuilder) {
-        this.companyBuilder = companyBuilder;
-        return this;
+        return asset;
     }
 }

@@ -18,11 +18,11 @@ import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AssetDetails } from './asset-details.model';
+import { FactoryAssetDetails } from './factory-asset-details.model';
 import { map, take, tap } from 'rxjs/operators';
-import { AssetDetailsStore } from './asset-details.store';
+import { FactoryAssetDetailsStore } from './factory-asset-details.store';
 import { Room } from '../room/room.model';
-import { AssetDetailsQuery } from './asset-details.query';
+import { FactoryAssetDetailsQuery } from './factory-asset-details.query';
 import { FactoryComposedQuery } from '../composed/factory-composed.query';
 
 
@@ -30,33 +30,33 @@ import { FactoryComposedQuery } from '../composed/factory-composed.query';
 @Injectable({
   providedIn: 'root'
 })
-export class AssetDetailsService {
+export class FactoryAssetDetailsService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private assetDetailsStore: AssetDetailsStore,
-              private assetDetailsQuery: AssetDetailsQuery,
+  constructor(private factoryAssetDetailsStore: FactoryAssetDetailsStore,
+              private factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
               private factoryComposedQuery: FactoryComposedQuery,
               private http: HttpClient) { }
 
-  getAssetDetailsOfCompany(companyId: ID): Observable<AssetDetails[]> {
-    const path = `companies/${companyId}/assetdetails`;
+  getAssetDetailsOfCompany(companyId: ID): Observable<FactoryAssetDetails[]> {
+    const path = `companies/${companyId}/factoryassetdetails`;
     const cacheKey = 'company-' + companyId;
-    return this.assetDetailsStore.cachedByParentId(cacheKey,
-      this.http.get<AssetDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+    return this.factoryAssetDetailsStore.cachedByParentId(cacheKey,
+      this.http.get<FactoryAssetDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
-        this.assetDetailsStore.upsertManyByParentIdCached(cacheKey, entities);
+        this.factoryAssetDetailsStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }
 
-  getAssetDetails(companyId: ID, assetDetailsId: ID): Observable<AssetDetails> {
-    const path = `companies/${companyId}/assetdetails/${assetDetailsId}`;
-    return this.http.get<AssetDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  getAssetDetails(companyId: ID, assetDetailsId: ID): Observable<FactoryAssetDetails> {
+    const path = `companies/${companyId}/factoryassetdetails/${assetDetailsId}`;
+    return this.http.get<FactoryAssetDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
   updateRoomNames(room: Room) {
-    this.assetDetailsQuery.selectAssetDetailsOfRoom(room.id).pipe(
+    this.factoryAssetDetailsQuery.selectAssetDetailsOfRoom(room.id).pipe(
       take(1),
       tap(assetsWithDetails => {
         assetsWithDetails = assetsWithDetails.map(assetWithDetails => {
@@ -64,7 +64,7 @@ export class AssetDetailsService {
           assetWithUpdatedRoomName.roomName = room.name;
           return assetWithUpdatedRoomName;
         });
-        this.assetDetailsStore.upsertManyCached(assetsWithDetails);
+        this.factoryAssetDetailsStore.upsertManyCached(assetsWithDetails);
       }
       )
     ).subscribe();
@@ -77,7 +77,7 @@ export class AssetDetailsService {
         const assetWithUpdatedRoom = Object.assign({ }, assetDetails);
         assetWithUpdatedRoom.roomName = room.name;
         assetWithUpdatedRoom.roomId = room.id;
-        this.assetDetailsStore.upsertCached(assetWithUpdatedRoom);
+        this.factoryAssetDetailsStore.upsertCached(assetWithUpdatedRoom);
       })
     ).subscribe();
   }

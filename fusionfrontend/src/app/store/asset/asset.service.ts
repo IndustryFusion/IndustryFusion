@@ -22,9 +22,9 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { environment } from '../../../environments/environment';
 import { RoomService } from '../room/room.service';
-import { AssetDetailsStore } from '../asset-details/asset-details.store';
-import { AssetDetailsService } from '../asset-details/asset-details.service';
-import { AssetDetails } from '../asset-details/asset-details.model';
+import { FactoryAssetDetailsStore } from '../factory-asset-details/factory-asset-details.store';
+import { FactoryAssetDetailsService } from '../factory-asset-details/factory-asset-details.service';
+import { FactoryAssetDetails } from '../factory-asset-details/factory-asset-details.model';
 import { FactorySiteService } from '../factory-site/factory-site.service';
 import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
 
@@ -39,8 +39,8 @@ export class AssetService {
 
   constructor(private assetStore: AssetStore,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
-              private assetDetailsService: AssetDetailsService,
-              private assetDetailsStore: AssetDetailsStore,
+              private assetDetailsService: FactoryAssetDetailsService,
+              private assetDetailsStore: FactoryAssetDetailsStore,
               private factorySiteService: FactorySiteService,
               private roomService: RoomService,
               private http: HttpClient) { }
@@ -126,7 +126,7 @@ export class AssetService {
     this.assetStore.setActive(assetId);
   }
 
-  updateCompanyAsset(companyId: ID, assetDetails: AssetDetails): Observable<Asset> {
+  updateCompanyAsset(companyId: ID, assetDetails: FactoryAssetDetails): Observable<Asset> {
     const path = `companies/${assetDetails.companyId}/assets/${assetDetails.id}`;
     const asset: Asset = this.mapAssetDetailsToAsset(assetDetails);
     return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
@@ -156,7 +156,7 @@ export class AssetService {
     }));
   }
 
-  mapAssetDetailsToAsset(assetDetails: AssetDetails): Asset {
+  mapAssetDetailsToAsset(assetDetails: FactoryAssetDetails): Asset {
     const mappedAsset = new Asset();
     mappedAsset.id = assetDetails.id;
     mappedAsset.companyId = assetDetails.companyId;

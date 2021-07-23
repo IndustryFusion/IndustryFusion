@@ -27,7 +27,7 @@ under the License.
 <div class="wrapper">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div class="title" >
-      {{ (assetsWithDetailsAndFields == null ? 0 : assetsWithDetailsAndFields.length) | i18nPlural: assetsMapping }}
+      {{ (factoryAssetDetailsWithFields == null ? 0 : factoryAssetDetailsWithFields.length) | i18nPlural: assetsMapping }}
     </div>
     <app-create-button text="Onboard new Asset" (createItem)="showOnboardDialog()"></app-create-button>
   </div>
@@ -57,8 +57,8 @@ under the License.
         </button>
       </div>
     </div>
-      <app-assets-list-header [assets]="assetsWithDetailsAndFields" (filterEvent)="onFilter($event)"></app-assets-list-header>
-      <app-assets-list-item *ngFor="let assetWithDetailsAndFields of assetsWithDetailsAndFields | tablefilter:filterDict"
+      <app-assets-list-header [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields" (filterEvent)="onFilter($event)"></app-assets-list-header>
+      <app-assets-list-item *ngFor="let assetWithDetailsAndFields of factoryAssetDetailsWithFields | tablefilter:filterDict"
                             [assetWithDetailsAndFields]="assetWithDetailsAndFields"
                             [rooms]="rooms"
                             [allRoomsOfFactorySite]="allRoomsOfFactorySite"

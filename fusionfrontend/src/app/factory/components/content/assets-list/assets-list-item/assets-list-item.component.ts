@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AssetDetailsWithFields, AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields, AssetModalMode } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
 import { RoomQuery } from '../../../../../store/room/room.query';
 import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
-import { AssetDetails, AssetModalType } from 'src/app/store/asset-details/asset-details.model';
+import { FactoryAssetDetails, AssetModalType } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
@@ -20,7 +20,7 @@ import { ConfirmationService } from 'primeng/api';
 export class AssetsListItemComponent implements OnInit, OnChanges {
 
   @Input()
-  assetWithDetailsAndFields: AssetDetailsWithFields;
+  assetWithDetailsAndFields: FactoryAssetDetailsWithFields;
   @Input()
   rooms: Room[];
   @Input()
@@ -34,13 +34,13 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   @Input()
   selected = false;
   @Output()
-  assetSelected = new EventEmitter<AssetDetailsWithFields>();
+  assetSelected = new EventEmitter<FactoryAssetDetailsWithFields>();
   @Output()
-  assetDeselected = new EventEmitter<AssetDetailsWithFields>();
+  assetDeselected = new EventEmitter<FactoryAssetDetailsWithFields>();
   @Output()
-  editAssetEvent = new EventEmitter<AssetDetails>();
+  editAssetEvent = new EventEmitter<FactoryAssetDetails>();
   @Output()
-  deleteAssetEvent = new EventEmitter<AssetDetailsWithFields>();
+  deleteAssetEvent = new EventEmitter<FactoryAssetDetailsWithFields>();
 
   showStatusCircle = false;
   roomsOfFactorySite: Room[];
@@ -86,7 +86,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       header: 'General Information',
     });
 
-    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+    ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
       if (assetFormValues) {
         this.editAssetEvent.emit(assetFormValues);
       }
@@ -118,14 +118,14 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       header
     });
 
-    ref.onClose.subscribe((newAssetDetails: AssetDetails) => {
+    ref.onClose.subscribe((newAssetDetails: FactoryAssetDetails) => {
       if (newAssetDetails) {
         this.editAssetEvent.emit(newAssetDetails);
       }
     });
   }
 
-  createDetailsAssetForm(formBuilder: FormBuilder, assetWithDetailsAndFields: AssetDetailsWithFields) {
+  createDetailsAssetForm(formBuilder: FormBuilder, assetWithDetailsAndFields: FactoryAssetDetailsWithFields) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.assetDetailsForm = formBuilder.group({
       id: [null],

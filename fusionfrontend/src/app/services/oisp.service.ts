@@ -31,7 +31,7 @@ import {
   Sampling,
   Series
 } from './oisp.model';
-import { AssetDetailsWithFields } from '../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
 
 @Injectable({
@@ -79,7 +79,7 @@ export class OispService {
     );
   }
 
-  getAssetDetailsFieldsExternalIds(assetDetails: AssetDetailsWithFields): Observable<AssetDetailsWithFields> {
+  getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
     if (!assetDetails) {
       return EMPTY;
     }

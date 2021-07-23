@@ -28,7 +28,7 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { Company } from 'src/app/store/company/company.model';
 import { RoomQuery } from '../../../../store/room/room.query';
-import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
+import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
 
 @Component({
   selector: 'app-rooms-page',
@@ -58,7 +58,7 @@ export class RoomsPageComponent implements OnInit {
               private assetQuery: AssetQuery,
               private factoryResolver: FactoryResolver,
               private activatedRoute: ActivatedRoute,
-              private assetDetailsService: AssetDetailsService,
+              private assetDetailsService: FactoryAssetDetailsService,
               private assetService: AssetService) { }
 
   ngOnInit() {

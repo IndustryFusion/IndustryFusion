@@ -32,27 +32,6 @@
   .fields-padding {
     margin-left: 3%;
   }
-
-  .template-fields-button-add {
-    height: 56px;
-    width: 100%;
-
-    padding-top: 16px;
-    padding-bottom: 17px;
-    margin-top: 24px;
-
-    text-align: center;
-    font-weight: bold;
-    font-size: $bigger-font-size;
-    line-height: $big-line-height;
-    letter-spacing: 0;
-    color: $highlighted;
-
-    background: $basic-white 0 0 no-repeat padding-box;
-    border: none !important;
-    border-radius: 10px;
-    opacity: 1;
-  }
 }
 
 .footer {
