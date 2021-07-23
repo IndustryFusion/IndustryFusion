@@ -29,7 +29,11 @@ const routes: Routes = [
         component: OverviewComponent,
       },
       {
-        path: ':fusionAppletId',
+        path: 'archiv',
+        component: OverviewComponent,
+      },
+      {
+        path: 'loki/:fusionAppletId',
         component: FusionAppletPageComponent,
         children: [
           {

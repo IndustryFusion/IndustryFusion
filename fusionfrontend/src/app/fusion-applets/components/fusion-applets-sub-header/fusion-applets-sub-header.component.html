@@ -15,7 +15,20 @@
 
 <div class="wrapper">
   <ul>
-    <li [ngClass]="{'active': isRouteActive('detail')}" (click)="onRouteClick('detail')">Detail</li>
-    <li [ngClass]="{'active': isRouteActive('editor')}" (click)="onRouteClick('editor')">Editor</li>
+    <li *ngIf="isRouteActive('detail') || isRouteActive('editor')"
+        [ngClass]="{'active': isRouteActive('detail')}"
+        (click)="onRouteClick('detail')">Detail</li>
+
+    <li *ngIf="isRouteActive('detail') || isRouteActive('editor')"
+        [ngClass]="{'active': isRouteActive('editor')}"
+        (click)="onRouteClick('editor')">Editor</li>
+
+    <li *ngIf="isRouteActive('overview') || isRouteActive('archiv')"
+        [ngClass]="{'active': isRouteActive('overview')}"
+        (click)="onRouteClick('overview')">Overview</li>
+
+    <li *ngIf="isRouteActive('overview') || isRouteActive('archiv')"
+        [ngClass]="{'active': isRouteActive('archiv')}"
+        (click)="onRouteClick('archiv')">Archive</li>
   </ul>
 </div>

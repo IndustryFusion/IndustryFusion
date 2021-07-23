@@ -28,6 +28,10 @@ import { FusionAppletDetailComponent } from './components/fusion-applet-detail/f
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletsSubHeaderComponent } from './components/fusion-applets-sub-header/fusion-applets-sub-header.component';
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
+import { RuleStatusUtil } from './util/rule-status-util';
+import { CardModule } from 'primeng/card';
+import { AccordionModule } from 'primeng/accordion';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 
@@ -41,20 +45,24 @@ import { FusionAppletEditorComponent } from './components/fusion-applet-editor/f
     FusionAppletsSubHeaderComponent,
     FusionAppletEditorComponent,
   ],
-    imports: [
-        CommonModule,
-        FusionAppletsRoutingModule,
-        TableModule,
-        InputSwitchModule,
-        IFCommon,
-        ReactiveFormsModule,
-    ],
+  imports: [
+    CommonModule,
+    FusionAppletsRoutingModule,
+    TableModule,
+    InputSwitchModule,
+    IFCommon,
+    ReactiveFormsModule,
+    CardModule,
+    AccordionModule,
+    MultiSelectModule,
+  ],
   exports: [
     FusionAppletPageTitleComponent,
     FusionAppletsSubHeaderComponent,
   ],
   providers: [
-    EnumHelpers
+    EnumHelpers,
+    RuleStatusUtil
   ]
 })
 export class FusionAppletsModule { }

@@ -19,7 +19,8 @@ import { Rule, RuleStatus } from '../../../services/oisp.model';
 import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { CreateFusionAppletComponent } from '../create-fusion-applet/create-fusion-applet.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RuleStatusUtil } from '../../util/rule-status-util';
 
 @Component({
   selector: 'app-overview',
@@ -38,19 +39,30 @@ export class OverviewComponent implements OnInit {
     private oispService: OispService,
     private dialogService: DialogService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
+    public ruleStatusUtil: RuleStatusUtil
   ) { }
 
   ngOnInit(): void {
-    this.oispService.getAllRules().subscribe(rules => this.rules = rules);
+    this.oispService.getAllRules().subscribe(rules => this.rules = this.filterRulesByStatus(rules));
+  }
+
+  filterRulesByStatus(rules: Rule[]): Rule[] {
+    const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
+    if (this.isRouteActive('overview')) {
+      return rules.filter(rule => !archivStatus.includes(rule.status) );
+    } else {
+      return rules.filter(rule =>  archivStatus.includes(rule.status) );
+    }
+  }
+
+  isRouteActive(subroute: string): boolean {
+    const snapshot = this.activatedRoute.snapshot;
+    return snapshot.url.map(sement => sement.path).includes(subroute);
   }
 
   isActive(status: string): boolean {
     return status === RuleStatus.Active;
-  }
-
-  canActivated(status: RuleStatus) {
-    const canActivatedStatus = [RuleStatus.Active, RuleStatus.Archived, RuleStatus.OnHold];
-    return canActivatedStatus.includes(status);
   }
 
   changeStatus(rowIndex: number, isActive: any) {

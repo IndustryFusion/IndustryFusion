@@ -41,9 +41,9 @@ under the License.
       <td [style.width.%]="40">{{rule.naturalLanguage}}</td>
       <td [style.width.%]="10">
         <p-inputSwitch
-          [disabled]="!canActivated(rule.status)"
+          [disabled]="!ruleStatusUtil.canActivated(rule.status)"
           (ngModelChange)="changeStatus(rowIndex, $event)"
-          [ngModel]="isActive(rule.status)"
+          [ngModel]="ruleStatusUtil.isActive(rule.status)"
         ></p-inputSwitch>
       </td>
       <td [style.width.%]="15">

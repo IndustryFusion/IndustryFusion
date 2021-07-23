@@ -38,10 +38,10 @@ export class FusionAppletPageTitleComponent implements OnInit {
   }
 
   resolveSubTitle(path: string) {
-    if (path.match('\/(assettypes$|assetseries\/+)')) {
+    if (path.match('\/overview')) {
       this.subtitle = 'Applet Overview';
     }
-    if (path.match('\/(assettypetemplate$|assets\/+)')) {
+    if (path.match('\/archiv')) {
       this.subtitle = 'Archive';
     }
   }

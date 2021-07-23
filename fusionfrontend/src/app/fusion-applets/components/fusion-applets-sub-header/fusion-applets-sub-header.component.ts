@@ -42,7 +42,7 @@ export class FusionAppletsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   onRouteClick(subroute: string): Promise<boolean> {
-        return this.router.navigate(['..', subroute], { relativeTo: this.getActiveRouteLastChild()});
+    return this.router.navigate(['..', subroute], { relativeTo: this.getActiveRouteLastChild()});
   }
 
   isRouteActive(subroute: string): boolean {
