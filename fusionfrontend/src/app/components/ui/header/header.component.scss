@@ -38,21 +38,35 @@ header {
     list-style: none;
 
     li {
-      height: 80px;
-      width: 80px;
+      height: 64px;
+      width: 64px;
       background: $grey-background;
       border-radius: 20px;
-      margin: 8px;
+      margin-top: 16px;
+      margin-right: 8px;
+      margin-left: 8px;
+      margin-bottom: 8px;
       cursor: pointer;
       outline: initial;
+
+      &.bigger {
+        height: 80px;
+        width: 80px;
+        margin-top: 8px;
+      }
 
       .icon {
         height: 48px;
         width: 48px;
         fill: $basic-grey;
-        margin: 20%;
+        margin: 10%;
         background-position: 50%;
         background-repeat: no-repeat;
+
+        &.bigger {
+          margin: 20%;
+        }
+
 
         &.home {
           background-image: url(/assets/img/IndustryFusion-hive-nav.png);
@@ -60,6 +74,7 @@ header {
 
         &.back {
           background-image: url(/assets/img/back-nav.svg);
+          margin: 13%;
         }
 
         &.grid {
