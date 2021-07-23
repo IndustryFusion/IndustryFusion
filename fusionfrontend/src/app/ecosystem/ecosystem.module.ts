@@ -46,7 +46,7 @@ import { QuantityTypeListItemComponent } from './components/content/quantity-typ
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
 import { UnitListHeaderComponent } from './components/content/unit-list-header/unit-list-header.component';
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
-import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
+import { QuantityTypeDialogComponent } from './components/content/quantity-type-dialog/quantity-type-dialog.component';
 import { UnitDialogComponent } from './components/content/unit-dialog/unit-dialog.component';
 import { FieldDialogContentComponent } from './components/content/field-dialog/field-dialog-content/field-dialog-content.component';
 // tslint:disable-next-line:max-line-length
@@ -65,7 +65,6 @@ import { AssetTypePageComponent } from './components/pages/asset-type-page/asset
 import { TableModule } from 'primeng/table';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { IFCommon } from '../common/i-f-common.module';
-import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
 import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
 import { AssetTypeTemplateWizardWarningDialogComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -112,7 +111,7 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     UnitListComponent,
     UnitListHeaderComponent,
     UnitListItemComponent,
-    QuantityTypeDialogContentComponent,
+    QuantityTypeDialogComponent,
     FieldDialogContentComponent,
     UnitDialogComponent,
     AssetTypeTemplateWizardStepOneComponent,
@@ -126,7 +125,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     AssetTypePageComponent,
     AssetTypeDialogComponent,
     QuantityTypePageComponent,
-    QuantityTypeEditDialogDirective,
     AssetTypeTemplateFieldHeaderComponent,
     FieldDialogDirective,
     FieldPageComponent,

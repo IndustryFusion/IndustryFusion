@@ -20,10 +20,7 @@ import { BaseListComponent } from '../base/base-list/base-list.component';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { QuantityTypeDialogContentComponent } from '../quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { QuantityDataType } from '../../../../store/field-details/field-details.model';
+import { QuantityTypeDialogComponent } from '../quantity-type-dialog/quantity-type-dialog.component';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 
 @Component({
@@ -45,15 +42,13 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
     };
 
   public ref: DynamicDialogRef;
-  public quantityTypeForm: FormGroup;
 
   constructor(
     public route: ActivatedRoute,
     public router: Router,
     public quantityQuery: QuantityTypeQuery,
     public quantityService: QuantityTypeService,
-    public dialogService: DialogService,
-    private formBuilder: FormBuilder) {
+    public dialogService: DialogService) {
       super(route, router, quantityQuery, quantityService);
   }
 
@@ -68,35 +63,13 @@ export class QuantityTypeListComponent extends BaseListComponent implements OnIn
     this.quantityQuery.resetError();
   }
 
-  private createQuantityTypeForm(formBuilder: FormBuilder): void {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    this.quantityTypeForm = formBuilder.group({
-      id: [],
-      name: ['', requiredTextValidator],
-      label: ['', requiredTextValidator],
-      description: ['', requiredTextValidator],
-      baseUnitId: [null, Validators.required],
-      dataType: [QuantityDataType.CATEGORICAL, Validators.required]
-    });
-  }
-
   showCreateDialog() {
-    this.createQuantityTypeForm(this.formBuilder);
-
-    const ref = this.dialogService.open(QuantityTypeDialogContentComponent, {
+    this.ref = this.dialogService.open(QuantityTypeDialogComponent, {
       data: {
-        quantityTypeForm: this.quantityTypeForm,
+        quantityType: null,
         type: DialogType.CREATE
       },
       header: `Create new Quantity Type`,
     });
-
-    ref.onClose.subscribe((quantityType: QuantityType) => this.onCreateQuantityType(quantityType));
-  }
-
-  private onCreateQuantityType(quantityType: QuantityType) {
-    if (quantityType) {
-      this.quantityService.createItem(quantityType).subscribe();
-    }
   }
 }
