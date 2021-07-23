@@ -39,6 +39,7 @@ import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
 import { CountryResolver } from '../../../../resolvers/country.resolver';
 import { FleetAssetDetailsResolver } from '../../../../resolvers/fleet-asset-details.resolver';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -84,7 +85,8 @@ export class AssetWizardComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
               private config: DynamicDialogConfig,
-              private ref: DynamicDialogRef) {
+              private ref: DynamicDialogRef,
+              private messageService: MessageService) {
     this.resolveWizard();
   }
 
@@ -139,21 +141,14 @@ export class AssetWizardComponent implements OnInit {
   onSaveAsset(): void {
     if (this.asset && this.assetForm.valid && this.asset.fieldInstances
         && this.metricsValid && this.attributesValid && this.subsystemsValid && this.customerDataValid) {
-      this.asset.name = this.assetForm.get('name').value;
-      this.asset.description = this.assetForm.get('description').value;
-      this.asset.ceCertified = this.assetForm.get('ceCertified').value;
-      this.asset.externalId = this.assetForm.get('externalId').value;
-      this.asset.controlSystemType = this.assetForm.get('controlSystemType')?.value;
-      this.asset.hasGateway = this.assetForm.get('hasGateway')?.value;
-      this.asset.gatewayConnectivity = this.assetForm.get('gatewayConnectivity')?.value;
-      this.asset.guid = this.assetForm.get('guid')?.value;
-      this.asset.serialNumber = this.assetForm.get('serialNumber')?.value;
-      this.asset.constructionDate = this.assetForm.get('constructionDate')?.value;
-      this.asset.installationDate = this.assetForm.get('installationDate')?.value;
-      this.asset.protectionClass = this.assetForm.get('protectionClass').value;
-      this.asset.handbookKey = this.assetForm.get('handbookKey').value;
-      this.asset.videoKey = this.assetForm.get('videoKey')?.value;
-      this.asset.imageKey = this.assetForm.get('imageKey')?.value;
+
+      const asset = this.assetForm.getRawValue() as Asset;
+
+      asset.subsystemIds = this.asset.subsystemIds;
+      asset.fieldInstances = this.asset.fieldInstances;
+      asset.room = this.asset.room;
+
+      this.asset = asset;
 
       if (this.type === DialogType.EDIT) {
 
@@ -164,7 +159,8 @@ export class AssetWizardComponent implements OnInit {
       this.ref.close(this.asset);
 
     } else {
-      throw new Error('[Asset Wizard]: Error at saving asset');
+      this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
+      console.error('[Asset Wizard]: Error at saving asset');
     }
   }
 
