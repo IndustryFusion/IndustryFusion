@@ -21,12 +21,12 @@ import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
-  Aggregator,
+  Aggregator, ComponentType, Device,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
   OispRequestWithAggregation,
-  OispResponse,
+  OispResponse, OISPUser,
   PointWithId,
   Rule,
   RuleStatus,
@@ -91,6 +91,21 @@ export class OispService {
   getRule(ruleId: string): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
     return this.http.get<Rule>(url, this.httpOptions);
+  }
+
+  getComponentTypesCatalog(): Observable<ComponentType[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
+    return this.http.get<ComponentType[]>(url, this.httpOptions);
+  }
+
+  getAllDevices(): Observable<Device[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
+    return this.http.get<Device[]>(url, this.httpOptions);
+  }
+
+  getUser(): Observable<OISPUser[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
+    return this.http.get<OISPUser[]>(url, this.httpOptions);
   }
 
   cloneRule(ruleId: string): Observable<Rule> {

@@ -74,6 +74,7 @@ export class OverviewComponent implements OnInit {
     }
     this.oispService.setRuleStatus(this.rules[rowIndex].id, status).subscribe( updatedRule => {
       this.rules[rowIndex] = updatedRule;
+      this.rules = this.filterRulesByStatus(this.rules);
       }
     );
   }
@@ -85,7 +86,10 @@ export class OverviewComponent implements OnInit {
     const dynamicDialogRef = this.dialogService.open(CreateFusionAppletComponent, dialogConfig);
     dynamicDialogRef.onClose.subscribe(result => {
       if (result) {
-        this.oispService.createRuleDraft(result).subscribe(newRule => this.rules.push(newRule));
+        this.oispService.createRuleDraft(result).subscribe(newRule => {
+          this.rules.push(newRule);
+          this.rules = this.filterRulesByStatus(this.rules);
+        });
       }
     });
   }
@@ -97,13 +101,14 @@ export class OverviewComponent implements OnInit {
   deleteItem(rowIndex: number) {
     this.oispService.deleteRule(this.rules[rowIndex].id).subscribe(() => {
       this.rules[rowIndex].status = RuleStatus.Deleted;
-      this.rules = this.rules.slice();
+      this.rules = this.filterRulesByStatus(this.rules);
     });
   }
 
   cloneItem(rowIndex: number) {
     this.oispService.cloneRule(this.rules[rowIndex].id).subscribe(clone => {
       this.rules.splice(rowIndex + 1, 0, clone);
+      this.rules = this.filterRulesByStatus(this.rules);
     });
   }
 

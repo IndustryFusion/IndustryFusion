@@ -33,7 +33,7 @@ const routes: Routes = [
         component: OverviewComponent,
       },
       {
-        path: 'loki/:fusionAppletId',
+        path: ':fusionAppletId',
         component: FusionAppletPageComponent,
         children: [
           {

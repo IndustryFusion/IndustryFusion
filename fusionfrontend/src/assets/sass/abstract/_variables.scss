@@ -19,15 +19,17 @@
   $dark-white:    #E6E6E6;
   $middle-grey:   #B9B9B9;
   $basic-grey:    #95989A;
+  $slight-grey:   #707070;
   $regular-grey:  #666666;
   $dark-grey:     #333333;
   $dark-gray:     #00000029;
   $basic-black:   #000000;
 
-  $fusion-blue: #2CA9CE;
-  $fusion-red: #A73737;
+  $fusion-blue:   #2CA9CE;
+  $fusion-red:    #A73737;
 
   /** function colors **/
+  $applet-editor-line-grey: $slight-grey;
   $tree-line-grey: $middle-grey;
   $error: $fusion-red;
   $highlighted: $basic-black;

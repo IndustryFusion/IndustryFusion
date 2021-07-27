@@ -1,0 +1,73 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<div class="action-panel">
+  <div class="p-grid">
+    <div class="if-label p-col-2">
+      2. Action
+    </div>
+  </div>
+  <div class="action-panel-wrapper">
+    <div class="action-panel">
+      <h3>Email</h3>
+      <p>Sends an email notification to one or more specified recipients.</p>
+    </div>
+    <div class="action-panel">
+      <h3>Webhook</h3>
+      <p>Fires a defined message format to a specified webhook.</p>
+    </div>
+  </div>
+  <p-accordion [multiple]="false" [(activeIndex)]="activeAccordionIndex">
+    <p-accordionTab [disabled]="activeAccordionIndex !== 1" header="Set up Webhook">
+      <label>Webhook URL *</label>
+      <input pInputText class="full-width"/>
+      <label class="if-label">Message Headers</label>
+      <div class="p-grid" [formGroup]="activeHeaderGroup">
+        <div class="p-col-4">
+          <label class="if-label full-width">Name</label>
+          <input class="full-width" formControlName="name" pInputText placeholder="Enter Value"/>
+        </div>
+        <div class="p-col-7">
+          <label class="if-label full-width">Value</label>
+          <input class="full-width" formControlName="value" pInputText placeholder="Enter Value"/>
+        </div>
+        <div class="p-col-1">
+          <button [disabled]="activeHeaderGroup.invalid" (click)="addHeader()" class="add-button">
+            <i class="pi pi-plus"></i></button>
+        </div>
+      </div>
+      <label *ngIf="headers?.length > 0" class="if-label">Selected Mesage Headers</label>
+      <div class="p-grid">
+        <div class="p-grid email-list full-width" *ngFor="let header of headers; let i = index">
+          <div class="list-item p-col-4">{{header.get('name').value}}</div>
+          <div class="list-item p-col-6">{{header.get('value').value}}</div>
+          <div class="p-col-1"><app-trash-button (deleteItem)="removeHeader(i)"></app-trash-button></div>
+        </div>
+      </div>
+    </p-accordionTab>
+
+    <p-accordionTab [disabled]="activeAccordionIndex !== 1" header="Set up Email Notification">
+      <label>Choose Email Recipients *</label>
+      <p-dropdown [options]="emailRecipients" [(ngModel)]="emailSelection" placeholder="Select Email"
+                  (onChange)="addEmail($event.value)"></p-dropdown>
+      <label *ngIf="selectedEmailRecipients?.length > 0">Selected Email Recipients</label>
+      <div class="email-list" *ngFor="let email of selectedEmailRecipients; let i = index">
+        <div class="list-item">
+          {{email}}
+        </div>
+        <app-trash-button (deleteItem)="removeEmail(i)"></app-trash-button>
+      </div>
+    </p-accordionTab>
+  </p-accordion>
+</div>

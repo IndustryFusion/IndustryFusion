@@ -32,6 +32,7 @@ import { RuleStatusUtil } from './util/rule-status-util';
 import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { AppletActionComponent } from './components/fusion-applet-editor/applet-action/applet-action.component';
 
 
 
@@ -44,6 +45,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     FusionAppletPageComponent,
     FusionAppletsSubHeaderComponent,
     FusionAppletEditorComponent,
+    AppletActionComponent,
   ],
   imports: [
     CommonModule,

@@ -103,6 +103,7 @@ export class Rule {
 export class RuleAction {
   type: RuleActionType;
   target: string[];
+  httpHeaders: any[];
 }
 
 export enum RuleStatus {
@@ -137,4 +138,75 @@ export enum RuleActionType {
   mail = 'mail',
   http = 'http',
   actuation = 'actuation',
+}
+
+export class ComponentType {
+  id: string;
+  dimension: string;
+  version: string;
+  default: boolean;
+  type: string;
+  dataType: string;
+  format: string;
+  min: number;
+  max: number;
+  measureunit: string;
+  display: string;
+  href: string;
+}
+
+export class DeviceComponent {
+  cid: string;
+  componentType: ComponentType;
+  componentTypeId: string;
+  name: string;
+  type: string;
+}
+
+export class Device {
+  components: DeviceComponent[];
+  deviceId: string;
+  gatewayId: string;
+  name: string;
+  tags: string[];
+  status: string;
+}
+
+export enum ConditionType {
+  basic = 'basic',
+  time = 'time',
+  statistics = 'statistics',
+}
+
+export function displayConstionType(type: ConditionType): string {
+  switch (type){
+    case ConditionType.basic:
+      return 'Basic Condition';
+      break;
+    case ConditionType.time:
+      return 'Timebased Condition';
+      break;
+    case ConditionType.statistics:
+      return 'Statistic based Condition';
+      break;
+  }
+}
+
+export enum ConditionOperator {
+  '>' = '>',
+  '<' = '<',
+  '<=' = '<=',
+  '>=' = '>=',
+  'Not Equal' = 'Not Equal',
+  'Equal' = 'Equal',
+  'Between' = 'Between',
+  'Not Between' = 'Not Between',
+  'Like' = 'Like',
+}
+
+export class OISPUser {
+  id: string;
+  created: Date;
+  updated: Date;
+  email: string;
 }
