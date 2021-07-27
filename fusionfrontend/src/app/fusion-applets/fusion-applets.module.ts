@@ -33,6 +33,7 @@ import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { AppletActionComponent } from './components/fusion-applet-editor/applet-action/applet-action.component';
+import { AppletActionMailComponent } from './components/fusion-applet-editor/applet-action/applet-action-mail/applet-action-mail.component';
 
 
 
@@ -46,6 +47,7 @@ import { AppletActionComponent } from './components/fusion-applet-editor/applet-
     FusionAppletsSubHeaderComponent,
     FusionAppletEditorComponent,
     AppletActionComponent,
+    AppletActionMailComponent,
   ],
   imports: [
     CommonModule,

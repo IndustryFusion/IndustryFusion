@@ -13,9 +13,9 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { OispService } from '../../../../services/oisp.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RuleAction, RuleActionType } from '../../../../services/oisp.model';
 
 @Component({
   selector: 'app-applet-action',
@@ -24,35 +24,33 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AppletActionComponent implements OnInit {
 
+  @Input()
+  actions: RuleAction[] = [];
+
+  actionsGroup: FormArray = new FormArray([]);
+  actionMailGroup: FormGroup;
   activeAccordionIndex = 0;
-  emailRecipients: string[] = [];
-  selectedEmailRecipients: string[] = [];
-  emailSelection: string;
   headers: FormGroup[] = [];
   activeHeaderGroup: FormGroup;
 
-  constructor(oispService: OispService, private formBuilder: FormBuilder) {
-    oispService.getUser().subscribe(users => this.emailRecipients = users.map(user => user.email));
+  constructor(private formBuilder: FormBuilder) {
+    this.createMailGroup();
     this.activeHeaderGroup = this.getHeaderGroup();
   }
 
 
+  private createMailGroup() {
+    this.actionMailGroup = this.formBuilder.group({
+      target: [[]],
+      type: [RuleActionType.mail]
+    });
+    this.actionsGroup.push(this.actionMailGroup);
+  }
 
   ngOnInit(): void {
+    this.actionMailGroup.setValue(this.actions.find(action => action.type === RuleActionType.mail));
   }
 
-  addEmail(email: string) {
-    this.selectedEmailRecipients.push(email);
-    this.selectedEmailRecipients = this.selectedEmailRecipients.slice();
-    this.emailRecipients = this.emailRecipients.filter(mail => mail.localeCompare(email));
-  }
-
-  removeEmail(emailIndex: number) {
-    this.emailRecipients.push(this.selectedEmailRecipients[emailIndex]);
-    this.emailRecipients = this.emailRecipients.slice();
-    this.selectedEmailRecipients.splice(emailIndex, 1);
-    this.emailSelection = null;
-  }
 
   private getHeaderGroup(): FormGroup {
     return this.formBuilder.group({

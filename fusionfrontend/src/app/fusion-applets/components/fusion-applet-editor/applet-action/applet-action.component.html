@@ -56,18 +56,6 @@ under the License.
         </div>
       </div>
     </p-accordionTab>
-
-    <p-accordionTab [disabled]="activeAccordionIndex !== 1" header="Set up Email Notification">
-      <label>Choose Email Recipients *</label>
-      <p-dropdown [options]="emailRecipients" [(ngModel)]="emailSelection" placeholder="Select Email"
-                  (onChange)="addEmail($event.value)"></p-dropdown>
-      <label *ngIf="selectedEmailRecipients?.length > 0">Selected Email Recipients</label>
-      <div class="email-list" *ngFor="let email of selectedEmailRecipients; let i = index">
-        <div class="list-item">
-          {{email}}
-        </div>
-        <app-trash-button (deleteItem)="removeEmail(i)"></app-trash-button>
-      </div>
-    </p-accordionTab>
   </p-accordion>
+  <app-applet-action-mail [emailAction]="actionMailGroup"></app-applet-action-mail>
 </div>
