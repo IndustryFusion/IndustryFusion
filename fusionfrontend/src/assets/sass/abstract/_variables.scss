@@ -14,16 +14,17 @@
  */
 
   /** colors **/
-  $basic-white:   #FFFFFF;
-  $light-grey:    #F8F8F8;
-  $dark-white:    #E6E6E6;
-  $middle-grey:   #B9B9B9;
-  $basic-grey:    #95989A;
-  $slight-grey:   #707070;
-  $regular-grey:  #666666;
-  $dark-grey:     #333333;
-  $dark-gray:     #00000029;
-  $basic-black:   #000000;
+  $basic-white:       #FFFFFF;
+  $light-grey:        #F8F8F8;
+  $dark-white:        #E6E6E6;
+  $middle-grey:       #B9B9B9;
+  $basic-grey:        #95989A;
+  $slight-grey:       #707070;
+  $regular-grey:      #666666;
+  $regular-dark-grey: #455B631A;
+  $dark-grey:         #333333;
+  $dark-gray:         #00000029;
+  $basic-black:       #000000;
 
   $fusion-blue:   #2CA9CE;
   $fusion-red:    #A73737;
@@ -46,7 +47,8 @@
   $black-background: $basic-black 50% 50% no-repeat padding-box;
 
 
-  $dark-box-shadow: 0px 3px 6px $dark-gray;
+  $dark-box-shadow: 0px 3px 6px  $dark-gray;
+  $grey-box-shadow: 0px 4px 16px $regular-dark-grey;
 
   /** checkbox size **/
   $checkbox-height: 16px;

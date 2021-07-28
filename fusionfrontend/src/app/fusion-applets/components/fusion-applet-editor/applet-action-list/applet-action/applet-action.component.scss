@@ -13,8 +13,13 @@
  * under the License.
  */
 
-@import "abstract/variables";
+@import "src/assets/sass/abstract/variables";
+@import "src/assets/sass/base/icons";
+
 .action-panel {
+  h3 {
+    margin: auto 0;
+  }
   .action-panel-wrapper {
     display: flex;
 

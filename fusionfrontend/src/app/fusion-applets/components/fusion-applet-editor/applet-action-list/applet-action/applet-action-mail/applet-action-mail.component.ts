@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { OispService } from '../../../../../services/oisp.service';
+import { OispService } from '../../../../../../services/oisp.service';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -50,7 +50,6 @@ export class AppletActionMailComponent implements OnInit {
   }
 
   getAvaileblRecipients(): string[] {
-    const result = this.emailRecipients.filter(mail => !this.emailAction.get('target').value.includes(mail));
-    return result;
+    return this.emailRecipients.filter(mail => !this.emailAction.get('target').value.includes(mail));
   }
 }

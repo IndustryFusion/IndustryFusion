@@ -13,4 +13,18 @@
  * under the License.
  */
 
-@import "../applet-action.component";
+@import "../fusion-applet-editor.component";
+
+.applet-action-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .applet-action-list-element {
+  }
+}
+
+.center-trigger {
+  padding-left: 6.3rem;
+}

@@ -25,6 +25,7 @@ under the License.
 <p-table #table [value]="rules">
   <ng-template pTemplate="header">
     <tr>
+      <th [style.width.rem]="2"></th>
       <th [style.width.%]="25">AppletName</th>
       <th [style.width.%]="40">Condition Summary</th>
       <th [style.width.%]="10"></th>
@@ -34,7 +35,12 @@ under the License.
   </ng-template>
   <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
     <tr>
+      <td [style.width.rem]="2">
+        <i class="if-mail-icon" *ngIf="hasActionType(rule,RuleActionType.mail)"></i>
+        <i class="if-webhook-icon" *ngIf="hasActionType(rule,RuleActionType.http)"></i>
+      </td>
       <td [style.width.%]="25">
+
         <span class="if-label">{{rule.name}}</span> <br>
         {{rule.description}}
       </td>

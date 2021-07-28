@@ -15,7 +15,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { OispService } from '../../../services/oisp.service';
-import { Rule, RuleStatus } from '../../../services/oisp.model';
+import { Rule, RuleActionType, RuleStatus } from '../../../services/oisp.model';
 import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { CreateFusionAppletComponent } from '../create-fusion-applet/create-fusion-applet.component';
@@ -28,7 +28,7 @@ import { RuleStatusUtil } from '../../util/rule-status-util';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  ItemOptionsMenuType = ItemOptionsMenuType;
+  RuleActionType = RuleActionType;
 
   rules: Rule[];
 
@@ -44,7 +44,10 @@ export class OverviewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.oispService.getAllRules().subscribe(rules => this.rules = this.filterRulesByStatus(rules));
+    this.oispService.getAllRules().subscribe(rules => {
+      this.rules = this.filterRulesByStatus(rules);
+      this.getRuleDetails();
+    });
   }
 
   filterRulesByStatus(rules: Rule[]): Rule[] {
@@ -129,5 +132,15 @@ export class OverviewComponent implements OnInit {
     }
 
     return result;
+  }
+
+  hasActionType(rule: Rule, type: RuleActionType): boolean {
+    return rule.actions.map(action => action.type).includes(type);
+  }
+
+  private getRuleDetails() {
+    for (let i = 0; i < this.rules.length; i++) {
+      this.oispService.getRule(this.rules[i].id).subscribe(rule => this.rules[i] = rule);
+    }
   }
 }

@@ -32,8 +32,10 @@ import { RuleStatusUtil } from './util/rule-status-util';
 import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { AppletActionComponent } from './components/fusion-applet-editor/applet-action/applet-action.component';
-import { AppletActionMailComponent } from './components/fusion-applet-editor/applet-action/applet-action-mail/applet-action-mail.component';
+import { AppletActionComponent } from './components/fusion-applet-editor/applet-action-list/applet-action/applet-action.component';
+import { AppletActionMailComponent } from './components/fusion-applet-editor/applet-action-list/applet-action/applet-action-mail/applet-action-mail.component';
+import { AppletActionWebhookComponent } from './components/fusion-applet-editor/applet-action-list/applet-action/applet-action-webhook/applet-action-webhook.component';
+import { AppletActionListComponent } from './components/fusion-applet-editor/applet-action-list/applet-action-list.component';
 
 
 
@@ -48,6 +50,8 @@ import { AppletActionMailComponent } from './components/fusion-applet-editor/app
     FusionAppletEditorComponent,
     AppletActionComponent,
     AppletActionMailComponent,
+    AppletActionWebhookComponent,
+    AppletActionListComponent,
   ],
   imports: [
     CommonModule,

@@ -30,35 +30,35 @@
   justify-content: center;
   align-items: center;
 
-  .full-width {
-    width: 100%;
-  }
-
-  .center-trigger {
-    padding-left: 6.6rem;
-    button {
-      padding-top: 5px;
-    }
-  }
-
-  .vl {
-    border-left: 3px solid $applet-editor-line-grey;;
-    height: 3rem;
-    left: 50%;
-    margin-left: -1.5px;
-    top: 0;
-  }
-
-  .if-card {
-    padding: 30px;
-    width: 100%;
-    box-shadow: $dark-box-shadow;
-    border-radius: 20px;
-    opacity: 1;
-  }
 
 }
 
+.full-width {
+  width: 100%;
+}
+
+.center-trigger {
+  padding-left: 6.6rem;
+  button {
+    padding-top: 5px;
+  }
+}
+
+.vl {
+  border-left: 3px solid $applet-editor-line-grey;;
+  height: 3rem;
+  left: 50%;
+  margin-left: -1.5px;
+  top: 0;
+}
+
+.if-card {
+  padding: 30px;
+  width: 100%;
+  box-shadow: $dark-box-shadow;
+  border-radius: 20px;
+  opacity: 1;
+}
 
 :host ::ng-deep .p-accordion-tab {
   padding: 1rem 1rem 1rem 2rem;
@@ -79,9 +79,8 @@
 }
 
 :host ::ng-deep .p-multiselect-token {
-  background: var(--highlighted) 0% 0% no-repeat padding-box !important;
   background: $highlighted 0% 0% no-repeat padding-box !important;
-  box-shadow: 0px 4px 16px #455B631A !important;
+  box-shadow: $grey-box-shadow !important;
   border-radius: 15px !important;
 }
 
