@@ -14,9 +14,9 @@ under the License.
 -->
 
 <p-accordion class="action-panel" [multiple]="false">
-  <p-accordionTab header="Set up Webhook">
+  <p-accordionTab header="Set up Webhook" [formGroup]="webhookGroup">
     <label>Webhook URL *</label>
-    <input pInputText class="full-width"/>
+    <input formControlName="target" pInputText class="full-width"/>
     <label class="if-label">Message Headers</label>
     <div class="p-grid" [formGroup]="activeHeaderGroup">
       <div class="p-col-4">
@@ -32,11 +32,11 @@ under the License.
           <i class="pi pi-plus"></i></button>
       </div>
     </div>
-    <label *ngIf="headers?.size > 0" class="if-label">Selected Mesage Headers</label>
+    <label *ngIf="getHeaders()?.size > 0" class="if-label">Selected Mesage Headers</label>
     <div class="p-grid">
-      <div class="p-grid email-list full-width" *ngFor="let headerKey of headers.keys()">
+      <div class="p-grid email-list full-width" *ngFor="let headerKey of getHeaders().keys()">
         <div class="list-item p-col-4">{{headerKey}}</div>
-        <div class="list-item p-col-6">{{headers.get(headerKey)}}</div>
+        <div class="list-item p-col-6">{{getHeaders().get(headerKey)}}</div>
         <div class="p-col-1"><app-trash-button (deleteItem)="removeHeader(headerKey)"></app-trash-button></div>
       </div>
     </div>

@@ -15,7 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { RuleAction, RuleActionType } from '../../../../services/oisp.model';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-applet-action-list',
@@ -26,38 +26,45 @@ export class AppletActionListComponent implements OnInit {
 
   @Input()
   actions: RuleAction[] = [];
-
-  private actionMailGroup: FormGroup;
   actionsArray: FormArray = new FormArray([]);
 
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.createMailGroup();
-    this.actionMailGroup.setValue(this.actions.find(action => action.type === RuleActionType.mail));
+    this.createMailGroup().setValue(this.actions.find(action => action.type === RuleActionType.mail));
     this.actions.filter(action => action.type === RuleActionType.http).forEach(action => {
-      const formGroup = this.createWebhookGroup();
-      formGroup.setValue(action);
+      action.http_headers = new Map<string, string>(Object.entries(action.http_headers));
+      this.createWebhookGroup().setValue(action);
     });
   }
 
   private createMailGroup(): FormGroup {
-    this.actionMailGroup = this.formBuilder.group({
-      target: [[]],
-      type: [RuleActionType.mail, [Validators.required]]
-    });
-    this.actionsArray.push(this.actionMailGroup);
-    return this.actionMailGroup;
-  }
-
-  private createWebhookGroup(): FormGroup {
-    const formGroup = this.formBuilder.group({
-      target: [[]],
-      type: [RuleActionType.http, [Validators.required]],
-      http_headers: [new Map<string, string>()]
-    });
+    const formGroup = this.createActionGroup();
+    formGroup.get('type').setValue(RuleActionType.mail);
     this.actionsArray.push(formGroup);
     return formGroup;
   }
 
+  private createWebhookGroup(): FormGroup {
+    const formGroup = this.createActionGroup();
+    formGroup.get('type').setValue(RuleActionType.http);
+    formGroup.addControl('http_headers', new FormControl(new Map<string, string>()));
+    this.actionsArray.push(formGroup);
+    return formGroup;
+  }
+
+  private createActionGroup(): FormGroup {
+    return this.formBuilder.group({
+      target: [[]],
+      type: [, [Validators.required]],
+    });
+  }
+
+  addAction() {
+    this.actionsArray.push(this.createActionGroup());
+  }
+
+  removeAction(index: number) {
+    this.actionsArray.removeAt(index);
+  }
 }

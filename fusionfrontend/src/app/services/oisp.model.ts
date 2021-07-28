@@ -103,7 +103,8 @@ export class Rule {
 export class RuleAction {
   type: RuleActionType;
   target: string[];
-  httpHeaders: any[];
+  // tslint:disable-next-line:variable-name
+  http_headers: Map<string, string>;
 }
 
 export enum RuleStatus {

@@ -14,11 +14,6 @@ under the License.
 -->
 
 <div class="action-panel">
-  <div class="p-grid">
-    <div class="if-label p-col-2">
-      2. Action
-    </div>
-  </div>
   <div class="action-panel-wrapper">
     <div *ngIf="showActionTypePanel(RuleActionType.mail)" class="action-panel p-grid">
       <i class="if-mail-icon"></i><h3>Email</h3>
@@ -29,6 +24,6 @@ under the License.
       <p>Fires a defined message format to a specified webhook.</p>
     </div>
   </div>
-  <app-applet-action-webhook *ngIf="isActionType(RuleActionType.http)"></app-applet-action-webhook>
+  <app-applet-action-webhook *ngIf="isActionType(RuleActionType.http)" [webhookGroup]="actionGroup"></app-applet-action-webhook>
   <app-applet-action-mail *ngIf="isActionType(RuleActionType.mail)" [emailAction]="actionGroup"></app-applet-action-mail>
 </div>

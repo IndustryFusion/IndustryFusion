@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -22,9 +22,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./applet-action-webhook.component.scss']
 })
 export class AppletActionWebhookComponent implements OnInit {
+  @Input()
+  webhookGroup: FormGroup;
 
   activeHeaderGroup: FormGroup;
-  headers: Map<string, string> = new Map<string, string>();
 
   constructor(private formBuilder: FormBuilder) {
     this.activeHeaderGroup = this.getHeaderGroup();
@@ -35,12 +36,12 @@ export class AppletActionWebhookComponent implements OnInit {
 
   addHeader() {
     const rawValue: { name: string, value: string} = this.activeHeaderGroup.getRawValue();
-    this.headers.set(rawValue.name, rawValue.value);
+    this.getHeaders().set(rawValue.name, rawValue.value);
     this.activeHeaderGroup = this.getHeaderGroup();
   }
 
   removeHeader(headerKey: string) {
-    this.headers.delete(headerKey);
+    this.getHeaders().delete(headerKey);
   }
 
   private getHeaderGroup(): FormGroup {
@@ -48,5 +49,9 @@ export class AppletActionWebhookComponent implements OnInit {
       name: [, [Validators.required]],
       value: []
     });
+  }
+
+  getHeaders(): Map<string, string> {
+    return this.webhookGroup.get('http_headers').value as Map<string, string>;
   }
 }
