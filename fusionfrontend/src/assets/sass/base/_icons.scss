@@ -1,18 +1,29 @@
-
-.if-mail-icon {
-  background: url(/assets/icons/mail.svg);
+.if-icon {
   display: inline-block;
   width: 2rem;
   height: 2rem;
-  background-size: contain;
+  background-size: contain !important;
   align-items: center;
 }
 
-.if-webhook-icon {
+.if-icon-mail {
+  @extend .if-icon;
+  background: url(/assets/icons/mail.svg);
+}
+
+.if-icon-webhook {
+  @extend .if-icon;
   background: url(/assets/icons/webhook.svg);
-  display: inline-block;
-  width: 2rem;
-  height: 2rem;
-  background-size: contain;
-  align-items: center;
+}
+
+.if-icon-actions {
+  @extend .if-icon;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: url(/assets/icons/actions.svg);
+}
+
+.if-icon-machine {
+  @extend .if-icon;
+  background: url(/assets/icons/machine.svg);
 }

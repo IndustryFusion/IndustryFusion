@@ -36,8 +36,8 @@ under the License.
   <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
     <tr>
       <td [style.width.rem]="2">
-        <i class="if-mail-icon" *ngIf="hasActionType(rule,RuleActionType.mail)"></i>
-        <i class="if-webhook-icon" *ngIf="hasActionType(rule,RuleActionType.http)"></i>
+        <i class="if-icon-mail" *ngIf="hasActionType(rule,RuleActionType.mail)"></i>
+        <i class="if-icon-webhook" *ngIf="hasActionType(rule,RuleActionType.http)"></i>
       </td>
       <td [style.width.%]="25">
 

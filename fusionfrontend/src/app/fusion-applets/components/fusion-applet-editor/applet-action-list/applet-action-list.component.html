@@ -17,8 +17,11 @@ under the License.
   <div class="applet-action-list" *ngFor="let actionGroup of actionsArray.controls; let i = index">
     <div class="if-card applet-action-list-element">
       <div class="p-grid p-justify-between">
-        <div class="if-label p-col-2">
+        <div class="flex-grid">
+        <i class="if-icon-actions"></i>
+        <div class="if-label p-col">
           {{i+1}}. Action
+        </div>
         </div>
         <div ><i (click)="removeAction(i)" class="pi pi-times-circle"></i></div>
       </div>
