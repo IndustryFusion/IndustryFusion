@@ -94,8 +94,22 @@ export class Rule {
   synchronizationStatus: SynchronizationStatus;
   population: { };
   conditions: {
-    operator: string,
-    values: string[]
+    operator: ConditionOperator,
+    values: {
+     component: {
+       name: string,
+       dataType: ComponentDataType,
+       cid?: string,
+     },
+      conditionSequence: number,
+      type: ConditionType,
+      operator: ConditionValueOperator,
+      values: string[],
+      timeLimit: number,
+      baselineCalculationLevel: BaselineCalculationLevel,
+      baselineSecondsBack: number,
+      baselineMinimalInstances: number,
+    }[]
   };
   actions: RuleAction[];
 }
@@ -104,7 +118,7 @@ export class RuleAction {
   type: RuleActionType;
   target: string[];
   // tslint:disable-next-line:variable-name
-  http_headers: Map<string, string>;
+  http_headers: [string, string][];
 }
 
 export enum RuleStatus {
@@ -147,13 +161,24 @@ export class ComponentType {
   version: string;
   default: boolean;
   type: string;
-  dataType: string;
+  dataType: ComponentDataType;
   format: string;
   min: number;
   max: number;
   measureunit: string;
   display: string;
   href: string;
+}
+
+export enum ComponentDataType {
+  Number = 'Number',
+  String = 'String',
+  Boolean = 'Boolean',
+  ByteArray = 'ByteArray',
+}
+
+export enum BaselineCalculationLevel {
+  'Device level' = 'Device level',
 }
 
 export class DeviceComponent {
@@ -194,6 +219,11 @@ export function displayConstionType(type: ConditionType): string {
 }
 
 export enum ConditionOperator {
+  AND = 'AND',
+  OR = 'OR',
+}
+
+export enum ConditionValueOperator {
   '>' = '>',
   '<' = '<',
   '<=' = '<=',

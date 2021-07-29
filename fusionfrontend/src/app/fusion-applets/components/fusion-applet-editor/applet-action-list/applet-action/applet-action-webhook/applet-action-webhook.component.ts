@@ -13,8 +13,9 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { RuleAction } from '../../../../../../services/oisp.model';
 
 @Component({
   selector: 'app-applet-action-webhook',
@@ -25,10 +26,14 @@ export class AppletActionWebhookComponent implements OnInit {
   @Input()
   webhookGroup: FormGroup;
 
+  @Output()
+  saveAction = new EventEmitter<RuleAction>();
+
   activeHeaderGroup: FormGroup;
+  activeAccordionIndex: number;
 
   constructor(private formBuilder: FormBuilder) {
-    this.activeHeaderGroup = this.getHeaderGroup();
+    this.activeHeaderGroup = this.getNewHeaderGroup();
   }
 
   ngOnInit(): void {
@@ -36,22 +41,31 @@ export class AppletActionWebhookComponent implements OnInit {
 
   addHeader() {
     const rawValue: { name: string, value: string} = this.activeHeaderGroup.getRawValue();
-    this.getHeaders().set(rawValue.name, rawValue.value);
-    this.activeHeaderGroup = this.getHeaderGroup();
+    this.getHeaders()[rawValue.name] = rawValue.value;
+    this.activeHeaderGroup = this.getNewHeaderGroup();
   }
 
   removeHeader(headerKey: string) {
-    this.getHeaders().delete(headerKey);
+    delete this.getHeaders()[headerKey];
   }
 
-  private getHeaderGroup(): FormGroup {
+  private getNewHeaderGroup(): FormGroup {
     return this.formBuilder.group({
       name: [, [Validators.required]],
       value: []
     });
   }
 
-  getHeaders(): Map<string, string> {
-    return this.webhookGroup.get('http_headers').value as Map<string, string>;
+  getHeaders() {
+    if (!this.webhookGroup.get('http_headers')) {
+      this.webhookGroup.addControl('http_headers', new FormControl());
+      this.webhookGroup.get('http_headers').setValue(new Object());
+    }
+    return this.webhookGroup.get('http_headers').value;
+  }
+
+  saveWebhookAction() {
+    this.activeAccordionIndex = 1;
+    this.saveAction.emit(this.webhookGroup.getRawValue());
   }
 }

@@ -17,11 +17,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OispService } from '../../../services/oisp.service';
 import {
-  Device,
-  Rule,
-  RuleResetType,
+  ConditionValueOperator,
   ConditionType,
-  displayConstionType, ConditionOperator
+  Device,
+  displayConstionType,
+  Rule,
+  RuleAction,
+  RuleResetType,
 } from '../../../services/oisp.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { EnumHelpers } from '../../../common/utils/enum-helpers';
@@ -94,7 +96,7 @@ export class FusionAppletEditorComponent implements OnInit {
   getConditionOperaterDropdownValue(): SelectItem[] {
     const result = [];
 
-    for (const element of this.enumHelpers.getIterableArray(ConditionOperator)) {
+    for (const element of this.enumHelpers.getIterableArray(ConditionValueOperator)) {
       result.push({
         label: element,
         value: element
@@ -120,5 +122,14 @@ export class FusionAppletEditorComponent implements OnInit {
         label: 'Seconds',
         value: 'seconds'
       }];
+  }
+
+  saveActions(actions: RuleAction[]) {
+    this.rule.actions = actions;
+/*    this.rule.type = RuleType.Regular;
+    this.rule.conditions.operator = 'AND';
+    this.rule.conditions.values = ['42'];
+    this.oispService.setRuleStatus(this.rule.id, RuleStatus.OnHold).subscribe(rule => this.rule = rule);*/
+    this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
   }
 }

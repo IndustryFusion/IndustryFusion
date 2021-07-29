@@ -21,14 +21,19 @@ import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
-  Aggregator, ComponentType, Device,
+  Aggregator,
+  ComponentType,
+  ConditionOperator,
+  Device,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
   OispRequestWithAggregation,
-  OispResponse, OISPUser,
+  OispResponse,
+  OISPUser,
   PointWithId,
   Rule,
+  RuleAction,
   RuleStatus,
   Sampling,
   Series
@@ -116,6 +121,33 @@ export class OispService {
   createRuleDraft(ruleDraft: Rule): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/draft`;
     return this.http.put<Rule>(url, ruleDraft, this.httpOptions);
+  }
+
+  updateRule(ruleId: string, rule: Rule): Observable<Rule> {
+    console.log(ruleId, rule);
+    rule = JSON.parse(JSON.stringify(rule));
+
+    rule.conditions.operator = ConditionOperator.OR;
+    rule.conditions.values.map( conditionValue => {
+      delete conditionValue[`conditionSequence`];
+    });
+
+    rule.actions = rule.actions.map<RuleAction>( (ruleAction: RuleAction) => {
+      if (typeof ruleAction.target  === 'string') {
+        ruleAction.target = [ruleAction.target];
+      }
+      return ruleAction;
+    });
+
+    delete rule[`id`];
+    delete rule[`domainId`];
+    delete rule[`owner`];
+    delete rule[`naturalLanguage`];
+    delete rule[`creationDate`];
+    delete rule[`lastUpdateDate`];
+
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
+    return this.http.put<Rule>(url, rule, this.httpOptions);
   }
 
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {

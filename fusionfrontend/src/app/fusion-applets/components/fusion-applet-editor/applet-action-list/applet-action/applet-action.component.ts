@@ -13,9 +13,9 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { RuleActionType } from '../../../../../services/oisp.model';
+import { RuleAction, RuleActionType } from '../../../../../services/oisp.model';
 
 @Component({
   selector: 'app-applet-action',
@@ -27,6 +27,9 @@ export class AppletActionComponent implements OnInit {
 
   @Input()
   actionGroup: FormGroup;
+
+  @Output()
+  saveAction = new EventEmitter<RuleAction>();
 
 
   constructor() {
@@ -43,5 +46,15 @@ export class AppletActionComponent implements OnInit {
   isActionType(type: RuleActionType): boolean {
     const actualType = this.actionGroup.get('type').value;
     return actualType === type;
+  }
+
+  setActionType(type: RuleActionType) {
+    if (!this.actionGroup.get('type').value) {
+      this.actionGroup.get('type').setValue(type);
+    }
+  }
+
+  saveThisAction(action: RuleAction) {
+    this.saveAction.emit(action);
   }
 }

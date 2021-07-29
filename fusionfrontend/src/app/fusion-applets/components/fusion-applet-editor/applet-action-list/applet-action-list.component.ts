@@ -13,9 +13,9 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { RuleAction, RuleActionType } from '../../../../services/oisp.model';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-applet-action-list',
@@ -28,32 +28,27 @@ export class AppletActionListComponent implements OnInit {
   actions: RuleAction[] = [];
   actionsArray: FormArray = new FormArray([]);
 
+  @Output()
+  save = new EventEmitter<RuleAction[]>();
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.createMailGroup().setValue(this.actions.find(action => action.type === RuleActionType.mail));
-    this.actions.filter(action => action.type === RuleActionType.http).forEach(action => {
-      action.http_headers = new Map<string, string>(Object.entries(action.http_headers));
-      this.createWebhookGroup().setValue(action);
+    this.createActionGroups();
+  }
+
+  private createActionGroups() {
+    this.actions.forEach(action => {
+      const formGroup = this.createNewActionGroup();
+      if (action.type === RuleActionType.http) {
+        formGroup.addControl('http_headers', this.formBuilder.group(action.http_headers));
+      }
+      formGroup.setValue(action);
+      this.actionsArray.push(formGroup);
     });
   }
 
-  private createMailGroup(): FormGroup {
-    const formGroup = this.createActionGroup();
-    formGroup.get('type').setValue(RuleActionType.mail);
-    this.actionsArray.push(formGroup);
-    return formGroup;
-  }
-
-  private createWebhookGroup(): FormGroup {
-    const formGroup = this.createActionGroup();
-    formGroup.get('type').setValue(RuleActionType.http);
-    formGroup.addControl('http_headers', new FormControl(new Map<string, string>()));
-    this.actionsArray.push(formGroup);
-    return formGroup;
-  }
-
-  private createActionGroup(): FormGroup {
+  private createNewActionGroup(): FormGroup {
     return this.formBuilder.group({
       target: [[]],
       type: [, [Validators.required]],
@@ -61,10 +56,16 @@ export class AppletActionListComponent implements OnInit {
   }
 
   addAction() {
-    this.actionsArray.push(this.createActionGroup());
+    this.actionsArray.push(this.createNewActionGroup());
   }
 
   removeAction(index: number) {
     this.actionsArray.removeAt(index);
+  }
+
+  saveAction() {
+    if (this.actionsArray.valid) {
+      this.save.emit(this.actionsArray.getRawValue());
+    }
   }
 }

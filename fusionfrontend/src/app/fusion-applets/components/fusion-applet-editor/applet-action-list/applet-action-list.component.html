@@ -25,7 +25,7 @@ under the License.
         </div>
         <div ><i (click)="removeAction(i)" class="pi pi-times-circle"></i></div>
       </div>
-      <app-applet-action [actionGroup]="actionGroup"></app-applet-action>
+      <app-applet-action (saveAction)="saveAction()" [actionGroup]="actionGroup"></app-applet-action>
     </div>
     <div class="vl"></div>
   </div>

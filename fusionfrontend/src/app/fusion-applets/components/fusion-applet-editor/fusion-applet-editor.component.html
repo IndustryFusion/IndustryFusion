@@ -82,5 +82,5 @@ under the License.
     <button><i class="pi pi-plus "></i></button> Create new Trigger
   </div>
   <div class="vl"></div>
-  <app-applet-action-list class="full-width" [actions]="rule.actions"></app-applet-action-list>
+  <app-applet-action-list class="full-width" (save)="saveActions($event)" [actions]="rule.actions"></app-applet-action-list>
 </div>
