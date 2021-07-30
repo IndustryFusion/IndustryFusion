@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AssetDetailsWithFields } from '../../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { FilterOptions } from '../assets-list.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { FilterOptions } from '../assets-list.component';
 export class AssetsListHeaderComponent implements OnInit {
 
   @Input()
-  assets: AssetDetailsWithFields[];
+  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
 
   @Output()
   filterEvent = new EventEmitter<{ [key: string]: string[]; }>();

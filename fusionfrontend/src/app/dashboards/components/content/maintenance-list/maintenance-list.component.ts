@@ -14,7 +14,7 @@
  */
 
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { AssetDetailsWithFields, DashboardFilterModalType } from 'src/app/store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields, DashboardFilterModalType } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -42,7 +42,7 @@ const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
   @Input()
-  assetDetailsWithFields: AssetDetailsWithFields[];
+  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   @Input()
   factorySites: FactorySite[];
   @Input()
@@ -50,7 +50,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   @Input()
   assetTypes: AssetType[];
 
-  displayedAssets: Array<AssetDetailsWithFields> = [];
+  displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   faFilter = faFilter;
   faSearch = faSearch;
 
@@ -82,7 +82,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.displayedAssets = this.assetDetailsWithFields;
+    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
   }
 
   searchAssets() {
@@ -151,23 +151,13 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   filterAssets() {
-    const factorySiteNames = this.selectedFactorySites.map(factorySite => factorySite.name);
-    const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
-    const companyNames = this.selectedCompanies.map(company => company.description);
-    this.displayedAssets = this.assetDetailsWithFields;
+    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
 
-    if (this.searchText) {
-      this.displayedAssets = this.displayedAssets.filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
-    }
-    if (factorySiteNames.length > 0) {
-      this.displayedAssets = this.displayedAssets.filter(asset => factorySiteNames.includes(asset.factorySiteName));
-    }
-    if (assetTypeNames.length > 0) {
-      this.displayedAssets = this.displayedAssets.filter(asset => assetTypeNames.includes(asset.category));
-    }
-    if (companyNames.length > 0) {
-      this.displayedAssets = this.displayedAssets.filter(asset => companyNames.includes(asset.manufacturer));
-    }
+    this.filterBySearchText();
+    this.filterByFactorySite();
+    this.filterByAssetType();
+    this.filterByCompany();
+
     if (this.selectedMaintenanceDue.length > 0) {
       if (this.selectedMaintenanceDue.length === 2) {
         this.filterAssetsByTwoMaintenanceValues();
@@ -175,6 +165,35 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       else if (this.selectedMaintenanceDue.length === 1) {
         this.filterAssetsByOneMaintenanceValue();
  }
+    }
+  }
+
+  private filterBySearchText() {
+    if (this.searchText) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets
+        .filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
+    }
+  }
+
+  private filterByCompany() {
+    const companyNames = this.selectedCompanies.map(company => company.description);
+    if (companyNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => companyNames.includes(asset.manufacturer));
+    }
+  }
+
+  private filterByAssetType() {
+    const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
+    if (assetTypeNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => assetTypeNames.includes(asset.category));
+    }
+  }
+
+  private filterByFactorySite() {
+    const factorySiteNames = this.selectedFactorySites.map(factorySite => factorySite.name);
+    if (factorySiteNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets
+        .filter(asset => factorySiteNames.includes(asset.factorySiteName));
     }
   }
 
@@ -203,7 +222,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   filterAssetsLowerThanMaintenanceValue(value: number) {
-    this.displayedAssets = this.displayedAssets.filter(asset => {
+    this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
       this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
@@ -212,7 +231,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   filterAssetsGreaterThanMaintenanceValue(value: number) {
-    this.displayedAssets = this.displayedAssets.filter(asset => {
+    this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
       this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > value;
@@ -221,7 +240,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   filterAssetOutsideTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
-    this.displayedAssets = this.displayedAssets.filter(asset => {
+    this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
       this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < lowerValue ||
@@ -231,7 +250,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   filterAssetsBetweenTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
-    this.displayedAssets = this.displayedAssets.filter(asset => {
+    this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
       this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < greaterValue &&

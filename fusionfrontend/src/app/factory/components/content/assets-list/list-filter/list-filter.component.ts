@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { AssetDetailsWithFields } from '../../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash';
 import { FilterOptions } from '../assets-list.component';
@@ -38,7 +38,7 @@ export class ListFilterComponent implements OnInit, OnChanges {
   attributeName: string;
 
   @Input()
-  assets: AssetDetailsWithFields[];
+  assets: FactoryAssetDetailsWithFields[];
 
   @Output()
   filterEvent = new EventEmitter<FilterOptions>();

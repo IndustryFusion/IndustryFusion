@@ -23,7 +23,7 @@ import { FieldDetails, FieldType } from '../store/field-details/field-details.mo
 import {
   Aggregator,
   ComponentType,
-  ConditionOperator,
+  ConditionType,
   Device,
   Metrics,
   MetricsWithAggregation,
@@ -127,9 +127,13 @@ export class OispService {
     console.log(ruleId, rule);
     rule = JSON.parse(JSON.stringify(rule));
 
-    rule.conditions.operator = ConditionOperator.OR;
     rule.conditions.values.map( conditionValue => {
       delete conditionValue[`conditionSequence`];
+      if (conditionValue.type !== ConditionType.statistics) {
+        delete conditionValue[`baselineCalculationLevel`];
+        delete conditionValue[`baselineSecondsBack`];
+        delete conditionValue[`baselineMinimalInstances`];
+      }
     });
 
     rule.actions = rule.actions.map<RuleAction>( (ruleAction: RuleAction) => {

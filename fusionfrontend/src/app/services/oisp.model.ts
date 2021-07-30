@@ -93,24 +93,7 @@ export class Rule {
   status: RuleStatus;
   synchronizationStatus: SynchronizationStatus;
   population: { };
-  conditions: {
-    operator: ConditionOperator,
-    values: {
-     component: {
-       name: string,
-       dataType: ComponentDataType,
-       cid?: string,
-     },
-      conditionSequence: number,
-      type: ConditionType,
-      operator: ConditionValueOperator,
-      values: string[],
-      timeLimit: number,
-      baselineCalculationLevel: BaselineCalculationLevel,
-      baselineSecondsBack: number,
-      baselineMinimalInstances: number,
-    }[]
-  };
+  conditions: RuleConditions;
   actions: RuleAction[];
 }
 
@@ -218,7 +201,7 @@ export function displayConstionType(type: ConditionType): string {
   }
 }
 
-export enum ConditionOperator {
+export enum ConditionsOperator {
   AND = 'AND',
   OR = 'OR',
 }
@@ -233,6 +216,29 @@ export enum ConditionValueOperator {
   'Between' = 'Between',
   'Not Between' = 'Not Between',
   'Like' = 'Like',
+}
+
+export class RuleConditions {
+    operator: ConditionsOperator;
+    values: ConditionValue[];
+}
+
+export class ConditionValue {
+  component: ConditionValueComponent;
+  conditionSequence?: number;
+  type: ConditionType;
+  operator: ConditionValueOperator;
+  values: string[];
+  timeLimit?: number;
+  baselineCalculationLevel?: BaselineCalculationLevel;
+  baselineSecondsBack?: number;
+  baselineMinimalInstances?: number;
+}
+
+export class ConditionValueComponent {
+  name?: string;
+  dataType: ComponentDataType;
+  cid?: string;
 }
 
 export class OISPUser {

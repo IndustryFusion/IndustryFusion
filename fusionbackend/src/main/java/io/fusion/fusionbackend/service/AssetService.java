@@ -191,6 +191,19 @@ public class AssetService {
         }
 
         asset.getFieldInstances().forEach(fieldInstanceService::validate);
+
+        validateSubsystems(asset);
+    }
+
+    private void validateSubsystems(Asset asset) {
+        for (Asset subsystem : asset.getSubsystems()) {
+            if (subsystem.getId().equals(asset.getId())) {
+                throw new RuntimeException("An asset is not allowed to be a subsystem of itself.");
+            }
+            if (subsystem.getAssetSeries().getId().equals(asset.getAssetSeries().getId())) {
+                throw new RuntimeException("A subsystem has to be of another asset series than the parent asset.");
+            }
+        }
     }
 
     public void deleteAsset(final Long companyId, final Long assetId) {
@@ -247,6 +260,8 @@ public class AssetService {
         final Asset targetAsset = getAssetOverAssetSeries(companyId, assetSeriesId, assetId);
 
         targetAsset.copyFrom(sourceAsset);
+
+        validate(targetAsset);
 
         return targetAsset;
     }
@@ -326,5 +341,9 @@ public class AssetService {
                 .filter(field -> field.getId().equals(fieldInstanceId))
                 .findAny()
                 .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public Set<Asset> findSubsystemCandidates(Long companyId, Long parentAssetSeriesId) {
+        return assetRepository.findSubsystemCandidates(parentAssetSeriesId, companyId);
     }
 }

@@ -14,69 +14,20 @@ under the License.
 -->
 
 <div class="if-fusion-applet-editor" *ngIf="rule">
-  <div class="p-grid p-jc-between">
+  <div class="p-grid p-jc-between full-width">
+    <button (click)="save()">Save Valid:{{ruleGroup.valid}}</button>
     <p class="if-title p-col-">{{rule.name}}</p>
     <p-inputSwitch class="p-col-1"
       [disabled]="!ruleStatusUtil.canActivated(rule.status)"
       (ngModelChange)="changeStatus($event)"
       [ngModel]="ruleStatusUtil.isActive(rule.status)"
     ></p-inputSwitch>
-  </div>
-  <div class="if-card">
-    <div class="p-grid">
-      <i class="if-icon-machine"></i>
-      <div class="if-label p-col-2">
-        1. Trigger
-      </div>
-      <div class="p-offset-5 p-col-4">
-        <p-checkbox [ngModel]="rule.resetType === RuleResetType.Automatic"></p-checkbox>
-        Enable automatic Reset
-      </div>
-      <app-item-options-menu class="p-col-1"></app-item-options-menu>
+    <div class="p-col-4">
+      <p-checkbox binary="true" [ngModel]="rule.resetType === RuleResetType.Automatic" (onChange)="setResetTypeAutomatic($event.checked)"></p-checkbox>
+      Enable automatic Reset
     </div>
-      <p-accordion [multiple]="false" [(activeIndex)]="activeAccordionIndex" >
-        <p-accordionTab header="Choose Trigger Asset">
-            <label class="if-label">Asset *</label>
-            <p-multiSelect class="full-width" [required]="true" [options]="devices" [optionLabel]="'name'"
-                           [(ngModel)]="selectedDevice" display="chip"></p-multiSelect>
-            <button class="if-button button-primary full-width"
-                    [disabled]="selectedDevice.length == 0" (click)="activeAccordionIndex = 1"
-            >Continue</button>
-        </p-accordionTab>
-        <p-accordionTab [disabled]="activeAccordionIndex !== 1" *ngIf="selectedDevice" header="Setup Condition">
-          <label>Choose Metric *</label>
-          <p-dropdown [options]="mapDeviceToComponent(selectedDevice)" [optionLabel]="'label'"></p-dropdown>
-          <label>Choose Condition Type *</label>
-          <p-dropdown [options]="contitionTypeDropdownValue" [optionValue]="'value'" [(ngModel)]="conditionType" [optionLabel]="'label'"></p-dropdown>
-          <label>Choose Condition *</label>
-          <p-dropdown [options]="conditionOperatorDropdownValue" [optionLabel]="'label'"></p-dropdown>
-          <label>Enter Value *</label>
-          <input pInputText class="full-width" />
-          <div *ngIf="conditionType === ConditionType.time">
-            <span class="full-width">Define Duration</span><br>
-            <label>Value *</label>
-            <input pInputText class="full-width" />
-            <label>Time *</label>
-            <p-dropdown [options]="conditionTimeDropdownValue" [optionLabel]="'label'"></p-dropdown>
-          </div>
-          <div *ngIf="conditionType === ConditionType.statistics">
-            <div class="input-div">
-              <label class="if-label">Calculate the control limit using</label>
-                  <p-radioButton [value]="false" label="2 Standard deviation" name="limitGroup" inputId="limitGroup1" ></p-radioButton>
-                  <p-radioButton [value]="true"  label="3 Standard deviation" name="limitGroup" inputId="limitGroup2" ></p-radioButton>
-            </div>
-            <span class="full-width">Average & Standard Deviation Baseline</span><br>
-            <label>Value *</label>
-            <input pInputText class="full-width" />
-            <label>Time *</label>
-            <p-dropdown [options]="conditionTimeDropdownValue" [optionLabel]="'label'"></p-dropdown>
-            <span class="full-width">Minimal Instances for Calculation</span><br>
-            <label>Value *</label>
-            <input pInputText class="full-width" />
-          </div>
-        </p-accordionTab>
-      </p-accordion>
   </div>
+  <app-applet-conditions [ruleGroup]="ruleGroup" [conditions]="rule.conditions"></app-applet-conditions>
   <div class="vl"></div>
   <div class="center-trigger">
     <button><i class="pi pi-plus "></i></button> Create new Trigger

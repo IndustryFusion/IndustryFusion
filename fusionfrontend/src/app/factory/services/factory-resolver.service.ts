@@ -34,9 +34,9 @@ import { FactorySiteService } from 'src/app/store/factory-site/factory-site.serv
 import { Room } from 'src/app/store/room/room.model';
 import { RoomQuery } from 'src/app/store/room/room.query';
 import { RoomService } from 'src/app/store/room/room.service';
-import { AssetDetailsWithFields } from '../../store/asset-details/asset-details.model';
-import { AssetDetailsQuery } from '../../store/asset-details/asset-details.query';
-import { AssetDetailsService } from '../../store/asset-details/asset-details.service';
+import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsQuery } from '../../store/factory-asset-details/factory-asset-details.query';
+import { FactoryAssetDetailsService } from '../../store/factory-asset-details/factory-asset-details.service';
 import { FactoryManagerPageType, RouteData } from '../factory-routing.model';
 import { AssetSeriesDetails } from '../../store/asset-series-details/asset-series-details.model';
 import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details.query';
@@ -55,7 +55,7 @@ export class FactoryResolver {
   public room$: Observable<Room>;
   public assetSeries$: Observable<AssetSeriesDetails[]>;
   public assets$: Observable<Asset[]>;
-  public assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
+  public assetsWithDetailsAndFields$: Observable<FactoryAssetDetailsWithFields[]>;
   public assetsWithFields$: Observable<AssetWithFields[]>;
   public asset$: Observable<Asset>;
   public assetWithFields$: Observable<AssetWithFields>;
@@ -74,8 +74,8 @@ export class FactoryResolver {
     private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
     private assetService: AssetService,
     private assetQuery: AssetQuery,
-    private assetDetailsService: AssetDetailsService,
-    private assetDetailsQuery: AssetDetailsQuery,
+    private assetDetailsService: FactoryAssetDetailsService,
+    private assetDetailsQuery: FactoryAssetDetailsQuery,
     private fieldService: FieldDetailsService,
     private fieldQuery: FieldDetailsQuery,
     private factoryComposedQuery: FactoryComposedQuery,

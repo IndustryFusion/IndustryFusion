@@ -24,7 +24,7 @@ import { Company } from 'src/app/store/company/company.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { Room } from 'src/app/store/room/room.model';
-import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetails, FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetService } from '../../../../store/asset/asset.service';
 import { RoomService } from '../../../../store/room/room.service';
@@ -42,7 +42,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
   rooms$: Observable<Room[]>;
   allRoomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
-  assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
+  factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   selectedIds: ID[];
   companyId: ID;
   createdAssetDetailsId: ID;
@@ -67,7 +67,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     this.allRoomsOfFactorySite$ = this.factoryResolver.allRoomsOfFactorySite$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
-    this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
   }
 
   ngOnDestroy() {
@@ -77,7 +77,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     this.selectedIds = Array.from(selectedAssetIds.values());
   }
 
-  updateAssetData(event: AssetDetails) {
+  updateAssetData(event: FactoryAssetDetails) {
     event.id = event.id ? event.id : this.createdAssetDetailsId;
     event.companyId = this.companyId;
     this.assetService.updateCompanyAsset(this.companyId, event).subscribe(
@@ -93,9 +93,9 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateRoom(event: [Room, AssetDetails]) {
+  updateRoom(event: [Room, FactoryAssetDetails]) {
     const oldRoom: Room = event[0];
-    const assetDetails: AssetDetails = event[1];
+    const assetDetails: FactoryAssetDetails = event[1];
 
     assetDetails.id = assetDetails.id ? assetDetails.id : this.createdAssetDetailsId;
     this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(

@@ -27,9 +27,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.HashSet;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -771,7 +772,7 @@ class FusionbackendApplicationTests {
                 asset, accessTokenFleetManAirist);
 
         transferFleetAssetToFactoryAsset(assetRoomEastStruumpFabId, assetSeriesAiristGasSupplyId,
-                                              companyAiristMachId, companyStruumpFabId, accessTokenFleetManAirist);
+                companyAiristMachId, companyStruumpFabId, accessTokenFleetManAirist);
 
         assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomEastStruumpFabId, assetRoomEastStruumpFabId);
     }
@@ -796,6 +797,19 @@ class FusionbackendApplicationTests {
                 companyLaserlyMachId, companyStruumpFabId, accessTokenFleetManLaserly);
 
         assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomWestStruumpFabId, assetRoomWestStruumpFabId);
+    }
+
+    @Test
+    @Order(703)
+    void createAssetWithSubsystem() {
+        AssetDto subsystem = AssetDto.builder()
+                .assetSeriesId(assetSeriesAiristGasSupplyId.longValue())
+                .companyId(companyAiristMachId.longValue())
+                .build();
+
+        addSubsystemToParentAndTest(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId, assetRoomWestStruumpFabId,
+                subsystem, accessTokenFleetManAirist, accessTokenFleetManLaserly);
+
     }
 
     @RepeatedTest(10)
@@ -1148,19 +1162,19 @@ class FusionbackendApplicationTests {
     }
 
     private void createAndTestAssetTypeTemplateExpectError(final Integer assetTypeId,
-                                                   final AssetTypeTemplateDto assetTypeTemplate) {
+                                                           final AssetTypeTemplateDto assetTypeTemplate) {
 
         given()
-            .contentType(ContentType.JSON)
-            .body(assetTypeTemplate)
-            .header("Authorization", "Bearer " + accessTokenEcoMan)
+                .contentType(ContentType.JSON)
+                .body(assetTypeTemplate)
+                .header("Authorization", "Bearer " + accessTokenEcoMan)
 
-            .when()
-            .queryParam("assetTypeId", assetTypeId)
-            .post(baseUrl + "/assettypetemplates")
+                .when()
+                .queryParam("assetTypeId", assetTypeId)
+                .post(baseUrl + "/assettypetemplates")
 
-            .then()
-            .statusCode(500);
+                .then()
+                .statusCode(500);
     }
 
     private Integer createAndTestAssetTypeTemplate(final Integer assetTypeId,
@@ -1429,6 +1443,96 @@ class FusionbackendApplicationTests {
         validateAssetDto(response, asset);
 
         return newAssetId;
+    }
+
+    private void addSubsystemToParentAndTest(final Integer companyId,
+                                             final Integer assetSeriesId,
+                                             final Integer parentAssetId,
+                                             final AssetDto newSubsystem,
+                                             final String subsystemAccessToken,
+                                             final String parentAccessToken) {
+
+        Integer newSubsystemId = persistNewAsset(companyId, newSubsystem, subsystemAccessToken);
+
+        addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
+
+        validateSubsystemExists(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
+
+    }
+
+    private void validateSubsystemExists(Integer companyId, Integer assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+
+                .then()
+                .statusCode(200)
+                .body("subsystemIds", equalTo(Collections.singletonList(newSubsystemId)));
+    }
+
+    private void addSubstemToParent(Integer companyId, Integer assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+        AssetDto parent = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+
+                .then()
+                .statusCode(200)
+                .extract().as(AssetDto.class);
+
+        parent.getSubsystemIds().add(newSubsystemId.longValue());
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(parent)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+
+                .then()
+                .statusCode(200);
+    }
+
+    private Integer persistNewAsset(Integer companyId, AssetDto newSubsystem, String accessToken) {
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/init-asset-draft")
+
+                .then()
+                .statusCode(200);
+
+        Integer newSubsystemId = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .body(response.extract().body().asString())
+                .post(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets")
+
+                .then()
+                .statusCode(200)
+                .extract().path("id");
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(newSubsystem)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .patch(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets/" + newSubsystemId)
+
+                .then()
+                .statusCode(200);
+        return newSubsystemId;
     }
 
     private void assignFactoryAssetToRoomAndTest(final Integer companyId, final Integer factorySiteId, final Integer roomId,

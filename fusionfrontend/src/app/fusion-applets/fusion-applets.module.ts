@@ -36,6 +36,8 @@ import { AppletActionComponent } from './components/fusion-applet-editor/applet-
 import { AppletActionMailComponent } from './components/fusion-applet-editor/applet-action-list/applet-action/applet-action-mail/applet-action-mail.component';
 import { AppletActionWebhookComponent } from './components/fusion-applet-editor/applet-action-list/applet-action/applet-action-webhook/applet-action-webhook.component';
 import { AppletActionListComponent } from './components/fusion-applet-editor/applet-action-list/applet-action-list.component';
+import { AppletConditionsComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions.component';
+import { ConditionTimeSelectorComponent } from './components/fusion-applet-editor/applet-conditions/condition-time-selector/condition-time-selector.component';
 
 
 
@@ -52,6 +54,8 @@ import { AppletActionListComponent } from './components/fusion-applet-editor/app
     AppletActionMailComponent,
     AppletActionWebhookComponent,
     AppletActionListComponent,
+    AppletConditionsComponent,
+    ConditionTimeSelectorComponent,
   ],
   imports: [
     CommonModule,

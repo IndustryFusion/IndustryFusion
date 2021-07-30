@@ -13,8 +13,8 @@
  * under the License.
  */
 
-@import "src/assets/sass/abstract/variables";
-@import "src/assets/sass/base/typography";
+@import "abstract/variables";
+@import "base/typography";
 
 .field-header {
   display: flex;
@@ -50,4 +50,3 @@
     width: 20%;
   }
 }
-

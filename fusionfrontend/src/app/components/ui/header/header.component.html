@@ -16,15 +16,18 @@ under the License.
 <header *ngIf="show">
   <section class="main-header">
     <ul class="navigation">
-      <li (click)="onHomeClick()">
-        <div class="icon home"></div>
+      <li (click)="onBackClick()">
+        <div class="icon back"></div>
       </li>
-      <li>
+      <li class="bigger" (click)="onHomeClick()">
+        <div class="icon home bigger"></div>
+      </li>
+      <!--<li> TODO: will be added later
         <div class="icon grid"></div>
       </li>
       <li class="">
         <div class="icon line-chart"></div>
-      </li>
+      </li>-->
     </ul>
     <div class="page-header">
       <app-ecosystem-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);"

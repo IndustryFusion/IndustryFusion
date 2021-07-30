@@ -16,18 +16,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OispService } from '../../../services/oisp.service';
-import {
-  ConditionValueOperator,
-  ConditionType,
-  Device,
-  displayConstionType,
-  Rule,
-  RuleAction,
-  RuleResetType,
-} from '../../../services/oisp.model';
+import { Rule, RuleAction, RuleResetType, } from '../../../services/oisp.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
-import { EnumHelpers } from '../../../common/utils/enum-helpers';
-import { SelectItem } from 'primeng/api';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-fusion-applet-editor',
@@ -35,33 +26,21 @@ import { SelectItem } from 'primeng/api';
   styleUrls: ['./fusion-applet-editor.component.scss']
 })
 export class FusionAppletEditorComponent implements OnInit {
-  rule: Rule;
   RuleResetType = RuleResetType;
-  ConditionType = ConditionType;
 
+  rule: Rule;
+  ruleGroup: FormGroup;
   assets: any[];
-  selectedDevice: Device[] = [];
-  devices: Device[] = [];
-  contitionTypeDropdownValue: SelectItem[];
-  conditionOperatorDropdownValue: SelectItem[];
-  activeAccordionIndex = 0;
-  conditionType: ConditionType;
-  conditionTimeDropdownValue: SelectItem[];
 
   constructor(
     activatedRoute: ActivatedRoute,
     private oispService: OispService,
     public ruleStatusUtil: RuleStatusUtil,
-    private enumHelpers: EnumHelpers
+    formBuilder: FormBuilder
   ) {
-    this.contitionTypeDropdownValue = this.getConditionTypeDropdownValue();
-    this.conditionOperatorDropdownValue = this.getConditionOperaterDropdownValue();
-    this.conditionTimeDropdownValue = this.getConditionTimeDropValue();
+    this.ruleGroup = formBuilder.group({ });
     const fusionAppletId = activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
     this.oispService.getRule(fusionAppletId).subscribe(rule => this.rule = rule);
-
-    this.oispService.getAllDevices()
-      .subscribe( devices => this.devices = devices);
   }
 
   ngOnInit(): void {
@@ -71,65 +50,21 @@ export class FusionAppletEditorComponent implements OnInit {
     console.log($event);
   }
 
-  mapDeviceToComponent(devices: Device[]): SelectItem[] {
-    return devices.map(device => device.components.map(component => {
-      return {
-        label: device.name + ': ' + component.name + '(' + component.componentType.dataType + ')',
-        value: component
-      };
-    }))
-      .reduce((acc, val) => acc.concat(val), []);
-  }
-
-  getConditionTypeDropdownValue(): SelectItem[] {
-    const result = [];
-
-    for (const element of this.enumHelpers.getIterableArray(ConditionType)) {
-      result.push({
-        label: displayConstionType(element),
-        value: element
-      });
-    }
-    return result;
-  }
-
-  getConditionOperaterDropdownValue(): SelectItem[] {
-    const result = [];
-
-    for (const element of this.enumHelpers.getIterableArray(ConditionValueOperator)) {
-      result.push({
-        label: element,
-        value: element
-      });
-    }
-    return result;
-  }
-
-  private getConditionTimeDropValue() {
-    return [{
-      label: 'Weeks',
-      value: 'weeks'
-    }, {
-      label: 'Days',
-      value: 'days'
-    }, {
-      label: 'Hours',
-      value: 'hours'
-    }, {
-        label: 'Minutes',
-        value: 'minutes'
-      }, {
-        label: 'Seconds',
-        value: 'seconds'
-      }];
-  }
-
   saveActions(actions: RuleAction[]) {
     this.rule.actions = actions;
-/*    this.rule.type = RuleType.Regular;
-    this.rule.conditions.operator = 'AND';
-    this.rule.conditions.values = ['42'];
-    this.oispService.setRuleStatus(this.rule.id, RuleStatus.OnHold).subscribe(rule => this.rule = rule);*/
+    this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
+  }
+
+  setResetTypeAutomatic(isAutomatic: boolean) {
+    if (isAutomatic) {
+      this.rule.resetType = RuleResetType.Automatic;
+    } else {
+      this.rule.resetType = RuleResetType.Manual;
+    }
+  }
+
+  save() {
+    this.rule.conditions = this.ruleGroup.get('conditions').value;
     this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
   }
 }

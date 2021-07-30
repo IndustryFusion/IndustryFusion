@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
@@ -22,19 +22,25 @@ import { QuantityType } from '../../../../store/quantity-type/quantity-type.mode
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 import { Unit } from '../../../../store/unit/unit.model';
 import { UnitQuery } from '../../../../store/unit/unit.query';
+import { QuantityTypeDialogComponent } from '../../content/quantity-type-dialog/quantity-type-dialog.component';
+import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-quantity-type-page',
   templateUrl: './quantity-type-page.component.html',
   styleUrls: ['./quantity-type-page.component.scss']
 })
-export class QuantityTypePageComponent implements OnInit {
+export class QuantityTypePageComponent implements OnInit, OnDestroy {
 
   isLoading$: Observable<boolean>;
   quantityType$: Observable<QuantityType>;
   units$: Observable<Unit[]>;
 
-  constructor(private quantityTypeQuery: QuantityTypeQuery,
+  private ref: DynamicDialogRef;
+
+  constructor(private dialogService: DialogService,
+              private quantityTypeQuery: QuantityTypeQuery,
               private quantityTypeService: QuantityTypeService,
               private unitQuery: UnitQuery,
               private activatedRoute: ActivatedRoute,
@@ -46,12 +52,28 @@ export class QuantityTypePageComponent implements OnInit {
     this.ecoSystemManagerResolver.resolve(this.activatedRoute);
   }
 
-  private resolve(activatedRoute: ActivatedRoute) {
+  private resolve(activatedRoute: ActivatedRoute): void {
     const quantityTypeId = activatedRoute.snapshot.paramMap.get('quantitytypeId');
     if (quantityTypeId != null) {
       this.quantityTypeService.setActive(quantityTypeId);
       this.quantityType$ = this.quantityTypeQuery.selectActive();
       this.units$ = this.unitQuery.selectUnitsOfQuantityType(quantityTypeId);
+    }
+  }
+
+  public showEditDialog(): void {
+    this.ref = this.dialogService.open(QuantityTypeDialogComponent, {
+      data: {
+        quantityType: this.quantityTypeQuery.getActive(),
+        type: DialogType.EDIT
+      },
+      header: `Edit Quantity Type`,
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.ref) {
+      this.ref.close();
     }
   }
 }
