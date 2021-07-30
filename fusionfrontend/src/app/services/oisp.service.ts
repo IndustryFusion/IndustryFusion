@@ -170,7 +170,6 @@ export class OispService {
 
 
   getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-
     if (!assetDetails) {
       return EMPTY;
     }
