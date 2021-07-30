@@ -37,7 +37,9 @@ import { AppletActionMailComponent } from './components/fusion-applet-editor/app
 import { AppletActionWebhookComponent } from './components/fusion-applet-editor/applet-action-list/applet-action/applet-action-webhook/applet-action-webhook.component';
 import { AppletActionListComponent } from './components/fusion-applet-editor/applet-action-list/applet-action-list.component';
 import { AppletConditionsComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions.component';
-import { ConditionTimeSelectorComponent } from './components/fusion-applet-editor/applet-conditions/condition-time-selector/condition-time-selector.component';
+import { ConditionTimeSelectorComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/condition-time-selector/condition-time-selector.component';
+import { AppletConditionsValueComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/applet-conditions-value.component';
+import { ValidIconComponent } from './components/fusion-applet-editor/valid-icon/valid-icon.component';
 
 
 
@@ -56,6 +58,8 @@ import { ConditionTimeSelectorComponent } from './components/fusion-applet-edito
     AppletActionListComponent,
     AppletConditionsComponent,
     ConditionTimeSelectorComponent,
+    AppletConditionsValueComponent,
+    ValidIconComponent,
   ],
   imports: [
     CommonModule,

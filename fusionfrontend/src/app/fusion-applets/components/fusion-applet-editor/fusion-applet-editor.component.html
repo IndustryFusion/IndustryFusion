@@ -23,15 +23,19 @@ under the License.
       [ngModel]="ruleStatusUtil.isActive(rule.status)"
     ></p-inputSwitch>
     <div class="p-col-4">
-      <p-checkbox binary="true" [ngModel]="rule.resetType === RuleResetType.Automatic" (onChange)="setResetTypeAutomatic($event.checked)"></p-checkbox>
+      <p-checkbox binary="true"
+                  [ngModel]="rule.resetType === RuleResetType.Automatic"
+                  (onChange)="setResetTypeAutomatic($event.checked)"
+      ></p-checkbox>
       Enable automatic Reset
     </div>
   </div>
-  <app-applet-conditions [ruleGroup]="ruleGroup" [conditions]="rule.conditions"></app-applet-conditions>
+  <app-applet-conditions [ruleGroup]="ruleGroup"
+                         [conditions]="rule.conditions"
+  ></app-applet-conditions>
   <div class="vl"></div>
-  <div class="center-trigger">
-    <button><i class="pi pi-plus "></i></button> Create new Trigger
-  </div>
-  <div class="vl"></div>
-  <app-applet-action-list class="full-width" (save)="saveActions($event)" [actions]="rule.actions"></app-applet-action-list>
+  <app-applet-action-list class="full-width"
+                          (save)="saveActions($event)"
+                          [actions]="rule.actions"
+  ></app-applet-action-list>
 </div>

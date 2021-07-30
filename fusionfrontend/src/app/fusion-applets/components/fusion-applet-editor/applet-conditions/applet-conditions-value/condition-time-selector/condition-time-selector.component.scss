@@ -13,11 +13,4 @@
  * under the License.
  */
 
-@import "../fusion-applet-editor.component";
-
-.applet-conditions-value-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+@import "../applet-conditions-value.component";

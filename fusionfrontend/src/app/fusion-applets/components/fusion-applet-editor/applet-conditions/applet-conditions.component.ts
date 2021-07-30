@@ -16,14 +16,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
   ConditionsOperator,
-  ConditionType, ConditionValueComponent,
-  ConditionValueOperator,
-  Device, DeviceComponent,
-  displayConstionType,
+  ConditionType,
+  ConditionValueOperator, Device,
   RuleConditions
 } from '../../../../services/oisp.model';
-import { SelectItem } from 'primeng/api';
-import { EnumHelpers } from '../../../../common/utils/enum-helpers';
 import { OispService } from '../../../../services/oisp.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -34,38 +30,33 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 })
 export class AppletConditionsComponent implements OnInit {
 
-  ConditionType = ConditionType;
-
   @Input()
   conditions: RuleConditions;
-  activeAccordionIndex = 0;
-  contitionTypeDropdownValue: SelectItem[];
-  conditionOperatorDropdownValue: SelectItem[];
-
-  conditionTimeDropdownValue: SelectItem[];
-  selectedDevice: Device[] = [];
-  devices: Device[] = [];
-  conditionType: ConditionType;
 
   @Input()
   ruleGroup: FormGroup;
   conditionsGroup: FormGroup;
-  conditionValueGroup: FormGroup;
+  devices: Device[];
 
-
-  constructor(private enumHelpers: EnumHelpers,
-              private oispService: OispService,
+  constructor(private oispService: OispService,
               private formBuilder: FormBuilder) {
-    this.setupDropdowns();
     this.loadDevices();
     this.createFormgroups();
   }
 
   ngOnInit(): void {
-    this.prefillSelectedDevices();
     if (!this.conditions.operator) {
       this.conditions.operator = ConditionsOperator.OR;
     }
+
+    if (this.conditions.values?.length > 0) {
+      this.conditions.values.forEach(() => {
+        (this.conditionsGroup.get('values') as FormArray).push(this.createConditionValueGroup());
+      });
+    } else {
+      this.createNewTrigger();
+    }
+
     this.conditionsGroup.patchValue(this.conditions);
     this.ruleGroup.addControl('conditions', this.conditionsGroup);
   }
@@ -75,24 +66,13 @@ export class AppletConditionsComponent implements OnInit {
       operator: [ConditionsOperator.OR, [Validators.required]],
       values: new FormArray([], [Validators.required, Validators.minLength(1)])
     });
-
-    this.conditionValueGroup = this.createConditionValueGroup();
-    (this.conditionsGroup.get('values') as FormArray)?.push(this.conditionValueGroup);
   }
 
   private loadDevices() {
     this.oispService.getAllDevices()
       .subscribe(devices => {
         this.devices = devices;
-        this.prefillSelectedDevices();
       });
-  }
-
-
-
-  private setupDropdowns() {
-    this.contitionTypeDropdownValue = this.getConditionTypeDropdownValue();
-    this.conditionOperatorDropdownValue = this.getConditionOperaterDropdownValue();
   }
 
   private createConditionValueGroup(): FormGroup {
@@ -114,73 +94,11 @@ export class AppletConditionsComponent implements OnInit {
     });
   }
 
-
-
-  private prefillSelectedDevices() {
-    if (this.conditions && this.devices) {
-      this.selectedDevice = this.conditions.values
-        .map(value => value.component.cid)
-        .map(cid => this.devices.find(device => device.components.find(deviceComponent => deviceComponent.cid === cid)))
-        .filter(device => device);
-    }
+  getConditonValues(): FormArray {
+    return (this.conditionsGroup.get('values') as FormArray);
   }
 
-  mapDeviceToComponent(devices: Device[]): SelectItem[] {
-    const cid = this.conditionValueGroup.get('component.cid')?.value;
-    const result: SelectItem<ConditionValueComponent>[] = devices
-      .map(device => device.components
-        .map<SelectItem<ConditionValueComponent>>(component => {
-          return this.mapDeviceComponentToSelectItem(device, component);
-        }))
-      .reduce((acc, val) => acc.concat(val), []);
-
-    if (cid) {
-      const deviceComponent = this.devices
-        .map(device => ({ device, component: device.components.find(component => component.cid === cid)}))
-        .find(component => component);
-      if (deviceComponent && result.find(selectItem => selectItem.value.cid === cid) === undefined) {
-        result.push(this.mapDeviceComponentToSelectItem(deviceComponent.device, deviceComponent.component));
-      }
-    }
-    return result;
-  }
-
-  mapDeviceComponentToSelectItem(device: Device, component: DeviceComponent): SelectItem<ConditionValueComponent> {
-    return {
-      label: device.name + ': ' + component.name + '(' + component.componentType?.dataType + ')',
-      value: {
-        name: component.name,
-        dataType: component.componentType?.dataType,
-        cid: component.cid
-      }
-    };
-  }
-
-  getConditionTypeDropdownValue(): SelectItem[] {
-    const result = [];
-
-    for (const element of this.enumHelpers.getIterableArray(ConditionType)) {
-      result.push({
-        label: displayConstionType(element),
-        value: element
-      });
-    }
-    return result;
-  }
-
-  getConditionOperaterDropdownValue(): SelectItem[] {
-    const result = [];
-
-    for (const element of this.enumHelpers.getIterableArray(ConditionValueOperator)) {
-      result.push({
-        label: element,
-        value: element
-      });
-    }
-    return result;
-  }
-
-  updateComponent(component: ConditionValueComponent) {
-    this.conditionValueGroup.get('component').patchValue(component);
+  createNewTrigger() {
+    (this.conditionsGroup.get('values') as FormArray).push(this.createConditionValueGroup());
   }
 }
