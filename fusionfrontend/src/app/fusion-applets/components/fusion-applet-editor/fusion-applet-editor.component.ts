@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OispService } from '../../../services/oisp.service';
-import { Rule, RuleAction, RuleResetType, } from '../../../services/oisp.model';
+import { Rule, RuleAction, RuleResetType, RuleType, } from '../../../services/oisp.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -64,7 +64,8 @@ export class FusionAppletEditorComponent implements OnInit {
   }
 
   save() {
-    this.rule.conditions = this.ruleGroup.get('conditions').value;
+    this.rule.conditions = (this.ruleGroup.get('conditions') as FormGroup).getRawValue();
+    this.rule.type = RuleType.Regular;
     this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
   }
 }
