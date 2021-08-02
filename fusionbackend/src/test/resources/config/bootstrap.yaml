@@ -16,4 +16,4 @@ embedded:
     dockerImage: postgres:10.4
   keycloak:
     dockerImage: jboss/keycloak:12.0.0
-    import-file: oisp-realm-export.json
+    import-file: config/oisp-realm-export.json
