@@ -31,7 +31,6 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   assetType: ID;
   companyId: ID;
-  error: any;
   step = 1;
   toalSteps = 4;
   assetSeries: AssetSeries = new AssetSeries();
@@ -63,22 +62,14 @@ export class AssetSeriesCreateComponent implements OnInit {
   ngOnInit() {
   }
 
-  createAssetseriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
+  createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
     this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
           .subscribe(assetSeries => this.assetSeries = assetSeries);
   }
 
-  onCloseError() {
-    this.error = undefined;
-  }
-
-  onError(error: string) {
-    this.error = error;
-  }
-
   nextStep() {
     if (this.step === this.toalSteps) {
-      this.saveAssetseries();
+      this.saveAssetSeries();
     } else {
       this.step++;
     }
@@ -110,8 +101,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     return result;
   }
 
-
-  private saveAssetseries() {
+  private saveAssetSeries() {
       if (this.assetSeries.id) {
         this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
         () => this.dynamicDialogRef.close()

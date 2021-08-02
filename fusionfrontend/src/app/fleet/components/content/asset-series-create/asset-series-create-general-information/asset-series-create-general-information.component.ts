@@ -32,7 +32,6 @@ export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
 
   @Output() errorSignal = new EventEmitter<string>();
   @Input() assetSeries: AssetSeries = new AssetSeries();
-  @Output() assetSeriesChange = new EventEmitter<AssetSeries>();
   @Input() mode: ViewMode = ViewMode.EDIT;
   @Output() updateTypeTemplate = new EventEmitter<ID>();
 

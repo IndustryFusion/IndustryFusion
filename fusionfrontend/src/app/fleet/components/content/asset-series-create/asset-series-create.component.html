@@ -14,19 +14,12 @@ under the License.
 -->
 
 <div class="if-wizard-wrapper">
-  <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
-    <clr-alert-item>
-      <span class="alert-text">
-        {{ error }}
-      </span>
-    </clr-alert-item>
-  </clr-alert>
   <app-timeline [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
   <app-asset-series-create-general-information
     *ngIf="step === 1"
     [mode]="mode"
-    [(assetSeries)]="assetSeries"
-    (updateTypeTemplate)="createAssetseriesOfAssetTypeTemplate($event)"
+    [assetSeries]="assetSeries"
+    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)"
   >
   </app-asset-series-create-general-information>
   <app-asset-series-create-connectivity-settings
