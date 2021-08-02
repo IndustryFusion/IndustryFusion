@@ -17,17 +17,10 @@
 @import '../../assets/sass/components/labels';
 
 
-div.content {
+/*.content {
   flex-direction: row;
   justify-content: space-around;
-}
-
-span.center {
-  margin-top: 1.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+}*/
 
 .attribute-row {
   display: flex;
@@ -58,8 +51,3 @@ span.center {
     }
   }
 }
-
-.header-row {
-  margin-top: 40px
-}
-

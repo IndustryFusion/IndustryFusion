@@ -13,13 +13,13 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-series-create-step-two">
-  <div class="content">
-      <div id="colum left">
-        <div class="title">General Information</div>
+<div class="asset-series-create-general-information">
+  <div class="content with-rows">
+      <div id="column left">
+        <div class="wizard-title">General Information</div>
 
         <div *ngIf="assetSeries">
-            <div>
+            <div class="input-div">
               <label class="if-label">Select Asset Type Template</label>
               <p-dropdown
                 [options]="assetTypeTemplates$ | async"
@@ -33,9 +33,9 @@ under the License.
               </p-dropdown>
           </div>
 
-          <div class="clr-form-control">
+          <div class="input-div">
             <label class="if-label">Name the Asset or Series you want to implement</label>
-            <input [disabled]="!assetSeries" [(ngModel)]="assetSeries.name"
+            <input pInputText [disabled]="!assetSeries" [(ngModel)]="assetSeries.name"
                    placeholder="Asset series name">
           </div>
 
@@ -47,7 +47,7 @@ under the License.
         <span class="if-hint" > How will my asset be displayed in a factory?</span>
         <div class="sample-asset-display">
           <div>
-            <span class="title">Asset series name</span>
+            <span class="wizard-icon-title">Asset series name</span>
             <span>Asset name</span>
             <span>Asset category</span>
             <span>Manufacturer</span>

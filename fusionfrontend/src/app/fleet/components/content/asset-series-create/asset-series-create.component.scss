@@ -17,45 +17,13 @@
 @import "base/typography";
 @import "components/labels";
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  background: $grey-background;
-  height: 100%;
-}
-
 .content {
   margin-top: 50px;
-
-  .title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-    font-weight: bold;
-    font-size: $big-font-size;
-    line-height: $huge-line-height;
-    letter-spacing: 0;
-    color: $highlighted;
-    opacity: 1;
-  }
-
-  .subtitle {
-    margin-top: 80px;
-    text-align: left;
-    font-weight: bold;
-    font-size: $big-font-size;
-    line-height: $huge-line-height;
-    letter-spacing: 0;
-    color: $highlighted;
-  }
 
   .selection {
     margin-top: 80px;
     display: flex;
     flex-direction: row;
-
-
   }
 
   select {
@@ -72,17 +40,11 @@
     }
   }
 
-  input {
-    //width: 23rem;
-    border-radius: 5px;
-    border-style: none;
-    border-color: white;
-    padding: 10px;
-  }
-
   .fields-list {
     margin-top: 80px;
   }
+}
 
-
+:host ::ng-deep .if-wizard-wrapper {
+  overflow: inherit !important;
 }
