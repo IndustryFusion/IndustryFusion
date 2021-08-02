@@ -29,7 +29,7 @@ under the License.
                 placeholder="Select Asset Type Template..."
                 (ngModelChange)="updateTypeTemplate.emit($event)"
                 [(ngModel)]="assetSeries.assetTypeTemplateId"
-                [disabled]="mode != ViewMode.CREATE">
+                [disabled]="mode != DialogType.CREATE">
               </p-dropdown>
           </div>
 

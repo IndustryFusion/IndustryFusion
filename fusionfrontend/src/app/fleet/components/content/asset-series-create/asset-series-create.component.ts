@@ -19,8 +19,9 @@ import { ID } from '@datorama/akita';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ViewMode } from './view-mode.enum';
 import { FieldService } from '../../../../store/field/field.service';
+import { DialogType } from '../../../../common/models/dialog-type.model';
+import { AssetSeriesCreateSteps } from './asset-series-create-steps.model';
 
 @Component({
   selector: 'app-asset-series-create',
@@ -31,12 +32,14 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   assetType: ID;
   companyId: ID;
-  step = 1;
-  toalSteps = 4;
+  step: AssetSeriesCreateSteps = AssetSeriesCreateSteps.GENERAL_INFORMATION;
+  totalSteps: number = AssetSeriesCreateSteps.METRICS;
   assetSeries: AssetSeries = new AssetSeries();
-  mode: ViewMode = ViewMode.CREATE;
+  mode: DialogType = DialogType.CREATE;
   attributesValid: boolean;
   metricsValid: boolean;
+
+  AssetSeriesCreateSteps = AssetSeriesCreateSteps;
 
   constructor(private assetSeriesService: AssetSeriesService,
               private changeDetectorRef: ChangeDetectorRef,
@@ -48,12 +51,12 @@ export class AssetSeriesCreateComponent implements OnInit {
     this.companyId = dialogConfig.data.companyId;
     const assetSeriesId = this.dialogConfig.data.assetSeriesId;
     if (assetSeriesId) {
-      this.mode = ViewMode.EDIT;
+      this.mode = DialogType.EDIT;
     } else {
-      this.mode = ViewMode.CREATE;
+      this.mode = DialogType.CREATE;
     }
 
-    if (this.mode === ViewMode.EDIT) {
+    if (this.mode === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
         .subscribe(assetSeries => this.assetSeries = assetSeries);
     }
@@ -68,7 +71,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   nextStep() {
-    if (this.step === this.toalSteps) {
+    if (this.step === this.totalSteps) {
       this.saveAssetSeries();
     } else {
       this.step++;
@@ -76,7 +79,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   back() {
-    if (this.step === 1) {
+    if (this.step === AssetSeriesCreateSteps.GENERAL_INFORMATION) {
       this.dynamicDialogRef.close();
     } else {
       this.step--;
@@ -86,15 +89,15 @@ export class AssetSeriesCreateComponent implements OnInit {
   isReadyForNextStep(): boolean {
     let result = true;
     switch (this.step) {
-      case 1:
+      case AssetSeriesCreateSteps.GENERAL_INFORMATION:
         result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0;
         break;
-      case 2:
+      case AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS:
         break;
-      case 3:
+      case AssetSeriesCreateSteps.ATTRIBUTES:
         result = this.attributesValid;
         break;
-      case 4:
+      case AssetSeriesCreateSteps.METRICS:
         result = this.metricsValid;
         break;
     }

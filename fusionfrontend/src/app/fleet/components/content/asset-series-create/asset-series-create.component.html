@@ -14,27 +14,28 @@ under the License.
 -->
 
 <div class="if-wizard-wrapper">
-  <app-timeline [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
+  <app-timeline [currentStep]="step" [totalSteps]="totalSteps"></app-timeline>
   <app-asset-series-create-general-information
-    *ngIf="step === 1"
+    *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
     [mode]="mode"
     [assetSeries]="assetSeries"
     (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)"
   >
   </app-asset-series-create-general-information>
   <app-asset-series-create-connectivity-settings
-    *ngIf="step === 2" >
+    [assetSeries]="assetSeries"
+    *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS" >
   </app-asset-series-create-connectivity-settings>
   <app-asset-series-create-attributes
-    *ngIf="step === 3"
+    *ngIf="step === AssetSeriesCreateSteps.ATTRIBUTES"
     [assetSeries]="assetSeries"
     (valid)="setAttributesValid($event)">
   </app-asset-series-create-attributes>
   <app-asset-series-create-metrics
-    *ngIf="step === 4"
+    *ngIf="step === AssetSeriesCreateSteps.METRICS"
     [assetSeries]="assetSeries"
     (valid)="setMetricsValid($event)">
   </app-asset-series-create-metrics>
   <app-asset-series-create-footer [step]="step" (back)="back()" [isReadyForNextStep]="isReadyForNextStep()"
-                                  (nextStep)="nextStep()" [toalSteps]="toalSteps"></app-asset-series-create-footer>
+                                  (nextStep)="nextStep()" [toalSteps]="totalSteps"></app-asset-series-create-footer>
 </div>

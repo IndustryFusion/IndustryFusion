@@ -20,8 +20,8 @@ import { Observable } from 'rxjs';
 import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { ViewMode } from '../view-mode.enum';
 import { ID } from '@datorama/akita';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-series-create-general-information',
@@ -32,14 +32,14 @@ export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
 
   @Output() errorSignal = new EventEmitter<string>();
   @Input() assetSeries: AssetSeries = new AssetSeries();
-  @Input() mode: ViewMode = ViewMode.EDIT;
+  @Input() mode: DialogType = DialogType.EDIT;
   @Output() updateTypeTemplate = new EventEmitter<ID>();
 
   assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
 
   assetTypeTemplates: AssetTypeTemplate[];
 
-  ViewMode = ViewMode;
+  DialogType = DialogType;
 
   constructor(
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
