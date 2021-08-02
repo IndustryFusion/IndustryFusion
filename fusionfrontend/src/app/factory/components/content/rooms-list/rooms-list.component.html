@@ -61,13 +61,13 @@ under the License.
     </ng-template>
 
     <ng-template pTemplate="body" let-room>
-      <tr>
-        <td [style.width.%]="5"></td>
-        <td [style.width.%]="15">{{room.id}}</td>
-        <td [style.width.%]="20">{{room.name}}</td>
-        <td [style.width.%]="15">{{room.assetIds.length}}</td>
-        <td [style.width.%]="25">{{room.description}}</td>
-        <td [style.width.%]="20">{{locationsAndRoomsMap.get(room.id)}}</td>
+      <tr style="cursor: pointer;">
+        <td [style.width.%]="5" [routerLink]="getRoomAssetLink(room.id)"></td>
+        <td [style.width.%]="15" [routerLink]="getRoomAssetLink(room.id)">{{room.id}}</td>
+        <td [style.width.%]="20" [routerLink]="getRoomAssetLink(room.id)">{{room.name}}</td>
+        <td [style.width.%]="15" [routerLink]="getRoomAssetLink(room.id)">{{room.assetIds.length}}</td>
+        <td [style.width.%]="25" [routerLink]="getRoomAssetLink(room.id)">{{room.description}}</td>
+        <td [style.width.%]="20" [routerLink]="getRoomAssetLink(room.id)">{{locationsAndRoomsMap.get(room.id)}}</td>
         <td [style.width.%]="5">
           <div class="table-dropdown-menu">
             <p-menu #menu  [popup]="true" [model]="menuActions"></p-menu>

@@ -94,7 +94,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
 
     if (button === 'GRID') {
       this.assetQuery.setSelectedAssetIds(this.selectedIds);
-      if (pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
+      if (pageTypes.includes(FactoryManagerPageType.ROOM_LIST) || pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
         this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
       } else {
         this.router.navigate(['..', 'asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });

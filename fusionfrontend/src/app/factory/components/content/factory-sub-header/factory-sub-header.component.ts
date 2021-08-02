@@ -65,12 +65,12 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
       this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/asset-cards/[0-9,]+$') ||
       this.route.match('^/factorymanager/companies/[0-9]+/assets$') ||
 
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$/rooms/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$/rooms/[0-9]+$/assets$\'') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$/rooms/[0-9]+/assets/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$/rooms/[0-9]+/assets/[0-9]+/asset-details$') ||
+      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+') ||
+      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/assets$\'') ||
+      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
+      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
+      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/assets/[0-9]+$') ||
+      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/assets/[0-9]+/asset-details$') ||
 
       this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+$') ||
       this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/rooms/[0-9]+$') ||

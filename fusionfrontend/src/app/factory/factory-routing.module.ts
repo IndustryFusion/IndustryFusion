@@ -74,6 +74,15 @@ const routes: Routes = [
     }
   },
   {
+    path: 'factorymanager/companies/:companyId/assets/rooms/:roomId',
+    component: AssetsListPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ROOM_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
     path: 'factorymanager/companies/:companyId/locations/:locationId/rooms',
     component: RoomsPageComponent,
     canActivate: [MainAuthGuardGuard],
@@ -84,6 +93,15 @@ const routes: Routes = [
   },
   {
     path: 'factorymanager/companies/:companyId/locations/:locationId/rooms/:roomId',
+    component: AssetsListPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/locations/:locationId/rooms/:roomId/assets',
     component: AssetsListPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
@@ -153,7 +171,43 @@ const routes: Routes = [
       pageTypes: [FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
-  }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/rooms/:roomId/assets/:assetId',
+    component: AssetsGridPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/rooms/:roomId/asset-cards/:assetIdList',
+    component: AssetsGridPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/:assetId',
+    component: AssetsGridPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/asset-cards/:assetIdList',
+    component: AssetsGridPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
 ];
 
 @NgModule({

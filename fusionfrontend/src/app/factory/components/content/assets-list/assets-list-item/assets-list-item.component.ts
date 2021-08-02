@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { AssetDetailsWithFields, AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
-import { RoomQuery } from '../../../../../store/room/room.query';
 import { Location } from '../../../../../store/location/location.model';
 import { AssetDetails, AssetModalType } from 'src/app/store/asset-details/asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -10,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
 import { MenuItem } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
+import { Location as loc  } from '@angular/common';
 
 @Component({
   selector: 'app-assets-list-item',
@@ -47,13 +47,13 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   assetDetailsForm: FormGroup;
   ref: DynamicDialogRef;
   menuActions: MenuItem[];
-
+  route: string;
 
   constructor(
-    private roomQuery: RoomQuery,
     private formBuilder: FormBuilder,
     public dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private routingLocation: loc) {
       this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
       this.menuActions = [
         { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
@@ -63,6 +63,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.route = this.routingLocation.path();
     this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
   }
 
@@ -139,15 +140,10 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   getAssetLink(asset: Asset) {
-    if (!asset) { return; }
-    if (this.room) {
-      return ['assets', asset.id];
-    } else if (!this.location) {
-      const room: Room = this.roomQuery.getEntity(asset.roomId);
-      if (!room) { return; }
-      return ['..', 'locations', room.locationId, 'rooms', asset.roomId, 'assets', asset.id];
+    if (this.route.endsWith('assets')) {
+      return [asset.id];
     } else {
-      return ['rooms', asset.roomId, 'assets', asset.id];
+      return ['assets', asset.id];
     }
   }
 

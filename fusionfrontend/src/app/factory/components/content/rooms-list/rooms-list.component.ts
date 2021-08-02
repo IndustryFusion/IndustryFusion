@@ -18,13 +18,11 @@ import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { Location } from 'src/app/store/location/location.model';
 import { Asset } from 'src/app/store/asset/asset.model';
+import { AssetDetails } from 'src/app/store/asset-details/asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { AssetService } from 'src/app/store/asset/asset.service';
 import { Location as loc } from '@angular/common';
-import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateRoomComponent } from '../create-room/create-room.component';
@@ -44,6 +42,8 @@ export class RoomsListComponent implements OnInit {
   rooms: Room[];
   @Input()
   locationSelected: boolean;
+  @Input()
+  assets: AssetDetails[];
 
   @Output()
   createRoomEvent = new EventEmitter<Room>();
@@ -51,6 +51,8 @@ export class RoomsListComponent implements OnInit {
   editRoomEvent = new EventEmitter<Room>();
   @Output()
   deleteRoomEvent = new EventEmitter<Room>();
+  @Output()
+  assignAssetToRoomEvent = new EventEmitter<Asset[]>();
 
   isLoading$: Observable<boolean>;
   assets$: Observable<Asset[]>;
@@ -58,9 +60,6 @@ export class RoomsListComponent implements OnInit {
 
   companyId: ID;
   locationId: ID;
-  selectedRoomId: ID;
-
-  assignToRoomModal = false;
 
   ref: DynamicDialogRef;
   roomForm: FormGroup;
@@ -68,21 +67,19 @@ export class RoomsListComponent implements OnInit {
 
   activeListItem: Room;
   locationsAndRoomsMap = new Map();
+  route: string;
 
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
 
   constructor(private locationQuery: LocationQuery,
               private companyQuery: CompanyQuery,
-              private assetQuery: AssetQuery,
               private routingLocation: loc,
-              private assetDetailsService: AssetDetailsService,
-              private assetService: AssetService,
               private formBuilder: FormBuilder,
               public dialogService: DialogService) { }
 
   ngOnInit() {
-    console.log(this.locationSelected)
+    this.route = this.routingLocation.path();
     this.isLoading$ = this.companyQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
@@ -104,6 +101,7 @@ export class RoomsListComponent implements OnInit {
   }
 
   showCreateDialog() {
+    this.createRoomForm(this.formBuilder)
     const ref = this.dialogService.open(CreateRoomComponent, {
       data: {
         roomForm: this.roomForm,
@@ -137,8 +135,8 @@ export class RoomsListComponent implements OnInit {
     });
 
     ref.onClose.subscribe((room: Room) => {
-      this.editRoomEvent.emit(room);
       this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+      this.editRoomEvent.emit(room);
     });
   }
 
@@ -161,15 +159,8 @@ export class RoomsListComponent implements OnInit {
     this.deleteRoomEvent.emit(this.activeListItem)
   }
 
-  assignToRoom(assetId: ID) {
-    const theAsset = this.assetQuery.getEntity(assetId);
-    this.assetService.assignAssetToRoom(this.companyId, this.locationId, this.selectedRoomId, theAsset.roomId, assetId)
-      .subscribe(
-        asset => { console.log('[rooms-page.component] asset: ' + asset.name + ' assigned'); },
-        error => { console.log(error); }
-      );
-    this.assetDetailsService.updateRoom(assetId, this.selectedRoomId);
-    this.assignToRoomModal = false;
+  getRoomAssetLink(roomId: ID) {
+    return [roomId]
   }
 
   goBack() {

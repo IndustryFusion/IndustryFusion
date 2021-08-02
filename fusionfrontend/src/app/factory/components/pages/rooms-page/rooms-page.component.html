@@ -14,9 +14,11 @@ under the License.
 -->
   <app-rooms-list [locations]="(locations$ | async)"
                   [rooms]="(rooms$ | async)"
-                  [locationSelected] ="locationSelected"
+                  [locationSelected]="locationSelected"
+                  [assets]="(assetsDetails$ | async)"
                   (createRoomEvent)="createRoom($event)"
                   (editRoomEvent)="editRoom($event)"
-                  (deleteRoomEvent)="deleteRoom($event)">
+                  (deleteRoomEvent)="deleteRoom($event)"
+                  (assignAssetToRoomEvent)="assignToRoom($event)">
   </app-rooms-list>
 
