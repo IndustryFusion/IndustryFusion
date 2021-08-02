@@ -74,11 +74,19 @@
                 }
               ]
             },
-            "dev": {
+            "local_dev": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
+                  "with": "src/environments/environment.local_dev.ts"
+                }
+              ]
+            },
+            "local_dev-cluster": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local_dev-cluster.ts"
                 }
               ]
             }
@@ -94,8 +102,11 @@
             "production": {
               "browserTarget": "fusionfrontend:build:production"
             },
-            "dev": {
-              "browserTarget": "fusionfrontend:build:dev"
+            "local_dev": {
+              "browserTarget": "fusionfrontend:build:local_dev"
+            },
+            "local_dev-cluster": {
+              "browserTarget": "fusionfrontend:build:local_dev-cluster"
             }
           }
         },
