@@ -84,21 +84,21 @@ ToDo (IF-201): Build schlägt aktuell beim fusion-aggregator fehl
 Example: 
    ![Run Configuration Backend](images/Intellij_run_configuration_backend.png)
 1. You can create multiple config files based on the pattern `application-local*.yaml` to set different local values.
-1. Assure the key `keycloak.credentials.secret` is set to the secret value, which has been generated during the keycloak set up. Therefore, you can use a `application-local.yaml` file. **Take care to activate the "local" spring profile in the Intellij run configuration.** 
+1. Assure the key `keycloak.credentials.secret` is set to the secret value, which has been generated during the keycloak set up. Therefore, you can use a `application-local_dev.yaml` file. **Take care to activate the "local" spring profile in the Intellij run configuration.** 
 
 
 #### Import Sample Data
 1. Start the fusionbackend run configuration. This creates the database schema based on Flyway migrations.
 1. Import sample data by using the file [demoinserts.sql (located in private GitHub repository)](https://github.com/mattmikulina/IndustryFusion-machine-configs/blob/master/_SQL-Demoinserts/demoinserts.sql).
 1. Stop the fusionbackend run configuration.
-1. Change back the setting `spring.jpa.hibernate.ddl-auto` in the `application-dev.yaml` from 'create' to 'validate'.
+1. Change back the setting `spring.jpa.hibernate.ddl-auto` in the `application-local_dev.yaml` from 'create' to 'validate'.
 
 
 ### fusionfrontend (npm)
 1. Assure there is a npm run configuration for the fusionfrontend.  
 1. Edit "Node Interpreter" and "Package manager" to correct path, see example below, within your target folder in the fusionfrontend module. Example:
    ![Run Configuration Frontend](images/Intellij_run_configuration_frontend.png)   
-1. Copy attachment of LastPass note "Shared-IndustryFusion > Frontend environment.dev.ts" to `fusionfrontend/src/environments/environment.dev.ts`. Do not forget to rename it correctly!
+1. Copy attachment of LastPass note "Shared-IndustryFusion > Frontend environment.local_dev.ts" to `fusionfrontend/src/environments/environment.local_dev.ts`. Do not forget to rename it correctly!
 
 Todo (IF-202): Besser nicht die ganze Datei, sondern nur die einzelnen Keys in LastPass ablegen
 
@@ -124,20 +124,20 @@ Todo (IF-202): Besser nicht die ganze Datei, sondern nur die einzelnen Keys in L
 In some cases, in particular when OISP is needed, the local environment can be configured to use
 the development cluster. Follow these steps:
 ## fusionbackend
-1. Create another _application-local_devcluster.yaml_ (all local prefixes are gitignored) or use the _application-dev.yaml_. Override the following 
+1. Create another _application-local_dev-cluster.yaml_ (all local prefixes are gitignored) or use the _application-local_dev.yaml_. Override the following 
    properties:
     1. `keycloak.auth-server-url`  set to `https://development.industry-fusion.com/keycloak/`
     1. `keycloak.credentials.secret` set to the the secret for the fusionbackend client. You can get it from
        the keycloak admin web console.
         1. URL and login credentials are in Lastpass within the entry _Development Cluster Keycloak_.
         1. In the admin web console follow the path: __Realm: OISP > Clients: fusion-backend > Credentials > Secret__
-    1. Create/Copy another Intellij run configuration for the fusionbackend. Perhaps you have to activate an **additional** spring profile. Thus, ist could be `dev,local_devcluster`.
+    1. Create/Copy another Intellij run configuration for the fusionbackend. Perhaps you have to activate an **additional** spring profile. Thus, the new run configuration should be `dev,local_dev-cluster`.
 
 ## fusionfrontend
 
-1. Edit _environment.dev.ts_ or create another one. For the latter, remember to activate the configuration for
+1. Edit _environment.local_dev.ts_ or create another one. For the latter, remember to activate the configuration for
    the Angular cli e.g. `ng serve -c=mydev`. 
-1. From the Lastpass entry _Frontend environment.*.ts Dateien_ you can get the file _environment.devcluster.ts.txt_. It contains all needed configuration.
+1. From the Lastpass entry _Frontend environment.local_*.ts Dateien_ you can get the file _environment.local_dev-cluster.ts.txt_. It contains all needed configuration.
 
 ## Login Credentials
 Use the Lastpass entry _Development Cluster Test Account_ for login.
