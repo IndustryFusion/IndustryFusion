@@ -14,51 +14,32 @@ under the License.
 -->
 <div class="asset-series-create-step-three">
   <div class="content">
-    <div id="column left">
+    <div class="wizard-title">Connectivity Settings</div>
 
-      <div class="wizard-title">Connectivity Settings</div>
-
-      <clr-select-container>
-        <label>Select your asset's control system</label>
-        <select clrSelect name="connectivitySelect">
-          <option value="PLC">PLC</option>
-          <option value="CNC">CNC</option>
-        </select>
-      </clr-select-container>
-      <br>
-      <label class="clr-control-label">Are you using a gateway to run IndustryFusion on your asset?</label>
-      <div class="radio-group">
-
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio value="gateway" name="options"/>
-          <label>Gateway</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio value="assetControl" name="options"/>
-          <label>On asset control system</label>
-        </clr-radio-wrapper>
+    <div class="input-div">
+      <label class="if-label">Select connectivity type</label>
+      <div>
+        <p-dropdown [options]="connectivityTypes" [(ngModel)]="assetSeries.connectivityTypeId" optionLabel="name"
+                    optionValue="id" (onChange)="onChangeConnectivityType($event.value)">
+        </p-dropdown>
+        <label class="if-label-small">{{ infoText }}</label>
       </div>
-
-      <clr-select-container>
-        <label>Select physical connection to gateway</label>
-        <select clrSelect id="connectivitySelect">
-          <option value="LAN">LAN</option>
-          <option value="Serial(RS232)">Serial(RS232)</option>
-          <option value="Serial(RS485)">Serial(RS485)</option>
-        </select>
-      </clr-select-container>
-
-
-      <clr-select-container>
-        <label>Select protocol</label>
-        <select clrSelect name="connectivitySelect">
-          <option value="OPC UA">OPC UA</option>
-          <option value="...">...</option>
-        </select>
-      </clr-select-container>
     </div>
-    <div id="column right">
 
+    <div class="input-div">
+      <label class="if-label">Select protocol</label>
+      <p-dropdown [options]="connectivityProtocols" [(ngModel)]="assetSeries.protocolId" optionLabel="name"
+                  optionValue="id" (onChange)="onChangeProtocolType($event.value)">
+      </p-dropdown>
     </div>
+
+    <div class="input-div">
+      <div>
+        <label class="if-label">Connection string</label>
+        <clr-icon class="connectivity-string-hint" shape="help" size="29"></clr-icon>
+      </div>
+      <input type="text" pInputText [(ngModel)]="assetSeries.connectionString" />
+    </div>
+
   </div>
 </div>

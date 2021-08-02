@@ -16,9 +16,9 @@
 @import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
 
 
-div.content {
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+.content {
+  .connectivity-string-hint {
+    margin-left: 5px;
+    margin-top: -10px;
+  }
 }

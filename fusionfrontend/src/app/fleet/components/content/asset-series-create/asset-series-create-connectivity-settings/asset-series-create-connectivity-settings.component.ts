@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/connectivity-type.query';
+import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
+import { Observable } from 'rxjs';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-series-create-connectivity-settings',
@@ -10,11 +14,82 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
   @Output() stepChange = new EventEmitter<number>();
   @Output() errorSignal = new EventEmitter<string>();
-  @Input() assetSeriesGroup: FormGroup;
+  @Input() assetSeries: AssetSeries;
 
-  constructor() { }
+  connectivityTypes: ConnectivityType[];
+  connectivityTypes$: Observable<ConnectivityType[]>;
+  connectivityProtocols: ConnectivityProtocol[];
+  infoText = '';
 
-  ngOnInit(): void {
+  constructor(private connectivityTypeQuery: ConnectivityTypeQuery) {
+    this.mockConnectivityTypes();
   }
 
+  private mockConnectivityTypes() {
+    this.connectivityTypes = [];
+    this.mockDirectIO();
+    this.mockInternalMachineNetwork();
+    this.mockNetworkBased();
+  }
+
+  ngOnInit(): void {
+    this.connectivityTypes$ = this.connectivityTypeQuery.selectAll();
+    this.onChangeConnectivityType(1);
+  }
+
+  onChangeConnectivityType(connectivityTypeId: ID) {
+    if (connectivityTypeId && this.connectivityTypes) {
+      const selectedConnectivityType = this.connectivityTypes
+        .find(connectivityType => String(connectivityType.id) === String(connectivityTypeId));
+      this.connectivityProtocols = selectedConnectivityType.availableProtocols;
+      this.infoText = selectedConnectivityType.infoText;
+
+      if (this.connectivityProtocols.length > 0) {
+        this.assetSeries.protocolId = this.connectivityProtocols[0].id;
+        this.onChangeProtocolType(this.connectivityProtocols[0].id);
+      } else {
+        this.assetSeries.protocolId = null;
+        this.assetSeries.connectionString = '';
+      }
+    }
+  }
+
+  onChangeProtocolType(connectivityProtocolId: ID) {
+    if (connectivityProtocolId && this.connectivityProtocols) {
+      this.assetSeries.connectionString = this.connectivityProtocols
+        .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionString;
+    }
+  }
+
+  private mockDirectIO() {
+    this.connectivityTypes.push({ id: 1, name: 'Direct IO / SoftSPS', infoText: 'Sensors connected directly to the Gateway',
+      availableProtocols: [ ] });
+  }
+
+  private mockInternalMachineNetwork() {
+    const connectivityProtocolModbus: ConnectivityProtocol = new ConnectivityProtocol();
+    connectivityProtocolModbus.id = 1;
+    connectivityProtocolModbus.connectionString = 'modbus:tcp://127.0.0.1:502';
+    connectivityProtocolModbus.name = 'Modbus TCP';
+
+    this.connectivityTypes.push({ id: 2, name: 'Internal Machine Network',
+      infoText: 'Gateway is connected 1 to 1 to the Asset (e.g. PLC via Ethernet/Serial)',
+      availableProtocols: [ connectivityProtocolModbus ] });
+  }
+
+  private mockNetworkBased() {
+    const connectivityProtocolMQTT: ConnectivityProtocol = new ConnectivityProtocol();
+    connectivityProtocolMQTT.id = 2;
+    connectivityProtocolMQTT.connectionString = 'tcp://127.0.0.1:1883';
+    connectivityProtocolMQTT.name = 'MQTT';
+
+    const connectivityProtocolSQL: ConnectivityProtocol = new ConnectivityProtocol();
+    connectivityProtocolSQL.id = 3;
+    connectivityProtocolSQL.connectionString = 'jdbc:sqlserver://127.0.0.1\\SQLEXPRESS;database=TEST';
+    connectivityProtocolSQL.name = 'SQL';
+
+    this.connectivityTypes.push({ id: 3, name: 'Network based (e.g. SQL, MQTT)',
+      infoText: 'Everything that is connected via the Network (SQL database, MQTT broker)',
+      availableProtocols: [ connectivityProtocolMQTT, connectivityProtocolSQL,  ] });
+  }
 }

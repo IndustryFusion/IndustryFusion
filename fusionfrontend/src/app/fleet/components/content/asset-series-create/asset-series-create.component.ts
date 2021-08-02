@@ -19,9 +19,10 @@ import { ID } from '@datorama/akita';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FieldService } from '../../../../store/field/field.service';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 import { AssetSeriesCreateSteps } from './asset-series-create-steps.model';
+import { ConnectivityTypeResolver } from '../../../../resolvers/connectivity-type.resolver';
+import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 
 @Component({
   selector: 'app-asset-series-create',
@@ -43,11 +44,13 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   constructor(private assetSeriesService: AssetSeriesService,
               private changeDetectorRef: ChangeDetectorRef,
-              fieldService: FieldService,
+              private fieldsResolver: FieldsResolver,
+              private connectivityTypeResolver: ConnectivityTypeResolver,
               private dialogConfig: DynamicDialogConfig,
               private dynamicDialogRef: DynamicDialogRef,
   ) {
-    fieldService.getItems().subscribe();
+    this.resolve();
+
     this.companyId = dialogConfig.data.companyId;
     const assetSeriesId = this.dialogConfig.data.assetSeriesId;
     if (assetSeriesId) {
@@ -63,6 +66,11 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  private resolve() {
+    this.fieldsResolver.resolve().subscribe();
+    this.connectivityTypeResolver.resolve().subscribe();
   }
 
   createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
