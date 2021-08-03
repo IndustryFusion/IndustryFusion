@@ -2,6 +2,7 @@ package io.fusion.fusionbackend.test.persistence;
 
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.ConnectivityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -11,8 +12,9 @@ import static io.fusion.fusionbackend.test.persistence.builder.AssetSeriesBuilde
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplateBuilder.anAssetTypeTemplate;
 import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityProtocolBuilder.aConnectivityProtocol;
+import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityTypeBuilder.aConnectivityType;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class PersistenceTests extends PersistenceTestsBase {
@@ -72,5 +74,25 @@ public class PersistenceTests extends PersistenceTestsBase {
         Asset foundParent = testEntityManager.persistFlushFind(parent);
 
         assertEquals(1, foundParent.getSubsystems().size());
+    }
+
+    @Test
+    void persistConnectivityType() {
+        ConnectivityType connectivityType = aConnectivityType().build();
+
+        ConnectivityType foundType = testEntityManager.persistFlushFind(connectivityType);
+
+        assertNotNull(foundType);
+    }
+
+    @Test
+    void persistConnectivityTypeWithProtocol() {
+        ConnectivityType connectivityType = aConnectivityType()
+                .withProtocol(persisted(aConnectivityProtocol()))
+                .build();
+
+        ConnectivityType foundType = testEntityManager.persistFlushFind(connectivityType);
+
+        assertEquals(1, foundType.getAvailableProtocols().size());
     }
 }
