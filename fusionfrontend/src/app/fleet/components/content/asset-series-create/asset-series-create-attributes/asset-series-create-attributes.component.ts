@@ -14,9 +14,8 @@ import { FieldQuery } from '../../../../../store/field/field-query.service';
 })
 export class AssetSeriesCreateAttributesComponent implements OnInit {
 
-  @Output() errorSignal = new EventEmitter<string>();
-  @Output() valid = new EventEmitter<boolean>();
   @Input() assetSeries: AssetSeries;
+  @Output() valid = new EventEmitter<boolean>();
 
   fieldSourcesFormArray: FormArray;
   $loading: Observable<boolean>;

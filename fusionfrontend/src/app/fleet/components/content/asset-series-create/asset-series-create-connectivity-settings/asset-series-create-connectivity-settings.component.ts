@@ -13,7 +13,7 @@ import { FormGroup } from '@angular/forms';
 export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
   @Output() stepChange = new EventEmitter<number>();
-  @Output() errorSignal = new EventEmitter<string>();
+  @Output() valid = new EventEmitter<boolean>();
   @Input() assetSeriesForm: FormGroup;
 
   connectivityTypes: ConnectivityType[];
@@ -34,6 +34,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.connectivityTypes$ = this.connectivityTypeQuery.selectAll();
+    this.assetSeriesForm.get('connectivityTypeId').setValue(1);
     this.onChangeConnectivityType(1);
   }
 
@@ -47,19 +48,33 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
       if (this.connectivityProtocols.length > 0) {
         this.assetSeriesForm.get('protocolId').setValue(this.connectivityProtocols[0].id);
         this.onChangeProtocolType(this.connectivityProtocols[0].id);
+
       } else {
         this.assetSeriesForm.get('protocolId').setValue(null);
         this.assetSeriesForm.get('connectionString').setValue('');
       }
     }
+
+    this.updateValidity();
   }
 
   onChangeProtocolType(connectivityProtocolId: ID) {
     if (connectivityProtocolId && this.connectivityProtocols) {
-      const connectionString =  this.connectivityProtocols
+      const connectionString = this.connectivityProtocols
         .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionString;
       this.assetSeriesForm.get('connectionString').setValue(connectionString);
     }
+
+    this.updateValidity();
+  }
+
+  private updateValidity() {
+    const protocolIdValidOrNotAvailable =  this.assetSeriesForm.get('protocolId')?.value !== null ||
+      this.connectivityProtocols.length === 0;
+    const isValid = this.assetSeriesForm.get('connectivityTypeId')?.value != null && protocolIdValidOrNotAvailable;
+
+    console.log('isValid', isValid, this.connectivityProtocols);
+    this.valid.emit(isValid);
   }
 
   // TODO: remove later

@@ -25,8 +25,10 @@ under the License.
     [relatedAssetType]="relatedAssetType">
   </app-asset-series-create-general-information>
   <app-asset-series-create-connectivity-settings
+    *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS"
     [assetSeriesForm]="assetSeriesForm"
-    *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS" >
+    (valid)="setConnectivitySettingsValid($event)"
+  >
   </app-asset-series-create-connectivity-settings>
   <app-asset-series-create-attributes
     *ngIf="step === AssetSeriesCreateSteps.ATTRIBUTES"

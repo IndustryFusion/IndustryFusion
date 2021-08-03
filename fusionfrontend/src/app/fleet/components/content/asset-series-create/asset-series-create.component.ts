@@ -47,6 +47,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   assetSeriesForm: FormGroup;
 
   mode: DialogType = DialogType.CREATE;
+  connectivitySettingsValid: boolean;
   attributesValid: boolean;
   metricsValid: boolean;
   relatedManufacturer: Company;
@@ -105,7 +106,6 @@ export class AssetSeriesCreateComponent implements OnInit {
     }
 
     this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
-      console.log('isLoading', isLoading);
       if (!isLoading) {
         const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
         this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
@@ -147,7 +147,6 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   private updateAssetSeriesNameDisabledState(assetTypeTemplateId: ID) {
-    console.log('assetTypeTemplateId', assetTypeTemplateId);
     if (assetTypeTemplateId) {
       this.assetSeriesForm.get('name').enable();
     } else {
@@ -175,9 +174,11 @@ export class AssetSeriesCreateComponent implements OnInit {
     let result = true;
     switch (this.step) {
       case AssetSeriesCreateSteps.GENERAL_INFORMATION:
-        result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0;
+        result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0 &&
+                 this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
         break;
       case AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS:
+        result = this.connectivitySettingsValid;
         break;
       case AssetSeriesCreateSteps.ATTRIBUTES:
         result = this.attributesValid;
@@ -198,6 +199,11 @@ export class AssetSeriesCreateComponent implements OnInit {
         this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
           .subscribe(() => this.dynamicDialogRef.close());
       }
+  }
+
+  setConnectivitySettingsValid(isValid: boolean) {
+    this.connectivitySettingsValid = isValid;
+    this.changeDetectorRef.detectChanges();
   }
 
   setAttributesValid(isValid: boolean) {
