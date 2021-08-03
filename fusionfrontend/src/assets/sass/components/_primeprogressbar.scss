@@ -14,18 +14,22 @@
  */
 
 .red-bar .p-progressbar .p-progressbar-value {
-    background: #A73737 !important;
-  }
+  background: #A73737 !important;
+}
 
-  .grey-bar .p-progressbar .p-progressbar-value {
-    background: #95989A !important;
-  }
+.grey-bar .p-progressbar .p-progressbar-value {
+  background: #95989A !important;
+}
 
-  .blue-bar .p-progressbar .p-progressbar-value {
-    background: #32C5F0 !important;
-  }
+.blue-bar .p-progressbar .p-progressbar-value {
+  background: #53A7CA !important;
+}
 
-  .p-progressbar {
-    height: 32px !important;
-    border-radius: 8px !important;
-  }
+.light-grey-bar .p-progressbar .p-progressbar-value {
+  background: #EAEAEA !important;
+}
+
+.p-progressbar {
+  height: 32px !important;
+  border-radius: 8px !important;
+}
