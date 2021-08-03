@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { MessageService } from 'primeng/api';
     EditDetailsButtonComponent,
     FactorySiteMapComponent,
     AccuracyFormatPipe,
+    TooltipComponent,
   ],
   imports: [
     CommonModule,
@@ -78,6 +80,7 @@ import { MessageService } from 'primeng/api';
     ConfirmDialogModule,
     AccuracyFormatPipe,
     RadioButtonModule,
+    TooltipComponent,
   ],
   providers: [
     MessageService

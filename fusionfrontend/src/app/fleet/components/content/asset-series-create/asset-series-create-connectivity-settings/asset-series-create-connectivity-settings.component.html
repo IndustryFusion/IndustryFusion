@@ -18,7 +18,7 @@ under the License.
       <div class="wizard-title">Connectivity Settings</div>
 
       <div class="input-div">
-        <label class="if-label">Select connectivity type</label>
+        <label class="if-label">Select&nbsp;connectivity&nbsp;type&nbsp;*</label>
         <div>
           <p-dropdown [options]="connectivityTypes" formControlName="connectivityTypeId" optionLabel="name"
                       optionValue="id" (onChange)="onChangeConnectivityType($event.value)">
@@ -28,7 +28,7 @@ under the License.
       </div>
 
       <div class="input-div">
-        <label class="if-label">Select protocol</label>
+        <label class="if-label">Select&nbsp;protocol&nbsp;*</label>
         <p-dropdown [options]="connectivityProtocols" formControlName="protocolId" optionLabel="name"
                     optionValue="id" (onChange)="onChangeProtocolType($event.value)">
         </p-dropdown>
@@ -36,8 +36,8 @@ under the License.
 
       <div class="input-div">
         <div>
-          <label class="if-label">Connection string</label>
-          <clr-icon class="connectivity-string-hint" shape="help" size="29"></clr-icon>
+          <label class="if-label">Connection&nbsp;string&nbsp;*</label>
+          <app-tooltip [component]="AssetSeriesCreateConnectivitySettingsTooltipComponent"></app-tooltip>
         </div>
         <input type="text" pInputText formControlName="connectionString" />
       </div>

@@ -51,7 +51,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
       } else {
         this.assetSeriesForm.get('protocolId').setValue(null);
-        this.assetSeriesForm.get('connectionString').setValue('');
+        this.assetSeriesForm.get('connectionString').setValue(null);
       }
     }
 
@@ -69,11 +69,10 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
   }
 
   private updateValidity() {
-    const protocolIdValidOrNotAvailable =  this.assetSeriesForm.get('protocolId')?.value !== null ||
-      this.connectivityProtocols.length === 0;
-    const isValid = this.assetSeriesForm.get('connectivityTypeId')?.value != null && protocolIdValidOrNotAvailable;
+    const isValid = this.assetSeriesForm && this.assetSeriesForm.get('connectivityTypeId').valid
+      && this.assetSeriesForm.get('protocolId').valid
+      && this.assetSeriesForm.get('connectionString').valid;
 
-    console.log('isValid', isValid, this.connectivityProtocols);
     this.valid.emit(isValid);
   }
 

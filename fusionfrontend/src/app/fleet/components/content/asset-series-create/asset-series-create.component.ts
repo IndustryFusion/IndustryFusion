@@ -134,7 +134,7 @@ export class AssetSeriesCreateComponent implements OnInit {
       companyId: [null, Validators.required],
       connectivityTypeId: [null, Validators.required],
       protocolId: [null, Validators.required],
-      connectionString: [null, Validators.maxLength(255)],
+      connectionString: [null, requiredTextValidator],
     });
 
     if (this.assetSeries) {
