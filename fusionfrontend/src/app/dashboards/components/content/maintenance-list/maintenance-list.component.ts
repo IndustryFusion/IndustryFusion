@@ -13,8 +13,11 @@
  * under the License.
  */
 
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { FactoryAssetDetailsWithFields, DashboardFilterModalType } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  DashboardFilterModalType,
+  FactoryAssetDetailsWithFields
+} from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -41,6 +44,9 @@ const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
+  MAINTENANCE_FIELD_NAME_OPERATING_HOURS = 'Hours till maintenance';
+  MAINTENANCE_FIELD_NAME_DAYS = 'Days till maintenance';
+
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   @Input()
@@ -55,27 +61,27 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   faSearch = faSearch;
 
   selectedValueMapping:
-  { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
+    { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
 
   activeFilterSet: Set<ActiveFilter> = new Set();
   filterOptions: SelectItem[] = [];
-  assetType: SelectItem =  { value: 'assetType', label: 'Asset Type' };
-  manufacturer: SelectItem =  { value: 'manufacturer', label: 'Manufacturer' };
-  factory: SelectItem =  { value: 'factory', label: 'Factory' };
-  maintenanceDue: SelectItem =  { value: 'maintenanceDue', label: 'Maintenance Due' };
+  assetType: SelectItem = { value: 'assetType', label: 'Asset Type' };
+  manufacturer: SelectItem = { value: 'manufacturer', label: 'Manufacturer' };
+  factory: SelectItem = { value: 'factory', label: 'Factory' };
+  maintenanceDue: SelectItem = { value: 'maintenanceDue', label: 'Maintenance Due' };
 
   dashboardFilterModalTypes = DashboardFilterModalType;
   dashboardFilterTypeActice: DashboardFilterModalType;
   selectedAssetTypes: AssetType[] = [];
   selectedCompanies: Company[] = [];
   selectedFactorySites: FactorySite[] = [];
-  maintenanceValues = [ SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY,  LONGTERM_PRIORITY ];
+  maintenanceValues = [SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY, LONGTERM_PRIORITY];
   selectedMaintenanceDue = [];
   searchText = '';
   index: number;
 
-  constructor(
-  ) { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.filterOptions = [this.assetType, this.manufacturer, this.factory, this.maintenanceDue];
@@ -96,16 +102,13 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     });
     if (!activeFilters.includes(this.assetType)) {
       this.activeFilterSet.add({ filterAttribute: this.assetType });
-    }
-    else if (!activeFilters.includes(this.manufacturer)) {
+    } else if (!activeFilters.includes(this.manufacturer)) {
       this.activeFilterSet.add({ filterAttribute: this.manufacturer });
- }
-    else if (!activeFilters.includes(this.factory)) {
+    } else if (!activeFilters.includes(this.factory)) {
       this.activeFilterSet.add({ filterAttribute: this.factory });
- }
-    else if (!activeFilters.includes(this.maintenanceDue)) {
+    } else if (!activeFilters.includes(this.maintenanceDue)) {
       this.activeFilterSet.add({ filterAttribute: this.maintenanceDue });
- }
+    }
   }
 
   clearSingleFilter(filterToRemove) {
@@ -113,16 +116,13 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       if (filter === filterToRemove) {
         if (filter.filterAttribute === this.assetType) {
           this.selectedAssetTypes = [];
-        }
-        else if (filter.filterAttribute === this.manufacturer) {
+        } else if (filter.filterAttribute === this.manufacturer) {
           this.selectedCompanies = [];
- }
-        else if (filter.filterAttribute === this.factory) {
+        } else if (filter.filterAttribute === this.factory) {
           this.selectedFactorySites = [];
- }
-        else if (filter.filterAttribute === this.maintenanceDue) {
+        } else if (filter.filterAttribute === this.maintenanceDue) {
           this.selectedMaintenanceDue = [];
- }
+        }
         this.activeFilterSet.delete(filter);
       }
     });
@@ -145,7 +145,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       this.selectedCompanies = [];
     } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.factoryFilterModal) {
       this.selectedFactorySites = [];
-    } else if (this.dashboardFilterTypeActice ===  DashboardFilterModalType.maintenanceDueFilterModal) {
+    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.maintenanceDueFilterModal) {
       this.selectedMaintenanceDue = [];
     }
   }
@@ -161,64 +161,30 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     if (this.selectedMaintenanceDue.length > 0) {
       if (this.selectedMaintenanceDue.length === 2) {
         this.filterAssetsByTwoMaintenanceValues();
-      }
-      else if (this.selectedMaintenanceDue.length === 1) {
+      } else if (this.selectedMaintenanceDue.length === 1) {
         this.filterAssetsByOneMaintenanceValue();
- }
-    }
-  }
-
-  private filterBySearchText() {
-    if (this.searchText) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets
-        .filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
-    }
-  }
-
-  private filterByCompany() {
-    const companyNames = this.selectedCompanies.map(company => company.description);
-    if (companyNames.length > 0) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => companyNames.includes(asset.manufacturer));
-    }
-  }
-
-  private filterByAssetType() {
-    const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
-    if (assetTypeNames.length > 0) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => assetTypeNames.includes(asset.category));
-    }
-  }
-
-  private filterByFactorySite() {
-    const factorySiteNames = this.selectedFactorySites.map(factorySite => factorySite.name);
-    if (factorySiteNames.length > 0) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets
-        .filter(asset => factorySiteNames.includes(asset.factorySiteName));
+      }
     }
   }
 
   filterAssetsByTwoMaintenanceValues() {
     if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
       this.filterAssetsLowerThanMaintenanceValue(MEDIUMTERM_MAINTENANCE_VALUE);
-    }
-    else if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
+    } else if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
       this.filterAssetOutsideTwoMaintenanceValues(CRITICAL_MAINTENANCE_VALUE, MEDIUMTERM_MAINTENANCE_VALUE);
- }
-    else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
+    } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
       this.filterAssetsGreaterThanMaintenanceValue(CRITICAL_MAINTENANCE_VALUE);
- }
+    }
   }
 
   filterAssetsByOneMaintenanceValue() {
     if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY)) {
       this.filterAssetsLowerThanMaintenanceValue(CRITICAL_MAINTENANCE_VALUE);
-    }
-    else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
+    } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
       this.filterAssetsBetweenTwoMaintenanceValues(CRITICAL_MAINTENANCE_VALUE, MEDIUMTERM_MAINTENANCE_VALUE);
- }
-    else if (this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
+    } else if (this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
       this.filterAssetsGreaterThanMaintenanceValue(MEDIUMTERM_MAINTENANCE_VALUE);
- }
+    }
   }
 
   filterAssetsLowerThanMaintenanceValue(value: number) {
@@ -258,4 +224,35 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       }
     });
   }
+
+  private filterBySearchText() {
+    if (this.searchText) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets
+        .filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
+    }
+  }
+
+  private filterByCompany() {
+    const companyNames = this.selectedCompanies.map(company => company.description);
+    if (companyNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => companyNames.includes(asset.manufacturer));
+    }
+  }
+
+  private filterByAssetType() {
+    const assetTypeNames = this.selectedAssetTypes.map(assetType => assetType.description);
+    if (assetTypeNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => assetTypeNames.includes(asset.category));
+    }
+  }
+
+  private filterByFactorySite() {
+    const factorySiteNames = this.selectedFactorySites.map(factorySite => factorySite.name);
+    if (factorySiteNames.length > 0) {
+      this.displayedFactoryAssets = this.displayedFactoryAssets
+        .filter(asset => factorySiteNames.includes(asset.factorySiteName));
+    }
+  }
+
+
 }

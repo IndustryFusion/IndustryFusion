@@ -25,7 +25,8 @@ import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 
-const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
+const MAINTENANCE_FIELD_NAME_OPERATING_HOURS = 'Hours till maintenance';
+// const MAINTENANCE_FIELD_NAME_DAYS = "Days till maintenance";
 
 @Component({
   selector: 'app-maintenance-page',
@@ -68,8 +69,8 @@ export class MaintenancePageComponent implements OnInit {
 
   sortAssetsByMaintenanceValue() {
     this.factoryAssetDetailsWithFields.sort((a, b) => {
-      const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
-      const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
+      const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
+      const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
       if (indexA !== -1 && indexB !== -1) {
         return Number(a.fields[indexA].value) > Number(b.fields[indexB].value) ? 1 : -1;
       } else if (indexA === -1) {
