@@ -13,9 +13,10 @@
  * under the License.
  */
 
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RuleAction, RuleActionType } from '../../../../services/oisp.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-applet-action-list',
@@ -23,15 +24,16 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./applet-action-list.component.scss']
 })
 export class AppletActionListComponent implements OnInit {
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   @Input()
   actions: RuleAction[] = [];
-  actionsArray: FormArray = new FormArray([]);
 
-  @Output()
-  save = new EventEmitter<RuleAction[]>();
+  @Input()
+  actionsArray: FormArray;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.createActionGroups();
@@ -43,14 +45,16 @@ export class AppletActionListComponent implements OnInit {
       if (action.type === RuleActionType.http) {
         formGroup.addControl('http_headers', this.formBuilder.group(action.http_headers));
       }
+      formGroup.setControl('target', this.formBuilder.array(action.target, Validators.minLength(1)));
       formGroup.setValue(action);
       this.actionsArray.push(formGroup);
+      console.log('actionGroup: ', formGroup);
     });
   }
 
   private createNewActionGroup(): FormGroup {
     return this.formBuilder.group({
-      target: [[]],
+      target: new FormArray([], Validators.minLength(1)),
       type: [, [Validators.required]],
     });
   }
@@ -61,11 +65,5 @@ export class AppletActionListComponent implements OnInit {
 
   removeAction(index: number) {
     this.actionsArray.removeAt(index);
-  }
-
-  saveAction() {
-    if (this.actionsArray.valid) {
-      this.save.emit(this.actionsArray.getRawValue());
-    }
   }
 }

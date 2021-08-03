@@ -15,13 +15,17 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import {
+  BaselineCalculationLevel,
   ConditionsOperator,
   ConditionType,
   ConditionValueOperator, Device,
   RuleConditions
 } from '../../../../services/oisp.model';
 import { OispService } from '../../../../services/oisp.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
+import { SelectItem } from 'primeng/api';
+import { EnumHelpers } from '../../../../common/utils/enum-helpers';
 
 @Component({
   selector: 'app-applet-conditions',
@@ -29,6 +33,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
   styleUrls: ['./applet-conditions.component.scss']
 })
 export class AppletConditionsComponent implements OnInit {
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   @Input()
   conditions: RuleConditions;
@@ -37,9 +42,12 @@ export class AppletConditionsComponent implements OnInit {
   ruleGroup: FormGroup;
   conditionsGroup: FormGroup;
   devices: Device[];
+  dropdownOperatorOptions: SelectItem[];
 
   constructor(private oispService: OispService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private enumHelpers: EnumHelpers) {
+    this.dropdownOperatorOptions = this.getOperatorDropdownValue();
     this.loadDevices();
     this.createFormgroups();
   }
@@ -66,6 +74,9 @@ export class AppletConditionsComponent implements OnInit {
       operator: [ConditionsOperator.OR, [Validators.required]],
       values: new FormArray([], [Validators.required, Validators.minLength(1)])
     });
+    this.conditionsGroup.get('operator').valueChanges.subscribe(value => {
+      this.conditionsGroup.get('operator').setValue(value, { emitEvent: false});
+    });
   }
 
   private loadDevices() {
@@ -76,7 +87,7 @@ export class AppletConditionsComponent implements OnInit {
   }
 
   private createConditionValueGroup(): FormGroup {
-    return this.formBuilder.group({
+    const formGroup = this.formBuilder.group({
       component: this.formBuilder.group({
         name: [],
         dataType: [, Validators.required],
@@ -88,10 +99,42 @@ export class AppletConditionsComponent implements OnInit {
         new FormControl(null, [Validators.required, Validators.minLength(1)])
       ], [Validators.required, Validators.minLength(1)]),
       timeLimit: [],
-      baselineCalculationLevel: [],
+      baselineCalculationLevel: [BaselineCalculationLevel['Device level']],
       baselineSecondsBack: [],
       baselineMinimalInstances: [],
     });
+    formGroup.get('type').valueChanges.subscribe((value: ConditionType) => {
+      this.updateValidationOnType(formGroup, value);
+    });
+    return formGroup;
+  }
+
+  private updateValidationOnType(formGroup: FormGroup, value: ConditionType) {
+    const groups: AbstractControl[] = [
+      formGroup.get('timeLimit'),
+      formGroup.get('values'),
+      formGroup.get('baselineCalculationLevel'),
+      formGroup.get('baselineSecondsBack'),
+      formGroup.get('baselineMinimalInstances')
+    ];
+    groups.forEach(control => control.clearValidators());
+    switch (value) {
+      case ConditionType.basic:
+        formGroup.get('values').setValidators([Validators.required, Validators.minLength(1)]);
+        (formGroup.get('values') as FormArray).removeAt(1);
+        break;
+      case ConditionType.statistics:
+        formGroup.get('baselineSecondsBack').setValidators([Validators.required, Validators.min(1)]);
+        formGroup.get('baselineMinimalInstances').setValidators([Validators.required, Validators.min(1)]);
+        formGroup.get('values').setValidators([Validators.required, Validators.minLength(2)]);
+        break;
+      case ConditionType.time:
+        formGroup.get('timeLimit').setValidators([Validators.required, Validators.min(1)]);
+        formGroup.get('values').setValidators([Validators.required, Validators.minLength(1)]);
+        (formGroup.get('values') as FormArray).removeAt(1);
+        break;
+    }
+    groups.forEach(control => control.updateValueAndValidity());
   }
 
   getConditonValues(): FormArray {
@@ -100,5 +143,21 @@ export class AppletConditionsComponent implements OnInit {
 
   createNewTrigger() {
     (this.conditionsGroup.get('values') as FormArray).push(this.createConditionValueGroup());
+  }
+
+  removeAction(index: number) {
+    this.getConditonValues().removeAt(index);
+  }
+
+  getOperatorDropdownValue(): SelectItem[] {
+    const result = [];
+
+    for (const element of this.enumHelpers.getIterableArray(ConditionsOperator)) {
+      result.push({
+        label: element,
+        value: element
+      });
+    }
+    return result;
   }
 }

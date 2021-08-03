@@ -46,7 +46,7 @@ import { KeycloakService } from 'keycloak-angular';
 })
 export class OispService {
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json', Authorization: environment.oispAuthToken })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   private defaultPoints: PointWithId[] = [];
 

@@ -22,16 +22,20 @@ under the License.
         <div class="if-label p-col">
           {{i+1}}. Action
         </div>
+          <app-valid-icon [isValid]="actionGroup.valid"></app-valid-icon>
         </div>
-        <div ><i (click)="removeAction(i)" class="pi pi-times-circle"></i></div>
+        <div>
+          <app-item-options-menu (deleteItem)="removeAction(i)" [type]="[ItemOptionsMenuType.DELETE]">
+          </app-item-options-menu>
+        </div>
       </div>
-      <app-applet-action (saveAction)="saveAction()" [actionGroup]="actionGroup"></app-applet-action>
+      <app-applet-action [actionGroup]="actionGroup"></app-applet-action>
     </div>
     <div class="vl"></div>
   </div>
 <div class="applet-action-list">
   <div class="center-trigger">
-    <button (click)="addAction()"><i class="pi pi-plus "></i></button>
+    <button class="if-button editor-add-btn" (click)="addAction()"><i class="pi pi-plus "></i></button>
     Create new Action
   </div>
 </div>

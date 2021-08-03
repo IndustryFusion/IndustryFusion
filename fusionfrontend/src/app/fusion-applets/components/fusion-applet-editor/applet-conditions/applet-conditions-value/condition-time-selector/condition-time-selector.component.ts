@@ -59,12 +59,10 @@ export class ConditionTimeSelectorComponent implements OnInit {
   private updateTimeGroup(value) {
     let timeOperator: number;
     for (const item of this.TIME_OPERATORS) {
-      console.log(value + ' % ' + item, value % item);
       if (value % item === 0) {
         timeOperator = item;
       }
     }
-    console.log(timeOperator, value / timeOperator);
     this.timeGroup.patchValue({ timeOperator, value: value / timeOperator});
   }
 

@@ -15,7 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { OispService } from '../../../../../../services/oisp.service';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-applet-action-mail',
@@ -29,6 +29,7 @@ export class AppletActionMailComponent implements OnInit {
 
   emailRecipients: string[] = [];
   emailSelection: string;
+  accordionIndex = -1;
 
   constructor(oispService: OispService) {
     oispService.getUser().subscribe(users => this.emailRecipients = users.map(user => user.email));
@@ -38,18 +39,23 @@ export class AppletActionMailComponent implements OnInit {
   }
 
   addEmail(email: string) {
-    if (!this.emailAction.get('target').value) {
-      this.emailAction.get('target').setValue([]);
-    }
-    this.emailAction.get('target').value.push(email);
+    (this.emailAction.get('target') as FormArray).push(new FormControl(email));
   }
 
   removeEmail(emailIndex: number) {
-    this.emailAction.get('target').value.splice(emailIndex, 1);
+    (this.emailAction.get('target') as FormArray).removeAt(emailIndex);
     this.emailSelection = null;
+  }
+
+  getTarget(): AbstractControl[] {
+    return (this.emailAction?.get('target') as FormArray).controls;
   }
 
   getAvaileblRecipients(): string[] {
     return this.emailRecipients.filter(mail => !this.emailAction.get('target').value.includes(mail));
+  }
+
+  close() {
+    this.accordionIndex = -1;
   }
 }

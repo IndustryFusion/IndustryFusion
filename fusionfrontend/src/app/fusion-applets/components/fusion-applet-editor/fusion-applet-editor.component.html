@@ -15,16 +15,23 @@ under the License.
 
 <div class="if-fusion-applet-editor" *ngIf="rule">
   <div class="p-grid p-jc-between full-width">
-    <button (click)="save()">Save Valid:{{ruleGroup.valid}}</button>
-    <p class="if-title p-col-">{{rule.name}}</p>
+    <p-inplace class="p-col-4" [formGroup]="ruleGroup" [closable]="true" [closeIcon]="'pi pi-check'">
+      <ng-template pTemplate="display">
+        <i class="pi pi-pencil"></i>&nbsp;
+        <label class="if-title p-col-" displayControlValue="name"></label>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <input formControlName="name" type="text" pInputText>
+      </ng-template>
+    </p-inplace>
     <p-inputSwitch class="p-col-1"
-      [disabled]="!ruleStatusUtil.canActivated(rule.status)"
-      (ngModelChange)="changeStatus($event)"
-      [ngModel]="ruleStatusUtil.isActive(rule.status)"
+                   [disabled]="!ruleStatusUtil.canActivated(rule.status)"
+                   (ngModelChange)="changeStatus($event)"
+                   [ngModel]="ruleStatusUtil.isActive(rule.status)"
     ></p-inputSwitch>
     <div class="p-col-4">
       <p-checkbox binary="true"
-                  [ngModel]="rule.resetType === RuleResetType.Automatic"
+                  [ngModel]="ruleGroup.get('resetType').value === RuleResetType.Automatic"
                   (onChange)="setResetTypeAutomatic($event.checked)"
       ></p-checkbox>
       Enable automatic Reset
@@ -35,7 +42,10 @@ under the License.
   ></app-applet-conditions>
   <div class="vl"></div>
   <app-applet-action-list class="full-width"
-                          (save)="saveActions($event)"
+                          [actionsArray]="ruleGroup.get('actions')"
                           [actions]="rule.actions"
   ></app-applet-action-list>
+  <div class="full-width p-grid p-justify-end">
+    <button class="if-button button-primary" [disabled]="ruleGroup.invalid" (click)="save()">Save</button>
+  </div>
 </div>

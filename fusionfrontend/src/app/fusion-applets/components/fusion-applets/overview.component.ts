@@ -119,10 +119,10 @@ export class OverviewComponent implements OnInit {
     let result: ItemOptionsMenuType[];
     switch (status) {
       case RuleStatus.Active:
-      case RuleStatus.Archived:
       case RuleStatus.OnHold:
         result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.CLONE, ItemOptionsMenuType.DELETE];
         break;
+      case RuleStatus.Archived:
       case RuleStatus.Deleted:
         result = [ItemOptionsMenuType.CLONE];
         break;
@@ -135,7 +135,7 @@ export class OverviewComponent implements OnInit {
   }
 
   hasActionType(rule: Rule, type: RuleActionType): boolean {
-    return rule.actions.map(action => action.type).includes(type);
+    return rule.actions?.map(action => action.type).includes(type);
   }
 
   private getRuleDetails() {

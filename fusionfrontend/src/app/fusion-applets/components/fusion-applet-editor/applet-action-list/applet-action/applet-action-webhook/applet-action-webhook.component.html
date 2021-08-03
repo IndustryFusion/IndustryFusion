@@ -15,8 +15,10 @@ under the License.
 
 <p-accordion class="action-panel" [(activeIndex)]="activeAccordionIndex" >
   <p-accordionTab header="Set up Webhook" [formGroup]="webhookGroup" [disabled]="activeAccordionIndex == 0">
-    <label>Webhook URL *</label>
-    <input formControlName="target" pInputText class="full-width"/>
+    <div *ngFor="let target of getTarget()">
+      <label>Webhook URL *</label>
+      <input [formControl]="target" pInputText class="full-width"/>
+    </div>
     <label class="if-label">Message Headers</label>
     <div class="p-grid" [formGroup]="activeHeaderGroup">
       <div class="p-col-4">

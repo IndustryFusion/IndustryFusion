@@ -40,6 +40,10 @@ import { AppletConditionsComponent } from './components/fusion-applet-editor/app
 import { ConditionTimeSelectorComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/condition-time-selector/condition-time-selector.component';
 import { AppletConditionsValueComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/applet-conditions-value.component';
 import { ValidIconComponent } from './components/fusion-applet-editor/valid-icon/valid-icon.component';
+import { InplaceModule } from 'primeng/inplace';
+import { FleetModule } from '../fleet/fleet.module';
+import { ControlLimitSelectorComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/control-limit-selector/control-limit-selector.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 
@@ -60,6 +64,7 @@ import { ValidIconComponent } from './components/fusion-applet-editor/valid-icon
     ConditionTimeSelectorComponent,
     AppletConditionsValueComponent,
     ValidIconComponent,
+    ControlLimitSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +76,9 @@ import { ValidIconComponent } from './components/fusion-applet-editor/valid-icon
     CardModule,
     AccordionModule,
     MultiSelectModule,
+    InplaceModule,
+    FleetModule,
+    InputNumberModule,
   ],
   exports: [
     FusionAppletPageTitleComponent,

@@ -27,7 +27,6 @@ under the License.
     </div>
   </div>
   <app-applet-action-webhook *ngIf="isActionType(RuleActionType.http)"
-                             (saveAction)="saveThisAction($event)"
                              [webhookGroup]="actionGroup"></app-applet-action-webhook>
   <app-applet-action-mail *ngIf="isActionType(RuleActionType.mail)" [emailAction]="actionGroup"></app-applet-action-mail>
 </div>

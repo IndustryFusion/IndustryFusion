@@ -13,25 +13,41 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="applet-conditions-value-list"
-     *ngFor="let conditonValueGroup of getConditonValues().controls; let i = index">
-  <div class="if-card">
-    <div class="p-grid">
-      <i class="if-icon-machine"></i>
-      <div class="if-label p-col-2">
-        {{i + 1}}. Trigger
+<div *ngIf="devices">
+  <div class="applet-conditions-value-list"
+       *ngFor="let conditonValueGroup of getConditonValues().controls; let i = index; let last = last">
+    <div class="if-card">
+      <div class="p-grid p-justify-between">
+        <div class="p-grid">
+          <i class="if-icon-machine"></i>
+          <div class="if-label p-col">
+            {{i + 1}}. Trigger
+          </div>
+          <app-valid-icon [isValid]="conditonValueGroup.valid"></app-valid-icon>
+        </div>
+        <div>
+          <app-item-options-menu (deleteItem)="removeAction(i)" [type]="[ItemOptionsMenuType.DELETE]">
+          </app-item-options-menu>
+        </div>
       </div>
-      <app-valid-icon [isValid]="conditonValueGroup.valid" ></app-valid-icon>
+      <app-applet-conditions-value [conditionValueGroup]="conditonValueGroup"
+                                   [devices]="devices"
+      ></app-applet-conditions-value>
     </div>
-    <app-applet-conditions-value [conditionValueGroup]="conditonValueGroup"
-                                 [devices]="devices"
-    ></app-applet-conditions-value>
+    <div class="vl"></div>
+    <div class="operator-dropdown" *ngIf="!last">
+    <p-dropdown [options]="dropdownOperatorOptions"
+                [optionLabel]="'label'"
+                [optionValue]="'value'"
+                [formControl]="conditionsGroup.get('operator')"
+    ></p-dropdown>
+    </div>
+    <div *ngIf="!last" class="vl"></div>
   </div>
-  <div class="vl"></div>
-</div>
-<div class="applet-conditions-value-list">
-  <div class="center-trigger">
-    <button (click)="createNewTrigger()"><i class="pi pi-plus "></i></button>
-    Create new Trigger
+  <div class="applet-conditions-value-list">
+    <div class="center-trigger">
+      <button class="if-button editor-add-btn" (click)="createNewTrigger()"><i class="pi pi-plus "></i></button>
+      Create new Trigger
+    </div>
   </div>
 </div>

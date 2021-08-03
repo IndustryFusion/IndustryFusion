@@ -17,6 +17,7 @@
 @import "base/icons";
 @import "abstract/variables";
 @import "components/labels";
+@import "components/buttons";
 @import "components/primecheckbox";
 @import "components/primedropdown";
 
@@ -59,6 +60,13 @@
   box-shadow: $dark-box-shadow;
   border-radius: 20px;
   opacity: 1;
+}
+
+.editor-add-btn {
+  padding: unset !important;
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
 }
 
 :host ::ng-deep .p-accordion-tab {

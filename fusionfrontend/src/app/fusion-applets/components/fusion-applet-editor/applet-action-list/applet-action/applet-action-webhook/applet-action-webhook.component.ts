@@ -13,9 +13,8 @@
  * under the License.
  */
 
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { RuleAction } from '../../../../../../services/oisp.model';
+import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-applet-action-webhook',
@@ -25,9 +24,6 @@ import { RuleAction } from '../../../../../../services/oisp.model';
 export class AppletActionWebhookComponent implements OnInit {
   @Input()
   webhookGroup: FormGroup;
-
-  @Output()
-  saveAction = new EventEmitter<RuleAction>();
 
   activeHeaderGroup: FormGroup;
   activeAccordionIndex: number;
@@ -66,6 +62,9 @@ export class AppletActionWebhookComponent implements OnInit {
 
   saveWebhookAction() {
     this.activeAccordionIndex = 1;
-    this.saveAction.emit(this.webhookGroup.getRawValue());
+  }
+
+  getTarget(): AbstractControl[] {
+    return (this.webhookGroup.get('target') as FormArray).controls;
   }
 }

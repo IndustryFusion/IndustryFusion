@@ -12,18 +12,21 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<p-accordion class="action-panel">
+<p-accordion class="action-panel" [(activeIndex)]="accordionIndex">
   <p-accordionTab header="Set up Email Notification">
     <label *ngIf="getAvaileblRecipients()?.length > 0">Choose Email Recipients *</label>
     <p-dropdown *ngIf="getAvaileblRecipients()?.length > 0" [options]="getAvaileblRecipients()"
                 [(ngModel)]="emailSelection" placeholder="Select Email"
                 (onChange)="addEmail($event.value)"></p-dropdown>
     <label *ngIf="emailAction?.get('target')?.value?.length > 0">Selected Email Recipients</label>
-    <div class="email-list" *ngFor="let email of emailAction?.get('target')?.value; let i = index">
+    <div class="email-list" *ngFor="let email of getTarget(); let i = index">
       <div class="list-item">
-        {{email}}
+        {{email.value}}
       </div>
       <app-trash-button (deleteItem)="removeEmail(i)"></app-trash-button>
     </div>
+    <button class="if-button button-primary full-width"
+            [disabled]="emailAction.invalid" (click)="close()"
+    >Continue</button>
   </p-accordionTab>
 </p-accordion>

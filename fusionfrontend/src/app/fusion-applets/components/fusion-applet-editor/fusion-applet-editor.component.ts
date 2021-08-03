@@ -16,9 +16,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OispService } from '../../../services/oisp.service';
-import { Rule, RuleAction, RuleResetType, RuleType, } from '../../../services/oisp.model';
+import { Rule, RuleResetType, RuleStatus, RuleType, } from '../../../services/oisp.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-fusion-applet-editor',
@@ -38,34 +38,54 @@ export class FusionAppletEditorComponent implements OnInit {
     public ruleStatusUtil: RuleStatusUtil,
     formBuilder: FormBuilder
   ) {
-    this.ruleGroup = formBuilder.group({ });
+    this.ruleGroup = formBuilder.group({
+      id: [],
+      externalId: [],
+      name: [],
+      description: [],
+      owner: [],
+      naturalLanguage: [],
+      type: [RuleType.Regular, [Validators.required]],
+      resetType: [],
+      priority: [],
+      status: [, [Validators.required]],
+      synchronizationStatus: [],
+      population: [],
+      actions: new FormArray([], [Validators.required, Validators.minLength(1)])
+    });
     const fusionAppletId = activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
-    this.oispService.getRule(fusionAppletId).subscribe(rule => this.rule = rule);
+    this.oispService.getRule(fusionAppletId).subscribe(rule => {
+      this.rule = rule;
+      this.ruleGroup.patchValue(this.rule);
+    });
   }
 
   ngOnInit(): void {
   }
 
-  changeStatus($event: boolean) {
-    console.log($event);
-  }
-
-  saveActions(actions: RuleAction[]) {
-    this.rule.actions = actions;
-    this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
+  changeStatus(isActivating: boolean) {
+    let status: RuleStatus;
+    if (isActivating) {
+      status = RuleStatus.Active;
+    } else {
+      status = RuleStatus.OnHold;
+    }
+    this.oispService.setRuleStatus(this.rule.id, status).subscribe(rule => {
+      this.rule = rule;
+      this.ruleGroup.patchValue(this.rule);
+    });
   }
 
   setResetTypeAutomatic(isAutomatic: boolean) {
     if (isAutomatic) {
-      this.rule.resetType = RuleResetType.Automatic;
+      this.ruleGroup.get('resetType').setValue(RuleResetType.Automatic);
     } else {
-      this.rule.resetType = RuleResetType.Manual;
+      this.ruleGroup.get('resetType').setValue(RuleResetType.Manual);
     }
   }
 
   save() {
-    this.rule.conditions = (this.ruleGroup.get('conditions') as FormGroup).getRawValue();
-    this.rule.type = RuleType.Regular;
+    this.rule = this.ruleGroup.getRawValue();
     this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
   }
 }

@@ -32,7 +32,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class AppletConditionsValueComponent implements OnInit {
   ConditionType = ConditionType;
-  activeAccordionIndex: number;
+  activeAccordionIndex = 1;
 
   @Input()
   conditionValueGroup: FormGroup;
@@ -116,10 +116,13 @@ export class AppletConditionsValueComponent implements OnInit {
         result.push(this.mapDeviceComponentToSelectItem(deviceComponent.device, deviceComponent.component));
       }
     }
-    return result;
+    return result.filter(selectedItem => selectedItem);
   }
 
   private mapDeviceComponentToSelectItem(device: Device, component: DeviceComponent): SelectItem<ConditionValueComponent> {
+    if (!device || !component) {
+      return null;
+    }
     return {
       label: device.name + ': ' + component.name + '(' + component.componentType?.dataType + ')',
       value: {
@@ -128,5 +131,17 @@ export class AppletConditionsValueComponent implements OnInit {
         cid: component.cid
       }
     };
+  }
+
+  close() {
+    this.activeAccordionIndex = -1;
+  }
+
+  isAnyConditonType(types: ConditionType[]): boolean {
+    let result = false;
+    for (const type of types) {
+      result = result || this.conditionValueGroup.get('type').value === type;
+    }
+    return result;
   }
 }
