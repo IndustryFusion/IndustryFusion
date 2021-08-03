@@ -22,6 +22,12 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 import { AssetSeriesCreateSteps } from './asset-series-create-steps.model';
 import { ConnectivityTypeResolver } from '../../../../resolvers/connectivity-type.resolver';
+import { Company } from '../../../../store/company/company.model';
+import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { CompanyQuery } from '../../../../store/company/company.query';
+import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
+import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
+import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -43,10 +49,16 @@ export class AssetSeriesCreateComponent implements OnInit {
   mode: DialogType = DialogType.CREATE;
   attributesValid: boolean;
   metricsValid: boolean;
+  relatedManufacturer: Company;
+  relatedAssetType: AssetType;
 
   AssetSeriesCreateSteps = AssetSeriesCreateSteps;
 
   constructor(private assetSeriesService: AssetSeriesService,
+              private companyQuery: CompanyQuery,
+              private assetTypeTemplateQuery: AssetTypeTemplateQuery,
+              private assetTypeQuery: AssetTypeQuery,
+              private assetTypesResolver: AssetTypesResolver,
               private changeDetectorRef: ChangeDetectorRef,
               private fieldsResolver: FieldsResolver,
               private formBuilder: FormBuilder,
@@ -77,11 +89,28 @@ export class AssetSeriesCreateComponent implements OnInit {
   private resolve() {
     this.fieldsResolver.resolve().subscribe();
     this.connectivityTypeResolver.resolve().subscribe();
+    this.assetTypesResolver.resolve().subscribe();
   }
 
   private updateAssetSeries(assetSeries: AssetSeries) {
     this.assetSeries = assetSeries;
     this.createAssetSeriesForm();
+    this.updateRelatedObjects(assetSeries);
+  }
+
+  private updateRelatedObjects(assetSeries: AssetSeries): void {
+    this.relatedManufacturer = this.companyQuery.getActive();
+    if (!this.relatedManufacturer) {
+      console.warn('[Asset wizard]: No active company found');
+    }
+
+    this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
+      console.log('isLoading', isLoading);
+      if (!isLoading) {
+        const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
+        this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+      }
+    });
   }
 
   createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {

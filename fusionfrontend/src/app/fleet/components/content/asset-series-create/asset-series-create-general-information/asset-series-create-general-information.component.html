@@ -46,10 +46,9 @@ under the License.
         <span class="if-hint" > How will my asset be displayed in a factory?</span>
         <div class="sample-asset-display">
           <div>
-            <span class="wizard-icon-title">Asset series name</span>
-            <span>Asset name</span>
-            <span>Asset category</span>
-            <span>Manufacturer</span>
+            <span class="wizard-icon-title">{{ assetSeriesForm?.get('name')?.value }}</span>
+            <span>{{ relatedAssetType?.name }}</span>
+            <span>{{ relatedManufacturer?.name }}</span>
           </div>
         </div>
       </div>

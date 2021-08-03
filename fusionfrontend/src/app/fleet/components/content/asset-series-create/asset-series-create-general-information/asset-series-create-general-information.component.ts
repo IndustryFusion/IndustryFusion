@@ -23,6 +23,8 @@ import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { FormGroup } from '@angular/forms';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import { Company } from '../../../../../store/company/company.model';
+import { AssetType } from '../../../../../store/asset-type/asset-type.model';
 
 @Component({
   selector: 'app-asset-series-create-general-information',
@@ -36,6 +38,8 @@ export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
   @Input() assetSeriesForm: FormGroup;
   @Input() mode: DialogType = DialogType.EDIT;
   @Output() updateTypeTemplate = new EventEmitter<ID>();
+  @Input() relatedManufacturer: Company;
+  @Input() relatedAssetType: AssetType;
 
   assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
   assetTypeTemplates: AssetTypeTemplate[];
