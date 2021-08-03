@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/connectivity-type.query';
 import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-series-create-connectivity-settings',
@@ -14,7 +14,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
   @Output() stepChange = new EventEmitter<number>();
   @Output() errorSignal = new EventEmitter<string>();
-  @Input() assetSeries: AssetSeries;
+  @Input() assetSeriesForm: FormGroup;
 
   connectivityTypes: ConnectivityType[];
   connectivityTypes$: Observable<ConnectivityType[]>;
@@ -45,22 +45,24 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
       this.infoText = selectedConnectivityType.infoText;
 
       if (this.connectivityProtocols.length > 0) {
-        this.assetSeries.protocolId = this.connectivityProtocols[0].id;
+        this.assetSeriesForm.get('protocolId').setValue(this.connectivityProtocols[0].id);
         this.onChangeProtocolType(this.connectivityProtocols[0].id);
       } else {
-        this.assetSeries.protocolId = null;
-        this.assetSeries.connectionString = '';
+        this.assetSeriesForm.get('protocolId').setValue(null);
+        this.assetSeriesForm.get('connectionString').setValue('');
       }
     }
   }
 
   onChangeProtocolType(connectivityProtocolId: ID) {
     if (connectivityProtocolId && this.connectivityProtocols) {
-      this.assetSeries.connectionString = this.connectivityProtocols
+      const connectionString =  this.connectivityProtocols
         .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionString;
+      this.assetSeriesForm.get('connectionString').setValue(connectionString);
     }
   }
 
+  // TODO: remove later
   private mockDirectIO() {
     this.connectivityTypes.push({ id: 1, name: 'Direct IO / SoftSPS', infoText: 'Sensors connected directly to the Gateway',
       availableProtocols: [ ] });

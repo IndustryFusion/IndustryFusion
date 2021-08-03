@@ -19,11 +19,13 @@ under the License.
     *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
     [mode]="mode"
     [assetSeries]="assetSeries"
-    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)"
-  >
+    [assetSeriesForm]="assetSeriesForm"
+    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)">
+  <!--  [relatedManufacturer]="relatedManufacturer"
+    [relatedAssetType]="relatedAssetType"-->
   </app-asset-series-create-general-information>
   <app-asset-series-create-connectivity-settings
-    [assetSeries]="assetSeries"
+    [assetSeriesForm]="assetSeriesForm"
     *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS" >
   </app-asset-series-create-connectivity-settings>
   <app-asset-series-create-attributes

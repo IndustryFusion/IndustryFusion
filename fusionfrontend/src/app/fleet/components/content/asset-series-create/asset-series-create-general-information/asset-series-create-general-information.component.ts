@@ -19,9 +19,10 @@ import { Observable } from 'rxjs';
 
 import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
-import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
+import { FormGroup } from '@angular/forms';
+import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 
 @Component({
   selector: 'app-asset-series-create-general-information',
@@ -31,19 +32,17 @@ import { DialogType } from '../../../../../common/models/dialog-type.model';
 export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
 
   @Output() errorSignal = new EventEmitter<string>();
-  @Input() assetSeries: AssetSeries = new AssetSeries();
+  @Input() assetSeries: AssetSeries;
+  @Input() assetSeriesForm: FormGroup;
   @Input() mode: DialogType = DialogType.EDIT;
   @Output() updateTypeTemplate = new EventEmitter<ID>();
 
   assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
-
   assetTypeTemplates: AssetTypeTemplate[];
 
   DialogType = DialogType;
 
-  constructor(
-    private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-  ) {
+  constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery) {
     this.assetTypeTemplates = this.assetTypeTemplateQuery.getAll();
   }
 

@@ -13,33 +13,35 @@ specific language governing permissions and limitations
 under the License.
 -->
 <div class="asset-series-create-step-three">
-  <div class="content">
-    <div class="wizard-title">Connectivity Settings</div>
+  <form [formGroup]="assetSeriesForm">
+    <div class="content">
+      <div class="wizard-title">Connectivity Settings</div>
 
-    <div class="input-div">
-      <label class="if-label">Select connectivity type</label>
-      <div>
-        <p-dropdown [options]="connectivityTypes" [(ngModel)]="assetSeries.connectivityTypeId" optionLabel="name"
-                    optionValue="id" (onChange)="onChangeConnectivityType($event.value)">
+      <div class="input-div">
+        <label class="if-label">Select connectivity type</label>
+        <div>
+          <p-dropdown [options]="connectivityTypes" formControlName="connectivityTypeId" optionLabel="name"
+                      optionValue="id" (onChange)="onChangeConnectivityType($event.value)">
+          </p-dropdown>
+          <label class="if-label-small">{{ infoText }}</label>
+        </div>
+      </div>
+
+      <div class="input-div">
+        <label class="if-label">Select protocol</label>
+        <p-dropdown [options]="connectivityProtocols" formControlName="protocolId" optionLabel="name"
+                    optionValue="id" (onChange)="onChangeProtocolType($event.value)">
         </p-dropdown>
-        <label class="if-label-small">{{ infoText }}</label>
       </div>
-    </div>
 
-    <div class="input-div">
-      <label class="if-label">Select protocol</label>
-      <p-dropdown [options]="connectivityProtocols" [(ngModel)]="assetSeries.protocolId" optionLabel="name"
-                  optionValue="id" (onChange)="onChangeProtocolType($event.value)">
-      </p-dropdown>
-    </div>
-
-    <div class="input-div">
-      <div>
-        <label class="if-label">Connection string</label>
-        <clr-icon class="connectivity-string-hint" shape="help" size="29"></clr-icon>
+      <div class="input-div">
+        <div>
+          <label class="if-label">Connection string</label>
+          <clr-icon class="connectivity-string-hint" shape="help" size="29"></clr-icon>
+        </div>
+        <input type="text" pInputText formControlName="connectionString" />
       </div>
-      <input type="text" pInputText [(ngModel)]="assetSeries.connectionString" />
-    </div>
 
-  </div>
+    </div>
+  </form>
 </div>

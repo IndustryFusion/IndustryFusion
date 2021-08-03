@@ -23,6 +23,7 @@ import { DialogType } from '../../../../common/models/dialog-type.model';
 import { AssetSeriesCreateSteps } from './asset-series-create-steps.model';
 import { ConnectivityTypeResolver } from '../../../../resolvers/connectivity-type.resolver';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-series-create',
@@ -35,7 +36,10 @@ export class AssetSeriesCreateComponent implements OnInit {
   companyId: ID;
   step: AssetSeriesCreateSteps = AssetSeriesCreateSteps.GENERAL_INFORMATION;
   totalSteps: number = AssetSeriesCreateSteps.METRICS;
-  assetSeries: AssetSeries = new AssetSeries();
+
+  assetSeries: AssetSeries;
+  assetSeriesForm: FormGroup;
+
   mode: DialogType = DialogType.CREATE;
   attributesValid: boolean;
   metricsValid: boolean;
@@ -45,6 +49,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   constructor(private assetSeriesService: AssetSeriesService,
               private changeDetectorRef: ChangeDetectorRef,
               private fieldsResolver: FieldsResolver,
+              private formBuilder: FormBuilder,
               private connectivityTypeResolver: ConnectivityTypeResolver,
               private dialogConfig: DynamicDialogConfig,
               private dynamicDialogRef: DynamicDialogRef,
@@ -61,11 +66,12 @@ export class AssetSeriesCreateComponent implements OnInit {
 
     if (this.mode === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe(assetSeries => this.assetSeries = assetSeries);
+        .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
     }
   }
 
   ngOnInit() {
+    this.createAssetSeriesForm();
   }
 
   private resolve() {
@@ -73,9 +79,51 @@ export class AssetSeriesCreateComponent implements OnInit {
     this.connectivityTypeResolver.resolve().subscribe();
   }
 
+  private updateAssetSeries(assetSeries: AssetSeries) {
+    this.assetSeries = assetSeries;
+    this.createAssetSeriesForm();
+  }
+
   createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
     this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
-          .subscribe(assetSeries => this.assetSeries = assetSeries);
+          .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
+  }
+
+  private createAssetSeriesForm() {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.assetSeriesForm = this.formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      ceCertified: [null, Validators.required],
+      protectionClass: [null, Validators.maxLength(255)],
+      handbookKey: [null, Validators.maxLength(255)],
+      videoKey: [null, Validators.maxLength(255)],
+      imageKey: [null, Validators.maxLength(255)],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode !== DialogType.CREATE }, Validators.required],
+      companyId: [null, Validators.required],
+      connectivityTypeId: [null, Validators.required],
+      protocolId: [null, Validators.required],
+      connectionString: [null, Validators.maxLength(255)],
+    });
+
+    if (this.assetSeries) {
+      this.assetSeriesForm.patchValue(this.assetSeries);
+    }
+
+    this.assetSeriesForm.get('assetTypeTemplateId').valueChanges.subscribe(
+      assetTypeTemplateId => this.updateAssetSeriesNameDisabledState(assetTypeTemplateId));
+    this.updateAssetSeriesNameDisabledState(this.assetSeriesForm.get('assetTypeTemplateId').value);
+  }
+
+  private updateAssetSeriesNameDisabledState(assetTypeTemplateId: ID) {
+    console.log('assetTypeTemplateId', assetTypeTemplateId);
+    if (assetTypeTemplateId) {
+      this.assetSeriesForm.get('name').enable();
+    } else {
+      this.assetSeriesForm.get('name').disable( { onlySelf: true });
+    }
   }
 
   nextStep() {
