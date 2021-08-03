@@ -83,6 +83,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .assetSeriesId(assetSeriesId)
                 .assetSeriesName(assetSeriesName)
                 .assetTypeName(assetTypeName)
+                .subsystemIds(toEntityIdSet(entity.getSubsystems()))
                 .name(entity.getName())
 
                 .description(entity.getDescription())
