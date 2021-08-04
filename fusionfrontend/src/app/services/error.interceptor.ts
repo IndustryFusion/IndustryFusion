@@ -10,6 +10,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   private prevErrorSummary = '';
   private prevErrorTime = new Date('1.1.2000').getTime();
+  private secondsBeforeShowingSameErrorAgain = 60;
 
   constructor(private messageService: MessageService) {
   }
@@ -21,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         const errorMessage = error.error?.error ? `${error.error?.error} (${error.error?.status})` : error.statusText;
 
         const secondsToPrevError = Math.abs((new Date().getTime() - this.prevErrorTime) / 1000);
-        if (errorSummary !== this.prevErrorSummary || secondsToPrevError > 5) {
+        if (errorSummary !== this.prevErrorSummary || secondsToPrevError > this.secondsBeforeShowingSameErrorAgain) {
           this.messageService.add(({
             severity: 'info',
             summary: errorSummary,
