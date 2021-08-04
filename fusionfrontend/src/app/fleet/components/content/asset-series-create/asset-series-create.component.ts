@@ -113,12 +113,12 @@ export class AssetSeriesCreateComponent implements OnInit {
     });
   }
 
-  createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
+  createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID): void {
     this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
           .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
   }
 
-  private createAssetSeriesForm() {
+  private createAssetSeriesForm(): void {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
 
     this.assetSeriesForm = this.formBuilder.group({
@@ -132,9 +132,6 @@ export class AssetSeriesCreateComponent implements OnInit {
       imageKey: [null, Validators.maxLength(255)],
       assetTypeTemplateId: [{ value: null, disabled: this.mode !== DialogType.CREATE }, Validators.required],
       companyId: [null, Validators.required],
-      connectivityTypeId: [null, Validators.required],
-      protocolId: [null, Validators.required],
-      connectionString: [null, requiredTextValidator],
     });
 
     if (this.assetSeries) {
@@ -146,7 +143,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     this.updateAssetSeriesNameDisabledState(this.assetSeriesForm.get('assetTypeTemplateId').value);
   }
 
-  private updateAssetSeriesNameDisabledState(assetTypeTemplateId: ID) {
+  private updateAssetSeriesNameDisabledState(assetTypeTemplateId: ID): void {
     if (assetTypeTemplateId) {
       this.assetSeriesForm.get('name').enable();
     } else {
@@ -154,7 +151,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     }
   }
 
-  nextStep() {
+  nextStep(): void {
     if (this.step === this.totalSteps) {
       this.saveAssetSeries();
     } else {
@@ -162,7 +159,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     }
   }
 
-  back() {
+  back(): void {
     if (this.step === AssetSeriesCreateSteps.GENERAL_INFORMATION) {
       this.dynamicDialogRef.close();
     } else {
@@ -199,7 +196,7 @@ export class AssetSeriesCreateComponent implements OnInit {
     this.assetSeries = updatedAssetSeries;
   }
 
-  private saveAssetSeries() {
+  private saveAssetSeries(): void {
     this.updateAssetSeriesFromForm();
 
     if (this.assetSeries.id) {
@@ -212,17 +209,17 @@ export class AssetSeriesCreateComponent implements OnInit {
     }
   }
 
-  setConnectivitySettingsValid(isValid: boolean) {
+  setConnectivitySettingsValid(isValid: boolean): void {
     this.connectivitySettingsValid = isValid;
     this.changeDetectorRef.detectChanges();
   }
 
-  setAttributesValid(isValid: boolean) {
+  setAttributesValid(isValid: boolean): void {
     this.attributesValid = isValid;
     this.changeDetectorRef.detectChanges();
   }
 
-  setMetricsValid(isValid: boolean) {
+  setMetricsValid(isValid: boolean): void {
     this.metricsValid = isValid;
     this.changeDetectorRef.detectChanges();
   }

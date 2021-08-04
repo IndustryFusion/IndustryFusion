@@ -23,5 +23,5 @@ export class ConnectivityType extends BaseEntity {
 
 export class ConnectivityProtocol extends BaseEntity {
   name: string;
-  connectionString: string;
+  connectionStringPattern: string;
 }

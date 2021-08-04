@@ -3,8 +3,9 @@ import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/co
 import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
+import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 
 @Component({
   selector: 'app-asset-series-create-connectivity-settings',
@@ -12,31 +13,48 @@ import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './asset-s
   styleUrls: ['./asset-series-create-connectivity-settings.component.scss']
 })
 export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
+  @Input() assetSeries: AssetSeries;
+  @Input() assetSeriesForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
   @Output() valid = new EventEmitter<boolean>();
-  @Input() assetSeriesForm: FormGroup;
 
-  connectivityTypes: ConnectivityType[];
-  connectivityTypes$: Observable<ConnectivityType[]>;
-  connectivityProtocols: ConnectivityProtocol[];
-  infoText = '';
+  public connectivitySettingsForm: FormGroup;
+  public connectivityTypes: ConnectivityType[];
+  public connectivityTypes$: Observable<ConnectivityType[]>;
+  public connectivityProtocols: ConnectivityProtocol[];
+  public infoText = '';
 
   AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesCreateConnectivitySettingsTooltipComponent;
 
-  constructor(private connectivityTypeQuery: ConnectivityTypeQuery) {
-    this.mockConnectivityTypes();
-  }
-
-  private mockConnectivityTypes() {
-    this.connectivityTypes = [];
-    this.mockDirectIO();
-    this.mockInternalMachineNetwork();
-    this.mockNetworkBased();
+  constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
+              private formBuilder: FormBuilder) {
+    this.connectivityTypes = connectivityTypeQuery.getAll();
+    this.createFormGroup();
   }
 
   ngOnInit(): void {
+    this.selectFirstItemsInDropdowns();
+    this.assetSeriesForm.addControl('connectivitySettings', this.connectivitySettingsForm);
+  }
+
+  private createFormGroup(): void {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.connectivitySettingsForm = this.formBuilder.group({
+      connectivityTypeId: [null, Validators.required],
+      protocolId: [null, Validators.required],
+      connectionString: [null, requiredTextValidator],
+    });
+    this.connectivitySettingsForm.valueChanges.subscribe(() => this.updateValidity());
+
+    if (this.assetSeries?.connectivitySettings) {
+      this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
+    }
+  }
+
+  private selectFirstItemsInDropdowns(): void {
     this.connectivityTypes$ = this.connectivityTypeQuery.selectAll();
-    this.assetSeriesForm.get('connectivityTypeId').setValue(1);
+    this.connectivitySettingsForm.get('connectivityTypeId').setValue(1);
     this.onChangeConnectivityType(1);
   }
 
@@ -48,66 +66,25 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
       this.infoText = selectedConnectivityType.infoText;
 
       if (this.connectivityProtocols.length > 0) {
-        this.assetSeriesForm.get('protocolId').setValue(this.connectivityProtocols[0].id);
+        this.connectivitySettingsForm.get('protocolId').setValue(this.connectivityProtocols[0].id);
         this.onChangeProtocolType(this.connectivityProtocols[0].id);
 
       } else {
-        this.assetSeriesForm.get('protocolId').setValue(null);
-        this.assetSeriesForm.get('connectionString').setValue(null);
+        this.connectivitySettingsForm.get('protocolId').setValue(null);
+        this.connectivitySettingsForm.get('connectionString').setValue(null);
       }
     }
-
-    this.updateValidity();
   }
 
   onChangeProtocolType(connectivityProtocolId: ID) {
     if (connectivityProtocolId && this.connectivityProtocols) {
       const connectionString = this.connectivityProtocols
-        .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionString;
-      this.assetSeriesForm.get('connectionString').setValue(connectionString);
+        .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionStringPattern;
+      this.connectivitySettingsForm.get('connectionString').setValue(connectionString);
     }
-
-    this.updateValidity();
   }
 
   private updateValidity() {
-    const isValid = this.assetSeriesForm && this.assetSeriesForm.get('connectivityTypeId').valid
-      && this.assetSeriesForm.get('protocolId').valid
-      && this.assetSeriesForm.get('connectionString').valid;
-
-    this.valid.emit(isValid);
-  }
-
-  // TODO: remove later
-  private mockDirectIO() {
-    this.connectivityTypes.push({ id: 1, name: 'Direct IO / SoftSPS', infoText: 'Sensors connected directly to the Gateway',
-      availableProtocols: [ ] });
-  }
-
-  private mockInternalMachineNetwork() {
-    const connectivityProtocolModbus: ConnectivityProtocol = new ConnectivityProtocol();
-    connectivityProtocolModbus.id = 1;
-    connectivityProtocolModbus.connectionString = 'modbus:tcp://127.0.0.1:502';
-    connectivityProtocolModbus.name = 'Modbus TCP';
-
-    this.connectivityTypes.push({ id: 2, name: 'Internal Machine Network',
-      infoText: 'Gateway is connected 1 to 1 to the Asset (e.g. PLC via Ethernet/Serial)',
-      availableProtocols: [ connectivityProtocolModbus ] });
-  }
-
-  private mockNetworkBased() {
-    const connectivityProtocolMQTT: ConnectivityProtocol = new ConnectivityProtocol();
-    connectivityProtocolMQTT.id = 2;
-    connectivityProtocolMQTT.connectionString = 'tcp://127.0.0.1:1883';
-    connectivityProtocolMQTT.name = 'MQTT';
-
-    const connectivityProtocolSQL: ConnectivityProtocol = new ConnectivityProtocol();
-    connectivityProtocolSQL.id = 3;
-    connectivityProtocolSQL.connectionString = 'jdbc:sqlserver://127.0.0.1\\SQLEXPRESS;database=TEST';
-    connectivityProtocolSQL.name = 'SQL';
-
-    this.connectivityTypes.push({ id: 3, name: 'Network based (e.g. SQL, MQTT)',
-      infoText: 'Everything that is connected via the Network (SQL database, MQTT broker)',
-      availableProtocols: [ connectivityProtocolMQTT, connectivityProtocolSQL,  ] });
+    this.valid.emit(this.connectivitySettingsForm.valid);
   }
 }

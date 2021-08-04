@@ -20,7 +20,6 @@ import { ConnectivityTypeStore } from './connectivity-type.store';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';
-import { ID } from '@datorama/akita';
 
 @Injectable({
   providedIn: 'root'
@@ -35,18 +34,10 @@ export class ConnectivityTypeService {
               private http: HttpClient) { }
 
   getItems(): Observable<ConnectivityType[]> {
-    const path = `connectivity-type?embedChildren=true`;
+    const path = `connectivity-types`;
     return this.http.get<ConnectivityType[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.connectivityTypeStore.upsertMany(entities);
-      }));
-  }
-
-  getItem(connectivityTypeId: ID): Observable<ConnectivityType> {
-    const path = `connectivity-type/${connectivityTypeId}?embedChildren=true`;
-    return this.http.get<ConnectivityType>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
-      .pipe(tap(entity => {
-        this.connectivityTypeStore.upsert(connectivityTypeId, entity);
       }));
   }
 }
