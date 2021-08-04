@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {  RuleActionType } from '../../../../../services/oisp.model';
 
 @Component({
@@ -33,6 +33,11 @@ export class AppletActionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if ((this.actionGroup.get('target') as FormArray).length === 0) {
+      (this.actionGroup.get('target') as FormArray).push(
+        new FormControl(null, [Validators.required, Validators.minLength(1)])
+      );
+    }
   }
 
   showActionTypePanel(type: RuleActionType): boolean {

@@ -25,44 +25,46 @@ under the License.
   </p-accordionTab>
   <p-accordionTab [formGroup]="conditionValueGroup" [disabled]="activeAccordionIndex !== 1" *ngIf="selectedDevice"
                   header="Setup Condition">
-    <label>Choose Metric *</label>
+    <div class="p-grid p-flex-column">
+    <label class="if-label full-width">Choose Metric *</label>
     <p-dropdown [formControlName]="'component'"
                 [options]="mapDeviceToComponent(selectedDevice)"
                 [optionLabel]="'label'"
                 [optionValue]="'value'"
                 (onChange)="updateComponent($event.value)" [placeholder]="'Choose Metric'"
     ></p-dropdown>
-    <label>Choose Condition Type *</label>
+    <label class="if-label">Choose Condition Type *</label>
     <p-dropdown [formControlName]="'type'"
                 [options]="contitionTypeDropdownValue"
                 [optionLabel]="'label'"
                 [optionValue]="'value'"
     ></p-dropdown>
-    <label>Choose Condition *</label>
+    <label class="if-label">Choose Condition *</label>
     <p-dropdown [formControlName]="'operator'"
                 [options]="conditionOperatorDropdownValue"
                 [optionLabel]="'label'"
                 [optionValue]="'value'"
     ></p-dropdown>
+    </div>
     <div *ngIf="isAnyConditonType([ConditionType.basic, ConditionType.time])">
-      <label>Enter Value *</label>
+      <label class="if-label">Enter Value *</label>
       <div [formGroupName]="'values'">
         <input [formControlName]="'0'" pInputText class="full-width"/>
       </div>
     </div>
-    <div *ngIf="isAnyConditonType([ConditionType.time])">
-      <span class="full-width">Define Duration</span>
+    <div class="" *ngIf="isAnyConditonType([ConditionType.time])">
+      <span class="if-label full-width">Define Duration</span>
       <app-condition-time-selector [timeLimit]="conditionValueGroup.get('timeLimit')"
       ></app-condition-time-selector>
     </div>
-    <div *ngIf="isAnyConditonType([ConditionType.statistics])">
+    <div class="p-grid p-flex-column" *ngIf="isAnyConditonType([ConditionType.statistics])">
       <app-control-limit-selector [valuesGroup]="conditionValueGroup.get('values')"></app-control-limit-selector>
-      <span class="full-width">Average & Standard Deviation Baseline</span><br>
+      <span class="if-label">Average & Standard Deviation Baseline</span><br>
       <app-condition-time-selector [timeLimit]="conditionValueGroup.get('baselineSecondsBack')"
       ></app-condition-time-selector>
-      <span class="full-width">Minimal Instances for Calculation</span><br>
-      <label>Value *</label>
-      <p-inputNumber [formControl]="conditionValueGroup.get('baselineMinimalInstances')" pInputText class="full-width"
+      <span class="if-label">Minimal Instances for Calculation</span><br>
+      <label class="if-label">Value *</label>
+      <p-inputNumber [formControl]="conditionValueGroup.get('baselineMinimalInstances')" class="full-width"
       ></p-inputNumber>
     </div>
     <button class="if-button button-primary full-width"

@@ -45,16 +45,15 @@ export class AppletActionListComponent implements OnInit {
       if (action.type === RuleActionType.http) {
         formGroup.addControl('http_headers', this.formBuilder.group(action.http_headers));
       }
-      formGroup.setControl('target', this.formBuilder.array(action.target, Validators.minLength(1)));
+      formGroup.setControl('target', this.formBuilder.array(action.target, [Validators.minLength(1), Validators.required]));
       formGroup.setValue(action);
       this.actionsArray.push(formGroup);
-      console.log('actionGroup: ', formGroup);
     });
   }
 
   private createNewActionGroup(): FormGroup {
     return this.formBuilder.group({
-      target: new FormArray([], Validators.minLength(1)),
+      target: new FormArray([], [Validators.required, Validators.minLength(1)]),
       type: [, [Validators.required]],
     });
   }

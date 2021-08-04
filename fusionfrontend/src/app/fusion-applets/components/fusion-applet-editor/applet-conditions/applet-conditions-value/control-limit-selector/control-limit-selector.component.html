@@ -15,13 +15,15 @@ under the License.
 
 <div class="input-div p-grid p-flex-column">
   <label class="if-label p-col">Calculate the control limit using</label>
-  <div [formGroup]="limitGroup" class="p-col p-grid full-width p-justify-between">
-    <p-radioButton [value]="['-2','2']"
+  <div [formGroup]="limitGroup" class="p-col p-grid full-width">
+    <p-radioButton class="p-col"
+                   [value]="['-2','2']"
                    [label]="'2 Standard deviation'"
                    formControlName="limit"
                    [inputId]="'limit1'"
     ></p-radioButton>
-    <p-radioButton [value]="['-3','3']"
+    <p-radioButton class="p-col"
+                   [value]="['-3','3']"
                    [label]="'3 Standard deviation'"
                    formControlName="limit"
                    [inputId]="'limit2'"

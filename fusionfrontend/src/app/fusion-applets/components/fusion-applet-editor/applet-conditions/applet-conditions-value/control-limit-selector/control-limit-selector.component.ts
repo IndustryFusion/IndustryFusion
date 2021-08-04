@@ -30,19 +30,16 @@ export class ControlLimitSelectorComponent implements OnInit {
   constructor() {
     const limitControl = new FormControl(['-2', '2'], Validators.minLength(2));
     this.limitGroup = new FormGroup({ limit: limitControl});
-    limitControl.statusChanges.subscribe(status => {
-      console.log(status);
-    });
     limitControl.valueChanges.subscribe(value => {
-      console.log(value);
-      this.valuesGroup.setValue(value);
+      this.valuesGroup.clear();
+      for (let i = 0; i < value.length; i++) {
+        this.valuesGroup.insert(i, new FormControl(value[i]));
+      }
     });
   }
 
   ngOnInit(): void {
     this.limitGroup.get('limit').setValue(this.valuesGroup.getRawValue());
-    this.valuesGroup.push(new FormControl());
-    console.log(this.valuesGroup, this.limitGroup.getRawValue());
   }
 
 }

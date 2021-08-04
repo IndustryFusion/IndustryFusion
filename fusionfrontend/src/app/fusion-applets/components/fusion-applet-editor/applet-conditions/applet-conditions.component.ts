@@ -96,7 +96,8 @@ export class AppletConditionsComponent implements OnInit {
       type: [ConditionType.basic, Validators.required],
       operator: [ConditionValueOperator['<'], Validators.required],
       values: new FormArray([
-        new FormControl(null, [Validators.required, Validators.minLength(1)])
+        new FormControl(null, [Validators.required, Validators.minLength(1)]),
+        new FormControl(null, [Validators.required, Validators.minLength(1)]),
       ], [Validators.required, Validators.minLength(1)]),
       timeLimit: [],
       baselineCalculationLevel: [BaselineCalculationLevel['Device level']],

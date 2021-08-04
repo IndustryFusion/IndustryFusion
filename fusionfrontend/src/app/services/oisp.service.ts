@@ -124,7 +124,6 @@ export class OispService {
   }
 
   updateRule(ruleId: string, rule: Rule): Observable<Rule> {
-    console.log(ruleId, rule);
     rule = JSON.parse(JSON.stringify(rule));
 
     rule.conditions.values.map( conditionValue => {
