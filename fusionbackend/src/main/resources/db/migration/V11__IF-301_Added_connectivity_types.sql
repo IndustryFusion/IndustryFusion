@@ -58,8 +58,6 @@ insert into connectivity_protocol (id, name, connection_string_pattern)
 values (nextval('idgen_connectivity_protocol'), 'Modbus TCP', 'modbus:tcp://127.0.0.1:502');
 insert into connectivity_protocol (id, name, connection_string_pattern)
 values (nextval('idgen_connectivity_protocol'), 'Ethernet/IP', default);
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'Modbus TCP (fest)', default);
 
 insert into connectivity_type_connectivity_protocol (connectivity_type_id, connectivity_protocol_id)
 values ((select id from connectivity_type where name = 'Internal Machine Network'),
@@ -113,4 +111,4 @@ values ((select id from connectivity_type where name = 'Network based (e.g. SQL,
 
 insert into connectivity_type_connectivity_protocol (connectivity_type_id, connectivity_protocol_id)
 values ((select id from connectivity_type where name = 'Direct IO / SoftSPS'),
-        (select id from connectivity_protocol where name = 'Modbus TCP (fest)'));
+        (select id from connectivity_protocol where name = 'Modbus TCP'));
