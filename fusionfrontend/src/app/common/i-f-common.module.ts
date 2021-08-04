@@ -26,6 +26,7 @@ import { FactorySiteMapComponent } from '../components/content/factory-site-map/
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
     RadioButtonModule,
     DialogModule,
     ToastModule,
+    TooltipModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -81,6 +83,7 @@ import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
     AccuracyFormatPipe,
     RadioButtonModule,
     TooltipComponent,
+    TooltipModule,
   ],
   providers: [
     MessageService

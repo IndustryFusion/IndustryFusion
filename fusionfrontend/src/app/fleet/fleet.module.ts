@@ -52,6 +52,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AssetWizardStepSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-subsystems/asset-wizard-step-subsystems.component';
 // tslint:disable-next-line:max-line-length
 import { AssetWizardSharedSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
+import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './components/content/asset-series-create/asset-series-create-connectivity-settings/asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
 
 
 @NgModule({
@@ -78,6 +79,8 @@ import { AssetWizardSharedSubsystemsComponent } from './components/content/asset
     AssetWizardStepCustomerDataComponent,
     AssetWizardStepMetricsThresholdsComponent,
     AssetSeriesCreateFooterComponent,
+    AssetSeriesCreateConnectivitySettingsTooltipComponent,
+    AssetSeriesCreateGeneralInformationComponent,
     AssetWizardStepReviewComponent,
     AssetWizardSharedMetricsComponent,
     AssetWizardSharedAttributesComponent,

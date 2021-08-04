@@ -23,7 +23,10 @@ under the License.
           <p-dropdown [options]="connectivityTypes" formControlName="connectivityTypeId" optionLabel="name"
                       optionValue="id" (onChange)="onChangeConnectivityType($event.value)">
           </p-dropdown>
-          <label class="if-label-small">{{ infoText }}</label>
+          <div class="info-text">
+            <i class="pi pi-info-circle"></i>
+            <label class="if-label-small"> {{ infoText }} </label>
+          </div>
         </div>
       </div>
 
@@ -35,7 +38,7 @@ under the License.
       </div>
 
       <div class="input-div">
-        <div>
+        <div style="display: flex">
           <label class="if-label">Connection&nbsp;string&nbsp;*</label>
           <app-tooltip [component]="AssetSeriesCreateConnectivitySettingsTooltipComponent"></app-tooltip>
         </div>

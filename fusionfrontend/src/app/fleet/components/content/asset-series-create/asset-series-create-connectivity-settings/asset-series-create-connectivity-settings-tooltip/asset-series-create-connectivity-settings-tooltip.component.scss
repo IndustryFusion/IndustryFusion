@@ -1,0 +1,65 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
+
+.asset-series-create-connectivity-settings-tooltip {
+
+  .connectivity-type-section {
+    margin-top: 1.4rem;
+  }
+
+  .title {
+    display: flex
+  }
+
+  .row {
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-wrap:wrap;
+    flex-wrap:wrap;
+  }
+
+  .first-row {
+    margin-top: 8px;
+  }
+
+  .protocol-label {
+    width: 25%;
+    color: $basic-black;
+    font-size: $regular-font-size;
+    text-align: left;
+    letter-spacing: 0;
+  }
+
+  .connection-string-label {
+    color: $basic-grey;
+    font-size: $regular-font-size;
+  }
+
+
+  .icon-help {
+    margin-left: -1.6rem;
+    margin-right: 0.8rem;
+    margin-top: 19px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    height: 19px;
+    width: 19px;
+    transform: scale(1.8);
+    background-image: url(/assets/icons/help-icon.svg);
+  }
+}

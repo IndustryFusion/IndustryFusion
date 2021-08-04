@@ -4,6 +4,7 @@ import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/con
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { FormGroup } from '@angular/forms';
+import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
 
 @Component({
   selector: 'app-asset-series-create-connectivity-settings',
@@ -11,7 +12,6 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./asset-series-create-connectivity-settings.component.scss']
 })
 export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
-
   @Output() stepChange = new EventEmitter<number>();
   @Output() valid = new EventEmitter<boolean>();
   @Input() assetSeriesForm: FormGroup;
@@ -20,6 +20,8 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
   connectivityTypes$: Observable<ConnectivityType[]>;
   connectivityProtocols: ConnectivityProtocol[];
   infoText = '';
+
+  AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesCreateConnectivitySettingsTooltipComponent;
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery) {
     this.mockConnectivityTypes();

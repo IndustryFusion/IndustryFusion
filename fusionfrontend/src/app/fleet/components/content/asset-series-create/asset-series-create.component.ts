@@ -190,15 +190,26 @@ export class AssetSeriesCreateComponent implements OnInit {
     return result;
   }
 
+  private updateAssetSeriesFromForm(): void {
+    const updatedAssetSeries: AssetSeries = this.assetSeriesForm.getRawValue();
+
+    updatedAssetSeries.fieldSources = this.assetSeries.fieldSources;
+    updatedAssetSeries.fieldSourceIds = this.assetSeries.fieldSourceIds;
+
+    this.assetSeries = updatedAssetSeries;
+  }
+
   private saveAssetSeries() {
-      if (this.assetSeries.id) {
-        this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
-        () => this.dynamicDialogRef.close()
-        );
-      } else {
-        this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
-          .subscribe(() => this.dynamicDialogRef.close());
-      }
+    this.updateAssetSeriesFromForm();
+
+    if (this.assetSeries.id) {
+      this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
+      () => this.dynamicDialogRef.close()
+      );
+    } else {
+      this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
+        .subscribe(() => this.dynamicDialogRef.close());
+    }
   }
 
   setConnectivitySettingsValid(isValid: boolean) {
