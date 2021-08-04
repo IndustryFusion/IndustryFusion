@@ -45,7 +45,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
       protocolId: [null, Validators.required],
       connectionString: [null, requiredTextValidator],
     });
-    this.connectivitySettingsForm.valueChanges.subscribe(() => this.updateValidity());
+    this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
 
     if (this.assetSeries?.connectivitySettings) {
       this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
@@ -58,7 +58,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
     this.onChangeConnectivityType(1);
   }
 
-  onChangeConnectivityType(connectivityTypeId: ID) {
+  onChangeConnectivityType(connectivityTypeId: ID): void {
     if (connectivityTypeId && this.connectivityTypes) {
       const selectedConnectivityType = this.connectivityTypes
         .find(connectivityType => String(connectivityType.id) === String(connectivityTypeId));
@@ -76,15 +76,11 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
     }
   }
 
-  onChangeProtocolType(connectivityProtocolId: ID) {
+  onChangeProtocolType(connectivityProtocolId: ID): void {
     if (connectivityProtocolId && this.connectivityProtocols) {
       const connectionString = this.connectivityProtocols
         .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionStringPattern;
       this.connectivitySettingsForm.get('connectionString').setValue(connectionString);
     }
-  }
-
-  private updateValidity() {
-    this.valid.emit(this.connectivitySettingsForm.valid);
   }
 }

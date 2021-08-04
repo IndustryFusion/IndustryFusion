@@ -13,7 +13,7 @@
  * under the License.
  */
 
-export enum AssetSeriesCreateSteps {
+export enum AssetSeriesCreateStep {
   GENERAL_INFORMATION = 1,
   CONNECTIVITY_SETTINGS,
   ATTRIBUTES,

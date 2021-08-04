@@ -18,10 +18,13 @@
 .asset-series-create-general-information {
 
   .content {
-
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+
+    #column-left {
+      width: 50%;
+    }
 
     .input-div {
      width: 100%;

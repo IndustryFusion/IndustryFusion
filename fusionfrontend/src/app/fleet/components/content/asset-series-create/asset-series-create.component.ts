@@ -20,7 +20,7 @@ import { AssetSeriesService } from '../../../../store/asset-series/asset-series.
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogType } from '../../../../common/models/dialog-type.model';
-import { AssetSeriesCreateSteps } from './asset-series-create-steps.model';
+import { AssetSeriesCreateStep } from './asset-series-create-step.model';
 import { ConnectivityTypeResolver } from '../../../../resolvers/connectivity-type.resolver';
 import { Company } from '../../../../store/company/company.model';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
@@ -40,8 +40,8 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   assetType: ID;
   companyId: ID;
-  step: AssetSeriesCreateSteps = AssetSeriesCreateSteps.GENERAL_INFORMATION;
-  totalSteps: number = AssetSeriesCreateSteps.METRICS;
+  step: AssetSeriesCreateStep = AssetSeriesCreateStep.GENERAL_INFORMATION;
+  totalSteps: number = AssetSeriesCreateStep.METRICS;
 
   assetSeries: AssetSeries;
   assetSeriesForm: FormGroup;
@@ -53,7 +53,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   relatedManufacturer: Company;
   relatedAssetType: AssetType;
 
-  AssetSeriesCreateSteps = AssetSeriesCreateSteps;
+  AssetSeriesCreateSteps = AssetSeriesCreateStep;
 
   constructor(private assetSeriesService: AssetSeriesService,
               private companyQuery: CompanyQuery,
@@ -160,7 +160,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   back(): void {
-    if (this.step === AssetSeriesCreateSteps.GENERAL_INFORMATION) {
+    if (this.step === AssetSeriesCreateStep.GENERAL_INFORMATION) {
       this.dynamicDialogRef.close();
     } else {
       this.step--;
@@ -170,17 +170,17 @@ export class AssetSeriesCreateComponent implements OnInit {
   isReadyForNextStep(): boolean {
     let result = true;
     switch (this.step) {
-      case AssetSeriesCreateSteps.GENERAL_INFORMATION:
+      case AssetSeriesCreateStep.GENERAL_INFORMATION:
         result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0 &&
                  this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
         break;
-      case AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS:
+      case AssetSeriesCreateStep.CONNECTIVITY_SETTINGS:
         result = this.connectivitySettingsValid;
         break;
-      case AssetSeriesCreateSteps.ATTRIBUTES:
+      case AssetSeriesCreateStep.ATTRIBUTES:
         result = this.attributesValid;
         break;
-      case AssetSeriesCreateSteps.METRICS:
+      case AssetSeriesCreateStep.METRICS:
         result = this.metricsValid;
         break;
     }

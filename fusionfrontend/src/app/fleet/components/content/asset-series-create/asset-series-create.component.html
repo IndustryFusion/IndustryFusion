@@ -15,6 +15,7 @@ under the License.
 
 <div class="if-wizard-wrapper">
   <app-timeline [currentStep]="step" [totalSteps]="totalSteps"></app-timeline>
+
   <app-asset-series-create-general-information
     *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
     [mode]="mode"
@@ -28,8 +29,7 @@ under the License.
     *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS"
     [assetSeries]="assetSeries"
     [assetSeriesForm]="assetSeriesForm"
-    (valid)="setConnectivitySettingsValid($event)"
-  >
+    (valid)="setConnectivitySettingsValid($event)">
   </app-asset-series-create-connectivity-settings>
   <app-asset-series-create-attributes
     *ngIf="step === AssetSeriesCreateSteps.ATTRIBUTES"
@@ -41,6 +41,7 @@ under the License.
     [assetSeries]="assetSeries"
     (valid)="setMetricsValid($event)">
   </app-asset-series-create-metrics>
+
   <app-asset-series-create-footer [step]="step" (back)="back()" [isReadyForNextStep]="isReadyForNextStep()"
                                   (nextStep)="nextStep()" [toalSteps]="totalSteps"></app-asset-series-create-footer>
 </div>

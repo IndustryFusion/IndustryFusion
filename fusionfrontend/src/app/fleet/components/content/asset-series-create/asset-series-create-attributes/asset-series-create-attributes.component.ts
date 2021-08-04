@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
 import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../store/field/field-query.service';
@@ -18,12 +16,9 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
   @Output() valid = new EventEmitter<boolean>();
 
   fieldSourcesFormArray: FormArray;
-  $loading: Observable<boolean>;
 
-  constructor(private fieldSourceQuery: FieldSourceQuery,
-              private fieldQuery: FieldQuery,
+  constructor(private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
-    this.$loading = this.fieldSourceQuery.selectLoading();
   }
 
   private createFieldSourceGroup(index: number, fieldSource: FieldSource): FormGroup {
@@ -50,19 +45,19 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
     this.fillTable(this.assetSeries.fieldSources);
   }
 
-  removeValue(group: AbstractControl) {
+  removeValue(group: AbstractControl): void {
     group.get('value').setValue(null);
     this.saveValue(group);
   }
 
-  saveValue(group: AbstractControl) {
+  saveValue(group: AbstractControl): void {
     const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('index').value] as FieldSource;
     fieldSource.value  =  group.get('value').value;
     this.assetSeries.fieldSources[group.get('index').value] = fieldSource;
     group.get('saved').patchValue(true);
   }
 
-  private fillTable(fieldSources: FieldSource[]) {
+  private fillTable(fieldSources: FieldSource[]): void {
     this.fieldSourcesFormArray = new FormArray([]);
     this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {

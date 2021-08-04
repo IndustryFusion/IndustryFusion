@@ -18,31 +18,6 @@
 @import "components/labels";
 
 .content {
-  margin-top: 50px;
-
-  .selection {
-    margin-top: 80px;
-    display: flex;
-    flex-direction: row;
-  }
-
-  select {
-    //width: 23rem;
-    background-color: white;
-    //border-style: none;
-    border-radius: 5px;
-  }
-
-  .radio-group {
-    display: flex;
-    .clr-radio-wrapper{
-      margin-right: 30px;
-    }
-  }
-
-  .fields-list {
-    margin-top: 80px;
-  }
 }
 
 :host ::ng-deep .if-wizard-wrapper {

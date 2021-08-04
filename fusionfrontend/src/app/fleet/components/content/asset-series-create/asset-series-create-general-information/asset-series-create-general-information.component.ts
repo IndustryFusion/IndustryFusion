@@ -33,21 +33,17 @@ import { AssetType } from '../../../../../store/asset-type/asset-type.model';
 })
 export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
 
-  @Output() errorSignal = new EventEmitter<string>();
+  @Input() mode: DialogType = DialogType.EDIT;
   @Input() assetSeries: AssetSeries;
   @Input() assetSeriesForm: FormGroup;
-  @Input() mode: DialogType = DialogType.EDIT;
-  @Output() updateTypeTemplate = new EventEmitter<ID>();
   @Input() relatedManufacturer: Company;
   @Input() relatedAssetType: AssetType;
+  @Output() updateTypeTemplate = new EventEmitter<ID>();
 
   assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
-  assetTypeTemplates: AssetTypeTemplate[];
-
   DialogType = DialogType;
 
   constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery) {
-    this.assetTypeTemplates = this.assetTypeTemplateQuery.getAll();
   }
 
   ngOnInit() {
