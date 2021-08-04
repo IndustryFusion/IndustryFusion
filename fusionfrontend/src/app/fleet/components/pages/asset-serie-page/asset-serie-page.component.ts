@@ -105,7 +105,7 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
         prefilledAssetSeriesId: this.assetSerieId,
       },
       header: 'Digital Twin Creator for Assets',
-      width: '75%'
+      width: '80%'
     });
 
     assetWizardRef.onClose.subscribe(() => this.resolve(this.route));

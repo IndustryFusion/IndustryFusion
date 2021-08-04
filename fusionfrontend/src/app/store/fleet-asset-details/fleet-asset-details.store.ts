@@ -14,19 +14,19 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AssetDetails } from './asset-details.model';
+import { FleetAssetDetails } from './fleet-asset-details.model';
 import { EntityState, ActiveState, StoreConfig, ID } from '@datorama/akita';
 import { CachedStore } from '../cachedstore';
 
-export interface AssetDetailsState extends EntityState<AssetDetails, ID>, ActiveState { }
+export interface FleetAssetDetailsState extends EntityState<FleetAssetDetails, ID>, ActiveState { }
 
 const initialState = {
   active: null
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'asset-details' })
-export class AssetDetailsStore extends CachedStore<AssetDetailsState, AssetDetails> {
+@StoreConfig({ name: 'fleet-asset-details' })
+export class FleetAssetDetailsStore extends CachedStore<FleetAssetDetailsState, FleetAssetDetails> {
 
   constructor() {
     super(initialState);

@@ -19,8 +19,9 @@ under the License.
                  [factorySites]="(factorySites$ | async)"
                  [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)"
                  [allRoomsOfFactorySite]="(allRoomsOfFactorySite$ | async)"
-                 [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"
+                 [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
-                 (assetDetailsSelected)="updateAssetData($event)">
+                 (assetDetailsSelected)="updateAssetData($event)"
+                 (updateAssetEvent)="updateRoom($event)">
 </app-assets-list>

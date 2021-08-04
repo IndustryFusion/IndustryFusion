@@ -18,7 +18,7 @@ under the License.
   <div class="if-detail-page-div">
     <div class="row clr-justify-content-between clr-align-items-center">
       <h3> {{ (quantityType$ | async)?.name }} </h3>
-      <app-edit-details-button [item]="quantityType$ | async" appQuantityTypeEditDialog></app-edit-details-button>
+      <app-edit-details-button (editItem)="showEditDialog()"></app-edit-details-button>
     </div>
 
     <div class="row">
@@ -42,5 +42,5 @@ under the License.
 
 
 <div class="wrapper">
-  <app-unit-list [optionalItems$]="units$"></app-unit-list>
+  <app-unit-list [itemsFromParent$]="units$" [parentQuantityTypeId]="(quantityType$ | async)?.id"></app-unit-list>
 </div>

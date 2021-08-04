@@ -23,6 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -43,6 +44,9 @@ public class AssetDto extends BaseAssetDto {
 
     @Builder.Default
     private Set<FieldInstanceDto> fieldInstances = new LinkedHashSet<>();
+
+    @Builder.Default
+    private Set<Long> subsystemIds = new HashSet<>();
 
     private String externalId;
     private String controlSystemType;

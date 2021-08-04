@@ -28,7 +28,6 @@ export class AssetWizardStepReviewComponent implements OnInit {
   @ViewChild(AssetWizardSharedMetricsComponent) metricsChild: AssetWizardSharedMetricsComponent;
 
   @Input() asset: Asset;
-  @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
   constructor() {
@@ -51,5 +50,9 @@ export class AssetWizardStepReviewComponent implements OnInit {
 
   onBackToMetrics(): void {
     this.stepChange.emit(AssetWizardStep.METRICS_THRESHOLDS);
+  }
+
+  onBackToSubsystems(): void {
+    this.stepChange.emit(AssetWizardStep.SUBSYSTEMS);
   }
 }

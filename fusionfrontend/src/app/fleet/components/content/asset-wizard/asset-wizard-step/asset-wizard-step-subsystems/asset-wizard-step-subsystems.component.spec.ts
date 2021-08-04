@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuantityTypeDialogContentComponent } from './quantity-type-dialog-content.component';
+import { AssetWizardStepSubsystemsComponent } from './asset-wizard-step-subsystems.component';
 
-describe('QuantityTypeDialogComponent', () => {
-  let component: QuantityTypeDialogContentComponent;
-  let fixture: ComponentFixture<QuantityTypeDialogContentComponent>;
+describe('AssetWizardStepSubsystemsComponent', () => {
+  let component: AssetWizardStepSubsystemsComponent;
+  let fixture: ComponentFixture<AssetWizardStepSubsystemsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ QuantityTypeDialogContentComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AssetWizardStepSubsystemsComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuantityTypeDialogContentComponent);
+    fixture = TestBed.createComponent(AssetWizardStepSubsystemsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

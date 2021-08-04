@@ -31,7 +31,7 @@ import {
   Sampling,
   Series
 } from './oisp.model';
-import { AssetDetailsWithFields } from '../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
 
 @Injectable({
@@ -39,7 +39,7 @@ import { KeycloakService } from 'keycloak-angular';
 })
 export class OispService {
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json', Authorization: environment.oispAuthToken })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   private defaultPoints: PointWithId[] = [];
 
@@ -79,7 +79,7 @@ export class OispService {
     );
   }
 
-  getAssetDetailsFieldsExternalIds(assetDetails: AssetDetailsWithFields): Observable<AssetDetailsWithFields> {
+  getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
     if (!assetDetails) {
       return EMPTY;
     }

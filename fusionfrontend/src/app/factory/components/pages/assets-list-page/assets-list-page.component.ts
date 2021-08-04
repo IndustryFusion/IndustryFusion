@@ -23,7 +23,7 @@ import { Company } from 'src/app/store/company/company.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { Room } from 'src/app/store/room/room.model';
-import { AssetDetails, AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetails, FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { ID } from '@datorama/akita';
 import { FactoryManagerPageType, RouteData } from 'src/app/factory/factory-routing.model';
 import { AssetService } from 'src/app/store/asset/asset.service';
@@ -40,7 +40,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
   assets$: Observable<Asset[]>;
-  assetsWithDetailsAndFields$: Observable<AssetDetailsWithFields[]>;
+  factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   factorySites$: Observable<FactorySite[]>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
@@ -70,19 +70,21 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.activatedRoute.snapshot.paramMap.get('companyId');
-    this.assetsWithDetailsAndFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
   }
 
   ngOnDestroy() {
   }
 
-  updateAssetData(event: [Room, AssetDetails]) {
-    event[1].id = event[1].id ? event[1].id : this.createdAssetDetailsId;
-    this.assetService.updateCompanyAsset(event[1].companyId, event[1]).subscribe(
-      res => {
-        console.log('[factory site page] updated asset with id: ' + res.id);
-        if (event[0].id !== event[1].roomId) {
-          this.roomService.updateRoomsAfterEditAsset(event[0].id, event[1]);
+  updateAssetData(event: [Room, FactoryAssetDetails]) {
+    const oldRoom: Room = event[0];
+    const assetDetails: FactoryAssetDetails = event[1];
+
+    assetDetails.id = assetDetails.id ? assetDetails.id : this.createdAssetDetailsId;
+    this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(
+      () => {
+        if (oldRoom.id !== assetDetails.roomId) {
+          this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
         }
       },
       error => console.log(error)

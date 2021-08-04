@@ -35,6 +35,7 @@ export class UnitDialogComponent implements OnInit {
   type: DialogType;
 
   public DialogType = DialogType;
+  public isQuantityTypeLocked: boolean;
 
   constructor(private quantityQuery: QuantityTypeQuery,
               public dialogRef: DynamicDialogRef,
@@ -46,17 +47,28 @@ export class UnitDialogComponent implements OnInit {
     this.quantityTypes$ = this.quantityQuery.selectAll();
     this.unit = this.config.data?.unit;
     this.type = this.config.data?.type;
+    this.isQuantityTypeLocked = this.config.data.prefilledQuantityTypeId != null;
     this.unitForm = this.createDialogFormGroup(this.unit);
   }
 
   createDialogFormGroup(unit: Unit): FormGroup {
-    return this.formBuilder.group({
-      id: [unit?.id],
-      name: [unit?.name, Validators.maxLength(255)],
-      label: [unit?.label, Validators.maxLength(255)],
-      symbol: [unit?.symbol, Validators.maxLength(255)],
-      quantityTypeId: [unit?.quantityType?.id, Validators.required],
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    const unitGroup = this.formBuilder.group({
+      id: [],
+      name: [null, requiredTextValidator],
+      label: [null, Validators.maxLength(255)],
+      symbol: [null, Validators.maxLength(255)],
+      quantityTypeId: [null, Validators.required],
     });
+
+    if (unit) {
+      unitGroup.patchValue(unit);
+      unitGroup.get('quantityTypeId').patchValue(unit.quantityType?.id);
+    }
+    if (this.isQuantityTypeLocked) {
+      unitGroup.get('quantityTypeId').patchValue(this.config.data.prefilledQuantityTypeId);
+    }
+    return unitGroup;
   }
 
   dismissModal(): void {
@@ -64,12 +76,7 @@ export class UnitDialogComponent implements OnInit {
   }
 
   confirmModal(): void {
-    const unit = new Unit();
-    unit.name = this.unitForm.get('name')?.value;
-    unit.label = this.unitForm.get('label')?.value;
-    unit.symbol = this.unitForm.get('symbol')?.value;
-    unit.quantityTypeId = this.unitForm.get('quantityTypeId')?.value;
-
+    const unit = this.unitForm.getRawValue() as Unit;
     this.dialogRef.close(unit);
   }
 

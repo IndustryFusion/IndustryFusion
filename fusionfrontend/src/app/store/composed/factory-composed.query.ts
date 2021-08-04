@@ -18,8 +18,8 @@ import { combineQueries, ID } from '@datorama/akita';
 import { forkJoin, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { OispService } from '../../services/oisp.service';
-import { AssetDetails, AssetDetailsWithFields } from '../asset-details/asset-details.model';
-import { AssetDetailsQuery } from '../asset-details/asset-details.query';
+import { FactoryAssetDetails, FactoryAssetDetailsWithFields } from '../factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsQuery } from '../factory-asset-details/factory-asset-details.query';
 import { Asset, AssetWithFields } from '../asset/asset.model';
 import { AssetQuery } from '../asset/asset.query';
 import { FieldDetailsQuery } from '../field-details/field-details-query.service';
@@ -34,7 +34,7 @@ export class FactoryComposedQuery {
     protected factorySiteQuery: FactorySiteQuery,
     protected roomQuery: RoomQuery,
     protected assetQuery: AssetQuery,
-    protected assetDetailsQuery: AssetDetailsQuery,
+    protected factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
     protected fieldQuery: FieldDetailsQuery,
     protected oispService: OispService) { }
 
@@ -88,9 +88,9 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectFieldsOfAssetsDetails(): Observable<AssetDetailsWithFields[]> {
+  selectFieldsOfAssetsDetails(): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
-      this.assetDetailsQuery.selectAll(),
+      this.factoryAssetDetailsQuery.selectAll(),
       this.fieldQuery.selectAll()
     ]).pipe(
       map(([assetsDetails, fields]) =>
@@ -102,9 +102,9 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectAssetDetailsOfFactorySite(factorySiteId: ID): Observable<AssetDetails[]> {
+  selectAssetDetailsOfFactorySite(factorySiteId: ID): Observable<FactoryAssetDetails[]> {
     return combineQueries([
-      this.assetDetailsQuery.selectAll(),
+      this.factoryAssetDetailsQuery.selectAll(),
       this.roomQuery.selectRoomsOfFactorySite(factorySiteId)])
      .pipe(
         map(([assetDetailsArray, rooms]) => {
@@ -113,7 +113,7 @@ export class FactoryComposedQuery {
   }
 
 
-  selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId: ID): Observable<AssetDetailsWithFields[]> {
+  selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId: ID): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
       this.selectAssetDetailsOfFactorySite(factorySiteId),
       this.fieldQuery.selectAll()
@@ -127,9 +127,9 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectFieldsOfAssetsDetailsByRoomId(roomId: ID): Observable<AssetDetailsWithFields[]> {
+  selectFieldsOfAssetsDetailsByRoomId(roomId: ID): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
-      this.assetDetailsQuery.selectAssetDetailsOfRoom(roomId),
+      this.factoryAssetDetailsQuery.selectAssetDetailsOfRoom(roomId),
       this.fieldQuery.selectAll()
     ]).pipe(
       map(([assetsDetails, fields]) =>
@@ -141,9 +141,9 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectAssetDetailsAndRoom(assetDetailsId: ID, roomId: ID): Observable<[AssetDetails, Room]> {
+  selectAssetDetailsAndRoom(assetDetailsId: ID, roomId: ID): Observable<[FactoryAssetDetails, Room]> {
     return combineQueries([
-      this.assetDetailsQuery.selectEntity(assetDetailsId),
+      this.factoryAssetDetailsQuery.selectEntity(assetDetailsId),
       this.roomQuery.selectEntity(roomId)
     ]).pipe(map(([assetDetails, room]) => {
       return [assetDetails, room];
@@ -159,7 +159,7 @@ export class FactoryComposedQuery {
     );
   }
 
-  joinFieldsOfAssetsDetailsWithOispData(): Observable<AssetDetailsWithFields[]> {
+  joinFieldsOfAssetsDetailsWithOispData(): Observable<FactoryAssetDetailsWithFields[]> {
     return this.selectFieldsOfAssetsDetails().pipe(
       mergeMap(assets =>
         forkJoin(
@@ -168,7 +168,7 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId): Observable<AssetDetailsWithFields[]> {
+  selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId): Observable<FactoryAssetDetailsWithFields[]> {
     return this.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId).pipe(
       mergeMap(assets =>
         forkJoin(
@@ -177,7 +177,7 @@ export class FactoryComposedQuery {
       ));
   }
 
-  selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId): Observable<AssetDetailsWithFields[]> {
+  selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId): Observable<FactoryAssetDetailsWithFields[]> {
     return this.selectFieldsOfAssetsDetailsByRoomId(roomId).pipe(
       mergeMap(assets =>
         forkJoin(

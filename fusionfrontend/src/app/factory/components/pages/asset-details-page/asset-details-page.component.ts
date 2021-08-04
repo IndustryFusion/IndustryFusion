@@ -19,14 +19,13 @@ import { combineLatest, Observable, Subject, zip } from 'rxjs';
 import { OispService } from 'src/app/services/oisp.service';
 import { PointWithId } from 'src/app/services/oisp.model';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
-import { FieldDetails, QuantityDataType, FieldType } from 'src/app/store/field-details/field-details.model';
+import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-details/field-details.model';
 import { ActivatedRoute } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MaintenanceInterval } from '../../content/asset-details/maintenance-bar/maintenance-interval.model';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
-import { Location as loc } from '@angular/common';
 import * as moment from 'moment';
 
 @Component({
@@ -69,7 +68,6 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
 
   constructor(private assetQuery: AssetQuery,
               private oispService: OispService,
-              private routingLocation: loc,
               private factoryResolver: FactoryResolver,
               private datePipe: DatePipe,
               private activatedRoute: ActivatedRoute) { }
@@ -184,10 +182,6 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
 
   isNotAttribute(field: FieldDetails) {
     return (field.type !== FieldType.ATTRIBUTE);
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 }
 

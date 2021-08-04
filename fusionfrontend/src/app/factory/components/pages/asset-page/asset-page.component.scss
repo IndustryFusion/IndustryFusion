@@ -15,27 +15,6 @@
 
 @import 'abstract/variables';
 
-.go-back-panel{
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: lightgray;
-
-  button{
-    color: black;
-  }
-
-
-  .goback{
-    clr-icon {
-      margin-right: 10px;
-      color: black;
-    }
-  }
-}
-
 .wrapper{
     background: #F8F8F8;
     padding: 0 15%;

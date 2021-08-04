@@ -38,6 +38,8 @@ import { AssetService } from '../../../../store/asset/asset.service';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
 import { CountryResolver } from '../../../../resolvers/country.resolver';
+import { FleetAssetDetailsResolver } from '../../../../resolvers/fleet-asset-details.resolver';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -50,6 +52,7 @@ export class AssetWizardComponent implements OnInit {
 
   public assetForm: FormGroup;
   public asset: Asset;
+  public relatedAssetSeriesId: ID = null;
   public relatedAssetSeries: AssetSeries = null;
   public relatedCompany: Company = null;
   public relatedAssetType: AssetType = null;
@@ -59,6 +62,7 @@ export class AssetWizardComponent implements OnInit {
 
   public metricsValid: boolean;
   public attributesValid: boolean;
+  public subsystemsValid: boolean;
   public customerDataValid: boolean;
 
   public AssetWizardStep = AssetWizardStep;
@@ -68,6 +72,7 @@ export class AssetWizardComponent implements OnInit {
               private assetSeriesQuery: AssetSeriesQuery,
               private assetSeriesService: AssetSeriesService,
               private assetResolver: AssetResolver,
+              private fleetAssetDetailsResolver: FleetAssetDetailsResolver,
               private assetService: AssetService,
               private companyQuery: CompanyQuery,
               private quantityTypesResolver: QuantityTypesResolver,
@@ -80,7 +85,8 @@ export class AssetWizardComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
               private config: DynamicDialogConfig,
-              private ref: DynamicDialogRef) {
+              private ref: DynamicDialogRef,
+              private messageService: MessageService) {
     this.resolveWizard();
   }
 
@@ -88,10 +94,13 @@ export class AssetWizardComponent implements OnInit {
     this.asset = { ...this.config.data.asset };
     this.createAssetForm();
 
-    this.isAssetSeriesLocked = this.config.data.prefilledAssetSeriesId != null;
+    this.relatedAssetSeriesId = this.config.data.prefilledAssetSeriesId;
+    this.isAssetSeriesLocked = this.relatedAssetSeriesId != null;
     if (this.isAssetSeriesLocked) {
-      this.isAssetSeriesLoading$.subscribe(() => {
-        this.prefillFormFromAssetSeries(this.config.data.prefilledAssetSeriesId);
+      this.isAssetSeriesLoading$.subscribe(isLoading => {
+        if (!isLoading) {
+          this.prefillFormFromAssetSeries(this.relatedAssetSeriesId);
+        }
       });
     }
 
@@ -118,7 +127,7 @@ export class AssetWizardComponent implements OnInit {
     const assetName: string = this.assetForm.get('name').value;
     const assetDescription: string = this.assetForm.get('description').value;
 
-    this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeries.id).subscribe(
+    this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeriesId).subscribe(
       asset => {
         this.asset = asset;
         this.asset.name = assetName;
@@ -131,33 +140,27 @@ export class AssetWizardComponent implements OnInit {
 
   onSaveAsset(): void {
     if (this.asset && this.assetForm.valid && this.asset.fieldInstances
-        && this.metricsValid && this.attributesValid && this.customerDataValid) {
-      this.asset.name = this.assetForm.get('name').value;
-      this.asset.description = this.assetForm.get('description').value;
-      this.asset.ceCertified = this.assetForm.get('ceCertified').value;
-      this.asset.externalId = this.assetForm.get('externalId').value;
-      this.asset.controlSystemType = this.assetForm.get('controlSystemType')?.value;
-      this.asset.hasGateway = this.assetForm.get('hasGateway')?.value;
-      this.asset.gatewayConnectivity = this.assetForm.get('gatewayConnectivity')?.value;
-      this.asset.guid = this.assetForm.get('guid')?.value;
-      this.asset.serialNumber = this.assetForm.get('serialNumber')?.value;
-      this.asset.constructionDate = this.assetForm.get('constructionDate')?.value;
-      this.asset.installationDate = this.assetForm.get('installationDate')?.value;
-      this.asset.protectionClass = this.assetForm.get('protectionClass').value;
-      this.asset.handbookKey = this.assetForm.get('handbookKey').value;
-      this.asset.videoKey = this.assetForm.get('videoKey')?.value;
-      this.asset.imageKey = this.assetForm.get('imageKey')?.value;
+        && this.metricsValid && this.attributesValid && this.subsystemsValid && this.customerDataValid) {
+
+      const asset = this.assetForm.getRawValue() as Asset;
+
+      asset.subsystemIds = this.asset.subsystemIds;
+      asset.fieldInstances = this.asset.fieldInstances;
+      asset.room = this.asset.room;
+
+      this.asset = asset;
 
       if (this.type === DialogType.EDIT) {
 
       } else if (this.type === DialogType.CREATE) {
-        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeries.id, this.asset).subscribe();
+        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset).subscribe();
       }
 
       this.ref.close(this.asset);
 
     } else {
-      throw new Error('[Asset Wizard]: Error at saving asset');
+      this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
+      console.error('[Asset Wizard]: Error at saving asset');
     }
   }
 
@@ -172,13 +175,18 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('handbookKey')?.setValue(assetSeries.handbookKey);
       this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
     } else {
-      throw new Error('[Asset wizard]: Related asset series not found');
+      console.warn('[Asset wizard]: Related asset series not found', assetSeriesId);
     }
   }
 
   private updateRelatedObjects(assetSeries: AssetSeries): void {
+    this.relatedAssetSeriesId = assetSeries.id;
     this.relatedAssetSeries = assetSeries;
     this.relatedCompany = this.companyQuery.getActive();
+    if (!this.relatedCompany) {
+      console.warn('[Asset wizard]: No active company found');
+    }
+
     this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
       if (!isLoading) {
         const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
@@ -190,6 +198,7 @@ export class AssetWizardComponent implements OnInit {
   private resolveWizard(): void {
     this.assetSeriesResolver.resolve(this.activatedRoute.snapshot);
     this.assetResolver.resolve(this.activatedRoute.snapshot);
+    this.fleetAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
     this.assetTypeTemplatesResolver.resolve().subscribe();
@@ -244,5 +253,9 @@ export class AssetWizardComponent implements OnInit {
 
   setCustomerDataValid(isValid: boolean) {
     this.customerDataValid = isValid;
+  }
+
+  setSubsystemValid(isValid: boolean) {
+    this.subsystemsValid = isValid;
   }
 }

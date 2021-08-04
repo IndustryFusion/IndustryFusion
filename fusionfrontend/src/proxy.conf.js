@@ -10,4 +10,11 @@ module.exports = {
     "target": "http://localhost:8081",
     "secure": false,
   },
+  "/oispapi": {
+    "target": "https://development.industry-fusion.com/v1/api",
+    "secure": false,
+    "pathRewrite": {
+      "^/oispapi": ""
+    }
+  }
 };

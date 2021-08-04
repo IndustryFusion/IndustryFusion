@@ -17,9 +17,10 @@ import { Asset } from '../asset/asset.model';
 import { FieldDetails } from '../field-details/field-details.model';
 
 
-export class AssetDetails extends Asset {
+export class FactoryAssetDetails extends Asset {
   manufacturer: string;
   assetSeriesName: string;
+  assetTypeName: string;
   category: string;
   roomName: string;
   factorySiteName: string;
@@ -47,6 +48,6 @@ export enum DashboardFilterModalType {
   maintenanceDueFilterModal = 4
 }
 
-export class AssetDetailsWithFields extends AssetDetails {
+export class FactoryAssetDetailsWithFields extends FactoryAssetDetails {
   fields: FieldDetails[];
 }

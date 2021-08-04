@@ -57,14 +57,14 @@ public class FactoryAssetRestService {
         return assetMapper.toDtoSet(assetService.getAssetsByFactorySite(companyId, factorySiteId), embedChildren);
     }
 
-    @GetMapping(path = "/companies/{companyId}/assetdetails")
+    @GetMapping(path = "/companies/{companyId}/factoryassetdetails")
     public Set<AssetDetailsDto> getAssetDetails(@PathVariable final Long companyId,
                                                 @RequestParam(defaultValue = "true") final boolean embedChildren) {
         Set<Asset> assetSet = assetService.getAssetsByCompany(companyId);
         return assetDetailsMapper.toDtoSet(assetSet, embedChildren);
     }
 
-    @GetMapping(path = "/companies/{companyId}/assetdetails/{assetDetailsId}")
+    @GetMapping(path = "/companies/{companyId}/factoryassetdetails/{assetDetailsId}")
     public AssetDetailsDto getSingleAssetDetails(@PathVariable final Long companyId,
                                                  @PathVariable final Long assetDetailsId,
                                                  @RequestParam(defaultValue = "false") final boolean embedChildren) {
