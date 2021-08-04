@@ -125,8 +125,14 @@ export class OispService {
 
   updateRule(ruleId: string, rule: Rule): Observable<Rule> {
     rule = JSON.parse(JSON.stringify(rule));
+    this.prepareRuleForSending(rule);
 
-    rule.conditions.values.map( conditionValue => {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
+    return this.http.put<Rule>(url, rule, this.httpOptions);
+  }
+
+  private prepareRuleForSending(rule: Rule) {
+    rule.conditions.values.map(conditionValue => {
       delete conditionValue[`conditionSequence`];
       if (conditionValue.type !== ConditionType.statistics) {
         delete conditionValue[`baselineCalculationLevel`];
@@ -138,8 +144,8 @@ export class OispService {
       }
     });
 
-    rule.actions = rule.actions.map<RuleAction>( (ruleAction: RuleAction) => {
-      if (typeof ruleAction.target  === 'string') {
+    rule.actions = rule.actions.map<RuleAction>((ruleAction: RuleAction) => {
+      if (typeof ruleAction.target === 'string') {
         ruleAction.target = [ruleAction.target];
       }
       return ruleAction;
@@ -151,9 +157,6 @@ export class OispService {
     delete rule[`naturalLanguage`];
     delete rule[`creationDate`];
     delete rule[`lastUpdateDate`];
-
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
-    return this.http.put<Rule>(url, rule, this.httpOptions);
   }
 
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
