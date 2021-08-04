@@ -20,7 +20,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,12 +47,12 @@ public class ConnectivityType extends BaseEntity {
     private String name;
 
     @ManyToMany
-    @JoinTable(name="connectivity_type_connectivity_protocol",
+    @JoinTable(name = "connectivity_type_connectivity_protocol",
             joinColumns =
-            @JoinColumn(name="connectivity_type_id"),
-            foreignKey = @ForeignKey(name="connectivity_type_id_fkey"),
+            @JoinColumn(name = "connectivity_type_id"),
+            foreignKey = @ForeignKey(name = "connectivity_type_id_fkey"),
             inverseJoinColumns =
-            @JoinColumn(name="connectivity_protocol_id"),
+            @JoinColumn(name = "connectivity_protocol_id"),
             inverseForeignKey = @ForeignKey(name = "connectivity_protocol_id_fkey")
 
     )
