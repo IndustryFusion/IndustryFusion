@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/connectivity-type.query';
 import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
-import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
@@ -19,16 +18,15 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
   @Output() valid = new EventEmitter<boolean>();
 
   public connectivitySettingsForm: FormGroup;
-  public connectivityTypes: ConnectivityType[];
-  public connectivityTypes$: Observable<ConnectivityType[]>;
-  public connectivityProtocols: ConnectivityProtocol[];
+  public connectivityTypeOptions: ConnectivityType[];
+  public connectivityProtocolOptions: ConnectivityProtocol[];
   public infoText = '';
 
   AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesCreateConnectivitySettingsTooltipComponent;
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
               private formBuilder: FormBuilder) {
-    this.connectivityTypes = connectivityTypeQuery.getAll();
+    this.connectivityTypeOptions = connectivityTypeQuery.getAll();
     this.createFormGroup();
   }
 
@@ -53,21 +51,20 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
   }
 
   private selectFirstItemsInDropdowns(): void {
-    this.connectivityTypes$ = this.connectivityTypeQuery.selectAll();
     this.connectivitySettingsForm.get('connectivityTypeId').setValue(1);
     this.onChangeConnectivityType(1);
   }
 
   onChangeConnectivityType(connectivityTypeId: ID): void {
-    if (connectivityTypeId && this.connectivityTypes) {
-      const selectedConnectivityType = this.connectivityTypes
+    if (connectivityTypeId && this.connectivityTypeOptions) {
+      const selectedConnectivityType = this.connectivityTypeOptions
         .find(connectivityType => String(connectivityType.id) === String(connectivityTypeId));
-      this.connectivityProtocols = selectedConnectivityType.availableProtocols;
+      this.connectivityProtocolOptions = selectedConnectivityType.availableProtocols;
       this.infoText = selectedConnectivityType.infoText;
 
-      if (this.connectivityProtocols.length > 0) {
-        this.connectivitySettingsForm.get('protocolId').setValue(this.connectivityProtocols[0].id);
-        this.onChangeProtocolType(this.connectivityProtocols[0].id);
+      if (this.connectivityProtocolOptions.length > 0) {
+        this.connectivitySettingsForm.get('protocolId').setValue(this.connectivityProtocolOptions[0].id);
+        this.onChangeProtocolType(this.connectivityProtocolOptions[0].id);
 
       } else {
         this.connectivitySettingsForm.get('protocolId').setValue(null);
@@ -77,8 +74,8 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
   }
 
   onChangeProtocolType(connectivityProtocolId: ID): void {
-    if (connectivityProtocolId && this.connectivityProtocols) {
-      const connectionString = this.connectivityProtocols
+    if (connectivityProtocolId && this.connectivityProtocolOptions) {
+      const connectionString = this.connectivityProtocolOptions
         .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionStringPattern;
       this.connectivitySettingsForm.get('connectionString').setValue(connectionString);
     }
