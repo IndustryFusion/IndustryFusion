@@ -38,7 +38,7 @@ export class FusionAppletDetailComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showEditDialog() {
+  navigateToEditor() {
     this.router.navigate(['..', 'editor'], { relativeTo: this.activatedRoute});
   }
 }
