@@ -14,8 +14,8 @@ under the License.
 -->
 <p-accordion class="action-panel" [(activeIndex)]="accordionIndex">
   <p-accordionTab header="Set up Email Notification">
-    <label class="if-label" *ngIf="getAvaileblRecipients()?.length > 0">Choose Email Recipients *</label>
-    <p-dropdown *ngIf="getAvaileblRecipients()?.length > 0" [options]="getAvaileblRecipients()"
+    <label class="if-label" *ngIf="getAvailableRecipients()?.length > 0">Choose Email Recipients *</label>
+    <p-dropdown *ngIf="getAvailableRecipients()?.length > 0" [options]="getAvailableRecipients()"
                 [(ngModel)]="emailSelection" placeholder="Select Email"
                 (onChange)="addEmail($event.value)"></p-dropdown>
     <label class="if-label" *ngIf="emailAction?.get('target')?.value?.length > 0">Selected Email Recipients</label>

@@ -51,7 +51,7 @@ export class AppletActionMailComponent implements OnInit {
     return (this.emailAction?.get('target') as FormArray).controls;
   }
 
-  getAvaileblRecipients(): string[] {
+  getAvailableRecipients(): string[] {
     return this.emailRecipients.filter(mail => !this.emailAction.get('target').value.includes(mail));
   }
 
