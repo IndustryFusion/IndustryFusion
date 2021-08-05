@@ -26,7 +26,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
               private formBuilder: FormBuilder) {
-    this.connectivityTypeOptions = connectivityTypeQuery.getAll();
+    this.connectivityTypeOptions = this.connectivityTypeQuery.getAll();
     this.createFormGroup();
   }
 
