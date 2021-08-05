@@ -133,8 +133,36 @@ header {
     cursor: pointer;
     flex-grow: unset;
 
-    &.notification {
-      background-image: url('/assets/img/message-toolbox.png');
+    i {
+      display: inline-block;
+      align-items: center;
+      background-size: contain !important;
+      height: 32px;
+      width: 32px;
+
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size: cover !important;
+      mask-size: cover !important;
+      background-color: $inactive;
+
+      &.search {
+        margin: 10px;
+        -webkit-mask-image: url('/assets/icons/search-icon.svg');
+      }
+
+      &.settings {
+        margin: 11px;
+        -webkit-mask-image: url('/assets/icons/settings-icon.svg');
+      }
+
+      &.notifications {
+        margin: 12px;
+        -webkit-mask-image: url('/assets/icons/notifications-icon.svg');
+      }
+
+      &:hover {
+        background-color: $hover-grey;
+      }
     }
 
     &.user {

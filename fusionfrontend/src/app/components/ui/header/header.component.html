@@ -43,13 +43,15 @@ under the License.
       </div>
     </div>
     <ul class="toolbox">
-      <li class="search">
-        <clr-icon shape="search"></clr-icon>
+      <li>
+        <i class="search"></i>
       </li>
-      <li class="settings">
-        <clr-icon shape="cog"></clr-icon>
+      <li>
+        <i class="settings"></i>
       </li>
-      <li class="notification" (click)="onNotificationsClick()"></li>
+      <li (click)="onNotificationsClick()">
+        <i class="notifications"></i>
+      </li>
       <li *ngIf="user" class="user"></li>
       <li *ngIf="user" class="user-name">
         Michel-Markuse
