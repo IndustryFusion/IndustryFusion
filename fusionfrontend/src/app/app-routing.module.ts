@@ -50,7 +50,12 @@ const routes: Routes = [
     path: 'settings',
     redirectTo: '/settings/template',
     pathMatch: 'full'
-  }
+  },
+  {
+    path: 'notifications',
+    redirectTo: '/notifications/open',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({

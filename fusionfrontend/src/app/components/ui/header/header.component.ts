@@ -79,6 +79,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.routingLocation.back();
   }
 
+  onNotificationsClick() {
+    return this.router.navigate(['/notifications']);
+  }
+
+  isNotifications() {
+    return this.route && this.route.match(`\/${'notifications'}\/`);
+  }
+
+
   ngOnDestroy(): void {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
