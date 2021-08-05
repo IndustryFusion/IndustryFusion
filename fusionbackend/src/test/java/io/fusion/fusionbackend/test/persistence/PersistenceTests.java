@@ -1,7 +1,9 @@
 package io.fusion.fusionbackend.test.persistence;
 
 import io.fusion.fusionbackend.model.Asset;
+import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,8 @@ import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplate
 import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
 import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityProtocolBuilder.aConnectivityProtocol;
 import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityTypeBuilder.aConnectivityType;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class PersistenceTests extends PersistenceTestsBase {
@@ -94,5 +97,25 @@ public class PersistenceTests extends PersistenceTestsBase {
         ConnectivityType foundType = testEntityManager.persistFlushFind(connectivityType);
 
         assertEquals(1, foundType.getAvailableProtocols().size());
+    }
+
+    @Test
+    void persistAssestSeriesWithConnectivitySettings() {
+        ConnectivityType connectivityType = persisted(aConnectivityType()
+                .withProtocol(persisted(aConnectivityProtocol())))
+                .build();
+
+        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
+
+        AssetSeries assetSeries = anAssetSeries()
+                .forCompany(persisted(aCompany()))
+                .basedOnTemplate(persisted(anAssetTypeTemplate()
+                        .forType(persisted(anAssetType()))))
+                .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
+                .build();
+
+        AssetSeries foundSeries = testEntityManager.persistFlushFind(assetSeries);
+
+        assertNotNull(foundSeries);
     }
 }
