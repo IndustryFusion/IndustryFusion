@@ -18,7 +18,8 @@ import {
   BaselineCalculationLevel,
   ConditionsOperator,
   ConditionType,
-  ConditionValueOperator, Device,
+  ConditionValueOperator,
+  Device,
   RuleConditions
 } from '../../../../services/oisp.model';
 import { OispService } from '../../../../services/oisp.service';
@@ -97,7 +98,6 @@ export class AppletConditionsComponent implements OnInit {
       operator: [ConditionValueOperator['<'], Validators.required],
       values: new FormArray([
         new FormControl(null, [Validators.required, Validators.minLength(1)]),
-        new FormControl(null, [Validators.required, Validators.minLength(1)]),
       ], [Validators.required, Validators.minLength(1)]),
       timeLimit: [],
       baselineCalculationLevel: [BaselineCalculationLevel['Device level']],
@@ -107,6 +107,7 @@ export class AppletConditionsComponent implements OnInit {
     formGroup.get('type').valueChanges.subscribe((value: ConditionType) => {
       this.updateValidationOnType(formGroup, value);
     });
+    this.updateValidationOnType(formGroup, ConditionType.basic);
     return formGroup;
   }
 
