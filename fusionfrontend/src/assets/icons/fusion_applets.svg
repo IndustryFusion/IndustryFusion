@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="118.693" height="108.5"
+     viewBox="0 0 118.693 108.5">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="1.044" y2="1.056" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#8ac9c1"/>
+      <stop offset="1" stop-color="#0089d8"/>
+    </linearGradient>
+  </defs>
+  <g id="np_flow_2787293_000000" transform="translate(-15.936 127.315) rotate(-90)" opacity="0.85">
+    <path id="Pfad_857" data-name="Pfad 857"
+          d="M85.22,40.636A49,49,0,0,0,71.609,31.02l5.866-5.744h.007A5.448,5.448,0,0,0,69.86,17.49L57.827,29.257a5.438,5.438,0,0,0,2.43,9.154,38.117,38.117,0,0,1,23.3,55.983,5.445,5.445,0,0,0,9.419,5.444,49,49,0,0,0-7.758-59.2Z"
+          transform="translate(27.739)" fill="url(#linear-gradient)"/>
+    <path id="Pfad_858" data-name="Pfad 858"
+          d="M40.207,70.293A38.1,38.1,0,0,1,68.79,33.387a5.45,5.45,0,0,0-2.722-10.555A49.042,49.042,0,0,0,32.422,87.479l-8.316.476a5.447,5.447,0,0,0,.313,10.889h.32l16.381-.953a5.44,5.44,0,0,0,4.356-8.2,38.189,38.189,0,0,1-5.267-19.4Z"
+          transform="translate(0 4.99)" fill="url(#linear-gradient)"/>
+    <path id="Pfad_859" data-name="Pfad 859"
+          d="M89.349,69.4a5.437,5.437,0,0,0-5.261.109,38.845,38.845,0,0,1-38.956-.47,5.444,5.444,0,1,0-5.676,9.29A49.727,49.727,0,0,0,82,82.469l.667,8.371v-.007a5.448,5.448,0,0,0,5.444,5.016h.436a5.431,5.431,0,0,0,5-5.859L92.26,73.806h.007a5.449,5.449,0,0,0-2.92-4.4Z"
+          transform="translate(13.312 38.779)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

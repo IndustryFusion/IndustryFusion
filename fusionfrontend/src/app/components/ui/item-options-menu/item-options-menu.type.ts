@@ -14,8 +14,10 @@
 */
 
 export enum ItemOptionsMenuType {
-  EDIT_DELETE,
-  UPDATE_DELETE,
   DELETE,
-  CREATE_EDIT_DELETE
+  EDIT,
+  UPDATE,
+  CREATE,
+  RENAME,
+  CLONE,
 }

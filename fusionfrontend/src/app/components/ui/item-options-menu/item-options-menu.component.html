@@ -13,8 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div [ngClass]="type === ItemOptionsMenuType.CREATE_EDIT_DELETE ? 'table-dropdown-menu-wide' : 'table-dropdown-menu'">
-  <p-menu #menu [popup]="true" [model]="menuActions"></p-menu>
+<div  [ngClass]="type?.includes(ItemOptionsMenuType.CREATE) ? 'table-dropdown-menu-wide' : 'table-dropdown-menu'">
+  <p-menu #menu [popup]="true" [model]="menuActions" [appendTo]="appendTo"></p-menu>
   <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event);"
           class="table-dropdown-menu-button"></button>
 </div>
