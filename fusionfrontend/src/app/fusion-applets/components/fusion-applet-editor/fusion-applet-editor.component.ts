@@ -19,6 +19,7 @@ import { OispService } from '../../../services/oisp.service';
 import { Rule, RuleResetType, RuleStatus, RuleType, } from '../../../services/oisp.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-fusion-applet-editor',
@@ -31,12 +32,14 @@ export class FusionAppletEditorComponent implements OnInit {
   rule: Rule;
   ruleGroup: FormGroup;
   assets: any[];
+  isStatusActive = false;
 
   constructor(
     activatedRoute: ActivatedRoute,
     private oispService: OispService,
     public ruleStatusUtil: RuleStatusUtil,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService
   ) {
     this.ruleGroup = formBuilder.group({
       id: [],
@@ -53,6 +56,9 @@ export class FusionAppletEditorComponent implements OnInit {
       population: [],
       actions: new FormArray([], [Validators.required, Validators.minLength(1)])
     });
+    this.ruleGroup.get('status').valueChanges.subscribe(status => {
+      this.isStatusActive = status === RuleStatus.Active;
+    });
     const fusionAppletId = activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
     this.oispService.getRule(fusionAppletId).subscribe(rule => {
       this.rule = rule;
@@ -64,12 +70,23 @@ export class FusionAppletEditorComponent implements OnInit {
   }
 
   changeStatus(isActivating: boolean) {
-    let status: RuleStatus;
+    let status: RuleStatus.Active | RuleStatus.OnHold;
+    let prefix = '';
     if (isActivating) {
       status = RuleStatus.Active;
     } else {
       status = RuleStatus.OnHold;
+      prefix = 'de';
     }
+    this.confirmationService.confirm({
+      message: `Are you sure that you want to ${prefix}activate this applet? All unsaved Changes will be lost!`,
+      accept: () => this.sendStatusChange(status),
+      reject: () => this.ruleGroup.get('status').setValue(this.rule.status),
+      rejectVisible: true
+    });
+  }
+
+  private sendStatusChange(status: RuleStatus.OnHold | RuleStatus.Active) {
     this.oispService.setRuleStatus(this.rule.id, status).subscribe(rule => {
       this.rule = rule;
       this.ruleGroup.patchValue(this.rule);
@@ -87,5 +104,9 @@ export class FusionAppletEditorComponent implements OnInit {
   save() {
     this.rule = this.ruleGroup.getRawValue();
     this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
+  }
+
+  log($event) {
+    console.log($event);
   }
 }

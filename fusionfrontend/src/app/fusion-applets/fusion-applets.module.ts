@@ -44,6 +44,7 @@ import { InplaceModule } from 'primeng/inplace';
 import { FleetModule } from '../fleet/fleet.module';
 import { ControlLimitSelectorComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/control-limit-selector/control-limit-selector.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { ConfirmationService } from 'primeng/api';
 
 
 
@@ -86,7 +87,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
   ],
   providers: [
     EnumHelpers,
-    RuleStatusUtil
+    RuleStatusUtil,
+    ConfirmationService
   ]
 })
 export class FusionAppletsModule { }

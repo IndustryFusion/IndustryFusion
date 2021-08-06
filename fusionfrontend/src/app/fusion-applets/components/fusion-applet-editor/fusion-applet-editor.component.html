@@ -13,9 +13,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<p-confirmDialog header="Attention" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <div class="if-fusion-applet-editor" *ngIf="rule">
-  <div class="p-grid p-jc-between full-width">
-    <p-inplace class="p-col-4" [formGroup]="ruleGroup" [closable]="true" [closeIcon]="'pi pi-check'">
+  <div class="p-grid p-jc-between full-width p-align-center p-justify-center">
+    <p-inplace class="p-col-" [formGroup]="ruleGroup" [closable]="true" [closeIcon]="'pi pi-check'">
       <ng-template pTemplate="display">
         <i class="pi pi-pencil"></i>&nbsp;
         <label class="if-title p-col-" displayControlValue="name"></label>
@@ -24,12 +25,12 @@ under the License.
         <input formControlName="name" type="text" pInputText>
       </ng-template>
     </p-inplace>
-    <p-inputSwitch class="p-col-1"
+    <p-inputSwitch class="p-col-"
                    [disabled]="!ruleStatusUtil.canActivated(rule.status)"
                    (ngModelChange)="changeStatus($event)"
-                   [ngModel]="ruleStatusUtil.isActive(rule.status)"
+                   [(ngModel)]="isStatusActive"
     ></p-inputSwitch>
-    <div class="p-col-4">
+    <div class="p-col-">
       <p-checkbox binary="true"
                   [ngModel]="ruleGroup.get('resetType').value === RuleResetType.Automatic"
                   (onChange)="setResetTypeAutomatic($event.checked)"
