@@ -14,6 +14,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { OispService } from '../../../services/oisp.service';
+import { OispNotification } from '../../../services/notification.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-notifications-page',
@@ -22,10 +25,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationsPageComponent implements OnInit {
 
-  constructor() {
+  private readonly FETCHING_PERIOD_MILLISECONDS = 5000; // TODO: extract to environment
+
+  notifications: OispNotification[];
+
+  constructor(private oispService: OispService,
+              private activatedRoute: ActivatedRoute) {
+    this.periodicallyFetchNotifications();
   }
 
   ngOnInit(): void {
   }
 
+/*  filterRulesByStatus(rules: Rule[]): Rule[] {
+    const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
+    if (this.isRouteActive('overview')) {
+      return rules.filter(rule => !archivStatus.includes(rule.status) );
+    } else {
+      return rules.filter(rule =>  archivStatus.includes(rule.status) );
+    }
+  }*/
+
+  isRouteActive(subroute: string): boolean {
+    const snapshot = this.activatedRoute.snapshot;
+    return snapshot.url.map(segment => segment.path).includes(subroute);
+  }
+
+  private periodicallyFetchNotifications() {
+    setInterval(() => this.fetchNotifications(this.oispService), this.FETCHING_PERIOD_MILLISECONDS);
+  }
+
+  private fetchNotifications(oispService: OispService) {
+    oispService.getNotifications().subscribe(
+      notifications => this.notifications = notifications
+    );
+  }
 }
