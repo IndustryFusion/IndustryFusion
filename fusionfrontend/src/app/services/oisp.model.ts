@@ -13,6 +13,8 @@
  * under the License.
  */
 
+import { ID } from '@datorama/akita';
+
 export class OispRequest {
   from: number;
   to?: number;
@@ -76,4 +78,14 @@ export class PointWithIdAndDate {
   id: string;
   date: Date;
   value: string;
+}
+
+export class Device {
+  created: Date;
+  deviceId: ID;
+  domainId: ID;
+  gatewayId: ID;
+  name: string;
+  status: string;
+  uid: ID;
 }
