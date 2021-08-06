@@ -21,6 +21,7 @@ import io.fusion.fusionbackend.dto.AssetTypeDto;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.BaseAssetDto;
 import io.fusion.fusionbackend.dto.CompanyDto;
+import io.fusion.fusionbackend.dto.ConnectivitySettingsDto;
 import io.fusion.fusionbackend.dto.ConnectivityTypeDto;
 import io.fusion.fusionbackend.dto.CountryDto;
 import io.fusion.fusionbackend.dto.FactorySiteDto;
@@ -1351,22 +1352,43 @@ class FusionbackendApplicationTests {
                                              final Integer assetTypeTemplateId, final AssetSeriesDto assetSeries,
                                              final String accessToken) {
 
+        ConnectivityTypeDto connectivityTypeDto = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+                .when()
+                .get(baseUrl + "/connectivity-types")
+                .then()
+                .statusCode(200)
+                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class).get(0);
+
+
+        AssetSeriesDto assetSeriesDto = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl +
+                        "/companies/" +
+                        companyId +
+                        "/assettypetemplates/" +
+                        assetTypeTemplateId +
+                        "/init-asset-series-draft")
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+
+        ConnectivitySettingsDto connectivitySettings = assetSeriesDto.getConnectivitySettings();
+        connectivitySettings.setConnectionString("Some Connection");
+        connectivitySettings.setConnectivityType(connectivityTypeDto);
+        connectivitySettings.setConnectivityProtocol(List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0));
+
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/assettypetemplates/" + assetTypeTemplateId + "/init-asset-series-draft")
-
-                .then()
-                .statusCode(200);
-
-        response = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-
-                .when()
-                .body(response.extract().body().asString())
+                .body(assetSeriesDto)
                 .post(baseUrl + "/companies/" + companyId + "/assetseries")
 
                 .then()

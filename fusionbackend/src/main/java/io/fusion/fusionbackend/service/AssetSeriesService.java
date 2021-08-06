@@ -22,10 +22,15 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.ConnectivityProtocol;
+import io.fusion.fusionbackend.model.ConnectivitySettings;
+import io.fusion.fusionbackend.model.ConnectivityType;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.repository.AssetSeriesRepository;
+import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
+import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;
 import io.fusion.fusionbackend.repository.FieldSourceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +49,10 @@ public class AssetSeriesService {
     private final CompanyService companyService;
     private final UnitService unitService;
 
+    private final ConnectivityTypeRepository connectivityTypeRepository;
+    private final ConnectivityProtocolRepository connectivityProtocolRepository;
+
+
     private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
 
     @Autowired
@@ -51,12 +60,16 @@ public class AssetSeriesService {
                               AssetTypeTemplateService assetTypeTemplateService,
                               FieldSourceRepository fieldSourceRepository,
                               CompanyService companyService,
-                              UnitService unitService) {
+                              UnitService unitService,
+                              ConnectivityTypeRepository connectivityTypeRepository,
+                              ConnectivityProtocolRepository connectivityProtocolRepository) {
         this.assetSeriesRepository = assetSeriesRepository;
         this.assetTypeTemplateService = assetTypeTemplateService;
         this.fieldSourceRepository = fieldSourceRepository;
         this.companyService = companyService;
         this.unitService = unitService;
+        this.connectivityTypeRepository = connectivityTypeRepository;
+        this.connectivityProtocolRepository = connectivityProtocolRepository;
     }
 
     public Set<AssetSeries> getAssetSeriesSetByCompany(final Long companyId) {
@@ -80,23 +93,32 @@ public class AssetSeriesService {
         assetSeries.setCompany(targetCompany);
         assetSeries.setAssetTypeTemplate(assetTypeTemplate);
 
-        assetSeries.getFieldSources().stream().forEach(fieldSource -> {
+        assetSeries.getFieldSources().forEach(fieldSource -> {
             fieldSource.setAssetSeries(assetSeries);
             Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
             fieldSource.setSourceUnit(unit);
         });
 
-        AssetSeries savedAssetSeries = assetSeriesRepository.save(assetSeries);
-        return savedAssetSeries;
+        ConnectivitySettings connectivitySettings = assetSeries.getConnectivitySettings();
+        ConnectivityType connectivityType = connectivitySettings.getConnectivityType();
+        ConnectivityProtocol connectivityProtocol = connectivitySettings.getConnectivityProtocol();
+        ConnectivityType mergedConnectivityType =
+                connectivityTypeRepository.findById(connectivityType.getId()).orElseThrow();
+        ConnectivityProtocol mergedConnectivityProtocol =
+                connectivityProtocolRepository.findById(connectivityProtocol.getId()).orElseThrow();
+
+        connectivitySettings.setConnectivityType(mergedConnectivityType);
+        connectivitySettings.setConnectivityProtocol(mergedConnectivityProtocol);
+
+        return assetSeriesRepository.save(assetSeries);
     }
 
     public AssetSeries updateAssetSeries(final Long companyId, final Long assetSeriesId,
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
-        sourceAssetSeries.getFieldSources().forEach(fieldSource -> {
-            updateFieldSource(companyId, assetSeriesId, fieldSource.getId(), fieldSource);
-        });
+        sourceAssetSeries.getFieldSources()
+                .forEach(fieldSource -> updateFieldSource(companyId, assetSeriesId, fieldSource.getId(), fieldSource));
 
         targetAssetSeries.copyFrom(sourceAssetSeries);
 
