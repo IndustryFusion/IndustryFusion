@@ -16,12 +16,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, map, startWith } from 'rxjs/operators';
+import { catchError, map, mergeMap, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
   Aggregator,
+  Device,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
@@ -33,6 +34,8 @@ import {
 } from './oisp.model';
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
+import { OispAlert, OispNotification } from './notification.model';
+import { ID } from '@datorama/akita';
 
 @Injectable({
   providedIn: 'root'
@@ -97,12 +100,61 @@ export class OispService {
         console.warn('[oisp service] caught error while searching for device using alert');
         return of(deviceUID);
       }),
-      startWith(assetDetails),
-      map((response) => {
-        const newFields = assetDetails.fields.map(field => this.getExternalIdForSingleField(field, response));
-        return Object.assign(assetDetails, { fields: newFields });
+    );
+  }
+
+  getDevices(): Observable<Device[]> {
+    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
+    return this.http.get<Device[]>(deviceRequest, this.httpOptions);
+  }
+
+  private getNotificationOfAlertWithDevices(alert: OispAlert, devices: Device[]): OispNotification {
+    let assetName = null;
+    if (devices && alert) {
+      assetName = devices.find(device => String(device.uid) === String(alert.deviceUID))?.name;
+    }
+
+    return this.getNotificationOfAlert(alert, assetName);
+  }
+
+  getNotificationOfAlert(alert: OispAlert, assetName: string): OispNotification {
+    const notification = new OispNotification();
+
+    if (alert) {
+      const hasMeasuredValue = alert.conditions.length > 0 && alert.conditions[0].components.length > 0
+        && alert.conditions[0].components[0].valuePoints.length > 0;
+
+      notification.id = alert.alertId;
+      notification.priority = alert.priority;
+      notification.ruleName = alert.ruleName;
+      notification.condition = alert.naturalLangAlert;
+      notification.measuredValue = hasMeasuredValue ? alert.conditions[0].components[0].valuePoints[0].value : '';
+      notification.assetName = assetName;
+      // TODO: round measuredValue
+      notification.timestamp = alert.triggered;
+      notification.status = alert.status;
+    } else {
+      console.error('[oisp service] no alert was given to be mapped');
+    }
+
+    return notification;
+  }
+
+  getNotifications(): Observable<OispNotification[]> {
+    return this.getDevices().pipe(
+      mergeMap((devices: Device[]) => {
+        return this.getAlerts().pipe(
+          map((alerts: OispAlert[]) => {
+            console.log('Ji');
+            return alerts.map<OispNotification>((alert: OispAlert) => this.getNotificationOfAlertWithDevices(alert, devices));
+          }));
       })
     );
+  }
+
+  getAlerts(): Observable<OispAlert[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts`;
+    return this.http.get<OispAlert[]>(url, this.httpOptions);
   }
 
   hasAnyPoints(oispSeries: Series[]): boolean {
