@@ -61,34 +61,41 @@ export class OispService {
   }
 
   getAssetFieldsExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
-    if (!asset) {
+    return this.addFieldsExternalIds(asset);
+  }
+
+  getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
+    return this.addFieldsExternalIds(assetDetails);
+  }
+
+  private addFieldsExternalIds(someAsset: any): Observable<any> {
+    if (!someAsset) {
       return EMPTY;
     }
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${asset.externalId}`;
 
-    return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
+    return this.getDevice(someAsset.externalId).pipe(
       catchError(() => {
         console.warn('[oisp service] caught error while searching for external Ids');
-        return of(asset);
+        return of(someAsset);
       }),
-      startWith(asset),
+      startWith(someAsset),
       map((response) => {
-        const newFields = asset.fields.map(field => this.getExternalIdForSingleField(field, response));
-        return Object.assign(asset, { fields: newFields });
+        const newFields = someAsset.fields.map(field => this.getExternalIdForSingleField(field, response));
+        return Object.assign(someAsset, { fields: newFields });
       })
     );
   }
 
-  getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    if (!assetDetails) {
+  getDevice(deviceUID: ID): Observable<any> {
+    if (!deviceUID) {
       return EMPTY;
     }
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${assetDetails.externalId}`;
 
+    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceUID}`;
     return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
       catchError(() => {
-        console.warn('[oisp service] caught error while searching for external Ids');
-        return of(assetDetails);
+        console.warn('[oisp service] caught error while searching for device using alert');
+        return of(deviceUID);
       }),
       startWith(assetDetails),
       map((response) => {
