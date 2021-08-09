@@ -34,7 +34,7 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
       sourceUnitName: [],
       fieldName: [],
       name: [],
-      value: ['', [Validators.max(255)]],
+      value: ['', [Validators.maxLength(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);
