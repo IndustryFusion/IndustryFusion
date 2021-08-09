@@ -25,7 +25,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NotificationsPageComponent implements OnInit, OnDestroy {
 
-  private readonly FETCHING_PERIOD_MILLISECONDS = 5000; // TODO: extract to environment
+  private readonly FETCHING_PERIOD_MILLISECONDS = 10000; // TODO: extract to environment
 
   notifications: OispNotification[];
   intervalId: number;
