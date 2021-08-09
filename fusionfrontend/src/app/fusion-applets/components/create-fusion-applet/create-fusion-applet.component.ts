@@ -18,7 +18,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   RuleActionType,
   RulePrority,
-  RuleResetType, RuleStatus,
+  RuleResetType,
+  RuleStatus,
   SynchronizationStatus
 } from '../../../services/oisp.model';
 import { EnumHelpers } from '../../../common/utils/enum-helpers';
@@ -34,37 +35,12 @@ export class CreateFusionAppletComponent implements OnInit {
   priorityOptions: string[];
 
   constructor(
-    formBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     enumHelpers: EnumHelpers,
     private dynamicDialogRef: DynamicDialogRef,
   ) {
     this.priorityOptions = enumHelpers.getIterableArray(RulePrority);
-
-    const actionGroup = formBuilder.group({
-      type: [RuleActionType.mail],
-      target: [[], []]
-    });
-
-    const conditonsgroup = formBuilder.group({
-      operator: [],
-      values: [[], []]
-    });
-
-    this.ruleForm = formBuilder.group({
-      id: [],
-      name: ['', [Validators.required, Validators.maxLength(255)]],
-      description: ['', [Validators.maxLength(1000)]],
-      type: [null, []],
-      resetType: [RuleResetType.Automatic, []],
-      synchronizationStatus: [SynchronizationStatus.NotSync, [Validators.required]],
-      priority: [null, Validators.required],
-      actions: new FormArray([actionGroup]),
-      conditions: conditonsgroup,
-      status: [RuleStatus.Draft]
-    });
-
-
-
+    this.createRuleForm();
   }
 
   ngOnInit(): void {
@@ -78,5 +54,37 @@ export class CreateFusionAppletComponent implements OnInit {
     if (this.ruleForm.valid) {
       this.dynamicDialogRef.close(this.ruleForm.getRawValue());
     }
+  }
+
+  private createRuleForm(): void {
+    const actionGroup = this.createActionGroup();
+    const conditionsGroup = this.createConditionsGroup();
+
+    this.ruleForm = this.formBuilder.group({
+      id: [],
+      name: ['', [Validators.required, Validators.maxLength(255)]],
+      description: ['', [Validators.maxLength(1000)]],
+      type: [null, []],
+      resetType: [RuleResetType.Automatic, []],
+      synchronizationStatus: [SynchronizationStatus.NotSync, [Validators.required]],
+      priority: [null, Validators.required],
+      actions: new FormArray([actionGroup]),
+      conditions: conditionsGroup,
+      status: [RuleStatus.Draft]
+    });
+  }
+
+  private createActionGroup(): FormGroup {
+    return this.formBuilder.group({
+      type: [RuleActionType.mail],
+      target: [[], []]
+    });
+  }
+
+  private createConditionsGroup(): FormGroup {
+    return this.formBuilder.group({
+      operator: [],
+      values: [[], []]
+    });
   }
 }

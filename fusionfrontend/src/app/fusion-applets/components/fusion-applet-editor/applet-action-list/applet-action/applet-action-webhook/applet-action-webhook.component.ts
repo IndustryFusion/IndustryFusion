@@ -64,7 +64,7 @@ export class AppletActionWebhookComponent implements OnInit {
     this.activeAccordionIndex = 1;
   }
 
-  getTarget(): AbstractControl[] {
+  getTargets(): AbstractControl[] {
     return (this.webhookGroup.get('target') as FormArray).controls;
   }
 }

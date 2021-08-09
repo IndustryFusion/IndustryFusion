@@ -58,7 +58,7 @@ export class ItemOptionsMenuComponent implements OnInit {
     this.menuActions = [];
 
     if (!this.type) {
-      this.menuActions = [editItem, deleteItem ];
+      this.menuActions = [ editItem, deleteItem ];
     } else {
       for (const itemOptionsMenuType of this.type) {
         switch (itemOptionsMenuType) {

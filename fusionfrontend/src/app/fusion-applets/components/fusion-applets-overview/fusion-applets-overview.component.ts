@@ -23,11 +23,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  selector: 'app-fusion-applets-overview',
+  templateUrl: './fusion-applets-overview.component.html',
+  styleUrls: ['./fusion-applets-overview.component.scss']
 })
-export class OverviewComponent implements OnInit {
+export class FusionAppletsOverviewComponent implements OnInit {
   RuleActionType = RuleActionType;
 
   rules: Rule[];

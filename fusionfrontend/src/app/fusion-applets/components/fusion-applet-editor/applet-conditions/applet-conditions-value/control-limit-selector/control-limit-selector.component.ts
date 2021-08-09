@@ -28,6 +28,14 @@ export class ControlLimitSelectorComponent implements OnInit {
   limitGroup: FormGroup;
 
   constructor() {
+   this.createFormGroup();
+  }
+
+  ngOnInit(): void {
+    this.limitGroup.get('limit').setValue(this.valuesGroup.getRawValue());
+  }
+
+  private createFormGroup(): void {
     const limitControl = new FormControl(['-2', '2'], Validators.minLength(2));
     this.limitGroup = new FormGroup({ limit: limitControl});
     limitControl.valueChanges.subscribe(value => {
@@ -36,10 +44,6 @@ export class ControlLimitSelectorComponent implements OnInit {
         this.valuesGroup.insert(i, new FormControl(value[i]));
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.limitGroup.get('limit').setValue(this.valuesGroup.getRawValue());
   }
 
 }

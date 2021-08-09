@@ -15,7 +15,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OverviewComponent } from './components/fusion-applets/overview.component';
+import { FusionAppletsOverviewComponent } from './components/fusion-applets-overview/fusion-applets-overview.component';
 import { FusionAppletsRoutingModule } from './fusion-applets-routing.module';
 import { FusionAppletPageTitleComponent } from './components/fusion-applets-page-title/fusion-applet-page-title.component';
 import { TableModule } from 'primeng/table';
@@ -50,7 +50,7 @@ import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
-    OverviewComponent,
+    FusionAppletsOverviewComponent,
     FusionAppletPageTitleComponent,
     CreateFusionAppletComponent,
     FusionAppletDetailComponent,
