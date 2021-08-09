@@ -173,7 +173,7 @@ header {
     }
 
     &.user-name {
-      color: black;
+      color: $basic-black;
       background: none;
       height: auto;
       width: auto;
@@ -196,7 +196,7 @@ header {
 
 .sub-header {
   height: 56px;
-  background-color: white;
+  background-color: $basic-white;
 
   ul {
     display: flex;
@@ -209,7 +209,7 @@ header {
       cursor: pointer;
 
       &.active {
-        color: black;
+        color: $basic-black;
         background: transparent linear-gradient(92deg, #8AC9C1 0%, #0089D8 100%) 0 100% no-repeat padding-box;
         background-size: 100% 5px;
       }

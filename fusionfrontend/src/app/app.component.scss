@@ -13,8 +13,10 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 .main-container {
-  background-color: white;
+  background-color: $basic-white;
   .content-container {
     .content-area {
       padding: 0;

@@ -60,7 +60,7 @@
 
   select {
     //width: 23rem;
-    background-color: white;
+    background-color: $basic-white;
     //border-style: none;
     border-radius: 5px;
   }
@@ -76,7 +76,7 @@
     //width: 23rem;
     border-radius: 5px;
     border-style: none;
-    border-color: white;
+    border-color: $basic-white;
     padding: 10px;
   }
 
