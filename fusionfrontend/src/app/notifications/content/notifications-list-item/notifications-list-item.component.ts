@@ -27,6 +27,9 @@ export class NotificationsListItemComponent implements OnInit {
   @Input()
   item: OispNotification;
 
+  @Input()
+  isCloseable: boolean;
+
   @Output()
   itemSelected = new EventEmitter<ID>();
 
@@ -54,13 +57,15 @@ export class NotificationsListItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showDeleteItem() {
+  showCloseItem() {
     this.shouldShowDeleteItem = true;
   }
 
-  deleteItem() {
-    this.shouldShowDeleteItem = false;
-    this.itemDelete.emit(this.item.id);
+  closeItem() {
+    if (this.isCloseable) {
+      this.shouldShowDeleteItem = false;
+      this.itemDelete.emit(this.item.id);
+    }
   }
 
   select() {

@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div *ngIf="shouldShowDeleteItem">
+<div *ngIf="shouldShowDeleteItem && isCloseable">
   <div class="backdrop"></div>
   <div class="delete-modal">
     <button class="button-close" (click)="shouldShowDeleteItem = false">
@@ -22,7 +22,7 @@ under the License.
     <div class="delete-modal-title">Clear notification?</div>
     <div class="delete-modal-footer">
       <button type="button" class="if-button-cancel" (click)="shouldShowDeleteItem = false">Cancel</button>
-      <button type="button" class="button-confirm" (click)="deleteItem()">Ok</button>
+      <button type="button" class="button-confirm" (click)="closeItem()">Ok</button>
     </div>
   </div>
 </div>
@@ -42,6 +42,6 @@ under the License.
   </div>
   <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="15">{{ item.timestamp | date:'dd.MM.yyyy - mm:hh:ss' }}</div>
   <div class="list-item-cell grey"  [style.width.%]="5">
-    <button type="button" class="small-confirm-button" (click)="showDeleteItem()"><i class="pi pi-check"></i></button>
+    <button *ngIf="isCloseable" type="button" class="small-confirm-button" (click)="showCloseItem()"><i class="pi pi-check"></i></button>
   </div>
 </div>

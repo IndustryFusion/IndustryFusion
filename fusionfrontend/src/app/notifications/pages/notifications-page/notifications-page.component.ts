@@ -13,9 +13,9 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OispService } from '../../../services/oisp.service';
-import { OispNotification } from '../../../services/notification.model';
+import { OispAlertStatus, OispNotification } from '../../../services/notification.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -23,28 +23,32 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './notifications-page.component.html',
   styleUrls: ['./notifications-page.component.scss']
 })
-export class NotificationsPageComponent implements OnInit {
+export class NotificationsPageComponent implements OnInit, OnDestroy {
 
   private readonly FETCHING_PERIOD_MILLISECONDS = 5000; // TODO: extract to environment
 
   notifications: OispNotification[];
+  intervalId: number;
 
   constructor(private oispService: OispService,
               private activatedRoute: ActivatedRoute) {
-    this.periodicallyFetchNotifications();
   }
 
   ngOnInit(): void {
+    this.periodicallyFetchNotifications();
   }
 
-/*  filterRulesByStatus(rules: Rule[]): Rule[] {
-    const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
-    if (this.isRouteActive('overview')) {
-      return rules.filter(rule => !archivStatus.includes(rule.status) );
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+  }
+
+  private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
+    if (this.isRouteActive('open')) {
+      return notifications.filter(rule => rule.status !== OispAlertStatus.CLOSED);
     } else {
-      return rules.filter(rule =>  archivStatus.includes(rule.status) );
+      return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
     }
-  }*/
+  }
 
   isRouteActive(subroute: string): boolean {
     const snapshot = this.activatedRoute.snapshot;
@@ -52,12 +56,14 @@ export class NotificationsPageComponent implements OnInit {
   }
 
   private periodicallyFetchNotifications() {
-    setInterval(() => this.fetchNotifications(this.oispService), this.FETCHING_PERIOD_MILLISECONDS);
+    this.fetchNotifications(this.oispService);
+    this.intervalId = setInterval(() => this.fetchNotifications(this.oispService), this.FETCHING_PERIOD_MILLISECONDS);
   }
 
   private fetchNotifications(oispService: OispService) {
-    oispService.getNotifications().subscribe(
-      notifications => this.notifications = notifications
+    oispService.getNotifications().subscribe(notifications => {
+        this.notifications = this.filterNotificationsByStatus(notifications);
+      }
     );
   }
 }

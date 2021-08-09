@@ -38,10 +38,11 @@ under the License.
       </div>
       <app-notifications-list-header (sortEvent)="onSort($event)"></app-notifications-list-header>
       <app-notifications-list-item *ngFor="let item of items" [item]="item"
+                                   [isCloseable]="isOpen"
+                                   [selected]="isSelected(item.id)"
                                   (itemSelected)="onItemSelect($event)"
                                   (itemDeselected)="onItemDeselect($event)"
-                                  (itemDelete)="deleteItem($event)"
-                                  [selected]="isSelected(item.id)">
+                                  (itemDelete)="deleteItem($event)">
       </app-notifications-list-item>
     </div>
   </div>

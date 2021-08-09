@@ -46,7 +46,7 @@ export class OispAlert {
 export enum OispAlertStatus {
   NEW = 'New',
   OPEN = 'Open',
-  CLOSED = 'Closed'
+  CLOSED = 'closed'
 }
 
 export enum OispPriority {

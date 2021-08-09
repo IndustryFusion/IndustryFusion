@@ -28,16 +28,10 @@ import { OispService } from '../../../services/oisp.service';
 export class NotificationsListComponent implements OnInit {
 
   @Input() items: OispNotification[];
+  @Input() isOpen: boolean;
 
-  titleMapping:
-    { [k: string]: string } = { '=0': 'No Open Notification', '=1': '# Open Notification', other: '# Open Notifications' };
-
-  editBarMapping:
-    { [k: string]: string } = {
-    '=0': 'No Open Notification selected',
-    '=1': '# Open Notification selected',
-    other: '# Open Notifications selected'
-  };
+  titleMapping: { [k: string]: string };
+  editBarMapping: { [k: string]: string };
 
   sortField: string;
   selected: Set<ID> = new Set();
@@ -52,7 +46,26 @@ export class NotificationsListComponent implements OnInit {
 
   ngOnInit() {
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
+    this.initMappings();
   }
+
+  private initMappings() {
+    this.titleMapping = {
+      '=0': `No ${this.getStatusName()} Notification`,
+      '=1': `# ${this.getStatusName()} Notification`,
+      other: `# ${this.getStatusName()} Notifications`
+    };
+    this.editBarMapping = {
+      '=0': `No ${this.getStatusName()} Notification selected`,
+      '=1': `# ${this.getStatusName()} Notification selected`,
+      other: `# ${this.getStatusName()} Notifications selected`
+    };
+  }
+
+  private getStatusName() {
+    return this.isOpen ? 'Open' : 'Cleared';
+  }
+
 
   onSort(field: string) {
     this.sortField = field;
