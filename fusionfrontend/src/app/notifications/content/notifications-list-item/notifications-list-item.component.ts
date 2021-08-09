@@ -45,6 +45,7 @@ export class NotificationsListItemComponent implements OnInit {
   @Input()
   selected = false;
 
+  shouldShowDeleteItem = false;
   OispPriority = OispPriority;
 
   constructor() {
@@ -53,11 +54,21 @@ export class NotificationsListItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  showDeleteItem() {
+    this.shouldShowDeleteItem = true;
+  }
+
   deleteItem() {
+    this.shouldShowDeleteItem = false;
     this.itemDelete.emit(this.item.id);
   }
 
   select() {
     !this.selected ? this.itemSelected.emit(this.item.id) : this.itemDeselected.emit(this.item.id);
+  }
+
+  isFloatingNumber(text: string) {
+    const n = Number(text);
+    return Number(n) === n && n % 1 !== 0;
   }
 }

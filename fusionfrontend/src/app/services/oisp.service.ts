@@ -40,7 +40,7 @@ import {
 } from './oisp.model';
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
-import { OispAlert, OispNotification } from './notification.model';
+import { OispAlert, OispAlertStatus, OispNotification } from './notification.model';
 import { ID } from '@datorama/akita';
 
 @Injectable({
@@ -164,6 +164,15 @@ export class OispService {
     return this.http.get<OispAlert[]>(url, this.httpOptions);
   }
 
+  setAlertStatus(alertID: ID, newStatus: OispAlertStatus): Observable<any> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts/${alertID}/reset`;
+    return this.http.put<any>(url, null, this.httpOptions).pipe(
+      catchError(() => {
+        console.error('[oisp service] error on updating alert status ', alertID, newStatus);
+        return of(newStatus);
+      }),
+    );
+  }
 
   getAllRules(): Observable<Rule[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules`;

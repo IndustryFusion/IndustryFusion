@@ -13,20 +13,20 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
-import { OispNotification } from '../../../services/notification.model';
+import { OispAlertStatus, OispNotification } from '../../../services/notification.model';
+import { OispService } from '../../../services/oisp.service';
 
 @Component({
   selector: 'app-notifications-list',
   templateUrl: './notifications-list.component.html',
   styleUrls: ['./notifications-list.component.scss']
 })
-export class NotificationsListComponent implements OnInit, OnDestroy {
+export class NotificationsListComponent implements OnInit {
 
-  // @Input() status
   @Input() items: OispNotification[];
 
   titleMapping:
@@ -45,16 +45,13 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver
+    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+    private oispService: OispService
   ) {
   }
 
   ngOnInit() {
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
-  }
-
-  ngOnDestroy() {
-    /*this.assetSeriesDetailsQuery.resetError();*/
   }
 
   onSort(field: string) {
@@ -75,11 +72,12 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteItem(id: number | string) {
-    console.log(id);
-   /* this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe(
-      () => this.selected.clear()
-    );*/
+  deleteItem(id: ID) {
+    const item = this.items.find(value => value.id === id);
+    this.oispService.setAlertStatus(item.id, OispAlertStatus.CLOSED).subscribe(() => {
+      this.items.splice(this.items.indexOf(item), 1);
+      this.selected.clear();
+    });
   }
 
   deselectAllItems() {
