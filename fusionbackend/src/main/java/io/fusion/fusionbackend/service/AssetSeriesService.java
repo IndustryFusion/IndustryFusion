@@ -82,7 +82,10 @@ public class AssetSeriesService {
     }
 
     @Transactional
-    public AssetSeries createAssetSeries(final Long targetCompanyId, final Long assetTypeTemplateId,
+    public AssetSeries createAssetSeries(final Long targetCompanyId,
+                                         final Long assetTypeTemplateId,
+                                         final Long connectivityTypeId,
+                                         final Long connectivityProtocolId,
                                          final AssetSeries assetSeries) {
 
         final AssetTypeTemplate assetTypeTemplate =
@@ -99,16 +102,14 @@ public class AssetSeriesService {
             fieldSource.setSourceUnit(unit);
         });
 
-        ConnectivitySettings connectivitySettings = assetSeries.getConnectivitySettings();
-        ConnectivityType connectivityType = connectivitySettings.getConnectivityType();
-        ConnectivityProtocol connectivityProtocol = connectivitySettings.getConnectivityProtocol();
-        ConnectivityType mergedConnectivityType =
-                connectivityTypeRepository.findById(connectivityType.getId()).orElseThrow();
-        ConnectivityProtocol mergedConnectivityProtocol =
-                connectivityProtocolRepository.findById(connectivityProtocol.getId()).orElseThrow();
+        ConnectivityType connectivityType =
+                connectivityTypeRepository.findById(connectivityTypeId).orElseThrow();
+        ConnectivityProtocol connectivityProtocol =
+                connectivityProtocolRepository.findById(connectivityProtocolId).orElseThrow();
 
-        connectivitySettings.setConnectivityType(mergedConnectivityType);
-        connectivitySettings.setConnectivityProtocol(mergedConnectivityProtocol);
+        ConnectivitySettings connectivitySettings = assetSeries.getConnectivitySettings();
+        connectivitySettings.setConnectivityType(connectivityType);
+        connectivitySettings.setConnectivityProtocol(connectivityProtocol);
 
         return assetSeriesRepository.save(assetSeries);
     }

@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/connectivity-type.query';
-import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
-import { ID } from '@datorama/akita';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
-import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ConnectivityTypeQuery} from '../../../../../store/connectivity-type/connectivity-type.query';
+import {ConnectivityProtocol, ConnectivityType} from '../../../../../store/connectivity-type/connectivity-type.model';
+import {ID} from '@datorama/akita';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AssetSeriesCreateConnectivitySettingsTooltipComponent} from './asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
+import {AssetSeries} from '../../../../../store/asset-series/asset-series.model';
 
 @Component({
   selector: 'app-asset-series-create-connectivity-settings',
@@ -40,7 +40,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
     this.connectivitySettingsForm = this.formBuilder.group({
       connectivityTypeId: [null, Validators.required],
-      protocolId: [null, Validators.required],
+      connectivityProtocolId: [null, Validators.required],
       connectionString: [null, requiredTextValidator],
     });
     this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
@@ -63,11 +63,11 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
       this.infoText = selectedConnectivityType.infoText;
 
       if (this.connectivityProtocolOptions.length > 0) {
-        this.connectivitySettingsForm.get('protocolId').setValue(this.connectivityProtocolOptions[0].id);
+        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(this.connectivityProtocolOptions[0].id);
         this.onChangeProtocolType(this.connectivityProtocolOptions[0].id);
 
       } else {
-        this.connectivitySettingsForm.get('protocolId').setValue(null);
+        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(null);
         this.connectivitySettingsForm.get('connectionString').setValue(null);
       }
     }

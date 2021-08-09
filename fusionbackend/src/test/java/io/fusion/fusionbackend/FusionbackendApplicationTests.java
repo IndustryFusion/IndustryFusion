@@ -1380,8 +1380,9 @@ class FusionbackendApplicationTests {
 
         ConnectivitySettingsDto connectivitySettings = assetSeriesDto.getConnectivitySettings();
         connectivitySettings.setConnectionString("Some Connection");
-        connectivitySettings.setConnectivityType(connectivityTypeDto);
-        connectivitySettings.setConnectivityProtocol(List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0));
+        connectivitySettings.setConnectivityTypeId(connectivityTypeDto.getId());
+        connectivitySettings.setConnectivityProtocolId(
+                List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0).getId());
 
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
