@@ -38,9 +38,10 @@ under the License.
       Enable automatic Reset
     </div>
   </div>
-  <app-applet-conditions class="full-width"
+  <app-applet-conditions *ngIf="devices" class="full-width"
                          [ruleGroup]="ruleGroup"
-                         [conditions]="rule.conditions"
+                         [rule]="rule"
+                         [devices]="devices"
   ></app-applet-conditions>
   <div class="vl"></div>
   <app-applet-action-list class="full-width"

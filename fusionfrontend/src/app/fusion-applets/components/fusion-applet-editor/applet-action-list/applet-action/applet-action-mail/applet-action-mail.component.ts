@@ -36,6 +36,12 @@ export class AppletActionMailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const target = this.emailAction.get('target') as FormArray;
+    for (let i = 0; i < target.controls.length; i++) {
+      if (!target.controls[i].value) {
+        target.removeAt(i);
+      }
+    }
   }
 
   addEmail(email: string) {

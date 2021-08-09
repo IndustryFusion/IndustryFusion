@@ -19,10 +19,8 @@ import {
   ConditionsOperator,
   ConditionType,
   ConditionValueOperator,
-  Device,
-  RuleConditions
+  Device, Rule,
 } from '../../../../services/oisp.model';
-import { OispService } from '../../../../services/oisp.service';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 import { SelectItem } from 'primeng/api';
@@ -37,36 +35,35 @@ export class AppletConditionsComponent implements OnInit {
   ItemOptionsMenuType = ItemOptionsMenuType;
 
   @Input()
-  conditions: RuleConditions;
+  rule: Rule;
 
   @Input()
   ruleGroup: FormGroup;
   conditionsGroup: FormGroup;
+  @Input()
   devices: Device[];
   dropdownOperatorOptions: SelectItem[];
 
-  constructor(private oispService: OispService,
-              private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder,
               private enumHelpers: EnumHelpers) {
     this.dropdownOperatorOptions = this.getOperatorDropdownValue();
-    this.loadDevices();
     this.createFormgroups();
   }
 
   ngOnInit(): void {
-    if (!this.conditions.operator) {
-      this.conditions.operator = ConditionsOperator.OR;
+    if (!this.rule.conditions.operator) {
+      this.rule.conditions.operator = ConditionsOperator.OR;
     }
 
-    if (this.conditions.values?.length > 0) {
-      this.conditions.values.forEach(() => {
-        (this.conditionsGroup.get('values') as FormArray).push(this.createConditionValueGroup());
+    if (this.rule.conditions.values?.length > 0) {
+      this.rule.conditions.values.forEach((conditionValue) => {
+        (this.conditionsGroup.get('values') as FormArray).push(this.createConditionValueGroup(conditionValue.values?.length));
       });
     } else {
       this.createNewTrigger();
     }
 
-    this.conditionsGroup.patchValue(this.conditions);
+    this.conditionsGroup.patchValue(this.rule.conditions);
     this.ruleGroup.addControl('conditions', this.conditionsGroup);
   }
 
@@ -80,14 +77,7 @@ export class AppletConditionsComponent implements OnInit {
     });
   }
 
-  private loadDevices() {
-    this.oispService.getAllDevices()
-      .subscribe(devices => {
-        this.devices = devices;
-      });
-  }
-
-  private createConditionValueGroup(): FormGroup {
+  private createConditionValueGroup(valuesCount?: number | undefined): FormGroup {
     const formGroup = this.formBuilder.group({
       component: this.formBuilder.group({
         name: [],
@@ -96,14 +86,20 @@ export class AppletConditionsComponent implements OnInit {
       }, [Validators.required]),
       type: [ConditionType.basic, Validators.required],
       operator: [ConditionValueOperator['<'], Validators.required],
-      values: new FormArray([
-        new FormControl(null, [Validators.required, Validators.minLength(1)]),
-      ], [Validators.required, Validators.minLength(1)]),
+      values: new FormArray([], [Validators.required, Validators.minLength(1)]),
       timeLimit: [],
       baselineCalculationLevel: [BaselineCalculationLevel['Device level']],
       baselineSecondsBack: [],
       baselineMinimalInstances: [],
     });
+    if (!valuesCount) {
+      valuesCount = 1;
+    }
+    valuesCount++;
+    while ((formGroup.get('values') as FormArray).length !== valuesCount) {
+      (formGroup.get('values') as FormArray).push(new FormControl(null, [Validators.required, Validators.minLength(1)]));
+    }
+
     formGroup.get('type').valueChanges.subscribe((value: ConditionType) => {
       this.updateValidationOnType(formGroup, value);
     });

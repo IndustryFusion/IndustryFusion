@@ -126,6 +126,14 @@ export class OispService {
   updateRule(ruleId: string, rule: Rule): Observable<Rule> {
     rule = JSON.parse(JSON.stringify(rule));
 
+    if (rule.status === RuleStatus.Draft) {
+      rule.status = RuleStatus.OnHold;
+    }
+
+    if (!rule.description) {
+      delete rule[`description`];
+    }
+
     rule.conditions.values.map( conditionValue => {
       delete conditionValue[`conditionSequence`];
       if (conditionValue.type !== ConditionType.statistics) {

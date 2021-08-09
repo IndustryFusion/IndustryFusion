@@ -92,6 +92,7 @@ export class OverviewComponent implements OnInit {
         this.oispService.createRuleDraft(result).subscribe(newRule => {
           this.rules.push(newRule);
           this.rules = this.filterRulesByStatus(this.rules);
+          this.router.navigate(['fusion-applets', newRule.id]);
         });
       }
     });
