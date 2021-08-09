@@ -13,9 +13,9 @@
  * under the License.
  */
 
-import {BaseEntity} from '../baseentity.model';
-import {ID} from '@datorama/akita';
-import {FieldSource} from '../field-source/field-source.model';
+import { BaseEntity } from '../baseentity.model';
+import { ID } from '@datorama/akita';
+import { FieldSource } from '../field-source/field-source.model';
 
 export class AssetSeries extends BaseEntity {
    companyId: ID;
