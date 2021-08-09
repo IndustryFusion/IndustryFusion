@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { MessageService } from 'primeng/api';
     EditDetailsButtonComponent,
     FactorySiteMapComponent,
     AccuracyFormatPipe,
+    LabelControlDirective,
   ],
   imports: [
     CommonModule,
@@ -78,6 +80,7 @@ import { MessageService } from 'primeng/api';
     ConfirmDialogModule,
     AccuracyFormatPipe,
     RadioButtonModule,
+    LabelControlDirective,
   ],
   providers: [
     MessageService

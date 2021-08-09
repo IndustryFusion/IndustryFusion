@@ -35,7 +35,7 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
 
   @Input() item: AssetTypeTemplate;
 
-  public menuType: ItemOptionsMenuType;
+  public menuType: ItemOptionsMenuType[];
 
   private updateWizardRef: DynamicDialogRef;
   private warningDialogRef: DynamicDialogRef;
@@ -49,7 +49,7 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
 
   ngOnInit() {
     this.menuType = this.item.publicationState === PublicationState.PUBLISHED ?
-      ItemOptionsMenuType.DELETE : ItemOptionsMenuType.UPDATE_DELETE;
+      [ItemOptionsMenuType.DELETE] : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
   }
 
   onUpdate() {
@@ -78,7 +78,7 @@ export class AssetTypeTemplateListItemComponent extends BaseListItemComponent im
       this.item.publicationState = assetTypeTemplateForm.get('publicationState')?.value;
       this.item.publishedDate = assetTypeTemplateForm.get('publishedDate')?.value;
       this.item.publishedVersion = assetTypeTemplateForm.get('publishedVersion')?.value;
-      this.menuType = ItemOptionsMenuType.DELETE;
+      this.menuType = [ItemOptionsMenuType.DELETE];
       this.assetTypeTemplateService.editItem(this.item.id, this.item).subscribe();
     }
   }
