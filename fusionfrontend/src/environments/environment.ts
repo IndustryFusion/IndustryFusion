@@ -28,6 +28,7 @@ export const environment = {
   oispAuthToken: 'Not required anymore',
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
+  alertFetchingIntervalSec: 10,
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',
   keycloakConfig: {
     url: 'http://localhost:4200/auth',

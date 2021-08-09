@@ -17,6 +17,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OispService } from '../../../services/oisp.service';
 import { OispAlertStatus, OispNotification } from '../../../services/notification.model';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-notifications-page',
@@ -25,7 +26,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NotificationsPageComponent implements OnInit, OnDestroy {
 
-  private readonly FETCHING_PERIOD_MILLISECONDS = 10000; // TODO: extract to environment
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
 
   notifications: OispNotification[];
   intervalId: number;
@@ -57,7 +58,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
 
   private periodicallyFetchNotifications() {
     this.fetchNotifications(this.oispService);
-    this.intervalId = setInterval(() => this.fetchNotifications(this.oispService), this.FETCHING_PERIOD_MILLISECONDS);
+    this.intervalId = setInterval(() => this.fetchNotifications(this.oispService), this.FETCHING_INTERVAL_MILLISECONDS);
   }
 
   private fetchNotifications(oispService: OispService) {

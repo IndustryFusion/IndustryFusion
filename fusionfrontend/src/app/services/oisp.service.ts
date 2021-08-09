@@ -152,7 +152,6 @@ export class OispService {
       mergeMap((devices: Device[]) => {
         return this.getAlerts().pipe(
           map((alerts: OispAlert[]) => {
-            console.log('Ji');
             return alerts.map<OispNotification>((alert: OispAlert) => this.getNotificationOfAlertWithDevices(alert, devices));
           }));
       })
