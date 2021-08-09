@@ -5,10 +5,11 @@ import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivityType;
-import io.fusion.fusionbackend.repository.CompanyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import java.util.List;
 
 import static io.fusion.fusionbackend.test.persistence.builder.AssetBuilder.anAsset;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetSeriesBuilder.anAssetSeries;
@@ -23,12 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PersistenceTests extends PersistenceTestsBase {
 
-
     @Autowired
     private TestEntityManager testEntityManager;
-
-    @Autowired
-    private CompanyRepository companyRepository;
 
     @Test
     void persistCompany() {
@@ -109,7 +106,7 @@ public class PersistenceTests extends PersistenceTestsBase {
                 .withProtocol(persisted(aConnectivityProtocol())))
                 .build();
 
-        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
+        ConnectivityProtocol connectivityProtocol = List.copyOf(connectivityType.getAvailableProtocols()).get(0);
 
         AssetSeries assetSeries = anAssetSeries()
                 .forCompany(persisted(aCompany()))
@@ -124,12 +121,12 @@ public class PersistenceTests extends PersistenceTestsBase {
     }
 
     @Test
-    void persistAssestSeriesWithConnectivitySettings_checkMergeCascadings() {
+    void persistAssestSeriesWithConnectivitySettings_detachBeforeSave() {
         ConnectivityType connectivityType = persisted(aConnectivityType()
                 .withProtocol(persisted(aConnectivityProtocol())))
                 .build();
 
-        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
+        ConnectivityProtocol connectivityProtocol = List.copyOf(connectivityType.getAvailableProtocols()).get(0);
 
         testEntityManager.detach(connectivityType);
         testEntityManager.detach(connectivityProtocol);
@@ -141,8 +138,9 @@ public class PersistenceTests extends PersistenceTestsBase {
                 .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                 .build();
 
-        AssetSeries foundSeries = testEntityManager.merge(assetSeries);
+        AssetSeries foundSeries = testEntityManager.persistFlushFind(assetSeries);
 
-        assertNotNull(foundSeries);
+        assertEquals(connectivityType, foundSeries.getConnectivitySettings().getConnectivityType());
+        assertEquals(connectivityProtocol, foundSeries.getConnectivitySettings().getConnectivityProtocol());
     }
 }
