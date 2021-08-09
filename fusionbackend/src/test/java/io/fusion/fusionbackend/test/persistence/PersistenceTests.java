@@ -5,6 +5,7 @@ import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivityType;
+import io.fusion.fusionbackend.repository.CompanyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -25,6 +26,9 @@ public class PersistenceTests extends PersistenceTestsBase {
 
     @Autowired
     private TestEntityManager testEntityManager;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Test
     void persistCompany() {
@@ -115,6 +119,29 @@ public class PersistenceTests extends PersistenceTestsBase {
                 .build();
 
         AssetSeries foundSeries = testEntityManager.persistFlushFind(assetSeries);
+
+        assertNotNull(foundSeries);
+    }
+
+    @Test
+    void persistAssestSeriesWithConnectivitySettings_checkMergeCascadings() {
+        ConnectivityType connectivityType = persisted(aConnectivityType()
+                .withProtocol(persisted(aConnectivityProtocol())))
+                .build();
+
+        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
+
+        testEntityManager.detach(connectivityType);
+        testEntityManager.detach(connectivityProtocol);
+
+        AssetSeries assetSeries = anAssetSeries()
+                .forCompany(persisted(aCompany()))
+                .basedOnTemplate(persisted(anAssetTypeTemplate()
+                        .forType(persisted(anAssetType()))))
+                .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
+                .build();
+
+        AssetSeries foundSeries = testEntityManager.merge(assetSeries);
 
         assertNotNull(foundSeries);
     }
