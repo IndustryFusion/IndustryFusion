@@ -133,6 +133,32 @@ header {
     cursor: pointer;
     flex-grow: unset;
 
+    .notifications-indicator {
+      display: inline-flex;
+      background-color: $fusion-red;
+      width: 20px;
+      height: 20px;
+      margin-left: -20px;
+      border-radius: 20px;
+
+      .notifications-count {
+        color: $basic-white;
+        text-align: center;
+        font: normal normal 600 14px/14px Gibson;
+        letter-spacing: 0;
+
+        &.one-digit {
+          margin-left: 6px;
+          margin-top: 1px;
+        }
+
+        &.two-digits {
+          margin-left: 2.5px;
+          margin-top: 1px;
+        }
+      }
+    }
+
     i {
       display: inline-block;
       align-items: center;

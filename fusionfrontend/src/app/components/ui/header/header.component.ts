@@ -20,6 +20,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/store/user/user.model';
 import { ManagerType } from '../../content/manager-type/manager-type.enum';
+import { OispService } from '../../../services/oisp.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -40,9 +42,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   show: boolean;
 
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
+
+  notificationCount = 0;
+  private intervalHandle: number;
+
   ManagerType = ManagerType;
 
   constructor(private routingLocation: Location,
+              private oispService: OispService,
               private router: Router) { }
 
   ngOnInit() {
@@ -57,6 +65,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.route = '/';
       }
     });
+
+    this.periodicallyFetchOpenNotificationCount();
   }
 
   isManager(manager: ManagerType) {
@@ -91,9 +101,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match(`\/${'notifications'}\/`);
   }
 
+  private periodicallyFetchOpenNotificationCount() {
+    this.fetchOpenNotificationCount(this.oispService);
+    this.intervalHandle = setInterval(() => this.fetchOpenNotificationCount(this.oispService), this.FETCHING_INTERVAL_MILLISECONDS);
+  }
+
+  private fetchOpenNotificationCount(oispService: OispService) {
+    oispService.getOpenAlertCount().subscribe(count => this.notificationCount = count);
+  }
 
   ngOnDestroy(): void {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
+    clearInterval(this.intervalHandle);
   }
 }

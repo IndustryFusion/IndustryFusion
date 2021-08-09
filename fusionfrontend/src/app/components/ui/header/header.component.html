@@ -52,6 +52,11 @@ under the License.
       </li>
       <li (click)="onNotificationsClick()">
         <i class="notifications"></i>
+        <ng-container *ngIf="notificationCount > 0">
+          <i class="notifications-indicator">
+            <label class="notifications-count" [ngClass]="notificationCount > 9 ? 'two-digits' : 'one-digit'">{{ notificationCount }}</label>
+          </i>
+        </ng-container>
       </li>
       <li *ngIf="user" class="user"></li>
       <li *ngIf="user" class="user-name">

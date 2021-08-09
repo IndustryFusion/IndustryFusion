@@ -158,9 +158,18 @@ export class OispService {
     );
   }
 
-  getAlerts(): Observable<OispAlert[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts`;
+  getAlerts(max?: number): Observable<OispAlert[]> {
+    const queryString = max ? `?maxAlerts=${max}` : '';
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts${queryString}`;
     return this.http.get<OispAlert[]>(url, this.httpOptions);
+  }
+
+  getOpenAlertCount(): Observable<number> {
+    return this.getAlerts(99).pipe(
+      map<OispAlert[], number>((alerts: OispAlert[]) => {
+        return alerts.filter(alert => alert.status !== OispAlertStatus.CLOSED).length;
+      })
+    );
   }
 
   setAlertStatus(alertID: ID, newStatus: OispAlertStatus): Observable<any> {
