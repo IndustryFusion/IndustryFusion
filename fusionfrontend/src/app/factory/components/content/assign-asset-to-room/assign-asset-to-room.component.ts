@@ -101,8 +101,7 @@ export class AssignAssetToRoomComponent implements OnInit, DoCheck {
   }
 
   onApply() {
-    console.log(this.selectedAssets);
-    // this.ref.close(this.selectedAssets);
+    this.ref.close(this.selectedAssets);
   }
 
   selectAllAssets() {

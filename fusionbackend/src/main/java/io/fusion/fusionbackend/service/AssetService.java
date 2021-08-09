@@ -16,20 +16,14 @@
 package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
-import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.Company;
-import io.fusion.fusionbackend.model.FieldInstance;
-import io.fusion.fusionbackend.model.Room;
+import io.fusion.fusionbackend.model.*;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -164,19 +158,27 @@ public class AssetService {
         return asset;
     }
 
-    public Asset moveAssetToRoom(final Long companyId, final Long locationId, final Long roomId, final Long assetId) {
+    public Set<Asset> moveAssetsToRoom(final Long companyId, final Long locationId, final Long roomId, final Asset[] assets) {
+        Set<Asset> assetSet = new HashSet<>();
+        for (Asset asset : assets) {
+            assetSet.add(this.moveAssetToRoom(companyId, locationId, roomId, asset.getId()));
+        }
+        return assetSet;
+    }
+
+    public Asset moveAssetToRoom(final Long companyId, final Long locationId, final Long newRoomId, final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
-        final Room room = roomService.getRoomCheckFullPath(companyId, locationId, roomId, false);
 
-        final Room currentAssetRoom = asset.getRoom();
+        final Room oldAssetRoom = roomService.getRoomCheckFullPath(companyId, locationId, asset.getRoom().getId(), false);
+        final Room newAssetRoom = roomService.getRoomCheckFullPath(companyId, locationId, newRoomId, false);
 
-        if (currentAssetRoom != null) {
-            currentAssetRoom.getAssets().remove(asset);
+        if (oldAssetRoom != null) {
+            oldAssetRoom.getAssets().remove(asset);
             asset.setRoom(null);
         }
 
-        room.getAssets().add(asset);
-        asset.setRoom(room);
+        newAssetRoom.getAssets().add(asset);
+        asset.setRoom(newAssetRoom);
 
         return asset;
     }
@@ -300,4 +302,6 @@ public class AssetService {
 
         fieldInstanceRepository.delete(fieldInstance);
     }
+
+
 }

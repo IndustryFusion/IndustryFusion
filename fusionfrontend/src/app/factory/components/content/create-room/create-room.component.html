@@ -36,7 +36,7 @@ under the License.
         <button *ngIf="editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
               || roomForm.controls['description'].invalid || roomForm.controls['locationId'].invalid">Edit</button>
         <button *ngIf="!editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
-              || roomForm.controls['description'].invalid || roomForm.controls['locationId'].invalid">Create</button>
+              || roomForm.controls['description'].invalid">Create</button>
       </div>
     </form>
   </div>

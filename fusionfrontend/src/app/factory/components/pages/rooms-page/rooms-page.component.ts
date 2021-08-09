@@ -17,7 +17,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { Location } from 'src/app/store/location/location.model';
-import { Asset } from '../../../../store/asset/asset.model';
 import { AssetDetails } from 'src/app/store/asset-details/asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
@@ -27,6 +26,9 @@ import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { Company } from 'src/app/store/company/company.model';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
+import { AssetService } from 'src/app/store/asset/asset.service';
+import { RoomQuery } from '../../../../store/room/room.query';
+import { Asset } from '../../../../store/asset/asset.model';
 
 @Component({
   selector: 'app-rooms-page',
@@ -50,6 +52,8 @@ export class RoomsPageComponent implements OnInit {
               private factoryResolver: FactoryResolver,
               private activatedRoute: ActivatedRoute,
               private assetDetailsService: AssetDetailsService,
+              private assetService: AssetService,
+              private roomQuery: RoomQuery,
   ) { }
 
   ngOnInit() {
@@ -105,15 +109,15 @@ export class RoomsPageComponent implements OnInit {
     }
   }
 
-  assignToRoom(assets: Asset[]) {
-    console.log(assets);
-    // const theAsset = this.assetQuery.getEntity(asset.id);
-    // this.assetService.assignAssetToRoom(this.companyId, this.locationId, this.selectedRoomId, theAsset.roomId, asset.id)
-    //   .subscribe(
-    //     asset => { console.log('[rooms-page.component] asset: ' + asset.name + ' assigned'); },
-    //     error => { console.log(error); }
-    //   );
-    // this.assetDetailsService.updateRoom(asset.id, this.selectedRoomId);
-  }
+  assignAssetsToRoom(event: [ID, Asset[]]) {
+    const locationId = this.roomQuery.getEntity(event[0]).locationId;
 
+    this.assetService.assignAssetsToRoom(this.companyId, locationId, event[0], event[1])
+      .subscribe(
+        assets => {
+          console.log('[rooms-page.component]: ' + assets.length + ' assets assigned');
+        },
+        error => { console.log(error); }
+      );
+  }
 }

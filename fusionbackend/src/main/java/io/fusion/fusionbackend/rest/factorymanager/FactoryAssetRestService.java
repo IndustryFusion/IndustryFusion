@@ -126,6 +126,14 @@ public class FactoryAssetRestService {
         return assetMapper.toDto(assetService.moveAssetToRoom(companyId, locationId, roomId, assetId), false);
     }
 
+    @PutMapping(path = "/companies/{companyId}/locations/{locationId}/rooms/{roomId}/assets/assigningAssetsToRoom")
+    public Set<AssetDto> assignAssetsToRoom(@PathVariable final Long companyId,
+                                       @PathVariable final Long locationId,
+                                       @PathVariable final Long roomId,
+                                       @RequestBody final Asset[] assets) {
+        return assetMapper.toDtoSet(assetService.moveAssetsToRoom(companyId, locationId, roomId, assets), false);
+    }
+
     // Company direct path
     @GetMapping(path = "/companies/{companyId}/assets")
     public Set<AssetDto> getCompanyAssets(@PathVariable final Long companyId,

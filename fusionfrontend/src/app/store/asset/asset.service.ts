@@ -84,6 +84,15 @@ export class AssetService {
       })));
   }
 
+  assignAssetsToRoom(companyId: ID, locationId: ID, roomId: ID, assets: Asset[]): Observable<Asset[]> {
+    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}/assets/assigningAssetsToRoom`;
+    return this.http.put<Asset[]>(`${environment.apiUrlPrefix}/${path}`, assets, this.httpOptions)
+      .pipe(tap(entities => {
+        entities.forEach(enitity => this.assetStore.upsertCached(enitity));
+        this.roomService.getRoomsOfCompany(companyId).subscribe();
+    }));
+  }
+
   assignAssetToRoom(companyId: ID, locationId: ID, newRoomId: ID, oldRoomId: ID, assetId: ID): Observable<Asset> {
     const path = `companies/${companyId}/locations/${locationId}/rooms/${newRoomId}/assets/${assetId}`;
     return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)

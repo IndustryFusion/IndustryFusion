@@ -53,7 +53,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
   @Output()
   deleteRoomEvent = new EventEmitter<Room>();
   @Output()
-  assignAssetToRoomEvent = new EventEmitter<Asset[]>();
+  assignAssetToRoomEvent = new EventEmitter<[ID, Asset[]]>();
 
   isLoading$: Observable<boolean>;
   assets$: Observable<Asset[]>;
@@ -120,7 +120,8 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
     ref.onClose.subscribe((room: Room) => {
       if (room) {
-        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id.toString()
+            === room.locationId.toString()).name);
         this.createRoomEvent.emit(room);
       }
     });
@@ -183,7 +184,10 @@ export class RoomsListComponent implements OnInit, OnChanges {
     });
 
     ref.onClose.subscribe((assets: Asset[]) => {
-      this.assignAssetToRoomEvent.emit(assets);
+      if (assets) {
+        const roomId = this.activeListItem.id;
+        this.assignAssetToRoomEvent.emit([roomId, assets]);
+      }
     });
   }
 
