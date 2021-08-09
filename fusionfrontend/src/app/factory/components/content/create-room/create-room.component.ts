@@ -50,6 +50,6 @@ export class CreateRoomComponent implements OnInit {
   }
 
   onSubmit() {
-    this.ref.close(<Room> this.roomForm.value);
+    this.ref.close(this.roomForm.value);
   }
 }

@@ -32,78 +32,39 @@ under the License.
       <app-create-button class="p-col create-button" text="Create Room" (createItem)="showCreateDialog()"></app-create-button>
     </div>
 
-<!--  <h3 class="table-header" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>-->
-<!--  <app-create-button class="p-col" text="Create Room" (createItem)="showCreateDialog()"></app-create-button>-->
-
-<!--  <div class="p-grid p-jc-between">-->
-<!--    <h3 class="table-header p-col" *ngIf="(rooms$| async)?.length > 0">  {{ (rooms$| async)?.length }} Rooms</h3>-->
-<!--    <span class="p-col"></span>-->
-<!--    <app-create-button class="p-col" text="Create Room" (createItem)="showCreateDialog()"></app-create-button>-->
-<!--  </div>-->
-<!--  <div class="clr-row clr-justify-content-between clr-align-items-center list-header">-->
-<!--    <div class="title" >{{ (rooms$| async)?.length | i18nPlural: roomMapping }}</div>-->
-<!--    <app-create-button text="Create Room" (createItem)="showCreateDialog()"></app-create-button>-->
-<!--  </div>-->
-
   <p-table class="list-container" [value]="rooms" [rowsPerPageOptions]="[5,10,50]" [rows]="10" [paginator]="true"
            [showCurrentPageReport]="true" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="5"></th>
-        <th [style.width.%]="15">Room ID</th>
+        <th [style.width.%]="12.5">Room ID</th>
         <th [style.width.%]="20">Name</th>
-        <th [style.width.%]="15">Assets</th>
+        <th [style.width.%]="12.5">Assets</th>
         <th [style.width.%]="25">Description</th>
-        <th [style.width.%]="20">Location</th>
-        <th [style.width.%]="5"></th>
-<!--        <th [style.width.%]="5"></th>-->
+        <th [style.width.%]="17.5">Location</th>
+        <th [style.width.%]="7.5"></th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-room>
-      <tr style="cursor: pointer;">
+    <ng-template #body pTemplate="body" let-room>
+      <tr #rowElement style="cursor: pointer;">
         <td [style.width.%]="5" [routerLink]="getRoomAssetLink(room.id)"></td>
-        <td [style.width.%]="15" [routerLink]="getRoomAssetLink(room.id)">{{room.id}}</td>
+        <td [style.width.%]="12.5" [routerLink]="getRoomAssetLink(room.id)">{{room.id}}</td>
         <td [style.width.%]="20" [routerLink]="getRoomAssetLink(room.id)">{{room.name}}</td>
-        <td [style.width.%]="15" [routerLink]="getRoomAssetLink(room.id)">{{room.assetIds.length}}</td>
+        <td [style.width.%]="12.5" [routerLink]="getRoomAssetLink(room.id)">{{room.assetIds.length}}</td>
         <td [style.width.%]="25" [routerLink]="getRoomAssetLink(room.id)">{{room.description}}</td>
-        <td [style.width.%]="20" [routerLink]="getRoomAssetLink(room.id)">{{locationsAndRoomsMap.get(room.id)}}</td>
-        <td [style.width.%]="5">
-          <div class="table-dropdown-menu">
-            <p-menu #menu  [popup]="true" [model]="menuActions"></p-menu>
+        <td [style.width.%]="17.5" [routerLink]="getRoomAssetLink(room.id)">{{locationsAndRoomsMap.get(room.id)}}</td>
+        <td #td [style.width.%]="2.5">
+          <div #div class="table-dropdown-menu">
+<!--            <p-menu #menu  [popup]="true" [model]="menuActions"></p-menu>-->
+            <p-menu #menu [popup]="true" [model]="menuActions" [appendTo]="div"></p-menu>
             <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event); setActiveRow(room)"
                     class="table-dropdown-menu-button"></button>
           </div>
         </td>
+        <td [style.width.%]="5" ></td>
       </tr>
     </ng-template>
 
   </p-table>
 </div>
-
-
-<!--  <clr-modal [(clrModalOpen)]="assignToRoomModal">-->
-
-<!--    <h3 class="modal-title">Assign asset to room </h3>-->
-<!--    <div class="modal-body">-->
-<!--      <p>Move the following asset to this room:</p>-->
-
-<!--      <clr-dropdown>-->
-<!--        <button class="btn btn-outline-primary" clrDropdownTrigger>-->
-<!--          Assets-->
-<!--          <clr-icon shape="caret down"></clr-icon>-->
-<!--        </button>-->
-<!--        <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>-->
-<!--          <div class="dropdown-divider" role="separator" aria-hidden="true"></div>-->
-
-<!--          <button *ngFor="let asset of assets$ | async" (click)="assignToRoom(asset.id)" clrDropdownTrigger>{{asset.name}}</button>-->
-
-<!--        </clr-dropdown-menu>-->
-<!--      </clr-dropdown>-->
-
-
-<!--    </div>-->
-<!--    <div class="modal-footer">-->
-<!--    </div>-->
-<!--  </clr-modal>-->
-

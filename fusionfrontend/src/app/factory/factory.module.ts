@@ -61,6 +61,7 @@ import { LocationDialogComponent } from './components/content/location-dialog/lo
 import { IFCommon } from '../common/i-f-common.module';
 import { TableModule } from 'primeng/table';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
+import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { RoomsListComponent } from './components/content/rooms-list/rooms-list.c
     AssetInstantiationRoomAssignmentModalComponent,
     LocationDialogComponent,
     RoomsListComponent,
+    AssignAssetToRoomComponent,
   ],
     imports: [
         IFCommon,

@@ -17,17 +17,15 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { Location } from 'src/app/store/location/location.model';
-import { Asset } from 'src/app/store/asset/asset.model';
+import { Asset } from '../../../../store/asset/asset.model';
+import { AssetDetails } from 'src/app/store/asset-details/asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
 import { LocationQuery } from 'src/app/store/location/location.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { RoomService } from 'src/app/store/room/room.service';
-// import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-// import { AssetService } from 'src/app/store/asset/asset.service';
 import { Company } from 'src/app/store/company/company.model';
-// import { RoomQuery } from '../../../../store/room/room.query';
 import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
 
 @Component({
@@ -38,25 +36,20 @@ import { AssetDetailsService } from '../../../../store/asset-details/asset-detai
 export class RoomsPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
-  assets$: Observable<Asset[]>;
+  assetsDetails$: Observable<AssetDetails[]>;
   locations$: Observable<Location[]>;
   rooms$: Observable<Room[]>;
-  activeRoom$: Observable<Room>;
 
   companyId: ID;
   locationId: ID;
-  selectedRoomId: ID;
   locationSelected: boolean;
 
   constructor(private locationQuery: LocationQuery,
               private companyQuery: CompanyQuery,
               private roomService: RoomService,
-              // private roomQuery: RoomQuery,
-              // private assetQuery: AssetQuery,
               private factoryResolver: FactoryResolver,
               private activatedRoute: ActivatedRoute,
               private assetDetailsService: AssetDetailsService,
-              // private assetService: AssetService
   ) { }
 
   ngOnInit() {
@@ -64,7 +57,7 @@ export class RoomsPageComponent implements OnInit {
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
     this.locations$ = this.factoryResolver.locations$;
-    this.assets$ = this.factoryResolver.assets$;
+    this.assetsDetails$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
     if (this.locationId) {
@@ -78,12 +71,12 @@ export class RoomsPageComponent implements OnInit {
 
   deleteRoom(room: Room) {
     console.log(room);
-  //   const companyId = this.companyQuery.getActiveId();
-  //   const locationId = this.locationQuery.getActiveId();
-  //   this.roomService.deleteRoom(companyId, locationId, room.id)
-  //     .subscribe(() => {
-  //       console.log('[rooms-page.component] Delete request successful', room.id);
-  //     });
+    const companyId = this.companyQuery.getActiveId();
+    const locationId = this.locationQuery.getActiveId();
+    this.roomService.deleteRoom(companyId, locationId, room.id)
+      .subscribe(() => {
+        console.log('[rooms-page.component] Delete request successful', room.id);
+      });
   }
 
   editRoom(event: Room) {
@@ -105,15 +98,15 @@ export class RoomsPageComponent implements OnInit {
     }
   }
 
-  // assignToRoom(assetId: ID) {
-  //   const theAsset = this.assetQuery.getEntity(assetId);
-  //   this.assetService.assignAssetToRoom(this.companyId, this.locationId, this.selectedRoomId, theAsset.roomId, assetId)
-  //     .subscribe(
-  //       asset => { console.log('[rooms-page.component] asset: ' + asset.name + ' assigned'); },
-  //       error => { console.log(error); }
-  //     );
-  //   this.assetDetailsService.updateRoom(assetId, this.selectedRoomId);
-  //   this.assignToRoomModal = false;
-  // }
-  //
+  assignToRoom(assets: Asset[]) {
+    console.log(assets);
+    // const theAsset = this.assetQuery.getEntity(asset.id);
+    // this.assetService.assignAssetToRoom(this.companyId, this.locationId, this.selectedRoomId, theAsset.roomId, asset.id)
+    //   .subscribe(
+    //     asset => { console.log('[rooms-page.component] asset: ' + asset.name + ' assigned'); },
+    //     error => { console.log(error); }
+    //   );
+    // this.assetDetailsService.updateRoom(asset.id, this.selectedRoomId);
+  }
+
 }

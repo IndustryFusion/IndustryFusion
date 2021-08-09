@@ -49,6 +49,11 @@ clr-dg-row {
   cursor: pointer;
 }
 
+::ng-deep .p-datatable {
+  overflow: visible;
+  margin-bottom: 100px
+}
+
 .table-dropdown-menu-button {
   outline: none;
   background-color: transparent !important;
@@ -58,11 +63,15 @@ clr-dg-row {
 
 .table-dropdown-menu {
   ::ng-deep .p-menu {
-    width: 200px;
+    width: 220px;
     border-radius: 10px !important;
     padding-top: 0.5em !important;
     padding-bottom: 0.5em !important;
     margin-top: 0.25em !important;
+  }
+
+  ::ng-deep .p-menu-overlay {
+    top: unset !important;
   }
 
   ::ng-deep .p-menuitem-link {
@@ -73,7 +82,6 @@ clr-dg-row {
     padding-right: 2em !important;
     white-space: nowrap !important;
   }
-
 
   ::ng-deep .p-menuitem-icon {
     font-size: 16px;

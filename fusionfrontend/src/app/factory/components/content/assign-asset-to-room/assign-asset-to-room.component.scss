@@ -1,0 +1,112 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'base/typography';
+@import 'abstract/variables';
+
+.selected-items-div {
+  background-color: $basic-white;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 0.25rem -0.5rem 0 -0.5rem;
+}
+
+:host ::ng-deep .p-col-fixed {
+  padding: 1%;
+}
+
+.selected-items {
+  height: 30px;
+  background-color: $basic-black;
+  color: $basic-white;
+  border-radius: 15px;
+}
+
+.asset-name {
+  margin: 0 10px;
+  font-size: $regular-font-size;
+}
+
+.remove-asset-button {
+  border: none;
+  height: 15px;
+  width: 15px;
+  border-radius: 7.5px;
+  background-color: $basic-black;
+  margin-right: 15px;
+  vertical-align: middle;
+}
+
+:host ::ng-deep .p-button-icon {
+  font-size: 12px;
+}
+
+.input-div {
+  display: grid;
+  padding-bottom: 24px;
+}
+
+
+.table-div {
+  background-color: $basic-white;
+  border-radius: 10px;
+}
+
+.select-all-checkbox {
+  padding: 0 2.2%;
+}
+
+.asset-search-input {
+  height: 56px;
+  width: 100.0%;
+}
+
+.search-input {
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+  margin: 0;
+
+  &:hover {
+    border: none;
+  }
+
+  &:focus {
+    border: none;
+  }
+}
+
+.assign-asset-dialog-footer {
+  margin-top: 8.1%;
+  margin-bottom: 5%;
+  text-align: right;
+}
+
+
+:host ::ng-deep .p-datatable	{
+  margin: 0;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  &:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+}
+
+@media (max-width: 1600px) {
+  .select-all-checkbox {
+    padding: 0 3%;
+  }
+}
