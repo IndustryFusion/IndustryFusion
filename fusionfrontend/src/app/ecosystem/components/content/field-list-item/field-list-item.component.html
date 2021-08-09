@@ -34,6 +34,6 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="30" [routerLink]="item.id">000</div>
   <div class="list-item-cell grey" [style.width.%]="30" [routerLink]="item.id">18.12.2019</div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
-    <app-item-options-menu appFieldDialog [item]="item" (deleteItem)="showDeleteItem()"></app-item-options-menu>
+    <app-item-options-menu (editItem)="showEditDialog()" (deleteItem)="showDeleteItem()"></app-item-options-menu>
   </div>
 </div>

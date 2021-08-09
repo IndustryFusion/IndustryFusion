@@ -20,6 +20,8 @@ import { FieldQuery } from '../../../../store/field/field-query.service';
 import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { FieldService } from '../../../../store/field/field.service';
 import { Field } from '../../../../store/field/field.model';
+import { FieldDialogComponent } from '../../content/field-dialog/field-dialog.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-field-page',
@@ -30,10 +32,13 @@ export class FieldPageComponent implements OnInit, OnDestroy {
 
   isLoading$: Observable<boolean>;
   field$: Observable<Field>;
+  private field: Field;
+  private editDialogRef: DynamicDialogRef;
 
   constructor(private fieldQuery: FieldQuery,
               private fieldService: FieldService,
               private activatedRoute: ActivatedRoute,
+              private dialogService: DialogService,
               private ecoSystemManagerResolver: EcoSystemManagerResolver) { }
 
   ngOnInit(): void {
@@ -44,6 +49,7 @@ export class FieldPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.fieldQuery.resetError();
+    this.editDialogRef?.close();
   }
 
   private resolve(activatedRoute: ActivatedRoute) {
@@ -51,7 +57,14 @@ export class FieldPageComponent implements OnInit, OnDestroy {
     if (fieldId != null) {
       this.fieldService.setActive(fieldId);
       this.field$ = this.fieldQuery.selectActive();
+      this.field$.subscribe(field => this.field = field);
     }
   }
 
+  showEditDialog() {
+    this.editDialogRef = this.dialogService.open(FieldDialogComponent, {
+      data: { field: this.field },
+      header: 'Edit Metric or Attribute'
+    });
+  }
 }
