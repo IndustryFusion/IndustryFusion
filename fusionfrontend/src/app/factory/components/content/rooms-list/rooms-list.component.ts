@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnChanges, SimpleChanges, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { Location } from 'src/app/store/location/location.model';
@@ -35,7 +35,7 @@ import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset
   styleUrls: ['./rooms-list.component.scss'],
   providers: [DialogService]
 })
-export class RoomsListComponent implements OnInit {
+export class RoomsListComponent implements OnInit, OnChanges {
 
   @Input()
   locations: Location[];
@@ -85,16 +85,19 @@ export class RoomsListComponent implements OnInit {
     this.companyId = this.companyQuery.getActiveId();
     this.locationId = this.locationQuery.getActiveId();
 
-    this.rooms.forEach(room => {
-      this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
-    });
-
     this.createRoomForm(this.formBuilder);
     this.menuActions = [
       { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
       { label: 'Assign Asset to room', icon: 'pi pw-fw pi-sign-in', command: (_) => { this.showAssignAssetToRoomModal(); } },
       { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
     ];
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.rooms) {
+      this.rooms.forEach(room => {
+        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+      });    }
   }
 
   setActiveRow(room?) {

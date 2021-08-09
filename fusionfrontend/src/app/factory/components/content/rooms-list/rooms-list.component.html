@@ -46,17 +46,16 @@ under the License.
       </tr>
     </ng-template>
 
-    <ng-template #body pTemplate="body" let-room>
-      <tr #rowElement style="cursor: pointer;">
+    <ng-template pTemplate="body" let-room>
+      <tr style="cursor: pointer;">
         <td [style.width.%]="5" [routerLink]="getRoomAssetLink(room.id)"></td>
         <td [style.width.%]="12.5" [routerLink]="getRoomAssetLink(room.id)">{{room.id}}</td>
         <td [style.width.%]="20" [routerLink]="getRoomAssetLink(room.id)">{{room.name}}</td>
         <td [style.width.%]="12.5" [routerLink]="getRoomAssetLink(room.id)">{{room.assetIds.length}}</td>
         <td [style.width.%]="25" [routerLink]="getRoomAssetLink(room.id)">{{room.description}}</td>
         <td [style.width.%]="17.5" [routerLink]="getRoomAssetLink(room.id)">{{locationsAndRoomsMap.get(room.id)}}</td>
-        <td #td [style.width.%]="2.5">
+        <td [style.width.%]="2.5">
           <div #div class="table-dropdown-menu">
-<!--            <p-menu #menu  [popup]="true" [model]="menuActions"></p-menu>-->
             <p-menu #menu [popup]="true" [model]="menuActions" [appendTo]="div"></p-menu>
             <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event); setActiveRow(room)"
                     class="table-dropdown-menu-button"></button>
