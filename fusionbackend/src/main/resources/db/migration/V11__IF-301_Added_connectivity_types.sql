@@ -31,33 +31,31 @@ alter table connectivity_type_connectivity_protocol
 
 
 
-
-
-insert into connectivity_type (id, name, info_text)
-values (nextval('idgen_connectivitytype'), 'Direct IO / SoftSPS', 'Sensors connected directly to the Gateway');
-insert into connectivity_type (id, name, info_text)
-values (nextval('idgen_connectivitytype'), 'Internal Machine Network',
+insert into connectivity_type (id, version, name, info_text)
+values (nextval('idgen_connectivitytype'), 0, 'Direct IO / SoftSPS', 'Sensors connected directly to the Gateway');
+insert into connectivity_type (id, version, name, info_text)
+values (nextval('idgen_connectivitytype'), 0, 'Internal Machine Network',
         'Gateway is connected 1 to 1 to the Asset (e.g. PLC via Ethernet/Serial)');
-insert into connectivity_type (id, name, info_text)
-values (nextval('idgen_connectivitytype'), 'Network based (e.g. SQL, MQTT)',
+insert into connectivity_type (id, version, name, info_text)
+values (nextval('idgen_connectivitytype'), 0, 'Network based (e.g. SQL, MQTT)',
         'Everything thats connected via the Network (SQL database, MQTT broker)');
 
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'MQTT', 'tcp://127.0.0.1:1883');
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'SQL', 'jdbc:sqlserver://127.0.0.1\SQLEXPRESS;database=TEST');
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'S7 (S7comm)', 's7://127.0.0.1');
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'LOGO! (S7comm)', 's7://127.0.0.1?controller-type=LOGO');
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'Beckhoff ADS', default);
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'OPC UA', 'opcua:tcp://127.0.0.1:12686?discovery=true');
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'Modbus TCP', 'modbus:tcp://127.0.0.1:502');
-insert into connectivity_protocol (id, name, connection_string_pattern)
-values (nextval('idgen_connectivity_protocol'), 'Ethernet/IP', default);
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'MQTT', 'tcp://127.0.0.1:1883');
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'SQL', 'jdbc:sqlserver://127.0.0.1\SQLEXPRESS;database=TEST');
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'S7 (S7comm)', 's7://127.0.0.1');
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'LOGO! (S7comm)', 's7://127.0.0.1?controller-type=LOGO');
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'Beckhoff ADS', default);
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'OPC UA', 'opcua:tcp://127.0.0.1:12686?discovery=true');
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'Modbus TCP', 'modbus:tcp://127.0.0.1:502');
+insert into connectivity_protocol (id, version, name, connection_string_pattern)
+values (nextval('idgen_connectivity_protocol'), 0, 'Ethernet/IP', default);
 
 insert into connectivity_type_connectivity_protocol (connectivity_type_id, connectivity_protocol_id)
 values ((select id from connectivity_type where name = 'Internal Machine Network'),
