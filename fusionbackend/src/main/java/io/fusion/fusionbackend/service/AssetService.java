@@ -281,6 +281,8 @@ public class AssetService {
 
         targetAsset.copyFrom(sourceAsset);
 
+        validate(targetAsset);
+
         return targetAsset;
     }
 

@@ -80,12 +80,173 @@ export class PointWithIdAndDate {
   value: string;
 }
 
+export class Rule {
+  id: string;
+  externalId: string;
+  name: string;
+  description: string;
+  owner: string;
+  naturalLanguage: string;
+  type: RuleType;
+  creationDate: Date;
+  lastUpdateDate: Date;
+  resetType: RuleResetType;
+  priority: string;
+  status: RuleStatus;
+  synchronizationStatus: SynchronizationStatus;
+  population: { };
+  conditions: RuleConditions;
+  actions: RuleAction[];
+}
+
+export class RuleAction {
+  type: RuleActionType;
+  target: string[];
+  // tslint:disable-next-line:variable-name
+  http_headers: [string, string][];
+}
+
+export enum RuleStatus {
+  Active = 'Active',
+  Draft = 'Draft',
+  OnHold = 'On-hold',
+  Archived = 'Archived',
+  Deleted = 'Deleted',
+}
+
+export enum RulePrority {
+  Low = 'Low',
+  Medium = 'Medium',
+  High = 'High',
+}
+
+export enum RuleType {
+  Regular = 'Regular',
+}
+
+export enum RuleResetType {
+  Manual = 'Manual',
+  Automatic = 'Automatic',
+}
+
+export enum SynchronizationStatus {
+  NotSync = 'NotSync',
+  Sync = 'Sync',
+}
+
+export enum RuleActionType {
+  mail = 'mail',
+  http = 'http',
+  actuation = 'actuation',
+}
+
+export class ComponentType {
+  id: string;
+  dimension: string;
+  version: string;
+  default: boolean;
+  type: string;
+  dataType: ComponentDataType;
+  format: string;
+  min: number;
+  max: number;
+  measureunit: string;
+  display: string;
+  href: string;
+}
+
+export enum ComponentDataType {
+  Number = 'Number',
+  String = 'String',
+  Boolean = 'Boolean',
+  ByteArray = 'ByteArray',
+}
+
+export enum BaselineCalculationLevel {
+  'Device level' = 'Device level',
+}
+
+export class DeviceComponent {
+  cid: string;
+  componentType: ComponentType;
+  componentTypeId: string;
+  name: string;
+  type: string;
+}
+
 export class Device {
-  created: Date;
+  components: DeviceComponent[];
   deviceId: ID;
-  domainId: ID;
   gatewayId: ID;
   name: string;
+  tags: string[];
   status: string;
   uid: ID;
+}
+
+export enum ConditionType {
+  basic = 'basic',
+  time = 'time',
+  statistics = 'statistics',
+}
+
+export function displayConstionType(type: ConditionType): string {
+  switch (type){
+    case ConditionType.basic:
+      return 'Basic Condition';
+      break;
+    case ConditionType.time:
+      return 'Timebased Condition';
+      break;
+    case ConditionType.statistics:
+      return 'Statistic based Condition';
+      break;
+  }
+}
+
+export enum ConditionsOperator {
+  AND = 'AND',
+  OR = 'OR',
+}
+
+export enum ConditionValueOperator {
+  '>' = '>',
+  '<' = '<',
+  '<=' = '<=',
+  '>=' = '>=',
+  'Not Equal' = 'Not Equal',
+  'Equal' = 'Equal',
+  'Between' = 'Between',
+  'Not Between' = 'Not Between',
+  'Like' = 'Like',
+}
+
+export class RuleConditions {
+    operator: ConditionsOperator;
+    values: ConditionValue[];
+}
+
+export class ConditionValue {
+  component: ConditionValueComponent;
+  conditionSequence?: number;
+  type: ConditionType;
+  operator: ConditionValueOperator;
+  values: string[];
+  timeLimit?: number;
+  baselineCalculationLevel?: BaselineCalculationLevel;
+  baselineSecondsBack?: number;
+  baselineMinimalInstances?: number;
+}
+
+export class ConditionValueComponent {
+  name?: string;
+  dataType: ComponentDataType;
+  cid?: string;
+}
+
+export class OISPUser {
+  id: string;
+  created: Date;
+  updated: Date;
+  email: string;
 }

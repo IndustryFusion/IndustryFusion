@@ -61,6 +61,13 @@ export class LaunchpadPageComponent implements OnInit {
       route: '/dashboards/companies/2/maintenance'
     },
     {
+      name: 'Fusion Applets',
+      text: '',
+      itemClass: HomeItemClass.FUSION_APPLETS,
+      icon: '',
+      route: '/fusion-applets/'
+    },
+    {
       name: 'Settings',
       text: '',
       itemClass: HomeItemClass.SETTINGS,

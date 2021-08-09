@@ -1,0 +1,37 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<div>
+  <form [formGroup]="ruleForm">
+    <div class="p-grid p-dir-col input-div">
+      <label class="if-label p-col">Applet name *</label>
+      <input class="p-col" formControlName="name" pInputText placeholder="Applet name" type="text"/>
+    </div>
+    <div class="p-grid p-dir-col input-div">
+        <label class="if-label p-col">Priority *</label>
+        <p-dropdown [options]="priorityOptions" class="p-col padding-unset" formControlName="priority" placeholder="Choose one">
+        </p-dropdown>
+    </div>
+    <div class="p-grid p-dir-col input-div">
+      <label class="if-label p-col">Description</label>
+      <textarea class="p-col select-asset-input" pInputTextarea formControlName="description"></textarea>
+    </div>
+    <div class="footer-buttons">
+      <button (click)="dismissModal()" class="if-button-cancel" type="button">Cancel</button>
+      <button (click)="confirmModal()" [disabled]="ruleForm.invalid" class="if-button button-primary" type="button">
+        Create
+      </button>
+    </div>
+  </form>
+</div>
