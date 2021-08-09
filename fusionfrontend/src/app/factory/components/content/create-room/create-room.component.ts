@@ -31,6 +31,7 @@ export class CreateRoomComponent implements OnInit {
   locations: Location[];
   locationSelected: boolean;
   editMode: boolean;
+  room: Room;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -38,6 +39,7 @@ export class CreateRoomComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.room = this.config.data.room ? { ...this.config.data.room } : new Room();
     this.roomForm = this.config.data.roomForm;
     this.rooms = this.config.data.rooms;
     this.locations = this.config.data.locations;
@@ -50,6 +52,13 @@ export class CreateRoomComponent implements OnInit {
   }
 
   onSubmit() {
-    this.ref.close(this.roomForm.value);
+    this.updateRoomData();
+    this.ref.close(this.room);
+  }
+
+  updateRoomData() {
+    this.room.description = this.roomForm.get('description').value;
+    this.room.name = this.roomForm.get('name').value;
+    this.room.locationId = this.roomForm.get('locationId').value;
   }
 }

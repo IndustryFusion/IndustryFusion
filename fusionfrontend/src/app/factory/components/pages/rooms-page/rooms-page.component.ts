@@ -91,10 +91,17 @@ export class RoomsPageComponent implements OnInit {
 
   createRoom(event: Room) {
     if (event) {
-      this.roomService.createRoom(this.companyId, event)
-        .subscribe(data => {
-          console.log('[rooms-page.component] Post request successful', data);
-        });
+      if (event.id)  {
+        this.roomService.updateRoom(this.companyId, event)
+          .subscribe(data => {
+            console.log('[rooms-page.component] Put request successful', data);
+          });
+      } else {
+        this.roomService.createRoom(this.companyId, event)
+          .subscribe(data => {
+            console.log('[rooms-page.component] Post request successful', data);
+          });
+      }
     }
   }
 

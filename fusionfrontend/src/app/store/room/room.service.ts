@@ -78,7 +78,7 @@ export class RoomService {
 
   updateRoom(companyId: ID, room: Room): Observable<Room> {
     const path = `companies/${companyId}/locations/${room.locationId}/rooms/${room.id}`;
-    return this.http.patch<Room>(`${environment.apiUrlPrefix}/${path}`, room, this.httpOptions)
+    return this.http.put<Room>(`${environment.apiUrlPrefix}/${path}`, room, this.httpOptions)
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);
       }));

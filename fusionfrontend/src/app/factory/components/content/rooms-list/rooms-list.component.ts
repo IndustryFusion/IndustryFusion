@@ -116,8 +116,10 @@ export class RoomsListComponent implements OnInit {
     });
 
     ref.onClose.subscribe((room: Room) => {
-      this.createRoomEvent.emit(room);
-      this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+      if (room) {
+        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+        this.createRoomEvent.emit(room);
+      }
     });
   }
 
@@ -125,6 +127,7 @@ export class RoomsListComponent implements OnInit {
     this.createRoomForm(this.formBuilder, this.activeListItem);
     const ref = this.dialogService.open(CreateRoomComponent, {
       data: {
+        room: this.activeListItem,
         roomForm: this.roomForm,
         locations: this.locations,
         rooms: this.rooms,
@@ -136,8 +139,10 @@ export class RoomsListComponent implements OnInit {
     });
 
     ref.onClose.subscribe((room: Room) => {
-      this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
-      this.editRoomEvent.emit(room);
+      if (room) {
+        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+        this.editRoomEvent.emit(room);
+      }
     });
   }
 

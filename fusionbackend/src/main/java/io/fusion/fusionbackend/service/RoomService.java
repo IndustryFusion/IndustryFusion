@@ -80,10 +80,19 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
-    public Room updateRoom(final Long companyId, final Long locationId, final Long roomId, final Room sourceRoom) {
-        final Room targetRoom = getRoomCheckFullPath(companyId, locationId, roomId, false);
+    public Room updateRoom(final Long companyId, final Long newLocationId, final Long roomId, final Room sourceRoom) {
+        final Long oldLocationId = getRoomById(roomId).getLocation().getId();
+        final Room targetRoom = getRoomCheckFullPath(companyId, oldLocationId, roomId, false);
 
+        if (!newLocationId.equals(oldLocationId)) {
+            final Location oldLocation = locationService.getLocationByCompany(companyId, oldLocationId, false);
+            oldLocation.getRooms().remove(targetRoom);
+        }
+
+        final Location newLocation = locationService.getLocationByCompany(companyId, newLocationId, false);
+        sourceRoom.setLocation(newLocation);
         targetRoom.copyFrom(sourceRoom);
+        newLocation.getRooms().add(sourceRoom);
 
         return targetRoom;
     }
