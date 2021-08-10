@@ -27,7 +27,6 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
-import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -57,7 +56,6 @@ import { TooltipModule } from 'primeng/tooltip';
     RadioButtonModule,
     DialogModule,
     ToastModule,
-    TooltipModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -86,7 +84,6 @@ import { TooltipModule } from 'primeng/tooltip';
     RadioButtonModule,
     LabelControlDirective,
     TooltipComponent,
-    TooltipModule,
   ],
   providers: [
     MessageService
