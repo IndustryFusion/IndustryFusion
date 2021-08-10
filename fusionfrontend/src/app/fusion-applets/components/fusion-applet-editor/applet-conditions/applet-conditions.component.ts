@@ -83,7 +83,7 @@ export class AppletConditionsComponent implements OnInit {
         name: [],
         dataType: [, Validators.required],
         cid: [],
-      }, [Validators.required]),
+      }, { validators: [Validators.required]}),
       type: [ConditionType.basic, Validators.required],
       operator: [ConditionValueOperator['<'], Validators.required],
       values: new FormArray([], [Validators.required, Validators.minLength(1)]),
