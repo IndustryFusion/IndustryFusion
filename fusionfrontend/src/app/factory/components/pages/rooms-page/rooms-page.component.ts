@@ -16,16 +16,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { AssetDetails } from 'src/app/store/asset-details/asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { RoomService } from 'src/app/store/room/room.service';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { Company } from 'src/app/store/company/company.model';
-import { AssetDetailsService } from '../../../../store/asset-details/asset-details.service';
+import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { Asset } from '../../../../store/asset/asset.model';
@@ -39,19 +39,19 @@ export class RoomsPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
   assetsDetails$: Observable<AssetDetails[]>;
-  locations$: Observable<Location[]>;
+  factorySite$: Observable<FactorySite>;
   rooms$: Observable<Room[]>;
 
   companyId: ID;
-  locationId: ID;
+  factorySiteId: ID;
   locationSelected: boolean;
 
-  constructor(private locationQuery: LocationQuery,
+  constructor(private factorySiteQuery: FactorySiteQuery,
               private companyQuery: CompanyQuery,
               private roomService: RoomService,
               private factoryResolver: FactoryResolver,
               private activatedRoute: ActivatedRoute,
-              private assetDetailsService: AssetDetailsService,
+              private assetDetailsService: FactoryAssetDetailsService,
               private assetService: AssetService,
               private roomQuery: RoomQuery,
   ) { }
@@ -60,11 +60,11 @@ export class RoomsPageComponent implements OnInit {
     this.isLoading$ = this.companyQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
-    this.locations$ = this.factoryResolver.locations$;
+    this.factorySite$ = this.factoryResolver.factorySite$;
     this.assetsDetails$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.companyId = this.companyQuery.getActiveId();
-    this.locationId = this.locationQuery.getActiveId();
-    if (this.locationId) {
+    this.factorySiteId = this.factorySiteQuery.getActiveId();
+    if (this.factorySiteId) {
       this.locationSelected = true;
       this.rooms$ = this.factoryResolver.allRoomsOfLocation$;
     } else {
@@ -76,8 +76,8 @@ export class RoomsPageComponent implements OnInit {
   deleteRoom(room: Room) {
     console.log(room);
     const companyId = this.companyQuery.getActiveId();
-    const locationId = this.locationQuery.getActiveId();
-    this.roomService.deleteRoom(companyId, locationId, room.id)
+    const factorySiteId = this.factorySiteQuery.getActiveId();
+    this.roomService.deleteRoom(companyId, factorySiteId, room.id)
       .subscribe(() => {
         console.log('[rooms-page.component] Delete request successful', room.id);
       });
@@ -110,9 +110,9 @@ export class RoomsPageComponent implements OnInit {
   }
 
   assignAssetsToRoom(event: [ID, Asset[]]) {
-    const locationId = this.roomQuery.getEntity(event[0]).locationId;
+    const factorySiteId = this.roomQuery.getEntity(event[0]).factorySiteId;
 
-    this.assetService.assignAssetsToRoom(this.companyId, locationId, event[0], event[1])
+    this.assetService.assignAssetsToRoom(this.companyId, factorySiteId, event[0], event[1])
       .subscribe(
         assets => {
           console.log('[rooms-page.component]: ' + assets.length + ' assets assigned');

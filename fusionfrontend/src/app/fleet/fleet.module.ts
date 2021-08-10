@@ -14,7 +14,6 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { FleetRoutingModule } from './fleet-routing.module';
 import { FleetManagerPageComponentComponent } from './components/pages/fleet-manager-page-component/fleet-manager-page-component.component';
@@ -24,18 +23,34 @@ import { AssetSeriesPageComponent } from './components/pages/asset-series-page/a
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { ClarityModule } from '@clr/angular';
 import { AssetSeriesListHeaderComponent } from './components/content/asset-series-list-header/asset-series-list-header.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AssetSeriesListItemComponent } from './components/content/asset-series-list-item/asset-series-list-item.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AssetSeriesCreateStepOneComponent } from './components/content/asset-series-create/asset-series-create-step-one/asset-series-create-step-one.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
-import { AssetSeriesCreateStepTwoComponent } from './components/content/asset-series-create/asset-series-create-step-two/asset-series-create-step-two.component';
-import { AssetSeriesCreateStepTreeComponent } from './components/content/asset-series-create/asset-series-create-step-three/asset-series-create-step-tree.component';
-import { AssetSeriesCreateStepFourComponent } from './components/content/asset-series-create/asset-series-create-step-four/asset-series-create-step-four.component';
+import { AssetSeriesCreateGeneralInformationComponent } from './components/content/asset-series-create/asset-series-create-general-information/asset-series-create-general-information.component';
+import { AssetSeriesCreateConnectivitySettingsComponent } from './components/content/asset-series-create/asset-series-create-connectivity-settings/asset-series-create-connectivity-settings.component';
+import { AssetSeriesCreateAttributesComponent } from './components/content/asset-series-create/asset-series-create-attributes/asset-series-create-attributes.component';
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
+import { AssetWizardComponent } from './components/content/asset-wizard/asset-wizard.component';
+import { AssetWizardStepGeneralInformationComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-general-information/asset-wizard-step-general-information.component';
+import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
+import { AssetWizardStepAttributesComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-attributes/asset-wizard-step-attributes.component';
+import { AssetWizardStepCustomerDataComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer-data/asset-wizard-step-customer-data.component';
+import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
+import { CalendarModule } from 'primeng/calendar';
+import { AccordionModule } from 'primeng/accordion';
+import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
+import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
+import { AssetWizardStepReviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-review/asset-wizard-step-review.component';
+import { AssetWizardSharedMetricsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
+import { AssetWizardSharedAttributesComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
+import { AgmCoreModule } from '@agm/core';
+// tslint:disable-next-line:max-line-length
+import { AssetWizardStepSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-subsystems/asset-wizard-step-subsystems.component';
+// tslint:disable-next-line:max-line-length
+import { AssetWizardSharedSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
 
 
 @NgModule({
@@ -48,26 +63,38 @@ import { TableModule } from 'primeng/table';
     AssetSeriesListHeaderComponent,
     AssetSeriesListItemComponent,
     AssetSeriesCreateComponent,
-    AssetSeriesCreateStepOneComponent,
-    AssetSeriesCreateStepTwoComponent,
-    AssetSeriesCreateStepTreeComponent,
+    AssetSeriesCreateGeneralInformationComponent,
+    AssetSeriesCreateConnectivitySettingsComponent,
     TimelineComponent,
-    AssetSeriesCreateStepFourComponent,
+    AssetSeriesCreateAttributesComponent,
     AssetSeriePageComponent,
+    AssetSeriesCreateMetricsComponent,
+    AssetWizardComponent,
+    AssetWizardStepGeneralInformationComponent,
+    AssetWizardStepNameplateComponent,
+    AssetWizardStepAttributesComponent,
+    AssetWizardStepCustomerDataComponent,
+    AssetWizardStepMetricsThresholdsComponent,
+    AssetSeriesCreateFooterComponent,
+    AssetWizardStepReviewComponent,
+    AssetWizardSharedMetricsComponent,
+    AssetWizardSharedAttributesComponent,
+    AssetWizardStepSubsystemsComponent,
+    AssetWizardSharedSubsystemsComponent,
   ],
-  imports: [
-    IFCommon,
-    CommonModule,
-    FleetRoutingModule,
-    ClarityModule,
-    FontAwesomeModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TableModule,
-  ],
+    imports: [
+        IFCommon,
+        FleetRoutingModule,
+        ClarityModule,
+        ReactiveFormsModule,
+        TableModule,
+        CalendarModule,
+        AccordionModule,
+        AgmCoreModule,
+    ],
   exports: [
     FleetSubHeaderComponent,
-    FleetPageTitleComponent
+    FleetPageTitleComponent,
   ]
 })
 export class FleetModule { }

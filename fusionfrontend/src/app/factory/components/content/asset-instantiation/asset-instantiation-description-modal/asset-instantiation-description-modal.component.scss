@@ -13,9 +13,12 @@
  * under the License.
  */
 
+@import 'abstract/variables';
+@import 'base/typography';
+
 .context-info {
-  font-size: 16px;
-  color: #666666;
+  font-size: $medium-font-size;
+  color: $regular-grey;
 }
 
 .asset-info {
@@ -32,14 +35,15 @@
 }
 
 .asset-name {
-  font-size: 22px;
+  font-size: $big-font-size;
+  font-weight: bold;
   padding-top: 0;
   padding-bottom: 2px;
 }
 
 .text-styling {
-  font-size: 16px;
-  color: #95989A;
+  font-size: $medium-font-size;
+  color: $basic-grey;
   padding-top: 0;
   padding-bottom: 2px;
 }

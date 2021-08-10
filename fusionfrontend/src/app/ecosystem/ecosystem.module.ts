@@ -14,10 +14,8 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
 // tslint:disable-next-line:max-line-length
@@ -48,7 +46,7 @@ import { QuantityTypeListItemComponent } from './components/content/quantity-typ
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
 import { UnitListHeaderComponent } from './components/content/unit-list-header/unit-list-header.component';
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
-import { QuantityTypeDialogContentComponent } from './components/content/quantity-type-dialog/quantity-type-dialog-content/quantity-type-dialog-content.component';
+import { QuantityTypeDialogComponent } from './components/content/quantity-type-dialog/quantity-type-dialog.component';
 import { UnitDialogComponent } from './components/content/unit-dialog/unit-dialog.component';
 import { FieldDialogContentComponent } from './components/content/field-dialog/field-dialog-content/field-dialog-content.component';
 // tslint:disable-next-line:max-line-length
@@ -67,13 +65,11 @@ import { AssetTypePageComponent } from './components/pages/asset-type-page/asset
 import { TableModule } from 'primeng/table';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { IFCommon } from '../common/i-f-common.module';
-import { QuantityTypeEditDialogDirective } from './components/content/quantity-type-dialog/quantity-type-edit-dialog.directive';
 import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
 import { AssetTypeTemplateWizardWarningDialogComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FieldDialogDirective } from './components/content/field-dialog/field-dialog.directive';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
-import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
 import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
 import { AssetTypeTemplateDialogPublishComponent } from './components/content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
@@ -115,7 +111,7 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     UnitListComponent,
     UnitListHeaderComponent,
     UnitListItemComponent,
-    QuantityTypeDialogContentComponent,
+    QuantityTypeDialogComponent,
     FieldDialogContentComponent,
     UnitDialogComponent,
     AssetTypeTemplateWizardStepOneComponent,
@@ -129,30 +125,25 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     AssetTypePageComponent,
     AssetTypeDialogComponent,
     QuantityTypePageComponent,
-    QuantityTypeEditDialogDirective,
     AssetTypeTemplateFieldHeaderComponent,
     FieldDialogDirective,
     FieldPageComponent,
-    AccuracyFormatPipe,
     AssetTypeTemplateDialogPublishComponent,
     AssetTypeTemplateDialogUpdateComponent,
     NameWithVersionPipe,
   ],
   imports: [
     IFCommon,
-    CommonModule,
     EcosystemRoutingModule,
     ClarityModule,
-    FontAwesomeModule,
-    FormsModule,
     Ng2CompleterModule,
     ReactiveFormsModule,
     TableModule,
   ],
-  exports: [
-    EcosystemSubHeaderComponent,
-    EcosystemPageTitleComponent,
-  ],
+    exports: [
+        EcosystemSubHeaderComponent,
+        EcosystemPageTitleComponent,
+    ],
   providers: [
     DialogService
   ]

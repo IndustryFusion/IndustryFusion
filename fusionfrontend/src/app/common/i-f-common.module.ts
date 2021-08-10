@@ -8,7 +8,6 @@ import { TrashButtonComponent } from '../components/ui/trash-button/trash-button
 import { ConfirmButtonComponent } from '../components/ui/confirm-button/confirm-button.component';
 import { EditDetailsButtonComponent } from '../components/ui/edit-details-button/edit-details-button.component';
 import { EditButtonComponent } from '../components/ui/edit-button/edit-button.component';
-import { LocationsMapComponent } from '../components/content/locations-map/locations-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
@@ -20,6 +19,13 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
+import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 
 
 @NgModule({
@@ -30,41 +36,55 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent,
+    FactorySiteMapComponent,
+    AccuracyFormatPipe,
+    LabelControlDirective,
   ],
   imports: [
     CommonModule,
     BrowserModule,
     ClrIconModule,
+    FontAwesomeModule,
+    FormsModule,
     MenuModule,
     ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
+    RadioButtonModule,
+    DialogModule,
+    ToastModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
-    DialogModule,
-    DropdownModule,
-    ButtonModule,
-    MenuModule,
-    InputTextModule,
-    InputTextareaModule
   ],
   exports: [
+    CommonModule,
     CreateButtonComponent,
     ItemOptionsMenuComponent,
     TrashButtonComponent,
     ConfirmButtonComponent,
     EditButtonComponent,
     EditDetailsButtonComponent,
-    LocationsMapComponent,
-    DialogModule,
-    DropdownModule,
-    ButtonModule,
+    FactorySiteMapComponent,
+    FontAwesomeModule,
+    FormsModule,
     MenuModule,
+    ButtonModule,
     InputTextModule,
+    DropdownModule,
     InputTextareaModule,
+    DialogModule,
     RadioButtonModule,
     CheckboxModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    AccuracyFormatPipe,
+    RadioButtonModule,
+    LabelControlDirective,
+  ],
+  providers: [
+    MessageService
   ]
 })
-export class IFCommon { }
+export class IFCommon {
+}

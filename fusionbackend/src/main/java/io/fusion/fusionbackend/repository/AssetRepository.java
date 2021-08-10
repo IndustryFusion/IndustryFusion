@@ -46,6 +46,8 @@ public interface AssetRepository extends PagingAndSortingRepository<Asset, Long>
     Optional<Asset> findByAssetSeriesIdAndId(Long assetSeriesId, Long assetId);
 
     @EntityGraph(value = "Asset.allChildren")
-    @Query("from Asset asset where asset.room.location.id = ?1")
-    Set<Asset> findAllByLocationId(Sort sort, Long locationId);
+    @Query("from Asset asset where asset.room.factorySite.id = ?1")
+    Set<Asset> findAllByFactorySiteId(Sort sort, Long factorySiteId);
+
+    Set<Asset> findSubsystemCandidates(Long parentAssetSeriesId, Long companyId);
 }

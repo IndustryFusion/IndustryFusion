@@ -15,7 +15,7 @@ under the License.
 <div class="create-unit">
   <form [formGroup]="unitForm">
     <div class="p-grid p-dir-col input-div">
-      <label class="if-label p-col">Unit name</label>
+      <label class="if-label p-col">Unit&nbsp;name&nbsp;*</label>
       <input class="p-col" formControlName="name" pInputText placeholder="Unit name" type="text"/>
     </div>
     <div class="p-grid input-div">
@@ -26,9 +26,9 @@ under the License.
       </div>
       <div class="stretch-box"></div>
       <div class="p-col-6 p-grid">
-        <label class="if-label p-col">Quantity Type *</label>
+        <label class="if-label p-col">Quantity&nbsp;Type&nbsp;*</label>
         <p-dropdown [options]="quantityTypes$ | async" class="p-col quantity-dropdown" formControlName="quantityTypeId"
-                    optionLabel="name" optionValue="id" placeholder="Quantity type"></p-dropdown>
+                    optionLabel="name" optionValue="id" placeholder="Quantity type" [disabled]="isQuantityTypeLocked"></p-dropdown>
       </div>
     </div>
     <div class="p-grid p-dir-col input-div">

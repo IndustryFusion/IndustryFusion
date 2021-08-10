@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
-    private final LocationMapper locationMapper;
+    private final FactorySiteMapper factorySiteMapper;
     private final AssetMapper assetMapper;
 
     @Autowired
-    public CompanyMapper(LocationMapper locationMapper, AssetMapper assetMapper) {
-        this.locationMapper = locationMapper;
+    public CompanyMapper(FactorySiteMapper factorySiteMapper, AssetMapper assetMapper) {
+        this.factorySiteMapper = factorySiteMapper;
         this.assetMapper = assetMapper;
     }
 
@@ -42,7 +42,7 @@ public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
         return CompanyDto.builder()
                 .id(entity.getId())
                 .type(entity.getType())
-                .locationIds(EntityDtoMapper.getSetOfEntityIds(entity.getLocations()))
+                .factorySiteIds(EntityDtoMapper.getSetOfEntityIds(entity.getFactorySites()))
                 .assetIds(EntityDtoMapper.getSetOfEntityIds(entity.getAssets()))
                 .name(entity.getName())
                 .description(entity.getDescription())
@@ -57,7 +57,7 @@ public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
         return CompanyDto.builder()
                 .id(entity.getId())
                 .type(entity.getType())
-                .locations(locationMapper.toDtoSet(entity.getLocations(), false))
+                .factorySites(factorySiteMapper.toDtoSet(entity.getFactorySites(), false))
                 .assets(assetMapper.toDtoSet(entity.getAssets(), false))
                 .name(entity.getName())
                 .description(entity.getDescription())

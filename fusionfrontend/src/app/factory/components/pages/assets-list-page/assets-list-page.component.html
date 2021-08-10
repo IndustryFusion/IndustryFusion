@@ -14,10 +14,10 @@ under the License.
 -->
 
 <app-assets-list [company]="(company$ | async)"
-                 [locations]="(locations$ | async)"
+                 [factorySites]="(factorySites$ | async)"
                  [rooms]="(rooms$ | async)"
                  [room]="(room$ | async)"
-                 [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"
+                 [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
                  (updateAssetEvent)="updateAssetData($event)">

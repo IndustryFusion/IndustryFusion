@@ -15,7 +15,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Room } from 'src/app/store/room/room.model';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 
@@ -28,7 +28,7 @@ export class CreateRoomComponent implements OnInit {
 
   roomForm: FormGroup;
   rooms: Room[];
-  locations: Location[];
+  factorySite: FactorySite[];
   locationSelected: boolean;
   editMode: boolean;
   room: Room;

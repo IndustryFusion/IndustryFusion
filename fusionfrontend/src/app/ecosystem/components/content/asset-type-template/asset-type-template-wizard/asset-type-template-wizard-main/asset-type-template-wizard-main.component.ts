@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
-import { AssetTypeTemplate } from '../../../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplate, PublicationState } from '../../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../../../store/asset-type-template/asset-type-template.service';
 import { FieldTargetService } from '../../../../../../store/field-target/field-target.service';
 import { AssetTypesResolver } from '../../../../../../resolvers/asset-types.resolver';
@@ -59,18 +59,18 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
 
   public static createAssetTypeTemplateForm(formBuilder: FormBuilder,
                                             assetTypeTemplate: AssetTypeTemplate,
-                                            preselectedAssetTypeIdOrNull: ID | null) {
+                                            prefilledAssetTypeIdOrNull: ID | null) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const assetTypeTemplateForm = formBuilder.group({
       id: [],
       name: ['', requiredTextValidator],
       description: ['', Validators.maxLength(255)],
-      published: [false],
+      publicationState: [PublicationState.DRAFT],
       publishedDate: [],
       publishedVersion: [],
       wasPublished: [false],
       useExistingTemplate: [false, Validators.required],
-      assetTypeId: [preselectedAssetTypeIdOrNull, Validators.required],
+      assetTypeId: [prefilledAssetTypeIdOrNull, Validators.required],
       assetTypeTemplateId: [],
       fieldTarget: [],
     });
@@ -94,7 +94,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets = [];
 
     if (this.config.data.type === DialogType.EDIT) {
-      if (this.assetTypeTemplateForm.get('published')?.value === true) {
+      if (this.assetTypeTemplateForm.get('publicationState')?.value === PublicationState.PUBLISHED) {
         this.ref.close();
         return;
       }
@@ -154,7 +154,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     if (assetTypeId && this.assetTypeTemplate.fieldTargets) {
       this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
-      this.assetTypeTemplate.published = this.assetTypeTemplateForm.get('published')?.value;
+      this.assetTypeTemplate.publicationState = this.assetTypeTemplateForm.get('publicationState')?.value;
       this.assetTypeTemplate.publishedDate = this.assetTypeTemplateForm.get('publishedDate')?.value;
       this.assetTypeTemplate.publishedVersion = this.assetTypeTemplateForm.get('publishedVersion')?.value;
       this.assetTypeTemplate.imageKey = null;

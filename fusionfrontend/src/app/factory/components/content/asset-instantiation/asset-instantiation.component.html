@@ -27,18 +27,16 @@ under the License.
                                             (descriptionAddedEvent)="finishedAddDescription($event)">
 </app-asset-instantiation-description-modal>
 
-<app-asset-instantiation-location-assignment-modal  *ngIf="activeModalType == assetModalTypes.locationAssignment"
-                                                    [locations] = "locations"
-                                                    [selectedLocation]="selectedLocation"
-                                                    (locationAssignedEvent)="finishedLocationAssignment($event)">
-</app-asset-instantiation-location-assignment-modal>
+<app-asset-instantiation-factory-site-assignment-modal *ngIf="activeModalType == assetModalTypes.factorySiteAssignment"
+                                                       [factorySites]="factorySites"
+                                                       [selectedFactorySite]="selectedFactorySite"
+                                                       [activeModalMode]="activeModalMode"
+                                                       (factorySitesAssignedEvent)="finishedFactorySitesAssignment($event)">
+</app-asset-instantiation-factory-site-assignment-modal>
 
 <app-asset-instantiation-room-assignment-modal *ngIf="activeModalType == assetModalTypes.roomAssignment"
-                                                [rooms]="allRoomsOfLocation"
-                                                [selectedRoom]="selectedRoom"
-                                                [activeModalMode]="activeModalMode"
-                                                (roomAssignedEvent)="finishedRoomAssignment($event)">
+                                               [rooms]="allRoomsOfFactorySite"
+                                               [selectedRoom]="selectedRoom"
+                                               [activeModalMode]="activeModalMode"
+                                               (roomAssignedEvent)="finishedRoomAssignment($event)">
 </app-asset-instantiation-room-assignment-modal>
-
-
-

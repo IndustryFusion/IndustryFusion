@@ -18,15 +18,15 @@ under the License.
     <div class="row clr-justify-content-between clr-align-items-center">
       <h3> Asset type template ({{ assetTypeTemplate?.name | nameWithVersion : assetTypeTemplate?.publishedVersion }}) </h3>
       <div class="button-section">
-        <p class="if-label" style="display: inline-block" *ngIf="assetTypeTemplate?.published === true">
+        <p class="if-label" style="display: inline-block" *ngIf="assetTypeTemplate?.publicationState === PublicationState.PUBLISHED">
           published on<br>
-          <label class="if-label if-label-medium">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</label>
+          <label class="if-label">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</label>
         </p>
 
-        <button class="if-button-update" (click)="onUpdate()" *ngIf="assetTypeTemplate?.published === false">
+        <button class="if-button-update" (click)="onUpdate()" *ngIf="assetTypeTemplate?.publicationState === PublicationState.DRAFT">
           <i class="pi pi-refresh" style="font-size: 0.7rem"></i> Update
         </button>
-        <button class="if-button-publish" (click)="onPublish()" *ngIf="assetTypeTemplate?.published === false">
+        <button class="if-button-publish" (click)="onPublish()" *ngIf="assetTypeTemplate?.publicationState === PublicationState.DRAFT">
           <i class="pi pi-cloud-upload" style="font-size: 0.8rem"></i> Publish
         </button>
       </div>

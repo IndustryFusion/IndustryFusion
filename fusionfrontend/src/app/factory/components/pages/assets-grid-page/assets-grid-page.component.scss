@@ -105,24 +105,3 @@ footer .table{
     }
   }
 }
-
-.go-back-panel{
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: lightgray;
-
-  button{
-    color: black;
-  }
-
-
-  .goback{
-    clr-icon {
-      margin-right: 10px;
-      color: black;
-    }
-  }
-}

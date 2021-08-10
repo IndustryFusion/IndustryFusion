@@ -17,8 +17,10 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.model.Asset;
+import io.fusion.fusionbackend.service.AssetService;
 import io.fusion.fusionbackend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -28,13 +30,23 @@ import java.util.stream.Collectors;
 @Component
 public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     private final BaseAssetMapper baseAssetMapper;
+    private final FieldInstanceMapper fieldInstanceMapper;
     private final RoomService roomService;
+    private final RoomMapper roomMapper;
+    private final AssetService assetService;
+
 
     @Autowired
     public AssetMapper(BaseAssetMapper baseAssetMapper,
-                       RoomService roomService) {
+                       FieldInstanceMapper fieldInstanceMapper,
+                       RoomService roomService,
+                       @Lazy RoomMapper roomMapper,
+                       AssetService assetService) {
         this.baseAssetMapper = baseAssetMapper;
+        this.fieldInstanceMapper = fieldInstanceMapper;
         this.roomService = roomService;
+        this.roomMapper = roomMapper;
+        this.assetService = assetService;
     }
 
     private AssetDto toDtoShallow(final Asset entity) {
@@ -45,6 +57,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .id(entity.getId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
+                .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
                 .externalId(entity.getExternalId())
                 .controlSystemType(entity.getControlSystemType())
@@ -58,6 +71,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .handbookKey(entity.getHandbookKey())
                 .videoKey(entity.getVideoKey())
                 .installationDate(entity.getInstallationDate())
+                .subsystemIds(toEntityIdSet(entity.getSubsystems()))
                 .build();
 
         if (entity.getRoom() != null) {
@@ -70,7 +84,21 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     }
 
     private AssetDto toDtoDeep(final Asset entity) {
-        return toDtoShallow(entity);
+        AssetDto dto = toDtoShallow(entity);
+        if (dto == null) {
+            return null;
+        }
+
+        if (entity.getFieldInstances() != null) {
+            dto.setFieldInstances(this.fieldInstanceMapper.toDtoSet(entity.getFieldInstances(), true));
+        }
+        if (entity.getRoom() != null) {
+            dto.setRoom(this.roomMapper.toDto(entity.getRoom(), true));
+        }
+
+        baseAssetMapper.copyToDto(entity, dto);
+
+        return dto;
     }
 
     @Override
@@ -102,13 +130,37 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .installationDate(dto.getInstallationDate())
                 .build();
 
-        if (dto.getRoomId() != null) {
-            entity.setRoom(roomService.getRoomById(dto.getRoomId()));
+        addRoomToEntity(dto, entity);
+        if (dto.getFieldInstances() != null) {
+            entity.setFieldInstances(fieldInstanceMapper.toEntitySet(dto.getFieldInstances()));
         }
+
+        addSubsystemsToEntity(dto, entity);
 
         baseAssetMapper.copyToEntity(dto, entity);
 
         return entity;
+    }
+
+    private void addSubsystemsToEntity(AssetDto dto, Asset entity) {
+        if (dto.getSubsystemIds() != null) {
+            dto.getSubsystemIds().forEach(id -> {
+                Asset asset = assetService.getAssetById(id);
+                entity.getSubsystems().add(asset);
+            });
+        }
+    }
+
+    private void addRoomToEntity(final AssetDto dto, final Asset entity) {
+        if (dto.getRoom() != null && dto.getRoomId() != null && !dto.getRoomId().equals(dto.getRoom().getId())) {
+            throw new IllegalArgumentException("Id of room is different to roomId");
+        }
+
+        if (dto.getRoom() != null) {
+            entity.setRoom(roomMapper.toEntity(dto.getRoom()));
+        } else if (dto.getRoomId() != null) {
+            entity.setRoom(roomService.getRoomById(dto.getRoomId()));
+        }
     }
 
     @Override

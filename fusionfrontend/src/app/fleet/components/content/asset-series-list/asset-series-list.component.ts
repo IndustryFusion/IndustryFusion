@@ -15,20 +15,18 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details-query.service';
+import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { tap } from 'rxjs/operators';
 import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
-import { AssetSeriesStore } from '../../../../store/asset-series/asset-series.store';
-import { CompanyStore } from '../../../../store/company/company.store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesCreateComponent } from '../asset-series-create/asset-series-create.component';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
+import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -38,7 +36,7 @@ import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 export class AssetSeriesListComponent implements OnInit, OnDestroy {
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No asset series.', '=1': '# Asset series', other: '# Asset series' };
+    { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
 
   editBarMapping:
     { [k: string]: string } = {
@@ -58,11 +56,9 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public companyStore: CompanyStore,
     public companyQuery: CompanyQuery,
     public assetSeriesService: AssetSeriesService,
     public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
-    public assetSeriesStore: AssetSeriesStore,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
     public  assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
     public unitsResolver: UnitsResolver,
@@ -70,7 +66,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
     this.items$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetTypeTemplatesResolver.resolve().subscribe();
@@ -86,8 +81,21 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     this.assetSeriesDetailsQuery.resetError();
   }
 
-  createItem() {
+  createAssetSeries() {
     this.startAssetSeriesWizard('');
+  }
+
+  createAsset(assetSeriesId: ID) {
+    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        prefilledAssetSeriesId: assetSeriesId,
+      },
+      header: 'Digital Twin Creator for Assets',
+      width: '75%'
+    });
+
+    assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
   onSort(field: string) {
@@ -143,33 +151,19 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString(), 2);
+    this.startAssetSeriesWizard(itemId.toString());
   }
 
-  public startAssetSeriesWizard(idString: string, startStep: number = 1) {
-    const dialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
+  public startAssetSeriesWizard(idString: string) {
+    const dynamicDialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
       data: {
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,
-        step: startStep
       },
-      width: '75%'
+      width: '90%',
+      header: 'AssetSeries Implementation',
     });
-
-    dialogRef.onClose.subscribe((value: AssetSeries) => {
-      if (value) {
-        this.updateAssetSeries(value);
-      }
-    });
+    dynamicDialogRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  updateAssetSeries(assetSeries: AssetSeries) {
-    if (assetSeries.id) {
-      this.assetSeriesService.editItem(assetSeries.id, assetSeries)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    } else {
-      this.assetSeriesService.createItem(assetSeries.companyId, assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => assetSeries = newAssetSeries);
-    }
-  }
 }

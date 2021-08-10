@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AssetDetailsWithFields, AssetModalMode } from '../../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields, AssetModalMode } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
-import { Location } from '../../../../../store/location/location.model';
-import { AssetDetails, AssetModalType } from 'src/app/store/asset-details/asset-details.model';
+import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
+import { FactoryAssetDetails, AssetModalType } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
@@ -20,30 +20,30 @@ import { Location as loc  } from '@angular/common';
 export class AssetsListItemComponent implements OnInit, OnChanges {
 
   @Input()
-  assetWithDetailsAndFields: AssetDetailsWithFields;
+  assetWithDetailsAndFields: FactoryAssetDetailsWithFields;
   @Input()
   rooms: Room[];
   @Input()
-  allRoomsOfLocations: Room[];
+  allRoomsOfFactorySite: Room[];
   @Input()
   room: Room;
   @Input()
-  locations: Location[];
+  factorySites: FactorySite[];
   @Input()
-  location: Location;
+  factorySite: FactorySite;
   @Input()
   selected = false;
   @Output()
-  assetSelected = new EventEmitter<AssetDetailsWithFields>();
+  assetSelected = new EventEmitter<FactoryAssetDetailsWithFields>();
   @Output()
-  assetDeselected = new EventEmitter<AssetDetailsWithFields>();
+  assetDeselected = new EventEmitter<FactoryAssetDetailsWithFields>();
   @Output()
-  editAssetEvent = new EventEmitter<AssetDetails>();
+  editAssetEvent = new EventEmitter<FactoryAssetDetails>();
   @Output()
-  deleteAssetEvent = new EventEmitter<AssetDetailsWithFields>();
+  deleteAssetEvent = new EventEmitter<FactoryAssetDetailsWithFields>();
 
   showStatusCircle = false;
-  roomsOfLocation: Room[];
+  roomsOfFactorySite: Room[];
   assetDetailsForm: FormGroup;
   ref: DynamicDialogRef;
   menuActions: MenuItem[];
@@ -56,69 +56,77 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     private routingLocation: loc) {
       this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
       this.menuActions = [
-        { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-        { label: 'Move item', icon: 'pi pw-fw pi-clone', command: (_) => { this.showEditRoomDialog(); } },
-        { label: 'Delete item', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
+        { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
+        { label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => { this.openAssignRoomDialog(); } },
+        { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
       ];
   }
 
   ngOnInit(): void {
     this.route = this.routingLocation.path();
-    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ((changes.location && this.location)) {
-      this.roomsOfLocation = this.location.rooms;
+    if ((changes.factorySite && this.factorySite)) {
+      this.roomsOfFactorySite = this.factorySite.rooms;
     }
   }
 
   showEditDialog() {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
         assetToBeEdited: this.assetWithDetailsAndFields,
-        locations: this.locations,
-        location: this.location,
+        factorySites: this.factorySites,
+        factorySite: this.factorySite,
         rooms: this.rooms,
         activeModalType: AssetModalType.customizeAsset,
         activeModalMode: AssetModalMode.editAssetMode
       },
-      header: 'Assign name and description to asset',
-      contentStyle: { 'padding-top': '1.5%' }
+      header: 'General Information',
     });
 
-    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
+    ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
       if (assetFormValues) {
         this.editAssetEvent.emit(assetFormValues);
       }
     });
   }
 
-  showEditRoomDialog() {
+  openAssignRoomDialog() {
+    if (this.factorySite) {
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
+        'Room Assignment (' + this.factorySite.name + ')');
+    } else {
+      this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,
+        'Factory Site Assignment');
+    }
+  }
+
+  showAssignRoomDialog(assetModalType: AssetModalType, assetModalMode: AssetModalMode, header: string ) {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
         assetToBeEdited: this.assetWithDetailsAndFields,
-        locations: this.locations,
-        location: this.location,
+        factorySites: this.factorySites,
+        factorySite: this.factorySite,
         rooms: this.rooms,
-        editRoomMode: true,
-        activeModalType: AssetModalType.roomAssignment,
-        activeModalMode: AssetModalMode.editRoomForAssetMode
+        activeModalType: assetModalType,
+        activeModalMode: assetModalMode
       },
-      header: 'Assign asset to room',
-      contentStyle: { 'padding-top': '1.5%' }
+      header
     });
 
-    ref.onClose.subscribe((assetFormValues: AssetDetails) => {
-      if (assetFormValues) {
-        this.editAssetEvent.emit(assetFormValues);
+    ref.onClose.subscribe((newAssetDetails: FactoryAssetDetails) => {
+      if (newAssetDetails) {
+        this.editAssetEvent.emit(newAssetDetails);
       }
     });
   }
 
-  createDetailsAssetForm(formBuilder: FormBuilder, assetWithDetailsAndFields: AssetDetailsWithFields) {
+  createDetailsAssetForm(formBuilder: FormBuilder, assetWithDetailsAndFields: FactoryAssetDetailsWithFields) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.assetDetailsForm = formBuilder.group({
       id: [null],
@@ -130,7 +138,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
       assetSeriesName: ['', requiredTextValidator],
       category: ['', requiredTextValidator],
       roomName: ['', requiredTextValidator],
-      locationName: ['', requiredTextValidator]
+      factorySiteName: ['', requiredTextValidator]
     });
     this.assetDetailsForm.patchValue(assetWithDetailsAndFields);
   }

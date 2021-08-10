@@ -13,18 +13,21 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<header class="" *ngIf="show">
+<header *ngIf="show">
   <section class="main-header">
     <ul class="navigation">
-      <li (click)="onHomeClick()">
-        <div class="icon home"></div>
+      <li (click)="onBackClick()">
+        <div class="icon back"></div>
       </li>
-      <li>
+      <li class="bigger" (click)="onHomeClick()">
+        <div class="icon home bigger"></div>
+      </li>
+      <!--<li> TODO: will be added later
         <div class="icon grid"></div>
       </li>
       <li class="">
         <div class="icon line-chart"></div>
-      </li>
+      </li>-->
     </ul>
     <div class="page-header">
       <app-ecosystem-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);"
@@ -33,6 +36,7 @@ under the License.
                               [factorySubTitle]="factorySubTitle$ | async"></app-factory-page-title>
       <app-fleet-page-title *ngIf="isManager(ManagerType.FLEET_MANAGER);"></app-fleet-page-title>
       <app-dashboard-page-title *ngIf="isDashboards();"></app-dashboard-page-title>
+      <app-fusion-applet-page-title *ngIf="isFusionApplet()"></app-fusion-applet-page-title>
       <div *ngIf="isHome()">
         <h1>Smart Factory</h1>
         <h2>Apps</h2>
@@ -46,8 +50,8 @@ under the License.
         <clr-icon shape="cog"></clr-icon>
       </li>
       <li class="message"></li>
-      <li class="user" *ngIf="user"></li>
-      <li class="user-name" *ngIf="user">
+      <li *ngIf="user" class="user"></li>
+      <li *ngIf="user" class="user-name">
         Michel-Markuse
         <clr-icon class="user-name-more" shape="caret" style="transform: rotate(180deg);"></clr-icon>
       </li>
@@ -58,6 +62,8 @@ under the License.
     <app-factory-sub-header *ngIf="isManager(ManagerType.FACTORY_MANAGER)"></app-factory-sub-header>
     <app-fleet-sub-header *ngIf="isManager(ManagerType.FLEET_MANAGER);"></app-fleet-sub-header>
     <app-dashboard-sub-header *ngIf=" isDashboards();"></app-dashboard-sub-header>
+    <app-fusion-applet-sub-header *ngIf="isFusionApplet()"></app-fusion-applet-sub-header>
+    <p-toast position="top-center" class="error-toast"></p-toast>
   </section>
 
 </header>

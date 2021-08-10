@@ -37,22 +37,22 @@ import java.util.Set;
 @Entity
 @NamedEntityGraph(name = "Company.allChildren",
         attributeNodes = {
-                @NamedAttributeNode(value = "locations"),
+                @NamedAttributeNode(value = "factorySites"),
                 @NamedAttributeNode(value = "assetSeries"),
                 @NamedAttributeNode(value = "assets")})
 @NamedEntityGraph(name = "Company.allChildrenDeep",
         attributeNodes = {
-                @NamedAttributeNode(value = "locations", subgraph = "locationChildren"),
+                @NamedAttributeNode(value = "factorySites", subgraph = "factorySitesChildren"),
                 @NamedAttributeNode(value = "assetSeries", subgraph = "assetSeriesChildren"),
                 @NamedAttributeNode(value = "assets")},
         subgraphs = {
-                @NamedSubgraph(name = "locationChildren", attributeNodes = {
+                @NamedSubgraph(name = "factorySiteChildren", attributeNodes = {
                         @NamedAttributeNode(value = "rooms")
                 }),
                 @NamedSubgraph(name = "assetSeriesChildren", attributeNodes = {
                         @NamedAttributeNode(value = "assets"),
                         @NamedAttributeNode(value = "fieldSources")})})
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_company")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_company")
 @Getter
 @Setter
 @SuperBuilder
@@ -64,7 +64,7 @@ public class Company extends BaseEntity {
 
     @OneToMany(mappedBy = "company")
     @Builder.Default
-    private Set<Location> locations = new LinkedHashSet<>();
+    private Set<FactorySite> factorySites = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "company")
     @Builder.Default
@@ -79,6 +79,9 @@ public class Company extends BaseEntity {
     private String imageKey;
 
     public void copyFrom(final Company sourceCompany) {
+        if (sourceCompany.getType() != null) {
+            setType(sourceCompany.getType());
+        }
         if (sourceCompany.getDescription() != null) {
             setDescription(sourceCompany.getDescription());
         }

@@ -21,7 +21,7 @@
   font-weight: bolder;
   font-size: 0.9em;
 
-  background: #C42326 0 0 no-repeat padding-box;
+  background: $trash-button 0 0 no-repeat padding-box;
   border-radius: 10px;
   border: none;
   opacity: 1;
@@ -31,9 +31,12 @@
   cursor: pointer;
 
   margin: 8px 4px;
-  padding-top: 6px;
 
   &:hover {
-    background: #d56365 0 0 no-repeat padding-box;
+    background: $trash-button-hover 0 0 no-repeat padding-box;
+  }
+
+  &:disabled {
+    background: $disabled-button 0 0 no-repeat padding-box;
   }
 }

@@ -13,6 +13,9 @@
  * under the License.
  */
 
+@import 'abstract/variables';
+@import 'base/typography';
+
 .asset-item {
   padding-top: 10px;
   padding-bottom: 15px;
@@ -26,23 +29,40 @@
 }
 
 .column-class {
-  align-self: center
+  align-self: center;
 }
 
 .asset-name {
-  font-size: 22px;
+  font-size: $big-font-size;
+  font-weight: bold;
   padding-top: 0;
   padding-bottom: 2px;
 }
 
 .asset-information {
-  font-size: 16px;
+  font-size: $medium-font-size;
   color: #95989A;
   padding-top: 0;
   padding-bottom: 2px;
 }
 
 .onboaring-text {
-  font-size: 16px;
-  color: #2CA9CE;
+  text-align: center;
+  font-size: $medium-font-size;
+  color: $onboarding-text;
+}
+
+.no-asset-to-pair-div {
+  text-align: center;
+  padding: 5%;
+}
+
+.no-assets-icon {
+  font-size: $big-font-size !important;
+  padding-bottom: 3%;
+}
+
+.text-styling {
+  font-size: $big-font-size;
+  color: $basic-black;
 }

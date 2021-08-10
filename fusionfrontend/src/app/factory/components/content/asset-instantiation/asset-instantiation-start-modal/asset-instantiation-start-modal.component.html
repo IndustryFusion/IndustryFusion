@@ -26,12 +26,16 @@ under the License.
           <span class="p-col asset-information">{{assetToBeOnboarded.manufacturer}}</span>
         </div>
         <div class="p-col-3 p-dir-col column-class">
-          <span class="onboaring-text">Ready for onboarding!</span>
+          <div class="onboaring-text">Ready for onboarding!</div>
         </div>
         <div class="p-col-3 p-dir-col column-class">
-          <button type="button" class="if-button button-secondary" (click)="onSubmit(assetToBeOnboarded)">Start</button>
+          <button type="button" class="if-button button-primary" (click)="onSubmit(assetToBeOnboarded)">Start</button>
         </div>
       </div>
+    </div>
+    <div *ngIf="!assetsToBeOnboarded" class="no-asset-to-pair-div">
+      <div><i class="pi exclamation-triangle no-assets-icon"></i></div>
+      <span class="text-styling">No Assets to be onboarded!</span>
     </div>
   </ng-container>
 </div>

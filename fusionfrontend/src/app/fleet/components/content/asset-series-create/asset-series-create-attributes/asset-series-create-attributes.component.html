@@ -1,0 +1,52 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<div class="asset-series-create-attributes">
+  <div class="content">
+    <div id="column left">
+      <div class="title">Attributes</div>
+      <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no attributes available</div>
+      <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
+        <div class="header-row p-grid">
+          <span class="if-label-small-header p-col-3">Custom Attribute name</span>
+          <span class="if-label-small-header p-col-3">Attribute name</span>
+          <span class="if-label-small-header p-col">Value</span>
+          <span class="if-label-small-header p-col-1">Unit</span>
+          <span class="if-label-small-header p-col"></span>
+        </div>
+        <div *ngFor="let fieldSource of fieldSourcesFormArray.controls;" class="p-grid attribute-row">
+          <ng-container [formGroup]="fieldSource //noinspection InvalidExpressionResultType">
+          <span class="p-col-3 "><label displayControlValue="name"></label></span>
+          <span class="p-col-3 "><label displayControlValue="fieldName"></label></span>
+          <span class="p-col">
+              <input *ngIf="isEditMode(fieldSource)" class="value-input" placeholder="Value" formControlName="value">
+              <label *ngIf="!isEditMode(fieldSource)" displayControlValue="value"></label>
+          </span>
+          <span class="p-col-1"><label displayControlValue="sourceUnitName"></label></span>
+          <span class="p-col edit-col">
+            <app-confirm-button *ngIf="isEditMode(fieldSource)"
+                                (confirmItem)="saveValue(fieldSource)">
+            </app-confirm-button>
+            <app-edit-button *ngIf="!isEditMode(fieldSource)" class="edit-button"
+                             (editItem)="fieldSource.get('saved').patchValue(false)">
+            </app-edit-button>
+            <app-trash-button (deleteItem)="removeValue(fieldSource)"
+                              [disabled]="!isEditMode(fieldSource)"></app-trash-button>
+          </span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

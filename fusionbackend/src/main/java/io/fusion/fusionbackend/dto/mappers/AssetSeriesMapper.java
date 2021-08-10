@@ -16,7 +16,9 @@
 package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetSeriesDto;
+import io.fusion.fusionbackend.dto.FieldSourceDto;
 import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.FieldSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,11 +29,14 @@ import java.util.stream.Collectors;
 @Component
 public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeriesDto> {
     private final BaseAssetMapper baseAssetMapper;
+    private final FieldSourceMapper fieldSourceMapper;
 
     @Autowired
-    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper) {
+    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper, FieldSourceMapper fieldSourceMapper) {
         this.baseAssetMapper = baseAssetMapper;
+        this.fieldSourceMapper = fieldSourceMapper;
     }
+
 
     private AssetSeriesDto toDtoShallow(final AssetSeries entity) {
         if (entity == null) {
@@ -55,12 +60,21 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
 
 
     private AssetSeriesDto toDtoDeep(final AssetSeries entity) {
-        return toDtoShallow(entity);
+        AssetSeriesDto assetSeriesDto = toDtoShallow(entity);
+        if (assetSeriesDto.getFieldSources() != null) {
+            Set<FieldSourceDto> fieldSourceDtos = fieldSourceMapper.toDtoSet(entity.getFieldSources(), true);
+            assetSeriesDto.setFieldSources(fieldSourceDtos);
+        }
+        return assetSeriesDto;
     }
 
     @Override
     public AssetSeriesDto toDto(AssetSeries entity, boolean embedChildren) {
-        return toDtoShallow(entity);
+        if (embedChildren) {
+            return toDtoDeep(entity);
+        } else {
+            return toDtoShallow(entity);
+        }
     }
 
     @Override
@@ -77,6 +91,11 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .build();
 
         baseAssetMapper.copyToEntity(dto, entity);
+
+        if (dto.getFieldSources() != null) {
+            Set<FieldSource> fieldSources = fieldSourceMapper.toEntitySet(dto.getFieldSources());
+            entity.setFieldSources(fieldSources);
+        }
 
         return entity;
     }

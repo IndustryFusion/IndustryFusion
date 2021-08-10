@@ -17,20 +17,17 @@ under the License.
   <div class="list-header-item" [style.width.%]="5"></div>
   <div class="list-header-item" [style.width.%]="30">Asset</div>
   <div class="list-header-item" [style.width.%]="30">Category
-    <app-list-filter [assets]="assets" [attribute]="'category'" [attributeName]="'category'" (filterEvent)="onFilter($event)"></app-list-filter>
+    <app-list-filter [assets]="factoryAssetDetailsWithFields" [attribute]="'category'" [attributeName]="'category'" (filterEvent)="onFilter($event)"></app-list-filter>
   </div>
   <div class="list-header-item" [style.width.%]="40">Manufacturer
-    <app-list-filter [assets]="assets" [attribute]="'manufacturer'" [attributeName]="'manufacturer'" (filterEvent)="onFilter($event)"></app-list-filter>
+    <app-list-filter [assets]="factoryAssetDetailsWithFields" [attribute]="'manufacturer'" [attributeName]="'manufacturer'" (filterEvent)="onFilter($event)"></app-list-filter>
   </div>
   <div class="list-header-item" [style.width.%]="15">Room
-    <app-list-filter [assets]="assets" [attribute]="'roomName'" [attributeName]="'room'" (filterEvent)="onFilter($event)"></app-list-filter>
+    <app-list-filter [assets]="factoryAssetDetailsWithFields" [attribute]="'roomName'" [attributeName]="'room'" (filterEvent)="onFilter($event)"></app-list-filter>
   </div>
-  <div class="list-header-item" [style.width.%]="15">Location
-    <app-list-filter [assets]="assets" [attribute]="'locationName'" [attributeName]="'location'" (filterEvent)="onFilter($event)"></app-list-filter>
+  <div class="list-header-item" [style.width.%]="15">Factory Site
+    <app-list-filter [assets]="factoryAssetDetailsWithFields" [attribute]="'factorySiteName'" [attributeName]="'factorySite'" (filterEvent)="onFilter($event)"></app-list-filter>
   </div>
   <div class="list-header-item" [style.width.%]="15">Status</div>
   <div class="list-header-item" [style.width.%]="5"></div>
 </div>
-
-
-

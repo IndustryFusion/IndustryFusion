@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.dto.mappers;
 import io.fusion.fusionbackend.dto.AssetDetailsDto;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Room;
 import org.springframework.stereotype.Component;
@@ -34,13 +35,15 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
         String assetSeriesName = null;
         String category = null;
         String roomName = null;
-        String locationName = null;
+        String factorySiteName = null;
+        String assetTypeName = null;
+        Long assetSeriesId = null;
 
         if (entity.getRoom() != null) {
             Room room = entity.getRoom();
             roomName = room.getName();
-            if (room.getLocation() != null) {
-                locationName = room.getLocation().getName();
+            if (room.getFactorySite() != null) {
+                factorySiteName = room.getFactorySite().getName();
             }
         }
 
@@ -49,8 +52,11 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
             Company assetSeriesCompany = assetSeries.getCompany();
             manufacturer = assetSeriesCompany.getDescription();
             assetSeriesName = assetSeries.getName();
+            assetSeriesId = assetSeries.getId();
             if (assetSeries.getAssetTypeTemplate() != null) {
-                category = assetSeries.getAssetTypeTemplate().getAssetType().getDescription();
+                AssetType assetType = assetSeries.getAssetTypeTemplate().getAssetType();
+                category = assetType.getDescription();
+                assetTypeName = assetType.getName();
             }
         }
 
@@ -73,8 +79,10 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .manufacturer(manufacturer)
                 .category(category)
                 .roomName(roomName)
-                .locationName(locationName)
+                .factorySiteName(factorySiteName)
+                .assetSeriesId(assetSeriesId)
                 .assetSeriesName(assetSeriesName)
+                .assetTypeName(assetTypeName)
                 .name(entity.getName())
 
                 .description(entity.getDescription())

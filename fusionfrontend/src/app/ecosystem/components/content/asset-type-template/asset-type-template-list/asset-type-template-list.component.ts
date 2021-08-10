@@ -39,7 +39,7 @@ export class AssetTypeTemplateListComponent extends BaseListComponent implements
   @Input() parentAssetTypeId: ID | null;
 
   public titleMapping:
-    { [k: string]: string } = { '=0': 'No asset type templates.', '=1': '# Asset type template', other: '# Asset type templates' };
+    { [k: string]: string } = { '=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates' };
 
   public editBarMapping:
     { [k: string]: string } = {

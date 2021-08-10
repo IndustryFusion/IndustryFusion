@@ -14,14 +14,12 @@ under the License.
 -->
 
 <div>
-    <span class="context-info">You can assign a specific name and description to your asset to customize them.</span>
-
   <div>
     <form [formGroup]="assetDetailsForm">
       <div class="p-grid asset-info">
         <img class="asset-image p-col-4" src="assets/img/{{assetDetailsForm.get('imageKey').value}}" alt="Asset Image">
         <div class="p-col-6 p-grid p-flex-column">
-          <h4 class="asset-name p-col">{{assetDetailsForm.get('assetSeriesName').value}}</h4>
+          <span class="asset-name p-col">{{assetDetailsForm.get('name').value}}</span>
           <span class="text-styling p-col">{{assetDetailsForm.get('category').value}}</span>
           <span class="text-styling p-col">{{assetDetailsForm.get('manufacturer').value}}</span>
         </div>
@@ -37,8 +35,8 @@ under the License.
       </div>
       <div class="description-dialog-footer">
         <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
-        <button type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="assetDetailsForm.controls['name'].invalid
-              || assetDetailsForm.controls['description'].invalid">Next</button>
+        <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="assetDetailsForm.get('name').invalid
+              || assetDetailsForm.get('description').invalid">Next</button>
       </div>
     </form>
   </div>

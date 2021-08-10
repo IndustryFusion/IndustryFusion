@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ManagerType = ManagerType;
 
-  constructor(private location: Location,
+  constructor(private routingLocation: Location,
               private router: Router) { }
 
   ngOnInit() {
@@ -51,8 +51,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     .pipe(
       takeUntil(this.unSubscribe$)
     ).subscribe(() => {
-      if (this.location.path() !== '') {
-        this.route = this.location.path();
+      if (this.routingLocation.path() !== '') {
+        this.route = this.routingLocation.path();
       } else {
         this.route = '/';
       }
@@ -67,12 +67,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match(`\/${'dashboards'}\/`);
   }
 
+  isFusionApplet() {
+    return this.route && this.route.match(`\/${'fusion-applets\/'}`);
+  }
+
   isHome() {
     return this.route && this.route.match('/home');
   }
 
   onHomeClick() {
     return this.router.navigate(['/home']);
+  }
+
+  onBackClick() {
+    return this.routingLocation.back();
   }
 
   ngOnDestroy(): void {

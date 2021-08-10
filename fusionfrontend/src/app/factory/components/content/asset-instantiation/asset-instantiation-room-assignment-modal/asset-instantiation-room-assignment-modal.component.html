@@ -14,11 +14,7 @@ under the License.
 -->
 
 <div>
-  <span class="context-info">You can assign your assets to specific rooms to create a topology in your factory.</span> <br>
-
-  <h3 class="heading">Your rooms</h3>
-  <span class="room-text">Select the room where your asset is located</span><br>
-
+  <div class="room-text">Select room</div>
   <span class="p-input-icon-right room-search-input">
     <i class="pi pi-search"></i>
     <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterRooms()">
@@ -33,8 +29,9 @@ under the License.
   </div>
 
   <div class="assign-room-dialog-footer">
-    <button *ngIf="activeModalMode != assetModalModes.editRoomForAssetMode" type="button" class="if-button button-secondary" (click)="onCancel()">Back</button>
-    <button type="button" class="if-button button-secondary" (click)="onSubmit()"
-            [disabled]="!selectedRoom">Finish</button>
+    <button type="button" class="if-button button-secondary" (click)="onCancel()">
+      {{ activeModalMode == assetModalModes.editRoomWithPreselecedFactorySiteMode ? 'Cancel' : 'Back' }}</button>
+    <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="!selectedRoom">
+      {{ activeModalMode != assetModalModes.onboardAssetMode ? 'Apply' : 'Onboard' }}</button>
   </div>
 </div>

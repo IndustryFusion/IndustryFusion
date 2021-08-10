@@ -13,7 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-locations-map [locations]="locations" (selectedLocation)="setSelectedLocation($event)"></app-locations-map>
+<app-factory-site-map [factorySites]="factorySites" (selectedFactorySite)="setSelectedFactorySite($event)"></app-factory-site-map>
 
-<app-locations (createLocationEvent)="locationCreated($event)" (updateLocationEvent)="locationUpdated($event)">
-</app-locations>
+<app-factory-sites (createFactorySiteEvent)="factorySiteCreated($event)"
+                   (updateFactorySiteEvent)="factorySiteUpdated($event)">
+</app-factory-sites>

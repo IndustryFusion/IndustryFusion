@@ -20,15 +20,20 @@ import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.repository.FieldTargetRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Service
 @Transactional
@@ -37,6 +42,8 @@ public class AssetTypeTemplateService {
     private final AssetTypeService assetTypeService;
     private final FieldTargetRepository fieldTargetRepository;
     private final FieldService fieldService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AssetTypeTemplateService.class);
 
     @Autowired
     public AssetTypeTemplateService(AssetTypeTemplateRepository assetTypeTemplateRepository,
@@ -56,23 +63,47 @@ public class AssetTypeTemplateService {
     public AssetTypeTemplate getAssetTypeTemplate(final Long assetTypeTemplateId, final boolean deep) {
         if (deep) {
             return assetTypeTemplateRepository.findDeepById(assetTypeTemplateId)
-                    .orElseThrow(ResourceNotFoundException::new);
+                    .orElseThrow(getAssetTypeTemplateNotFoundException(assetTypeTemplateId));
         }
         return assetTypeTemplateRepository.findById(assetTypeTemplateId)
-                .orElseThrow(ResourceNotFoundException::new);
+                .orElseThrow(getAssetTypeTemplateNotFoundException(assetTypeTemplateId));
+    }
+
+    private Supplier<ResourceNotFoundException> getAssetTypeTemplateNotFoundException(Long assetTypeTemplateId) {
+        LOG.debug("AssetTypeTemplate with ID {} not found", assetTypeTemplateId);
+        return ResourceNotFoundException::new;
     }
 
     public AssetTypeTemplate createAssetTypeTemplate(final Long assetTypeId,
                                                      final AssetTypeTemplate assetTypeTemplate) {
         final AssetType assetType = assetTypeService.getAssetType(assetTypeId);
+
+        validate(assetTypeTemplate, assetType);
+
+        assetTypeTemplate.setAssetType(assetType);
+
+        return assetTypeTemplateRepository.save(assetTypeTemplate);
+    }
+
+    private void validate(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
+        Objects.requireNonNull(assetTypeTemplate.getPublicationState(), "Publication state must be set but is null.");
+
+        if (assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)) {
+            Objects.requireNonNull(assetTypeTemplate.getPublishedDate(),
+                    "Published date must be set for publication state PUBLISHED");
+        } else if (assetTypeTemplate.getPublicationState().equals(PublicationState.DRAFT)) {
+            if (Objects.nonNull(assetTypeTemplate.getPublishedDate())) {
+                throw new RuntimeException("Published date not allowed for publication state DRAFT");
+            }
+        } else {
+            throw new RuntimeException("Unknown publication state: " + assetTypeTemplate.getPublicationState());
+        }
+
         if (assetType != null && existsDraftToAssetType(assetType)) {
             String exception = "It is forbidden to create a new asset type template draft if another one exists.";
             throw new RuntimeException(exception);
         }
 
-        assetTypeTemplate.setAssetType(assetType);
-
-        return assetTypeTemplateRepository.save(assetTypeTemplate);
     }
 
     private boolean existsDraftToAssetType(AssetType assetType) {
@@ -80,7 +111,7 @@ public class AssetTypeTemplateService {
                 .findAllByAssetType(assetType);
 
         for (AssetTypeTemplate assetTypeTemplate : assetTypeTemplatesOfAssetType) {
-            if (!assetTypeTemplate.getPublished()) {
+            if (assetTypeTemplate.getPublicationState().equals(PublicationState.DRAFT)) {
                 return true;
             }
         }
@@ -90,7 +121,7 @@ public class AssetTypeTemplateService {
 
     public AssetTypeTemplate updateAssetTypeTemplate(final Long assetTypeTemplateId,
                                                      final AssetTypeTemplate sourceAssetTypeTemplate) {
-        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,false);
+        final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
 
         targetAssetTypeTemplate.copyFrom(sourceAssetTypeTemplate);
 
@@ -101,8 +132,8 @@ public class AssetTypeTemplateService {
         final List<AssetTypeTemplate> assetTypeTemplates = this.assetTypeTemplateRepository
                 .findAllByAssetTypeId(assetTypeId);
         final Optional<Long> maxPublishedVersion = assetTypeTemplates.stream()
-                .filter(assetTypeTemplate -> assetTypeTemplate.getPublished()
-                    && assetTypeId.equals(assetTypeTemplate.getAssetType().getId()))
+                .filter(assetTypeTemplate -> assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)
+                        && assetTypeId.equals(assetTypeTemplate.getAssetType().getId()))
                 .map(AssetTypeTemplate::getPublishedVersion)
                 .max(Long::compare);
 
@@ -150,7 +181,7 @@ public class AssetTypeTemplateService {
     }
 
     public FieldTarget updateFieldTarget(final Long assetTypeTemplateId, final Long fieldTargetId,
-                                           final FieldTarget fieldTarget) {
+                                         final FieldTarget fieldTarget) {
         final FieldTarget targetFieldTarget = getFieldTarget(assetTypeTemplateId, fieldTargetId);
 
         targetFieldTarget.copyFrom(fieldTarget);

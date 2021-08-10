@@ -22,7 +22,7 @@ import { OispService } from 'src/app/services/oisp.service';
 import { StatusService } from 'src/app/services/status.service';
 import { FieldDetails } from '../../../../store/field-details/field-details.model';
 import { Status } from '../../../models/status.model';
-import { AssetDetailsWithFields } from '../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 
 @Component({
   selector: 'app-status',
@@ -32,7 +32,7 @@ import { AssetDetailsWithFields } from '../../../../store/asset-details/asset-de
 export class StatusComponent implements OnInit {
 
   @Input()
-  asset: AssetDetailsWithFields;
+  asset: FactoryAssetDetailsWithFields;
 
   @Input()
   showStatusCircle;

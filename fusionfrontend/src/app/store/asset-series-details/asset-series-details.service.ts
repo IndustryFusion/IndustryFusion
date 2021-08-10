@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { AssetSeriesDetails } from './asset-series-details.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AssetSeriesDetailsStore } from './asset-series-details-store.service';
+import { AssetSeriesDetailsStore } from './asset-series-details.store';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';
@@ -30,16 +30,17 @@ export class AssetSeriesDetailsService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private assetSeriesStore: AssetSeriesDetailsStore, private http: HttpClient) { }
+  constructor(private assetSeriesDetailsStore: AssetSeriesDetailsStore, private http: HttpClient) { }
 
-  getAssetSeriesDetailsOfCompany(companyId: ID): Observable<AssetSeriesDetails[]> {
+  getAssetSeriesDetailsOfCompany(companyId: ID, refresh: boolean = false): Observable<AssetSeriesDetails[]> {
     const path = `companies/${companyId}/assetseriesdetails`;
     const cacheKey = 'company-' + companyId;
-    return this.assetSeriesStore.cachedByParentId(cacheKey,
+    if (refresh) { this.assetSeriesDetailsStore.invalidateCacheParentId(cacheKey); }
+
+    return this.assetSeriesDetailsStore.cachedByParentId(cacheKey,
       this.http.get<AssetSeriesDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
-        console.log(entities);
-        this.assetSeriesStore.upsertManyByParentIdCached(cacheKey, entities);
+        this.assetSeriesDetailsStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }
 }

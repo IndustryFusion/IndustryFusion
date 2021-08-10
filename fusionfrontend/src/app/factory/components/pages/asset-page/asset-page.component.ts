@@ -13,7 +13,6 @@
  * under the License.
  */
 
-import { Location as loc } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
@@ -23,7 +22,7 @@ import { PointWithId } from 'src/app/services/oisp.model';
 import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
 
 @Component({
@@ -33,7 +32,7 @@ import { Room } from 'src/app/store/room/room.model';
 })
 export class AssetPageComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
-  location$: Observable<Location>;
+  factorySite$: Observable<FactorySite>;
   rooms$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   asset$: Observable<Asset>;
@@ -46,14 +45,13 @@ export class AssetPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetQuery: AssetQuery,
-    private routingLocation: loc,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.isLoading$ = this.assetQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
-    this.location$ = this.factoryResolver.location$;
+    this.factorySite$ = this.factoryResolver.factorySite$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.assets$ = this.factoryResolver.assets$;
     this.asset$ = this.factoryResolver.asset$;
@@ -62,9 +60,5 @@ export class AssetPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 }

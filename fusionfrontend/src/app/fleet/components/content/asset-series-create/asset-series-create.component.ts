@@ -13,91 +13,59 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
-import { Observable } from 'rxjs';
-import { AssetSeriesComposedQuery } from '../../../../store/composed/asset-series-composed.query';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ViewMode } from './view-mode.enum';
+import { FieldService } from '../../../../store/field/field.service';
 
 @Component({
-  selector: 'app-asset-type-template-create',
+  selector: 'app-asset-series-create',
   templateUrl: './asset-series-create.component.html',
   styleUrls: ['./asset-series-create.component.scss']
 })
 export class AssetSeriesCreateComponent implements OnInit {
 
-  constructor(private assetSeriesService: AssetSeriesService,
-              private assetSeriesQuery: AssetSeriesComposedQuery,
-              private route: ActivatedRoute,
-              private router: Router,
-              formBuilder: FormBuilder
-  ) {
-
-    this.checkboxGroup = formBuilder.group({
-      isTermsChecked: [false, Validators.requiredTrue],
-      isPrivacyChecked: [false, Validators.requiredTrue],
-    });
-
-  }
-
-  step = 1;
   assetType: ID;
   companyId: ID;
   error: any;
-  checkboxGroup: FormGroup;
+  step = 1;
   toalSteps = 4;
-  assetSeries$: Observable<AssetSeries>;
   assetSeries: AssetSeries = new AssetSeries();
+  mode: ViewMode = ViewMode.CREATE;
+  attributesValid: boolean;
+  metricsValid: boolean;
+
+  constructor(private assetSeriesService: AssetSeriesService,
+              private changeDetectorRef: ChangeDetectorRef,
+              fieldService: FieldService,
+              private dialogConfig: DynamicDialogConfig,
+              private dynamicDialogRef: DynamicDialogRef,
+  ) {
+    fieldService.getItems().subscribe();
+    this.companyId = dialogConfig.data.companyId;
+    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
+    if (assetSeriesId) {
+      this.mode = ViewMode.EDIT;
+    } else {
+      this.mode = ViewMode.CREATE;
+    }
+
+    if (this.mode === ViewMode.EDIT) {
+      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
+        .subscribe(assetSeries => this.assetSeries = assetSeries);
+    }
+  }
 
   ngOnInit() {
-    this.companyId = this.route.parent.snapshot.params.companyId;
-    this.route.queryParamMap.subscribe(paramMap => {
-      if (paramMap.has('id')) {
-        this.assetSeries$ = this.assetSeriesQuery.selectAssetSeries(paramMap.get('id'));
-        this.assetSeries$.subscribe(assetSeries => this.assetSeries = assetSeries );
-      }
-      if (paramMap.has('step')) {
-        const paramStep = Number(paramMap.get('step'));
-        if (paramStep !== this.step) {
-          this.step = paramStep;
-          this.onStepChange(this.step);
-        }
-      }
-    });
   }
 
-  onStepChange(step: number) {
-    this.error = undefined;
-    this.step = step;
-    if (this.assetSeries?.id || this.assetSeries?.assetTypeTemplateId) {
-      this.onUpdateAssetSeries();
-    }
-    const queryParams: any = { step: this.step};
-    if (this.assetSeries?.id) {
-      queryParams.id = this.assetSeries.id;
-    }
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.route,
-        queryParams: { step: this.step, id: this.assetSeries?.id},
-        queryParamsHandling: 'merge'
-      });
-  }
-
-  onUpdateAssetSeries() {
-    if (this.assetSeries.id) {
-      this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries)
-        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
-    } else {
-      this.assetSeries.companyId = this.companyId;
-      this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries.assetTypeTemplateId)
-        .subscribe(newAssetSeries => this.assetSeries = newAssetSeries);
-    }
+  createAssetseriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
+    this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
+          .subscribe(assetSeries => this.assetSeries = assetSeries);
   }
 
   onCloseError() {
@@ -110,30 +78,57 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   nextStep() {
     if (this.step === this.toalSteps) {
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.saveAssetseries();
     } else {
-      this.onStepChange(this.step + 1);
+      this.step++;
     }
   }
 
   back() {
     if (this.step === 1) {
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.dynamicDialogRef.close();
     } else {
-      this.onStepChange( this.step - 1);
+      this.step--;
     }
   }
 
-  readyToTakeNextStep(): boolean {
+  isReadyForNextStep(): boolean {
     let result = true;
     switch (this.step) {
       case 1:
-        result = this.checkboxGroup.valid;
+        result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0;
         break;
       case 2:
-        result = this.assetSeries?.name !== undefined;
+        break;
+      case 3:
+        result = this.attributesValid;
+        break;
+      case 4:
+        result = this.metricsValid;
         break;
     }
     return result;
+  }
+
+
+  private saveAssetseries() {
+      if (this.assetSeries.id) {
+        this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
+        () => this.dynamicDialogRef.close()
+        );
+      } else {
+        this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
+          .subscribe(() => this.dynamicDialogRef.close());
+      }
+  }
+
+  setAttributesValid(isValid: boolean) {
+    this.attributesValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setMetricsValid(isValid: boolean) {
+    this.metricsValid = isValid;
+    this.changeDetectorRef.detectChanges();
   }
 }

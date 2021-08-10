@@ -18,13 +18,15 @@ import { Asset } from './asset.model';
 import { AssetStore } from './asset.store';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { environment } from '../../../environments/environment';
 import { RoomService } from '../room/room.service';
-import { AssetDetailsStore } from '../asset-details/asset-details.store';
-import { AssetDetailsService } from '../asset-details/asset-details.service';
-import { AssetDetails } from '../asset-details/asset-details.model';
+import { FactoryAssetDetailsStore } from '../factory-asset-details/factory-asset-details.store';
+import { FactoryAssetDetailsService } from '../factory-asset-details/factory-asset-details.service';
+import { FactoryAssetDetails } from '../factory-asset-details/factory-asset-details.model';
+import { FactorySiteService } from '../factory-site/factory-site.service';
+import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
 
 
 @Injectable({
@@ -36,8 +38,10 @@ export class AssetService {
   };
 
   constructor(private assetStore: AssetStore,
-              private assetDetailsService: AssetDetailsService,
-              private assetDetailsStore: AssetDetailsStore,
+              private assetSeriesDetailsService: AssetSeriesDetailsService,
+              private assetDetailsService: FactoryAssetDetailsService,
+              private assetDetailsStore: FactoryAssetDetailsStore,
+              private factorySiteService: FactorySiteService,
               private roomService: RoomService,
               private http: HttpClient) { }
 
@@ -58,34 +62,34 @@ export class AssetService {
       })));
   }
 
-  getAssetsOfLocation(companyId: ID, locationId: ID): Observable<Asset[]> {
-    const path = `companies/${companyId}/locations/${locationId}/assets`;
-    const cacheKey = 'location-' + companyId;
+  getAssetsOfFactorySite(companyId: ID, factorySiteId: ID): Observable<Asset[]> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/assets`;
+    const cacheKey = 'factorysite-' + factorySiteId;
     return this.assetStore.cachedByParentId(cacheKey, this.http.get<Asset[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.assetStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
 }
 
-  getAssetsOfRoom(companyId: ID, locationId: ID, roomId: ID): Observable<Asset[]> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}/assets`;
-    const cacheKey = 'room-' + companyId;
+  getAssetsOfRoom(companyId: ID, factorySiteId: ID, roomId: ID): Observable<Asset[]> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets`;
+    const cacheKey = 'room-' + companyId; // TODO: should it be 'room-' + roomId?
     return this.assetStore.cachedByParentId(cacheKey, this.http.get<Asset[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.assetStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }
 
-  getAssetOfRoom(companyId: ID, locationId: ID, roomId: ID, assetId: ID): Observable<Asset> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}/assets/${assetId}`;
+  getAssetOfRoom(companyId: ID, factorySiteId: ID, roomId: ID, assetId: ID): Observable<Asset> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/${assetId}`;
     return this.assetStore.cachedById(assetId, this.http.get<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assetStore.upsertCached(entity);
       })));
   }
 
-  assignAssetsToRoom(companyId: ID, locationId: ID, roomId: ID, assets: Asset[]): Observable<Asset[]> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}/assets/assigningAssetsToRoom`;
+  assignAssetsToRoom(companyId: ID, factorySiteId: ID, roomId: ID, assets: Asset[]): Observable<Asset[]> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/assigningAssetsToRoom`;
     return this.http.put<Asset[]>(`${environment.apiUrlPrefix}/${path}`, assets, this.httpOptions)
       .pipe(tap(entities => {
         entities.forEach(enitity => this.assetStore.upsertCached(enitity));
@@ -93,28 +97,37 @@ export class AssetService {
     }));
   }
 
-  assignAssetToRoom(companyId: ID, locationId: ID, newRoomId: ID, oldRoomId: ID, assetId: ID): Observable<Asset> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${newRoomId}/assets/${assetId}`;
+  assignAssetToRoom(companyId: ID, factorySiteId: ID, newRoomId: ID, oldRoomId: ID, assetId: ID): Observable<Asset> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${newRoomId}/assets/${assetId}`;
     return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assetStore.upsertCached(entity);
         // Refresh rooms
-        this.roomService.getRoom(companyId, locationId, newRoomId, true).subscribe();
-        this.roomService.getRoom(companyId, locationId, oldRoomId, true).subscribe();
+        this.roomService.getRoom(companyId, factorySiteId, newRoomId, true).subscribe();
+        this.roomService.getRoom(companyId, factorySiteId, oldRoomId, true).subscribe();
       }));
   }
 
-  createAssetFromAssetSeries(targetCompanyId: ID, assetSeriesId: ID, sourceCompanyId: ID): Observable<ID> {
-    const path = `companies/${targetCompanyId}/assetseries/${assetSeriesId}/company/${sourceCompanyId}`;
-    return this.http.post<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).pipe(
-      switchMap(asset => {
-        console.log('new asset id ' + asset.id);
-        this.assetStore.upsertCached(asset);
-        const assetDetails = this.assetDetailsService.getAssetDetails(asset.id).pipe(tap(entity => {
-          this.assetDetailsStore.upsertCached(entity);
-        }));
-        return assetDetails.pipe(map(entity => entity.id));
-      })
+  createAsset(companyId: ID, assetSeriesId: ID, asset: Asset): Observable<ID> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}/assets`;
+    return this.http.post<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
+      .pipe(
+        switchMap(savedAsset => {
+          this.assetStore.upsertCached(savedAsset);
+
+          const assetDetails = this.assetDetailsService.getAssetDetails(savedAsset.companyId, savedAsset.id)
+            .pipe(tap(entity => {
+            this.assetDetailsStore.upsertCached(entity);
+          }));
+
+          this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId, true).subscribe();
+          if (savedAsset.room) {
+            this.factorySiteService.getFactorySite(savedAsset.companyId, savedAsset.room.factorySite.id).subscribe();
+            this.roomService.getRoom(savedAsset.companyId, savedAsset.room.factorySite.id, savedAsset.roomId, false)
+              .subscribe();
+          }
+          return assetDetails.pipe(map(entity => entity.id));
+        })
     );
   }
 
@@ -122,18 +135,17 @@ export class AssetService {
     this.assetStore.setActive(assetId);
   }
 
-  updateCompanyAsset(companyId: ID, assetDetails: AssetDetails): Observable<Asset> {
-    const path = `companies/${companyId}/assets/${assetDetails.id}`;
+  updateCompanyAsset(companyId: ID, assetDetails: FactoryAssetDetails): Observable<Asset> {
+    const path = `companies/${assetDetails.companyId}/assets/${assetDetails.id}`;
     const asset: Asset = this.mapAssetDetailsToAsset(assetDetails);
-    return this.http.patch<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
+    return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(updatedAsset => {
             console.log('updated asset with id ' + updatedAsset.id);
             this.assetStore.upsertCached(updatedAsset);
-            const updatedAssetDetails = this.assetDetailsService.getAssetDetails(updatedAsset.id).pipe(tap(entity => {
+            return this.assetDetailsService.getAssetDetails(companyId, updatedAsset.id).pipe(tap(entity => {
               this.assetDetailsStore.upsertCached(entity);
             }));
-            return updatedAssetDetails;
           })
 
       );
@@ -153,7 +165,7 @@ export class AssetService {
     }));
   }
 
-  mapAssetDetailsToAsset(assetDetails: AssetDetails): Asset {
+  mapAssetDetailsToAsset(assetDetails: FactoryAssetDetails): Asset {
     const mappedAsset = new Asset();
     mappedAsset.id = assetDetails.id;
     mappedAsset.companyId = assetDetails.companyId;

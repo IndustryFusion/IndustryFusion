@@ -14,24 +14,50 @@
  */
 
   /** colors **/
-  $basic-grey: #95989A;
-  $light-grey: #F8F8F8;
-  $dark-gray: #00000029;
-  $basic-white: #FFFFFF;
-  $basic-black: #000000;
+  $basic-white:       #FFFFFF;
+  $light-grey:        #F8F8F8;
+  $dark-white:        #E6E6E6;
+  $middle-grey:       #B9B9B9;
+  $basic-grey:        #95989A;
+  $slight-grey:       #707070;
+  $regular-grey:      #666666;
+  $regular-dark-grey: #455B631A;
+  $dark-grey:         #333333;
+  $dark-gray:         #00000029;
+  $basic-black:       #000000;
 
-  $highlighted: $basic-black;
-  $inactive: #95989A;
-  $regular-grey: #666666;
-  $hover-grey: #333333;
+  $saturated-red:     #C42326;
+  $fusion-red:        #A73737;
+  $light-red:         #D56365;
+  $yellow:            #FBC02D;
+
+  $fusion-blue:       #2CA9CE;
+
+
+  /** function colors **/
+  $applet-editor-line-grey:   $slight-grey;
+  $tree-line-grey:            $middle-grey;
+  $warning:                   $yellow;
+  $error:                     $fusion-red;
+  $highlighted:               $basic-black;
+  $inactive:                  $basic-grey;
+  $hover-grey:                $dark-grey;
+  $hover-grey-border:         $basic-grey;
+  $disabled-button:           $dark-white;
+  $onboarding-text:           $fusion-blue;
+  $status-active:             $fusion-blue;
+  $trash-button:              $saturated-red;
+  $trash-button-hover:        $light-red;
+
 
   /** backgrounds **/
-  $grey-background: $light-grey 50% 50% no-repeat padding-box;
+  $grey-background:  $light-grey  50% 50% no-repeat padding-box;
   $white-background: $basic-white 50% 50% no-repeat padding-box;
   $black-background: $basic-black 50% 50% no-repeat padding-box;
 
 
-  $dark-box-shadow: 0px 3px 6px $dark-gray;
+  $dark-box-shadow: 0px 3px 6px  $dark-gray;
+  $grey-box-shadow: 0px 4px 16px $regular-dark-grey;
 
   /** checkbox size **/
   $checkbox-height: 16px;
@@ -40,5 +66,3 @@
   /** radiobutton size **/
   $radiobutton-height: 12px;
   $radiobutton-width: 12px;
-
-

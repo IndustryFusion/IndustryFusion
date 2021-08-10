@@ -33,7 +33,8 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
   companyId: ID;
   sub: Subscription;
 
-  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) { }
+  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
+  }
 
   ngOnInit() {
     this.sub = this.router.events
@@ -46,7 +47,7 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
           this.route = '/';
         }
       });
-    this.companyId = this.companyQuery.getActiveId();
+    this.companyQuery.selectLoading().subscribe( () => this.companyId = this.companyQuery.getActiveId());
   }
 
   ngOnDestroy(): void {

@@ -21,6 +21,8 @@ import { ID } from '@datorama/akita';
 import { RoomStore } from './room.store';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Asset } from '../asset/asset.model';
+import { RoomQuery } from './room.query';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +33,9 @@ export class RoomService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private roomStore: RoomStore, private http: HttpClient) { }
+  constructor(private roomStore: RoomStore,
+              private http: HttpClient,
+              private roomQuery: RoomQuery) { }
 
   getRoomsOfCompany(companyId: ID): Observable<Room[]> {
     const path = `companies/${companyId}/rooms`;
@@ -42,17 +46,17 @@ export class RoomService {
       })));
   }
 
-  getRooms(companyId: ID, locationId: ID): Observable<Room[]> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms`;
-    const cacheKey = 'location-' + companyId;
+  getRoomsOfFactorySite(companyId: ID, factorySiteId: ID): Observable<Room[]> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms`;
+    const cacheKey = 'factorysite-' + factorySiteId;
     return this.roomStore.cachedByParentId(cacheKey, this.http.get<Room[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.roomStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }
 
-  getRoom(companyId: ID, locationId: ID, roomId: ID, refresh: boolean = false): Observable<Room> {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}`;
+  getRoom(companyId: ID, factorySiteId: ID, roomId: ID, refresh: boolean = false): Observable<Room> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}`;
     if (refresh) { this.roomStore.invalidateCacheId(roomId); }
     return this.roomStore.cachedById(roomId, this.http.get<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
@@ -61,15 +65,15 @@ export class RoomService {
   }
 
   createRoom(companyId: ID, room: Room): Observable<Room> {
-    const path = `companies/${companyId}/locations/${room.locationId}/rooms`;
+    const path = `companies/${companyId}/factorysites/${room.factorySiteId}/rooms`;
     return this.http.post<Room>(`${environment.apiUrlPrefix}/${path}`, room, this.httpOptions)
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);
       }));
   }
 
-  deleteRoom(companyId: ID, locationId: ID, roomId: ID) {
-    const path = `companies/${companyId}/locations/${locationId}/rooms/${roomId}`;
+  deleteRoom(companyId: ID, factorySiteId: ID, roomId: ID) {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}`;
     return this.http.delete<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(() => {
         this.roomStore.removeCached(roomId);
@@ -77,11 +81,39 @@ export class RoomService {
   }
 
   updateRoom(companyId: ID, room: Room): Observable<Room> {
-    const path = `companies/${companyId}/locations/${room.locationId}/rooms/${room.id}`;
+    const path = `companies/${companyId}/factorysites/${room.factorySiteId}/rooms/${room.id}`;
     return this.http.put<Room>(`${environment.apiUrlPrefix}/${path}`, room, this.httpOptions)
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);
       }));
+  }
+
+
+  updateRoomsAfterEditAsset(oldAssetRoomId: ID, asset: Asset) {
+    this.roomStore.upsertCached(this.removeAssetFromOldRoom(oldAssetRoomId, asset));
+    this.roomStore.upsertCached(this.addAssetToNewRoom(asset));
+  }
+
+  removeAssetFromOldRoom(oldAssetRoomId, asset) {
+    const oldAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === oldAssetRoomId).pop() };
+    oldAssetRoom.assetIds = oldAssetRoom.assetIds.filter(assetId => assetId !== asset.id);
+    oldAssetRoom.assets = oldAssetRoom.assets.filter(arrayAsset => arrayAsset !== asset);
+
+    return oldAssetRoom;
+  }
+
+  addAssetToNewRoom(asset) {
+    const newAssetRoom = { ...this.roomQuery.getAll().filter(room => room.id === asset.roomId).pop() };
+    const assetIdsNewAssetRoom = [...newAssetRoom.assetIds];
+    const assetNewAssetRoom = [...newAssetRoom.assets];
+
+    assetIdsNewAssetRoom.push(asset.id);
+    assetNewAssetRoom.push(asset);
+
+    newAssetRoom.assetIds = assetIdsNewAssetRoom;
+    newAssetRoom.assets = assetNewAssetRoom;
+
+    return newAssetRoom;
   }
 
   setActive(roomId: ID) {

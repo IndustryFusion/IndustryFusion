@@ -1,55 +1,62 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 @import 'base/typography';
 @import 'abstract/variables';
 
-.dropdown-filter .p-dropdown {
+.p-dropdown {
   width: 100%;
   background-color: $basic-white !important;
   border: 2px solid $basic-white;
-  border-radius: 8px;
+  border-radius: 10px;
+  align-items: center;
   box-shadow: none !important;
 
   .p-dropdown-label {
-    font-weight: bold !important;
     border: none;
     color: $basic-black;
     margin-left: 10px;
     background-color: $basic-white !important;
   }
 
+  .p-inputtext {
+    border: none !important;
+    &:not(.p-dropdown-filter) {
+      margin-left: 2.0rem;
+    }
+  }
+
   .p-dropdown-trigger {
     background-color: $basic-white !important;
     color: $basic-black !important;
-    margin-right: 5px;
+    position: absolute;
+  }
+
+  p-dropdownitem {
+    .p-highlight {
+      background: $highlighted !important;
+      color: $basic-white !important;
+    }
   }
 
   &:hover {
     border: 2px solid $basic-grey !important;
   }
 
-  &:focus {
-    border: 2px solid $highlighted;
-    box-shadow: none !important;
-  }
-}
-
-.p-dialog .p-dropdown {
-  border-radius: 10px !important;
-  align-items: center;
-  min-width: 100%;
-  border: 2px solid $basic-white;
-
-  .p-dropdown-label {
-    border: none;
-  }
-
-  &:hover {
-    border: 2px solid $basic-grey;
-    box-shadow: none !important;
-  }
-  &:focus {
+  &:focus, &.p-focus {
     border: 2px solid $highlighted !important;
-  }
-  &.p-focus {
-    border: 2px solid $highlighted !important;
+    box-shadow: none !important;
   }
 }

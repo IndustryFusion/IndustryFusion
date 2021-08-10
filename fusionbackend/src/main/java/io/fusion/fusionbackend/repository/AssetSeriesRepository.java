@@ -27,9 +27,6 @@ public interface AssetSeriesRepository extends PagingAndSortingRepository<AssetS
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
     @EntityGraph(value = "AssetSeries.allChildren")
-    Set<AssetSeries> findAll(Sort sort);
-
-    @EntityGraph(value = "AssetSeries.allChildren")
     Set<AssetSeries> findAllByCompanyId(Sort sort, Long companyId);
 
     @EntityGraph(value = "AssetSeries.allChildren")

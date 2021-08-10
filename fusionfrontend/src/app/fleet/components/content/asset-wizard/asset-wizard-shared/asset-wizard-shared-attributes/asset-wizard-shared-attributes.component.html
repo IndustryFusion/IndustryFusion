@@ -1,0 +1,54 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="asset-wizard-field-instance-attributes">
+  <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">no attributes available</div>
+  <div *ngIf="fieldInstancesFormArray?.controls?.length > 0">
+    <div class="attributes-list-header p-grid">
+      <div class="if-label-small-header p-col-3"> Custom Attribute name </div>
+      <div class="if-label-small-header p-col-3"> Attribute name </div>
+      <div class="if-label-small-header p-col-2"> Value </div>
+      <div class="if-label-small-header p-col-1"> Unit </div>
+      <div class="if-label-small-header p-col-2"> </div>
+      <div class="if-label-small-header p-col-1"> </div>
+    </div>
+
+    <div class="attributes-list-content" *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
+      <ng-container [formGroup]="fieldInstance //noinspection InvalidExpressionResultType">
+        <div class="p-grid">
+          <label class="if-label p-col-3" displayControlValue="name"></label>
+          <label class="if-label p-col-3" displayControlValue="fieldName"></label>
+          <input *ngIf="isReview === false" class="value-input p-col-2" type="number" pInputText formControlName="value">
+          <label *ngIf="isReview === true" class="p-col-2" displayControlValue="value"></label>
+          <label class="if-label-normal-weight p-col-1" displayControlValue="sourceUnitName"></label>
+
+          <ng-container *ngIf="isReview === false">
+            <label class="if-label-small-header p-col-2"></label>
+            <app-trash-button class="p-col-1" [disabled]="fieldInstance.get('mandatory')?.value"
+                              (click)="removeAttribute(fieldInstance)"></app-trash-button>
+          </ng-container>
+          <ng-container *ngIf="isReview === true">
+            <label class="if-label-small-header p-col-1"></label>
+            <div class="p-col-2">
+              <app-edit-button (click)="onClickEdit()" ></app-edit-button>
+              <app-trash-button [disabled]="fieldInstance.get('mandatory')?.value"
+                                (click)="removeAttribute(fieldInstance)"></app-trash-button>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

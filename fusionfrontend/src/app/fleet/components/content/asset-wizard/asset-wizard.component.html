@@ -1,0 +1,73 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="if-wizard-wrapper">
+  <div class="timeline">
+    <ul class="clr-timeline clr-timeline-horizontal">
+      <ng-container *ngFor="let i of [AssetWizardStep.GENERAL_INFORMATION, AssetWizardStep.DIGITAL_NAMEPLATE,
+                                    AssetWizardStep.METRICS_THRESHOLDS, AssetWizardStep.ATTRIBUTES,
+                                    AssetWizardStep.SUBSYSTEMS, AssetWizardStep.REVIEW,
+                                    AssetWizardStep.CUSTOMER_DATA];">
+        <li class="clr-timeline-step">
+          <clr-icon *ngIf="step === i" shape="dot-circle" aria-label="Started"></clr-icon>
+          <clr-icon *ngIf="step < i" shape="circle" aria-label="Not started"></clr-icon>
+          <clr-icon *ngIf="step > i" shape="success-standard" aria-label="Finished"></clr-icon>
+          <div class="clr-timeline-step-body"></div>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+
+  <div class="content">
+    <app-asset-wizard-step-general-information *ngIf="step === AssetWizardStep.GENERAL_INFORMATION"
+                                               [assetForm]="assetForm"
+                                               [isAssetSeriesLocked]="isAssetSeriesLocked"
+                                               [relatedAssetSeries]="relatedAssetSeries"
+                                               [relatedAssetSeriesId]="relatedAssetSeriesId"
+                                               [relatedAssetType]="relatedAssetType"
+                                               [relatedCompany]="relatedCompany"
+                                               (stepChange)="onStepChange($event)"
+                                               (changeAssetSeries)="onChangeAssetSeries($event)">
+    </app-asset-wizard-step-general-information>
+    <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE"
+                                     [assetForm]="assetForm"
+                                     (stepChange)="onStepChange($event)">
+    </app-asset-wizard-step-nameplate>
+    <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS"
+                                              [asset]="asset"
+                                              (stepChange)="onStepChange($event)"
+                                              (valid)="setMetricsValid($event)">
+    </app-asset-wizard-step-metrics-thresholds>
+    <app-asset-wizard-step-attributes *ngIf="step === AssetWizardStep.ATTRIBUTES"
+                                      [asset]="asset"
+                                      (stepChange)="onStepChange($event)"
+                                      (valid)="setAttributesValid($event)">
+    </app-asset-wizard-step-attributes>
+    <app-asset-wizard-step-subsystems *ngIf="step === AssetWizardStep.SUBSYSTEMS"
+                                      [asset]="asset"
+                                      (stepChange)="onStepChange($event)"
+                                      (valid)="setSubsystemValid($event)">
+    </app-asset-wizard-step-subsystems>
+    <app-asset-wizard-step-review *ngIf="step === AssetWizardStep.REVIEW"
+                                  [asset]="asset"
+                                  (stepChange)="onStepChange($event)">
+    </app-asset-wizard-step-review>
+    <app-asset-wizard-step-customer-data *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
+                                         [asset]="asset"
+                                         (stepChange)="onStepChange($event)" (createAsset)="onSaveAsset()"
+                                         (valid)="setCustomerDataValid($event)">
+    </app-asset-wizard-step-customer-data>
+  </div>
+</div>

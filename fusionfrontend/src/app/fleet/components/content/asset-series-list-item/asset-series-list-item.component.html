@@ -32,8 +32,11 @@ under the License.
   <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.assetType}}</div>
   <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.templateVersion}}</div>
   <div class="list-item-cell grey label-success" [routerLink]="item.id" [style.width.%]="20"><span class="badge badge-light-blue"></span> {{item.status}}</div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.instances}}</div>
+  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.assetCount}}</div>
   <div class="list-item-cell grey"  [style.width.%]="5" [ngClass]="{'hidden': !selected}">
-    <app-item-options-menu (editItem)="editItem()"  (deleteItem)="showDeleteItem()"></app-item-options-menu>
+    <app-item-options-menu [type]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
+                           [createItemName]="'Asset'"
+                           (createItem)="createItem()" (editItem)="editItem()" (deleteItem)="showDeleteItem()">
+    </app-item-options-menu>
   </div>
 </div>
