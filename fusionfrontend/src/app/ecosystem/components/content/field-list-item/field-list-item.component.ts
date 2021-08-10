@@ -21,6 +21,8 @@ import { FieldService } from '../../../../store/field/field.service';
 import { Field } from '../../../../store/field/field.model';
 import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UnitQuery } from '../../../../store/unit/unit.query';
+import { Unit } from '../../../../store/unit/unit.model';
 
 @Component({
   selector: 'app-field-list-item',
@@ -33,15 +35,18 @@ export class FieldListItemComponent extends BaseListItemComponent implements OnI
   item: Field;
 
   private editDialogRef: DynamicDialogRef;
+  public unit: Unit;
 
   constructor(public route: ActivatedRoute,
               public router: Router,
               public fieldService: FieldService,
+              private unitQuery: UnitQuery,
               private dialogService: DialogService) {
     super(route, router, fieldService);
   }
 
   ngOnInit() {
+    this.unit = this.unitQuery.getEntity(this.item.unitId);
   }
 
   ngOnDestroy() {
