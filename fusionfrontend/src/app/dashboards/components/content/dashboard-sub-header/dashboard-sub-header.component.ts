@@ -14,10 +14,11 @@
  */
 
 import { Location } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, UrlTree } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-dashboard-sub-header',
@@ -29,6 +30,7 @@ export class DashboardSubHeaderComponent implements OnInit, OnDestroy {
   private unSubscribe$ = new Subject<void>();
 
   route: string;
+  companyId: ID = null;
 
   constructor(private location: Location, private router: Router) { }
 
@@ -48,6 +50,7 @@ export class DashboardSubHeaderComponent implements OnInit, OnDestroy {
     } else {
       this.route = '/';
     }
+    this.companyId = this.route.split('/')[3];
   }
 
   isMaintenanceActive = () => {
@@ -55,19 +58,29 @@ export class DashboardSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isEquipmentEfficiencyActive = () => {
-    return this.route && this.route.match('^\/dashboards\/companies\/[0-9]\/equipment+$');
+    return this.route && this.route.match('^\/dashboards\/companies\/[0-9]\/equipmentEfficiency+$');
   }
 
   isDashboard3Active = () => {
     return false;
   }
 
-  onMaintenanceClick() {
-    return this.router.navigate(['/dashboards/maintenance']);
+  onMaintenanceClick(): Promise<boolean> {
+    if (this.companyId) {
+      return this.router.navigateByUrl(this.getUrlTree('maintenance'));
+    }
+    return null;
   }
 
-  onEquipmentEfficiencyClick() {
-    return this.router.navigate(['/dashboards/equipmentEfficiency']);
+  onEquipmentEfficiencyClick(): Promise<boolean> {
+    if (this.companyId) {
+      return this.router.navigateByUrl(this.getUrlTree('equipmentEfficiency'));
+    }
+    return null;
+  }
+
+  private getUrlTree(subroute: string): UrlTree {
+    return this.router.createUrlTree(['/dashboards/companies', this.companyId, subroute]);
   }
 
   ngOnDestroy(): void {
