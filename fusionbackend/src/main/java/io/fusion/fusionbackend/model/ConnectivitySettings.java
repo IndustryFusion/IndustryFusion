@@ -22,7 +22,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -42,12 +41,12 @@ public class ConnectivitySettings extends BaseEntity {
     @Basic(optional = false)
     private String connectionString;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "connectivity_type_id",
             foreignKey = @ForeignKey(name = "connectivity_settings_connectivity_type_id_fkey"))
     private ConnectivityType connectivityType;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "connectivity_protocol_id",
             foreignKey = @ForeignKey(name = "connectivity_settings_connectivity_protocol_id_fkey"))
     private ConnectivityProtocol connectivityProtocol;

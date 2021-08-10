@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.util.List;
+
 import static io.fusion.fusionbackend.test.persistence.builder.AssetBuilder.anAsset;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetSeriesBuilder.anAssetSeries;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
@@ -21,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class PersistenceTests extends PersistenceTestsBase {
-
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -105,7 +106,7 @@ public class PersistenceTests extends PersistenceTestsBase {
                 .withProtocol(persisted(aConnectivityProtocol())))
                 .build();
 
-        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
+        ConnectivityProtocol connectivityProtocol = List.copyOf(connectivityType.getAvailableProtocols()).get(0);
 
         AssetSeries assetSeries = anAssetSeries()
                 .forCompany(persisted(aCompany()))
@@ -117,5 +118,29 @@ public class PersistenceTests extends PersistenceTestsBase {
         AssetSeries foundSeries = testEntityManager.persistFlushFind(assetSeries);
 
         assertNotNull(foundSeries);
+    }
+
+    @Test
+    void persistAssestSeriesWithConnectivitySettings_detachBeforeSave() {
+        ConnectivityType connectivityType = persisted(aConnectivityType()
+                .withProtocol(persisted(aConnectivityProtocol())))
+                .build();
+
+        ConnectivityProtocol connectivityProtocol = List.copyOf(connectivityType.getAvailableProtocols()).get(0);
+
+        testEntityManager.detach(connectivityType);
+        testEntityManager.detach(connectivityProtocol);
+
+        AssetSeries assetSeries = anAssetSeries()
+                .forCompany(persisted(aCompany()))
+                .basedOnTemplate(persisted(anAssetTypeTemplate()
+                        .forType(persisted(anAssetType()))))
+                .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
+                .build();
+
+        AssetSeries foundSeries = testEntityManager.persistFlushFind(assetSeries);
+
+        assertEquals(connectivityType, foundSeries.getConnectivitySettings().getConnectivityType());
+        assertEquals(connectivityProtocol, foundSeries.getConnectivitySettings().getConnectivityProtocol());
     }
 }

@@ -34,6 +34,6 @@ export class AssetSeries extends BaseEntity {
 
 export class ConnectivitySettings extends BaseEntity {
   connectivityTypeId: ID;
-  protocolId: ID;
+  connectivityProtocolId: ID;
   connectionString: string;
 }

@@ -25,7 +25,7 @@ import lombok.experimental.SuperBuilder;
 public class ConnectivitySettingsDto {
 
     private String connectionString;
-    private ConnectivityTypeDto connectivityType;
-    private ConnectivityProtocolDto connectivityProtocol;
+    private Long connectivityTypeId;
+    private Long connectivityProtocolId;
 
 }

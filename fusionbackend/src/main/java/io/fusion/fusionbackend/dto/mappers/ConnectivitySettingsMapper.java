@@ -20,7 +20,6 @@ import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivitySettings;
 import io.fusion.fusionbackend.model.ConnectivityType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -29,32 +28,21 @@ import java.util.stream.Collectors;
 @Component
 public class ConnectivitySettingsMapper implements EntityDtoMapper<ConnectivitySettings, ConnectivitySettingsDto> {
 
-    private final ConnectivityTypeMapper connectivityTypeMapper;
-
-    private final ConnectivityProtocolMapper connectivityProtocolMapper;
-
-    @Autowired
-    public ConnectivitySettingsMapper(ConnectivityTypeMapper connectivityTypeMapper,
-                                      ConnectivityProtocolMapper connectivityProtocolMapper) {
-        this.connectivityTypeMapper = connectivityTypeMapper;
-        this.connectivityProtocolMapper = connectivityProtocolMapper;
-    }
-
     @Override
     public ConnectivitySettingsDto toDto(ConnectivitySettings entity, boolean embedChildren) {
 
-        ConnectivitySettingsDto dto =  ConnectivitySettingsDto.builder()
+        ConnectivitySettingsDto dto = ConnectivitySettingsDto.builder()
                 .connectionString(entity.getConnectionString())
                 .build();
 
         ConnectivityType connectivityType = entity.getConnectivityType();
         if (connectivityType != null) {
-            dto.setConnectivityType(connectivityTypeMapper.toDto(entity.getConnectivityType(), false));
+            dto.setConnectivityTypeId(entity.getConnectivityType().getId());
         }
 
         ConnectivityProtocol connectivityProtocol = entity.getConnectivityProtocol();
         if (connectivityProtocol != null) {
-            dto.setConnectivityProtocol(connectivityProtocolMapper.toDto(entity.getConnectivityProtocol(), false));
+            dto.setConnectivityProtocolId(entity.getConnectivityProtocol().getId());
         }
 
         return dto;
@@ -65,9 +53,6 @@ public class ConnectivitySettingsMapper implements EntityDtoMapper<ConnectivityS
 
         ConnectivitySettings connectivitySettings = new ConnectivitySettings();
         connectivitySettings.setConnectionString(dto.getConnectionString());
-        connectivitySettings.setConnectivityType(connectivityTypeMapper.toEntity(dto.getConnectivityType()));
-        connectivitySettings.setConnectivityProtocol(
-                connectivityProtocolMapper.toEntity(dto.getConnectivityProtocol()));
 
         return connectivitySettings;
     }
@@ -75,7 +60,7 @@ public class ConnectivitySettingsMapper implements EntityDtoMapper<ConnectivityS
     @Override
     public Set<ConnectivitySettingsDto> toDtoSet(Set<ConnectivitySettings> entitySet, boolean embedChildren) {
         return entitySet.stream()
-                .map(connectivitySettings -> toDto(connectivitySettings,false))
+                .map(connectivitySettings -> toDto(connectivitySettings, false))
                 .collect(Collectors.toSet());
     }
 

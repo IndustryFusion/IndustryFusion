@@ -105,5 +105,8 @@ public class AssetSeries extends BaseAsset {
         if (sourceAssetSeries.getFieldSources() != null) {
             setFieldSources(sourceAssetSeries.getFieldSources());
         }
+        if (sourceAssetSeries.getConnectivitySettings() != null) {
+            setConnectivitySettings(sourceAssetSeries.getConnectivitySettings());
+        }
     }
 }

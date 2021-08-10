@@ -23,7 +23,7 @@ abstract class PersistenceTestsBase {
     protected  <T> Builder<T> persisted(final Builder<T> builder) {
         return () -> {
             T entity = builder.build();
-            testEntityManager.persist(entity);
+            testEntityManager.persistAndFlush(entity);
             return entity;
         };
     }

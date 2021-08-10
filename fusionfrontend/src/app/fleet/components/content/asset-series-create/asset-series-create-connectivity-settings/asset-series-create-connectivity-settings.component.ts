@@ -40,7 +40,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
 
     this.connectivitySettingsForm = this.formBuilder.group({
       connectivityTypeId: [null, Validators.required],
-      protocolId: [null, Validators.required],
+      connectivityProtocolId: [null, Validators.required],
       connectionString: [null, requiredTextValidator],
     });
     this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
@@ -63,11 +63,11 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
       this.infoText = selectedConnectivityType.infoText;
 
       if (this.connectivityProtocolOptions.length > 0) {
-        this.connectivitySettingsForm.get('protocolId').setValue(this.connectivityProtocolOptions[0].id);
+        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(this.connectivityProtocolOptions[0].id);
         this.onChangeProtocolType(this.connectivityProtocolOptions[0].id);
 
       } else {
-        this.connectivitySettingsForm.get('protocolId').setValue(null);
+        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(null);
         this.connectivitySettingsForm.get('connectionString').setValue(null);
       }
     }
