@@ -31,6 +31,9 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
 import { IFCommon } from '../common/i-f-common.module';
+import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
+import { EquipmentEfficiencyListComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-list.component';
+import { EquipmentEfficiencyProgressbarComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-progressbar/equipment-efficiency-progressbar.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { IFCommon } from '../common/i-f-common.module';
     MaintenancePageComponent,
     MaintenanceListComponent,
     MaintenanceProgressbarComponent,
+    EquipmentEfficiencyPageComponent,
+    EquipmentEfficiencyListComponent,
+    EquipmentEfficiencyProgressbarComponent,
   ],
     imports: [
         IFCommon,
