@@ -29,5 +29,6 @@ export enum HomeItemClass {
     FLEET = 'fleet-manager',
     ECOSYSTEM = 'ecosystem-manager',
     DASHBOARDS = 'dashboards',
+    FUSION_APPLETS = 'fusion-applets',
     SETTINGS = 'settings',
 }

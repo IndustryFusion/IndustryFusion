@@ -67,6 +67,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match(`\/${'dashboards'}\/`);
   }
 
+  isFusionApplet() {
+    return this.route && this.route.match(`\/${'fusion-applets\/'}`);
+  }
+
   isHome() {
     return this.route && this.route.match('/home');
   }

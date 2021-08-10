@@ -15,7 +15,7 @@
 
 import { Component, Input } from '@angular/core';
 
-import { LaunchpadItem } from './launchpad-item.model';
+import { HomeItemClass, LaunchpadItem } from './launchpad-item.model';
 
 @Component({
     selector: 'app-launchpad-item',
@@ -23,6 +23,8 @@ import { LaunchpadItem } from './launchpad-item.model';
     styleUrls: ['./launchpad-item.component.scss']
 })
 export class LaunchpadItemComponent {
+
+  HomeItemClass = HomeItemClass;
 
     @Input()
     item: LaunchpadItem;

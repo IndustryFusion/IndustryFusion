@@ -1,0 +1,53 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div *ngIf="devices">
+  <div class="applet-conditions-value-list"
+       *ngFor="let conditonValueGroup of getConditonValues().controls; let i = index; let last = last">
+    <div class="if-card">
+      <div class="p-grid p-justify-between">
+        <div class="p-grid">
+          <i class="if-icon-machine"></i>
+          <div class="if-label p-col">
+            {{i + 1}}. Trigger
+          </div>
+          <app-valid-icon [isValid]="conditonValueGroup.valid"></app-valid-icon>
+        </div>
+        <div>
+          <app-item-options-menu (deleteItem)="removeAction(i)" [type]="[ItemOptionsMenuType.DELETE]">
+          </app-item-options-menu>
+        </div>
+      </div>
+      <app-applet-conditions-value [conditionValueGroup]="conditonValueGroup"
+                                   [devices]="devices"
+      ></app-applet-conditions-value>
+    </div>
+    <div class="vl"></div>
+    <div class="operator-dropdown" *ngIf="!last">
+    <p-dropdown [options]="dropdownOperatorOptions"
+                [optionLabel]="'label'"
+                [optionValue]="'value'"
+                [formControl]="conditionsGroup.get('operator')"
+    ></p-dropdown>
+    </div>
+    <div *ngIf="!last" class="vl"></div>
+  </div>
+  <div class="applet-conditions-value-list">
+    <div class="center-trigger">
+      <button class="if-button editor-add-btn" (click)="createNewTrigger()"><i class="pi pi-plus "></i></button>
+      Create new Trigger
+    </div>
+  </div>
+</div>

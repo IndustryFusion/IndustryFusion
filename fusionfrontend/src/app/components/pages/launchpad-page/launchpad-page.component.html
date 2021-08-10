@@ -16,7 +16,7 @@ under the License.
 <div class="wrapper">
     <div class="launchpad-page">
       <ng-container *ngFor="let item of items; let i = index">
-        <app-launchpad-item *ngIf="hasRequiredRole(item)" [ngClass] = "{'padded': (i+1)%5!==0}" [item]="item" [routerLink]="item.route"></app-launchpad-item>
+        <app-launchpad-item *ngIf="hasRequiredRole(item)" [ngClass] = "{'padded': (i+1)%6!==0}" [item]="item" [routerLink]="item.route"></app-launchpad-item>
       </ng-container>
     </div>
 </div>

@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -39,6 +40,7 @@ import { TooltipModule } from 'primeng/tooltip';
     EditDetailsButtonComponent,
     FactorySiteMapComponent,
     AccuracyFormatPipe,
+    LabelControlDirective,
     TooltipComponent,
   ],
   imports: [
@@ -82,6 +84,7 @@ import { TooltipModule } from 'primeng/tooltip';
     ConfirmDialogModule,
     AccuracyFormatPipe,
     RadioButtonModule,
+    LabelControlDirective,
     TooltipComponent,
     TooltipModule,
   ],

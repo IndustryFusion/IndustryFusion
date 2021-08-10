@@ -29,7 +29,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
       fieldName: [],
       accuracy: [],
       name: [],
-      register: ['', [Validators.max(255)]],
+      register: ['', [Validators.maxLength(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);

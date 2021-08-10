@@ -38,7 +38,6 @@ import { AssetWizardStepGeneralInformationComponent } from './components/content
 import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
 import { AssetWizardStepAttributesComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-attributes/asset-wizard-step-attributes.component';
 import { AssetWizardStepCustomerDataComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer-data/asset-wizard-step-customer-data.component';
-import { LabelControlDirective } from './components/content/label-control/label-control.directive';
 import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
@@ -70,7 +69,6 @@ import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './compone
     TimelineComponent,
     AssetSeriesCreateAttributesComponent,
     AssetSeriePageComponent,
-    LabelControlDirective,
     AssetSeriesCreateMetricsComponent,
     AssetWizardComponent,
     AssetWizardStepGeneralInformationComponent,
@@ -99,7 +97,7 @@ import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './compone
     ],
   exports: [
     FleetSubHeaderComponent,
-    FleetPageTitleComponent
+    FleetPageTitleComponent,
   ]
 })
 export class FleetModule { }

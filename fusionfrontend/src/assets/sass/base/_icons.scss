@@ -1,0 +1,44 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.if-icon {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  background-size: contain !important;
+  align-items: center;
+}
+
+.if-icon-mail {
+  @extend .if-icon;
+  background: url(/assets/icons/mail.svg);
+}
+
+.if-icon-webhook {
+  @extend .if-icon;
+  background: url(/assets/icons/webhook.svg);
+}
+
+.if-icon-actions {
+  @extend .if-icon;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: url(/assets/icons/actions.svg);
+}
+
+.if-icon-machine {
+  @extend .if-icon;
+  background: url(/assets/icons/machine.svg);
+}

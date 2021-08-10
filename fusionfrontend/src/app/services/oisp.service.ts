@@ -22,12 +22,19 @@ import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
   Aggregator,
+  ComponentType,
+  ConditionType,
+  Device,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
   OispRequestWithAggregation,
   OispResponse,
+  OISPUser,
   PointWithId,
+  Rule,
+  RuleAction,
+  RuleStatus,
   Sampling,
   Series
 } from './oisp.model';
@@ -43,7 +50,9 @@ export class OispService {
   };
   private defaultPoints: PointWithId[] = [];
 
-  constructor(private http: HttpClient, private keycloakService: KeycloakService) {
+  constructor(
+    private http: HttpClient,
+    private keycloakService: KeycloakService) {
   }
 
   getExternalIdForSingleField(field: FieldDetails, oispDevice: any): FieldDetails {
@@ -79,6 +88,95 @@ export class OispService {
     );
   }
 
+  getAllRules(): Observable<Rule[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules`;
+    return this.http.get<Rule[]>(url, this.httpOptions);
+  }
+
+  getRule(ruleId: string): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
+    return this.http.get<Rule>(url, this.httpOptions);
+  }
+
+  getComponentTypesCatalog(): Observable<ComponentType[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
+    return this.http.get<ComponentType[]>(url, this.httpOptions);
+  }
+
+  getAllDevices(): Observable<Device[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
+    return this.http.get<Device[]>(url, this.httpOptions);
+  }
+
+  getUser(): Observable<OISPUser[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
+    return this.http.get<OISPUser[]>(url, this.httpOptions);
+  }
+
+  cloneRule(ruleId: string): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/clone/${ruleId}`;
+    return this.http.post<Rule>(url, null, this.httpOptions);
+  }
+
+  createRuleDraft(ruleDraft: Rule): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/draft`;
+    return this.http.put<Rule>(url, ruleDraft, this.httpOptions);
+  }
+
+  updateRule(ruleId: string, rule: Rule): Observable<Rule> {
+    rule = JSON.parse(JSON.stringify(rule));
+    this.prepareRuleForSending(rule);
+
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
+    return this.http.put<Rule>(url, rule, this.httpOptions);
+  }
+
+  private prepareRuleForSending(rule: Rule) {
+    if (!rule.description) {
+      delete rule[`description`];
+    }
+    if (rule.status === RuleStatus.Draft) {
+      rule.status = RuleStatus.OnHold;
+    }
+    rule.conditions.values.map(conditionValue => {
+      delete conditionValue[`conditionSequence`];
+      if (conditionValue.type !== ConditionType.statistics) {
+        delete conditionValue[`baselineCalculationLevel`];
+        delete conditionValue[`baselineSecondsBack`];
+        delete conditionValue[`baselineMinimalInstances`];
+      }
+      if (conditionValue.type !== ConditionType.time) {
+        delete conditionValue[`timeLimit`];
+      }
+    });
+
+    rule.actions = rule.actions.map<RuleAction>((ruleAction: RuleAction) => {
+      if (typeof ruleAction.target === 'string') {
+        ruleAction.target = [ruleAction.target];
+      }
+      return ruleAction;
+    });
+
+    delete rule[`id`];
+    delete rule[`domainId`];
+    delete rule[`owner`];
+    delete rule[`naturalLanguage`];
+    delete rule[`creationDate`];
+    delete rule[`lastUpdateDate`];
+  }
+
+  setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}/status`;
+    const body = { status};
+    return this.http.put<Rule>(url, body, this.httpOptions);
+  }
+
+  deleteRule(ruleId: string): Observable<any> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/delete_rule_with_alerts/${ruleId}`;
+    return this.http.delete(url, this.httpOptions);
+  }
+
+
   getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
     if (!assetDetails) {
       return EMPTY;
@@ -113,7 +211,7 @@ export class OispService {
     return this.http.post<OispResponse>(`${environment.oispApiUrlPrefix}/${path}`, request, this.httpOptions)
       .pipe(
         catchError(() => {
-          console.warn('[oisp service] caught error while searching for oispPoints');
+          console.error('[oisp service] caught error while searching for oispPoints');
           return EMPTY;
         }),
         map((entity) => {
