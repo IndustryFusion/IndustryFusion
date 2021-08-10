@@ -78,8 +78,8 @@ public class Room extends BaseEntity {
         if (sourceRoom.getDescription() != null) {
             setDescription(sourceRoom.getDescription());
         }
-        if (sourceRoom.getLocation() != null) {
-            setLocation(sourceRoom.getLocation());
+        if (sourceRoom.getFactorySite() != null) {
+            setFactorySite(sourceRoom.getFactorySite());
         }
     }
 }

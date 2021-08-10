@@ -25,6 +25,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
+import { Location as loc } from '@angular/common';
 
 @Component({
   selector: 'app-assets-list',
@@ -78,7 +79,8 @@ export class AssetsListComponent implements OnInit {
   constructor(
     private assetService: AssetService,
     private formBuilder: FormBuilder,
-    public dialogService: DialogService) {
+    public dialogService: DialogService,
+    private routingLocation: loc) {
       this.createDetailsAssetForm(this.formBuilder);
   }
 
@@ -177,6 +179,10 @@ export class AssetsListComponent implements OnInit {
     this.assetService.removeCompanyAsset(event.companyId, event.id).subscribe(() => {
       this.factoryAssetDetailsWithFields.splice(this.factoryAssetDetailsWithFields.indexOf(event), 1);
     });
+  }
+
+  goBack() {
+    this.routingLocation.back();
   }
 }
 

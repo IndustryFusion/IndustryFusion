@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { AssetDetails } from 'src/app/store/asset-details/asset-details.model';
+import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
@@ -38,13 +38,13 @@ import { Asset } from '../../../../store/asset/asset.model';
 export class RoomsPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
-  assetsDetails$: Observable<AssetDetails[]>;
-  factorySite$: Observable<FactorySite>;
+  factoryAssetsDetails$: Observable<FactoryAssetDetails[]>;
+  factorySites$: Observable<FactorySite[]>;
   rooms$: Observable<Room[]>;
 
   companyId: ID;
   factorySiteId: ID;
-  locationSelected: boolean;
+  factorySiteSelected: boolean;
 
   constructor(private factorySiteQuery: FactorySiteQuery,
               private companyQuery: CompanyQuery,
@@ -60,15 +60,15 @@ export class RoomsPageComponent implements OnInit {
     this.isLoading$ = this.companyQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
-    this.factorySite$ = this.factoryResolver.factorySite$;
-    this.assetsDetails$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.factorySites$ = this.factoryResolver.factorySites$;
+    this.factoryAssetsDetails$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.companyId = this.companyQuery.getActiveId();
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     if (this.factorySiteId) {
-      this.locationSelected = true;
-      this.rooms$ = this.factoryResolver.allRoomsOfLocation$;
+      this.factorySiteSelected = true;
+      this.rooms$ = this.factoryResolver.allRoomsOfFactorySite$;
     } else {
-      this.locationSelected = false;
+      this.factorySiteSelected = false;
       this.rooms$ = this.factoryResolver.rooms$;
     }
   }

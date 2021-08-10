@@ -28,8 +28,8 @@ export class CreateRoomComponent implements OnInit {
 
   roomForm: FormGroup;
   rooms: Room[];
-  factorySite: FactorySite[];
-  locationSelected: boolean;
+  factorySites: FactorySite[];
+  factorySiteSelected: boolean;
   editMode: boolean;
   room: Room;
 
@@ -42,8 +42,8 @@ export class CreateRoomComponent implements OnInit {
     this.room = this.config.data.room ? { ...this.config.data.room } : new Room();
     this.roomForm = this.config.data.roomForm;
     this.rooms = this.config.data.rooms;
-    this.locations = this.config.data.locations;
-    this.locationSelected = this.config.data.locationSelected;
+    this.factorySites = this.config.data.factorySites;
+    this.factorySiteSelected = this.config.data.factorySiteSelected;
     this.editMode = this.config.data.editMode;
   }
 
@@ -59,6 +59,6 @@ export class CreateRoomComponent implements OnInit {
   updateRoomData() {
     this.room.description = this.roomForm.get('description').value;
     this.room.name = this.roomForm.get('name').value;
-    this.room.locationId = this.roomForm.get('locationId').value;
+    this.room.factorySiteId = this.roomForm.get('factorySiteId').value;
   }
 }

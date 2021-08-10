@@ -69,7 +69,7 @@ const routes: Routes = [
     component: RoomsPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ROOM_LIST],
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
   },
@@ -78,7 +78,7 @@ const routes: Routes = [
     component: AssetsListPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ROOM_LIST],
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
   },
@@ -105,7 +105,7 @@ const routes: Routes = [
     component: AssetsListPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
   },
@@ -186,7 +186,7 @@ const routes: Routes = [
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
   },
@@ -195,7 +195,7 @@ const routes: Routes = [
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
   },
@@ -204,7 +204,7 @@ const routes: Routes = [
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.LOCATION_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
   },

@@ -16,11 +16,11 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges, SimpleChanges, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { Location } from 'src/app/store/location/location.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Asset } from 'src/app/store/asset/asset.model';
-import { AssetDetails } from 'src/app/store/asset-details/asset-details.model';
+import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
-import { LocationQuery } from 'src/app/store/location/location.query';
+import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { Location as loc } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -38,13 +38,13 @@ import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset
 export class RoomsListComponent implements OnInit, OnChanges {
 
   @Input()
-  locations: Location[];
+  factorySites: FactorySite[];
   @Input()
   rooms: Room[];
   @Input()
-  locationSelected: boolean;
+  factorySiteSelected: boolean;
   @Input()
-  assets: AssetDetails[];
+  factoryAssets: FactoryAssetDetails[];
 
   @Output()
   createRoomEvent = new EventEmitter<Room>();
@@ -56,24 +56,24 @@ export class RoomsListComponent implements OnInit, OnChanges {
   assignAssetToRoomEvent = new EventEmitter<[ID, Asset[]]>();
 
   isLoading$: Observable<boolean>;
-  assets$: Observable<Asset[]>;
+  factoryAssets$: Observable<Asset[]>;
   rooms$: Observable<Room[]>;
 
   companyId: ID;
-  locationId: ID;
+  factorySiteId: ID;
 
   ref: DynamicDialogRef;
   roomForm: FormGroup;
   menuActions: MenuItem[];
 
   activeListItem: Room;
-  locationsAndRoomsMap = new Map();
+  factorySitesAndRoomsMap = new Map();
   route: string;
 
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
 
-  constructor(private locationQuery: LocationQuery,
+  constructor(private factorySiteQuery: FactorySiteQuery,
               private companyQuery: CompanyQuery,
               private routingLocation: loc,
               private formBuilder: FormBuilder,
@@ -83,7 +83,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
     this.route = this.routingLocation.path();
     this.isLoading$ = this.companyQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
-    this.locationId = this.locationQuery.getActiveId();
+    this.factorySiteId = this.factorySiteQuery.getActiveId();
 
     this.createRoomForm(this.formBuilder);
     this.menuActions = [
@@ -96,7 +96,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.rooms) {
       this.rooms.forEach(room => {
-        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+        this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id === room.factorySiteId).name);
       });    }
   }
 
@@ -109,9 +109,9 @@ export class RoomsListComponent implements OnInit, OnChanges {
     const ref = this.dialogService.open(CreateRoomComponent, {
       data: {
         roomForm: this.roomForm,
-        locations: this.locations,
+        factorySites: this.factorySites,
         rooms: this.rooms,
-        locationSelected: this.locationSelected,
+        factorySiteSelected: this.factorySiteSelected,
         editMode: false,
       },
       header: 'Add new room to factory',
@@ -120,8 +120,8 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
     ref.onClose.subscribe((room: Room) => {
       if (room) {
-        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id.toString()
-            === room.locationId.toString()).name);
+        this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id.toString()
+            === room.factorySiteId.toString()).name);
         this.createRoomEvent.emit(room);
       }
     });
@@ -133,9 +133,9 @@ export class RoomsListComponent implements OnInit, OnChanges {
       data: {
         room: this.activeListItem,
         roomForm: this.roomForm,
-        locations: this.locations,
+        factorySites: this.factorySites,
         rooms: this.rooms,
-        locationSelected: this.locationSelected,
+        factorySiteSelected: this.factorySiteSelected,
         editMode: true,
       },
       header: 'Edit room',
@@ -144,7 +144,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
     ref.onClose.subscribe((room: Room) => {
       if (room) {
-        this.locationsAndRoomsMap.set(room.id, this.locations.find(location => location.id === room.locationId).name);
+        this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id === room.factorySiteId).name);
         this.editRoomEvent.emit(room);
       }
     });
@@ -156,7 +156,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
       id: [null],
       description: ['', requiredTextValidator],
       name: ['', requiredTextValidator],
-      locationId: [this.locationId ? this.locationId : '', requiredTextValidator],
+      factorySiteId: [this.factorySiteId ? this.factorySiteId : '', requiredTextValidator],
       assets: [[]],
       assetIds: [[]]
     });
@@ -174,9 +174,9 @@ export class RoomsListComponent implements OnInit, OnChanges {
     const ref = this.dialogService.open(AssignAssetToRoomComponent, {
       data: {
         roomForm: this.roomForm,
-        assets: this.assets,
-        locations: this.locations,
-        locationsAndRoomsMap: this.locationsAndRoomsMap,
+        factoryAssets: this.factoryAssets,
+        factorySites: this.factorySites,
+        factorySitesAndRoomsMap: this.factorySitesAndRoomsMap,
         room: this.activeListItem,
         rooms: this.rooms,
       },

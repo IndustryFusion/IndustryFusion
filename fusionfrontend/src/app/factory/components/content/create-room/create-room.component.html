@@ -26,15 +26,15 @@ under the License.
         <textarea pInputTextarea class="room-dialog-textarea" formControlName="description" placeholder="Enter a description here"></textarea>
         <label class="textarea-character-count if-label">{{ roomForm.get('description').value?.length }}/300</label>
       </div>
-      <div *ngIf="!locationSelected" class="input-div">
+      <div *ngIf="!factorySiteSelected" class="input-div">
         <label class="if-label">Select Factory site</label>
-        <p-dropdown [options]="locations" formControlName="locationId" optionLabel="name" optionValue="id" placeholder="Location"
-                    class="locations-dropdown"></p-dropdown>
+        <p-dropdown [options]="factorySites" formControlName="factorySiteId" optionLabel="name" optionValue="id" placeholder="FactorySite"
+                    class="factorySites-dropdown"></p-dropdown>
         </div>
       <div class="room-dialog-footer">
         <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
         <button *ngIf="editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
-              || roomForm.controls['description'].invalid || roomForm.controls['locationId'].invalid">Edit</button>
+              || roomForm.controls['description'].invalid || roomForm.controls['factorySiteId'].invalid">Edit</button>
         <button *ngIf="!editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
               || roomForm.controls['description'].invalid">Create</button>
       </div>

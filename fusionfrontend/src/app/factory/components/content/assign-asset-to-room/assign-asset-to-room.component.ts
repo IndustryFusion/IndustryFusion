@@ -17,7 +17,8 @@ import { Component, OnInit, DoCheck, IterableDiffers, IterableDiffer } from '@an
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { Room } from '../../../../store/room/room.model';
-import { AssetDetails } from '../../../../store/asset-details/asset-details.model';
+import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 
 @Component({
   selector: 'app-assign-asset-to-room',
@@ -26,18 +27,18 @@ import { AssetDetails } from '../../../../store/asset-details/asset-details.mode
 })
 export class AssignAssetToRoomComponent implements OnInit, DoCheck {
 
-  assets: AssetDetails[];
-  filteredAssets: AssetDetails[];
-  selectedAssets: AssetDetails[] = [];
+  assets: FactoryAssetDetails[];
+  filteredAssets: FactoryAssetDetails[];
+  selectedAssets: FactoryAssetDetails[] = [];
   room: Room;
   rooms: Room[];
-  locations: Location[];
-  assetAndLocationsMap = new Map();
-  locationsAndRoomsMap = new Map();
+  factorySites: FactorySite[];
+  assetAndFactorySitesMap = new Map();
+  factorySitesAndRoomsMap = new Map();
   roomForm: FormGroup;
   searchText: string;
   allAssetsSelected: boolean;
-  iterableDiffer: IterableDiffer<AssetDetails>;
+  iterableDiffer: IterableDiffer<FactoryAssetDetails>;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -48,15 +49,16 @@ export class AssignAssetToRoomComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.roomForm = this.config.data.roomForm;
-    this.assets = this.config.data.assets;
+    this.assets = this.config.data.factoryAssets;
     this.room = this.config.data.room;
     this.rooms = this.config.data.rooms;
-    this.locations = this.config.data.locations;
+    this.factorySites = this.config.data.factorySites;
     this.filteredAssets = this.assets;
-    this.locationsAndRoomsMap = this.config.data.locationsAndRoomsMap;
+    this.factorySitesAndRoomsMap = this.config.data.factorySitesAndRoomsMap;
 
+    console.log(this.assets);
     this.assets.forEach(asset => {
-      this.fillAssetLocationsMap(asset);
+      this.fillAssetFactorySitesMap(asset);
       this.prefillSelectedItems(asset);
     });
     this.checkIfSelectedAssetsEqualsAllAssets();
@@ -73,11 +75,11 @@ export class AssignAssetToRoomComponent implements OnInit, DoCheck {
     this.allAssetsSelected = this.selectedAssets.length === this.assets.length;
   }
 
-  fillAssetLocationsMap(asset: AssetDetails) {
-    this.assetAndLocationsMap.set(asset.id, this.locationsAndRoomsMap.get(asset.roomId));
+  fillAssetFactorySitesMap(asset: FactoryAssetDetails) {
+    this.assetAndFactorySitesMap.set(asset.id, this.factorySitesAndRoomsMap.get(asset.roomId));
   }
 
-  prefillSelectedItems(asset: AssetDetails) {
+  prefillSelectedItems(asset: FactoryAssetDetails) {
     this.room.assetIds.forEach(assetId => {
       if (assetId === asset.id) {
         this.selectedAssets.push(asset);
@@ -90,7 +92,7 @@ export class AssignAssetToRoomComponent implements OnInit, DoCheck {
       .includes(this.searchText.toLowerCase()));
   }
 
-  unselectItem(unselectedAsset: AssetDetails) {
+  unselectItem(unselectedAsset: FactoryAssetDetails) {
     this.selectedAssets = this.selectedAssets.filter(selectedAsset => selectedAsset.id !== unselectedAsset.id);
     console.log(this.selectedAssets);
     console.log(unselectedAsset);

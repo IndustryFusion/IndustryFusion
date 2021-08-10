@@ -14,8 +14,8 @@ under the License.
 -->
   <app-rooms-list [factorySites]="(factorySites$ | async)"
                   [rooms]="(rooms$ | async)"
-                  [locationSelected]="locationSelected"
-                  [assets]="(assetsDetails$ | async)"
+                  [factorySiteSelected]="factorySiteSelected"
+                  [factoryAssets]="(factoryAssetsDetails$ | async)"
                   (createRoomEvent)="createRoom($event)"
                   (editRoomEvent)="editRoom($event)"
                   (deleteRoomEvent)="deleteRoom($event)"
