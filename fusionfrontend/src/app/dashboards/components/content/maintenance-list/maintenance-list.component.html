@@ -42,13 +42,15 @@
         <td [style.width.%]="12">{{asset.factorySiteName}}</td>
         <td [style.width.%]="13">
           <app-maintenance-progressbar
-            [assetFields]="this.asset.fields" [maintenanceIntervalKey]="MAINTENANCE_FIELD_NAME_DAYS"
-            [maintenanceValueKey]="MAINTENANCE_FIELD_NAME_DAYS"></app-maintenance-progressbar>
+            [assetFields]="asset.fields" [asset]="asset" [lowerThreshold]="90"
+            [maintenanceValueKey]="MAINTENANCE_FIELD_NAME_DAYS"
+            [upperThreshold]="180"></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="13">
           <app-maintenance-progressbar
-            [assetFields]="this.asset.fields" [maintenanceIntervalKey]="MAINTENANCE_FIELD_NAME_OPERATING_HOURS"
-            [maintenanceValueKey]="MAINTENANCE_FIELD_NAME_OPERATING_HOURS"></app-maintenance-progressbar>
+            [assetFields]="asset.fields" [asset]="asset" [lowerThreshold]="150"
+            [maintenanceValueKey]="MAINTENANCE_FIELD_NAME_OPERATING_HOURS"
+            [upperThreshold]="750"></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="2"></td>
       </tr>

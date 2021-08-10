@@ -35,7 +35,6 @@ const SHORTTERM_PRIORITY = 'Critical (red)';
 const MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
 const LONGTERM_PRIORITY = 'Longterm (blue)';
 const RADIX_DECIMAL = 10;
-const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 
 @Component({
   selector: 'app-maintenance-list',
@@ -44,7 +43,7 @@ const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
-  MAINTENANCE_FIELD_NAME_OPERATING_HOURS = 'Hours till maintenance';
+  MAINTENANCE_FIELD_NAME_OPERATING_HOURS = 'Operating Hours till maintenance';
   MAINTENANCE_FIELD_NAME_DAYS = 'Days till maintenance';
 
   @Input()
@@ -189,7 +188,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsLowerThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
       }
@@ -198,7 +197,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsGreaterThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > value;
       }
@@ -207,7 +206,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetOutsideTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < lowerValue ||
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > greaterValue;
@@ -217,7 +216,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsBetweenTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < greaterValue &&
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > lowerValue;

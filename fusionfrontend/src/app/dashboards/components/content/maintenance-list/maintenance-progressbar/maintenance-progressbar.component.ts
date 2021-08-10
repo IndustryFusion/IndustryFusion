@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Field } from '../../../../../store/field/field.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 
 @Component({
   selector: 'app-maintenance-progressbar',
@@ -9,30 +10,30 @@ import { Field } from '../../../../../store/field/field.model';
 export class MaintenanceProgressbarComponent implements OnInit {
 
   @Input()
+  asset: FactoryAssetDetailsWithFields;
+
+  @Input()
   assetFields: Field[];
 
   @Input()
   maintenanceValueKey: string;
 
   @Input()
-  maintenanceIntervalKey: string;
+  upperThreshold: number;
+
+  @Input()
+  lowerThreshold: number;
 
   maintenanceValue: number;
   maintenancePercentage: number;
-  isMaintenanceInfoAvailable: boolean;
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.maintenanceValue = +this.assetFields.find(field => field.name === this.maintenanceValueKey)?.value;
-    const maintenanceInterval = +this.assetFields.find(field => field.name === this.maintenanceIntervalKey)?.value;
-    this.maintenancePercentage = this.maintenanceValue / maintenanceInterval * (Math.random() * 100);
-
-    if (this.maintenanceValue && this.maintenancePercentage) {
-      this.isMaintenanceInfoAvailable = true;
-    } else {
-      this.isMaintenanceInfoAvailable = false;
+    if (this.maintenanceValue) {
+      this.maintenancePercentage = (this.maintenanceValue / this.upperThreshold) * 100;
     }
   }
 

@@ -1,22 +1,22 @@
 <div class="maintenance-value">
-  <div *ngIf="isMaintenanceInfoAvailable" [style.width.%]="100" class="label-success">
-    <div *ngIf="maintenancePercentage < 25" class="container">
+  <div *ngIf="maintenanceValue" [style.width.%]="100" class="label-success">
+    <div *ngIf="maintenanceValue <= lowerThreshold" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
                      class="red-bar"></p-progressBar>
       <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>
-    <div *ngIf="maintenancePercentage >= 25 && maintenancePercentage < 50" class="container">
+    <div *ngIf="maintenanceValue > lowerThreshold && maintenanceValue <= upperThreshold" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
                      class="grey-bar"></p-progressBar>
       <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>
-    <div *ngIf="maintenancePercentage >= 50" class="container">
+    <div *ngIf="maintenanceValue > upperThreshold" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
                      class="blue-bar"></p-progressBar>
       <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>
   </div>
-  <div *ngIf="!isMaintenanceInfoAvailable" class="container">
+  <div *ngIf="!maintenanceValue" class="container">
     <p-progressBar [showValue]="false" [value]="0" class="progress-bar" class="light-grey-bar"></p-progressBar>
     <p class="progress-bar-label na-label">n.a.</p>
   </div>
