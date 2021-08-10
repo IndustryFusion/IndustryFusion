@@ -71,7 +71,7 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
       label: ['', requiredTextValidator],
       description: ['', Validators.maxLength(255)],
       accuracy: [0],
-      unitId: [1, Validators.required],
+      unitId: [null, Validators.required],
       thresholdType: [FieldThresholdType.OPTIONAL, Validators.required]
     });
 

@@ -22,6 +22,8 @@ import { FieldService } from '../../../../store/field/field.service';
 import { Field } from '../../../../store/field/field.model';
 import { FieldDialogComponent } from '../../content/field-dialog/field-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Unit } from '../../../../store/unit/unit.model';
+import { UnitQuery } from '../../../../store/unit/unit.query';
 
 @Component({
   selector: 'app-field-page',
@@ -32,10 +34,12 @@ export class FieldPageComponent implements OnInit, OnDestroy {
 
   isLoading$: Observable<boolean>;
   field$: Observable<Field>;
+  unit$: Observable<Unit>;
   private field: Field;
   private editDialogRef: DynamicDialogRef;
 
   constructor(private fieldQuery: FieldQuery,
+              private unitQuery: UnitQuery,
               private fieldService: FieldService,
               private activatedRoute: ActivatedRoute,
               private dialogService: DialogService,
@@ -57,7 +61,10 @@ export class FieldPageComponent implements OnInit, OnDestroy {
     if (fieldId != null) {
       this.fieldService.setActive(fieldId);
       this.field$ = this.fieldQuery.selectActive();
-      this.field$.subscribe(field => this.field = field);
+      this.field$.subscribe(field => {
+        this.unit$ = this.unitQuery.selectEntity(field.unitId);
+        this.field = field;
+      });
     }
   }
 

@@ -16,17 +16,23 @@ under the License.
 <div class="field-dialog">
   <form [formGroup]="fieldForm">
     <div class="input-div">
-      <label class="if-label">Name</label>
+      <label class="if-label">Name&nbsp;*</label>
       <input type="text" pInputText class="field-dialog-inputs" formControlName="name" />
     </div>
     <div class="input-div">
-      <label class="if-label">Label</label>
+      <label class="if-label">Label&nbsp;*</label>
       <input type="text" pInputText class="field-dialog-inputs" formControlName="label" />
     </div>
     <div class="input-div">
       <label class="if-label">Description</label>
       <textarea pInputTextarea class="field-dialog-inputs" formControlName="description"></textarea>
       <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}/255</label>
+    </div>
+
+    <div class="field-dialog-inputs">
+      <label class="if-label">Unit&nbsp;*</label>
+      <p-dropdown [options]="(units$ | async)" formControlName="unitId" optionValue="id" optionLabel="name"
+                  class="field-dialog-inputs" placeholder="Select unit"></p-dropdown>
     </div>
 
     <label class="if-dialog-title">Define Accuracy</label>
@@ -40,7 +46,7 @@ under the License.
     <label class="if-dialog-title">Define Thresholds & Limits</label>
 
     <div class="input-div">
-      <label class="if-label">Thresholds & limits</label>
+      <label class="if-label">Thresholds & limits&nbsp;*</label>
       <div class="dialog-grid">
         <div>
           <p-radioButton [value]="FieldThresholdType.OPTIONAL" [label]="FieldThresholdType.OPTIONAL | titlecase" formControlName="thresholdType"
