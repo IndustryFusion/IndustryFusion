@@ -38,11 +38,17 @@ export class FusionAppletPageTitleComponent implements OnInit {
   }
 
   resolveSubTitle(path: string) {
-    if (path.match('\/overview')) {
+    if (path.match('^\\/fusion-applets\/overview')) {
       this.subtitle = 'Applet Overview';
     }
-    if (path.match('\/archiv')) {
-      this.subtitle = 'Archive';
+    if (path.match('^\\/fusion-applets\/archiv')) {
+      this.subtitle = 'Applet Archive';
+    }
+    if (path.match('^\\/fusion-applets\\/.*\\/detail')) {
+      this.subtitle = 'Applet Detail';
+    }
+    if (path.match('^\\/fusion-applets\\/.*\\/editor')) {
+      this.subtitle = 'Applet Editor';
     }
   }
 

@@ -92,7 +92,9 @@ export class Rule {
   priority: string;
   status: RuleStatus;
   synchronizationStatus: SynchronizationStatus;
-  population: { };
+  population: {
+    ids: string[],
+    };
   conditions: RuleConditions;
   actions: RuleAction[];
 }
