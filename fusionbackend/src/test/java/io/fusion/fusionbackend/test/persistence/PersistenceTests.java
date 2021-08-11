@@ -101,7 +101,7 @@ public class PersistenceTests extends PersistenceTestsBase {
     }
 
     @Test
-    void persistAssestSeriesWithConnectivitySettings() {
+    void persistAssetsSeriesWithConnectivitySettings() {
         ConnectivityType connectivityType = persisted(aConnectivityType()
                 .withProtocol(persisted(aConnectivityProtocol())))
                 .build();
@@ -118,10 +118,13 @@ public class PersistenceTests extends PersistenceTestsBase {
         AssetSeries foundSeries = testEntityManager.persistFlushFind(assetSeries);
 
         assertNotNull(foundSeries);
+        assertEquals(connectivityType, foundSeries.getConnectivitySettings().getConnectivityType());
+        assertEquals(connectivityProtocol, foundSeries.getConnectivitySettings().getConnectivityProtocol());
+
     }
 
     @Test
-    void persistAssestSeriesWithConnectivitySettings_detachBeforeSave() {
+    void persistAssetsSeriesWithConnectivitySettings_detachBeforeSave() {
         ConnectivityType connectivityType = persisted(aConnectivityType()
                 .withProtocol(persisted(aConnectivityProtocol())))
                 .build();

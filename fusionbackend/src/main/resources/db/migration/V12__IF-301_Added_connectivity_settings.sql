@@ -1,7 +1,7 @@
 alter table asset_series
     add column connectivity_settings_id bigint;
 alter table asset_series
-    add constraint UK_su1a43xou98sno10yyaxdc2ce unique (connectivity_settings_id);
+    add constraint asset_series_connectivity_settings_id_key unique (connectivity_settings_id);
 
 create table connectivity_settings
 (
