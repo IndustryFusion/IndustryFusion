@@ -19,68 +19,84 @@
 @import 'base/typography';
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
-.efficiency-dashboard-upper-part {
-  padding: 1%;
-  height: max-content;
-  width: 100%;
-  background: $grey-background;
-}
-
-.if-badge {
-  display: inline-flex;
-  vertical-align: middle;
-  align-items: center;
-  justify-content: center;
-  min-width: .75rem;
-  background: #8c8c8c;
-  height: .75rem;
-  line-height: normal;
-  border-radius: .5rem;
-  font-size: .5rem;
-  padding: 0 .2rem;
-  margin-right: .3rem;
-  white-space: nowrap;
-  text-align: center;
-  color: $basic-white;
-
-  &.running{
-    background: $status-running;
+.efficiency-dashboard {
+  .efficiency-dashboard-upper-part {
+    padding: 1%;
+    height: max-content;
+    width: 100%;
+    background: $grey-background;
   }
 
-  &.idle {
-    background: $status-idle;
+  .manufacturer-icon {
+    display: flex;
+    width: 100% !important;
+    align-items: center;
+
+    img {
+      width: 2rem;
+      height: 2rem;
+      background: grey;
+      border-radius: 45px;
+      margin-right: 0.5rem;
+    }
   }
 
-  &.error {
-    background: $status-error;
+  .if-badge {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    min-width: .75rem;
+    background: #8c8c8c;
+    height: .75rem;
+    line-height: normal;
+    border-radius: .5rem;
+    font-size: .5rem;
+    padding: 0 .2rem;
+    margin-right: .3rem;
+    white-space: nowrap;
+    text-align: center;
+    color: $basic-white;
+
+    &.running{
+      background: $status-running;
+    }
+
+    &.idle {
+      background: $status-idle;
+    }
+
+    &.error {
+      background: $status-error;
+    }
+
+    &.offline {
+      background: $status-offline;
+    }
   }
 
-  &.offline {
-    background: $status-offline;
+  .if-badge-square {
+    @extend .if-badge;
+    border-radius: 0;
   }
-}
 
-.if-badge-square {
-  @extend .if-badge;
-  border-radius: 0;
-}
+  .status-key {
+    padding-top: 0.5rem;
 
-.status-key {
-  padding-top: 0.5rem;
-
-  .badge-padding {
-    padding-right: 1rem;
+    .badge-padding {
+      padding-right: 1rem;
+    }
   }
 }
 
 
 
 .filter-btn {
-    height: 48px;
-    width: 48px;
-    background-color: hsl(198, 0%, 95%);
-    border-color: transparent;
-    border-radius: 10px;
+  height: 48px;
+  width: 48px;
+  background-color: hsl(198, 0%, 95%);
+  border-color: transparent;
+  border-radius: 10px;
 }
 
 .remove-all-filters-btn {
