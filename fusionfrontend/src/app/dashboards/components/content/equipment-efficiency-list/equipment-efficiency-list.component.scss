@@ -19,6 +19,12 @@
 @import 'base/typography';
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
+.efficiency-dashboard-upper-part {
+  padding: 1%;
+  height: max-content;
+  width: 100%;
+  background: $grey-background;
+}
 
 .if-badge {
   display: inline-flex;

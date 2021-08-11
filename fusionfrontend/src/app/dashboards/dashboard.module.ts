@@ -34,6 +34,7 @@ import { IFCommon } from '../common/i-f-common.module';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
 import { EquipmentEfficiencyListComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-list.component';
 import { EquipmentEfficiencyProgressbarComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-progressbar/equipment-efficiency-progressbar.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -58,8 +59,9 @@ import { EquipmentEfficiencyProgressbarComponent } from './components/content/eq
         ReactiveFormsModule,
         ProgressBarModule,
         OverlayPanelModule,
-        TableModule
-      ],
+        TableModule,
+        CalendarModule
+    ],
   exports: [
     DashboardSubHeaderComponent,
     DashboardPageTitleComponent,

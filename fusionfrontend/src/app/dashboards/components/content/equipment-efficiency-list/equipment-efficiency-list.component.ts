@@ -50,6 +50,8 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   @Input()
   assetTypes: AssetType[];
 
+  dateFilter: Date;
+
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   faFilter = faFilter;
   faSearch = faSearch;
