@@ -33,8 +33,9 @@ import { TableModule } from 'primeng/table';
 import { IFCommon } from '../common/i-f-common.module';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
 import { EquipmentEfficiencyListComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-list.component';
-import { EquipmentEfficiencyProgressbarComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-progressbar/equipment-efficiency-progressbar.component';
+import { EquipmentEfficiencyBarChartComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { CalendarModule } from 'primeng/calendar';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -45,23 +46,24 @@ import { CalendarModule } from 'primeng/calendar';
     MaintenanceProgressbarComponent,
     EquipmentEfficiencyPageComponent,
     EquipmentEfficiencyListComponent,
-    EquipmentEfficiencyProgressbarComponent,
+    EquipmentEfficiencyBarChartComponent,
   ],
-    imports: [
-        IFCommon,
-        DashboardRoutingModule,
-        ClarityModule,
-        AgmCoreModule.forRoot({
-            apiKey: environment.googleMapsClientId
-        }),
-        ChartsModule,
-        FontAwesomeModule,
-        ReactiveFormsModule,
-        ProgressBarModule,
-        OverlayPanelModule,
-        TableModule,
-        CalendarModule
-    ],
+  imports: [
+    IFCommon,
+    DashboardRoutingModule,
+    ClarityModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsClientId
+    }),
+    ChartsModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    ProgressBarModule,
+    OverlayPanelModule,
+    TableModule,
+    CalendarModule,
+    ChartModule
+  ],
   exports: [
     DashboardSubHeaderComponent,
     DashboardPageTitleComponent,

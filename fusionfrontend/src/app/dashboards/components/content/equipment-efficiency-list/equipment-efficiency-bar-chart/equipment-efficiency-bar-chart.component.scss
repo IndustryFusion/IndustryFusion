@@ -13,6 +13,8 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 .maintenance-value {
     display: flex;
     flex-direction: row;
@@ -22,8 +24,8 @@
 }
 
 .container {
-    width: 260.59px;
-    height: 32px;
+    width: 16rem;
+    height: 2rem;
     position: relative;
 }
 
@@ -33,13 +35,8 @@
     top: 0;
 }
 
-.label-class {
-    font-size: 14px;
-    font-weight: bold;
-    top: -20px;
-    left: 10px;
-    z-index: 10;
-    background-color: transparent;
-    color: white;
-    position: absolute;
+:host ::ng-deep canvas {
+  border-radius: 0 8px 8px 0 !important;
+  width: 16rem !important;
+  height: 2rem !important;
 }

@@ -23,7 +23,7 @@ export class MaintenanceProgressbarComponent implements OnInit {
   maintenanceDurationWeeks: number;
   maintenanceDurationMonth: number;
   maintenancePercentage: number;
-  noMaintenacneValue: boolean;
+  noMaintenanceValue: boolean;
 
   constructor() { }
 
@@ -35,10 +35,9 @@ export class MaintenanceProgressbarComponent implements OnInit {
       this.maintenanceDurationDays = Math.round(this.maintenanceDurationHours / HOURS_PER_DAY);
       this.maintenanceDurationWeeks = Math.round(this.maintenanceDurationHours / (HOURS_PER_DAY * DAY_PER_WEEK));
       this.maintenanceDurationMonth = Math.round(this.maintenanceDurationHours / (DAYS_PER_MONTH * HOURS_PER_DAY));
-      this.noMaintenacneValue = false;
+      this.noMaintenanceValue = false;
     } else {
-      this.noMaintenacneValue = true;
+      this.noMaintenanceValue = true;
     }
   }
-
 }

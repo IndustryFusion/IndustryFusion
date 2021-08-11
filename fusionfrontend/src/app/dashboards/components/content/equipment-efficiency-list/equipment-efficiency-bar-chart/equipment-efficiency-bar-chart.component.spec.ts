@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { EquipmentEfficiencyProgressbarComponent } from './equipment-efficiency-progressbar.component';
+import { EquipmentEfficiencyBarChartComponent } from './equipment-efficiency-bar-chart.component';
 
-describe('MaintenanceProgressbarComponent', () => {
-  let component: EquipmentEfficiencyProgressbarComponent;
-  let fixture: ComponentFixture<EquipmentEfficiencyProgressbarComponent>;
+describe('EquipmentEfficiencyBarChartComponent', () => {
+  let component: EquipmentEfficiencyBarChartComponent;
+  let fixture: ComponentFixture<EquipmentEfficiencyBarChartComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EquipmentEfficiencyProgressbarComponent ]
+      declarations: [ EquipmentEfficiencyBarChartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EquipmentEfficiencyProgressbarComponent);
+    fixture = TestBed.createComponent(EquipmentEfficiencyBarChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
