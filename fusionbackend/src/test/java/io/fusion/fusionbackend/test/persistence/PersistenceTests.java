@@ -39,10 +39,13 @@ public class PersistenceTests extends PersistenceTestsBase {
 
     @Test
     public void persistAsset() {
+        ConnectivityType connectivityType = persisted(aConnectivityType()).build();
+        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
 
         Asset asset = anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(persisted(aCompany()))
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(persisted(aCompany()))
@@ -56,9 +59,13 @@ public class PersistenceTests extends PersistenceTestsBase {
     @Test
     void persistAssetWithSubsystem() {
 
+        ConnectivityType connectivityType = persisted(aConnectivityType()).build();
+        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
+
         Asset subsystem = persisted(anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(persisted(aCompany()))
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(persisted(aCompany())))
@@ -67,6 +74,7 @@ public class PersistenceTests extends PersistenceTestsBase {
         Asset parent = persisted(anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(persisted(aCompany()))
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(persisted(aCompany())))

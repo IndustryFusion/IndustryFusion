@@ -1,5 +1,5 @@
 alter table asset_series
-    add column connectivity_settings_id bigint;
+    add column connectivity_settings_id bigint not null;
 alter table asset_series
     add constraint asset_series_connectivity_settings_id_key unique (connectivity_settings_id);
 
@@ -7,7 +7,7 @@ create table connectivity_settings
 (
     id                       bigint         not null,
     version                  bigint,
-    connection_string        varchar(255) not null,
+    connection_string        varchar(255)   not null,
     connectivity_protocol_id bigint         not null,
     connectivity_type_id     bigint         not null,
     primary key (id)

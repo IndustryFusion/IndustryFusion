@@ -64,7 +64,7 @@ public class AssetSeries extends BaseAsset {
     @Builder.Default
     private Set<FieldSource> fieldSources = new LinkedHashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "connectivity_settings_id",
             foreignKey = @ForeignKey(name = "asset_series_connectivity_settings_id_fkey"))
     private ConnectivitySettings connectivitySettings;
