@@ -131,6 +131,40 @@ export class OispService {
     return this.http.put<Rule>(url, rule, this.httpOptions);
   }
 
+  private prepareRuleForSending(rule: Rule) {
+    if (!rule.description) {
+      delete rule[`description`];
+    }
+    if (rule.status === RuleStatus.Draft) {
+      rule.status = RuleStatus.OnHold;
+    }
+    rule.conditions.values.map(conditionValue => {
+      delete conditionValue[`conditionSequence`];
+      if (conditionValue.type !== ConditionType.statistics) {
+        delete conditionValue[`baselineCalculationLevel`];
+        delete conditionValue[`baselineSecondsBack`];
+        delete conditionValue[`baselineMinimalInstances`];
+      }
+      if (conditionValue.type !== ConditionType.time) {
+        delete conditionValue[`timeLimit`];
+      }
+    });
+
+    rule.actions = rule.actions.map<RuleAction>((ruleAction: RuleAction) => {
+      if (typeof ruleAction.target === 'string') {
+        ruleAction.target = [ruleAction.target];
+      }
+      return ruleAction;
+    });
+
+    delete rule[`id`];
+    delete rule[`domainId`];
+    delete rule[`owner`];
+    delete rule[`naturalLanguage`];
+    delete rule[`creationDate`];
+    delete rule[`lastUpdateDate`];
+  }
+
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}/status`;
     const body = { status };
@@ -169,10 +203,39 @@ export class OispService {
     return answer;
   }
 
+  getOispPoints(path: string, request: OispRequest, allFields: boolean): Observable<PointWithId[]> {
+    if (request.metrics.length < 1) {
+      return of(this.defaultPoints);
+    }
+    return this.http.post<OispResponse>(`${environment.oispApiUrlPrefix}/${path}`, request, this.httpOptions)
+      .pipe(
+        catchError(() => {
+          console.error('[oisp service] caught error while searching for oispPoints');
+          return EMPTY;
+        }),
+        map((entity) => {
+          if (entity.series && this.hasAnyPoints(entity.series)) {
+            if (allFields) {
+              // returns the last value for each field
+              const points = entity.series.map((series) => ({ id: series.componentId, ...series.points.slice(-1)[0] }));
+              return points;
+            } else if (!allFields) {
+              // returns all values for one field
+              const seriesId = entity.series[0].componentId;
+              const points = entity.series[0].points
+                .map((point) => ({ id: seriesId, ts: point.ts, value: point.value }));
+              return points;
+            }
+          } else {
+            return this.defaultPoints;
+          }
+        }));
+  }
+
   getLastValueOfAllFields(asset: Asset, fields: FieldDetails[], secondsInPast: number): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
     const request: OispRequest = {
-      from: secondsInPast - 1000000,
+      from: -secondsInPast,
       targetFilter: { deviceList: [asset.externalId] },
       metrics: fields
         .filter(field => field.fieldType === FieldType.METRIC)
@@ -242,63 +305,6 @@ export class OispService {
       };
       return this.getOispPoints(path, request, false);
     }
-  }
-
-  private prepareRuleForSending(rule: Rule) {
-    rule.conditions.values.map(conditionValue => {
-      delete conditionValue[`conditionSequence`];
-      if (conditionValue.type !== ConditionType.statistics) {
-        delete conditionValue[`baselineCalculationLevel`];
-        delete conditionValue[`baselineSecondsBack`];
-        delete conditionValue[`baselineMinimalInstances`];
-      }
-      if (conditionValue.type !== ConditionType.time) {
-        delete conditionValue[`timeLimit`];
-      }
-    });
-
-    rule.actions = rule.actions.map<RuleAction>((ruleAction: RuleAction) => {
-      if (typeof ruleAction.target === 'string') {
-        ruleAction.target = [ruleAction.target];
-      }
-      return ruleAction;
-    });
-
-    delete rule[`id`];
-    delete rule[`domainId`];
-    delete rule[`owner`];
-    delete rule[`naturalLanguage`];
-    delete rule[`creationDate`];
-    delete rule[`lastUpdateDate`];
-  }
-
-  private getOispPoints(path: string, request: OispRequest, allFields: boolean): Observable<PointWithId[]> {
-    if (request.metrics.length < 1) {
-      return of(this.defaultPoints);
-    }
-    return this.http.post<OispResponse>(`${environment.oispApiUrlPrefix}/${path}`, request, this.httpOptions)
-      .pipe(
-        catchError(() => {
-          console.error('[oisp service] caught error while searching for oispPoints');
-          return EMPTY;
-        }),
-        map((entity) => {
-          if (entity.series && this.hasAnyPoints(entity.series)) {
-            if (allFields) {
-              // returns the last value for each field
-              const points = entity.series.map((series) => ({ id: series.componentId, ...series.points.slice(-1)[0] }));
-              return points;
-            } else if (!allFields) {
-              // returns all values for one field
-              const seriesId = entity.series[0].componentId;
-              const points = entity.series[0].points
-                .map((point) => ({ id: seriesId, ts: point.ts, value: point.value }));
-              return points;
-            }
-          } else {
-            return this.defaultPoints;
-          }
-        }));
   }
 
   private getOispAccountId(): string {

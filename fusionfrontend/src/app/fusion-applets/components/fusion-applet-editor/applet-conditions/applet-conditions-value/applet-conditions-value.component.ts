@@ -32,7 +32,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class AppletConditionsValueComponent implements OnInit {
   ConditionType = ConditionType;
-  activeAccordionIndex = 1;
+  activeAccordionIndex = -1;
 
   @Input()
   conditionValueGroup: FormGroup;

@@ -14,11 +14,12 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OispService } from '../../../services/oisp.service';
-import { Rule, RuleResetType, RuleStatus, RuleType, } from '../../../services/oisp.model';
+import { Device, Rule, RuleResetType, RuleStatus, RuleType, } from '../../../services/oisp.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-fusion-applet-editor',
@@ -31,14 +32,28 @@ export class FusionAppletEditorComponent implements OnInit {
   rule: Rule;
   ruleGroup: FormGroup;
   assets: any[];
+  isStatusActive = false;
+  devices: Device[];
 
   constructor(
-    activatedRoute: ActivatedRoute,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     private oispService: OispService,
     public ruleStatusUtil: RuleStatusUtil,
-    formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService
   ) {
-    this.ruleGroup = formBuilder.group({
+    this.loadDevices();
+    this.createRuleGroup();
+    const fusionAppletId = this.activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
+    this.oispService.getRule(fusionAppletId).subscribe(rule => {
+      this.rule = rule;
+      this.ruleGroup.patchValue(this.rule);
+    });
+  }
+
+  private createRuleGroup() {
+    this.ruleGroup = this.formBuilder.group({
       id: [],
       externalId: [],
       name: [],
@@ -53,10 +68,8 @@ export class FusionAppletEditorComponent implements OnInit {
       population: [],
       actions: new FormArray([], [Validators.required, Validators.minLength(1)])
     });
-    const fusionAppletId = activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
-    this.oispService.getRule(fusionAppletId).subscribe(rule => {
-      this.rule = rule;
-      this.ruleGroup.patchValue(this.rule);
+    this.ruleGroup.get('status').valueChanges.subscribe(status => {
+      this.isStatusActive = status === RuleStatus.Active;
     });
   }
 
@@ -64,12 +77,23 @@ export class FusionAppletEditorComponent implements OnInit {
   }
 
   changeStatus(isActivating: boolean) {
-    let status: RuleStatus;
+    let status: RuleStatus.Active | RuleStatus.OnHold;
+    let prefix = '';
     if (isActivating) {
       status = RuleStatus.Active;
     } else {
       status = RuleStatus.OnHold;
+      prefix = 'de';
     }
+    this.confirmationService.confirm({
+      message: `Are you sure that you want to ${prefix}activate this applet? All unsaved Changes will be lost!`,
+      accept: () => this.sendStatusChange(status),
+      reject: () => this.ruleGroup.get('status').setValue(this.rule.status),
+      rejectVisible: true
+    });
+  }
+
+  private sendStatusChange(status: RuleStatus.OnHold | RuleStatus.Active) {
     this.oispService.setRuleStatus(this.rule.id, status).subscribe(rule => {
       this.rule = rule;
       this.ruleGroup.patchValue(this.rule);
@@ -86,6 +110,30 @@ export class FusionAppletEditorComponent implements OnInit {
 
   save() {
     this.rule = this.ruleGroup.getRawValue();
-    this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => this.rule = rule);
+    this.createPopulation();
+    this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => {
+      this.rule = rule;
+      this.router.navigate(['..', 'detail'], { relativeTo: this.activatedRoute });
+    });
+  }
+
+  private createPopulation() {
+    if (this.rule.conditions.values.length > 0) {
+      const ids: string[] = [];
+      this.rule.conditions.values.map(value => value.component.cid).forEach(cid => {
+        const usedDevice = this.devices.find(device => device.components.filter(deviceComponent => deviceComponent.cid === cid));
+        if (usedDevice && !ids.includes(usedDevice.deviceId)) {
+          ids.push(usedDevice.deviceId);
+        }
+      });
+      this.rule.population = { ids };
+    }
+  }
+
+  private loadDevices() {
+    this.oispService.getAllDevices()
+      .subscribe(devices => {
+        this.devices = devices;
+      });
   }
 }
