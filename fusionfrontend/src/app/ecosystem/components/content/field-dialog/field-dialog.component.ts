@@ -40,6 +40,7 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
 
   public DialogType = DialogType;
   public FieldThresholdType = FieldThresholdType;
+  public readonly MAX_TEXT_LENGTH = 255;
 
   constructor(private unitQuery: UnitQuery,
               private formBuilder: FormBuilder,
@@ -63,13 +64,13 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
   }
 
   private createFieldFormGroup(field: Field) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(this.MAX_TEXT_LENGTH)];
 
     this.fieldForm = this.formBuilder.group({
       id: [],
       name: ['', requiredTextValidator],
       label: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
+      description: ['', Validators.maxLength(this.MAX_TEXT_LENGTH)],
       accuracy: [0],
       unitId: [null, Validators.required],
       thresholdType: [FieldThresholdType.OPTIONAL, Validators.required]
