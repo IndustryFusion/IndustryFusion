@@ -15,17 +15,4 @@
 
 @import 'abstract/variables';
 @import 'base/typography';
-
-.if-tooltip {
-  margin-left: 6px;
-  margin-top: 8px;
-  display: inline-block;
-
-  background-repeat: no-repeat;
-
-  &.icon-help {
-    height: 18px;
-    width: 18px;
-    background-image: url(/assets/icons/help-icon.svg);
-  }
-}
+@import 'base/icons';

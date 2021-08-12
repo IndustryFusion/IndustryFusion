@@ -26,7 +26,7 @@ under the License.
 <app-factory-site-map [factorySites]="factorySites$ | async"></app-factory-site-map>
 
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-  {{ (assetsCombined$ | async)?.length }} {{(assetsCombined$ | async)?.length > 1 ? 'Assets' : 'Asset'}}
+  {{ (assetsCombined$ | async)?.length | i18nPlural: assetsMapping }}
   <div>
     <app-create-button [text]="'Create Asset'" (createItem)="createAssetFromAssetSeries()"></app-create-button>
   </div>

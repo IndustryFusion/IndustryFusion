@@ -50,12 +50,6 @@ export class TooltipComponent implements OnInit, OnDestroy {
   private showDialog() {
     if (!this.dialogRef) {
       this.dialogRef = this.dialogService.open(this.component, { header: '', modal: false });
-
-/*      const dialogElements = document.getElementsByClassName('p-dialog-mask');
-      if (dialogElements.length > 0) {
-        document.getElementById('test123').appendChild(dialogElements[dialogElements.length - 1]);
-      }*/
-
       this.dialogRef.onClose.subscribe(() => this.reset());
     }
   }

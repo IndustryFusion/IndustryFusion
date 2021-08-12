@@ -14,6 +14,7 @@
  */
 
 @import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
+@import 'base/icons';
 
 .asset-series-create-general-information {
 
@@ -50,6 +51,7 @@
 
     .sample-asset-display {
       display: flex;
+      margin-top: 0.5rem;
 
       img {
         height: min-content;

@@ -14,6 +14,7 @@
  */
 
 @import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
+@import 'base/icons';
 
 .asset-series-create-connectivity-settings-tooltip {
 
@@ -49,17 +50,10 @@
     color: $basic-grey;
     font-size: $regular-font-size;
   }
+}
 
-
-  .icon-help {
-    margin-left: -1.6rem;
-    margin-right: 0.8rem;
-    margin-top: 19px;
-    display: inline-block;
-    background-repeat: no-repeat;
-    height: 19px;
-    width: 19px;
-    transform: scale(1.8);
-    background-image: url(/assets/icons/help-icon.svg);
-  }
+:host ::ng-deep .if-icon-help {
+  margin-left: -1.6rem;
+  margin-right: 0.8rem;
+  margin-top: 0.5rem;
 }

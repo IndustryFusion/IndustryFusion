@@ -44,6 +44,9 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
   factorySites$: Observable<FactorySite[]>;
   assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite }[]>;
 
+  assetsMapping:
+    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+
   constructor(private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
               private assetQuery: AssetQuery,
               private activatedRoute: ActivatedRoute,
