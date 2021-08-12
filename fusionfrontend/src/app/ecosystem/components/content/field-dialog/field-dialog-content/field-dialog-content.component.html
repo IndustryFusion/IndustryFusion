@@ -29,15 +29,15 @@ under the License.
       <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}/255</label>
     </div>
 
-    <label class="if-dialog-title">Define Accuracy</label>
+    <label class="if-dialog-section-title">Define Accuracy</label>
 
-    <div class="field-dialog-inputs">
+    <div class="field-dialog-inputs input-div">
       <label class="if-label">Accuracy</label>
       <p-dropdown [options]="accuracyItems" formControlName="accuracy"
                   class="field-dialog-inputs" placeholder="Select accuracy format"></p-dropdown>
     </div>
 
-    <label class="if-dialog-title">Define Thresholds & Limits</label>
+    <label class="if-dialog-section-title">Define Thresholds & Limits</label>
 
     <div class="input-div">
       <label class="if-label">Thresholds & limits</label>
