@@ -53,6 +53,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         if (entity == null) {
             return null;
         }
+        // Please mind editing AssetDetailsMapper on changes here too
         AssetDto dto = AssetDto.builder()
                 .id(entity.getId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
@@ -73,10 +74,6 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .installationDate(entity.getInstallationDate())
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
                 .build();
-
-        if (entity.getRoom() != null) {
-            dto.setRoomId(entity.getRoom().getId());
-        }
 
         baseAssetMapper.copyToDto(entity, dto);
 
