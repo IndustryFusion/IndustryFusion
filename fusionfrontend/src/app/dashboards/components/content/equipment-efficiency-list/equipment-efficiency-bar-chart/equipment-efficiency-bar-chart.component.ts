@@ -15,6 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+
 // import styles from '../../../../../../assets/sass/abstract/_variables.scss';
 
 @Component({
@@ -41,14 +42,37 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit {
   private initOptions() {
     this.stackedOptions = {
       tooltips: {
-        mode: 'index',
-        intersect: false,
-        enabled: false
+        mode: 'dataset',
+        position: 'nearest',
+    /*    mode: 'label',
+        intersect: true,*/
+        callbacks: {
+          title(tooltipItem, data) {
+            const value = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index];
+            const label = data.datasets[tooltipItem[0].datasetIndex].label;
+            return value + ':02 h (' + label + ')';
+          },
+          label(_, _2) {
+            return '';
+          },
+        },
+        backgroundColor: '#000000',
+        titleFontSize: 16,
+        titleFontColor: '#FFFFFF',
+        bodyFontColor: '#FFFFFF',
+        bodyFontSize: 12,
+        displayColors: false,
+        xAlign: 'center',
       },
       animation: false,
       maintainAspectRatio: false,
       responsive: true,
-      height: 30,
+      layout: {
+        padding: {
+          bottom: 22,
+          right: 50
+        }
+      },
       legend: {
         display: false
       },
