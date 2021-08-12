@@ -17,12 +17,8 @@ package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Data
 @SuperBuilder
