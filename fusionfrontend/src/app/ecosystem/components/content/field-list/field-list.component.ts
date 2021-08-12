@@ -19,6 +19,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseListComponent } from '../base/base-list/base-list.component';
 import { FieldQuery } from '../../../../store/field/field-query.service';
 import { FieldService } from '../../../../store/field/field.service';
+import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-field-list',
@@ -36,12 +38,14 @@ export class FieldListComponent extends BaseListComponent implements OnInit, OnD
       '=1': '# metric or attribute selected',
       other: '# metrics or attributes selected'
     };
+  private createDialogRef: DynamicDialogRef;
 
 
   constructor(public route: ActivatedRoute,
               public router: Router,
               public fieldQuery: FieldQuery,
-              public fieldService: FieldService) {
+              public fieldService: FieldService,
+              private dialogService: DialogService) {
     super(route, router, fieldQuery, fieldService);
   }
 
@@ -51,6 +55,13 @@ export class FieldListComponent extends BaseListComponent implements OnInit, OnD
 
   ngOnDestroy() {
     this.fieldQuery.resetError();
+    this.createDialogRef?.close();
   }
 
+  showCreateDialog() {
+    this.createDialogRef = this.dialogService.open(FieldDialogComponent, {
+      data: { },
+      header: 'Create new Metric or Attribute',
+    });
+  }
 }
