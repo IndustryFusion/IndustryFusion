@@ -24,7 +24,6 @@ import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 import { SelectItem } from 'primeng/api';
 
-
 interface ActiveFilter {
   filterAttribute: SelectItem;
 }
@@ -43,8 +42,13 @@ const RADIX_DECIMAL = 10;
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
-  MAINTENANCE_FIELD_NAME_OPERATING_HOURS = 'Operating Hours till maintenance';
-  MAINTENANCE_FIELD_NAME_DAYS = 'Days till maintenance';
+  MAINTENANCE_OPERATING_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
+  MAINTENANCE_OPERATING_HOURS_LOWER_THRESHOLD = 150;
+  MAINTENANCE_OPERATING_HOURS_UPPER_THRESHOLD = 750;
+
+  MAINTENANCE_DAYS_FIELD_NAME = 'Days till maintenance';
+  MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
+  MAINTENANCE_DAYS_UPPER_THRESHOLD = 180;
 
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
@@ -188,7 +192,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsLowerThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
       }
@@ -197,7 +201,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsGreaterThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > value;
       }
@@ -206,7 +210,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetOutsideTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < lowerValue ||
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > greaterValue;
@@ -216,12 +220,23 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsBetweenTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_FIELD_NAME_OPERATING_HOURS);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < greaterValue &&
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > lowerValue;
       }
     });
+  }
+
+  public isMaintenanceNeededSoon(asset: FactoryAssetDetailsWithFields): boolean {
+    const maintenance_days = +asset.fields.find(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME)?.value;
+    const maintenance_hours = +asset.fields.find(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME)?.value;
+    const maintenance_days_percentage = maintenance_days / this.MAINTENANCE_OPERATING_HOURS_UPPER_THRESHOLD;
+    const maintenance_hours_percentage = maintenance_hours / this.MAINTENANCE_DAYS_UPPER_THRESHOLD;
+    if (maintenance_days_percentage < 0.25 || maintenance_hours_percentage < 0.25) {
+      return true;
+    }
+    return false;
   }
 
   private filterBySearchText() {
@@ -252,6 +267,5 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
         .filter(asset => factorySiteNames.includes(asset.factorySiteName));
     }
   }
-
 
 }

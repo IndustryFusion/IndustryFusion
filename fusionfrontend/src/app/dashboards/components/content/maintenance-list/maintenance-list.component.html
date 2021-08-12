@@ -36,20 +36,21 @@
     <ng-template let-asset pTemplate="body">
       <tr>
         <td [style.width.%]="2"></td>
-        <td [style.width.%]="20">{{asset.name}}</td>
+        <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(asset)}"
+            [style.width.%]="20">{{asset.name}}</td>
         <td [style.width.%]="18">{{asset.category}}</td>
         <td [style.width.%]="20">{{asset.manufacturer}}</td>
         <td [style.width.%]="12">{{asset.factorySiteName}}</td>
         <td [style.width.%]="13">
           <app-maintenance-progressbar
             [assetFields]="asset.fields" [asset]="asset" [lowerThreshold]="90"
-            [maintenanceValueKey]="MAINTENANCE_FIELD_NAME_DAYS"
+            [maintenanceValueKey]="MAINTENANCE_DAYS_FIELD_NAME"
             [upperThreshold]="180"></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="13">
           <app-maintenance-progressbar
             [assetFields]="asset.fields" [asset]="asset" [lowerThreshold]="150"
-            [maintenanceValueKey]="MAINTENANCE_FIELD_NAME_OPERATING_HOURS"
+            [maintenanceValueKey]="MAINTENANCE_OPERATING_HOURS_FIELD_NAME"
             [upperThreshold]="750"></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="2"></td>
