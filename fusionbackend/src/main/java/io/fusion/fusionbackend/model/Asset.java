@@ -21,16 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -86,6 +77,9 @@ public class Asset extends BaseAsset {
     protected String videoKey;
     protected OffsetDateTime installationDate;
 
+    @Column(nullable = false)
+    protected String connectionString;
+
     public void copyFrom(final Asset sourceAsset) {
         super.copyFrom(sourceAsset);
         if (sourceAsset.getExternalId() != null) {
@@ -132,6 +126,9 @@ public class Asset extends BaseAsset {
         }
         if (sourceAsset.getSubsystems() != null) {
             setSubsystems(sourceAsset.getSubsystems());
+        }
+        if (sourceAsset.getConnectionString() != null) {
+            setConnectionString(sourceAsset.getConnectionString());
         }
     }
 }

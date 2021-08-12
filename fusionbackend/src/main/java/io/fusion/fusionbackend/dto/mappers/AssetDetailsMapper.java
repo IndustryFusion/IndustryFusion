@@ -16,7 +16,6 @@
 package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetDetailsDto;
-import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetType;
