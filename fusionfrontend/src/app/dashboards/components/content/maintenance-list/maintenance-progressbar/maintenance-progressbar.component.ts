@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Field } from '../../../../../store/field/field.model';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 
 @Component({
@@ -11,9 +10,6 @@ export class MaintenanceProgressbarComponent implements OnInit {
 
   @Input()
   asset: FactoryAssetDetailsWithFields;
-
-  @Input()
-  assetFields: Field[];
 
   @Input()
   maintenanceValueKey: string;
@@ -31,7 +27,7 @@ export class MaintenanceProgressbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.maintenanceValue = +this.assetFields.find(field => field.name === this.maintenanceValueKey)?.value;
+    this.maintenanceValue = +this.asset.fields.find(field => field.name === this.maintenanceValueKey)?.value;
     if (this.maintenanceValue) {
       this.maintenancePercentage = (this.maintenanceValue / this.upperThreshold) * 100;
     }

@@ -6,7 +6,7 @@
       <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>
     <div *ngIf="maintenanceValue > lowerThreshold && maintenanceValue <= upperThreshold" class="container">
-      <p-progressBar [showValue]="false" [value]="maintenancePercentage + 100" class="progress-bar"
+      <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
                      class="grey-bar"></p-progressBar>
       <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>

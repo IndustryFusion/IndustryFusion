@@ -229,11 +229,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   public isMaintenanceNeededSoon(asset: FactoryAssetDetailsWithFields): boolean {
-    const maintenance_days = +asset.fields.find(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME)?.value;
-    const maintenance_hours = +asset.fields.find(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME)?.value;
-    const maintenance_days_percentage = maintenance_days / this.MAINTENANCE_OPERATING_HOURS_UPPER_THRESHOLD;
-    const maintenance_hours_percentage = maintenance_hours / this.MAINTENANCE_DAYS_UPPER_THRESHOLD;
-    if (maintenance_days_percentage < 0.25 || maintenance_hours_percentage < 0.25) {
+    const maintenanceDays = +asset.fields.find(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME)?.value;
+    const maintenanceHours = +asset.fields.find(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME)?.value;
+    const maintenanceDaysPercentage = maintenanceDays / this.MAINTENANCE_OPERATING_HOURS_UPPER_THRESHOLD;
+    const maintenanceHoursPercentage = maintenanceHours / this.MAINTENANCE_DAYS_UPPER_THRESHOLD;
+    if ((maintenanceDays && maintenanceDaysPercentage < 0.25) || (maintenanceHours && maintenanceHoursPercentage < 0.25)) {
       return true;
     }
     return false;
