@@ -16,19 +16,6 @@
 @import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
 @import '../../assets/sass/components/labels';
 
-
-div.content {
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-span.center {
-  margin-top: 1.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .attribute-row {
   display: flex;
   align-items: center;
@@ -58,8 +45,3 @@ span.center {
     }
   }
 }
-
-.header-row {
-  margin-top: 40px
-}
-

@@ -1,8 +1,6 @@
 package io.fusion.fusionbackend.test.persistence;
 
-import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.*;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,8 @@ import static io.fusion.fusionbackend.test.persistence.builder.AssetSeriesBuilde
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplateBuilder.anAssetTypeTemplate;
 import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
+import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityProtocolBuilder.aConnectivityProtocol;
+import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityTypeBuilder.aConnectivityType;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,10 +26,13 @@ public class QueryTests extends PersistenceTestsBase {
     @Test
     void findSubsystemCandidates() {
         Company company = persisted(aCompany()).build();
+        ConnectivityType connectivityType = persisted(aConnectivityType()).build();
+        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
 
         Asset parent = persisted(anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(company)
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(company))
@@ -38,6 +41,7 @@ public class QueryTests extends PersistenceTestsBase {
         Asset subsystemCandidate = persisted(anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(company)
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(company))
@@ -52,10 +56,13 @@ public class QueryTests extends PersistenceTestsBase {
     @Test
     void findSubsystemCandidates_subsystemsShouldNotBeFound() {
         Company company = persisted(aCompany()).build();
+        ConnectivityType connectivityType = persisted(aConnectivityType()).build();
+        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
 
         Asset parent = persisted(anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(company)
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(company))
@@ -64,6 +71,7 @@ public class QueryTests extends PersistenceTestsBase {
         Asset subsystem = persisted(anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(company)
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(company)
@@ -80,9 +88,13 @@ public class QueryTests extends PersistenceTestsBase {
     @Test
     void findSubsystemCandidates_forDifferentAssetSeries() {
         Company company = persisted(aCompany()).build();
+        ConnectivityType connectivityType = persisted(aConnectivityType()).build();
+        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
+
 
         AssetSeries parentAssetSeries = persisted(anAssetSeries()
                 .forCompany(company)
+                .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                 .basedOnTemplate(persisted(anAssetTypeTemplate()
                         .forType(persisted(anAssetType()))))).build();
 
@@ -99,6 +111,7 @@ public class QueryTests extends PersistenceTestsBase {
         Asset assetOfOtherAssetSeries = persisted(anAsset()
                 .basedOnSeries(persisted(anAssetSeries()
                         .forCompany(company)
+                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
                         .basedOnTemplate(persisted(anAssetTypeTemplate()
                                 .forType(persisted(anAssetType()))))))
                 .forCompany(company))

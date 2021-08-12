@@ -14,21 +14,22 @@
  */
 
 @import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
+@import 'base/icons';
 
-.asset-series-create-step-two {
+.asset-series-create-general-information {
 
-  .if-hint {
-    font-weight: bold;
-    font-size: $regular-font-size;
-    line-height: $regular-line-height;
-    color: $highlighted;
-  }
-
-  div.content {
-
+  .content {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+
+    #column-left {
+      width: 50%;
+    }
+
+    .input-div {
+     width: 100%;
+    }
 
     .upload-button {
       margin-top: 1.2rem;
@@ -37,7 +38,7 @@
       align-items: center;
 
       .upload-pic {
-        background: transparent url('/assets/icons/upload-icon.svg') 0% 0% no-repeat padding-box;
+        background: transparent url('/assets/icons/upload-icon.svg') 0 0 no-repeat padding-box;
         opacity: 1;
         width: 100px;
         height: 100px;
@@ -50,6 +51,7 @@
 
     .sample-asset-display {
       display: flex;
+      margin-top: 0.5rem;
 
       img {
         height: min-content;

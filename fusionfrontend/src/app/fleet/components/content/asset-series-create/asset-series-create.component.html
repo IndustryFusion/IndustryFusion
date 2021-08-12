@@ -13,35 +13,35 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="wrapper">
-  <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
-    <clr-alert-item>
-      <span class="alert-text">
-        {{ error }}
-      </span>
-    </clr-alert-item>
-  </clr-alert>
-  <app-timeline [currentStep]="step" [totalSteps]="toalSteps"></app-timeline>
+<div class="if-wizard-wrapper">
+  <app-timeline [currentStep]="step" [totalSteps]="totalSteps"></app-timeline>
+
   <app-asset-series-create-general-information
-    *ngIf="step === 1"
+    *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
     [mode]="mode"
-    [(assetSeries)]="assetSeries"
-    (updateTypeTemplate)="createAssetseriesOfAssetTypeTemplate($event)"
-  >
+    [assetSeries]="assetSeries"
+    [assetSeriesForm]="assetSeriesForm"
+    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)"
+    [relatedManufacturer]="relatedManufacturer"
+    [relatedAssetType]="relatedAssetType">
   </app-asset-series-create-general-information>
   <app-asset-series-create-connectivity-settings
-    *ngIf="step === 2" >
+    *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS"
+    [assetSeries]="assetSeries"
+    [assetSeriesForm]="assetSeriesForm"
+    (valid)="setConnectivitySettingsValid($event)">
   </app-asset-series-create-connectivity-settings>
   <app-asset-series-create-attributes
-    *ngIf="step === 3"
+    *ngIf="step === AssetSeriesCreateSteps.ATTRIBUTES"
     [assetSeries]="assetSeries"
     (valid)="setAttributesValid($event)">
   </app-asset-series-create-attributes>
   <app-asset-series-create-metrics
-    *ngIf="step === 4"
+    *ngIf="step === AssetSeriesCreateSteps.METRICS"
     [assetSeries]="assetSeries"
     (valid)="setMetricsValid($event)">
   </app-asset-series-create-metrics>
+
   <app-asset-series-create-footer [step]="step" (back)="back()" [isReadyForNextStep]="isReadyForNextStep()"
-                                  (nextStep)="nextStep()" [toalSteps]="toalSteps"></app-asset-series-create-footer>
+                                  (nextStep)="nextStep()" [toalSteps]="totalSteps"></app-asset-series-create-footer>
 </div>

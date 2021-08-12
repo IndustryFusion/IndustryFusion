@@ -15,10 +15,10 @@ under the License.
 <section class="if-detail-page-section">
   <div class="if-detail-page-div">
     <h3>
-      {{ (assetSerie$ | async)?.name }}
+      {{ (assetSerieDetails$ | async)?.name }}
     </h3>
     <div class="if-detail-page-description">
-      <textarea [disabled]="true">{{ (assetSerie$ | async)?.description  }}</textarea>
+      <textarea [disabled]="true">{{ (assetSerieDetails$ | async)?.description  }}</textarea>
     </div>
   </div>
 
@@ -26,7 +26,7 @@ under the License.
 <app-factory-site-map [factorySites]="factorySites$ | async"></app-factory-site-map>
 
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-  {{ (assetsCombined$ | async)?.length }} {{(assetsCombined$ | async)?.length > 1 ? 'Assets' : 'Asset'}}
+  {{ (assetsCombined$ | async)?.length | i18nPlural: assetsMapping }}
   <div>
     <app-create-button [text]="'Create Asset'" (createItem)="createAssetFromAssetSeries()"></app-create-button>
   </div>

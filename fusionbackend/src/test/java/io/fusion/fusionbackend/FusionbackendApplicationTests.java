@@ -15,12 +15,35 @@
 
 package io.fusion.fusionbackend;
 
-import io.fusion.fusionbackend.dto.*;
-import io.fusion.fusionbackend.model.enums.*;
+import io.fusion.fusionbackend.dto.AssetDto;
+import io.fusion.fusionbackend.dto.AssetSeriesDto;
+import io.fusion.fusionbackend.dto.AssetTypeDto;
+import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
+import io.fusion.fusionbackend.dto.BaseAssetDto;
+import io.fusion.fusionbackend.dto.CompanyDto;
+import io.fusion.fusionbackend.dto.ConnectivitySettingsDto;
+import io.fusion.fusionbackend.dto.ConnectivityTypeDto;
+import io.fusion.fusionbackend.dto.CountryDto;
+import io.fusion.fusionbackend.dto.FactorySiteDto;
+import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.FieldTargetDto;
+import io.fusion.fusionbackend.dto.QuantityTypeDto;
+import io.fusion.fusionbackend.dto.RoomDto;
+import io.fusion.fusionbackend.dto.UnitDto;
+import io.fusion.fusionbackend.model.enums.CompanyType;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
+import io.fusion.fusionbackend.model.enums.FieldThresholdType;
+import io.fusion.fusionbackend.model.enums.FieldType;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -888,6 +911,23 @@ class FusionbackendApplicationTests {
                 .contains(assetRoomEastStruumpFabId, assetRoomWestStruumpFabId);
     }
 
+
+    @Test
+    @Order(710)
+    void testGetAllConnectivityTypes() {
+        List<ConnectivityTypeDto> connectivityTypeDtos = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFabManStruump)
+                .when()
+                .get(baseUrl + "/connectivity-types")
+                .then()
+                .statusCode(200)
+                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class);
+
+        assertThat(connectivityTypeDtos.size()).isGreaterThan(1);
+        assertThat(connectivityTypeDtos.get(0).getAvailableProtocols().size()).isGreaterThanOrEqualTo(1);
+    }
+
     private Integer createAndTestCompany(final CompanyDto company) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
@@ -1312,22 +1352,44 @@ class FusionbackendApplicationTests {
                                              final Integer assetTypeTemplateId, final AssetSeriesDto assetSeries,
                                              final String accessToken) {
 
+        ConnectivityTypeDto connectivityTypeDto = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+                .when()
+                .get(baseUrl + "/connectivity-types")
+                .then()
+                .statusCode(200)
+                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class).get(0);
+
+
+        AssetSeriesDto assetSeriesDto = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl +
+                        "/companies/" +
+                        companyId +
+                        "/assettypetemplates/" +
+                        assetTypeTemplateId +
+                        "/init-asset-series-draft")
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+
+        ConnectivitySettingsDto connectivitySettings = assetSeriesDto.getConnectivitySettings();
+        connectivitySettings.setConnectionString("Some Connection");
+        connectivitySettings.setConnectivityTypeId(connectivityTypeDto.getId());
+        connectivitySettings.setConnectivityProtocolId(
+                List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0).getId());
+
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/assettypetemplates/" + assetTypeTemplateId + "/init-asset-series-draft")
-
-                .then()
-                .statusCode(200);
-
-        response = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-
-                .when()
-                .body(response.extract().body().asString())
+                .body(assetSeriesDto)
                 .post(baseUrl + "/companies/" + companyId + "/assetseries")
 
                 .then()

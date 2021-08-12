@@ -16,16 +16,9 @@
 @import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
 
 
-div.content {
+.content {
   flex-direction: row;
   justify-content: space-around;
-}
-
-span.center {
-  margin-top: 1.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .attribute-row {
@@ -55,10 +48,4 @@ span.center {
       margin-left: 80px;
     }
   }
-
-
-}
-
-.header-row {
-  margin-top: 40px
 }
