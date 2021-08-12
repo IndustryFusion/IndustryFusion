@@ -14,21 +14,21 @@
  */
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FieldDialogContentComponent } from './field-dialog-content.component';
+import { FieldDialogComponent } from './field-dialog.component';
 
 describe('FieldDialogContentComponent', () => {
-  let component: FieldDialogContentComponent;
-  let fixture: ComponentFixture<FieldDialogContentComponent>;
+  let component: FieldDialogComponent;
+  let fixture: ComponentFixture<FieldDialogComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FieldDialogContentComponent ]
+      declarations: [ FieldDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FieldDialogContentComponent);
+    fixture = TestBed.createComponent(FieldDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
