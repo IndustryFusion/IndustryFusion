@@ -17,8 +17,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
-import { AssetSeriesQuery } from '../../../../store/asset-series/asset-series.query';
 import { FactorySite } from '../../../../store/factory-site/factory-site.model';
 import { AssetQuery } from '../../../../store/asset/asset.query';
 import { Asset } from '../../../../store/asset/asset.model';
@@ -29,6 +27,8 @@ import { map } from 'rxjs/operators';
 import { AssetWizardComponent } from '../../content/asset-wizard/asset-wizard.component';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { DialogService } from 'primeng/dynamicdialog';
+import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
+import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 
 @Component({
   selector: 'app-asset-serie-page',
@@ -38,13 +38,16 @@ import { DialogService } from 'primeng/dynamicdialog';
 export class AssetSeriePageComponent implements OnInit, OnDestroy {
 
   assetSerieId: ID;
-  assetSerie$: Observable<AssetSeries>;
+  assetSerieDetails$: Observable<AssetSeriesDetails>;
 
   isLoading$: Observable<boolean>;
   factorySites$: Observable<FactorySite[]>;
   assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite }[]>;
 
-  constructor(private assetSeriesQuery: AssetSeriesQuery,
+  assetsMapping:
+    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+
+  constructor(private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
               private assetQuery: AssetQuery,
               private activatedRoute: ActivatedRoute,
               private roomQuery: RoomQuery,
@@ -55,18 +58,18 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isLoading$ = this.assetSeriesQuery.selectLoading();
+    this.isLoading$ = this.assetSeriesDetailsQuery.selectLoading();
     this.resolve(this.activatedRoute);
   }
 
   ngOnDestroy(): void {
-    this.assetSeriesQuery.resetError();
+    this.assetSeriesDetailsQuery.resetError();
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
     const assetSeriesId = activatedRoute.snapshot.paramMap.get('assetSeriesId');
     if (assetSeriesId != null) {
-      this.assetSerie$ = this.assetSeriesQuery.selectEntity(assetSeriesId);
+      this.assetSerieDetails$ = this.assetSeriesDetailsQuery.selectEntity(assetSeriesId);
       this.assetSerieId = assetSeriesId;
 
       const assets$ = this.assetQuery.selectAssetsOfAssetSerie(assetSeriesId);

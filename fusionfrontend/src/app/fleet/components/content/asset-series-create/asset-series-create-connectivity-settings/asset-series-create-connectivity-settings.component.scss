@@ -15,10 +15,18 @@
 
 @import 'src/app/fleet/components/content/asset-series-create/asset-series-create.component';
 
+.content {
+  .info-text {
+    display: flex;
 
-div.content {
+    i {
+      margin-left: 2px;
+      margin-top: 10px;
+      margin-right: 5px;
+    }
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+    label {
+      margin-top: 3px;
+    }
+  }
 }

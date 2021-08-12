@@ -1,0 +1,62 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="asset-series-create-connectivity-settings-tooltip if-tooltip-dialog">
+  <div class="title">
+    <i class="if-icon-help"></i>
+    <label class="if-label">Enter the correct connection string depending on<br>the connectivity type you are using for your asset.</label>
+  </div>
+
+
+  <div class="connectivity-type-section">
+    <label class="if-label">PLC4X-based Communication (fusionplcdataservice):</label>
+
+    <div class="row first-row">
+      <label class="protocol-label"> S7 (S7comm): </label>
+      <label class="connection-string-label"> s7://127.0.0.1 </label>
+    </div>
+    <div class="row">
+      <label class="protocol-label"> LOGO (S7comm):</label>
+      <label class="connection-string-label"> s7://127.0.0.1?controller-type=LOGO </label>
+    </div>
+    <div class="row">
+      <label class="protocol-label"> Modbus TCP:</label>
+      <label class="connection-string-label"> modbus:tcp://127.0.0.1:502  </label>
+    </div>
+    <div class="row">
+      <label class="protocol-label"> OPC UA:</label>
+      <label class="connection-string-label"> tcp://127.0.0.1:12686?discovery=true </label>
+    </div>
+  </div>
+
+  <div class="connectivity-type-section">
+    <label class="if-label">MQTT (fusionmqttdataservice):</label>
+
+    <div class="row first-row">
+      <label class="protocol-label"> Broker-URL: </label>
+      <label class="connection-string-label"> tcp://127.0.0.1:1883 </label>
+    </div>
+  </div>
+
+  <div class="connectivity-type-section">
+    <label class="if-label">SQL (fusiondbdataservice):</label>
+
+    <div class="row first-row">
+      <label class="protocol-label"> SQL-Server: </label>
+      <label class="connection-string-label"> jdbc:sqlserver://127.0.0.1\SQLEXPRESS;database=TEST </label>
+    </div>
+  </div>
+
+</div>

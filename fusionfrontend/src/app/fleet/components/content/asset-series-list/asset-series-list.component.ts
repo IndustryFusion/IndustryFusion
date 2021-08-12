@@ -51,7 +51,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   items$: Observable<any[]>;
   selected: Set<ID> = new Set();
   error: any;
-  shouldShowCreateItem = false;
 
   constructor(
     public route: ActivatedRoute,
@@ -140,8 +139,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   onCloseError() {
     this.error = undefined;
   }
-
-  onDismissModal() { this.shouldShowCreateItem = false; }
 
   modifyItems() {
     if (this.selected.size === 1) {
