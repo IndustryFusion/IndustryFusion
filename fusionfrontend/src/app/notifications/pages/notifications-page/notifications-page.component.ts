@@ -18,6 +18,8 @@ import { OispService } from '../../../services/oisp.service';
 import { OispAlertStatus, OispNotification } from '../../../services/notification.model';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-notifications-page',
@@ -28,7 +30,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
 
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
 
-  notifications: OispNotification[];
+  notifications$: Observable<OispNotification[]>;
   intervalId: number;
 
   constructor(private oispService: OispService,
@@ -39,7 +41,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
     this.periodicallyFetchNotifications();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     clearInterval(this.intervalId);
   }
 
@@ -56,15 +58,14 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
     return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
-  private periodicallyFetchNotifications() {
+  private periodicallyFetchNotifications(): void {
     this.fetchNotifications(this.oispService);
     this.intervalId = setInterval(() => this.fetchNotifications(this.oispService), this.FETCHING_INTERVAL_MILLISECONDS);
   }
 
-  private fetchNotifications(oispService: OispService) {
-    oispService.getNotifications().subscribe(notifications => {
-        this.notifications = this.filterNotificationsByStatus(notifications);
-      }
+  private fetchNotifications(oispService: OispService): void {
+    this.notifications$ = oispService.getNotifications().pipe(
+      map(notifications => this.filterNotificationsByStatus(notifications))
     );
   }
 }

@@ -25,6 +25,7 @@ import { NotificationsListComponent } from './content/notifications-list/notific
 import { NotificationsListHeaderComponent } from './content/notifications-list-header/notifications-list-header.component';
 import { NotificationsListItemComponent } from './content/notifications-list-item/notifications-list-item.component';
 import { ClrAlertModule, ClrIconModule } from '@clr/angular';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -35,13 +36,14 @@ import { ClrAlertModule, ClrIconModule } from '@clr/angular';
     NotificationsListHeaderComponent,
     NotificationsListItemComponent
   ],
-  imports: [
-    IFCommon,
-    NotificationsRoutingModule,
-    TableModule,
-    ClrIconModule,
-    ClrAlertModule
-  ],
+    imports: [
+        IFCommon,
+        NotificationsRoutingModule,
+        TableModule,
+        ClrIconModule,
+        ClrAlertModule,
+        OverlayPanelModule
+    ],
   exports: [
     NotificationsPageTitleComponent,
     NotificationsSubHeaderComponent,

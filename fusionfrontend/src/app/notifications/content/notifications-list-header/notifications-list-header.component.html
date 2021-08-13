@@ -17,7 +17,7 @@ under the License.
   <div class="list-header-item" [style.width.%]="5"></div>
   <div class="list-header-item" [style.width.%]="3"></div>
   <div class="list-header-item" [style.width.%]="30" (click)="sort('ruleName')">Rule name <fa-icon *ngIf="sortField === 'ruleName'" [icon]="faSort"></fa-icon></div>
-  <div class="list-header-item" [style.width.%]="17" (click)="sort('assetName')">Asset <fa-icon *ngIf="sortField === 'assetName'" [icon]="faSort"></fa-icon></div>
+  <div class="list-header-item" [style.width.%]="17" (click)="searchpanel.toggle($event)">Asset <fa-icon [icon]="faSearch" class="fa-fw" ></fa-icon></div>
   <div class="list-header-item" [style.width.%]="40" (click)="sort('condition')">Condition <fa-icon *ngIf="sortField === 'condition'" [icon]="faSort"></fa-icon></div>
   <div class="list-header-item" [style.width.%]="10" (click)="sort('measuredValue')">Measured Value <fa-icon *ngIf="sortField === 'measuredValue'" [icon]="faSort"></fa-icon></div>
   <div class="list-header-item" [style.width.%]="15" (click)="sort('timestamp')">Date & Time <fa-icon *ngIf="sortField === 'timestamp'" [icon]="faSort"></fa-icon></div>

@@ -16,9 +16,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
 import { OispAlertStatus, OispNotification } from '../../../services/notification.model';
 import { OispService } from '../../../services/oisp.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-notifications-list',
@@ -27,7 +29,7 @@ import { OispService } from '../../../services/oisp.service';
 })
 export class NotificationsListComponent implements OnInit {
 
-  @Input() items: OispNotification[];
+  @Input() items$: Observable<OispNotification[]>;
   @Input() isOpen: boolean;
 
   titleMapping: { [k: string]: string };
@@ -35,6 +37,11 @@ export class NotificationsListComponent implements OnInit {
 
   sortField: string;
   selected: Set<ID> = new Set();
+
+  faSearch = faSearch;
+  searchText = '';
+  allNotifications: OispNotification[];
+  filteredNotifications: OispNotification[];
 
   constructor(
     public route: ActivatedRoute,
@@ -46,10 +53,14 @@ export class NotificationsListComponent implements OnInit {
 
   ngOnInit() {
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
+    this.items$.subscribe(notifications => {
+      this.allNotifications = notifications;
+      this.filterNotifications();
+    });
     this.initMappings();
   }
 
-  private initMappings() {
+  private initMappings(): void {
     this.titleMapping = {
       '=0': `No ${this.getStatusName()} Notification`,
       '=1': `# ${this.getStatusName()} Notification`,
@@ -62,42 +73,62 @@ export class NotificationsListComponent implements OnInit {
     };
   }
 
-  private getStatusName() {
+  private getStatusName(): string {
     return this.isOpen ? 'Open' : 'Cleared';
   }
 
 
-  onSort(field: string) {
+  onSort(field: string): void {
     this.sortField = field;
   }
 
-  onItemSelect(id: ID) {
+  onItemSelect(id: ID): void {
     this.selected.add(id);
   }
 
-  onItemDeselect(id: ID) {
+  onItemDeselect(id: ID): void {
     this.selected.delete(id);
   }
 
-  deleteItems() {
+  deleteItems(): void {
     this.selected.forEach(id => {
           this.deleteItem(id);
     });
   }
 
-  deleteItem(id: ID) {
-    const item = this.items.find(value => value.id === id);
-    this.oispService.setAlertStatus(item.id, OispAlertStatus.CLOSED).subscribe(() => {
-      this.items.splice(this.items.indexOf(item), 1);
+  deleteItem(id: ID): void {
+    const filteredItem = this.filteredNotifications.find(value => value.id === id);
+    this.oispService.setAlertStatus(filteredItem.id, OispAlertStatus.CLOSED).subscribe(() => {
+      this.filteredNotifications.splice(this.filteredNotifications.indexOf(filteredItem), 1);
+      const item = this.allNotifications.find(value => value.id === id);
+      this.allNotifications.splice(this.allNotifications.indexOf(item), 1);
+
       this.selected.clear();
     });
   }
 
-  deselectAllItems() {
+  deselectAllItems(): void {
     this.selected.clear();
   }
 
-  isSelected(id: ID) {
+  isSelected(id: ID): boolean {
     return this.selected.has(id);
+  }
+
+  searchAssets(): void {
+    this.filterNotifications();
+  }
+
+  private filterNotifications(): void {
+    this.filteredNotifications = this.allNotifications;
+
+    this.filterBySearchText();
+  }
+
+  private filterBySearchText(): void {
+    if (this.searchText) {
+      this.filteredNotifications = this.filteredNotifications
+        .filter(notification => notification.assetName.toLowerCase().includes(this.searchText.toLowerCase()));
+    }
   }
 }

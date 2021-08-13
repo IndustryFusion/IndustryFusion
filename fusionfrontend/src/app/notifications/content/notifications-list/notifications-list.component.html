@@ -15,7 +15,7 @@ under the License.
 
 <div class="notifications-list">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="title">{{ items?.length | i18nPlural: titleMapping }}</div>
+    <div class="title">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</div>
   </div>
   <div>
     <div class="list-container">
@@ -36,8 +36,9 @@ under the License.
           </button>
         </div>
       </div>
-      <app-notifications-list-header (sortEvent)="onSort($event)"></app-notifications-list-header>
-      <app-notifications-list-item *ngFor="let item of items" [item]="item"
+      <app-notifications-list-header [searchpanel]="searchpanel" (sortEvent)="onSort($event)">
+      </app-notifications-list-header>
+      <app-notifications-list-item *ngFor="let item of filteredNotifications" [item]="item"
                                    [isCloseable]="isOpen"
                                    [selected]="isSelected(item.id)"
                                   (itemSelected)="onItemSelect($event)"
@@ -47,3 +48,18 @@ under the License.
     </div>
   </div>
 </div>
+
+<p-overlayPanel #searchpanel [showCloseIcon]="true" class="assetSearchPanel">
+  <ng-template pTemplate>
+    <div class="panel-heading">Search</div>
+    <span class="p-input-icon-left">
+            <fa-icon [icon]="faSearch" class="fa-fw" ></fa-icon>
+            <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input">
+        </span>
+    <br>
+    <div class="footer">
+      <button type="button" class="if-button button-primary button-modal" style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"
+              (click)="searchAssets(); searchpanel.hide()">Apply</button>
+    </div>
+  </ng-template>
+</p-overlayPanel>
