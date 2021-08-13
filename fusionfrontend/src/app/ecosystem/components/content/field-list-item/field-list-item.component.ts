@@ -13,28 +13,50 @@
  * under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListItemComponent } from '../base/base-list-item/base-list-item.component';
 import { FieldService } from '../../../../store/field/field.service';
 import { Field } from '../../../../store/field/field.model';
+import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UnitQuery } from '../../../../store/unit/unit.query';
+import { Unit } from '../../../../store/unit/unit.model';
 
 @Component({
   selector: 'app-field-list-item',
   templateUrl: './field-list-item.component.html',
   styleUrls: ['./field-list-item.component.scss']
 })
-export class FieldListItemComponent extends BaseListItemComponent implements OnInit {
+export class FieldListItemComponent extends BaseListItemComponent implements OnInit, OnDestroy {
 
   @Input()
   item: Field;
 
-  constructor(public route: ActivatedRoute, public router: Router, public fieldService: FieldService) {
+  private editDialogRef: DynamicDialogRef;
+  public unit: Unit;
+
+  constructor(public route: ActivatedRoute,
+              public router: Router,
+              public fieldService: FieldService,
+              private unitQuery: UnitQuery,
+              private dialogService: DialogService) {
     super(route, router, fieldService);
   }
 
   ngOnInit() {
+    this.unit = this.unitQuery.getEntity(this.item.unitId);
   }
 
+  ngOnDestroy() {
+    this.editDialogRef?.close();
+  }
+
+  showEditDialog() {
+    this.editDialogRef = this.dialogService.open(FieldDialogComponent, {
+      data: { field: this.item },
+      header: 'Edit Metric or Attribute'
+    });
+  }
 }
