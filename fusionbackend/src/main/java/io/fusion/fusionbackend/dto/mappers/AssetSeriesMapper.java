@@ -30,11 +30,15 @@ import java.util.stream.Collectors;
 public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeriesDto> {
     private final BaseAssetMapper baseAssetMapper;
     private final FieldSourceMapper fieldSourceMapper;
+    private final ConnectivitySettingsMapper connectivitySettingsMapper;
 
     @Autowired
-    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper, FieldSourceMapper fieldSourceMapper) {
+    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper,
+                             FieldSourceMapper fieldSourceMapper,
+                             ConnectivitySettingsMapper connectivitySettingsMapper) {
         this.baseAssetMapper = baseAssetMapper;
         this.fieldSourceMapper = fieldSourceMapper;
+        this.connectivitySettingsMapper = connectivitySettingsMapper;
     }
 
 
@@ -51,6 +55,7 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .handbookKey(entity.getHandbookKey())
                 .videoKey(entity.getVideoKey())
                 .fieldSourceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldSources()))
+                .connectivitySettingsId(entity.getConnectivitySettings().getId())
                 .build();
 
         baseAssetMapper.copyToDto(entity, dto);
@@ -65,6 +70,12 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
             Set<FieldSourceDto> fieldSourceDtos = fieldSourceMapper.toDtoSet(entity.getFieldSources(), true);
             assetSeriesDto.setFieldSources(fieldSourceDtos);
         }
+
+        if (entity.getConnectivitySettings() != null) {
+            assetSeriesDto.setConnectivitySettings(
+                    connectivitySettingsMapper.toDto(entity.getConnectivitySettings(), false));
+        }
+
         return assetSeriesDto;
     }
 
@@ -95,6 +106,10 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
         if (dto.getFieldSources() != null) {
             Set<FieldSource> fieldSources = fieldSourceMapper.toEntitySet(dto.getFieldSources());
             entity.setFieldSources(fieldSources);
+        }
+
+        if (dto.getConnectivitySettings() != null) {
+            entity.setConnectivitySettings(connectivitySettingsMapper.toEntity(dto.getConnectivitySettings()));
         }
 
         return entity;

@@ -79,6 +79,8 @@ public class AssetSeriesRestService {
                 assetSeriesService.createAssetSeries(
                         companyId,
                         assetSeriesDto.getAssetTypeTemplateId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityTypeId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
                         assetSeriesMapper.toEntity(assetSeriesDto)
                 ),
                 false);

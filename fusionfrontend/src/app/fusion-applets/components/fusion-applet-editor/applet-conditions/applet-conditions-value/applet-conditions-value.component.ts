@@ -19,7 +19,7 @@ import {
   ConditionValue, ConditionValueComponent,
   ConditionValueOperator,
   Device, DeviceComponent,
-  displayConstionType
+  displayConditionType
 } from '../../../../../services/oisp.model';
 import { SelectItem } from 'primeng/api';
 import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
@@ -32,7 +32,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class AppletConditionsValueComponent implements OnInit {
   ConditionType = ConditionType;
-  activeAccordionIndex = 1;
+  activeAccordionIndex = -1;
 
   @Input()
   conditionValueGroup: FormGroup;
@@ -76,7 +76,7 @@ export class AppletConditionsValueComponent implements OnInit {
 
     for (const element of this.enumHelpers.getIterableArray(ConditionType)) {
       result.push({
-        label: displayConstionType(element),
+        label: displayConditionType(element),
         value: element
       });
     }

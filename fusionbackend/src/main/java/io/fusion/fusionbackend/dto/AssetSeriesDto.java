@@ -42,6 +42,9 @@ public class AssetSeriesDto extends BaseAssetDto {
     protected String handbookKey;
     protected String videoKey;
 
+    private Long connectivitySettingsId;
+    private ConnectivitySettingsDto connectivitySettings;
+
     @JsonCreator
     public AssetSeriesDto() {
     }

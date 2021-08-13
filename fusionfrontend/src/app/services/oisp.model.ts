@@ -94,7 +94,9 @@ export class Rule {
   priority: string;
   status: RuleStatus;
   synchronizationStatus: SynchronizationStatus;
-  population: { };
+  population: {
+    ids: string[],
+    };
   conditions: RuleConditions;
   actions: RuleAction[];
 }
@@ -176,8 +178,8 @@ export class DeviceComponent {
 
 export class Device {
   components: DeviceComponent[];
-  deviceId: ID;
-  gatewayId: ID;
+  deviceId: string;
+  gatewayId: string;
   name: string;
   tags: string[];
   status: string;
@@ -190,17 +192,14 @@ export enum ConditionType {
   statistics = 'statistics',
 }
 
-export function displayConstionType(type: ConditionType): string {
+export function displayConditionType(type: ConditionType): string {
   switch (type){
     case ConditionType.basic:
       return 'Basic Condition';
-      break;
     case ConditionType.time:
       return 'Timebased Condition';
-      break;
     case ConditionType.statistics:
       return 'Statistic based Condition';
-      break;
   }
 }
 

@@ -128,6 +128,8 @@ const routes: Routes = [
     canActivate: [MainAuthGuardGuard],
     resolve: {
       fields: FieldsResolver,
+      units: UnitsResolver,
+      quantityTypes: QuantityTypesResolver,
     },
     data: {
       pageTypes: [EcosystemManagerPageType.FIELD_DETAIL],

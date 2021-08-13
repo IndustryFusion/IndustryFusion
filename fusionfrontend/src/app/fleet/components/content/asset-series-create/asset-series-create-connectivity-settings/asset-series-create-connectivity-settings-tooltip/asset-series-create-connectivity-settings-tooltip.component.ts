@@ -13,30 +13,19 @@
  * under the License.
  */
 
-@import "components/buttons";
-@import "components/radiobuttons";
-@import "abstract/variables";
+import { Component, OnInit } from '@angular/core';
 
-.field-dialog {
-  .field-dialog-footer {
-    margin-top: 8.1%;
-    margin-bottom: 5%;
-    text-align: right;
-  }
+@Component({
+  selector: 'app-asset-series-create-connectivity-settings-tooltip',
+  templateUrl: './asset-series-create-connectivity-settings-tooltip.component.html',
+  styleUrls: ['./asset-series-create-connectivity-settings-tooltip.component.scss']
+})
+export class AssetSeriesCreateConnectivitySettingsTooltipComponent implements OnInit {
 
-  .field-dialog-inputs {
-    width: 82.0%;
+  constructor() {
   }
 
-  .input-div {
-    display: grid;
-    padding-bottom: 24px;
+  ngOnInit() {
   }
 
-  .dialog-grid {
-    display: inline-flex;
-  }
-  .dialog-grid-col {
-    padding-left: 35px;
-  }
 }

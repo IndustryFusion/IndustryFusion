@@ -22,6 +22,7 @@ export class AssetSeries extends BaseEntity {
    assetTypeTemplateId: ID;
    fieldSourceIds: Array<ID>;
    fieldSources: Array<FieldSource>;
+   connectivitySettings: ConnectivitySettings;
    ceCertified: boolean;
    protectionClass: string;
    handbookKey: string;
@@ -31,3 +32,8 @@ export class AssetSeries extends BaseEntity {
    imageKey: string;
 }
 
+export class ConnectivitySettings extends BaseEntity {
+  connectivityTypeId: ID;
+  connectivityProtocolId: ID;
+  connectionString: string;
+}

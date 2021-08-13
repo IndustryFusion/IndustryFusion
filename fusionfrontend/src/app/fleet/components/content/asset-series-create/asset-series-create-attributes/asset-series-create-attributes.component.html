@@ -15,10 +15,10 @@ under the License.
 <div class="asset-series-create-attributes">
   <div class="content">
     <div id="column left">
-      <div class="title">Attributes</div>
+      <div class="wizard-title">Attributes</div>
       <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no attributes available</div>
       <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
-        <div class="header-row p-grid">
+        <div class="p-grid">
           <span class="if-label-small-header p-col-3">Custom Attribute name</span>
           <span class="if-label-small-header p-col-3">Attribute name</span>
           <span class="if-label-small-header p-col">Value</span>
@@ -29,10 +29,10 @@ under the License.
           <ng-container [formGroup]="fieldSource //noinspection InvalidExpressionResultType">
           <span class="p-col-3 "><label displayControlValue="name"></label></span>
           <span class="p-col-3 "><label displayControlValue="fieldName"></label></span>
-          <span class="p-col">
-              <input *ngIf="isEditMode(fieldSource)" class="value-input" placeholder="Value" formControlName="value">
+          <div class="p-col">
+              <input *ngIf="isEditMode(fieldSource)" pInputText class="value-input" placeholder="Value" formControlName="value">
               <label *ngIf="!isEditMode(fieldSource)" displayControlValue="value"></label>
-          </span>
+          </div>
           <span class="p-col-1"><label displayControlValue="sourceUnitName"></label></span>
           <span class="p-col edit-col">
             <app-confirm-button *ngIf="isEditMode(fieldSource)"

@@ -15,6 +15,7 @@
 
 @import "src/assets/sass/abstract/variables";
 @import "src/assets/sass/base/icons";
+@import "../applet-action-list.component";
 
 .action-panel {
   h3 {
@@ -39,6 +40,10 @@
         margin-right: unset;
       }
     }
+  }
+
+  .action-setup-panel{
+    margin-top: 10px;
   }
 
   .email-list {

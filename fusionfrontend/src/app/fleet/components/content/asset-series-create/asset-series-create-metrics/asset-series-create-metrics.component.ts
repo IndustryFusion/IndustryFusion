@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { Observable } from 'rxjs';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldSource } from '../../../../../store/field-source/field-source.model';
-import { FieldSourceQuery } from '../../../../../store/field-source/field-source.query';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../store/field/field-query.service';
 
@@ -14,17 +12,13 @@ import { FieldQuery } from '../../../../../store/field/field-query.service';
 })
 export class AssetSeriesCreateMetricsComponent implements OnInit {
 
-  @Output() errorSignal = new EventEmitter<string>();
-  @Output() valid = new EventEmitter<boolean>();
   @Input() assetSeries: AssetSeries;
+  @Output() valid = new EventEmitter<boolean>();
 
   fieldSourcesFormArray: FormArray;
-  $loading: Observable<boolean>;
 
-  constructor(private fieldSourceQuery: FieldSourceQuery,
-              private fieldQuery: FieldQuery,
+  constructor(private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
-    this.$loading = this.fieldSourceQuery.selectLoading();
   }
 
   private createFieldSourceGroup(index: number, fieldSource: FieldSource): FormGroup {
@@ -35,7 +29,7 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
       fieldName: [],
       accuracy: [],
       name: [],
-      register: ['', [Validators.max(255)]],
+      register: ['', [Validators.maxLength(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);
@@ -55,12 +49,12 @@ export class AssetSeriesCreateMetricsComponent implements OnInit {
     this.fillTable(this.assetSeries.fieldSources);
   }
 
-  saveValue(group: AbstractControl) {
+  saveValue(group: AbstractControl): void {
     this.assetSeries.fieldSources[group.get('index').value].register =  group.get('register').value;
     group.get('saved').patchValue(true);
   }
 
-  private fillTable(fieldSources: FieldSource[]) {
+  private fillTable(fieldSources: FieldSource[]): void {
     this.fieldSourcesFormArray = new FormArray([]);
     this.valid.emit(this.fieldSourcesFormArray.valid);
     this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
