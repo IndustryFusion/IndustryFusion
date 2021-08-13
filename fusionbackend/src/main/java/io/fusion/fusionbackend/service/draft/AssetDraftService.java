@@ -75,6 +75,7 @@ public class AssetDraftService {
                 .room(unspecificRoom)
                 .company(company)
                 .assetSeries(assetSeries)
+                .connectionString(assetSeries.getConnectivitySettings().getConnectionString())
                 .guid(UUID.randomUUID())
                 .build();
 

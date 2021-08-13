@@ -62,6 +62,8 @@ public class AssetBuilder implements Builder<Asset> {
             parentAsset.getSubsystems().add(asset);
         }
 
+        asset.setConnectionString(TEST_STRING);
+
         return asset;
     }
 }
