@@ -28,19 +28,18 @@
 }
 
 .notification-icons {
-
   overflow: initial !important;
   padding-top: -2px;
 
   .notification-low {
-    color: $fusion-blue;
+    color: $alert-low;
   }
 
   .notification-medium {
-    color: $warning;
+    color: $alert-medium;
   }
 
   .notification-high {
-    color: $error;
+    color: $alert-high;
   }
 }
