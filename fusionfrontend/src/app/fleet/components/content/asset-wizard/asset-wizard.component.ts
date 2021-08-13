@@ -174,11 +174,7 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookKey')?.setValue(assetSeries.handbookKey);
       this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
-      if (assetSeries.connectivitySettings) {
-        this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
-      } else {
-        console.error('[Asset wizard]: connectivity settings of asset series are not existing');
-      }
+      this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
       console.warn('[Asset wizard]: Related asset series not found', assetSeriesId);
     }

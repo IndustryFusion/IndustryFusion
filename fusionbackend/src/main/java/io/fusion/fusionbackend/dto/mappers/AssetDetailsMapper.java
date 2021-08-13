@@ -35,6 +35,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
         this.baseAssetMapper = baseAssetMapper;
     }
 
+    @Override
     protected AssetDetailsDto toDtoDeep(Asset entity) {
         if (entity == null) {
             return null;
