@@ -15,6 +15,7 @@
 
 import { Asset } from '../asset/asset.model';
 import { FieldDetails } from '../field-details/field-details.model';
+import { OispPriority } from '../../services/notification.model';
 
 
 export class FactoryAssetDetails extends Asset {
@@ -24,6 +25,7 @@ export class FactoryAssetDetails extends Asset {
   category: string;
   roomName: string;
   factorySiteName: string;
+  openAlertPriority?: OispPriority;
 }
 
 export enum AssetModalType  {
