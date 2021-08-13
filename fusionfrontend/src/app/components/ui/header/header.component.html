@@ -52,9 +52,9 @@ under the License.
       </li>
       <li (click)="onNotificationsClick()">
         <i class="notifications"></i>
-        <ng-container *ngIf="notificationCount > 0">
+        <ng-container *ngIf="openAlertCount > 0">
           <i class="notifications-indicator">
-            <label class="notifications-count" [ngClass]="notificationCount > 9 ? 'two-digits' : 'one-digit'">{{ notificationCount }}</label>
+            <label class="notifications-count" [ngClass]="openAlertCount > 9 ? 'two-digits' : 'one-digit'">{{ openAlertCount }}</label>
           </i>
         </ng-container>
       </li>

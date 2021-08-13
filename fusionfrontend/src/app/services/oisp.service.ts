@@ -16,7 +16,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, map, mergeMap, startWith } from 'rxjs/operators';
+import { catchError, map, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
@@ -40,7 +40,6 @@ import {
 } from './oisp.model';
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
-import { OispAlert, OispAlertStatus, OispNotification } from './notification.model';
 import { ID } from '@datorama/akita';
 
 @Injectable({
@@ -97,16 +96,16 @@ export class OispService {
     );
   }
 
-  getDevice(deviceUID: ID): Observable<any> {
-    if (!deviceUID) {
+  getDevice(deviceId: ID): Observable<any> {
+    if (!deviceId) {
       return EMPTY;
     }
 
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceUID}`;
+    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceId}`;
     return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
       catchError(() => {
-        console.error('[oisp service] caught error while searching for device ', deviceUID);
-        return of(deviceUID);
+        console.error('[oisp service] caught error while searching for device ', deviceId);
+        return of(deviceId);
       }),
     );
   }
@@ -114,72 +113,6 @@ export class OispService {
   getAllDevices(): Observable<Device[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
     return this.http.get<Device[]>(url, this.httpOptions);
-  }
-
-  private getNotificationOfAlertWithDevices(alert: OispAlert, devices: Device[]): OispNotification {
-    let assetName = null;
-    if (devices && alert) {
-      assetName = devices.find(device => String(device.uid) === String(alert.deviceUID))?.name;
-    }
-
-    return this.getNotificationOfAlert(alert, assetName);
-  }
-
-  getNotificationOfAlert(alert: OispAlert, assetName: string): OispNotification {
-    const notification = new OispNotification();
-
-    if (alert) {
-      const hasMeasuredValue = alert.conditions.length > 0 && alert.conditions[0].components.length > 0
-        && alert.conditions[0].components[0].valuePoints.length > 0;
-
-      notification.id = alert.alertId;
-      notification.priority = alert.priority;
-      notification.ruleName = alert.ruleName;
-      notification.condition = alert.naturalLangAlert;
-      notification.measuredValue = hasMeasuredValue ? alert.conditions[0].components[0].valuePoints[0].value : '';
-      notification.assetName = assetName;
-      notification.timestamp = alert.triggered;
-      notification.status = alert.status;
-    } else {
-      console.error('[oisp service] no alert was given to be mapped');
-    }
-
-    return notification;
-  }
-
-  getNotifications(): Observable<OispNotification[]> {
-    return this.getAllDevices().pipe(
-      mergeMap((devices: Device[]) => {
-        return this.getAlerts().pipe(
-          map((alerts: OispAlert[]) => {
-            return alerts.map<OispNotification>((alert: OispAlert) => this.getNotificationOfAlertWithDevices(alert, devices));
-          }));
-      })
-    );
-  }
-
-  getAlerts(max?: number): Observable<OispAlert[]> {
-    const queryString = max ? `?maxAlerts=${max}` : '';
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts${queryString}`;
-    return this.http.get<OispAlert[]>(url, this.httpOptions);
-  }
-
-  getOpenAlertCount(): Observable<number> {
-    return this.getAlerts(99).pipe(
-      map<OispAlert[], number>((alerts: OispAlert[]) => {
-        return alerts.filter(alert => alert.status !== OispAlertStatus.CLOSED).length;
-      })
-    );
-  }
-
-  setAlertStatus(alertID: ID, newStatus: OispAlertStatus): Observable<any> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts/${alertID}/reset`;
-    return this.http.put<any>(url, null, this.httpOptions).pipe(
-      catchError(() => {
-        console.error('[oisp service] error on updating alert status ', alertID, newStatus);
-        return of(newStatus);
-      }),
-    );
   }
 
   getAllRules(): Observable<Rule[]> {

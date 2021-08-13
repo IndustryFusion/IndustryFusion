@@ -13,36 +13,31 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { OispService } from '../../../services/oisp.service';
-import { OispAlertStatus, OispNotification } from '../../../services/notification.model';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { OispNotification } from '../../../store/oisp-notification/oisp-notification.model';
+import { OispAlertStatus } from '../../../store/oisp-alert/oisp-alert.model';
+import { OispNotificationService } from '../../../store/oisp-notification/oisp-notification.service';
 
 @Component({
   selector: 'app-notifications-page',
   templateUrl: './notifications-page.component.html',
   styleUrls: ['./notifications-page.component.scss']
 })
-export class NotificationsPageComponent implements OnInit, OnDestroy {
-
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
+export class NotificationsPageComponent implements OnInit {
 
   notifications$: Observable<OispNotification[]>;
-  intervalId: number;
 
-  constructor(private oispService: OispService,
+  constructor(private oispNotificationService: OispNotificationService,
               private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.periodicallyFetchNotifications();
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.intervalId);
+    this.notifications$ = this.oispNotificationService.getNotificationsUsingAlertStore().pipe(
+      map(notifications => this.filterNotificationsByStatus(notifications))
+    );
   }
 
   private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
@@ -56,16 +51,5 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
   isRouteActive(subroute: string): boolean {
     const snapshot = this.activatedRoute.snapshot;
     return snapshot.url.map(segment => segment.path).includes(subroute);
-  }
-
-  private periodicallyFetchNotifications(): void {
-    this.fetchNotifications(this.oispService);
-    this.intervalId = setInterval(() => this.fetchNotifications(this.oispService), this.FETCHING_INTERVAL_MILLISECONDS);
-  }
-
-  private fetchNotifications(oispService: OispService): void {
-    this.notifications$ = oispService.getNotifications().pipe(
-      map(notifications => this.filterNotificationsByStatus(notifications))
-    );
   }
 }

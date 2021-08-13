@@ -15,7 +15,8 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { OispNotification, OispPriority } from '../../../services/notification.model';
+import { OispPriority } from 'src/app/store/oisp-alert/oisp-alert.model';
+import { OispNotification } from '../../../store/oisp-notification/oisp-notification.model';
 
 @Component({
   selector: 'app-notifications-list-item',

@@ -15,18 +15,8 @@
 
 import { ID } from '@datorama/akita';
 
-export class OispNotification {
-  id: ID;
-  priority: OispPriority;
-  ruleName: string;
-  assetName: string;
-  condition: string;
-  measuredValue: string;
-  timestamp: Date;
-  status: OispAlertStatus;
-}
-
 export class OispAlert {
+  id: ID;
   accountId: ID;
   alertId: ID;
   conditions: Array<OispAlertCondition>;

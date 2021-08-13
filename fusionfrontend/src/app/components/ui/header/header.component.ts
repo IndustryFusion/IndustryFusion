@@ -20,8 +20,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/store/user/user.model';
 import { ManagerType } from '../../content/manager-type/manager-type.enum';
-import { OispService } from '../../../services/oisp.service';
-import { environment } from '../../../../environments/environment';
+import { OispAlertQuery } from '../../../store/oisp-alert/oisp-alert.query';
 
 @Component({
   selector: 'app-header',
@@ -39,18 +38,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: User;
 
   route: string;
-
   show: boolean;
 
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
-
-  notificationCount = 0;
-  private intervalHandle: number;
-
+  openAlertCount = 0;
   ManagerType = ManagerType;
 
   constructor(private routingLocation: Location,
-              private oispService: OispService,
+              private oispAlertQuery: OispAlertQuery,
               private router: Router) { }
 
   ngOnInit() {
@@ -66,7 +60,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.periodicallyFetchOpenNotificationCount();
+    this.oispAlertQuery.getOpenAlertCount().subscribe(openAlertCount => {
+      this.openAlertCount = openAlertCount;
+    } );
   }
 
   isManager(manager: ManagerType) {
@@ -101,18 +97,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match(`\/${'notifications'}\/`);
   }
 
-  private periodicallyFetchOpenNotificationCount() {
-    this.fetchOpenNotificationCount(this.oispService);
-    this.intervalHandle = setInterval(() => this.fetchOpenNotificationCount(this.oispService), this.FETCHING_INTERVAL_MILLISECONDS);
-  }
-
-  private fetchOpenNotificationCount(oispService: OispService) {
-    oispService.getOpenAlertCount().subscribe(count => this.notificationCount = count);
-  }
-
   ngOnDestroy(): void {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
-    clearInterval(this.intervalHandle);
   }
 }

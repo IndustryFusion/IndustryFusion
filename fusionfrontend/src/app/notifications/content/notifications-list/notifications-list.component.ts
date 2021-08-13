@@ -13,21 +13,24 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
-import { OispAlertStatus, OispNotification } from '../../../services/notification.model';
-import { OispService } from '../../../services/oisp.service';
 import { Observable } from 'rxjs';
+import { OispNotification } from '../../../store/oisp-notification/oisp-notification.model';
+import { OispAlertService } from '../../../store/oisp-alert/oisp-alert.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-notifications-list',
   templateUrl: './notifications-list.component.html',
   styleUrls: ['./notifications-list.component.scss']
 })
-export class NotificationsListComponent implements OnInit {
+export class NotificationsListComponent implements OnInit, OnDestroy {
+
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
 
   @Input() items$: Observable<OispNotification[]>;
   @Input() isOpen: boolean;
@@ -37,6 +40,7 @@ export class NotificationsListComponent implements OnInit {
 
   sortField: string;
   selected: Set<ID> = new Set();
+  intervalId: number;
 
   faSearch = faSearch;
   searchText = '';
@@ -47,17 +51,18 @@ export class NotificationsListComponent implements OnInit {
     public route: ActivatedRoute,
     public router: Router,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    private oispService: OispService
+    private oispAlertService: OispAlertService
   ) {
   }
 
   ngOnInit() {
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
-    this.items$.subscribe(notifications => {
-      this.allNotifications = notifications;
-      this.filterNotifications();
-    });
+    this.periodicallyFetchNotifications();
     this.initMappings();
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
 
   private initMappings(): void {
@@ -98,11 +103,7 @@ export class NotificationsListComponent implements OnInit {
 
   deleteItem(id: ID): void {
     const filteredItem = this.filteredNotifications.find(value => value.id === id);
-    this.oispService.setAlertStatus(filteredItem.id, OispAlertStatus.CLOSED).subscribe(() => {
-      this.filteredNotifications.splice(this.filteredNotifications.indexOf(filteredItem), 1);
-      const item = this.allNotifications.find(value => value.id === id);
-      this.allNotifications.splice(this.allNotifications.indexOf(item), 1);
-
+    this.oispAlertService.closeAlert(filteredItem.id).subscribe(() => {
       this.selected.clear();
     });
   }
@@ -130,5 +131,17 @@ export class NotificationsListComponent implements OnInit {
       this.filteredNotifications = this.filteredNotifications
         .filter(notification => notification.assetName.toLowerCase().includes(this.searchText.toLowerCase()));
     }
+  }
+
+  private periodicallyFetchNotifications(): void {
+    this.fetchNotifications();
+    this.intervalId = setInterval(() => this.fetchNotifications(), this.FETCHING_INTERVAL_MILLISECONDS);
+  }
+
+  private fetchNotifications() {
+    this.items$.subscribe(notifications => {
+      this.allNotifications = notifications;
+      this.filterNotifications();
+    });
   }
 }
