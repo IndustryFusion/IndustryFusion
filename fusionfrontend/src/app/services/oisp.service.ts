@@ -132,6 +132,12 @@ export class OispService {
   }
 
   private prepareRuleForSending(rule: Rule) {
+    if (!rule.description) {
+      delete rule[`description`];
+    }
+    if (rule.status === RuleStatus.Draft) {
+      rule.status = RuleStatus.OnHold;
+    }
     rule.conditions.values.map(conditionValue => {
       delete conditionValue[`conditionSequence`];
       if (conditionValue.type !== ConditionType.statistics) {

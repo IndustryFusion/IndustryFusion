@@ -16,3 +16,21 @@
 .padding-unset {
   padding: unset;
 }
+
+.create-applet {
+
+  .footer-buttons {
+    text-align: right;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+
+  .input-div {
+    padding-bottom: 24px;
+  }
+
+  .stretch-box {
+    flex: 1;
+  }
+
+}

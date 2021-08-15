@@ -45,6 +45,8 @@ export class AppletActionListComponent implements OnInit {
       if (action.type === RuleActionType.http) {
         formGroup.addControl('http_headers', this.formBuilder.group(action.http_headers));
       }
+      const target = formGroup.get('target') as FormArray;
+      target.clear();
       formGroup.setControl('target', this.formBuilder.array(action.target, [Validators.minLength(1), Validators.required]));
       formGroup.setValue(action);
       this.actionsArray.push(formGroup);

@@ -21,7 +21,10 @@
   height: max-content;
   width: 100%;
   background: $grey-background;
-  padding: 2.0% 7.7%;
+  padding-top: 0;
+  padding-right: 7.7%;
+  padding-left: 7.7%;
+  padding-bottom: 2.0%;
 
   .row {
     display:-webkit-box;
@@ -32,14 +35,13 @@
   }
 
   .if-detail-page-div  {
-
-    margin-top: 10px;
     width: 100%;
 
     h3 {
       font-size: $big-font-size;
       font-weight: bolder;
-      margin: 0 0;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
     }
 
     .if-detail-page-label {

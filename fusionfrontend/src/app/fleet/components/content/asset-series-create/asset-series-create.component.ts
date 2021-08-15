@@ -19,8 +19,17 @@ import { ID } from '@datorama/akita';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ViewMode } from './view-mode.enum';
-import { FieldService } from '../../../../store/field/field.service';
+import { DialogType } from '../../../../common/models/dialog-type.model';
+import { AssetSeriesCreateStep } from './asset-series-create-step.model';
+import { ConnectivityTypeResolver } from '../../../../resolvers/connectivity-type.resolver';
+import { Company } from '../../../../store/company/company.model';
+import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { CompanyQuery } from '../../../../store/company/company.query';
+import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
+import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
+import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
+import { FieldsResolver } from '../../../../resolvers/fields-resolver';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-asset-series-create',
@@ -31,61 +40,127 @@ export class AssetSeriesCreateComponent implements OnInit {
 
   assetType: ID;
   companyId: ID;
-  error: any;
-  step = 1;
-  toalSteps = 4;
-  assetSeries: AssetSeries = new AssetSeries();
-  mode: ViewMode = ViewMode.CREATE;
+  step: AssetSeriesCreateStep = AssetSeriesCreateStep.GENERAL_INFORMATION;
+  totalSteps: number = AssetSeriesCreateStep.METRICS;
+
+  assetSeries: AssetSeries;
+  assetSeriesForm: FormGroup;
+
+  mode: DialogType = DialogType.CREATE;
+  connectivitySettingsValid: boolean;
   attributesValid: boolean;
   metricsValid: boolean;
+  relatedManufacturer: Company;
+  relatedAssetType: AssetType;
+
+  AssetSeriesCreateSteps = AssetSeriesCreateStep;
 
   constructor(private assetSeriesService: AssetSeriesService,
+              private companyQuery: CompanyQuery,
+              private assetTypeTemplateQuery: AssetTypeTemplateQuery,
+              private assetTypeQuery: AssetTypeQuery,
+              private assetTypesResolver: AssetTypesResolver,
               private changeDetectorRef: ChangeDetectorRef,
-              fieldService: FieldService,
+              private fieldsResolver: FieldsResolver,
+              private formBuilder: FormBuilder,
+              private connectivityTypeResolver: ConnectivityTypeResolver,
               private dialogConfig: DynamicDialogConfig,
               private dynamicDialogRef: DynamicDialogRef,
   ) {
-    fieldService.getItems().subscribe();
+    this.resolve();
+
     this.companyId = dialogConfig.data.companyId;
     const assetSeriesId = this.dialogConfig.data.assetSeriesId;
     if (assetSeriesId) {
-      this.mode = ViewMode.EDIT;
+      this.mode = DialogType.EDIT;
     } else {
-      this.mode = ViewMode.CREATE;
+      this.mode = DialogType.CREATE;
     }
 
-    if (this.mode === ViewMode.EDIT) {
+    if (this.mode === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe(assetSeries => this.assetSeries = assetSeries);
+        .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
     }
   }
 
   ngOnInit() {
+    this.createAssetSeriesForm();
   }
 
-  createAssetseriesOfAssetTypeTemplate(assetTypeTemplateId: ID) {
+  private resolve() {
+    this.fieldsResolver.resolve().subscribe();
+    this.connectivityTypeResolver.resolve().subscribe();
+    this.assetTypesResolver.resolve().subscribe();
+  }
+
+  private updateAssetSeries(assetSeries: AssetSeries) {
+    this.assetSeries = assetSeries;
+    this.createAssetSeriesForm();
+    this.updateRelatedObjects(assetSeries);
+  }
+
+  private updateRelatedObjects(assetSeries: AssetSeries): void {
+    this.relatedManufacturer = this.companyQuery.getActive();
+    if (!this.relatedManufacturer) {
+      console.warn('[Asset wizard]: No active company found');
+    }
+
+    this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
+      if (!isLoading) {
+        const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
+        this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+      }
+    });
+  }
+
+  createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID): void {
     this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
-          .subscribe(assetSeries => this.assetSeries = assetSeries);
+          .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
   }
 
-  onCloseError() {
-    this.error = undefined;
+  private createAssetSeriesForm(): void {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.assetSeriesForm = this.formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      ceCertified: [null, Validators.required],
+      protectionClass: [null, Validators.maxLength(255)],
+      handbookKey: [null, Validators.maxLength(255)],
+      videoKey: [null, Validators.maxLength(255)],
+      imageKey: [null, Validators.maxLength(255)],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode !== DialogType.CREATE }, Validators.required],
+      companyId: [null, Validators.required],
+    });
+
+    if (this.assetSeries) {
+      this.assetSeriesForm.patchValue(this.assetSeries);
+    }
+
+    this.assetSeriesForm.get('assetTypeTemplateId').valueChanges.subscribe(
+      assetTypeTemplateId => this.updateAssetSeriesNameDisabledState(assetTypeTemplateId));
+    this.updateAssetSeriesNameDisabledState(this.assetSeriesForm.get('assetTypeTemplateId').value);
   }
 
-  onError(error: string) {
-    this.error = error;
+  private updateAssetSeriesNameDisabledState(assetTypeTemplateId: ID): void {
+    if (assetTypeTemplateId) {
+      this.assetSeriesForm.get('name').enable();
+    } else {
+      this.assetSeriesForm.get('name').disable( { onlySelf: true });
+    }
   }
 
-  nextStep() {
-    if (this.step === this.toalSteps) {
-      this.saveAssetseries();
+  nextStep(): void {
+    if (this.step === this.totalSteps) {
+      this.saveAssetSeries();
     } else {
       this.step++;
     }
   }
 
-  back() {
-    if (this.step === 1) {
+  back(): void {
+    if (this.step === AssetSeriesCreateStep.GENERAL_INFORMATION) {
       this.dynamicDialogRef.close();
     } else {
       this.step--;
@@ -95,39 +170,56 @@ export class AssetSeriesCreateComponent implements OnInit {
   isReadyForNextStep(): boolean {
     let result = true;
     switch (this.step) {
-      case 1:
-        result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0;
+      case AssetSeriesCreateStep.GENERAL_INFORMATION:
+        result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0 &&
+                 this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
         break;
-      case 2:
+      case AssetSeriesCreateStep.CONNECTIVITY_SETTINGS:
+        result = this.connectivitySettingsValid;
         break;
-      case 3:
+      case AssetSeriesCreateStep.ATTRIBUTES:
         result = this.attributesValid;
         break;
-      case 4:
+      case AssetSeriesCreateStep.METRICS:
         result = this.metricsValid;
         break;
     }
     return result;
   }
 
+  private updateAssetSeriesFromForm(): void {
+    const updatedAssetSeries: AssetSeries = this.assetSeriesForm.getRawValue();
 
-  private saveAssetseries() {
-      if (this.assetSeries.id) {
-        this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
-        () => this.dynamicDialogRef.close()
-        );
-      } else {
-        this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
-          .subscribe(() => this.dynamicDialogRef.close());
-      }
+    updatedAssetSeries.fieldSources = this.assetSeries.fieldSources;
+    updatedAssetSeries.fieldSourceIds = this.assetSeries.fieldSourceIds;
+
+    this.assetSeries = updatedAssetSeries;
   }
 
-  setAttributesValid(isValid: boolean) {
+  private saveAssetSeries(): void {
+    this.updateAssetSeriesFromForm();
+
+    if (this.assetSeries.id) {
+      this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
+      () => this.dynamicDialogRef.close()
+      );
+    } else {
+      this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
+        .subscribe(() => this.dynamicDialogRef.close());
+    }
+  }
+
+  setConnectivitySettingsValid(isValid: boolean): void {
+    this.connectivitySettingsValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setAttributesValid(isValid: boolean): void {
     this.attributesValid = isValid;
     this.changeDetectorRef.detectChanges();
   }
 
-  setMetricsValid(isValid: boolean) {
+  setMetricsValid(isValid: boolean): void {
     this.metricsValid = isValid;
     this.changeDetectorRef.detectChanges();
   }

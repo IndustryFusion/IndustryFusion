@@ -14,14 +14,11 @@
  */
 
 @import "../../asset-wizard.component";
+@import 'base/icons';
 
 .asset-wizard-step-general-information {
 
   .content {
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
 
     .input-div {
       width: 100%;

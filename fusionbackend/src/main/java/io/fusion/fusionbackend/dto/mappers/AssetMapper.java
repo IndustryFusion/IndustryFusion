@@ -53,6 +53,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         if (entity == null) {
             return null;
         }
+        // Please mind editing AssetDetailsMapper on changes here too
         AssetDto dto = AssetDto.builder()
                 .id(entity.getId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
@@ -72,11 +73,8 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .videoKey(entity.getVideoKey())
                 .installationDate(entity.getInstallationDate())
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .connectionString(entity.getConnectionString())
                 .build();
-
-        if (entity.getRoom() != null) {
-            dto.setRoomId(entity.getRoom().getId());
-        }
 
         baseAssetMapper.copyToDto(entity, dto);
 
@@ -128,6 +126,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .handbookKey(dto.getHandbookKey())
                 .videoKey(dto.getVideoKey())
                 .installationDate(dto.getInstallationDate())
+                .connectionString(dto.getConnectionString())
                 .build();
 
         addRoomToEntity(dto, entity);

@@ -19,9 +19,12 @@ import { Observable } from 'rxjs';
 
 import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
-import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { ViewMode } from '../view-mode.enum';
 import { ID } from '@datorama/akita';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
+import { FormGroup } from '@angular/forms';
+import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import { Company } from '../../../../../store/company/company.model';
+import { AssetType } from '../../../../../store/asset-type/asset-type.model';
 
 @Component({
   selector: 'app-asset-series-create-general-information',
@@ -30,22 +33,17 @@ import { ID } from '@datorama/akita';
 })
 export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
 
-  @Output() errorSignal = new EventEmitter<string>();
-  @Input() assetSeries: AssetSeries = new AssetSeries();
-  @Output() assetSeriesChange = new EventEmitter<AssetSeries>();
-  @Input() mode: ViewMode = ViewMode.EDIT;
+  @Input() mode: DialogType = DialogType.EDIT;
+  @Input() assetSeries: AssetSeries;
+  @Input() assetSeriesForm: FormGroup;
+  @Input() relatedManufacturer: Company;
+  @Input() relatedAssetType: AssetType;
   @Output() updateTypeTemplate = new EventEmitter<ID>();
 
   assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
+  DialogType = DialogType;
 
-  assetTypeTemplates: AssetTypeTemplate[];
-
-  ViewMode = ViewMode;
-
-  constructor(
-    private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-  ) {
-    this.assetTypeTemplates = this.assetTypeTemplateQuery.getAll();
+  constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery) {
   }
 
   ngOnInit() {

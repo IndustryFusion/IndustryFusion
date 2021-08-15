@@ -13,46 +13,43 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-series-create-step-two">
-  <div class="content">
-      <div id="colum left">
-        <div class="title">General Information</div>
+<div class="asset-series-create-general-information">
+  <form [formGroup]="assetSeriesForm">
+    <div class="content with-rows">
+      <div id="column-left">
+        <div class="wizard-title">General Information</div>
 
-        <div *ngIf="assetSeries">
-            <div>
-              <label class="if-label">Select Asset Type Template</label>
-              <p-dropdown
-                [options]="assetTypeTemplates$ | async"
-                [optionLabel]="'name'"
-                [optionValue]="'id'"
-                name="assetTypeTemplate"
-                placeholder="Select Asset Type Template..."
-                (ngModelChange)="updateTypeTemplate.emit($event)"
-                [(ngModel)]="assetSeries.assetTypeTemplateId"
-                [disabled]="mode != ViewMode.CREATE">
-              </p-dropdown>
-          </div>
+        <div class="input-div">
+          <label class="if-label">Select Asset Type Template</label>
+          <p-dropdown
+            [options]="assetTypeTemplates$ | async"
+            [optionLabel]="'name'"
+            [optionValue]="'id'"
+            name="assetTypeTemplate"
+            placeholder="Select Asset Type Template..."
+            formControlName="assetTypeTemplateId"
+            (ngModelChange)="updateTypeTemplate.emit($event)">
+          </p-dropdown>
+        </div>
 
-          <div class="clr-form-control">
-            <label class="if-label">Name the Asset or Series you want to implement</label>
-            <input [disabled]="!assetSeries" [(ngModel)]="assetSeries.name"
-                   placeholder="Asset series name">
-          </div>
-
-
+        <div class="input-div">
+          <label class="if-label">Asset or Asset Series name</label>
+          <input pInputText formControlName="name"
+                 placeholder="Asset series name">
         </div>
       </div>
-      <div id="column right">
-        <clr-icon shape="help" size="29"></clr-icon>
+
+      <div id="column-right">
+        <i class="if-icon-help"></i>
         <span class="if-hint" > How will my asset be displayed in a factory?</span>
         <div class="sample-asset-display">
           <div>
-            <span class="title">Asset series name</span>
-            <span>Asset name</span>
-            <span>Asset category</span>
-            <span>Manufacturer</span>
+            <span class="wizard-icon-title">{{ assetSeriesForm?.get('name')?.value }}</span>
+            <span>{{ relatedAssetType?.name }}</span>
+            <span>{{ relatedManufacturer?.name }}</span>
           </div>
         </div>
       </div>
-  </div>
+    </div>
+  </form>
 </div>

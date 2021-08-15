@@ -13,22 +13,22 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FieldDialogContentComponent } from './field-dialog-content.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AssetSeriesCreateConnectivitySettingsComponent } from './asset-series-create-connectivity-settings.component';
 
-describe('FieldDialogContentComponent', () => {
-  let component: FieldDialogContentComponent;
-  let fixture: ComponentFixture<FieldDialogContentComponent>;
+describe('AssetSeriesCreateConnectivitySettingsComponent', () => {
+  let component: AssetSeriesCreateConnectivitySettingsComponent;
+  let fixture: ComponentFixture<AssetSeriesCreateConnectivitySettingsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ FieldDialogContentComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AssetSeriesCreateConnectivitySettingsComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FieldDialogContentComponent);
+    fixture = TestBed.createComponent(AssetSeriesCreateConnectivitySettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

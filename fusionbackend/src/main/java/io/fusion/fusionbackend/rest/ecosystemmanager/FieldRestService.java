@@ -65,8 +65,8 @@ public class FieldRestService {
     @PatchMapping(path = "/fields/{fieldId}")
     public FieldDto updateField(@PathVariable final Long fieldId,
                                 @RequestBody final FieldDto fieldDto) {
-        return fieldMapper.toDto(fieldService.updateField(fieldId, fieldMapper.toEntity(fieldDto)),
-                false);
+        return fieldMapper.toDto(fieldService.updateField(fieldId, fieldMapper.toEntity(fieldDto),
+                        fieldDto.getUnitId()), false);
     }
 
     @DeleteMapping(path = "/fields/{fieldId}")
