@@ -97,16 +97,19 @@ public class RoomService {
         return createRoom(companyId, factorySiteId, newUnspecificRoom);
     }
 
-    public Room updateRoom(final Long companyId, final Long newFactorySiteId, final Long roomId, final Room sourceRoom) {
+    public Room updateRoom(final Long companyId, final Long newFactorySiteId, final Long roomId,
+                           final Room sourceRoom) {
         final Long oldFactorySiteId = getRoomById(roomId).getFactorySite().getId();
         final Room targetRoom = getRoomCheckFullPath(companyId, oldFactorySiteId, roomId, false);
 
         if (!newFactorySiteId.equals(oldFactorySiteId)) {
-            final FactorySite oldFactorySite = factorySiteService.getFactorySiteByCompany(companyId, oldFactorySiteId, false);
+            final FactorySite oldFactorySite = factorySiteService.getFactorySiteByCompany(companyId, oldFactorySiteId,
+                    false);
             oldFactorySite.getRooms().remove(targetRoom);
         }
 
-        final FactorySite newFactorySite = factorySiteService.getFactorySiteByCompany(companyId, newFactorySiteId, false);
+        final FactorySite newFactorySite = factorySiteService.getFactorySiteByCompany(companyId, newFactorySiteId,
+                false);
         sourceRoom.setFactorySite(newFactorySite);
         targetRoom.copyFrom(sourceRoom);
         newFactorySite.getRooms().add(sourceRoom);

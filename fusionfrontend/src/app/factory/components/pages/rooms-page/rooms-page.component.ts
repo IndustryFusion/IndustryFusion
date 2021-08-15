@@ -114,7 +114,7 @@ export class RoomsPageComponent implements OnInit {
     const oldFactoryIdSet: Set<ID> = new Set<ID>();
     event[0].forEach(id => {
       oldFactoryIdSet.add(this.roomQuery.getEntity(id).factorySiteId);
-    })
+    });
     this.assetService.assignAssetsToRoom(this.companyId, room.factorySiteId, event[0][0], event[1])
       .subscribe(
         assets => {
