@@ -93,7 +93,6 @@ export class AssetService {
     return this.http.put<Asset[]>(`${environment.apiUrlPrefix}/${path}`, assets, this.httpOptions)
       .pipe(tap(entities => {
         entities.forEach(enitity => this.assetStore.upsertCached(enitity));
-        this.roomService.getRoomsOfCompany(companyId).subscribe();
     }));
   }
 

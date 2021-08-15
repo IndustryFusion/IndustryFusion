@@ -236,16 +236,42 @@ public class AssetService {
 
     public Set<Asset> moveAssetsToRoom(final Long companyId, final Long factorySiteId, final Long roomId, final Asset[] assets) {
         Set<Asset> assetSet = new HashSet<>();
+        this.moveUnselectedAssetsToNoSpecificRoom(companyId, factorySiteId, roomId, assets);
         for (Asset asset : assets) {
             assetSet.add(this.moveAssetToRoom(companyId, factorySiteId, roomId, asset.getId()));
         }
         return assetSet;
     }
 
+    public void moveUnselectedAssetsToNoSpecificRoom(final Long companyId, final Long factorySiteId, final Long roomId, final Asset[] updatedAssets) {
+        Set<Asset> previouslyAssets = this.roomService.getRoomCheckFullPath(companyId, factorySiteId, roomId, true).getAssets();
+        Set<Asset> updatedAssetsSet = new HashSet<>(Arrays.asList(updatedAssets));
+        Asset[] unselectedAssets = previouslyAssets.stream().filter(asset -> !updatedAssetsSet.contains(asset)).toArray(Asset[]::new);
+
+        if (unselectedAssets.length > 0) {
+            Set<Room> factoryRooms = this.factorySiteService.getFactorySiteByCompany(companyId, factorySiteId, true).getRooms();
+            Room noSpecificRoom = factoryRooms.stream().filter(factoryRoom -> factoryRoom.getName().equals("No specific room")).findFirst().orElse(null);
+            if (noSpecificRoom == null) {
+                noSpecificRoom = Room.getUnspecificRoomInstance();
+                this.roomService.createRoom(companyId, factorySiteId, noSpecificRoom);
+            }
+            for (Asset asset: unselectedAssets) {
+                Room oldAssetRoom = this.roomService.getRoomCheckFullPath(companyId, factorySiteId, roomId, true);
+                if (oldAssetRoom != null) {
+                    oldAssetRoom.getAssets().remove(asset);
+                    asset.setRoom(null);
+                }
+
+                noSpecificRoom.getAssets().add(asset);
+                asset.setRoom(noSpecificRoom);
+            }
+        }
+    }
+
     public Asset moveAssetToRoom(final Long companyId, final Long factorySiteId, final Long newRoomId, final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
 
-        final Room oldAssetRoom = roomService.getRoomCheckFullPath(companyId, factorySiteId, asset.getRoom().getId(), false);
+        final Room oldAssetRoom = roomService.getRoomCheckFullPath(companyId, asset.getRoom().getFactorySite().getId(), asset.getRoom().getId(), false);
         final Room newAssetRoom = roomService.getRoomCheckFullPath(companyId, factorySiteId, newRoomId, false);
 
         if (oldAssetRoom != null) {

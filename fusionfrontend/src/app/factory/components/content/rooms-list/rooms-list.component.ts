@@ -53,11 +53,9 @@ export class RoomsListComponent implements OnInit, OnChanges {
   @Output()
   deleteRoomEvent = new EventEmitter<Room>();
   @Output()
-  assignAssetToRoomEvent = new EventEmitter<[ID, Asset[]]>();
+  assignAssetToRoomEvent = new EventEmitter<[ID[], Asset[]]>();
 
   isLoading$: Observable<boolean>;
-  factoryAssets$: Observable<Asset[]>;
-  rooms$: Observable<Room[]>;
 
   companyId: ID;
   factorySiteId: ID;
@@ -69,6 +67,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
   activeListItem: Room;
   factorySitesAndRoomsMap = new Map();
   route: string;
+  oldRoomIds: ID[] = [];
 
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
@@ -97,7 +96,8 @@ export class RoomsListComponent implements OnInit, OnChanges {
     if (changes.rooms) {
       this.rooms.forEach(room => {
         this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id === room.factorySiteId).name);
-      });    }
+      });
+    }
   }
 
   setActiveRow(room?) {
@@ -186,7 +186,12 @@ export class RoomsListComponent implements OnInit, OnChanges {
     ref.onClose.subscribe((assets: Asset[]) => {
       if (assets) {
         const roomId = this.activeListItem.id;
-        this.assignAssetToRoomEvent.emit([roomId, assets]);
+        this.oldRoomIds.push(roomId);
+        assets.forEach(asset => {
+          this.oldRoomIds.push(asset.roomId);
+        });
+        this.assignAssetToRoomEvent.emit([this.oldRoomIds, assets]);
+        this.oldRoomIds = [];
       }
     });
   }

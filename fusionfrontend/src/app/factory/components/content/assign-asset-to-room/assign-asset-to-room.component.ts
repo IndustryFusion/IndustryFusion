@@ -113,5 +113,4 @@ export class AssignAssetToRoomComponent implements OnInit, DoCheck {
       this.selectedAssets = [];
     }
   }
-
 }

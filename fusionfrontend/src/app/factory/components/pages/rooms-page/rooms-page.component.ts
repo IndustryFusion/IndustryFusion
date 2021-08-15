@@ -109,13 +109,19 @@ export class RoomsPageComponent implements OnInit {
     }
   }
 
-  assignAssetsToRoom(event: [ID, Asset[]]) {
-    const factorySiteId = this.roomQuery.getEntity(event[0]).factorySiteId;
-
-    this.assetService.assignAssetsToRoom(this.companyId, factorySiteId, event[0], event[1])
+  assignAssetsToRoom(event: [oldRoomIds: ID[], assets: Asset[]]) {
+    const room = this.roomQuery.getEntity(event[0][0]);
+    const oldFactoryIdSet: Set<ID> = new Set<ID>();
+    event[0].forEach(id => {
+      oldFactoryIdSet.add(this.roomQuery.getEntity(id).factorySiteId);
+    })
+    this.assetService.assignAssetsToRoom(this.companyId, room.factorySiteId, event[0][0], event[1])
       .subscribe(
         assets => {
-          console.log('[rooms-page.component]: ' + assets.length + ' assets assigned');
+          console.log('[rooms-page.component]: ' + assets.length + ' assets assigned to room ' + room.name);
+          oldFactoryIdSet.forEach(factoryId => {
+            this.roomService.getRoomsOfFactorySite(this.companyId, factoryId).subscribe();
+          });
         },
         error => { console.log(error); }
       );
