@@ -48,8 +48,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -86,7 +84,7 @@ class FusionbackendApplicationTests {
     private static Integer roomWestStruumpFabId;
     private static Integer roomEastStruumpFabId;
 
-    private static Integer countryGermanyId = 80;
+    private static final Integer countryGermanyId = 80;
 
     private static Integer assetRoomWestStruumpFabId;
     private static Integer assetRoomEastStruumpFabId;
@@ -262,7 +260,7 @@ class FusionbackendApplicationTests {
                 .longitude(11.604835)
                 .build();
 
-        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
+        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
@@ -279,7 +277,7 @@ class FusionbackendApplicationTests {
                 .longitude(11.679882)
                 .build();
 
-        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
+        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @RepeatedTest(10)
@@ -295,7 +293,7 @@ class FusionbackendApplicationTests {
                 .latitude(48.024522)
                 .longitude(11.679882)
                 .build();
-        createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
+        createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
@@ -831,7 +829,7 @@ class FusionbackendApplicationTests {
     @Order(703)
     void createAssetWithSubsystem() {
         AssetDto subsystem = AssetDto.builder()
-                .assetSeriesId(assetSeriesAiristGasSupplyId.longValue())
+                .assetSeriesId(assetSeriesAiristGasSupplyId)
                 .companyId(companyAiristMachId.longValue())
                 .build();
 
@@ -968,7 +966,7 @@ class FusionbackendApplicationTests {
         return newCompanyId;
     }
 
-    private Integer createAndTestCountry(final CountryDto country) {
+    private void createAndTestCountry(final CountryDto country) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(country)
@@ -993,16 +991,13 @@ class FusionbackendApplicationTests {
                 .then()
                 .statusCode(200)
                 .body("name", equalTo(country.getName()));
-
-        return newCountryId;
     }
 
     // TODO: test getter with embed
     // TODO: test create with entityDto with ID
     // TODO: Test fields in assettypetemplate, series, assets
 
-    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite,
-                                             final Integer countryId) {
+    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite) {
 
         if (factorySite.getCountry() == null) {
             ValidatableResponse response = given()
@@ -1010,7 +1005,7 @@ class FusionbackendApplicationTests {
                     .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                     .when()
-                    .get(baseUrl + "/countries/" + countryId)
+                    .get(baseUrl + "/countries/" + FusionbackendApplicationTests.countryGermanyId)
 
                     .then()
                     .statusCode(200);
@@ -1255,9 +1250,9 @@ class FusionbackendApplicationTests {
         return newAssetTypeTemplateId;
     }
 
-    private Integer createAndTestAssetTypeTemplateFieldTarget(final Integer assetTypeTemplateId,
-                                                              final Integer fieldId,
-                                                              final FieldTargetDto fieldTarget) {
+    private void createAndTestAssetTypeTemplateFieldTarget(final Integer assetTypeTemplateId,
+                                                           final Integer fieldId,
+                                                           final FieldTargetDto fieldTarget) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(fieldTarget)
@@ -1286,7 +1281,6 @@ class FusionbackendApplicationTests {
         String fieldType = response.extract().path("fieldType");
         assertThat(fieldType).isEqualTo(fieldTarget.getFieldType().name());
 
-        return newFieldId;
     }
 
     private Integer createAndTestAssetType(final AssetTypeDto assetType) {
@@ -1336,21 +1330,6 @@ class FusionbackendApplicationTests {
         response.body("controlSystemType", equalTo(dto.getControlSystemType()));
         response.body("hasGateway", equalTo(dto.getHasGateway()));
         response.body("gatewayConnectivity", equalTo(dto.getGatewayConnectivity()));
-    }
-
-    private void validateFieldDto(ValidatableResponse response, FieldDto dto) {
-        if (dto.getName() != null) {
-            response.body("name", equalTo(dto.getName()));
-        }
-        if (dto.getDescription() != null) {
-            response.body("description", equalTo(dto.getDescription()));
-        }
-        if (dto.getUnit() != null) {
-            response.body("unit", equalTo(dto.getUnit()));
-        }
-
-        Float accuracy = response.extract().path("accuracy");
-        assertThat(accuracy.doubleValue()).isCloseTo(dto.getAccuracy(), within(0.001));
     }
 
     private Long createAndTestAssetSeries(final Integer companyId,
@@ -1521,7 +1500,7 @@ class FusionbackendApplicationTests {
                                              final String subsystemAccessToken,
                                              final String parentAccessToken) {
 
-        Integer newSubsystemId = persistNewAsset(companyId, newSubsystem, subsystemAccessToken);
+        Integer newSubsystemId = persistNewAsset(newSubsystem, subsystemAccessToken);
 
         addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
@@ -1568,7 +1547,7 @@ class FusionbackendApplicationTests {
                 .statusCode(200);
     }
 
-    private Integer persistNewAsset(Integer companyId, AssetDto newSubsystem, String accessToken) {
+    private Integer persistNewAsset(AssetDto newSubsystem, String accessToken) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1646,9 +1625,4 @@ class FusionbackendApplicationTests {
         return response.extract().path("access_token");
     }
 
-    private void assertOffsetDateTimesEqualToSecond(final OffsetDateTime odt1, final OffsetDateTime odt2) {
-        OffsetDateTime convertedOdt1 = odt1.withOffsetSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-        OffsetDateTime convertedOdt2 = odt2.withOffsetSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-        assertThat(convertedOdt1).isAtSameInstantAs(convertedOdt2);
-    }
 }
