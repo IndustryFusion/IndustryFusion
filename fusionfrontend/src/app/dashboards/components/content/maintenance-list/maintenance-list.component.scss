@@ -21,21 +21,21 @@
 
 
 .filter-btn {
-    height: 48px;
-    width: 48px;
-    background-color: hsl(198, 0%, 95%);
-    border-color: transparent;
-    border-radius: 10px;
+  height: 48px;
+  width: 48px;
+  background-color: $light-grey;
+  border-color: transparent;
+  border-radius: 10px;
 }
 
 .remove-all-filters-btn {
   background-color: transparent;
   border: transparent;
-  background:none;
+  background: none;
   position: absolute;
   right: -5px;
-  top:28px;
-  cursor:pointer;
+  top: 28px;
+  cursor: pointer;
 
   .remove-all-filters-btn-icon {
     font-size: 16px;
@@ -128,7 +128,7 @@
   height: 30px;
 }
 
-:host ::ng-deep .p-datatable	{
+:host ::ng-deep .p-datatable {
   margin: 30px 80px;
   border: hidden !important;
 }
@@ -265,4 +265,28 @@
 
 }
 
+.asset-needs-maintenance {
+  color: red !important;
+}
 
+.search-panel-button {
+  font-size: 13px;
+  height: 30px;
+  margin: 5px 0 0 0;
+}
+
+.filter-box {
+  margin-bottom: 10px;
+}
+
+.potential-filter-item {
+  margin-left: 7px;
+}
+
+.filter-buttons-box {
+  margin-top: 10px;
+}
+
+.filter-panel {
+  position: relative;
+}

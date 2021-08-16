@@ -1,30 +1,26 @@
 <div class="maintenance-value">
-    <div class="label-success" [style.width.%]="50" *ngIf="!noMaintenacneValue">
-        <div class="container" *ngIf="maintenancePercentage < 25">
-            <p-progressBar class="progress-bar" class="red-bar" [value]="maintenancePercentage" [showValue]="false"></p-progressBar>
-            <p class="label-class">{{ maintenanceDurationHours }}</p>
-        </div>
-        <div class="container" *ngIf="maintenancePercentage > 25 && maintenancePercentage < 50">
-            <p-progressBar class="progress-bar" class="grey-bar" [value]="maintenancePercentage" [showValue]="false"></p-progressBar>
-            <p class="label-class">{{ maintenanceDurationHours }}</p>
-        </div>
-        <div class="container" *ngIf="maintenancePercentage > 50">
-            <p-progressBar class="progress-bar" class="blue-bar" [value]="maintenancePercentage" [showValue]="false"></p-progressBar>
-            <p class="label-class">{{ maintenanceDurationHours }}</p>
-        </div>
+  <div *ngIf="maintenanceValue" [style.width.%]="100" class="label-success">
+    <div *ngIf="state == maintenanceState.CRITICAL" class="container">
+      <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
+                     class="critical-bar"></p-progressBar>
+      <p [ngClass]="maintenancePercentage<=10 ? 'value-label-low' : 'value-label'"
+         class="progress-bar-label">{{ maintenanceValue }}</p>
     </div>
-    <div class="label-success" [style.width.%]="50" *ngIf="noMaintenacneValue"></div>
-    <div [style.width.%]="5"></div>
-    <div class="label-success" [style.width.%]="50" *ngIf="!noMaintenacneValue">
-        <div *ngIf="maintenancePercentage < 25">
-            <b>{{ maintenanceDurationHours }} Stunden</b> oder <b>{{ maintenanceDurationDays }} Tage</b>
-        </div>
-        <div *ngIf="maintenancePercentage > 25 && maintenancePercentage < 50">
-            <b>{{ maintenanceDurationHours }} Stunden</b> oder <b>{{ maintenanceDurationWeeks }} Wochen</b>
-        </div>
-        <div *ngIf="maintenancePercentage > 50">
-            <b>{{ maintenanceDurationHours }} Stunden</b> oder <b>{{ maintenanceDurationMonth }} Monate</b>
-        </div>
+    <div *ngIf="state == maintenanceState.MEDIUMTERM" class="container">
+      <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
+                     class="midterm-bar"></p-progressBar>
+      <p [ngClass]="maintenancePercentage<=20 ? 'value-label-low' : 'value-label'"
+         class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>
-    <div class="label-success" [style.width.%]="50" *ngIf="noMaintenacneValue"></div>
+    <div *ngIf="state == maintenanceState.LONGTERM" class="container">
+      <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
+                     class="longterm-bar"></p-progressBar>
+      <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>
+      <p *ngIf="maintenancePercentage > 100" class="overshooting-indicator"></p>
+    </div>
+  </div>
+  <div *ngIf="!maintenanceValue" class="container">
+    <p-progressBar [showValue]="false" [value]="0" class="unknown-bar" class="light-grey-bar"></p-progressBar>
+    <p class="progress-bar-label na-label">n.a.</p>
+  </div>
 </div>

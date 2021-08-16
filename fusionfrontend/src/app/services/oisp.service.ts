@@ -167,7 +167,7 @@ export class OispService {
 
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}/status`;
-    const body = { status};
+    const body = { status };
     return this.http.put<Rule>(url, body, this.httpOptions);
   }
 
@@ -175,7 +175,6 @@ export class OispService {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/delete_rule_with_alerts/${ruleId}`;
     return this.http.delete(url, this.httpOptions);
   }
-
 
   getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
     if (!assetDetails) {

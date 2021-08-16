@@ -175,6 +175,7 @@ export class AssetService {
     mappedAsset.videoKey = assetDetails.videoKey;
     mappedAsset.installationDate = assetDetails.installationDate;
     mappedAsset.imageKey = assetDetails.imageKey;
+    mappedAsset.subsystemIds = assetDetails.subsystemIds;
     return mappedAsset;
   }
 }
