@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,8 +94,8 @@ class FusionbackendApplicationTests {
     private static Integer assetTypeTemplateGasSupplyId;
     private static Integer assetTypeTemplateLaserCutterId;
 
-    private static Integer assetSeriesAiristGasSupplyId;
-    private static Integer assetSeriesLaserlyLaserCutterId;
+    private static Long assetSeriesAiristGasSupplyId;
+    private static Long assetSeriesLaserlyLaserCutterId;
 
     private static Integer assetTypeGasSupplyId;
     private static Integer assetTypeLaserCutterId;
@@ -756,7 +757,7 @@ class FusionbackendApplicationTests {
     @Test
     @Order(609)
     void testGetAllAssetSeries() {
-        List<Integer> assetIds = given()
+        List<AssetSeriesDto> assetSeriesList = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFleetManAirist)
 
@@ -765,9 +766,13 @@ class FusionbackendApplicationTests {
 
                 .then()
                 .statusCode(200)
-                .extract().path("id");
+                .extract().body().jsonPath().getList(".", AssetSeriesDto.class);
 
-        assertThat(assetIds)
+        List<Long> assetSeriesIds = assetSeriesList.stream()
+                .map(AssetSeriesDto::getId)
+                .collect(Collectors.toList());
+
+        assertThat(assetSeriesIds)
                 .hasSize(11)
                 .contains(assetSeriesAiristGasSupplyId);
     }
@@ -1348,10 +1353,10 @@ class FusionbackendApplicationTests {
         assertThat(accuracy.doubleValue()).isCloseTo(dto.getAccuracy(), within(0.001));
     }
 
-    private Integer createAndTestAssetSeries(final Integer companyId,
-                                             final Integer assetTypeTemplateId,
-                                             final AssetSeriesDto assetSeries,
-                                             final String accessToken) {
+    private Long createAndTestAssetSeries(final Integer companyId,
+                                          final Integer assetTypeTemplateId,
+                                          final AssetSeriesDto assetSeries,
+                                          final String accessToken) {
 
         ConnectivityTypeDto connectivityTypeDto = given()
                 .contentType(ContentType.JSON)
@@ -1385,7 +1390,7 @@ class FusionbackendApplicationTests {
         connectivitySettings.setConnectivityProtocolId(
                 List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0).getId());
 
-        ValidatableResponse response = given()
+        AssetSeriesDto persistedAssetSeriesDto = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
@@ -1394,11 +1399,12 @@ class FusionbackendApplicationTests {
                 .post(baseUrl + "/companies/" + companyId + "/assetseries")
 
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
 
-        Integer newAssetSeriesId = response.extract().path("id");
+        Long newAssetSeriesId = persistedAssetSeriesDto.getId();
 
-        response = given()
+        ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(assetSeries)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1427,7 +1433,7 @@ class FusionbackendApplicationTests {
     }
 
     private void transferFleetAssetToFactoryAsset(final Integer assetId,
-                                                  final Integer assetSeriesId,
+                                                  final Long assetSeriesId,
                                                   final Integer fleetCompanyId,
                                                   final Integer factoryCompanyId,
                                                   final String accessTokenFleet) {
@@ -1455,7 +1461,7 @@ class FusionbackendApplicationTests {
         response.body("companyId", equalTo(factoryCompanyId));
     }
 
-    private Integer createAndTestFleetAsset(final Integer companyId, final Integer assetSeriesId,
+    private Integer createAndTestFleetAsset(final Integer companyId, final Long assetSeriesId,
                                             final AssetDto asset, final String accessToken) {
 
         ValidatableResponse response = given()
@@ -1509,7 +1515,7 @@ class FusionbackendApplicationTests {
     }
 
     private void addSubsystemToParentAndTest(final Integer companyId,
-                                             final Integer assetSeriesId,
+                                             final Long assetSeriesId,
                                              final Integer parentAssetId,
                                              final AssetDto newSubsystem,
                                              final String subsystemAccessToken,
@@ -1523,7 +1529,7 @@ class FusionbackendApplicationTests {
 
     }
 
-    private void validateSubsystemExists(Integer companyId, Integer assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+    private void validateSubsystemExists(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1536,7 +1542,7 @@ class FusionbackendApplicationTests {
                 .body("subsystemIds", equalTo(Collections.singletonList(newSubsystemId)));
     }
 
-    private void addSubstemToParent(Integer companyId, Integer assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+    private void addSubstemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
         AssetDto parent = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
