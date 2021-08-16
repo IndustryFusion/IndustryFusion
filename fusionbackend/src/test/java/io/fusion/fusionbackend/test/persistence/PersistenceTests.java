@@ -154,4 +154,39 @@ public class PersistenceTests extends PersistenceTestsBase {
         assertEquals(connectivityType, foundSeries.getConnectivitySettings().getConnectivityType());
         assertEquals(connectivityProtocol, foundSeries.getConnectivitySettings().getConnectivityProtocol());
     }
+
+    @Test
+    void updateAssetsSeries() {
+        ConnectivityType connectivityTypeBefore = persisted(aConnectivityType()
+                .withProtocol(persisted(aConnectivityProtocol())))
+                .build();
+
+        ConnectivityProtocol connectivityProtocolBefore =
+                List.copyOf(connectivityTypeBefore.getAvailableProtocols()).get(0);
+
+        AssetSeries toBeUpdatedAssetSeries = persisted(anAssetSeries()
+                .forCompany(persisted(aCompany()))
+                .basedOnTemplate(persisted(anAssetTypeTemplate()
+                        .forType(persisted(anAssetType()))))
+                .withConnectivitySettingsFor(connectivityTypeBefore, connectivityProtocolBefore))
+                .build();
+
+
+        ConnectivityType connectivityTypeAfter = persisted(aConnectivityType()
+                .withProtocol(persisted(aConnectivityProtocol())))
+                .build();
+
+        ConnectivityProtocol connectivityProtocolAfter =
+                List.copyOf(connectivityTypeAfter.getAvailableProtocols()).get(0);
+
+
+        toBeUpdatedAssetSeries.getConnectivitySettings().setConnectivityType(connectivityTypeAfter);
+        toBeUpdatedAssetSeries.getConnectivitySettings().setConnectivityProtocol(connectivityProtocolAfter);
+
+        AssetSeries updatedAssetSeries = testEntityManager.persistFlushFind(toBeUpdatedAssetSeries);
+
+        assertEquals(connectivityTypeAfter, updatedAssetSeries.getConnectivitySettings().getConnectivityType());
+        assertEquals(connectivityProtocolAfter, updatedAssetSeries.getConnectivitySettings().getConnectivityProtocol());
+    }
+
 }
