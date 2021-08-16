@@ -23,7 +23,7 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 import { SelectItem } from 'primeng/api';
-import { OispPriority } from 'src/app/services/notification.model';
+import { OispPriority } from 'src/app/store/oisp-alert/oisp-alert.model';
 
 interface ActiveFilter {
   filterAttribute: SelectItem;
