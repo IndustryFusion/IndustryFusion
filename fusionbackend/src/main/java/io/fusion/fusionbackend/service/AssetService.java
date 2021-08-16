@@ -281,8 +281,7 @@ public class AssetService {
                                  final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
 
-        final Room oldAssetRoom = roomService.getRoomCheckFullPath(companyId, asset.getRoom().getFactorySite().getId(),
-                asset.getRoom().getId(), false);
+        final Room oldAssetRoom = asset.getRoom();
         final Room newAssetRoom = roomService.getRoomCheckFullPath(companyId, factorySiteId, newRoomId, false);
 
         if (oldAssetRoom != null) {
