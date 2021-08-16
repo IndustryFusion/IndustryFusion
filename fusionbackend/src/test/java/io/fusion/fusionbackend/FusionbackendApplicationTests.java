@@ -1337,6 +1337,39 @@ class FusionbackendApplicationTests {
                                           final AssetSeriesDto assetSeries,
                                           final String accessToken) {
 
+        AssetSeriesDto persistedAssetSeriesDto = createAssetSeries(companyId, assetTypeTemplateId, accessToken);
+
+        Long newAssetSeriesId = persistedAssetSeriesDto.getId();
+
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .body(assetSeries)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + newAssetSeriesId)
+
+                .then()
+                .statusCode(200);
+
+        validateBaseAssetDto(response, assetSeries);
+
+        response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + newAssetSeriesId)
+
+                .then()
+                .statusCode(200);
+
+        validateBaseAssetDto(response, assetSeries);
+
+        return newAssetSeriesId;
+    }
+
+    private AssetSeriesDto createAssetSeries(Integer companyId, Integer assetTypeTemplateId, String accessToken) {
         ConnectivityTypeDto connectivityTypeDto = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFleetManAirist)
@@ -1369,7 +1402,7 @@ class FusionbackendApplicationTests {
         connectivitySettings.setConnectivityProtocolId(
                 List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0).getId());
 
-        AssetSeriesDto persistedAssetSeriesDto = given()
+        return given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
@@ -1380,35 +1413,6 @@ class FusionbackendApplicationTests {
                 .then()
                 .statusCode(200)
                 .extract().body().as(AssetSeriesDto.class);
-
-        Long newAssetSeriesId = persistedAssetSeriesDto.getId();
-
-        ValidatableResponse response = given()
-                .contentType(ContentType.JSON)
-                .body(assetSeries)
-                .header("Authorization", "Bearer " + accessToken)
-
-                .when()
-                .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + newAssetSeriesId)
-
-                .then()
-                .statusCode(200);
-
-        validateBaseAssetDto(response, assetSeries);
-
-        response = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-
-                .when()
-                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + newAssetSeriesId)
-
-                .then()
-                .statusCode(200);
-
-        validateBaseAssetDto(response, assetSeries);
-
-        return newAssetSeriesId;
     }
 
     private void transferFleetAssetToFactoryAsset(final Integer assetId,
