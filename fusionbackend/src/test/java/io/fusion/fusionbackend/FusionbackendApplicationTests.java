@@ -715,7 +715,7 @@ class FusionbackendApplicationTests {
                 .videoKey("airistgasvideokey")
                 .build();
 
-        assetSeriesAiristGasSupplyId = createAndTestAssetSeries(companyAiristMachId, companyEcosystemId,
+        assetSeriesAiristGasSupplyId = createAndTestAssetSeries(companyAiristMachId,
                 assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManAirist);
     }
 
@@ -732,7 +732,7 @@ class FusionbackendApplicationTests {
                 .videoKey("lascuttervideokey")
                 .build();
 
-        assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId, companyEcosystemId,
+        assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId,
                 assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManLaserly);
     }
 
@@ -749,7 +749,7 @@ class FusionbackendApplicationTests {
                 .videoKey("genericcuttervideokey" + repetitionInfo.getCurrentRepetition())
                 .build();
 
-        createAndTestAssetSeries(companyAiristMachId, companyEcosystemId, assetTypeTemplateGasSupplyId, assetSeries,
+        createAndTestAssetSeries(companyAiristMachId, assetTypeTemplateGasSupplyId, assetSeries,
                 accessTokenFleetManAirist);
     }
 
@@ -1348,8 +1348,9 @@ class FusionbackendApplicationTests {
         assertThat(accuracy.doubleValue()).isCloseTo(dto.getAccuracy(), within(0.001));
     }
 
-    private Integer createAndTestAssetSeries(final Integer companyId, final Integer assetTypeTemplateCompanyId,
-                                             final Integer assetTypeTemplateId, final AssetSeriesDto assetSeries,
+    private Integer createAndTestAssetSeries(final Integer companyId,
+                                             final Integer assetTypeTemplateId,
+                                             final AssetSeriesDto assetSeries,
                                              final String accessToken) {
 
         ConnectivityTypeDto connectivityTypeDto = given()
