@@ -29,8 +29,6 @@ import { PointWithId } from '../../../../services/oisp.model';
 import { FieldDetails } from '../../../../store/field-details/field-details.model';
 import { mergeMap } from 'rxjs/operators';
 
-// const MAINTENANCE_FIELD_NAME_OPERATING_HOURS = 'Operating Hours till maintenance';
-
 @Component({
   selector: 'app-maintenance-page',
   templateUrl: './maintenance-page.component.html',
@@ -40,7 +38,7 @@ export class MaintenancePageComponent implements OnInit {
 
   companyId: ID;
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
-  factoryAssetDetailsWithFieldsAndValues: Observable<FactoryAssetDetailsWithFields[]>;
+  factoryAssetDetailsWithFieldsAndValues$: Observable<FactoryAssetDetailsWithFields[]>;
   assetTypes$: Observable<AssetType[]>;
   factorySites$: Observable<FactorySite[]>;
   companies$: Observable<Company[]>;
@@ -69,7 +67,7 @@ export class MaintenancePageComponent implements OnInit {
 
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
 
-    this.factoryAssetDetailsWithFieldsAndValues = this.factoryAssetDetailsWithFields$.pipe(
+    this.factoryAssetDetailsWithFieldsAndValues$ = this.factoryAssetDetailsWithFields$.pipe(
       mergeMap((assets) =>
         combineLatest(
           assets.map((asset) => {

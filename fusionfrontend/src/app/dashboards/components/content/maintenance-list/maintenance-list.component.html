@@ -42,14 +42,18 @@
         <td [style.width.%]="20">{{asset.manufacturer}}</td>
         <td [style.width.%]="12">{{asset.factorySiteName}}</td>
         <td [style.width.%]="13">
-          <app-maintenance-progressbar [asset]="asset" [lowerThreshold]="MAINTENANCE_DAYS_LOWER_THRESHOLD"
-                                       [maintenanceValueKey]="MAINTENANCE_DAYS_FIELD_NAME"
-                                       [upperThreshold]="MAINTENANCE_DAYS_UPPER_THRESHOLD"></app-maintenance-progressbar>
+          <app-maintenance-progressbar [asset]="asset"
+                                       [maintenancePercentage]="getMaintenanceDaysPercentage(asset)"
+                                       [maintenanceValue]="getMaintenanceDaysValue(asset)"
+                                       [state]="getMaintenanceState(getMaintenanceDaysValue(asset), MAINTENANCE_DAYS_LOWER_THRESHOLD, MAINTENANCE_DAYS_UPPER_THRESHOLD)"
+          ></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="13">
-          <app-maintenance-progressbar [asset]="asset" [lowerThreshold]="MAINTENANCE_OPERATING_HOURS_LOWER_THRESHOLD"
-                                       [maintenanceValueKey]="MAINTENANCE_OPERATING_HOURS_FIELD_NAME"
-                                       [upperThreshold]="MAINTENANCE_OPERATING_HOURS_UPPER_THRESHOLD"></app-maintenance-progressbar>
+          <app-maintenance-progressbar [asset]="asset"
+                                       [maintenancePercentage]="getMaintenanceHoursPercentage(asset)"
+                                       [maintenanceValue]="getMaintenanceHoursValue(asset)"
+                                       [state]="getMaintenanceState(getMaintenanceHoursValue(asset), MAINTENANCE_HOURS_LOWER_THRESHOLD, MAINTENANCE_HOURS_UPPER_THRESHOLD)"
+          ></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="2"></td>
       </tr>

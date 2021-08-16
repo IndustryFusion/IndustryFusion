@@ -28,6 +28,8 @@ interface ActiveFilter {
   filterAttribute: SelectItem;
 }
 
+export enum MaintenanceState { REQUIRED, OK, RECENTLY_PERFORMED}
+
 const CRITICAL_MAINTENANCE_VALUE = 375;
 const MEDIUMTERM_MAINTENANCE_VALUE = 750;
 const SHORTTERM_PRIORITY = 'Critical (red)';
@@ -42,9 +44,9 @@ const RADIX_DECIMAL = 10;
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
-  MAINTENANCE_OPERATING_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
-  MAINTENANCE_OPERATING_HOURS_LOWER_THRESHOLD = 150;
-  MAINTENANCE_OPERATING_HOURS_UPPER_THRESHOLD = 750;
+  MAINTENANCE_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
+  MAINTENANCE_HOURS_LOWER_THRESHOLD = 150;
+  MAINTENANCE_HOURS_UPPER_THRESHOLD = 750;
 
   MAINTENANCE_DAYS_FIELD_NAME = 'Days till maintenance';
   MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
@@ -192,7 +194,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsLowerThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
       }
@@ -201,7 +203,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsGreaterThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > value;
       }
@@ -210,7 +212,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetOutsideTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < lowerValue ||
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > greaterValue;
@@ -220,7 +222,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsBetweenTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < greaterValue &&
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > lowerValue;
@@ -228,15 +230,37 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     });
   }
 
+  public getMaintenanceHoursValue(asset: FactoryAssetDetailsWithFields): number {
+    return +asset.fields.find(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME)?.value;
+  }
+
+  public getMaintenanceHoursPercentage(asset: FactoryAssetDetailsWithFields): number {
+    return this.getMaintenanceHoursValue(asset) / this.MAINTENANCE_HOURS_UPPER_THRESHOLD * 100;
+  }
+
+  public getMaintenanceDaysValue(asset: FactoryAssetDetailsWithFields): number {
+    return +asset.fields.find(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME)?.value;
+  }
+
+  public getMaintenanceDaysPercentage(asset: FactoryAssetDetailsWithFields): number {
+    return this.getMaintenanceDaysValue(asset) / this.MAINTENANCE_DAYS_UPPER_THRESHOLD * 100;
+  }
+
   public isMaintenanceNeededSoon(asset: FactoryAssetDetailsWithFields): boolean {
-    const maintenanceDays = +asset.fields.find(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME)?.value;
-    const maintenanceHours = +asset.fields.find(field => field.name === this.MAINTENANCE_OPERATING_HOURS_FIELD_NAME)?.value;
-    const maintenanceDaysPercentage = maintenanceDays / this.MAINTENANCE_OPERATING_HOURS_UPPER_THRESHOLD;
-    const maintenanceHoursPercentage = maintenanceHours / this.MAINTENANCE_DAYS_UPPER_THRESHOLD;
-    if ((maintenanceDays && maintenanceDaysPercentage < 0.25) || (maintenanceHours && maintenanceHoursPercentage < 0.25)) {
+    if ((this.getMaintenanceHoursValue(asset) && this.getMaintenanceHoursPercentage(asset) < 0.25) ||
+      (this.getMaintenanceDaysValue(asset) && this.getMaintenanceDaysPercentage(asset) < 0.25)) {
       return true;
     }
     return false;
+  }
+
+  public getMaintenanceState(value: number, lowerTreshold: number, upperThreshold: number): MaintenanceState {
+    if (value < lowerTreshold) {
+      return MaintenanceState.REQUIRED;
+    } else if (value < upperThreshold) {
+      return MaintenanceState.OK;
+    }
+    return MaintenanceState.RECENTLY_PERFORMED;
   }
 
   private filterBySearchText() {

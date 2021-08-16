@@ -16,6 +16,6 @@ under the License.
 <app-maintenance-list
   [assetTypes]="(assetTypes$ | async)"
   [companies]="(companies$ | async)"
-  [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFieldsAndValues | async | maintenanceSort:MAINTENANCE_FIELD_NAME_DAYS"
+  [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFieldsAndValues$ | async | maintenanceSort:MAINTENANCE_FIELD_NAME_DAYS"
   [factorySites]="(factorySites$ | async)">
 </app-maintenance-list>
