@@ -154,7 +154,7 @@ export class FactoryComposedQuery {
     return this.selectFieldsOfSelectedAssets().pipe(
       mergeMap(assets =>
         forkJoin(
-          assets.map(asset => this.oispService.getAssetFieldsExternalIds(asset)))
+          assets.map(asset => this.oispService.getAssetFieldsWithReplacedExternalIds(asset)))
       )
     );
   }
@@ -163,17 +163,18 @@ export class FactoryComposedQuery {
     return this.selectFieldsOfAssetsDetails().pipe(
       mergeMap(assets =>
         forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsExternalIds(asset)))
+          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
+        )
       )
     );
   }
 
-  selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId): Observable<FactoryAssetDetailsWithFields[]> {
+  selectAssetDetailsWithFieldsOfFactorySiteAndOispData(factorySiteId): Observable<FactoryAssetDetailsWithFields[]> {
     return this.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId).pipe(
       mergeMap(assets =>
         forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsExternalIds(asset)
-          ))
+          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
+        )
       ));
   }
 
@@ -181,7 +182,8 @@ export class FactoryComposedQuery {
     return this.selectFieldsOfAssetsDetailsByRoomId(roomId).pipe(
       mergeMap(assets =>
         forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsExternalIds(asset)))
+          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
+        )
       )
     );
   }
@@ -190,7 +192,7 @@ export class FactoryComposedQuery {
     return this.fieldQuery.selectFieldsOfAsset(asset.id).pipe(
       mergeMap(myFields => {
         const assetWithFields = Object.assign({ fields: myFields }, asset);
-        return this.oispService.getAssetFieldsExternalIds(assetWithFields);
+        return this.oispService.getAssetFieldsWithReplacedExternalIds(assetWithFields);
       })
     );
   }

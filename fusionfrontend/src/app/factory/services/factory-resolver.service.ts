@@ -122,7 +122,7 @@ export class FactoryResolver {
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
       this.assets$ = this.factoryComposedQuery.selectAssetsOfFactorySite(factorySiteId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery
-        .selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId);
+        .selectAssetDetailsWithFieldsOfFactorySiteAndOispData(factorySiteId);
     }
     const roomId = activatedRoute.snapshot.paramMap.get('roomId');
     this.roomService.setActive(roomId);

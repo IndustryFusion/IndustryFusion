@@ -25,6 +25,7 @@ import {
   ComponentType,
   ConditionType,
   Device,
+  DeviceComponent,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
@@ -56,56 +57,56 @@ export class OispService {
     private keycloakService: KeycloakService) {
   }
 
-  getExternalIdForSingleField(field: FieldDetails, oispDevice: any): FieldDetails {
+  tryReplaceExternalIdWithComponentUid(fieldDetails: FieldDetails, oispDevice: Device): FieldDetails {
     if (oispDevice.components) {
-      const fieldCopy = Object.assign({ }, field);
-      oispDevice.components.map((el) => {
-        if (el.name === field.externalId) {
-          fieldCopy.externalId = el.cid;
+      const fieldDetailsCopy = Object.assign({ }, fieldDetails);
+      oispDevice.components.map((component: DeviceComponent) => {
+        if (component.name === fieldDetails.externalId) {
+          fieldDetailsCopy.externalId = component.cid;
         }
       });
-      return fieldCopy;
+      return fieldDetailsCopy;
     } else {
-      return field;
+      return fieldDetails;
     }
   }
 
-  getAssetFieldsExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
-    return this.addFieldsExternalIds(asset);
+  getAssetFieldsWithReplacedExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
+    return this.replaceExternalIdsOfFieldsWithUid(asset);
   }
 
-  getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    return this.addFieldsExternalIds(assetDetails);
+  getAssetDetailsFieldsWithReplacedExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
+    return this.replaceExternalIdsOfFieldsWithUid(assetDetails);
   }
 
-  private addFieldsExternalIds(someAsset: any): Observable<any> {
-    if (!someAsset) {
+  private replaceExternalIdsOfFieldsWithUid(assetOrAssetDetails: any): Observable<any> {
+    if (!assetOrAssetDetails) {
       return EMPTY;
     }
 
-    return this.getDevice(someAsset.externalId).pipe(
+    return this.getDevice(assetOrAssetDetails.externalId).pipe(
       catchError(() => {
         console.error('[oisp service] caught error while searching for external Ids');
-        return of(someAsset);
+        return of(assetOrAssetDetails);
       }),
-      startWith(someAsset),
-      map((response) => {
-        const newFields = someAsset.fields.map(field => this.getExternalIdForSingleField(field, response));
-        return Object.assign(someAsset, { fields: newFields });
+      startWith(assetOrAssetDetails),
+      map((assetOrDevice: any) => {
+        const newFields = assetOrAssetDetails.fields.map(field => this.tryReplaceExternalIdWithComponentUid(field, assetOrDevice));
+        return Object.assign(assetOrAssetDetails, { fields: newFields });
       })
     );
   }
 
-  getDevice(deviceId: ID): Observable<any> {
+  getDevice(deviceId: ID): Observable<Device> {
     if (!deviceId) {
       return EMPTY;
     }
 
     const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceId}`;
-    return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
+    return this.http.get<Device>(deviceRequest, this.httpOptions).pipe(
       catchError(() => {
         console.error('[oisp service] caught error while searching for device ', deviceId);
-        return of(deviceId);
+        return EMPTY;
       }),
     );
   }

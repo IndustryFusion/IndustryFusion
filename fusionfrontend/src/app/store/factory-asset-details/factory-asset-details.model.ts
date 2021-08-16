@@ -15,7 +15,7 @@
 
 import { Asset } from '../asset/asset.model';
 import { FieldDetails } from '../field-details/field-details.model';
-import { OispPriority } from '../../services/notification.model';
+import { OispPriority } from '../oisp-alert/oisp-alert.model';
 
 
 export class FactoryAssetDetails extends Asset {
