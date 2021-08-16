@@ -25,7 +25,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
-import { Location as loc } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-assets-list',
@@ -80,7 +80,7 @@ export class AssetsListComponent implements OnInit {
     private assetService: AssetService,
     private formBuilder: FormBuilder,
     public dialogService: DialogService,
-    private routingLocation: loc) {
+    private routingLocation: Location) {
       this.createDetailsAssetForm(this.formBuilder);
   }
 

@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FactoryAssetDetailsWithFields, AssetModalMode } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { AssetModalMode, FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
 import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
-import { FactoryAssetDetails, AssetModalType } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+import { AssetModalType, FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
-import { MenuItem } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
-import { Location as loc  } from '@angular/common';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-assets-list-item',
@@ -53,13 +52,25 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     public dialogService: DialogService,
     private confirmationService: ConfirmationService,
-    private routingLocation: loc) {
-      this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
-      this.menuActions = [
-        { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-        { label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => { this.openAssignRoomDialog(); } },
-        { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
-      ];
+    private routingLocation: Location) {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
+    this.menuActions = [
+      {
+        label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => {
+          this.showEditDialog();
+        }
+      },
+      {
+        label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => {
+          this.openAssignRoomDialog();
+        }
+      },
+      {
+        label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => {
+          this.showDeleteDialog();
+        }
+      },
+    ];
   }
 
   ngOnInit(): void {
@@ -104,7 +115,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     }
   }
 
-  showAssignRoomDialog(assetModalType: AssetModalType, assetModalMode: AssetModalMode, header: string ) {
+  showAssignRoomDialog(assetModalType: AssetModalType, assetModalMode: AssetModalMode, header: string) {
     this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {

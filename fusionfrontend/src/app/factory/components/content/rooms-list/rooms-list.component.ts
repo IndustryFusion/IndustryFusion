@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, OnChanges, SimpleChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -22,7 +22,7 @@ import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory
 import { Room } from 'src/app/store/room/room.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { Location as loc } from '@angular/common';
+import { Location } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateRoomComponent } from '../create-room/create-room.component';
@@ -74,9 +74,10 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   constructor(private factorySiteQuery: FactorySiteQuery,
               private companyQuery: CompanyQuery,
-              private routingLocation: loc,
+              private routingLocation: Location,
               private formBuilder: FormBuilder,
-              public dialogService: DialogService) { }
+              public dialogService: DialogService) {
+  }
 
   ngOnInit() {
     this.route = this.routingLocation.path();
@@ -121,7 +122,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
     ref.onClose.subscribe((room: Room) => {
       if (room) {
         this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id.toString()
-            === room.factorySiteId.toString()).name);
+          === room.factorySiteId.toString()).name);
         this.createRoomEvent.emit(room);
       }
     });
