@@ -28,10 +28,8 @@ interface ActiveFilter {
   filterAttribute: SelectItem;
 }
 
-export enum MaintenanceState { CRITICAL, MEDIUMTERM, LONGTERM}
+export enum MaintenanceState { CRITICAL, MEDIUMTERM, LONGTERM }
 
-const CRITICAL_MAINTENANCE_VALUE = 375;
-const MEDIUMTERM_MAINTENANCE_VALUE = 750;
 const SHORTTERM_PRIORITY = 'Critical (red)';
 const MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
 const LONGTERM_PRIORITY = 'Longterm (blue)';
@@ -44,13 +42,17 @@ const RADIX_DECIMAL = 10;
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
-  MAINTENANCE_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
-  MAINTENANCE_HOURS_LOWER_THRESHOLD = 150;
-  MAINTENANCE_HOURS_UPPER_THRESHOLD = 750;
+  readonly MAINTENANCE_HIGHLIGHT_PERCENTAGE = 25;
 
-  MAINTENANCE_DAYS_FIELD_NAME = 'Days till maintenance';
-  MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
-  MAINTENANCE_DAYS_UPPER_THRESHOLD = 180;
+  readonly MAINTENANCE_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
+  readonly MAINTENANCE_HOURS_LOWER_THRESHOLD = 150;
+  readonly MAINTENANCE_HOURS_UPPER_THRESHOLD = 750;
+  readonly MAINTENANCE_HOURS_OVERSHOOTING_LIMIT = 1500;
+
+  readonly MAINTENANCE_DAYS_FIELD_NAME = 'Days till maintenance';
+  readonly MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
+  readonly MAINTENANCE_DAYS_UPPER_THRESHOLD = 180;
+  readonly MAINTENANCE_DAYS_OVERSHOOTING_LIMIT = 365;
 
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
@@ -76,7 +78,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   maintenanceDue: SelectItem = { value: 'maintenanceDue', label: 'Maintenance Due (Days)' };
 
   dashboardFilterModalTypes = DashboardFilterModalType;
-  dashboardFilterTypeActice: DashboardFilterModalType;
+  dashboardFilterTypeActive: DashboardFilterModalType;
   selectedAssetTypes: AssetType[] = [];
   selectedCompanies: Company[] = [];
   selectedFactorySites: FactorySite[] = [];
@@ -144,13 +146,13 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   clearSelectFilterValues() {
-    if (this.dashboardFilterTypeActice === DashboardFilterModalType.assetTypeFilterModal) {
+    if (this.dashboardFilterTypeActive === DashboardFilterModalType.assetTypeFilterModal) {
       this.selectedAssetTypes = [];
-    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.manufacturerFilterModal) {
+    } else if (this.dashboardFilterTypeActive === DashboardFilterModalType.manufacturerFilterModal) {
       this.selectedCompanies = [];
-    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.factoryFilterModal) {
+    } else if (this.dashboardFilterTypeActive === DashboardFilterModalType.factoryFilterModal) {
       this.selectedFactorySites = [];
-    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.maintenanceDueFilterModal) {
+    } else if (this.dashboardFilterTypeActive === DashboardFilterModalType.maintenanceDueFilterModal) {
       this.selectedMaintenanceDue = [];
     }
   }
@@ -174,21 +176,21 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsByTwoMaintenanceValues() {
     if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
-      this.filterAssetsLowerThanMaintenanceValue(MEDIUMTERM_MAINTENANCE_VALUE);
+      this.filterAssetsLowerThanMaintenanceValue(this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
     } else if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-      this.filterAssetOutsideTwoMaintenanceValues(CRITICAL_MAINTENANCE_VALUE, MEDIUMTERM_MAINTENANCE_VALUE);
+      this.filterAssetOutsideTwoMaintenanceValues(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
     } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-      this.filterAssetsGreaterThanMaintenanceValue(CRITICAL_MAINTENANCE_VALUE);
+      this.filterAssetsGreaterThanMaintenanceValue(this.MAINTENANCE_DAYS_LOWER_THRESHOLD);
     }
   }
 
   filterAssetsByOneMaintenanceValue() {
     if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY)) {
-      this.filterAssetsLowerThanMaintenanceValue(CRITICAL_MAINTENANCE_VALUE);
+      this.filterAssetsLowerThanMaintenanceValue(this.MAINTENANCE_DAYS_LOWER_THRESHOLD);
     } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
-      this.filterAssetsBetweenTwoMaintenanceValues(CRITICAL_MAINTENANCE_VALUE, MEDIUMTERM_MAINTENANCE_VALUE);
+      this.filterAssetsBetweenTwoMaintenanceValues(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
     } else if (this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-      this.filterAssetsGreaterThanMaintenanceValue(MEDIUMTERM_MAINTENANCE_VALUE);
+      this.filterAssetsGreaterThanMaintenanceValue(this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
     }
   }
 
@@ -235,7 +237,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   public getMaintenanceHoursPercentage(asset: FactoryAssetDetailsWithFields): number {
-    return this.getMaintenanceHoursValue(asset) / this.MAINTENANCE_HOURS_UPPER_THRESHOLD * 100;
+    return this.getMaintenanceHoursValue(asset) / this.MAINTENANCE_HOURS_OVERSHOOTING_LIMIT * 100;
   }
 
   public getMaintenanceDaysValue(asset: FactoryAssetDetailsWithFields): number {
@@ -243,19 +245,16 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   public getMaintenanceDaysPercentage(asset: FactoryAssetDetailsWithFields): number {
-    return this.getMaintenanceDaysValue(asset) / this.MAINTENANCE_DAYS_UPPER_THRESHOLD * 100;
+    return this.getMaintenanceDaysValue(asset) / this.MAINTENANCE_DAYS_OVERSHOOTING_LIMIT * 100;
   }
 
   public isMaintenanceNeededSoon(asset: FactoryAssetDetailsWithFields): boolean {
-    if ((this.getMaintenanceHoursValue(asset) && this.getMaintenanceHoursPercentage(asset) < 0.25) ||
-      (this.getMaintenanceDaysValue(asset) && this.getMaintenanceDaysPercentage(asset) < 0.25)) {
-      return true;
-    }
-    return false;
+    return (this.getMaintenanceHoursValue(asset) && this.getMaintenanceHoursPercentage(asset) < this.MAINTENANCE_HIGHLIGHT_PERCENTAGE) ||
+      (this.getMaintenanceDaysValue(asset) && this.getMaintenanceDaysPercentage(asset) < this.MAINTENANCE_HIGHLIGHT_PERCENTAGE);
   }
 
-  public getMaintenanceState(value: number, lowerTreshold: number, upperThreshold: number): MaintenanceState {
-    if (value < lowerTreshold) {
+  public getMaintenanceState(value: number, lowerThreshold: number, upperThreshold: number): MaintenanceState {
+    if (value < lowerThreshold) {
       return MaintenanceState.CRITICAL;
     } else if (value < upperThreshold) {
       return MaintenanceState.MEDIUMTERM;

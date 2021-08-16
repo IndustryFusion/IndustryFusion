@@ -1,7 +1,7 @@
 <div>
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div class="title">Maintenance Dashboard</div>
-    <div style="position: relative">
+    <div class="filter-panel">
       <button (click)="filterpanel.toggle($event)" class="filter-btn">
         <fa-icon [icon]="faFilter" class="fa-fw"></fa-icon>
       </button>
@@ -71,9 +71,8 @@
         </span>
     <br>
     <div class="footer">
-      <button (click)="searchAssets(); searchpanel.hide()" class="if-button button-primary button-modal"
-              style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"
-              type="button">Apply
+      <button (click)="searchAssets(); searchpanel.hide()"
+              class="if-button button-primary button-modal search-panel-button" type="button">Apply
       </button>
     </div>
   </ng-template>
@@ -83,12 +82,12 @@
   <ng-template pTemplate>
     <div class="panel-heading">Filter</div>
     <div>
-      <div *ngFor="let activeFilter of activeFilterSet" style="margin-bottom: 10px;">
+      <div *ngFor="let activeFilter of activeFilterSet" class="filter-box">
         <div *ngIf="activeFilter.filterAttribute === assetType">
           <p-dropdown [(ngModel)]="activeFilter.filterAttribute" [options]="filterOptions"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.assetTypeFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.assetTypeFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -104,7 +103,7 @@
           <p-dropdown [(ngModel)]="activeFilter.filterAttribute" [options]="filterOptions"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.manufacturerFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.manufacturerFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -120,7 +119,7 @@
           <p-dropdown [(ngModel)]="activeFilter.filterAttribute" [options]="filterOptions"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.factoryFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.factoryFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -136,7 +135,7 @@
           <p-dropdown [(ngModel)]="activeFilter.filterAttribute" [options]="filterOptions"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.maintenanceDueFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.maintenanceDueFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -159,50 +158,50 @@
 
 <p-overlayPanel #editFilterPanel class="editFilterPanel">
   <ng-template pTemplate>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.assetTypeFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.assetTypeFilterModal">
       <div class="panel-heading">Select AssetType</div>
       <div *ngFor="let assetType of assetTypes">
         <p-checkbox [(ngModel)]="selectedAssetTypes" [inputId]="assetType.id" [value]="assetType" name="assetTypeValues"
                     value="assetType"></p-checkbox>
-        <label [for]="assetType.id" style="margin-left: 7px;">{{assetType.description}}</label>
+        <label [for]="assetType.id" class="potential-filter-item">{{assetType.description}}</label>
       </div>
     </div>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.manufacturerFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.manufacturerFilterModal">
       <div class="panel-heading">Select Manufacturer</div>
       <div *ngFor="let company of companies">
         <p-checkbox [(ngModel)]="selectedCompanies" [inputId]="company.id" [value]="company" name="companyValues"
                     value="company"></p-checkbox>
-        <label [for]="company.id" style="margin-left: 7px;">{{company.description}}</label>
+        <label [for]="company.id" class="potential-filter-item">{{company.description}}</label>
       </div>
     </div>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.factoryFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.factoryFilterModal">
       <div class="panel-heading">Select Factory Site</div>
       <div *ngFor="let factorySite of factorySites">
         <p-checkbox [(ngModel)]="selectedFactorySites" [inputId]="factorySite.id" [value]="factorySite"
                     name="factorySitesValues" value="factorySite"></p-checkbox>
-        <label [for]="factorySite.id" style="margin-left: 7px;">{{factorySite.name}}</label>
+        <label [for]="factorySite.id" class="potential-filter-item">{{factorySite.name}}</label>
       </div>
     </div>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.maintenanceDueFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.maintenanceDueFilterModal">
       <div class="panel-heading">Select Factory Site</div>
       <div>
         <p-checkbox [(ngModel)]="selectedMaintenanceDue" name="maintenanceDueValues"
                     value="{{ maintenanceValues[0] }}"></p-checkbox>
-        <label style="margin-left: 7px;">{{ maintenanceValues[0] }}</label>
+        <label class="potential-filter-item">{{ maintenanceValues[0] }}</label>
       </div>
       <div>
         <p-checkbox [(ngModel)]="selectedMaintenanceDue" name="maintenanceDueValues"
                     value="{{ maintenanceValues[1] }}"></p-checkbox>
-        <label style="margin-left: 7px;">{{ maintenanceValues[1] }}</label>
+        <label class="potential-filter-item">{{ maintenanceValues[1] }}</label>
       </div>
       <div>
         <p-checkbox [(ngModel)]="selectedMaintenanceDue" name="maintenanceDueValues"
                     value="{{ maintenanceValues[2] }}"></p-checkbox>
-        <label style="margin-left: 7px;">{{ maintenanceValues[2] }}</label>
+        <label class="potential-filter-item">{{ maintenanceValues[2] }}</label>
       </div>
     </div>
 
-    <div style="margin-top: 10px;">
+    <div class="filter-buttons-box">
       <button (click)="clearSelectFilterValues(); filterAssets();"
               class="if-button button-secondary button-modal clear-filter-btn">
         Clear all

@@ -12,21 +12,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+@import 'abstract/variables';
 
-.red-bar .p-progressbar .p-progressbar-value {
-  background: #A73737 !important;
+.critical-bar .p-progressbar .p-progressbar-value {
+  background: $error !important;
 }
 
-.grey-bar .p-progressbar .p-progressbar-value {
-  background: #95989A !important;
+.midterm-bar .p-progressbar .p-progressbar-value {
+  background: $slight-grey !important;
 }
 
-.blue-bar .p-progressbar .p-progressbar-value {
-  background: #53A7CA !important;
+.longterm-bar .p-progressbar .p-progressbar-value {
+  background: $fusion-blue !important;
 }
 
-.light-grey-bar .p-progressbar .p-progressbar-value {
-  background: #EAEAEA !important;
+.unknown-bar .p-progressbar .p-progressbar-value {
+  background: $light-grey !important;
 }
 
 .p-progressbar {

@@ -2,25 +2,25 @@
   <div *ngIf="maintenanceValue" [style.width.%]="100" class="label-success">
     <div *ngIf="state == maintenanceState.CRITICAL" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
-                     class="red-bar"></p-progressBar>
-      <p [ngClass]="maintenancePercentage<=20 ? 'value-label-low' : 'value-label'"
+                     class="critical-bar"></p-progressBar>
+      <p [ngClass]="maintenancePercentage<=10 ? 'value-label-low' : 'value-label'"
          class="progress-bar-label">{{ maintenanceValue }}</p>
     </div>
     <div *ngIf="state == maintenanceState.MEDIUMTERM" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
-                     class="grey-bar"></p-progressBar>
+                     class="midterm-bar"></p-progressBar>
       <p [ngClass]="maintenancePercentage<=20 ? 'value-label-low' : 'value-label'"
          class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>
     <div *ngIf="state == maintenanceState.LONGTERM" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
-                     class="blue-bar"></p-progressBar>
+                     class="longterm-bar"></p-progressBar>
       <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>
       <p *ngIf="maintenancePercentage > 100" class="overshooting-indicator"></p>
     </div>
   </div>
   <div *ngIf="!maintenanceValue" class="container">
-    <p-progressBar [showValue]="false" [value]="0" class="progress-bar" class="light-grey-bar"></p-progressBar>
+    <p-progressBar [showValue]="false" [value]="0" class="unknown-bar" class="light-grey-bar"></p-progressBar>
     <p class="progress-bar-label na-label">n.a.</p>
   </div>
 </div>
