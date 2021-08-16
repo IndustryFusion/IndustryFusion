@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -86,6 +87,9 @@ public class Asset extends BaseAsset {
     protected String videoKey;
     protected OffsetDateTime installationDate;
 
+    @Column(nullable = false)
+    protected String connectionString;
+
     public void copyFrom(final Asset sourceAsset) {
         super.copyFrom(sourceAsset);
         if (sourceAsset.getExternalId() != null) {
@@ -132,6 +136,9 @@ public class Asset extends BaseAsset {
         }
         if (sourceAsset.getSubsystems() != null) {
             setSubsystems(sourceAsset.getSubsystems());
+        }
+        if (sourceAsset.getConnectionString() != null) {
+            setConnectionString(sourceAsset.getConnectionString());
         }
     }
 }
