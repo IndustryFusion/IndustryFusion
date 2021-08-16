@@ -53,8 +53,8 @@ export class RoomsPageComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private assetDetailsService: FactoryAssetDetailsService,
               private assetService: AssetService,
-              private roomQuery: RoomQuery,
-  ) { }
+              private roomQuery: RoomQuery) {
+  }
 
   ngOnInit() {
     this.isLoading$ = this.companyQuery.selectLoading();
@@ -74,37 +74,24 @@ export class RoomsPageComponent implements OnInit {
   }
 
   deleteRoom(room: Room) {
-    console.log(room);
     const companyId = this.companyQuery.getActiveId();
     const factorySiteId = this.factorySiteQuery.getActiveId();
-    this.roomService.deleteRoom(companyId, factorySiteId, room.id)
-      .subscribe(() => {
-        console.log('[rooms-page.component] Delete request successful', room.id);
-      });
+    this.roomService.deleteRoom(companyId, factorySiteId, room.id).subscribe();
   }
 
   editRoom(event: Room) {
     if (event) {
-      this.roomService.updateRoom(this.companyId, event)
-        .subscribe(data => {
-          console.log('[rooms-page.component] Patch request successful', data);
-        });
+      this.roomService.updateRoom(this.companyId, event).subscribe();
       this.assetDetailsService.updateRoomNames(event);
     }
   }
 
   createRoom(event: Room) {
     if (event) {
-      if (event.id)  {
-        this.roomService.updateRoom(this.companyId, event)
-          .subscribe(data => {
-            console.log('[rooms-page.component] Put request successful', data);
-          });
+      if (event.id) {
+        this.roomService.updateRoom(this.companyId, event).subscribe();
       } else {
-        this.roomService.createRoom(this.companyId, event)
-          .subscribe(data => {
-            console.log('[rooms-page.component] Post request successful', data);
-          });
+        this.roomService.createRoom(this.companyId, event).subscribe();
       }
     }
   }
@@ -117,13 +104,14 @@ export class RoomsPageComponent implements OnInit {
     });
     this.assetService.assignAssetsToRoom(this.companyId, room.factorySiteId, event[0][0], event[1])
       .subscribe(
-        assets => {
-          console.log('[rooms-page.component]: ' + assets.length + ' assets assigned to room ' + room.name);
+        _ => {
           oldFactoryIdSet.forEach(factoryId => {
             this.roomService.getRoomsOfFactorySite(this.companyId, factoryId).subscribe();
           });
         },
-        error => { console.log(error); }
+        error => {
+          console.error(error);
+        }
       );
   }
 }

@@ -1,4 +1,21 @@
-.p-datatable	{
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import "abstract/variables";
+
+.p-datatable {
   margin: 30px 80px;
   border: hidden !important;
 }
@@ -10,8 +27,8 @@
   font-size: 16px;
   line-height: 20px;
   font-weight: 600;
-  color: #000000;
-  background-color: #F8F8F8;
+  color: $basic-black;
+  background-color: $light-grey;
   border: 0 none;
 
   &:first-child {
@@ -24,26 +41,26 @@
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
-  background-color: white;
+  background-color: $basic-white;
   border-color: transparent;
   text-align: left;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
   letter-spacing: 0;
-  color: #95989A;
+  color: $basic-grey;
   overflow: hidden;
 
 
   &:first-child {
     border-radius: 10px 0 0 10px;
-    color: #000000;
+    color: $basic-black;
   }
 }
 
 .p-paginator {
   height: 45px;
-  background-color: white;
+  background-color: $basic-white;
   border-color: transparent;
   border: none;
   margin-top: 5px;
@@ -63,11 +80,11 @@
     height: 38px;
     width: 38px;
     margin: 2px;
-    background-color: white !important;
-    color: black !important;
+    background-color: $basic-white !important;
+    color: $basic-black !important;
     font-size: 16px;
     font-weight: 600;
-    border-color: black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px;
     border-radius: 10px;
@@ -76,7 +93,7 @@
   }
 
   .p-widget {
-    border-color: black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
@@ -84,7 +101,7 @@
     .p-inputtext {
       height: 38px !important;
       font-weight: normal;
-      border-color: black;
+      border-color: $basic-black;
       border-width: 2px !important;
       border-radius: 10px;
       width: 60px;
@@ -92,8 +109,8 @@
 
 
     .p-state-highlight {
-      background-color: white !important;
-      color: black !important;
+      background-color: $basic-white !important;
+      color: $basic-black !important;
       font-weight: bold;
       border-radius: 10px;
     }
@@ -107,8 +124,8 @@
     height: 38px;
     width: 38px;
     margin: 2px;
-    color: black;
-    border-color: black;
+    color: $basic-black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
@@ -118,8 +135,8 @@
     height: 38px;
     width: 38px;
     margin: 2px;
-    color: black;
-    border-color: black;
+    color: $basic-black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
