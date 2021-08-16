@@ -28,7 +28,7 @@ interface ActiveFilter {
   filterAttribute: SelectItem;
 }
 
-export enum MaintenanceState { REQUIRED, OK, RECENTLY_PERFORMED}
+export enum MaintenanceState { CRITICAL, MEDIUMTERM, LONGTERM}
 
 const CRITICAL_MAINTENANCE_VALUE = 375;
 const MEDIUMTERM_MAINTENANCE_VALUE = 750;
@@ -73,7 +73,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   assetType: SelectItem = { value: 'assetType', label: 'Asset Type' };
   manufacturer: SelectItem = { value: 'manufacturer', label: 'Manufacturer' };
   factory: SelectItem = { value: 'factory', label: 'Factory' };
-  maintenanceDue: SelectItem = { value: 'maintenanceDue', label: 'Maintenance Due' };
+  maintenanceDue: SelectItem = { value: 'maintenanceDue', label: 'Maintenance Due (Days)' };
 
   dashboardFilterModalTypes = DashboardFilterModalType;
   dashboardFilterTypeActice: DashboardFilterModalType;
@@ -194,7 +194,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsLowerThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
       }
@@ -203,7 +203,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsGreaterThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > value;
       }
@@ -212,7 +212,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetOutsideTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < lowerValue ||
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > greaterValue;
@@ -222,7 +222,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsBetweenTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < greaterValue &&
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > lowerValue;
@@ -256,11 +256,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   public getMaintenanceState(value: number, lowerTreshold: number, upperThreshold: number): MaintenanceState {
     if (value < lowerTreshold) {
-      return MaintenanceState.REQUIRED;
+      return MaintenanceState.CRITICAL;
     } else if (value < upperThreshold) {
-      return MaintenanceState.OK;
+      return MaintenanceState.MEDIUMTERM;
     }
-    return MaintenanceState.RECENTLY_PERFORMED;
+    return MaintenanceState.LONGTERM;
   }
 
   private filterBySearchText() {
