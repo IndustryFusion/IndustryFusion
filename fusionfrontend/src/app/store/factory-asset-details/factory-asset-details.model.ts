@@ -25,7 +25,7 @@ export class FactoryAssetDetails extends Asset {
   category: string;
   roomName: string;
   factorySiteName: string;
-  openAlertPriority?: OispPriority;
+  openAlertPriority: OispPriority;
 }
 
 export enum AssetModalType  {

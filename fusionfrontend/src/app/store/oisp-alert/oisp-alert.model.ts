@@ -31,6 +31,17 @@ export class OispAlert {
   status: OispAlertStatus;
   triggered: Date;
   updated: Date;
+
+  public static getPriorityAsNumber(priority: OispPriority): number {
+    switch (priority) {
+      case OispPriority.LOW:
+        return 3;
+      case OispPriority.MEDIUM:
+        return 2;
+      case OispPriority.HIGH:
+        return 1;
+    }
+  }
 }
 
 export enum OispAlertStatus {

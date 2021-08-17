@@ -42,6 +42,7 @@ import {
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
 import { ID } from '@datorama/akita';
+import { OispAlertQuery } from '../store/oisp-alert/oisp-alert.query';
 
 @Injectable({
   providedIn: 'root'
@@ -54,21 +55,8 @@ export class OispService {
 
   constructor(
     private http: HttpClient,
+    private oispAlertQuery: OispAlertQuery,
     private keycloakService: KeycloakService) {
-  }
-
-  tryReplaceExternalIdWithComponentUid(fieldDetails: FieldDetails, oispDevice: Device): FieldDetails {
-    if (oispDevice.components) {
-      const fieldDetailsCopy = Object.assign({ }, fieldDetails);
-      oispDevice.components.map((component: DeviceComponent) => {
-        if (component.name === fieldDetails.externalId) {
-          fieldDetailsCopy.externalId = component.cid;
-        }
-      });
-      return fieldDetailsCopy;
-    } else {
-      return fieldDetails;
-    }
   }
 
   getAssetFieldsWithReplacedExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
@@ -91,10 +79,44 @@ export class OispService {
       }),
       startWith(assetOrAssetDetails),
       map((assetOrDevice: any) => {
-        const newFields = assetOrAssetDetails.fields.map(field => this.tryReplaceExternalIdWithComponentUid(field, assetOrDevice));
-        return Object.assign(assetOrAssetDetails, { fields: newFields });
+        return this.tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails, assetOrDevice);
       })
     );
+  }
+
+  private tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails: any,
+                                                      assetOrDevice: any) {
+    const newFields = assetOrAssetDetails.fields.map(field =>
+      this.tryReplaceExternalIdOfFieldDetailsWithComponentUid(field, assetOrDevice));
+    const newAsset = this.tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails, assetOrDevice);
+    const newAssetWithFields = Object.assign(newAsset, { fields: newFields });
+    return this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(newAssetWithFields);
+  }
+
+  private tryReplaceExternalIdOfFieldDetailsWithComponentUid(fieldDetails: FieldDetails, oispDevice: Device): FieldDetails {
+    if (oispDevice.components) {
+      const fieldDetailsCopy = Object.assign({ }, fieldDetails);
+      oispDevice.components.map((component: DeviceComponent) => {
+        if (component.name === fieldDetails.externalId) {
+          fieldDetailsCopy.externalId = component.cid;
+        }
+      });
+      return fieldDetailsCopy;
+    } else {
+      return fieldDetails;
+    }
+  }
+
+  private tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails: any, oispDevice: Device): any {
+    if (oispDevice) {
+      const assetCopy = Object.assign({ }, assetOrAssetDetails);
+      if (oispDevice.deviceId === assetCopy.externalId) {
+        assetCopy.externalId = oispDevice.uid;
+      }
+      return assetCopy;
+    } else {
+      return assetOrAssetDetails;
+    }
   }
 
   getDevice(deviceId: ID): Observable<Device> {
