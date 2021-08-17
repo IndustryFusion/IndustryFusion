@@ -15,7 +15,7 @@
 
 import { Injectable } from '@angular/core';
 import { combineQueries, ID } from '@datorama/akita';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { OispService } from '../../services/oisp.service';
 import {
@@ -31,7 +31,6 @@ import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
 import { RoomQuery } from '../room/room.query';
 import { OispAlertQuery } from '../oisp-alert/oisp-alert.query';
-import { OispAlertPriority } from '../oisp-alert/oisp-alert.model';
 
 @Injectable({ providedIn: 'root' })
 export class FactoryComposedQuery {
@@ -162,12 +161,7 @@ export class FactoryComposedQuery {
         forkJoin(
           assets.map(asset => this.oispService.getAssetFieldsWithReplacedExternalIds(asset))
         )
-      ), /*
-      mergeMap((assets: AssetWithFields[]) =>
-        forkJoin(
-          assets.map(asset => this.oispAlertQuery.getAssetWithOpenAlertPriorityUsingReplacedExternalId(asset))
-        )
-      )*/
+      )
     );
   }
 
@@ -176,23 +170,8 @@ export class FactoryComposedQuery {
       mergeMap(myFields => {
         const assetWithFields = Object.assign({ fields: myFields }, asset);
         return this.oispService.getAssetFieldsWithReplacedExternalIds(assetWithFields);
-      })/*,
-      mergeMap((assetWithFields: AssetWithFields) =>
-        this.oispAlertQuery.getAssetWithOpenAlertPriorityUsingReplacedExternalId(assetWithFields)
-      )*/
+      })
     );
-  }
-
-  testChange1(item: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    item.externalId = 'e408884d-fb3b-4f4e-a6f5-8314d5c95c86';
-    console.log('Call #1');
-    return of(item);
-  }
-
-  testChange2(item: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    item.openAlertPriority = OispAlertPriority.MEDIUM;
-    console.log('call #2', item.externalId);
-    return of(item);
   }
 
   joinFieldsOfAssetsDetailsWithOispData(): Observable<FactoryAssetDetailsWithFields[]> {
@@ -211,11 +190,6 @@ export class FactoryComposedQuery {
         forkJoin(
           assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
         ),
-      ),
-      mergeMap((assets: FactoryAssetDetailsWithFields[]) =>
-        forkJoin(
-          assets.map(asset => this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(asset))
-        )
       )
     );
   }
@@ -225,11 +199,6 @@ export class FactoryComposedQuery {
       mergeMap(assets =>
         forkJoin(
           assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
-        )
-      ),
-      mergeMap((assets: FactoryAssetDetailsWithFields[]) =>
-        forkJoin(
-          assets.map(asset => this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(asset))
         )
       )
     );
