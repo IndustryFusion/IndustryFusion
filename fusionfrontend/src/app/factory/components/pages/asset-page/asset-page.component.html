@@ -13,7 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)"></app-company-info>
+<app-factory-site-info [assets]="(assets$ | async)" [factorySite]="(factorySite$ | async)" [numUsers]="6"
+                       [rooms]="(rooms$ | async)"></app-factory-site-info>
 
 <div class="clr-row wrapper">
     <div *ngIf="asset$ | async as asset" class="cards clr-col">

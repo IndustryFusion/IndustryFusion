@@ -25,7 +25,7 @@ import { FactorySitePageComponent } from './components/pages/factory-site-page/f
 import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { AssetDetailsPageComponent } from './components/pages/asset-details-page/asset-details-page.component';
-import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
+import { FactorySiteInfoComponent } from './components/content/factory-site-info/factory-site-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
 import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
@@ -72,7 +72,7 @@ import { AssignAssetToRoomComponent } from './components/content/assign-asset-to
     AssetsListPageComponent,
     AssetDetailsPageComponent,
     FactorySitesComponent,
-    CompanyInfoComponent,
+    FactorySiteInfoComponent,
     AssetsListComponent,
     FusionFormatPipe,
     PrecisionPipe,

@@ -21,11 +21,11 @@ import { Observable } from 'rxjs';
 import { WeatherService } from '../../../../services/weather.service';
 
 @Component({
-  selector: 'app-company-info',
-  templateUrl: './company-info.component.html',
-  styleUrls: ['./company-info.component.scss']
+  selector: 'app-factory-site-info',
+  templateUrl: './factory-site-info.component.html',
+  styleUrls: ['./factory-site-info.component.scss']
 })
-export class CompanyInfoComponent implements OnChanges {
+export class FactorySiteInfoComponent implements OnChanges {
   @Input()
   numUsers: number;
 
