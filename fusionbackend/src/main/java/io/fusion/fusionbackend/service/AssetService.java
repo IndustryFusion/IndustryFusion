@@ -357,20 +357,7 @@ public class AssetService {
     public Set<FieldInstance> getFieldInstances(final Long companyId, final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
         Set<FieldInstance> assetFields = asset.getFieldInstances();
-
-        // Generate random maintenance value
-        for (FieldInstance field : asset.getFieldInstances()) {
-            if (field.getName().equals("Hours till maintenance")) {
-                field = this.generateRandomMaintenanceValue(field);
-            }
-        }
         return assetFields;
-    }
-
-    public FieldInstance generateRandomMaintenanceValue(FieldInstance field) {
-        final Random random = new Random();
-        field.setValue(Integer.toString(random.nextInt(1500)));
-        return field;
     }
 
     public FieldInstance getFieldInstance(final Long companyId, final Long assetId, final Long fieldInstanceId) {

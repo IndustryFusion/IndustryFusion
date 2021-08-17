@@ -21,21 +21,21 @@
 
 
 .filter-btn {
-    height: 48px;
-    width: 48px;
-    background-color: hsl(198, 0%, 95%);
-    border-color: transparent;
-    border-radius: 10px;
+  height: 48px;
+  width: 48px;
+  background-color: $light-grey;
+  border-color: transparent;
+  border-radius: 10px;
 }
 
 .remove-all-filters-btn {
   background-color: transparent;
   border: transparent;
-  background:none;
+  background: none;
   position: absolute;
   right: -5px;
-  top:28px;
-  cursor:pointer;
+  top: 28px;
+  cursor: pointer;
 
   .remove-all-filters-btn-icon {
     font-size: 16px;
@@ -126,4 +126,167 @@
 .select-filter-btn {
   font-size: 12px;
   height: 30px;
+}
+
+:host ::ng-deep .p-datatable {
+  margin: 30px 80px;
+  border: hidden !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  margin-bottom: 10px;
+  height: 56px;
+  text-align: left;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #000000;
+  background-color: #F8F8F8;
+  border: 0 none;
+
+  &:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+
+  &:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  background-color: white;
+  border-color: transparent;
+  text-align: left;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #95989A;
+  overflow: hidden;
+
+
+  &:first-child {
+    border-radius: 10px 0 0 10px;
+    color: #000000;
+  }
+}
+
+:host ::ng-deep .p-paginator {
+  height: 45px;
+  background-color: white;
+  border-color: transparent;
+  border: none;
+  margin-top: 5px;
+  padding-bottom: 5px;
+
+  .p-dropdown {
+    height: 40px;
+    float: right;
+    margin-right: 50px;
+  }
+
+  .p-paginator-current {
+    float: left;
+  }
+
+  .p-paginator-pages .p-paginator-page {
+    height: 38px;
+    width: 38px;
+    margin: 2px;
+    background-color: white !important;
+    color: black !important;
+    font-size: 16px;
+    font-weight: 600;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .p-widget {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px !important;
+    border-radius: 10px !important;
+
+    .p-inputtext {
+      height: 38px !important;
+      font-weight: normal;
+      border-color: black;
+      border-width: 2px im !important;
+      border-radius: 10px;
+      width: 60px;
+    }
+
+
+    .p-state-highlight {
+      background-color: white !important;
+      color: black !important;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+
+    .p-dropdown-trigger {
+      border-radius: 10px;
+    }
+  }
+
+  .p-paginator-prev {
+    height: 38px;
+    width: 38px;
+    margin: 2px;
+    color: black;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px !important;
+    border-radius: 10px !important;
+  }
+
+  .p-paginator-next {
+    height: 38px;
+    width: 38px;
+    margin: 2px;
+    color: black;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px !important;
+    border-radius: 10px !important;
+  }
+
+  .p-paginator-first {
+    display: none !important;
+  }
+
+  .p-paginator-last {
+    display: none !important;
+  }
+
+}
+
+.asset-needs-maintenance {
+  color: red !important;
+}
+
+.search-panel-button {
+  font-size: 13px;
+  height: 30px;
+  margin: 5px 0 0 0;
+}
+
+.filter-box {
+  margin-bottom: 10px;
+}
+
+.potential-filter-item {
+  margin-left: 7px;
+}
+
+.filter-buttons-box {
+  margin-top: 10px;
+}
+
+.filter-panel {
+  position: relative;
 }

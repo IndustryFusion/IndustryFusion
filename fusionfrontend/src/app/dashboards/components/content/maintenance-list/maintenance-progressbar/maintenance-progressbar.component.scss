@@ -1,30 +1,52 @@
 .maintenance-value {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .container {
-    width: 260.59;
-    height: 32px;
-    position: relative;
+  width: 100%;
+  height: 32px;
+  position: relative;
 }
 
 .progress-bar {
-    position: absolute;
-    left: 0;
-    top: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
-.label-class {
-    font-size: 14px;
-    font-weight: bold;
-    top: -20px;
-    left: 10px;
-    z-index: 10;
-    background-color: transparent;
-    color: white;
-    position: absolute;
+.progress-bar-label {
+  font-size: 14px;
+  font-weight: bold;
+  top: -20px;
+  left: 10px;
+  z-index: 10;
+  background-color: transparent;
+  position: absolute;
+}
+
+.value-label {
+  color: white;
+}
+
+.value-label-low {
+  color: black;
+}
+
+.na-label {
+  color: black;
+}
+
+.overshooting-indicator {
+  min-width: 5px;
+  min-height: 100%;
+  background-color: white;
+  position: absolute;
+  z-index: 9;
+  right: 15px;
+  top: 0px;
+  margin: 0;
 }

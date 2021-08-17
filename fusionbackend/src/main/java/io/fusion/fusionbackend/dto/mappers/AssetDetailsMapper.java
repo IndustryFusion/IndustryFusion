@@ -122,8 +122,8 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
         assetDetailsDto.setAssetSeriesName(assetSeriesName);
         assetDetailsDto.setAssetSeriesId(assetSeriesId);
         assetDetailsDto.setAssetTypeName(assetTypeName);
+        assetDetailsDto.setSubsystemIds(toEntityIdSet(entity.getSubsystems()));
     }
-
 
     @Override
     public Set<Long> toEntityIdSet(Set<Asset> entitySet) {
