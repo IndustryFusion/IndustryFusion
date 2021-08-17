@@ -73,7 +73,7 @@
   }
 
   .grey {
-    color: #95989A;
+    color: $basic-grey;
     cursor: pointer;
   }
 
@@ -99,7 +99,7 @@
   width: 60vw;
   padding: 64px 80px 56px;
   z-index: 100;
-  background: #F8F8F8 0% 0% no-repeat padding-box;
+  background: $light-grey 0% 0% no-repeat padding-box;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 10px;
 
@@ -122,7 +122,7 @@
     position: absolute;
     top: 32px;
     right: 40px;
-    color: #95989A;
+    color: $basic-grey;
     background: 0 0;
     border: 0;
   }

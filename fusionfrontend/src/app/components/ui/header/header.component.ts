@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/store/user/user.model';
 import { ManagerType } from '../../content/manager-type/manager-type.enum';
+import { OispAlertQuery } from '../../../store/oisp-alert/oisp-alert.query';
 
 @Component({
   selector: 'app-header',
@@ -37,12 +38,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: User;
 
   route: string;
-
   show: boolean;
 
+  openAlertCount = 0;
   ManagerType = ManagerType;
 
   constructor(private routingLocation: Location,
+              private oispAlertQuery: OispAlertQuery,
               private router: Router) { }
 
   ngOnInit() {
@@ -57,6 +59,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.route = '/';
       }
     });
+
+    this.oispAlertQuery.getOpenAlertCount().subscribe(openAlertCount => {
+      this.openAlertCount = openAlertCount;
+    } );
   }
 
   isManager(manager: ManagerType) {
@@ -81,6 +87,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onBackClick() {
     return this.routingLocation.back();
+  }
+
+  onNotificationsClick() {
+    return this.router.navigate(['/notifications']);
+  }
+
+  isNotifications() {
+    return this.route && this.route.match(`\/${'notifications'}\/`);
   }
 
   ngOnDestroy(): void {

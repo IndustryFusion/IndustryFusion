@@ -1,0 +1,47 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div *ngIf="shouldShowDeleteItem && isCloseable">
+  <div class="backdrop"></div>
+  <div class="delete-modal">
+    <button class="button-close" (click)="shouldShowDeleteItem = false">
+      <clr-icon [style.width.px]="19" [style.height.px]="19" shape="times"></clr-icon>
+    </button>
+    <div class="delete-modal-title">Clear notification?</div>
+    <div class="delete-modal-footer">
+      <button type="button" class="if-button-cancel" (click)="shouldShowDeleteItem = false">Cancel</button>
+      <button type="button" class="button-confirm" (click)="closeItem()">Ok</button>
+    </div>
+  </div>
+</div>
+
+<div class="list-item" [ngClass]="{'selected': selected}">
+  <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}"><input type="checkbox" [(ngModel)]="selected" (click)="select()" /></div>
+  <div class="list-item-cell notification-icons" [style.width.%]="3" [ngSwitch]="item.priority">
+      <clr-icon *ngSwitchCase="OispPriority.LOW"    size="20" shape="info-standard" class="is-solid notification-low"></clr-icon>
+      <clr-icon *ngSwitchCase="OispPriority.MEDIUM" size="20" shape="exclamation-circle" class="is-solid notification-medium"></clr-icon>
+      <clr-icon *ngSwitchCase="OispPriority.HIGH"   size="20" shape="exclamation-triangle" class="is-solid notification-high"></clr-icon>
+  </div>
+  <div class="list-item-cell bold black" [routerLink]="item.id" [style.width.%]="30">{{ item.ruleName }}</div>
+  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="17">{{ item.assetName }}</div>
+  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="40">{{ item.condition }}</div>
+  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="10">
+    {{ isFloatingNumber(item.measuredValue) ? (item.measuredValue | number: '1.0-2') : item.measuredValue }}
+  </div>
+  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="15">{{ item.timestamp | date:'dd.MM.yyyy - mm:hh:ss' }}</div>
+  <div class="list-item-cell grey"  [style.width.%]="5">
+    <button *ngIf="isCloseable" type="button" class="small-confirm-button" (click)="showCloseItem()"><i class="pi pi-check"></i></button>
+  </div>
+</div>

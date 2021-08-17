@@ -13,6 +13,8 @@
  * under the License.
  */
 
+import { ID } from '@datorama/akita';
+
 export class OispRequest {
   from: number;
   to?: number;
@@ -181,6 +183,7 @@ export class Device {
   name: string;
   tags: string[];
   status: string;
+  uid: ID;
 }
 
 export enum ConditionType {
@@ -189,17 +192,14 @@ export enum ConditionType {
   statistics = 'statistics',
 }
 
-export function displayConstionType(type: ConditionType): string {
+export function displayConditionType(type: ConditionType): string {
   switch (type){
     case ConditionType.basic:
       return 'Basic Condition';
-      break;
     case ConditionType.time:
       return 'Timebased Condition';
-      break;
     case ConditionType.statistics:
       return 'Statistic based Condition';
-      break;
   }
 }
 
