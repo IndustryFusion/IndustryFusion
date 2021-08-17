@@ -95,7 +95,7 @@
 }
 
 
-:host ::ng-deep .p-datatable	{
+:host ::ng-deep .p-datatable {
   margin: 0;
 }
 
@@ -109,4 +109,8 @@
   .select-all-checkbox {
     padding: 0 3%;
   }
+}
+
+.selected-assets {
+  height: 42px;
 }

@@ -1604,7 +1604,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId)
+                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId + "/assign")
 
                 .then()
                 .statusCode(200);

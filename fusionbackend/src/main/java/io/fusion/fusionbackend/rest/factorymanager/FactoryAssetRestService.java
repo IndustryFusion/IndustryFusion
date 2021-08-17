@@ -117,7 +117,7 @@ public class FactoryAssetRestService {
     }
 
 
-    @PutMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}")
+    @PutMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/{assetId}/assign")
     public AssetDto assignAssetToRoom(@PathVariable final Long companyId,
                                       @PathVariable final Long factorySiteId,
                                       @PathVariable final Long roomId,
@@ -125,8 +125,7 @@ public class FactoryAssetRestService {
         return assetMapper.toDto(assetService.moveAssetToRoom(companyId, factorySiteId, roomId, assetId), false);
     }
 
-    @PutMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/"
-            + "assigningAssetsToRoom")
+    @PutMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/assign")
     public Set<AssetDto> assignAssetsToRoom(@PathVariable final Long companyId,
                                        @PathVariable final Long factorySiteId,
                                        @PathVariable final Long roomId,

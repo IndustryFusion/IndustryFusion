@@ -14,7 +14,7 @@ under the License.
 -->
 
 
-<app-company-info [numUsers]="6" [factorySite]="factorySites[2]" [rooms]="rooms" [assets]="factoryAssets"></app-company-info>
+<app-company-info [numUsers]="6" [factorySite]="factorySite" [rooms]="rooms" [assets]="factoryAssets"></app-company-info>
 <div class="rooms-panel">
   <div class="manage">
     <button class="btn btn-sm btn-link"  [routerLink]="['../']">
@@ -41,7 +41,7 @@ under the License.
         <th [style.width.%]="20">Name</th>
         <th [style.width.%]="12.5">Assets</th>
         <th [style.width.%]="25">Description</th>
-        <th [style.width.%]="17.5">FactorySite</th>
+        <th [style.width.%]="17.5">Factory Site</th>
         <th [style.width.%]="7.5"></th>
       </tr>
     </ng-template>

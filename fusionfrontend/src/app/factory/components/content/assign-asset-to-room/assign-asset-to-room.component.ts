@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit, DoCheck, IterableDiffers, IterableDiffer } from '@angular/core';
+import { Component, DoCheck, IterableDiffer, IterableDiffers, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { Room } from '../../../../store/room/room.model';
@@ -56,7 +56,6 @@ export class AssignAssetToRoomComponent implements OnInit, DoCheck {
     this.filteredAssets = this.assets;
     this.factorySitesAndRoomsMap = this.config.data.factorySitesAndRoomsMap;
 
-    console.log(this.assets);
     this.assets.forEach(asset => {
       this.fillAssetFactorySitesMap(asset);
       this.prefillSelectedItems(asset);
@@ -94,8 +93,6 @@ export class AssignAssetToRoomComponent implements OnInit, DoCheck {
 
   unselectItem(unselectedAsset: FactoryAssetDetails) {
     this.selectedAssets = this.selectedAssets.filter(selectedAsset => selectedAsset.id !== unselectedAsset.id);
-    console.log(this.selectedAssets);
-    console.log(unselectedAsset);
   }
 
   onCancel() {

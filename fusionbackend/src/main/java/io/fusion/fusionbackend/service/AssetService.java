@@ -17,10 +17,10 @@ package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.Room;
+import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldInstance;
+import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -258,23 +258,26 @@ public class AssetService {
         if (unselectedAssets.length > 0) {
             Set<Room> factoryRooms = this.factorySiteService.getFactorySiteByCompany(companyId,
                     factorySiteId, true).getRooms();
-            Room noSpecificRoom = factoryRooms.stream().filter(factoryRoom -> factoryRoom.getName()
-                    .equals("No specific room")).findFirst().orElse(null);
-            if (noSpecificRoom == null) {
-                noSpecificRoom = Room.getUnspecificRoomInstance();
-                this.roomService.createRoom(companyId, factorySiteId, noSpecificRoom);
-            }
-            for (Asset asset: unselectedAssets) {
+            Room noSpecificRoom = getOrCreateNoSpecificRoom(companyId, factorySiteId, factoryRooms);
+            for (Asset asset : unselectedAssets) {
                 Room oldAssetRoom = this.roomService.getRoomCheckFullPath(companyId, factorySiteId, roomId, true);
                 if (oldAssetRoom != null) {
                     oldAssetRoom.getAssets().remove(asset);
-                    asset.setRoom(null);
                 }
-
                 noSpecificRoom.getAssets().add(asset);
                 asset.setRoom(noSpecificRoom);
             }
         }
+    }
+
+    private Room getOrCreateNoSpecificRoom(Long companyId, Long factorySiteId, Set<Room> factoryRooms) {
+        Room noSpecificRoom = factoryRooms.stream().filter(factoryRoom -> factoryRoom.getName()
+                .equals(Room.NO_SPECIFIC_ROOM_NAME)).findFirst().orElse(null);
+        if (noSpecificRoom == null) {
+            noSpecificRoom = Room.getUnspecificRoomInstance();
+            this.roomService.createRoom(companyId, factorySiteId, noSpecificRoom);
+        }
+        return noSpecificRoom;
     }
 
     public Asset moveAssetToRoom(final Long companyId, final Long factorySiteId, final Long newRoomId,
@@ -356,7 +359,7 @@ public class AssetService {
         Set<FieldInstance> assetFields = asset.getFieldInstances();
 
         // Generate random maintenance value
-        for (FieldInstance field: asset.getFieldInstances()) {
+        for (FieldInstance field : asset.getFieldInstances()) {
             if (field.getName().equals("Hours till maintenance")) {
                 field = this.generateRandomMaintenanceValue(field);
             }

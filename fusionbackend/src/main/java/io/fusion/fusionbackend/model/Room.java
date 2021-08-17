@@ -49,22 +49,22 @@ import java.util.Set;
 @SuperBuilder
 @NoArgsConstructor
 public class Room extends BaseEntity {
+    public static final String NO_SPECIFIC_ROOM_NAME = "No specific room";
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "factory_site_id", nullable = false)
     private FactorySite factorySite;
-
     @OneToMany(mappedBy = "room")
     @Builder.Default
     private Set<Asset> assets = new LinkedHashSet<>();
-
     private String name;
     private String imageKey;
     private String description;
 
     public static Room getUnspecificRoomInstance() {
         Room unspecificRoom = new Room();
-        unspecificRoom.name = "No specific room";
-        unspecificRoom.description = "No specific room";
+        unspecificRoom.name = NO_SPECIFIC_ROOM_NAME;
+        unspecificRoom.description = NO_SPECIFIC_ROOM_NAME;
         return unspecificRoom;
     }
 

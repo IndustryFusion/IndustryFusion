@@ -19,7 +19,7 @@ under the License.
     <div class="input-div">
       <label class="if-label">Select Assets</label>
       <div class="selected-items-div p-grid">
-        <div style="height: 42px;" class="p-col-fixed p-dir-col" *ngFor="let selectedAsset of selectedAssets">
+        <div class="p-col-fixed p-dir-col selected-assets" *ngFor="let selectedAsset of selectedAssets">
           <div class="selected-items">
             <span class="asset-name">{{selectedAsset.name}}</span>
             <button pButton type="button" icon="pi pi-times" class="remove-asset-button" (click)="unselectItem(selectedAsset)"></button>

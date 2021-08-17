@@ -57,8 +57,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   isLoading$: Observable<boolean>;
 
-  companyId: ID;
-  factorySiteId: ID;
+  factorySite: FactorySite;
 
   ref: DynamicDialogRef;
   roomForm: FormGroup;
@@ -82,14 +81,25 @@ export class RoomsListComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.route = this.routingLocation.path();
     this.isLoading$ = this.companyQuery.selectLoading();
-    this.companyId = this.companyQuery.getActiveId();
-    this.factorySiteId = this.factorySiteQuery.getActiveId();
+    this.factorySite = this.factorySiteQuery.getActive();
 
     this.createRoomForm(this.formBuilder);
     this.menuActions = [
-      { label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-      { label: 'Assign Asset to room', icon: 'pi pw-fw pi-sign-in', command: (_) => { this.showAssignAssetToRoomModal(); } },
-      { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.onDeleteClick(); } },
+      {
+        label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => {
+          this.showEditDialog();
+        }
+      },
+      {
+        label: 'Assign Asset to room', icon: 'pi pw-fw pi-sign-in', command: (_) => {
+          this.showAssignAssetToRoomModal();
+        }
+      },
+      {
+        label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => {
+          this.onDeleteClick();
+        }
+      },
     ];
   }
 
@@ -157,7 +167,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
       id: [null],
       description: ['', requiredTextValidator],
       name: ['', requiredTextValidator],
-      factorySiteId: [this.factorySiteId ? this.factorySiteId : '', requiredTextValidator],
+      factorySiteId: [this.factorySite?.id ? this.factorySite.id : '', requiredTextValidator],
       assets: [[]],
       assetIds: [[]]
     });
