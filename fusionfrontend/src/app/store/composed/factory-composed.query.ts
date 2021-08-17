@@ -31,7 +31,7 @@ import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
 import { RoomQuery } from '../room/room.query';
 import { OispAlertQuery } from '../oisp-alert/oisp-alert.query';
-import { OispPriority } from '../oisp-alert/oisp-alert.model';
+import { OispAlertPriority } from '../oisp-alert/oisp-alert.model';
 
 @Injectable({ providedIn: 'root' })
 export class FactoryComposedQuery {
@@ -190,7 +190,7 @@ export class FactoryComposedQuery {
   }
 
   testChange2(item: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    item.openAlertPriority = OispPriority.MEDIUM;
+    item.openAlertPriority = OispAlertPriority.MEDIUM;
     console.log('call #2', item.externalId);
     return of(item);
   }
@@ -202,22 +202,6 @@ export class FactoryComposedQuery {
             assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
           )
       ),
- /*     mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(asset))
-        )
-      ),*/
-    /*  mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
-        ).pipe(
-          mergeMap((assets2: FactoryAssetDetailsWithFields[]) =>
-            forkJoin(
-              assets2.map(asset => this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(asset))
-            )
-          )
-        )
-      )*/
     );
   }
 
