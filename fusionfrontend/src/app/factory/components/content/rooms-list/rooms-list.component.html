@@ -14,26 +14,30 @@ under the License.
 -->
 
 
-<app-company-info [numUsers]="6" [factorySite]="factorySite$ | async" [rooms]="rooms" [assets]="factoryAssets"></app-company-info>
+<app-company-info *ngIf="factorySiteId" [assets]="factoryAssets" [factorySite]="factorySite$ | async" [numUsers]="6"
+                  [rooms]="rooms"></app-company-info>
 <div class="rooms-panel">
   <div class="manage">
-    <button class="btn btn-sm btn-link"  [routerLink]="['../']">
-      <clr-icon shape="view-list"></clr-icon>Assets list
+    <button [routerLink]="['../']" class="btn btn-sm btn-link">
+      <clr-icon shape="view-list"></clr-icon>
+      Assets list
     </button>
-    <button class="btn btn-sm btn-link" (click)="goBack()">
-      <clr-icon shape="undo"></clr-icon> Go Back
+    <button (click)="goBack()" class="btn btn-sm btn-link">
+      <clr-icon shape="undo"></clr-icon>
+      Go Back
     </button>
   </div>
 </div>
 
 <div>
-    <div class="p-grid p-jc-between header-line">
-      <h3 class="table-header p-col" *ngIf="rooms.length > 0">{{ rooms.length | i18nPlural: roomMapping }}</h3>
-      <app-create-button class="p-col create-button" text="Create Room" (createItem)="showCreateDialog()"></app-create-button>
-    </div>
+  <div class="p-grid p-jc-between header-line">
+    <h3 *ngIf="rooms.length > 0" class="table-header p-col">{{ rooms.length | i18nPlural: roomMapping }}</h3>
+    <app-create-button (createItem)="showCreateDialog()" class="p-col create-button"
+                       text="Create Room"></app-create-button>
+  </div>
 
-  <p-table class="list-container" [value]="rooms" [rowsPerPageOptions]="[5,10,50]" [rows]="10" [paginator]="true"
-           [showCurrentPageReport]="true" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
+  <p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10" [showCurrentPageReport]="true" [value]="rooms"
+           class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="5"></th>
@@ -46,22 +50,23 @@ under the License.
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-room>
+    <ng-template let-room pTemplate="body">
       <tr style="cursor: pointer;">
-        <td [style.width.%]="5" [routerLink]="getRoomAssetLink(room.id)"></td>
-        <td [style.width.%]="12.5" [routerLink]="getRoomAssetLink(room.id)">{{room.id}}</td>
-        <td [style.width.%]="20" [routerLink]="getRoomAssetLink(room.id)">{{room.name}}</td>
-        <td [style.width.%]="12.5" [routerLink]="getRoomAssetLink(room.id)">{{room.assetIds.length}}</td>
-        <td [style.width.%]="25" [routerLink]="getRoomAssetLink(room.id)">{{room.description}}</td>
-        <td [style.width.%]="17.5" [routerLink]="getRoomAssetLink(room.id)">{{factorySitesAndRoomsMap.get(room.id)}}</td>
+        <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="5"></td>
+        <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.id}}</td>
+        <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="20">{{room.name}}</td>
+        <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.assetIds.length}}</td>
+        <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25">{{room.description}}</td>
+        <td [routerLink]="getRoomAssetLink(room.id)"
+            [style.width.%]="17.5">{{factorySitesAndRoomsMap.get(room.id)}}</td>
         <td [style.width.%]="2.5">
           <div #div class="table-dropdown-menu">
-            <p-menu #menu [popup]="true" [model]="menuActions" [appendTo]="div"></p-menu>
-            <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event); setActiveRow(room)"
-                    class="table-dropdown-menu-button"></button>
+            <p-menu #menu [appendTo]="div" [model]="menuActions" [popup]="true"></p-menu>
+            <button (click)="menu.toggle($event); setActiveRow(room)" class="table-dropdown-menu-button" icon="pi pi-ellipsis-h" pButton
+                    type="button"></button>
           </div>
         </td>
-        <td [style.width.%]="5" ></td>
+        <td [style.width.%]="5"></td>
       </tr>
     </ng-template>
 

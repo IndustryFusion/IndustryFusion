@@ -116,8 +116,6 @@ export class FactoryResolver {
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
-      console.warn("factory site id IS NOT NULL")
-
       this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
       this.rooms$ = this.roomQuery.selectAllRooms();
       this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
