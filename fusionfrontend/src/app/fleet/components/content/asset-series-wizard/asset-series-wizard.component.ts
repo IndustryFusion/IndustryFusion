@@ -20,7 +20,7 @@ import { AssetSeriesService } from '../../../../store/asset-series/asset-series.
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogType } from '../../../../common/models/dialog-type.model';
-import { AssetSeriesCreateStep } from './asset-series-create-step.model';
+import { AssetSeriesWizardStep } from './asset-series-wizard-step.model';
 import { ConnectivityTypeResolver } from '../../../../resolvers/connectivity-type.resolver';
 import { Company } from '../../../../store/company/company.model';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
@@ -32,16 +32,16 @@ import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-asset-series-create',
-  templateUrl: './asset-series-create.component.html',
-  styleUrls: ['./asset-series-create.component.scss']
+  selector: 'app-asset-series-wizard',
+  templateUrl: './asset-series-wizard.component.html',
+  styleUrls: ['./asset-series-wizard.component.scss']
 })
-export class AssetSeriesCreateComponent implements OnInit {
+export class AssetSeriesWizardComponent implements OnInit {
 
   assetType: ID;
   companyId: ID;
-  step: AssetSeriesCreateStep = AssetSeriesCreateStep.GENERAL_INFORMATION;
-  totalSteps: number = AssetSeriesCreateStep.METRICS;
+  step: AssetSeriesWizardStep = AssetSeriesWizardStep.GENERAL_INFORMATION;
+  totalSteps: number = AssetSeriesWizardStep.METRICS;
 
   assetSeries: AssetSeries;
   assetSeriesForm: FormGroup;
@@ -53,7 +53,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   relatedManufacturer: Company;
   relatedAssetType: AssetType;
 
-  AssetSeriesCreateSteps = AssetSeriesCreateStep;
+  AssetSeriesCreateSteps = AssetSeriesWizardStep;
 
   constructor(private assetSeriesService: AssetSeriesService,
               private companyQuery: CompanyQuery,
@@ -160,7 +160,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   back(): void {
-    if (this.step === AssetSeriesCreateStep.GENERAL_INFORMATION) {
+    if (this.step === AssetSeriesWizardStep.GENERAL_INFORMATION) {
       this.dynamicDialogRef.close();
     } else {
       this.step--;
@@ -170,17 +170,17 @@ export class AssetSeriesCreateComponent implements OnInit {
   isReadyForNextStep(): boolean {
     let result = true;
     switch (this.step) {
-      case AssetSeriesCreateStep.GENERAL_INFORMATION:
+      case AssetSeriesWizardStep.GENERAL_INFORMATION:
         result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0 &&
                  this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
         break;
-      case AssetSeriesCreateStep.CONNECTIVITY_SETTINGS:
+      case AssetSeriesWizardStep.CONNECTIVITY_SETTINGS:
         result = this.connectivitySettingsValid;
         break;
-      case AssetSeriesCreateStep.ATTRIBUTES:
+      case AssetSeriesWizardStep.ATTRIBUTES:
         result = this.attributesValid;
         break;
-      case AssetSeriesCreateStep.METRICS:
+      case AssetSeriesWizardStep.METRICS:
         result = this.metricsValid;
         break;
     }

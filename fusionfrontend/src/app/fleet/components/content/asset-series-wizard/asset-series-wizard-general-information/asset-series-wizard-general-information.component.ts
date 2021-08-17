@@ -27,11 +27,11 @@ import { Company } from '../../../../../store/company/company.model';
 import { AssetType } from '../../../../../store/asset-type/asset-type.model';
 
 @Component({
-  selector: 'app-asset-series-create-general-information',
-  templateUrl: './asset-series-create-general-information.component.html',
-  styleUrls: ['./asset-series-create-general-information.component.scss']
+  selector: 'app-asset-series-wizard-general-information',
+  templateUrl: './asset-series-wizard-general-information.component.html',
+  styleUrls: ['./asset-series-wizard-general-information.component.scss']
 })
-export class AssetSeriesCreateGeneralInformationComponent implements OnInit {
+export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
 
   @Input() mode: DialogType = DialogType.EDIT;
   @Input() assetSeries: AssetSeries;

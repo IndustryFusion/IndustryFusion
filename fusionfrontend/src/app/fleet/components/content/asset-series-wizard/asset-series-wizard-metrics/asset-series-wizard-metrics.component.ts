@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../store/field/field-query.service';
 
 @Component({
-  selector: 'app-asset-series-create-attributes',
-  templateUrl: './asset-series-create-attributes.component.html',
-  styleUrls: ['./asset-series-create-attributes.component.scss']
+  selector: 'app-asset-series-wizard-metrics',
+  templateUrl: './asset-series-wizard-metrics.component.html',
+  styleUrls: ['./asset-series-wizard-metrics.component.scss']
 })
-export class AssetSeriesCreateAttributesComponent implements OnInit {
+export class AssetSeriesWizardMetricsComponent implements OnInit {
 
   @Input() assetSeries: AssetSeries;
   @Output() valid = new EventEmitter<boolean>();
@@ -27,17 +27,21 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
       index: [],
       sourceUnitName: [],
       fieldName: [],
+      accuracy: [],
       name: [],
-      value: ['', [Validators.maxLength(255)]],
+      register: ['', [Validators.maxLength(255)]],
       saved: [true, Validators.requiredTrue],
     });
     group.get('id').patchValue(fieldSource.id);
     group.get('index').patchValue(index);
     group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
     group.get('name').patchValue(fieldSource.name);
-    group.get('value').patchValue(fieldSource.value);
+    group.get('register').patchValue(fieldSource.register);
+
     const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+    group.get('accuracy').patchValue(field?.accuracy);
     group.get('fieldName').patchValue(field.name);
+
     return group;
   }
 
@@ -45,28 +49,21 @@ export class AssetSeriesCreateAttributesComponent implements OnInit {
     this.fillTable(this.assetSeries.fieldSources);
   }
 
-  removeValue(group: AbstractControl): void {
-    group.get('value').setValue(null);
-    this.saveValue(group);
-  }
-
   saveValue(group: AbstractControl): void {
-    const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('index').value] as FieldSource;
-    fieldSource.value  =  group.get('value').value;
-    this.assetSeries.fieldSources[group.get('index').value] = fieldSource;
+    this.assetSeries.fieldSources[group.get('index').value].register =  group.get('register').value;
     group.get('saved').patchValue(true);
   }
 
   private fillTable(fieldSources: FieldSource[]): void {
     this.fieldSourcesFormArray = new FormArray([]);
+    this.valid.emit(this.fieldSourcesFormArray.valid);
     this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {
-      if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
+      if (fieldSources[i].fieldTarget.fieldType === FieldType.METRIC) {
         const formGroup = this.createFieldSourceGroup(i, fieldSources[i]);
         this.fieldSourcesFormArray.push(formGroup);
       }
     }
-    this.valid.emit(this.fieldSourcesFormArray.valid);
   }
 
   isEditMode(group: AbstractControl): boolean {

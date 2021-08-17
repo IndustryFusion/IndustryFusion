@@ -3,15 +3,15 @@ import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/co
 import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
 import { ID } from '@datorama/akita';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
+import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 
 @Component({
-  selector: 'app-asset-series-create-connectivity-settings',
-  templateUrl: './asset-series-create-connectivity-settings.component.html',
-  styleUrls: ['./asset-series-create-connectivity-settings.component.scss']
+  selector: 'app-asset-series-wizard-connectivity-settings',
+  templateUrl: './asset-series-wizard-connectivity-settings.component.html',
+  styleUrls: ['./asset-series-wizard-connectivity-settings.component.scss']
 })
-export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
+export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
   @Input() assetSeries: AssetSeries;
   @Input() assetSeriesForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
@@ -22,7 +22,7 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
   public connectivityProtocolOptions: ConnectivityProtocol[];
   public infoText = '';
 
-  AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesCreateConnectivitySettingsTooltipComponent;
+  AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesWizardConnectivitySettingsTooltipComponent;
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
               private formBuilder: FormBuilder) {
