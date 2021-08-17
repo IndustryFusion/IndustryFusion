@@ -58,8 +58,7 @@ public class AssetSeriesRestService {
     @SuppressWarnings("checkstyle:LineLength")
     @GetMapping(path = "/companies/{companyId}/assetseriesdetails")
     public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(@PathVariable final Long companyId,
-                                                               @RequestParam(defaultValue = "true")
-                                                               final boolean embedChildren) {
+                                                               @RequestParam(defaultValue = "true") final boolean embedChildren) {
         return assetSeriesDetailsMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId),
                 embedChildren);
     }
@@ -83,7 +82,7 @@ public class AssetSeriesRestService {
                         assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
                         assetSeriesMapper.toEntity(assetSeriesDto)
                 ),
-                false);
+                true);
     }
 
     @PatchMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")
