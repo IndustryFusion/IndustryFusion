@@ -42,7 +42,6 @@ import {
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
 import { ID } from '@datorama/akita';
-import { OispAlertQuery } from '../store/oisp-alert/oisp-alert.query';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +54,6 @@ export class OispService {
 
   constructor(
     private http: HttpClient,
-    private oispAlertQuery: OispAlertQuery,
     private keycloakService: KeycloakService) {
   }
 
@@ -89,8 +87,7 @@ export class OispService {
     const newFields = assetOrAssetDetails.fields.map(field =>
       this.tryReplaceExternalIdOfFieldDetailsWithComponentUid(field, assetOrDevice));
     const newAsset = this.tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails, assetOrDevice);
-    const newAssetWithFields = Object.assign(newAsset, { fields: newFields });
-    return this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(newAssetWithFields);
+    return Object.assign(newAsset, { fields: newFields });
   }
 
   private tryReplaceExternalIdOfFieldDetailsWithComponentUid(fieldDetails: FieldDetails,

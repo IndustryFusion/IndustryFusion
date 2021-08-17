@@ -111,7 +111,7 @@ export class FactoryResolver {
           forkJoin(
             assetDetailsArray.map(assetDetails => this.fieldService.getFieldsOfAsset(companyId, assetDetails.id))))
       ).subscribe();
-      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinFieldsOfAssetsDetailsWithOispData();
+      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinFieldsOfAssetsDetailsWithOispDataIncludingAlerts();
     }
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);

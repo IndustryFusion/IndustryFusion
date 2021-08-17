@@ -174,13 +174,16 @@ export class FactoryComposedQuery {
     );
   }
 
-  joinFieldsOfAssetsDetailsWithOispData(): Observable<FactoryAssetDetailsWithFields[]> {
+  joinFieldsOfAssetsDetailsWithOispDataIncludingAlerts(): Observable<FactoryAssetDetailsWithFields[]> {
     return this.selectFieldsOfAssetsDetails().pipe(
       mergeMap(assets =>
-          forkJoin(
-            assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
-          )
-      ),
+        forkJoin(
+          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset).pipe(
+            map((assetDetails: FactoryAssetDetailsWithFields) =>
+              this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(assetDetails))
+          ))
+        )
+      )
     );
   }
 
