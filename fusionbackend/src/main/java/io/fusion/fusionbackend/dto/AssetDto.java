@@ -60,6 +60,7 @@ public class AssetDto extends BaseAssetDto {
     protected String handbookKey;
     protected String videoKey;
     protected OffsetDateTime installationDate;
+    protected String connectionString;
 
     @JsonCreator
     public AssetDto() {

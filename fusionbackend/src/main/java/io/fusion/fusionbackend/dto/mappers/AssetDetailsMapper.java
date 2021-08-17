@@ -21,23 +21,66 @@ import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Room;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
 public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetailsDto> {
+    private final BaseAssetMapper baseAssetMapper;
+
+    @Autowired
+    public AssetDetailsMapper(BaseAssetMapper baseAssetMapper) {
+        this.baseAssetMapper = baseAssetMapper;
+    }
+
+    @Override
     protected AssetDetailsDto toDtoDeep(Asset entity) {
         if (entity == null) {
             return null;
         }
-        String manufacturer = null;
-        String assetSeriesName = null;
-        String category = null;
+
+        AssetDetailsDto assetDetailsDto = buildFromAsset(entity);
+        this.addRoomAndFactorySiteNames(entity, assetDetailsDto);
+        this.addDetailAttributesOfAssetSeries(entity, assetDetailsDto);
+
+        return assetDetailsDto;
+    }
+
+    private AssetDetailsDto buildFromAsset(Asset entity) {
+        AssetDetailsDto dto = AssetDetailsDto.builder()
+                .id(entity.getId())
+                .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
+                .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
+                .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
+                .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
+                .externalId(entity.getExternalId())
+                .controlSystemType(entity.getControlSystemType())
+                .hasGateway(entity.getHasGateway())
+                .gatewayConnectivity(entity.getGatewayConnectivity())
+                .guid(entity.getGuid())
+                .ceCertified(entity.getCeCertified())
+                .serialNumber(entity.getSerialNumber())
+                .constructionDate(entity.getConstructionDate())
+                .protectionClass(entity.getProtectionClass())
+                .handbookKey(entity.getHandbookKey())
+                .videoKey(entity.getVideoKey())
+                .installationDate(entity.getInstallationDate())
+                .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .build();
+
+        baseAssetMapper.copyToDto(entity, dto);
+
+        return dto;
+    }
+
+    private void addRoomAndFactorySiteNames(final Asset entity, final AssetDetailsDto assetDetailsDto) {
+        assert entity != null;
+        assert assetDetailsDto != null;
+
         String roomName = null;
         String factorySiteName = null;
-        String assetTypeName = null;
-        Long assetSeriesId = null;
 
         if (entity.getRoom() != null) {
             Room room = entity.getRoom();
@@ -46,6 +89,20 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 factorySiteName = room.getFactorySite().getName();
             }
         }
+
+        assetDetailsDto.setRoomName(roomName);
+        assetDetailsDto.setFactorySiteName(factorySiteName);
+    }
+
+    private void addDetailAttributesOfAssetSeries(final Asset entity, final AssetDetailsDto assetDetailsDto) {
+        assert entity != null;
+        assert assetDetailsDto != null;
+
+        String manufacturer = null;
+        String assetSeriesName = null;
+        String category = null;
+        String assetTypeName = null;
+        Long assetSeriesId = null;
 
         if (entity.getAssetSeries() != null) {
             AssetSeries assetSeries = entity.getAssetSeries();
@@ -60,35 +117,13 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
             }
         }
 
-        return AssetDetailsDto.builder()
-                .id(entity.getId())
-                .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
-                .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
-                .externalId(entity.getExternalId())
-                .controlSystemType(entity.getControlSystemType())
-                .hasGateway(entity.getHasGateway())
-                .gatewayConnectivity(entity.getGatewayConnectivity())
-                .guid(entity.getGuid())
-                .ceCertified(entity.getCeCertified())
-                .serialNumber(entity.getSerialNumber())
-                .constructionDate(entity.getConstructionDate())
-                .protectionClass(entity.getProtectionClass())
-                .handbookKey(entity.getHandbookKey())
-                .videoKey(entity.getVideoKey())
-                .installationDate(entity.getInstallationDate())
-                .manufacturer(manufacturer)
-                .category(category)
-                .roomName(roomName)
-                .factorySiteName(factorySiteName)
-                .assetSeriesId(assetSeriesId)
-                .assetSeriesName(assetSeriesName)
-                .assetTypeName(assetTypeName)
-                .name(entity.getName())
-
-                .description(entity.getDescription())
-                .imageKey(entity.getImageKey())
-                .build();
+        assetDetailsDto.setManufacturer(manufacturer);
+        assetDetailsDto.setCategory(category);
+        assetDetailsDto.setAssetSeriesName(assetSeriesName);
+        assetDetailsDto.setAssetSeriesId(assetSeriesId);
+        assetDetailsDto.setAssetTypeName(assetTypeName);
     }
+
 
     @Override
     public Set<Long> toEntityIdSet(Set<Asset> entitySet) {
