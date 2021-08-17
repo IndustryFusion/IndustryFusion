@@ -35,7 +35,8 @@ export class RoomService {
 
   constructor(private roomStore: RoomStore,
               private http: HttpClient,
-              private roomQuery: RoomQuery) { }
+              private roomQuery: RoomQuery) {
+  }
 
   getRoomsOfCompany(companyId: ID): Observable<Room[]> {
     const path = `companies/${companyId}/rooms`;
@@ -46,9 +47,12 @@ export class RoomService {
       })));
   }
 
-  getRoomsOfFactorySite(companyId: ID, factorySiteId: ID): Observable<Room[]> {
+  getRoomsOfFactorySite(companyId: ID, factorySiteId: ID, refresh: boolean = false): Observable<Room[]> {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms`;
     const cacheKey = 'factorysite-' + factorySiteId;
+    if (refresh) {
+      this.roomStore.invalidateCacheParentId(cacheKey);
+    }
     return this.roomStore.cachedByParentId(cacheKey, this.http.get<Room[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.roomStore.upsertManyByParentIdCached(cacheKey, entities);
@@ -57,7 +61,9 @@ export class RoomService {
 
   getRoom(companyId: ID, factorySiteId: ID, roomId: ID, refresh: boolean = false): Observable<Room> {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}`;
-    if (refresh) { this.roomStore.invalidateCacheId(roomId); }
+    if (refresh) {
+      this.roomStore.invalidateCacheId(roomId);
+    }
     return this.roomStore.cachedById(roomId, this.http.get<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.roomStore.upsertCached(entity);
@@ -87,7 +93,6 @@ export class RoomService {
         this.roomStore.upsertCached(entity);
       }));
   }
-
 
   updateRoomsAfterEditAsset(oldAssetRoomId: ID, asset: Asset) {
     this.roomStore.upsertCached(this.removeAssetFromOldRoom(oldAssetRoomId, asset));

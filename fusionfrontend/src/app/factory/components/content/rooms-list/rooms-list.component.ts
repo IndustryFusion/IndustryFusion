@@ -20,7 +20,6 @@ import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Asset } from 'src/app/store/asset/asset.model';
 import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { Location } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -28,6 +27,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateRoomComponent } from '../create-room/create-room.component';
 import { MenuItem } from 'primeng/api';
 import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset-to-room.component';
+import { FactoryResolver } from '../../../services/factory-resolver.service';
+import { ActivatedRoute } from '@angular/router';
+import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
 
 @Component({
   selector: 'app-rooms-list',
@@ -57,7 +59,8 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   isLoading$: Observable<boolean>;
 
-  factorySite: FactorySite;
+  factorySiteId: ID;
+  factorySite$: Observable<FactorySite>;
 
   ref: DynamicDialogRef;
   roomForm: FormGroup;
@@ -65,23 +68,27 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   activeListItem: Room;
   factorySitesAndRoomsMap = new Map();
-  route: string;
   oldRoomIds: ID[] = [];
 
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
 
-  constructor(private factorySiteQuery: FactorySiteQuery,
-              private companyQuery: CompanyQuery,
+  constructor(private companyQuery: CompanyQuery,
               private routingLocation: Location,
               private formBuilder: FormBuilder,
-              public dialogService: DialogService) {
+              public dialogService: DialogService,
+              public factoryResolver: FactoryResolver,
+              private factorySiteQuery: FactorySiteQuery,
+              public route: ActivatedRoute) {
+    console.log('going to resolve');
+    this.factoryResolver.resolve(route);
+    this.factorySiteId = this.factorySiteQuery.getActiveId();
+    this.factorySite$ = this.factoryResolver.factorySite$;
+    this.factorySite$.subscribe((see) => console.warn('SEEEEEEE', see));
   }
 
   ngOnInit() {
-    this.route = this.routingLocation.path();
     this.isLoading$ = this.companyQuery.selectLoading();
-    this.factorySite = this.factorySiteQuery.getActive();
 
     this.createRoomForm(this.formBuilder);
     this.menuActions = [
@@ -106,7 +113,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.rooms) {
       this.rooms.forEach(room => {
-        this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id === room.factorySiteId).name);
+        this.factorySitesAndRoomsMap.set(room.id, this.factorySites?.find(factorySite => factorySite.id === room.factorySiteId).name);
       });
     }
   }
@@ -167,7 +174,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
       id: [null],
       description: ['', requiredTextValidator],
       name: ['', requiredTextValidator],
-      factorySiteId: [this.factorySite?.id ? this.factorySite.id : '', requiredTextValidator],
+      factorySiteId: [this.factorySiteId ? this.factorySiteId : '', requiredTextValidator],
       assets: [[]],
       assetIds: [[]]
     });

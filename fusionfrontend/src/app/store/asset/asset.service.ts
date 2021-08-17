@@ -93,7 +93,7 @@ export class AssetService {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/assign`;
     return this.http.put<Asset[]>(`${environment.apiUrlPrefix}/${path}`, assets, this.httpOptions)
       .pipe(tap(entities => {
-        entities.forEach(enitity => this.assetStore.upsertCached(enitity));
+        entities.forEach(entity => this.assetStore.upsertCached(entity));
       }));
   }
 

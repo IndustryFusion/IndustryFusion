@@ -106,7 +106,7 @@ export class RoomsPageComponent implements OnInit {
       .subscribe(
         _ => {
           oldFactoryIdSet.forEach(factoryId => {
-            this.roomService.getRoomsOfFactorySite(this.companyId, factoryId).subscribe();
+            this.roomService.getRoomsOfFactorySite(this.companyId, factoryId, true).subscribe();
           });
         },
         error => {
