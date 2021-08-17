@@ -67,7 +67,7 @@ export class OispService {
     return this.replaceExternalIdsOfFieldsWithUid(assetDetails);
   }
 
-  private replaceExternalIdsOfFieldsWithUid(assetOrAssetDetails: any): Observable<any> {
+  private replaceExternalIdsOfFieldsWithUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields): Observable<any> {
     if (!assetOrAssetDetails) {
       return EMPTY;
     }
@@ -78,13 +78,13 @@ export class OispService {
         return of(assetOrAssetDetails);
       }),
       startWith(assetOrAssetDetails),
-      map((assetOrDevice: any) => {
+      map((assetOrDevice: AssetWithFields | FactoryAssetDetailsWithFields | Device) => {
         return this.tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails, assetOrDevice);
       })
     );
   }
 
-  private tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails: any,
+  private tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields,
                                                       assetOrDevice: any) {
     const newFields = assetOrAssetDetails.fields.map(field =>
       this.tryReplaceExternalIdOfFieldDetailsWithComponentUid(field, assetOrDevice));
@@ -93,7 +93,8 @@ export class OispService {
     return this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(newAssetWithFields);
   }
 
-  private tryReplaceExternalIdOfFieldDetailsWithComponentUid(fieldDetails: FieldDetails, oispDevice: Device): FieldDetails {
+  private tryReplaceExternalIdOfFieldDetailsWithComponentUid(fieldDetails: FieldDetails,
+                                                             oispDevice: Device): FieldDetails {
     if (oispDevice.components) {
       const fieldDetailsCopy = Object.assign({ }, fieldDetails);
       oispDevice.components.map((component: DeviceComponent) => {
@@ -107,7 +108,8 @@ export class OispService {
     }
   }
 
-  private tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails: any, oispDevice: Device): any {
+  private tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields,
+                                                   oispDevice: Device): any {
     if (oispDevice) {
       const assetCopy = Object.assign({ }, assetOrAssetDetails);
       if (oispDevice.deviceId === assetCopy.externalId) {
