@@ -918,14 +918,7 @@ class FusionbackendApplicationTests {
     @Test
     @Order(710)
     void testGetAllConnectivityTypes() {
-        List<ConnectivityTypeDto> connectivityTypeDtos = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessTokenFabManStruump)
-                .when()
-                .get(baseUrl + "/connectivity-types")
-                .then()
-                .statusCode(200)
-                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class);
+        List<ConnectivityTypeDto> connectivityTypeDtos = getConnectivityTypeDtos(accessTokenFabManStruump);
 
         assertThat(connectivityTypeDtos.size()).isGreaterThan(1);
         assertThat(connectivityTypeDtos.get(0).getAvailableProtocols().size()).isGreaterThanOrEqualTo(1);
@@ -1370,14 +1363,7 @@ class FusionbackendApplicationTests {
     }
 
     private AssetSeriesDto createAssetSeries(Integer companyId, Integer assetTypeTemplateId, String accessToken) {
-        ConnectivityTypeDto connectivityTypeDto = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
-                .when()
-                .get(baseUrl + "/connectivity-types")
-                .then()
-                .statusCode(200)
-                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class).get(0);
+        ConnectivityTypeDto connectivityTypeDto = getConnectivityTypeDtos(accessTokenFleetManAirist).get(0);
 
 
         AssetSeriesDto assetSeriesDto = given()
@@ -1413,6 +1399,17 @@ class FusionbackendApplicationTests {
                 .then()
                 .statusCode(200)
                 .extract().body().as(AssetSeriesDto.class);
+    }
+
+    private List<ConnectivityTypeDto> getConnectivityTypeDtos(String accessTokenFleetManAirist) {
+        return given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+                .when()
+                .get(baseUrl + "/connectivity-types")
+                .then()
+                .statusCode(200)
+                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class);
     }
 
     private void transferFleetAssetToFactoryAsset(final Integer assetId,
