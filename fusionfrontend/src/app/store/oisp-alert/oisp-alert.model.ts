@@ -47,7 +47,7 @@ export class OispAlert {
 export enum OispAlertStatus {
   NEW = 'New',
   OPEN = 'Open',
-  CLOSED = 'closed'
+  CLOSED = 'closed' // lower c relates to OISP naming and is on purpose
 }
 
 export enum OispAlertPriority {
