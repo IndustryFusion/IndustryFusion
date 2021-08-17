@@ -13,8 +13,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-maintenance-list [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields"
-                      [factorySites]="(factorySites$ | async)"
-                      [companies]="(companies$ | async)"
-                      [assetTypes]="(assetTypes$ | async)">
+<app-maintenance-list
+  [assetTypes]="(assetTypes$ | async)"
+  [companies]="(companies$ | async)"
+  [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFieldsAndValues$ | async | maintenanceSort:MAINTENANCE_FIELD_NAME_DAYS"
+  [factorySites]="(factorySites$ | async)">
 </app-maintenance-list>

@@ -191,7 +191,7 @@ export class OispService {
 
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}/status`;
-    const body = { status};
+    const body = { status };
     return this.http.put<Rule>(url, body, this.httpOptions);
   }
 
