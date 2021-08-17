@@ -21,6 +21,7 @@ import io.fusion.fusionbackend.dto.AssetTypeDto;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.BaseAssetDto;
 import io.fusion.fusionbackend.dto.CompanyDto;
+import io.fusion.fusionbackend.dto.ConnectivityProtocolDto;
 import io.fusion.fusionbackend.dto.ConnectivitySettingsDto;
 import io.fusion.fusionbackend.dto.ConnectivityTypeDto;
 import io.fusion.fusionbackend.dto.CountryDto;
@@ -773,6 +774,39 @@ class FusionbackendApplicationTests {
         assertThat(assetSeriesIds)
                 .hasSize(11)
                 .contains(assetSeriesAiristGasSupplyId);
+    }
+
+    @Test
+    @Order(610)
+    void testUpdateAssetSeriesConnectivitySettings() {
+
+        List<ConnectivityTypeDto> connectivityTypesFromMasterData = getConnectivityTypeDtos(accessTokenFleetManAirist);
+        ConnectivityTypeDto newConnectivityTypeDto = connectivityTypesFromMasterData.get(2);
+        ConnectivityProtocolDto newConnectivityProtocolDto =
+                List.copyOf(newConnectivityTypeDto.getAvailableProtocols()).get(0);
+
+        AssetSeriesDto existingAssetSeriesDto = createAssetSeries(companyAiristMachId,
+                assetTypeTemplateGasSupplyId, accessTokenFleetManAirist);
+
+        existingAssetSeriesDto.getConnectivitySettings().setConnectivityTypeId(newConnectivityTypeDto.getId());
+        existingAssetSeriesDto.getConnectivitySettings().setConnectivityProtocolId(newConnectivityProtocolDto.getId());
+
+        AssetSeriesDto patchedAssetSeries = given()
+                .contentType(ContentType.JSON)
+                .body(existingAssetSeriesDto)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+
+                .when()
+                .patch(baseUrl + "/companies/" + companyAiristMachId + "/assetseries/" + existingAssetSeriesDto.getId())
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+
+        assertThat(patchedAssetSeries.getConnectivitySettings().getConnectivityTypeId())
+                .isEqualTo(newConnectivityTypeDto.getId());
+        assertThat(patchedAssetSeries.getConnectivitySettings().getConnectivityProtocolId())
+                .isEqualTo(newConnectivityProtocolDto.getId());
     }
 
     @Test
