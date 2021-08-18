@@ -103,7 +103,7 @@ public class AssetSeries extends BaseAsset {
             setAssets(sourceAssetSeries.getAssets());
         }
         if (sourceAssetSeries.getCompany() != null) {
-            getCompany().copyFrom(sourceAssetSeries.getCompany());
+            setCompany(sourceAssetSeries.getCompany());
         }
 
         Map<Long, FieldSource> sourceFieldSourcesIdBasedMap = sourceAssetSeries.getFieldSources().stream()
