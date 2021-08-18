@@ -5,6 +5,7 @@ import { ID } from '@datorama/akita';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-series-wizard-connectivity-settings',
@@ -12,6 +13,7 @@ import { AssetSeries } from '../../../../../store/asset-series/asset-series.mode
   styleUrls: ['./asset-series-wizard-connectivity-settings.component.scss']
 })
 export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
+  @Input() mode: DialogType;
   @Input() assetSeries: AssetSeries;
   @Input() assetSeriesForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
@@ -27,12 +29,17 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
               private formBuilder: FormBuilder) {
     this.connectivityTypeOptions = this.connectivityTypeQuery.getAll();
-    this.createFormGroup();
   }
 
   ngOnInit(): void {
+    this.createFormGroup();
     this.selectFirstItemsInDropdowns();
+    this.disableFormGroupOnEdit();
     this.assetSeriesForm.addControl('connectivitySettings', this.connectivitySettingsForm);
+  }
+
+  public isEditMode(): boolean {
+    return this.mode === DialogType.EDIT;
   }
 
   private createFormGroup(): void {
@@ -42,11 +49,22 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
       connectivityTypeId: [null, Validators.required],
       connectivityProtocolId: [null, Validators.required],
       connectionString: [null, requiredTextValidator],
+   /*   connectivityTypeId: [{ value: null, disabled: this.isEditMode() }, Validators.required],
+      connectivityProtocolId: [{ value: null, disabled: this.isEditMode() }, Validators.required],
+      connectionString: [{ value: null, disabled: this.isEditMode() }, requiredTextValidator],*/
     });
     this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
 
     if (this.assetSeries?.connectivitySettings) {
       this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
+    }
+  }
+
+  private disableFormGroupOnEdit() {
+    if (this.mode === DialogType.EDIT) {
+      this.connectivitySettingsForm.get('connectivityTypeId').disable( { onlySelf: true });
+      this.connectivitySettingsForm.get('connectivityProtocolId').disable( { onlySelf: true });
+      this.connectivitySettingsForm.get('connectionString').disable( { onlySelf: true });
     }
   }
 

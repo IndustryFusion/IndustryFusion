@@ -130,7 +130,7 @@ export class AssetSeriesWizardComponent implements OnInit {
       handbookKey: [null, Validators.maxLength(255)],
       videoKey: [null, Validators.maxLength(255)],
       imageKey: [null, Validators.maxLength(255)],
-      assetTypeTemplateId: [{ value: null, disabled: this.mode !== DialogType.CREATE }, Validators.required],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
       companyId: [null, Validators.required],
     });
 
@@ -138,16 +138,8 @@ export class AssetSeriesWizardComponent implements OnInit {
       this.assetSeriesForm.patchValue(this.assetSeries);
     }
 
-    this.assetSeriesForm.get('assetTypeTemplateId').valueChanges.subscribe(
-      assetTypeTemplateId => this.updateAssetSeriesNameDisabledState(assetTypeTemplateId));
-    this.updateAssetSeriesNameDisabledState(this.assetSeriesForm.get('assetTypeTemplateId').value);
-  }
-
-  private updateAssetSeriesNameDisabledState(assetTypeTemplateId: ID): void {
-    if (assetTypeTemplateId) {
-      this.assetSeriesForm.get('name').enable();
-    } else {
-      this.assetSeriesForm.get('name').disable( { onlySelf: true });
+    if (this.mode === DialogType.EDIT) {
+      this.assetSeriesForm.get('assetTypeTemplateId').disable( { onlySelf: true });
     }
   }
 

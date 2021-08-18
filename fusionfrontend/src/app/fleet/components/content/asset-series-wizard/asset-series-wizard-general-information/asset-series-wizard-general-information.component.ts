@@ -22,7 +22,6 @@ import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template
 import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { FormGroup } from '@angular/forms';
-import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 import { Company } from '../../../../../store/company/company.model';
 import { AssetType } from '../../../../../store/asset-type/asset-type.model';
 
@@ -34,7 +33,6 @@ import { AssetType } from '../../../../../store/asset-type/asset-type.model';
 export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
 
   @Input() mode: DialogType = DialogType.EDIT;
-  @Input() assetSeries: AssetSeries;
   @Input() assetSeriesForm: FormGroup;
   @Input() relatedManufacturer: Company;
   @Input() relatedAssetType: AssetType;

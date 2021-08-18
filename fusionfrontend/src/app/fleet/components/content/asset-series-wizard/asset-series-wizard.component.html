@@ -19,7 +19,6 @@ under the License.
   <app-asset-series-wizard-general-information
     *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
     [mode]="mode"
-    [assetSeries]="assetSeries"
     [assetSeriesForm]="assetSeriesForm"
     (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)"
     [relatedManufacturer]="relatedManufacturer"
@@ -27,6 +26,7 @@ under the License.
   </app-asset-series-wizard-general-information>
   <app-asset-series-wizard-connectivity-settings
     *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS"
+    [mode]="mode"
     [assetSeries]="assetSeries"
     [assetSeriesForm]="assetSeriesForm"
     (valid)="setConnectivitySettingsValid($event)">
