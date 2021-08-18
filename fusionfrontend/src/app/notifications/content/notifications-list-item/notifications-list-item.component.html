@@ -40,7 +40,7 @@ under the License.
   <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="10">
     {{ isFloatingNumber(item.measuredValue) ? (item.measuredValue | number: '1.0-2') : item.measuredValue }}
   </div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="15">{{ item.timestamp | date:'dd.MM.yyyy - mm:hh:ss' }}</div>
+  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="15">{{ item.timestamp | date:'dd.MM.yyyy \'at\' hh:mm:ss' }}</div>
   <div class="list-item-cell grey"  [style.width.%]="5">
     <button *ngIf="isCloseable" type="button" class="small-confirm-button" (click)="showCloseItem()"><i class="pi pi-check"></i></button>
   </div>
