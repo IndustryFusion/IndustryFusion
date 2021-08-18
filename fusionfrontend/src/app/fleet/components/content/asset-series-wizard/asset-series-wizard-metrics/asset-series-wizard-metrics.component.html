@@ -30,7 +30,7 @@ under the License.
             <span class="p-col-2 "><label displayControlValue="name"></label></span>
             <span class="p-col-2 "><label displayControlValue="fieldName"></label></span>
             <span class="p-col">
-              <input *ngIf="isUnsaved(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
+              <input pInputText *ngIf="isUnsaved(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
               <label *ngIf="!isUnsaved(fieldSource)" displayControlValue="register"></label>
           </span>
             <span class="p-col-1"><label displayControlValue="sourceUnitName"></label></span>
