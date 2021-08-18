@@ -25,7 +25,7 @@ export class OispAlert {
   dashboardObservationReceivedOn: Date;
   deviceUID: ID;
   naturalLangAlert: string;
-  priority: OispPriority;
+  priority: OispAlertPriority;
   reset: Date;
   resetType: string;
   ruleId: string;
@@ -33,15 +33,26 @@ export class OispAlert {
   status: OispAlertStatus;
   triggered: Date;
   updated: Date;
+
+  public static getPriorityAsNumber(priority: OispAlertPriority): number {
+    switch (priority) {
+      case OispAlertPriority.LOW:
+        return 3;
+      case OispAlertPriority.MEDIUM:
+        return 2;
+      case OispAlertPriority.HIGH:
+        return 1;
+    }
+  }
 }
 
 export enum OispAlertStatus {
   NEW = 'New',
   OPEN = 'Open',
-  CLOSED = 'closed'
+  CLOSED = 'closed' // lower c relates to OISP naming and is on purpose
 }
 
-export enum OispPriority {
+export enum OispAlertPriority {
   LOW = 'Low',
   MEDIUM = 'Medium',
   HIGH = 'High'

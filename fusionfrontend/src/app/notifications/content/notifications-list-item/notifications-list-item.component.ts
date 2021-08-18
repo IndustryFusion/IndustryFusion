@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { OispPriority } from 'src/app/store/oisp-alert/oisp-alert.model';
+import { OispAlertPriority } from 'src/app/store/oisp-alert/oisp-alert.model';
 import { OispNotification } from '../../../store/oisp-notification/oisp-notification.model';
 
 @Component({
@@ -50,7 +50,7 @@ export class NotificationsListItemComponent implements OnInit {
   selected = false;
 
   shouldShowDeleteItem = false;
-  OispPriority = OispPriority;
+  OispPriority = OispAlertPriority;
 
   constructor() {
   }

@@ -14,11 +14,11 @@
  */
 
 import { ID } from '@datorama/akita';
-import { OispAlertStatus, OispPriority } from '../oisp-alert/oisp-alert.model';
+import { OispAlertStatus, OispAlertPriority } from '../oisp-alert/oisp-alert.model';
 
 export class OispNotification {
   id: ID;
-  priority: OispPriority;
+  priority: OispAlertPriority;
   ruleName: string;
   assetName: string;
   condition: string;

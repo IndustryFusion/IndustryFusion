@@ -18,7 +18,9 @@ import { QueryEntity } from '@datorama/akita';
 import { OispAlertState, OispAlertStore } from './oisp-alert.store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { OispAlert, OispAlertStatus } from './oisp-alert.model';
+import { OispAlert, OispAlertStatus, OispAlertPriority } from './oisp-alert.model';
+import { FactoryAssetDetailsWithFields } from '../factory-asset-details/factory-asset-details.model';
+
 @Injectable({ providedIn: 'root' })
 export class OispAlertQuery extends QueryEntity<OispAlertState> {
 
@@ -26,12 +28,67 @@ export class OispAlertQuery extends QueryEntity<OispAlertState> {
     super(store);
   }
 
-  getOpenAlertCount(): Observable<number> {
+  selectOpenAlerts(): Observable<OispAlert[]> {
     return this.selectAll().pipe(
       map((alerts: OispAlert[]) => {
-        return alerts.filter(alert => alert.status !== OispAlertStatus.CLOSED).length;
-      }),
+        return alerts.filter(alert => alert.status !== OispAlertStatus.CLOSED);
+      })
     );
+  }
+
+  selectOpenAlertCount(): Observable<number> {
+    return this.selectOpenAlerts().pipe(
+      map((alerts: OispAlert[]) => alerts.length)
+    );
+  }
+
+  getOpenAlerts(): OispAlert[] {
+    return this.getAll().filter(alert => alert.status !== OispAlertStatus.CLOSED);
+  }
+
+  getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(assetDetails: FactoryAssetDetailsWithFields):
+    FactoryAssetDetailsWithFields {
+    const openAlerts = this.getOpenAlerts();
+    const assetDetailsCopy = Object.assign({ }, assetDetails);
+    const alertPriorities: OispAlertPriority[] = [];
+
+    alertPriorities.push(this.getAlertPriorityOf(assetDetailsCopy.externalId, openAlerts));
+    assetDetailsCopy.fields?.forEach(field => {
+      alertPriorities.push(this.getAlertPriorityOf(field.externalId, openAlerts));
+    });
+
+    assetDetailsCopy.openAlertPriority = this.getMostCriticalPriority(alertPriorities);
+    return assetDetailsCopy;
+  }
+
+  private getAlertPriorityOf(externalId: string, openAlerts: OispAlert[]): OispAlertPriority {
+    let mostCriticalPriority = null;
+
+    if (externalId) {
+      const openAlertsOfExternalId = openAlerts.filter(alert => String(alert.deviceUID) === externalId);
+      if (openAlertsOfExternalId.length > 0) {
+        const sortedAlerts = openAlertsOfExternalId.sort((openAlert1, openAlert2) =>
+          OispAlert.getPriorityAsNumber(openAlert1.priority) - OispAlert.getPriorityAsNumber(openAlert2.priority));
+        mostCriticalPriority = sortedAlerts[0].priority;
+      }
+    } else {
+      console.warn('[oisp alert query]: ExternalId does not exist');
+    }
+
+    return mostCriticalPriority;
+  }
+
+  private getMostCriticalPriority(priorities: OispAlertPriority[]): OispAlertPriority {
+    let mostCriticalPriority = null;
+
+    priorities = priorities.filter(priority => priority != null);
+    if (priorities && priorities.length > 0) {
+      const sortedPriorities = priorities.sort((priority1, priority2) =>
+        OispAlert.getPriorityAsNumber(priority1) - OispAlert.getPriorityAsNumber(priority2));
+      mostCriticalPriority = sortedPriorities[0];
+    }
+
+    return mostCriticalPriority;
   }
 
   resetStore() {

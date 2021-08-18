@@ -32,8 +32,13 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.createFormGroup();
-    this.updateSelectOptionsAndInfoText();
     this.disableFormGroupOnEditMode();
+
+    this.updateConnectivityProtocolOptionsAndInfoText();
+    if (this.mode === DialogType.CREATE) {
+      this.updateConnectivityProtocolIdAndConnectionString();
+    }
+
     this.assetSeriesForm.addControl('connectivitySettings', this.connectivitySettingsForm);
   }
 
@@ -65,7 +70,7 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
     this.connectivitySettingsForm.get('connectivityTypeId').setValue(1);
   }
 
-  private updateSelectOptionsAndInfoText(): void {
+  private updateConnectivityProtocolOptionsAndInfoText(): void {
     const connectivityTypeId = this.connectivitySettingsForm.get('connectivityTypeId').value;
 
     if (connectivityTypeId && this.connectivityTypeOptions) {
@@ -74,27 +79,31 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
 
       this.connectivityProtocolOptions = selectedConnectivityType.availableProtocols;
       this.infoText = selectedConnectivityType.infoText;
-
-      if (this.connectivityProtocolOptions.length > 0) {
-        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(this.connectivityProtocolOptions[0].id);
-        this.updateConnectivityProtocolOptionsAndConnectionString();
-
-      } else {
-        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(null);
-        this.connectivitySettingsForm.get('connectionString').setValue(null);
-      }
     }
   }
 
+  private updateConnectivityProtocolIdAndConnectionString(): void {
+    if (this.connectivityProtocolOptions.length > 0) {
+      this.connectivitySettingsForm.get('connectivityProtocolId').setValue(this.connectivityProtocolOptions[0].id);
+      this.updateConnectionString();
+
+    } else {
+      this.connectivitySettingsForm.get('connectivityProtocolId').setValue(null);
+      this.connectivitySettingsForm.get('connectionString').setValue(null);
+    }
+  }
+
+
   onChangeConnectivityType(): void {
-    this.updateSelectOptionsAndInfoText();
+    this.updateConnectivityProtocolOptionsAndInfoText();
+    this.updateConnectivityProtocolIdAndConnectionString();
   }
 
   onChangeProtocolType(): void {
-    this.updateConnectivityProtocolOptionsAndConnectionString();
+    this.updateConnectionString();
   }
 
-  private updateConnectivityProtocolOptionsAndConnectionString() {
+  private updateConnectionString() {
     const connectivityProtocolId = this.connectivitySettingsForm.get('connectivityProtocolId').value;
 
     if (connectivityProtocolId && this.connectivityProtocolOptions) {
