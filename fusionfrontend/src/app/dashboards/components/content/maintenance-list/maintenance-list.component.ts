@@ -23,6 +23,7 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 import { SelectItem } from 'primeng/api';
+import { OispAlertPriority } from 'src/app/store/oisp-alert/oisp-alert.model';
 
 interface ActiveFilter {
   filterAttribute: SelectItem;
@@ -66,6 +67,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   faFilter = faFilter;
   faSearch = faSearch;
+  OispPriority = OispAlertPriority;
 
   selectedValueMapping:
     { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };

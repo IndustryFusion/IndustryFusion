@@ -13,8 +13,6 @@
  * under the License.
  */
 
-import { ID } from '@datorama/akita';
-
 export class OispRequest {
   from: number;
   to?: number;
@@ -170,20 +168,24 @@ export enum BaselineCalculationLevel {
 
 export class DeviceComponent {
   cid: string;
-  componentType: ComponentType;
-  componentTypeId: string;
   name: string;
+  componentTypeId: string;
+  componentType: ComponentType;
   type: string;
 }
 
 export class Device {
+  attributes: any;
   components: DeviceComponent[];
+  contact: any;
+  created: Date;
   deviceId: string;
+  domainId: string;
   gatewayId: string;
   name: string;
-  tags: string[];
   status: string;
-  uid: ID;
+  tags: string[];
+  uid: string;
 }
 
 export enum ConditionType {

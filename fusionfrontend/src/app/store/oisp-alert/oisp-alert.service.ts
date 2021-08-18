@@ -77,5 +77,4 @@ export class OispAlertService {
 
     return oispAccountId;
   }
-
 }
