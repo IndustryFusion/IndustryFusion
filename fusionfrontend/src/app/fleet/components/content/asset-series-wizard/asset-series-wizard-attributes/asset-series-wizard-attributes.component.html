@@ -41,8 +41,8 @@ under the License.
             <app-edit-button *ngIf="!isUnsaved(fieldSource)" class="edit-button"
                              (editItem)="fieldSource.get('saved').patchValue(false)">
             </app-edit-button>
-            <app-trash-button (deleteItem)="removeValue(fieldSource)"
-                              [disabled]="!isUnsaved(fieldSource)"></app-trash-button>
+            <app-trash-button (deleteItem)="removeAttribute(fieldSource)"
+                              [disabled]="isMandatory(fieldSource)"></app-trash-button>
           </span>
           </ng-container>
         </div>

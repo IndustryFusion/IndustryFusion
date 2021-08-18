@@ -4,6 +4,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '
 import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../store/field/field-query.service';
+import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-series-wizard-metrics',
@@ -32,33 +33,49 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
 
     for (let i = 0; i < fieldSources.length; i++) {
       if (fieldSources[i].fieldTarget.fieldType === FieldType.METRIC) {
-        const formGroup = this.createSingleFieldSourceFormGroup(i, fieldSources[i]);
+        const formGroup = this.createSingleFieldSourceFormGroup(i, this.fieldSourcesFormArray.length, fieldSources[i]);
         this.fieldSourcesFormArray.push(formGroup);
       }
     }
   }
 
-  private createSingleFieldSourceFormGroup(index: number, fieldSource: FieldSource): FormGroup {
+  private createSingleFieldSourceFormGroup(indexFieldSources: number,
+                                           indexInArray: number,
+                                           fieldSource: FieldSource): FormGroup {
     const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
 
     return this.formBuilder.group({
       id: [fieldSource.id],
-      index: [index],
+      indexFieldSources: [indexFieldSources],
+      indexInArray: [indexInArray],
       sourceUnitName: [fieldSource.sourceUnit?.name],
       fieldName: [field.name],
       accuracy: [field.accuracy],
       name: [fieldSource.name],
       register: [fieldSource.register, [Validators.maxLength(255)]],
+      mandatory: [fieldSource.fieldTarget.mandatory],
       saved: [true, Validators.requiredTrue],
     });
   }
 
+  removeMetric(metricGroup: AbstractControl): void {
+    if (!this.isMandatory(metricGroup) && metricGroup instanceof FormGroup) {
+      WizardHelper.removeItemFromFormAndDataArray(metricGroup,
+        this.fieldSourcesFormArray, 'indexInArray',
+        this.assetSeries.fieldSources, 'indexFieldSources');
+    }
+  }
+
   saveValue(group: AbstractControl): void {
-    this.assetSeries.fieldSources[group.get('index').value].register =  group.get('register').value;
+    this.assetSeries.fieldSources[group.get('indexInArray').value].register =  group.get('register').value;
     group.get('saved').patchValue(true);
   }
 
   isUnsaved(group: AbstractControl): boolean {
     return !group.get('saved').value;
+  }
+
+  isMandatory(group: AbstractControl): boolean {
+    return group == null || group.get('mandatory').value;
   }
 }
