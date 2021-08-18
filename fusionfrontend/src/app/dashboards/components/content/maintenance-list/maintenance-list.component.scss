@@ -92,6 +92,23 @@
   }
 }
 
+.notification-icons {
+  overflow: visible !important;
+  margin-top: -2px;
+
+  .notification-low {
+    color: $alert-low;
+  }
+
+  .notification-medium {
+    color: $alert-medium;
+  }
+
+  .notification-high {
+    color: $alert-high;
+  }
+}
+
 .remove-filter-btn {
   border-color: transparent;
   background-color: $basic-white;

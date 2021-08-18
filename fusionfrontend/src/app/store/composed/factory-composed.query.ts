@@ -18,7 +18,10 @@ import { combineQueries, ID } from '@datorama/akita';
 import { forkJoin, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { OispService } from '../../services/oisp.service';
-import { FactoryAssetDetails, FactoryAssetDetailsWithFields } from '../factory-asset-details/factory-asset-details.model';
+import {
+  FactoryAssetDetails,
+  FactoryAssetDetailsWithFields
+} from '../factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../factory-asset-details/factory-asset-details.query';
 import { Asset, AssetWithFields } from '../asset/asset.model';
 import { AssetQuery } from '../asset/asset.query';
@@ -27,6 +30,7 @@ import { FactorySiteWithAssetCount } from '../factory-site/factory-site.model';
 import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
 import { RoomQuery } from '../room/room.query';
+import { OispAlertQuery } from '../oisp-alert/oisp-alert.query';
 
 @Injectable({ providedIn: 'root' })
 export class FactoryComposedQuery {
@@ -36,6 +40,7 @@ export class FactoryComposedQuery {
     protected assetQuery: AssetQuery,
     protected factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
     protected fieldQuery: FieldDetailsQuery,
+    protected oispAlertQuery: OispAlertQuery,
     protected oispService: OispService) { }
 
   selectAssetsOfFactorySite(factorySiteId: ID): Observable<Asset[]> {
@@ -152,36 +157,10 @@ export class FactoryComposedQuery {
 
   joinFieldsOfAssetsWithOispData(): Observable<AssetWithFields[]> {
     return this.selectFieldsOfSelectedAssets().pipe(
-      mergeMap(assets =>
+      mergeMap((assets: AssetWithFields[]) =>
         forkJoin(
-          assets.map(asset => this.oispService.getAssetFieldsExternalIds(asset)))
-      )
-    );
-  }
-
-  joinFieldsOfAssetsDetailsWithOispData(): Observable<FactoryAssetDetailsWithFields[]> {
-    return this.selectFieldsOfAssetsDetails().pipe(
-      mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsExternalIds(asset)))
-      )
-    );
-  }
-
-  selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId): Observable<FactoryAssetDetailsWithFields[]> {
-    return this.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId).pipe(
-      mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsExternalIds(asset)
-          ))
-      ));
-  }
-
-  selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId): Observable<FactoryAssetDetailsWithFields[]> {
-    return this.selectFieldsOfAssetsDetailsByRoomId(roomId).pipe(
-      mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsExternalIds(asset)))
+          assets.map(asset => this.oispService.getAssetFieldsWithReplacedExternalIds(asset))
+        )
       )
     );
   }
@@ -190,9 +169,41 @@ export class FactoryComposedQuery {
     return this.fieldQuery.selectFieldsOfAsset(asset.id).pipe(
       mergeMap(myFields => {
         const assetWithFields = Object.assign({ fields: myFields }, asset);
-        return this.oispService.getAssetFieldsExternalIds(assetWithFields);
+        return this.oispService.getAssetFieldsWithReplacedExternalIds(assetWithFields);
       })
     );
   }
 
+  joinFieldsOfAssetsDetailsWithOispDataIncludingAlerts(): Observable<FactoryAssetDetailsWithFields[]> {
+    return this.selectFieldsOfAssetsDetails().pipe(
+      mergeMap(assets =>
+        forkJoin(
+          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset).pipe(
+            map((assetDetails: FactoryAssetDetailsWithFields) =>
+              this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(assetDetails))
+          ))
+        )
+      )
+    );
+  }
+
+  selectAssetDetailsWithFieldsOfFactorySiteAndOispData(factorySiteId): Observable<FactoryAssetDetailsWithFields[]> {
+    return this.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId).pipe(
+      mergeMap(assets =>
+        forkJoin(
+          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
+        ),
+      )
+    );
+  }
+
+  selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId): Observable<FactoryAssetDetailsWithFields[]> {
+    return this.selectFieldsOfAssetsDetailsByRoomId(roomId).pipe(
+      mergeMap(assets =>
+        forkJoin(
+          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
+        )
+      )
+    );
+  }
 }

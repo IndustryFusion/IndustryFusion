@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.oispAlertQuery.getOpenAlertCount().subscribe(openAlertCount => {
+    this.oispAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
     } );
   }
