@@ -118,11 +118,7 @@ public class AssetSeriesService {
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
-        sourceAssetSeries.getFieldSources()
-                .forEach(fieldSource -> updateFieldSource(companyId, assetSeriesId, fieldSource.getId(), fieldSource));
-
         targetAssetSeries.copyFrom(sourceAssetSeries);
-
 
         return targetAssetSeries;
     }

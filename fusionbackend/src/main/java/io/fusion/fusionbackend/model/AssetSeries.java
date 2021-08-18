@@ -34,7 +34,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedEntityGraph(name = "AssetSeries.allChildren",
@@ -100,11 +103,19 @@ public class AssetSeries extends BaseAsset {
             setAssets(sourceAssetSeries.getAssets());
         }
         if (sourceAssetSeries.getCompany() != null) {
-            setCompany(sourceAssetSeries.getCompany());
+            getCompany().copyFrom(sourceAssetSeries.getCompany());
         }
-        if (sourceAssetSeries.getFieldSources() != null) {
-            setFieldSources(sourceAssetSeries.getFieldSources());
+
+        Map<Long, FieldSource> sourceFieldSourcesIdBasedMap = sourceAssetSeries.getFieldSources().stream()
+                .collect(Collectors.toMap(BaseEntity::getId, fieldsource -> fieldsource));
+        List<FieldSource> sourceFieldSources = List.copyOf(sourceAssetSeries.getFieldSources());
+        if (sourceFieldSources != null) {
+            for (FieldSource targetFieldSource : getFieldSources()) {
+                FieldSource sourceFieldSource = sourceFieldSourcesIdBasedMap.get(targetFieldSource.getId());
+                targetFieldSource.copyFrom(sourceFieldSource);
+            }
         }
+
         ConnectivitySettings sourceConnectivitySettings = sourceAssetSeries.getConnectivitySettings();
         if (sourceConnectivitySettings != null) {
             getConnectivitySettings().setConnectionString(sourceConnectivitySettings.getConnectionString());
