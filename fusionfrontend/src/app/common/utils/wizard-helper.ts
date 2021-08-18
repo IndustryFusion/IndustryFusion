@@ -19,6 +19,11 @@ export class WizardHelper {
   public static removeItemFromFormAndDataArray(group: FormGroup,
                                                formArray: FormArray, formArrayIndexPath: string,
                                                dataArray: any[], dataArrayIndexPath: string): void {
+
+    if (!WizardHelper.isArgumentsValid(group, formArray, formArrayIndexPath, dataArray, dataArrayIndexPath) ) {
+      console.error('[wizard helper]: invalid arguments');
+    }
+
     const indexDataArray: number = group.get(dataArrayIndexPath).value;
     dataArray.splice(indexDataArray, 1);
 
@@ -28,8 +33,19 @@ export class WizardHelper {
     WizardHelper.updateFormAndDataArrayIndices(formArray, formArrayIndexPath, indexFormArray, dataArrayIndexPath);
   }
 
+  private static isArgumentsValid(group: FormGroup,
+                                  formArray: FormArray, formArrayIndexPath: string,
+                                  dataArray: any[], dataArrayIndexPath: string): boolean {
+    return group == null || formArray == null || dataArray == null
+     || formArrayIndexPath == null || dataArrayIndexPath == null;
+  }
+
   private static updateFormAndDataArrayIndices(formArray: FormArray, formArrayIndexPath: string, indexFormArray: number,
                                                dataArrayIndexPath: string): void {
+    if (indexFormArray < 0) {
+      console.error('[wizard helper]: Index out of bounds: ', indexFormArray);
+    }
+
     for (let i = indexFormArray; i < formArray.length; i++) {
       const indexInArrayElement = formArray.at(i).get(formArrayIndexPath);
       const indexInFieldInstancesElement = formArray.at(i).get(dataArrayIndexPath);
