@@ -26,6 +26,8 @@ export class OispAlert {
   deviceUID: ID;
   naturalLangAlert: string;
   priority: OispAlertPriority;
+  reset: Date;
+  resetType: string;
   ruleId: string;
   ruleName: string;
   status: OispAlertStatus;
