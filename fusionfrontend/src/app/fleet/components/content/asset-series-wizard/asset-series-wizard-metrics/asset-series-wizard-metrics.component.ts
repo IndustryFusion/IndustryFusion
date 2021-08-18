@@ -21,32 +21,36 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
               private formBuilder: FormBuilder) {
   }
 
-  private createFieldSourceGroup(index: number, fieldSource: FieldSource): FormGroup {
-    const group = this.formBuilder.group({
-      id: [],
-      index: [],
-      sourceUnitName: [],
-      fieldName: [],
-      accuracy: [],
-      name: [],
-      register: ['', [Validators.maxLength(255)]],
-      saved: [true, Validators.requiredTrue],
-    });
-    group.get('id').patchValue(fieldSource.id);
-    group.get('index').patchValue(index);
-    group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
-    group.get('name').patchValue(fieldSource.name);
-    group.get('register').patchValue(fieldSource.register);
-
-    const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
-    group.get('accuracy').patchValue(field?.accuracy);
-    group.get('fieldName').patchValue(field.name);
-
-    return group;
+  ngOnInit(): void {
+    this.createFormArray(this.assetSeries.fieldSources);
   }
 
-  ngOnInit(): void {
-    this.fillTable(this.assetSeries.fieldSources);
+  private createFormArray(fieldSources: FieldSource[]): void {
+    this.fieldSourcesFormArray = new FormArray([]);
+    this.valid.emit(this.fieldSourcesFormArray.valid);
+    this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
+
+    for (let i = 0; i < fieldSources.length; i++) {
+      if (fieldSources[i].fieldTarget.fieldType === FieldType.METRIC) {
+        const formGroup = this.createSingleFieldSourceFormGroup(i, fieldSources[i]);
+        this.fieldSourcesFormArray.push(formGroup);
+      }
+    }
+  }
+
+  private createSingleFieldSourceFormGroup(index: number, fieldSource: FieldSource): FormGroup {
+    const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+
+    return this.formBuilder.group({
+      id: [fieldSource.id],
+      index: [index],
+      sourceUnitName: [fieldSource.sourceUnit?.name],
+      fieldName: [field.name],
+      accuracy: [field.accuracy],
+      name: [fieldSource.name],
+      register: [fieldSource.register, [Validators.maxLength(255)]],
+      saved: [true, Validators.requiredTrue],
+    });
   }
 
   saveValue(group: AbstractControl): void {
@@ -54,19 +58,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
     group.get('saved').patchValue(true);
   }
 
-  private fillTable(fieldSources: FieldSource[]): void {
-    this.fieldSourcesFormArray = new FormArray([]);
-    this.valid.emit(this.fieldSourcesFormArray.valid);
-    this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
-    for (let i = 0; i < fieldSources.length; i++) {
-      if (fieldSources[i].fieldTarget.fieldType === FieldType.METRIC) {
-        const formGroup = this.createFieldSourceGroup(i, fieldSources[i]);
-        this.fieldSourcesFormArray.push(formGroup);
-      }
-    }
-  }
-
-  isEditMode(group: AbstractControl): boolean {
+  isUnsaved(group: AbstractControl): boolean {
     return !group.get('saved').value;
   }
 }

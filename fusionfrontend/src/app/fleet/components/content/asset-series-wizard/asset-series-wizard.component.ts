@@ -68,23 +68,11 @@ export class AssetSeriesWizardComponent implements OnInit {
               private dynamicDialogRef: DynamicDialogRef,
   ) {
     this.resolve();
-
-    this.companyId = dialogConfig.data.companyId;
-    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
-    if (assetSeriesId) {
-      this.mode = DialogType.EDIT;
-    } else {
-      this.mode = DialogType.CREATE;
-    }
-
-    if (this.mode === DialogType.EDIT) {
-      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
-    }
+    this.initFromConfigData(dialogConfig);
   }
 
   ngOnInit() {
-    this.createAssetSeriesForm();
+    this.createAssetSeriesFormGroup();
   }
 
   private resolve() {
@@ -93,9 +81,21 @@ export class AssetSeriesWizardComponent implements OnInit {
     this.assetTypesResolver.resolve().subscribe();
   }
 
+  private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
+    this.companyId = dialogConfig.data.companyId;
+
+    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
+    this.mode = assetSeriesId ? DialogType.EDIT : DialogType.CREATE;
+
+    if (this.mode === DialogType.EDIT) {
+      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
+        .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
+    }
+  }
+
   private updateAssetSeries(assetSeries: AssetSeries) {
     this.assetSeries = assetSeries;
-    this.createAssetSeriesForm();
+    this.createAssetSeriesFormGroup();
     this.updateRelatedObjects(assetSeries);
   }
 
@@ -118,7 +118,7 @@ export class AssetSeriesWizardComponent implements OnInit {
           .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
   }
 
-  private createAssetSeriesForm(): void {
+  private createAssetSeriesFormGroup(): void {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
 
     this.assetSeriesForm = this.formBuilder.group({
@@ -136,10 +136,6 @@ export class AssetSeriesWizardComponent implements OnInit {
 
     if (this.assetSeries) {
       this.assetSeriesForm.patchValue(this.assetSeries);
-    }
-
-    if (this.mode === DialogType.EDIT) {
-      this.assetSeriesForm.get('assetTypeTemplateId').disable( { onlySelf: true });
     }
   }
 

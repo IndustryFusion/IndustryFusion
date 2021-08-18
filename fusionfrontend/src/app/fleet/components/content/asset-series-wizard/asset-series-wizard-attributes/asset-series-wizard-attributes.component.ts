@@ -21,28 +21,33 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
               private formBuilder: FormBuilder) {
   }
 
-  private createFieldSourceGroup(index: number, fieldSource: FieldSource): FormGroup {
-    const group = this.formBuilder.group({
-      id: [],
-      index: [],
-      sourceUnitName: [],
-      fieldName: [],
-      name: [],
-      value: ['', [Validators.maxLength(255)]],
-      saved: [true, Validators.requiredTrue],
-    });
-    group.get('id').patchValue(fieldSource.id);
-    group.get('index').patchValue(index);
-    group.get('sourceUnitName').patchValue(fieldSource.sourceUnit?.name);
-    group.get('name').patchValue(fieldSource.name);
-    group.get('value').patchValue(fieldSource.value);
-    const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
-    group.get('fieldName').patchValue(field.name);
-    return group;
+  ngOnInit(): void {
+    this.createFormArray(this.assetSeries.fieldSources);
   }
 
-  ngOnInit(): void {
-    this.fillTable(this.assetSeries.fieldSources);
+  private createFormArray(fieldSources: FieldSource[]): void {
+    this.fieldSourcesFormArray = new FormArray([]);
+    this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
+    for (let i = 0; i < fieldSources.length; i++) {
+      if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
+        const formGroup = this.createSingleFieldSourceFormGroup(i, fieldSources[i]);
+        this.fieldSourcesFormArray.push(formGroup);
+      }
+    }
+    this.valid.emit(this.fieldSourcesFormArray.valid);
+  }
+
+  private createSingleFieldSourceFormGroup(index: number, fieldSource: FieldSource): FormGroup {
+    const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+    return this.formBuilder.group({
+      id: [fieldSource.id],
+      index: [index],
+      sourceUnitName: [fieldSource.sourceUnit?.name],
+      fieldName: [field.name],
+      name: [fieldSource.name],
+      value: [fieldSource.value, [Validators.maxLength(255)]],
+      saved: [true, Validators.requiredTrue],
+    });
   }
 
   removeValue(group: AbstractControl): void {
@@ -57,19 +62,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
     group.get('saved').patchValue(true);
   }
 
-  private fillTable(fieldSources: FieldSource[]): void {
-    this.fieldSourcesFormArray = new FormArray([]);
-    this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
-    for (let i = 0; i < fieldSources.length; i++) {
-      if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
-        const formGroup = this.createFieldSourceGroup(i, fieldSources[i]);
-        this.fieldSourcesFormArray.push(formGroup);
-      }
-    }
-    this.valid.emit(this.fieldSourcesFormArray.valid);
-  }
-
-  isEditMode(group: AbstractControl): boolean {
+  isUnsaved(group: AbstractControl): boolean {
     return !group.get('saved').value;
   }
 }
