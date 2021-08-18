@@ -118,6 +118,11 @@ public class AssetSeriesService {
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
+
+        if (!targetAssetSeries.isConnectivitySettingsUnchanged(sourceAssetSeries)) {
+            throw new RuntimeException("It is not allowed to change the connectivity settings.");
+        }
+
         targetAssetSeries.copyFrom(sourceAssetSeries);
 
         return targetAssetSeries;
