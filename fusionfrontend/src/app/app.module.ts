@@ -34,6 +34,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { TokenInterceptor } from './services/token.interceptor';
 import { DashboardModule } from './dashboards/dashboard.module';
+import { NotificationsModule } from './notifications/notifications.module';
 import { IFCommon } from './common/i-f-common.module';
 import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
 import { ErrorInterceptor } from './services/error.interceptor';
@@ -57,6 +58,7 @@ import { ToastModule } from 'primeng/toast';
     SettingsModule,
     DashboardModule,
     FusionAppletsModule,
+    NotificationsModule,
     AkitaNgRouterStoreModule,
     ClarityModule,
     BrowserAnimationsModule,

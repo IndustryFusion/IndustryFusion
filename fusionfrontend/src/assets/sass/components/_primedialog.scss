@@ -18,14 +18,14 @@
 
 .p-dialog .p-dialog-titlebar {
     background: white !important;
-    color: black !important;
+    color: $basic-black !important;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    border-bottom-color: white;
+    border-bottom-color: $basic-white;
   }
 
   .p-dialog .p-dialog-titlebar .p-dialog-titlebar-icon {
-    color: black !important;
+    color: $basic-black !important;
   }
 
 .p-dialog .p-dialog-header {

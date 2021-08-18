@@ -13,7 +13,8 @@
  * under the License.
  */
 
-
+@import 'base/typography';
+@import "abstract/variables";
 
 .table-wrapper{
   min-height: 500px;
@@ -21,14 +22,14 @@
 
 .label{
   border: 0;
-  color: #95989A;
+  color: $basic-grey;
 }
 
 .value {
   font-weight: bold;
   text-align: right;
   padding: 12px 0;
-  color: black;
+  color: $basic-black;
   text-overflow: ellipsis;
   max-width: 160px;
   white-space: nowrap;
@@ -36,7 +37,7 @@
 
   span{
     font-weight: normal;
-    color: #95989A;
+    color: $basic-grey;
   }
 }
 
@@ -73,7 +74,7 @@
 .progress {
   line-height: 28px;
   width: 100%;
-  background-color: #c9c9c9;
+  background-color: #C9C9C9;
   position: relative;
   display: table;
   border-radius: 5px;
@@ -94,9 +95,8 @@
   background-color: gray;
   display: inline-block;
   height: 100%;
-  color: white;
+  color: $basic-white;
   text-align: center;
-  // width:50%;
 }
 
 .details-value {

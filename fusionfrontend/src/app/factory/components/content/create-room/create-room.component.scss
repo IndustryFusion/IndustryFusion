@@ -13,20 +13,22 @@
  * under the License.
  */
 
+@import 'abstract/variables';
+
 .footer{
   display: flex;
   justify-content: flex-end;
 
   .black{
-    color: white;
-    background-color: black;
-    border-color: black;
+    color: $basic-white;
+    background-color: $basic-black;
+    border-color: $basic-black;
   }
 
   .white{
-    color: black;
-    background-color: white;
-    border-color: white;
+    color: $basic-black;
+    background-color: $basic-white;
+    border-color: $basic-white;
   }
 
 }
