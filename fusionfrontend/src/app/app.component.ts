@@ -61,9 +61,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private periodicallyFetchOpenAlertCount() {
-    AppComponent.fetchOpenNotificationCount(this.oispAlertResolver);
-    this.intervalHandle = setInterval(() => AppComponent.fetchOpenNotificationCount(this.oispAlertResolver),
-      this.FETCHING_INTERVAL_MILLISECONDS);
+    if (this.FETCHING_INTERVAL_MILLISECONDS > 0) {
+      AppComponent.fetchOpenNotificationCount(this.oispAlertResolver);
+      this.intervalHandle = setInterval(() => AppComponent.fetchOpenNotificationCount(this.oispAlertResolver),
+        this.FETCHING_INTERVAL_MILLISECONDS);
+    }
   }
 
   ngOnDestroy() {
