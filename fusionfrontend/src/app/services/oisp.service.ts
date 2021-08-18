@@ -62,10 +62,12 @@ export class OispService {
   }
 
   getAssetDetailsFieldsWithReplacedExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    return this.replaceExternalIdsOfFieldsWithUid(assetDetails);
+    return this.replaceExternalIdsOfFieldsWithUid(assetDetails) as Observable<FactoryAssetDetailsWithFields>;
   }
 
-  private replaceExternalIdsOfFieldsWithUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields): Observable<any> {
+  // TODO: refactor, see IF-371
+  private replaceExternalIdsOfFieldsWithUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields):
+    Observable<FactoryAssetDetailsWithFields | AssetWithFields> {
     if (!assetOrAssetDetails) {
       return EMPTY;
     }
