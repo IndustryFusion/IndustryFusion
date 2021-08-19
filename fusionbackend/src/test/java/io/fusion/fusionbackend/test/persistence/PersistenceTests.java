@@ -132,7 +132,6 @@ public class PersistenceTests extends PersistenceTestsBase {
         assertNotNull(foundSeries);
         assertEquals(connectivityType, foundSeries.getConnectivitySettings().getConnectivityType());
         assertEquals(connectivityProtocol, foundSeries.getConnectivitySettings().getConnectivityProtocol());
-
     }
 
     @Test
@@ -196,7 +195,8 @@ public class PersistenceTests extends PersistenceTestsBase {
     /**
      * This is only an example test for the functionality of JPA/Hibernate itself. The intent is to show an alternative
      * to the copyFrom() approach. The latter is the current implementation for making updates.
-     * <p>
+     * <br>
+     * <br>
      * This test is more an example than an automatic running unit test. Therefore, it is not written clean.
      */
     @Test
