@@ -88,7 +88,7 @@ export class FactorySiteDialogComponent implements OnInit {
       line2: [''],
       city: ['', requiredTextValidator],
       zip: [''],
-      countryId: [countryIdGermany, Validators.required],
+      countryId: [this.type === DialogType.CREATE ? countryIdGermany : null, Validators.required],
       latitude: [0],
       longitude: [0],
       type: [null, requiredTextValidator]
