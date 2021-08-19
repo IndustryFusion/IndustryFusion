@@ -88,6 +88,8 @@ public class AssetSeriesService {
                                          final Long connectivityProtocolId,
                                          final AssetSeries assetSeries) {
 
+        validate(assetSeries);
+
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
 
@@ -118,17 +120,25 @@ public class AssetSeriesService {
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
-        if (sourceAssetSeries.getConnectivitySettings() != null) {
-            throw new RuntimeException("There must be connectivity settings for every asset series");
-        }
+        validate(sourceAssetSeries);
 
-        if (!targetAssetSeries.isConnectivitySettingsUnchanged(sourceAssetSeries)) {
-            throw new RuntimeException("It is not allowed to change the connectivity settings.");
-        }
+        validateForUpdates(sourceAssetSeries, targetAssetSeries);
 
         targetAssetSeries.copyFrom(sourceAssetSeries);
 
         return targetAssetSeries;
+    }
+
+    private void validateForUpdates(AssetSeries sourceAssetSeries, AssetSeries targetAssetSeries) {
+        if (!targetAssetSeries.isConnectivitySettingsUnchanged(sourceAssetSeries)) {
+            throw new RuntimeException("It is not allowed to change the connectivity settings.");
+        }
+    }
+
+    private void validate(AssetSeries sourceAssetSeries) {
+        if (sourceAssetSeries.getConnectivitySettings() == null) {
+            throw new RuntimeException("There must be connectivity settings for every asset series");
+        }
     }
 
     public void deleteAssetSeries(final Long companyId, final Long assetSeriesId) {
