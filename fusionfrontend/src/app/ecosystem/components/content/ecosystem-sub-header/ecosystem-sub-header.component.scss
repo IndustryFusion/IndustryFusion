@@ -26,7 +26,7 @@ ul {
     cursor: pointer;
 
     &.active {
-      color: black;
+      color: $basic-black;
       background: transparent linear-gradient(92deg, #8AC9C1 0%, #0089D8 100%) 0 100% no-repeat padding-box;
       background-size:100% 5px ;
     }

@@ -29,7 +29,7 @@
   border-color: lightgray;
 
   button {
-    color: black;
+    color: $basic-black;
   }
 
   .manage {
@@ -43,7 +43,7 @@
   border-radius: 10px;
   display: flex;
   background: black;
-  color: white;
+  color: $basic-white;
   justify-content: space-between;
   align-items: baseline;
 
@@ -56,7 +56,7 @@
     justify-content: center;
 
     .btn {
-      color: white;
+      color: $basic-white;
       border: 0;
       margin: auto 15px;
       .icon{
@@ -67,7 +67,7 @@
   }
 
   .btn {
-    color: white;
+    color: $basic-white;
   }
 
   .btn-link {
@@ -97,7 +97,3 @@
     }
   }
 }
-
-
-
-

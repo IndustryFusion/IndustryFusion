@@ -16,6 +16,7 @@
 import { BaseEntity } from '../baseentity.model';
 import { ID } from '@datorama/akita';
 
+// Data come from entities field_instance, field_target and field
 export class FieldDetails extends BaseEntity {
   assetId: ID;
   externalId: string;

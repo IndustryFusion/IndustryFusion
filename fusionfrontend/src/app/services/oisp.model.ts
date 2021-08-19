@@ -168,19 +168,24 @@ export enum BaselineCalculationLevel {
 
 export class DeviceComponent {
   cid: string;
-  componentType: ComponentType;
-  componentTypeId: string;
   name: string;
+  componentTypeId: string;
+  componentType: ComponentType;
   type: string;
 }
 
 export class Device {
+  attributes: any;
   components: DeviceComponent[];
+  contact: any;
+  created: Date;
   deviceId: string;
+  domainId: string;
   gatewayId: string;
   name: string;
-  tags: string[];
   status: string;
+  tags: string[];
+  uid: string;
 }
 
 export enum ConditionType {
@@ -189,17 +194,14 @@ export enum ConditionType {
   statistics = 'statistics',
 }
 
-export function displayConstionType(type: ConditionType): string {
+export function displayConditionType(type: ConditionType): string {
   switch (type){
     case ConditionType.basic:
       return 'Basic Condition';
-      break;
     case ConditionType.time:
       return 'Timebased Condition';
-      break;
     case ConditionType.statistics:
       return 'Statistic based Condition';
-      break;
   }
 }
 
