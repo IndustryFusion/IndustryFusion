@@ -18,11 +18,11 @@ under the License.
     <div [formGroup]="factorySiteForm">
       <div class="p-grid">
         <div class="p-col-7 p-grid p-dir-col factory-div">
-          <label class="p-col if-label">Factory name</label>
+          <label class="p-col if-label">Factory name&nbsp;*</label>
           <input type="text" pInputText formControlName="name" placeholder="Name" class="factory-site-input p-col">
         </div>
         <div class="p-col-4 p-grid p-dir-col factory-div">
-          <label class="p-col if-label">Factory type</label>
+          <label class="p-col if-label">Factory type&nbsp;*</label>
           <p-dropdown [options]="factorySiteTypes" formControlName="type" placeholder="Factory type"
                       class="p-col factory-dropdown"></p-dropdown>
         </div>
@@ -47,12 +47,12 @@ under the License.
             <input type="text" pInputText formControlName="zip" placeholder="Zip code" class="address-input p-col">
           </div>
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label">City</label>
+            <label class="p-col if-label">City&nbsp;*</label>
             <input type="text" pInputText formControlName="city" placeholder="City" class="address-input p-col">
           </div>
 
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label">Country</label>
+            <label class="p-col if-label">Country&nbsp;*</label>
             <p-dropdown class="" [options]="countries" formControlName="countryId"
                         filter="true" resetFilterOnHide="true"
                         placeholder="Select a country...">
