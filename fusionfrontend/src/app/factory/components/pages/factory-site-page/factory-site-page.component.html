@@ -13,12 +13,12 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [rooms]="(allRoomsOfFactorySite$ | async)" [assets]="(assets$ | async)"></app-company-info>
+<app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
 
 <app-assets-list [company]="(company$ | async)"
                  [factorySites]="(factorySites$ | async)"
                  [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)"
-                 [allRoomsOfFactorySite]="(allRoomsOfFactorySite$ | async)"
+                 [allRoomsOfFactorySite]="(roomsOfFactorySite$ | async)"
                  [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"

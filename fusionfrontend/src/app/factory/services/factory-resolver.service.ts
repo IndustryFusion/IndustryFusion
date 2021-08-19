@@ -51,7 +51,7 @@ export class FactoryResolver {
   public factorySites$: Observable<FactorySite[]>;
   public factorySite$: Observable<FactorySite>;
   public rooms$: Observable<Room[]>;
-  public allRoomsOfFactorySite$: Observable<Room[]>;
+  public roomsOfFactorySite$: Observable<Room[]>;
   public room$: Observable<Room>;
   public assetSeries$: Observable<AssetSeriesDetails[]>;
   public assets$: Observable<Asset[]>;
@@ -117,8 +117,8 @@ export class FactoryResolver {
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
       this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
-      this.rooms$ = this.roomQuery.selectRoomsOfCompany(companyId);
-      this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
+      this.rooms$ = this.roomQuery.selectRoomsOfCompany(companyId); // TODO: shouldn't this be selectRoomsOfFactorySite(factorySiteId)?
+      this.roomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
       this.assets$ = this.factoryComposedQuery.selectAssetsOfFactorySite(factorySiteId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery
@@ -128,7 +128,7 @@ export class FactoryResolver {
     this.roomService.setActive(roomId);
     if (roomId != null) {
       this.rooms$ = this.roomQuery.selectActive().pipe(map(room => Array(room)));
-      this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
+      this.roomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assets$ = this.assetQuery.selectAssetsOfRoom(roomId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId);
     }
