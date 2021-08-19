@@ -38,7 +38,7 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   companyId: ID;
   factorySites$: Observable<FactorySiteWithAssetCount[]>;
   factorySiteMapping:
-    { [k: string]: string } = { '=0': 'No factories', '=1': '# Factory site', other: '# Factory sites' };
+    { [k: string]: string } = { '=0': 'No Factory sites', '=1': '# Factory site', other: '# Factory sites' };
   sortField: string;
   sortType: string;
 

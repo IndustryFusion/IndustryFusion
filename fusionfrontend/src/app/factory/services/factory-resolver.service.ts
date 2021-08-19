@@ -157,7 +157,7 @@ export class FactoryResolver {
 
     const pageTypes: FactoryManagerPageType[] = (activatedRoute.snapshot.data as RouteData).pageTypes || [];
     if (pageTypes.includes(FactoryManagerPageType.COMPANY_DETAIL)) {
-      this.factorySubTitle$.next('My Factories');
+      this.factorySubTitle$.next('My Factory Sites');
     } else if (pageTypes.includes(FactoryManagerPageType.ASSET_DETAIL)) {
       this.assetQuery
         .waitForActive()
