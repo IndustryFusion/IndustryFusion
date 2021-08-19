@@ -89,8 +89,7 @@ export class FactoryResolver {
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
-    this.countries$ = this.countryResolver.resolve();
-
+    this.countryResolver.resolve().subscribe();
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
     const companyId = activatedRoute.snapshot.paramMap.get('companyId');

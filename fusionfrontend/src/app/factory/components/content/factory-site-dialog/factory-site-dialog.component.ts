@@ -16,12 +16,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FactorySite, FactorySiteType } from 'src/app/store/factory-site/factory-site.model';
 import { SelectItem } from 'primeng/api';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { debounceTime } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 import { CountryQuery } from '../../../../store/country/country.query';
+import { CompanyQuery } from '../../../../store/company/company.query';
+import { RoomService } from '../../../../store/room/room.service';
+import { FactorySiteService } from '../../../../store/factory-site/factory-site.service';
+import { CountryResolver } from '../../../../resolvers/country.resolver';
 
 @Component({
   selector: 'app-factory-site-dialog',
@@ -34,7 +38,6 @@ export class FactorySiteDialogComponent implements OnInit {
   factorySiteForm: FormGroup;
   factorySiteTypes: SelectItem[];
   countries: SelectItem[] = [];
-  formChange: Subscription;
   factorySite: FactorySite;
   type: DialogType;
 
@@ -43,7 +46,13 @@ export class FactorySiteDialogComponent implements OnInit {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
+    private formBuilder: FormBuilder,
+    private factorySiteService: FactorySiteService,
+    private roomService: RoomService,
+    private countryResolver: CountryResolver,
+    private companyQuery: CompanyQuery,
     private countryQuery: CountryQuery) {
+
     this.factorySiteTypes = [
       { label: 'Headquarter', value: FactorySiteType.HEADQUARTER },
       { label: 'Fabrication', value: FactorySiteType.FABRICATION },
@@ -51,21 +60,62 @@ export class FactorySiteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.factorySiteForm = this.config.data.factorySiteForm;
     this.type = this.config.data.type;
-    this.updateFactorySite();
-    this.formChange = this.factorySiteForm.valueChanges.pipe(
-      debounceTime(200)
-    ).subscribe(() => {
-     this.updateFactorySite();
+    this.factorySite = this.config.data.factorySite;
+
+    this.countryResolver.resolve().subscribe(() => {
+      this.createFormGroup();
+      this.subscribeToCoordinateUpdates();
+      this.updateAddressToChangeLongitudeAndLatitudeInMap();
     });
     this.createCountriesItems();
   }
 
-  private updateFactorySite() {
+  private updateAddressToChangeLongitudeAndLatitudeInMap() {
     this.factorySite = { ...this.factorySite, ...this.factorySiteForm.value };
     this.factorySite.country = this.countryQuery.getEntity(this.factorySite.countryId);
   }
+
+  private createFormGroup() {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+    const countryIdGermany = this.countryQuery.getAll().find(country => country.name === 'Germany').id;
+
+    this.factorySiteForm = this.formBuilder.group({
+      id: [],
+      companyId: [],
+      name: ['', requiredTextValidator],
+      line1: [''],
+      line2: [''],
+      city: ['', requiredTextValidator],
+      zip: [''],
+      countryId: [countryIdGermany, Validators.required],
+      latitude: [0],
+      longitude: [0],
+      type: [null, requiredTextValidator]
+    });
+
+    if (this.factorySite && this.type === DialogType.EDIT) {
+      this.factorySiteForm.patchValue(this.factorySite);
+    } else {
+      this.factorySite = this.factorySiteForm.getRawValue() as FactorySite;
+    }
+  }
+
+  private subscribeToCoordinateUpdates() {
+    this.updateCoordinatesDelayed(this.factorySiteForm.get('line1').valueChanges);
+    this.updateCoordinatesDelayed(this.factorySiteForm.get('line2').valueChanges);
+    this.updateCoordinatesDelayed(this.factorySiteForm.get('zip').valueChanges);
+    this.updateCoordinatesDelayed(this.factorySiteForm.get('city').valueChanges);
+    this.updateCoordinatesDelayed(this.factorySiteForm.get('countryId').valueChanges);
+  }
+
+  private updateCoordinatesDelayed(s: Observable<any>): void {
+    s.pipe(
+        debounceTime(200)
+    ).subscribe(() => {
+      this.updateAddressToChangeLongitudeAndLatitudeInMap();
+    });
+}
 
   onCancel() {
     this.ref.close();
@@ -77,10 +127,31 @@ export class FactorySiteDialogComponent implements OnInit {
       factorySite.longitude = this.factorySite.longitude;
       factorySite.latitude = this.factorySite.latitude;
       factorySite.country = this.countryQuery.getEntity(factorySite.countryId);
+      factorySite.companyId = this.companyQuery.getActiveId();
       this.factorySite = factorySite;
+
+      if (this.type === DialogType.CREATE) {
+        this.create();
+      } else if (this.type === DialogType.EDIT) {
+        this.edit();
+      }
 
       this.ref.close(this.factorySite);
     }
+  }
+
+  private create() {
+    this.factorySiteService.createFactorySite(this.factorySite).subscribe(newFactorySite => {
+        this.roomService.getRoomsOfFactorySite(this.factorySite.companyId, newFactorySite.id).subscribe();
+      },
+      error => console.log(error)
+    );
+  }
+
+  private edit() {
+    this.factorySiteService.updateFactorySite(this.factorySite).subscribe(
+      error => console.log(error)
+    );
   }
 
   private createCountriesItems() {

@@ -22,7 +22,7 @@ under the License.
     <div class="list-container">
       <app-factory-sites-list-header (sortEvent)="onSort($event)"></app-factory-sites-list-header>
       <app-factory-sites-list-item *ngFor="let factorySite of (factorySites$ | async) | sortExtended:sortField:sortType"
-                               [factorySite]="factorySite" (updateFactorySiteEvent)="factorySiteUpdated($event)">
+                               [factorySite]="factorySite">
       </app-factory-sites-list-item>
     </div>
   </div>
