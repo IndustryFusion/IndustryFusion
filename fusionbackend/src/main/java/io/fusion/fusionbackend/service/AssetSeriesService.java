@@ -118,6 +118,9 @@ public class AssetSeriesService {
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
+        if (sourceAssetSeries.getConnectivitySettings() != null) {
+            throw new RuntimeException("There must be connectivity settings for every asset series");
+        }
 
         if (!targetAssetSeries.isConnectivitySettingsUnchanged(sourceAssetSeries)) {
             throw new RuntimeException("It is not allowed to change the connectivity settings.");
