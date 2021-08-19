@@ -74,6 +74,8 @@ export class FactorySiteDialogComponent implements OnInit {
   onSave() {
     if (this.factorySiteForm.valid) {
       const factorySite = this.factorySiteForm.getRawValue() as FactorySite;
+      factorySite.longitude = this.factorySite.longitude;
+      factorySite.latitude = this.factorySite.latitude;
       factorySite.country = this.countryQuery.getEntity(factorySite.countryId);
       this.factorySite = factorySite;
 
