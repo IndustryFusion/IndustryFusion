@@ -24,7 +24,7 @@ import { CompanyQuery } from 'src/app/store/company/company.query';
 import { Location } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateRoomComponent } from '../create-room/create-room.component';
+import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
 import { MenuItem } from 'primeng/api';
 import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset-to-room.component';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
@@ -124,7 +124,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   showCreateDialog() {
     this.createRoomForm(this.formBuilder);
-    const ref = this.dialogService.open(CreateRoomComponent, {
+    const ref = this.dialogService.open(RoomDialogComponent, {
       data: {
         roomForm: this.roomForm,
         factorySites: this.factorySites,
@@ -147,7 +147,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   showEditDialog() {
     this.createRoomForm(this.formBuilder, this.activeListItem);
-    const ref = this.dialogService.open(CreateRoomComponent, {
+    const ref = this.dialogService.open(RoomDialogComponent, {
       data: {
         room: this.activeListItem,
         roomForm: this.roomForm,
@@ -222,4 +222,3 @@ export class RoomsListComponent implements OnInit, OnChanges {
     this.routingLocation.back();
   }
 }
-

@@ -20,11 +20,11 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-create-room',
-  templateUrl: './create-room.component.html',
-  styleUrls: ['./create-room.component.scss']
+  selector: 'app-room-dialog',
+  templateUrl: './room-dialog.component.html',
+  styleUrls: ['./room-dialog.component.scss']
 })
-export class CreateRoomComponent implements OnInit {
+export class RoomDialogComponent implements OnInit {
 
   roomForm: FormGroup;
   rooms: Room[];

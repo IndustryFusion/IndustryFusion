@@ -32,7 +32,7 @@ import { AssetCardComponent } from './components/content/asset-card/asset-card.c
 import { AssetDetailsHeaderComponent } from './components/content/asset-details/asset-details-header/asset-details-header.component';
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
-import { CreateRoomComponent } from './components/content/create-room/create-room.component';
+import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
@@ -83,7 +83,7 @@ import { AssignAssetToRoomComponent } from './components/content/assign-asset-to
     FactoryPageTitleComponent,
     MaintenanceBarComponent,
     AssetChartsComponent,
-    CreateRoomComponent,
+    RoomDialogComponent,
     RoomsPageComponent,
     AssetTablesComponent,
     StatusComponent,
