@@ -33,7 +33,7 @@ import { AssetDetailsHeaderComponent } from './components/content/asset-details/
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { CreateRoomComponent } from './components/content/create-room/create-room.component';
-import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
+import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
 import { EditRoomComponent } from './components/content/edit-room/edit-room.component';
 import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
@@ -82,7 +82,7 @@ import { FactorySitesListHeaderComponent } from './components/content/factory-si
     MaintenanceBarComponent,
     AssetChartsComponent,
     CreateRoomComponent,
-    RoomsPageComponent,
+    FactorySiteRoomsPageComponent,
     EditRoomComponent,
     AssetTablesComponent,
     StatusComponent,

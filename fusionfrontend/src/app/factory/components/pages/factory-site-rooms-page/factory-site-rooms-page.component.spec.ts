@@ -15,21 +15,21 @@
 
  import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
- import { RoomsPageComponent } from './rooms-page.component';
+ import { FactorySiteRoomsPageComponent } from './factory-site-rooms-page.component';
 
- describe('RoomsPageComponent', () => {
-  let component: RoomsPageComponent;
-  let fixture: ComponentFixture<RoomsPageComponent>;
+ describe('FactorySiteRoomsPageComponent', () => {
+  let component: FactorySiteRoomsPageComponent;
+  let fixture: ComponentFixture<FactorySiteRoomsPageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoomsPageComponent ]
+      declarations: [ FactorySiteRoomsPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RoomsPageComponent);
+    fixture = TestBed.createComponent(FactorySiteRoomsPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

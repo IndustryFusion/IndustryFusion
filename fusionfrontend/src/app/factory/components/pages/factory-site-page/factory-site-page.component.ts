@@ -40,7 +40,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
   factorySites$: Observable<FactorySite[]>;
   factorySite$: Observable<FactorySite>;
   rooms$: Observable<Room[]>;
-  allRoomsOfFactorySite$: Observable<Room[]>;
+  roomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   selectedIds: ID[];
@@ -64,7 +64,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.factorySite$ = this.factoryResolver.factorySite$;
     this.rooms$ = this.factoryResolver.rooms$;
-    this.allRoomsOfFactorySite$ = this.factoryResolver.allRoomsOfFactorySite$;
+    this.roomsOfFactorySite$ = this.factoryResolver.roomsOfFactorySite$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
