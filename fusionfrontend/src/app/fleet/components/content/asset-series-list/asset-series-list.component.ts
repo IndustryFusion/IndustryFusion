@@ -22,7 +22,7 @@ import { tap } from 'rxjs/operators';
 import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { DialogService } from 'primeng/dynamicdialog';
-import { AssetSeriesCreateComponent } from '../asset-series-create/asset-series-create.component';
+import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-wizard.component';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
@@ -152,7 +152,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   public startAssetSeriesWizard(idString: string) {
-    const dynamicDialogRef = this.dialogService.open(AssetSeriesCreateComponent, {
+    const dynamicDialogRef = this.dialogService.open(AssetSeriesWizardComponent, {
       data: {
         companyId: this.companyQuery.getActiveId(),
         assetSeriesId: idString,

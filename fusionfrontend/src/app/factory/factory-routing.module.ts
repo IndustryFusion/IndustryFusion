@@ -21,7 +21,7 @@ import { FactorySitePageComponent } from './components/pages/factory-site-page/f
 import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { AssetDetailsPageComponent } from './components/pages/asset-details-page/asset-details-page.component';
-import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
+import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryManagerPageType } from './factory-routing.model';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
@@ -84,7 +84,7 @@ const routes: Routes = [
   },
   {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms',
-    component: RoomsPageComponent,
+    component: FactorySiteRoomsPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],

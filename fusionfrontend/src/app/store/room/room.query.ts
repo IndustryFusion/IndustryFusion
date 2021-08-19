@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 import { BaseQueryEntity } from '../basequery';
 import { Room } from './room.model';
 import { RoomState, RoomStore } from './room.store';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class RoomQuery extends BaseQueryEntity<RoomState, Room> {
@@ -32,7 +33,9 @@ export class RoomQuery extends BaseQueryEntity<RoomState, Room> {
     });
   }
 
-  selectAllRooms(): Observable<Room[]> {
-    return this.selectAll();
+  selectRoomsOfCompany(companyId: ID): Observable<Room[]> {
+    return this.selectAll().pipe(map(rooms => {
+      return rooms.filter(room => String(room.factorySite.companyId) === String(companyId));
+    }));
   }
 }
