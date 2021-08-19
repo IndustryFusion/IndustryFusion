@@ -8,8 +8,7 @@ import { FactoryAssetDetails, AssetModalType } from 'src/app/store/factory-asset
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
-import { MenuItem } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-assets-list-item',
@@ -23,8 +22,6 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   assetWithDetailsAndFields: FactoryAssetDetailsWithFields;
   @Input()
   rooms: Room[];
-  @Input()
-  allRoomsOfFactorySite: Room[];
   @Input()
   room: Room;
   @Input()
