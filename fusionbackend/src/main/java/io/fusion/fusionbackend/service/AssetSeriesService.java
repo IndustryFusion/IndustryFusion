@@ -62,7 +62,8 @@ public class AssetSeriesService {
                               FieldSourceRepository fieldSourceRepository,
                               CompanyService companyService,
                               UnitService unitService,
-                              FieldSourceService fieldSourceService, ConnectivityTypeRepository connectivityTypeRepository,
+                              FieldSourceService fieldSourceService,
+                              ConnectivityTypeRepository connectivityTypeRepository,
                               ConnectivityProtocolRepository connectivityProtocolRepository) {
         this.assetSeriesRepository = assetSeriesRepository;
         this.assetTypeTemplateService = assetTypeTemplateService;
