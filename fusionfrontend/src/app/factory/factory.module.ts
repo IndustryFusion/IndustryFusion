@@ -34,7 +34,6 @@ import { MaintenanceBarComponent } from './components/content/asset-details/main
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { CreateRoomComponent } from './components/content/create-room/create-room.component';
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
-import { EditRoomComponent } from './components/content/edit-room/edit-room.component';
 import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
@@ -86,7 +85,6 @@ import { AssignAssetToRoomComponent } from './components/content/assign-asset-to
     AssetChartsComponent,
     CreateRoomComponent,
     RoomsPageComponent,
-    EditRoomComponent,
     AssetTablesComponent,
     StatusComponent,
     FactorySitesListHeaderComponent,
