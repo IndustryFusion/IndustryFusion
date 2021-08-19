@@ -4,6 +4,7 @@ import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.ConnectivityProtocol;
+import io.fusion.fusionbackend.model.ConnectivitySettings;
 import io.fusion.fusionbackend.model.ConnectivityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityProto
 import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityTypeBuilder.aConnectivityType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 
 public class PersistenceTests extends PersistenceTestsBase {
 
+    public static final String NEW_STRING_VALUE = "New String Value";
     @Autowired
     private TestEntityManager testEntityManager;
 
@@ -187,6 +191,65 @@ public class PersistenceTests extends PersistenceTestsBase {
 
         assertEquals(connectivityTypeAfter, updatedAssetSeries.getConnectivitySettings().getConnectivityType());
         assertEquals(connectivityProtocolAfter, updatedAssetSeries.getConnectivitySettings().getConnectivityProtocol());
+    }
+
+    /**
+     * This is only an example test for the functionality of JPA/Hibernate itself. The intent is to show an alternative
+     * to the copyFrom() approach. The latter is the current implementation for making updates.
+     * <p>
+     * This test is more an example than an automatic running unit test. Therefore, it is not written clean.
+     */
+    @Test
+    void simulateChangesForDetachedEntities() {
+        //Set-up
+        ConnectivityType connectivityType = persisted(aConnectivityType()
+                .withProtocol(persisted(aConnectivityProtocol())))
+                .build();
+
+        ConnectivityProtocol connectivityProtocol = connectivityType.getAvailableProtocols().iterator().next();
+
+        AssetSeries sourceAssetSeries = persisted(anAssetSeries()
+                .forCompany(persisted(aCompany()))
+                .basedOnTemplate(persisted(anAssetTypeTemplate()
+                        .forType(persisted(anAssetType()))))
+                .withConnectivitySettingsFor(connectivityType, connectivityProtocol))
+                .build();
+
+        //Simulate frontend changes
+        testEntityManager.detach(sourceAssetSeries);
+        ConnectivitySettings oldConnectivitySettings = sourceAssetSeries.getConnectivitySettings();
+
+        sourceAssetSeries.setName(NEW_STRING_VALUE);
+        ConnectivityProtocol otherConnectivityProtocol = persisted(aConnectivityProtocol()).build();
+        ConnectivitySettings newTransientConnectivitySettings = ConnectivitySettings.builder()
+                .connectionString(NEW_STRING_VALUE)
+                .connectivityType(connectivityType)
+                .connectivityProtocol(otherConnectivityProtocol)
+                .build();
+        sourceAssetSeries.setConnectivitySettings(newTransientConnectivitySettings);
+
+        //Simulate backend processing and assert result
+        AssetSeries targetAssetSeries = testEntityManager.find(AssetSeries.class, sourceAssetSeries.getId());
+
+        sourceAssetSeries = testEntityManager.merge(sourceAssetSeries);
+        testEntityManager.flush();
+
+        assertEquals(targetAssetSeries, sourceAssetSeries);
+        assertSame(targetAssetSeries, sourceAssetSeries);
+
+        assertEquals(NEW_STRING_VALUE, targetAssetSeries.getName());
+        assertEquals(NEW_STRING_VALUE, targetAssetSeries.getConnectivitySettings().getConnectionString());
+        assertEquals(otherConnectivityProtocol, targetAssetSeries.getConnectivitySettings().getConnectivityProtocol());
+
+        //"manual" cleanup of orphans
+        oldConnectivitySettings = testEntityManager.find(ConnectivitySettings.class, oldConnectivitySettings.getId());
+        assertNotNull(oldConnectivitySettings);
+
+        testEntityManager.remove(oldConnectivitySettings);
+        testEntityManager.flush();
+        oldConnectivitySettings = testEntityManager.find(ConnectivitySettings.class, oldConnectivitySettings.getId());
+        assertNull(oldConnectivitySettings);
+
     }
 
 }
