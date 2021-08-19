@@ -87,6 +87,11 @@ public class Asset extends BaseAsset {
     protected String videoKey;
     protected OffsetDateTime installationDate;
 
+    /**
+     * This connectionsString attribute is derived from the {@link ConnectivitySettings#getConnectionString()}.
+     * From a business point of view it is the same concept but up to now, assets do not have
+     * their own {@link ConnectivitySettings}.
+     */
     @Column(nullable = false)
     protected String connectionString;
 

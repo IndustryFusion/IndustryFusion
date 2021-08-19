@@ -31,16 +31,16 @@ import { RoomQuery } from '../../../../store/room/room.query';
 import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
 
 @Component({
-  selector: 'app-rooms-page',
-  templateUrl: './rooms-page.component.html',
-  styleUrls: ['./rooms-page.component.scss']
+  selector: 'app-factory-site-rooms-page',
+  templateUrl: './factory-site-rooms-page.component.html',
+  styleUrls: ['./factory-site-rooms-page.component.scss']
 })
-export class RoomsPageComponent implements OnInit {
+export class FactorySiteRoomsPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
   assets$: Observable<Asset[]>;
   factorySite$: Observable<FactorySite>;
-  allRoomsOfFactorySite$: Observable<Room[]>;
+  roomsOfFactorySite$: Observable<Room[]>;
   activeRoom$: Observable<Room>;
 
   companyId: ID;
@@ -66,7 +66,7 @@ export class RoomsPageComponent implements OnInit {
     this.factoryResolver.resolve(this.activatedRoute);
     this.company$ = this.factoryResolver.company$;
     this.factorySite$ = this.factoryResolver.factorySite$;
-    this.allRoomsOfFactorySite$ = this.factoryResolver.allRoomsOfFactorySite$;
+    this.roomsOfFactorySite$ = this.factoryResolver.roomsOfFactorySite$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.factorySiteId = this.factorySiteQuery.getActiveId();
