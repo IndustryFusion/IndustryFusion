@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -48,7 +49,7 @@ public class AssetSeriesService {
     private final FieldSourceRepository fieldSourceRepository;
     private final CompanyService companyService;
     private final UnitService unitService;
-
+    private final FieldSourceService fieldSourceService;
     private final ConnectivityTypeRepository connectivityTypeRepository;
     private final ConnectivityProtocolRepository connectivityProtocolRepository;
 
@@ -61,13 +62,14 @@ public class AssetSeriesService {
                               FieldSourceRepository fieldSourceRepository,
                               CompanyService companyService,
                               UnitService unitService,
-                              ConnectivityTypeRepository connectivityTypeRepository,
+                              FieldSourceService fieldSourceService, ConnectivityTypeRepository connectivityTypeRepository,
                               ConnectivityProtocolRepository connectivityProtocolRepository) {
         this.assetSeriesRepository = assetSeriesRepository;
         this.assetTypeTemplateService = assetTypeTemplateService;
         this.fieldSourceRepository = fieldSourceRepository;
         this.companyService = companyService;
         this.unitService = unitService;
+        this.fieldSourceService = fieldSourceService;
         this.connectivityTypeRepository = connectivityTypeRepository;
         this.connectivityProtocolRepository = connectivityProtocolRepository;
     }
@@ -123,6 +125,10 @@ public class AssetSeriesService {
         validate(sourceAssetSeries);
 
         validateForUpdates(sourceAssetSeries, targetAssetSeries);
+
+        List<FieldSource> deletedFieldSources = targetAssetSeries.calculateDeletedFieldSources(sourceAssetSeries);
+
+        deletedFieldSources.forEach(fieldSourceService::delete);
 
         targetAssetSeries.copyFrom(sourceAssetSeries);
 

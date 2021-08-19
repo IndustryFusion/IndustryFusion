@@ -106,10 +106,9 @@ public class AssetSeries extends BaseAsset {
             setCompany(sourceAssetSeries.getCompany());
         }
 
-        Map<Long, FieldSource> sourceFieldSourcesIdBasedMap = sourceAssetSeries.getFieldSources().stream()
-                .collect(Collectors.toMap(BaseEntity::getId, fieldsource -> fieldsource));
-        List<FieldSource> sourceFieldSources = List.copyOf(sourceAssetSeries.getFieldSources());
-        if (sourceFieldSources != null) {
+        if (!sourceAssetSeries.getFieldSources().isEmpty()) {
+            Map<Long, FieldSource> sourceFieldSourcesIdBasedMap = sourceAssetSeries.getFieldSources().stream()
+                    .collect(Collectors.toMap(BaseEntity::getId, fieldsource -> fieldsource));
             for (FieldSource targetFieldSource : getFieldSources()) {
                 FieldSource sourceFieldSource = sourceFieldSourcesIdBasedMap.get(targetFieldSource.getId());
                 targetFieldSource.copyFrom(sourceFieldSource);
@@ -154,5 +153,14 @@ public class AssetSeries extends BaseAsset {
 
         return isChanged;
 
+    }
+
+    public List<FieldSource> calculateDeletedFieldSources(AssetSeries sourceAssetSeries) {
+
+        Set<FieldSource> sourceFieldSources = sourceAssetSeries.getFieldSources();
+
+        return this.getFieldSources().stream()
+                .filter(targetFieldSource -> !sourceFieldSources.contains(targetFieldSource))
+                .collect(Collectors.toList());
     }
 }
