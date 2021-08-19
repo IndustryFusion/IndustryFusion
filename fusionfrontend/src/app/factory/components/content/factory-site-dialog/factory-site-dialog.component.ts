@@ -53,15 +53,18 @@ export class FactorySiteDialogComponent implements OnInit {
   ngOnInit() {
     this.factorySiteForm = this.config.data.factorySiteForm;
     this.type = this.config.data.type;
-    this.factorySite = { ...this.factorySite, ...this.factorySiteForm.value };
-    this.factorySite.country = this.countryQuery.getEntity(this.factorySite.countryId);
+    this.updateFactorySite();
     this.formChange = this.factorySiteForm.valueChanges.pipe(
-      debounceTime(500)
+      debounceTime(200)
     ).subscribe(() => {
-      this.factorySite = { ...this.factorySite, ...this.factorySiteForm.value };
-      this.factorySite.country = this.countryQuery.getEntity(this.factorySite.countryId);
+     this.updateFactorySite();
     });
     this.createCountriesItems();
+  }
+
+  private updateFactorySite() {
+    this.factorySite = { ...this.factorySite, ...this.factorySiteForm.value };
+    this.factorySite.country = this.countryQuery.getEntity(this.factorySite.countryId);
   }
 
   onCancel() {
@@ -70,15 +73,9 @@ export class FactorySiteDialogComponent implements OnInit {
 
   onSave() {
     if (this.factorySiteForm.valid) {
-
-      this.factorySite.id = this.factorySiteForm.get('id')?.value;
-      this.factorySite.name = this.factorySiteForm.get('name')?.value;
-      this.factorySite.type = this.factorySiteForm.get('type')?.value;
-      this.factorySite.line1 = this.factorySiteForm.get('line1')?.value;
-      this.factorySite.line2 = this.factorySiteForm.get('line2')?.value;
-      this.factorySite.zip = this.factorySiteForm.get('zip')?.value;
-      this.factorySite.city = this.factorySiteForm.get('city')?.value;
-      this.factorySite.countryId = this.factorySiteForm.get('countryId')?.value;
+      const factorySite = this.factorySiteForm.getRawValue() as FactorySite;
+      factorySite.country = this.countryQuery.getEntity(factorySite.countryId);
+      this.factorySite = factorySite;
 
       this.ref.close(this.factorySite);
     }
