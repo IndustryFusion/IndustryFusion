@@ -31,7 +31,9 @@ under the License.
             <span class="p-col-2 "><label displayControlValue="fieldName"></label></span>
             <span class="p-col">
               <input pInputText *ngIf="isUnsaved(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
-              <label *ngIf="!isUnsaved(fieldSource)" displayControlValue="register"></label>
+              <label *ngIf="!isUnsaved(fieldSource)  && fieldSource.valid" displayControlValue="register"></label>
+              <input *ngIf="!isUnsaved(fieldSource) && fieldSource.invalid" pInputText class="value-input if-invalid-border"
+                     [disabled]="true">
           </span>
             <span class="p-col-1"><label displayControlValue="sourceUnitName"></label></span>
             <span class="p-col-1">
