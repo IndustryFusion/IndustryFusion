@@ -13,19 +13,20 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+@import 'src/app/fleet/components/content/asset-series-wizard/asset-series-wizard.component';
 
-@Component({
-  selector: 'app-asset-series-create-connectivity-settings-tooltip',
-  templateUrl: './asset-series-create-connectivity-settings-tooltip.component.html',
-  styleUrls: ['./asset-series-create-connectivity-settings-tooltip.component.scss']
-})
-export class AssetSeriesCreateConnectivitySettingsTooltipComponent implements OnInit {
+.content {
+  .info-text {
+    display: flex;
 
-  constructor() {
+    i {
+      margin-left: 2px;
+      margin-top: 10px;
+      margin-right: 5px;
+    }
+
+    label {
+      margin-top: 3px;
+    }
   }
-
-  ngOnInit() {
-  }
-
 }

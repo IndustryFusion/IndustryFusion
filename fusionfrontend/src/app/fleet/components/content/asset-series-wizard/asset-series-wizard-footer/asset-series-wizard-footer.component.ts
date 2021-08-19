@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-asset-series-create-footer',
-  templateUrl: './asset-series-create-footer.component.html',
-  styleUrls: ['./asset-series-create-footer.component.scss']
+  selector: 'app-asset-series-wizard-footer',
+  templateUrl: './asset-series-wizard-footer.component.html',
+  styleUrls: ['./asset-series-wizard-footer.component.scss']
 })
-export class AssetSeriesCreateFooterComponent implements OnInit {
+export class AssetSeriesWizardFooterComponent implements OnInit {
 
   @Input() step: number;
 

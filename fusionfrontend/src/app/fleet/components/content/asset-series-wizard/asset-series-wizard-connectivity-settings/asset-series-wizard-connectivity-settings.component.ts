@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/connectivity-type.query';
 import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
-import { ID } from '@datorama/akita';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetSeriesCreateConnectivitySettingsTooltipComponent } from './asset-series-create-connectivity-settings-tooltip/asset-series-create-connectivity-settings-tooltip.component';
+import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import { DialogType } from '../../../../../common/models/dialog-type.model';
 
 @Component({
-  selector: 'app-asset-series-create-connectivity-settings',
-  templateUrl: './asset-series-create-connectivity-settings.component.html',
-  styleUrls: ['./asset-series-create-connectivity-settings.component.scss']
+  selector: 'app-asset-series-wizard-connectivity-settings',
+  templateUrl: './asset-series-wizard-connectivity-settings.component.html',
+  styleUrls: ['./asset-series-wizard-connectivity-settings.component.scss']
 })
-export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
+export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
+  @Input() mode: DialogType;
   @Input() assetSeries: AssetSeries;
   @Input() assetSeriesForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
@@ -22,16 +23,22 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
   public connectivityProtocolOptions: ConnectivityProtocol[];
   public infoText = '';
 
-  AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesCreateConnectivitySettingsTooltipComponent;
+  AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesWizardConnectivitySettingsTooltipComponent;
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
               private formBuilder: FormBuilder) {
     this.connectivityTypeOptions = this.connectivityTypeQuery.getAll();
-    this.createFormGroup();
   }
 
   ngOnInit(): void {
-    this.selectFirstItemsInDropdowns();
+    this.createFormGroup();
+    this.disableFormGroupOnEditMode();
+
+    this.updateConnectivityProtocolOptionsAndInfoText();
+    if (this.mode === DialogType.CREATE) {
+      this.updateConnectivityProtocolIdAndConnectionString();
+    }
+
     this.assetSeriesForm.addControl('connectivitySettings', this.connectivitySettingsForm);
   }
 
@@ -45,35 +52,60 @@ export class AssetSeriesCreateConnectivitySettingsComponent implements OnInit {
     });
     this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
 
-    if (this.assetSeries?.connectivitySettings) {
-      this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
+    this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
+    if (this.mode === DialogType.CREATE) {
+      this.selectFirstItemsInDropdowns();
+    }
+  }
+
+  private disableFormGroupOnEditMode() {
+    if (this.mode === DialogType.EDIT) {
+      this.connectivitySettingsForm.get('connectivityTypeId').disable( { onlySelf: true });
+      this.connectivitySettingsForm.get('connectivityProtocolId').disable( { onlySelf: true });
+      this.connectivitySettingsForm.get('connectionString').disable( { onlySelf: true });
     }
   }
 
   private selectFirstItemsInDropdowns(): void {
     this.connectivitySettingsForm.get('connectivityTypeId').setValue(1);
-    this.onChangeConnectivityType(1);
   }
 
-  onChangeConnectivityType(connectivityTypeId: ID): void {
+  private updateConnectivityProtocolOptionsAndInfoText(): void {
+    const connectivityTypeId = this.connectivitySettingsForm.get('connectivityTypeId').value;
+
     if (connectivityTypeId && this.connectivityTypeOptions) {
       const selectedConnectivityType = this.connectivityTypeOptions
         .find(connectivityType => String(connectivityType.id) === String(connectivityTypeId));
+
       this.connectivityProtocolOptions = selectedConnectivityType.availableProtocols;
       this.infoText = selectedConnectivityType.infoText;
-
-      if (this.connectivityProtocolOptions.length > 0) {
-        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(this.connectivityProtocolOptions[0].id);
-        this.onChangeProtocolType(this.connectivityProtocolOptions[0].id);
-
-      } else {
-        this.connectivitySettingsForm.get('connectivityProtocolId').setValue(null);
-        this.connectivitySettingsForm.get('connectionString').setValue(null);
-      }
     }
   }
 
-  onChangeProtocolType(connectivityProtocolId: ID): void {
+  private updateConnectivityProtocolIdAndConnectionString(): void {
+    if (this.connectivityProtocolOptions.length > 0) {
+      this.connectivitySettingsForm.get('connectivityProtocolId').setValue(this.connectivityProtocolOptions[0].id);
+      this.updateConnectionString();
+
+    } else {
+      this.connectivitySettingsForm.get('connectivityProtocolId').setValue(null);
+      this.connectivitySettingsForm.get('connectionString').setValue(null);
+    }
+  }
+
+
+  onChangeConnectivityType(): void {
+    this.updateConnectivityProtocolOptionsAndInfoText();
+    this.updateConnectivityProtocolIdAndConnectionString();
+  }
+
+  onChangeProtocolType(): void {
+    this.updateConnectionString();
+  }
+
+  private updateConnectionString() {
+    const connectivityProtocolId = this.connectivitySettingsForm.get('connectivityProtocolId').value;
+
     if (connectivityProtocolId && this.connectivityProtocolOptions) {
       const connectionString = this.connectivityProtocolOptions
         .find(connectivityProtocol => String(connectivityProtocol.id) === String(connectivityProtocolId)).connectionStringPattern;

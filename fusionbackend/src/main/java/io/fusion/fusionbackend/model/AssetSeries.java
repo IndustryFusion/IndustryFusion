@@ -34,7 +34,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedEntityGraph(name = "AssetSeries.allChildren",
@@ -102,11 +105,62 @@ public class AssetSeries extends BaseAsset {
         if (sourceAssetSeries.getCompany() != null) {
             setCompany(sourceAssetSeries.getCompany());
         }
-        if (sourceAssetSeries.getFieldSources() != null) {
-            setFieldSources(sourceAssetSeries.getFieldSources());
+
+        if (!sourceAssetSeries.getFieldSources().isEmpty()) {
+            Map<Long, FieldSource> sourceFieldSourcesIdBasedMap = sourceAssetSeries.getFieldSources().stream()
+                    .collect(Collectors.toMap(BaseEntity::getId, fieldsource -> fieldsource));
+            for (FieldSource targetFieldSource : getFieldSources()) {
+                FieldSource sourceFieldSource = sourceFieldSourcesIdBasedMap.get(targetFieldSource.getId());
+                targetFieldSource.copyFrom(sourceFieldSource);
+            }
         }
-        if (sourceAssetSeries.getConnectivitySettings() != null) {
-            setConnectivitySettings(sourceAssetSeries.getConnectivitySettings());
+
+        ConnectivitySettings sourceConnectivitySettings = sourceAssetSeries.getConnectivitySettings();
+        if (sourceConnectivitySettings != null) {
+            getConnectivitySettings().setConnectionString(sourceConnectivitySettings.getConnectionString());
+            getConnectivitySettings().setConnectivityProtocol(sourceConnectivitySettings.getConnectivityProtocol());
+            getConnectivitySettings().setConnectivityType(sourceConnectivitySettings.getConnectivityType());
         }
+    }
+
+
+    public boolean isConnectivitySettingsUnchanged(AssetSeries targetAssetSeries) {
+        boolean isChanged = false;
+
+        ConnectivitySettings sourceConnectivitySettings = this.connectivitySettings;
+        ConnectivitySettings targetConnectivitySettings = targetAssetSeries.getConnectivitySettings();
+
+        String sourceConnectionString = sourceConnectivitySettings.getConnectionString();
+        String targetConnectionString = targetConnectivitySettings.getConnectionString();
+
+        ConnectivityType sourceConnectivityType = sourceConnectivitySettings.getConnectivityType();
+        ConnectivityProtocol sourceConnectivityProtocol = sourceConnectivitySettings.getConnectivityProtocol();
+
+        ConnectivityType targetConnectivityType = targetConnectivitySettings.getConnectivityType();
+        ConnectivityProtocol targetConnectivityProtocol = targetConnectivitySettings.getConnectivityProtocol();
+
+
+        if (!sourceConnectivitySettings.equals(targetConnectivitySettings)) {
+            isChanged = true;
+        } else if (!sourceConnectionString.equals(targetConnectionString)) {
+            isChanged = true;
+        } else if (!sourceConnectivityType.equals(targetConnectivityType)) {
+            isChanged = true;
+        } else if (!sourceConnectivityProtocol.equals(targetConnectivityProtocol)) {
+            isChanged = true;
+        }
+
+
+        return isChanged;
+
+    }
+
+    public List<FieldSource> calculateDeletedFieldSources(AssetSeries sourceAssetSeries) {
+
+        Set<FieldSource> sourceFieldSources = sourceAssetSeries.getFieldSources();
+
+        return this.getFieldSources().stream()
+                .filter(targetFieldSource -> !sourceFieldSources.contains(targetFieldSource))
+                .collect(Collectors.toList());
     }
 }

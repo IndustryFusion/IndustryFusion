@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetSeriesCreateMetricsComponent } from './asset-series-create-metrics.component';
+import { AssetSeriesWizardGeneralInformationComponent } from './asset-series-wizard-general-information.component';
 
-describe('AssetSeriesCreateMetricsComponent', () => {
-  let component: AssetSeriesCreateMetricsComponent;
-  let fixture: ComponentFixture<AssetSeriesCreateMetricsComponent>;
+describe('AssetSeriesWizardGeneralInformationComponent', () => {
+  let component: AssetSeriesWizardGeneralInformationComponent;
+  let fixture: ComponentFixture<AssetSeriesWizardGeneralInformationComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ AssetSeriesCreateMetricsComponent ]
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ AssetSeriesWizardGeneralInformationComponent ]
     })
     .compileComponents();
-  });
+  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesCreateMetricsComponent);
+    fixture = TestBed.createComponent(AssetSeriesWizardGeneralInformationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

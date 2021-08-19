@@ -30,18 +30,18 @@ under the License.
             <span class="p-col-2 "><label displayControlValue="name"></label></span>
             <span class="p-col-2 "><label displayControlValue="fieldName"></label></span>
             <span class="p-col">
-              <input *ngIf="isEditMode(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
-              <label *ngIf="!isEditMode(fieldSource)" displayControlValue="register"></label>
+              <input *ngIf="isUnsaved(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
+              <label *ngIf="!isUnsaved(fieldSource)" displayControlValue="register"></label>
           </span>
             <span class="p-col-1"><label displayControlValue="sourceUnitName"></label></span>
             <span class="p-col-1">
               <label >{{fieldSource.get('accuracy').value | accuracyformat}}</label>
             </span>
             <span class="p-col edit-col">
-              <app-confirm-button *ngIf="isEditMode(fieldSource)"
+              <app-confirm-button *ngIf="isUnsaved(fieldSource)"
                                   (confirmItem)="saveValue(fieldSource)">
               </app-confirm-button>
-              <app-edit-button *ngIf="!isEditMode(fieldSource)" class="edit-button"
+              <app-edit-button *ngIf="!isUnsaved(fieldSource)" class="edit-button"
                                (editItem)="fieldSource.get('saved').patchValue(false)">
               </app-edit-button>
             </span>

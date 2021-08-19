@@ -20,13 +20,26 @@ import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivitySettings;
 import io.fusion.fusionbackend.model.ConnectivityType;
+import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
+import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Component
 public class ConnectivitySettingsMapper implements EntityDtoMapper<ConnectivitySettings, ConnectivitySettingsDto> {
+
+    private final ConnectivityTypeRepository connectivityTypeRepository;
+    private final ConnectivityProtocolRepository connectivityProtocolRepository;
+
+
+    public ConnectivitySettingsMapper(ConnectivityTypeRepository connectivityTypeRepository,
+                                      ConnectivityProtocolRepository connectivityProtocolRepository) {
+        this.connectivityTypeRepository = connectivityTypeRepository;
+        this.connectivityProtocolRepository = connectivityProtocolRepository;
+    }
 
     @Override
     public ConnectivitySettingsDto toDto(ConnectivitySettings entity, boolean embedChildren) {
@@ -54,7 +67,27 @@ public class ConnectivitySettingsMapper implements EntityDtoMapper<ConnectivityS
         ConnectivitySettings connectivitySettings = new ConnectivitySettings();
         connectivitySettings.setConnectionString(dto.getConnectionString());
 
+        Long connectivityTypeId = dto.getConnectivityTypeId();
+        ConnectivityType connectivityType = connectivityTypeRepository
+                .findById(connectivityTypeId)
+                .orElseThrow(throwRuntimeException("Missing Connectivity Type for id %s", connectivityTypeId));
+        connectivitySettings.setConnectivityType(connectivityType);
+
+        Long connectivityProtocolId = dto.getConnectivityProtocolId();
+        ConnectivityProtocol connectivityProtocol = connectivityProtocolRepository
+                .findById(connectivityProtocolId)
+                .orElseThrow(
+                        throwRuntimeException("Missing ConnectivityProtocol for id %s", connectivityProtocolId));
+        connectivitySettings.setConnectivityProtocol(connectivityProtocol);
+
         return connectivitySettings;
+    }
+
+    private Supplier<RuntimeException> throwRuntimeException(String message, Long parameter) {
+        return () -> {
+            throw new RuntimeException(
+                    String.format(message, parameter));
+        };
     }
 
     @Override

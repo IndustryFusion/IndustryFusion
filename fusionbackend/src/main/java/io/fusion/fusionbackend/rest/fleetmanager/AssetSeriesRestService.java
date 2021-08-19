@@ -55,13 +55,12 @@ public class AssetSeriesRestService {
         return assetSeriesMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId), embedChildren);
     }
 
-    @SuppressWarnings("checkstyle:LineLength")
     @GetMapping(path = "/companies/{companyId}/assetseriesdetails")
-    public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(@PathVariable final Long companyId,
-                                                               @RequestParam(defaultValue = "true")
-                                                               final boolean embedChildren) {
-        return assetSeriesDetailsMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId),
-                embedChildren);
+    public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(
+            @PathVariable final Long companyId,
+            @RequestParam(defaultValue = "true") final boolean embedChildren) {
+        return assetSeriesDetailsMapper
+                .toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")
@@ -83,7 +82,7 @@ public class AssetSeriesRestService {
                         assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
                         assetSeriesMapper.toEntity(assetSeriesDto)
                 ),
-                false);
+                true);
     }
 
     @PatchMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")
@@ -91,7 +90,7 @@ public class AssetSeriesRestService {
                                             @PathVariable final Long assetSeriesId,
                                             @RequestBody final AssetSeriesDto assetSeriesDto) {
         return assetSeriesMapper.toDto(assetSeriesService.updateAssetSeries(companyId, assetSeriesId,
-                assetSeriesMapper.toEntity(assetSeriesDto)), false);
+                assetSeriesMapper.toEntity(assetSeriesDto)), true);
     }
 
     @DeleteMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")

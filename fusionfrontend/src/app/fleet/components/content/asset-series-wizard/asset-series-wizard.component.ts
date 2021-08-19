@@ -20,7 +20,7 @@ import { AssetSeriesService } from '../../../../store/asset-series/asset-series.
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogType } from '../../../../common/models/dialog-type.model';
-import { AssetSeriesCreateStep } from './asset-series-create-step.model';
+import { AssetSeriesWizardStep } from './asset-series-wizard-step.model';
 import { ConnectivityTypeResolver } from '../../../../resolvers/connectivity-type.resolver';
 import { Company } from '../../../../store/company/company.model';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
@@ -32,16 +32,16 @@ import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-asset-series-create',
-  templateUrl: './asset-series-create.component.html',
-  styleUrls: ['./asset-series-create.component.scss']
+  selector: 'app-asset-series-wizard',
+  templateUrl: './asset-series-wizard.component.html',
+  styleUrls: ['./asset-series-wizard.component.scss']
 })
-export class AssetSeriesCreateComponent implements OnInit {
+export class AssetSeriesWizardComponent implements OnInit {
 
   assetType: ID;
   companyId: ID;
-  step: AssetSeriesCreateStep = AssetSeriesCreateStep.GENERAL_INFORMATION;
-  totalSteps: number = AssetSeriesCreateStep.METRICS;
+  step: AssetSeriesWizardStep = AssetSeriesWizardStep.GENERAL_INFORMATION;
+  totalSteps: number = AssetSeriesWizardStep.METRICS;
 
   assetSeries: AssetSeries;
   assetSeriesForm: FormGroup;
@@ -53,7 +53,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   relatedManufacturer: Company;
   relatedAssetType: AssetType;
 
-  AssetSeriesCreateSteps = AssetSeriesCreateStep;
+  AssetSeriesCreateSteps = AssetSeriesWizardStep;
 
   constructor(private assetSeriesService: AssetSeriesService,
               private companyQuery: CompanyQuery,
@@ -68,23 +68,11 @@ export class AssetSeriesCreateComponent implements OnInit {
               private dynamicDialogRef: DynamicDialogRef,
   ) {
     this.resolve();
-
-    this.companyId = dialogConfig.data.companyId;
-    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
-    if (assetSeriesId) {
-      this.mode = DialogType.EDIT;
-    } else {
-      this.mode = DialogType.CREATE;
-    }
-
-    if (this.mode === DialogType.EDIT) {
-      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
-    }
+    this.initFromConfigData(dialogConfig);
   }
 
   ngOnInit() {
-    this.createAssetSeriesForm();
+    this.createAssetSeriesFormGroup();
   }
 
   private resolve() {
@@ -93,9 +81,21 @@ export class AssetSeriesCreateComponent implements OnInit {
     this.assetTypesResolver.resolve().subscribe();
   }
 
+  private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
+    this.companyId = dialogConfig.data.companyId;
+
+    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
+    this.mode = assetSeriesId ? DialogType.EDIT : DialogType.CREATE;
+
+    if (this.mode === DialogType.EDIT) {
+      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
+        .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
+    }
+  }
+
   private updateAssetSeries(assetSeries: AssetSeries) {
     this.assetSeries = assetSeries;
-    this.createAssetSeriesForm();
+    this.createAssetSeriesFormGroup();
     this.updateRelatedObjects(assetSeries);
   }
 
@@ -118,7 +118,7 @@ export class AssetSeriesCreateComponent implements OnInit {
           .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
   }
 
-  private createAssetSeriesForm(): void {
+  private createAssetSeriesFormGroup(): void {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
 
     this.assetSeriesForm = this.formBuilder.group({
@@ -130,24 +130,12 @@ export class AssetSeriesCreateComponent implements OnInit {
       handbookKey: [null, Validators.maxLength(255)],
       videoKey: [null, Validators.maxLength(255)],
       imageKey: [null, Validators.maxLength(255)],
-      assetTypeTemplateId: [{ value: null, disabled: this.mode !== DialogType.CREATE }, Validators.required],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
       companyId: [null, Validators.required],
     });
 
     if (this.assetSeries) {
       this.assetSeriesForm.patchValue(this.assetSeries);
-    }
-
-    this.assetSeriesForm.get('assetTypeTemplateId').valueChanges.subscribe(
-      assetTypeTemplateId => this.updateAssetSeriesNameDisabledState(assetTypeTemplateId));
-    this.updateAssetSeriesNameDisabledState(this.assetSeriesForm.get('assetTypeTemplateId').value);
-  }
-
-  private updateAssetSeriesNameDisabledState(assetTypeTemplateId: ID): void {
-    if (assetTypeTemplateId) {
-      this.assetSeriesForm.get('name').enable();
-    } else {
-      this.assetSeriesForm.get('name').disable( { onlySelf: true });
     }
   }
 
@@ -160,7 +148,7 @@ export class AssetSeriesCreateComponent implements OnInit {
   }
 
   back(): void {
-    if (this.step === AssetSeriesCreateStep.GENERAL_INFORMATION) {
+    if (this.step === AssetSeriesWizardStep.GENERAL_INFORMATION) {
       this.dynamicDialogRef.close();
     } else {
       this.step--;
@@ -170,17 +158,17 @@ export class AssetSeriesCreateComponent implements OnInit {
   isReadyForNextStep(): boolean {
     let result = true;
     switch (this.step) {
-      case AssetSeriesCreateStep.GENERAL_INFORMATION:
+      case AssetSeriesWizardStep.GENERAL_INFORMATION:
         result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0 &&
                  this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
         break;
-      case AssetSeriesCreateStep.CONNECTIVITY_SETTINGS:
+      case AssetSeriesWizardStep.CONNECTIVITY_SETTINGS:
         result = this.connectivitySettingsValid;
         break;
-      case AssetSeriesCreateStep.ATTRIBUTES:
+      case AssetSeriesWizardStep.ATTRIBUTES:
         result = this.attributesValid;
         break;
-      case AssetSeriesCreateStep.METRICS:
+      case AssetSeriesWizardStep.METRICS:
         result = this.metricsValid;
         break;
     }

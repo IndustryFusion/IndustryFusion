@@ -21,7 +21,7 @@ under the License.
         <label class="if-label">Select&nbsp;connectivity&nbsp;type&nbsp;*</label>
         <div>
           <p-dropdown [options]="connectivityTypeOptions" formControlName="connectivityTypeId" optionLabel="name"
-                      optionValue="id" (onChange)="onChangeConnectivityType($event.value)">
+                      optionValue="id" (onChange)="onChangeConnectivityType()">
           </p-dropdown>
           <div class="info-text">
             <i class="pi pi-info-circle"></i>
@@ -32,8 +32,8 @@ under the License.
 
       <div class="input-div">
         <label class="if-label">Select&nbsp;protocol&nbsp;*</label>
-        <p-dropdown [options]="connectivityProtocolOptions" formControlName="protocolId" optionLabel="name"
-                    optionValue="id" (onChange)="onChangeProtocolType($event.value)">
+        <p-dropdown [options]="connectivityProtocolOptions" formControlName="connectivityProtocolId" optionLabel="name"
+                    optionValue="id" (onChange)="onChangeProtocolType()">
         </p-dropdown>
       </div>
 
