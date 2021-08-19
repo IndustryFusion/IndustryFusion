@@ -25,6 +25,7 @@ import { Field, FieldThresholdType } from '../../../../store/field/field.model';
 import { SelectItem } from 'primeng/api';
 import { DialogType } from 'src/app/common/models/dialog-type.model';
 import { FieldService } from '../../../../store/field/field.service';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-field-dialog',
@@ -40,7 +41,7 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
 
   public DialogType = DialogType;
   public FieldThresholdType = FieldThresholdType;
-  public readonly MAX_TEXT_LENGTH = 255;
+  public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
   constructor(private unitQuery: UnitQuery,
               private formBuilder: FormBuilder,
@@ -64,13 +65,11 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
   }
 
   private createFieldFormGroup(field: Field) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(this.MAX_TEXT_LENGTH)];
-
     this.fieldForm = this.formBuilder.group({
       id: [],
-      name: ['', requiredTextValidator],
-      label: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(this.MAX_TEXT_LENGTH)],
+      name: ['', WizardHelper.requiredTextValidator],
+      label: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
       accuracy: [0],
       unitId: [null, Validators.required],
       thresholdType: [FieldThresholdType.OPTIONAL, Validators.required]

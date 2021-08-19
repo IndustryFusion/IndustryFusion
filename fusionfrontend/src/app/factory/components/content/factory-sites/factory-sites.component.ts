@@ -27,6 +27,7 @@ import { DialogType } from '../../../../common/models/dialog-type.model';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
 import { Country } from '../../../../store/country/country.model';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-factory-sites',
@@ -101,19 +102,18 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   }
 
   async createFactorySiteForm(formBuilder: FormBuilder) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const countryIdGermany = await this.countries$.toPromise()
       .then(countries => countries.find(item => item.name === 'Germany').id);
 
     this.factorySiteForm = formBuilder.group({
       id: [null],
-      name: ['', requiredTextValidator],
+      name: ['', WizardHelper.requiredTextValidator],
       line1: [''],
       line2: [''],
-      city: ['', requiredTextValidator],
+      city: ['', WizardHelper.requiredTextValidator],
       zip: [''],
       countryId: [countryIdGermany, Validators.required],
-      type: [null, requiredTextValidator]
+      type: [null, WizardHelper.requiredTextValidator]
     });
   }
 

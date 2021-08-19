@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FactorySiteDialogComponent } from '../../factory-site-dialog/factory-site-dialog.component';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
+import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-factory-sites-list-item',
@@ -48,19 +49,18 @@ export class FactorySitesListItemComponent implements OnInit, OnDestroy {
   }
 
   createFactorySiteForm(formBuilder: FormBuilder, factorySiteToCreate: FactorySite) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.factorySiteForm = formBuilder.group({
       id: [],
       companyId: [null],
-      name: ['', requiredTextValidator],
+      name: ['', WizardHelper.requiredTextValidator],
       line1: [''],
       line2: [''],
-      city: ['', requiredTextValidator],
+      city: ['', WizardHelper.requiredTextValidator],
       zip: [''],
       countryId: [null, Validators.required],
       latitude: [0],
       longitude: [0],
-      type: [null, requiredTextValidator]
+      type: [null, WizardHelper.requiredTextValidator]
     });
     this.factorySiteForm.patchValue(factorySiteToCreate);
   }

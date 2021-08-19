@@ -52,7 +52,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
       fieldName: [field.name],
       accuracy: [field.accuracy],
       name: [fieldSource.name],
-      register: [fieldSource.register, [Validators.maxLength(255)]],
+      register: [fieldSource.register, WizardHelper.maxTextLengthValidator],
       mandatory: [fieldSource.fieldTarget.mandatory],
       saved: [true, Validators.requiredTrue],
     });

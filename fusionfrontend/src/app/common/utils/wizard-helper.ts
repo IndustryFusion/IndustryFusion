@@ -13,9 +13,14 @@
  * under the License.
  */
 
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, Validators } from '@angular/forms';
 
 export class WizardHelper {
+  public static readonly MAX_TEXT_LENGTH = 255;
+  public static readonly requiredTextValidator = [Validators.required, Validators.minLength(1),
+    Validators.maxLength(WizardHelper.MAX_TEXT_LENGTH)];
+  public static readonly maxTextLengthValidator = [Validators.maxLength(WizardHelper.MAX_TEXT_LENGTH)];
+
   public static removeItemFromFormAndDataArray(group: FormGroup,
                                                formArray: FormArray, formArrayIndexPath: string,
                                                dataArray: any[], dataArrayIndexPath: string): void {
