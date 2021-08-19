@@ -14,16 +14,14 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-import { Observable } from 'rxjs';
-
-import { AssetTypeTemplate } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { FormGroup } from '@angular/forms';
 import { Company } from '../../../../../store/company/company.model';
 import { AssetType } from '../../../../../store/asset-type/asset-type.model';
+import { SelectItem } from 'primeng/api';
+import { NameWithVersionPipe } from 'src/app/pipes/namewithversion.pipe';
 
 @Component({
   selector: 'app-asset-series-wizard-general-information',
@@ -38,14 +36,25 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
   @Input() relatedAssetType: AssetType;
   @Output() updateTypeTemplate = new EventEmitter<ID>();
 
-  assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
+  assetTypeTemplateOptions: SelectItem[] = [];
   DialogType = DialogType;
 
   constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery) {
   }
 
   ngOnInit() {
-    this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll();
+    this.initAssetTypeTemplateOptions();
+  }
+
+  private initAssetTypeTemplateOptions() {
+    this.assetTypeTemplateQuery.selectAll().subscribe(assetTypeTemplates => {
+      for (const assetTypeTemplate of assetTypeTemplates) {
+        this.assetTypeTemplateOptions.push({
+          label: new NameWithVersionPipe().transform(assetTypeTemplate.name, assetTypeTemplate.publishedVersion),
+          value: assetTypeTemplate.id
+        });
+      }
+    });
   }
 
 }
