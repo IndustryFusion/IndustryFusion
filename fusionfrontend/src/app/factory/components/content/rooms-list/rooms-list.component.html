@@ -14,8 +14,8 @@ under the License.
 -->
 
 
-<app-factory-site-info *ngIf="factorySiteId" [assets]="factoryAssets" [factorySite]="factorySite$ | async" [numUsers]="6"
-                       [rooms]="rooms"></app-factory-site-info>
+<app-company-info *ngIf="factorySiteId" [assets]="factoryAssets" [factorySite]="factorySite$ | async" [numUsers]="6"
+                       [roomCount]="rooms.length"></app-company-info>
 <div class="rooms-panel">
   <div class="manage">
     <button [routerLink]="['../']" class="btn btn-sm btn-link">

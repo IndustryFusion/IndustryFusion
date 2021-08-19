@@ -40,7 +40,7 @@ export class FactorySiteRoomsPageComponent implements OnInit {
   company$: Observable<Company>;
   factoryAssetsDetails$: Observable<FactoryAssetDetails[]>;
   factorySites$: Observable<FactorySite[]>;
-  roomsOfFactorySite$: Observable<Room[]>;
+  rooms$: Observable<Room[]>;
 
   companyId: ID;
   factorySiteId: ID;
@@ -66,10 +66,10 @@ export class FactorySiteRoomsPageComponent implements OnInit {
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     if (this.factorySiteId) {
       this.factorySiteSelected = true;
-      this.roomsOfFactorySite$ = this.factoryResolver.roomsOfFactorySite$;
+      this.rooms$ = this.factoryResolver.roomsOfFactorySite$;
     } else {
       this.factorySiteSelected = false;
-      this.roomsOfFactorySite$ = this.factoryResolver.roomsOfFactorySite$;
+      this.rooms$ = this.factoryResolver.rooms$;
     }
   }
 
