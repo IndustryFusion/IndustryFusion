@@ -18,6 +18,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
   @Output() valid = new EventEmitter<boolean>();
 
   fieldSourcesFormArray: FormArray;
+  showNotDeletableWarning: boolean;
 
   constructor(private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
@@ -25,6 +26,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
 
   ngOnInit(): void {
     this.createFormArray(this.assetSeries.fieldSources);
+    this.showNotDeletableWarning = !this.fieldSourcesCanBeDeleted;
   }
 
   private createFormArray(fieldSources: FieldSource[]): void {
@@ -77,5 +79,9 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
 
   isDeletable(attributeGroup: AbstractControl): boolean {
     return attributeGroup != null && attributeGroup.get('mandatory').value === false && this.fieldSourcesCanBeDeleted;
+  }
+
+  hideNotDeletableWarning(): void {
+    this.showNotDeletableWarning = false;
   }
 }

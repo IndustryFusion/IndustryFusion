@@ -49,3 +49,7 @@
     }
   }
 }
+
+:host ::ng-deep .if-warning-toast {
+  margin-top: -1.2rem;
+}
