@@ -37,7 +37,7 @@ export class OispNotificationService {
     params: new HttpParams()
   };
 
-  private static getNotificationOfAlert(alert: OispAlert, assetName: string, deviceId: string): OispNotification {
+  private static getNotificationOfAlert(alert: OispAlert, assetName: string): OispNotification {
     const notification = new OispNotification();
 
     if (alert) {
@@ -45,7 +45,6 @@ export class OispNotificationService {
         && alert.conditions[0].components[0].valuePoints.length > 0;
 
       notification.id = alert.alertId;
-      notification.externalId = deviceId;
       notification.priority = alert.priority;
       notification.ruleName = alert.ruleName;
       notification.condition = alert.naturalLangAlert;
@@ -62,14 +61,12 @@ export class OispNotificationService {
 
   private getNotificationOfAlertWithDevices(alert: OispAlert, devices: Device[]): OispNotification {
     let assetName = null;
-    let deviceId = null;
     if (devices && alert) {
       const deviceOfAlert = devices.find(device => String(device.uid) === String(alert.deviceUID));
       assetName = deviceOfAlert?.name;
-      deviceId = deviceOfAlert?.deviceId;
     }
 
-    return OispNotificationService.getNotificationOfAlert(alert, assetName, deviceId);
+    return OispNotificationService.getNotificationOfAlert(alert, assetName);
   }
 
   getNotificationsUsingAlertStore(): Observable<OispNotification[]> {

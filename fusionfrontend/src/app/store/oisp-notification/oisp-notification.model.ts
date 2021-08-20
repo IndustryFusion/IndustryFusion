@@ -25,5 +25,4 @@ export class OispNotification {
   measuredValue: string;
   timestamp: Date;
   status: OispAlertStatus;
-  externalId: ID;
 }
