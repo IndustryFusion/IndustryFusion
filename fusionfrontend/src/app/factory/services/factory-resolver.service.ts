@@ -89,8 +89,7 @@ export class FactoryResolver {
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
-    this.countries$ = this.countryResolver.resolve();
-
+    this.countryResolver.resolve().subscribe();
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
     const companyId = activatedRoute.snapshot.paramMap.get('companyId');
@@ -158,7 +157,7 @@ export class FactoryResolver {
 
     const pageTypes: FactoryManagerPageType[] = (activatedRoute.snapshot.data as RouteData).pageTypes || [];
     if (pageTypes.includes(FactoryManagerPageType.COMPANY_DETAIL)) {
-      this.factorySubTitle$.next('My Factories');
+      this.factorySubTitle$.next('My Factory Sites');
     } else if (pageTypes.includes(FactoryManagerPageType.ASSET_DETAIL)) {
       this.assetQuery
         .waitForActive()
