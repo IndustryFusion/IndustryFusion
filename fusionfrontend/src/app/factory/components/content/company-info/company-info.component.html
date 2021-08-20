@@ -14,7 +14,7 @@ under the License.
 -->
 
 <section class="company">
-  <img class="company-img" src="{{ imgUrl }}"/>
+  <img class="company-img" src="{{ imgUrl }}" alt="company image"/>
   <div class="company-info">
     <h3>
       {{factorySite?.name}}
@@ -43,8 +43,8 @@ under the License.
     </div>
     <div class="details">
       <p>
-        <span class="c-value">{{rooms?.length}}</span>
-        <span class="c-label">Rooms</span>
+        <span class="c-value">{{roomCount}}</span>
+        <span class="c-label">{{roomCount === 1 ? 'Room' : 'Rooms'}}</span>
       </p>
       <p>
         <span class="c-value">{{assets?.length}}</span>

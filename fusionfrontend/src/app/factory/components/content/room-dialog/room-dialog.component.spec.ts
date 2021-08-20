@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { EditRoomComponent } from './edit-room.component';
+import { RoomDialogComponent } from './room-dialog.component';
 
-describe('EditRoomComponent', () => {
-  let component: EditRoomComponent;
-  let fixture: ComponentFixture<EditRoomComponent>;
+describe('CreateRoomComponent', () => {
+  let component: RoomDialogComponent;
+  let fixture: ComponentFixture<RoomDialogComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditRoomComponent ]
+      declarations: [ RoomDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditRoomComponent);
+    fixture = TestBed.createComponent(RoomDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

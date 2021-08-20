@@ -13,22 +13,28 @@
  * under the License.
  */
 
-@import 'abstract/variables';
+.factory-sites-dropdown {
+  width: 82.0%;
+  padding: 0;
+}
 
-.footer{
-  display: flex;
-  justify-content: flex-end;
+.room-dialog-inputs {
+  height: 56px;
+  width: 82.0%;
+}
 
-  .black{
-    color: $basic-white;
-    background-color: $basic-black;
-    border-color: $basic-black;
-  }
+.room-dialog-textarea {
+  height: 208px;
+  width: 82.0%;
+}
 
-  .white{
-    color: $basic-black;
-    background-color: $basic-white;
-    border-color: $basic-white;
-  }
+.input-div {
+  display: grid;
+  padding-bottom: 24px;
+}
 
+.room-dialog-footer {
+  margin-top: 8.1%;
+  margin-bottom: 5%;
+  text-align: right;
 }

@@ -43,7 +43,8 @@ export class AssetService {
               private assetDetailsStore: FactoryAssetDetailsStore,
               private factorySiteService: FactorySiteService,
               private roomService: RoomService,
-              private http: HttpClient) { }
+              private http: HttpClient) {
+  }
 
   getAssetsOfCompany(companyId: ID): Observable<Asset[]> {
     const path = `companies/${companyId}/assets`;
@@ -69,7 +70,7 @@ export class AssetService {
       .pipe(tap(entities => {
         this.assetStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
-}
+  }
 
   getAssetsOfRoom(companyId: ID, factorySiteId: ID, roomId: ID): Observable<Asset[]> {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets`;
@@ -88,8 +89,16 @@ export class AssetService {
       })));
   }
 
+  assignAssetsToRoom(companyId: ID, factorySiteId: ID, roomId: ID, assets: Asset[]): Observable<Asset[]> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/assign`;
+    return this.http.put<Asset[]>(`${environment.apiUrlPrefix}/${path}`, assets, this.httpOptions)
+      .pipe(tap(entities => {
+        entities.forEach(entity => this.assetStore.upsertCached(entity));
+      }));
+  }
+
   assignAssetToRoom(companyId: ID, factorySiteId: ID, newRoomId: ID, oldRoomId: ID, assetId: ID): Observable<Asset> {
-    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${newRoomId}/assets/${assetId}`;
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${newRoomId}/assets/${assetId}/assign`;
     return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {
         this.assetStore.upsertCached(entity);
@@ -108,8 +117,8 @@ export class AssetService {
 
           const assetDetails = this.assetDetailsService.getAssetDetails(savedAsset.companyId, savedAsset.id)
             .pipe(tap(entity => {
-            this.assetDetailsStore.upsertCached(entity);
-          }));
+              this.assetDetailsStore.upsertCached(entity);
+            }));
 
           this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId, true).subscribe();
           if (savedAsset.room) {
@@ -119,7 +128,7 @@ export class AssetService {
           }
           return assetDetails.pipe(map(entity => entity.id));
         })
-    );
+      );
   }
 
   setActive(assetId: ID) {
@@ -132,13 +141,11 @@ export class AssetService {
     return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(updatedAsset => {
-            console.log('updated asset with id ' + updatedAsset.id);
-            this.assetStore.upsertCached(updatedAsset);
-            return this.assetDetailsService.getAssetDetails(companyId, updatedAsset.id).pipe(tap(entity => {
-              this.assetDetailsStore.upsertCached(entity);
-            }));
-          })
-
+          this.assetStore.upsertCached(updatedAsset);
+          return this.assetDetailsService.getAssetDetails(companyId, updatedAsset.id).pipe(tap(entity => {
+            this.assetDetailsStore.upsertCached(entity);
+          }));
+        })
       );
   }
 
@@ -146,11 +153,11 @@ export class AssetService {
     const path = `companies/${companyId}/assets/${assetId}`;
     return this.http.delete(`${environment.apiUrlPrefix}/${path}`).pipe(tap({
       complete: () => {
-        console.log('delete asset with id ' + assetId);
         this.assetStore.removeCached(assetId);
         this.assetDetailsStore.removeCached(assetId);
       },
       error: (error) => {
+        console.error(error);
         this.assetStore.setError(error);
       }
     }));
@@ -163,7 +170,7 @@ export class AssetService {
     mappedAsset.roomId = assetDetails.roomId;
     mappedAsset.externalId = assetDetails.externalId;
     mappedAsset.controlSystemType = assetDetails.controlSystemType;
-    mappedAsset.hasGateway =  assetDetails.hasGateway;
+    mappedAsset.hasGateway = assetDetails.hasGateway;
     mappedAsset.name = assetDetails.name;
     mappedAsset.description = assetDetails.description;
     mappedAsset.guid = assetDetails.guid;

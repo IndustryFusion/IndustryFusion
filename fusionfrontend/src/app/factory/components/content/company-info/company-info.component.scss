@@ -16,7 +16,7 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-.company {
+.factory-site {
   display: flex;
   height: 180px;
   padding: 0 100px;
@@ -30,7 +30,7 @@
     overflow: hidden;
   }
 
-  .company-info {
+  .factory-site-info {
 
     h3 {
       font-size: $big-font-size;

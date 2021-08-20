@@ -12,11 +12,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
+  <app-rooms-list [factorySites]="(factorySites$ | async)"
+                  [rooms]="(rooms$ | async)"
+                  [factorySiteSelected]="factorySiteSelected"
+                  [factoryAssets]="(factoryAssetsDetails$ | async)"
+                  (createRoomEvent)="createRoom($event)"
+                  (editRoomEvent)="editRoom($event)"
+                  (deleteRoomEvent)="deleteRoom($event)"
+                  (assignAssetToRoomEvent)="assignAssetsToRoom($event)">
+  </app-rooms-list>
 
-<div class="wrapper">
-  <ul>
-    <li [ngClass]="{'active': isFactoriesActive()}" (click)="onFactoriesClick()">Factory Sites</li>
-    <li [ngClass]="{'active': isAssetsActive()}" (click)="onAssetsClick()">Assets</li>
-    <li [ngClass]="{'active': isSettingsActive()}">Settings</li>
-  </ul>
-</div>

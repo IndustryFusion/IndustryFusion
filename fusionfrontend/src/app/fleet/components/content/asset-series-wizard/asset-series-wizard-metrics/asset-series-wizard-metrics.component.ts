@@ -14,9 +14,11 @@ import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 export class AssetSeriesWizardMetricsComponent implements OnInit {
 
   @Input() assetSeries: AssetSeries;
+  @Input() fieldSourcesCanBeDeleted: boolean;
   @Output() valid = new EventEmitter<boolean>();
 
   fieldSourcesFormArray: FormArray;
+  showNotDeletableWarning: boolean;
 
   constructor(private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
@@ -24,6 +26,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
 
   ngOnInit(): void {
     this.createFormArray(this.assetSeries.fieldSources);
+    this.showNotDeletableWarning = !this.fieldSourcesCanBeDeleted;
   }
 
   private createFormArray(fieldSources: FieldSource[]): void {
@@ -60,7 +63,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
   }
 
   removeMetric(metricGroup: AbstractControl): void {
-    if (!this.isMandatory(metricGroup) && metricGroup instanceof FormGroup) {
+    if (this.isDeletable(metricGroup) && metricGroup instanceof FormGroup) {
       WizardHelper.removeItemFromFormAndDataArray(metricGroup,
         this.fieldSourcesFormArray, 'indexInArray',
         this.assetSeries.fieldSources, 'indexFieldSources');
@@ -76,7 +79,11 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
     return !group.get('saved').value;
   }
 
-  isMandatory(group: AbstractControl): boolean {
-    return group == null || group.get('mandatory').value;
+  isDeletable(metricGroup: AbstractControl): boolean {
+    return metricGroup != null && metricGroup.get('mandatory').value === false && this.fieldSourcesCanBeDeleted;
+  }
+
+  hideNotDeletableWarning() {
+    this.showNotDeletableWarning = false;
   }
 }

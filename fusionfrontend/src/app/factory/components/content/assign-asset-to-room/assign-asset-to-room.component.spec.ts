@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateRoomComponent } from './create-room.component';
+import { AssignAssetToRoomComponent } from './assign-asset-to-room.component';
 
-describe('CreateRoomComponent', () => {
-  let component: CreateRoomComponent;
-  let fixture: ComponentFixture<CreateRoomComponent>;
+describe('AssignAssetToRoomComponent', () => {
+  let component: AssignAssetToRoomComponent;
+  let fixture: ComponentFixture<AssignAssetToRoomComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CreateRoomComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AssignAssetToRoomComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateRoomComponent);
+    fixture = TestBed.createComponent(AssignAssetToRoomComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

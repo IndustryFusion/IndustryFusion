@@ -22,9 +22,7 @@ under the License.
         <div class="input-div">
           <label class="if-label">Select Asset Type Template</label>
           <p-dropdown
-            [options]="assetTypeTemplates$ | async"
-            [optionLabel]="'name'"
-            [optionValue]="'id'"
+            [options]="assetTypeTemplateOptions"
             name="assetTypeTemplate"
             placeholder="Select Asset Type Template..."
             formControlName="assetTypeTemplateId"

@@ -14,9 +14,11 @@ import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 export class AssetSeriesWizardAttributesComponent implements OnInit {
 
   @Input() assetSeries: AssetSeries;
+  @Input() fieldSourcesCanBeDeleted: boolean;
   @Output() valid = new EventEmitter<boolean>();
 
   fieldSourcesFormArray: FormArray;
+  showNotDeletableWarning: boolean;
 
   constructor(private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
@@ -24,6 +26,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
 
   ngOnInit(): void {
     this.createFormArray(this.assetSeries.fieldSources);
+    this.showNotDeletableWarning = !this.fieldSourcesCanBeDeleted;
   }
 
   private createFormArray(fieldSources: FieldSource[]): void {
@@ -57,7 +60,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
   }
 
   removeAttribute(attributeGroup: AbstractControl): void {
-    if (!this.isMandatory(attributeGroup) && attributeGroup instanceof FormGroup) {
+    if (this.isDeletable(attributeGroup) && attributeGroup instanceof FormGroup) {
       WizardHelper.removeItemFromFormAndDataArray(attributeGroup,
         this.fieldSourcesFormArray, 'indexInArray',
         this.assetSeries.fieldSources, 'indexFieldSources');
@@ -75,7 +78,11 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
     return !group.get('saved').value;
   }
 
-  isMandatory(group: AbstractControl): boolean {
-    return group == null || group.get('mandatory').value;
+  isDeletable(attributeGroup: AbstractControl): boolean {
+    return attributeGroup != null && attributeGroup.get('mandatory').value === false && this.fieldSourcesCanBeDeleted;
+  }
+
+  hideNotDeletableWarning(): void {
+    this.showNotDeletableWarning = false;
   }
 }

@@ -39,6 +39,7 @@ import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.groups.Tuple;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
@@ -713,10 +714,16 @@ class FusionbackendApplicationTests {
                 .imageKey("airisgasimagekey")
                 .handbookKey("airistgashandbookkey")
                 .videoKey("airistgasvideokey")
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
         assetSeriesAiristGasSupplyId = createAndTestAssetSeries(companyAiristMachId,
                 assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManAirist);
+    }
+
+    @NotNull
+    private ConnectivitySettingsDto createConnectivitySettings() {
+        return new ConnectivitySettingsDto("Some String", 1L, 1L);
     }
 
     @Test
@@ -730,6 +737,7 @@ class FusionbackendApplicationTests {
                 .imageKey("lascutterimagekey")
                 .handbookKey("lascutterhandbookkey")
                 .videoKey("lascuttervideokey")
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
         assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId,
@@ -747,6 +755,7 @@ class FusionbackendApplicationTests {
                 .imageKey("genericcutterimagekey" + repetitionInfo.getCurrentRepetition())
                 .handbookKey("genericcutterhandbookkey" + repetitionInfo.getCurrentRepetition())
                 .videoKey("genericcuttervideokey" + repetitionInfo.getCurrentRepetition())
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
         createAndTestAssetSeries(companyAiristMachId, assetTypeTemplateGasSupplyId, assetSeries,
@@ -1625,7 +1634,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId)
+                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId + "/assign")
 
                 .then()
                 .statusCode(200);

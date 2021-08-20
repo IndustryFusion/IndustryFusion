@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -48,7 +49,7 @@ public class AssetSeriesService {
     private final FieldSourceRepository fieldSourceRepository;
     private final CompanyService companyService;
     private final UnitService unitService;
-
+    private final FieldSourceService fieldSourceService;
     private final ConnectivityTypeRepository connectivityTypeRepository;
     private final ConnectivityProtocolRepository connectivityProtocolRepository;
 
@@ -61,6 +62,7 @@ public class AssetSeriesService {
                               FieldSourceRepository fieldSourceRepository,
                               CompanyService companyService,
                               UnitService unitService,
+                              FieldSourceService fieldSourceService,
                               ConnectivityTypeRepository connectivityTypeRepository,
                               ConnectivityProtocolRepository connectivityProtocolRepository) {
         this.assetSeriesRepository = assetSeriesRepository;
@@ -68,6 +70,7 @@ public class AssetSeriesService {
         this.fieldSourceRepository = fieldSourceRepository;
         this.companyService = companyService;
         this.unitService = unitService;
+        this.fieldSourceService = fieldSourceService;
         this.connectivityTypeRepository = connectivityTypeRepository;
         this.connectivityProtocolRepository = connectivityProtocolRepository;
     }
@@ -87,6 +90,8 @@ public class AssetSeriesService {
                                          final Long connectivityTypeId,
                                          final Long connectivityProtocolId,
                                          final AssetSeries assetSeries) {
+
+        validate(assetSeries);
 
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
@@ -118,9 +123,29 @@ public class AssetSeriesService {
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
+        validate(sourceAssetSeries);
+
+        validateForUpdates(sourceAssetSeries, targetAssetSeries);
+
+        List<FieldSource> deletedFieldSources = targetAssetSeries.calculateDeletedFieldSources(sourceAssetSeries);
+
+        deletedFieldSources.forEach(fieldSourceService::delete);
+
         targetAssetSeries.copyFrom(sourceAssetSeries);
 
         return targetAssetSeries;
+    }
+
+    private void validateForUpdates(AssetSeries sourceAssetSeries, AssetSeries targetAssetSeries) {
+        if (!targetAssetSeries.isConnectivitySettingsUnchanged(sourceAssetSeries)) {
+            throw new RuntimeException("It is not allowed to change the connectivity settings.");
+        }
+    }
+
+    private void validate(AssetSeries sourceAssetSeries) {
+        if (sourceAssetSeries.getConnectivitySettings() == null) {
+            throw new RuntimeException("There must be connectivity settings for every asset series");
+        }
     }
 
     public void deleteAssetSeries(final Long companyId, final Long assetSeriesId) {

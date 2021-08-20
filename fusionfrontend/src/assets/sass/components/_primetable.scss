@@ -13,151 +13,21 @@
  * under the License.
  */
 
-/*@import 'src/variables.scss';*/
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
-@import 'abstract/variables';
-@import 'base/typography';
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import "abstract/variables";
 
-
-.filter-btn {
-  height: 48px;
-  width: 48px;
-  background-color: $light-grey;
-  border-color: transparent;
-  border-radius: 10px;
-}
-
-.remove-all-filters-btn {
-  background-color: transparent;
-  border: transparent;
-  background: none;
-  position: absolute;
-  right: -5px;
-  top: 28px;
-  cursor: pointer;
-
-  .remove-all-filters-btn-icon {
-    font-size: 16px;
-    color: $basic-black;
-  }
-}
-
-.panel-heading {
-  font-size: large;
-  font-weight: bold;
-  color: $basic-black;
-  margin-bottom: 10px;
-  margin-left: 5px;
-}
-
-.search-dialog {
-  position: relative;
-}
-
-.search-input {
-  border-color: $basic-white;
-  touch-action: none;
-}
-
-.footer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.open-filterpanel-btn {
-  width: 175px;
-  height: 38px;
-  border-radius: 8px;
-  border-color: transparent;
-  margin-left: 5px;
-  margin-right: 40px;
-  padding: 0 0;
-
-  .filter-panel-btn-grid {
-    display: grid;
-    grid-template-columns: 75% 25%;
-    margin-left: 10px;
-
-    .filter-panel-btn-grid-text {
-      font-weight: bold;
-      justify-self: start;
-      margin-left: 10px;
-    }
-
-    .filter-panel-btn-grid-icon {
-      font-size: 17.5px;
-      margin-top: 3px
-    }
-  }
-}
-
-.notification-icons {
-  overflow: visible !important;
-  margin-top: -2px;
-
-  .notification-low {
-    color: $alert-low;
-  }
-
-  .notification-medium {
-    color: $alert-medium;
-  }
-
-  .notification-high {
-    color: $alert-high;
-  }
-}
-
-.remove-filter-btn {
-  border-color: transparent;
-  background-color: $basic-white;
-
-  .remove-filter-btn-icon {
-    font-size: 14px;
-    color: $basic-black;
-  }
-}
-
-.add-btn {
-  background-color: $basic-white;
-  border: none;
-
-  .add-btn-icon {
-    font-size: 12px;
-    color: $basic-black;
-  }
-}
-
-.clear-filter-btn {
-  font-weight: bold;
-  font-size: 12px;
-  height: 30px;
-
-  .btn-icon {
-    font-size: 14px;
-    color: $basic-black;
-  }
-}
-
-.select-filter-btn {
-  font-size: 12px;
-  height: 30px;
-}
-
-:host ::ng-deep .p-datatable {
+.p-datatable {
   margin: 30px 80px;
   border: hidden !important;
 }
 
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+.p-datatable .p-datatable-thead > tr > th {
   margin-bottom: 10px;
   height: 56px;
   text-align: left;
   font-size: 16px;
   line-height: 20px;
   font-weight: 600;
-  color: #000000;
+  color: $basic-black;
   background-color: $light-grey;
   border: 0 none;
 
@@ -170,7 +40,7 @@
   }
 }
 
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+.p-datatable .p-datatable-tbody > tr > td {
   background-color: $basic-white;
   border-color: transparent;
   text-align: left;
@@ -184,11 +54,11 @@
 
   &:first-child {
     border-radius: 10px 0 0 10px;
-    color: #000000;
+    color: $basic-black;
   }
 }
 
-:host ::ng-deep .p-paginator {
+.p-paginator {
   height: 45px;
   background-color: $basic-white;
   border-color: transparent;
@@ -279,31 +149,6 @@
   .p-paginator-last {
     display: none !important;
   }
-
 }
 
-.asset-needs-maintenance {
-  color: red !important;
-}
 
-.search-panel-button {
-  font-size: 13px;
-  height: 30px;
-  margin: 5px 0 0 0;
-}
-
-.filter-box {
-  margin-bottom: 10px;
-}
-
-.potential-filter-item {
-  margin-left: 7px;
-}
-
-.filter-buttons-box {
-  margin-top: 10px;
-}
-
-.filter-panel {
-  position: relative;
-}

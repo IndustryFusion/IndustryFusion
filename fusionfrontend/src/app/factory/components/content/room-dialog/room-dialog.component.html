@@ -1,0 +1,45 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div>
+
+  <div>
+    <form [formGroup]="roomForm">
+      <div class="input-div">
+        <label class="if-label">Room name</label>
+        <input type="text" pInputText class="room-dialog-inputs" formControlName="name" placeholder="Enter a custom name here">
+      </div>
+      <div class="input-div">
+        <label class="if-label">Room description</label>
+        <textarea pInputTextarea class="room-dialog-textarea" formControlName="description" placeholder="Enter a description here"></textarea>
+        <label class="textarea-character-count if-label">{{ roomForm.get('description').value?.length }}/300</label>
+      </div>
+      <div *ngIf="!factorySiteSelected" class="input-div">
+        <label class="if-label">Select Factory site</label>
+        <p-dropdown [options]="factorySites" formControlName="factorySiteId" optionLabel="name" optionValue="id" placeholder="Factory Site"
+                    class="factory-sites-dropdown"></p-dropdown>
+        </div>
+      <div class="room-dialog-footer">
+        <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
+        <button *ngIf="editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
+              || roomForm.controls['description'].invalid || roomForm.controls['factorySiteId'].invalid">Edit</button>
+        <button *ngIf="!editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
+              || roomForm.controls['description'].invalid">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
