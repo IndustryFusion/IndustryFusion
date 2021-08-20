@@ -169,6 +169,7 @@ export class AssetService {
     mappedAsset.companyId = assetDetails.companyId;
     mappedAsset.roomId = assetDetails.roomId;
     mappedAsset.externalId = assetDetails.externalId;
+    mappedAsset.externalName = assetDetails.externalName;
     mappedAsset.controlSystemType = assetDetails.controlSystemType;
     mappedAsset.hasGateway = assetDetails.hasGateway;
     mappedAsset.name = assetDetails.name;

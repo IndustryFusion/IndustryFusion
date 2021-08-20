@@ -20,6 +20,7 @@ import { ID } from '@datorama/akita';
 export class FieldDetails extends BaseEntity {
   assetId: ID;
   externalId: string;
+  externalName: string;
   fieldType: FieldType;
   mandatory: boolean;
   name: string;
