@@ -4,6 +4,7 @@ import { AssetSeries } from '../../../../../store/asset-series/asset-series.mode
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../store/field/field-query.service';
+import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-series-wizard-attributes',
@@ -13,9 +14,11 @@ import { FieldQuery } from '../../../../../store/field/field-query.service';
 export class AssetSeriesWizardAttributesComponent implements OnInit {
 
   @Input() assetSeries: AssetSeries;
+  @Input() fieldSourcesCanBeDeleted: boolean;
   @Output() valid = new EventEmitter<boolean>();
 
   fieldSourcesFormArray: FormArray;
+  showNotDeletableWarning: boolean;
 
   constructor(private fieldQuery: FieldQuery,
               private formBuilder: FormBuilder) {
@@ -23,6 +26,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
 
   ngOnInit(): void {
     this.createFormArray(this.assetSeries.fieldSources);
+    this.showNotDeletableWarning = !this.fieldSourcesCanBeDeleted;
   }
 
   private createFormArray(fieldSources: FieldSource[]): void {
@@ -30,39 +34,54 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
     this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {
       if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
-        const formGroup = this.createSingleFieldSourceFormGroup(i, fieldSources[i]);
+        const formGroup = this.createSingleFieldSourceFormGroup(i, this.fieldSourcesFormArray.length, fieldSources[i]);
         this.fieldSourcesFormArray.push(formGroup);
       }
     }
     this.valid.emit(this.fieldSourcesFormArray.valid);
   }
 
-  private createSingleFieldSourceFormGroup(index: number, fieldSource: FieldSource): FormGroup {
+  private createSingleFieldSourceFormGroup(indexFieldSources: number,
+                                           indexInArray: number,
+                                           fieldSource: FieldSource): FormGroup {
     const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
     return this.formBuilder.group({
       id: [fieldSource.id],
-      index: [index],
+      indexFieldSources: [indexFieldSources],
+      indexInArray: [indexInArray],
       sourceUnitName: [fieldSource.sourceUnit?.name],
       fieldName: [field.name],
       name: [fieldSource.name],
       value: [fieldSource.value, [Validators.maxLength(255)]],
+      mandatory: [fieldSource.fieldTarget.mandatory],
       saved: [true, Validators.requiredTrue],
     });
   }
 
-  removeValue(group: AbstractControl): void {
-    group.get('value').setValue(null);
-    this.saveValue(group);
+  removeAttribute(attributeGroup: AbstractControl): void {
+    if (this.isDeletable(attributeGroup) && attributeGroup instanceof FormGroup) {
+      WizardHelper.removeItemFromFormAndDataArray(attributeGroup,
+        this.fieldSourcesFormArray, 'indexInArray',
+        this.assetSeries.fieldSources, 'indexFieldSources');
+    }
   }
 
   saveValue(group: AbstractControl): void {
-    const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('index').value] as FieldSource;
-    fieldSource.value  =  group.get('value').value;
-    this.assetSeries.fieldSources[group.get('index').value] = fieldSource;
+    const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('indexInArray').value] as FieldSource;
+    fieldSource.value = group.get('value').value;
+    this.assetSeries.fieldSources[group.get('indexInArray').value] = fieldSource;
     group.get('saved').patchValue(true);
   }
 
   isUnsaved(group: AbstractControl): boolean {
     return !group.get('saved').value;
+  }
+
+  isDeletable(attributeGroup: AbstractControl): boolean {
+    return attributeGroup != null && attributeGroup.get('mandatory').value === false && this.fieldSourcesCanBeDeleted;
+  }
+
+  hideNotDeletableWarning(): void {
+    this.showNotDeletableWarning = false;
   }
 }

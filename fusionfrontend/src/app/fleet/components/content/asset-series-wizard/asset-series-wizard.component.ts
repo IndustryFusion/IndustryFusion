@@ -30,6 +30,8 @@ import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
 import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 
 @Component({
   selector: 'app-asset-series-wizard',
@@ -50,12 +52,15 @@ export class AssetSeriesWizardComponent implements OnInit {
   connectivitySettingsValid: boolean;
   attributesValid: boolean;
   metricsValid: boolean;
+  fieldSourcesCanBeDeleted: boolean;
   relatedManufacturer: Company;
   relatedAssetType: AssetType;
 
   AssetSeriesCreateSteps = AssetSeriesWizardStep;
 
   constructor(private assetSeriesService: AssetSeriesService,
+              private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+              private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
               private companyQuery: CompanyQuery,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
               private assetTypeQuery: AssetTypeQuery,
@@ -67,18 +72,15 @@ export class AssetSeriesWizardComponent implements OnInit {
               private dialogConfig: DynamicDialogConfig,
               private dynamicDialogRef: DynamicDialogRef,
   ) {
-    this.resolve();
+    this.resolve(dialogConfig.data.companyId);
     this.initFromConfigData(dialogConfig);
   }
 
-  ngOnInit() {
-    this.createAssetSeriesFormGroup();
-  }
-
-  private resolve() {
+  private resolve(companyId: ID) {
     this.fieldsResolver.resolve().subscribe();
     this.connectivityTypeResolver.resolve().subscribe();
     this.assetTypesResolver.resolve().subscribe();
+    this.assetSeriesDetailsResolver.resolveUsingCompanyId(companyId);
   }
 
   private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
@@ -90,6 +92,42 @@ export class AssetSeriesWizardComponent implements OnInit {
     if (this.mode === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
         .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
+    }
+  }
+
+  ngOnInit() {
+    this.createAssetSeriesFormGroup();
+    this.setIfFieldSourcesCanBeDeleted();
+  }
+
+  private createAssetSeriesFormGroup(): void {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.assetSeriesForm = this.formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      ceCertified: [null, Validators.required],
+      protectionClass: [null, Validators.maxLength(255)],
+      handbookKey: [null, Validators.maxLength(255)],
+      videoKey: [null, Validators.maxLength(255)],
+      imageKey: [null, Validators.maxLength(255)],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
+      companyId: [null, Validators.required],
+    });
+
+    if (this.assetSeries) {
+      this.assetSeriesForm.patchValue(this.assetSeries);
+    }
+  }
+
+
+  private setIfFieldSourcesCanBeDeleted() {
+    this.fieldSourcesCanBeDeleted = true;
+    if (this.mode === DialogType.EDIT) {
+      this.assetSeriesDetailsQuery.selectAssetSeriesDetails(this.dialogConfig.data.assetSeriesId).subscribe(assetSeriesDetails => {
+        this.fieldSourcesCanBeDeleted = assetSeriesDetails.assetCount < 1;
+      });
     }
   }
 
@@ -118,26 +156,6 @@ export class AssetSeriesWizardComponent implements OnInit {
           .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
   }
 
-  private createAssetSeriesFormGroup(): void {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-
-    this.assetSeriesForm = this.formBuilder.group({
-      id: [],
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
-      ceCertified: [null, Validators.required],
-      protectionClass: [null, Validators.maxLength(255)],
-      handbookKey: [null, Validators.maxLength(255)],
-      videoKey: [null, Validators.maxLength(255)],
-      imageKey: [null, Validators.maxLength(255)],
-      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
-      companyId: [null, Validators.required],
-    });
-
-    if (this.assetSeries) {
-      this.assetSeriesForm.patchValue(this.assetSeries);
-    }
-  }
 
   nextStep(): void {
     if (this.step === this.totalSteps) {

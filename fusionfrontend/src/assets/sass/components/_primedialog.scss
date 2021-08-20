@@ -86,5 +86,28 @@
   margin-left: 1rem;
   margin-top: -2rem !important;
   padding-bottom: 2%;
+}
 
+.if-warning-toast {
+  display: flex;
+  padding-bottom: 1rem;
+  padding-top: -0.3rem;
+  margin-left: 0.3rem;
+  color: $warning;
+
+  .pi-exclamation-circle {
+    margin-top: 2px;
+    margin-right: 0.4rem;
+  }
+
+  .pi-times-circle {
+    font-size: 0.7rem;
+    margin-top: -0.3rem;
+    margin-left: 0.2rem;
+    color: $basic-grey;
+
+    &:hover {
+      color: $hover-grey;
+    }
+  }
 }

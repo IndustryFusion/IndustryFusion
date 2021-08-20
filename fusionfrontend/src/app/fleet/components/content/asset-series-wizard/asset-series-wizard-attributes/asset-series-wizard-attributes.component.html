@@ -18,6 +18,11 @@ under the License.
       <div class="wizard-title">Attributes</div>
       <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no attributes available</div>
       <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
+        <div *ngIf="showNotDeletableWarning === true" class="if-warning-toast">
+          <i class="pi pi-exclamation-circle"></i>
+          <label>Attributes can not be deleted as assets of this asset series already exist.</label>
+          <i class="pi pi-times-circle" (click)="hideNotDeletableWarning()"></i>
+        </div>
         <div class="p-grid">
           <span class="if-label-small-header p-col-3">Custom Attribute name</span>
           <span class="if-label-small-header p-col-3">Attribute name</span>
@@ -41,8 +46,8 @@ under the License.
             <app-edit-button *ngIf="!isUnsaved(fieldSource)" class="edit-button"
                              (editItem)="fieldSource.get('saved').patchValue(false)">
             </app-edit-button>
-            <app-trash-button (deleteItem)="removeValue(fieldSource)"
-                              [disabled]="!isUnsaved(fieldSource)"></app-trash-button>
+            <app-trash-button (deleteItem)="removeAttribute(fieldSource)"
+                              [disabled]="!isDeletable(fieldSource)"></app-trash-button>
           </span>
           </ng-container>
         </div>
