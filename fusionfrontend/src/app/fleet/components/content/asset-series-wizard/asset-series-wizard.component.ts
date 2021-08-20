@@ -93,6 +93,32 @@ export class AssetSeriesWizardComponent implements OnInit {
     }
   }
 
+  ngOnInit() {
+    this.createAssetSeriesFormGroup();
+  }
+
+  private createAssetSeriesFormGroup(): void {
+    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
+
+    this.assetSeriesForm = this.formBuilder.group({
+      id: [],
+      name: ['', requiredTextValidator],
+      description: ['', Validators.maxLength(255)],
+      ceCertified: [null, Validators.required],
+      protectionClass: [null, Validators.maxLength(255)],
+      handbookKey: [null, Validators.maxLength(255)],
+      videoKey: [null, Validators.maxLength(255)],
+      imageKey: [null, Validators.maxLength(255)],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
+      companyId: [null, Validators.required],
+    });
+
+    if (this.assetSeries) {
+      this.assetSeriesForm.patchValue(this.assetSeries);
+    }
+  }
+
+
   private updateAssetSeries(assetSeries: AssetSeries) {
     this.assetSeries = assetSeries;
     this.createAssetSeriesFormGroup();
