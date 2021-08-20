@@ -100,9 +100,6 @@ public class FactorySite extends BaseEntity {
         if (sourceFactorySite.getZip() != null) {
             setZip(sourceFactorySite.getZip());
         }
-        if (sourceFactorySite.getCountry() != null) {
-            getCountry().copyFrom(sourceFactorySite.getCountry());
-        }
         if (sourceFactorySite.getLatitude() != null) {
             setLatitude(sourceFactorySite.getLatitude());
         }
