@@ -64,6 +64,7 @@ public class AssetDraftService {
 
         final Asset transientAsset = Asset.builder()
                 .name(assetSeries.getName())
+                .externalName(null)
                 .description(assetSeries.getDescription())
                 .ceCertified(assetSeries.getCeCertified())
                 .handbookKey(assetSeries.getHandbookKey())
