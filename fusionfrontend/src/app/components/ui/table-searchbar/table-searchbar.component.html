@@ -1,0 +1,21 @@
+<div>
+  <div (click)="searchpanel.toggle($event)"
+          class="table-dropdown-menu-button">
+    <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
+  </div>
+</div>
+
+<p-overlayPanel #searchpanel [showCloseIcon]="true" class="searchPanel panel-class">
+  <ng-template pTemplate>
+    <div class="panel-heading">Search</div>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input">
+      </span>
+    <br>
+    <div class="footer">
+      <button type="button" class="if-button button-primary button-modal" style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"
+              (click)="filterItems(); searchpanel.hide()">Apply</button>
+    </div>
+  </ng-template>
+</p-overlayPanel>

@@ -1,0 +1,52 @@
+/*@import 'src/variables.scss';*/
+@import 'abstract/variables';
+@import 'base/typography';
+
+
+.panel-heading {
+  font-size: large;
+  font-weight: bold;
+  color: $basic-black;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.search-input {
+  border-color: $basic-white;
+  touch-action: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+//.panel-class {
+//  ::ng-deep .p-component {
+//    top: unset !important;
+//    left: 10% !important;
+//  }
+//
+//  ::ng-deep .p-component::before {
+//    left: 12%;
+//  }
+//
+//  ::ng-deep .p-component::after {
+//    left: 12%;
+//  }
+
+.panel-class {
+  ::ng-deep .p-component {
+    top: unset !important;
+    left: 8% !important;
+  }
+
+  ::ng-deep .p-component::before {
+    left: 14%;
+  }
+
+  ::ng-deep .p-component::after {
+    left: 14%;
+  }
+}
+

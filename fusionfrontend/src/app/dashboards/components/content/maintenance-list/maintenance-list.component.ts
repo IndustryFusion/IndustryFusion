@@ -65,6 +65,9 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   assetTypes: AssetType[];
 
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
+  searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
+  filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
+
   faFilter = faFilter;
   faSearch = faSearch;
   OispPriority = OispAlertPriority;
@@ -100,7 +103,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
   }
 
-  searchAssets() {
+  searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
+    this.searchedFactoryAssets = event;
     this.filterAssets();
   }
 
@@ -135,7 +139,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
         this.activeFilterSet.delete(filter);
       }
     });
-    this.filterAssets();
+    // this.filterAssets();
   }
 
   clearAllFilters() {
@@ -144,7 +148,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.selectedCompanies = [];
     this.selectedFactorySites = [];
     this.selectedMaintenanceDue = [];
-    this.filterAssets();
+    // this.filterAssets();
   }
 
   clearSelectFilterValues() {
@@ -162,7 +166,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   filterAssets() {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
 
-    this.filterBySearchText();
+    if (this.searchedFactoryAssets.length > 0) {
+      this.displayedFactoryAssets = this.searchedFactoryAssets;
+    }
+
+    // this.filterBySearchText();
     this.filterByFactorySite();
     this.filterByAssetType();
     this.filterByCompany();
@@ -264,12 +272,12 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     return MaintenanceState.LONGTERM;
   }
 
-  private filterBySearchText() {
-    if (this.searchText) {
-      this.displayedFactoryAssets = this.displayedFactoryAssets
-        .filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
-    }
-  }
+  // private filterBySearchText() {
+  //   if (this.searchText) {
+  //     this.displayedFactoryAssets = this.displayedFactoryAssets
+  //       .filter(asset => asset.name.toLowerCase().includes(this.searchText.toLowerCase()));
+  //   }
+  // }
 
   private filterByCompany() {
     const companyNames = this.selectedCompanies.map(company => company.description);

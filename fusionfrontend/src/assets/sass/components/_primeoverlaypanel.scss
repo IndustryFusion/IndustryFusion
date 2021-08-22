@@ -13,25 +13,36 @@
  * under the License.
  */
 
-.assetSearchPanel  {
-    .p-overlaypanel {
-        border-radius: 8px;
-        width: 300px;
-    }
+.searchPanel  {
+  .p-overlaypanel {
+    border-radius: 8px;
+    width: 330px;
+  }
 
-    .p-overlaypanel .p-overlaypanel-close {
-        background-color: $basic-white;
-        color: $basic-black;
-        position: absolute;
-        right: 15px;
-        top: 12px;
-        border-radius: 8px;
+
+  .p-overlaypanel .p-overlaypanel-close {
+    background-color: $basic-white;
+    color: $basic-black;
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    border-radius: 8px;
+    width: 20px;
+    height: 20px;
+
+    &:hover {
+      background-color: $basic-white;
+      color: $basic-black
     }
+    &:active {
+      border-color: $basic-white;
+    }
+  }
 }
 
 .dashboardFilterPanel {
-    .p-overlaypanel {
-        border-radius: 8px;
-        width: 500px;
-    }
+  .p-overlaypanel {
+      border-radius: 8px;
+      width: 500px;
+  }
 }

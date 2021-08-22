@@ -22,10 +22,16 @@
       <tr>
         <th [style.width.%]="2"></th>
         <th [style.width.%]="4"></th>
-        <th (click)="searchpanel.toggle($event)" [style.width.%]="20">Asset
-          <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
+        <th [style.width.%]="20">
+          <div class="p-grid">
+            <div class="p-col-fixed">Asset</div>
+            <app-table-searchbar class="p-col" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields" (searchByName)="searchAssets($event)">
+            </app-table-searchbar>
+          </div>
         </th>
-        <th [style.width.%]="18">Asset Type</th>
+        <th [style.width.%]="18" pSortableColumn="category">Asset Type
+          <p-sortIcon field="category"></p-sortIcon>
+        </th>
         <th [style.width.%]="20">Manufacturer</th>
         <th [style.width.%]="12">Factory</th>
         <th [style.width.%]="13">Days till Maintenance</th>
@@ -70,21 +76,6 @@
   </p-table>
 </div>
 
-<p-overlayPanel #searchpanel [showCloseIcon]="true" class="assetSearchPanel">
-  <ng-template pTemplate>
-    <div class="panel-heading">Search</div>
-    <span class="p-input-icon-left">
-            <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
-            <input [(ngModel)]="searchText" class="search-input" pInputText placeholder="Name" type="text">
-        </span>
-    <br>
-    <div class="footer">
-      <button (click)="searchAssets(); searchpanel.hide()"
-              class="if-button button-primary button-modal search-panel-button" type="button">Apply
-      </button>
-    </div>
-  </ng-template>
-</p-overlayPanel>
 
 <p-overlayPanel #filterpanel [dismissable]="false" class="dashboardFilterPanel">
   <ng-template pTemplate>

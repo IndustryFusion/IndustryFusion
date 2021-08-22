@@ -27,7 +27,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TableSearchbarComponent } from '../components/ui/table-searchbar/table-searchbar.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
     AccuracyFormatPipe,
     LabelControlDirective,
     TooltipComponent,
+    TableSearchbarComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,7 @@ import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
     RadioButtonModule,
     DialogModule,
     ToastModule,
+    OverlayPanelModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -84,6 +87,7 @@ import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
     RadioButtonModule,
     LabelControlDirective,
     TooltipComponent,
+    TableSearchbarComponent,
   ],
   providers: [
     MessageService
