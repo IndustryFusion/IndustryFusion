@@ -19,10 +19,10 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { OispNotificationStore } from './oisp-notification.store';
 import { Observable } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
-import { Device } from '../../../services/oisp.model';
-import { OispService } from '../../../services/oisp.service';
 import { OispAlert } from '../oisp-alert/oisp-alert.model';
 import { OispAlertQuery } from '../oisp-alert/oisp-alert.query';
+import { Device } from '../oisp-device/oisp-device.model';
+import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
 
 @Injectable({
   providedIn: 'root'
@@ -31,13 +31,13 @@ export class OispNotificationService {
 
   constructor(private oispNotificationStore: OispNotificationStore,
               private oispAlertQuery: OispAlertQuery,
-              private oispService: OispService) { }
+              private oispDeviceQuery: OispDeviceQuery) { }
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     params: new HttpParams()
   };
 
-  private static getNotificationOfAlert(alert: OispAlert, assetName: string): OispNotification {
+  private static mapAlertToNotification(alert: OispAlert, assetName: string): OispNotification {
     const notification = new OispNotification();
 
     if (alert) {
@@ -66,11 +66,11 @@ export class OispNotificationService {
       assetName = deviceOfAlert?.name;
     }
 
-    return OispNotificationService.getNotificationOfAlert(alert, assetName);
+    return OispNotificationService.mapAlertToNotification(alert, assetName);
   }
 
   getNotificationsUsingAlertStore(): Observable<OispNotification[]> {
-    return this.oispService.getAllDevices()
+    return this.oispDeviceQuery.selectAll()
       .pipe(mergeMap((devices: Device[]) => {
           return this.oispAlertQuery.selectAll().pipe(
             map((alerts: OispAlert[]) => {

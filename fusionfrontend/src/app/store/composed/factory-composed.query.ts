@@ -15,8 +15,8 @@
 
 import { Injectable } from '@angular/core';
 import { combineQueries, ID } from '@datorama/akita';
-import { forkJoin, Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { OispService } from '../../services/oisp.service';
 import {
   FactoryAssetDetails,
@@ -93,7 +93,7 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectFieldsOfAssetsDetails(): Observable<FactoryAssetDetailsWithFields[]> {
+  selectAssetsWithFieldInstanceDetails(): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
       this.factoryAssetDetailsQuery.selectAll(),
       this.fieldDetailsQuery.selectAll()
@@ -155,55 +155,20 @@ export class FactoryComposedQuery {
     }));
   }
 
-  joinFieldsOfAssetsWithOispData(): Observable<AssetWithFields[]> {
-    return this.selectFieldsOfSelectedAssets().pipe(
-      mergeMap((assets: AssetWithFields[]) =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetFieldsWithReplacedExternalIds(asset))
-        )
-      )
-    );
-  }
-
-  joinFieldsOfSingleAssetWithOispData(asset: Asset): Observable<AssetWithFields> {
+  joinAssetAndFieldInstanceDetails(asset: Asset): Observable<AssetWithFields> {
     return this.fieldDetailsQuery.selectFieldsOfAsset(asset.id).pipe(
-      mergeMap(myFields => {
-        const assetWithFields = Object.assign({ fields: myFields }, asset);
-        return this.oispService.getAssetFieldsWithReplacedExternalIds(assetWithFields);
+      map(fieldDetails => {
+        const assetWithFieldDetails: AssetWithFields = Object.assign({ fields: fieldDetails }, asset);
+        return assetWithFieldDetails;
       })
     );
   }
 
-  joinFieldsOfAssetsDetailsWithOispDataIncludingAlerts(): Observable<FactoryAssetDetailsWithFields[]> {
-    return this.selectFieldsOfAssetsDetails().pipe(
-      mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset).pipe(
-            map((assetDetails: FactoryAssetDetailsWithFields) =>
-              this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(assetDetails))
-          ))
-        )
-      )
-    );
-  }
-
-  selectAssetDetailsWithFieldsOfFactorySiteAndOispData(factorySiteId): Observable<FactoryAssetDetailsWithFields[]> {
-    return this.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId).pipe(
-      mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
-        ),
-      )
-    );
-  }
-
-  selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId): Observable<FactoryAssetDetailsWithFields[]> {
-    return this.selectFieldsOfAssetsDetailsByRoomId(roomId).pipe(
-      mergeMap(assets =>
-        forkJoin(
-          assets.map(asset => this.oispService.getAssetDetailsFieldsWithReplacedExternalIds(asset))
-        )
-      )
+  joinAssetsDetailsWithFieldInstancesWithAlerts(): Observable<FactoryAssetDetailsWithFields[]> {
+    return this.selectAssetsWithFieldInstanceDetails().pipe(
+      map((assetsDetails: FactoryAssetDetailsWithFields[]) => {
+        return assetsDetails.map(asset => this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(asset));
+      })
     );
   }
 }

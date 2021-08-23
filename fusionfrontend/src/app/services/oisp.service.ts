@@ -16,16 +16,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, map, startWith } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { Asset, AssetWithFields } from '../store/asset/asset.model';
+import { Asset } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
   Aggregator,
-  ComponentType,
   ConditionType,
-  Device,
-  DeviceComponent,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
@@ -39,9 +36,7 @@ import {
   Sampling,
   Series
 } from './oisp.model';
-import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
-import { ID } from '@datorama/akita';
 
 @Injectable({
   providedIn: 'root'
@@ -148,13 +143,6 @@ export class OispService {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
     return this.http.get<Rule>(url, this.httpOptions);
   }
-
-  getComponentTypesCatalog(): Observable<ComponentType[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
-    return this.http.get<ComponentType[]>(url, this.httpOptions);
-  }
-
-
 
   getUser(): Observable<OISPUser[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
