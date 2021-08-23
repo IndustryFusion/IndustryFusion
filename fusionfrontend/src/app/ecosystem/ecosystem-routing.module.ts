@@ -56,20 +56,20 @@ const routes: Routes = [
     children: [{
       path: '',
       component: AssetTypeTemplateListComponent
+    }],
+  },
+  {
+    path: 'ecosystemmanager/assettypetemplate/:assetTypeTemplateId',
+    component: AssetTypeTemplatePageComponent,
+    resolve: {
+      assetTypes: AssetTypesResolver,
+      fields: FieldsResolver,
+      units: UnitsResolver,
     },
-    {
-      path: ':assetTypeTemplateId',
-      component: AssetTypeTemplatePageComponent,
-      resolve: {
-        assetTypes: AssetTypesResolver,
-        fields: FieldsResolver,
-        units: UnitsResolver,
-      },
-      data: {
-        pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL],
-        roles: [Role.ECOSYSTEM_MANAGER]
-      },
-    }]
+    data: {
+      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL],
+      roles: [Role.ECOSYSTEM_MANAGER]
+    },
   },
   {
     path: 'ecosystemmanager/assettypes',
