@@ -26,7 +26,7 @@ import { CompanyQuery } from 'src/app/store/company/company.query';
 import { CompanyService } from 'src/app/store/company/company.service';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { FieldDetailsQuery } from 'src/app/store/field-details/field-details-query.service';
+import { FieldDetailsQuery } from 'src/app/store/field-details/field-details.query';
 import { FieldDetailsService } from 'src/app/store/field-details/field-details.service';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';

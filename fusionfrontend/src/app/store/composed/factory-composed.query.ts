@@ -25,7 +25,7 @@ import {
 import { FactoryAssetDetailsQuery } from '../factory-asset-details/factory-asset-details.query';
 import { Asset, AssetWithFields } from '../asset/asset.model';
 import { AssetQuery } from '../asset/asset.query';
-import { FieldDetailsQuery } from '../field-details/field-details-query.service';
+import { FieldDetailsQuery } from '../field-details/field-details.query';
 import { FactorySiteWithAssetCount } from '../factory-site/factory-site.model';
 import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
@@ -39,7 +39,7 @@ export class FactoryComposedQuery {
     protected roomQuery: RoomQuery,
     protected assetQuery: AssetQuery,
     protected factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
-    protected fieldQuery: FieldDetailsQuery,
+    protected fieldDetailsQuery: FieldDetailsQuery,
     protected oispAlertQuery: OispAlertQuery,
     protected oispService: OispService) { }
 
@@ -82,7 +82,7 @@ export class FactoryComposedQuery {
   selectFieldsOfSelectedAssets(): Observable<AssetWithFields[]> {
     return combineQueries([
       this.assetQuery.getSelectedAssets(),
-      this.fieldQuery.selectAll()
+      this.fieldDetailsQuery.selectAll()
     ]).pipe(
       map(([assets, fields]) =>
         assets.map(asset => {
@@ -96,7 +96,7 @@ export class FactoryComposedQuery {
   selectFieldsOfAssetsDetails(): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
       this.factoryAssetDetailsQuery.selectAll(),
-      this.fieldQuery.selectAll()
+      this.fieldDetailsQuery.selectAll()
     ]).pipe(
       map(([assetsDetails, fields]) =>
         assetsDetails.map(assetDetails => {
@@ -121,7 +121,7 @@ export class FactoryComposedQuery {
   selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId: ID): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
       this.selectAssetDetailsOfFactorySite(factorySiteId),
-      this.fieldQuery.selectAll()
+      this.fieldDetailsQuery.selectAll()
     ]).pipe(
       map(([assetsDetails, fields]) =>
         assetsDetails.map(assetDetails => {
@@ -135,7 +135,7 @@ export class FactoryComposedQuery {
   selectFieldsOfAssetsDetailsByRoomId(roomId: ID): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
       this.factoryAssetDetailsQuery.selectAssetDetailsOfRoom(roomId),
-      this.fieldQuery.selectAll()
+      this.fieldDetailsQuery.selectAll()
     ]).pipe(
       map(([assetsDetails, fields]) =>
         assetsDetails.map(assetDetails => {
@@ -166,7 +166,7 @@ export class FactoryComposedQuery {
   }
 
   joinFieldsOfSingleAssetWithOispData(asset: Asset): Observable<AssetWithFields> {
-    return this.fieldQuery.selectFieldsOfAsset(asset.id).pipe(
+    return this.fieldDetailsQuery.selectFieldsOfAsset(asset.id).pipe(
       mergeMap(myFields => {
         const assetWithFields = Object.assign({ fields: myFields }, asset);
         return this.oispService.getAssetFieldsWithReplacedExternalIds(assetWithFields);

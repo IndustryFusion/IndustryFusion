@@ -18,7 +18,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { BaseQueryEntityCached } from '../basequerycached';
 import { FieldDetails } from './field-details.model';
-import { FieldDetailsState, FieldDetailsStore } from './field-details-store.service';
+import { FieldDetailsState, FieldDetailsStore } from './field-details.store';
 
 @Injectable({ providedIn: 'root' })
 export class FieldDetailsQuery extends BaseQueryEntityCached<FieldDetailsState, FieldDetails> {
