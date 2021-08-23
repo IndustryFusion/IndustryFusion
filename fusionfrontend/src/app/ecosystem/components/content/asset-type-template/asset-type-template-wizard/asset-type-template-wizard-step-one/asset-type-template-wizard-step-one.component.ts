@@ -29,6 +29,7 @@ import { AssetTypeTemplateWizardWarningDialogComponent } from '../asset-type-tem
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { NameWithVersionPipe } from '../../../../../../pipes/namewithversion.pipe';
+import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-one',
@@ -47,6 +48,8 @@ export class AssetTypeTemplateWizardStepOneComponent implements OnInit {
   public assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
 
   public warningDialogRef: DynamicDialogRef;
+
+  public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
   constructor(private assetTypeQuery: AssetTypeQuery,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,

@@ -24,6 +24,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuantityDataType } from '../../../../store/field-details/field-details.model';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-quantity-type-dialog',
@@ -41,6 +42,7 @@ export class QuantityTypeDialogComponent implements OnInit {
   public valueCategorical = QuantityDataType.CATEGORICAL;
   public valueNumeric = QuantityDataType.NUMERIC;
   public DialogType = DialogType;
+  public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
   public noBaseUnitWarning = 'No base unit selected';
   public showBaseUnitWarning: boolean;
@@ -69,12 +71,11 @@ export class QuantityTypeDialogComponent implements OnInit {
   }
 
   private createQuantityTypeForm(quantityType: QuantityType): void {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.quantityTypeForm = this.formBuilder.group({
       id: [],
-      name: ['', requiredTextValidator],
-      label: ['', Validators.maxLength(255)],
-      description: ['', Validators.maxLength(255)],
+      name: ['', WizardHelper.requiredTextValidator],
+      label: ['', WizardHelper.maxTextLengthValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
       baseUnitId: [],
       dataType: [QuantityDataType.CATEGORICAL, Validators.required]
     });

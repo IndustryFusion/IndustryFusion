@@ -22,10 +22,11 @@ import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
 import { FactoryAssetDetails, FactoryAssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
 import { Location } from '@angular/common';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-assets-list',
@@ -111,18 +112,17 @@ export class AssetsListComponent implements OnInit {
   }
 
   createDetailsAssetForm(formBuilder: FormBuilder) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.assetDetailsForm = formBuilder.group({
       id: [null],
-      roomId: ['', requiredTextValidator],
-      name: ['', requiredTextValidator],
+      roomId: ['', WizardHelper.requiredTextValidator],
+      name: ['', WizardHelper.requiredTextValidator],
       description: [''],
       imageKey: [''],
-      manufacturer: ['', requiredTextValidator],
-      assetSeriesName: ['', requiredTextValidator],
-      category: ['', requiredTextValidator],
-      roomName: ['', requiredTextValidator],
-      factorySiteName: ['', requiredTextValidator]
+      manufacturer: ['', WizardHelper.requiredTextValidator],
+      assetSeriesName: ['', WizardHelper.requiredTextValidator],
+      category: ['', WizardHelper.requiredTextValidator],
+      roomName: ['', WizardHelper.requiredTextValidator],
+      factorySiteName: ['', WizardHelper.requiredTextValidator]
     });
   }
 

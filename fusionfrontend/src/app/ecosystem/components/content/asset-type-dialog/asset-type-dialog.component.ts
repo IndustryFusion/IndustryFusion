@@ -15,11 +15,12 @@
 
 import { Component, OnInit } from '@angular/core';
 import { AssetType } from '../../../../store/asset-type/asset-type.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 import { DialogType } from '../../../../common/models/dialog-type.model';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-type-dialog',
@@ -32,6 +33,7 @@ export class AssetTypeDialogComponent implements OnInit {
   public type: DialogType;
 
   public DialogType = DialogType;
+  public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
   constructor(private assetTypeService: AssetTypeService,
               private formBuilder: FormBuilder,
@@ -67,13 +69,11 @@ export class AssetTypeDialogComponent implements OnInit {
   }
 
   private createAssetTypeForm(assetTypeToEdit: AssetTypeDetails) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-
     this.assetTypeForm = this.formBuilder.group({
       id: [],
-      name: ['', requiredTextValidator],
-      label: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)]
+      name: ['', WizardHelper.requiredTextValidator],
+      label: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator]
     });
 
     if (assetTypeToEdit) {

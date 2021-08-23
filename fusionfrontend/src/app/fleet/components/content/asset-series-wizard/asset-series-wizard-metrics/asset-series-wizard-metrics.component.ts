@@ -46,6 +46,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
                                            indexInArray: number,
                                            fieldSource: FieldSource): FormGroup {
     const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+    const registerValidator = fieldSource.fieldTarget.mandatory ? WizardHelper.requiredTextValidator :  WizardHelper.maxTextLengthValidator;
 
     return this.formBuilder.group({
       id: [fieldSource.id],
@@ -55,7 +56,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
       fieldName: [field.name],
       accuracy: [field.accuracy],
       name: [fieldSource.name],
-      register: [fieldSource.register, [Validators.maxLength(255)]],
+      register: [fieldSource.register, registerValidator],
       mandatory: [fieldSource.fieldTarget.mandatory],
       saved: [true, Validators.requiredTrue],
     });
