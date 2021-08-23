@@ -62,6 +62,7 @@ const routes: Routes = [
     path: 'ecosystemmanager/assettypetemplate/:assetTypeTemplateId',
     component: AssetTypeTemplatePageComponent,
     resolve: {
+      templates: AssetTypeTemplatesResolver,
       assetTypes: AssetTypesResolver,
       fields: FieldsResolver,
       units: UnitsResolver,
