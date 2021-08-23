@@ -37,6 +37,7 @@ import {
   Series
 } from './oisp.model';
 import { KeycloakService } from 'keycloak-angular';
+import { OispDeviceQuery } from '../store/oisp/oisp-device/oisp-device.query';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,7 @@ export class OispService {
 
   constructor(
     private http: HttpClient,
+    private oispDeviceQuery: OispDeviceQuery,
     private keycloakService: KeycloakService) {
   }
 
@@ -174,11 +176,11 @@ export class OispService {
       targetFilter: { deviceList: [asset.externalName] },
       metrics: fields
         .filter(field => field.fieldType === FieldType.METRIC)
-        .map(field => ({ id: field.externalName, op: 'none' }))
+        .map(field => ({ id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
+          op: 'none' }))
     };
 
-    const oispPoints$ = this.getOispPoints(path, request, true);
-    return oispPoints$;
+    return this.getOispPoints(path, request, true);
   }
 
   getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: string): Observable<PointWithId[]> {
@@ -186,7 +188,8 @@ export class OispService {
     let oispPoints$: Observable<PointWithId[]>;
     if (!maxPoints) {
       let metrics: Metrics;
-      metrics = ({ id: field.externalId, op: 'none' });
+      metrics = ({ id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
+        op: 'none' });
       const request: OispRequest = {
         from: -secondsInPast,
         targetFilter: { deviceList: [asset.externalName] },
@@ -196,7 +199,9 @@ export class OispService {
     } else {
       let metricsWithAggregation: MetricsWithAggregation;
       const myAggregator: Aggregator = ({ name: 'avg' });
-      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
+      metricsWithAggregation = ({ id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
+          field.externalName),
+        op: 'none', aggregator: myAggregator });
       const request: OispRequestWithAggregation = {
         from: -secondsInPast,
         maxItems: Number(maxPoints),
@@ -220,7 +225,9 @@ export class OispService {
     if (samplingUnit) {
       const mySampling: Sampling = ({ unit: samplingUnit, value: samplingValue });
       const myAggregator: Aggregator = ({ name: 'avg', sampling: mySampling });
-      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
+      metricsWithAggregation = ({ id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
+          field.externalName),
+        op: 'none', aggregator: myAggregator });
       const request: OispRequestWithAggregation = {
         from: fromDate,
         to: toDate,
@@ -230,7 +237,9 @@ export class OispService {
       return this.getOispPoints(path, request, false);
     } else {
       const myAggregator: Aggregator = ({ name: 'avg' });
-      metricsWithAggregation = ({ id: field.externalName, op: 'none', aggregator: myAggregator });
+      metricsWithAggregation = ({ id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
+          field.externalName),
+        op: 'none', aggregator: myAggregator });
       const request: OispRequestWithAggregation = {
         from: fromDate,
         to: toDate,

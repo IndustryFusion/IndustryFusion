@@ -24,12 +24,26 @@ export class OispDeviceQuery extends QueryEntity<OispDeviceState> {
     super(store);
   }
 
-  mapExternalNameOFieldInstanceToComponentId(externalName: string): string | null {
-    return this.getEntity(externalName)?.components.find(component => component.name === externalName)?.cid;
+  mapExternalNameOFieldInstanceToComponentId(externalNameOfAsset: string, externalNameOfFieldInstance: string): string {
+    if (this.getAll().length < 1) {
+      console.error('[oisp device query]: No devices loaded. Forgot to add resolver?');
+    }
+
+    console.log('externalNameOfFieldInstance', externalNameOfAsset, externalNameOfFieldInstance);
+
+    let externalId = externalNameOfFieldInstance;
+    const foundComponent = this.getEntity(externalNameOfAsset)?.components.find(c => c.name === externalNameOfFieldInstance);
+    if (foundComponent) {
+      externalId = foundComponent.cid;
+    }
+    return externalId;
   }
 
-  mapExternalNameOfAssetToDeviceUid(externalName: string): string | null {
-    return this.getEntity(externalName)?.uid;
+  mapExternalNameOfAssetToDeviceUid(externalName: string): string {
+    if (this.getAll().length < 1) {
+      console.error('[oisp device query]: No devices loaded. Forgot to add resolver?');
+    }
+    return this.getEntity(externalName)?.uid ?? externalName;
   }
 
   resetStore() {

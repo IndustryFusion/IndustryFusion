@@ -25,6 +25,7 @@ import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
+import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
 
 @Component({
   selector: 'app-asset-card',
@@ -50,6 +51,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private oispService: OispService,
+    private oispDeviceQuery: OispDeviceQuery,
     private statusService: StatusService,
     private router: Router) { }
 
@@ -64,7 +66,8 @@ export class AssetCardComponent implements OnInit, OnDestroy {
       map(latestPoints => {
         return this.asset.fields.map(field => {
           const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id === field.externalName);
+          const point = latestPoints.find(latestPoint => latestPoint.id ===
+            this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(this.asset.externalName, field.externalName));
 
           if (point) {
             fieldCopy.value = point.value;

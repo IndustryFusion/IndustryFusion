@@ -18,10 +18,10 @@ import { QueryEntity } from '@datorama/akita';
 import { OispAlertState, OispAlertStore } from './oisp-alert.store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { OispAlert, OispAlertStatus, OispAlertPriority } from './oisp-alert.model';
+import { OispAlert, OispAlertPriority, OispAlertStatus } from './oisp-alert.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
-import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
 import { FieldDetails } from '../../field-details/field-details.model';
+import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
 
 @Injectable({ providedIn: 'root' })
 export class OispAlertQuery extends QueryEntity<OispAlertState> {
@@ -60,7 +60,7 @@ export class OispAlertQuery extends QueryEntity<OispAlertState> {
 
     assetDetailsCopy.fields?.forEach((fieldInstanceDetails: FieldDetails) => {
       const externalIdOFieldInstanceDetails = this.oispDeviceQuery.
-        mapExternalNameOFieldInstanceToComponentId(fieldInstanceDetails.externalName);
+        mapExternalNameOFieldInstanceToComponentId(assetDetailsCopy.externalName, fieldInstanceDetails.externalName);
       alertPriorities.push(this.findAlertPriorityByExternalId(externalIdOFieldInstanceDetails, openAlerts));
     });
 

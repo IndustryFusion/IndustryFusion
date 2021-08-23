@@ -60,6 +60,30 @@ export class OispDeviceService {
         return devices;
       }));
   }
+/*
+  mapExternalNameOFieldInstanceToComponentId(externalNameOfAsset: string, externalNameOfFieldInstance: string): string {
+    let externalId: string = externalNameOfFieldInstance;
+    this.getItems().toPromise().then(devices => {
+      const device = this.findDevice(devices, externalNameOfAsset);
+      if (device) {
+        externalId = device.components.find(component => component.name === externalNameOfFieldInstance)?.cid;
+      }
+    });
+    return externalId;
+  }
+
+  mapExternalNameOfAssetToDeviceUid(externalName: string): string {
+    let externalId: string = externalName;
+    this.getItems().toPromise().then(devices => {
+      const device = this.findDevice(devices, externalName);
+      externalId = device?.uid;
+    });
+    return externalId;
+  }
+
+  private findDevice(devices: Device[], deviceId: string) {
+    return devices.find(device => device.deviceId === deviceId);
+  }*/
 
   getComponentTypesCatalog(): Observable<ComponentType[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
