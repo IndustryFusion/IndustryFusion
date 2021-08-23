@@ -1,6 +1,7 @@
 <div>
   <div (click)="searchpanel.toggle($event)"
           class="table-dropdown-menu-button">
+    <span style="margin-right: 10px;">{{filterColumn}}</span>
     <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
   </div>
 </div>
@@ -11,6 +12,9 @@
       <span class="p-input-icon-left">
         <i class="pi pi-search"></i>
         <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input">
+        <button (click)="clearSearchText();" class="remove-searchtext-btn">
+          <i class="pi pi-trash searchtext-btn-icon"></i>
+        </button>
       </span>
     <br>
     <div class="footer">

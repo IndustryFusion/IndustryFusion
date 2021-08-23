@@ -16,37 +16,58 @@
   touch-action: none;
 }
 
+.remove-searchtext-btn {
+  background-color: $basic-white !important;
+  border: none;
+  position: absolute;
+  top: 7.5px;
+  left: 260px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .searchtext-btn-icon {
+    font-size: $regular-font-size;
+    font-weight: lighter;
+  }
+}
+
 .footer {
   display: flex;
   justify-content: flex-end;
 }
 
-//.panel-class {
-//  ::ng-deep .p-component {
-//    top: unset !important;
-//    left: 10% !important;
-//  }
-//
-//  ::ng-deep .p-component::before {
-//    left: 12%;
-//  }
-//
-//  ::ng-deep .p-component::after {
-//    left: 12%;
-//  }
+@media (max-width: 1500px) {
+  .panel-class {
+    ::ng-deep .p-component {
+      top: unset !important;
+      left: 8% !important;
+    }
 
-.panel-class {
-  ::ng-deep .p-component {
-    top: unset !important;
-    left: 8% !important;
-  }
+    ::ng-deep .p-component::before {
+      left: 15%;
+    }
 
-  ::ng-deep .p-component::before {
-    left: 14%;
-  }
-
-  ::ng-deep .p-component::after {
-    left: 14%;
+    ::ng-deep .p-component::after {
+      left: 15%;
+    }
   }
 }
 
+@media (min-width: 1500px) {
+  .panel-class {
+    ::ng-deep .p-component {
+      top: unset !important;
+      left: 8% !important;
+    }
+
+    ::ng-deep .p-component::before {
+      left: 11%;
+    }
+
+    ::ng-deep .p-component::after {
+      left: 11%;
+    }
+  }
+}

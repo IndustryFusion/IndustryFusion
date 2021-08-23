@@ -9,12 +9,12 @@ import { BaseEntity } from '../../../store/baseentity.model';
 })
 export class TableSearchbarComponent implements OnInit {
 
+  @Input() filterColumn: string;
   @Input() itemsToBeFiltered: any;
   @Output() searchByName = new EventEmitter<any>();
 
   searchText: string;
   faSearch = faSearch;
-
   constructor() { }
 
   ngOnInit(): void {
@@ -33,6 +33,10 @@ export class TableSearchbarComponent implements OnInit {
       .filter(item => item.name.toLowerCase().includes(this.searchText.toLowerCase()));
     console.log(filteredItems);
     return filteredItems;
+  }
+
+  clearSearchText() {
+    this.searchText = '';
   }
 
 }

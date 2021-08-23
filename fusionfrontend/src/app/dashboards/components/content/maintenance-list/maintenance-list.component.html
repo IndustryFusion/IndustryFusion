@@ -23,11 +23,8 @@
         <th [style.width.%]="2"></th>
         <th [style.width.%]="4"></th>
         <th [style.width.%]="20">
-          <div class="p-grid">
-            <div class="p-col-fixed">Asset</div>
-            <app-table-searchbar class="p-col" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields" (searchByName)="searchAssets($event)">
-            </app-table-searchbar>
-          </div>
+          <app-table-searchbar class="p-col" filterColumn="Asset" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields" (searchByName)="searchAssets($event)">
+          </app-table-searchbar>
         </th>
         <th [style.width.%]="18" pSortableColumn="category">Asset Type
           <p-sortIcon field="category"></p-sortIcon>
