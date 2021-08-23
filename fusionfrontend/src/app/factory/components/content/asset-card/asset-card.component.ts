@@ -64,7 +64,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
       map(latestPoints => {
         return this.asset.fields.map(field => {
           const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id === field.externalId);
+          const point = latestPoints.find(latestPoint => latestPoint.id === field.externalName);
 
           if (point) {
             fieldCopy.value = point.value;

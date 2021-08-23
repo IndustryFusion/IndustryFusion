@@ -58,7 +58,7 @@ export class StatusComponent implements OnInit {
         map(latestPoints => {
           return this.asset.fields.map(field => {
             const fieldCopy = Object.assign({ }, field);
-            const point = latestPoints.find(latestPoint => latestPoint.id === field.externalId);
+            const point = latestPoints.find(latestPoint => latestPoint.id === field.externalId); // TODO: externalId or name?
 
             if (point) {
               fieldCopy.value = point.value;

@@ -88,7 +88,7 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
       map(([asset, latestPoints]) => {
         return asset.fields.map(field => {
           const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id === field.externalId);
+          const point = latestPoints.find(latestPoint => latestPoint.id === field.externalName);
 
           if (point) {
             fieldCopy.value = point.value;

@@ -82,7 +82,7 @@ export class PointWithIdAndDate {
 
 export class Rule {
   id: string;
-  externalId: string;
+  externalId: string; // TODO (jsy): ID or name?
   name: string;
   description: string;
   owner: string;

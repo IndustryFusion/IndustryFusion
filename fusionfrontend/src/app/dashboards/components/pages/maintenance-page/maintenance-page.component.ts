@@ -93,7 +93,7 @@ export class MaintenancePageComponent implements OnInit {
   private getAssetFieldValues(asset: FactoryAssetDetailsWithFields, lastValues: PointWithId[]): FieldDetails[] {
     return asset.fields.map((field) => {
         const fieldCopy = Object.assign({ }, field);
-        const point = lastValues?.find(latestPoint => latestPoint.id === field.externalId);
+        const point = lastValues?.find(latestPoint => latestPoint.id === field.externalName);
         if (point) {
           fieldCopy.value = point.value;
         }
