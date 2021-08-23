@@ -18,7 +18,7 @@ import { OispAlert } from './oisp-alert.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { OispAlertStore } from './oisp-alert.store';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { KeycloakService } from 'keycloak-angular';

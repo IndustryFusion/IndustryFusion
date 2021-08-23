@@ -19,8 +19,8 @@ import { ID } from '@datorama/akita';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
 import { Observable } from 'rxjs';
-import { OispNotification } from '../../../store/oisp-notification/oisp-notification.model';
-import { OispAlertService } from '../../../store/oisp-alert/oisp-alert.service';
+import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
+import { OispAlertService } from '../../../store/oisp/oisp-alert/oisp-alert.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({

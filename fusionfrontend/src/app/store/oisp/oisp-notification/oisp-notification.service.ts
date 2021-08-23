@@ -19,8 +19,8 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { OispNotificationStore } from './oisp-notification.store';
 import { Observable } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
-import { Device } from '../../services/oisp.model';
-import { OispService } from '../../services/oisp.service';
+import { Device } from '../../../services/oisp.model';
+import { OispService } from '../../../services/oisp.service';
 import { OispAlert } from '../oisp-alert/oisp-alert.model';
 import { OispAlertQuery } from '../oisp-alert/oisp-alert.query';
 

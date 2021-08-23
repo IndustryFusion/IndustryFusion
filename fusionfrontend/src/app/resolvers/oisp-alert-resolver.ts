@@ -16,8 +16,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OispAlert } from '../store/oisp-alert/oisp-alert.model';
-import { OispAlertService } from '../store/oisp-alert/oisp-alert.service';
+import { OispAlert } from '../store/oisp/oisp-alert/oisp-alert.model';
+import { OispAlertService } from '../store/oisp/oisp-alert/oisp-alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class OispAlertResolver implements Resolve<OispAlert[]> {

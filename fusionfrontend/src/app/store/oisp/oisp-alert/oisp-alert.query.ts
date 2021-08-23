@@ -19,7 +19,7 @@ import { OispAlertState, OispAlertStore } from './oisp-alert.store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OispAlert, OispAlertStatus, OispAlertPriority } from './oisp-alert.model';
-import { FactoryAssetDetailsWithFields } from '../factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
 
 @Injectable({ providedIn: 'root' })
 export class OispAlertQuery extends QueryEntity<OispAlertState> {

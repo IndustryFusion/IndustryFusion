@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
 import { OispAlert } from './oisp-alert.model';
-import { CachedStore } from '../cachedstore';
+import { CachedStore } from '../../cachedstore';
 
 export interface OispAlertState extends EntityState<OispAlert, ID>, ActiveState { }
 
