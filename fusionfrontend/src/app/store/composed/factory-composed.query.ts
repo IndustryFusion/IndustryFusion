@@ -167,7 +167,7 @@ export class FactoryComposedQuery {
   joinAssetsDetailsWithFieldInstancesWithAlerts(): Observable<FactoryAssetDetailsWithFields[]> {
     return this.selectAssetsWithFieldInstanceDetails().pipe(
       map((assetsDetails: FactoryAssetDetailsWithFields[]) => {
-        return assetsDetails.map(asset => this.oispAlertQuery.getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(asset));
+        return assetsDetails.map(asset => this.oispAlertQuery.joinAssetDetailsWithOpenAlertPriority(asset));
       })
     );
   }

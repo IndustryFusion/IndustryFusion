@@ -20,11 +20,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OispAlert, OispAlertStatus, OispAlertPriority } from './oisp-alert.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
+import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
+import { FieldDetails } from '../../field-details/field-details.model';
 
 @Injectable({ providedIn: 'root' })
 export class OispAlertQuery extends QueryEntity<OispAlertState> {
 
-  constructor(protected store: OispAlertStore) {
+  constructor(protected store: OispAlertStore,
+              protected oispDeviceQuery: OispDeviceQuery) {
     super(store);
   }
 
@@ -46,22 +49,26 @@ export class OispAlertQuery extends QueryEntity<OispAlertState> {
     return this.getAll().filter(alert => alert.status !== OispAlertStatus.CLOSED);
   }
 
-  getAssetDetailsWithOpenAlertPriorityUsingReplacedExternalId(assetDetails: FactoryAssetDetailsWithFields):
+  joinAssetDetailsWithOpenAlertPriority(assetDetails: FactoryAssetDetailsWithFields):
     FactoryAssetDetailsWithFields {
     const openAlerts = this.getOpenAlerts();
     const assetDetailsCopy = Object.assign({ }, assetDetails);
     const alertPriorities: OispAlertPriority[] = [];
 
-    alertPriorities.push(this.getAlertPriorityOf(assetDetailsCopy.externalId, openAlerts));
-    assetDetailsCopy.fields?.forEach(field => {
-      alertPriorities.push(this.getAlertPriorityOf(field.externalId, openAlerts));
+    const externalIdOfAsset = this.oispDeviceQuery.mapExternalNameOfAssetToDeviceUid(assetDetailsCopy.externalName);
+    alertPriorities.push(this.findAlertPriorityByExternalId(externalIdOfAsset, openAlerts));
+
+    assetDetailsCopy.fields?.forEach((fieldInstanceDetails: FieldDetails) => {
+      const externalIdOFieldInstanceDetails = this.oispDeviceQuery.
+        mapExternalNameOFieldInstanceToComponentId(fieldInstanceDetails.externalName);
+      alertPriorities.push(this.findAlertPriorityByExternalId(externalIdOFieldInstanceDetails, openAlerts));
     });
 
     assetDetailsCopy.openAlertPriority = this.getMostCriticalPriority(alertPriorities);
     return assetDetailsCopy;
   }
 
-  private getAlertPriorityOf(externalId: string, openAlerts: OispAlert[]): OispAlertPriority {
+  private findAlertPriorityByExternalId(externalId: string, openAlerts: OispAlert[]): OispAlertPriority {
     let mostCriticalPriority = null;
 
     if (externalId) {
