@@ -28,9 +28,6 @@ export class OispDeviceQuery extends QueryEntity<OispDeviceState> {
     if (this.getAll().length < 1) {
       console.error('[oisp device query]: No devices loaded. Forgot to add resolver?');
     }
-
-    console.log('externalNameOfFieldInstance', externalNameOfAsset, externalNameOfFieldInstance);
-
     let externalId = externalNameOfFieldInstance;
     const foundComponent = this.getEntity(externalNameOfAsset)?.components.find(c => c.name === externalNameOfFieldInstance);
     if (foundComponent) {

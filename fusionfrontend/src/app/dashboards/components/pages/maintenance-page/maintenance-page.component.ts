@@ -80,7 +80,7 @@ export class MaintenancePageComponent implements OnInit {
 
   private updateAssetWithFieldValue(asset: FactoryAssetDetailsWithFields) {
     return new Observable<any>((observer) => {
-      this.oispService.getLastValueOfAllFields(asset, asset.fields, 600).subscribe((lastValues) => {
+      this.oispService.getLastValueOfAllFields(asset, asset.fields, 600, true).subscribe((lastValues) => {
           asset.fields = this.getAssetFieldValues(asset, lastValues);
           observer.next(asset);
         }, _ => {
