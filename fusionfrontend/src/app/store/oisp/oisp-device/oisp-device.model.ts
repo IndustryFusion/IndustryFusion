@@ -13,10 +13,7 @@
  * under the License.
  */
 
-import { ID } from '@datorama/akita';
-
 export class Device {
-  id: ID; // actually not part of model, but necessary for storing with upsertMany using akita
   attributes: any;
   components: DeviceComponent[];
   contact: any;

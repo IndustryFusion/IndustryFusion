@@ -16,7 +16,6 @@
 import { ID } from '@datorama/akita';
 
 export class OispAlert {
-  id: ID;  // actually not part of model, but necessary for storing with upsertMany using akita
   accountId: ID;
   alertId: ID;
   conditions: Array<OispAlertCondition>;

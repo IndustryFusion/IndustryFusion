@@ -25,7 +25,7 @@ const initialState = {
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'oisp-alerts', resettable: true })
+@StoreConfig({ name: 'oisp-alerts', resettable: true, idKey: 'alertId' })
 export class OispAlertStore extends CachedStore<OispAlertState, OispAlert> {
 
   constructor() {

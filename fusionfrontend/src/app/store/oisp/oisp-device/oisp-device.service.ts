@@ -44,7 +44,6 @@ export class OispDeviceService {
     const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceUid}`;
     return this.http.get<Device>(deviceRequest, this.httpOptions).pipe(
       map((device: Device) => {
-        device.id = device.deviceId;
         this.oispDeviceStore.upsertCached(device);
         return device;
       })
@@ -55,7 +54,6 @@ export class OispDeviceService {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
     return this.http.get<Device[]>(url, this.httpOptions)
       .pipe(map((devices: Device[]) => {
-        devices.forEach(device => device.id = device.deviceId);
         this.oispDeviceStore.upsertManyCached(devices);
         return devices;
       }));

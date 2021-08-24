@@ -25,7 +25,7 @@ const initialState = {
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'oisp-devices', resettable: true })
+@StoreConfig({ name: 'oisp-devices', resettable: true, idKey: 'deviceId' })
 export class OispDeviceStore extends CachedStore<OispDeviceState, Device> {
 
   constructor() {
