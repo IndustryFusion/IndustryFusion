@@ -27,7 +27,7 @@ export class Asset extends BaseEntity {
   subsystemIds: Array<ID>;
   roomId: ID;
   room: Room;
-  externalId: string;
+  externalName: string;
   controlSystemType: string;
   hasGateway: boolean;
   gatewayConnectivity: string;

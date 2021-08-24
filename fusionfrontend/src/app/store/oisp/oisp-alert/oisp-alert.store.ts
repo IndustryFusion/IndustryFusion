@@ -14,21 +14,22 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
-import { BaseQueryEntityCached } from '../basequerycached';
-import { FieldDetails } from './field-details.model';
-import { FieldDetailsState, FieldDetailsStore } from './field-details-store.service';
+import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
+import { OispAlert } from './oisp-alert.model';
+import { CachedStore } from '../../cachedstore';
+
+export interface OispAlertState extends EntityState<OispAlert, ID>, ActiveState { }
+
+const initialState = {
+  active: null
+};
 
 @Injectable({ providedIn: 'root' })
-export class FieldDetailsQuery extends BaseQueryEntityCached<FieldDetailsState, FieldDetails> {
-  constructor(protected store: FieldDetailsStore) {
-    super(store);
+@StoreConfig({ name: 'oisp-alerts', resettable: true, idKey: 'alertId' })
+export class OispAlertStore extends CachedStore<OispAlertState, OispAlert> {
+
+  constructor() {
+    super(initialState);
   }
 
-  selectFieldsOfAsset(assetId: ID): Observable<FieldDetails[]> {
-    return this.selectAll({
-      filterBy: entity => String(entity.assetId) === String(assetId)
-    });
-  }
 }

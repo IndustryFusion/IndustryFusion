@@ -14,16 +14,21 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { OispAlert } from '../store/oisp/oisp-alert/oisp-alert.model';
-import { OispAlertService } from '../store/oisp/oisp-alert/oisp-alert.service';
+import { BaseQueryEntityCached } from '../basequerycached';
+import { FieldDetails } from './field-details.model';
+import { FieldDetailsState, FieldDetailsStore } from './field-details.store';
 
 @Injectable({ providedIn: 'root' })
-export class OispAlertResolver implements Resolve<OispAlert[]> {
-  constructor(private oispAlertService: OispAlertService) { }
+export class FieldDetailsQuery extends BaseQueryEntityCached<FieldDetailsState, FieldDetails> {
+  constructor(protected store: FieldDetailsStore) {
+    super(store);
+  }
 
-  resolve(): Observable<OispAlert[]> {
-    return this.oispAlertService.getItems();
+  selectFieldsOfAsset(assetId: ID): Observable<FieldDetails[]> {
+    return this.selectAll({
+      filterBy: entity => String(entity.assetId) === String(assetId)
+    });
   }
 }

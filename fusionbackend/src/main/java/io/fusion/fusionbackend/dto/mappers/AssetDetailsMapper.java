@@ -55,7 +55,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
-                .externalId(entity.getExternalId())
+                .externalName(entity.getExternalName())
                 .controlSystemType(entity.getControlSystemType())
                 .hasGateway(entity.getHasGateway())
                 .gatewayConnectivity(entity.getGatewayConnectivity())

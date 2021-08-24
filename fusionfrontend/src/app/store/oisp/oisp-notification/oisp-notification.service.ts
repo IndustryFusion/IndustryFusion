@@ -19,10 +19,10 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { OispNotificationStore } from './oisp-notification.store';
 import { Observable } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
-import { Device } from '../../services/oisp.model';
-import { OispService } from '../../services/oisp.service';
 import { OispAlert } from '../oisp-alert/oisp-alert.model';
 import { OispAlertQuery } from '../oisp-alert/oisp-alert.query';
+import { Device } from '../oisp-device/oisp-device.model';
+import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
 
 @Injectable({
   providedIn: 'root'
@@ -31,13 +31,13 @@ export class OispNotificationService {
 
   constructor(private oispNotificationStore: OispNotificationStore,
               private oispAlertQuery: OispAlertQuery,
-              private oispService: OispService) { }
+              private oispDeviceQuery: OispDeviceQuery) { }
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     params: new HttpParams()
   };
 
-  private static getNotificationOfAlert(alert: OispAlert, assetName: string, deviceId: string): OispNotification {
+  private static mapAlertToNotification(alert: OispAlert, assetName: string): OispNotification {
     const notification = new OispNotification();
 
     if (alert) {
@@ -45,7 +45,6 @@ export class OispNotificationService {
         && alert.conditions[0].components[0].valuePoints.length > 0;
 
       notification.id = alert.alertId;
-      notification.externalId = deviceId;
       notification.priority = alert.priority;
       notification.ruleName = alert.ruleName;
       notification.condition = alert.naturalLangAlert;
@@ -62,18 +61,16 @@ export class OispNotificationService {
 
   private getNotificationOfAlertWithDevices(alert: OispAlert, devices: Device[]): OispNotification {
     let assetName = null;
-    let deviceId = null;
     if (devices && alert) {
       const deviceOfAlert = devices.find(device => String(device.uid) === String(alert.deviceUID));
       assetName = deviceOfAlert?.name;
-      deviceId = deviceOfAlert?.deviceId;
     }
 
-    return OispNotificationService.getNotificationOfAlert(alert, assetName, deviceId);
+    return OispNotificationService.mapAlertToNotification(alert, assetName);
   }
 
   getNotificationsUsingAlertStore(): Observable<OispNotification[]> {
-    return this.oispService.getAllDevices()
+    return this.oispDeviceQuery.selectAll()
       .pipe(mergeMap((devices: Device[]) => {
           return this.oispAlertQuery.selectAll().pipe(
             map((alerts: OispAlert[]) => {

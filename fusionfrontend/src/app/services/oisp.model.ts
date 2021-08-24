@@ -13,6 +13,8 @@
  * under the License.
  */
 
+import { ComponentDataType } from '../store/oisp/oisp-device/oisp-device.model';
+
 export class OispRequest {
   from: number;
   to?: number;
@@ -140,52 +142,8 @@ export enum RuleActionType {
   actuation = 'actuation',
 }
 
-export class ComponentType {
-  id: string;
-  dimension: string;
-  version: string;
-  default: boolean;
-  type: string;
-  dataType: ComponentDataType;
-  format: string;
-  min: number;
-  max: number;
-  measureunit: string;
-  display: string;
-  href: string;
-}
-
-export enum ComponentDataType {
-  Number = 'Number',
-  String = 'String',
-  Boolean = 'Boolean',
-  ByteArray = 'ByteArray',
-}
-
 export enum BaselineCalculationLevel {
   'Device level' = 'Device level',
-}
-
-export class DeviceComponent {
-  cid: string;
-  name: string;
-  componentTypeId: string;
-  componentType: ComponentType;
-  type: string;
-}
-
-export class Device {
-  attributes: any;
-  components: DeviceComponent[];
-  contact: any;
-  created: Date;
-  deviceId: string;
-  domainId: string;
-  gatewayId: string;
-  name: string;
-  status: string;
-  tags: string[];
-  uid: string;
 }
 
 export enum ConditionType {

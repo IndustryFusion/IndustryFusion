@@ -14,16 +14,22 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
-import { OispAlert } from '../store/oisp/oisp-alert/oisp-alert.model';
-import { OispAlertService } from '../store/oisp/oisp-alert/oisp-alert.service';
+import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
+import { CachedStore } from '../../cachedstore';
+import { Device } from './oisp-device.model';
+
+export interface OispDeviceState extends EntityState<Device, ID>, ActiveState { }
+
+const initialState = {
+  active: null
+};
 
 @Injectable({ providedIn: 'root' })
-export class OispAlertResolver implements Resolve<OispAlert[]> {
-  constructor(private oispAlertService: OispAlertService) { }
+@StoreConfig({ name: 'oisp-devices', resettable: true, idKey: 'deviceId' })
+export class OispDeviceStore extends CachedStore<OispDeviceState, Device> {
 
-  resolve(): Observable<OispAlert[]> {
-    return this.oispAlertService.getItems();
+  constructor() {
+    super(initialState);
   }
+
 }

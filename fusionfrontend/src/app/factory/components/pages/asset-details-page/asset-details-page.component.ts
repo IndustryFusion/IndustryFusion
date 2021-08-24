@@ -27,6 +27,7 @@ import { MaintenanceInterval } from '../../content/asset-details/maintenance-bar
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
 import * as moment from 'moment';
+import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
 
 @Component({
   selector: 'app-asset-details-page',
@@ -68,6 +69,7 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
 
   constructor(private assetQuery: AssetQuery,
               private oispService: OispService,
+              private oispDeviceQuery: OispDeviceQuery,
               private factoryResolver: FactoryResolver,
               private datePipe: DatePipe,
               private activatedRoute: ActivatedRoute) { }
@@ -88,7 +90,8 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
       map(([asset, latestPoints]) => {
         return asset.fields.map(field => {
           const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id === field.externalId);
+          const point = latestPoints.find(latestPoint => latestPoint.id ===
+            this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName));
 
           if (point) {
             fieldCopy.value = point.value;

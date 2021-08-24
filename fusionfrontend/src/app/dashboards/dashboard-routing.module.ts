@@ -18,6 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MaintenancePageComponent } from './components/pages/maintenance-page/maintenance-page.component';
 import { DashboardPageType } from './dashboard-routing.model';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
+import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 
 const routes: Routes = [
   {
@@ -25,6 +26,9 @@ const routes: Routes = [
     component: MaintenancePageComponent,
     data: {
       pageTypes: [DashboardPageType.MAINTENANCE]
+    },
+    resolve: {
+      devices: OispDeviceResolver
     }
   },
   {

@@ -74,7 +74,7 @@ public class Asset extends BaseAsset {
     @Builder.Default
     private Set<Asset> subsystems = new HashSet<>();
 
-    private String externalId;
+    private String externalName;
     private String controlSystemType;
     private Boolean hasGateway;
     private String gatewayConnectivity;
@@ -97,8 +97,8 @@ public class Asset extends BaseAsset {
 
     public void copyFrom(final Asset sourceAsset) {
         super.copyFrom(sourceAsset);
-        if (sourceAsset.getExternalId() != null) {
-            setExternalId(sourceAsset.getExternalId());
+        if (sourceAsset.getExternalName() != null) {
+            setExternalName(sourceAsset.getExternalName());
         }
         if (sourceAsset.getControlSystemType() != null) {
             setControlSystemType(sourceAsset.getControlSystemType());

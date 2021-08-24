@@ -18,7 +18,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { PointWithId } from 'src/app/services/oisp.model';
 import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
@@ -37,8 +36,6 @@ export class AssetPageComponent implements OnInit, OnDestroy {
   assets$: Observable<Asset[]>;
   asset$: Observable<Asset>;
   fields$: Observable<FieldDetails[]>;
-  latestPoints$: Observable<PointWithId[]>;
-  mergedFields$: Observable<FieldDetails[]>;
   assetsWithFields$: Observable<AssetWithFields[]>;
   companyId: ID;
   assetId: ID;
@@ -46,7 +43,8 @@ export class AssetPageComponent implements OnInit, OnDestroy {
   constructor(
     private assetQuery: AssetQuery,
     private factoryResolver: FactoryResolver,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.isLoading$ = this.assetQuery.selectLoading();
@@ -54,7 +52,7 @@ export class AssetPageComponent implements OnInit, OnDestroy {
     this.factorySite$ = this.factoryResolver.factorySite$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.assets$ = this.factoryResolver.assets$;
-    this.asset$ = this.factoryResolver.asset$;
+    this.asset$ = this.factoryResolver.assetWithFields$;
     this.fields$ = this.factoryResolver.fields$;
     this.assetsWithFields$ = this.factoryResolver.assetsWithFields$;
   }

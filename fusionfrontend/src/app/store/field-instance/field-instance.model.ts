@@ -21,7 +21,7 @@ import { FieldSource } from '../field-source/field-source.model';
 export class FieldInstance extends BaseEntity{
 
   description: string;
-  externalId: string;
+  externalName: string;
   name: string;
   sourceSensorLabel: string;
   value: string;
