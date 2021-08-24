@@ -42,8 +42,6 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
-  progress$: Observable<number>;
-  progressColor$: Observable<string>;
 
   showStatusCircle = true;
 
@@ -53,7 +51,8 @@ export class AssetCardComponent implements OnInit, OnDestroy {
     private oispService: OispService,
     private oispDeviceQuery: OispDeviceQuery,
     private statusService: StatusService,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   ngOnInit() {
     this.latestPoints$ = timer(0, 2000).pipe(
@@ -65,7 +64,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
     this.mergedFields$ = this.latestPoints$.pipe(
       map(latestPoints => {
         return this.asset.fields.map(field => {
-          const fieldCopy = Object.assign({ }, field);
+          const fieldCopy = Object.assign({}, field);
           const point = latestPoints.find(latestPoint => latestPoint.id ===
             this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(this.asset.externalName, field.externalName));
 
@@ -82,49 +81,6 @@ export class AssetCardComponent implements OnInit, OnDestroy {
         return this.statusService.determineStatus(fields, this.asset);
       })
     );
-
-    /* TODO: Progress bar should be integrated later
-    this.progress$ = combineLatest([this.fields$, this.mergedFields$])
-      .pipe(
-        map(([fields, mergedFields]) => {
-          const filteredField = fields.filter(field => field.description === 'Hours till maintenance')[0];
-          const filteredMergedField = mergedFields.filter(field => field.description === 'Hours till maintenance')[0];
-          // no field hours till maintenance
-          if (!filteredField) {
-            return -1;
-          }
-          const progress = parseInt(filteredMergedField.value, 10);
-          // no value retrieved for current time -> get last emitted value from oisp
-          if (isNaN(progress)) {
-            this.oispService.getLastValuesOfSingleField(this.asset, filteredField, 100000).pipe(
-              map(points => {
-                const val = points[points.length - 1].value;
-                const lastProgress = parseInt(val, 10);
-                if (isNaN(lastProgress)) {
-                  return -2;
-                } else {
-                  return lastProgress;
-                }
-              })
-            );
-          } else {
-            return progress;
-          }
-        })
-      );
-
-    this.progressColor$ = this.progress$.pipe(
-      map(progress => {
-        const ratio = progress / this.maxProgress;
-        if (ratio < 0.33) {
-          return '#C42326';
-        } else if (ratio < 0.66) {
-          return '#2CA9CE';
-        } else {
-          return 'rgba(44,206,79,0.73)';
-        }
-      })
-    );*/
   }
 
   ngOnDestroy() {
