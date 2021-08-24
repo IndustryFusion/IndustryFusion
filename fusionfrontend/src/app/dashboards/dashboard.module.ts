@@ -31,6 +31,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
 import { IFCommon } from '../common/i-f-common.module';
+import { MaintenanceAssetSortPipe } from '../pipes/maintenance-asset-sort.pipe';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
 import { EquipmentEfficiencyListComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-list.component';
 import { EquipmentEfficiencyBarChartComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
@@ -44,6 +45,7 @@ import { ChartModule } from 'primeng/chart';
     MaintenancePageComponent,
     MaintenanceListComponent,
     MaintenanceProgressbarComponent,
+    MaintenanceAssetSortPipe,
     EquipmentEfficiencyPageComponent,
     EquipmentEfficiencyListComponent,
     EquipmentEfficiencyBarChartComponent,
@@ -62,11 +64,12 @@ import { ChartModule } from 'primeng/chart';
     OverlayPanelModule,
     TableModule,
     CalendarModule,
-    ChartModule
+    ChartModule,
   ],
   exports: [
     DashboardSubHeaderComponent,
     DashboardPageTitleComponent,
   ]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}

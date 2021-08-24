@@ -91,6 +91,9 @@ public class FactorySiteService {
 
         targetFactorySite.copyFrom(sourceFactorySite);
 
+        final Country country = countryService.getCountry(sourceFactorySite.getCountry().getId());
+        targetFactorySite.setCountry(country);
+
         return targetFactorySite;
     }
 

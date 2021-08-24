@@ -38,7 +38,7 @@ export class AssetSeriesService {
               private http: HttpClient) { }
 
   getAssetSeriesOfCompany(companyId: ID): Observable<AssetSeries[]> {
-    const path = `companies/${companyId}/assetseries`;
+    const path = `companies/${companyId}/assetseries?embedChildren=true`;
     const cacheKey = 'company-' + companyId;
     return this.assetSeriesStore.cachedByParentId(cacheKey,
       this.http.get<AssetSeries[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)

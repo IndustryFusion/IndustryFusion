@@ -13,13 +13,15 @@
  * under the License.
  */
 
+@import 'abstract/variables';
+
 .list-header {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
 
-  background: #F8F8F8 0% 0% no-repeat padding-box;
+  background: $light-grey 0% 0% no-repeat padding-box;
   border-radius: 10px;
   opacity: 1;
   height: 56px;

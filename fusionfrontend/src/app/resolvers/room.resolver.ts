@@ -27,7 +27,7 @@ export class RoomResolver implements Resolve<any>{
   resolve(route: ActivatedRouteSnapshot): void {
 
     this.companyService.getCompanies().subscribe();
-    const companyId = route.parent.params.companyId;
+    const companyId = route.paramMap.get('companyId');
     this.companyService.setActive(companyId);
     if (companyId != null) {
       this.roomService.getRoomsOfCompany(companyId).subscribe();

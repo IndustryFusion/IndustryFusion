@@ -25,11 +25,11 @@ import { ClarityModule } from '@clr/angular';
 import { AssetSeriesListHeaderComponent } from './components/content/asset-series-list-header/asset-series-list-header.component';
 import { AssetSeriesListItemComponent } from './components/content/asset-series-list-item/asset-series-list-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
+import { AssetSeriesWizardComponent } from './components/content/asset-series-wizard/asset-series-wizard.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
-import { AssetSeriesCreateGeneralInformationComponent } from './components/content/asset-series-create/asset-series-create-general-information/asset-series-create-general-information.component';
-import { AssetSeriesCreateConnectivitySettingsComponent } from './components/content/asset-series-create/asset-series-create-connectivity-settings/asset-series-create-connectivity-settings.component';
-import { AssetSeriesCreateAttributesComponent } from './components/content/asset-series-create/asset-series-create-attributes/asset-series-create-attributes.component';
+import { AssetSeriesWizardGeneralInformationComponent } from './components/content/asset-series-wizard/asset-series-wizard-general-information/asset-series-wizard-general-information.component';
+import { AssetSeriesWizardConnectivitySettingsComponent } from './components/content/asset-series-wizard/asset-series-wizard-connectivity-settings/asset-series-wizard-connectivity-settings.component';
+import { AssetSeriesWizardAttributesComponent } from './components/content/asset-series-wizard/asset-series-wizard-attributes/asset-series-wizard-attributes.component';
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { TableModule } from 'primeng/table';
@@ -38,11 +38,11 @@ import { AssetWizardStepGeneralInformationComponent } from './components/content
 import { AssetWizardStepNameplateComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-nameplate/asset-wizard-step-nameplate.component';
 import { AssetWizardStepAttributesComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-attributes/asset-wizard-step-attributes.component';
 import { AssetWizardStepCustomerDataComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-customer-data/asset-wizard-step-customer-data.component';
-import { AssetSeriesCreateMetricsComponent } from './components/content/asset-series-create/asset-series-create-metrics/asset-series-create-metrics.component';
+import { AssetSeriesWizardMetricsComponent } from './components/content/asset-series-wizard/asset-series-wizard-metrics/asset-series-wizard-metrics.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { AssetWizardStepMetricsThresholdsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-metrics-thresholds/asset-wizard-step-metrics-thresholds.component';
-import { AssetSeriesCreateFooterComponent } from './components/content/asset-series-create/asset-series-create-footer/asset-series-create-footer.component';
+import { AssetSeriesWizardFooterComponent } from './components/content/asset-series-wizard/asset-series-wizard-footer/asset-series-wizard-footer.component';
 import { AssetWizardStepReviewComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-review/asset-wizard-step-review.component';
 import { AssetWizardSharedMetricsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
 import { AssetWizardSharedAttributesComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-attributes/asset-wizard-shared-attributes.component';
@@ -51,6 +51,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AssetWizardStepSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-subsystems/asset-wizard-step-subsystems.component';
 // tslint:disable-next-line:max-line-length
 import { AssetWizardSharedSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
+import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-connectivity-settings/asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
 
 
 @NgModule({
@@ -62,20 +63,22 @@ import { AssetWizardSharedSubsystemsComponent } from './components/content/asset
     AssetSeriesListComponent,
     AssetSeriesListHeaderComponent,
     AssetSeriesListItemComponent,
-    AssetSeriesCreateComponent,
-    AssetSeriesCreateGeneralInformationComponent,
-    AssetSeriesCreateConnectivitySettingsComponent,
+    AssetSeriesWizardComponent,
+    AssetSeriesWizardGeneralInformationComponent,
+    AssetSeriesWizardConnectivitySettingsComponent,
     TimelineComponent,
-    AssetSeriesCreateAttributesComponent,
+    AssetSeriesWizardAttributesComponent,
     AssetSeriePageComponent,
-    AssetSeriesCreateMetricsComponent,
+    AssetSeriesWizardMetricsComponent,
     AssetWizardComponent,
     AssetWizardStepGeneralInformationComponent,
     AssetWizardStepNameplateComponent,
     AssetWizardStepAttributesComponent,
     AssetWizardStepCustomerDataComponent,
     AssetWizardStepMetricsThresholdsComponent,
-    AssetSeriesCreateFooterComponent,
+    AssetSeriesWizardFooterComponent,
+    AssetSeriesWizardConnectivitySettingsTooltipComponent,
+    AssetSeriesWizardGeneralInformationComponent,
     AssetWizardStepReviewComponent,
     AssetWizardSharedMetricsComponent,
     AssetWizardSharedAttributesComponent,

@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FactoryAssetDetailsWithFields, AssetModalMode } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { AssetModalMode, FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
-import { RoomQuery } from '../../../../../store/room/room.query';
 import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
-import { FactoryAssetDetails, AssetModalType } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+import { AssetModalType, FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { AssetInstantiationComponent } from '../../asset-instantiation/asset-instantiation.component';
-import { MenuItem } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+import { WizardHelper } from '../../../../../common/utils/wizard-helper';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-assets-list-item',
@@ -47,22 +47,35 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   assetDetailsForm: FormGroup;
   ref: DynamicDialogRef;
   menuActions: MenuItem[];
-
+  route: string;
 
   constructor(
-    private roomQuery: RoomQuery,
     private formBuilder: FormBuilder,
     public dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
-      this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
-      this.menuActions = [
-        { label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-        { label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => { this.openAssignRoomDialog(); } },
-        { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } },
-      ];
+    private confirmationService: ConfirmationService,
+    private routingLocation: Location) {
+    this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
+    this.menuActions = [
+      {
+        label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => {
+          this.showEditDialog();
+        }
+      },
+      {
+        label: 'Assign to room', icon: 'pi pw-fw pi-clone', command: (_) => {
+          this.openAssignRoomDialog();
+        }
+      },
+      {
+        label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => {
+          this.showDeleteDialog();
+        }
+      },
+    ];
   }
 
   ngOnInit(): void {
+    this.route = this.routingLocation.path();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -103,7 +116,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
     }
   }
 
-  showAssignRoomDialog(assetModalType: AssetModalType, assetModalMode: AssetModalMode, header: string ) {
+  showAssignRoomDialog(assetModalType: AssetModalType, assetModalMode: AssetModalMode, header: string) {
     this.createDetailsAssetForm(this.formBuilder, this.assetWithDetailsAndFields);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
@@ -126,18 +139,17 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   createDetailsAssetForm(formBuilder: FormBuilder, assetWithDetailsAndFields: FactoryAssetDetailsWithFields) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.assetDetailsForm = formBuilder.group({
       id: [null],
-      roomId: ['', requiredTextValidator],
-      name: ['', requiredTextValidator],
+      roomId: ['', WizardHelper.requiredTextValidator],
+      name: ['', WizardHelper.requiredTextValidator],
       description: [''],
       imageKey: [''],
-      manufacturer: ['', requiredTextValidator],
-      assetSeriesName: ['', requiredTextValidator],
-      category: ['', requiredTextValidator],
-      roomName: ['', requiredTextValidator],
-      factorySiteName: ['', requiredTextValidator]
+      manufacturer: ['', WizardHelper.requiredTextValidator],
+      assetSeriesName: ['', WizardHelper.requiredTextValidator],
+      category: ['', WizardHelper.requiredTextValidator],
+      roomName: ['', WizardHelper.requiredTextValidator],
+      factorySiteName: ['', WizardHelper.requiredTextValidator]
     });
     this.assetDetailsForm.patchValue(assetWithDetailsAndFields);
   }
@@ -147,15 +159,10 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   getAssetLink(asset: Asset) {
-    if (!asset) { return; }
-    if (this.room) {
-      return ['assets', asset.id];
-    } else if (!this.factorySite) {
-      const room: Room = this.roomQuery.getEntity(asset.roomId);
-      if (!room) { return; }
-      return ['..', 'factorysites', room.factorySiteId, 'rooms', asset.roomId, 'assets', asset.id];
+    if (this.route.endsWith('assets')) {
+      return [asset.id];
     } else {
-      return ['rooms', asset.roomId, 'assets', asset.id];
+      return ['assets', asset.id];
     }
   }
 

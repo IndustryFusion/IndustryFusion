@@ -42,6 +42,7 @@ export class Asset extends BaseEntity {
   videoKey: string;
   installationDate: Date;
   imageKey: string;
+  connectionString: string;
 }
 
 export class AssetWithFields extends Asset {

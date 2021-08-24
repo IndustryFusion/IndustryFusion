@@ -24,6 +24,7 @@ import { Asset } from '../../../../../../store/asset/asset.model';
 import { FieldType } from '../../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../../store/field/field-query.service';
 import { QuantityTypeQuery } from '../../../../../../store/quantity-type/quantity-type.query';
+import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-shared-metrics',
@@ -173,19 +174,11 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
       this.backToEditPage.emit();
       return;
     }
-    if (metricGroup == null || metricGroup.get('mandatory') === null || metricGroup.get('mandatory').value === true) {
-      return;
-    }
-    const indexFieldInstances: number = metricGroup.get('indexFieldInstances').value;
-    const indexInArray: number = metricGroup.get('indexInArray').value;
-    this.fieldInstancesFormArray.removeAt(indexInArray);
-    this.asset.fieldInstances.splice(indexFieldInstances, 1);
 
-    for (let i = indexInArray; i < this.fieldInstancesFormArray.length; i++) {
-      const indexInArrayElement = this.fieldInstancesFormArray.at(i).get('indexInArray');
-      const indexInFieldInstancesElement = this.fieldInstancesFormArray.at(i).get('indexFieldInstances');
-      indexInArrayElement.setValue(indexInArrayElement.value - 1);
-      indexInFieldInstancesElement.setValue(indexInFieldInstancesElement.value - 1);
+    if (!this.isMandatory(metricGroup) && metricGroup instanceof FormGroup) {
+      WizardHelper.removeItemFromFormAndDataArray(metricGroup,
+        this.fieldInstancesFormArray, 'indexInArray',
+        this.asset.fieldInstances, 'indexFieldInstances');
     }
   }
 
@@ -216,5 +209,9 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
 
   public onClickEdit() {
     this.backToEditPage.emit();
+  }
+
+  public isMandatory(group: AbstractControl): boolean {
+    return group == null || group.get('mandatory').value;
   }
 }

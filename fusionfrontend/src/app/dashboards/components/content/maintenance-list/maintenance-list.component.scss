@@ -21,32 +21,32 @@
 
 
 .filter-btn {
-    height: 48px;
-    width: 48px;
-    background-color: hsl(198, 0%, 95%);
-    border-color: transparent;
-    border-radius: 10px;
+  height: 48px;
+  width: 48px;
+  background-color: $light-grey;
+  border-color: transparent;
+  border-radius: 10px;
 }
 
 .remove-all-filters-btn {
   background-color: transparent;
   border: transparent;
-  background:none;
+  background: none;
   position: absolute;
   right: -5px;
-  top:28px;
-  cursor:pointer;
+  top: 28px;
+  cursor: pointer;
 
   .remove-all-filters-btn-icon {
     font-size: 16px;
-    color: black;
+    color: $basic-black;
   }
 }
 
 .panel-heading {
   font-size: large;
   font-weight: bold;
-  color: black;
+  color: $basic-black;
   margin-bottom: 10px;
   margin-left: 5px;
 }
@@ -56,7 +56,7 @@
 }
 
 .search-input {
-  border-color: white;
+  border-color: $basic-white;
   touch-action: none;
 }
 
@@ -72,7 +72,7 @@
   border-color: transparent;
   margin-left: 5px;
   margin-right: 40px;
-  padding: 0px 0px;
+  padding: 0 0;
 
   .filter-panel-btn-grid {
     display: grid;
@@ -92,23 +92,40 @@
   }
 }
 
+.notification-icons {
+  overflow: visible !important;
+  margin-top: -2px;
+
+  .notification-low {
+    color: $alert-low;
+  }
+
+  .notification-medium {
+    color: $alert-medium;
+  }
+
+  .notification-high {
+    color: $alert-high;
+  }
+}
+
 .remove-filter-btn {
   border-color: transparent;
-  background-color: white;
+  background-color: $basic-white;
 
   .remove-filter-btn-icon {
     font-size: 14px;
-    color: black;
+    color: $basic-black;
   }
 }
 
 .add-btn {
-  background-color: white;
+  background-color: $basic-white;
   border: none;
 
   .add-btn-icon {
     font-size: 12px;
-    color: black;
+    color: $basic-black;
   }
 }
 
@@ -119,7 +136,7 @@
 
   .btn-icon {
     font-size: 14px;
-    color: black;
+    color: $basic-black;
   }
 }
 
@@ -128,7 +145,7 @@
   height: 30px;
 }
 
-:host ::ng-deep .p-datatable	{
+:host ::ng-deep .p-datatable {
   margin: 30px 80px;
   border: hidden !important;
 }
@@ -141,7 +158,7 @@
   line-height: 20px;
   font-weight: 600;
   color: #000000;
-  background-color: #F8F8F8;
+  background-color: $light-grey;
   border: 0 none;
 
   &:first-child {
@@ -154,14 +171,14 @@
 }
 
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-  background-color: white;
+  background-color: $basic-white;
   border-color: transparent;
   text-align: left;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
   letter-spacing: 0;
-  color: #95989A;
+  color: $basic-grey;
   overflow: hidden;
 
 
@@ -173,7 +190,7 @@
 
 :host ::ng-deep .p-paginator {
   height: 45px;
-  background-color: white;
+  background-color: $basic-white;
   border-color: transparent;
   border: none;
   margin-top: 5px;
@@ -193,11 +210,11 @@
     height: 38px;
     width: 38px;
     margin: 2px;
-    background-color: white !important;
-    color: black !important;
+    background-color: $basic-white !important;
+    color: $basic-black !important;
     font-size: 16px;
     font-weight: 600;
-    border-color: black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px;
     border-radius: 10px;
@@ -206,7 +223,7 @@
   }
 
   .p-widget {
-    border-color: black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
@@ -214,16 +231,16 @@
     .p-inputtext {
       height: 38px !important;
       font-weight: normal;
-      border-color: black;
-      border-width: 2px im !important;
+      border-color: $basic-black;
+      border-width: 2px !important;
       border-radius: 10px;
       width: 60px;
     }
 
 
     .p-state-highlight {
-      background-color: white !important;
-      color: black !important;
+      background-color: $basic-white !important;
+      color: $basic-black !important;
       font-weight: bold;
       border-radius: 10px;
     }
@@ -237,8 +254,8 @@
     height: 38px;
     width: 38px;
     margin: 2px;
-    color: black;
-    border-color: black;
+    color: $basic-black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
@@ -248,8 +265,8 @@
     height: 38px;
     width: 38px;
     margin: 2px;
-    color: black;
-    border-color: black;
+    color: $basic-black;
+    border-color: $basic-black;
     border-style: solid;
     border-width: 1px !important;
     border-radius: 10px !important;
@@ -265,4 +282,28 @@
 
 }
 
+.asset-needs-maintenance {
+  color: red !important;
+}
 
+.search-panel-button {
+  font-size: 13px;
+  height: 30px;
+  margin: 5px 0 0 0;
+}
+
+.filter-box {
+  margin-bottom: 10px;
+}
+
+.potential-filter-item {
+  margin-left: 7px;
+}
+
+.filter-buttons-box {
+  margin-top: 10px;
+}
+
+.filter-panel {
+  position: relative;
+}

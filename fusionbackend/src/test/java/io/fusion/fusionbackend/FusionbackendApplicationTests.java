@@ -15,22 +15,46 @@
 
 package io.fusion.fusionbackend;
 
-import io.fusion.fusionbackend.dto.*;
-import io.fusion.fusionbackend.model.enums.*;
+import io.fusion.fusionbackend.dto.AssetDto;
+import io.fusion.fusionbackend.dto.AssetSeriesDto;
+import io.fusion.fusionbackend.dto.AssetTypeDto;
+import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
+import io.fusion.fusionbackend.dto.BaseAssetDto;
+import io.fusion.fusionbackend.dto.CompanyDto;
+import io.fusion.fusionbackend.dto.ConnectivityProtocolDto;
+import io.fusion.fusionbackend.dto.ConnectivitySettingsDto;
+import io.fusion.fusionbackend.dto.ConnectivityTypeDto;
+import io.fusion.fusionbackend.dto.CountryDto;
+import io.fusion.fusionbackend.dto.FactorySiteDto;
+import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.FieldTargetDto;
+import io.fusion.fusionbackend.dto.QuantityTypeDto;
+import io.fusion.fusionbackend.dto.RoomDto;
+import io.fusion.fusionbackend.dto.UnitDto;
+import io.fusion.fusionbackend.model.enums.CompanyType;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
+import io.fusion.fusionbackend.model.enums.FieldThresholdType;
+import io.fusion.fusionbackend.model.enums.FieldType;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.*;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,7 +86,7 @@ class FusionbackendApplicationTests {
     private static Integer roomWestStruumpFabId;
     private static Integer roomEastStruumpFabId;
 
-    private static Integer countryGermanyId = 80;
+    private static final Integer countryGermanyId = 80;
 
     private static Integer assetRoomWestStruumpFabId;
     private static Integer assetRoomEastStruumpFabId;
@@ -70,8 +94,8 @@ class FusionbackendApplicationTests {
     private static Integer assetTypeTemplateGasSupplyId;
     private static Integer assetTypeTemplateLaserCutterId;
 
-    private static Integer assetSeriesAiristGasSupplyId;
-    private static Integer assetSeriesLaserlyLaserCutterId;
+    private static Long assetSeriesAiristGasSupplyId;
+    private static Long assetSeriesLaserlyLaserCutterId;
 
     private static Integer assetTypeGasSupplyId;
     private static Integer assetTypeLaserCutterId;
@@ -238,7 +262,7 @@ class FusionbackendApplicationTests {
                 .longitude(11.604835)
                 .build();
 
-        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
+        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
@@ -255,7 +279,7 @@ class FusionbackendApplicationTests {
                 .longitude(11.679882)
                 .build();
 
-        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
+        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @RepeatedTest(10)
@@ -271,7 +295,7 @@ class FusionbackendApplicationTests {
                 .latitude(48.024522)
                 .longitude(11.679882)
                 .build();
-        createAndTestFactorySite(companyStruumpFabId, factorySite, countryGermanyId);
+        createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
@@ -690,10 +714,16 @@ class FusionbackendApplicationTests {
                 .imageKey("airisgasimagekey")
                 .handbookKey("airistgashandbookkey")
                 .videoKey("airistgasvideokey")
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
-        assetSeriesAiristGasSupplyId = createAndTestAssetSeries(companyAiristMachId, companyEcosystemId,
+        assetSeriesAiristGasSupplyId = createAndTestAssetSeries(companyAiristMachId,
                 assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManAirist);
+    }
+
+    @NotNull
+    private ConnectivitySettingsDto createConnectivitySettings() {
+        return new ConnectivitySettingsDto("Some String", 1L, 1L);
     }
 
     @Test
@@ -707,9 +737,10 @@ class FusionbackendApplicationTests {
                 .imageKey("lascutterimagekey")
                 .handbookKey("lascutterhandbookkey")
                 .videoKey("lascuttervideokey")
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
-        assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId, companyEcosystemId,
+        assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId,
                 assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManLaserly);
     }
 
@@ -724,16 +755,17 @@ class FusionbackendApplicationTests {
                 .imageKey("genericcutterimagekey" + repetitionInfo.getCurrentRepetition())
                 .handbookKey("genericcutterhandbookkey" + repetitionInfo.getCurrentRepetition())
                 .videoKey("genericcuttervideokey" + repetitionInfo.getCurrentRepetition())
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
-        createAndTestAssetSeries(companyAiristMachId, companyEcosystemId, assetTypeTemplateGasSupplyId, assetSeries,
+        createAndTestAssetSeries(companyAiristMachId, assetTypeTemplateGasSupplyId, assetSeries,
                 accessTokenFleetManAirist);
     }
 
     @Test
     @Order(609)
     void testGetAllAssetSeries() {
-        List<Integer> assetIds = given()
+        List<AssetSeriesDto> assetSeriesList = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFleetManAirist)
 
@@ -742,11 +774,48 @@ class FusionbackendApplicationTests {
 
                 .then()
                 .statusCode(200)
-                .extract().path("id");
+                .extract().body().jsonPath().getList(".", AssetSeriesDto.class);
 
-        assertThat(assetIds)
+        List<Long> assetSeriesIds = assetSeriesList.stream()
+                .map(AssetSeriesDto::getId)
+                .collect(Collectors.toList());
+
+        assertThat(assetSeriesIds)
                 .hasSize(11)
                 .contains(assetSeriesAiristGasSupplyId);
+    }
+
+    @Test
+    @Order(610)
+    void testUpdateAssetSeriesConnectivitySettings() {
+
+        List<ConnectivityTypeDto> connectivityTypesFromMasterData = getConnectivityTypeDtos(accessTokenFleetManAirist);
+        ConnectivityTypeDto newConnectivityTypeDto = connectivityTypesFromMasterData.get(2);
+        ConnectivityProtocolDto newConnectivityProtocolDto =
+                List.copyOf(newConnectivityTypeDto.getAvailableProtocols()).get(0);
+
+        AssetSeriesDto existingAssetSeriesDto = createAssetSeries(companyAiristMachId,
+                assetTypeTemplateGasSupplyId, accessTokenFleetManAirist);
+
+        existingAssetSeriesDto.getConnectivitySettings().setConnectivityTypeId(newConnectivityTypeDto.getId());
+        existingAssetSeriesDto.getConnectivitySettings().setConnectivityProtocolId(newConnectivityProtocolDto.getId());
+
+        AssetSeriesDto patchedAssetSeries = given()
+                .contentType(ContentType.JSON)
+                .body(existingAssetSeriesDto)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+
+                .when()
+                .patch(baseUrl + "/companies/" + companyAiristMachId + "/assetseries/" + existingAssetSeriesDto.getId())
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+
+        assertThat(patchedAssetSeries.getConnectivitySettings().getConnectivityTypeId())
+                .isEqualTo(newConnectivityTypeDto.getId());
+        assertThat(patchedAssetSeries.getConnectivitySettings().getConnectivityProtocolId())
+                .isEqualTo(newConnectivityProtocolDto.getId());
     }
 
     @Test
@@ -803,7 +872,7 @@ class FusionbackendApplicationTests {
     @Order(703)
     void createAssetWithSubsystem() {
         AssetDto subsystem = AssetDto.builder()
-                .assetSeriesId(assetSeriesAiristGasSupplyId.longValue())
+                .assetSeriesId(assetSeriesAiristGasSupplyId)
                 .companyId(companyAiristMachId.longValue())
                 .build();
 
@@ -888,6 +957,16 @@ class FusionbackendApplicationTests {
                 .contains(assetRoomEastStruumpFabId, assetRoomWestStruumpFabId);
     }
 
+
+    @Test
+    @Order(710)
+    void testGetAllConnectivityTypes() {
+        List<ConnectivityTypeDto> connectivityTypeDtos = getConnectivityTypeDtos(accessTokenFabManStruump);
+
+        assertThat(connectivityTypeDtos.size()).isGreaterThan(1);
+        assertThat(connectivityTypeDtos.get(0).getAvailableProtocols().size()).isGreaterThanOrEqualTo(1);
+    }
+
     private Integer createAndTestCompany(final CompanyDto company) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
@@ -923,7 +1002,7 @@ class FusionbackendApplicationTests {
         return newCompanyId;
     }
 
-    private Integer createAndTestCountry(final CountryDto country) {
+    private void createAndTestCountry(final CountryDto country) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(country)
@@ -948,16 +1027,13 @@ class FusionbackendApplicationTests {
                 .then()
                 .statusCode(200)
                 .body("name", equalTo(country.getName()));
-
-        return newCountryId;
     }
 
     // TODO: test getter with embed
     // TODO: test create with entityDto with ID
     // TODO: Test fields in assettypetemplate, series, assets
 
-    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite,
-                                             final Integer countryId) {
+    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite) {
 
         if (factorySite.getCountry() == null) {
             ValidatableResponse response = given()
@@ -965,7 +1041,7 @@ class FusionbackendApplicationTests {
                     .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                     .when()
-                    .get(baseUrl + "/countries/" + countryId)
+                    .get(baseUrl + "/countries/" + FusionbackendApplicationTests.countryGermanyId)
 
                     .then()
                     .statusCode(200);
@@ -1210,9 +1286,9 @@ class FusionbackendApplicationTests {
         return newAssetTypeTemplateId;
     }
 
-    private Integer createAndTestAssetTypeTemplateFieldTarget(final Integer assetTypeTemplateId,
-                                                              final Integer fieldId,
-                                                              final FieldTargetDto fieldTarget) {
+    private void createAndTestAssetTypeTemplateFieldTarget(final Integer assetTypeTemplateId,
+                                                           final Integer fieldId,
+                                                           final FieldTargetDto fieldTarget) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(fieldTarget)
@@ -1241,7 +1317,6 @@ class FusionbackendApplicationTests {
         String fieldType = response.extract().path("fieldType");
         assertThat(fieldType).isEqualTo(fieldTarget.getFieldType().name());
 
-        return newFieldId;
     }
 
     private Integer createAndTestAssetType(final AssetTypeDto assetType) {
@@ -1293,49 +1368,16 @@ class FusionbackendApplicationTests {
         response.body("gatewayConnectivity", equalTo(dto.getGatewayConnectivity()));
     }
 
-    private void validateFieldDto(ValidatableResponse response, FieldDto dto) {
-        if (dto.getName() != null) {
-            response.body("name", equalTo(dto.getName()));
-        }
-        if (dto.getDescription() != null) {
-            response.body("description", equalTo(dto.getDescription()));
-        }
-        if (dto.getUnit() != null) {
-            response.body("unit", equalTo(dto.getUnit()));
-        }
+    private Long createAndTestAssetSeries(final Integer companyId,
+                                          final Integer assetTypeTemplateId,
+                                          final AssetSeriesDto assetSeries,
+                                          final String accessToken) {
 
-        Float accuracy = response.extract().path("accuracy");
-        assertThat(accuracy.doubleValue()).isCloseTo(dto.getAccuracy(), within(0.001));
-    }
+        AssetSeriesDto persistedAssetSeriesDto = createAssetSeries(companyId, assetTypeTemplateId, accessToken);
 
-    private Integer createAndTestAssetSeries(final Integer companyId, final Integer assetTypeTemplateCompanyId,
-                                             final Integer assetTypeTemplateId, final AssetSeriesDto assetSeries,
-                                             final String accessToken) {
+        Long newAssetSeriesId = persistedAssetSeriesDto.getId();
 
         ValidatableResponse response = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-
-                .when()
-                .get(baseUrl + "/companies/" + companyId + "/assettypetemplates/" + assetTypeTemplateId + "/init-asset-series-draft")
-
-                .then()
-                .statusCode(200);
-
-        response = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-
-                .when()
-                .body(response.extract().body().asString())
-                .post(baseUrl + "/companies/" + companyId + "/assetseries")
-
-                .then()
-                .statusCode(200);
-
-        Integer newAssetSeriesId = response.extract().path("id");
-
-        response = given()
                 .contentType(ContentType.JSON)
                 .body(assetSeries)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1363,8 +1405,58 @@ class FusionbackendApplicationTests {
         return newAssetSeriesId;
     }
 
+    private AssetSeriesDto createAssetSeries(Integer companyId, Integer assetTypeTemplateId, String accessToken) {
+        ConnectivityTypeDto connectivityTypeDto = getConnectivityTypeDtos(accessTokenFleetManAirist).get(0);
+
+
+        AssetSeriesDto assetSeriesDto = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl +
+                        "/companies/" +
+                        companyId +
+                        "/assettypetemplates/" +
+                        assetTypeTemplateId +
+                        "/init-asset-series-draft")
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+
+        ConnectivitySettingsDto connectivitySettings = assetSeriesDto.getConnectivitySettings();
+        connectivitySettings.setConnectionString("Some Connection");
+        connectivitySettings.setConnectivityTypeId(connectivityTypeDto.getId());
+        connectivitySettings.setConnectivityProtocolId(
+                List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0).getId());
+
+        return given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .body(assetSeriesDto)
+                .post(baseUrl + "/companies/" + companyId + "/assetseries")
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+    }
+
+    private List<ConnectivityTypeDto> getConnectivityTypeDtos(String accessTokenFleetManAirist) {
+        return given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+                .when()
+                .get(baseUrl + "/connectivity-types")
+                .then()
+                .statusCode(200)
+                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class);
+    }
+
     private void transferFleetAssetToFactoryAsset(final Integer assetId,
-                                                  final Integer assetSeriesId,
+                                                  final Long assetSeriesId,
                                                   final Integer fleetCompanyId,
                                                   final Integer factoryCompanyId,
                                                   final String accessTokenFleet) {
@@ -1392,7 +1484,7 @@ class FusionbackendApplicationTests {
         response.body("companyId", equalTo(factoryCompanyId));
     }
 
-    private Integer createAndTestFleetAsset(final Integer companyId, final Integer assetSeriesId,
+    private Integer createAndTestFleetAsset(final Integer companyId, final Long assetSeriesId,
                                             final AssetDto asset, final String accessToken) {
 
         ValidatableResponse response = given()
@@ -1446,13 +1538,13 @@ class FusionbackendApplicationTests {
     }
 
     private void addSubsystemToParentAndTest(final Integer companyId,
-                                             final Integer assetSeriesId,
+                                             final Long assetSeriesId,
                                              final Integer parentAssetId,
                                              final AssetDto newSubsystem,
                                              final String subsystemAccessToken,
                                              final String parentAccessToken) {
 
-        Integer newSubsystemId = persistNewAsset(companyId, newSubsystem, subsystemAccessToken);
+        Integer newSubsystemId = persistNewAsset(newSubsystem, subsystemAccessToken);
 
         addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
@@ -1460,7 +1552,7 @@ class FusionbackendApplicationTests {
 
     }
 
-    private void validateSubsystemExists(Integer companyId, Integer assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+    private void validateSubsystemExists(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1473,7 +1565,7 @@ class FusionbackendApplicationTests {
                 .body("subsystemIds", equalTo(Collections.singletonList(newSubsystemId)));
     }
 
-    private void addSubstemToParent(Integer companyId, Integer assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+    private void addSubstemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
         AssetDto parent = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1499,7 +1591,7 @@ class FusionbackendApplicationTests {
                 .statusCode(200);
     }
 
-    private Integer persistNewAsset(Integer companyId, AssetDto newSubsystem, String accessToken) {
+    private Integer persistNewAsset(AssetDto newSubsystem, String accessToken) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1542,7 +1634,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId)
+                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId + "/assign")
 
                 .then()
                 .statusCode(200);
@@ -1577,9 +1669,4 @@ class FusionbackendApplicationTests {
         return response.extract().path("access_token");
     }
 
-    private void assertOffsetDateTimesEqualToSecond(final OffsetDateTime odt1, final OffsetDateTime odt2) {
-        OffsetDateTime convertedOdt1 = odt1.withOffsetSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-        OffsetDateTime convertedOdt2 = odt2.withOffsetSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-        assertThat(convertedOdt1).isAtSameInstantAs(convertedOdt2);
-    }
 }

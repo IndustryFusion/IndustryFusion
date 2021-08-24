@@ -51,7 +51,7 @@ export class FactoryResolver {
   public factorySites$: Observable<FactorySite[]>;
   public factorySite$: Observable<FactorySite>;
   public rooms$: Observable<Room[]>;
-  public allRoomsOfFactorySite$: Observable<Room[]>;
+  public roomsOfFactorySite$: Observable<Room[]>;
   public room$: Observable<Room>;
   public assetSeries$: Observable<AssetSeriesDetails[]>;
   public assets$: Observable<Asset[]>;
@@ -89,8 +89,7 @@ export class FactoryResolver {
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
-    this.countries$ = this.countryResolver.resolve();
-
+    this.countryResolver.resolve().subscribe();
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
     const companyId = activatedRoute.snapshot.paramMap.get('companyId');
@@ -104,31 +103,31 @@ export class FactoryResolver {
 
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
       this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
-      this.rooms$ = this.roomQuery.selectAllRooms();
+      this.rooms$ = this.roomQuery.selectRoomsOfCompany();
       this.assets$ = this.assetQuery.selectAssetsOfCompany(companyId);
       this.assetDetailsQuery.selectAssetDetailsOfCompany(companyId).pipe(
         switchMap(assetDetailsArray =>
           forkJoin(
             assetDetailsArray.map(assetDetails => this.fieldService.getFieldsOfAsset(companyId, assetDetails.id))))
       ).subscribe();
-      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinFieldsOfAssetsDetailsWithOispData();
+      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinFieldsOfAssetsDetailsWithOispDataIncludingAlerts();
     }
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
       this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
-      this.rooms$ = this.roomQuery.selectAllRooms();
-      this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
+      this.rooms$ = this.roomQuery.selectRoomsOfCompany(); // TODO: shouldn't this be selectRoomsOfFactorySite(factorySiteId)?
+      this.roomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
       this.assets$ = this.factoryComposedQuery.selectAssetsOfFactorySite(factorySiteId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery
-        .selectAssetDetailsWithFieldsOfFactorySiteAndJoinWithOispData(factorySiteId);
+        .selectAssetDetailsWithFieldsOfFactorySiteAndOispData(factorySiteId);
     }
     const roomId = activatedRoute.snapshot.paramMap.get('roomId');
     this.roomService.setActive(roomId);
     if (roomId != null) {
       this.rooms$ = this.roomQuery.selectActive().pipe(map(room => Array(room)));
-      this.allRoomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
+      this.roomsOfFactorySite$ = this.roomQuery.selectRoomsOfFactorySite(factorySiteId);
       this.assets$ = this.assetQuery.selectAssetsOfRoom(roomId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectAssetDetailsWithFieldsOfRoomAndJoinWithOispData(roomId);
     }
@@ -158,7 +157,7 @@ export class FactoryResolver {
 
     const pageTypes: FactoryManagerPageType[] = (activatedRoute.snapshot.data as RouteData).pageTypes || [];
     if (pageTypes.includes(FactoryManagerPageType.COMPANY_DETAIL)) {
-      this.factorySubTitle$.next('My Factories');
+      this.factorySubTitle$.next('My Factory Sites');
     } else if (pageTypes.includes(FactoryManagerPageType.ASSET_DETAIL)) {
       this.assetQuery
         .waitForActive()

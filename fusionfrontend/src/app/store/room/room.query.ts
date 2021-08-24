@@ -32,7 +32,7 @@ export class RoomQuery extends BaseQueryEntity<RoomState, Room> {
     });
   }
 
-  selectAllRooms(): Observable<Room[]> {
+  selectRoomsOfCompany(): Observable<Room[]> {
     return this.selectAll();
   }
 }

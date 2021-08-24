@@ -43,7 +43,7 @@ public class AssetSeriesDraftRestService {
     public AssetSeriesDto initAssetSeriesDraftFromAssetTypeTemplate(
             @PathVariable final Long assetTypeTemplateId,
             @PathVariable final Long companyId,
-            @RequestParam(defaultValue = "false") final boolean embedChildren) {
+            @RequestParam(defaultValue = "true") final boolean embedChildren) {
         return assetSeriesMapper.toDto(
                 assetSeriesDraftService.fromAssetTypeTemplate(companyId, assetTypeTemplateId),
                 embedChildren);

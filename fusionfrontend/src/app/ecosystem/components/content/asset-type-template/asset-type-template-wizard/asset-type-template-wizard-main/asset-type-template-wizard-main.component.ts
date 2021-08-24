@@ -31,6 +31,7 @@ import { ID } from '@datorama/akita';
 
 import { take } from 'rxjs/operators';
 import { DialogType } from '../../../../../../common/models/dialog-type.model';
+import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-type-template-wizard-main',
@@ -60,11 +61,10 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
   public static createAssetTypeTemplateForm(formBuilder: FormBuilder,
                                             assetTypeTemplate: AssetTypeTemplate,
                                             prefilledAssetTypeIdOrNull: ID | null) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const assetTypeTemplateForm = formBuilder.group({
       id: [],
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
+      name: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
       publicationState: [PublicationState.DRAFT],
       publishedDate: [],
       publishedVersion: [],

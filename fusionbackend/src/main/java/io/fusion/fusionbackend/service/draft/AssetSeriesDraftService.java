@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.service.draft;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.ConnectivitySettings;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
@@ -76,6 +77,10 @@ public class AssetSeriesDraftService {
                                 .build())
                 .collect(Collectors.toSet());
         newAssetSeries.setFieldSources(newFieldSources);
+
+        ConnectivitySettings connectivitySettings = new ConnectivitySettings();
+        newAssetSeries.setConnectivitySettings(connectivitySettings);
+
         return newAssetSeries;
     }
 }

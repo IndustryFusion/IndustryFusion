@@ -40,6 +40,7 @@ import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.reso
 import { CountryResolver } from '../../../../resolvers/country.resolver';
 import { FleetAssetDetailsResolver } from '../../../../resolvers/fleet-asset-details.resolver';
 import { MessageService } from 'primeng/api';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -174,6 +175,7 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookKey')?.setValue(assetSeries.handbookKey);
       this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
+      this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
       console.warn('[Asset wizard]: Related asset series not found', assetSeriesId);
     }
@@ -208,30 +210,30 @@ export class AssetWizardComponent implements OnInit {
   }
 
   private createAssetForm() {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const companyId = this.config.data.companyId;
     const assetSeriesIdOrNull = this.config.data.prefilledAssetSeriesId;
 
     this.assetForm = this.formBuilder.group({
       id: [],
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
+      name: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
       companyId: [companyId, Validators.required],
       assetSeriesId: [assetSeriesIdOrNull, Validators.required],
       roomId: [],
-      externalId: [null, Validators.maxLength(255)],
-      controlSystemType: [null, Validators.maxLength(255)],
+      externalId: [null, WizardHelper.maxTextLengthValidator],
+      controlSystemType: [null, WizardHelper.maxTextLengthValidator],
       hasGateway: [],
-      gatewayConnectivity: [null, Validators.maxLength(255)],
+      gatewayConnectivity: [null, WizardHelper.maxTextLengthValidator],
       guid: [],
       ceCertified: [null, Validators.required],
-      serialNumber: [null, Validators.maxLength(255)],
+      serialNumber: [null, WizardHelper.maxTextLengthValidator],
       constructionDate: [null, Validators.required],
       installationDate: [null],
-      protectionClass: [null, Validators.maxLength(255)],
-      handbookKey: [null, Validators.maxLength(255)],
-      videoKey: [null, Validators.maxLength(255)],
-      imageKey: [null, Validators.maxLength(255)],
+      protectionClass: [null, WizardHelper.maxTextLengthValidator],
+      handbookKey: [null, WizardHelper.maxTextLengthValidator],
+      videoKey: [null, WizardHelper.maxTextLengthValidator],
+      imageKey: [null, WizardHelper.maxTextLengthValidator],
+      connectionString: [null, WizardHelper.requiredTextValidator],
     });
 
     if (this.asset) {

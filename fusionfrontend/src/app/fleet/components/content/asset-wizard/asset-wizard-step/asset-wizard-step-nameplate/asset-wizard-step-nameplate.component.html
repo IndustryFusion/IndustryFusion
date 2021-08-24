@@ -38,7 +38,7 @@ under the License.
     </div>
 
     <div class="input-div">
-      <label class="if-label">CE Certification</label>
+      <label class="if-label">CE Certification&nbsp;*</label>
       <div class="dialog-grid">
         <div>
           <p-radioButton [value]="true" label="Yes" formControlName="ceCertified"
@@ -53,7 +53,7 @@ under the License.
 
     <div class="selection">
       <div class="input-div">
-        <label class="if-label">Protection Class</label>
+        <label class="if-label">Protection Class&nbsp;*</label>
         <p-dropdown [options]="protectionClasses" formControlName="protectionClass"
                     filter="true" resetFilterOnHide="true"
                     placeholder="Select a protection class...">
@@ -69,6 +69,13 @@ under the License.
     <div class="input-div">
       <label class="if-label">Asset Video</label>
       <input type="text" pInputText formControlName="videoKey" />
+    </div>
+
+    <label class="if-dialog-section-title">Customize Connection</label>
+
+    <div class="input-div">
+      <label class="if-label">Connection String *</label>
+      <input type="text" pInputText formControlName="connectionString" />
     </div>
   </div>
   <div class="footer">

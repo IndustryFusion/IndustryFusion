@@ -82,6 +82,9 @@ public class FactorySite extends BaseEntity {
     private String imageKey;
 
     public void copyFrom(final FactorySite sourceFactorySite) {
+        if (sourceFactorySite.getType() != null) {
+            setType(sourceFactorySite.getType());
+        }
         if (sourceFactorySite.getName() != null) {
             setName(sourceFactorySite.getName());
         }
@@ -96,9 +99,6 @@ public class FactorySite extends BaseEntity {
         }
         if (sourceFactorySite.getZip() != null) {
             setZip(sourceFactorySite.getZip());
-        }
-        if (sourceFactorySite.getCountry() != null) {
-            setCountry(sourceFactorySite.getCountry());
         }
         if (sourceFactorySite.getLatitude() != null) {
             setLatitude(sourceFactorySite.getLatitude());

@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -24,8 +24,10 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-
-const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
+import { OispService } from '../../../../services/oisp.service';
+import { PointWithId } from '../../../../services/oisp.model';
+import { FieldDetails } from '../../../../store/field-details/field-details.model';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-maintenance-page',
@@ -36,18 +38,22 @@ export class MaintenancePageComponent implements OnInit {
 
   companyId: ID;
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
+  factoryAssetDetailsWithFieldsAndValues$: Observable<FactoryAssetDetailsWithFields[]>;
   assetTypes$: Observable<AssetType[]>;
   factorySites$: Observable<FactorySite[]>;
   companies$: Observable<Company[]>;
-  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   companies: Company[];
+
+  MAINTENANCE_FIELD_NAME_DAYS = 'Days till maintenance';
 
   constructor(
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
-  ) { }
+    private oispService: OispService,
+  ) {
+  }
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
@@ -60,24 +66,40 @@ export class MaintenancePageComponent implements OnInit {
     this.assetTypes$ = this.assetTypesResolver.resolve();
 
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
-    this.factoryAssetDetailsWithFields$.subscribe(res => {
-      this.factoryAssetDetailsWithFields = res;
-      this.sortAssetsByMaintenanceValue();
+
+    this.factoryAssetDetailsWithFieldsAndValues$ = this.factoryAssetDetailsWithFields$.pipe(
+      mergeMap((assets) =>
+        combineLatest(
+          assets.map((asset) => {
+            return this.updateAssetWithFieldValue(asset);
+          })
+        )
+      ),
+    );
+  }
+
+  private updateAssetWithFieldValue(asset: FactoryAssetDetailsWithFields) {
+    return new Observable<any>((observer) => {
+      this.oispService.getLastValueOfAllFields(asset, asset.fields, 600).subscribe((lastValues) => {
+          asset.fields = this.getAssetFieldValues(asset, lastValues);
+          observer.next(asset);
+        }, _ => {
+          observer.next(null);
+        }
+      );
     });
   }
 
-  sortAssetsByMaintenanceValue() {
-    this.factoryAssetDetailsWithFields.sort((a, b) => {
-      const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
-      const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
-      if (indexA !== -1 && indexB !== -1) {
-        return Number(a.fields[indexA].value) > Number(b.fields[indexB].value) ? 1 : -1;
-      } else if (indexA === -1) {
-        return 1;
-      } else {
-        return -1;
+  private getAssetFieldValues(asset: FactoryAssetDetailsWithFields, lastValues: PointWithId[]): FieldDetails[] {
+    return asset.fields.map((field) => {
+        const fieldCopy = Object.assign({ }, field);
+        const point = lastValues?.find(latestPoint => latestPoint.id === field.externalId);
+        if (point) {
+          fieldCopy.value = point.value;
+        }
+        return fieldCopy;
       }
-    });
+    );
   }
 
 }

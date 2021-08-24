@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { CompanyQuery } from 'src/app/store/company/company.query';
@@ -21,12 +21,10 @@ import { FactorySite, FactorySiteWithAssetCount } from 'src/app/store/factory-si
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FactorySiteDialogComponent } from '../factory-site-dialog/factory-site-dialog.component';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
-import { Country } from '../../../../store/country/country.model';
 
 @Component({
   selector: 'app-factory-sites',
@@ -36,26 +34,16 @@ import { Country } from '../../../../store/country/country.model';
 })
 export class FactorySitesComponent implements OnInit, OnDestroy {
 
-  @Output()
-  createFactorySiteEvent = new EventEmitter<FactorySite>();
-
-  @Output()
-  updateFactorySiteEvent = new EventEmitter<FactorySite>();
-
   isLoading$: Observable<boolean>;
   companyId: ID;
   factorySites$: Observable<FactorySiteWithAssetCount[]>;
   factorySiteMapping:
-    { [k: string]: string } = { '=0': 'No factories', '=1': '# Factory site', other: '# Factory sites' };
+    { [k: string]: string } = { '=0': 'No Factory sites', '=1': '# Factory site', other: '# Factory sites' };
   sortField: string;
   sortType: string;
 
   factorySite: FactorySite;
-  factorySiteForm: FormGroup;
   ref: DynamicDialogRef;
-
-  private countries$: Observable<Country[]>;
-
 
   constructor(
     private factoryResolver: FactoryResolver,
@@ -63,18 +51,15 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private factoryComposedQuery: FactoryComposedQuery,
-    private formBuilder: FormBuilder,
     public dialogService: DialogService) {
 
     this.factoryResolver.resolve(activatedRoute);
-    this.countries$ = this.factoryResolver.countries$;
   }
 
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
     this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCountInFactoryManager(this.companyId);
-    this.createFactorySiteForm(this.formBuilder);
   }
 
   onSort(field: [string, string]) {
@@ -83,53 +68,14 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   }
 
   showCreateDialog() {
-    const ref = this.dialogService.open(FactorySiteDialogComponent, {
+    this.ref = this.dialogService.open(FactorySiteDialogComponent, {
       data: {
-        factorySiteForm: this.factorySiteForm,
         type: DialogType.CREATE
       },
       header: `Create new Factory Site`,
       width: '70%',
       contentStyle: { 'padding-left': '6%', 'padding-right': '6%' },
     });
-
-    ref.onClose.subscribe((factorySite: FactorySite) => {
-      this.onCloseCreateDialog(factorySite);
-      this.createFactorySiteForm(this.formBuilder);
-      this.factorySite = new FactorySite();
-    });
-  }
-
-  async createFactorySiteForm(formBuilder: FormBuilder) {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-    const countryIdGermany = await this.countries$.toPromise()
-      .then(countries => countries.find(item => item.name === 'Germany').id);
-
-    this.factorySiteForm = formBuilder.group({
-      id: [null],
-      name: ['', requiredTextValidator],
-      line1: [''],
-      line2: [''],
-      city: ['', requiredTextValidator],
-      zip: [''],
-      countryId: [countryIdGermany, Validators.required],
-      type: [null, requiredTextValidator]
-    });
-  }
-
-  onCloseCreateDialog(factorySite: FactorySite) {
-    if (factorySite) {
-      factorySite.companyId = this.companyId;
-      this.factorySiteCreated(factorySite);
-    }
-  }
-
-  factorySiteCreated(factorySite: FactorySite): void {
-    this.createFactorySiteEvent.emit(factorySite);
-  }
-
-  factorySiteUpdated(factorySite: FactorySite): void {
-    this.updateFactorySiteEvent.emit(factorySite);
   }
 
   ngOnDestroy() {

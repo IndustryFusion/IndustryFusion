@@ -60,6 +60,11 @@
   padding-bottom: 1.1rem;
 }
 
+.if-dialog-section-title {
+  @extend .if-dialog-title;
+  margin-top: 1.2rem;
+}
+
 .if-title {
   text-align: left;
   font-size: $big-font-size;

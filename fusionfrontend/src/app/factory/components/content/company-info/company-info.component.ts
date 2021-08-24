@@ -14,7 +14,6 @@
  */
 
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Room } from 'src/app/store/room/room.model';
 import { Asset } from 'src/app/store/asset/asset.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Observable } from 'rxjs';
@@ -33,7 +32,7 @@ export class CompanyInfoComponent implements OnChanges {
   factorySite: FactorySite;
 
   @Input()
-  rooms: Room[];
+  roomCount: number;
 
   @Input()
   assets: Asset[];

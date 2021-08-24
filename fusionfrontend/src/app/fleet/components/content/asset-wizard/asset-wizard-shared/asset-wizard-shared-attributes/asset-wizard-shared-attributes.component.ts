@@ -20,6 +20,7 @@ import { CustomFormValidators } from '../../../../../../common/utils/custom-form
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { FieldType } from '../../../../../../store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../../store/field/field-query.service';
+import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-shared-attributes',
@@ -89,21 +90,11 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
       this.backToEditPage.emit();
       return;
     }
-    if (attributeGroup == null
-      || attributeGroup.get('mandatory') === null || attributeGroup.get('mandatory').value === true) {
-      return;
-    }
 
-    const indexFieldInstances: number = attributeGroup.get('indexFieldInstances').value;
-    const indexInArray: number = attributeGroup.get('indexInArray').value;
-    this.fieldInstancesFormArray.removeAt(indexInArray);
-    this.asset.fieldInstances.splice(indexFieldInstances, 1);
-
-    for (let i = indexInArray; i < this.fieldInstancesFormArray.length; i++) {
-      const indexInArrayElement = this.fieldInstancesFormArray.at(i).get('indexInArray');
-      const indexInFieldInstancesElement = this.fieldInstancesFormArray.at(i).get('indexFieldInstances');
-      indexInArrayElement.setValue(indexInArrayElement.value - 1);
-      indexInFieldInstancesElement.setValue(indexInFieldInstancesElement.value - 1);
+    if (!this.isMandatory(attributeGroup) && attributeGroup instanceof FormGroup) {
+      WizardHelper.removeItemFromFormAndDataArray(attributeGroup,
+        this.fieldInstancesFormArray, 'indexInArray',
+        this.asset.fieldInstances, 'indexFieldInstances');
     }
   }
 
@@ -130,5 +121,9 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
 
   public onClickEdit() {
     this.backToEditPage.emit();
+  }
+
+  public isMandatory(group: AbstractControl): boolean {
+    return group == null || group.get('mandatory').value;
   }
 }

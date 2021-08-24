@@ -26,6 +26,7 @@ import { FactorySiteMapComponent } from '../components/content/factory-site-map/
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
+import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { LabelControlDirective } from '../components/ui/label-control/label-cont
     FactorySiteMapComponent,
     AccuracyFormatPipe,
     LabelControlDirective,
+    TooltipComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +83,7 @@ import { LabelControlDirective } from '../components/ui/label-control/label-cont
     AccuracyFormatPipe,
     RadioButtonModule,
     LabelControlDirective,
+    TooltipComponent,
   ],
   providers: [
     MessageService

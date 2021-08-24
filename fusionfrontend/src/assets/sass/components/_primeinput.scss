@@ -44,6 +44,10 @@
   }
 }
 
+.if-invalid-border {
+  border: 2px solid $error !important;
+}
+
 .p-inputtextarea {
   @extend .p-inputtext;
   min-height: 85px;

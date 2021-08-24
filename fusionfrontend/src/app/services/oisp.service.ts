@@ -25,6 +25,7 @@ import {
   ComponentType,
   ConditionType,
   Device,
+  DeviceComponent,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
@@ -40,6 +41,7 @@ import {
 } from './oisp.model';
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
+import { ID } from '@datorama/akita';
 
 @Injectable({
   providedIn: 'root'
@@ -55,37 +57,86 @@ export class OispService {
     private keycloakService: KeycloakService) {
   }
 
-  getExternalIdForSingleField(field: FieldDetails, oispDevice: any): FieldDetails {
+  getAssetFieldsWithReplacedExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
+    return this.replaceExternalIdsOfFieldsWithUid(asset);
+  }
+
+  getAssetDetailsFieldsWithReplacedExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
+    return this.replaceExternalIdsOfFieldsWithUid(assetDetails) as Observable<FactoryAssetDetailsWithFields>;
+  }
+
+  // TODO: refactor, see IF-371
+  private replaceExternalIdsOfFieldsWithUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields):
+    Observable<FactoryAssetDetailsWithFields | AssetWithFields> {
+    if (!assetOrAssetDetails) {
+      return EMPTY;
+    }
+
+    return this.getDevice(assetOrAssetDetails.externalId).pipe(
+      catchError(() => {
+        console.error('[oisp service] caught error while searching for external Ids');
+        return of(assetOrAssetDetails);
+      }),
+      startWith(assetOrAssetDetails),
+      map((assetOrDevice: AssetWithFields | FactoryAssetDetailsWithFields | Device) => {
+        return this.tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails, assetOrDevice);
+      })
+    );
+  }
+
+  private tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields,
+                                                      assetOrDevice: any) {
+    const newFields = assetOrAssetDetails.fields.map(field =>
+      this.tryReplaceExternalIdOfFieldDetailsWithComponentUid(field, assetOrDevice));
+    const newAsset = this.tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails, assetOrDevice);
+    return Object.assign(newAsset, { fields: newFields });
+  }
+
+  private tryReplaceExternalIdOfFieldDetailsWithComponentUid(fieldDetails: FieldDetails,
+                                                             oispDevice: Device): FieldDetails {
     if (oispDevice.components) {
-      const fieldCopy = Object.assign({ }, field);
-      oispDevice.components.map((el) => {
-        if (el.name === field.externalId) {
-          fieldCopy.externalId = el.cid;
+      const fieldDetailsCopy = Object.assign({ }, fieldDetails);
+      oispDevice.components.map((component: DeviceComponent) => {
+        if (component.name === fieldDetails.externalId) {
+          fieldDetailsCopy.externalId = component.cid;
         }
       });
-      return fieldCopy;
+      return fieldDetailsCopy;
     } else {
-      return field;
+      return fieldDetails;
     }
   }
 
-  getAssetFieldsExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
-    if (!asset) {
+  private tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields,
+                                                   oispDevice: Device): any {
+    if (oispDevice) {
+      const assetCopy = Object.assign({ }, assetOrAssetDetails);
+      if (oispDevice.deviceId === assetCopy.externalId) {
+        assetCopy.externalId = oispDevice.uid;
+      }
+      return assetCopy;
+    } else {
+      return assetOrAssetDetails;
+    }
+  }
+
+  getDevice(deviceId: ID): Observable<Device> {
+    if (!deviceId) {
       return EMPTY;
     }
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${asset.externalId}`;
 
-    return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
+    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceId}`;
+    return this.http.get<Device>(deviceRequest, this.httpOptions).pipe(
       catchError(() => {
-        console.warn('[oisp service] caught error while searching for external Ids');
-        return of(asset);
+        console.error('[oisp service] caught error while searching for device ', deviceId);
+        return EMPTY;
       }),
-      startWith(asset),
-      map((response) => {
-        const newFields = asset.fields.map(field => this.getExternalIdForSingleField(field, response));
-        return Object.assign(asset, { fields: newFields });
-      })
     );
+  }
+
+  getAllDevices(): Observable<Device[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
+    return this.http.get<Device[]>(url, this.httpOptions);
   }
 
   getAllRules(): Observable<Rule[]> {
@@ -103,10 +154,7 @@ export class OispService {
     return this.http.get<ComponentType[]>(url, this.httpOptions);
   }
 
-  getAllDevices(): Observable<Device[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
-    return this.http.get<Device[]>(url, this.httpOptions);
-  }
+
 
   getUser(): Observable<OISPUser[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
@@ -167,33 +215,13 @@ export class OispService {
 
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}/status`;
-    const body = { status};
+    const body = { status };
     return this.http.put<Rule>(url, body, this.httpOptions);
   }
 
   deleteRule(ruleId: string): Observable<any> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/delete_rule_with_alerts/${ruleId}`;
     return this.http.delete(url, this.httpOptions);
-  }
-
-
-  getAssetDetailsFieldsExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    if (!assetDetails) {
-      return EMPTY;
-    }
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${assetDetails.externalId}`;
-
-    return this.http.get<any>(deviceRequest, this.httpOptions).pipe(
-      catchError(() => {
-        console.warn('[oisp service] caught error while searching for external Ids');
-        return of(assetDetails);
-      }),
-      startWith(assetDetails),
-      map((response) => {
-        const newFields = assetDetails.fields.map(field => this.getExternalIdForSingleField(field, response));
-        return Object.assign(assetDetails, { fields: newFields });
-      })
-    );
   }
 
   hasAnyPoints(oispSeries: Series[]): boolean {

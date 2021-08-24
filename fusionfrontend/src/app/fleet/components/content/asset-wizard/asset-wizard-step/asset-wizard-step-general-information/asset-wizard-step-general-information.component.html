@@ -36,11 +36,11 @@ under the License.
           <div class="input-div">
             <label class="if-label">Description</label>
             <textarea pInputTextarea formControlName="description"></textarea>
-            <label class="textarea-character-count if-label">{{ assetForm.get('description')?.value?.length }}/255</label>
+            <label class="textarea-character-count if-label">{{ assetForm.get('description')?.value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
           </div>
         </div>
         <div id="column right">
-          <clr-icon shape="help" size="29"></clr-icon>
+          <i class="if-icon-help"></i>
           <span class="if-hint" > How will my asset be displayed in a factory?</span>
           <div class="sample-asset-display">
             <img src="/assets/img/IndustryFusion-hive.png" alt="asset-symbol">

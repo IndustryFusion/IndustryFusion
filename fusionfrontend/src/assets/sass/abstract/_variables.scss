@@ -31,7 +31,7 @@
   $saturated-red:     #C42326;
   $fusion-red:        #A73737;
   $light-red:         #D56365;
-  $yellow:            #FBC02D;
+  $yellow:            #FCA82B;
 
   $fusion-blue:       #2CA9CE;
 
@@ -56,6 +56,10 @@
 
   $trash-button:              $saturated-red;
   $trash-button-hover:        $light-red;
+
+  $alert-low:                 $fusion-blue;
+  $alert-medium:              $warning;
+  $alert-high:                $error;
 
 
   /** backgrounds **/

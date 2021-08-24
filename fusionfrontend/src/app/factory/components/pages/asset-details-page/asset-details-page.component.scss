@@ -13,9 +13,12 @@
  * under the License.
  */
 
+@import 'base/typography';
+@import "abstract/variables";
+
 .asset-details-wrapper{
   border: 0px;
-  background: #f8f8f8;
+  background: $light-grey;
   margin: 0px;
   padding: 20px;
 
@@ -66,19 +69,19 @@
   }
 
   .tables-wrapper{
-    background: #F8F8F8;
+    background: $light-grey;
     margin: 25px 50px;
     border: 0px ;
   }
 
   .radio-wrapper{
-    background: #F8F8F8;
+    background: $light-grey;
     padding-top: 20px;
     margin: 0px 50px 25px;
   }
 
   .charts-container{
-    background: #F8F8F8;
+    background: $light-grey;
     border: 0px;
     justify-content: center;
     margin: 25px 50px;

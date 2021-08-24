@@ -27,7 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -235,22 +236,63 @@ public class AssetService {
         return asset;
     }
 
-    public Asset moveAssetToRoom(final Long companyId,
-                                 final Long factorySiteId,
-                                 final Long roomId,
+    public Set<Asset> moveAssetsToRoom(final Long companyId, final Long factorySiteId, final Long roomId,
+                                       final Asset[] assets) {
+        Set<Asset> assetSet = new HashSet<>();
+        this.moveUnselectedAssetsToNoSpecificRoom(companyId, factorySiteId, roomId, assets);
+        for (Asset asset : assets) {
+            assetSet.add(this.moveAssetToRoom(companyId, factorySiteId, roomId, asset.getId()));
+        }
+        return assetSet;
+    }
+
+    public void moveUnselectedAssetsToNoSpecificRoom(final Long companyId, final Long factorySiteId, final Long roomId,
+                                                     final Asset[] updatedAssets) {
+        Set<Asset> previouslyAssets = this.roomService.getRoomCheckFullPath(companyId, factorySiteId,
+                roomId, true).getAssets();
+        Set<Asset> updatedAssetsSet = new HashSet<>(Arrays.asList(updatedAssets));
+        Asset[] unselectedAssets = previouslyAssets.stream().filter(asset -> !updatedAssetsSet.contains(asset))
+                .toArray(Asset[]::new);
+
+        if (unselectedAssets.length > 0) {
+            Set<Room> factoryRooms = this.factorySiteService.getFactorySiteByCompany(companyId,
+                    factorySiteId, true).getRooms();
+            Room noSpecificRoom = getOrCreateNoSpecificRoom(companyId, factorySiteId, factoryRooms);
+            for (Asset asset : unselectedAssets) {
+                Room oldAssetRoom = this.roomService.getRoomCheckFullPath(companyId, factorySiteId, roomId, true);
+                if (oldAssetRoom != null) {
+                    oldAssetRoom.getAssets().remove(asset);
+                }
+                noSpecificRoom.getAssets().add(asset);
+                asset.setRoom(noSpecificRoom);
+            }
+        }
+    }
+
+    private Room getOrCreateNoSpecificRoom(Long companyId, Long factorySiteId, Set<Room> factoryRooms) {
+        Room noSpecificRoom = factoryRooms.stream().filter(factoryRoom -> factoryRoom.getName()
+                .equals(Room.NO_SPECIFIC_ROOM_NAME)).findFirst().orElse(null);
+        if (noSpecificRoom == null) {
+            noSpecificRoom = Room.getUnspecificRoomInstance();
+            this.roomService.createRoom(companyId, factorySiteId, noSpecificRoom);
+        }
+        return noSpecificRoom;
+    }
+
+    public Asset moveAssetToRoom(final Long companyId, final Long factorySiteId, final Long newRoomId,
                                  final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
-        final Room room = roomService.getRoomCheckFullPath(companyId, factorySiteId, roomId, false);
 
-        final Room currentAssetRoom = asset.getRoom();
+        final Room oldAssetRoom = asset.getRoom();
+        final Room newAssetRoom = roomService.getRoomCheckFullPath(companyId, factorySiteId, newRoomId, false);
 
-        if (currentAssetRoom != null) {
-            currentAssetRoom.getAssets().remove(asset);
+        if (oldAssetRoom != null) {
+            oldAssetRoom.getAssets().remove(asset);
             asset.setRoom(null);
         }
 
-        room.getAssets().add(asset);
-        asset.setRoom(room);
+        newAssetRoom.getAssets().add(asset);
+        asset.setRoom(newAssetRoom);
 
         return asset;
     }
@@ -314,20 +356,7 @@ public class AssetService {
     public Set<FieldInstance> getFieldInstances(final Long companyId, final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
         Set<FieldInstance> assetFields = asset.getFieldInstances();
-
-        // Generate random maintenance value
-        for (FieldInstance field: asset.getFieldInstances()) {
-            if (field.getName().equals("Hours till maintenance")) {
-                field = this.generateRandomMaintenanceValue(field);
-            }
-        }
         return assetFields;
-    }
-
-    public FieldInstance generateRandomMaintenanceValue(FieldInstance field) {
-        final Random random = new Random();
-        field.setValue(Integer.toString(random.nextInt(1500)));
-        return field;
     }
 
     public FieldInstance getFieldInstance(final Long companyId, final Long assetId, final Long fieldInstanceId) {

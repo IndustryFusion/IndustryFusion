@@ -22,13 +22,12 @@ import io.fusion.fusionbackend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Set;
 
 @RestController
@@ -72,7 +71,7 @@ public class RoomRestService {
         return roomMapper.toDto(roomService.createRoom(companyId, factorySiteId, roomMapper.toEntity(roomDto)), false);
     }
 
-    @PatchMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}")
+    @PutMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}")
     public RoomDto updateRoom(@PathVariable final Long companyId,
                               @PathVariable final Long factorySiteId,
                               @PathVariable final Long roomId,

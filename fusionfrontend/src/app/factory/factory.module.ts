@@ -32,9 +32,8 @@ import { AssetCardComponent } from './components/content/asset-card/asset-card.c
 import { AssetDetailsHeaderComponent } from './components/content/asset-details/asset-details-header/asset-details-header.component';
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
-import { CreateRoomComponent } from './components/content/create-room/create-room.component';
-import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
-import { EditRoomComponent } from './components/content/edit-room/edit-room.component';
+import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
+import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
 import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
@@ -58,6 +57,9 @@ import { FactorySitesComponent } from './components/content/factory-sites/factor
 // tslint:disable-next-line:max-line-length
 import { FactorySitesListItemComponent } from './components/content/factory-sites/factory-sites-list-item/factory-sites-list-item.component';
 import { FactorySitesListHeaderComponent } from './components/content/factory-sites/factory-sites-list-header/factory-sites-list-header.component';
+import { TableModule } from 'primeng/table';
+import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
+import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
 
 @NgModule({
   declarations: [
@@ -81,9 +83,8 @@ import { FactorySitesListHeaderComponent } from './components/content/factory-si
     FactoryPageTitleComponent,
     MaintenanceBarComponent,
     AssetChartsComponent,
-    CreateRoomComponent,
-    RoomsPageComponent,
-    EditRoomComponent,
+    RoomDialogComponent,
+    FactorySiteRoomsPageComponent,
     AssetTablesComponent,
     StatusComponent,
     FactorySitesListHeaderComponent,
@@ -98,6 +99,8 @@ import { FactorySitesListHeaderComponent } from './components/content/factory-si
     AssetInstantiationFactorySiteAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
     FactorySiteDialogComponent,
+    RoomsListComponent,
+    AssignAssetToRoomComponent,
   ],
     imports: [
         IFCommon,
@@ -105,6 +108,7 @@ import { FactorySitesListHeaderComponent } from './components/content/factory-si
         ClarityModule,
         ChartsModule,
         ReactiveFormsModule,
+        TableModule,
     ],
   exports: [
     FactorySubHeaderComponent,
