@@ -64,7 +64,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
     this.mergedFields$ = this.latestPoints$.pipe(
       map(latestPoints => {
         return this.asset.fields.map(field => {
-          const fieldCopy = Object.assign({}, field);
+          const fieldCopy = Object.assign({ }, field);
           const point = latestPoints.find(latestPoint => latestPoint.id ===
             this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(this.asset.externalName, field.externalName));
 
