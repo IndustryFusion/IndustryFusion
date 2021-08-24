@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
+import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-series-wizard-connectivity-settings',
@@ -43,12 +44,10 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
   }
 
   private createFormGroup(): void {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-
     this.connectivitySettingsForm = this.formBuilder.group({
       connectivityTypeId: [null, Validators.required],
       connectivityProtocolId: [null, Validators.required],
-      connectionString: [null, requiredTextValidator],
+      connectionString: [null, WizardHelper.requiredTextValidator],
     });
     this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
 

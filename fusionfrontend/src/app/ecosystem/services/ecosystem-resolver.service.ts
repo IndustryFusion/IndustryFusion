@@ -23,6 +23,7 @@ import { QuantityTypeQuery } from '../../store/quantity-type/quantity-type.query
 import { UnitQuery } from '../../store/unit/unit.query';
 import { FieldQuery } from '../../store/field/field-query.service';
 import { AssetTypeTemplateQuery } from '../../store/asset-type-template/asset-type-template.query';
+import { NameWithVersionPipe } from '../../pipes/namewithversion.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,8 @@ export class EcoSystemManagerResolver {
               private unitQuery: UnitQuery,
               private fieldQuery: FieldQuery,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-              private quantityTypeQuery: QuantityTypeQuery) {
+              private quantityTypeQuery: QuantityTypeQuery,
+              private nameWithVersionPipe: NameWithVersionPipe) {
     this.assetType$ = this.assetTypeQuery.selectActive();
     this.ecoSystemManagerSubTitle$ = new BehaviorSubject('Apps');
   }
@@ -46,44 +48,34 @@ export class EcoSystemManagerResolver {
       this.assetTypeQuery
         .waitForActive()
         .subscribe(assetType => this.ecoSystemManagerSubTitle$.next(`Asset Types > ${assetType.name}`));
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_LIST)) {
+    } else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Asset Types');
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST)) {
+    } else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Asset Type Templates');
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.FIELD_LIST)) {
+    } else if (pageTypes.includes(EcosystemManagerPageType.FIELD_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Metrics & Attributes');
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_LIST)) {
+    } else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Quantity Types');
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_DETAIL)) {
+    } else if (pageTypes.includes(EcosystemManagerPageType.QUANTITY_TYPE_DETAIL)) {
       this.quantityTypeQuery
         .waitForActive()
         .subscribe(quantityType => this.ecoSystemManagerSubTitle$.next(`Quantity Types > ${quantityType.name}`));
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL)) {
+    } else if (pageTypes.includes(EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL)) {
       this.assetTypeTemplateQuery
         .waitForActive()
-        .subscribe(assetTypeTemplate => this.ecoSystemManagerSubTitle$.next('Asset Type Templates > ' + assetTypeTemplate.name));
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.FIELD_DETAIL)) {
+        .subscribe(assetTypeTemplate => this.ecoSystemManagerSubTitle$.next(`Asset Type Templates > ${this.nameWithVersionPipe.transform(assetTypeTemplate.name, assetTypeTemplate.publishedVersion)}`));
+    } else if (pageTypes.includes(EcosystemManagerPageType.FIELD_DETAIL)) {
       this.fieldQuery
         .waitForActive()
-        .subscribe(field => this.ecoSystemManagerSubTitle$.next('Metrics & Attributes > ' + field.name));
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.UNIT_LIST)) {
+        .subscribe(field => this.ecoSystemManagerSubTitle$.next(`Metrics & Attributes > ${field.name}`));
+    } else if (pageTypes.includes(EcosystemManagerPageType.UNIT_LIST)) {
       this.ecoSystemManagerSubTitle$.next('Units');
-    }
-    else if (pageTypes.includes(EcosystemManagerPageType.UNIT_DETAIL)) {
+    } else if (pageTypes.includes(EcosystemManagerPageType.UNIT_DETAIL)) {
       this.unitQuery
         .waitForActive()
         .subscribe(unit => this.ecoSystemManagerSubTitle$.next(`Units > ${unit.name}`));
-    }
-    else {
-      this.ecoSystemManagerSubTitle$.next('Apps');
+    } else {
+      this.ecoSystemManagerSubTitle$.next(`Apps`);
     }
   }
 }

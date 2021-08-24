@@ -21,6 +21,7 @@ import { SelectItem } from 'primeng/api';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { FactorySite, FactorySiteType } from '../../../../../../store/factory-site/factory-site.model';
 import { Coordinate, GeocoderService } from '../../../../../../services/geocoder.service';
+import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-step-customer-data',
@@ -60,11 +61,11 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
     this.factorySiteForm = this.formBuilder.group({
       id: [],
       companyId: [null, Validators.required],
-      name: [null, Validators.maxLength(255)],
-      line1: ['', Validators.maxLength(255)],
-      line2: ['', Validators.maxLength(255)],
-      zip: [null, [Validators.maxLength(255)]],
-      city: [null, Validators.maxLength(255)],
+      name: [null, WizardHelper.maxTextLengthValidator],
+      line1: ['', WizardHelper.maxTextLengthValidator],
+      line2: ['', WizardHelper.maxTextLengthValidator],
+      zip: [null, [WizardHelper.maxTextLengthValidator]],
+      city: [null, WizardHelper.maxTextLengthValidator],
       countryId: [countryIdGermany, Validators.required],
       type: [null, Validators.required],
       imageKey: [null],

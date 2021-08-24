@@ -45,6 +45,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
                                            indexInArray: number,
                                            fieldSource: FieldSource): FormGroup {
     const field = this.fieldQuery.getEntity(fieldSource.fieldTarget.fieldId);
+    const valueValidator = fieldSource.fieldTarget.mandatory ? WizardHelper.requiredTextValidator :  WizardHelper.maxTextLengthValidator;
     return this.formBuilder.group({
       id: [fieldSource.id],
       indexFieldSources: [indexFieldSources],
@@ -52,7 +53,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
       sourceUnitName: [fieldSource.sourceUnit?.name],
       fieldName: [field.name],
       name: [fieldSource.name],
-      value: [fieldSource.value, [Validators.maxLength(255)]],
+      value: [fieldSource.value, valueValidator],
       mandatory: [fieldSource.fieldTarget.mandatory],
       saved: [true, Validators.requiredTrue],
     });

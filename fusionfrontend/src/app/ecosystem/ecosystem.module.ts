@@ -138,12 +138,13 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     ReactiveFormsModule,
     TableModule,
   ],
-    exports: [
-        EcosystemSubHeaderComponent,
-        EcosystemPageTitleComponent,
-    ],
+  exports: [
+    EcosystemSubHeaderComponent,
+    EcosystemPageTitleComponent,
+  ],
   providers: [
-    DialogService
+    DialogService,
+    NameWithVersionPipe
   ]
 })
 export class EcosystemModule {
