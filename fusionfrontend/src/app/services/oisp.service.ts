@@ -38,6 +38,7 @@ import {
 } from './oisp.model';
 import { KeycloakService } from 'keycloak-angular';
 import { OispDeviceQuery } from '../store/oisp/oisp-device/oisp-device.query';
+import { ComponentType } from '../store/oisp/oisp-device/oisp-device.model';
 
 @Injectable({
   providedIn: 'root'
@@ -263,6 +264,11 @@ export class OispService {
       };
       return this.getOispPoints(path, request, false);
     }
+  }
+
+  getComponentTypesCatalog(): Observable<ComponentType[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
+    return this.http.get<ComponentType[]>(url, this.httpOptions);
   }
 
   private getOispAccountId(): string {
