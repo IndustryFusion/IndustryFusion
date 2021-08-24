@@ -17,6 +17,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MaintenancePageComponent } from './components/pages/maintenance-page/maintenance-page.component';
 import { DashboardPageType } from './dashboard-routing.model';
+import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 
 const routes: Routes = [
   {
@@ -24,6 +25,9 @@ const routes: Routes = [
     component: MaintenancePageComponent,
     data: {
       pageTypes: [DashboardPageType.MAINTENANCE]
+    },
+    resolve: {
+      devices: OispDeviceResolver
     }
   },
 ];

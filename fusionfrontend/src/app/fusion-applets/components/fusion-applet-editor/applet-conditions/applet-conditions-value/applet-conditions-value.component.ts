@@ -18,12 +18,12 @@ import {
   ConditionType,
   ConditionValue, ConditionValueComponent,
   ConditionValueOperator,
-  Device, DeviceComponent,
   displayConditionType
 } from '../../../../../services/oisp.model';
 import { SelectItem } from 'primeng/api';
 import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
 import { FormGroup } from '@angular/forms';
+import { Device, DeviceComponent } from '../../../../../store/oisp/oisp-device/oisp-device.model';
 
 @Component({
   selector: 'app-applet-conditions-value',

@@ -13,17 +13,17 @@
  * under the License.
  */
 
-import { ID } from '@datorama/akita';
-import { OispAlertStatus, OispAlertPriority } from '../oisp-alert/oisp-alert.model';
+import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Device } from '../store/oisp/oisp-device/oisp-device.model';
+import { OispDeviceService } from '../store/oisp/oisp-device/oisp-device.service';
 
-export class OispNotification {
-  id: ID;
-  priority: OispAlertPriority;
-  ruleName: string;
-  assetName: string;
-  condition: string;
-  measuredValue: string;
-  timestamp: Date;
-  status: OispAlertStatus;
-  externalId: ID;
+@Injectable({ providedIn: 'root' })
+export class OispDeviceResolver implements Resolve<Device[]> {
+  constructor(private oispDeviceService: OispDeviceService) { }
+
+  resolve(): Observable<Device[]> {
+    return this.oispDeviceService.getItems();
+  }
 }

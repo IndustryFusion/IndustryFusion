@@ -220,7 +220,7 @@ export class AssetWizardComponent implements OnInit {
       companyId: [companyId, Validators.required],
       assetSeriesId: [assetSeriesIdOrNull, Validators.required],
       roomId: [],
-      externalId: [null, WizardHelper.maxTextLengthValidator],
+      externalName: [null, WizardHelper.maxTextLengthValidator],
       controlSystemType: [null, WizardHelper.maxTextLengthValidator],
       hasGateway: [],
       gatewayConnectivity: [null, WizardHelper.maxTextLengthValidator],

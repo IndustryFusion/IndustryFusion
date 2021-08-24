@@ -20,7 +20,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/store/user/user.model';
 import { ManagerType } from '../../content/manager-type/manager-type.enum';
-import { OispAlertQuery } from '../../../store/oisp-alert/oisp-alert.query';
+import { OispAlertQuery } from '../../../store/oisp/oisp-alert/oisp-alert.query';
 
 @Component({
   selector: 'app-header',

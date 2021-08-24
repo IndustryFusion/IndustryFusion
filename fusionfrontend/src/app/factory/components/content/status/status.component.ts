@@ -23,6 +23,7 @@ import { StatusService } from 'src/app/services/status.service';
 import { FieldDetails } from '../../../../store/field-details/field-details.model';
 import { Status } from '../../../models/status.model';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
 
 @Component({
   selector: 'app-status',
@@ -43,6 +44,7 @@ export class StatusComponent implements OnInit {
 
   constructor(
     private oispService: OispService,
+    private oispDeviceQuery: OispDeviceQuery,
     private statusService: StatusService) {
   }
 
@@ -58,7 +60,8 @@ export class StatusComponent implements OnInit {
         map(latestPoints => {
           return this.asset.fields.map(field => {
             const fieldCopy = Object.assign({ }, field);
-            const point = latestPoints.find(latestPoint => latestPoint.id === field.externalId);
+            const point = latestPoints.find(latestPoint => latestPoint.id ===
+              this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(this.asset.externalName, field.externalName));
 
             if (point) {
               fieldCopy.value = point.value;

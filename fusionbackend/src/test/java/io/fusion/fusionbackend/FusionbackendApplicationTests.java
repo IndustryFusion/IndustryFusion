@@ -823,7 +823,7 @@ class FusionbackendApplicationTests {
     void createAssetInRoomEastInAiristFab() {
         AssetDto asset = AssetDto.builder()
                 .name("Gas Supply Oxygen")
-                .externalId("ubuntu1804")
+                .externalName("ubuntu1804")
                 .description("Central Gas Supply")
                 .controlSystemType("PLC")
                 .gatewayConnectivity("NETWORK")

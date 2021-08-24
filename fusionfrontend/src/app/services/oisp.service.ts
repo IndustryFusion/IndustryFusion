@@ -16,16 +16,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, map, startWith } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { Asset, AssetWithFields } from '../store/asset/asset.model';
+import { Asset } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
   Aggregator,
-  ComponentType,
   ConditionType,
-  Device,
-  DeviceComponent,
   Metrics,
   MetricsWithAggregation,
   OispRequest,
@@ -39,9 +36,9 @@ import {
   Sampling,
   Series
 } from './oisp.model';
-import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { KeycloakService } from 'keycloak-angular';
-import { ID } from '@datorama/akita';
+import { OispDeviceQuery } from '../store/oisp/oisp-device/oisp-device.query';
+import { ComponentType } from '../store/oisp/oisp-device/oisp-device.model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,89 +51,8 @@ export class OispService {
 
   constructor(
     private http: HttpClient,
+    private oispDeviceQuery: OispDeviceQuery,
     private keycloakService: KeycloakService) {
-  }
-
-  getAssetFieldsWithReplacedExternalIds(asset: AssetWithFields): Observable<AssetWithFields> {
-    return this.replaceExternalIdsOfFieldsWithUid(asset);
-  }
-
-  getAssetDetailsFieldsWithReplacedExternalIds(assetDetails: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
-    return this.replaceExternalIdsOfFieldsWithUid(assetDetails) as Observable<FactoryAssetDetailsWithFields>;
-  }
-
-  // TODO: refactor, see IF-371
-  private replaceExternalIdsOfFieldsWithUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields):
-    Observable<FactoryAssetDetailsWithFields | AssetWithFields> {
-    if (!assetOrAssetDetails) {
-      return EMPTY;
-    }
-
-    return this.getDevice(assetOrAssetDetails.externalId).pipe(
-      catchError(() => {
-        console.error('[oisp service] caught error while searching for external Ids');
-        return of(assetOrAssetDetails);
-      }),
-      startWith(assetOrAssetDetails),
-      map((assetOrDevice: AssetWithFields | FactoryAssetDetailsWithFields | Device) => {
-        return this.tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails, assetOrDevice);
-      })
-    );
-  }
-
-  private tryReplaceExternalIdsOfAssetAndFieldDetails(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields,
-                                                      assetOrDevice: any) {
-    const newFields = assetOrAssetDetails.fields.map(field =>
-      this.tryReplaceExternalIdOfFieldDetailsWithComponentUid(field, assetOrDevice));
-    const newAsset = this.tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails, assetOrDevice);
-    return Object.assign(newAsset, { fields: newFields });
-  }
-
-  private tryReplaceExternalIdOfFieldDetailsWithComponentUid(fieldDetails: FieldDetails,
-                                                             oispDevice: Device): FieldDetails {
-    if (oispDevice.components) {
-      const fieldDetailsCopy = Object.assign({ }, fieldDetails);
-      oispDevice.components.map((component: DeviceComponent) => {
-        if (component.name === fieldDetails.externalId) {
-          fieldDetailsCopy.externalId = component.cid;
-        }
-      });
-      return fieldDetailsCopy;
-    } else {
-      return fieldDetails;
-    }
-  }
-
-  private tryReplaceExternalIdOfAssetWithDeviceUid(assetOrAssetDetails: AssetWithFields | FactoryAssetDetailsWithFields,
-                                                   oispDevice: Device): any {
-    if (oispDevice) {
-      const assetCopy = Object.assign({ }, assetOrAssetDetails);
-      if (oispDevice.deviceId === assetCopy.externalId) {
-        assetCopy.externalId = oispDevice.uid;
-      }
-      return assetCopy;
-    } else {
-      return assetOrAssetDetails;
-    }
-  }
-
-  getDevice(deviceId: ID): Observable<Device> {
-    if (!deviceId) {
-      return EMPTY;
-    }
-
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceId}`;
-    return this.http.get<Device>(deviceRequest, this.httpOptions).pipe(
-      catchError(() => {
-        console.error('[oisp service] caught error while searching for device ', deviceId);
-        return EMPTY;
-      }),
-    );
-  }
-
-  getAllDevices(): Observable<Device[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
-    return this.http.get<Device[]>(url, this.httpOptions);
   }
 
   getAllRules(): Observable<Rule[]> {
@@ -148,13 +64,6 @@ export class OispService {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
     return this.http.get<Rule>(url, this.httpOptions);
   }
-
-  getComponentTypesCatalog(): Observable<ComponentType[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
-    return this.http.get<ComponentType[]>(url, this.httpOptions);
-  }
-
-
 
   getUser(): Observable<OISPUser[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
@@ -232,7 +141,7 @@ export class OispService {
     return answer;
   }
 
-  getOispPoints(path: string, request: OispRequest, allFields: boolean): Observable<PointWithId[]> {
+  getOispPoints(path: string, request: OispRequest, allFields: boolean, useNameAsId = false): Observable<PointWithId[]> {
     if (request.metrics.length < 1) {
       return of(this.defaultPoints);
     }
@@ -246,11 +155,14 @@ export class OispService {
           if (entity.series && this.hasAnyPoints(entity.series)) {
             if (allFields) {
               // returns the last value for each field
-              const points = entity.series.map((series) => ({ id: series.componentId, ...series.points.slice(-1)[0] }));
+              const points = entity.series.map((series) => ({
+                id: useNameAsId ? series.componentName : series.componentId,
+                ...series.points.slice(-1)[0]
+              }));
               return points;
             } else if (!allFields) {
               // returns all values for one field
-              const seriesId = entity.series[0].componentId;
+              const seriesId = useNameAsId ? entity.series[0].componentName : entity.series[0].componentId;
               const points = entity.series[0].points
                 .map((point) => ({ id: seriesId, ts: point.ts, value: point.value }));
               return points;
@@ -261,18 +173,21 @@ export class OispService {
         }));
   }
 
-  getLastValueOfAllFields(asset: Asset, fields: FieldDetails[], secondsInPast: number): Observable<PointWithId[]> {
+  // tslint:disable:max-line-length
+  getLastValueOfAllFields(asset: Asset, fields: FieldDetails[], secondsInPast: number, useFieldNameAsId = false): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
     const request: OispRequest = {
       from: -secondsInPast,
-      targetFilter: { deviceList: [asset.externalId] },
+      targetFilter: { deviceList: [asset.externalName] },
       metrics: fields
         .filter(field => field.fieldType === FieldType.METRIC)
-        .map(field => ({ id: field.externalId, op: 'none' }))
+        .map(field => ({
+          id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
+          op: 'none'
+        }))
     };
 
-    const oispPoints$ = this.getOispPoints(path, request, true);
-    return oispPoints$;
+    return this.getOispPoints(path, request, true, useFieldNameAsId);
   }
 
   getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: string): Observable<PointWithId[]> {
@@ -280,21 +195,28 @@ export class OispService {
     let oispPoints$: Observable<PointWithId[]>;
     if (!maxPoints) {
       let metrics: Metrics;
-      metrics = ({ id: field.externalId, op: 'none' });
+      metrics = ({
+        id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
+        op: 'none'
+      });
       const request: OispRequest = {
         from: -secondsInPast,
-        targetFilter: { deviceList: [asset.externalId] },
+        targetFilter: { deviceList: [asset.externalName] },
         metrics: [metrics]
       };
       oispPoints$ = this.getOispPoints(path, request, false);
     } else {
       let metricsWithAggregation: MetricsWithAggregation;
       const myAggregator: Aggregator = ({ name: 'avg' });
-      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
+      metricsWithAggregation = ({
+        id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
+          field.externalName),
+        op: 'none', aggregator: myAggregator
+      });
       const request: OispRequestWithAggregation = {
         from: -secondsInPast,
         maxItems: Number(maxPoints),
-        targetFilter: { deviceList: [asset.externalId] },
+        targetFilter: { deviceList: [asset.externalName] },
         metrics: [metricsWithAggregation]
       };
       oispPoints$ = this.getOispPoints(path, request, false);
@@ -314,26 +236,39 @@ export class OispService {
     if (samplingUnit) {
       const mySampling: Sampling = ({ unit: samplingUnit, value: samplingValue });
       const myAggregator: Aggregator = ({ name: 'avg', sampling: mySampling });
-      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
+      metricsWithAggregation = ({
+        id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
+          field.externalName),
+        op: 'none', aggregator: myAggregator
+      });
       const request: OispRequestWithAggregation = {
         from: fromDate,
         to: toDate,
-        targetFilter: { deviceList: [asset.externalId] },
+        targetFilter: { deviceList: [asset.externalName] },
         metrics: [metricsWithAggregation]
       };
       return this.getOispPoints(path, request, false);
     } else {
       const myAggregator: Aggregator = ({ name: 'avg' });
-      metricsWithAggregation = ({ id: field.externalId, op: 'none', aggregator: myAggregator });
+      metricsWithAggregation = ({
+        id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
+          field.externalName),
+        op: 'none', aggregator: myAggregator
+      });
       const request: OispRequestWithAggregation = {
         from: fromDate,
         to: toDate,
         maxItems: Number(maxPoints),
-        targetFilter: { deviceList: [asset.externalId] },
+        targetFilter: { deviceList: [asset.externalName] },
         metrics: [metricsWithAggregation]
       };
       return this.getOispPoints(path, request, false);
     }
+  }
+
+  getComponentTypesCatalog(): Observable<ComponentType[]> {
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
+    return this.http.get<ComponentType[]>(url, this.httpOptions);
   }
 
   private getOispAccountId(): string {

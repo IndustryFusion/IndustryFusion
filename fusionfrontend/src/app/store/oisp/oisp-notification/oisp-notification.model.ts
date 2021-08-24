@@ -13,23 +13,16 @@
  * under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
-import { OispAlert } from './oisp-alert.model';
-import { CachedStore } from '../cachedstore';
+import { ID } from '@datorama/akita';
+import { OispAlertStatus, OispAlertPriority } from '../oisp-alert/oisp-alert.model';
 
-export interface OispAlertState extends EntityState<OispAlert, ID>, ActiveState { }
-
-const initialState = {
-  active: null
-};
-
-@Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'oisp-alerts', resettable: true })
-export class OispAlertStore extends CachedStore<OispAlertState, OispAlert> {
-
-  constructor() {
-    super(initialState);
-  }
-
+export class OispNotification {
+  id: ID;
+  priority: OispAlertPriority;
+  ruleName: string;
+  assetName: string;
+  condition: string;
+  measuredValue: string;
+  timestamp: Date;
+  status: OispAlertStatus;
 }

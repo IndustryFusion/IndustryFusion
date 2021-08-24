@@ -60,7 +60,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
-                .externalId(entity.getExternalId())
+                .externalName(entity.getExternalName())
                 .controlSystemType(entity.getControlSystemType())
                 .hasGateway(entity.getHasGateway())
                 .gatewayConnectivity(entity.getGatewayConnectivity())
@@ -114,7 +114,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         }
         Asset entity = Asset.builder()
                 .id(dto.getId())
-                .externalId(dto.getExternalId())
+                .externalName(dto.getExternalName())
                 .controlSystemType(dto.getControlSystemType())
                 .hasGateway(dto.getHasGateway())
                 .gatewayConnectivity(dto.getGatewayConnectivity())

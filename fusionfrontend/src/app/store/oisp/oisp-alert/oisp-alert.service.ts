@@ -18,7 +18,7 @@ import { OispAlert } from './oisp-alert.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { OispAlertStore } from './oisp-alert.store';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { KeycloakService } from 'keycloak-angular';
@@ -40,7 +40,6 @@ export class OispAlertService {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts`;
     return this.http.get<OispAlert[]>(url, this.httpOptions)
       .pipe(map(alerts => {
-        alerts.forEach(alert => alert.id = alert.alertId);
         this.oispAlertStore.upsertMany(alerts);
         return alerts;
     }));
@@ -50,7 +49,6 @@ export class OispAlertService {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts/${alertId}`;
     return this.http.get<OispAlert>(url, this.httpOptions)
       .pipe(map(alert => {
-        alert.id = alert.alertId;
         this.oispAlertStore.upsert(alertId, alert);
         return alert;
       }));

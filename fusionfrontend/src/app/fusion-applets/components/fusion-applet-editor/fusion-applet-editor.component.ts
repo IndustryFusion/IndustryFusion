@@ -16,10 +16,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OispService } from '../../../services/oisp.service';
-import { Device, Rule, RuleResetType, RuleStatus, RuleType, } from '../../../services/oisp.model';
+import { Rule, RuleResetType, RuleStatus, RuleType, } from '../../../services/oisp.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
+import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
+import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
 
 @Component({
   selector: 'app-fusion-applet-editor',
@@ -39,6 +41,7 @@ export class FusionAppletEditorComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private oispService: OispService,
+    private oispDeviceQuery: OispDeviceQuery,
     public ruleStatusUtil: RuleStatusUtil,
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService
@@ -55,7 +58,7 @@ export class FusionAppletEditorComponent implements OnInit {
   private createRuleGroup() {
     this.ruleGroup = this.formBuilder.group({
       id: [],
-      externalId: [],
+      externalName: [],
       name: [],
       description: [],
       owner: [],
@@ -131,7 +134,7 @@ export class FusionAppletEditorComponent implements OnInit {
   }
 
   private loadDevices() {
-    this.oispService.getAllDevices()
+    this.oispDeviceQuery.selectAll()
       .subscribe(devices => {
         this.devices = devices;
       });

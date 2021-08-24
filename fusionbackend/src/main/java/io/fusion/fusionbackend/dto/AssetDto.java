@@ -48,7 +48,7 @@ public class AssetDto extends BaseAssetDto {
     @Builder.Default
     private Set<Long> subsystemIds = new HashSet<>();
 
-    private String externalId;
+    private String externalName;
     private String controlSystemType;
     private Boolean hasGateway;
     private String gatewayConnectivity;
