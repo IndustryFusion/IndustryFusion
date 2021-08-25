@@ -26,8 +26,7 @@ import {
   Metrics,
   MetricsWithAggregation,
   OispRequest,
-  OispRequestWithAggregation,
-  OispResponse,
+  OispRequestWithAggregation, OispResponse,
   OISPUser,
   PointWithId,
   Rule,
@@ -141,7 +140,8 @@ export class OispService {
     return answer;
   }
 
-  getOispPoints(path: string, request: OispRequest, allFields: boolean, useNameAsId = false): Observable<PointWithId[]> {
+  getOispPoints(path: string, request: OispRequest, allFields: boolean, useNameAsId = false):
+    Observable<PointWithId[]> {
     if (request.metrics.length < 1) {
       return of(this.defaultPoints);
     }
