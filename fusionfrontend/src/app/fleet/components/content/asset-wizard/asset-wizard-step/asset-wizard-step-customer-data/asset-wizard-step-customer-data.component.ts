@@ -64,7 +64,7 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
       name: [null, WizardHelper.maxTextLengthValidator],
       line1: ['', WizardHelper.maxTextLengthValidator],
       line2: ['', WizardHelper.maxTextLengthValidator],
-      zip: [null, [WizardHelper.maxTextLengthValidator]],
+      zip: [null, WizardHelper.maxTextLengthValidator],
       city: [null, WizardHelper.maxTextLengthValidator],
       countryId: [countryIdGermany, Validators.required],
       type: [null, Validators.required],
