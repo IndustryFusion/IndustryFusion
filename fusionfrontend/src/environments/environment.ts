@@ -24,6 +24,7 @@ export const environment = {
   production: false,
   apiUrlPrefix: 'api',
   oispApiUrlPrefix: 'https://PUT-YOUR-OISP-URL-HERE.com/v1/api',
+  kairosApiUrlPrefix: 'https://PUT-YOUR-KAIROS-URL-HERE.com/api/v1',
   // tslint:disable-next-line: max-line-length
   oispAuthToken: 'Not required anymore',
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
