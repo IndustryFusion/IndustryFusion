@@ -13,8 +13,11 @@
  * under the License.
  */
 
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { FactoryAssetDetailsWithFields, DashboardFilterModalType } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  DashboardFilterModalType,
+  FactoryAssetDetailsWithFields
+} from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -50,7 +53,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   @Input()
   assetTypes: AssetType[];
 
-  dateFilter: Date;
+  date: Date = new Date(Date.now());
 
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   faFilter = faFilter;

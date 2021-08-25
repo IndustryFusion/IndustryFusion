@@ -19,7 +19,7 @@ under the License.
           <div class="title">Equipment Efficiency Dashboard</div>
           <div>
             <label class="if-label">Pick Date</label>
-            <p-calendar class="calendar-only-button" [ngModel]="dateFilter" showIcon="true" showButtonBar="true"
+            <p-calendar class="calendar-only-button" [(ngModel)]="date" showIcon="true" showButtonBar="true"
                         dateFormat="dd.mm.yy"></p-calendar>
           </div>
       </div>
@@ -78,7 +78,10 @@ under the License.
                 </td>
                 <td [style.width.%]="10">{{asset.factorySiteName}}</td>
                 <td [style.width.%]="25">
-                    <app-equipment-efficiency-bar-chart [asset]=asset></app-equipment-efficiency-bar-chart>
+                    <app-equipment-efficiency-bar-chart *ngIf="getStatusFieldOfAsset(asset) != null" [asset]=asset
+                                                        [date]="date">
+
+                    </app-equipment-efficiency-bar-chart>
                 </td>
                 <td [style.width.%]="5"></td>
             </tr>

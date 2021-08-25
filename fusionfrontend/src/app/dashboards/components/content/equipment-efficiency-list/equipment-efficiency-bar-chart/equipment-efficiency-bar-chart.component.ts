@@ -28,6 +28,9 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit {
   @Input()
   asset: FactoryAssetDetailsWithFields;
 
+  @Input()
+  date: Date;
+
   noMaintenanceValue: boolean;
 
   stackedOptions: any;
