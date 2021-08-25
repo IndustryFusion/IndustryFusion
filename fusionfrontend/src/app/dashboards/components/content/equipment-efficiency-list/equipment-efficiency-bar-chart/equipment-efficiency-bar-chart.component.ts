@@ -59,7 +59,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
 
   constructor(private kairosService: KairosService) { }
 
-  static getDatasetIndexFromStatus(status: OispDeviceStatus) {
+  public static getDatasetIndexFromStatus(status: OispDeviceStatus) {
     switch (status) {
       case OispDeviceStatus.OFFLINE:
         return 0;
@@ -69,6 +69,18 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
         return 3;
       case OispDeviceStatus.ERROR:
         return 2;
+    }
+  }
+
+  public static getHoursStringOfPercentage(percentage: number) {
+    if (/*!this.isDateToday()*/ 1 === 1) {
+      // TODO (tse): finish
+      const hours = percentage / 100 * 24;
+      const onlyHours = Math.floor(hours);
+      const minutes = Math.round(hours - onlyHours) * 60;
+      return `${onlyHours}:${minutes} h`;
+    } else {
+      // TODO (tse): other calculation for today
     }
   }
 
@@ -84,10 +96,11 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
     /*    mode: 'label',
         intersect: true,*/
         callbacks: {
+          // TODO (tse): Update and convert percentage to Hours
           title(tooltipItem, data) {
             const value = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index];
             const label = data.datasets[tooltipItem[0].datasetIndex].label;
-            return value + ':02 h (' + label + ')';
+            return EquipmentEfficiencyBarChartComponent.getHoursStringOfPercentage(value) + ' (' + label + ')';
           },
           label(_, _2) {
             return '';
