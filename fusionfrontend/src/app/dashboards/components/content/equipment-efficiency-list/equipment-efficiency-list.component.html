@@ -79,7 +79,7 @@ under the License.
                 <td [style.width.%]="10">{{asset.factorySiteName}}</td>
                 <td [style.width.%]="25">
                     <app-equipment-efficiency-bar-chart *ngIf="getStatusFieldOfAsset(asset) != null" [asset]=asset
-                                                        [date]="date">
+                                                        [date]="date" [field]="getStatusFieldOfAsset(asset)">
 
                     </app-equipment-efficiency-bar-chart>
                 </td>

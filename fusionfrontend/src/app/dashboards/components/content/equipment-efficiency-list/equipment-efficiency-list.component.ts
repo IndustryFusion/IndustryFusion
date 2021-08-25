@@ -29,6 +29,7 @@ interface ActiveFilter {
   filterAttribute: SelectItem;
 }
 
+// TODO (tse): remove
 const CRITICAL_MAINTENANCE_VALUE = 375;
 const MEDIUMTERM_MAINTENANCE_VALUE = 750;
 const SHORTTERM_PRIORITY = 'Critical (red)';
@@ -262,5 +263,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > lowerValue;
       }
     });
+  }
+
+  getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields) {
+    return asset.fields.find(field => field.name === 'Asset status');
   }
 }

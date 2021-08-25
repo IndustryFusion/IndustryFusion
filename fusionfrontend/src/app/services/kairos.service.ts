@@ -94,14 +94,17 @@ export class KairosService {
 
     const path = `datapoints/query`;
     let metricsWithAggregationAndGrouping: MetricsWithAggregationAndGrouping;
-    console.log('deleteMe', asset);
 
     const mySampling: Sampling = ({ unit: 'days', value: 1 });
     const myAggregator: Aggregator = ({ name: 'count', sampling: mySampling });
     const myGrouping: KairosGroupBy = ({ name: 'value', range_size: 1 });
-    const domainIdOfDevice = this.oispDeviceQuery.getDeviceOfAsset(asset.externalName).domainId;
+    const domainIdOfDevice = this.oispDeviceQuery.getDeviceOfAsset(asset.externalName)?.domainId;
     const externalIdOfFieldInstance = this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
       fieldDetails.externalName);
+
+    if (domainIdOfDevice == null) {
+      return of(this.emptyResponse);
+    }
 
     if (limit) {
       metricsWithAggregationAndGrouping = ({ name: domainIdOfDevice + '.' + externalIdOfFieldInstance, limit,
@@ -113,7 +116,6 @@ export class KairosService {
     const request: KairosRequest = {
       start_absolute: fromDate,
       end_absolute: toDate,
-      // maxItems: Number(maxPointsPerDay),
       metrics: [metricsWithAggregationAndGrouping]
     };
     return this.makeKairosRequest(path, request);
