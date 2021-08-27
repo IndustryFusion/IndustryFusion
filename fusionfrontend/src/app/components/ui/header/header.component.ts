@@ -97,6 +97,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match(`\/${'notifications'}\/`);
   }
 
+  isAssetDetails() {
+    return this.route && this.route.match(`\/assets\/[0-9]*\/details`);
+  }
+
   ngOnDestroy(): void {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();

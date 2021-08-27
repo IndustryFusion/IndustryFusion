@@ -15,10 +15,12 @@ under the License.
 
 <div class="wrapper if-subheader">
   <ul>
-    <li routerLinkActive="active" routerLink="/ecosystemmanager/assettypes">Asset Types</li>
-    <li routerLinkActive="active" routerLink="/ecosystemmanager/assettypetemplate">Asset Type Templates</li>
-    <li routerLinkActive="active" routerLink="/ecosystemmanager/fields">Metrics & Attributes</li>
-    <li routerLinkActive="active" routerLink="/ecosystemmanager/quantitytypes">Quantity Types</li>
-    <li routerLinkActive="active" routerLink="/ecosystemmanager/units">Units</li>
+    <li (click)="onRouteClick('performance')" [ngClass]="{'active': isRouteActive('performance')}">Performance</li>
+    <li [ngClass]="{'active': isRouteActive('notifications')}">Notifications</li>
+    <li [ngClass]="{'active': isRouteActive('applets')}">Applets</li>
+    <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}"
+        routerLink="../digital-nameplate">Digital Nameplate
+    </li>
+    <li [ngClass]="{'active': isRouteActive('subsystems')}">Subsystems</li>
   </ul>
 </div>

@@ -105,7 +105,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
     const roomId = this.asset.roomId;
     const assetId = this.asset.id;
     this.router.navigateByUrl(
-      `factorymanager/companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/${assetId}/asset-details`
+      `factorymanager/companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/${assetId}/details/digital-nameplate`
     );
   }
 
