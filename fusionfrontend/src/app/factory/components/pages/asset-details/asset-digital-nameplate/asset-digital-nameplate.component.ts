@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FactoryResolver } from '../../../../services/factory-resolver.service';
 
 @Component({
   selector: 'app-asset-digital-nameplate',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssetDigitalNameplateComponent implements OnInit {
 
-  constructor() { }
+  constructor(public activatedRoute: ActivatedRoute,
+              private factoryResolver: FactoryResolver) {
+  }
 
   ngOnInit(): void {
+    this.factoryResolver.resolve(this.activatedRoute);
   }
 
 }

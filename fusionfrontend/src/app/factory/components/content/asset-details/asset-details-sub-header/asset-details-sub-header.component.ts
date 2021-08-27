@@ -15,6 +15,11 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { FactoryResolver } from '../../../../services/factory-resolver.service';
+import { AssetQuery } from '../../../../../store/asset/asset.query';
+import { ID } from '@datorama/akita';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 
 @Component({
   selector: 'app-asset-details-sub-header',
@@ -24,11 +29,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AssetDetailsSubHeaderComponent implements OnInit {
 
   route: string;
+  assetId: ID;
+  asset$: Observable<FactoryAssetDetailsWithFields>;
 
-  constructor(public activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(public activatedRoute: ActivatedRoute,
+              private router: Router,
+              private factoryResolver: FactoryResolver,
+              private assetQuery: AssetQuery) {
   }
 
   ngOnInit() {
+    this.assetQuery.selectLoading();
+    this.assetId = this.assetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
   }
 
   onRouteClick(subroute: string): Promise<boolean> {

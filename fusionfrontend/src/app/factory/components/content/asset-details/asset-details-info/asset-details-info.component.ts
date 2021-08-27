@@ -14,18 +14,19 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Asset } from 'src/app/store/asset/asset.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 
 @Component({
-  selector: 'app-asset-details-header',
-  templateUrl: './asset-details-header.component.html',
-  styleUrls: ['./asset-details-header.component.scss']
+  selector: 'app-asset-details-info',
+  templateUrl: './asset-details-info.component.html',
+  styleUrls: ['./asset-details-info.component.scss']
 })
-export class AssetDetailsHeaderComponent implements OnInit {
+export class AssetDetailsInfoComponent implements OnInit {
   @Input()
-  asset: Asset;
+  asset: FactoryAssetDetailsWithFields;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
 

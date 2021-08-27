@@ -14,11 +14,10 @@
  */
 
 import { Location } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { ManagerType } from 'src/app/components/content/manager-type/manager-type.enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -28,12 +27,12 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./factory-sub-header.component.scss']
 })
 export class FactorySubHeaderComponent implements OnInit, OnDestroy {
-  private unSubscribe$ = new Subject<void>();
-
   route: string;
   companyId: ID;
+  private unSubscribe$ = new Subject<void>();
 
-  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) { }
+  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
+  }
 
   ngOnInit() {
     this.checkUrl();
@@ -41,8 +40,8 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.unSubscribe$)
       ).subscribe(() => {
-        this.checkUrl();
-      });
+      this.checkUrl();
+    });
     this.companyId = this.companyQuery.getActiveId();
   }
 
@@ -95,12 +94,8 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   onAssetsClick() {
     const companyId = this.route.split('/')[3];
     if (companyId) {
-      return this.router.navigate(['/factorymanager/companies', companyId , 'assets']);
+      return this.router.navigate(['/factorymanager/companies', companyId, 'assets']);
     }
-  }
-
-  isManager(manager: ManagerType) {
-    return this.route && this.route.match(`\/${manager}\/`);
   }
 
   ngOnDestroy(): void {

@@ -26,7 +26,6 @@ import { FactoryAssetDetailsQuery } from './factory-asset-details.query';
 import { FactoryComposedQuery } from '../composed/factory-composed.query';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -82,4 +81,7 @@ export class FactoryAssetDetailsService {
     ).subscribe();
   }
 
+  public setActive(id: ID) {
+    this.factoryAssetDetailsStore.setActive(id);
+  }
 }

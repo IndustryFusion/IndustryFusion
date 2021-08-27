@@ -28,7 +28,7 @@ import { CompanyInfoComponent } from './components/content/company-info/company-
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
 import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
-import { AssetDetailsHeaderComponent } from './components/content/asset-details/asset-details-header/asset-details-header.component';
+import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
@@ -80,7 +80,7 @@ import { AssetDigitalNameplateComponent } from './components/pages/asset-details
     ArraysortextendedPipe,
     ArrayFilterPipe,
     AssetCardComponent,
-    AssetDetailsHeaderComponent,
+    AssetDetailsInfoComponent,
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
     MaintenanceBarComponent,
