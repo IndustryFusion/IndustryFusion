@@ -18,8 +18,8 @@
 @import 'base/typography';
 
 header {
-  height: 160px;
   display: block;
+  height: auto !important;
 
   section {
     border-bottom: 1px solid $light-grey;
@@ -30,7 +30,6 @@ header {
 .main-header {
   @include flex-center-space;
   background: white;
-  height: 104px;
   width: 100%;
 
   .navigation {
@@ -221,7 +220,6 @@ header {
 }
 
 .sub-header {
-  height: 56px;
   background-color: $basic-white;
 
   ul {

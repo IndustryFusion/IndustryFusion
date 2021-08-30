@@ -19,15 +19,9 @@ under the License.
       <li (click)="onBackClick()">
         <div class="icon back"></div>
       </li>
-      <li class="bigger" (click)="onHomeClick()">
+      <li (click)="onHomeClick()" class="bigger">
         <div class="icon home bigger"></div>
       </li>
-      <!--<li> TODO: will be added later
-        <div class="icon grid"></div>
-      </li>
-      <li class="">
-        <div class="icon line-chart"></div>
-      </li>-->
     </ul>
     <div class="page-header">
       <app-ecosystem-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);"
@@ -54,7 +48,8 @@ under the License.
         <i class="notifications"></i>
         <ng-container *ngIf="openAlertCount > 0">
           <i class="notifications-indicator">
-            <label class="notifications-count" [ngClass]="openAlertCount > 9 ? 'two-digits' : 'one-digit'">{{ openAlertCount }}</label>
+            <label [ngClass]="openAlertCount > 9 ? 'two-digits' : 'one-digit'"
+                   class="notifications-count">{{ openAlertCount }}</label>
           </i>
         </ng-container>
       </li>
@@ -67,13 +62,13 @@ under the License.
   </section>
   <section class="sub-header">
     <app-ecosystem-sub-header *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER)"></app-ecosystem-sub-header>
-    <app-factory-sub-header *ngIf="isManager(ManagerType.FACTORY_MANAGER) && !isAssetDetails()"></app-factory-sub-header>
+    <app-factory-sub-header
+      *ngIf="isManager(ManagerType.FACTORY_MANAGER) && !isAssetDetails()"></app-factory-sub-header>
     <app-fleet-sub-header *ngIf="isManager(ManagerType.FLEET_MANAGER)"></app-fleet-sub-header>
     <app-dashboard-sub-header *ngIf=" isDashboards()"></app-dashboard-sub-header>
     <app-fusion-applet-sub-header *ngIf="isFusionApplet()"></app-fusion-applet-sub-header>
     <app-notifications-sub-header *ngIf="isNotifications()"></app-notifications-sub-header>
     <app-asset-details-sub-header *ngIf="isAssetDetails()"></app-asset-details-sub-header>
-    <p-toast position="top-center" class="error-toast"></p-toast>
+    <p-toast class="error-toast" position="top-center"></p-toast>
   </section>
-
 </header>
