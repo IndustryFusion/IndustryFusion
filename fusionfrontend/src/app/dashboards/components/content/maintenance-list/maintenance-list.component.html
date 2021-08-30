@@ -14,9 +14,9 @@
 
   <p-treeTable [value]="treeData"
                [paginator]="true"
+               [alwaysShowPaginator]="true"
                [pageLinks]="5"
                [rowsPerPageOptions]="[5,10,50]"
-               [showCurrentPageReport]="true"
                [rows]="10" class="list-container">
     <ng-template pTemplate="header">
       <tr>
@@ -63,7 +63,8 @@
             >
             </app-maintenance-progressbar>
             <span class="progressbar-icon" *ngIf="isChildrenMaintenanceNeededSoon(rowNode.node)">
-              <fa-icon [icon]="faChevronCircleDown" (click)="openNode(rowNode.node)" class="fa-fw"></fa-icon>
+              <fa-icon *ngIf="rowNode.node.expanded" [icon]="faChevronCircleDown" (click)="openNode(rowNode.node)" class="fa-fw"></fa-icon>
+              <fa-icon *ngIf="!rowNode.node.expanded" [icon]="faChevronCircleUp" (click)="openNode(rowNode.node)" class="fa-fw"></fa-icon>
             </span>
           </span>
         </td>

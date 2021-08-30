@@ -18,12 +18,13 @@ import {
   DashboardFilterModalType,
   FactoryAssetDetailsWithFields
 } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { faFilter, faSearch, faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faSearch, faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 import { SelectItem, TreeNode } from 'primeng/api';
 import { OispAlert, OispAlertPriority } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
+import { ID } from '@datorama/akita';
 
 interface ActiveFilter {
   filterAttribute: SelectItem;
@@ -69,6 +70,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   faFilter = faFilter;
   faSearch = faSearch;
   faChevronCircleDown = faChevronCircleDown;
+  faChevronCircleUp = faChevronCircleUp;
   OispPriority = OispAlertPriority;
 
   selectedValueMapping:
@@ -182,21 +184,34 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   private updateTree() {
     if (this.displayedFactoryAssets) {
+      const expandetNodeIDs = this.getExpandetNodeIDs(this.treeData);
       const map = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
       const reduce = map.reduce((acc, val) => acc.concat(val), []);
       const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       this.displayedFactoryAssets
         .filter(asset => !reduce.includes(asset.id))
         .forEach((value: FactoryAssetDetailsWithFields) => {
-        treeData.push(this.addNode(null, value));
+        treeData.push(this.addNode(null, value, expandetNodeIDs));
       });
       this.treeData = treeData;
     }
   }
 
+  private getExpandetNodeIDs(treeData: TreeNode[]): ID[] {
+    const expanded: ID[] = [];
+    for (const node of treeData) {
+      if (node.expanded) {
+        expanded.push(node.data.id);
+        expanded.push(...this.getExpandetNodeIDs(node.children));
+      }
+    }
+    return expanded;
+  }
+
   private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
-                  value: FactoryAssetDetailsWithFields): TreeNode<FactoryAssetDetailsWithFields> {
+                  value: FactoryAssetDetailsWithFields, expandetNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
     const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
+      expanded: expandetNodeIDs.includes(value.id),
       data: value,
       parent,
     };
@@ -205,7 +220,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       value.subsystemIds.forEach(id => {
         const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
         if (subsytem) {
-          children.push(this.addNode(treeNode, subsytem));
+          children.push(this.addNode(treeNode, subsytem, expandetNodeIDs));
         }
       });
       treeNode.children = children;
@@ -367,7 +382,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   openNode(node: TreeNode) {
-    node.expanded = true;
+    node.expanded = !node.expanded;
     this.treeData = [...this.treeData];
   }
 }
