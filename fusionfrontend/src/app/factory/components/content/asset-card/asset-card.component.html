@@ -28,7 +28,7 @@ under the License.
     </div>
     <div class="card-block">
         <div class="card-title">
-          <app-status [asset]="asset" [showStatusCircle]="showStatusCircle"></app-status>
+          <app-status [asset]="asset" [showInline]="showStatusCircle"></app-status>
         </div>
       <div class="table-wrapper">
         <table class="table table-noborder">
@@ -53,47 +53,4 @@ under the License.
         </table>
       </div>
     </div>
-  <!--TODO: progress bar should be integrated later -->
-<!--    <div class="card-footer clr-row" *ngIf="progress$ | async as progress; else ShowValueZero">
-      <div *ngIf="progress > -1; else ShowNoInfo">
-        <div class="clr-col-8">
-            Time left
-        </div>
-        <div class="clr-col" >
-            {{progress}} / {{maxProgress}}
-        </div>
-        <div class="progress" *ngIf=" progressColor$ | async as progressColor">
-            <span class="progress-value completed" [ngStyle]="{
-            'width.%': calculateMin(progress),
-            'background-color': progressColor }">
-              {{progress}}
-            </span>
-        </div>
-      </div>
-      <ng-template #ShowNoInfo>
-        <div class="progress">
-          <span style="color: white; margin-left: 10px">
-            no progress info available for this asset
-          </span>
-        </div>
-      </ng-template>
-    </div>
-&lt;!&ndash;  if the hours till maintenance value is 0, we want to show the progress bar nevertheless &ndash;&gt;
-    <ng-template #ShowValueZero>
-      <div class="card-footer clr-row" >
-          <div class="clr-col-8">
-              Time left
-          </div>
-          <div class="clr-col" >
-              0 / {{maxProgress}}
-          </div>
-          <div class="progress">
-              <span class="progress-value completed" [ngStyle]="{
-              'width.%': 100 / maxProgress * 100,
-              'background-color': '$saturated-red' }">
-                0
-              </span>
-          </div>
-      </div>
-    </ng-template> -->
 </div>

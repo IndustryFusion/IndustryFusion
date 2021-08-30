@@ -42,7 +42,6 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   @Output()
   deleteAssetEvent = new EventEmitter<FactoryAssetDetailsWithFields>();
 
-  showStatusCircle = false;
   roomsOfFactorySite: Room[];
   assetDetailsForm: FormGroup;
   ref: DynamicDialogRef;

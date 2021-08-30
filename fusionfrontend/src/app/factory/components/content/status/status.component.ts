@@ -36,7 +36,7 @@ export class StatusComponent implements OnInit {
   asset: FactoryAssetDetailsWithFields;
 
   @Input()
-  showStatusCircle;
+  showInline: boolean;
 
   status$: Observable<Status>;
   latestPoints$: Observable<PointWithId[]>;
