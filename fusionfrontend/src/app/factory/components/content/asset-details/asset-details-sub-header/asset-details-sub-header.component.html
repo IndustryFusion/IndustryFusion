@@ -15,14 +15,18 @@ under the License.
 
 <app-asset-details-info [asset]="(asset$ | async)"></app-asset-details-info>
 
-<div class="wrapper if-subheader">
-  <ul>
-    <li (click)="onRouteClick('performance')" [ngClass]="{'active': isRouteActive('performance')}">Performance</li>
-    <li [ngClass]="{'active': isRouteActive('notifications')}">Notifications</li>
-    <li [ngClass]="{'active': isRouteActive('applets')}">Applets</li>
-    <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}"
-        routerLink="../digital-nameplate">Digital Nameplate
-    </li>
-    <li [ngClass]="{'active': isRouteActive('subsystems')}">Subsystems</li>
-  </ul>
+<div class="subheader-flex">
+  <div class="flexbox"></div>
+  <div class="wrapper if-subheader asset-details-subheader">
+    <ul>
+      <li (click)="onRouteClick('performance')" [ngClass]="{'active': isRouteActive('performance')}">Performance</li>
+      <li [ngClass]="{'active': isRouteActive('notifications')}">Notifications</li>
+      <li [ngClass]="{'active': isRouteActive('applets')}">Applets</li>
+      <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}">Digital
+        Nameplate
+      </li>
+      <li [ngClass]="{'active': isRouteActive('subsystems')}">Subsystems</li>
+    </ul>
+  </div>
+  <div class="flexbox"></div>
 </div>

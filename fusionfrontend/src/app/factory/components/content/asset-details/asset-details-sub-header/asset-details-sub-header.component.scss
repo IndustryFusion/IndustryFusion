@@ -12,3 +12,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+@import 'abstract/variables';
+
+.subheader-flex {
+  display: flex;
+  flex-direction: row;
+
+  .flexbox {
+    flex: 1;
+  }
+}
+
+.asset-details-subheader {
+  border-top: 1px solid $light-grey;
+}
+

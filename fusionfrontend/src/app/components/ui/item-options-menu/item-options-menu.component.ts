@@ -26,6 +26,7 @@ export class ItemOptionsMenuComponent implements OnInit {
 
   @Input() type: ItemOptionsMenuType[];
   @Input() createItemName: string;
+  @Input() showInline = true;
   @Output() createItem = new EventEmitter<void>();
   @Output() cloneItem = new EventEmitter<void>();
   @Output() renameItem = new EventEmitter<void>();
