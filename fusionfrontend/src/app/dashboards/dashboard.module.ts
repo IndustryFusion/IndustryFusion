@@ -32,6 +32,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
 import { IFCommon } from '../common/i-f-common.module';
 import { MaintenanceAssetSortPipe } from '../pipes/maintenance-asset-sort.pipe';
+import { TreeTableModule } from 'primeng/treetable';
+import { TreeModule } from 'primeng/tree';
 
 @NgModule({
   declarations: [
@@ -42,20 +44,22 @@ import { MaintenanceAssetSortPipe } from '../pipes/maintenance-asset-sort.pipe';
     MaintenanceProgressbarComponent,
     MaintenanceAssetSortPipe
   ],
-  imports: [
-    IFCommon,
-    DashboardRoutingModule,
-    ClarityModule,
-    AgmCoreModule.forRoot({
-      apiKey: environment.googleMapsClientId
-    }),
-    ChartsModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    ProgressBarModule,
-    OverlayPanelModule,
-    TableModule
-  ],
+    imports: [
+        IFCommon,
+        DashboardRoutingModule,
+        ClarityModule,
+        AgmCoreModule.forRoot({
+            apiKey: environment.googleMapsClientId
+        }),
+        ChartsModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        ProgressBarModule,
+        OverlayPanelModule,
+        TableModule,
+        TreeTableModule,
+        TreeModule,
+    ],
   exports: [
     DashboardSubHeaderComponent,
     DashboardPageTitleComponent,
