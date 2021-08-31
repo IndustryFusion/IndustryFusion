@@ -22,7 +22,6 @@ import { FactoryRoutingModule } from './factory-routing.module';
 import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
 import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
-import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
@@ -61,13 +60,15 @@ import { RoomsListComponent } from './components/content/rooms-list/rooms-list.c
 import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
 import { AssetDetailsSubHeaderComponent } from './components/content/asset-details/asset-details-sub-header/asset-details-sub-header.component';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
+import { CardModule } from 'primeng/card';
+import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
 
 @NgModule({
   declarations: [
     CompaniesPageComponent,
     CompanyPageComponent,
     FactorySitePageComponent,
-    AssetPageComponent,
     AssetsGridPageComponent,
     AssetsListPageComponent,
     AssetPerformanceComponent,
@@ -103,6 +104,8 @@ import { AssetPerformanceComponent } from './components/pages/asset-details/asse
     RoomsListComponent,
     AssignAssetToRoomComponent,
     AssetDetailsSubHeaderComponent,
+    AssetCardComponent,
+    NameplateItemComponent
   ],
   imports: [
     IFCommon,
@@ -111,6 +114,7 @@ import { AssetPerformanceComponent } from './components/pages/asset-details/asse
     ChartsModule,
     ReactiveFormsModule,
     TableModule,
+    CardModule,
   ],
   exports: [
     FactorySubHeaderComponent,

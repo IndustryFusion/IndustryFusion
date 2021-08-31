@@ -12,45 +12,45 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
-<div class="card">
-  <div class="card-header">
-    <h4 style="font-weight: bold">{{asset?.name}}</h4>
-    <p style="margin: 0 "> {{asset?.description}}</p>
-    <p class="details-value" (click)="goToDetails()">
-      <clr-icon shape="line-chart"></clr-icon>
-      Go to Details
-    </p>
-
-  </div>
-  <div class="card-img">
-    <img src="assets/img/{{asset?.imageKey}}">
-  </div>
-  <div class="card-block">
-    <div class="card-title">
-      <app-status [asset]="asset" [showInline]="false"></app-status>
+<div class="nameplate">
+  <div class="caption-with-buttons">
+    <div class="caption">Digital Nameplate</div>
+    <div class="flexbox"></div>
+    <div class="card-button-box">
+      <button class="card-button">
+        <fa-icon [icon]="manualIcon" class="fa-fw"></fa-icon>
+        Manual
+      </button>
     </div>
-    <div class="table-wrapper">
-      <table class="table table-noborder">
-        <tbody>
-        <tr>
-          <td class="left label">Description</td>
-          <td class="value">{{asset?.description}}</td>
-        </tr>
-        <tr>
-          <td class="left label">Control System Type </td>
-          <td class="value">{{asset?.controlSystemType}}</td>
-        </tr>
-        <tr>
-          <td class="left label">Gateway Connectivity</td>
-          <td class="value">{{asset?.gatewayConnectivity}}</td>
-        </tr>
-        <tr *ngFor="let field of mergedFields$ | async" >
-          <td class="left label">{{field.description}}</td>
-          <td class="value">{{ field.value | precision:field.type:field.accuracy }} <span>{{field.unit}}</span></td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="card-button-box">
+      <button class="card-button">
+        <fa-icon [icon]="videoIcon" class="fa-fw"></fa-icon>
+        Video
+      </button>
     </div>
   </div>
+
+  <p-card class="card">
+    <div class="grid">
+      <app-nameplate-item label="Asset type">{{(asset$ | async).assetTypeName}}</app-nameplate-item>
+      <app-nameplate-item label="Asset name">{{(asset$ | async).name}}</app-nameplate-item>
+      <app-nameplate-item label="Asset series">{{(asset$ | async).assetSeriesName}}</app-nameplate-item>
+      <app-nameplate-item label="Manufacturer">{{(asset$ | async).manufacturer}}</app-nameplate-item>
+      <app-nameplate-item label="Serial Number">{{(asset$ | async).serialNumber}}</app-nameplate-item>
+      <app-nameplate-item
+        label="Construction Date">{{(asset$ | async).constructionDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
+      <app-nameplate-item
+        label="Installation Date">{{(asset$ | async).installationDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
+      <app-nameplate-item label="CE Certification">{{(asset$ | async).ceCertified | boolean}}</app-nameplate-item>
+      <app-nameplate-item label="Protection Class">{{(asset$ | async).protectionClass}}</app-nameplate-item>
+    </div>
+  </p-card>
+  <div class="caption">Connectivity Settings</div>
+  <p-card class="card">
+    <div class="grid">
+      <app-nameplate-item label="Connectivity type">{{(asset$ | async).gatewayConnectivity}}</app-nameplate-item>
+      <app-nameplate-item label="Protocol"></app-nameplate-item>
+      <app-nameplate-item label="Connection string">{{(asset$ | async).connectionString}}</app-nameplate-item>
+    </div>
+  </p-card>
 </div>

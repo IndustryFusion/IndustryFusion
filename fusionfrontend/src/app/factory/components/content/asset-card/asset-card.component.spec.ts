@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetPageComponent } from './asset-page.component';
+import { AssetCardComponent } from './asset-card.component';
 
-describe('AssetPageComponent', () => {
-  let component: AssetPageComponent;
-  let fixture: ComponentFixture<AssetPageComponent>;
+describe('AssetCardComponent', () => {
+  let component: AssetCardComponent;
+  let fixture: ComponentFixture<AssetCardComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetPageComponent ]
+      declarations: [ AssetCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetPageComponent);
+    fixture = TestBed.createComponent(AssetCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

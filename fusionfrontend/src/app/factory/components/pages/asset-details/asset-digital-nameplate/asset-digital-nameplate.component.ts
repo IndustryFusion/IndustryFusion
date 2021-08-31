@@ -13,18 +13,22 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, timer } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Status } from 'src/app/factory/models/status.model';
 import { PointWithId } from 'src/app/services/oisp.model';
 import { OispService } from 'src/app/services/oisp.service';
 import { StatusService } from 'src/app/services/status.service';
-import { AssetWithFields } from 'src/app/store/asset/asset.model';
-import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
+import { ID } from '@datorama/akita';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryResolver } from '../../../../services/factory-resolver.service';
+import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
+import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-asset-digital-nameplate',
@@ -33,72 +37,59 @@ import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-devi
 })
 
 export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
-  maxProgress = 1500;
-
-  @Input()
-  asset: AssetWithFields;
+  assetId: ID;
+  asset$: Observable<FactoryAssetDetailsWithFields>;
 
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
 
+  manualIcon = faLayerGroup;
+  videoIcon = faPlayCircle;
+
   constructor(
-    private companyQuery: CompanyQuery,
     private oispService: OispService,
     private oispDeviceQuery: OispDeviceQuery,
     private statusService: StatusService,
-    private router: Router) {
+    private factoryResolver: FactoryResolver,
+    private activatedRoute: ActivatedRoute,
+    private factoryAssetQuery: FactoryAssetDetailsQuery) {
   }
 
   ngOnInit() {
-    this.latestPoints$ = timer(0, 2000).pipe(
-      switchMap(() => {
-        return this.oispService.getLastValueOfAllFields(this.asset, this.asset.fields, 5);
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.assetId = this.factoryAssetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+
+    this.latestPoints$ = combineLatest([this.asset$, timer(0, 2000)]).pipe(
+      switchMap(([asset, _]) => {
+        return this.oispService.getLastValueOfAllFields(asset, asset?.fields, 5);
       })
     );
 
-    this.mergedFields$ = this.latestPoints$.pipe(
-      map(latestPoints => {
-        return this.asset.fields.map(field => {
-          const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id ===
-            this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(this.asset.externalName, field.externalName));
+    this.mergedFields$ = combineLatest([this.asset$, this.latestPoints$])
+      .pipe(
+        map(([asset, latestPoints]) => {
+          return asset.fields.map(field => {
+            const fieldCopy = Object.assign({ }, field);
+            const point = latestPoints.find(latestPoint => latestPoint.id ===
+              this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName));
 
-          if (point) {
-            fieldCopy.value = point.value;
-          }
-          return fieldCopy;
-        });
-      })
-    );
+            if (point) {
+              fieldCopy.value = point.value;
+            }
+            return fieldCopy;
+          });
+        }));
 
-    this.status$ = this.mergedFields$.pipe(
-      map((fields) => {
-        return this.statusService.determineStatus(fields, this.asset);
+
+    this.status$ = combineLatest([this.asset$, this.mergedFields$]).pipe(
+      map(([asset, fields]) => {
+        return this.statusService.determineStatus(fields, asset);
       })
     );
   }
 
   ngOnDestroy() {
   }
-
-  calculateMin(progress: number): number {
-    return Math.min(progress / this.maxProgress * 100, 7);
-  }
-
-  formatValue(value: any, unit: any) {
-    if (unit === 'bar' || unit === 'l/min') {
-      return (Math.round(value * 10000) / 10000).toFixed(4);
-
-    } else {
-      return value;
-    }
-  }
-
-  goToDetails() {
-    const companyId = this.companyQuery.getActiveId();
-    const assetId = this.asset.id;
-    this.router.navigateByUrl(`factorymanager/companies/${companyId}/assets/${assetId}/digital-nameplate`);
-  }
-
 }

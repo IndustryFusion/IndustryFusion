@@ -43,8 +43,6 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
     this.assetQuery.selectLoading();
     this.assetId = this.assetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
-
-    this.activatedRoute.url.subscribe((ch) => console.warn('cccchange', ch.join('/')));
   }
 
   onRouteClick(subroute: string): Promise<boolean> {

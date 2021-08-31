@@ -13,16 +13,21 @@
  * under the License.
  */
 
-@import 'abstract/variables';
+import { Component, Input, OnInit } from '@angular/core';
 
-.wrapper{
-    background: $light-grey;
-    padding: 0 15%;
-    margin: 0;
-}
+@Component({
+  selector: 'app-nameplate-item',
+  templateUrl: './nameplate-item.component.html',
+  styleUrls: ['./nameplate-item.component.scss']
+})
+export class NameplateItemComponent implements OnInit {
 
+  @Input()
+  label: string;
 
-.cards{
-    display: flex;
-    justify-content: center;
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

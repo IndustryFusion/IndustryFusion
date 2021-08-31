@@ -16,87 +16,72 @@
 @import 'src/assets/sass/base/typography';
 @import "src/assets/sass/abstract/variables";
 
-.table-wrapper {
-  min-height: 500px;
-}
-
-.label {
-  border: 0;
-  color: $basic-grey;
-}
-
-.value {
-  font-weight: bold;
-  text-align: right;
-  padding: 12px 0;
-  color: $basic-black;
-  text-overflow: ellipsis;
-  max-width: 160px;
-  white-space: nowrap;
-  overflow: hidden;
-
-  span {
-    font-weight: normal;
-    color: $basic-grey;
-  }
-}
-
-.card {
-  border-radius: 10px;
-  border: 0;
-  box-shadow: none;
-  margin-bottom: 25px;
-}
-
-.card-block, .card-header {
-  border: 0;
-  padding: 32px;
-}
-
-.card-footer {
-  padding: 0 32px 32px 32px;
-}
-
-.card-img {
-  img {
-    max-height: 200px;
-    margin: 0 auto;
-    width: auto;
-  }
-}
-
-.card-header {
-  min-height: 160px;
-}
-
-.progress {
-  line-height: 28px;
+.nameplate {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10%;
+  background-color: $light-grey;
   width: 100%;
-  background-color: #C9C9C9;
-  position: relative;
-  display: table;
-  border-radius: 5px;
-  margin-top: 0;
 
-}
+  .card {
+    width: 100%;
+    background-color: $basic-white;
+    border-radius: 10px;
+    border: 0;
+    margin: 1rem;
+    padding: 0 2rem;
+  }
 
-.progress:before {
-  font-size: 0.8em;
-  position: absolute;
-  text-align: center;
-  top: 5px;
-  left: 0;
-  right: 0;
-}
+  ::ng-deep .p-card {
+    box-shadow: none !important;
+  }
 
-.progress .completed {
-  background-color: gray;
-  display: inline-block;
-  height: 100%;
-  color: $basic-white;
-  text-align: center;
-}
+  .caption {
+    font-size: $bigger-font-size;
+    font-weight: bold;
+    padding: 1rem 3rem;
+  }
 
-.details-value {
-  cursor: pointer;
+  .grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flexbox {
+    flex: 1;
+  }
+
+  .card-button-box {
+    padding-left: 1rem;
+  }
+
+  .card-button {
+    font-style: normal;
+    font-weight: bold;
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+    text-align: left;
+
+    letter-spacing: 0;
+    color: $basic-white;
+
+    background: $highlighted 0 0% no-repeat padding-box;
+    border: 1px solid $basic-grey;
+    border-radius: 10px;
+    opacity: 1;
+
+    padding: 8px 32px 8px 16px;
+    cursor: pointer;
+
+    &:hover {
+      background: $hover-grey;
+    }
+  }
+
+  .caption-with-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+  }
 }
