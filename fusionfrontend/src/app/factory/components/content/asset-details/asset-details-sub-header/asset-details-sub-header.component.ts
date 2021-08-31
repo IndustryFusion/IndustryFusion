@@ -29,7 +29,6 @@ import { Location } from '@angular/common';
 })
 export class AssetDetailsSubHeaderComponent implements OnInit {
 
-  route: string;
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;
 
@@ -44,12 +43,13 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
     this.assetQuery.selectLoading();
     this.assetId = this.assetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
-    this.route = this.routingLocation.path();
+
+    this.activatedRoute.url.subscribe((ch) => console.warn('cccchange', ch.join('/')));
   }
 
   onRouteClick(subroute: string): Promise<boolean> {
     let newRoute = ['..', subroute];
-    if (this.route.match(`\/assets\/[0-9]*$`)) {
+    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`)) {
       newRoute = [subroute];
     }
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });

@@ -118,7 +118,6 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
     this.latestPoints$.pipe(takeUntil(this.destroy$))
       .subscribe(points => {
-        console.log('[asset-tables.component] points length ' + points.length);
         points.filter(point => !this.currentTimestamps.includes(point.ts)).forEach(point => {
           if (this.lastReceivedTimestamp < point.ts) {
             this.lastReceivedTimestamp = point.ts;

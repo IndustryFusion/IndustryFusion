@@ -230,8 +230,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     let gotFirstPoints = false;
     let currentTime = moment().valueOf();
     let startTime = currentTime - 600000;
-    console.log('start time ' + moment(startTime).toISOString());
-    console.log('current time ' + moment(currentTime).toISOString());
     this.latestPoints$ = timer(0, 5000)
         .pipe(
           switchMap(() => {
@@ -272,7 +270,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public updateChart(points: PointWithId[]) {
-    console.log('[asset-chart.component] points length ' + points.length);
     points.forEach(point => {
       this.currentTimestamps.push(point.ts);
       this.currentNumberOfPoints += 1;
