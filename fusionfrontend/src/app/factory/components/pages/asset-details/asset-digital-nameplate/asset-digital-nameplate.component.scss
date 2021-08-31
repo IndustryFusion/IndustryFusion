@@ -1,0 +1,102 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'src/assets/sass/base/typography';
+@import "src/assets/sass/abstract/variables";
+
+.table-wrapper {
+  min-height: 500px;
+}
+
+.label {
+  border: 0;
+  color: $basic-grey;
+}
+
+.value {
+  font-weight: bold;
+  text-align: right;
+  padding: 12px 0;
+  color: $basic-black;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+
+  span {
+    font-weight: normal;
+    color: $basic-grey;
+  }
+}
+
+.card {
+  border-radius: 10px;
+  border: 0;
+  box-shadow: none;
+  margin-bottom: 25px;
+}
+
+.card-block, .card-header {
+  border: 0;
+  padding: 32px;
+}
+
+.card-footer {
+  padding: 0 32px 32px 32px;
+}
+
+.card-img {
+  img {
+    max-height: 200px;
+    margin: 0 auto;
+    width: auto;
+  }
+}
+
+.card-header {
+  min-height: 160px;
+}
+
+.progress {
+  line-height: 28px;
+  width: 100%;
+  background-color: #C9C9C9;
+  position: relative;
+  display: table;
+  border-radius: 5px;
+  margin-top: 0;
+
+}
+
+.progress:before {
+  font-size: 0.8em;
+  position: absolute;
+  text-align: center;
+  top: 5px;
+  left: 0;
+  right: 0;
+}
+
+.progress .completed {
+  background-color: gray;
+  display: inline-block;
+  height: 100%;
+  color: $basic-white;
+  text-align: center;
+}
+
+.details-value {
+  cursor: pointer;
+}

@@ -18,7 +18,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
 import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
-import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
@@ -120,42 +119,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms/:roomId/assets/:assetId',
-    component: AssetsGridPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/assets/:assetId',
-    component: AssetPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms/:roomId/assets/:assetId/details/performance',
-    component: AssetPerformanceComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms/:roomId/assets/:assetId/details/digital-nameplate',
-    component: AssetDigitalNameplateComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/assets',
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
@@ -183,15 +146,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'factorymanager/companies/:companyId/assets/rooms/:roomId/assets/:assetId',
-    component: AssetsGridPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
     path: 'factorymanager/companies/:companyId/assets/rooms/:roomId/asset-cards/:assetIdList',
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
@@ -202,7 +156,25 @@ const routes: Routes = [
   },
   {
     path: 'factorymanager/companies/:companyId/assets/:assetId',
-    component: AssetsGridPageComponent,
+    component: AssetPerformanceComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/:assetId/performance',
+    component: AssetPerformanceComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/:assetId/digital-nameplate',
+    component: AssetDigitalNameplateComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],

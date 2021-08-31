@@ -20,6 +20,7 @@ import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { AssetQuery } from '../../../../../store/asset/asset.query';
 import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-asset-details-sub-header',
@@ -34,6 +35,7 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   constructor(public activatedRoute: ActivatedRoute,
               private router: Router,
+              private routingLocation: Location,
               private factoryResolver: FactoryResolver,
               private assetQuery: AssetQuery) {
   }
@@ -42,14 +44,22 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
     this.assetQuery.selectLoading();
     this.assetId = this.assetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+    this.route = this.routingLocation.path();
   }
 
   onRouteClick(subroute: string): Promise<boolean> {
-    return this.router.navigate(['..', subroute], { relativeTo: this.getActiveRouteLastChild() });
+    let newRoute = ['..', subroute];
+    if (this.route.match(`\/assets\/[0-9]*$`)) {
+      newRoute = [subroute];
+    }
+    return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
   }
 
-  isRouteActive(subroute: string): boolean {
+  isRouteActive(subroute: string, useAsDefault: boolean = false): boolean {
     const snapshot = this.getActiveRouteLastChild().snapshot;
+    if (useAsDefault && snapshot.url.join('/').endsWith(`${this.assetId}`)) {
+      return true;
+    }
     return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 

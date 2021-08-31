@@ -27,7 +27,7 @@ import { AssetsGridPageComponent } from './components/pages/assets-grid-page/ass
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
 import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
-import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
+import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
@@ -61,7 +61,6 @@ import { RoomsListComponent } from './components/content/rooms-list/rooms-list.c
 import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
 import { AssetDetailsSubHeaderComponent } from './components/content/asset-details/asset-details-sub-header/asset-details-sub-header.component';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
-import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +78,7 @@ import { AssetDigitalNameplateComponent } from './components/pages/asset-details
     PrecisionPipe,
     ArraysortextendedPipe,
     ArrayFilterPipe,
-    AssetCardComponent,
+    AssetDigitalNameplateComponent,
     AssetDetailsInfoComponent,
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
@@ -104,7 +103,6 @@ import { AssetDigitalNameplateComponent } from './components/pages/asset-details
     RoomsListComponent,
     AssignAssetToRoomComponent,
     AssetDetailsSubHeaderComponent,
-    AssetDigitalNameplateComponent,
   ],
   imports: [
     IFCommon,
