@@ -14,7 +14,7 @@
  */
 
 @import 'src/assets/sass/base/typography';
-@import "src/assets/sass/abstract/variables";
+@import 'src/assets/sass/abstract/variables';
 
 .nameplate {
   display: flex;
@@ -28,6 +28,7 @@
     background-color: $basic-white;
     border-radius: 10px;
     border: 0;
+    box-shadow: none;
     margin: 1rem;
     padding: 0 2rem;
   }
@@ -37,6 +38,7 @@
   }
 
   .caption {
+    color: $basic-black;
     font-size: $bigger-font-size;
     font-weight: bold;
     padding: 1rem 3rem;
@@ -75,6 +77,11 @@
 
     &:hover {
       background: $hover-grey;
+    }
+
+    &:disabled {
+      background-color: $middle-grey;
+      border: none;
     }
   }
 

@@ -52,8 +52,8 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .assetTypeTemplateId(EntityDtoMapper.getEntityId(entity.getAssetTypeTemplate()))
                 .ceCertified(entity.getCeCertified())
                 .protectionClass(entity.getProtectionClass())
-                .handbookKey(entity.getHandbookKey())
-                .videoKey(entity.getVideoKey())
+                .handbookUrl(entity.getHandbookUrl())
+                .videoUrl(entity.getVideoUrl())
                 .fieldSourceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldSources()))
                 .connectivitySettingsId(entity.getConnectivitySettings().getId())
                 .build();
@@ -97,8 +97,8 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .id(dto.getId())
                 .ceCertified(dto.getCeCertified())
                 .protectionClass(dto.getProtectionClass())
-                .handbookKey(dto.getHandbookKey())
-                .videoKey(dto.getVideoKey())
+                .handbookUrl(dto.getHandbookUrl())
+                .videoUrl(dto.getVideoUrl())
                 .build();
 
         baseAssetMapper.copyToEntity(dto, entity);

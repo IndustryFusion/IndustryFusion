@@ -74,8 +74,8 @@ public class AssetSeries extends BaseAsset {
 
     protected Boolean ceCertified;
     protected String protectionClass;
-    protected String handbookKey;
-    protected String videoKey;
+    protected String handbookUrl;
+    protected String videoUrl;
 
     public void copyFrom(final AssetSeries sourceAssetSeries) {
         if (sourceAssetSeries.getName() != null) {
@@ -93,11 +93,11 @@ public class AssetSeries extends BaseAsset {
         if (sourceAssetSeries.getCeCertified() != null) {
             setCeCertified(sourceAssetSeries.getCeCertified());
         }
-        if (sourceAssetSeries.getHandbookKey() != null) {
-            setHandbookKey(sourceAssetSeries.getHandbookKey());
+        if (sourceAssetSeries.getHandbookUrl() != null) {
+            setHandbookUrl(sourceAssetSeries.getHandbookUrl());
         }
-        if (sourceAssetSeries.getVideoKey() != null) {
-            setVideoKey(sourceAssetSeries.getVideoKey());
+        if (sourceAssetSeries.getVideoUrl() != null) {
+            setVideoUrl(sourceAssetSeries.getVideoUrl());
         }
         if (sourceAssetSeries.getAssets() != null) {
             setAssets(sourceAssetSeries.getAssets());

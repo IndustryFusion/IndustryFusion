@@ -92,4 +92,8 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
+
+  openExternalUrl(url: string) {
+    window.open(url, '_blank');
+  }
 }

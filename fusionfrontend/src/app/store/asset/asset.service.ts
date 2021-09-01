@@ -178,8 +178,8 @@ export class AssetService {
     mappedAsset.serialNumber = assetDetails.serialNumber;
     mappedAsset.constructionDate = assetDetails.constructionDate;
     mappedAsset.protectionClass = assetDetails.protectionClass;
-    mappedAsset.handbookKey = assetDetails.handbookKey;
-    mappedAsset.videoKey = assetDetails.videoKey;
+    mappedAsset.handbookUrl = assetDetails.handbookUrl;
+    mappedAsset.videoUrl = assetDetails.videoUrl;
     mappedAsset.installationDate = assetDetails.installationDate;
     mappedAsset.imageKey = assetDetails.imageKey;
     mappedAsset.subsystemIds = assetDetails.subsystemIds;
