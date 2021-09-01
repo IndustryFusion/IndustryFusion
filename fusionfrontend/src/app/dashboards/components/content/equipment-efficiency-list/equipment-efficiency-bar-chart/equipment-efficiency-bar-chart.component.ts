@@ -23,6 +23,7 @@ import { KairosService } from '../../../../../services/kairos.service';
 import { KairosResponseGroup, OispDeviceStatus } from '../../../../../services/kairos.model';
 import { environment } from '../../../../../../environments/environment';
 import { UIChart } from 'primeng/chart';
+import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
 
 // import styles from '../../../../../../assets/sass/abstract/_variables.scss';
 
@@ -57,7 +58,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
   private readonly statusUpdatesPerDay = this.secondsPerDay * this.statusUpdatesPerSecond;
   private statusUpdateCountOfSelectedDay = this.statusUpdatesPerDay;
 
-  constructor(private kairosService: KairosService) { }
+  constructor(private kairosService: KairosService, private enumHelpers: EnumHelpers) { }
 
   public static getDatasetIndexFromStatus(status: OispDeviceStatus) {
     switch (status) {
@@ -72,16 +73,10 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
     }
   }
 
-  public static getHoursStringOfPercentage(percentage: number) {
-    if (/*!this.isDateToday()*/ 1 === 1) {
-      // TODO (tse): finish
-      const hours = percentage / 100 * 24;
-      const onlyHours = Math.floor(hours);
-      const minutes = Math.round(hours - onlyHours) * 60;
+  public static getHoursStringOfPercentage(hours: number) {
+      const onlyHours = ('00' + Math.floor(hours)).slice(-2);
+      const minutes = ('00' + Math.round((hours - Math.floor(hours)) * 60)).slice(-2);
       return `${onlyHours}:${minutes} h`;
-    } else {
-      // TODO (tse): other calculation for today
-    }
   }
 
   ngOnInit(): void {
@@ -158,21 +153,21 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
         label: 'Offline',
         backgroundColor: '#F0F0F0', // styles.statusErrorColor,
         data: [
-          15,
+          0,
         ]
       }, {
         type: 'horizontalBar',
         label: 'Idle',
         backgroundColor: '#454F63',  // styles.statusIdleColor,
         data: [
-          10,
+          0,
         ]
       }, {
         type: 'horizontalBar',
         label: 'Error',
         backgroundColor: '#A73737', // styles.statusErrorColor,
         data: [
-          5,
+          0,
         ]
       },
       {
@@ -180,7 +175,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
         label: 'Running',
         backgroundColor: '#2CA9CE', // styles.statusRunningColor,
         data: [
-          70,
+          0,
         ]
       }]
     };
@@ -254,20 +249,24 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
   private updateChart(statusGroupsExcludingOffline: KairosResponseGroup[]) {
     if (statusGroupsExcludingOffline.length > 0) {
       this.hasStatusData = true;
-
       const estimatedOfflineCount = this.calculateOfflineStatusCount(statusGroupsExcludingOffline);
       const offlineGroup: KairosResponseGroup = ({ index: OispDeviceStatus.OFFLINE, results: [estimatedOfflineCount] });
       const statusGroups: KairosResponseGroup[] = [ ...statusGroupsExcludingOffline];
       statusGroups.unshift(offlineGroup);
+      for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
+        this.stackedData.datasets[i].data = [0];
+      }
 
-      console.log('statusGroups:');
+      let hoursOfDay: number;
+      if (this.isDateToday()) {
+        hoursOfDay = this.getSecondsOfTodayUntilNow() / (60 * 60);
+      } else {
+        hoursOfDay = 24;
+      }
       statusGroups.forEach(group => {
-        console.log(group);
-        const roundedPercentage = Math.round(this.sumOfResults(group) / this.statusUpdateCountOfSelectedDay * 100);
-        console.log('percentage', roundedPercentage);
-        this.stackedData.datasets[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(group.index)].data = roundedPercentage;
+        const roundedPercentage = Math.round(this.sumOfResults(group) / this.statusUpdateCountOfSelectedDay * hoursOfDay);
+        this.stackedData.datasets[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(group.index)].data = [roundedPercentage];
       });
-
       this.chart?.reinit();
     } else {
       this.hasStatusData = false;
