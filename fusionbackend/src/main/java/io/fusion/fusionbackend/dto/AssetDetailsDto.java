@@ -33,6 +33,7 @@ public class AssetDetailsDto extends AssetDto {
     private String category;
     private String roomName;
     private String factorySiteName;
+    private String protocol;
 
     @JsonCreator
     public AssetDetailsDto() {

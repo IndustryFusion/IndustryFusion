@@ -68,6 +68,8 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .videoUrl(entity.getVideoUrl())
                 .installationDate(entity.getInstallationDate())
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .connectionString(entity.getConnectionString())
+                .protocol(entity.getAssetSeries().getConnectivitySettings().getConnectivityProtocol().getName())
                 .build();
 
         baseAssetMapper.copyToDto(entity, dto);

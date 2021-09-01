@@ -183,6 +183,7 @@ export class AssetService {
     mappedAsset.installationDate = assetDetails.installationDate;
     mappedAsset.imageKey = assetDetails.imageKey;
     mappedAsset.subsystemIds = assetDetails.subsystemIds;
+    mappedAsset.connectionString = assetDetails.connectionString;
     return mappedAsset;
   }
 }

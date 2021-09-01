@@ -52,7 +52,7 @@ under the License.
   <p-card class="card">
     <div class="grid">
       <app-nameplate-item label="Connectivity type">{{(asset$ | async).gatewayConnectivity}}</app-nameplate-item>
-      <app-nameplate-item label="Protocol"></app-nameplate-item>
+      <app-nameplate-item label="Protocol">{{(asset$ | async).protocol}}</app-nameplate-item>
       <app-nameplate-item label="Connection string">{{(asset$ | async).connectionString}}</app-nameplate-item>
     </div>
   </p-card>
