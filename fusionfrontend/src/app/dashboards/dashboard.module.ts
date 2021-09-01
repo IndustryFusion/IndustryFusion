@@ -44,22 +44,22 @@ import { TreeModule } from 'primeng/tree';
     MaintenanceProgressbarComponent,
     MaintenanceAssetSortPipe
   ],
-    imports: [
-        IFCommon,
-        DashboardRoutingModule,
-        ClarityModule,
-        AgmCoreModule.forRoot({
-            apiKey: environment.googleMapsClientId
-        }),
-        ChartsModule,
-        FontAwesomeModule,
-        ReactiveFormsModule,
-        ProgressBarModule,
-        OverlayPanelModule,
-        TableModule,
-        TreeTableModule,
-        TreeModule,
-    ],
+  imports: [
+    IFCommon,
+    DashboardRoutingModule,
+    ClarityModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsClientId
+    }),
+    ChartsModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    ProgressBarModule,
+    OverlayPanelModule,
+    TableModule,
+    TreeTableModule,
+    TreeModule,
+  ],
   exports: [
     DashboardSubHeaderComponent,
     DashboardPageTitleComponent,

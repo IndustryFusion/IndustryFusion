@@ -184,25 +184,25 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   private updateTree() {
     if (this.displayedFactoryAssets) {
-      const expandetNodeIDs = this.getExpandetNodeIDs(this.treeData);
+      const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
       const map = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
       const reduce = map.reduce((acc, val) => acc.concat(val), []);
       const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       this.displayedFactoryAssets
         .filter(asset => !reduce.includes(asset.id))
         .forEach((value: FactoryAssetDetailsWithFields) => {
-        treeData.push(this.addNode(null, value, expandetNodeIDs));
+        treeData.push(this.addNode(null, value, expandedNodeIDs));
       });
       this.treeData = treeData;
     }
   }
 
-  private getExpandetNodeIDs(treeData: TreeNode[]): ID[] {
+  private getExpandedNodeIDs(treeData: TreeNode[]): ID[] {
     const expanded: ID[] = [];
     for (const node of treeData) {
       if (node.expanded) {
         expanded.push(node.data.id);
-        expanded.push(...this.getExpandetNodeIDs(node.children));
+        expanded.push(...this.getExpandedNodeIDs(node.children));
       }
     }
     return expanded;

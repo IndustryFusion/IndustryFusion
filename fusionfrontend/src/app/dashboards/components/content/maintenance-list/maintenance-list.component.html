@@ -57,9 +57,9 @@
         <td [style.width.%]="13">
           <span class="progressbar-wrapper">
             <app-maintenance-progressbar [asset]="rowData"
-                                       [maintenancePercentage]="getMaintenanceDaysPercentage(rowData)"
-                                       [maintenanceValue]="getMaintenanceDaysValue(rowData)"
-                                       [state]="getMaintenanceState(getMaintenanceDaysValue(rowData), MAINTENANCE_DAYS_LOWER_THRESHOLD, MAINTENANCE_DAYS_UPPER_THRESHOLD)"
+                                         [maintenancePercentage]="getMaintenanceDaysPercentage(rowData)"
+                                         [maintenanceValue]="getMaintenanceDaysValue(rowData)"
+                                         [state]="getMaintenanceState(getMaintenanceDaysValue(rowData), MAINTENANCE_DAYS_LOWER_THRESHOLD, MAINTENANCE_DAYS_UPPER_THRESHOLD)"
             >
             </app-maintenance-progressbar>
             <span class="progressbar-icon" *ngIf="isChildrenMaintenanceNeededSoon(rowNode.node)">
