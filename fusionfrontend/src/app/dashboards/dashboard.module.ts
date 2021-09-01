@@ -32,6 +32,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
 import { IFCommon } from '../common/i-f-common.module';
 import { MaintenanceAssetSortPipe } from '../pipes/maintenance-asset-sort.pipe';
+import { TreeTableModule } from 'primeng/treetable';
+import { TreeModule } from 'primeng/tree';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { MaintenanceAssetSortPipe } from '../pipes/maintenance-asset-sort.pipe';
     ReactiveFormsModule,
     ProgressBarModule,
     OverlayPanelModule,
-    TableModule
+    TableModule,
+    TreeTableModule,
+    TreeModule,
   ],
   exports: [
     DashboardSubHeaderComponent,
