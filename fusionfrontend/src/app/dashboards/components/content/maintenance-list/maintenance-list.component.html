@@ -12,12 +12,12 @@
     </div>
   </div>
 
-  <p-table [paginator]="true"
-           [rowsPerPageOptions]="[5,10,50]"
-           [rows]="10"
-           [showCurrentPageReport]="true"
-           [value]="displayedFactoryAssets" class="list-container"
-           currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+  <p-treeTable [value]="treeData"
+               [paginator]="true"
+               [alwaysShowPaginator]="true"
+               [pageLinks]="5"
+               [rowsPerPageOptions]="[5,10,50]"
+               [rows]="10" class="list-container">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="2"></th>
@@ -33,41 +33,52 @@
         <th [style.width.%]="2"></th>
       </tr>
     </ng-template>
-
-    <ng-template let-asset pTemplate="body">
-      <tr>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr [ttRow]="rowNode">
         <td [style.width.%]="2"></td>
         <td [style.width.%]="4">
-          <div class="list-item-cell notification-icons" [style.width.%]="3" [ngSwitch]="asset.openAlertPriority">
+          <div class="list-item-cell notification-icons" [style.width.%]="3" [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)">
             <clr-icon *ngSwitchCase="OispPriority.LOW"    size="20" shape="info-standard" class="is-solid notification-low"></clr-icon>
             <clr-icon *ngSwitchCase="OispPriority.MEDIUM" size="20" shape="exclamation-circle" class="is-solid notification-medium"></clr-icon>
             <clr-icon *ngSwitchCase="OispPriority.HIGH"   size="20" shape="exclamation-triangle" class="is-solid notification-high"></clr-icon>
           </div>
         </td>
-        <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(asset)}"
-            [style.width.%]="20">{{asset.name}}</td>
-        <td [style.width.%]="18">{{asset.category}}</td>
-        <td [style.width.%]="20">{{asset.manufacturer}}</td>
-        <td [style.width.%]="12">{{asset.factorySiteName}}</td>
+        <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(rowNode.node)}" class="asset-column p-flex-row">
+          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+          <span class="subsystem-grid p-col-" *ngIf="rowNode.parent">
+            <span class="upper"></span>
+            <span class="lower" [ngClass]="{'last-element': isLastChildElement(rowNode)}"></span>
+          </span>
+          <span class="p-col">{{rowData.name}}</span>
+        </td>
+        <td [style.width.%]="18">{{rowData.category}}</td>
+        <td [style.width.%]="20">{{rowData.manufacturer}}</td>
+        <td [style.width.%]="12">{{rowData.factorySiteName}}</td>
         <td [style.width.%]="13">
-          <app-maintenance-progressbar [asset]="asset"
-                                       [maintenancePercentage]="getMaintenanceDaysPercentage(asset)"
-                                       [maintenanceValue]="getMaintenanceDaysValue(asset)"
-                                       [state]="getMaintenanceState(getMaintenanceDaysValue(asset), MAINTENANCE_DAYS_LOWER_THRESHOLD, MAINTENANCE_DAYS_UPPER_THRESHOLD)"
-          ></app-maintenance-progressbar>
+          <span class="progressbar-wrapper">
+            <app-maintenance-progressbar [asset]="rowData"
+                                         [maintenancePercentage]="getMaintenanceDaysPercentage(rowData)"
+                                         [maintenanceValue]="getMaintenanceDaysValue(rowData)"
+                                         [state]="getMaintenanceState(getMaintenanceDaysValue(rowData), MAINTENANCE_DAYS_LOWER_THRESHOLD, MAINTENANCE_DAYS_UPPER_THRESHOLD)"
+            >
+            </app-maintenance-progressbar>
+            <span class="progressbar-icon" *ngIf="isChildrenMaintenanceNeededSoon(rowNode.node)">
+              <fa-icon *ngIf="rowNode.node.expanded" [icon]="faChevronCircleDown" (click)="openNode(rowNode.node)" class="fa-fw"></fa-icon>
+              <fa-icon *ngIf="!rowNode.node.expanded" [icon]="faChevronCircleUp" (click)="openNode(rowNode.node)" class="fa-fw"></fa-icon>
+            </span>
+          </span>
         </td>
         <td [style.width.%]="13">
-          <app-maintenance-progressbar [asset]="asset"
-                                       [maintenancePercentage]="getMaintenanceHoursPercentage(asset)"
-                                       [maintenanceValue]="getMaintenanceHoursValue(asset)"
-                                       [state]="getMaintenanceState(getMaintenanceHoursValue(asset), MAINTENANCE_HOURS_LOWER_THRESHOLD, MAINTENANCE_HOURS_UPPER_THRESHOLD)"
+          <app-maintenance-progressbar [asset]="rowData"
+                                       [maintenancePercentage]="getMaintenanceHoursPercentage(rowData)"
+                                       [maintenanceValue]="getMaintenanceHoursValue(rowData)"
+                                       [state]="getMaintenanceState(getMaintenanceHoursValue(rowData), MAINTENANCE_HOURS_LOWER_THRESHOLD, MAINTENANCE_HOURS_UPPER_THRESHOLD)"
           ></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="2"></td>
       </tr>
     </ng-template>
-
-  </p-table>
+  </p-treeTable>
 </div>
 
 <p-overlayPanel #searchpanel [showCloseIcon]="true" class="assetSearchPanel">

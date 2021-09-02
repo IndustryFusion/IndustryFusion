@@ -37,6 +37,8 @@ import { EquipmentEfficiencyListComponent } from './components/content/equipment
 import { EquipmentEfficiencyBarChartComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { CalendarModule } from 'primeng/calendar';
 import { ChartModule } from 'primeng/chart';
+import { TreeTableModule } from 'primeng/treetable';
+import { TreeModule } from 'primeng/tree';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,9 @@ import { ChartModule } from 'primeng/chart';
     TableModule,
     CalendarModule,
     ChartModule,
+    TableModule,
+    TreeTableModule,
+    TreeModule,
   ],
   exports: [
     DashboardSubHeaderComponent,
