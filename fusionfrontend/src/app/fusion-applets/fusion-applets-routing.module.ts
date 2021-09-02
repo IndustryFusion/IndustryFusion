@@ -19,7 +19,7 @@ import { FusionAppletsOverviewComponent } from './components/fusion-applets-over
 import { FusionAppletDetailComponent } from './components/fusion-applet-detail/fusion-applet-detail.component';
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
-import { OispDeviceQuery } from '../store/oisp/oisp-device/oisp-device.query';
+import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 
 const routes: Routes = [
   {
@@ -50,7 +50,7 @@ const routes: Routes = [
             path: 'editor',
             component: FusionAppletEditorComponent,
             resolve: {
-              devices: OispDeviceQuery
+              devices: OispDeviceResolver
             }
           }
         ]

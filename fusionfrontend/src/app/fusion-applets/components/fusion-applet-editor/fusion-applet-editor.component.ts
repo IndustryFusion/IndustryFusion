@@ -58,7 +58,7 @@ export class FusionAppletEditorComponent implements OnInit {
   private createRuleGroup() {
     this.ruleGroup = this.formBuilder.group({
       id: [],
-      externalName: [],
+      externalId: [],
       name: [],
       description: [],
       owner: [],
