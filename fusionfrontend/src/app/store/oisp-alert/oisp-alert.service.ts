@@ -38,11 +38,13 @@ export class OispAlertService {
 
   getItems(): Observable<OispAlert[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts`;
-    return this.http.get<OispAlert[]>(url, this.httpOptions)
-      .pipe(map(alerts => {
-        alerts.forEach(alert => alert.id = alert.alertId);
-        this.oispAlertStore.upsertMany(alerts);
-        return alerts;
+    return this.http.get<OispAlert[]>(url, { observe: 'response' })
+      .pipe(map(response => {
+        response.body.forEach(alert => alert.id = alert.alertId);
+        if (response.status !== 304) {
+          this.oispAlertStore.upsertMany(response.body);
+        }
+        return response.body;
     }));
   }
 
