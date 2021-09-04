@@ -9,12 +9,18 @@ import { BaseEntity } from '../../../store/baseentity.model';
 })
 export class TableSearchbarComponent implements OnInit {
 
-  @Input() filterColumn: string;
-  @Input() itemsToBeFiltered: any;
-  @Output() searchByName = new EventEmitter<any>();
+  @Input()
+  filterColumn: string;
+  @Input()
+  itemsToBeFiltered: any;
+  @Input()
+  attributeToBeSearched: string;
+  @Output()
+  searchByName = new EventEmitter<any>();
 
   searchText: string;
   faSearch = faSearch;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -29,14 +35,13 @@ export class TableSearchbarComponent implements OnInit {
   }
 
   filterItemsBySearchText<ItemType extends BaseEntity>(): ItemType {
-    const filteredItems = this.itemsToBeFiltered
-      .filter(item => item.name.toLowerCase().includes(this.searchText.toLowerCase()));
-    console.log(filteredItems);
-    return filteredItems;
+    return this.itemsToBeFiltered
+      .filter(item => item[this.attributeToBeSearched].toLowerCase().includes(this.searchText.toLowerCase()));
   }
 
   clearSearchText() {
     this.searchText = '';
+    this.filterItems();
   }
 
 }

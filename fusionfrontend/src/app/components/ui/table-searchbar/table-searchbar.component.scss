@@ -11,6 +11,12 @@
   margin-left: 5px;
 }
 
+.search-panel-button {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .search-input {
   border-color: $basic-white;
   touch-action: none;
@@ -21,7 +27,7 @@
   border: none;
   position: absolute;
   top: 7.5px;
-  left: 260px;
+  right: 2.5%;
 
   &:hover {
     cursor: pointer;
@@ -29,7 +35,6 @@
 
   .searchtext-btn-icon {
     font-size: $regular-font-size;
-    font-weight: lighter;
   }
 }
 
@@ -38,36 +43,9 @@
   justify-content: flex-end;
 }
 
-@media (max-width: 1500px) {
-  .panel-class {
-    ::ng-deep .p-component {
-      top: unset !important;
-      left: 8% !important;
-    }
-
-    ::ng-deep .p-component::before {
-      left: 15%;
-    }
-
-    ::ng-deep .p-component::after {
-      left: 15%;
-    }
-  }
-}
-
-@media (min-width: 1500px) {
-  .panel-class {
-    ::ng-deep .p-component {
-      top: unset !important;
-      left: 8% !important;
-    }
-
-    ::ng-deep .p-component::before {
-      left: 11%;
-    }
-
-    ::ng-deep .p-component::after {
-      left: 11%;
-    }
+.panel-class {
+  ::ng-deep .p-component {
+    top: unset !important;
+    left: unset !important;
   }
 }

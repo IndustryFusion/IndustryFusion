@@ -14,15 +14,17 @@
  */
 
 @import "abstract/variables";
+@import "base/typography";
 
 clr-dg-row.datagrid-row {
   border-top: 0;
 }
 
 h3.table-header{
+  font-size: $big-font-size;
   font-weight: bold;
   margin-top: .5rem;
-  padding: 25px 0 !important;
+  margin-left: 68px;
 }
 
 .p-datatable	{

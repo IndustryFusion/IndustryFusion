@@ -35,6 +35,7 @@
 
   &.p-highlight {
     &:not([p-disabled]) {
+      visibility: visible !important;
       background: $highlighted 0 0 no-repeat padding-box !important;
     }
     &.p-disabled {
