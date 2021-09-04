@@ -13,39 +13,56 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
 import { Observable } from 'rxjs';
 import { OispNotification } from '../../../store/oisp-notification/oisp-notification.model';
 import { OispAlertService } from '../../../store/oisp-alert/oisp-alert.service';
 import { environment } from '../../../../environments/environment';
+import { faFilter, faInfoCircle, faExclamationCircle, faExclamationTriangle, faTrashAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+
+import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp-alert/oisp-alert.model';
 
 @Component({
   selector: 'app-notifications-list',
   templateUrl: './notifications-list.component.html',
   styleUrls: ['./notifications-list.component.scss']
 })
-export class NotificationsListComponent implements OnInit, OnDestroy {
+export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges {
 
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
 
-  @Input() items$: Observable<OispNotification[]>;
-  @Input() isOpen: boolean;
+  @Input()
+  items$: Observable<OispNotification[]>;
+  @Input()
+  isOpen: boolean;
+
+  faFilter = faFilter;
+  faInfoCircle = faInfoCircle;
+  faExclamationCircle = faExclamationCircle;
+  faExclamationTriangle = faExclamationTriangle;
+  faCheckCircle = faCheckCircle;
+  faTrashAlt = faTrashAlt;
+  faTimes = faTimes;
 
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };
 
-  sortField: string;
-  selected: Set<ID> = new Set();
   intervalId: number;
 
-  faSearch = faSearch;
   searchText = '';
-  allNotifications: OispNotification[];
+  allNotifications: OispNotification[] = [];
   filteredNotifications: OispNotification[];
+  searchedNotifications: OispNotification[]
+  OispPriority = OispAlertPriority;
+  selectedNotifications: OispNotification[] = [];
+  alertstatusTypes = OispAlertStatus;
+  activeItem: OispNotification;
+  shouldShowDeleteItem = false;
+
 
   constructor(
     public route: ActivatedRoute,
@@ -59,6 +76,16 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
     this.periodicallyFetchNotifications();
     this.initMappings();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.selectedNotifications) {
+      console.log(this.selectedNotifications);
+    }
+  }
+
+  openFilter(){
+    console.log(this.selectedNotifications);
   }
 
   ngOnDestroy(): void {
@@ -83,53 +110,26 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
 
-  onSort(field: string): void {
-    this.sortField = field;
-  }
-
-  onItemSelect(id: ID): void {
-    this.selected.add(id);
-  }
-
-  onItemDeselect(id: ID): void {
-    this.selected.delete(id);
-  }
-
-  deleteItems(): void {
-    this.selected.forEach(id => {
-          this.deleteItem(id);
-    });
-  }
-
   deleteItem(id: ID): void {
     const filteredItem = this.filteredNotifications.find(value => value.id === id);
     this.oispAlertService.closeAlert(filteredItem.id).subscribe(() => {
-      this.selected.clear();
     });
   }
 
   deselectAllItems(): void {
-    this.selected.clear();
+    this.selectedNotifications = [];
   }
 
-  isSelected(id: ID): boolean {
-    return this.selected.has(id);
-  }
-
-  searchAssets(): void {
+  searchAssets(event?): void {
+    this.searchedNotifications = event;
     this.filterNotifications();
   }
 
   private filterNotifications(): void {
     this.filteredNotifications = this.allNotifications;
-
-    this.filterBySearchText();
-  }
-
-  private filterBySearchText(): void {
-    if (this.searchText) {
-      this.filteredNotifications = this.filteredNotifications
-        .filter(notification => notification.assetName.toLowerCase().includes(this.searchText.toLowerCase()));
+    if (this.searchedNotifications) {
+      this.filteredNotifications = this.filteredNotifications.filter(notification =>
+        this.searchedNotifications.includes(notification));
     }
   }
 
@@ -143,5 +143,29 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
       this.allNotifications = notifications;
       this.filterNotifications();
     });
+  }
+
+  closeMultibleItmes() {
+    this.selectedNotifications.forEach(notification => {
+      this.deleteItem(notification.id)
+    });
+    this.selectedNotifications = [];
+  }
+
+  showCloseItem(item: OispNotification) {
+    this.activeItem = item;
+    this.shouldShowDeleteItem = true;
+  }
+
+  closeItem() {
+    if (this.activeItem.status === this.alertstatusTypes.NEW || this.activeItem.status === this.alertstatusTypes.OPEN) {
+      this.shouldShowDeleteItem = false;
+      this.deleteItem(this.activeItem.id)
+    }
+  }
+
+  isFloatingNumber(text: string) {
+    const n = Number(text);
+    return Number(n) === n && n % 1 !== 0;
   }
 }
