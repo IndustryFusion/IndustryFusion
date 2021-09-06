@@ -199,6 +199,30 @@
   height: 30px;
 }
 
+.subsystem-grid {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  margin-top: -2rem;
+  margin-bottom: -2rem;
+
+  .upper {
+    width: 10px;
+    height: 50%;
+    border-bottom: 1px solid $middle-grey;
+    border-left: 1px solid $middle-grey;
+  }
+
+  .lower {
+    border-left: 1px solid $middle-grey;
+    height: 50%;
+  }
+
+  .last-element {
+    border: unset;
+  }
+}
+
 :host ::ng-deep .p-datatable	{
   margin: 30px 80px;
   border: hidden !important;

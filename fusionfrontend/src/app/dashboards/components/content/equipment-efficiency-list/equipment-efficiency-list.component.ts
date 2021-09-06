@@ -22,7 +22,8 @@ import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, TreeNode } from 'primeng/api';
+import { ID } from '@datorama/akita';
 
 
 interface ActiveFilter {
@@ -57,6 +58,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   date: Date = new Date(Date.now());
 
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
+  treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   faFilter = faFilter;
   faSearch = faSearch;
 
@@ -89,6 +91,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
+    this.updateTree();
   }
 
   searchAssets() {
@@ -172,6 +175,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
         this.filterAssetsByOneMaintenanceValue();
  }
     }
+    this.updateTree();
   }
 
   private filterBySearchText() {
@@ -267,5 +271,61 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
 
   getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields) {
     return asset.fields.find(field => field.name === 'Asset status');
+  }
+
+  private updateTree() {
+    if (this.displayedFactoryAssets) {
+      const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
+      const map = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
+      const reduce = map.reduce((acc, val) => acc.concat(val), []);
+      const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
+      this.displayedFactoryAssets
+        .filter(asset => !reduce.includes(asset.id))
+        .forEach((value: FactoryAssetDetailsWithFields) => {
+          treeData.push(this.addNode(null, value, expandedNodeIDs));
+        });
+      this.treeData = treeData;
+    }
+  }
+
+  private getExpandedNodeIDs(treeData: TreeNode[]): ID[] {
+    const expanded: ID[] = [];
+    for (const node of treeData) {
+      if (node.expanded) {
+        expanded.push(node.data.id);
+        expanded.push(...this.getExpandedNodeIDs(node.children));
+      }
+    }
+    return expanded;
+  }
+
+  private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
+                  value: FactoryAssetDetailsWithFields, expandetNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
+    const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
+      expanded: expandetNodeIDs.includes(value.id),
+      data: value,
+      parent,
+    };
+    if (value.subsystemIds?.length > 0) {
+      const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
+      value.subsystemIds.forEach(id => {
+        const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
+        if (subsytem) {
+          children.push(this.addNode(treeNode, subsytem, expandetNodeIDs));
+        }
+      });
+      treeNode.children = children;
+    }
+    return treeNode;
+  }
+
+  isLastChildElement(rowNode: any): boolean {
+    const subsystemIds = rowNode.parent?.data.subsystemIds;
+    if (subsystemIds) {
+      const index = subsystemIds.findIndex((value) => value === rowNode.node.data.id);
+      return index === subsystemIds.length - 1;
+    } else {
+      return null;
+    }
   }
 }
