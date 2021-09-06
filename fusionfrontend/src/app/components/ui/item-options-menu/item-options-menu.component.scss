@@ -15,11 +15,19 @@
 
 @import 'abstract/variables';
 
-.table-dropdown-menu-button {
+.table-dropdown-menu-button-inline {
   outline: none;
   background-color: transparent !important;
   color: $basic-grey !important;
   border: none !important;
+}
+
+.table-dropdown-menu-button-standalone {
+  outline: none;
+  background-color: $light-grey !important;
+  color: $regular-grey !important;
+  border: none !important;
+  border-radius: 10px !important;
 }
 
 .table-dropdown-menu {

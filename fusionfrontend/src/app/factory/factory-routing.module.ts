@@ -18,14 +18,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
 import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
-import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
-import { AssetDetailsPageComponent } from './components/pages/asset-details-page/asset-details-page.component';
 import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryManagerPageType } from './factory-routing.model';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { Role } from '../services/roles.model';
+import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 
 const routes: Routes = [
   {
@@ -119,33 +119,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms/:roomId/assets/:assetId',
-    component: AssetsGridPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/assets/:assetId',
-    component: AssetPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms/:roomId/assets/:assetId/asset-details',
-    component: AssetDetailsPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/assets',
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
@@ -173,15 +146,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'factorymanager/companies/:companyId/assets/rooms/:roomId/assets/:assetId',
-    component: AssetsGridPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
     path: 'factorymanager/companies/:companyId/assets/rooms/:roomId/asset-cards/:assetIdList',
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
@@ -192,7 +156,25 @@ const routes: Routes = [
   },
   {
     path: 'factorymanager/companies/:companyId/assets/:assetId',
-    component: AssetsGridPageComponent,
+    component: AssetPerformanceComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/:assetId/performance',
+    component: AssetPerformanceComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/:assetId/digital-nameplate',
+    component: AssetDigitalNameplateComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
@@ -214,4 +196,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FactoryRoutingModule { }
+export class FactoryRoutingModule {
+}

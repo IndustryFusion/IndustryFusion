@@ -25,7 +25,9 @@ under the License.
   <div class="list-item-cell grey" [style.width.%]="40" [routerLink]="getAssetLink(assetWithDetailsAndFields)">{{assetWithDetailsAndFields.manufacturer}}</div>
   <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="getAssetLink(assetWithDetailsAndFields)">{{assetWithDetailsAndFields.roomName}}</div>
   <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="getAssetLink(assetWithDetailsAndFields)">{{assetWithDetailsAndFields.factorySiteName}}</div>
-  <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="getAssetLink(assetWithDetailsAndFields)"> <app-status [asset]="assetWithDetailsAndFields" [showStatusCircle]="showStatusCircle"></app-status></div>
+  <div class="list-item-cell grey" [style.width.%]="15" [routerLink]="getAssetLink(assetWithDetailsAndFields)">
+    <app-status [asset]="assetWithDetailsAndFields" [showInline]="true"></app-status>
+  </div>
   <div class="list-item-cell grey" [style.width.%]="5" [ngClass]="{'hidden': !selected}">
     <div class="table-dropdown-menu">
       <p-menu #menu [popup]="true" [model]="menuActions"></p-menu>

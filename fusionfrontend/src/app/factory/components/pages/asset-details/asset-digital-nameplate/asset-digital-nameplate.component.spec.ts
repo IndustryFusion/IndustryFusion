@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetDetailsHeaderComponent } from './asset-details-header.component';
+import { AssetDigitalNameplateComponent } from './asset-digital-nameplate.component';
 
-describe('AssetDetailsHeaderComponent', () => {
-  let component: AssetDetailsHeaderComponent;
-  let fixture: ComponentFixture<AssetDetailsHeaderComponent>;
+describe('AssetCardComponent', () => {
+  let component: AssetDigitalNameplateComponent;
+  let fixture: ComponentFixture<AssetDigitalNameplateComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetDetailsHeaderComponent ]
+      declarations: [ AssetDigitalNameplateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetDetailsHeaderComponent);
+    fixture = TestBed.createComponent(AssetDigitalNameplateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

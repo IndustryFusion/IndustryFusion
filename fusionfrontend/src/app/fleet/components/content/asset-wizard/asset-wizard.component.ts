@@ -173,8 +173,8 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('description')?.setValue(assetSeries.description);
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
-      this.assetForm.get('handbookKey')?.setValue(assetSeries.handbookKey);
-      this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
+      this.assetForm.get('handbookUrl')?.setValue(assetSeries.handbookUrl);
+      this.assetForm.get('videoUrl')?.setValue(assetSeries.videoUrl);
       this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
       console.warn('[Asset wizard]: Related asset series not found', assetSeriesId);
@@ -230,8 +230,8 @@ export class AssetWizardComponent implements OnInit {
       constructionDate: [null, Validators.required],
       installationDate: [null],
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
-      handbookKey: [null, WizardHelper.maxTextLengthValidator],
-      videoKey: [null, WizardHelper.maxTextLengthValidator],
+      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
+      videoUrl: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [null, WizardHelper.maxTextLengthValidator],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });

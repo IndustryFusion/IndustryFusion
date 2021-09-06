@@ -13,8 +13,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div  [ngClass]="type?.includes(ItemOptionsMenuType.CREATE) ? 'table-dropdown-menu-wide' : 'table-dropdown-menu'">
-  <p-menu #menu [popup]="true" [model]="menuActions" [appendTo]="appendTo"></p-menu>
-  <button type="button" pButton icon="pi pi-ellipsis-h" (click)="menu.toggle($event);"
-          class="table-dropdown-menu-button"></button>
+<div [ngClass]="type?.includes(ItemOptionsMenuType.CREATE) ? 'table-dropdown-menu-wide' : 'table-dropdown-menu'">
+  <p-menu #menu [appendTo]="appendTo" [model]="menuActions" [popup]="true"></p-menu>
+  <button (click)="menu.toggle($event);"
+          [ngClass]="{'table-dropdown-menu-button-inline': showInline, 'table-dropdown-menu-button-standalone': !showInline}"
+          class="table-dropdown-menu-button" icon="pi pi-ellipsis-h" pButton
+          type="button"></button>
 </div>

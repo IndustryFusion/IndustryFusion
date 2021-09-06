@@ -43,8 +43,6 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
 
-  showStatusCircle = true;
-
   constructor(
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,

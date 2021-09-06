@@ -13,16 +13,28 @@
  * under the License.
  */
 
-@import 'abstract/variables';
+@import "abstract/variables";
 
-.wrapper{
-    background: $light-grey;
-    padding: 0 15%;
-    margin: 0;
-}
-
-
-.cards{
+.if-subheader {
+  ul {
     display: flex;
     justify-content: center;
+    list-style: none;
+
+    li {
+      padding: 15px 50px;
+      color: $basic-grey;
+      cursor: pointer;
+
+      &.active {
+        color: $basic-black;
+        background: transparent linear-gradient(92deg, $header-gradient-light, $header-gradient-dark) 0 100% no-repeat padding-box;
+        background-size: 100% 5px;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 }

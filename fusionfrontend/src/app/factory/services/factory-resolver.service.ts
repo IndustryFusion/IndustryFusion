@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, forkJoin, Observable, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 // import { switchMap } from 'rxjs/operators';
 import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
@@ -60,6 +60,7 @@ export class FactoryResolver {
   public assetsWithFields$: Observable<AssetWithFields[]>;
   public asset$: Observable<Asset>;
   public assetWithFields$: Observable<AssetWithFields>;
+  public assetWithDetailsAndFields$: Observable<FactoryAssetDetailsWithFields>;
   public fields$: Observable<FieldDetails[]>;
   public factorySubTitle$: Subject<string>;
   public companies$: Observable<Company[]>;
@@ -136,11 +137,15 @@ export class FactoryResolver {
     }
     const assetId = activatedRoute.snapshot.paramMap.get('assetId');
     this.assetService.setActive(assetId);
+    this.assetDetailsService.setActive(assetId);
     if (assetId != null) {
       this.fieldService.getFieldsOfAsset(companyId, assetId).subscribe();
       this.assetQuery.setSelectedAssetIds([assetId]);
       this.fields$ = this.fieldDetailsQuery.selectFieldsOfAsset(assetId);
-      this.assetWithFields$ = this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(this.assetQuery.getActive());
+      this.assetWithFields$ = this.assetQuery.waitForActive().pipe(mergeMap((asset) => {
+        return this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset);
+      }));
+      this.assetWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsOfActiveAsset();
     }
     const assetIdListParam = activatedRoute.snapshot.paramMap.get('assetIdList');
     if (assetIdListParam) {

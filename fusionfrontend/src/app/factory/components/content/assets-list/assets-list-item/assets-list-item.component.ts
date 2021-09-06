@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AssetModalMode, FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import {
+  AssetModalMode,
+  FactoryAssetDetailsWithFields
+} from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { Asset } from '../../../../../store/asset/asset.model';
 import { Room } from '../../../../../store/room/room.model';
 import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
@@ -42,7 +45,6 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   @Output()
   deleteAssetEvent = new EventEmitter<FactoryAssetDetailsWithFields>();
 
-  showStatusCircle = false;
   roomsOfFactorySite: Room[];
   assetDetailsForm: FormGroup;
   ref: DynamicDialogRef;
@@ -155,15 +157,13 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   }
 
   select() {
-    !this.selected ? this.assetSelected.emit(this.assetWithDetailsAndFields) : this.assetDeselected.emit(this.assetWithDetailsAndFields);
+    !this.selected ?
+      this.assetSelected.emit(this.assetWithDetailsAndFields) :
+      this.assetDeselected.emit(this.assetWithDetailsAndFields);
   }
 
   getAssetLink(asset: Asset) {
-    if (this.route.endsWith('assets')) {
-      return [asset.id];
-    } else {
-      return ['assets', asset.id];
-    }
+    return ['/factorymanager', 'companies', asset.companyId, 'assets', asset.id];
   }
 
   showDeleteDialog() {

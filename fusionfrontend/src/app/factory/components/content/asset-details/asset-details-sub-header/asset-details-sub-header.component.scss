@@ -13,21 +13,18 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
-import { Asset } from 'src/app/store/asset/asset.model';
+@import 'abstract/variables';
 
-@Component({
-  selector: 'app-asset-details-header',
-  templateUrl: './asset-details-header.component.html',
-  styleUrls: ['./asset-details-header.component.scss']
-})
-export class AssetDetailsHeaderComponent implements OnInit {
-  @Input()
-  asset: Asset;
+.subheader-flex {
+  display: flex;
+  flex-direction: row;
 
-  constructor() { }
-
-  ngOnInit() {
-
+  .flexbox {
+    flex: 1;
   }
 }
+
+.asset-details-subheader {
+  border-top: 1px solid $light-grey;
+}
+

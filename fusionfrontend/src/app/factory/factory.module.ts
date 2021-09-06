@@ -22,14 +22,12 @@ import { FactoryRoutingModule } from './factory-routing.module';
 import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
 import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
-import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
-import { AssetDetailsPageComponent } from './components/pages/asset-details-page/asset-details-page.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
 import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
-import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
-import { AssetDetailsHeaderComponent } from './components/content/asset-details/asset-details-header/asset-details-header.component';
+import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
+import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
@@ -60,16 +58,20 @@ import { FactorySitesListHeaderComponent } from './components/content/factory-si
 import { TableModule } from 'primeng/table';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
+import { AssetDetailsSubHeaderComponent } from './components/content/asset-details/asset-details-sub-header/asset-details-sub-header.component';
+import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
+import { CardModule } from 'primeng/card';
+import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
 
 @NgModule({
   declarations: [
     CompaniesPageComponent,
     CompanyPageComponent,
     FactorySitePageComponent,
-    AssetPageComponent,
     AssetsGridPageComponent,
     AssetsListPageComponent,
-    AssetDetailsPageComponent,
+    AssetPerformanceComponent,
     FactorySitesComponent,
     CompanyInfoComponent,
     AssetsListComponent,
@@ -77,8 +79,8 @@ import { AssignAssetToRoomComponent } from './components/content/assign-asset-to
     PrecisionPipe,
     ArraysortextendedPipe,
     ArrayFilterPipe,
-    AssetCardComponent,
-    AssetDetailsHeaderComponent,
+    AssetDigitalNameplateComponent,
+    AssetDetailsInfoComponent,
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
     MaintenanceBarComponent,
@@ -101,19 +103,25 @@ import { AssignAssetToRoomComponent } from './components/content/assign-asset-to
     FactorySiteDialogComponent,
     RoomsListComponent,
     AssignAssetToRoomComponent,
+    AssetDetailsSubHeaderComponent,
+    AssetCardComponent,
+    NameplateItemComponent
   ],
-    imports: [
-        IFCommon,
-        FactoryRoutingModule,
-        ClarityModule,
-        ChartsModule,
-        ReactiveFormsModule,
-        TableModule,
-    ],
+  imports: [
+    IFCommon,
+    FactoryRoutingModule,
+    ClarityModule,
+    ChartsModule,
+    ReactiveFormsModule,
+    TableModule,
+    CardModule,
+  ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
     ArraysortextendedPipe,
+    AssetDetailsSubHeaderComponent,
   ]
 })
-export class FactoryModule { }
+export class FactoryModule {
+}

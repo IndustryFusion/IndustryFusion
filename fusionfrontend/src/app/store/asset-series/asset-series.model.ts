@@ -25,8 +25,8 @@ export class AssetSeries extends BaseEntity {
    connectivitySettings: ConnectivitySettings;
    ceCertified: boolean;
    protectionClass: string;
-   handbookKey: string;
-   videoKey: string;
+   handbookUrl: string;
+   videoUrl: string;
    name: string;
    description: string;
    imageKey: string;

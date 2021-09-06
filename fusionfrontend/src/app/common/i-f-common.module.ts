@@ -27,6 +27,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
+import { BooleanPipe } from '../pipes/boolean.pipe';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
     AccuracyFormatPipe,
     LabelControlDirective,
     TooltipComponent,
+    BooleanPipe,
   ],
   imports: [
     CommonModule,
@@ -84,9 +86,11 @@ import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
     RadioButtonModule,
     LabelControlDirective,
     TooltipComponent,
+    BooleanPipe,
   ],
   providers: [
-    MessageService
+    MessageService,
+    BooleanPipe
   ]
 })
 export class IFCommon {

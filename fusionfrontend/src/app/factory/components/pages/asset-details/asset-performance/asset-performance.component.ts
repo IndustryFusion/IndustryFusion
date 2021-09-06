@@ -22,19 +22,19 @@ import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-details/field-details.model';
 import { ActivatedRoute } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { MaintenanceInterval } from '../../content/asset-details/maintenance-bar/maintenance-interval.model';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { MaintenanceInterval } from '../../../content/asset-details/maintenance-bar/maintenance-interval.model';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
 import * as moment from 'moment';
-import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
+import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
 
 @Component({
-  selector: 'app-asset-details-page',
-  templateUrl: './asset-details-page.component.html',
-  styleUrls: ['./asset-details-page.component.scss']
+  selector: 'app-asset-performance',
+  templateUrl: './asset-performance.component.html',
+  styleUrls: ['./asset-performance.component.scss']
 })
-export class AssetDetailsPageComponent implements OnInit, OnDestroy {
+export class AssetPerformanceComponent implements OnInit, OnDestroy {
   private unSubscribe$ = new Subject<void>();
 
   isLoading$: Observable<boolean>;
@@ -99,8 +99,7 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
           }
           return fieldCopy;
         });
-      }),
-      tap(fields => console.log(fields))
+      })
     );
 
     this.hoursTillValue$ = this.mergedFields$.pipe(
@@ -169,10 +168,6 @@ export class AssetDetailsPageComponent implements OnInit, OnDestroy {
     this.minDate =  this.datePipe.transform(localDate, 'yyyy-MM-dd');
     this.maxDate = this.datePipe.transform(moment(localDate).add(2, 'days').toDate(), 'yyyy-MM-dd');
     this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
-  }
-
-  rangeChange(event) {
-    console.log(event.target.value);
   }
 
   hasTypeCategorical(field: FieldDetails): boolean {
