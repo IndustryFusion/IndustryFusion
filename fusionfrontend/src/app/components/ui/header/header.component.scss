@@ -41,10 +41,7 @@ header {
       width: 64px;
       background: $grey-background;
       border-radius: 20px;
-      margin-top: 16px;
-      margin-right: 8px;
-      margin-left: 8px;
-      margin-bottom: 8px;
+      margin: 16px 8px 8px;
       cursor: pointer;
       outline: initial;
 
@@ -86,7 +83,7 @@ header {
       }
 
       &.active {
-        background: transparent linear-gradient(134deg, #8AC9C1 0%, #0089D8 100%) 0 0 no-repeat padding-box;
+        background: transparent linear-gradient(134deg, $header-gradient-light, $header-gradient-dark) 0 0 no-repeat padding-box;
 
         .icon {
           background-color: $light-grey;
