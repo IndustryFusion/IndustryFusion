@@ -15,6 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-asset-details-info',
@@ -22,8 +23,11 @@ import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asse
   styleUrls: ['./asset-details-info.component.scss']
 })
 export class AssetDetailsInfoComponent implements OnInit {
+
   @Input()
   asset: FactoryAssetDetailsWithFields;
+
+  dropdownMenuOptions: ItemOptionsMenuType[] = [];
 
   constructor() {
   }

@@ -56,6 +56,10 @@
     text-align: right;
   }
 
+  .asset-status-wrapper {
+    display: flex; flex-direction: row;
+  }
+
   .asset-menu {
     margin-left: 20px;
   }

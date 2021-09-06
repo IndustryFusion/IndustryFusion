@@ -35,25 +35,25 @@ under the License.
 
   <p-card class="card">
     <div class="grid">
-      <app-nameplate-item label="Asset type">{{(asset$ | async).assetTypeName}}</app-nameplate-item>
-      <app-nameplate-item label="Asset name">{{(asset$ | async).name}}</app-nameplate-item>
-      <app-nameplate-item label="Asset series">{{(asset$ | async).assetSeriesName}}</app-nameplate-item>
-      <app-nameplate-item label="Manufacturer">{{(asset$ | async).manufacturer}}</app-nameplate-item>
-      <app-nameplate-item label="Serial Number">{{(asset$ | async).serialNumber}}</app-nameplate-item>
+      <app-nameplate-item label="Asset type">{{(asset$ | async)?.assetTypeName}}</app-nameplate-item>
+      <app-nameplate-item label="Asset name">{{(asset$ | async)?.name}}</app-nameplate-item>
+      <app-nameplate-item label="Asset series">{{(asset$ | async)?.assetSeriesName}}</app-nameplate-item>
+      <app-nameplate-item label="Manufacturer">{{(asset$ | async)?.manufacturer}}</app-nameplate-item>
+      <app-nameplate-item label="Serial Number">{{(asset$ | async)?.serialNumber}}</app-nameplate-item>
       <app-nameplate-item
-        label="Construction Date">{{(asset$ | async).constructionDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
+        label="Construction Date">{{(asset$ | async)?.constructionDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
       <app-nameplate-item
-        label="Installation Date">{{(asset$ | async).installationDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
-      <app-nameplate-item label="CE Certification">{{(asset$ | async).ceCertified | boolean}}</app-nameplate-item>
-      <app-nameplate-item label="Protection Class">{{(asset$ | async).protectionClass}}</app-nameplate-item>
+        label="Installation Date">{{(asset$ | async)?.installationDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
+      <app-nameplate-item label="CE Certification">{{(asset$ | async)?.ceCertified | boolean}}</app-nameplate-item>
+      <app-nameplate-item label="Protection Class">{{(asset$ | async)?.protectionClass}}</app-nameplate-item>
     </div>
   </p-card>
   <div class="caption">Connectivity Settings</div>
   <p-card class="card">
     <div class="grid">
-      <app-nameplate-item label="Connectivity type">{{(asset$ | async).gatewayConnectivity}}</app-nameplate-item>
-      <app-nameplate-item label="Protocol">{{(asset$ | async).protocol}}</app-nameplate-item>
-      <app-nameplate-item label="Connection string">{{(asset$ | async).connectionString}}</app-nameplate-item>
+      <app-nameplate-item label="Connectivity type">{{(asset$ | async)?.gatewayConnectivity}}</app-nameplate-item>
+      <app-nameplate-item label="Protocol">{{(asset$ | async)?.protocol}}</app-nameplate-item>
+      <app-nameplate-item label="Connection string">{{(asset$ | async)?.connectionString}}</app-nameplate-item>
     </div>
   </p-card>
 </div>
