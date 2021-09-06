@@ -307,3 +307,58 @@
 .filter-panel {
   position: relative;
 }
+
+.asset-column {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.5rem;
+  margin-left: -0.5rem;
+  border: unset !important;
+
+  .subsystem-grid {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    margin-top: -2rem;
+    margin-bottom: -2rem;
+
+    .upper {
+      width: 10px;
+      height: 50%;
+      border-bottom: 1px solid $middle-grey;
+      border-left: 1px solid $middle-grey;
+    }
+
+    .lower {
+      border-left: 1px solid $middle-grey;
+      height: 50%;
+    }
+
+    .last-element {
+      border: unset;
+    }
+  }
+}
+
+.progressbar-wrapper {
+  position: relative;
+  width: 100%;
+
+  .progressbar-icon {
+    position: absolute;
+    bottom: 50%;
+    left: 86%;
+    width: 100%;
+    height: auto;
+    color: $alert-high;
+    &:hover {
+      color: $hover-grey;
+    }
+  }
+
+  app-maintenance-progressbar {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+  }
+}
