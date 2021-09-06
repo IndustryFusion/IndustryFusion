@@ -19,7 +19,7 @@
 .asset {
   display: flex;
   height: 180px;
-  padding: 0 100px;
+  padding: 0 5%;
 
   .asset-img {
     width: 120px;
@@ -42,7 +42,6 @@
   }
 
   p {
-    margin: 8px 0;
     color: $basic-grey;
     font-size: $regular-font-size;
     margin: 2px;
@@ -57,7 +56,8 @@
   }
 
   .asset-status-wrapper {
-    display: flex; flex-direction: row;
+    display: flex;
+    flex-direction: row;
   }
 
   .asset-menu {
