@@ -24,10 +24,15 @@ import { environment } from '../../../environments/environment';
 import { RoomService } from '../room/room.service';
 import { FactoryAssetDetailsStore } from '../factory-asset-details/factory-asset-details.store';
 import { FactoryAssetDetailsService } from '../factory-asset-details/factory-asset-details.service';
-import { FactoryAssetDetails } from '../factory-asset-details/factory-asset-details.model';
+import {
+  FactoryAssetDetails,
+  FactoryAssetDetailsWithFields
+} from '../factory-asset-details/factory-asset-details.model';
 import { FactorySiteService } from '../factory-site/factory-site.service';
 import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
-
+import { PointWithId } from '../../services/oisp.model';
+import { FieldDetails } from '../field-details/field-details.model';
+import { OispService } from '../../services/oisp.service';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +48,7 @@ export class AssetService {
               private assetDetailsStore: FactoryAssetDetailsStore,
               private factorySiteService: FactorySiteService,
               private roomService: RoomService,
+              private oispService: OispService,
               private http: HttpClient) {
   }
 
@@ -185,5 +191,29 @@ export class AssetService {
     mappedAsset.subsystemIds = assetDetails.subsystemIds;
     mappedAsset.connectionString = assetDetails.connectionString;
     return mappedAsset;
+  }
+
+  updateAssetWithFieldValue(asset: FactoryAssetDetailsWithFields) {
+    return new Observable<any>((observer) => {
+      this.oispService.getLastValueOfAllFields(asset, asset.fields, 600, true).subscribe((lastValues) => {
+          asset.fields = this.getAssetFieldValues(asset, lastValues);
+          observer.next(asset);
+        }, _ => {
+          observer.next(null);
+        }
+      );
+    });
+  }
+
+  getAssetFieldValues(asset: FactoryAssetDetailsWithFields, lastValues: PointWithId[]): FieldDetails[] {
+    return asset.fields.map((field) => {
+        const fieldCopy = Object.assign({ }, field);
+        const point = lastValues?.find(latestPoint => latestPoint.id === field.externalName);
+        if (point) {
+          fieldCopy.value = point.value;
+        }
+        return fieldCopy;
+      }
+    );
   }
 }

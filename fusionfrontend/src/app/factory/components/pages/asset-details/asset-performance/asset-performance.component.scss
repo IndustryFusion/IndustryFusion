@@ -16,48 +16,49 @@
 @import 'src/assets/sass/base/typography';
 @import "src/assets/sass/abstract/variables";
 
-.asset-details-wrapper{
+.asset-details-wrapper {
   border: 0px;
   background: $light-grey;
   margin: 0px;
   padding: 20px;
 
-  .modal-body{
+  .modal-body {
     height: 170px;
   }
 
-  .choiceOptions{
+  .choiceOptions {
     margin: 25px 50px;
   }
 
-  .okButton{
+  .okButton {
     margin: 25px 50px;
   }
 
-  .maxpoints{
+  .maxpoints {
     margin: 0px;
 
-    .pointslabel{
+    .pointslabel {
       margin: 0px;
     }
   }
 
-  .dater{
+  .dater {
     margin: 0px;
 
-    .datelabel{
+    .datelabel {
       margin: 0px;
     }
   }
 
-  .alert{
+  .alert {
     width: 50%;
   }
 
-  .alert-warning{
+  .alert-warning {
     margin: 25px 50px;
     width: 30%;
-    .gotIt{
+
+    .gotIt {
       border: 5px rgba(0, 0, 0, 0.32);
       background-color: inherit;
       color: hsl(198, 0%, 40%);
@@ -68,22 +69,50 @@
     }
   }
 
-  .tables-wrapper{
+  .tables-wrapper {
     background: $light-grey;
     margin: 25px 50px;
-    border: 0px ;
+    border: 0px;
   }
 
-  .radio-wrapper{
+  .radio-wrapper {
     background: $light-grey;
     padding-top: 20px;
     margin: 0px 50px 25px;
   }
 
-  .charts-container{
+  .charts-container {
     background: $light-grey;
     border: 0px;
     justify-content: center;
     margin: 25px 50px;
+  }
+
+  .progress-bar-container {
+    background: $basic-white;
+    border: 0px;
+    border-radius: 15px;
+    padding: 20px 30px;
+    margin: 20px 50px;
+    display: flex;
+    flex-direction: column;
+
+    .caption {
+      font-weight: bold;
+      color: $basic-black;
+    }
+  }
+
+  .progress-bar {
+    padding: 10px 0;
+  }
+
+  .highlight {
+    font-weight: bold;
+  }
+
+  .maintenance-text {
+    text-align: right;
+    font-size: $regular-font-size;
   }
 }

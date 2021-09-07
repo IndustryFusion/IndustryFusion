@@ -18,19 +18,22 @@ import {
   DashboardFilterModalType,
   FactoryAssetDetailsWithFields
 } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { faFilter, faSearch, faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronCircleDown, faChevronCircleUp, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 import { SelectItem, TreeNode } from 'primeng/api';
 import { OispAlert, OispAlertPriority } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
 import { ID } from '@datorama/akita';
+import {
+  AssetMaintenanceUtils,
+  AssetMaintenanceUtils as Utils,
+  MaintenanceType
+} from '../../../../factory/util/asset-maintenance-utils';
 
 interface ActiveFilter {
   filterAttribute: SelectItem;
 }
-
-export enum MaintenanceState { CRITICAL, MEDIUMTERM, LONGTERM }
 
 const SHORTTERM_PRIORITY = 'Critical (red)';
 const MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
@@ -46,16 +49,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   readonly MAINTENANCE_HIGHLIGHT_PERCENTAGE = 25;
 
-  readonly MAINTENANCE_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
-  readonly MAINTENANCE_HOURS_LOWER_THRESHOLD = 150;
-  readonly MAINTENANCE_HOURS_UPPER_THRESHOLD = 750;
-  readonly MAINTENANCE_HOURS_OVERSHOOTING_LIMIT = 1500;
-
-  readonly MAINTENANCE_DAYS_FIELD_NAME = 'Days till maintenance';
-  readonly MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
-  readonly MAINTENANCE_DAYS_UPPER_THRESHOLD = 180;
-  readonly MAINTENANCE_DAYS_OVERSHOOTING_LIMIT = 365;
-
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   @Input()
@@ -64,7 +57,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   companies: Company[];
   @Input()
   assetTypes: AssetType[];
-
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   faFilter = faFilter;
@@ -93,8 +85,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   searchText = '';
   index: number;
 
+  utils = Utils;
+
   constructor() {
   }
+
 
   ngOnInit(): void {
     this.filterOptions = [this.assetType, this.manufacturer, this.factory, this.maintenanceDue];
@@ -182,75 +177,29 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.updateTree();
   }
 
-  private updateTree() {
-    if (this.displayedFactoryAssets) {
-      const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
-      const map = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
-      const reduce = map.reduce((acc, val) => acc.concat(val), []);
-      const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
-      this.displayedFactoryAssets
-        .filter(asset => !reduce.includes(asset.id))
-        .forEach((value: FactoryAssetDetailsWithFields) => {
-        treeData.push(this.addNode(null, value, expandedNodeIDs));
-      });
-      this.treeData = treeData;
-    }
-  }
-
-  private getExpandedNodeIDs(treeData: TreeNode[]): ID[] {
-    const expanded: ID[] = [];
-    for (const node of treeData) {
-      if (node.expanded) {
-        expanded.push(node.data.id);
-        expanded.push(...this.getExpandedNodeIDs(node.children));
-      }
-    }
-    return expanded;
-  }
-
-  private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
-                  value: FactoryAssetDetailsWithFields, expandetNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
-    const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
-      expanded: expandetNodeIDs.includes(value.id),
-      data: value,
-      parent,
-    };
-    if (value.subsystemIds?.length > 0) {
-      const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
-      value.subsystemIds.forEach(id => {
-        const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
-        if (subsytem) {
-          children.push(this.addNode(treeNode, subsytem, expandetNodeIDs));
-        }
-      });
-      treeNode.children = children;
-    }
-    return treeNode;
-  }
-
   filterAssetsByTwoMaintenanceValues() {
     if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
-      this.filterAssetsLowerThanMaintenanceValue(this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
+      this.filterAssetsLowerThanMaintenanceValue(Utils.maintenanceDays.upperThreshold);
     } else if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-      this.filterAssetOutsideTwoMaintenanceValues(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
+      this.filterAssetOutsideTwoMaintenanceValues(Utils.maintenanceDays.lowerThreshold, Utils.maintenanceDays.upperThreshold);
     } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-      this.filterAssetsGreaterThanMaintenanceValue(this.MAINTENANCE_DAYS_LOWER_THRESHOLD);
+      this.filterAssetsGreaterThanMaintenanceValue(Utils.maintenanceDays.lowerThreshold);
     }
   }
 
   filterAssetsByOneMaintenanceValue() {
     if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY)) {
-      this.filterAssetsLowerThanMaintenanceValue(this.MAINTENANCE_DAYS_LOWER_THRESHOLD);
+      this.filterAssetsLowerThanMaintenanceValue(Utils.maintenanceDays.lowerThreshold);
     } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
-      this.filterAssetsBetweenTwoMaintenanceValues(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
+      this.filterAssetsBetweenTwoMaintenanceValues(Utils.maintenanceDays.lowerThreshold, Utils.maintenanceDays.upperThreshold);
     } else if (this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-      this.filterAssetsGreaterThanMaintenanceValue(this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
+      this.filterAssetsGreaterThanMaintenanceValue(Utils.maintenanceDays.upperThreshold);
     }
   }
 
   filterAssetsLowerThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === Utils.maintenanceDays.fieldName);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
       }
@@ -259,7 +208,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsGreaterThanMaintenanceValue(value: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === Utils.maintenanceDays.fieldName);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > value;
       }
@@ -268,7 +217,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetOutsideTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === Utils.maintenanceDays.fieldName);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < lowerValue ||
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > greaterValue;
@@ -278,28 +227,12 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   filterAssetsBetweenTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
     this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-      this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+      this.index = asset.fields.findIndex(field => field.name === Utils.maintenanceDays.fieldName);
       if (this.index !== -1) {
         return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < greaterValue &&
           Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > lowerValue;
       }
     });
-  }
-
-  public getMaintenanceHoursValue(asset: FactoryAssetDetailsWithFields): number {
-    return +asset.fields.find(field => field.name === this.MAINTENANCE_HOURS_FIELD_NAME)?.value;
-  }
-
-  public getMaintenanceHoursPercentage(asset: FactoryAssetDetailsWithFields): number {
-    return this.getMaintenanceHoursValue(asset) / this.MAINTENANCE_HOURS_OVERSHOOTING_LIMIT * 100;
-  }
-
-  public getMaintenanceDaysValue(asset: FactoryAssetDetailsWithFields): number {
-    return +asset.fields.find(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME)?.value;
-  }
-
-  public getMaintenanceDaysPercentage(asset: FactoryAssetDetailsWithFields): number {
-    return this.getMaintenanceDaysValue(asset) / this.MAINTENANCE_DAYS_OVERSHOOTING_LIMIT * 100;
   }
 
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
@@ -316,10 +249,25 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     return openAlertPriority;
   }
 
+  isLastChildElement(rowNode: any): boolean {
+    const subsystemIds = rowNode.parent?.data.subsystemIds;
+    if (subsystemIds) {
+      const index = subsystemIds.findIndex((value) => value === rowNode.node.data.id);
+      return index === subsystemIds.length - 1;
+    } else {
+      return null;
+    }
+  }
+
+  openNode(node: TreeNode) {
+    node.expanded = !node.expanded;
+    this.treeData = [...this.treeData];
+  }
+
   public isMaintenanceNeededSoon(node: TreeNode): boolean {
     const asset = node.data;
-    return (this.getMaintenanceHoursValue(asset) && this.getMaintenanceHoursPercentage(asset) < this.MAINTENANCE_HIGHLIGHT_PERCENTAGE) ||
-      (this.getMaintenanceDaysValue(asset) && this.getMaintenanceDaysPercentage(asset) < this.MAINTENANCE_HIGHLIGHT_PERCENTAGE);
+    return this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
+      || this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
   }
 
   public isChildrenMaintenanceNeededSoon(node: TreeNode): boolean {
@@ -333,13 +281,55 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     return result;
   }
 
-  public getMaintenanceState(value: number, lowerThreshold: number, upperThreshold: number): MaintenanceState {
-    if (value < lowerThreshold) {
-      return MaintenanceState.CRITICAL;
-    } else if (value < upperThreshold) {
-      return MaintenanceState.MEDIUMTERM;
+  private isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
+    return Utils.getMaintenanceValue(asset, type)
+      && Utils.getMaintenancePercentage(asset, type) < this.MAINTENANCE_HIGHLIGHT_PERCENTAGE;
+  }
+
+  private updateTree() {
+    if (this.displayedFactoryAssets) {
+      const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
+      const map = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
+      const reduce = map.reduce((acc, val) => acc.concat(val), []);
+      const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
+      this.displayedFactoryAssets
+        .filter(asset => !reduce.includes(asset.id))
+        .forEach((value: FactoryAssetDetailsWithFields) => {
+          treeData.push(this.addNode(null, value, expandedNodeIDs));
+        });
+      this.treeData = treeData;
     }
-    return MaintenanceState.LONGTERM;
+  }
+
+  private getExpandedNodeIDs(treeData: TreeNode[]): ID[] {
+    const expanded: ID[] = [];
+    for (const node of treeData) {
+      if (node.expanded) {
+        expanded.push(node.data.id);
+        expanded.push(...this.getExpandedNodeIDs(node.children));
+      }
+    }
+    return expanded;
+  }
+
+  private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
+                  value: FactoryAssetDetailsWithFields, expandedNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
+    const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
+      expanded: expandedNodeIDs.includes(value.id),
+      data: value,
+      parent,
+    };
+    if (value.subsystemIds?.length > 0) {
+      const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
+      value.subsystemIds.forEach(id => {
+        const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
+        if (subsytem) {
+          children.push(this.addNode(treeNode, subsytem, expandedNodeIDs));
+        }
+      });
+      treeNode.children = children;
+    }
+    return treeNode;
   }
 
   private filterBySearchText() {
@@ -369,20 +359,5 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       this.displayedFactoryAssets = this.displayedFactoryAssets
         .filter(asset => factorySiteNames.includes(asset.factorySiteName));
     }
-  }
-
-  isLastChildElement(rowNode: any): boolean {
-    const subsystemIds = rowNode.parent?.data.subsystemIds;
-    if (subsystemIds) {
-      const index = subsystemIds.findIndex((value) => value === rowNode.node.data.id);
-      return index === subsystemIds.length - 1;
-    } else {
-      return null;
-    }
-  }
-
-  openNode(node: TreeNode) {
-    node.expanded = !node.expanded;
-    this.treeData = [...this.treeData];
   }
 }

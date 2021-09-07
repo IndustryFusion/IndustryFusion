@@ -15,8 +15,12 @@
 
 
 import { Component, Input, OnInit } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
-import { MaintenanceState } from '../maintenance-list.component';
+import { FactoryAssetDetailsWithFields } from '../../../store/factory-asset-details/factory-asset-details.model';
+import {
+  AssetMaintenanceUtils,
+  MaintenanceState,
+  MaintenanceType
+} from '../../../factory/util/asset-maintenance-utils';
 
 @Component({
   selector: 'app-maintenance-progressbar',
@@ -29,20 +33,21 @@ export class MaintenanceProgressbarComponent implements OnInit {
   asset: FactoryAssetDetailsWithFields;
 
   @Input()
-  maintenanceValue: number;
+  type: MaintenanceType;
 
-  @Input()
-  maintenancePercentage: number;
+  maintenanceStates = MaintenanceState;
 
-  @Input()
   state: MaintenanceState;
-
-  maintenanceState = MaintenanceState;
+  maintenanceValue: number;
+  maintenancePercentage: number;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.maintenanceValue = AssetMaintenanceUtils.getMaintenanceValue(this.asset, this.type);
+    this.maintenancePercentage = AssetMaintenanceUtils.getMaintenancePercentage(this.asset, this.type);
+    this.state = AssetMaintenanceUtils.getMaintenanceState(this.maintenanceValue, this.type);
   }
 
 }

@@ -15,7 +15,7 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, forkJoin, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, Subject } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 // import { switchMap } from 'rxjs/operators';
 import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
@@ -57,10 +57,12 @@ export class FactoryResolver {
   public assetSeries$: Observable<AssetSeriesDetails[]>;
   public assets$: Observable<Asset[]>;
   public assetsWithDetailsAndFields$: Observable<FactoryAssetDetailsWithFields[]>;
+  public assetsWithDetailsAndFieldsAndValues$: Observable<FactoryAssetDetailsWithFields[]>;
   public assetsWithFields$: Observable<AssetWithFields[]>;
   public asset$: Observable<Asset>;
   public assetWithFields$: Observable<AssetWithFields>;
   public assetWithDetailsAndFields$: Observable<FactoryAssetDetailsWithFields>;
+  public assetWithDetailsAndFieldsAndValues$: Observable<FactoryAssetDetailsWithFields>;
   public fields$: Observable<FieldDetails[]>;
   public factorySubTitle$: Subject<string>;
   public companies$: Observable<Company[]>;
@@ -116,6 +118,16 @@ export class FactoryResolver {
             assetDetailsArray.map(assetDetails => this.fieldService.getFieldsOfAsset(companyId, assetDetails.id))))
       ).subscribe();
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinAssetsDetailsWithFieldInstancesWithAlerts();
+      this.assetsWithDetailsAndFieldsAndValues$ = this.assetsWithDetailsAndFields$.pipe(
+        mergeMap((assets) =>
+          combineLatest(
+            assets.map((asset) => {
+              return this.assetService.updateAssetWithFieldValue(asset);
+            })
+          )
+        ),
+      );
+
     }
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
@@ -146,6 +158,9 @@ export class FactoryResolver {
         return this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset);
       }));
       this.assetWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsOfActiveAsset();
+      this.assetWithDetailsAndFieldsAndValues$ = this.assetWithDetailsAndFields$.pipe(
+        mergeMap((asset) => this.assetService.updateAssetWithFieldValue(asset))
+      );
     }
     const assetIdListParam = activatedRoute.snapshot.paramMap.get('assetIdList');
     if (assetIdListParam) {

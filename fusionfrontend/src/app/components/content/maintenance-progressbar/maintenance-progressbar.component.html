@@ -15,19 +15,19 @@ under the License.
 
 <div class="maintenance-value">
   <div *ngIf="maintenanceValue" [style.width.%]="100" class="label-success">
-    <div *ngIf="state == maintenanceState.CRITICAL" class="container">
+    <div *ngIf="state == maintenanceStates.CRITICAL" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
                      class="critical-bar"></p-progressBar>
       <p [ngClass]="maintenancePercentage<=10 ? 'value-label-low' : 'value-label'"
          class="progress-bar-label">{{ maintenanceValue }}</p>
     </div>
-    <div *ngIf="state == maintenanceState.MEDIUMTERM" class="container">
+    <div *ngIf="state == maintenanceStates.MEDIUMTERM" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
                      class="midterm-bar"></p-progressBar>
       <p [ngClass]="maintenancePercentage<=20 ? 'value-label-low' : 'value-label'"
          class="progress-bar-label value-label">{{ maintenanceValue }}</p>
     </div>
-    <div *ngIf="state == maintenanceState.LONGTERM" class="container">
+    <div *ngIf="state == maintenanceStates.LONGTERM" class="container">
       <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
                      class="longterm-bar"></p-progressBar>
       <p class="progress-bar-label value-label">{{ maintenanceValue }}</p>

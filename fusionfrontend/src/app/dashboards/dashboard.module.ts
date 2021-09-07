@@ -26,8 +26,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { environment } from 'src/environments/environment';
 import { MaintenancePageComponent } from 'src/app/dashboards/components/pages/maintenance-page/maintenance-page.component';
 import { MaintenanceListComponent } from './components/content/maintenance-list/maintenance-list.component';
-import { MaintenanceProgressbarComponent } from './components/content/maintenance-list/maintenance-progressbar/maintenance-progressbar.component';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
 import { IFCommon } from '../common/i-f-common.module';
@@ -41,7 +39,6 @@ import { TreeModule } from 'primeng/tree';
     DashboardSubHeaderComponent,
     MaintenancePageComponent,
     MaintenanceListComponent,
-    MaintenanceProgressbarComponent,
     MaintenanceAssetSortPipe
   ],
   imports: [
@@ -54,7 +51,6 @@ import { TreeModule } from 'primeng/tree';
     ChartsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    ProgressBarModule,
     OverlayPanelModule,
     TableModule,
     TreeTableModule,
