@@ -13,4 +13,16 @@
  * under the License.
  */
 
-@import '../../../ecosystem/components/content/base/base-list-header/base-list-header.component.scss';
+@import 'src/app/ecosystem/components/content/base/base-list/base-list.component';
+
+.folder-view {
+  margin-right: 16px;
+}
+
+.notifications-list {
+  margin: 0 80px;
+}
+
+.notification-state-button {
+  margin: 0 8px;
+}

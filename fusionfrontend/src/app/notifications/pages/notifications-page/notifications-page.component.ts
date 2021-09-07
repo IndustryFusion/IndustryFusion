@@ -20,6 +20,7 @@ import { Observable } from 'rxjs';
 import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
 import { OispAlertStatus } from '../../../store/oisp/oisp-alert/oisp-alert.model';
 import { OispNotificationService } from '../../../store/oisp/oisp-notification/oisp-notification.service';
+import { NotificationState } from '../../../components/content/notifications-list/notifications-list.component';
 
 @Component({
   selector: 'app-notifications-page',
@@ -35,9 +36,22 @@ export class NotificationsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.notifications$ = this.oispNotificationService.getNotificationsUsingAlertStore().pipe(
+    this.notifications$ = this.oispNotificationService.getAllNotificationsUsingAlertStore().pipe(
       map(notifications => this.filterNotificationsByStatus(notifications))
     );
+  }
+
+  isRouteActive(subroute: string): boolean {
+    const snapshot = this.activatedRoute.snapshot;
+    return snapshot.url.map(segment => segment.path).includes(subroute);
+  }
+
+  getOpenedTab(): NotificationState {
+    if (this.isRouteActive('open')) {
+      return NotificationState.OPEN;
+    } else {
+      return NotificationState.CLEARED;
+    }
   }
 
   private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
@@ -46,10 +60,5 @@ export class NotificationsPageComponent implements OnInit {
     } else {
       return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
     }
-  }
-
-  isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 }

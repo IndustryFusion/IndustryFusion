@@ -29,13 +29,15 @@ import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
 })
 export class OispNotificationService {
 
-  constructor(private oispNotificationStore: OispNotificationStore,
-              private oispAlertQuery: OispAlertQuery,
-              private oispDeviceQuery: OispDeviceQuery) { }
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     params: new HttpParams()
   };
+
+  constructor(private oispNotificationStore: OispNotificationStore,
+              private oispAlertQuery: OispAlertQuery,
+              private oispDeviceQuery: OispDeviceQuery) {
+  }
 
   private static mapAlertToNotification(alert: OispAlert, assetName: string): OispNotification {
     const notification = new OispNotification();
@@ -59,28 +61,47 @@ export class OispNotificationService {
     return notification;
   }
 
+  getAllNotificationsUsingAlertStore(limitToDeviceId: string = null): Observable<OispNotification[]> {
+    return this.oispDeviceQuery.selectAll().pipe(
+      map(devices => this.filterDevicesByUid(devices, limitToDeviceId)),
+      mergeMap((devices: Device[]) => {
+        return this.oispAlertQuery.selectAll().pipe(
+          map(alerts => this.filterAlertsByDevices(alerts, limitToDeviceId ? devices : null)),
+          map((alerts: OispAlert[]) => {
+            return alerts.map<OispNotification>((alert: OispAlert) => this.getNotificationOfAlertWithDevices(alert, devices));
+          }),
+          tap(notifications => {
+            this.oispNotificationStore.upsertMany(notifications);
+          })
+        );
+      })
+    );
+  }
+
+  filterDevicesByUid(devices: Device[], deviceId: string = null) {
+    return devices.filter(device => {
+      if (deviceId) {
+        return device.deviceId === deviceId;
+      }
+      return true;
+    });
+  }
+
+  filterAlertsByDevices(alerts: OispAlert[], devices: Device[]) {
+    return alerts.filter(alert => {
+      if (devices) {
+        return devices.find(device => device.uid === alert.deviceUID) != null;
+      }
+      return true;
+    });
+  }
+
   private getNotificationOfAlertWithDevices(alert: OispAlert, devices: Device[]): OispNotification {
     let assetName = null;
     if (devices && alert) {
       const deviceOfAlert = devices.find(device => String(device.uid) === String(alert.deviceUID));
       assetName = deviceOfAlert?.name;
     }
-
     return OispNotificationService.mapAlertToNotification(alert, assetName);
-  }
-
-  getNotificationsUsingAlertStore(): Observable<OispNotification[]> {
-    return this.oispDeviceQuery.selectAll()
-      .pipe(mergeMap((devices: Device[]) => {
-          return this.oispAlertQuery.selectAll().pipe(
-            map((alerts: OispAlert[]) => {
-              return alerts.map<OispNotification>((alert: OispAlert) => this.getNotificationOfAlertWithDevices(alert, devices));
-            }),
-            tap(notifications => {
-              this.oispNotificationStore.upsertMany(notifications);
-            })
-          );
-        })
-      );
   }
 }

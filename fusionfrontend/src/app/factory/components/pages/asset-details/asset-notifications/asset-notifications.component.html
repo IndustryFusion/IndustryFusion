@@ -13,4 +13,11 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-notifications-list [items$]="notifications$" [state]="getOpenedTab()"></app-notifications-list>
+<div *ngIf="getOpenedTab() == allStates.OPEN">
+  <app-notifications-list [isInline]="true" [items$]="openNotifications$"
+                          [state]="allStates.OPEN"></app-notifications-list>
+</div>
+<div *ngIf="getOpenedTab() == allStates.CLEARED">
+  <app-notifications-list [isInline]="true" [items$]="clearedNotifications$"
+                          [state]="allStates.CLEARED"></app-notifications-list>
+</div>

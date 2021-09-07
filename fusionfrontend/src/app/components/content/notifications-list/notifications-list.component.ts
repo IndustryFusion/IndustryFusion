@@ -18,10 +18,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
 import { OispAlertService } from '../../../store/oisp/oisp-alert/oisp-alert.service';
 import { environment } from '../../../../environments/environment';
+import { Location } from '@angular/common';
+
+export enum NotificationState { OPEN, CLEARED}
 
 @Component({
   selector: 'app-notifications-list',
@@ -30,33 +33,33 @@ import { environment } from '../../../../environments/environment';
 })
 export class NotificationsListComponent implements OnInit, OnDestroy {
 
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
-
   @Input() items$: Observable<OispNotification[]>;
-  @Input() isOpen: boolean;
-
+  @Input() state: NotificationState;
+  @Input() isInline: false;
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };
-
   sortField: string;
   selected: Set<ID> = new Set();
   intervalId: number;
-
   faSearch = faSearch;
   searchText = '';
   allNotifications: OispNotification[];
   filteredNotifications: OispNotification[];
+  allStates = NotificationState;
+  itemsSub: Subscription;
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
 
   constructor(
-    public route: ActivatedRoute,
+    public activatedRoute: ActivatedRoute,
     public router: Router,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    private oispAlertService: OispAlertService
+    private oispAlertService: OispAlertService,
+    private routingLocation: Location
   ) {
   }
 
   ngOnInit() {
-    this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
+    this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.periodicallyFetchNotifications();
     this.initMappings();
   }
@@ -64,24 +67,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
   }
-
-  private initMappings(): void {
-    this.titleMapping = {
-      '=0': `No ${this.getStatusName()} Notification`,
-      '=1': `# ${this.getStatusName()} Notification`,
-      other: `# ${this.getStatusName()} Notifications`
-    };
-    this.editBarMapping = {
-      '=0': `No ${this.getStatusName()} Notification selected`,
-      '=1': `# ${this.getStatusName()} Notification selected`,
-      other: `# ${this.getStatusName()} Notifications selected`
-    };
-  }
-
-  private getStatusName(): string {
-    return this.isOpen ? 'Open' : 'Cleared';
-  }
-
 
   onSort(field: string): void {
     this.sortField = field;
@@ -97,7 +82,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   deleteItems(): void {
     this.selected.forEach(id => {
-          this.deleteItem(id);
+      this.deleteItem(id);
     });
   }
 
@@ -120,6 +105,52 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.filterNotifications();
   }
 
+  public changeTab(state: NotificationState) {
+    if (state === NotificationState.CLEARED) {
+      this.navigateToSubroute('cleared');
+    } else {
+      this.navigateToSubroute('open');
+    }
+  }
+
+  navigateToSubroute(subroute): Promise<boolean> {
+    let newRoute = ['..', subroute];
+    if (this.routingLocation.path().match(`\/notifications$`)) {
+      newRoute = [subroute];
+    }
+    return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
+  }
+
+  private getActiveRouteLastChild() {
+    let route = this.activatedRoute;
+    while (route.firstChild !== null) {
+      route = route.firstChild;
+    }
+    return route;
+  }
+
+  private initMappings(): void {
+    this.titleMapping = {
+      '=0': `No ${this.getStatusName()} Notification`,
+      '=1': `# ${this.getStatusName()} Notification`,
+      other: `# ${this.getStatusName()} Notifications`
+    };
+    this.editBarMapping = {
+      '=0': `No ${this.getStatusName()} Notification selected`,
+      '=1': `# ${this.getStatusName()} Notification selected`,
+      other: `# ${this.getStatusName()} Notifications selected`
+    };
+  }
+
+  private getStatusName(): string {
+    switch (this.state) {
+      case NotificationState.CLEARED:
+        return 'Cleared';
+      case NotificationState.OPEN:
+        return 'Open';
+    }
+  }
+
   private filterNotifications(): void {
     this.filteredNotifications = this.allNotifications;
 
@@ -139,7 +170,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private fetchNotifications() {
-    this.items$.subscribe(notifications => {
+    this.itemsSub?.unsubscribe();
+    this.itemsSub = this.items$?.subscribe(notifications => {
       this.allNotifications = notifications;
       this.filterNotifications();
     });

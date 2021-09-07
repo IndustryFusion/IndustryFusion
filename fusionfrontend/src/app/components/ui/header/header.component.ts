@@ -28,31 +28,29 @@ import { OispAlertQuery } from '../../../store/oisp/oisp-alert/oisp-alert.query'
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private unSubscribe$ = new Subject<void>();
-
   @Input()
   factorySubTitle$: Subject<string>;
   @Input()
   ecoSystemManagerSubTitle$: Subject<string>;
   @Input()
   user: User;
-
   route: string;
   show: boolean;
-
   openAlertCount = 0;
   ManagerType = ManagerType;
+  private unSubscribe$ = new Subject<void>();
 
   constructor(private routingLocation: Location,
               private oispAlertQuery: OispAlertQuery,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.show = true;
     this.router.events
-    .pipe(
-      takeUntil(this.unSubscribe$)
-    ).subscribe(() => {
+      .pipe(
+        takeUntil(this.unSubscribe$)
+      ).subscribe(() => {
       if (this.routingLocation.path() !== '') {
         this.route = this.routingLocation.path();
       } else {
@@ -62,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.oispAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
-    } );
+    });
   }
 
   isManager(manager: ManagerType) {
@@ -94,11 +92,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   isNotifications() {
-    return this.route && this.route.match(`\/${'notifications'}\/`);
+    return this.route
+      && this.route.match(`\/notifications\/`)
+      && !this.route.match(`assets\/[0-9]*\/notifications\/`);
   }
 
   isAssetDetails() {
-      return this.route && this.route.match(`\/assets\/[0-9]*`);
+    return this.route && this.route.match(`\/assets\/[0-9]*`);
   }
 
   ngOnDestroy(): void {

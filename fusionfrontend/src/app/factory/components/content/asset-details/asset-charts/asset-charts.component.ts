@@ -170,7 +170,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (this.initialized) {
       if (changes.options) {
-        console.log('options: ' + this.options);
         switch ( this.options ){
             case 'current':
               this.flushData();

@@ -1,0 +1,78 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="notifications-list">
+  <div class="p-grid p-dir-row p-justify-between p-align-center list-header">
+    <div class="title">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</div>
+    <div class="p-col"></div>
+    <div *ngIf="isInline" class="notification-state-button">
+      <button (click)="changeTab(allStates.OPEN)" [disabled]="state == allStates.OPEN" class="if-light-button">
+        Open
+      </button>
+    </div>
+    <div *ngIf="isInline" class="notification-state-button">
+      <button (click)="changeTab(allStates.CLEARED)" [disabled]="state == allStates.CLEARED" class="if-light-button">
+        Cleared
+      </button>
+    </div>
+  </div>
+  <div>
+    <div class="list-container">
+      <div *ngIf="selected.size > 0" class="list-edit-bar">
+        <div [style.width.%]="5" class="list-edit-bar-item">
+          <clr-icon shape="check-circle" size="20"></clr-icon>
+        </div>
+        <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
+        <div [style.width.%]="50" class="list-edit-bar-item">
+          <button (click)="deleteItems()" class="btn btn-link button-white">
+            <clr-icon shape="trash"></clr-icon>
+          </button>
+        </div>
+        <div [style.width.%]="35" class="list-edit-bar-last-item">
+          <button (click)="deselectAllItems()" class="btn btn-link button-white">
+            <clr-icon shape="times"></clr-icon>
+            Close
+          </button>
+        </div>
+      </div>
+      <app-notifications-list-header (sortEvent)="onSort($event)" [searchpanel]="searchpanel">
+      </app-notifications-list-header>
+      <app-notifications-list-item (itemDelete)="deleteItem($event)" (itemDeselected)="onItemDeselect($event)"
+                                   (itemSelected)="onItemSelect($event)"
+                                   *ngFor="let item of filteredNotifications"
+                                   [isCloseable]="state == allStates.OPEN"
+                                   [item]="item"
+                                   [selected]="isSelected(item.id)">
+      </app-notifications-list-item>
+    </div>
+  </div>
+</div>
+
+<p-overlayPanel #searchpanel [showCloseIcon]="true" class="assetSearchPanel">
+  <ng-template pTemplate>
+    <div class="panel-heading">Search</div>
+    <span class="p-input-icon-left">
+            <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
+            <input [(ngModel)]="searchText" class="search-input" pInputText placeholder="Name" type="text">
+        </span>
+    <br>
+    <div class="footer">
+      <button (click)="searchAssets(); searchpanel.hide()" class="if-button button-primary button-modal"
+              style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"
+              type="button">Apply
+      </button>
+    </div>
+  </ng-template>
+</p-overlayPanel>

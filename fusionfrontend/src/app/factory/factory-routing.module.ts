@@ -26,6 +26,7 @@ import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { Role } from '../services/roles.model';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
+import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 
 const routes: Routes = [
   {
@@ -168,7 +169,7 @@ const routes: Routes = [
     component: AssetPerformanceComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
       roles: [Role.FACTORY_MANAGER]
     }
   },
@@ -177,7 +178,25 @@ const routes: Routes = [
     component: AssetDigitalNameplateComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/:assetId/notifications',
+    component: AssetNotificationsComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
+      roles: [Role.FACTORY_MANAGER]
+    }
+  },
+  {
+    path: 'factorymanager/companies/:companyId/assets/:assetId/notifications/:state',
+    component: AssetNotificationsComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
       roles: [Role.FACTORY_MANAGER]
     }
   },
