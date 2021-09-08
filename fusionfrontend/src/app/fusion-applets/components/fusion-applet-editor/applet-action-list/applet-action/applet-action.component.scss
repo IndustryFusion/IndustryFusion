@@ -53,7 +53,7 @@
   }
 
   .list-item {
-    background: #FFFFFF 0% 0% no-repeat padding-box;
+    background: $basic-white 0% 0% no-repeat padding-box;
     border-radius: 10px;
     opacity: 1;
     flex: auto;
@@ -68,7 +68,7 @@
   }
 
   .add-button {
-    background: #FFFFFF 0% 0% no-repeat padding-box;
+    background: $basic-white 0% 0% no-repeat padding-box;
     border-radius: 10px;
     border: unset;
     width: 2rem;

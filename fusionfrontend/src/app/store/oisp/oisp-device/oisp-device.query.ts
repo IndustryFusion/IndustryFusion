@@ -16,6 +16,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { OispDeviceState, OispDeviceStore } from './oisp-device.store';
+import { Device, DeviceComponent } from './oisp-device.model';
 
 @Injectable({ providedIn: 'root' })
 export class OispDeviceQuery extends QueryEntity<OispDeviceState> {
@@ -24,23 +25,32 @@ export class OispDeviceQuery extends QueryEntity<OispDeviceState> {
     super(store);
   }
 
-  mapExternalNameOFieldInstanceToComponentId(externalNameOfAsset: string, externalNameOfFieldInstance: string): string {
+  getComponentOfFieldInstance(externalNameOfAsset: string, externalNameOfFieldInstance: string): DeviceComponent {
     if (this.getAll().length < 1) {
       console.error('[oisp device query]: No devices loaded. Forgot to add resolver?');
     }
+    return this.getEntity(externalNameOfAsset)?.components.find(c => c.name === externalNameOfFieldInstance);
+  }
+
+  mapExternalNameOFieldInstanceToComponentId(externalNameOfAsset: string, externalNameOfFieldInstance: string): string {
+    const component: DeviceComponent = this.getComponentOfFieldInstance(externalNameOfAsset, externalNameOfFieldInstance);
     let externalId = externalNameOfFieldInstance;
-    const foundComponent = this.getEntity(externalNameOfAsset)?.components.find(c => c.name === externalNameOfFieldInstance);
-    if (foundComponent) {
-      externalId = foundComponent.cid;
+    if (component) {
+      externalId = component.cid;
     }
     return externalId;
   }
 
-  mapExternalNameOfAssetToDeviceUid(externalName: string): string {
+  getDeviceOfAsset(externalName: string): Device {
     if (this.getAll().length < 1) {
       console.error('[oisp device query]: No devices loaded. Forgot to add resolver?');
     }
-    return this.getEntity(externalName)?.uid ?? externalName;
+    return this.getEntity(externalName);
+  }
+
+  mapExternalNameOfAssetToDeviceUid(externalName: string): string {
+    const device: Device = this.getDeviceOfAsset(externalName);
+    return device ? device.uid : externalName;
   }
 
   resetStore() {
