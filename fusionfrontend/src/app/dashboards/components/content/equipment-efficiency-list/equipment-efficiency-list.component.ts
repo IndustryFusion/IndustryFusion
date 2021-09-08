@@ -30,7 +30,6 @@ interface ActiveFilter {
   filterAttribute: SelectItem;
 }
 
-// TODO (tse): remove
 const CRITICAL_MAINTENANCE_VALUE = 375;
 const MEDIUMTERM_MAINTENANCE_VALUE = 750;
 const SHORTTERM_PRIORITY = 'Critical (red)';

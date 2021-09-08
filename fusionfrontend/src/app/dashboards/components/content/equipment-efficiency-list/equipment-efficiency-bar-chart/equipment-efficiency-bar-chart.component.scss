@@ -16,23 +16,23 @@
 @import "abstract/variables";
 
 .maintenance-value {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .container {
-    width: 16rem;
-    height: 2rem;
-    position: relative;
+  width: 16rem;
+  height: 2rem;
+  position: relative;
 }
 
 .progress-bar {
-    position: absolute;
-    left: 0;
-    top: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 :host ::ng-deep canvas {

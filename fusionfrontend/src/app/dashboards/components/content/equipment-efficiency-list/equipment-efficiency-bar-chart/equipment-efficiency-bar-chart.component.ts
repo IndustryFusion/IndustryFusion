@@ -25,7 +25,6 @@ import { environment } from '../../../../../../environments/environment';
 import { UIChart } from 'primeng/chart';
 import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
 
-// import styles from '../../../../../../assets/sass/abstract/_variables.scss';
 
 @Component({
   selector: 'app-equipment-efficiency-bar-chart',
@@ -44,8 +43,6 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
   date: Date;
 
   @ViewChild('chart') chart: UIChart;
-
-  hasStatusData = false;
 
   stackedOptions: any;
   stackedData: any;
@@ -80,6 +77,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
 
   ngOnInit(): void {
     this.initOptions();
+    this.updateChart([]);
   }
 
   private initOptions() {
@@ -141,7 +139,6 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
       }
     };
 
-    // TODO: Use colours from style
     this.stackedData = {
       labels: ['January'],
       datasets: [{
@@ -149,7 +146,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
         label: 'Offline',
         backgroundColor: '#F0F0F0',
         data: [
-          0,
+          24,
         ]
       }, {
         type: 'horizontalBar',
@@ -202,7 +199,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
     );
     this.latestGroups$.pipe(
       takeUntil(this.destroy$),
-      catchError(() => { this.hasStatusData = false; return EMPTY; })
+      catchError(() => EMPTY)
     )
     .subscribe(
       points => {
@@ -233,8 +230,6 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
   }
 
   private updateChart(statusGroupsExcludingOffline: KairosResponseGroup[]) {
-    if (statusGroupsExcludingOffline.length > 0) {
-      this.hasStatusData = true;
       const estimatedOfflineCount = this.calculateOfflineStatusCount(statusGroupsExcludingOffline);
       const offlineGroup: KairosResponseGroup = ({ index: OispDeviceStatus.OFFLINE, results: [estimatedOfflineCount] });
       const statusGroups: KairosResponseGroup[] = [ ...statusGroupsExcludingOffline];
@@ -248,9 +243,6 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
         this.stackedData.datasets[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(group.index)].data = [hours];
       });
       this.chart?.reinit();
-    } else {
-      this.hasStatusData = false;
-    }
   }
 
   private secondsOfDay() {

@@ -32,7 +32,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'dashboards/companies/:companyId/equipmentEfficiency',
+    path: 'dashboards/companies/:companyId/equipment-efficiency',
     component: EquipmentEfficiencyPageComponent,
     data: {
       pageTypes: [DashboardPageType.EQUIPMENT_EFFICIENCY]
