@@ -54,7 +54,9 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
   private readonly secondsPerHour = 60 * 60;
   private readonly hoursPerDay = 24;
 
-  constructor(private kairosService: KairosService, private enumHelpers: EnumHelpers) { }
+  constructor(private kairosService: KairosService, private enumHelpers: EnumHelpers) {
+    this.initOptions();
+  }
 
   public static getDatasetIndexFromStatus(status: OispDeviceStatus) {
     switch (status) {
@@ -76,7 +78,6 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
   }
 
   ngOnInit(): void {
-    this.initOptions();
     this.updateChart([]);
   }
 
@@ -230,19 +231,27 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
   }
 
   private updateChart(statusGroupsExcludingOffline: KairosResponseGroup[]) {
-      const estimatedOfflineCount = this.calculateOfflineStatusCount(statusGroupsExcludingOffline);
-      const offlineGroup: KairosResponseGroup = ({ index: OispDeviceStatus.OFFLINE, results: [estimatedOfflineCount] });
-      const statusGroups: KairosResponseGroup[] = [ ...statusGroupsExcludingOffline];
-      statusGroups.unshift(offlineGroup);
-      for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
-        this.stackedData.datasets[i].data = [0];
-      }
+    const estimatedOfflineCount = this.calculateOfflineStatusCount(statusGroupsExcludingOffline);
+    const offlineGroup: KairosResponseGroup = ({ index: OispDeviceStatus.OFFLINE, results: [estimatedOfflineCount] });
+    const statusGroups: KairosResponseGroup[] = [ ...statusGroupsExcludingOffline];
+    statusGroups.unshift(offlineGroup);
 
-      statusGroups.forEach(group => {
-        const hours = (this.sumOfResults(group) / this.statusUpdatesPerSecond) / this.secondsPerHour;
-        this.stackedData.datasets[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(group.index)].data = [hours];
-      });
-      this.chart?.reinit();
+    this.resetChartData();
+    this.setChartData(statusGroups);
+    this.chart?.reinit();
+  }
+
+  private resetChartData() {
+    for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
+      this.stackedData.datasets[i].data = [0];
+    }
+  }
+
+  private setChartData(statusGroups: KairosResponseGroup[]) {
+    statusGroups.forEach(group => {
+      const hours = (this.sumOfResults(group) / this.statusUpdatesPerSecond) / this.secondsPerHour;
+      this.stackedData.datasets[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(group.index)].data = [hours];
+    });
   }
 
   private secondsOfDay() {
