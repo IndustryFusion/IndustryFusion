@@ -42,6 +42,8 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   companies: Company[];
 
+  date: Date = new Date(Date.now());
+
   constructor(
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
@@ -80,4 +82,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     });
   }
 
+  dateChanged(date: Date) {
+    this.date = date;
+  }
 }

@@ -1,0 +1,66 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'abstract/variables';
+@import 'base/typography';
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+
+.efficiency-dashboard-overview {
+  padding: 1%;
+  height: max-content;
+  width: 100%;
+  background: $grey-background;
+
+  .aggregated-stats {
+    display: flex;
+    padding-bottom: 1rem;
+
+    .aggregated-section {
+      background: $white-background !important;
+      height: 17rem;
+      border-radius: 10px;
+      display: flex;
+
+      .aggregated-title {
+        padding-left: 3rem;
+        padding-top: 1rem;
+
+        color: $basic-black;
+        text-align: left;
+        font-variant: normal;
+        font-style: normal;
+        font-size: $bigger-font-size;
+        line-height: $big-line-height;
+        font-weight: 600;
+        letter-spacing: 0;
+      }
+
+      &.realtime {
+        width: 28%;
+      }
+
+      &.status-donut {
+        width: 22%;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+      }
+
+      &.status-bar {
+        width: 45%;
+      }
+    }
+  }
+
+}

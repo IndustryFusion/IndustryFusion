@@ -13,20 +13,11 @@
  * under the License.
  */
 
-/*@import 'src/variables.scss';*/
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 @import 'abstract/variables';
 @import 'base/typography';
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
 .efficiency-dashboard {
-  .efficiency-dashboard-upper-part {
-    padding: 1%;
-    height: max-content;
-    width: 100%;
-    background: $grey-background;
-  }
-
   .manufacturer-icon {
     display: flex;
     width: 100% !important;
@@ -77,7 +68,10 @@
 
   .if-badge-square {
     @extend .if-badge;
-    border-radius: 0;
+    min-width: .55rem;
+    height: .55rem;
+    border-radius: 3px;
+    margin-top: -3px;
   }
 
   .status-key {

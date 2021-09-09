@@ -39,6 +39,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ChartModule } from 'primeng/chart';
 import { TreeTableModule } from 'primeng/treetable';
 import { TreeModule } from 'primeng/tree';
+import { EquipmentEfficiencyOverviewComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { TreeModule } from 'primeng/tree';
     EquipmentEfficiencyPageComponent,
     EquipmentEfficiencyListComponent,
     EquipmentEfficiencyBarChartComponent,
+    EquipmentEfficiencyOverviewComponent,
   ],
   imports: [
     IFCommon,
