@@ -15,10 +15,10 @@
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { EMPTY, Observable, of, timer } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { Asset } from '../store/asset/asset.model';
+import { Asset, AssetWithFields } from '../store/asset/asset.model';
 import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
 import {
   Aggregator,
@@ -39,6 +39,7 @@ import {
 import { KeycloakService } from 'keycloak-angular';
 import { OispDeviceQuery } from '../store/oisp/oisp-device/oisp-device.query';
 import { ComponentType } from '../store/oisp/oisp-device/oisp-device.model';
+import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 
 @Injectable({
   providedIn: 'root'
@@ -285,4 +286,26 @@ export class OispService {
     return oispAccountId;
   }
 
+  getMergedFieldsByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): Observable<FieldDetails[]> {
+    const latestPoints$ = timer(0, 2000).pipe(
+      switchMap(() => {
+        return this.getLastValueOfAllFields(assetWithFields, assetWithFields.fields, 5);
+      })
+    );
+
+    return latestPoints$.pipe(
+      map(latestPoints => {
+        return assetWithFields.fields.map(field => {
+          const fieldCopy = Object.assign({ }, field);
+          const point = latestPoints.find(latestPoint => latestPoint.id ===
+            this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(assetWithFields.externalName, field.externalName));
+
+          if (point) {
+            fieldCopy.value = point.value;
+          }
+          return fieldCopy;
+        });
+      })
+    );
+  }
 }

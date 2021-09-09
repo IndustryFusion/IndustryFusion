@@ -61,6 +61,7 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
     this.assetId = this.factoryAssetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
 
+    // TODO: refactor using status.service.getStatusByAssetWithFields
     this.latestPoints$ = combineLatest([this.asset$, timer(0, 2000)]).pipe(
       switchMap(([asset, _]) => {
         return this.oispService.getLastValueOfAllFields(asset, asset?.fields, 5);
