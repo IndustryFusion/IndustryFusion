@@ -81,8 +81,8 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   searchText = '';
   index: number;
 
-  constructor(
-  ) { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.filterOptions = [this.assetType, this.manufacturer, this.factory, this.maintenanceDue];
@@ -268,10 +268,6 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     });
   }
 
-  getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields) {
-    return asset.fields.find(field => field.name === 'Asset status');
-  }
-
   private updateTree() {
     if (this.displayedFactoryAssets) {
       const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
@@ -308,9 +304,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     if (value.subsystemIds?.length > 0) {
       const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       value.subsystemIds.forEach(id => {
-        const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
-        if (subsytem) {
-          children.push(this.addNode(treeNode, subsytem, expandetNodeIDs));
+        const subsystem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
+        if (subsystem) {
+          children.push(this.addNode(treeNode, subsystem, expandetNodeIDs));
         }
       });
       treeNode.children = children;

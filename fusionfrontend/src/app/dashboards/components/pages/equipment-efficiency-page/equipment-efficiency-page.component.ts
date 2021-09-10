@@ -24,6 +24,8 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
+import { KairosStatusAggregationService } from '../../../../services/kairos-status-aggregation.service';
+import { FieldDetails } from '../../../../store/field-details/field-details.model';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 
@@ -49,6 +51,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
+    private kairosStatusAggregationService: KairosStatusAggregationService,
   ) { }
 
   ngOnInit(): void {
@@ -62,9 +65,10 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     this.assetTypes$ = this.assetTypesResolver.resolve();
 
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
-    this.factoryAssetDetailsWithFields$.subscribe(res => {
-      this.factoryAssetDetailsWithFields = res;
+    this.factoryAssetDetailsWithFields$.subscribe(assetDetailsWithFields => {
+      this.factoryAssetDetailsWithFields = assetDetailsWithFields;
       this.sortAssetsByMaintenanceValue();
+      this.addStatusHoursToAssets();
     });
   }
 
@@ -78,6 +82,19 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
         return 1;
       } else {
         return -1;
+      }
+    });
+  }
+
+  getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields): FieldDetails {
+    return KairosStatusAggregationService.getStatusFieldOfAsset(asset);
+  }
+
+  addStatusHoursToAssets(): void {
+    this.factoryAssetDetailsWithFields.forEach(assetWithFields => {
+      if (this.getStatusFieldOfAsset(assetWithFields) != null) {
+        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.date)
+          .subscribe(assetStatusHours => assetWithFields.statusHours = assetStatusHours.statusHours);
       }
     });
   }
