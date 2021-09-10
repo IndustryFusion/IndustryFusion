@@ -21,6 +21,8 @@ import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/fa
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OispService } from './oisp.service';
+import { OispDeviceStatus } from './kairos.model';
+import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -110,8 +112,8 @@ export class StatusService {
     }
   }
 
-  getStatusByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): Observable<Status> {
-    const mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(assetWithFields);
+  getStatusByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<Status> {
+    const mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(assetWithFields, period);
     return this.getStatusFromMergedFieldsAndAsset(mergedFields$, assetWithFields);
   }
 
@@ -122,5 +124,21 @@ export class StatusService {
         return this.determineStatus(fields, assetWithFields);
       })
     );
+  }
+
+  transformStatusToOispDeviceStatus(status: Status): OispDeviceStatus {
+    const fusionFormat = new FusionFormatPipe();
+    const statusString = fusionFormat.transform(status.gotData, status.type, status.statusValue).status;
+
+    switch (statusString) {
+      case 'offline':
+        return OispDeviceStatus.OFFLINE;
+      case 'idle':
+        return OispDeviceStatus.IDLE;
+      case 'running':
+        return OispDeviceStatus.ONLINE;
+      default:
+        return OispDeviceStatus.ERROR;
+    }
   }
 }

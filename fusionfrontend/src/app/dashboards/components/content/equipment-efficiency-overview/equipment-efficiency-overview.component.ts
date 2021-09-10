@@ -14,6 +14,13 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { StatusService } from '../../../../services/status.service';
+import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
+import { Status } from '../../../../factory/models/status.model';
+import { switchMap } from 'rxjs/operators';
+import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
+import { OispDeviceStatus } from '../../../../services/kairos.model';
 
 @Component({
   selector: 'app-equipment-efficiency-overview',
@@ -23,14 +30,39 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class EquipmentEfficiencyOverviewComponent implements OnInit {
 
   @Input()
+  factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
+
+  @Input()
   date: Date;
 
   @Output()
   dateChanged = new EventEmitter<Date>();
 
-  constructor() { }
+  public statusCounts: number[] = [0, 0, 0, 0];
+  public OispDeviceStatus = OispDeviceStatus;
+
+  private stati$: Observable<Status[]>;
+
+
+  constructor(private statusService: StatusService) { }
 
   ngOnInit(): void {
+    this.stati$ = combineLatest([this.factoryAssetDetailsWithFields$, timer(0, 5000)]).pipe(
+      switchMap(([assetsWithFields, _]) =>
+       forkJoin(assetsWithFields.map(assetWithFields => this.statusService.getStatusByAssetWithFields(assetWithFields, null)) )
+      )
+    );
+
+    this.stati$.subscribe((stati: Status[]) => this.updateStatusCounts(stati));
+  }
+
+  private updateStatusCounts(stati: Status[]) {
+    this.statusCounts = this.statusCounts.map(() => 0);
+
+    stati.forEach(status => {
+      const deviceStatus = this.statusService.transformStatusToOispDeviceStatus(status);
+      this.statusCounts[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(deviceStatus)]++;
+    });
   }
 
 }

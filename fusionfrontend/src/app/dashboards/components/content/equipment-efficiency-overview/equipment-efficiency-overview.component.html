@@ -10,7 +10,36 @@
 
   <div class="aggregated-stats list-header">
     <div class="aggregated-section realtime">
-      <label class="aggregated-title">Realtime Status</label>
+      <div> <label class="aggregated-title">Realtime Status</label> </div>
+
+      <div class="aggregated-realtime-badges">
+        <table>
+          <thead>
+            <tr>
+              <th [width]="'70%'"></th>
+              <th [width]="'30%'"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="if-badge running"></span> <label class="badge-padding">Running</label></td>
+              <td><span>{{statusCounts[OispDeviceStatus.ONLINE]}}</span> <span>Assets</span></td>
+            </tr>
+            <tr>
+              <td><span class="if-badge idle"></span> <label class="badge-padding">Idle</label></td>
+              <td><span>{{statusCounts[OispDeviceStatus.IDLE]}}</span> <span>Assets</span></td>
+            </tr>
+            <tr>
+              <td><span class="if-badge error"></span> <label class="badge-padding">Error</label></td>
+              <td><span>{{statusCounts[OispDeviceStatus.ERROR]}}</span> <span>Assets</span></td>
+            </tr>
+            <tr>
+              <td><span class="if-badge offline"></span> <label class="badge-padding">Offline</label></td>
+              <td><span>{{statusCounts[OispDeviceStatus.OFFLINE]}}</span> <span>Assets</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="aggregated-section status-donut">

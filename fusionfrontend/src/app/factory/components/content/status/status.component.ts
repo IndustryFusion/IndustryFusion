@@ -39,6 +39,6 @@ export class StatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.status$ = this.statusService.getStatusByAssetWithFields(this.asset);
+   this.status$ = this.statusService.getStatusByAssetWithFields(this.asset, 2000);
   }
 }

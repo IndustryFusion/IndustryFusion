@@ -286,12 +286,17 @@ export class OispService {
     return oispAccountId;
   }
 
-  getMergedFieldsByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): Observable<FieldDetails[]> {
-    const latestPoints$ = timer(0, 2000).pipe(
-      switchMap(() => {
-        return this.getLastValueOfAllFields(assetWithFields, assetWithFields.fields, 5);
-      })
-    );
+  getMergedFieldsByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<FieldDetails[]> {
+    let latestPoints$: Observable<PointWithId[]>;
+    if (period) {
+      latestPoints$ = timer(0, period).pipe(
+        switchMap(() => {
+          return this.getLastValueOfAllFields(assetWithFields, assetWithFields.fields, 5);
+        })
+      );
+    } else {
+      latestPoints$ = this.getLastValueOfAllFields(assetWithFields, assetWithFields.fields, 5);
+    }
 
     return latestPoints$.pipe(
       map(latestPoints => {

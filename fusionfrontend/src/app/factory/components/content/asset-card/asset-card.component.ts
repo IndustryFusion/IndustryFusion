@@ -46,7 +46,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset);
+    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, 2000);
     this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.mergedFields$, this.asset);
   }
 
