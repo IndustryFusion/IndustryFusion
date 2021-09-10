@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { catchError, map } from 'rxjs/operators';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { KairosResponseGroup, OispDeviceStatus } from './kairos.model';
 import { environment } from '../../environments/environment';
 import { KairosService } from './kairos.service';
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { FieldDetails } from '../store/field-details/field-details.model';
-import { AssetStatusHours, StatusHours } from './kairos-status-aggregation.model';
-import { ID } from '@datorama/akita';
+import { StatusHours } from './kairos-status-aggregation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,21 +52,7 @@ export class KairosStatusAggregationService {
     return asset.fields.find(field => field.name === 'Asset status');
   }
 
-  public selectHoursPerStatusOfAssets(assetsWithFields: FactoryAssetDetailsWithFields[], date: Date): Observable<AssetStatusHours[]> {
-    const startDateAtMidnight = new Date(date.toDateString()).valueOf();
-    const endDate = moment(date).add(1, 'days').valueOf();
-
-    return forkJoin(assetsWithFields.map(assetWithFields => this.kairosService.getStatusCounts(assetWithFields,
-      KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields), startDateAtMidnight, endDate,
-      KairosStatusAggregationService.getStatusUpdatesPerDay(date)).pipe(
-        // takeUntil(this.destroy$),
-        catchError(() => EMPTY),
-        map(groups => this.convertResponseToStatusHours(groups, date, assetWithFields.id))
-      )
-    ));
-  }
-
-  public selectHoursPerStatusOfAsset(assetWithFields: FactoryAssetDetailsWithFields, date: Date): Observable<AssetStatusHours> {
+  public selectHoursPerStatusOfAsset(assetWithFields: FactoryAssetDetailsWithFields, date: Date): Observable<StatusHours[]> {
     const startDateAtMidnight = new Date(date.toDateString()).valueOf();
     const endDate = moment(date).add(1, 'days').valueOf();
 
@@ -77,7 +62,7 @@ export class KairosStatusAggregationService {
       .pipe(
         // takeUntil(this.destroy$),
         catchError(() => EMPTY),
-        map(groups => this.convertResponseToStatusHours(groups, date, assetWithFields.id))
+        map(groups => this.convertResponseToStatusHours(groups, date))
       );
   }
 
@@ -96,7 +81,7 @@ export class KairosStatusAggregationService {
     return Math.round(offlineCount);
   }
 
-  private convertResponseToStatusHours(statusGroupsExcludingOffline: KairosResponseGroup[], date: Date, assetId: ID): AssetStatusHours {
+  private convertResponseToStatusHours(statusGroupsExcludingOffline: KairosResponseGroup[], date: Date): StatusHours[] {
     const estimatedOfflineCount = this.calculateOfflineStatusCount(statusGroupsExcludingOffline, date);
     const offlineGroup: KairosResponseGroup = ({ index: OispDeviceStatus.OFFLINE, results: [estimatedOfflineCount] });
     const statusGroups: KairosResponseGroup[] = [...statusGroupsExcludingOffline];
@@ -109,7 +94,7 @@ export class KairosStatusAggregationService {
       statusHours.push({ hours: hour, status: group.index as OispDeviceStatus });
     });
 
-    return { assetId, statusHours };
+    return statusHours;
   }
 
   private sumOfResults(group: KairosResponseGroup) {

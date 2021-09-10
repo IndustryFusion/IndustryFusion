@@ -72,11 +72,11 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   maintenanceDue: SelectItem =  { value: 'maintenanceDue', label: 'Maintenance Due' };
 
   dashboardFilterModalTypes = DashboardFilterModalType;
-  dashboardFilterTypeActice: DashboardFilterModalType;
+  dashboardFilterTypeActive: DashboardFilterModalType;
   selectedAssetTypes: AssetType[] = [];
   selectedCompanies: Company[] = [];
   selectedFactorySites: FactorySite[] = [];
-  maintenanceValues = [ SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY,  LONGTERM_PRIORITY ];
+  maintenanceValues = [ SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY, LONGTERM_PRIORITY ];
   selectedMaintenanceDue = [];
   searchText = '';
   index: number;
@@ -147,13 +147,13 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   }
 
   clearSelectFilterValues() {
-    if (this.dashboardFilterTypeActice === DashboardFilterModalType.assetTypeFilterModal) {
+    if (this.dashboardFilterTypeActive === DashboardFilterModalType.assetTypeFilterModal) {
       this.selectedAssetTypes = [];
-    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.manufacturerFilterModal) {
+    } else if (this.dashboardFilterTypeActive === DashboardFilterModalType.manufacturerFilterModal) {
       this.selectedCompanies = [];
-    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.factoryFilterModal) {
+    } else if (this.dashboardFilterTypeActive === DashboardFilterModalType.factoryFilterModal) {
       this.selectedFactorySites = [];
-    } else if (this.dashboardFilterTypeActice ===  DashboardFilterModalType.maintenanceDueFilterModal) {
+    } else if (this.dashboardFilterTypeActive ===  DashboardFilterModalType.maintenanceDueFilterModal) {
       this.selectedMaintenanceDue = [];
     }
   }

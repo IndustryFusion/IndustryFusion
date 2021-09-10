@@ -94,7 +94,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     this.factoryAssetDetailsWithFields.forEach(assetWithFields => {
       if (this.getStatusFieldOfAsset(assetWithFields) != null) {
         this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.date)
-          .subscribe(assetStatusHours => assetWithFields.statusHours = assetStatusHours.statusHours);
+          .subscribe(assetStatusHours => assetWithFields.statusHours = assetStatusHours);
       }
     });
   }

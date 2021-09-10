@@ -33,9 +33,9 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   @Output()
   dateChanged = new EventEmitter<Date>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
-
 }
