@@ -13,9 +13,9 @@
  * under the License.
  */
 
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 @import 'abstract/variables';
 @import 'base/typography';
+@import '../../pages/equipment-efficiency-page/equipment-efficiency-page.component.scss';
 
 .efficiency-dashboard {
   .manufacturer-icon {
@@ -31,59 +31,7 @@
       margin-right: 0.5rem;
     }
   }
-
-  .if-badge {
-    display: inline-flex;
-    vertical-align: middle;
-    align-items: center;
-    justify-content: center;
-    min-width: .75rem;
-    background: #8c8c8c;
-    height: .75rem;
-    line-height: normal;
-    border-radius: .5rem;
-    font-size: .5rem;
-    padding: 0 .2rem;
-    margin-right: .3rem;
-    white-space: nowrap;
-    text-align: center;
-    color: $basic-white;
-
-    &.running{
-      background: $status-running;
-    }
-
-    &.idle {
-      background: $status-idle;
-    }
-
-    &.error {
-      background: $status-error;
-    }
-
-    &.offline {
-      background: $status-offline;
-    }
-  }
-
-  .if-badge-square {
-    @extend .if-badge;
-    min-width: .55rem;
-    height: .55rem;
-    border-radius: 3px;
-    margin-top: -3px;
-  }
-
-  .status-key {
-    padding-top: 0.5rem;
-
-    .badge-padding {
-      padding-right: 1rem;
-    }
-  }
 }
-
-
 
 .filter-btn {
   height: 48px;

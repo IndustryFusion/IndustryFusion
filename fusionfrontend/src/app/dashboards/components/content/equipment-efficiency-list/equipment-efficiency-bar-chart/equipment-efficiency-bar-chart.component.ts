@@ -58,16 +58,16 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges, 
     this.initOptions();
   }
 
-  public static getDatasetIndexFromStatus(status: OispDeviceStatus) {
+  public static getDatasetIndexFromStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
     switch (status) {
       case OispDeviceStatus.OFFLINE:
         return 0;
       case OispDeviceStatus.IDLE:
         return 1;
-      case OispDeviceStatus.ONLINE:
-        return 3;
       case OispDeviceStatus.ERROR:
         return 2;
+      case OispDeviceStatus.ONLINE:
+        return 3;
     }
   }
 

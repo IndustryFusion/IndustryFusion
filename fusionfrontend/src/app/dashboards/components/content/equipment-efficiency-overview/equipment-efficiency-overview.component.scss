@@ -15,7 +15,7 @@
 
 @import 'abstract/variables';
 @import 'base/typography';
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import '../../pages/equipment-efficiency-page/equipment-efficiency-page.component.scss';
 
 .efficiency-dashboard-overview {
   padding: 1%;
@@ -31,11 +31,12 @@
       background: $white-background !important;
       height: 17rem;
       border-radius: 10px;
-      display: flex;
+      display: block;
 
       .aggregated-title {
         padding-left: 3rem;
         padding-top: 1rem;
+        display: inline-block;
 
         color: $basic-black;
         text-align: left;
@@ -49,6 +50,10 @@
 
       &.realtime {
         width: 28%;
+
+        .aggregated-realtime-badges {
+          padding: 1rem;
+        }
       }
 
       &.status-donut {
