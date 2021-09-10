@@ -1,0 +1,46 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<div> <label class="aggregated-title">Realtime Status</label> </div>
+
+<div class="aggregated-realtime-badges">
+  <table>
+    <thead>
+    <tr>
+      <th [width]="'70%'"></th>
+      <th [width]="'30%'"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><span class="if-badge running"></span> <label class="badge-padding">Running</label></td>
+      <td><span>{{statusCounts[OispDeviceStatus.ONLINE]}}</span> <span>Assets</span></td>
+    </tr>
+    <tr>
+      <td><span class="if-badge idle"></span> <label class="badge-padding">Idle</label></td>
+      <td><span>{{statusCounts[OispDeviceStatus.IDLE]}}</span> <span>Assets</span></td>
+    </tr>
+    <tr>
+      <td><span class="if-badge error"></span> <label class="badge-padding">Error</label></td>
+      <td><span>{{statusCounts[OispDeviceStatus.ERROR]}}</span> <span>Assets</span></td>
+    </tr>
+    <tr>
+      <td><span class="if-badge offline"></span> <label class="badge-padding">Offline</label></td>
+      <td><span>{{statusCounts[OispDeviceStatus.OFFLINE]}}</span> <span>Assets</span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

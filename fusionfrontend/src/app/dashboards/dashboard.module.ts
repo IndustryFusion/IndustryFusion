@@ -40,6 +40,7 @@ import { ChartModule } from 'primeng/chart';
 import { TreeTableModule } from 'primeng/treetable';
 import { TreeModule } from 'primeng/tree';
 import { EquipmentEfficiencyOverviewComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview.component';
+import { EquipmentEfficiencyOverviewRealtimeStatusComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview-realtime-status/equipment-efficiency-overview-realtime-status.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { EquipmentEfficiencyOverviewComponent } from './components/content/equip
     EquipmentEfficiencyListComponent,
     EquipmentEfficiencyBarChartComponent,
     EquipmentEfficiencyOverviewComponent,
+    EquipmentEfficiencyOverviewRealtimeStatusComponent,
   ],
   imports: [
     IFCommon,
