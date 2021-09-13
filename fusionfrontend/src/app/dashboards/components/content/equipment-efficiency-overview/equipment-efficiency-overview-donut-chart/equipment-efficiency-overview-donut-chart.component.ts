@@ -19,7 +19,7 @@ import { EquipmentEfficiencyBarChartComponent } from '../../equipment-efficiency
 import { StatusHours } from '../../../../../services/kairos-status-aggregation.model';
 import { OispDeviceStatus } from '../../../../../services/kairos.model';
 import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-equipment-efficiency-overview-donut-chart',
@@ -29,7 +29,7 @@ import { Observable } from 'rxjs';
 export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
 
   @Input()
-  aggregatedStatusHours$: Observable<StatusHours[]>;
+  aggregatedStatusHours$: BehaviorSubject<StatusHours[]>;
 
   @ViewChild('chart') chart: UIChart;
 
@@ -116,6 +116,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
 
   ngOnInit() {
     this.aggregatedStatusHours$.subscribe(aggregatedStatusHours => {
+      console.log('HIII', aggregatedStatusHours);
       if (aggregatedStatusHours) {
         this.updateChart(aggregatedStatusHours);
       }

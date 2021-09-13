@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StatusHours } from '../../../../services/kairos-status-aggregation.model';
 import { OispDeviceStatus } from '../../../../services/kairos.model';
 import { EnumHelpers } from '../../../../common/utils/enum-helpers';
@@ -34,7 +34,7 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
 
   @Input()
-  isLoading$: Subject<boolean>;
+  fullyLoadedAssets$: Subject<FactoryAssetDetailsWithFields[]>;
 
   @Input()
   date: Date;
@@ -43,34 +43,32 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   dateChanged = new EventEmitter<Date>();
 
   isLoaded = false;
-  aggregatedStatusHours$: Subject<StatusHours[]> = new Subject<StatusHours[]>();
+  aggregatedStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
 
   constructor(private enumHelpers: EnumHelpers) {
   }
 
   ngOnInit(): void {
-    this.isLoading$.subscribe(isLoading => {
-      this.isLoaded = isLoading;
-      if (!isLoading) {
+    this.fullyLoadedAssets$.subscribe(assetWithHours => {
+      if (assetWithHours) {
+        this.factoryAssetDetailsWithFields = assetWithHours;
         this.updateAggregatedStatusHours();
-        this.isLoaded = true;
       }
+      this.isLoaded = assetWithHours !== null;
     });
   }
 
   private updateAggregatedStatusHours() {
     if (this.factoryAssetDetailsWithFields) {
       const aggregatedStatusHours = this.getNewAggregatedStatusHours();
-      this.factoryAssetDetailsWithFields.forEach(assetWithField => {
+      for (const assetWithField of this.factoryAssetDetailsWithFields) {
         if (assetWithField.statusHours) {
           assetWithField.statusHours.forEach(statusHours => {
             aggregatedStatusHours[statusHours.status].hours += statusHours.hours;
           });
         }
-      });
-
+      }
       this.aggregatedStatusHours$.next(aggregatedStatusHours);
-      console.log('aggregatedStatusHours', aggregatedStatusHours);
     }
   }
 

@@ -46,7 +46,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
   date: Date = new Date(Date.now());
 
-  isLoading$ = new Subject<boolean>();
+  fullyLoadedAssets = new Subject<FactoryAssetDetailsWithFields[]>();
 
   private assetsWithStatus: number;
   private loadedStatusCount = 0;
@@ -58,7 +58,6 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     private companyQuery: CompanyQuery,
     private kairosStatusAggregationService: KairosStatusAggregationService,
   ) {
-    this.isLoading$.next(true);
   }
 
   ngOnInit(): void {
@@ -78,8 +77,6 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
   }
 
   private updateAssets(assetDetailsWithFields: FactoryAssetDetailsWithFields[]) {
-    this.isLoading$.next(true);
-
     this.factoryAssetDetailsWithFields = assetDetailsWithFields;
     if (this.factoryAssetDetailsWithFields.length < 1) {
       console.warn('[equipment efficiency page]: No assets found');
@@ -88,7 +85,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     this.addStatusHoursToAssets();
 
     if (this.assetsWithStatus === 0) {
-      this.isLoading$.next(false);
+      this.fullyLoadedAssets.next(this.factoryAssetDetailsWithFields);
     }
   }
 
@@ -114,16 +111,17 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
       if (KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields) != null) {
         this.assetsWithStatus++;
         this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.date)
-          .subscribe(assetStatusHours => this.updateStatusHoursOfAssetAndLoadingStatus(assetWithFields, assetStatusHours));
+          .subscribe(assetStatusHours => this.updateStatusHoursOfAsset(assetWithFields, assetStatusHours));
       }
     });
   }
 
-  private updateStatusHoursOfAssetAndLoadingStatus(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]) {
+  private updateStatusHoursOfAsset(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]) {
     assetWithFields.statusHours = statusHours;
     this.loadedStatusCount++;
     if (this.assetsWithStatus === this.loadedStatusCount) {
-      this.isLoading$.next(false);
+      console.log('AAAA', this.factoryAssetDetailsWithFields);
+      this.fullyLoadedAssets.next(this.factoryAssetDetailsWithFields);
     }
   }
 

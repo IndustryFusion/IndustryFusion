@@ -71,17 +71,17 @@ export class KairosStatusAggregationService {
     // Offline (0) is often sent only at shutdown, followed by a gap of data.
     // Therefore, we can derive the offline count by subtracting the expected messages of the selected day (or so far, if today)
     // from the sum of Idle, Online and Error statuses including some existing offline points.
-    let pointsOfAllStatiExceptOffline = 0;
+    let pointsOfStatusesWithoutOffline = 0;
     let pointsOfOfflineStatus = 0;
     groups.forEach(group => {
       if (group.index !== OispDeviceStatus.OFFLINE) {
-        pointsOfAllStatiExceptOffline += KairosStatusAggregationService.sumOfGroupResults(group);
+        pointsOfStatusesWithoutOffline += KairosStatusAggregationService.sumOfGroupResults(group);
       } else {
         pointsOfOfflineStatus += KairosStatusAggregationService.sumOfGroupResults(group);
       }
     });
 
-    const estimatedOfflineCountByGaps = KairosStatusAggregationService.getStatusUpdatesPerDay(date) - pointsOfAllStatiExceptOffline;
+    const estimatedOfflineCountByGaps = KairosStatusAggregationService.getStatusUpdatesPerDay(date) - pointsOfStatusesWithoutOffline;
     const offlineCount = pointsOfOfflineStatus + estimatedOfflineCountByGaps;
     return Math.round(offlineCount);
   }
