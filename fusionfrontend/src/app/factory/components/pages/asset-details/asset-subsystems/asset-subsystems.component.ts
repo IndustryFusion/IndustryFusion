@@ -46,7 +46,6 @@ export class AssetSubsystemsComponent implements OnInit {
   }
 
   selectSubsystem(asset: any) {
-    console.log(asset);
     this.factoryAssetDetailsService.setActive(asset.id);
     this.router.navigate(['../..', asset.id], { relativeTo: this.activatedRoute});
   }

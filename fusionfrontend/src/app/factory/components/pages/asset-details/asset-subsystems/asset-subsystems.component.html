@@ -11,11 +11,11 @@
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
-      <th >Asset</th>
-      <th >Asset type</th>
-      <th >Manufacturer</th>
-      <th >Room</th>
-      <th >Status</th>
+      <th>Asset</th>
+      <th>Asset type</th>
+      <th>Manufacturer</th>
+      <th>Room</th>
+      <th>Status</th>
       <th [style.width.%]="5"></th>
     </tr>
   </ng-template>
@@ -33,11 +33,16 @@
                     class="is-solid notification-high"></clr-icon>
         </div>
       </td>
-      <td >{{asset.name}}</td>
-      <td >{{asset.assetTypeName}}</td>
-      <td >{{asset.manufacturer}}</td>
-      <td >{{asset.roomName}}</td>
-      <td ><app-status [asset]="asset" [showInline]="true"></app-status></td>
+      <td>
+        <div>
+          <label class="if-label">{{asset.name}}</label><br>
+          <label class="if-label-small">{{asset.assetSeriesName}}</label>
+        </div>
+      </td>
+      <td>{{asset.assetTypeName}}</td>
+      <td>{{asset.manufacturer}}</td>
+      <td>{{asset.roomName}}</td>
+      <td><app-status [asset]="asset" [showInline]="true"></app-status></td>
     </tr>
   </ng-template>
 </p-table>

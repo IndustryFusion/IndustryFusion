@@ -30,7 +30,7 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   assetId: ID;
   asset: FactoryAssetDetailsWithFields;
-  hasSubsytems = false;
+  hasSubsystems = false;
 
   constructor(public activatedRoute: ActivatedRoute,
               private router: Router,
@@ -40,7 +40,6 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events.subscribe(event => console.log(event));
     this.activatedRoute.fragment.subscribe(() => {
       this.updateAsset();
     });
@@ -52,7 +51,7 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
     this.assetId = this.factoryAssetDetailsQuery.getActiveId();
     this.factoryComposedQuery.selectActiveAssetsWithFieldInstanceDetails().subscribe(asset => {
       this.asset = asset;
-      this.hasSubsytems = asset.subsystemIds?.length > 0;
+      this.hasSubsystems = asset.subsystemIds?.length > 0;
     });
   }
 

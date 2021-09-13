@@ -113,7 +113,6 @@ export class FactoryComposedQuery {
       this.fieldDetailsQuery.selectAll()
     ]).pipe(
       map(([activeAsset, fieldDetails]) => {
-
         const filteredFields = fieldDetails.filter(field => field.assetId === activeAsset.id);
         return Object.assign({ fields: filteredFields}, activeAsset);
       })
@@ -129,7 +128,6 @@ export class FactoryComposedQuery {
           return assetDetailsArray.filter(assetDetails => rooms.find(room => String(room.id) === String(assetDetails.roomId)));
        }));
   }
-
 
   selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId: ID): Observable<FactoryAssetDetailsWithFields[]> {
     return combineQueries([
