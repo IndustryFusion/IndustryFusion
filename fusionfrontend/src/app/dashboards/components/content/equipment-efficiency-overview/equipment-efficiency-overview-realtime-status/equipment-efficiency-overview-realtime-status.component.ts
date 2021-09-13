@@ -18,7 +18,6 @@ import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
 import { Status } from '../../../../../factory/models/status.model';
 import { switchMap } from 'rxjs/operators';
 import { StatusService } from '../../../../../services/status.service';
-import { EquipmentEfficiencyBarChartComponent } from '../../equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { OispDeviceStatus } from '../../../../../services/kairos.model';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 
@@ -55,7 +54,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
 
     statuses.forEach(status => {
       const deviceStatus = this.statusService.transformStatusToOispDeviceStatus(status);
-      this.statusCounts[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(deviceStatus)]++;
+      this.statusCounts[deviceStatus]++;
     });
   }
 

@@ -53,8 +53,6 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   companies: Company[];
   @Input()
   assetTypes: AssetType[];
-  @Input()
-  date: Date;
 
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];

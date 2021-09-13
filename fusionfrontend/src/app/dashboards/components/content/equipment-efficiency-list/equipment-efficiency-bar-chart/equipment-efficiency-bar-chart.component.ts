@@ -36,16 +36,17 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   stackedData: any;
 
   constructor(private enumHelpers: EnumHelpers) {
-    this.initOptions();
+    this.initChartOptions();
+    this.initChartData();
   }
 
-  public static getDatasetIndexFromStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
+  private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
     switch (status) {
       case OispDeviceStatus.OFFLINE:
         return 0;
-      case OispDeviceStatus.IDLE:
-        return 1;
       case OispDeviceStatus.ERROR:
+        return 1;
+      case OispDeviceStatus.IDLE:
         return 2;
       case OispDeviceStatus.ONLINE:
         return 3;
@@ -62,7 +63,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
     this.updateChart(this.assetStatusHours);
   }
 
-  private initOptions() {
+  private initChartOptions() {
     const axesOptions = [{
       stacked: true,
       display: false,
@@ -74,28 +75,30 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
       }
     }];
 
-    this.stackedOptions = {
-      tooltips: {
-        mode: 'dataset',
-        position: 'nearest',
-        callbacks: {
-          title(tooltipItem, data) {
-            const value = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index];
-            const label = data.datasets[tooltipItem[0].datasetIndex].label;
-            return EquipmentEfficiencyBarChartComponent.getHoursString(value) + ' (' + label + ')';
-          },
-          label(_, _2) {
-            return '';
-          },
+    const tooltips = {
+      mode: 'dataset',
+      position: 'nearest',
+      callbacks: {
+        title(tooltipItem, data) {
+          const value = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index];
+          const label = data.datasets[tooltipItem[0].datasetIndex].label;
+          return EquipmentEfficiencyBarChartComponent.getHoursString(value) + ' (' + label + ')';
         },
-        backgroundColor: '#000000',
-        titleFontSize: 16,
-        titleFontColor: '#FFFFFF',
-        bodyFontColor: '#FFFFFF',
-        bodyFontSize: 12,
-        displayColors: false,
-        xAlign: 'center',
+        label(_, _2) {
+          return '';
+        },
       },
+      backgroundColor: '#000000',
+      titleFontSize: 16,
+      titleFontColor: '#FFFFFF',
+      bodyFontColor: '#FFFFFF',
+      bodyFontSize: 12,
+      displayColors: false,
+      xAlign: 'center',
+    };
+
+    this.stackedOptions = {
+      tooltips,
       animation: false,
       maintainAspectRatio: false,
       responsive: true,
@@ -113,7 +116,9 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
         yAxes: axesOptions
       }
     };
+  }
 
+  private initChartData() {
     this.stackedData = {
       labels: [''],
       datasets: [{
@@ -123,21 +128,21 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
         data: [ 0 ]
       }, {
         type: 'horizontalBar',
-        label: 'Idle',
-        backgroundColor: '#454F63',
-        data: [ 0 ]
-      }, {
-        type: 'horizontalBar',
         label: 'Error',
         backgroundColor: '#A73737',
         data: [ 0 ]
-      },
-      {
+      }, {
         type: 'horizontalBar',
-        label: 'Running',
-        backgroundColor: '#2CA9CE',
+        label: 'Idle',
+        backgroundColor: '#454F63',
         data: [ 0 ]
-      }]
+      },
+        {
+          type: 'horizontalBar',
+          label: 'Running',
+          backgroundColor: '#2CA9CE',
+          data: [ 0 ]
+        }]
     };
   }
 
@@ -162,7 +167,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   private setChartData(assetStatusHours: StatusHours[]) {
     if (assetStatusHours) {
       assetStatusHours.forEach(statusHour => {
-        const index = EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(statusHour.status);
+        const index = EquipmentEfficiencyBarChartComponent.getDatasetIndexOfStatus(statusHour.status);
         this.stackedData.datasets[index].data = [statusHour.hours];
       });
     }
