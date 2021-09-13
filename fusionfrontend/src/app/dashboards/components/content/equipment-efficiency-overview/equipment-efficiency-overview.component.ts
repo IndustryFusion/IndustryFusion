@@ -15,7 +15,10 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { StatusHours } from '../../../../services/kairos-status-aggregation.model';
+import { OispDeviceStatus } from '../../../../services/kairos.model';
+import { EnumHelpers } from '../../../../common/utils/enum-helpers';
 
 @Component({
   selector: 'app-equipment-efficiency-overview',
@@ -28,14 +31,54 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
 
   @Input()
+  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
+
+  @Input()
+  isLoading$: Subject<boolean>;
+
+  @Input()
   date: Date;
 
   @Output()
   dateChanged = new EventEmitter<Date>();
 
-  constructor() {
+  isLoaded = false;
+  aggregatedStatusHours$: Subject<StatusHours[]> = new Subject<StatusHours[]>();
+
+  constructor(private enumHelpers: EnumHelpers) {
   }
 
   ngOnInit(): void {
+    this.isLoading$.subscribe(isLoading => {
+      this.isLoaded = isLoading;
+      if (!isLoading) {
+        this.updateAggregatedStatusHours();
+        this.isLoaded = true;
+      }
+    });
+  }
+
+  private updateAggregatedStatusHours() {
+    if (this.factoryAssetDetailsWithFields) {
+      const aggregatedStatusHours = this.getNewAggregatedStatusHours();
+      this.factoryAssetDetailsWithFields.forEach(assetWithField => {
+        if (assetWithField.statusHours) {
+          assetWithField.statusHours.forEach(statusHours => {
+            aggregatedStatusHours[statusHours.status].hours += statusHours.hours;
+          });
+        }
+      });
+
+      this.aggregatedStatusHours$.next(aggregatedStatusHours);
+      console.log('aggregatedStatusHours', aggregatedStatusHours);
+    }
+  }
+
+  private getNewAggregatedStatusHours(): StatusHours[] {
+    const aggregatedStatusHours: StatusHours[] = [];
+    for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
+      aggregatedStatusHours.push({ status: i as OispDeviceStatus, hours: 0 });
+    }
+    return aggregatedStatusHours;
   }
 }

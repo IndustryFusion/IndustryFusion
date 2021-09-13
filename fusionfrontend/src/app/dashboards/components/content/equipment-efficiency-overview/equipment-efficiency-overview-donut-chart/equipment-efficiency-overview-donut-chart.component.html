@@ -1,0 +1,51 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<label class="equipment-efficiency-dashboard-overview-title">Status Overview (All Assets)</label>
+
+<div class="status-overview-data">
+  <div class="donut-chart">
+    <p-chart #chart type="doughnut" [data]="data" [options]="chartOptions"></p-chart>
+  </div>
+
+  <div class="legend">
+    <table>
+      <thead>
+      <tr>
+        <th [style.width.%]="30"></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><label class="if-label margin-right">{{statusHoursPercentage[OispDeviceStatus.ONLINE]}}</label> <label class="if-label-small">%</label></td>
+        <td><span class="if-badge running small margin-right"></span> <label class="if-label">Running</label></td>
+      </tr>
+      <tr>
+        <td><label class="if-label margin-right">{{statusHoursPercentage[OispDeviceStatus.IDLE]}}</label> <label class="if-label-small">%</label></td>
+        <td><span class="if-badge idle small margin-right"></span> <label class="if-label">Idle</label></td>
+      </tr>
+      <tr>
+        <td><label class="if-label margin-right">{{statusHoursPercentage[OispDeviceStatus.ERROR]}}</label> <label class="if-label-small">%</label></td>
+        <td><span class="if-badge error small margin-right"></span> <label class="if-label">Error</label></td>
+      </tr>
+      <tr>
+        <td><label class="if-label margin-right">{{statusHoursPercentage[OispDeviceStatus.OFFLINE]}}</label> <label class="if-label-small">%</label></td>
+        <td><span class="if-badge offline small margin-right"></span> <label class="if-label">Offline</label></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

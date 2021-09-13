@@ -24,8 +24,8 @@
   vertical-align: middle;
   align-items: center;
   justify-content: center;
-  min-width: .75rem;
   background: #8c8c8c;
+  min-width: .75rem;
   height: .75rem;
   line-height: normal;
   border-radius: .5rem;
@@ -50,6 +50,11 @@
 
   &.offline {
     background: $status-offline;
+  }
+
+  &.small {
+    min-width: .5rem;
+    height: .5rem;
   }
 }
 

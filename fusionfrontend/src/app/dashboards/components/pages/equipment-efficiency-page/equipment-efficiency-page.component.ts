@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -25,7 +25,7 @@ import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { KairosStatusAggregationService } from '../../../../services/kairos-status-aggregation.service';
-import { FieldDetails } from '../../../../store/field-details/field-details.model';
+import { StatusHours } from '../../../../services/kairos-status-aggregation.model';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 
@@ -46,13 +46,20 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
   date: Date = new Date(Date.now());
 
+  isLoading$ = new Subject<boolean>();
+
+  private assetsWithStatus: number;
+  private loadedStatusCount = 0;
+
   constructor(
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
     private kairosStatusAggregationService: KairosStatusAggregationService,
-  ) { }
+  ) {
+    this.isLoading$.next(true);
+  }
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
@@ -66,13 +73,26 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.factoryAssetDetailsWithFields$.subscribe(assetDetailsWithFields => {
-      this.factoryAssetDetailsWithFields = assetDetailsWithFields;
-      this.sortAssetsByMaintenanceValue();
-      this.addStatusHoursToAssets();
+      this.updateAssets(assetDetailsWithFields);
     });
   }
 
-  sortAssetsByMaintenanceValue() {
+  private updateAssets(assetDetailsWithFields: FactoryAssetDetailsWithFields[]) {
+    this.isLoading$.next(true);
+
+    this.factoryAssetDetailsWithFields = assetDetailsWithFields;
+    if (this.factoryAssetDetailsWithFields.length < 1) {
+      console.warn('[equipment efficiency page]: No assets found');
+    }
+    this.sortAssetsByMaintenanceValue();
+    this.addStatusHoursToAssets();
+
+    if (this.assetsWithStatus === 0) {
+      this.isLoading$.next(false);
+    }
+  }
+
+  private sortAssetsByMaintenanceValue(): void {
     this.factoryAssetDetailsWithFields.sort((a, b) => {
       const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
@@ -86,20 +106,29 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     });
   }
 
-  getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields): FieldDetails {
-    return KairosStatusAggregationService.getStatusFieldOfAsset(asset);
-  }
+  private addStatusHoursToAssets(): void {
+    this.assetsWithStatus = 0;
+    this.loadedStatusCount = 0;
 
-  addStatusHoursToAssets(): void {
     this.factoryAssetDetailsWithFields.forEach(assetWithFields => {
-      if (this.getStatusFieldOfAsset(assetWithFields) != null) {
+      if (KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields) != null) {
+        this.assetsWithStatus++;
         this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.date)
-          .subscribe(assetStatusHours => assetWithFields.statusHours = assetStatusHours);
+          .subscribe(assetStatusHours => this.updateStatusHoursOfAssetAndLoadingStatus(assetWithFields, assetStatusHours));
       }
     });
   }
 
+  private updateStatusHoursOfAssetAndLoadingStatus(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]) {
+    assetWithFields.statusHours = statusHours;
+    this.loadedStatusCount++;
+    if (this.assetsWithStatus === this.loadedStatusCount) {
+      this.isLoading$.next(false);
+    }
+  }
+
   dateChanged(date: Date) {
     this.date = date;
+    this.updateAssets(this.factoryAssetDetailsWithFields);
   }
 }
