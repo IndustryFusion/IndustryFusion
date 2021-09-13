@@ -46,7 +46,11 @@ export class KairosStatusAggregationService {
   }
 
   public static getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields): FieldDetails {
-    return asset.fields.find(field => field.name === 'Asset status');
+    return asset.fields.find(field => field.name === 'status');
+  }
+
+  private static sumOfGroupResults(group: KairosResponseGroup) {
+    return group.results.reduce((accumulator, value) => accumulator + value);
   }
 
   public selectHoursPerStatusOfAsset(assetWithFields: FactoryAssetDetailsWithFields, date: Date): Observable<StatusHours[]> {
@@ -71,9 +75,9 @@ export class KairosStatusAggregationService {
     let pointsOfOfflineStatus = 0;
     groups.forEach(group => {
       if (group.index !== OispDeviceStatus.OFFLINE) {
-        pointsOfAllStatiExceptOffline += this.sumOfGroupResults(group);
+        pointsOfAllStatiExceptOffline += KairosStatusAggregationService.sumOfGroupResults(group);
       } else {
-        pointsOfOfflineStatus += this.sumOfGroupResults(group);
+        pointsOfOfflineStatus += KairosStatusAggregationService.sumOfGroupResults(group);
       }
     });
 
@@ -87,7 +91,7 @@ export class KairosStatusAggregationService {
 
     const statusHours: StatusHours[] = [];
     statusGroupsIncludingOffline.forEach((group: KairosResponseGroup) => {
-      const hour = (this.sumOfGroupResults(group) / KairosStatusAggregationService.statusUpdatesPerSecond) /
+      const hour = (KairosStatusAggregationService.sumOfGroupResults(group) / KairosStatusAggregationService.statusUpdatesPerSecond) /
                     KairosStatusAggregationService.secondsPerHour;
       statusHours.push({ hours: hour, status: group.index as OispDeviceStatus });
     });
@@ -108,12 +112,6 @@ export class KairosStatusAggregationService {
     }
 
     return statusGroupsIncludingOffline;
-  }
-
-  private sumOfGroupResults(group: KairosResponseGroup) {
-    let count = 0;
-    group.results.forEach(result => count += result);
-    return count;
   }
 
 }

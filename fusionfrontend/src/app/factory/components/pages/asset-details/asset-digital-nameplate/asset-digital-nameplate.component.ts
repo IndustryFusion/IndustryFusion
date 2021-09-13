@@ -29,6 +29,7 @@ import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
 import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
+import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
 
 
 @Component({
@@ -54,11 +55,13 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
     private statusService: StatusService,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
+    private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
     private factoryAssetQuery: FactoryAssetDetailsQuery) {
   }
 
   ngOnInit() {
     this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetId = this.factoryAssetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
 
