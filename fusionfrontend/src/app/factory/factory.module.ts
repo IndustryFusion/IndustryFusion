@@ -63,6 +63,7 @@ import { AssetPerformanceComponent } from './components/pages/asset-details/asse
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
 import { CardModule } from 'primeng/card';
 import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
+import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { NameplateItemComponent } from './components/content/asset-details/namep
     AssignAssetToRoomComponent,
     AssetDetailsSubHeaderComponent,
     AssetCardComponent,
-    NameplateItemComponent
+    NameplateItemComponent,
+    AssetSubsystemsComponent
   ],
   imports: [
     IFCommon,

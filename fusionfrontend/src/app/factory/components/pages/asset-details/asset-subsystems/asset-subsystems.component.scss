@@ -13,31 +13,10 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'base/typography';
+@import "base/typography";
 
-.wrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.status-circle {
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  background: gray 0 0 no-repeat padding-box;
-  &.status-circle-small {
-    width: 10px !important;
-    height: 10px !important;
-  }
-}
-
-.status {
-  margin: 0 0 0 10px;
-}
-
-.status-standalone {
-  font-weight: bolder;
+.list-header {
   font-size: $big-font-size;
+  font-weight: bolder;
+  margin: 1rem 5rem;
 }
