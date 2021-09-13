@@ -18,5 +18,30 @@
 @import '../equipment-efficiency-overview.component';
 
 .aggregated-realtime-badges {
-  padding: 1rem;
+  padding-top: 1rem;
+  padding-left: 5rem;
+}
+
+.margin-right {
+  margin-right: 0.5rem;
+}
+
+span, label {
+  vertical-align: text-top;
+}
+
+table {
+  table-layout: fixed;
+  width: 80%;
+}
+
+
+tbody tr {
+  height: 2rem;
+}
+
+th,
+td {
+  width: 80%;
+  overflow: hidden;
 }

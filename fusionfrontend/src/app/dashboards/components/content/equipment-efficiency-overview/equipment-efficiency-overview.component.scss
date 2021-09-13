@@ -31,27 +31,17 @@
 
 .aggregated-section {
   background: $white-background !important;
-  height: 17rem;
+  height: 14rem;
   border-radius: 10px;
   display: block;
 
-  &.realtime {
-    width: 28%;
-  }
-
-  &.status-donut {
-    width: 22%;
+  &.status {
     margin-left: 1.5rem;
-    margin-right: 1.5rem;
-  }
-
-  &.status-bar {
-    width: 45%;
   }
 }
 
 .aggregated-title {
-  padding-left: 3rem;
+  padding-left: 2rem;
   padding-top: 1rem;
   display: inline-block;
 

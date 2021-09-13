@@ -20,27 +20,27 @@ under the License.
   <table>
     <thead>
     <tr>
-      <th [width]="'70%'"></th>
-      <th [width]="'30%'"></th>
+      <th></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td><span class="if-badge running"></span> <label class="badge-padding">Running</label></td>
-      <td><span>{{statusCounts[OispDeviceStatus.ONLINE]}}</span> <span>Assets</span></td>
-    </tr>
-    <tr>
-      <td><span class="if-badge idle"></span> <label class="badge-padding">Idle</label></td>
-      <td><span>{{statusCounts[OispDeviceStatus.IDLE]}}</span> <span>Assets</span></td>
-    </tr>
-    <tr>
-      <td><span class="if-badge error"></span> <label class="badge-padding">Error</label></td>
-      <td><span>{{statusCounts[OispDeviceStatus.ERROR]}}</span> <span>Assets</span></td>
-    </tr>
-    <tr>
-      <td><span class="if-badge offline"></span> <label class="badge-padding">Offline</label></td>
-      <td><span>{{statusCounts[OispDeviceStatus.OFFLINE]}}</span> <span>Assets</span></td>
-    </tr>
+      <tr>
+        <td><span class="if-badge running margin-right"></span> <label class="if-label-bigger">Running</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.ONLINE]}}</label> <label class="if-label-small">Assets</label></td>
+      </tr>
+      <tr>
+        <td><span class="if-badge idle margin-right"></span> <label class="if-label-bigger">Idle</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.IDLE]}}</label> <label class="if-label-small">Assets</label></td>
+      </tr>
+      <tr>
+        <td><span class="if-badge error margin-right"></span> <label class="if-label-bigger">Error</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.ERROR]}}</label> <label class="if-label-small">Assets</label></td>
+      </tr>
+      <tr>
+        <td><span class="if-badge offline margin-right"></span> <label class="if-label-bigger">Offline</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.OFFLINE]}}</label> <label class="if-label-small">Assets</label></td>
+      </tr>
     </tbody>
   </table>
 </div>

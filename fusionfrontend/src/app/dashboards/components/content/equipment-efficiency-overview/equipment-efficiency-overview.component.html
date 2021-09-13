@@ -23,18 +23,14 @@ under the License.
     </div>
   </div>
 
-  <div class="aggregated-stats list-header">
-    <app-equipment-efficiency-overview-realtime-status class="aggregated-section realtime"
+  <div class="aggregated-stats list-header p-grid">
+    <app-equipment-efficiency-overview-realtime-status class="aggregated-section p-col-4"
                                                        [factoryAssetDetailsWithFields$]="factoryAssetDetailsWithFields$">
     </app-equipment-efficiency-overview-realtime-status>
 
-    <div class="aggregated-section status-donut">
-      <label class="aggregated-title">Status Overview (All Assets)</label>
-    </div>
-
-    <div class="aggregated-section status-bar">
-      <label class="aggregated-title">Status Overview (All Assets)</label>
-    </div>
+    <app-equipment-efficiency-overview-donut-chart class="aggregated-section status p-col-4" *ngIf="isLoaded"
+                                                      [aggregatedStatusHours$]="aggregatedStatusHours$">
+    </app-equipment-efficiency-overview-donut-chart>
   </div>
 
 </div>
