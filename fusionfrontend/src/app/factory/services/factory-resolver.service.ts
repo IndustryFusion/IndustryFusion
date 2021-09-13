@@ -122,7 +122,7 @@ export class FactoryResolver {
         mergeMap((assets) =>
           combineLatest(
             assets.map((asset) => {
-              return this.assetService.updateAssetWithFieldValue(asset);
+              return this.assetService.updateAssetWithFieldValue(asset, 600);
             })
           )
         ),
@@ -159,7 +159,7 @@ export class FactoryResolver {
       }));
       this.assetWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsOfActiveAsset();
       this.assetWithDetailsAndFieldsAndValues$ = this.assetWithDetailsAndFields$.pipe(
-        mergeMap((asset) => this.assetService.updateAssetWithFieldValue(asset))
+        mergeMap((asset) => this.assetService.updateAssetWithFieldValue(asset, 600))
       );
     }
     const assetIdListParam = activatedRoute.snapshot.paramMap.get('assetIdList');

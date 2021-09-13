@@ -193,9 +193,9 @@ export class AssetService {
     return mappedAsset;
   }
 
-  updateAssetWithFieldValue(asset: FactoryAssetDetailsWithFields) {
+  updateAssetWithFieldValue(asset: FactoryAssetDetailsWithFields, secondsInPast: number) {
     return new Observable<any>((observer) => {
-      this.oispService.getLastValueOfAllFields(asset, asset.fields, 600, true).subscribe((lastValues) => {
+      this.oispService.getLastValueOfAllFields(asset, asset.fields, secondsInPast, true).subscribe((lastValues) => {
           asset.fields = this.getAssetFieldValues(asset, lastValues);
           observer.next(asset);
         }, _ => {

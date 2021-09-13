@@ -35,7 +35,7 @@ export class MaintenanceProgressbarComponent implements OnInit {
   @Input()
   type: MaintenanceType;
 
-  maintenanceStates = MaintenanceState;
+  maintenanceState = MaintenanceState;
 
   state: MaintenanceState;
   maintenanceValue: number;

@@ -46,8 +46,7 @@ under the License.
       <ng-container *ngFor="let field of assetWithFields.fields">
         <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
           <app-asset-charts [asset]="assetWithFields" [clickedOk]="currentChoiceConfiguration.clickedOk"
-                            [endDate]="endDate"
-                            [field]="field" [maxPointsOptions]="maxPointsOptions"
+                            [endDate]="endDate" [field]="field" [maxPointsOptions]="maxPointsOptions"
                             [options]="timeSlotOptions" [startDate]="startDate"></app-asset-charts>
         </ng-container>
       </ng-container>

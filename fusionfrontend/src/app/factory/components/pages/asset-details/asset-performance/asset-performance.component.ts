@@ -95,7 +95,6 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
 
             if (point) {
               fieldCopy.value = point.value;
-              console.log('[asset-details-page.component] matched field and point');
             }
             return fieldCopy;
           });

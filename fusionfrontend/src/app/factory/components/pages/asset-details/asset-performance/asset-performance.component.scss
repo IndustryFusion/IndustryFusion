@@ -17,9 +17,9 @@
 @import "src/assets/sass/abstract/variables";
 
 .asset-details-wrapper {
-  border: 0px;
+  border: 0;
   background: $light-grey;
-  margin: 0px;
+  margin: 0;
   padding: 20px;
 
   .modal-body {
@@ -35,18 +35,18 @@
   }
 
   .maxpoints {
-    margin: 0px;
+    margin: 0;
 
     .pointslabel {
-      margin: 0px;
+      margin: 0;
     }
   }
 
   .dater {
-    margin: 0px;
+    margin: 0;
 
     .datelabel {
-      margin: 0px;
+      margin: 0;
     }
   }
 
@@ -62,7 +62,6 @@
       border: 5px rgba(0, 0, 0, 0.32);
       background-color: inherit;
       color: hsl(198, 0%, 40%);
-      // padding: 14px 28px;
       font-size: 12px;
       cursor: pointer;
       display: inline-block;
@@ -72,25 +71,25 @@
   .tables-wrapper {
     background: $light-grey;
     margin: 25px 50px;
-    border: 0px;
+    border: 0;
   }
 
   .radio-wrapper {
     background: $light-grey;
     padding-top: 20px;
-    margin: 0px 50px 25px;
+    margin: 0 50px 25px;
   }
 
   .charts-container {
     background: $light-grey;
-    border: 0px;
+    border: 0;
     justify-content: center;
     margin: 25px 50px;
   }
 
   .progress-bar-container {
     background: $basic-white;
-    border: 0px;
+    border: 0;
     border-radius: 15px;
     padding: 1.5rem 2rem;
     margin: 1rem 2rem;
