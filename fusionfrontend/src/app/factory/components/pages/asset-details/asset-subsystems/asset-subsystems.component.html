@@ -1,0 +1,48 @@
+<div class="list-header">
+  <div class="if-title">{{ (subsystems$|async)?.length | i18nPlural: titleMapping }}</div>
+</div>
+{{selected?.id}}
+<p-table
+  [selectionMode]="'single'"
+  [(selection)]="selected"
+  (onRowSelect)="selectSubsystem($event)"
+  [value]="subsystems$ | async"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="5"></th>
+      <th>Asset</th>
+      <th>Asset type</th>
+      <th>Manufacturer</th>
+      <th>Room</th>
+      <th>Status</th>
+      <th [style.width.%]="5"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-asset >
+    <tr (click)="selectSubsystem(asset)">
+      <td >
+        {{asset.openAlertPriority}}
+        <div class="list-item-cell notification-icons" [style.width.%]="3"
+             [ngSwitch]="asset.openAlertPriority">
+          <clr-icon *ngSwitchCase="OispPriority.LOW" size="20" shape="info-standard"
+                    class="is-solid notification-low"></clr-icon>
+          <clr-icon *ngSwitchCase="OispPriority.MEDIUM" size="20" shape="exclamation-circle"
+                    class="is-solid notification-medium"></clr-icon>
+          <clr-icon *ngSwitchCase="OispPriority.HIGH" size="20" shape="exclamation-triangle"
+                    class="is-solid notification-high"></clr-icon>
+        </div>
+      </td>
+      <td>
+        <div>
+          <label class="if-label">{{asset.name}}</label><br>
+          <label class="if-label-small">{{asset.assetSeriesName}}</label>
+        </div>
+      </td>
+      <td>{{asset.assetTypeName}}</td>
+      <td>{{asset.manufacturer}}</td>
+      <td>{{asset.roomName}}</td>
+      <td><app-status [asset]="asset" [showInline]="true"></app-status></td>
+    </tr>
+  </ng-template>
+</p-table>
