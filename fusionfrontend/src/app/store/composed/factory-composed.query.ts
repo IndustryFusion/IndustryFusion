@@ -107,6 +107,19 @@ export class FactoryComposedQuery {
     );
   }
 
+  selectActiveAssetsWithFieldInstanceDetails(): Observable<FactoryAssetDetailsWithFields> {
+    return combineQueries([
+      this.factoryAssetDetailsQuery.waitForActive(),
+      this.fieldDetailsQuery.selectAll()
+    ]).pipe(
+      map(([activeAsset, fieldDetails]) => {
+
+        const filteredFields = fieldDetails.filter(field => field.assetId === activeAsset.id);
+        return Object.assign({ fields: filteredFields}, activeAsset);
+      })
+    );
+  }
+
   selectAssetDetailsOfFactorySite(factorySiteId: ID): Observable<FactoryAssetDetails[]> {
     return combineQueries([
       this.factoryAssetDetailsQuery.selectAll(),
