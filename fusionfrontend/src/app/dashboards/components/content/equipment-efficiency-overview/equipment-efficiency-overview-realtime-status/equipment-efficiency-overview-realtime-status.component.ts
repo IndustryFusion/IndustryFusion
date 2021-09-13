@@ -35,25 +35,25 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
   public statusCounts: number[] = [0, 0, 0, 0];
   public OispDeviceStatus = OispDeviceStatus;
 
-  private stati$: Observable<Status[]>;
+  private statuses$: Observable<Status[]>;
 
   constructor(private statusService: StatusService) {
   }
 
   ngOnInit(): void {
-    this.stati$ = combineLatest([this.factoryAssetDetailsWithFields$, timer(0, 5000)]).pipe(
+    this.statuses$ = combineLatest([this.factoryAssetDetailsWithFields$, timer(0, 5000)]).pipe(
       switchMap(([assetsWithFields, _]) =>
         forkJoin(assetsWithFields.map(assetWithFields => this.statusService.getStatusByAssetWithFields(assetWithFields, null)) )
       )
     );
 
-    this.stati$.subscribe((stati: Status[]) => this.updateStatusCounts(stati));
+    this.statuses$.subscribe((statuses: Status[]) => this.updateStatusCounts(statuses));
   }
 
-  private updateStatusCounts(stati: Status[]) {
+  private updateStatusCounts(statuses: Status[]) {
     this.statusCounts = this.statusCounts.map(() => 0);
 
-    stati.forEach(status => {
+    statuses.forEach(status => {
       const deviceStatus = this.statusService.transformStatusToOispDeviceStatus(status);
       this.statusCounts[EquipmentEfficiencyBarChartComponent.getDatasetIndexFromStatus(deviceStatus)]++;
     });

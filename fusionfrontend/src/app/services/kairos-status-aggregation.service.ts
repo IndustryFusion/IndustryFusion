@@ -18,9 +18,6 @@ export class KairosStatusAggregationService {
   private static readonly secondsPerHour = 60 * 60;
   private static readonly hoursPerDay = 24;
 
-  // private destroy$: Subject<boolean> = new Subject<boolean>();
-  // private latestGroups$: Observable<KairosResponseGroup[]>;
-
   constructor(private kairosService: KairosService) {
   }
 
@@ -60,36 +57,37 @@ export class KairosStatusAggregationService {
         KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields), startDateAtMidnight, endDate,
         KairosStatusAggregationService.getStatusUpdatesPerDay(date))
       .pipe(
-        // takeUntil(this.destroy$),
         catchError(() => EMPTY),
         map(groups => this.convertResponseToStatusHours(groups, date))
       );
   }
 
   private calculateOfflineStatusCount(groups: KairosResponseGroup[], date: Date): number {
-    // Idea: As devices sent all status messages except offline  (apart from few potential 0 at shutdown) in a more or less period interval
-    // we can derive the offline count by subtracting the expected messages of the selected day (or until now if today)
-    // from the sum of status idle, online and error.
+    // Idea: All devices send 3-4 status types at an almost regular interval.
+    // Offline (0) is often sent only at shutdown, followed by a gap of data.
+    // Therefore, we can derive the offline count by subtracting the expected messages of the selected day (or so far, if today)
+    // from the sum of Idle, Online and Error statuses including some existing offline points.
     let pointsOfAllStatiExceptOffline = 0;
+    let pointsOfOfflineStatus = 0;
     groups.forEach(group => {
       if (group.index !== OispDeviceStatus.OFFLINE) {
-        pointsOfAllStatiExceptOffline += this.sumOfResults(group);
+        pointsOfAllStatiExceptOffline += this.sumOfGroupResults(group);
+      } else {
+        pointsOfOfflineStatus += this.sumOfGroupResults(group);
       }
     });
 
-    const offlineCount = KairosStatusAggregationService.getStatusUpdatesPerDay(date) - pointsOfAllStatiExceptOffline;
+    const estimatedOfflineCountByGaps = KairosStatusAggregationService.getStatusUpdatesPerDay(date) - pointsOfAllStatiExceptOffline;
+    const offlineCount = pointsOfOfflineStatus + estimatedOfflineCountByGaps;
     return Math.round(offlineCount);
   }
 
-  private convertResponseToStatusHours(statusGroupsExcludingOffline: KairosResponseGroup[], date: Date): StatusHours[] {
-    const estimatedOfflineCount = this.calculateOfflineStatusCount(statusGroupsExcludingOffline, date);
-    const offlineGroup: KairosResponseGroup = ({ index: OispDeviceStatus.OFFLINE, results: [estimatedOfflineCount] });
-    const statusGroups: KairosResponseGroup[] = [...statusGroupsExcludingOffline];
-    statusGroups.unshift(offlineGroup);
+  private convertResponseToStatusHours(statusGroups: KairosResponseGroup[], date: Date): StatusHours[] {
+    const statusGroupsIncludingOffline = this.upsertOfflineGroup(statusGroups, date);
 
     const statusHours: StatusHours[] = [];
-    statusGroups.forEach((group: KairosResponseGroup) => {
-      const hour = (this.sumOfResults(group) / KairosStatusAggregationService.statusUpdatesPerSecond) /
+    statusGroupsIncludingOffline.forEach((group: KairosResponseGroup) => {
+      const hour = (this.sumOfGroupResults(group) / KairosStatusAggregationService.statusUpdatesPerSecond) /
                     KairosStatusAggregationService.secondsPerHour;
       statusHours.push({ hours: hour, status: group.index as OispDeviceStatus });
     });
@@ -97,7 +95,22 @@ export class KairosStatusAggregationService {
     return statusHours;
   }
 
-  private sumOfResults(group: KairosResponseGroup) {
+  private upsertOfflineGroup(statusGroups: KairosResponseGroup[], date: Date): KairosResponseGroup[]  {
+    const estimatedOfflineCount = this.calculateOfflineStatusCount(statusGroups, date);
+    const statusGroupsIncludingOffline: KairosResponseGroup[] = [...statusGroups];
+
+    const existingOfflineGroup = statusGroupsIncludingOffline.find(x => x.index === OispDeviceStatus.OFFLINE);
+    if (existingOfflineGroup) {
+      existingOfflineGroup.results = [estimatedOfflineCount];
+    } else {
+      const newOfflineGroup: KairosResponseGroup = ({ index: OispDeviceStatus.OFFLINE, results: [estimatedOfflineCount] });
+      statusGroupsIncludingOffline.push(newOfflineGroup);
+    }
+
+    return statusGroupsIncludingOffline;
+  }
+
+  private sumOfGroupResults(group: KairosResponseGroup) {
     let count = 0;
     group.results.forEach(result => count += result);
     return count;
