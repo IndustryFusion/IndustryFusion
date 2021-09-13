@@ -19,7 +19,7 @@
    margin: 0 80px;
  }
 
-.if-badge {
+.status-circle {
   display: inline-flex;
   vertical-align: middle;
   align-items: center;
@@ -58,8 +58,8 @@
   }
 }
 
-.if-badge-square {
-  @extend .if-badge;
+.status-square {
+  @extend .status-circle;
   min-width: .55rem;
   height: .55rem;
   border-radius: 3px;
