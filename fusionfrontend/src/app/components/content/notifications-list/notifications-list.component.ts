@@ -34,8 +34,7 @@ export enum NotificationState { OPEN, CLEARED}
 export class NotificationsListComponent implements OnInit, OnDestroy {
 
   @Input() items$: Observable<OispNotification[]>;
-  @Input() state: NotificationState;
-  @Input() isInline: false;
+  @Input() isInline = false;
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };
   sortField: string;
@@ -60,11 +59,12 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.periodicallyFetchNotifications();
     this.initMappings();
+    this.periodicallyFetchNotifications();
   }
 
   ngOnDestroy(): void {
+    this.itemsSub?.unsubscribe();
     clearInterval(this.intervalId);
   }
 
@@ -105,12 +105,21 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.filterNotifications();
   }
 
+  getCurrentState(): NotificationState {
+    if (this.isRouteActive('cleared')) {
+      return NotificationState.CLEARED;
+    } else {
+      return NotificationState.OPEN;
+    }
+  }
+
   public changeTab(state: NotificationState) {
     if (state === NotificationState.CLEARED) {
-      this.navigateToSubroute('cleared');
+      this.navigateToSubroute('cleared').then(_ => this.initMappings());
     } else {
-      this.navigateToSubroute('open');
+      this.navigateToSubroute('open').then(_ => this.initMappings());
     }
+    this.fetchNotifications();
   }
 
   navigateToSubroute(subroute): Promise<boolean> {
@@ -119,6 +128,11 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
       newRoute = [subroute];
     }
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
+  }
+
+  isRouteActive(subroute: string): boolean {
+    const snapshot = this.activatedRoute.snapshot;
+    return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
   private getActiveRouteLastChild() {
@@ -143,10 +157,10 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private getStatusName(): string {
-    switch (this.state) {
+    switch (this.getCurrentState()) {
       case NotificationState.CLEARED:
         return 'Cleared';
-      case NotificationState.OPEN:
+      default:
         return 'Open';
     }
   }

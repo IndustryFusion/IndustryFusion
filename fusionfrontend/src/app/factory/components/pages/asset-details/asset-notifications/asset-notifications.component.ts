@@ -17,12 +17,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OispNotification } from '../../../../../store/oisp/oisp-notification/oisp-notification.model';
-import { map } from 'rxjs/operators';
+import { first, map, mergeMap } from 'rxjs/operators';
 import { OispNotificationService } from '../../../../../store/oisp/oisp-notification/oisp-notification.service';
 import { OispAlertStatus } from '../../../../../store/oisp/oisp-alert/oisp-alert.model';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
-import { NotificationState } from '../../../../../components/content/notifications-list/notifications-list.component';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 
 @Component({
@@ -33,10 +32,8 @@ import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asse
 export class AssetNotificationsComponent implements OnInit {
 
   asset$: Observable<FactoryAssetDetailsWithFields>;
-  allStates = NotificationState;
 
-  openNotifications$: Observable<OispNotification[]>;
-  clearedNotifications$: Observable<OispNotification[]>;
+  allNotifications$: Observable<OispNotification[]>;
 
   constructor(private factoryResolver: FactoryResolver,
               private oispNotificationService: OispNotificationService,
@@ -46,15 +43,15 @@ export class AssetNotificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.asset$.subscribe(asset => {
-      console.warn('got asset', asset);
-      this.openNotifications$ = this.oispNotificationService.getAllNotificationsUsingAlertStore(asset.externalName).pipe(
-        map(notifications => this.filterNotificationsByStatus(notifications, NotificationState.OPEN))
-      );
-      this.clearedNotifications$ = this.oispNotificationService.getAllNotificationsUsingAlertStore(asset.externalName).pipe(
-        map(notifications => this.filterNotificationsByStatus(notifications, NotificationState.CLEARED))
-      );
-    });
+    this.allNotifications$ = this.asset$.pipe(first(),
+      mergeMap(asset => this.getFilteredNotifications(asset))
+    );
+  }
+
+  getFilteredNotifications(asset: FactoryAssetDetailsWithFields): Observable<OispNotification[]> {
+    return this.oispNotificationService.getAllNotificationsUsingAlertStore(asset.externalName).pipe(
+      map(notifications => this.filterNotificationsByStatus(notifications)),
+    );
   }
 
   isRouteActive(subroute: string): boolean {
@@ -62,19 +59,11 @@ export class AssetNotificationsComponent implements OnInit {
     return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
-  getOpenedTab(): NotificationState {
+  private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
     if (this.isRouteActive('cleared')) {
-      return NotificationState.CLEARED;
-    } else {
-      return NotificationState.OPEN;
-    }
-  }
-
-  private filterNotificationsByStatus(notifications: OispNotification[], state: NotificationState): OispNotification[] {
-    if (state === NotificationState.OPEN) {
-      return notifications.filter(rule => rule.status !== OispAlertStatus.CLOSED);
-    } else {
       return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
+    } else {
+      return notifications.filter(rule => rule.status !== OispAlertStatus.CLOSED);
     }
   }
 }
