@@ -12,17 +12,24 @@ import { environment } from 'src/environments/environment';
  */
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+
   private bearerUrlWhitelist: RegExp[] = [
-    new RegExp('^' + this.ensureTrailingSlash(environment.oispApiUrlPrefix)),
-    new RegExp('^' + this.ensureTrailingSlash(window.location.origin + this.location.prepareExternalUrl(environment.apiUrlPrefix))),
-    new RegExp('^' + this.ensureTrailingSlash(this.location.prepareExternalUrl(environment.apiUrlPrefix))),
-    new RegExp('^' + this.ensureTrailingSlash(environment.apiUrlPrefix))
+    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.oispApiUrlPrefix)),
+    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.kairosApiUrlPrefix)),
+    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(window.location.origin +
+      this.location.prepareExternalUrl(environment.apiUrlPrefix))),
+    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(this.location.prepareExternalUrl(environment.apiUrlPrefix))),
+    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.apiUrlPrefix))
   ];
 
-  constructor(
-    private keycloak: KeycloakService,
-    protected readonly location: Location
-  ) { }
+  constructor(private keycloak: KeycloakService,
+              protected readonly location: Location) {
+
+  }
+
+  public static ensureTrailingSlash(str: string) {
+    return str + (str.endsWith('/') ? '' : '/');
+  }
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const includeBearerToken: boolean =
@@ -49,9 +56,5 @@ export class TokenInterceptor implements HttpInterceptor {
         return next.handle(kcReq);
       })
     );
-  }
-
-  private ensureTrailingSlash(str: string) {
-    return str + (str.endsWith('/') ? '' : '/');
   }
 }

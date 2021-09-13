@@ -141,7 +141,8 @@ export class OispService {
     return answer;
   }
 
-  getOispPoints(path: string, request: OispRequest, allFields: boolean, useNameAsId = false): Observable<PointWithId[]> {
+  getOispPoints(path: string, request: OispRequest, allFields: boolean, useNameAsId = false):
+    Observable<PointWithId[]> {
     if (request.metrics.length < 1) {
       return of(this.defaultPoints);
     }

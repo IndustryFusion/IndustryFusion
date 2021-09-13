@@ -1,5 +1,6 @@
 export enum DashboardPageType {
-  MAINTENANCE
+  MAINTENANCE,
+  EQUIPMENT_EFFICIENCY
 }
 
 export class RouteData {
