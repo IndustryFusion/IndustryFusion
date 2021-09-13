@@ -15,12 +15,11 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { FactoryResolver } from '../../../../services/factory-resolver.service';
-import { AssetQuery } from '../../../../../store/asset/asset.query';
 import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { Location } from '@angular/common';
+import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
+import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
 
 @Component({
   selector: 'app-asset-details-sub-header',
@@ -30,19 +29,30 @@ import { Location } from '@angular/common';
 export class AssetDetailsSubHeaderComponent implements OnInit {
 
   assetId: ID;
-  asset$: Observable<FactoryAssetDetailsWithFields>;
+  asset: FactoryAssetDetailsWithFields;
+  hasSubsystems = false;
 
   constructor(public activatedRoute: ActivatedRoute,
               private router: Router,
               private routingLocation: Location,
-              private factoryResolver: FactoryResolver,
-              private assetQuery: AssetQuery) {
+              private factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
+              private factoryComposedQuery: FactoryComposedQuery) {
   }
 
   ngOnInit() {
-    this.assetQuery.selectLoading();
-    this.assetId = this.assetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+    this.activatedRoute.fragment.subscribe(() => {
+      this.updateAsset();
+    });
+    this.factoryAssetDetailsQuery.selectLoading();
+    this.updateAsset();
+  }
+
+  updateAsset() {
+    this.assetId = this.factoryAssetDetailsQuery.getActiveId();
+    this.factoryComposedQuery.selectActiveAssetsWithFieldInstanceDetails().subscribe(asset => {
+      this.asset = asset;
+      this.hasSubsystems = asset.subsystemIds?.length > 0;
+    });
   }
 
   onRouteClick(subroute: string): Promise<boolean> {

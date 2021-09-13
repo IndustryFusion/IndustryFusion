@@ -26,6 +26,9 @@ import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { Role } from '../services/roles.model';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
+import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
+import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
+import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 
 const routes: Routes = [
@@ -157,48 +160,39 @@ const routes: Routes = [
   },
   {
     path: 'factorymanager/companies/:companyId/assets/:assetId',
-    component: AssetPerformanceComponent,
     canActivate: [MainAuthGuardGuard],
+    resolve: { assets: FactoryAssetDetailsResolver, OispDeviceResolver },
     data: {
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/assets/:assetId/performance',
-    component: AssetPerformanceComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/assets/:assetId/digital-nameplate',
-    component: AssetDigitalNameplateComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/assets/:assetId/notifications',
-    component: AssetNotificationsComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/assets/:assetId/notifications/:state',
-    component: AssetNotificationsComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
-      roles: [Role.FACTORY_MANAGER]
-    }
+    },
+    children: [
+      {
+        path: '',
+        redirectTo: 'performance',
+        pathMatch: 'full',
+      },
+      {
+        path: 'performance',
+        component: AssetPerformanceComponent,
+      },
+      {
+        path: 'digital-nameplate',
+        component: AssetDigitalNameplateComponent,
+      },
+      {
+        path: 'subsystems',
+        component: AssetSubsystemsComponent,
+      },
+      {
+        path: 'notifications',
+        component: AssetNotificationsComponent,
+      },
+      {
+        path: 'notifications/:state',
+        component: AssetNotificationsComponent,
+      },
+    ]
   },
   {
     path: 'factorymanager/companies/:companyId/assets/asset-cards/:assetIdList',

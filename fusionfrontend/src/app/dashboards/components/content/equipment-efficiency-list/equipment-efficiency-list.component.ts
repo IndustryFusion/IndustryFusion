@@ -269,7 +269,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   }
 
   getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields) {
-    return asset.fields.find(field => field.name === 'Asset status');
+    return asset.fields.find(field => field.name === 'status');
   }
 
   private updateTree() {

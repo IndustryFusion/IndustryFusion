@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-asset-details-info [asset]="(asset$ | async)"></app-asset-details-info>
+<app-asset-details-info [asset]="(asset)"></app-asset-details-info>
 
 <div class="subheader-flex">
   <div class="flexbox"></div>
@@ -27,7 +27,8 @@ under the License.
       <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}">Digital
         Nameplate
       </li>
-      <li [ngClass]="{'active': isRouteActive('subsystems')}">Subsystems</li>
+      <li (click)="onRouteClick('subsystems')" *ngIf="hasSubsystems"
+          [ngClass]="{'active': isRouteActive('subsystems')}">Subsystems</li>
     </ul>
   </div>
   <div class="flexbox"></div>

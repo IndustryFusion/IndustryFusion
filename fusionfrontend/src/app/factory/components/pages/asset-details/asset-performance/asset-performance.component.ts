@@ -28,6 +28,7 @@ import { FactoryResolver } from 'src/app/factory/services/factory-resolver.servi
 import { ID } from '@datorama/akita';
 import * as moment from 'moment';
 import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
+import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
 
 @Component({
   selector: 'app-asset-performance',
@@ -71,12 +72,14 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
               private oispService: OispService,
               private oispDeviceQuery: OispDeviceQuery,
               private factoryResolver: FactoryResolver,
+              private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
               private datePipe: DatePipe,
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.isLoading$ = this.assetQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetId = this.assetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithFields$;
 

@@ -63,6 +63,7 @@ import { AssetPerformanceComponent } from './components/pages/asset-details/asse
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
 import { CardModule } from 'primeng/card';
 import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
+import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 
 @NgModule({
@@ -107,6 +108,7 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
     AssetDetailsSubHeaderComponent,
     AssetCardComponent,
     NameplateItemComponent,
+    AssetSubsystemsComponent,
     AssetNotificationsComponent
   ],
   imports: [
