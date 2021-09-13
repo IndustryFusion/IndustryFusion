@@ -22,6 +22,7 @@ import { StatusService } from 'src/app/services/status.service';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-asset-card',
@@ -46,7 +47,7 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, 2000);
+    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
     this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.mergedFields$, this.asset);
   }
 

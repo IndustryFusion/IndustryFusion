@@ -14,7 +14,7 @@ import { StatusHours } from './kairos-status-aggregation.model';
 })
 export class KairosStatusAggregationService {
 
-  private static readonly statusUpdatesPerSecond = 1.0 / (environment.assetStatusUpdateIntervalMs / 1000.0);
+  private static readonly statusUpdatesPerSecond = 1.0 / (environment.assetStatusSampleRateMs / 1000.0);
   private static readonly secondsPerHour = 60 * 60;
   private static readonly hoursPerDay = 24;
 

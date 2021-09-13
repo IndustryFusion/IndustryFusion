@@ -28,6 +28,7 @@ import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asse
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
 import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -62,7 +63,7 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
 
     // TODO: refactor using status.service.getStatusByAssetWithFields
-    this.latestPoints$ = combineLatest([this.asset$, timer(0, 2000)]).pipe(
+    this.latestPoints$ = combineLatest([this.asset$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
       switchMap(([asset, _]) => {
         return this.oispService.getLastValueOfAllFields(asset, asset?.fields, 5);
       })

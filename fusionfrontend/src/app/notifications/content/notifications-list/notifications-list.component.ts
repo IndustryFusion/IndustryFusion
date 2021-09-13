@@ -30,7 +30,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class NotificationsListComponent implements OnInit, OnDestroy {
 
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
   @Input() items$: Observable<OispNotification[]>;
   @Input() isOpen: boolean;

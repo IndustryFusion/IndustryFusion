@@ -20,6 +20,7 @@ import { switchMap } from 'rxjs/operators';
 import { StatusService } from '../../../../../services/status.service';
 import { OispDeviceStatus } from '../../../../../services/kairos.model';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-equipment-efficiency-overview-realtime-status',
@@ -40,7 +41,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
   }
 
   ngOnInit(): void {
-    this.statuses$ = combineLatest([this.factoryAssetDetailsWithFields$, timer(0, 5000)]).pipe(
+    this.statuses$ = combineLatest([this.factoryAssetDetailsWithFields$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
       switchMap(([assetsWithFields, _]) =>
         forkJoin(assetsWithFields.map(assetWithFields => this.statusService.getStatusByAssetWithFields(assetWithFields, null)) )
       )

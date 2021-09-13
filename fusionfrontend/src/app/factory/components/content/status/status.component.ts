@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 import { StatusService } from 'src/app/services/status.service';
 import { Status } from '../../../models/status.model';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-status',
@@ -39,6 +40,6 @@ export class StatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.status$ = this.statusService.getStatusByAssetWithFields(this.asset, 2000);
+   this.status$ = this.statusService.getStatusByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
   }
 }
