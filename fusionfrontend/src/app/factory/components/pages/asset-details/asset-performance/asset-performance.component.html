@@ -17,25 +17,16 @@ under the License.
 
   <ng-container *ngIf="asset$ | async as assetWithFields">
 
+    <div class="caption">Maintenance</div>
     <div class="progress-bar-container">
-      <div class="caption">Betriebsstunden</div>
+      <div class="progress-bar-label">Operating Hours till Maintenance</div>
       <app-maintenance-progressbar [asset]="assetWithFields" [type]="maintenanceUtils.maintenanceHours"
                                    class="progress-bar"></app-maintenance-progressbar>
-      <div class="maintenance-text">Wartung in <span
-        class="highlight">{{ maintenanceUtils.getMaintenanceValue(assetWithFields, maintenanceUtils.maintenanceHours) }}
-        Stunden</span> oder <span class="highlight">YYY Wochen</span> fällig
-      </div>
     </div>
-
     <div class="progress-bar-container">
-      <div class="caption">Tage</div>
+      <div class="progress-bar-label">Days till Maintenance</div>
       <app-maintenance-progressbar [asset]="assetWithFields" [type]="maintenanceUtils.maintenanceDays"
                                    class="progress-bar"></app-maintenance-progressbar>
-      <div class="maintenance-text">Wartung in <span
-        class="highlight">{{ maintenanceUtils.getMaintenanceValue(assetWithFields, maintenanceUtils.maintenanceDays) }}
-        Tagen</span> oder <span class="highlight">YYY Wochen</span>
-        fällig
-      </div>
     </div>
 
     <div class="tables-wrapper">

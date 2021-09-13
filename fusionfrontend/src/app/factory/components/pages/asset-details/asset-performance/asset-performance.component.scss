@@ -92,14 +92,13 @@
     background: $basic-white;
     border: 0px;
     border-radius: 15px;
-    padding: 20px 30px;
-    margin: 20px 50px;
+    padding: 1.5rem 2rem;
+    margin: 1rem 2rem;
     display: flex;
     flex-direction: column;
 
-    .caption {
-      font-weight: bold;
-      color: $basic-black;
+    .progress-bar-label {
+      color: $regular-grey;
     }
   }
 
@@ -107,12 +106,11 @@
     padding: 10px 0;
   }
 
-  .highlight {
+  .caption {
+    color: $basic-black;
+    font-size: $bigger-font-size;
     font-weight: bold;
+    margin: 1rem 2rem;
   }
 
-  .maintenance-text {
-    text-align: right;
-    font-size: $regular-font-size;
-  }
 }
