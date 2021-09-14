@@ -14,48 +14,59 @@ under the License.
 -->
 <div class="wrapper">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="if-title">{{ rules?.length | i18nPlural: titleMapping }}</div>
-    <div *ngIf="isRouteActive('overview')">
-      <app-create-button [text]="'Create Applet'" (createItem)="createItem()"></app-create-button>
+    <div class="if-title">{{ filtedRules?.length | i18nPlural: titleMapping }}</div>
+    <div class="clr-row list-header">
+      <p-selectButton  class="space-right"
+                       *ngIf="!showActions"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="[{name:'Active', value:true},{name:'Archived', value:false}]"
+                       [(ngModel)]="showActive"
+                       (ngModelChange)="updateFilter()"
+      ></p-selectButton>
+      <app-create-button *ngIf="showActive || !showActions"
+                         [text]="'Create Applet'"
+                         (createItem)="createItem()"
+      ></app-create-button>
     </div>
   </div>
 </div>
 
 
-<p-table #table [value]="rules">
+<p-table #table [value]="filtedRules">
   <ng-template pTemplate="header">
     <tr>
-      <th [style.width.rem]="2"></th>
+      <th ></th>
       <th [style.width.%]="25">AppletName</th>
       <th [style.width.%]="40">Condition Summary</th>
       <th [style.width.%]="10"></th>
-      <th [style.width.%]="15">Status</th>
-      <th [style.width.%]="5"></th>
+      <th [style.width.%]="10">Status</th>
+      <th *ngIf="showActions"></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
     <tr>
-      <td [style.width.rem]="2">
+      <td (click)="editItem(rowIndex)" style="direction: rtl">
         <i class="if-icon-mail" *ngIf="hasActionType(rule,RuleActionType.mail)"></i>
         <i class="if-icon-webhook" *ngIf="hasActionType(rule,RuleActionType.http)"></i>
       </td>
-      <td [style.width.%]="25">
+      <td (click)="editItem(rowIndex)">
 
         <span class="if-label">{{rule.name}}</span> <br>
         {{rule.description}}
       </td>
-      <td [style.width.%]="40">{{rule.naturalLanguage}}</td>
-      <td [style.width.%]="10">
+      <td (click)="editItem(rowIndex)">{{rule.naturalLanguage}}</td>
+      <td>
         <p-inputSwitch
           [disabled]="!ruleStatusUtil.canActivated(rule.status)"
           (ngModelChange)="changeStatus(rowIndex, $event)"
           [ngModel]="ruleStatusUtil.isActive(rule.status)"
         ></p-inputSwitch>
       </td>
-      <td [style.width.%]="15">
+      <td (click)="editItem(rowIndex)">
         <span class="if-badge" [ngClass]="{'if-badge-active': isActive(rule.status)}"></span> {{rule.status}}
       </td>
-      <td [style.width.%]="5">
+      <td *ngIf="showActions">
         <app-item-options-menu
           (createItem)="createItem()"
           (cloneItem)="cloneItem(rowIndex)"
