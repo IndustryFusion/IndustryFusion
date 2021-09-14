@@ -28,6 +28,7 @@ import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 import { BooleanPipe } from '../pipes/boolean.pipe';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { BooleanPipe } from '../pipes/boolean.pipe';
     RadioButtonModule,
     DialogModule,
     ToastModule,
+    BreadcrumbModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -86,11 +88,12 @@ import { BooleanPipe } from '../pipes/boolean.pipe';
     RadioButtonModule,
     LabelControlDirective,
     TooltipComponent,
+    BreadcrumbModule,
     BooleanPipe,
   ],
   providers: [
     MessageService,
-    BooleanPipe
+    BooleanPipe,
   ]
 })
 export class IFCommon {
