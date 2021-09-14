@@ -120,7 +120,6 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     assetWithFields.statusHours = statusHours;
     this.loadedStatusCount++;
     if (this.assetsWithStatus === this.loadedStatusCount) {
-      console.log('AAAA', this.factoryAssetDetailsWithFields);
       this.fullyLoadedAssets.next(this.factoryAssetDetailsWithFields);
     }
   }

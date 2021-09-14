@@ -81,7 +81,8 @@ export class KairosStatusAggregationService {
       }
     });
 
-    const estimatedOfflineCountByGaps = KairosStatusAggregationService.getStatusUpdatesPerDay(date) - pointsOfStatusesWithoutOffline;
+    const dataCountWithoutGaps = pointsOfStatusesWithoutOffline + pointsOfOfflineStatus;
+    const estimatedOfflineCountByGaps = KairosStatusAggregationService.getStatusUpdatesPerDay(date) - dataCountWithoutGaps;
     const offlineCount = pointsOfOfflineStatus + estimatedOfflineCountByGaps;
     return Math.round(offlineCount);
   }

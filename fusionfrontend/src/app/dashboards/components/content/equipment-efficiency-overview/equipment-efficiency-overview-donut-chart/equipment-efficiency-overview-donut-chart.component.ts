@@ -116,7 +116,6 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
 
   ngOnInit() {
     this.aggregatedStatusHours$.subscribe(aggregatedStatusHours => {
-      console.log('HIII', aggregatedStatusHours);
       if (aggregatedStatusHours) {
         this.updateChart(aggregatedStatusHours);
       }
