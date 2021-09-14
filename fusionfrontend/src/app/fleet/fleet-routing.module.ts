@@ -15,7 +15,6 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FleetManagerPageComponentComponent } from './components/pages/fleet-manager-page-component/fleet-manager-page-component.component';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
 import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
@@ -27,10 +26,6 @@ import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service'
 
 
 const routes: Routes = [
-  {
-    path: 'fleetmanager/template',
-    component: FleetManagerPageComponentComponent,
-  },
   {
     path: 'fleetmanager/companies/:companyId/assetseries',
     component: AssetSeriesPageComponent,
