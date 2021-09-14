@@ -46,7 +46,7 @@ public class AssetSeriesDetailsMapper extends EntityDetailsDtoMapper<AssetSeries
                 .status("Active")
                 .assetCount((long) assetCount)
                 .imageKey(entity.getImageKey())
-                .manufacturer(entity.getCompany().getDescription())
+                .manufacturer(entity.getCompany().getName())
                 .category(assetType.getDescription())
                 .companyId(entity.getCompany().getId())
                 .build();
