@@ -33,7 +33,6 @@ import { UnitsResolver } from '../resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
 import { Role } from '../services/roles.model';
-import { EcosystemManagerPageType } from './ecosystem.routing.model';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
@@ -55,7 +54,6 @@ const routes: Routes = [
       assetTypes: AssetTypeDetailsResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_LIST],
       roles: [Role.ECOSYSTEM_MANAGER],
       breadcrumb: 'Asset Types',
     },
@@ -76,7 +74,6 @@ const routes: Routes = [
           templates: AssetTypeTemplatesResolver,
         },
         data: {
-          pageTypes: [EcosystemManagerPageType.ASSET_TYPE_DETAIL],
           roles: [Role.ECOSYSTEM_MANAGER],
           breadcrumb: AssetTypeQuery,
         },
@@ -97,7 +94,6 @@ const routes: Routes = [
       templates: AssetTypeTemplatesResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST],
       roles: [Role.ECOSYSTEM_MANAGER],
       breadcrumb: 'Asset Type Templates',
     },
@@ -118,7 +114,6 @@ const routes: Routes = [
           units: UnitsResolver,
         },
         data: {
-          pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL],
           roles: [Role.ECOSYSTEM_MANAGER],
           breadcrumb: AssetTypeTemplateQuery,
         },
@@ -135,7 +130,6 @@ const routes: Routes = [
       quantityTypes: QuantityTypesResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.FIELD_LIST],
       roles: [Role.ECOSYSTEM_MANAGER],
       breadcrumb: 'Metrics & Attributes',
     },
@@ -157,7 +151,6 @@ const routes: Routes = [
           quantityTypes: QuantityTypesResolver,
         },
         data: {
-          pageTypes: [EcosystemManagerPageType.FIELD_DETAIL],
           roles: [Role.ECOSYSTEM_MANAGER],
           breadcrumb: FieldQuery,
         }
@@ -172,7 +165,6 @@ const routes: Routes = [
       units: UnitsResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_LIST],
       roles: [Role.ECOSYSTEM_MANAGER],
       breadcrumb: 'Quantity Types',
     },
@@ -193,7 +185,6 @@ const routes: Routes = [
           units: UnitsResolver,
         },
         data: {
-          pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_DETAIL],
           roles: [Role.ECOSYSTEM_MANAGER],
           breadcrumb: QuantityTypeQuery,
         },
@@ -215,7 +206,6 @@ const routes: Routes = [
       units: UnitsResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.UNIT_LIST],
       roles: [Role.ECOSYSTEM_MANAGER],
       breadcrumb: 'Units'
     },
@@ -236,7 +226,6 @@ const routes: Routes = [
           units: UnitsResolver,
         },
         data: {
-          pageTypes: [EcosystemManagerPageType.UNIT_DETAIL],
           roles: [Role.ECOSYSTEM_MANAGER],
           breadcrumb: UnitQuery,
         },
