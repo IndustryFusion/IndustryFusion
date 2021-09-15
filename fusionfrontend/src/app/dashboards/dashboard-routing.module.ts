@@ -25,11 +25,17 @@ const routes: Routes = [
     component: MaintenancePageComponent,
     resolve: {
       devices: OispDeviceResolver
+    },
+    data: {
+      breadcrumb: 'Maintenance'
     }
   },
   {
     path: 'dashboards/companies/:companyId/equipment-efficiency',
     component: EquipmentEfficiencyPageComponent,
+    data: {
+      breadcrumb: 'Equipment Efficiency'
+    }
   },
 ];
 

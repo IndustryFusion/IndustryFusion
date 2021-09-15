@@ -28,8 +28,9 @@ under the License.
                       [title]="'Ecosystem Manager'"></app-page-title>
       <app-factory-page-title *ngIf="isManager(ManagerType.FACTORY_MANAGER);"
                               [factorySubTitle]="factorySubTitle$ | async"></app-factory-page-title>
-      <app-fleet-page-title *ngIf="isManager(ManagerType.FLEET_MANAGER);"></app-fleet-page-title>
-      <app-dashboard-page-title *ngIf="isDashboards();"></app-dashboard-page-title>
+      <app-page-title *ngIf="isManager(ManagerType.FLEET_MANAGER);" [title]="'Fleet Manager'"></app-page-title>
+      <app-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);" [title]="'Ecosystem Manager'"></app-page-title>
+      <app-page-title *ngIf="isDashboards();" [title]="'Dashboards'"></app-page-title>
       <app-fusion-applet-page-title *ngIf="isFusionApplet()"></app-fusion-applet-page-title>
       <app-notifications-page-title *ngIf="isNotifications();"></app-notifications-page-title>
       <div *ngIf="isHome()">

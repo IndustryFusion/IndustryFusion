@@ -66,14 +66,6 @@ export class PageTitleComponent implements OnInit {
     }
   }
 
-  private addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
-    const label = breadcrumbData;
-    if (label) {
-      breadcrumbs.push({ label, url });
-    }
-    return breadcrumbs;
-  }
-
   private addQueryResult(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[]  {
     const query = this.injector.get(breadcrumbData);
     const subtitleQuery: BaseSubtitleQuery<typeof query> = this.injector.get(breadcrumbData);
@@ -82,9 +74,17 @@ export class PageTitleComponent implements OnInit {
         // Only add (last) active item matching with id at end of url to avoid concurrency issues
         const lastUrlParameter = url.split('/')[url.split('/').length - 1];
         if (String(object.id) === String(lastUrlParameter)) {
-          breadcrumbs.push({ label: query.getSubtitleName(object), url });
+          breadcrumbs.push({ label: subtitleQuery.getSubtitleName(object), url });
         }
       });
+    return breadcrumbs;
+  }
+
+  private addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
+    const label = breadcrumbData;
+    if (label) {
+      breadcrumbs.push({ label, url });
+    }
     return breadcrumbs;
   }
 }
