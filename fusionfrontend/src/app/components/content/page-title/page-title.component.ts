@@ -57,9 +57,13 @@ export class PageTitleComponent implements OnInit {
       const isQuery = typeof(breadcrumbData) === 'function';
       if (isQuery) {
         const query = this.injector.get(breadcrumbData);
-        query.waitForActive()
+        query.waitForActives()
           .subscribe((object: any) => {
-            breadcrumbs.push({ label: object.name, url });
+            // Only add (last) active item matching with id at end of url to avoid concurrency issues
+            const lastUrlParameter = url.split('/')[url.split('/').length - 1];
+            if (String(object.id) === String(lastUrlParameter)) {
+              breadcrumbs.push({ label: object.name, url });
+            }
           });
       } else {
         const label = breadcrumbData;
