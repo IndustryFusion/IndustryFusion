@@ -35,8 +35,10 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   @Input() items$: Observable<OispNotification[]>;
   @Input() isInline = false;
+
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };
+
   sortField: string;
   selected: Set<ID> = new Set();
   intervalId: number;
@@ -105,7 +107,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.filterNotifications();
   }
 
-  getCurrentState(): NotificationState {
+  public getCurrentState(): NotificationState {
     if (this.isRouteActive('cleared')) {
       return NotificationState.CLEARED;
     } else {
@@ -113,7 +115,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeTab(state: NotificationState) {
+  public changeTab(state: NotificationState): void {
     if (state === NotificationState.CLEARED) {
       this.navigateToSubroute('cleared').then(_ => this.initMappings());
     } else {
@@ -183,7 +185,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => this.fetchNotifications(), this.FETCHING_INTERVAL_MILLISECONDS);
   }
 
-  private fetchNotifications() {
+  private fetchNotifications(): void {
     this.itemsSub?.unsubscribe();
     this.itemsSub = this.items$?.subscribe(notifications => {
       this.allNotifications = notifications;

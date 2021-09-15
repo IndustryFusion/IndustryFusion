@@ -211,7 +211,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   ngOnDestroy() {
-    console.log('[asset-charts.component] destroyed subscription');
     this.destroy$.next(true);
     this.destroy$.complete();
   }

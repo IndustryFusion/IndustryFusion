@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: User;
   route: string;
   show: boolean;
+
   openAlertCount = 0;
   ManagerType = ManagerType;
   private unSubscribe$ = new Subject<void>();
@@ -48,15 +49,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.show = true;
     this.router.events
-      .pipe(
-        takeUntil(this.unSubscribe$)
-      ).subscribe(() => {
-      if (this.routingLocation.path() !== '') {
-        this.route = this.routingLocation.path();
-      } else {
-        this.route = '/';
-      }
-    });
+      .pipe(takeUntil(this.unSubscribe$))
+      .subscribe(() => {
+        if (this.routingLocation.path() !== '') {
+          this.route = this.routingLocation.path();
+        } else {
+          this.route = '/';
+        }
+      });
 
     this.oispAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
