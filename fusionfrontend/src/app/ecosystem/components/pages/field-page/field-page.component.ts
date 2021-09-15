@@ -17,7 +17,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FieldQuery } from '../../../../store/field/field-query.service';
-import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { FieldService } from '../../../../store/field/field.service';
 import { Field } from '../../../../store/field/field.model';
 import { FieldDialogComponent } from '../../content/field-dialog/field-dialog.component';
@@ -42,13 +41,11 @@ export class FieldPageComponent implements OnInit, OnDestroy {
               private unitQuery: UnitQuery,
               private fieldService: FieldService,
               private activatedRoute: ActivatedRoute,
-              private dialogService: DialogService,
-              private ecoSystemManagerResolver: EcoSystemManagerResolver) { }
+              private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.fieldQuery.selectLoading();
     this.resolve(this.activatedRoute);
-    this.ecoSystemManagerResolver.resolve(this.activatedRoute);
   }
 
   ngOnDestroy(): void {

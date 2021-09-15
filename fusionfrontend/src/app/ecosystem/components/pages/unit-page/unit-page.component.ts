@@ -20,7 +20,6 @@ import { ActivatedRoute } from '@angular/router';
 import { UnitService } from '../../../../store/unit/unit.service';
 import { UnitQuery } from '../../../../store/unit/unit.query';
 import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
-import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { first } from 'rxjs/operators';
 import { UnitDialogComponent } from '../../content/unit-dialog/unit-dialog.component';
@@ -37,7 +36,6 @@ export class UnitPageComponent implements OnInit {
   unit$: Observable<Unit>;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private ecoSystemManagerResolver: EcoSystemManagerResolver,
               private unitService: UnitService,
               private unitQuery: UnitQuery,
               private dialogService: DialogService,
@@ -49,7 +47,6 @@ export class UnitPageComponent implements OnInit {
   }
 
   resolve(): void {
-    this.ecoSystemManagerResolver.resolve(this.activatedRoute);
     const unitId = this.activatedRoute.snapshot.paramMap.get('unitId');
     if (unitId != null) {
       this.unitService.setActive(unitId);

@@ -44,4 +44,8 @@ export class AssetTypeTemplateQuery extends BaseQueryEntity<AssetTypeTemplateSta
   resetError() {
     this.store.setError(null);
   }
+
+  getSubtitleName(entity: any) {
+    return this.nameWithVersionPipe.transform(entity.name, entity.publishedVersion);
+  }
 }

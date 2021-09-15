@@ -33,8 +33,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
   factorySubTitle$: Subject<string>;
   @Input()
-  ecoSystemManagerSubTitle$: Subject<string>;
-  @Input()
   user: User;
 
   route: string;
