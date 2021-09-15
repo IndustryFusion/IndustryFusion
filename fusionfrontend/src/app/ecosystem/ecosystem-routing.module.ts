@@ -40,38 +40,13 @@ import { QuantityTypePageComponent } from './components/pages/quantity-type-page
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
+import { AssetTypeTemplateQuery } from '../store/asset-type-template/asset-type-template.query';
+import { AssetTypeQuery } from '../store/asset-type/asset-type.query';
+import { FieldQuery } from '../store/field/field-query.service';
+import { QuantityTypeQuery } from '../store/quantity-type/quantity-type.query';
+import { UnitQuery } from '../store/unit/unit.query';
 
 const routes: Routes = [
-  {
-    path: 'ecosystemmanager/assettypetemplate',
-    component: AssetTypeTemplatesPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    resolve: {
-      templates: AssetTypeTemplatesResolver,
-    },
-    data: {
-      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST],
-      roles: [Role.ECOSYSTEM_MANAGER]
-    },
-    children: [{
-      path: '',
-      component: AssetTypeTemplateListComponent
-    }],
-  },
-  {
-    path: 'ecosystemmanager/assettypetemplate/:assetTypeTemplateId',
-    component: AssetTypeTemplatePageComponent,
-    resolve: {
-      templates: AssetTypeTemplatesResolver,
-      assetTypes: AssetTypesResolver,
-      fields: FieldsResolver,
-      units: UnitsResolver,
-    },
-    data: {
-      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL],
-      roles: [Role.ECOSYSTEM_MANAGER]
-    },
-  },
   {
     path: 'ecosystemmanager/assettypes',
     component: AssetTypesPageComponent,
@@ -81,29 +56,74 @@ const routes: Routes = [
     },
     data: {
       pageTypes: [EcosystemManagerPageType.ASSET_TYPE_LIST],
-      roles: [Role.ECOSYSTEM_MANAGER]
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Asset Types',
     },
-    children: [{
-      path: '',
-      component: AssetTypeListComponent,
-    }]
+    children: [
+      {
+        path: '',
+        component: AssetTypeListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':assettypeId',
+        component: AssetTypePageComponent,
+        canActivate: [MainAuthGuardGuard],
+        resolve: {
+          assetTypes: AssetTypesResolver,
+          templates: AssetTypeTemplatesResolver,
+        },
+        data: {
+          pageTypes: [EcosystemManagerPageType.ASSET_TYPE_DETAIL],
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: AssetTypeQuery,
+        },
+        children: [{
+          path: '',
+          component: AssetTypeTemplateListComponent,
+          data: {
+            breadcrumb: null,
+          }
+        }]
+      }]
   },
   {
-    path: 'ecosystemmanager/assettypes/:assettypeId',
-    component: AssetTypePageComponent,
+    path: 'ecosystemmanager/assettypetemplate',
+    component: AssetTypeTemplatesPageComponent,
     canActivate: [MainAuthGuardGuard],
     resolve: {
-      assetTypes: AssetTypesResolver,
       templates: AssetTypeTemplatesResolver,
     },
     data: {
-      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_DETAIL],
-      roles: [Role.ECOSYSTEM_MANAGER]
+      pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_LIST],
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Asset Type Templates',
     },
-    children: [{
-      path: '',
-      component: AssetTypeTemplateListComponent,
-    }]
+    children: [
+      {
+        path: '',
+        component: AssetTypeTemplateListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':assetTypeTemplateId',
+        component: AssetTypeTemplatePageComponent,
+        resolve: {
+          assetTypes: AssetTypesResolver,
+          fields: FieldsResolver,
+          units: UnitsResolver,
+        },
+        data: {
+          pageTypes: [EcosystemManagerPageType.ASSET_TYPE_TEMPLATE_DETAIL],
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: AssetTypeTemplateQuery,
+        },
+      }
+    ],
   },
   {
     path: 'ecosystemmanager/fields',
@@ -116,26 +136,32 @@ const routes: Routes = [
     },
     data: {
       pageTypes: [EcosystemManagerPageType.FIELD_LIST],
-      roles: [Role.ECOSYSTEM_MANAGER]
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Metrics & Attributes',
     },
-    children: [{
-      path: '',
-      component: FieldListComponent,
-    }]
-  },
-  {
-    path: 'ecosystemmanager/fields/:fieldId',
-    component: FieldPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    resolve: {
-      fields: FieldsResolver,
-      units: UnitsResolver,
-      quantityTypes: QuantityTypesResolver,
-    },
-    data: {
-      pageTypes: [EcosystemManagerPageType.FIELD_DETAIL],
-      roles: [Role.ECOSYSTEM_MANAGER]
-    }
+    children: [
+      {
+        path: '',
+        component: FieldListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':fieldId',
+        component: FieldPageComponent,
+        canActivate: [MainAuthGuardGuard],
+        resolve: {
+          fields: FieldsResolver,
+          units: UnitsResolver,
+          quantityTypes: QuantityTypesResolver,
+        },
+        data: {
+          pageTypes: [EcosystemManagerPageType.FIELD_DETAIL],
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: FieldQuery,
+        }
+      }]
   },
   {
     path: 'ecosystemmanager/quantitytypes',
@@ -147,29 +173,38 @@ const routes: Routes = [
     },
     data: {
       pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_LIST],
-      roles: [Role.ECOSYSTEM_MANAGER]
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Quantity Types',
     },
-    children: [{
-      path: '',
-      component: QuantityTypeListComponent,
-    }]
-  },
-  {
-    path: 'ecosystemmanager/quantitytypes/:quantitytypeId',
-    component: QuantityTypePageComponent,
-    canActivate: [MainAuthGuardGuard],
-    resolve: {
-      quantityTypes: QuantityTypesResolver,
-      units: UnitsResolver,
-    },
-    data: {
-      pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_DETAIL],
-      roles: [Role.ECOSYSTEM_MANAGER]
-    },
-    children: [{
-      path: '',
-      component: UnitListComponent,
-    }]
+    children: [
+      {
+        path: '',
+        component: QuantityTypeListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':quantitytypeId',
+        component: QuantityTypePageComponent,
+        canActivate: [MainAuthGuardGuard],
+        resolve: {
+          quantityTypes: QuantityTypesResolver,
+          units: UnitsResolver,
+        },
+        data: {
+          pageTypes: [EcosystemManagerPageType.QUANTITY_TYPE_DETAIL],
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: QuantityTypeQuery,
+        },
+        children: [{
+          path: '',
+          component: UnitListComponent,
+          data: {
+            breadcrumb: null,
+          }
+        }]
+      }]
   },
   {
     path: 'ecosystemmanager/units',
@@ -181,26 +216,31 @@ const routes: Routes = [
     },
     data: {
       pageTypes: [EcosystemManagerPageType.UNIT_LIST],
-      roles: [Role.ECOSYSTEM_MANAGER]
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Units'
     },
-    children: [{
-      path: '',
-      component: UnitListComponent,
-    }]
-  },
-  {
-    path: 'ecosystemmanager/units/:unitId',
-    component: UnitPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    resolve: {
-      quantityTypes: QuantityTypesResolver,
-      units: UnitsResolver,
-    },
-    data: {
-      pageTypes: [EcosystemManagerPageType.UNIT_DETAIL],
-      roles: [Role.ECOSYSTEM_MANAGER]
-    },
-    children: []
+    children: [
+      {
+        path: '',
+        component: UnitListComponent,
+        data: {
+          breadcrumb: null
+        }
+      },
+      {
+        path: ':unitId',
+        component: UnitPageComponent,
+        canActivate: [MainAuthGuardGuard],
+        resolve: {
+          quantityTypes: QuantityTypesResolver,
+          units: UnitsResolver,
+        },
+        data: {
+          pageTypes: [EcosystemManagerPageType.UNIT_DETAIL],
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: UnitQuery,
+        },
+      }]
   },
 ];
 
