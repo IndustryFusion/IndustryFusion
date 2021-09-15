@@ -18,6 +18,7 @@ import { Component, Injector, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs/operators';
+import { BaseSubtitleQuery } from '../../../store/basesubtitlequery.model';
 
 @Component({
   selector: 'app-page-title',
@@ -56,24 +57,34 @@ export class PageTitleComponent implements OnInit {
       const breadcrumbData = child.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
       const isQuery = typeof(breadcrumbData) === 'function';
       if (isQuery) {
-        const query = this.injector.get(breadcrumbData);
-        query.waitForActives()
-          .subscribe((object: any) => {
-            // Only add (last) active item matching with id at end of url to avoid concurrency issues
-            const lastUrlParameter = url.split('/')[url.split('/').length - 1];
-            if (String(object.id) === String(lastUrlParameter)) {
-              breadcrumbs.push({ label: object.name, url });
-            }
-          });
+        breadcrumbs = this.addQueryResult(breadcrumbData, url, breadcrumbs);
       } else {
-        const label = breadcrumbData;
-        if (label) {
-          breadcrumbs.push({ label, url });
-        }
+        breadcrumbs = this.addLabelIfExisting(breadcrumbData, url, breadcrumbs);
       }
 
       return this.createBreadcrumbs(child, url, breadcrumbs);
     }
   }
 
+  private addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
+    const label = breadcrumbData;
+    if (label) {
+      breadcrumbs.push({ label, url });
+    }
+    return breadcrumbs;
+  }
+
+  private addQueryResult(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[]  {
+    const query = this.injector.get(breadcrumbData);
+    const subtitleQuery: BaseSubtitleQuery<typeof query> = this.injector.get(breadcrumbData);
+    subtitleQuery.waitForActives()
+      .subscribe((object: any) => {
+        // Only add (last) active item matching with id at end of url to avoid concurrency issues
+        const lastUrlParameter = url.split('/')[url.split('/').length - 1];
+        if (String(object.id) === String(lastUrlParameter)) {
+          breadcrumbs.push({ label: query.getSubtitleName(object), url });
+        }
+      });
+    return breadcrumbs;
+  }
 }

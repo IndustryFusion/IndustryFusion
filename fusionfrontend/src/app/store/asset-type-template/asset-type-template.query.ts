@@ -19,11 +19,13 @@ import { Observable } from 'rxjs';
 import { BaseQueryEntity } from '../basequery';
 import { AssetTypeTemplate } from './asset-type-template.model';
 import { AssetTypeTemplateState, AssetTypeTemplateStore } from './asset-type-template.store';
+import { NameWithVersionPipe } from '../../pipes/namewithversion.pipe';
 
 @Injectable({ providedIn: 'root' })
 export class AssetTypeTemplateQuery extends BaseQueryEntity<AssetTypeTemplateState, AssetTypeTemplate> {
 
-  constructor(protected store: AssetTypeTemplateStore) {
+  constructor(protected store: AssetTypeTemplateStore,
+              private nameWithVersionPipe: NameWithVersionPipe) {
     super(store);
   }
 
