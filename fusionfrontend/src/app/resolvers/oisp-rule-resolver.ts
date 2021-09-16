@@ -14,16 +14,45 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { forkJoin, Observable } from 'rxjs';
 import { OispRuleService } from '../store/oisp/oisp-rule/oisp-rule.service';
-import { Rule } from '../store/oisp/oisp-rule/oisp-rule.model';
+import { Rule, RuleStatus } from '../store/oisp/oisp-rule/oisp-rule.model';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class OispRuleResolver implements Resolve<Rule[]> {
   constructor(private oispRuleService: OispRuleService) { }
 
-  resolve(): Observable<Rule[]> {
-    return this.oispRuleService.getAllRules();
+  resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<Rule[]> {
+    return this.oispRuleService.getAllRules().pipe(
+      switchMap(rules => forkJoin(
+        this.filterRulesByStatus(rules, activatedRouteSnapshot).map(rule => this.oispRuleService.getRuleDetails(rule.id))
+      ))
+    );
+  }
+
+  private filterRulesByStatus(rules: Rule[], activatedRouteSnapshot: ActivatedRouteSnapshot): Rule[] {
+    const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
+    if (this.isRouteActive('overview', activatedRouteSnapshot)) {
+      return rules.filter(rule => !archivStatus.includes(rule.status) );
+    } else {
+      return rules.filter(rule =>  archivStatus.includes(rule.status) );
+    }
+  }
+
+  isRouteActive(subroute: string, activatedRouteSnapshot: ActivatedRouteSnapshot): boolean {
+    return activatedRouteSnapshot.url.map(segment => segment.path).includes(subroute);
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class OispSingleRuleResolver implements Resolve<Rule> {
+  constructor(private oispRuleService: OispRuleService) { }
+
+  resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<Rule> {
+    const fusionAppletId = activatedRouteSnapshot.paramMap.get('fusionAppletId');
+    this.oispRuleService.setActive(fusionAppletId);
+    return this.oispRuleService.getRuleDetails(fusionAppletId);
   }
 }

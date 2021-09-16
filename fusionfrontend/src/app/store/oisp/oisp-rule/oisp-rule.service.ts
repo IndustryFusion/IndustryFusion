@@ -43,7 +43,7 @@ export class OispRuleService {
     );
   }
 
-  getRule(ruleId: string): Observable<Rule> {
+  getRuleDetails(ruleId: string): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
     return this.http.get<Rule>(url, this.httpOptions).pipe(
       tap((rule: Rule) => this.oispRuleStore.upsert(rule.id, rule))

@@ -48,7 +48,6 @@ export class FusionAppletsOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.oispRuleQuery.selectAll().subscribe(rules => {
       this.rules = this.filterRulesByStatus(rules);
-      this.getRuleDetails();
     });
   }
 
@@ -101,7 +100,7 @@ export class FusionAppletsOverviewComponent implements OnInit {
   }
 
   editItem(rowIndex: number) {
-    this.router.navigate(['fusion-applets', this.rules[rowIndex].id]);
+    this.router.navigate(['fusion-applets', 'detail', this.rules[rowIndex].id]);
   }
 
   deleteItem(rowIndex: number) {
@@ -139,11 +138,5 @@ export class FusionAppletsOverviewComponent implements OnInit {
 
   hasActionType(rule: Rule, type: RuleActionType): boolean {
     return rule.actions?.map(action => action.type).includes(type);
-  }
-
-  private getRuleDetails() {
-    for (let i = 0; i < this.rules.length; i++) {
-      this.oispRuleQuery.selectEntity(this.rules[i].id).subscribe(rule => this.rules[i] = rule);
-    }
   }
 }

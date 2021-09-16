@@ -42,18 +42,19 @@ export class FusionAppletEditorComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private oispRuleService: OispRuleService,
-    private oispRuleQuery: OispRuleQuery,
     private oispDeviceQuery: OispDeviceQuery,
     public ruleStatusUtil: RuleStatusUtil,
     private formBuilder: FormBuilder,
+    private oispRuleQuery: OispRuleQuery,
     private confirmationService: ConfirmationService
   ) {
     this.loadDevices();
     this.createRuleGroup();
-    const fusionAppletId = this.activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
+    const fusionAppletId = this.activatedRoute.snapshot.paramMap.get('fusionAppletId');
     this.oispRuleQuery.selectEntity(fusionAppletId).subscribe(rule => {
-      this.rule = rule;
+      this.rule = JSON.parse(JSON.stringify(rule));
       this.ruleGroup.patchValue(this.rule);
+      this.oispRuleService.setActive(this.rule.id);
     });
   }
 

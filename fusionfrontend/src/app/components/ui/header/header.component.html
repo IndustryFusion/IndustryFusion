@@ -31,7 +31,7 @@ under the License.
       <app-page-title *ngIf="isManager(ManagerType.FLEET_MANAGER);" [title]="'Fleet Manager'"></app-page-title>
       <app-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);" [title]="'Ecosystem Manager'"></app-page-title>
       <app-page-title *ngIf="isDashboards();" [title]="'Dashboards'"></app-page-title>
-      <app-fusion-applet-page-title *ngIf="isFusionApplet()"></app-fusion-applet-page-title>
+      <app-page-title *ngIf="isFusionApplet" [title]="'Applets'"></app-page-title>
       <app-page-title *ngIf="isNotifications();" [title]="'Notifications'"></app-page-title>
       <div *ngIf="isHome()">
         <h1>Smart Factory</h1>

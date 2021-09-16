@@ -27,11 +27,11 @@ export class FusionAppletDetailComponent implements OnInit {
   rule: Rule;
 
   constructor(
-    private oispRuleQuery: OispRuleQuery,
     private activatedRoute: ActivatedRoute,
+    private oispRuleQuery: OispRuleQuery,
     private router: Router,
   ) {
-    const fusionAppletId = activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
+    const fusionAppletId = this.activatedRoute.snapshot.paramMap.get('fusionAppletId');
     this.oispRuleQuery.selectEntity(fusionAppletId).subscribe(rule => this.rule = rule);
   }
 
@@ -39,6 +39,6 @@ export class FusionAppletDetailComponent implements OnInit {
   }
 
   navigateToEditor() {
-    this.router.navigate(['..', 'editor'], { relativeTo: this.activatedRoute});
+    this.router.navigate(['../..', 'editor', this.rule.id], { relativeTo: this.activatedRoute});
   }
 }

@@ -20,45 +20,80 @@ import { FusionAppletDetailComponent } from './components/fusion-applet-detail/f
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
-import { OispRuleResolver } from '../resolvers/oisp-rule-resolver';
+import { OispRuleResolver, OispSingleRuleResolver } from '../resolvers/oisp-rule-resolver';
+import { OispRuleQuery } from '../store/oisp/oisp-rule/oisp-rule.query';
 
 const routes: Routes = [
   {
     path: 'fusion-applets',
-    resolve: {
-      OispRuleResolver
-    },
     children: [
       {
         path: 'overview',
         component: FusionAppletsOverviewComponent,
+        data: {
+          breadcrumb: 'Overview',
+        },
+        resolve: {
+          rules: OispRuleResolver
+        },
       },
       {
         path: 'archiv',
         component: FusionAppletsOverviewComponent,
+        data: {
+          breadcrumb: 'Archive',
+        },
+        resolve: {
+          rules: OispRuleResolver
+        },
       },
       {
-        path: ':fusionAppletId',
+        path: 'detail',
+        redirectTo: 'overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'editor',
+        redirectTo: 'overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'detail',
         component: FusionAppletPageComponent,
-        children: [
-          {
-            path: '',
-            redirectTo: 'detail',
-            pathMatch: 'full'
+        data: {
+          breadcrumb: 'Applet Detail',
+        },
+        children: [{
+          path: ':fusionAppletId',
+          component: FusionAppletDetailComponent,
+          data: {
+            breadcrumb: OispRuleQuery,
           },
-          {
-            path: 'detail',
-            component: FusionAppletDetailComponent
-          },
-          {
-            path: 'editor',
-            component: FusionAppletEditorComponent,
-            resolve: {
-              devices: OispDeviceResolver
-            }
+          resolve: {
+            rules: OispSingleRuleResolver
           }
-        ]
-      }
+        }]
+      },
+      {
+        path: 'editor',
+        component: FusionAppletPageComponent,
+        data: {
+          breadcrumb: 'Applet Editor',
+        },
+        resolve: {
+          devices: OispDeviceResolver,
+        },
+        children: [{
+          path: ':fusionAppletId',
+          component: FusionAppletEditorComponent,
+          data: {
+            breadcrumb: OispRuleQuery,
+          },
+          resolve: {
+            rules: OispSingleRuleResolver
+          }
+        }]
+      },
     ]
   }
 ];
