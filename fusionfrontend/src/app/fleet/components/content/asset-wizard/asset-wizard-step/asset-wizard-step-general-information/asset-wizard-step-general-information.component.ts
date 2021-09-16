@@ -62,8 +62,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
   isReadyForNextStep(): boolean {
     return this.assetForm.get('assetSeriesId').value != null
-      && this.assetForm.get('name').value
-      && this.assetForm.get('description').value;
+      && this.assetForm.get('name').value != null
+      && this.assetForm.get('description').value != null;
   }
 
   onCancel(): void {
