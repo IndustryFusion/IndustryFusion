@@ -20,10 +20,14 @@ import { FusionAppletDetailComponent } from './components/fusion-applet-detail/f
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { OispRuleResolver } from '../resolvers/oisp-rule-resolver';
 
 const routes: Routes = [
   {
     path: 'fusion-applets',
+    resolve: {
+      OispRuleResolver
+    },
     children: [
       {
         path: 'overview',

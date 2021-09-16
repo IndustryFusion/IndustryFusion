@@ -20,7 +20,7 @@ import {
   ConditionType,
   ConditionValueOperator,
   Rule,
-} from '../../../../services/oisp.model';
+} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 import { SelectItem } from 'primeng/api';

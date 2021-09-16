@@ -16,7 +16,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FieldQuery } from '../../../../store/field/field-query.service';
+import { FieldQuery } from '../../../../store/field/field.query';
 import { FieldService } from '../../../../store/field/field.service';
 import { Field } from '../../../../store/field/field.model';
 import { FieldDialogComponent } from '../../content/field-dialog/field-dialog.component';

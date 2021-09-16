@@ -14,13 +14,14 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { OispService } from '../../../services/oisp.service';
-import { Rule, RuleActionType, RuleStatus } from '../../../services/oisp.model';
+import { Rule, RuleActionType, RuleStatus } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { CreateFusionAppletComponent } from '../create-fusion-applet/create-fusion-applet.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RuleStatusUtil } from '../../util/rule-status-util';
+import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service';
+import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
 
 @Component({
   selector: 'app-fusion-applets-overview',
@@ -36,7 +37,8 @@ export class FusionAppletsOverviewComponent implements OnInit {
     { [k: string]: string } = { '=0': 'No Applet', '=1': '# Applet', other: '# Applets' };
 
   constructor(
-    private oispService: OispService,
+    private oispRuleQuery: OispRuleQuery,
+    private oispRuleService: OispRuleService,
     private dialogService: DialogService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -44,7 +46,7 @@ export class FusionAppletsOverviewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.oispService.getAllRules().subscribe(rules => {
+    this.oispRuleQuery.selectAll().subscribe(rules => {
       this.rules = this.filterRulesByStatus(rules);
       this.getRuleDetails();
     });
@@ -75,7 +77,7 @@ export class FusionAppletsOverviewComponent implements OnInit {
     } else {
       status = RuleStatus.OnHold;
     }
-    this.oispService.setRuleStatus(this.rules[rowIndex].id, status).subscribe( updatedRule => {
+    this.oispRuleService.setRuleStatus(this.rules[rowIndex].id, status).subscribe( updatedRule => {
       this.rules[rowIndex] = updatedRule;
       this.rules = this.filterRulesByStatus(this.rules);
       }
@@ -89,7 +91,7 @@ export class FusionAppletsOverviewComponent implements OnInit {
     const dynamicDialogRef = this.dialogService.open(CreateFusionAppletComponent, dialogConfig);
     dynamicDialogRef.onClose.subscribe(result => {
       if (result) {
-        this.oispService.createRuleDraft(result).subscribe(newRule => {
+        this.oispRuleService.createRuleDraft(result).subscribe(newRule => {
           this.rules.push(newRule);
           this.rules = this.filterRulesByStatus(this.rules);
           this.router.navigate(['fusion-applets', newRule.id]);
@@ -103,14 +105,14 @@ export class FusionAppletsOverviewComponent implements OnInit {
   }
 
   deleteItem(rowIndex: number) {
-    this.oispService.deleteRule(this.rules[rowIndex].id).subscribe(() => {
+    this.oispRuleService.deleteRule(this.rules[rowIndex].id).subscribe(() => {
       this.rules[rowIndex].status = RuleStatus.Deleted;
       this.rules = this.filterRulesByStatus(this.rules);
     });
   }
 
   cloneItem(rowIndex: number) {
-    this.oispService.cloneRule(this.rules[rowIndex].id).subscribe(clone => {
+    this.oispRuleService.cloneRule(this.rules[rowIndex].id).subscribe(clone => {
       this.rules.splice(rowIndex + 1, 0, clone);
       this.rules = this.filterRulesByStatus(this.rules);
     });
@@ -141,7 +143,7 @@ export class FusionAppletsOverviewComponent implements OnInit {
 
   private getRuleDetails() {
     for (let i = 0; i < this.rules.length; i++) {
-      this.oispService.getRule(this.rules[i].id).subscribe(rule => this.rules[i] = rule);
+      this.oispRuleQuery.selectEntity(this.rules[i].id).subscribe(rule => this.rules[i] = rule);
     }
   }
 }

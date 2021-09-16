@@ -14,13 +14,14 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BaseQueryEntity } from '../basequery';
-import { Field } from './field.model';
-import { FieldState, FieldStore } from './field-store.service';
+import { OispRuleState, OispRuleStore } from './oisp-rule.store';
+import { BaseQueryEntity } from '../../basequery';
+import { Rule } from './oisp-rule.model';
 
 @Injectable({ providedIn: 'root' })
-export class FieldQuery extends BaseQueryEntity<FieldState, Field> {
-  constructor(protected store: FieldStore) {
+export class OispRuleQuery extends BaseQueryEntity<OispRuleState, Rule> {
+
+  constructor(protected store: OispRuleStore) {
     super(store);
   }
 
@@ -31,4 +32,5 @@ export class FieldQuery extends BaseQueryEntity<FieldState, Field> {
   resetError() {
     this.store.setError(null);
   }
+
 }
