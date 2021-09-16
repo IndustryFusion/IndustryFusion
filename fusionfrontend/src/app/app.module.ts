@@ -39,6 +39,7 @@ import { IFCommon } from './common/i-f-common.module';
 import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { ToastModule } from 'primeng/toast';
+import { HIGHLIGHT_OPTIONS, HighlightModule } from 'ngx-highlightjs';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { ToastModule } from 'primeng/toast';
     BrowserAnimationsModule,
     KeycloakAngularModule,
     ToastModule,
+    HighlightModule,
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -83,6 +85,12 @@ import { ToastModule } from 'primeng/toast';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
+    },
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        fullLibraryLoader: () => import('highlight.js'),
+      }
     }
   ]
 })
