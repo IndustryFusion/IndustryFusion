@@ -23,7 +23,7 @@ import { AssetSeriePageComponent } from './components/pages/asset-serie-page/ass
 import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
-import { AssetSeriesQuery } from '../store/asset-series/asset-series.query';
+import { AssetSeriesDetailsQuery } from '../store/asset-series-details/asset-series-details.query';
 
 
 const routes: Routes = [
@@ -32,7 +32,7 @@ const routes: Routes = [
     component: AssetSeriesPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
-      breadcrumb: 'Asset Series'
+      breadcrumb: 'Asset Series',
     },
     resolve: {
       assetSeriesDetails: AssetSeriesDetailsResolver,
@@ -42,18 +42,16 @@ const routes: Routes = [
         path: '',
         component: AssetSeriesListComponent,
         data: {
-          breadcrumb: null
+          breadcrumb: null,
         },
       },
       {
         path: ':assetSeriesId',
         component: AssetSeriePageComponent,
         data: {
-          breadcrumb: 'Subtitle',
-          query: AssetSeriesQuery
+          breadcrumb: AssetSeriesDetailsQuery,
         },
         resolve: {
-          assetSeriesDetails: AssetSeriesDetailsResolver,
           asset: AssetResolver,
           room: RoomResolver,
           factorySite: FactorySiteResolver
