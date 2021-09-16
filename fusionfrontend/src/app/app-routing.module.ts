@@ -24,7 +24,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: LaunchpadPageComponent,
-    canActivate: [MainAuthGuardGuard]
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      breadcrumb: 'Launchpad'
+    }
   },
   {
      path: 'ecosystemmanager',

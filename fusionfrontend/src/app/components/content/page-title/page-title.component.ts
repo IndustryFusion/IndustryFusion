@@ -14,31 +14,34 @@
  */
 
 
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs/operators';
 import { BaseSubtitleQuery } from '../../../store/basesubtitlequery.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-page-title',
   templateUrl: './page-title.component.html',
   styleUrls: ['./page-title.component.scss']
 })
-export class PageTitleComponent implements OnInit {
+export class PageTitleComponent implements OnInit, OnDestroy {
 
   @Input()
   title: string;
 
   menuItems: MenuItem[];
   private readonly ROUTE_DATA_BREADCRUMB = 'breadcrumb';
+  private routerSubscription = Subscription.EMPTY;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private injector: Injector) { }
 
   ngOnInit(): void {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => this.menuItems = this.createBreadcrumbs(this.activatedRoute.root));
   }
 
@@ -86,5 +89,9 @@ export class PageTitleComponent implements OnInit {
       breadcrumbs.push({ label, url });
     }
     return breadcrumbs;
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
   }
 }
