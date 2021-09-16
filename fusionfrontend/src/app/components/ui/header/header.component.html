@@ -32,7 +32,7 @@ under the License.
       <app-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);" [title]="'Ecosystem Manager'"></app-page-title>
       <app-page-title *ngIf="isDashboards();" [title]="'Dashboards'"></app-page-title>
       <app-fusion-applet-page-title *ngIf="isFusionApplet()"></app-fusion-applet-page-title>
-      <app-notifications-page-title *ngIf="isNotifications();"></app-notifications-page-title>
+      <app-page-title *ngIf="isNotifications();" [title]="'Notifications'"></app-page-title>
       <div *ngIf="isHome()">
         <h1>Smart Factory</h1>
         <h2>Launchpad</h2>

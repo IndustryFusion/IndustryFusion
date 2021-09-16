@@ -18,7 +18,6 @@ import { NgModule } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { IFCommon } from '../common/i-f-common.module';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
-import { NotificationsPageTitleComponent } from './content/notifications-page-title/notifications-page-title.component';
 import { NotificationsSubHeaderComponent } from './content/notifications-sub-header/notifications-sub-header.component';
 import { NotificationsRoutingModule } from './notifications-routing.module';
 import { NotificationsListComponent } from './content/notifications-list/notifications-list.component';
@@ -29,7 +28,6 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
-    NotificationsPageTitleComponent,
     NotificationsSubHeaderComponent,
     NotificationsPageComponent,
     NotificationsListComponent,
@@ -45,7 +43,6 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         OverlayPanelModule
     ],
   exports: [
-    NotificationsPageTitleComponent,
     NotificationsSubHeaderComponent,
   ]
 })

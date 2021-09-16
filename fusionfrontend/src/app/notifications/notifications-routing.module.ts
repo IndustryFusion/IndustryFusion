@@ -20,11 +20,17 @@ import { NotificationsPageComponent } from './pages/notifications-page/notificat
 const routes: Routes = [
   {
     path: 'notifications/open',
-    component: NotificationsPageComponent
+    component: NotificationsPageComponent,
+    data: {
+      breadcrumb: 'Open Notifications',
+    },
   },
   {
     path: 'notifications/cleared',
     component: NotificationsPageComponent,
+    data: {
+      breadcrumb: 'Cleared Notifications',
+    },
   },
 ];
 
