@@ -15,7 +15,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Rule, RuleResetType, RuleStatus, RuleType, } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
+import { Rule, RuleResetType, RuleType, } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';

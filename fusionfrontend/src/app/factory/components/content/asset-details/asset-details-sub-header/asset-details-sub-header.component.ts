@@ -55,17 +55,22 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
     });
   }
 
-  onRouteClick(subroute: string): Promise<boolean> {
-    let newRoute = ['..', subroute];
-    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`)) {
+  onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
+    let newRoute = subroute2 ?  ['..', subroute, subroute2] : ['..', subroute];
+    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`) || this.isApplets()) {
       newRoute = [subroute];
     }
-    return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
+    const relativeToRoute = this.isApplets() ? this.getActiveRouteSecondLastChild() : this.getActiveRouteLastChild();
+    return this.router.navigate(newRoute, { relativeTo: relativeToRoute });
   }
 
   isRouteActive(subroute: string): boolean {
     const snapshot = this.getActiveRouteLastChild().snapshot;
     return snapshot.url.map(segment => segment.path).includes(subroute);
+  }
+
+  isApplets() {
+    return this.isRouteActive('active') || this.isRouteActive('archiv');
   }
 
   private getActiveRouteLastChild() {
@@ -74,5 +79,15 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
       route = route.firstChild;
     }
     return route;
+  }
+
+  private getActiveRouteSecondLastChild() {
+    let route = this.activatedRoute;
+    let prevRoute = route;
+    while (route.firstChild !== null) {
+      prevRoute = route;
+      route = route.firstChild;
+    }
+    return prevRoute;
   }
 }

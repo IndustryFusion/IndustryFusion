@@ -30,6 +30,7 @@ import { AssetSubsystemsComponent } from './components/pages/asset-details/asset
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
+import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
 
 const routes: Routes = [
   {
@@ -177,8 +178,14 @@ const routes: Routes = [
         component: AssetPerformanceComponent,
       },
       {
-        path: 'applets',
+        path: 'applets/active',
         component: AssetAppletsComponent,
+        resolve: { rules: OispRuleFilteredByStatusResolver }
+      },
+      {
+        path: 'applets/archiv',
+        component: AssetAppletsComponent,
+        resolve: { rules: OispRuleFilteredByStatusResolver }
       },
       {
         path: 'digital-nameplate',

@@ -15,34 +15,47 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { OispRuleService } from '../store/oisp/oisp-rule/oisp-rule.service';
-import { Rule, RuleStatus } from '../store/oisp/oisp-rule/oisp-rule.model';
+import { Rule } from '../store/oisp/oisp-rule/oisp-rule.model';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class OispRuleResolver implements Resolve<Rule[]> {
+export class OispRuleFilteredByStatusResolver implements Resolve<Rule[]> {
+  private activatedRouteSnapshot: ActivatedRouteSnapshot;
+
   constructor(private oispRuleService: OispRuleService) { }
 
   resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<Rule[]> {
-    return this.oispRuleService.getAllRules().pipe(
+    this.activatedRouteSnapshot = activatedRouteSnapshot;
+    return this.addActionsToFilteredRules(this.oispRuleService.getAllRules());
+  }
+
+  private addActionsToFilteredRules(rules$: Observable<Rule[]>): Observable<Rule[]>  {
+    return rules$.pipe(
       switchMap(rules => forkJoin(
-        this.filterRulesByStatus(rules, activatedRouteSnapshot).map(rule => this.oispRuleService.getRuleDetails(rule.id))
+        this.filterRulesByStatus(rules)
+          .map(filteredRule => this.getRuleDetailsWithActions(filteredRule))
       ))
     );
   }
 
-  private filterRulesByStatus(rules: Rule[], activatedRouteSnapshot: ActivatedRouteSnapshot): Rule[] {
-    const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
-    if (this.isRouteActive('overview', activatedRouteSnapshot)) {
-      return rules.filter(rule => !archivStatus.includes(rule.status) );
+  private filterRulesByStatus(rules: Rule[]): Rule[] {
+    const showActive = this.isRouteActive('overview')
+      || this.isRouteActive('active');
+    return this.oispRuleService.filterRulesByStatus(rules, showActive);
+  }
+
+  private getRuleDetailsWithActions(filteredRule: Rule): Observable<Rule> {
+    if (!filteredRule.actions) {
+      return this.oispRuleService.getRuleDetails(filteredRule.id);
     } else {
-      return rules.filter(rule =>  archivStatus.includes(rule.status) );
+      return of(filteredRule);
     }
   }
 
-  isRouteActive(subroute: string, activatedRouteSnapshot: ActivatedRouteSnapshot): boolean {
-    return activatedRouteSnapshot.url.map(segment => segment.path).includes(subroute);
+  private isRouteActive(subroute: string): boolean {
+    return this.activatedRouteSnapshot.url.map(segment => segment.path).includes(subroute);
   }
 }
 

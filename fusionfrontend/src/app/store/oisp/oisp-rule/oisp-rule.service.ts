@@ -44,10 +44,20 @@ export class OispRuleService {
   }
 
   getRuleDetails(ruleId: string): Observable<Rule> {
+    // gets actions as well (unlike getAllRules)
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
     return this.http.get<Rule>(url, this.httpOptions).pipe(
       tap((rule: Rule) => this.oispRuleStore.upsert(rule.id, rule))
     );
+  }
+
+  filterRulesByStatus(rules: Rule[], showActive: boolean): Rule[] {
+    const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
+    if (showActive) {
+      return rules.filter(rule => !archivStatus.includes(rule.status) );
+    } else {
+      return rules.filter(rule =>  archivStatus.includes(rule.status) );
+    }
   }
 
   cloneRule(ruleId: string): Observable<Rule> {

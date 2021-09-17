@@ -22,7 +22,7 @@ under the License.
                        optionValue="value"
                        [options]="[{name:'Active', value:true},{name:'Archived', value:false}]"
                        [(ngModel)]="showActive"
-                       (ngModelChange)="updateFilter()"
+                       (ngModelChange)="onToggleRoute()"
       ></p-selectButton>
       <app-create-button *ngIf="showActive || !showActions"
                          [text]="'Create Applet'"
