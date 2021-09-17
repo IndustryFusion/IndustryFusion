@@ -23,7 +23,7 @@ under the License.
       </li>
       <li (click)="onRouteClick('notifications')" [ngClass]="{'active': isRouteActive('notifications')}">Notifications
       </li>
-      <li [ngClass]="{'active': isRouteActive('applets')}">Applets</li>
+      <li (click)="onRouteClick('applets')" [ngClass]="{'active': isRouteActive('applets')}">Applets</li>
       <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}">Digital
         Nameplate
       </li>

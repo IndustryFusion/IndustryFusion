@@ -45,6 +45,10 @@
     margin-right: 48px;
     margin-top: 35px;
 
+    .space-right {
+      margin-right: 20px;
+    }
+
     .if-button {
       padding: 14px 20px 12px;
       margin-bottom: 5px;
@@ -53,4 +57,18 @@
       border-radius: 22px;
     }
   }
+}
+
+:host ::ng-deep .p-selectbutton .p-button.p-highlight {
+  background: #dadada;
+  border-radius: 15px;
+  border-color: unset;
+  color: #333333;
+}
+
+:host ::ng-deep .p-selectbutton .p-button {
+  background: unset;
+  border: unset;
+  color: #333333;
+  transition: background-color 0.05s, color 0.05s, border-color 0.05s, box-shadow 0.05s;
 }
