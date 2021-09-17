@@ -15,7 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { BaseListHeaderComponent } from '../../../ecosystem/components/content/base/base-list-header/base-list-header.component';
+import { BaseListHeaderComponent } from '../../../../ecosystem/components/content/base/base-list-header/base-list-header.component';
 import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
@@ -28,7 +28,9 @@ export class NotificationsListHeaderComponent extends BaseListHeaderComponent im
   @Input() searchpanel: OverlayPanel;
   faSearch = faSearch;
 
-  constructor() { super(); }
+  constructor() {
+    super();
+  }
 
   ngOnInit() {
   }

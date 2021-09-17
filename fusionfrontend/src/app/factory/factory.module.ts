@@ -66,6 +66,7 @@ import { NameplateItemComponent } from './components/content/asset-details/namep
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
+import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,8 @@ import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
     NameplateItemComponent,
     AssetSubsystemsComponent,
     AssetAppletsComponent,
+    AssetSubsystemsComponent,
+    AssetNotificationsComponent
   ],
   imports: [
     IFCommon,
