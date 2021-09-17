@@ -29,6 +29,7 @@ import { AssetDigitalNameplateComponent } from './components/pages/asset-details
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 
 const routes: Routes = [
   {
@@ -174,6 +175,10 @@ const routes: Routes = [
       {
         path: 'performance',
         component: AssetPerformanceComponent,
+      },
+      {
+        path: 'applets',
+        component: AssetAppletsComponent,
       },
       {
         path: 'digital-nameplate',

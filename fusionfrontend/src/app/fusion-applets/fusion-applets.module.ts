@@ -15,7 +15,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FusionAppletsOverviewComponent } from './components/fusion-applets-overview/fusion-applets-overview.component';
+import { FusionAppletsListComponent } from './components/fusion-applets-list/fusion-applets-list.component';
 import { FusionAppletsRoutingModule } from './fusion-applets-routing.module';
 import { TableModule } from 'primeng/table';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -44,12 +44,15 @@ import { FleetModule } from '../fleet/fleet.module';
 import { ControlLimitSelectorComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/control-limit-selector/control-limit-selector.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmationService } from 'primeng/api';
+import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 
 @NgModule({
   declarations: [
     FusionAppletsOverviewComponent,
+    FusionAppletsListComponent,
     CreateFusionAppletComponent,
     FusionAppletDetailComponent,
     FusionAppletPageComponent,
@@ -78,9 +81,11 @@ import { ConfirmationService } from 'primeng/api';
     InplaceModule,
     FleetModule,
     InputNumberModule,
+    SelectButtonModule,
   ],
   exports: [
     FusionAppletsSubHeaderComponent,
+    FusionAppletsListComponent,
   ],
   providers: [
     EnumHelpers,

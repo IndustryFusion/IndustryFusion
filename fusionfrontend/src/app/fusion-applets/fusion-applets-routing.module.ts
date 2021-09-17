@@ -15,11 +15,11 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FusionAppletsOverviewComponent } from './components/fusion-applets-overview/fusion-applets-overview.component';
 import { FusionAppletDetailComponent } from './components/fusion-applet-detail/fusion-applet-detail.component';
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
 import { OispRuleResolver, OispSingleRuleResolver } from '../resolvers/oisp-rule-resolver';
 import { OispRuleQuery } from '../store/oisp/oisp-rule/oisp-rule.query';
 
@@ -83,17 +83,19 @@ const routes: Routes = [
         resolve: {
           devices: OispDeviceResolver,
         },
-        children: [{
-          path: ':fusionAppletId',
-          component: FusionAppletEditorComponent,
-          data: {
-            breadcrumb: OispRuleQuery,
-          },
-          resolve: {
-            rules: OispSingleRuleResolver
+        children: [
+          {
+            path: ':fusionAppletId',
+            component: FusionAppletEditorComponent,
+            data: {
+              breadcrumb: OispRuleQuery,
+            },
+            resolve: {
+              rules: OispSingleRuleResolver
+            }
           }
-        }]
-      },
+        ]
+      }
     ]
   }
 ];

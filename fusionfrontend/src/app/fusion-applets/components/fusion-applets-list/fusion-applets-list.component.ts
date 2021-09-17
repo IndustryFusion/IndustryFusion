@@ -13,7 +13,8 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { OispService } from '../../../services/oisp.service';
 import { Rule, RuleActionType, RuleStatus } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
@@ -24,13 +25,20 @@ import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service
 import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
 
 @Component({
-  selector: 'app-fusion-applets-overview',
-  templateUrl: './fusion-applets-overview.component.html',
-  styleUrls: ['./fusion-applets-overview.component.scss']
+  selector: 'app-fusion-applets-list',
+  templateUrl: './fusion-applets-list.component.html',
+  styleUrls: ['./fusion-applets-list.component.scss']
 })
-export class FusionAppletsOverviewComponent implements OnInit {
+export class FusionAppletsListComponent implements OnInit {
+  @Input()
+  showActive = true;
+
+  @Input()
+  showActions = true;
+
   RuleActionType = RuleActionType;
 
+  filteredRules: Rule[];
   rules: Rule[];
 
   public titleMapping:
@@ -46,14 +54,25 @@ export class FusionAppletsOverviewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // TODO (jsy)
     this.oispRuleQuery.selectAll().subscribe(rules => {
       this.rules = this.filterRulesByStatus(rules);
     });
+    this.oispService.getAllRules().subscribe(rules => {
+      this.rules = rules;
+      this.updateFilter();
+    });
+  }
+
+  // TODO (jsy): new
+  updateFilter() {
+    this.filteredRules = this.filterRulesByStatus(this.rules);
+    this.getRuleDetails();
   }
 
   filterRulesByStatus(rules: Rule[]): Rule[] {
     const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
-    if (this.isRouteActive('overview')) {
+    if (this.showActive) {
       return rules.filter(rule => !archivStatus.includes(rule.status) );
     } else {
       return rules.filter(rule =>  archivStatus.includes(rule.status) );
@@ -76,9 +95,9 @@ export class FusionAppletsOverviewComponent implements OnInit {
     } else {
       status = RuleStatus.OnHold;
     }
-    this.oispRuleService.setRuleStatus(this.rules[rowIndex].id, status).subscribe( updatedRule => {
-      this.rules[rowIndex] = updatedRule;
-      this.rules = this.filterRulesByStatus(this.rules);
+    this.oispRuleService.setRuleStatus(this.filteredRules[rowIndex].id, status).subscribe(updatedRule => {
+      this.filteredRules[rowIndex] = updatedRule;
+      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
       }
     );
   }
@@ -91,8 +110,8 @@ export class FusionAppletsOverviewComponent implements OnInit {
     dynamicDialogRef.onClose.subscribe(result => {
       if (result) {
         this.oispRuleService.createRuleDraft(result).subscribe(newRule => {
-          this.rules.push(newRule);
-          this.rules = this.filterRulesByStatus(this.rules);
+          this.filteredRules.push(newRule);
+          this.filteredRules = this.filterRulesByStatus(this.filteredRules);
           this.router.navigate(['fusion-applets', newRule.id]);
         });
       }
@@ -100,20 +119,20 @@ export class FusionAppletsOverviewComponent implements OnInit {
   }
 
   editItem(rowIndex: number) {
-    this.router.navigate(['fusion-applets', 'detail', this.rules[rowIndex].id]);
+    this.router.navigate(['fusion-applets', detail', this.filteredRules[rowIndex].id]);
   }
 
   deleteItem(rowIndex: number) {
-    this.oispRuleService.deleteRule(this.rules[rowIndex].id).subscribe(() => {
-      this.rules[rowIndex].status = RuleStatus.Deleted;
-      this.rules = this.filterRulesByStatus(this.rules);
+    this.oispRuleService.deleteRule(this.filteredRules[rowIndex].id).subscribe(() => {
+      this.filteredRules[rowIndex].status = RuleStatus.Deleted;
+      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
     });
   }
 
   cloneItem(rowIndex: number) {
-    this.oispRuleService.cloneRule(this.rules[rowIndex].id).subscribe(clone => {
-      this.rules.splice(rowIndex + 1, 0, clone);
-      this.rules = this.filterRulesByStatus(this.rules);
+    this.oispRuleService.cloneRule(this.filteredRules[rowIndex].id).subscribe(clone => {
+      this.filteredRules.splice(rowIndex + 1, 0, clone);
+      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
     });
   }
 
@@ -138,5 +157,21 @@ export class FusionAppletsOverviewComponent implements OnInit {
 
   hasActionType(rule: Rule, type: RuleActionType): boolean {
     return rule.actions?.map(action => action.type).includes(type);
+  }
+
+  // TODO: change to another place
+  private getRuleDetails() {
+    for (let i = 0; i < this.filteredRules.length; i++) {
+      if (!this.filteredRules[i].actions) {
+        this.oispService.getRule(this.filteredRules[i].id).subscribe(rule => {
+          const ruleIndex = this.rules.findIndex(searchRule => searchRule.id === rule.id);
+          this.rules[ruleIndex] = rule;
+          const filteredRule = this.filterRulesByStatus([rule])[0];
+          if (filteredRule) {
+            this.filteredRules[i] = filteredRule;
+          }
+        });
+      }
+    }
   }
 }

@@ -56,4 +56,12 @@ under the License.
       <app-nameplate-item label="Connection string">{{(asset$ | async)?.connectionString}}</app-nameplate-item>
     </div>
   </p-card>
+  <div class="caption">Asset Attributes</div>
+  <p-card class="card">
+    <div class="grid">
+      <ng-container *ngFor="let attribute of getAttributes((asset$ | async)?.fields)">
+        <app-nameplate-item label="{{ attribute.name }}">{{ attribute.value }} {{ attribute.unit }}</app-nameplate-item>
+      </ng-container>
+    </div>
+  </p-card>
 </div>

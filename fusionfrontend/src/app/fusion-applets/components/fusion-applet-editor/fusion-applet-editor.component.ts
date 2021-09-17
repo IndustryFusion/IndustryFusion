@@ -18,7 +18,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Rule, RuleResetType, RuleStatus, RuleType, } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
 import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
 import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
 import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service';
@@ -35,7 +34,6 @@ export class FusionAppletEditorComponent implements OnInit {
   rule: Rule;
   ruleGroup: FormGroup;
   assets: any[];
-  isStatusActive = false;
   devices: Device[];
 
   constructor(
@@ -45,8 +43,7 @@ export class FusionAppletEditorComponent implements OnInit {
     private oispDeviceQuery: OispDeviceQuery,
     public ruleStatusUtil: RuleStatusUtil,
     private formBuilder: FormBuilder,
-    private oispRuleQuery: OispRuleQuery,
-    private confirmationService: ConfirmationService
+    private oispRuleQuery: OispRuleQuery
   ) {
     this.loadDevices();
     this.createRuleGroup();
@@ -74,36 +71,9 @@ export class FusionAppletEditorComponent implements OnInit {
       population: [],
       actions: new FormArray([], [Validators.required, Validators.minLength(1)])
     });
-    this.ruleGroup.get('status').valueChanges.subscribe(status => {
-      this.isStatusActive = status === RuleStatus.Active;
-    });
   }
 
   ngOnInit(): void {
-  }
-
-  changeStatus(isActivating: boolean) {
-    let status: RuleStatus.Active | RuleStatus.OnHold;
-    let prefix = '';
-    if (isActivating) {
-      status = RuleStatus.Active;
-    } else {
-      status = RuleStatus.OnHold;
-      prefix = 'de';
-    }
-    this.confirmationService.confirm({
-      message: `Are you sure that you want to ${prefix}activate this applet? All unsaved Changes will be lost!`,
-      accept: () => this.sendStatusChange(status),
-      reject: () => this.ruleGroup.get('status').setValue(this.rule.status),
-      rejectVisible: true
-    });
-  }
-
-  private sendStatusChange(status: RuleStatus.OnHold | RuleStatus.Active) {
-    this.oispRuleService.setRuleStatus(this.rule.id, status).subscribe(rule => {
-      this.rule = rule;
-      this.ruleGroup.patchValue(this.rule);
-    });
   }
 
   setResetTypeAutomatic(isAutomatic: boolean) {
