@@ -28,6 +28,8 @@ import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 import { BooleanPipe } from '../pipes/boolean.pipe';
+import { MaintenanceProgressbarComponent } from '../components/content/maintenance-progressbar/maintenance-progressbar.component';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 
 @NgModule({
@@ -43,6 +45,7 @@ import { BooleanPipe } from '../pipes/boolean.pipe';
     LabelControlDirective,
     TooltipComponent,
     BooleanPipe,
+    MaintenanceProgressbarComponent
   ],
   imports: [
     CommonModule,
@@ -58,6 +61,7 @@ import { BooleanPipe } from '../pipes/boolean.pipe';
     RadioButtonModule,
     DialogModule,
     ToastModule,
+    ProgressBarModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -87,6 +91,7 @@ import { BooleanPipe } from '../pipes/boolean.pipe';
     LabelControlDirective,
     TooltipComponent,
     BooleanPipe,
+    MaintenanceProgressbarComponent
   ],
   providers: [
     MessageService,
