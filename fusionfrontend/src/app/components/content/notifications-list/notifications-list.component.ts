@@ -33,7 +33,7 @@ export enum NotificationState { OPEN, CLEARED}
 })
 export class NotificationsListComponent implements OnInit, OnDestroy {
 
-  @Input() items$: Observable<OispNotification[]>;
+  @Input() notifications: Observable<OispNotification[]>;
   @Input() isInline = false;
 
   titleMapping: { [k: string]: string };
@@ -46,8 +46,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   searchText = '';
   allNotifications: OispNotification[];
   filteredNotifications: OispNotification[];
-  allStates = NotificationState;
-  itemsSub: Subscription;
+  notificationStates = NotificationState;
+  notificationSubscription: Subscription;
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
 
   constructor(
@@ -66,7 +66,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.itemsSub?.unsubscribe();
+    this.notificationSubscription?.unsubscribe();
     clearInterval(this.intervalId);
   }
 
@@ -186,8 +186,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private fetchNotifications(): void {
-    this.itemsSub?.unsubscribe();
-    this.itemsSub = this.items$?.subscribe(notifications => {
+    this.notificationSubscription?.unsubscribe();
+    this.notificationSubscription = this.notifications?.subscribe(notifications => {
       this.allNotifications = notifications;
       this.filterNotifications();
     });

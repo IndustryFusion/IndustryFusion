@@ -61,7 +61,7 @@ export class OispNotificationService {
     return notification;
   }
 
-  getAllNotificationsUsingAlertStore(limitToDeviceId: string = null): Observable<OispNotification[]> {
+  getNotificationsUsingAlertStore(limitToDeviceId: string = null): Observable<OispNotification[]> {
     return this.oispDeviceQuery.selectAll().pipe(
       map(devices => this.filterDevicesByUid(devices, limitToDeviceId)),
       mergeMap((devices: Device[]) => {

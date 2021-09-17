@@ -49,7 +49,7 @@ export class AssetNotificationsComponent implements OnInit {
   }
 
   getFilteredNotifications(asset: FactoryAssetDetailsWithFields): Observable<OispNotification[]> {
-    return this.oispNotificationService.getAllNotificationsUsingAlertStore(asset.externalName).pipe(
+    return this.oispNotificationService.getNotificationsUsingAlertStore(asset.externalName).pipe(
       map(notifications => this.filterNotificationsByStatus(notifications)),
     );
   }

@@ -18,13 +18,13 @@ under the License.
     <div class="title">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</div>
     <div class="p-col"></div>
     <div *ngIf="isInline" class="notification-state-button">
-      <button (click)="changeTab(allStates.OPEN)" [disabled]="getCurrentState() == allStates.OPEN"
+      <button (click)="changeTab(notificationStates.OPEN)" [disabled]="getCurrentState() == notificationStates.OPEN"
               class="if-light-button">
         Open
       </button>
     </div>
     <div *ngIf="isInline" class="notification-state-button">
-      <button (click)="changeTab(allStates.CLEARED)" [disabled]="getCurrentState() == allStates.CLEARED"
+      <button (click)="changeTab(notificationStates.CLEARED)" [disabled]="getCurrentState() == notificationStates.CLEARED"
               class="if-light-button">
         Cleared
       </button>
@@ -54,7 +54,7 @@ under the License.
       <app-notifications-list-item (itemDelete)="deleteItem($event)" (itemDeselected)="onItemDeselect($event)"
                                    (itemSelected)="onItemSelect($event)"
                                    *ngFor="let item of filteredNotifications"
-                                   [isCloseable]="getCurrentState() == allStates.OPEN"
+                                   [isCloseable]="getCurrentState() == notificationStates.OPEN"
                                    [item]="item"
                                    [selected]="isSelected(item.id)">
       </app-notifications-list-item>

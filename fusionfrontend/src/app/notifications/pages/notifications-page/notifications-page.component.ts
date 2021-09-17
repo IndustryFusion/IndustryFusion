@@ -35,7 +35,7 @@ export class NotificationsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.notifications$ = this.oispNotificationService.getAllNotificationsUsingAlertStore().pipe(
+    this.notifications$ = this.oispNotificationService.getNotificationsUsingAlertStore().pipe(
       map(notifications => this.filterNotificationsByStatus(notifications)),
     );
   }
