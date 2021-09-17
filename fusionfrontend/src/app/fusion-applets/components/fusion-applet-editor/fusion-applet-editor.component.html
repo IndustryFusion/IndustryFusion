@@ -25,11 +25,6 @@ under the License.
         <input formControlName="name" type="text" pInputText>
       </ng-template>
     </p-inplace>
-    <p-inputSwitch class="p-col-"
-                   [disabled]="!ruleStatusUtil.canActivated(rule.status)"
-                   (ngModelChange)="changeStatus($event)"
-                   [(ngModel)]="isStatusActive"
-    ></p-inputSwitch>
     <div class="p-col-">
       <p-checkbox binary="true"
                   [ngModel]="ruleGroup.get('resetType').value === RuleResetType.Automatic"

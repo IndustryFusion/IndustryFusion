@@ -21,7 +21,7 @@ import { Status } from 'src/app/factory/models/status.model';
 import { PointWithId } from 'src/app/services/oisp.model';
 import { OispService } from 'src/app/services/oisp.service';
 import { StatusService } from 'src/app/services/status.service';
-import { FieldDetails } from 'src/app/store/field-details/field-details.model';
+import { FieldDetails, FieldType } from 'src/app/store/field-details/field-details.model';
 import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
 import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
@@ -98,5 +98,9 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
 
   openExternalUrl(url: string) {
     window.open(url, '_blank');
+  }
+
+  getAttributes(fields: FieldDetails[]): FieldDetails[] {
+    return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
   }
 }
