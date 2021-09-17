@@ -255,7 +255,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       const index = subsystemIds.findIndex((value) => value === rowNode.node.data.id);
       return index === subsystemIds.length - 1;
     } else {
-      return null;
+      return false;
     }
   }
 
@@ -289,11 +289,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   private updateTree() {
     if (this.displayedFactoryAssets) {
       const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
-      const map = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
-      const reduce = map.reduce((acc, val) => acc.concat(val), []);
+      const subsystemIDs = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
+      const flattenedSubsystemIDs = subsystemIDs.reduce((acc, val) => acc.concat(val), []);
       const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       this.displayedFactoryAssets
-        .filter(asset => !reduce.includes(asset.id))
+        .filter(asset => !flattenedSubsystemIDs.includes(asset.id))
         .forEach((value: FactoryAssetDetailsWithFields) => {
           treeData.push(this.addNode(null, value, expandedNodeIDs));
         });

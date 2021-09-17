@@ -42,6 +42,8 @@ export class AssetService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  DEFAULT_OISP_LOOKBACK_TIME = 600;
+
   constructor(private assetStore: AssetStore,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
               private assetDetailsService: FactoryAssetDetailsService,
@@ -193,7 +195,8 @@ export class AssetService {
     return mappedAsset;
   }
 
-  updateAssetWithFieldValue(asset: FactoryAssetDetailsWithFields, secondsInPast: number) {
+  // tslint:disable-next-line: max-line-length
+  updateAssetWithFieldValues(asset: FactoryAssetDetailsWithFields, secondsInPast: number = this.DEFAULT_OISP_LOOKBACK_TIME): Observable<FactoryAssetDetailsWithFields> {
     return new Observable<any>((observer) => {
       this.oispService.getLastValueOfAllFields(asset, asset.fields, secondsInPast, true).subscribe((lastValues) => {
           asset.fields = this.getAssetFieldValues(asset, lastValues);

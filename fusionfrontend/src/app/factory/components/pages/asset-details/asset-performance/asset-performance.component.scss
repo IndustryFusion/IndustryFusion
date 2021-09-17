@@ -22,52 +22,6 @@
   margin: 0;
   padding: 20px;
 
-  .modal-body {
-    height: 170px;
-  }
-
-  .choiceOptions {
-    margin: 25px 50px;
-  }
-
-  .okButton {
-    margin: 25px 50px;
-  }
-
-  .maxpoints {
-    margin: 0;
-
-    .pointslabel {
-      margin: 0;
-    }
-  }
-
-  .dater {
-    margin: 0;
-
-    .datelabel {
-      margin: 0;
-    }
-  }
-
-  .alert {
-    width: 50%;
-  }
-
-  .alert-warning {
-    margin: 25px 50px;
-    width: 30%;
-
-    .gotIt {
-      border: 5px rgba(0, 0, 0, 0.32);
-      background-color: inherit;
-      color: hsl(198, 0%, 40%);
-      font-size: 12px;
-      cursor: pointer;
-      display: inline-block;
-    }
-  }
-
   .tables-wrapper {
     background: $light-grey;
     margin: 25px 50px;

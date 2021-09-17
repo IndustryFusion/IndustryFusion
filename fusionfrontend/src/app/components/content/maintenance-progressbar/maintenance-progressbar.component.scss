@@ -46,11 +46,11 @@
 }
 
 .value-label {
-  color: white;
+  color: $basic-white;
 }
 
 .value-label-low {
-  color: black;
+  color: $basic-black;
 }
 
 .na-label {
@@ -60,7 +60,7 @@
 .overshooting-indicator {
   min-width: 5px;
   min-height: 100%;
-  background-color: white;
+  background-color: $basic-white;
   position: absolute;
   z-index: 9;
   right: 15px;

@@ -17,7 +17,6 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, Subject } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
-// import { switchMap } from 'rxjs/operators';
 import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { AssetService } from 'src/app/store/asset/asset.service';
@@ -122,7 +121,7 @@ export class FactoryResolver {
         mergeMap((assets) =>
           combineLatest(
             assets.map((asset) => {
-              return this.assetService.updateAssetWithFieldValue(asset, 600);
+              return this.assetService.updateAssetWithFieldValues(asset);
             })
           )
         ),
@@ -159,7 +158,7 @@ export class FactoryResolver {
       }));
       this.assetWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsOfActiveAsset();
       this.assetWithDetailsAndFieldsAndValues$ = this.assetWithDetailsAndFields$.pipe(
-        mergeMap((asset) => this.assetService.updateAssetWithFieldValue(asset, 600))
+        mergeMap((asset) => this.assetService.updateAssetWithFieldValues(asset))
       );
     }
     const assetIdListParam = activatedRoute.snapshot.paramMap.get('assetIdList');
