@@ -18,7 +18,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Observable, Subject, zip } from 'rxjs';
 import { OispService } from 'src/app/services/oisp.service';
 import { PointWithId } from 'src/app/services/oisp.model';
-import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-details/field-details.model';
 import { ActivatedRoute } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
@@ -29,6 +28,8 @@ import { ID } from '@datorama/akita';
 import * as moment from 'moment';
 import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { AssetMaintenanceUtils } from '../../../../util/asset-maintenance-utils';
 
 @Component({
   selector: 'app-asset-performance',
@@ -36,10 +37,8 @@ import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-as
   styleUrls: ['./asset-performance.component.scss']
 })
 export class AssetPerformanceComponent implements OnInit, OnDestroy {
-  private unSubscribe$ = new Subject<void>();
-
   isLoading$: Observable<boolean>;
-  asset$: Observable<AssetWithFields>;
+  asset$: Observable<FactoryAssetDetailsWithFields>;
   assetId: ID;
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
@@ -51,7 +50,6 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
   endDate: string;
   minDate: string;
   maxDate: string;
-
   choiceConfigurationMapping:
     { [k: string]: ChoiceConfiguration } = {
     current: new ChoiceConfiguration(false, false, false, false, false, false),
@@ -62,11 +60,12 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
     onOkClickShowWarning: new ChoiceConfiguration(false, false, false, false, false, true),
   };
   currentChoiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
-
   maintenanceValues: MaintenanceInterval = {
     hoursTillMaintenance: null,
     maintenanceInterval: null
   };
+  maintenanceUtils = AssetMaintenanceUtils;
+  private unSubscribe$ = new Subject<void>();
 
   constructor(private assetQuery: AssetQuery,
               private oispService: OispService,
@@ -74,14 +73,15 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
               private factoryResolver: FactoryResolver,
               private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
               private datePipe: DatePipe,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.isLoading$ = this.assetQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetId = this.assetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithFields$;
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
 
     this.latestPoints$ = this.asset$
       .pipe(
@@ -89,21 +89,20 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
       );
 
     this.mergedFields$ = combineLatest([this.asset$, this.latestPoints$])
-    .pipe(
-      map(([asset, latestPoints]) => {
-        return asset.fields.map(field => {
-          const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id ===
-            this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName));
+      .pipe(
+        map(([asset, latestPoints]) => {
+          return asset.fields.map(field => {
+            const fieldCopy = Object.assign({ }, field);
+            const point = latestPoints.find(latestPoint => latestPoint.id ===
+              this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName));
 
-          if (point) {
-            fieldCopy.value = point.value;
-            console.log('[asset-details-page.component] matched field and point');
-          }
-          return fieldCopy;
-        });
-      })
-    );
+            if (point) {
+              fieldCopy.value = point.value;
+            }
+            return fieldCopy;
+          });
+        })
+      );
 
     this.hoursTillValue$ = this.mergedFields$.pipe(
       map(fields => {
@@ -124,14 +123,14 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
     );
 
     zip(this.hoursTillValue$,
-        this.maintenanceIntervalValue$
+      this.maintenanceIntervalValue$
     )
       .pipe(
         takeUntil(this.unSubscribe$)
       ).subscribe(values => {
-        this.maintenanceValues.hoursTillMaintenance =  isNaN(values[0]) ?  0 : values[0];
-        this.maintenanceValues.maintenanceInterval = isNaN(values[1]) ?  0 : values[1];
-      });
+      this.maintenanceValues.hoursTillMaintenance = isNaN(values[0]) ? 0 : values[0];
+      this.maintenanceValues.maintenanceInterval = isNaN(values[1]) ? 0 : values[1];
+    });
   }
 
   ngOnDestroy() {
@@ -168,7 +167,7 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
 
   setMinAndMaxDate(date: string) {
     const localDate: Date = new Date(date);
-    this.minDate =  this.datePipe.transform(localDate, 'yyyy-MM-dd');
+    this.minDate = this.datePipe.transform(localDate, 'yyyy-MM-dd');
     this.maxDate = this.datePipe.transform(moment(localDate).add(2, 'days').toDate(), 'yyyy-MM-dd');
     this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
   }
@@ -186,7 +185,7 @@ export class AssetPerformanceComponent implements OnInit, OnDestroy {
   }
 }
 
-class ChoiceConfiguration{
+class ChoiceConfiguration {
   chooseMaxPoints = false;
   chooseStartDate = false;
   chooseEndDate = false;

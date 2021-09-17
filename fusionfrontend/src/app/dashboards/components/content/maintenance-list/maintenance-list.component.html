@@ -12,12 +12,12 @@
     </div>
   </div>
 
-  <p-treeTable [value]="treeData"
-               [paginator]="true"
-               [alwaysShowPaginator]="true"
+  <p-treeTable [alwaysShowPaginator]="true"
                [pageLinks]="5"
+               [paginator]="true"
                [rowsPerPageOptions]="[5,10,50]"
-               [rows]="10" class="list-container">
+               [rows]="10"
+               [value]="treeData" class="list-container">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="2"></th>
@@ -33,21 +33,27 @@
         <th [style.width.%]="2"></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
       <tr [ttRow]="rowNode">
         <td [style.width.%]="2"></td>
         <td [style.width.%]="4">
-          <div class="list-item-cell notification-icons" [style.width.%]="3" [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)">
-            <clr-icon *ngSwitchCase="OispPriority.LOW"    size="20" shape="info-standard" class="is-solid notification-low"></clr-icon>
-            <clr-icon *ngSwitchCase="OispPriority.MEDIUM" size="20" shape="exclamation-circle" class="is-solid notification-medium"></clr-icon>
-            <clr-icon *ngSwitchCase="OispPriority.HIGH"   size="20" shape="exclamation-triangle" class="is-solid notification-high"></clr-icon>
+          <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" [style.width.%]="3"
+               class="list-item-cell notification-icons">
+            <clr-icon *ngSwitchCase="OispPriority.LOW" class="is-solid notification-low" shape="info-standard"
+                      size="20"></clr-icon>
+            <clr-icon *ngSwitchCase="OispPriority.MEDIUM" class="is-solid notification-medium"
+                      shape="exclamation-circle"
+                      size="20"></clr-icon>
+            <clr-icon *ngSwitchCase="OispPriority.HIGH" class="is-solid notification-high" shape="exclamation-triangle"
+                      size="20"></clr-icon>
           </div>
         </td>
-        <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(rowNode.node)}" class="asset-column p-flex-row">
+        <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(rowNode.node)}"
+            class="asset-column p-flex-row">
           <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-          <span class="subsystem-grid p-col-" *ngIf="rowNode.parent">
+          <span *ngIf="rowNode.parent" class="subsystem-grid p-col-">
             <span class="upper"></span>
-            <span class="lower" [ngClass]="{'last-element': isLastChildElement(rowNode)}"></span>
+            <span [ngClass]="{'last-element': isLastChildElement(rowNode)}" class="lower"></span>
           </span>
           <span class="p-col">{{rowData.name}}</span>
         </td>
@@ -56,24 +62,17 @@
         <td [style.width.%]="12">{{rowData.factorySiteName}}</td>
         <td [style.width.%]="13">
           <span class="progressbar-wrapper">
-            <app-maintenance-progressbar [asset]="rowData"
-                                         [maintenancePercentage]="getMaintenanceDaysPercentage(rowData)"
-                                         [maintenanceValue]="getMaintenanceDaysValue(rowData)"
-                                         [state]="getMaintenanceState(getMaintenanceDaysValue(rowData), MAINTENANCE_DAYS_LOWER_THRESHOLD, MAINTENANCE_DAYS_UPPER_THRESHOLD)"
-            >
-            </app-maintenance-progressbar>
-            <span class="progressbar-icon" *ngIf="isChildrenMaintenanceNeededSoon(rowNode.node)">
-              <fa-icon *ngIf="rowNode.node.expanded" [icon]="faChevronCircleDown" (click)="openNode(rowNode.node)" class="fa-fw"></fa-icon>
-              <fa-icon *ngIf="!rowNode.node.expanded" [icon]="faChevronCircleUp" (click)="openNode(rowNode.node)" class="fa-fw"></fa-icon>
+            <app-maintenance-progressbar [asset]="rowData" [type]="utils.maintenanceDays"></app-maintenance-progressbar>
+            <span *ngIf="isChildrenMaintenanceNeededSoon(rowNode.node)" class="progressbar-icon">
+              <fa-icon (click)="openNode(rowNode.node)" *ngIf="rowNode.node.expanded" [icon]="faChevronCircleDown"
+                       class="fa-fw"></fa-icon>
+              <fa-icon (click)="openNode(rowNode.node)" *ngIf="!rowNode.node.expanded" [icon]="faChevronCircleUp"
+                       class="fa-fw"></fa-icon>
             </span>
           </span>
         </td>
         <td [style.width.%]="13">
-          <app-maintenance-progressbar [asset]="rowData"
-                                       [maintenancePercentage]="getMaintenanceHoursPercentage(rowData)"
-                                       [maintenanceValue]="getMaintenanceHoursValue(rowData)"
-                                       [state]="getMaintenanceState(getMaintenanceHoursValue(rowData), MAINTENANCE_HOURS_LOWER_THRESHOLD, MAINTENANCE_HOURS_UPPER_THRESHOLD)"
-          ></app-maintenance-progressbar>
+          <app-maintenance-progressbar [asset]="rowData" [type]="utils.maintenanceHours"></app-maintenance-progressbar>
         </td>
         <td [style.width.%]="2"></td>
       </tr>
