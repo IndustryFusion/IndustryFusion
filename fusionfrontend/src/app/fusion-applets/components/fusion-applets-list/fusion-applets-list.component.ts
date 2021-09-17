@@ -36,7 +36,7 @@ export class FusionAppletsListComponent implements OnInit {
 
   RuleActionType = RuleActionType;
 
-  filtedRules: Rule[];
+  filteredRules: Rule[];
   rules: Rule[];
 
   public titleMapping:
@@ -58,7 +58,7 @@ export class FusionAppletsListComponent implements OnInit {
   }
 
   updateFilter() {
-    this.filtedRules = this.filterRulesByStatus(this.rules);
+    this.filteredRules = this.filterRulesByStatus(this.rules);
     this.getRuleDetails();
   }
 
@@ -87,9 +87,9 @@ export class FusionAppletsListComponent implements OnInit {
     } else {
       status = RuleStatus.OnHold;
     }
-    this.oispService.setRuleStatus(this.filtedRules[rowIndex].id, status).subscribe(updatedRule => {
-      this.filtedRules[rowIndex] = updatedRule;
-      this.filtedRules = this.filterRulesByStatus(this.filtedRules);
+    this.oispService.setRuleStatus(this.filteredRules[rowIndex].id, status).subscribe(updatedRule => {
+      this.filteredRules[rowIndex] = updatedRule;
+      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
       }
     );
   }
@@ -102,8 +102,8 @@ export class FusionAppletsListComponent implements OnInit {
     dynamicDialogRef.onClose.subscribe(result => {
       if (result) {
         this.oispService.createRuleDraft(result).subscribe(newRule => {
-          this.filtedRules.push(newRule);
-          this.filtedRules = this.filterRulesByStatus(this.filtedRules);
+          this.filteredRules.push(newRule);
+          this.filteredRules = this.filterRulesByStatus(this.filteredRules);
           this.router.navigate(['fusion-applets', newRule.id]);
         });
       }
@@ -111,20 +111,20 @@ export class FusionAppletsListComponent implements OnInit {
   }
 
   editItem(rowIndex: number) {
-    this.router.navigate(['fusion-applets', this.filtedRules[rowIndex].id]);
+    this.router.navigate(['fusion-applets', this.filteredRules[rowIndex].id]);
   }
 
   deleteItem(rowIndex: number) {
-    this.oispService.deleteRule(this.filtedRules[rowIndex].id).subscribe(() => {
-      this.filtedRules[rowIndex].status = RuleStatus.Deleted;
-      this.filtedRules = this.filterRulesByStatus(this.filtedRules);
+    this.oispService.deleteRule(this.filteredRules[rowIndex].id).subscribe(() => {
+      this.filteredRules[rowIndex].status = RuleStatus.Deleted;
+      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
     });
   }
 
   cloneItem(rowIndex: number) {
-    this.oispService.cloneRule(this.filtedRules[rowIndex].id).subscribe(clone => {
-      this.filtedRules.splice(rowIndex + 1, 0, clone);
-      this.filtedRules = this.filterRulesByStatus(this.filtedRules);
+    this.oispService.cloneRule(this.filteredRules[rowIndex].id).subscribe(clone => {
+      this.filteredRules.splice(rowIndex + 1, 0, clone);
+      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
     });
   }
 
@@ -152,14 +152,14 @@ export class FusionAppletsListComponent implements OnInit {
   }
 
   private getRuleDetails() {
-    for (let i = 0; i < this.filtedRules.length; i++) {
-      if (!this.filtedRules[i].actions) {
-        this.oispService.getRule(this.filtedRules[i].id).subscribe(rule => {
+    for (let i = 0; i < this.filteredRules.length; i++) {
+      if (!this.filteredRules[i].actions) {
+        this.oispService.getRule(this.filteredRules[i].id).subscribe(rule => {
           const ruleIndex = this.rules.findIndex(searchRule => searchRule.id === rule.id);
           this.rules[ruleIndex] = rule;
-          const filterRule = this.filterRulesByStatus([rule])[0];
-          if (filterRule) {
-            this.filtedRules[i] = filterRule;
+          const filteredRule = this.filterRulesByStatus([rule])[0];
+          if (filteredRule) {
+            this.filteredRules[i] = filteredRule;
           }
         });
       }

@@ -30,8 +30,6 @@ export class FusionAppletsOverviewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-
   isRouteActive(subroute: string): boolean {
     const snapshot = this.activatedRoute.snapshot;
     return snapshot.url.map(sement => sement.path).includes(subroute);
