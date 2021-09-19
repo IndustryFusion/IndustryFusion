@@ -17,13 +17,9 @@ under the License.
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</h3>
     <div class="filter-panel">
-      <button class="filter-btn" (click)="openFilter()">
-        <fa-icon [icon]="faFilter" class="fa-fw"></fa-icon>
-      </button>
-<!--      <button (click)="clearAllFilters(); filterpanel.hide()" *ngIf="activeFilterSet.size > 0"-->
-<!--              class="remove-all-filters-btn">-->
-<!--        <i class="pi pi-times-circle remove-all-filters-btn-icon"></i>-->
-<!--      </button>-->
+      <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.allNotifications"
+                        (filteredItems)="searchAssets($event)">
+      </app-table-filter>
     </div>
   </div>
 
@@ -54,8 +50,13 @@ under the License.
       <tr>
         <th [style.width.%]="5"></th>
         <th [style.width.%]="3"></th>
-        <th [style.width.%]="30" pSortableColumn="ruleName">Rule name
+        <th [style.width.%]="30" pSortableColumn="ruleName">
+          <div class="p-d-flex p-ai-start">
           <p-sortIcon field="ruleName"></p-sortIcon>
+            <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="this.allNotifications"
+                                 attributeToBeSearched="ruleName" (searchByName)="searchAssets($event)">
+            </app-table-searchbar>
+          </div>
         </th>
         <th [style.width.%]="17">
           <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.allNotifications"

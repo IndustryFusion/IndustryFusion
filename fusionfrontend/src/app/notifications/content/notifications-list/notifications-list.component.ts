@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
@@ -21,8 +21,9 @@ import { Observable } from 'rxjs';
 import { OispNotification } from '../../../store/oisp-notification/oisp-notification.model';
 import { OispAlertService } from '../../../store/oisp-alert/oisp-alert.service';
 import { environment } from '../../../../environments/environment';
-import { faFilter, faInfoCircle, faExclamationCircle, faExclamationTriangle, faTrashAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faExclamationTriangle, faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import { FilterOption, FilterType } from 'src/app/components/ui/table-filter/filter-options';
 
 import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp-alert/oisp-alert.model';
 
@@ -40,12 +41,10 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
   @Input()
   isOpen: boolean;
 
-  faFilter = faFilter;
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
   faExclamationTriangle = faExclamationTriangle;
   faCheckCircle = faCheckCircle;
-  faTrashAlt = faTrashAlt;
   faTimes = faTimes;
 
   titleMapping: { [k: string]: string };
@@ -56,13 +55,16 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
   searchText = '';
   allNotifications: OispNotification[] = [];
   filteredNotifications: OispNotification[];
-  searchedNotifications: OispNotification[]
+  searchedNotifications: OispNotification[];
   OispPriority = OispAlertPriority;
   selectedNotifications: OispNotification[] = [];
   alertstatusTypes = OispAlertStatus;
   activeItem: OispNotification;
   shouldShowDeleteItem = false;
 
+  possibleFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Priority', attributeToBeFiltered: 'priority' },
+    { filterType: FilterType.DATEFILTER, columnName: 'Date & Time', attributeToBeFiltered: 'timestamp'}];
 
   constructor(
     public route: ActivatedRoute,
@@ -82,10 +84,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
     if (changes.selectedNotifications) {
       console.log(this.selectedNotifications);
     }
-  }
-
-  openFilter(){
-    console.log(this.selectedNotifications);
   }
 
   ngOnDestroy(): void {
@@ -140,14 +138,16 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
 
   private fetchNotifications() {
     this.items$.subscribe(notifications => {
-      this.allNotifications = notifications;
-      this.filterNotifications();
+      if (notifications.length !== this.allNotifications.length) {
+        this.allNotifications = notifications;
+        this.filterNotifications();
+      }
     });
   }
 
   closeMultibleItmes() {
     this.selectedNotifications.forEach(notification => {
-      this.deleteItem(notification.id)
+      this.deleteItem(notification.id);
     });
     this.selectedNotifications = [];
   }
@@ -160,7 +160,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
   closeItem() {
     if (this.activeItem.status === this.alertstatusTypes.NEW || this.activeItem.status === this.alertstatusTypes.OPEN) {
       this.shouldShowDeleteItem = false;
-      this.deleteItem(this.activeItem.id)
+      this.deleteItem(this.activeItem.id);
     }
   }
 
