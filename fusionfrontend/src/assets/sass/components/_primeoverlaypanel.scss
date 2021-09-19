@@ -13,37 +13,38 @@
  * under the License.
  */
 
-.searchPanel  {
-  .p-overlaypanel {
-    border-radius: 8px;
-    width: 330px;
+
+.if-panel-heading {
+  font-size: $bigger-font-size;
+  font-weight: bold;
+  color: $basic-black;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.p-overlaypanel .p-overlaypanel-close {
+  background-color: $basic-white;
+  color: $basic-black;
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  border-radius: 8px;
+  width: 20px;
+  height: 20px;
+  box-shadow: none !important;
+
+  .pi-times:before {
+    font-size: $regular-font-size !important;
+    font-weight: bolder !important;
   }
 
-
-  .p-overlaypanel .p-overlaypanel-close {
+  &:hover {
     background-color: $basic-white;
-    color: $basic-black;
-    position: absolute;
-    right: 12px;
-    top: 10px;
-    border-radius: 8px;
-    width: 20px;
-    height: 20px;
-    box-shadow: none !important;
-
-    .pi-times:before {
-      font-size: $regular-font-size !important;
-      font-weight: bolder !important;
-    }
-
-    &:hover {
-      background-color: $basic-white;
-      color: $basic-black
-    }
-    &:active {
-      border-color: $basic-white;
-    }
+    color: $basic-black
   }
+  &:active {
+    border-color: $basic-white;
+    }
 }
 
 .dashboardFilterPanel {
@@ -51,4 +52,25 @@
       border-radius: 8px;
       width: 500px;
   }
+}
+
+.searchPanel {
+  .p-overlaypanel {
+    border-radius: 8px;
+    width: 330px;
+  }
+}
+
+.filterPanel {
+  .p-overlaypanel {
+    border-radius: 8px;
+    width: 500px;
+  }
+  .smallFilterPanel {
+    .p-overlaypanel {
+      width: 330px;
+      border-radius: 8px;
+    }
+  }
+
 }

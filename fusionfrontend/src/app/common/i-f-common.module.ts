@@ -21,7 +21,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -29,6 +29,10 @@ import { LabelControlDirective } from '../components/ui/label-control/label-cont
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableSearchbarComponent } from '../components/ui/table-searchbar/table-searchbar.component';
+import { TableFilterComponent } from '../components/ui/table-filter/table-filter.component';
+import { DateFilterComponent } from '../components/ui/table-filter/date-filter/date-filter.component';
+import { DropdownFilterComponent } from '../components/ui/table-filter/dropdown-filter/dropdown-filter.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,9 @@ import { TableSearchbarComponent } from '../components/ui/table-searchbar/table-
     LabelControlDirective,
     TooltipComponent,
     TableSearchbarComponent,
+    TableFilterComponent,
+    DateFilterComponent,
+    DropdownFilterComponent
   ],
   imports: [
     CommonModule,
@@ -59,6 +66,9 @@ import { TableSearchbarComponent } from '../components/ui/table-searchbar/table-
     DialogModule,
     ToastModule,
     OverlayPanelModule,
+    CheckboxModule,
+    CalendarModule,
+    ReactiveFormsModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -88,6 +98,9 @@ import { TableSearchbarComponent } from '../components/ui/table-searchbar/table-
     LabelControlDirective,
     TooltipComponent,
     TableSearchbarComponent,
+    TableFilterComponent,
+    DateFilterComponent,
+    DropdownFilterComponent
   ],
   providers: [
     MessageService

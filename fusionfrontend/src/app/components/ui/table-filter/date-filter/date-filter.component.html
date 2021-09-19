@@ -1,0 +1,52 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<button (click)="dateFilterPanel.toggle($event);" class="open-filterpanel-btn">
+  <span class="filter-panel-btn-grid">
+    <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value !== null" class="filter-panel-btn-grid-text">
+      {{ this.dateFilterFormGroup.get('filteredItems').value.length | i18nPlural: selectedValueMapping }}</span>
+    <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value === null" class="filter-panel-btn-grid-text">
+      not set</span>
+      <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
+  </span>
+</button>
+
+<p-overlayPanel #dateFilterPanel [showCloseIcon]="true" class="filterPanel panel-class">
+  <form [formGroup]="dateFilterFormGroup">
+    <div class="if-panel-heading">Date & Time Filter</div>
+    <div class="input-div calendar-class">
+      <label class="if-label">Start Date: </label>
+      <p-calendar formControlName="startTimeValue" showIcon="true" showTime="true" showButtonBar="true"
+                  yearNavigator="true" dateFormat="dd.mm.yy"></p-calendar>
+    </div>
+    <div class="input-div calendar-class dialog-grid-col">
+      <label class="if-label">End Date: </label>
+      <p-calendar formControlName="endTimeValue" showIcon="true" showTime="true" showButtonBar="true"
+                  yearNavigator="true" dateFormat="dd.mm.yy"></p-calendar>
+    </div>
+  </form>
+
+  <div class="filter-buttons-box">
+    <button (click)="clearSelectFilterValues();"
+            class="if-button button-secondary button-modal clear-filter-btn">
+      Clear all
+      <i class="pi pi-times btn-icon"></i>
+    </button>
+    <button (click)="filterItemsByTimestemp(); dateFilterPanel.hide()"
+            class="if-button button-primary button-modal select-filter-btn">
+      Filter
+    </button>
+  </div>
+</p-overlayPanel>
