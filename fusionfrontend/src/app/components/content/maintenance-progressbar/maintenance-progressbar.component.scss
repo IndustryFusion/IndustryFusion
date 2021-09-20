@@ -13,8 +13,7 @@
  * under the License.
  */
 
-
-@import "abstract/variables";
+@import "src/assets/sass/abstract/variables";
 
 .maintenance-value {
   display: flex;
@@ -47,24 +46,24 @@
 }
 
 .value-label {
-  color: white;
+  color: $basic-white;
 }
 
 .value-label-low {
-  color: black;
+  color: $basic-black;
 }
 
 .na-label {
-  color: black;
+  color: $dark-grey;
 }
 
 .overshooting-indicator {
   min-width: 5px;
   min-height: 100%;
-  background-color: white;
+  background-color: $basic-white;
   position: absolute;
   z-index: 9;
   right: 15px;
-  top: 0px;
+  top: 0;
   margin: 0;
 }

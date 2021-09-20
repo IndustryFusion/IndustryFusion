@@ -20,9 +20,6 @@ import { IFCommon } from '../common/i-f-common.module';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { NotificationsSubHeaderComponent } from './content/notifications-sub-header/notifications-sub-header.component';
 import { NotificationsRoutingModule } from './notifications-routing.module';
-import { NotificationsListComponent } from './content/notifications-list/notifications-list.component';
-import { NotificationsListHeaderComponent } from './content/notifications-list-header/notifications-list-header.component';
-import { NotificationsListItemComponent } from './content/notifications-list-item/notifications-list-item.component';
 import { ClrAlertModule, ClrIconModule } from '@clr/angular';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
@@ -30,20 +27,18 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   declarations: [
     NotificationsSubHeaderComponent,
     NotificationsPageComponent,
-    NotificationsListComponent,
-    NotificationsListHeaderComponent,
-    NotificationsListItemComponent
   ],
-    imports: [
-        IFCommon,
-        NotificationsRoutingModule,
-        TableModule,
-        ClrIconModule,
-        ClrAlertModule,
-        OverlayPanelModule
-    ],
+  imports: [
+    IFCommon,
+    NotificationsRoutingModule,
+    TableModule,
+    ClrIconModule,
+    ClrAlertModule,
+    OverlayPanelModule
+  ],
   exports: [
     NotificationsSubHeaderComponent,
   ]
 })
-export class NotificationsModule { }
+export class NotificationsModule {
+}

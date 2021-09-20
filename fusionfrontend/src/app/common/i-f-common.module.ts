@@ -29,6 +29,12 @@ import { LabelControlDirective } from '../components/ui/label-control/label-cont
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 import { BooleanPipe } from '../pipes/boolean.pipe';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { MaintenanceProgressbarComponent } from '../components/content/maintenance-progressbar/maintenance-progressbar.component';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
+import { NotificationsListHeaderComponent } from '../components/content/notifications-list/notifications-list-header/notifications-list-header.component';
+import { NotificationsListItemComponent } from '../components/content/notifications-list/notifications-list-item/notifications-list-item.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 @NgModule({
@@ -44,6 +50,10 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     LabelControlDirective,
     TooltipComponent,
     BooleanPipe,
+    MaintenanceProgressbarComponent,
+    NotificationsListComponent,
+    NotificationsListHeaderComponent,
+    NotificationsListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +70,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     DialogModule,
     ToastModule,
     BreadcrumbModule,
+    OverlayPanelModule,
+    ProgressBarModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -90,6 +102,10 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     TooltipComponent,
     BreadcrumbModule,
     BooleanPipe,
+    MaintenanceProgressbarComponent,
+    NotificationsListComponent,
+    NotificationsListHeaderComponent,
+    NotificationsListItemComponent,
   ],
   providers: [
     MessageService,

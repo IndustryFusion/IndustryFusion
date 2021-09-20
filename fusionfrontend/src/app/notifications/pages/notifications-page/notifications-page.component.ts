@@ -36,8 +36,13 @@ export class NotificationsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.notifications$ = this.oispNotificationService.getNotificationsUsingAlertStore().pipe(
-      map(notifications => this.filterNotificationsByStatus(notifications))
+      map(notifications => this.filterNotificationsByStatus(notifications)),
     );
+  }
+
+  isRouteActive(subroute: string): boolean {
+    const snapshot = this.activatedRoute.snapshot;
+    return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
   private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
@@ -46,10 +51,5 @@ export class NotificationsPageComponent implements OnInit {
     } else {
       return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
     }
-  }
-
-  isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 }

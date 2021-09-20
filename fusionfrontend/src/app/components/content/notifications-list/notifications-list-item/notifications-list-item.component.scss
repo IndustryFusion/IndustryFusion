@@ -13,12 +13,33 @@
  * under the License.
  */
 
-@import '../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import 'src/app/ecosystem/components/content/base/base-list-item/base-list-item.component';
 
-.folder-view {
-  margin-right: 16px;
+.small-confirm-button {
+  width: 2rem;
+  height: 2rem;
+  border: none !important;
+  box-shadow: none !important;
+  background: $light-grey 0 0 no-repeat padding-box;
+
+  &:hover {
+    background: $hover-grey-border;
+  }
 }
 
-.notifications-list {
-  margin: 0 80px;
+.notification-icons {
+  overflow: initial !important;
+  padding-top: -2px;
+
+  .notification-low {
+    color: $alert-low;
+  }
+
+  .notification-medium {
+    color: $alert-medium;
+  }
+
+  .notification-high {
+    color: $alert-high;
+  }
 }

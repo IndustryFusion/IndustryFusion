@@ -30,6 +30,7 @@ import { AssetSubsystemsComponent } from './components/pages/asset-details/asset
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
+import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
 
 const routes: Routes = [
@@ -194,6 +195,14 @@ const routes: Routes = [
       {
         path: 'subsystems',
         component: AssetSubsystemsComponent,
+      },
+      {
+        path: 'notifications',
+        component: AssetNotificationsComponent,
+      },
+      {
+        path: 'notifications/:state',
+        component: AssetNotificationsComponent,
       },
     ]
   },

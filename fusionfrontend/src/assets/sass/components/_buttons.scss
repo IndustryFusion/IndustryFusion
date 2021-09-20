@@ -136,9 +136,25 @@
   border-color: hsl(198, 0%, 95%);
   font-size: 15px;
   color: $basic-black;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 button:focus:not(:focus-visible) {
   outline: none;
+}
+
+.if-light-button {
+  outline: none;
+  background-color: $light-grey;
+  color: $regular-grey;
+  border: none;
+  border-radius: 5px;
+  font-size: $medium-font-size;
+  padding: 5px 10px;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: transparent !important;
+    cursor: default;
+  }
 }
