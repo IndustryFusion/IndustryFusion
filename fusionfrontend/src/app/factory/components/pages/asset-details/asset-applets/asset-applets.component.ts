@@ -13,33 +13,19 @@
  * under the License.
  */
 
-@import '../../../ecosystem/components/content/base/base-list-item/base-list-item.component';
+import { Component, OnInit } from '@angular/core';
 
-.small-confirm-button {
-  width: 2rem;
-  height: 2rem;
-  border: none !important;
-  box-shadow: none !important;
-  background: $light-grey 0 0 no-repeat padding-box;
+@Component({
+  selector: 'app-asset-applets',
+  templateUrl: './asset-applets.component.html',
+  styleUrls: ['./asset-applets.component.scss']
+})
+export class AssetAppletsComponent implements OnInit {
 
-  &:hover {
-    background: $hover-grey-border;
-  }
-}
+  public showActive = true;
 
-.notification-icons {
-  overflow: initial !important;
-  padding-top: -2px;
+  constructor() { }
 
-  .notification-low {
-    color: $alert-low;
-  }
-
-  .notification-medium {
-    color: $alert-medium;
-  }
-
-  .notification-high {
-    color: $alert-high;
+  ngOnInit(): void {
   }
 }

@@ -109,7 +109,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
         if (entity.getAssetSeries() != null) {
             AssetSeries assetSeries = entity.getAssetSeries();
             Company assetSeriesCompany = assetSeries.getCompany();
-            manufacturer = assetSeriesCompany.getDescription();
+            manufacturer = assetSeriesCompany.getName();
             assetSeriesName = assetSeries.getName();
             assetSeriesId = assetSeries.getId();
             if (assetSeries.getAssetTypeTemplate() != null) {

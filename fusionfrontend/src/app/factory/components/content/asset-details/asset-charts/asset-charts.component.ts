@@ -171,7 +171,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (this.initialized) {
       if (changes.options) {
-        console.log('options: ' + this.options);
         switch ( this.options ){
             case 'current':
               this.flushData();
@@ -213,7 +212,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   ngOnDestroy() {
-    console.log('[asset-charts.component] destroyed subscription');
     this.destroy$.next(true);
     this.destroy$.complete();
   }

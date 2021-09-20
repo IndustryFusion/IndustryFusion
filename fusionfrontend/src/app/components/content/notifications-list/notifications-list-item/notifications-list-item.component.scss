@@ -13,17 +13,33 @@
  * under the License.
  */
 
+@import 'src/app/ecosystem/components/content/base/base-list-item/base-list-item.component';
 
-/** font size **/
-$small-font-size: 12px;
-$regular-font-size: 14px;
-$medium-font-size: 16px;
-$bigger-font-size: 18px;
-$big-font-size: 24px;
-$huge-font-size: 48px;
+.small-confirm-button {
+  width: 2rem;
+  height: 2rem;
+  border: none !important;
+  box-shadow: none !important;
+  background: $light-grey 0 0 no-repeat padding-box;
 
-$regular-line-height: 18px;
-$medium-line-height: 20px;
-$bigger-line-height: 21px;
-$big-line-height: 23px;
-$huge-line-height: 30px;
+  &:hover {
+    background: $hover-grey-border;
+  }
+}
+
+.notification-icons {
+  overflow: initial !important;
+  padding-top: -2px;
+
+  .notification-low {
+    color: $alert-low;
+  }
+
+  .notification-medium {
+    color: $alert-medium;
+  }
+
+  .notification-high {
+    color: $alert-high;
+  }
+}

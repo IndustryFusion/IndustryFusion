@@ -80,11 +80,9 @@ export class RoomsListComponent implements OnInit, OnChanges {
               public factoryResolver: FactoryResolver,
               private factorySiteQuery: FactorySiteQuery,
               public route: ActivatedRoute) {
-    console.log('going to resolve');
     this.factoryResolver.resolve(route);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     this.factorySite$ = this.factoryResolver.factorySite$;
-    this.factorySite$.subscribe((see) => console.warn('SEEEEEEE', see));
   }
 
   ngOnInit() {

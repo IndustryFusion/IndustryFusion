@@ -13,36 +13,26 @@
  * under the License.
  */
 
-
 import { Component, Input, OnInit } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
-import { MaintenanceState } from '../maintenance-list.component';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { BaseListHeaderComponent } from '../../../../ecosystem/components/content/base/base-list-header/base-list-header.component';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
-  selector: 'app-maintenance-progressbar',
-  templateUrl: './maintenance-progressbar.component.html',
-  styleUrls: ['./maintenance-progressbar.component.scss']
+  selector: 'app-notifications-list-header',
+  templateUrl: './notifications-list-header.component.html',
+  styleUrls: ['./notifications-list-header.component.scss']
 })
-export class MaintenanceProgressbarComponent implements OnInit {
+export class NotificationsListHeaderComponent extends BaseListHeaderComponent implements OnInit {
 
-  @Input()
-  asset: FactoryAssetDetailsWithFields;
-
-  @Input()
-  maintenanceValue: number;
-
-  @Input()
-  maintenancePercentage: number;
-
-  @Input()
-  state: MaintenanceState;
-
-  maintenanceState = MaintenanceState;
+  @Input() searchpanel: OverlayPanel;
+  faSearch = faSearch;
 
   constructor() {
+    super();
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
 }

@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetSubsystemsComponent } from './asset-subsystems.component';
+import { AssetNotificationsComponent } from './asset-notifications.component';
 
-describe('AssetSubsystemsComponent', () => {
-  let component: AssetSubsystemsComponent;
-  let fixture: ComponentFixture<AssetSubsystemsComponent>;
+describe('AssetNotificationsComponent', () => {
+  let component: AssetNotificationsComponent;
+  let fixture: ComponentFixture<AssetNotificationsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetSubsystemsComponent ]
+      declarations: [ AssetNotificationsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSubsystemsComponent);
+    fixture = TestBed.createComponent(AssetNotificationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

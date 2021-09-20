@@ -64,6 +64,9 @@ import { AssetCardComponent } from './components/content/asset-card/asset-card.c
 import { CardModule } from 'primeng/card';
 import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
+import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
+import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
+import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +110,10 @@ import { AssetSubsystemsComponent } from './components/pages/asset-details/asset
     AssetDetailsSubHeaderComponent,
     AssetCardComponent,
     NameplateItemComponent,
-    AssetSubsystemsComponent
+    AssetSubsystemsComponent,
+    AssetAppletsComponent,
+    AssetSubsystemsComponent,
+    AssetNotificationsComponent
   ],
   imports: [
     IFCommon,
@@ -117,6 +123,7 @@ import { AssetSubsystemsComponent } from './components/pages/asset-details/asset
     ReactiveFormsModule,
     TableModule,
     CardModule,
+    FusionAppletsModule,
   ],
   exports: [
     FactorySubHeaderComponent,
