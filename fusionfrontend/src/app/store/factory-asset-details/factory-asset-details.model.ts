@@ -43,13 +43,6 @@ export enum AssetModalMode  {
   editRoomWithPreselecedFactorySiteMode = 4,
 }
 
-export enum DashboardFilterModalType {
-  assetTypeFilterModal = 1,
-  manufacturerFilterModal = 2,
-  factoryFilterModal = 3,
-  maintenanceDueFilterModal = 4
-}
-
 export class FactoryAssetDetailsWithFields extends FactoryAssetDetails {
   fields: FieldDetails[];
 }

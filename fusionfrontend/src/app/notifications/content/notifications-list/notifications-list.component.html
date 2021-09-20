@@ -18,7 +18,7 @@ under the License.
     <h3 class="table-header">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</h3>
     <div class="filter-panel">
       <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.allNotifications"
-                        (filteredItems)="searchAssets($event)">
+                        [position]="[238, 879]" (filteredItems)="searchAssets($event)">
       </app-table-filter>
     </div>
   </div>

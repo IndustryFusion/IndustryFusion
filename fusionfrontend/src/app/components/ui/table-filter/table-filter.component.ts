@@ -30,6 +30,8 @@ export class TableFilterComponent implements OnInit {
   possibleFilters: FilterOption[];
   @Input()
   itemsToBeFiltered: any;
+  @Input()
+  position: [number, number];
   @Output()
   filteredItems = new EventEmitter<any>();
 
@@ -42,7 +44,9 @@ export class TableFilterComponent implements OnInit {
   filterOptions: FilterOption[] = [];
   selectedFilter: FilterOption[] = [];
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {
+    this.changeTheme(0, 0);
+  }
 
   faFilter = faFilter;
 
@@ -51,6 +55,12 @@ export class TableFilterComponent implements OnInit {
       this.createFilterForm(filter);
       this.filterOptions.push(filter);
     });
+    this.changeTheme(this.position[0], this.position[1]);
+  }
+
+  changeTheme(top: number, left: number) {
+    document.documentElement.style.setProperty('--top-position', top.toString() + 'px');
+    document.documentElement.style.setProperty('--left-position', left.toString() + 'px');
   }
 
   createFilterForm(filter: FilterOption) {

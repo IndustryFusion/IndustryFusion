@@ -16,6 +16,37 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
+$top: var(--top-position);
+$left: var(--left-position);
+
+.panel-class {
+  ::ng-deep .p-overlaypanel:before {
+    visibility: hidden !important;
+  }
+  ::ng-deep .p-overlaypanel:after {
+    visibility: hidden !important;
+  }
+
+  ::ng-deep .p-component {
+    top: $top !important;
+    left: $left !important;
+    //left: -400px !important;
+    margin-top: 0 !important;
+  }
+}
+
+.dropdown-class {
+  ::ng-deep .p-component {
+    top: 0 !important;
+    left: 0 !important;
+    margin-top: 0 !important;
+  }
+}
+
+:host ::ng-deep .p-dropdown {
+  width: 45%;
+}
+
 .filter-btn {
   height: 48px;
   width: 48px;
@@ -46,23 +77,6 @@
   }
 }
 
-.panel-class {
-  ::ng-deep .p-overlaypanel:before {
-    visibility: hidden !important;
-  }
-  ::ng-deep .p-overlaypanel:after {
-    visibility: hidden !important;
-  }
-
-  ::ng-deep .p-component {
-    margin-top: 0 !important;
-  }
-
-}
-
-:host ::ng-deep .p-dropdown {
-  width: 45%;
-}
 
 .open-filterpanel-btn {
   width: 175px;
