@@ -54,8 +54,6 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   @Input()
   assetTypes: AssetType[];
 
-  date: Date = new Date(Date.now());
-
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   faFilter = faFilter;
@@ -72,17 +70,17 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   maintenanceDue: SelectItem =  { value: 'maintenanceDue', label: 'Maintenance Due' };
 
   dashboardFilterModalTypes = DashboardFilterModalType;
-  dashboardFilterTypeActice: DashboardFilterModalType;
+  dashboardFilterTypeActive: DashboardFilterModalType;
   selectedAssetTypes: AssetType[] = [];
   selectedCompanies: Company[] = [];
   selectedFactorySites: FactorySite[] = [];
-  maintenanceValues = [ SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY,  LONGTERM_PRIORITY ];
+  maintenanceValues = [ SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY, LONGTERM_PRIORITY ];
   selectedMaintenanceDue = [];
   searchText = '';
   index: number;
 
-  constructor(
-  ) { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.filterOptions = [this.assetType, this.manufacturer, this.factory, this.maintenanceDue];
@@ -147,13 +145,13 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   }
 
   clearSelectFilterValues() {
-    if (this.dashboardFilterTypeActice === DashboardFilterModalType.assetTypeFilterModal) {
+    if (this.dashboardFilterTypeActive === DashboardFilterModalType.assetTypeFilterModal) {
       this.selectedAssetTypes = [];
-    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.manufacturerFilterModal) {
+    } else if (this.dashboardFilterTypeActive === DashboardFilterModalType.manufacturerFilterModal) {
       this.selectedCompanies = [];
-    } else if (this.dashboardFilterTypeActice === DashboardFilterModalType.factoryFilterModal) {
+    } else if (this.dashboardFilterTypeActive === DashboardFilterModalType.factoryFilterModal) {
       this.selectedFactorySites = [];
-    } else if (this.dashboardFilterTypeActice ===  DashboardFilterModalType.maintenanceDueFilterModal) {
+    } else if (this.dashboardFilterTypeActive ===  DashboardFilterModalType.maintenanceDueFilterModal) {
       this.selectedMaintenanceDue = [];
     }
   }
@@ -268,10 +266,6 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     });
   }
 
-  getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields) {
-    return asset.fields.find(field => field.name === 'status');
-  }
-
   private updateTree() {
     if (this.displayedFactoryAssets) {
       const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
@@ -308,9 +302,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     if (value.subsystemIds?.length > 0) {
       const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       value.subsystemIds.forEach(id => {
-        const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
-        if (subsytem) {
-          children.push(this.addNode(treeNode, subsytem, expandetNodeIDs));
+        const subsystem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
+        if (subsystem) {
+          children.push(this.addNode(treeNode, subsystem, expandetNodeIDs));
         }
       });
       treeNode.children = children;

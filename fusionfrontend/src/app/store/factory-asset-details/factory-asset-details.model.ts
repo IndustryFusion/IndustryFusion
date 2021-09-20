@@ -16,6 +16,7 @@
 import { Asset } from '../asset/asset.model';
 import { FieldDetails } from '../field-details/field-details.model';
 import { OispAlertPriority } from '../oisp/oisp-alert/oisp-alert.model';
+import { StatusHours } from '../../services/kairos-status-aggregation.model';
 
 
 export class FactoryAssetDetails extends Asset {
@@ -26,6 +27,7 @@ export class FactoryAssetDetails extends Asset {
   roomName: string;
   factorySiteName: string;
   openAlertPriority: OispAlertPriority;
+  statusHours?: StatusHours[];
   protocol: string;
 }
 

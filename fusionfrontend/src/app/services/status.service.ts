@@ -16,12 +16,21 @@
 import { Injectable } from '@angular/core';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { Status } from '../factory/models/status.model';
-import { Asset } from 'src/app/store/asset/asset.model';
+import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
+import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { OispService } from './oisp.service';
+import { OispDeviceStatus } from './kairos.model';
+import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatusService {
+
+  constructor(private oispService: OispService) {
+  }
 
   determineStatus(fields: FieldDetails[], asset: Asset): Status {
     if (fields.length <= 0) {
@@ -94,13 +103,42 @@ export class StatusService {
             } else {
               return 'mldBetriebOff';
             }
-            break;
           default:
             return null;
         }
       }
     } else {
       return '';
+    }
+  }
+
+  getStatusByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<Status> {
+    const mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(assetWithFields, period);
+    return this.getStatusFromMergedFieldsAndAsset(mergedFields$, assetWithFields);
+  }
+
+  getStatusFromMergedFieldsAndAsset(mergedFields$: Observable<FieldDetails[]>,
+                                    assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): Observable<Status> {
+    return mergedFields$.pipe(
+      map((fields) => {
+        return this.determineStatus(fields, assetWithFields);
+      })
+    );
+  }
+
+  transformStatusToOispDeviceStatus(status: Status): OispDeviceStatus {
+    const fusionFormat = new FusionFormatPipe();
+    const statusString = fusionFormat.transform(status.gotData, status.type, status.statusValue).status;
+
+    switch (statusString) {
+      case 'offline':
+        return OispDeviceStatus.OFFLINE;
+      case 'idle':
+        return OispDeviceStatus.IDLE;
+      case 'running':
+        return OispDeviceStatus.ONLINE;
+      default:
+        return OispDeviceStatus.ERROR;
     }
   }
 }

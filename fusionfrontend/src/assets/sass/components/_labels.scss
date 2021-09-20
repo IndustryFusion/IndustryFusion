@@ -35,6 +35,12 @@
   font-weight: normal;
 }
 
+.if-label-bigger {
+  @extend .if-label;
+  font-size: $bigger-font-size;
+  line-height: $bigger-line-height;
+}
+
 .if-label-small-header {
   @extend .if-label;
   font-weight: normal;

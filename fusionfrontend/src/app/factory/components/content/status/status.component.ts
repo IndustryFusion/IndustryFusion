@@ -15,15 +15,11 @@
 
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { PointWithId } from 'src/app/services/oisp.model';
-import { OispService } from 'src/app/services/oisp.service';
+import { Observable } from 'rxjs';
 import { StatusService } from 'src/app/services/status.service';
-import { FieldDetails } from '../../../../store/field-details/field-details.model';
 import { Status } from '../../../models/status.model';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
-import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-status',
@@ -39,41 +35,11 @@ export class StatusComponent implements OnInit {
   showInline: boolean;
 
   status$: Observable<Status>;
-  latestPoints$: Observable<PointWithId[]>;
-  mergedFields$: Observable<FieldDetails[]>;
 
-  constructor(
-    private oispService: OispService,
-    private oispDeviceQuery: OispDeviceQuery,
-    private statusService: StatusService) {
+  constructor(private statusService: StatusService) {
   }
 
   ngOnInit(): void {
-    this.latestPoints$ = timer(0, 2000).pipe(
-      switchMap(() => {
-        return this.oispService.getLastValueOfAllFields(this.asset, this.asset.fields, 5);
-      })
-    );
-
-    this.mergedFields$ = this.latestPoints$
-      .pipe(
-        map(latestPoints => {
-          return this.asset.fields.map(field => {
-            const fieldCopy = Object.assign({ }, field);
-            const point = latestPoints.find(latestPoint => latestPoint.id ===
-              this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(this.asset.externalName, field.externalName));
-
-            if (point) {
-              fieldCopy.value = point.value;
-            }
-            return fieldCopy;
-          });
-        }));
-
-    this.status$ = this.mergedFields$.pipe(
-      map((fields) => {
-        return this.statusService.determineStatus(fields, this.asset);
-      })
-    );
+   this.status$ = this.statusService.getStatusByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
   }
 }

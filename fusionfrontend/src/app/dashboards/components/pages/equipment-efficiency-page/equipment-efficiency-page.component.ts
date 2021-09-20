@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -24,6 +24,8 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
+import { KairosStatusAggregationService } from '../../../../services/kairos-status-aggregation.service';
+import { StatusHours } from '../../../../services/kairos-status-aggregation.model';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 
@@ -42,12 +44,21 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   companies: Company[];
 
+  date: Date = new Date(Date.now());
+
+  fullyLoadedAssets = new Subject<FactoryAssetDetailsWithFields[]>();
+
+  private assetsWithStatus: number;
+  private loadedStatusCount = 0;
+
   constructor(
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
-  ) { }
+    private kairosStatusAggregationService: KairosStatusAggregationService,
+  ) {
+  }
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
@@ -60,13 +71,25 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     this.assetTypes$ = this.assetTypesResolver.resolve();
 
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
-    this.factoryAssetDetailsWithFields$.subscribe(res => {
-      this.factoryAssetDetailsWithFields = res;
-      this.sortAssetsByMaintenanceValue();
+    this.factoryAssetDetailsWithFields$.subscribe(assetDetailsWithFields => {
+      this.updateAssets(assetDetailsWithFields);
     });
   }
 
-  sortAssetsByMaintenanceValue() {
+  private updateAssets(assetDetailsWithFields: FactoryAssetDetailsWithFields[]) {
+    this.factoryAssetDetailsWithFields = assetDetailsWithFields;
+    if (this.factoryAssetDetailsWithFields.length < 1) {
+      console.warn('[equipment efficiency page]: No assets found');
+    }
+    this.sortAssetsByMaintenanceValue();
+    this.addStatusHoursToAssets();
+
+    if (this.assetsWithStatus === 0) {
+      this.fullyLoadedAssets.next(this.factoryAssetDetailsWithFields);
+    }
+  }
+
+  private sortAssetsByMaintenanceValue(): void {
     this.factoryAssetDetailsWithFields.sort((a, b) => {
       const indexA = a.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
       const indexB = b.fields.findIndex(field => field.name === MAINTENANCE_FIELD_NAME);
@@ -80,4 +103,29 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     });
   }
 
+  private addStatusHoursToAssets(): void {
+    this.assetsWithStatus = 0;
+    this.loadedStatusCount = 0;
+
+    this.factoryAssetDetailsWithFields.forEach(assetWithFields => {
+      if (KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields) != null) {
+        this.assetsWithStatus++;
+        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.date)
+          .subscribe(assetStatusHours => this.updateStatusHoursOfAsset(assetWithFields, assetStatusHours));
+      }
+    });
+  }
+
+  private updateStatusHoursOfAsset(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]) {
+    assetWithFields.statusHours = statusHours;
+    this.loadedStatusCount++;
+    if (this.assetsWithStatus === this.loadedStatusCount) {
+      this.fullyLoadedAssets.next(this.factoryAssetDetailsWithFields);
+    }
+  }
+
+  dateChanged(date: Date) {
+    this.date = date;
+    this.updateAssets(this.factoryAssetDetailsWithFields);
+  }
 }

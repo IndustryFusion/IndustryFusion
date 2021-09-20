@@ -35,6 +35,9 @@ const routes: Routes = [
     component: EquipmentEfficiencyPageComponent,
     data: {
       breadcrumb: 'Equipment Efficiency'
+    },
+    resolve: {
+      devices: OispDeviceResolver
     }
   },
 ];
