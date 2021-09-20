@@ -54,6 +54,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
 
   searchText = '';
   allNotifications: OispNotification[] = [];
+  displayedNotifications: OispNotification[];
   filteredNotifications: OispNotification[];
   searchedNotifications: OispNotification[];
   OispPriority = OispAlertPriority;
@@ -78,6 +79,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
     this.periodicallyFetchNotifications();
     this.initMappings();
+    this.filteredNotifications = this.searchedNotifications = this.allNotifications;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -109,7 +111,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
 
 
   deleteItem(id: ID): void {
-    const filteredItem = this.filteredNotifications.find(value => value.id === id);
+    const filteredItem = this.displayedNotifications.find(value => value.id === id);
     this.oispAlertService.closeAlert(filteredItem.id).subscribe(() => {
     });
   }
@@ -118,15 +120,20 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
     this.selectedNotifications = [];
   }
 
-  searchAssets(event?): void {
+  searchNotifications(event?) {
     this.searchedNotifications = event;
-    this.filterNotifications();
+    this.updateNotifications();
   }
 
-  private filterNotifications(): void {
-    this.filteredNotifications = this.allNotifications;
+  filterNotifications(event?) {
+    this.filteredNotifications = event;
+    this.updateNotifications();
+  }
+
+  private updateNotifications(): void {
+    this.displayedNotifications = this.allNotifications;
     if (this.searchedNotifications) {
-      this.filteredNotifications = this.filteredNotifications.filter(notification =>
+      this.displayedNotifications = this.filteredNotifications.filter(notification =>
         this.searchedNotifications.includes(notification));
     }
   }
@@ -140,7 +147,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges 
     this.items$.subscribe(notifications => {
       if (notifications.length !== this.allNotifications.length) {
         this.allNotifications = notifications;
-        this.filterNotifications();
+        this.updateNotifications();
       }
     });
   }

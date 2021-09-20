@@ -18,7 +18,7 @@ under the License.
     <h3 class="table-header">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</h3>
     <div class="filter-panel">
       <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.allNotifications"
-                        [position]="[238, 879]" (filteredItems)="searchAssets($event)">
+                        [position]="[238, 879]" (filteredItems)="filterNotifications($event)">
       </app-table-filter>
     </div>
   </div>
@@ -54,13 +54,13 @@ under the License.
           <div class="p-d-flex p-ai-start">
           <p-sortIcon field="ruleName"></p-sortIcon>
             <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="this.allNotifications"
-                                 attributeToBeSearched="ruleName" (searchByName)="searchAssets($event)">
+                                 attributeToBeSearched="ruleName" (searchByName)="searchNotifications($event)">
             </app-table-searchbar>
           </div>
         </th>
         <th [style.width.%]="17">
           <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.allNotifications"
-                               attributeToBeSearched="assetName" (searchByName)="searchAssets($event)">
+                               attributeToBeSearched="assetName" (searchByName)="searchNotifications($event)">
           </app-table-searchbar>
         </th>
         <th [style.width.%]="40">Condition</th>
