@@ -57,6 +57,10 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match('^\/factorymanager\/companies\/[0-9]+$');
   }
 
+  isRoomsActive() {
+    return this.route && this.route.match('^\/factorymanager\/companies\/[0-9]+/rooms$');
+  }
+
   isAssetsActive = () => {
     return this.route && (
       this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+$') ||
@@ -84,6 +88,13 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
     const companyId = this.route.split('/')[3];
     if (companyId) {
       return this.router.navigate(['/factorymanager/companies', companyId]);
+    }
+  }
+
+  onRoomsClick() {
+    const companyId = this.route.split('/')[3];
+    if (companyId) {
+      return this.router.navigate(['/factorymanager/companies', companyId, 'rooms']);
     }
   }
 

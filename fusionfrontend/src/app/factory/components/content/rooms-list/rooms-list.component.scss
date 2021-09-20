@@ -14,35 +14,26 @@
  */
 
 @import 'abstract/variables';
+@import 'base/typography';
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
-.header-line {
-  height: 50px;
-  margin: 0 80px;
-}
 .create-button {
   text-align: right;
   align-self: center;
 }
 
-.rooms-panel {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: lightgray;
-
-  button{
-    color: black;
-  }
-
-  clr-icon{
-    color: black;
-  }
-}
-
 .wrapper {
   margin: 0 80px;
+
+  .list-header {
+    .if-button {
+      padding: 14px 20px 12px;
+      margin-bottom: 5px;
+      font-size: $regular-font-size;
+      line-height: $regular-line-height;
+      border-radius: 22px;
+    }
+  }
 }
 
 clr-dg-row {

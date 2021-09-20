@@ -52,6 +52,7 @@ const routes: Routes = [
       roles: [Role.FACTORY_MANAGER]
     }
   },
+
   {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId',
     component: FactorySitePageComponent,
@@ -61,6 +62,18 @@ const routes: Routes = [
       roles: [Role.FACTORY_MANAGER]
     }
   },
+
+  {
+    path: 'factorymanager/companies/:companyId/rooms',
+    component: FactorySiteRoomsPageComponent,
+    canActivate: [MainAuthGuardGuard],
+    data: {
+      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],
+      roles: [Role.FACTORY_MANAGER],
+      breadcrumb: 'Rooms'
+    }
+  },
+
   {
     path: 'factorymanager/companies/:companyId/assets',
     component: AssetsListPageComponent,
@@ -70,15 +83,7 @@ const routes: Routes = [
       roles: [Role.FACTORY_MANAGER]
     }
   },
-  {
-    path: 'factorymanager/companies/:companyId/assets/rooms',
-    component: FactorySiteRoomsPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
+
   {
     path: 'factorymanager/companies/:companyId/assets/rooms/:roomId',
     component: AssetsListPageComponent,
