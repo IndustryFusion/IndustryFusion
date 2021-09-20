@@ -15,16 +15,14 @@
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, timer } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Status } from 'src/app/factory/models/status.model';
-import { PointWithId } from 'src/app/services/oisp.model';
 import { OispService } from 'src/app/services/oisp.service';
 import { StatusService } from 'src/app/services/status.service';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-asset-card',
@@ -38,45 +36,19 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   @Input()
   asset: AssetWithFields;
 
-  latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
 
   constructor(
     private companyQuery: CompanyQuery,
     private oispService: OispService,
-    private oispDeviceQuery: OispDeviceQuery,
     private statusService: StatusService,
     private router: Router) {
   }
 
   ngOnInit() {
-    this.latestPoints$ = timer(0, 2000).pipe(
-      switchMap(() => {
-        return this.oispService.getLastValueOfAllFields(this.asset, this.asset.fields, 5);
-      })
-    );
-
-    this.mergedFields$ = this.latestPoints$.pipe(
-      map(latestPoints => {
-        return this.asset.fields.map(field => {
-          const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id ===
-            this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(this.asset.externalName, field.externalName));
-
-          if (point) {
-            fieldCopy.value = point.value;
-          }
-          return fieldCopy;
-        });
-      })
-    );
-
-    this.status$ = this.mergedFields$.pipe(
-      map((fields) => {
-        return this.statusService.determineStatus(fields, this.asset);
-      })
-    );
+    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
+    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.mergedFields$, this.asset);
   }
 
   ngOnDestroy() {

@@ -13,6 +13,12 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<app-equipment-efficiency-overview [factoryAssetDetailsWithFields$]="factoryAssetDetailsWithFields$"
+                                   [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields"
+                                   [fullyLoadedAssets$]="fullyLoadedAssets"
+                                   [date]="date"
+                                   (dateChanged)="dateChanged($event)"></app-equipment-efficiency-overview>
+
 <app-equipment-efficiency-list [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields"
                       [factorySites]="(factorySites$ | async)"
                       [companies]="(companies$ | async)"

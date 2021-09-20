@@ -14,25 +14,14 @@ under the License.
 -->
 
 <div class="efficiency-dashboard">
-  <div class="efficiency-dashboard-upper-part">
-    <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-      <div class="title">Equipment Efficiency Dashboard</div>
-      <div>
-        <label class="if-label">Pick Date</label>
-        <p-calendar class="calendar-only-button" [(ngModel)]="date" showIcon="true" showButtonBar="true"
-                    dateFormat="dd.mm.yy"></p-calendar>
-      </div>
-    </div>
-  </div>
-
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div>
       <div class="title">Status Overview by Asset</div>
       <div class="status-key">
-        <span class="if-badge-square running"></span> <label class="badge-padding">Running</label>
-        <span class="if-badge-square idle"></span> <label class="badge-padding">Idle</label>
-        <span class="if-badge-square error"></span> <label class="badge-padding">Error</label>
-        <span class="if-badge-square offline"></span> <label class="badge-padding">Offline</label>
+        <span class="status-square running"></span> <label class="badge-padding">Running</label>
+        <span class="status-square idle"></span> <label class="badge-padding">Idle</label>
+        <span class="status-square error"></span> <label class="badge-padding">Error</label>
+        <span class="status-square offline"></span> <label class="badge-padding">Offline</label>
       </div>
     </div>
     <div style="position: relative">
@@ -89,10 +78,8 @@ under the License.
         </td>
         <td [style.width.%]="10">{{rowData.factorySiteName}}</td>
         <td [style.width.%]="25">
-          <app-equipment-efficiency-bar-chart *ngIf="getStatusFieldOfAsset(rowData) != null"
-                                              [asset]=rowData
-                                              [date]="date"
-                                              [field]="getStatusFieldOfAsset(rowData)">
+          <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHours"
+                                              [assetStatusHours]="rowData.statusHours">
           </app-equipment-efficiency-bar-chart>
         </td>
       </tr>
@@ -127,7 +114,7 @@ under the License.
           <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.assetTypeFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.assetTypeFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -143,7 +130,7 @@ under the License.
           <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.manufacturerFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.manufacturerFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -159,7 +146,7 @@ under the License.
           <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.factoryFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.factoryFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -175,7 +162,7 @@ under the License.
           <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
                       optionLabel="label"></p-dropdown>
           <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActice = dashboardFilterModalTypes.maintenanceDueFilterModal"
+            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.maintenanceDueFilterModal"
             class="open-filterpanel-btn">
             <div class="filter-panel-btn-grid">
               <span
@@ -198,7 +185,7 @@ under the License.
 
 <p-overlayPanel #editFilterPanel class="editFilterPanel">
   <ng-template pTemplate>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.assetTypeFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.assetTypeFilterModal">
       <div class="panel-heading">Select AssetType</div>
       <div *ngFor="let assetType of assetTypes">
         <p-checkbox name="assetTypeValues" value="assetType" [value]="assetType" [(ngModel)]="selectedAssetTypes"
@@ -206,7 +193,7 @@ under the License.
         <label style="margin-left: 7px;" [for]="assetType.id">{{assetType.description}}</label>
       </div>
     </div>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.manufacturerFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.manufacturerFilterModal">
       <div class="panel-heading">Select Manufacturer</div>
       <div *ngFor="let company of companies">
         <p-checkbox name="companyValues" value="company" [value]="company" [(ngModel)]="selectedCompanies"
@@ -214,7 +201,7 @@ under the License.
         <label style="margin-left: 7px;" [for]="company.id">{{company.description}}</label>
       </div>
     </div>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.factoryFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.factoryFilterModal">
       <div class="panel-heading">Select Factory Site</div>
       <div *ngFor="let factorySite of factorySites">
         <p-checkbox name="factorySitesValues" value="factorySite" [value]="factorySite"
@@ -222,7 +209,7 @@ under the License.
         <label style="margin-left: 7px;" [for]="factorySite.id">{{factorySite.name}}</label>
       </div>
     </div>
-    <div *ngIf="dashboardFilterTypeActice == dashboardFilterModalTypes.maintenanceDueFilterModal">
+    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.maintenanceDueFilterModal">
       <div class="panel-heading">Select Factory Site</div>
       <div>
         <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[0] }}"

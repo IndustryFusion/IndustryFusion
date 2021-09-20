@@ -24,7 +24,7 @@ import { OispAlertService } from '../../../store/oisp/oisp-alert/oisp-alert.serv
 import { environment } from '../../../../environments/environment';
 import { Location } from '@angular/common';
 
-export enum NotificationState { OPEN, CLEARED}
+export enum NotificationState { OPEN, CLEARED }
 
 @Component({
   selector: 'app-notifications-list',
@@ -48,7 +48,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   filteredNotifications: OispNotification[];
   notificationStates = NotificationState;
   notificationSubscription: Subscription;
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
+
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
   constructor(
     public activatedRoute: ActivatedRoute,
