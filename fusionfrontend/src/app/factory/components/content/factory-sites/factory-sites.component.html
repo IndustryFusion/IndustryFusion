@@ -13,6 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<app-factory-site-map [factorySites]="(factorySites$ | async)" (selectedFactorySite)="setSelectedFactorySite($event)"></app-factory-site-map>
+
 <div class="wrapper">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
     <div class="title">{{ (factorySites$ | async)?.length | i18nPlural: factorySiteMapping }}</div>

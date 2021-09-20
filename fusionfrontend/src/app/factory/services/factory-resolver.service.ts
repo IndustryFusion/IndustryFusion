@@ -42,6 +42,7 @@ import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-
 import { Country } from '../../store/country/country.model';
 import { CountryResolver } from '../../resolvers/country.resolver';
 import { OispDeviceResolver } from '../../resolvers/oisp-device-resolver';
+import { ID } from '@datorama/akita';
 
 @Injectable({
   providedIn: 'root'
@@ -98,7 +99,11 @@ export class FactoryResolver {
 
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
-    const companyId = activatedRoute.snapshot.paramMap.get('companyId');
+    let companyId = activatedRoute.snapshot.paramMap.get('companyId') as ID;
+    if (companyId == null && this.companyQuery.getActive() != null) {
+      companyId = this.companyQuery.getActiveId();
+    }
+
     this.companyService.setActive(companyId);
     if (companyId != null) {
       this.companyService.getCompany(companyId).subscribe();
@@ -126,8 +131,8 @@ export class FactoryResolver {
           )
         ),
       );
-
     }
+
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
@@ -177,6 +182,7 @@ export class FactoryResolver {
       this.assetsWithFields$ = this.factoryComposedQuery.selectFieldsOfSelectedAssets();
     }
 
+    // Subtitles
     const pageTypes: FactoryManagerPageType[] = (activatedRoute.snapshot.data as RouteData).pageTypes || [];
     if (pageTypes.includes(FactoryManagerPageType.COMPANY_DETAIL)) {
       this.factorySubTitle$.next('My Factory Sites');

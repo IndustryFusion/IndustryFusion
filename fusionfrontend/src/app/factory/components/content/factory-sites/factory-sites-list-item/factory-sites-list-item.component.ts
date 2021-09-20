@@ -14,18 +14,16 @@ export class FactorySitesListItemComponent implements OnInit, OnDestroy {
   @Input()
   factorySite: FactorySiteWithAssetCount;
 
-  routerLink: string[];
-  ref: DynamicDialogRef;
+  factorySiteDialogRef: DynamicDialogRef;
 
   constructor(public dialogService: DialogService) {
   }
 
   ngOnInit(): void {
-    this.routerLink = ['factorysites', `${this.factorySite.id}`];
   }
 
   showEditDialog() {
-    this.ref = this.dialogService.open(FactorySiteDialogComponent, {
+    this.factorySiteDialogRef = this.dialogService.open(FactorySiteDialogComponent, {
       data: {
         factorySite: this.factorySite,
         type: DialogType.EDIT
@@ -40,8 +38,8 @@ export class FactorySitesListItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.ref) {
-      this.ref.close();
+    if (this.factorySiteDialogRef) {
+      this.factorySiteDialogRef.close();
     }
   }
 }

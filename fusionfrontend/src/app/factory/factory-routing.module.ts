@@ -15,7 +15,7 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
+import { FactorySitesPageComponent } from './components/pages/factory-sites-page/factory-sites-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
@@ -31,26 +31,48 @@ import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
+import { FactorySiteQuery } from '../store/factory-site/factory-site.query';
+import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 
 const routes: Routes = [
   {
     path: 'factorymanager/companies/:companyId',
-    component: CompanyPageComponent,
     canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.COMPANY_DETAIL, FactoryManagerPageType.FACTORY_SITE_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-
-  {
-    path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId',
-    component: FactorySitePageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
+    children: [
+      {
+        path: '',
+        redirectTo: 'factorysites',
+        pathMatch: 'full'
+      },
+      {
+        path: 'factorysites',
+        component: FactorySitesPageComponent,
+        data: {
+          pageTypes: [FactoryManagerPageType.COMPANY_DETAIL, FactoryManagerPageType.FACTORY_SITE_LIST],
+          roles: [Role.FACTORY_MANAGER],
+          breadcrumb: 'My Factory Sites'
+        },
+        children: [
+          {
+            path: '',
+            component: FactorySitesComponent,
+            pathMatch: 'full',
+            data: {
+              breadcrumb: null
+            }
+          },
+          {
+            path: ':factorySiteId',
+            component: FactorySitePageComponent,
+            data: {
+              pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+              roles: [Role.FACTORY_MANAGER],
+              breadcrumb: FactorySiteQuery
+            }
+          },
+        ]
+      }
+    ]
   },
 
   {

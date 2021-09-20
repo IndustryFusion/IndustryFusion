@@ -28,6 +28,7 @@ import { FactoryAssetDetails, FactoryAssetDetailsWithFields } from '../../../../
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetService } from '../../../../store/asset/asset.service';
 import { RoomService } from '../../../../store/room/room.service';
+import { FactorySiteService } from '../../../../store/factory-site/factory-site.service';
 
 @Component({
   selector: 'app-factory-site-page',
@@ -50,6 +51,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
   constructor(
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
+    private factorySiteService: FactorySiteService,
     private assetQuery: AssetQuery,
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
@@ -68,6 +70,10 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+
+    if (this.factorySiteQuery.getActive() == null) {
+      this.factorySite$.subscribe(factorySite =>  this.factorySiteService.setActive(factorySite.id));
+    }
   }
 
   ngOnDestroy() {
