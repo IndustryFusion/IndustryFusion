@@ -43,6 +43,11 @@ under the License.
                                [dropDownFilterFormGroup]="this.filterFormMap.get(activeFilter.attributeToBeFiltered)"
                                [itemsToBeFiltered]="itemsToBeFiltered"  (itemsFiltered)="filterItems()">
           </app-dropdown-filter>
+
+          <app-numeric-filter *ngSwitchCase="filterType.NUMBERBASEDFILTER"
+                               [numericFilterFormGroup]="this.filterFormMap.get(activeFilter.attributeToBeFiltered)"
+                               [itemsToBeFiltered]="itemsToBeFiltered"  (itemsFiltered)="filterItems()">
+          </app-numeric-filter>
         </ng-container>
 
 

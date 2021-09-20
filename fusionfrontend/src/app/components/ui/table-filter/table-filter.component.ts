@@ -68,6 +68,8 @@ export class TableFilterComponent implements OnInit {
       this.createDateFilterForm(this.formBuilder, filter);
     } else if (filter.filterType === FilterType.DROPDOWNFILTER) {
       this.createDropDownFilterForm(this.formBuilder, filter);
+    } else if (filter.filterType === FilterType.NUMBERBASEDFILTER) {
+      this.createNumericFilterForm(this.formBuilder, filter);
     }
   }
 
@@ -83,6 +85,16 @@ export class TableFilterComponent implements OnInit {
   }
 
   createDropDownFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
+    this.filterFormMap.set(filter.attributeToBeFiltered, formBuilder.group({
+      filterType: filter.filterType,
+      attributeToBeFiltered: filter.attributeToBeFiltered,
+      columnName: filter.columnName,
+      filteredItems: [] as FilterOption[],
+      selectedCheckboxItems: [] as any[],
+    }));
+  }
+
+  createNumericFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
     this.filterFormMap.set(filter.attributeToBeFiltered, formBuilder.group({
       filterType: filter.filterType,
       attributeToBeFiltered: filter.attributeToBeFiltered,
@@ -136,6 +148,7 @@ export class TableFilterComponent implements OnInit {
       form.get('endTimeValue').patchValue(null);
     } else if (form.get('filterType').value === FilterType.DROPDOWNFILTER) {
       form.get('selectedCheckboxItems').patchValue(null);
+    } else if (form.get('filterType').value === FilterType.NUMBERBASEDFILTER) {
     }
   }
 

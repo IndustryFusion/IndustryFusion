@@ -32,6 +32,7 @@ import { TableSearchbarComponent } from '../components/ui/table-searchbar/table-
 import { TableFilterComponent } from '../components/ui/table-filter/table-filter.component';
 import { DateFilterComponent } from '../components/ui/table-filter/date-filter/date-filter.component';
 import { DropdownFilterComponent } from '../components/ui/table-filter/dropdown-filter/dropdown-filter.component';
+import { NumericFilterComponent } from '../components/ui/table-filter/numeric-filter/numeric-filter.component';
 import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
@@ -49,7 +50,8 @@ import { CalendarModule } from 'primeng/calendar';
     TableSearchbarComponent,
     TableFilterComponent,
     DateFilterComponent,
-    DropdownFilterComponent
+    DropdownFilterComponent,
+    NumericFilterComponent
   ],
   imports: [
     CommonModule,
@@ -100,7 +102,8 @@ import { CalendarModule } from 'primeng/calendar';
     TableSearchbarComponent,
     TableFilterComponent,
     DateFilterComponent,
-    DropdownFilterComponent
+    DropdownFilterComponent,
+    NumericFilterComponent
   ],
   providers: [
     MessageService

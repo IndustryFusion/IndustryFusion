@@ -59,7 +59,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   OispPriority = OispAlertPriority;
 
   searchText = '';
-  index: number;
 
   possibleFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
