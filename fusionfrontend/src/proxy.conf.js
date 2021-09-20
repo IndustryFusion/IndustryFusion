@@ -16,5 +16,13 @@ module.exports = {
     "pathRewrite": {
       "^/oispapi": ""
     }
+  },
+  "/kairosapi": {
+    "target": "https://development.industry-fusion.com/tsdb/api/v1",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/kairosapi": ""
+    }
   }
 };

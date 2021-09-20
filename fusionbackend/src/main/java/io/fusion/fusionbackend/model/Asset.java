@@ -53,40 +53,14 @@ import java.util.UUID;
                 + " and asset_series_id != ? and company_id = ? ",
         resultClass = Asset.class)
 public class Asset extends BaseAsset {
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "room_id")
-    private Room room;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "asset_series_id", nullable = false)
-    private AssetSeries assetSeries;
-
-    @OneToMany(mappedBy = "asset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Builder.Default
-    private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "subsystem_parent_id")
-    @Builder.Default
-    private Set<Asset> subsystems = new HashSet<>();
-
-    private String externalId;
-    private String controlSystemType;
-    private Boolean hasGateway;
-    private String gatewayConnectivity;
     protected UUID guid;
     protected Boolean ceCertified;
     protected String serialNumber;
     protected OffsetDateTime constructionDate;
     protected String protectionClass;
-    protected String handbookKey;
-    protected String videoKey;
+    protected String handbookUrl;
+    protected String videoUrl;
     protected OffsetDateTime installationDate;
-
     /**
      * This connectionsString attribute is derived from the {@link ConnectivitySettings#getConnectionString()}.
      * From a business point of view it is the same concept but up to now, assets do not have
@@ -94,11 +68,31 @@ public class Asset extends BaseAsset {
      */
     @Column(nullable = false)
     protected String connectionString;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "room_id")
+    private Room room;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "asset_series_id", nullable = false)
+    private AssetSeries assetSeries;
+    @OneToMany(mappedBy = "asset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "subsystem_parent_id")
+    @Builder.Default
+    private Set<Asset> subsystems = new HashSet<>();
+    private String externalName;
+    private String controlSystemType;
+    private Boolean hasGateway;
+    private String gatewayConnectivity;
 
     public void copyFrom(final Asset sourceAsset) {
         super.copyFrom(sourceAsset);
-        if (sourceAsset.getExternalId() != null) {
-            setExternalId(sourceAsset.getExternalId());
+        if (sourceAsset.getExternalName() != null) {
+            setExternalName(sourceAsset.getExternalName());
         }
         if (sourceAsset.getControlSystemType() != null) {
             setControlSystemType(sourceAsset.getControlSystemType());
@@ -124,11 +118,11 @@ public class Asset extends BaseAsset {
         if (sourceAsset.getProtectionClass() != null) {
             setProtectionClass(sourceAsset.getProtectionClass());
         }
-        if (sourceAsset.getHandbookKey() != null) {
-            setHandbookKey(sourceAsset.getHandbookKey());
+        if (sourceAsset.getHandbookUrl() != null) {
+            setHandbookUrl(sourceAsset.getHandbookUrl());
         }
-        if (sourceAsset.getVideoKey() != null) {
-            setVideoKey(sourceAsset.getVideoKey());
+        if (sourceAsset.getVideoUrl() != null) {
+            setVideoUrl(sourceAsset.getVideoUrl());
         }
         if (sourceAsset.getInstallationDate() != null) {
             setInstallationDate(sourceAsset.getInstallationDate());

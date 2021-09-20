@@ -1,0 +1,75 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+
+ .wrapper {
+   margin: 0 80px;
+ }
+
+.status-circle {
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  background: #8c8c8c;
+  min-width: .75rem;
+  height: .75rem;
+  line-height: normal;
+  border-radius: .5rem;
+  font-size: .5rem;
+  padding: 0 .2rem;
+  margin-right: .3rem;
+  white-space: nowrap;
+  text-align: center;
+  color: $basic-white;
+
+  &.running{
+    background: $status-running;
+  }
+
+  &.idle {
+    background: $status-idle;
+  }
+
+  &.error {
+    background: $status-error;
+  }
+
+  &.offline {
+    background: $status-offline;
+  }
+
+  &.small {
+    min-width: .5rem;
+    height: .5rem;
+  }
+}
+
+.status-square {
+  @extend .status-circle;
+  min-width: .55rem;
+  height: .55rem;
+  border-radius: 3px;
+  margin-top: -3px;
+}
+
+.status-key {
+  padding-top: 0.5rem;
+
+  .badge-padding {
+    padding-right: 1rem;
+  }
+}

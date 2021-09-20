@@ -59,7 +59,7 @@ public class FieldInstance extends BaseEntity {
     private Threshold criticalThreshold;
 
     private String sourceSensorLabel;
-    private String externalId;
+    private String externalName;
     private String name;
     private String description;
     private String value;
@@ -74,8 +74,8 @@ public class FieldInstance extends BaseEntity {
         if (sourceField.getValue() != null) {
             setValue(sourceField.getValue());
         }
-        if (sourceField.getExternalId() != null) {
-            setExternalId(sourceField.getExternalId());
+        if (sourceField.getExternalName() != null) {
+            setExternalName(sourceField.getExternalName());
         }
         if (sourceField.getSourceSensorLabel() != null) {
             setSourceSensorLabel(sourceField.getSourceSensorLabel());

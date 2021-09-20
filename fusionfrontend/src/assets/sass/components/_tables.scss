@@ -27,12 +27,12 @@ h3.table-header{
   margin-left: 68px;
 }
 
-.p-datatable	{
+.basic-table {
   margin: 30px 80px;
   border: hidden !important;
 }
 
-.p-datatable .p-datatable-thead > tr > th {
+.basic-table-header {
   margin-bottom: 10px;
   height: 56px;
   text-align: left;
@@ -52,7 +52,7 @@ h3.table-header{
   }
 }
 
-.p-datatable .p-datatable-tbody > tr > td {
+.basic-table-cell {
   background-color: $basic-white;
   border-color: transparent;
   text-align: left;
@@ -70,6 +70,30 @@ h3.table-header{
   }
 }
 
+.p-datatable	{
+  @extend .basic-table;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  @extend .basic-table-header
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  @extend .basic-table-cell;
+}
+
+.p-treetable	{
+  @extend .basic-table;
+}
+
+.p-treetable .p-treetable-thead > tr > th {
+  @extend .basic-table-header;
+}
+
+.p-treetable .p-treetable-tbody > tr > td {
+  @extend .basic-table-cell;
+}
+
 .p-paginator {
   height: 45px;
   background-color: $basic-white;
@@ -82,6 +106,9 @@ h3.table-header{
     height: 40px;
     float: right;
     margin-right: 50px;
+    .p-dropdown-label {
+      background: unset !important;
+    }
   }
 
   .p-paginator-current {
@@ -161,5 +188,4 @@ h3.table-header{
   .p-paginator-last {
     display: none !important;
   }
-
 }

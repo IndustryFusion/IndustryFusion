@@ -1,0 +1,36 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="efficiency-dashboard-overview">
+  <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
+    <label class="title">Equipment Efficiency Dashboard</label>
+    <div>
+      <label class="if-label">Pick Date</label>
+      <p-calendar class="calendar-only-button" [(ngModel)]="date" (ngModelChange)="dateChanged.emit($event)" showIcon="true" showButtonBar="true"
+                  dateFormat="dd.mm.yy"></p-calendar>
+    </div>
+  </div>
+
+  <div class="aggregated-stats list-header p-grid">
+    <app-equipment-efficiency-overview-realtime-status class="aggregated-section p-col-4"
+                                                       [factoryAssetDetailsWithFields$]="factoryAssetDetailsWithFields$">
+    </app-equipment-efficiency-overview-realtime-status>
+
+    <app-equipment-efficiency-overview-donut-chart class="aggregated-section status p-col-4" *ngIf="isLoaded"
+                                                      [aggregatedStatusHours$]="aggregatedStatusHours$">
+    </app-equipment-efficiency-overview-donut-chart>
+  </div>
+
+</div>

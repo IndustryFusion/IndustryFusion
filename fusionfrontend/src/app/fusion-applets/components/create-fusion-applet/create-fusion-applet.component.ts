@@ -24,6 +24,7 @@ import {
 } from '../../../services/oisp.model';
 import { EnumHelpers } from '../../../common/utils/enum-helpers';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { WizardHelper } from '../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-create-fusion-applet',
@@ -62,7 +63,7 @@ export class CreateFusionAppletComponent implements OnInit {
 
     this.ruleForm = this.formBuilder.group({
       id: [],
-      name: ['', [Validators.required, Validators.maxLength(255)]],
+      name: ['', WizardHelper.requiredTextValidator],
       description: ['', [Validators.maxLength(1000)]],
       type: [null, []],
       resetType: [RuleResetType.Automatic, []],

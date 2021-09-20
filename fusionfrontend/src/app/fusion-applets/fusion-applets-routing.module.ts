@@ -15,10 +15,11 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FusionAppletsOverviewComponent } from './components/fusion-applets-overview/fusion-applets-overview.component';
 import { FusionAppletDetailComponent } from './components/fusion-applet-detail/fusion-applet-detail.component';
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
+import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
 
 const routes: Routes = [
   {
@@ -47,7 +48,10 @@ const routes: Routes = [
           },
           {
             path: 'editor',
-            component: FusionAppletEditorComponent
+            component: FusionAppletEditorComponent,
+            resolve: {
+              devices: OispDeviceResolver
+            }
           }
         ]
       }

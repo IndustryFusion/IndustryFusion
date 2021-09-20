@@ -34,6 +34,14 @@ import { DateFilterComponent } from '../components/ui/table-filter/date-filter/d
 import { DropdownFilterComponent } from '../components/ui/table-filter/dropdown-filter/dropdown-filter.component';
 import { NumericFilterComponent } from '../components/ui/table-filter/numeric-filter/numeric-filter.component';
 import { CalendarModule } from 'primeng/calendar';
+import { BooleanPipe } from '../pipes/boolean.pipe';
+import { MaintenanceProgressbarComponent } from '../components/content/maintenance-progressbar/maintenance-progressbar.component';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
+import { NotificationsListHeaderComponent } from '../components/content/notifications-list/notifications-list-header/notifications-list-header.component';
+import { NotificationsListItemComponent } from '../components/content/notifications-list/notifications-list-item/notifications-list-item.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 
 @NgModule({
   declarations: [
@@ -52,6 +60,11 @@ import { CalendarModule } from 'primeng/calendar';
     DateFilterComponent,
     DropdownFilterComponent,
     NumericFilterComponent
+    BooleanPipe,
+    MaintenanceProgressbarComponent,
+    NotificationsListComponent,
+    NotificationsListHeaderComponent,
+    NotificationsListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +84,7 @@ import { CalendarModule } from 'primeng/calendar';
     CheckboxModule,
     CalendarModule,
     ReactiveFormsModule,
+    ProgressBarModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -104,9 +118,15 @@ import { CalendarModule } from 'primeng/calendar';
     DateFilterComponent,
     DropdownFilterComponent,
     NumericFilterComponent
+    BooleanPipe,
+    MaintenanceProgressbarComponent,
+    NotificationsListComponent,
+    NotificationsListHeaderComponent,
+    NotificationsListItemComponent,
   ],
   providers: [
-    MessageService
+    MessageService,
+    BooleanPipe
   ]
 })
 export class IFCommon {

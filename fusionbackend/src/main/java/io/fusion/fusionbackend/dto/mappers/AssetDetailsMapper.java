@@ -55,7 +55,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
-                .externalId(entity.getExternalId())
+                .externalName(entity.getExternalName())
                 .controlSystemType(entity.getControlSystemType())
                 .hasGateway(entity.getHasGateway())
                 .gatewayConnectivity(entity.getGatewayConnectivity())
@@ -64,10 +64,12 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .serialNumber(entity.getSerialNumber())
                 .constructionDate(entity.getConstructionDate())
                 .protectionClass(entity.getProtectionClass())
-                .handbookKey(entity.getHandbookKey())
-                .videoKey(entity.getVideoKey())
+                .handbookUrl(entity.getHandbookUrl())
+                .videoUrl(entity.getVideoUrl())
                 .installationDate(entity.getInstallationDate())
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .connectionString(entity.getConnectionString())
+                .protocol(entity.getAssetSeries().getConnectivitySettings().getConnectivityProtocol().getName())
                 .build();
 
         baseAssetMapper.copyToDto(entity, dto);
@@ -107,7 +109,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
         if (entity.getAssetSeries() != null) {
             AssetSeries assetSeries = entity.getAssetSeries();
             Company assetSeriesCompany = assetSeries.getCompany();
-            manufacturer = assetSeriesCompany.getDescription();
+            manufacturer = assetSeriesCompany.getName();
             assetSeriesName = assetSeries.getName();
             assetSeriesId = assetSeries.getId();
             if (assetSeries.getAssetTypeTemplate() != null) {

@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { FieldDetails } from './field-details.model';
-import { FieldDetailsStore } from './field-details-store.service';
+import { FieldDetailsStore } from './field-details.store';
 
 @Injectable({
   providedIn: 'root'

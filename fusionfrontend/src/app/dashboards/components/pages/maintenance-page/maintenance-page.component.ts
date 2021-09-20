@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -24,10 +24,6 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { OispService } from '../../../../services/oisp.service';
-import { PointWithId } from '../../../../services/oisp.model';
-import { FieldDetails } from '../../../../store/field-details/field-details.model';
-import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-maintenance-page',
@@ -37,7 +33,6 @@ import { mergeMap } from 'rxjs/operators';
 export class MaintenancePageComponent implements OnInit {
 
   companyId: ID;
-  factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   factoryAssetDetailsWithFieldsAndValues$: Observable<FactoryAssetDetailsWithFields[]>;
   assetTypes$: Observable<AssetType[]>;
   factorySites$: Observable<FactorySite[]>;
@@ -51,7 +46,6 @@ export class MaintenancePageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
-    private oispService: OispService,
   ) {
   }
 
@@ -65,41 +59,7 @@ export class MaintenancePageComponent implements OnInit {
     });
     this.assetTypes$ = this.assetTypesResolver.resolve();
 
-    this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
-
-    this.factoryAssetDetailsWithFieldsAndValues$ = this.factoryAssetDetailsWithFields$.pipe(
-      mergeMap((assets) =>
-        combineLatest(
-          assets.map((asset) => {
-            return this.updateAssetWithFieldValue(asset);
-          })
-        )
-      ),
-    );
-  }
-
-  private updateAssetWithFieldValue(asset: FactoryAssetDetailsWithFields) {
-    return new Observable<any>((observer) => {
-      this.oispService.getLastValueOfAllFields(asset, asset.fields, 600).subscribe((lastValues) => {
-          asset.fields = this.getAssetFieldValues(asset, lastValues);
-          observer.next(asset);
-        }, _ => {
-          observer.next(null);
-        }
-      );
-    });
-  }
-
-  private getAssetFieldValues(asset: FactoryAssetDetailsWithFields, lastValues: PointWithId[]): FieldDetails[] {
-    return asset.fields.map((field) => {
-        const fieldCopy = Object.assign({ }, field);
-        const point = lastValues?.find(latestPoint => latestPoint.id === field.externalId);
-        if (point) {
-          fieldCopy.value = point.value;
-        }
-        return fieldCopy;
-      }
-    );
+    this.factoryAssetDetailsWithFieldsAndValues$ = this.factoryResolver.assetsWithDetailsAndFieldsAndValues$;
   }
 
 }

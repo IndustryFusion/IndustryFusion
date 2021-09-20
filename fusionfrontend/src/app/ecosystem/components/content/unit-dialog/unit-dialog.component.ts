@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { DialogType } from '../../../../common/models/dialog-type.model';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-unit-dialog',
@@ -52,12 +53,11 @@ export class UnitDialogComponent implements OnInit {
   }
 
   createDialogFormGroup(unit: Unit): FormGroup {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     const unitGroup = this.formBuilder.group({
       id: [],
-      name: [null, requiredTextValidator],
-      label: [null, Validators.maxLength(255)],
-      symbol: [null, Validators.maxLength(255)],
+      name: [null, WizardHelper.requiredTextValidator],
+      label: [null, WizardHelper.maxTextLengthValidator],
+      symbol: [null, WizardHelper.maxTextLengthValidator],
       quantityTypeId: [null, Validators.required],
     });
 

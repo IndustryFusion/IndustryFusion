@@ -16,11 +16,11 @@
 @import 'base/typography';
 @import "abstract/variables";
 
-.table-wrapper{
+.table-wrapper {
   min-height: 500px;
 }
 
-.label{
+.label {
   border: 0;
   color: $basic-grey;
 }
@@ -35,19 +35,17 @@
   white-space: nowrap;
   overflow: hidden;
 
-  span{
+  span {
     font-weight: normal;
     color: $basic-grey;
   }
 }
 
 .card {
-  width: 400px;
   border-radius: 10px;
   border: 0;
   box-shadow: none;
   margin-bottom: 25px;
-
 }
 
 .card-block, .card-header {
@@ -59,7 +57,7 @@
   padding: 0 32px 32px 32px;
 }
 
-.card-img{
+.card-img {
   img {
     max-height: 200px;
     margin: 0 auto;

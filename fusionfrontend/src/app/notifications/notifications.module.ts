@@ -32,17 +32,18 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     NotificationsPageComponent,
     NotificationsListComponent,
   ],
-    imports: [
-        IFCommon,
-        NotificationsRoutingModule,
-        TableModule,
-        ClrIconModule,
-        ClrAlertModule,
-        OverlayPanelModule
-    ],
+  imports: [
+    IFCommon,
+    NotificationsRoutingModule,
+    TableModule,
+    ClrIconModule,
+    ClrAlertModule,
+    OverlayPanelModule
+  ],
   exports: [
     NotificationsPageTitleComponent,
     NotificationsSubHeaderComponent,
   ]
 })
-export class NotificationsModule { }
+export class NotificationsModule {
+}

@@ -15,16 +15,14 @@
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, timer } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Status } from 'src/app/factory/models/status.model';
-import { PointWithId } from 'src/app/services/oisp.model';
 import { OispService } from 'src/app/services/oisp.service';
 import { StatusService } from 'src/app/services/status.service';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-asset-card',
@@ -38,90 +36,19 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   @Input()
   asset: AssetWithFields;
 
-  latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
-  progress$: Observable<number>;
-  progressColor$: Observable<string>;
-
-  showStatusCircle = true;
 
   constructor(
     private companyQuery: CompanyQuery,
-    private factorySiteQuery: FactorySiteQuery,
     private oispService: OispService,
     private statusService: StatusService,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   ngOnInit() {
-    this.latestPoints$ = timer(0, 2000).pipe(
-      switchMap(() => {
-        return this.oispService.getLastValueOfAllFields(this.asset, this.asset.fields, 5);
-      })
-    );
-
-    this.mergedFields$ = this.latestPoints$.pipe(
-      map(latestPoints => {
-        return this.asset.fields.map(field => {
-          const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id === field.externalId);
-
-          if (point) {
-            fieldCopy.value = point.value;
-          }
-          return fieldCopy;
-        });
-      })
-    );
-
-    this.status$ = this.mergedFields$.pipe(
-      map((fields) => {
-        return this.statusService.determineStatus(fields, this.asset);
-      })
-    );
-
-    /* TODO: Progress bar should be integrated later
-    this.progress$ = combineLatest([this.fields$, this.mergedFields$])
-      .pipe(
-        map(([fields, mergedFields]) => {
-          const filteredField = fields.filter(field => field.description === 'Hours till maintenance')[0];
-          const filteredMergedField = mergedFields.filter(field => field.description === 'Hours till maintenance')[0];
-          // no field hours till maintenance
-          if (!filteredField) {
-            return -1;
-          }
-          const progress = parseInt(filteredMergedField.value, 10);
-          // no value retrieved for current time -> get last emitted value from oisp
-          if (isNaN(progress)) {
-            this.oispService.getLastValuesOfSingleField(this.asset, filteredField, 100000).pipe(
-              map(points => {
-                const val = points[points.length - 1].value;
-                const lastProgress = parseInt(val, 10);
-                if (isNaN(lastProgress)) {
-                  return -2;
-                } else {
-                  return lastProgress;
-                }
-              })
-            );
-          } else {
-            return progress;
-          }
-        })
-      );
-
-    this.progressColor$ = this.progress$.pipe(
-      map(progress => {
-        const ratio = progress / this.maxProgress;
-        if (ratio < 0.33) {
-          return '#C42326';
-        } else if (ratio < 0.66) {
-          return '#2CA9CE';
-        } else {
-          return 'rgba(44,206,79,0.73)';
-        }
-      })
-    );*/
+    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
+    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.mergedFields$, this.asset);
   }
 
   ngOnDestroy() {
@@ -142,11 +69,9 @@ export class AssetCardComponent implements OnInit, OnDestroy {
 
   goToDetails() {
     const companyId = this.companyQuery.getActiveId();
-    const factorySiteId = this.factorySiteQuery.getActiveId();
-    const roomId = this.asset.roomId;
     const assetId = this.asset.id;
     this.router.navigateByUrl(
-      `factorymanager/companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/${assetId}/asset-details`
+      `factorymanager/companies/${companyId}/assets/${assetId}`
     );
   }
 

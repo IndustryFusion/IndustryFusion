@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 public class FieldDetailsDto {
     private Long id;
     private Long assetId;
-    private String externalId;
+    private String externalName;
     private FieldType fieldType;
     private Boolean mandatory;
     private String name;

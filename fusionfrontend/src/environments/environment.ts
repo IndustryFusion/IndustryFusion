@@ -24,11 +24,13 @@ export const environment = {
   production: false,
   apiUrlPrefix: 'api',
   oispApiUrlPrefix: 'https://PUT-YOUR-OISP-URL-HERE.com/v1/api',
-  // tslint:disable-next-line: max-line-length
+  kairosApiUrlPrefix: 'https://PUT-YOUR-KAIROS-URL-HERE.com/api/v1',
+  alertsUpdateIntervalMs: 10000,
+  dataUpdateIntervalMs: 10000,
+  assetStatusSampleRateMs: 5000,
   oispAuthToken: 'Not required anymore',
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
-  alertFetchingIntervalSec: 10,
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',
   keycloakConfig: {
     url: 'http://localhost:4200/auth',

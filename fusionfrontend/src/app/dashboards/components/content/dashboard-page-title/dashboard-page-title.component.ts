@@ -41,8 +41,8 @@ export class DashboardPageTitleComponent implements OnInit {
     if (path.match('^\/dashboards\/companies\/[0-9]\/maintenance+$')) {
       this.dashboardSubTitle = 'Maintenance';
     }
-    else if (path.match('^\/dashboards\/companies\/[0-9]\/equipment+$')) {
-      this.dashboardSubTitle = 'Equipment';
+    else if (path.match('^\/dashboards\/companies\/[0-9]\/equipment-efficiency+$')) {
+      this.dashboardSubTitle = 'Equipment Efficiency';
  }
   }
 

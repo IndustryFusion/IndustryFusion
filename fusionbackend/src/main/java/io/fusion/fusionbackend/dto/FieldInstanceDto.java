@@ -30,7 +30,7 @@ public class FieldInstanceDto {
     private FieldSourceDto fieldSource;
     private String name;
     private String description;
-    private String externalId;
+    private String externalName;
     private String sourceSensorLabel;
     private String value;
     private Long absoluteThresholdId;

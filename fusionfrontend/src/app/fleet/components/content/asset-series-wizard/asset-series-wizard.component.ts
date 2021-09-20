@@ -32,6 +32,7 @@ import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
+import { WizardHelper } from '../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-series-wizard',
@@ -101,17 +102,15 @@ export class AssetSeriesWizardComponent implements OnInit {
   }
 
   private createAssetSeriesFormGroup(): void {
-    const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
-
     this.assetSeriesForm = this.formBuilder.group({
       id: [],
-      name: ['', requiredTextValidator],
-      description: ['', Validators.maxLength(255)],
+      name: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
       ceCertified: [null, Validators.required],
-      protectionClass: [null, Validators.maxLength(255)],
-      handbookKey: [null, Validators.maxLength(255)],
-      videoKey: [null, Validators.maxLength(255)],
-      imageKey: [null, Validators.maxLength(255)],
+      protectionClass: [null, WizardHelper.maxTextLengthValidator],
+      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
+      videoUrl: [null, WizardHelper.maxTextLengthValidator],
+      imageKey: [null, WizardHelper.maxTextLengthValidator],
       assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
       companyId: [null, Validators.required],
     });

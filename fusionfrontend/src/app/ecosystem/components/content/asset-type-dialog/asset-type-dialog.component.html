@@ -26,7 +26,7 @@ under the License.
     <div class="input-div">
       <label class="if-label">Description</label>
       <textarea pInputTextarea class="asset-type-dialog-inputs" name="description" formControlName="description"></textarea>
-      <label class="textarea-character-count if-label">{{ assetTypeForm.get('description').value?.length }}/255</label>
+      <label class="textarea-character-count if-label">{{ assetTypeForm.get('description').value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
     </div>
 
     <div class="edit-asset-type-footer">

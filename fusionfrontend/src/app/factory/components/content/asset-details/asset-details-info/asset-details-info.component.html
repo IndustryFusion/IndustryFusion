@@ -1,0 +1,36 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<section class="asset">
+  <img class="asset-img" src="assets/img/{{(asset)?.imageKey}}"/>
+  <div class="asset-info">
+    <h3>{{(asset)?.name}}</h3>
+    <p>{{(asset)?.assetTypeName}}</p>
+    <p>{{(asset)?.manufacturer}}</p>
+  </div>
+  <div class="flex-box"></div>
+  <div class="asset-info asset-status">
+    <div class="asset-status-wrapper">
+      <div class="flex-box"></div>
+      <p>
+        <app-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-status>
+      </p>
+    </div>
+    <p>{{(asset)?.factorySiteName}} ({{(asset)?.roomName}})</p>
+  </div>
+  <div class="asset-info asset-menu">
+    <app-item-options-menu [showInline]="false" [type]="dropdownMenuOptions"></app-item-options-menu>
+  </div>
+</section>

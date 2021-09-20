@@ -48,7 +48,7 @@ public class AssetDto extends BaseAssetDto {
     @Builder.Default
     private Set<Long> subsystemIds = new HashSet<>();
 
-    private String externalId;
+    private String externalName;
     private String controlSystemType;
     private Boolean hasGateway;
     private String gatewayConnectivity;
@@ -57,8 +57,8 @@ public class AssetDto extends BaseAssetDto {
     protected String serialNumber;
     protected OffsetDateTime constructionDate;
     protected String protectionClass;
-    protected String handbookKey;
-    protected String videoKey;
+    protected String handbookUrl;
+    protected String videoUrl;
     protected OffsetDateTime installationDate;
     protected String connectionString;
 

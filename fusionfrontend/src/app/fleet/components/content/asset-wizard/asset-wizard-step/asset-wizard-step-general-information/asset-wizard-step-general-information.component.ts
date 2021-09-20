@@ -23,6 +23,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Company } from '../../../../../../store/company/company.model';
 import { AssetType } from '../../../../../../store/asset-type/asset-type.model';
+import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',
@@ -42,6 +43,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
   public assetSeries$: Observable<AssetSeries[]>;
 
+  public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
+
   constructor(private assetSeriesQuery: AssetSeriesQuery,
               private wizardRef: DynamicDialogRef) { }
 
@@ -59,8 +62,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
   isReadyForNextStep(): boolean {
     return this.assetForm.get('assetSeriesId').value != null
-      && this.assetForm.get('name').value
-      && this.assetForm.get('description').value;
+      && this.assetForm.get('name').value != null
+      && this.assetForm.get('description').value != null;
   }
 
   onCancel(): void {

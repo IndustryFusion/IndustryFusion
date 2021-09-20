@@ -27,7 +27,7 @@ export class Asset extends BaseEntity {
   subsystemIds: Array<ID>;
   roomId: ID;
   room: Room;
-  externalId: string;
+  externalName: string;
   controlSystemType: string;
   hasGateway: boolean;
   gatewayConnectivity: string;
@@ -38,8 +38,8 @@ export class Asset extends BaseEntity {
   serialNumber: string;
   constructionDate: Date;
   protectionClass: string;
-  handbookKey: string;
-  videoKey: string;
+  handbookUrl: string;
+  videoUrl: string;
   installationDate: Date;
   imageKey: string;
   connectionString: string;
