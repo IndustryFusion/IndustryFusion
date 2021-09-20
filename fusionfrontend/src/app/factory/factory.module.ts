@@ -19,7 +19,6 @@ import { ClarityModule } from '@clr/angular';
 import { ChartsModule } from 'ng2-charts';
 
 import { FactoryRoutingModule } from './factory-routing.module';
-import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
 import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
@@ -70,7 +69,6 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
 
 @NgModule({
   declarations: [
-    CompaniesPageComponent,
     CompanyPageComponent,
     FactorySitePageComponent,
     AssetsGridPageComponent,

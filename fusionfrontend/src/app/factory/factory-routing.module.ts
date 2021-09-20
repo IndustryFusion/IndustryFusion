@@ -15,7 +15,6 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
 import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
@@ -34,15 +33,6 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
 import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
 
 const routes: Routes = [
-  {
-    path: 'factorymanager/companies',
-    component: CompaniesPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.COMPANY_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
   {
     path: 'factorymanager/companies/:companyId',
     component: CompanyPageComponent,
