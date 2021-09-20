@@ -12,13 +12,5 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-  <app-rooms-list [factorySites]="(factorySites$ | async)"
-                  [rooms]="(rooms$ | async)"
-                  [factorySiteSelected]="factorySiteSelected"
-                  [factoryAssets]="(factoryAssetsDetails$ | async)"
-                  (createRoomEvent)="createRoom($event)"
-                  (editRoomEvent)="editRoom($event)"
-                  (deleteRoomEvent)="deleteRoom($event)"
-                  (assignAssetToRoomEvent)="assignAssetsToRoom($event)">
-  </app-rooms-list>
 
+<router-outlet></router-outlet>

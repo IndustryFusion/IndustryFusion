@@ -61,7 +61,10 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isRoomsActive() {
-    return this.route && this.route.match('^\/factorymanager\/companies\/[0-9]+/rooms$');
+    return this.route && (
+      this.route.match('^\/factorymanager\/companies\/[0-9]+/rooms$') ||
+      this.route.match('^/factorymanager/companies/[0-9]+/rooms/[0-9]+$')
+    );
   }
 
   isAssetsActive = () => {
@@ -70,7 +73,7 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
       this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+/asset-cards/[0-9,]+$') ||
       this.route.match('^/factorymanager/companies/[0-9]+/assets$') ||
 
-      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+') ||
+
       this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/assets$\'') ||
       this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
       this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/asset-cards/[0-9,]+$') ||

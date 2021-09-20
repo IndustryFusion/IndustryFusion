@@ -18,7 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FactorySitesPageComponent } from './components/pages/factory-sites-page/factory-sites-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
-import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
+import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryManagerPageType } from './factory-routing.model';
 import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
@@ -33,6 +33,8 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
 import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
 import { FactorySiteQuery } from '../store/factory-site/factory-site.query';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
+import { RoomQuery } from '../store/room/room.query';
+import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 
 const routes: Routes = [
   {
@@ -50,7 +52,7 @@ const routes: Routes = [
         data: {
           pageTypes: [FactoryManagerPageType.COMPANY_DETAIL, FactoryManagerPageType.FACTORY_SITE_LIST],
           roles: [Role.FACTORY_MANAGER],
-          breadcrumb: 'My Factory Sites'
+          breadcrumb: 'Factory Sites'
         },
         children: [
           {
@@ -77,13 +79,33 @@ const routes: Routes = [
 
   {
     path: 'factorymanager/companies/:companyId/rooms',
-    component: FactorySiteRoomsPageComponent,
+    component: RoomsPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],
       roles: [Role.FACTORY_MANAGER],
       breadcrumb: 'Rooms'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: RoomsListComponent,
+        pathMatch: 'full',
+        data: {
+          breadcrumb: null
+        }
+      },
+      {
+        path: ':roomId',
+        component: AssetsListPageComponent,
+        canActivate: [MainAuthGuardGuard],
+        data: {
+          pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],
+          roles: [Role.FACTORY_MANAGER],
+          breadcrumb: RoomQuery
+        }
+      },
+    ]
   },
 
   {
@@ -97,17 +119,8 @@ const routes: Routes = [
   },
 
   {
-    path: 'factorymanager/companies/:companyId/assets/rooms/:roomId',
-    component: AssetsListPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
-  },
-  {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms',
-    component: FactorySiteRoomsPageComponent,
+    component: RoomsPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ROOM_LIST],

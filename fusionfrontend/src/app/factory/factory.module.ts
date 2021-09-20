@@ -30,7 +30,7 @@ import { AssetDetailsInfoComponent } from './components/content/asset-details/as
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
-import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
+import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
@@ -88,7 +88,7 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
     MaintenanceBarComponent,
     AssetChartsComponent,
     RoomDialogComponent,
-    FactorySiteRoomsPageComponent,
+    RoomsPageComponent,
     AssetTablesComponent,
     StatusComponent,
     FactorySitesListHeaderComponent,

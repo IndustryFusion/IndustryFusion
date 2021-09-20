@@ -14,7 +14,7 @@ under the License.
 -->
 
 
-<app-company-info *ngIf="factorySiteId" [assets]="factoryAssets" [factorySite]="factorySite$ | async" [numUsers]="6"
+<app-company-info *ngIf="factorySiteId" [assets]="(factoryAssetsDetails$ | async)" [factorySite]="factorySite$ | async" [numUsers]="6"
                        [roomCount]="rooms.length"></app-company-info>
 
 <div class="wrapper">

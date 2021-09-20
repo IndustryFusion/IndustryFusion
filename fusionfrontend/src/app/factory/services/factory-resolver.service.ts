@@ -143,6 +143,7 @@ export class FactoryResolver {
       this.assets$ = this.factoryComposedQuery.selectAssetsOfFactorySite(factorySiteId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId);
     }
+
     const roomId = activatedRoute.snapshot.paramMap.get('roomId');
     this.roomService.setActive(roomId);
     if (roomId != null) {

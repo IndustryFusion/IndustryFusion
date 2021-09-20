@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -21,7 +21,6 @@ import { Asset } from 'src/app/store/asset/asset.model';
 import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { Room } from 'src/app/store/room/room.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { Location } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
@@ -30,6 +29,10 @@ import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset
 import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
 import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
+import { RoomService } from '../../../../store/room/room.service';
+import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
+import { AssetService } from '../../../../store/asset/asset.service';
+import { RoomQuery } from '../../../../store/room/room.query';
 
 @Component({
   selector: 'app-rooms-list',
@@ -39,26 +42,14 @@ import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.qu
 })
 export class RoomsListComponent implements OnInit, OnChanges {
 
-  @Input()
+  companyId: ID;
+  factorySites$: Observable<FactorySite[]>;
   factorySites: FactorySite[];
-  @Input()
-  rooms: Room[];
-  @Input()
   factorySiteSelected: boolean;
-  @Input()
+  factoryAssetsDetails$: Observable<FactoryAssetDetails[]>;
   factoryAssets: FactoryAssetDetails[];
 
-  @Output()
-  createRoomEvent = new EventEmitter<Room>();
-  @Output()
-  editRoomEvent = new EventEmitter<Room>();
-  @Output()
-  deleteRoomEvent = new EventEmitter<Room>();
-  @Output()
-  assignAssetToRoomEvent = new EventEmitter<[ID[], Asset[]]>();
-
   isLoading$: Observable<boolean>;
-
   factorySiteId: ID;
   factorySite$: Observable<FactorySite>;
 
@@ -66,6 +57,8 @@ export class RoomsListComponent implements OnInit, OnChanges {
   roomForm: FormGroup;
   menuActions: MenuItem[];
 
+  rooms$: Observable<Room[]>;
+  rooms: Room[];
   activeListItem: Room;
   factorySitesAndRoomsMap = new Map();
   oldRoomIds: ID[] = [];
@@ -74,13 +67,16 @@ export class RoomsListComponent implements OnInit, OnChanges {
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
 
   constructor(private companyQuery: CompanyQuery,
-              private routingLocation: Location,
+              private roomService: RoomService,
+              private assetDetailsService: FactoryAssetDetailsService,
               private formBuilder: FormBuilder,
               public dialogService: DialogService,
               public factoryResolver: FactoryResolver,
               private factorySiteQuery: FactorySiteQuery,
-              public route: ActivatedRoute) {
-    this.factoryResolver.resolve(route);
+              activatedRoute: ActivatedRoute,
+              private assetService: AssetService,
+              private roomQuery: RoomQuery) {
+    this.factoryResolver.resolve(activatedRoute);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     this.factorySite$ = this.factoryResolver.factorySite$;
   }
@@ -89,6 +85,11 @@ export class RoomsListComponent implements OnInit, OnChanges {
     this.isLoading$ = this.companyQuery.selectLoading();
 
     this.createRoomForm(this.formBuilder);
+    this.initMenuActions();
+    this.initObservers();
+  }
+
+  private initMenuActions() {
     this.menuActions = [
       {
         label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => {
@@ -106,6 +107,25 @@ export class RoomsListComponent implements OnInit, OnChanges {
         }
       },
     ];
+  }
+
+  private initObservers() {
+    this.factorySites$ = this.factoryResolver.factorySites$;
+    this.factorySites$.subscribe(factorySites => factorySites);
+    this.factoryAssetsDetails$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.factoryAssetsDetails$.subscribe(assets => this.factoryAssets = assets);
+
+    this.companyId = this.companyQuery.getActiveId();
+    this.factorySiteId = this.factorySiteQuery.getActiveId();
+    if (this.factorySiteId) {
+      this.factorySiteSelected = true;
+      this.rooms$ = this.factoryResolver.roomsOfFactorySite$;
+    } else {
+      this.factorySiteSelected = false;
+      this.rooms$ = this.factoryResolver.rooms$;
+    }
+
+    this.rooms$.subscribe(rooms => this.rooms = rooms);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -138,7 +158,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
       if (room) {
         this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id.toString()
           === room.factorySiteId.toString()).name);
-        this.createRoomEvent.emit(room);
+        this.createRoom(room);
       }
     });
   }
@@ -161,11 +181,12 @@ export class RoomsListComponent implements OnInit, OnChanges {
     ref.onClose.subscribe((room: Room) => {
       if (room) {
         this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id === room.factorySiteId).name);
-        this.editRoomEvent.emit(room);
+        this.editRoom(room);
       }
     });
   }
 
+  // TODO: put method in dialog
   createRoomForm(formBuilder: FormBuilder, room?: Room) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.roomForm = formBuilder.group({
@@ -182,7 +203,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
   }
 
   onDeleteClick() {
-    this.deleteRoomEvent.emit(this.activeListItem);
+    this.deleteRoom(this.activeListItem);
   }
 
   showAssignAssetToRoomModal() {
@@ -206,7 +227,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
         assets.forEach(asset => {
           this.oldRoomIds.push(asset.roomId);
         });
-        this.assignAssetToRoomEvent.emit([this.oldRoomIds, assets]);
+        this.assignAssetsToRoom(this.oldRoomIds, assets);
         this.oldRoomIds = [];
       }
     });
@@ -216,7 +237,44 @@ export class RoomsListComponent implements OnInit, OnChanges {
     return [roomId];
   }
 
-  goBack() {
-    this.routingLocation.back();
+  private deleteRoom(room: Room) {
+    const factorySiteId = this.factorySiteQuery.getActiveId();
+    this.roomService.deleteRoom(this.companyId, factorySiteId, room.id).subscribe();
+  }
+
+  private editRoom(room: Room) {
+    if (room) {
+      this.roomService.updateRoom(this.companyId, room).subscribe();
+      this.assetDetailsService.updateRoomNames(room);
+    }
+  }
+
+  private createRoom(room: Room) {
+    if (room) {
+      if (room.id) {
+        this.roomService.updateRoom(this.companyId, room).subscribe();
+      } else {
+        this.roomService.createRoom(this.companyId, room).subscribe();
+      }
+    }
+  }
+
+  private assignAssetsToRoom(oldRoomIds: ID[], assets: Asset[]) {
+    const room = this.roomQuery.getEntity(oldRoomIds[0]);
+    const oldFactoryIdSet: Set<ID> = new Set<ID>();
+    oldRoomIds.forEach(id => {
+      oldFactoryIdSet.add(this.roomQuery.getEntity(id).factorySiteId);
+    });
+    this.assetService.assignAssetsToRoom(this.companyId, room.factorySiteId, oldRoomIds[0], assets)
+      .subscribe(
+        _ => {
+          oldFactoryIdSet.forEach(factoryId => {
+            this.roomService.getRoomsOfFactorySite(this.companyId, factoryId, true).subscribe();
+          });
+        },
+        error => {
+          console.error(error);
+        }
+      );
   }
 }
