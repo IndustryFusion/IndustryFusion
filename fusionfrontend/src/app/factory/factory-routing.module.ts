@@ -35,6 +35,7 @@ import { FactorySiteQuery } from '../store/factory-site/factory-site.query';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 import { RoomQuery } from '../store/room/room.query';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
+import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 
 const routes: Routes = [
   {
@@ -110,13 +111,92 @@ const routes: Routes = [
 
   {
     path: 'factorymanager/companies/:companyId/assets',
-    component: AssetsListPageComponent,
     canActivate: [MainAuthGuardGuard],
     data: {
       pageTypes: [FactoryManagerPageType.ASSET_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    }
+      roles: [Role.FACTORY_MANAGER],
+      breadcrumb: 'Assets',
+    },
+    children: [
+      {
+        path: '',
+        component: AssetsListPageComponent,
+        pathMatch: 'full',
+        data: {
+          breadcrumb: null
+        }
+      },
+      {
+        path: ':assetId',
+        canActivate: [MainAuthGuardGuard],
+        resolve: { assets: FactoryAssetDetailsResolver, OispDeviceResolver },
+        data: {
+          pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
+          roles: [Role.FACTORY_MANAGER],
+          breadcrumb: FactoryAssetDetailsQuery
+        },
+        children: [
+          {
+            path: '',
+            redirectTo: 'performance',
+            pathMatch: 'full',
+          },
+          {
+            path: 'performance',
+            component: AssetPerformanceComponent,
+            data: {
+              breadcrumb: 'Performance',
+            },
+          },
+          {
+            path: 'applets/active',
+            component: AssetAppletsComponent,
+            resolve: { rules: OispRuleFilteredByStatusResolver },
+            data: {
+              breadcrumb: 'Active Applets',
+            },
+          },
+          {
+            path: 'applets/archiv',
+            component: AssetAppletsComponent,
+            resolve: { rules: OispRuleFilteredByStatusResolver },
+            data: {
+              breadcrumb: 'Archived Applets',
+            },
+          },
+          {
+            path: 'digital-nameplate',
+            component: AssetDigitalNameplateComponent,
+            data: {
+              breadcrumb: 'Digital Nameplate',
+            },
+          },
+          {
+            path: 'subsystems',
+            component: AssetSubsystemsComponent,
+            data: {
+              breadcrumb: 'Subsystems',
+            },
+          },
+          {
+            path: 'notifications',
+            component: AssetNotificationsComponent,
+            data: {
+              breadcrumb: 'Notifications',
+            },
+          },
+          {
+            path: 'notifications/:state',
+            component: AssetNotificationsComponent,
+            data: {
+              breadcrumb: 'Notifications',
+            },
+          },
+        ]
+      },
+    ]
   },
+
   {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/rooms/:roomId/asset-cards/:assetIdList',
     component: AssetsGridPageComponent,
@@ -126,7 +206,7 @@ const routes: Routes = [
       roles: [Role.FACTORY_MANAGER]
     }
   },
-  {
+/*  {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/assets',
     component: AssetsGridPageComponent,
     canActivate: [MainAuthGuardGuard],
@@ -134,7 +214,7 @@ const routes: Routes = [
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
-  },
+  },*/
   {
     path: 'factorymanager/companies/:companyId/factorysites/:factorySiteId/asset-cards/:assetIdList',
     component: AssetsGridPageComponent,
@@ -161,52 +241,6 @@ const routes: Routes = [
       pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
       roles: [Role.FACTORY_MANAGER]
     }
-  },
-  {
-    path: 'factorymanager/companies/:companyId/assets/:assetId',
-    canActivate: [MainAuthGuardGuard],
-    resolve: { assets: FactoryAssetDetailsResolver, OispDeviceResolver },
-    data: {
-      pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_LIST],
-      roles: [Role.FACTORY_MANAGER]
-    },
-    children: [
-      {
-        path: '',
-        redirectTo: 'performance',
-        pathMatch: 'full',
-      },
-      {
-        path: 'performance',
-        component: AssetPerformanceComponent,
-      },
-      {
-        path: 'applets/active',
-        component: AssetAppletsComponent,
-        resolve: { rules: OispRuleFilteredByStatusResolver }
-      },
-      {
-        path: 'applets/archiv',
-        component: AssetAppletsComponent,
-        resolve: { rules: OispRuleFilteredByStatusResolver }
-      },
-      {
-        path: 'digital-nameplate',
-        component: AssetDigitalNameplateComponent,
-      },
-      {
-        path: 'subsystems',
-        component: AssetSubsystemsComponent,
-      },
-      {
-        path: 'notifications',
-        component: AssetNotificationsComponent,
-      },
-      {
-        path: 'notifications/:state',
-        component: AssetNotificationsComponent,
-      },
-    ]
   },
   {
     path: 'factorymanager/companies/:companyId/assets/asset-cards/:assetIdList',
