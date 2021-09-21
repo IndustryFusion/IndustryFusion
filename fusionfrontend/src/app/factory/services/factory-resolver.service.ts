@@ -36,10 +36,8 @@ import { RoomService } from 'src/app/store/room/room.service';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../../store/factory-asset-details/factory-asset-details.query';
 import { FactoryAssetDetailsService } from '../../store/factory-asset-details/factory-asset-details.service';
-import { FactoryManagerPageType, RouteData } from '../factory-routing.model';
 import { AssetSeriesDetails } from '../../store/asset-series-details/asset-series-details.model';
 import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details.query';
-import { Country } from '../../store/country/country.model';
 import { CountryResolver } from '../../resolvers/country.resolver';
 import { OispDeviceResolver } from '../../resolvers/oisp-device-resolver';
 import { ID } from '@datorama/akita';
@@ -66,7 +64,6 @@ export class FactoryResolver {
   public fields$: Observable<FieldDetails[]>;
   public factorySubTitle$: Subject<string>;
   public companies$: Observable<Company[]>;
-  public countries$: Observable<Country[]>;
 
   constructor(
     private companyService: CompanyService,
@@ -90,13 +87,20 @@ export class FactoryResolver {
     this.factorySite$ = this.factorySiteQuery.selectActive();
     this.room$ = this.roomQuery.selectActive();
     this.asset$ = this.assetQuery.selectActive();
-    this.factorySubTitle$ = new BehaviorSubject('Apps');
+    this.factorySubTitle$ = new BehaviorSubject('Launchpad');
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
     this.countryResolver.resolve().subscribe();
     this.oispDeviceResolver.resolve().subscribe();
 
+    const companyId = this.resolveCompany(activatedRoute);
+    const factorySiteId = this.resolveFactorySite(activatedRoute, companyId);
+    this.resolveRoom(activatedRoute, factorySiteId);
+    this.resolveAsset(activatedRoute, companyId);
+  }
+
+  private resolveCompany(activatedRoute: ActivatedRoute): ID {
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
     let companyId = activatedRoute.snapshot.paramMap.get('companyId') as ID;
@@ -133,6 +137,10 @@ export class FactoryResolver {
       );
     }
 
+    return companyId;
+  }
+
+  private resolveFactorySite(activatedRoute: ActivatedRoute, companyId: ID): ID {
     const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
@@ -143,7 +151,10 @@ export class FactoryResolver {
       this.assets$ = this.factoryComposedQuery.selectAssetsOfFactorySite(factorySiteId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId);
     }
+    return factorySiteId;
+  }
 
+  private resolveRoom(activatedRoute: ActivatedRoute, factorySiteId: ID) {
     const roomId = activatedRoute.snapshot.paramMap.get('roomId');
     this.roomService.setActive(roomId);
     if (roomId != null) {
@@ -152,6 +163,9 @@ export class FactoryResolver {
       this.assets$ = this.assetQuery.selectAssetsOfRoom(roomId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsByRoomId(roomId);
     }
+  }
+
+  private resolveAsset(activatedRoute: ActivatedRoute, companyId: ID) {
     const assetId = activatedRoute.snapshot.paramMap.get('assetId');
     this.assetService.setActive(assetId);
     this.assetDetailsService.setActive(assetId);
@@ -181,39 +195,6 @@ export class FactoryResolver {
             assets.map(asset => this.fieldService.getFieldsOfAsset(companyId, asset.id))))
       ).subscribe();
       this.assetsWithFields$ = this.factoryComposedQuery.selectFieldsOfSelectedAssets();
-    }
-
-    // Subtitles
-    const pageTypes: FactoryManagerPageType[] = (activatedRoute.snapshot.data as RouteData).pageTypes || [];
-    if (pageTypes.includes(FactoryManagerPageType.COMPANY_DETAIL)) {
-      this.factorySubTitle$.next('My Factory Sites');
-    } else if (pageTypes.includes(FactoryManagerPageType.ASSET_DETAIL)) {
-      this.assetQuery
-        .waitForActive()
-        .subscribe(asset => this.factorySubTitle$.next('Assets > ' + asset.name));
-    } else if (
-      pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL)
-      && pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)
-      && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.roomQuery
-        .waitForActive()
-        .subscribe(room => this.factorySubTitle$.next('Rooms > ' + room.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL) && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.factorySiteQuery
-        .waitForActive()
-        .subscribe(factorySite => this.factorySubTitle$.next('Assets > ' + factorySite.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL) && pageTypes.includes(FactoryManagerPageType.ROOM_LIST)) {
-      this.factorySiteQuery
-        .waitForActive()
-        .subscribe(factorySite => this.factorySubTitle$.next('Rooms > ' + factorySite.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
-      this.roomQuery
-        .waitForActive()
-        .subscribe(room => this.factorySubTitle$.next('Rooms > ' + room.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.factorySubTitle$.next('My Assets');
-    } else {
-      this.factorySubTitle$.next('Apps');
     }
   }
 }
