@@ -233,7 +233,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
   }
 
   getRoomAssetLink(roomId: ID) {
-    return [roomId];
+    return this.factorySiteSelected ? ['../..', 'rooms', roomId] : [roomId];
   }
 
   private deleteRoom(room: Room) {
