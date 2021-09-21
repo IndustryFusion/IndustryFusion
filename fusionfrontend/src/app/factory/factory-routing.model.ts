@@ -5,6 +5,7 @@ export enum FactoryManagerPageType {
   FACTORY_SITE_DETAIL,
   ASSET_LIST,
   ASSET_DETAIL,
+  ASSET_CARD,
   ROOM_LIST,
   ROOM_DETAIL,
 }
