@@ -29,6 +29,8 @@ import { AssetDigitalNameplateComponent } from './components/pages/asset-details
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
+import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 
 const routes: Routes = [
   {
@@ -176,12 +178,24 @@ const routes: Routes = [
         component: AssetPerformanceComponent,
       },
       {
+        path: 'applets',
+        component: AssetAppletsComponent,
+      },
+      {
         path: 'digital-nameplate',
         component: AssetDigitalNameplateComponent,
       },
       {
         path: 'subsystems',
         component: AssetSubsystemsComponent,
+      },
+      {
+        path: 'notifications',
+        component: AssetNotificationsComponent,
+      },
+      {
+        path: 'notifications/:state',
+        component: AssetNotificationsComponent,
       },
     ]
   },

@@ -15,7 +15,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FusionAppletsOverviewComponent } from './components/fusion-applets-overview/fusion-applets-overview.component';
+import { FusionAppletsListComponent } from './components/fusion-applets-list/fusion-applets-list.component';
 import { FusionAppletsRoutingModule } from './fusion-applets-routing.module';
 import { FusionAppletPageTitleComponent } from './components/fusion-applets-page-title/fusion-applet-page-title.component';
 import { TableModule } from 'primeng/table';
@@ -45,12 +45,14 @@ import { FleetModule } from '../fleet/fleet.module';
 import { ControlLimitSelectorComponent } from './components/fusion-applet-editor/applet-conditions/applet-conditions-value/control-limit-selector/control-limit-selector.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmationService } from 'primeng/api';
+import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 
 @NgModule({
   declarations: [
-    FusionAppletsOverviewComponent,
+    FusionAppletsListComponent,
     FusionAppletPageTitleComponent,
     CreateFusionAppletComponent,
     FusionAppletDetailComponent,
@@ -66,25 +68,28 @@ import { ConfirmationService } from 'primeng/api';
     AppletConditionsValueComponent,
     ValidIconComponent,
     ControlLimitSelectorComponent,
+    FusionAppletsOverviewComponent,
   ],
-  imports: [
-    CommonModule,
-    FusionAppletsRoutingModule,
-    TableModule,
-    InputSwitchModule,
-    IFCommon,
-    ReactiveFormsModule,
-    CardModule,
-    AccordionModule,
-    MultiSelectModule,
-    InplaceModule,
-    FleetModule,
-    InputNumberModule,
-  ],
-  exports: [
-    FusionAppletPageTitleComponent,
-    FusionAppletsSubHeaderComponent,
-  ],
+    imports: [
+        CommonModule,
+        FusionAppletsRoutingModule,
+        TableModule,
+        InputSwitchModule,
+        IFCommon,
+        ReactiveFormsModule,
+        CardModule,
+        AccordionModule,
+        MultiSelectModule,
+        InplaceModule,
+        FleetModule,
+        InputNumberModule,
+        SelectButtonModule,
+    ],
+    exports: [
+        FusionAppletPageTitleComponent,
+        FusionAppletsSubHeaderComponent,
+        FusionAppletsListComponent,
+    ],
   providers: [
     EnumHelpers,
     RuleStatusUtil,

@@ -63,8 +63,11 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
   }
 
-  isRouteActive(subroute: string): boolean {
+  isRouteActive(subroute: string, useAsDefault: boolean = false): boolean {
     const snapshot = this.getActiveRouteLastChild().snapshot;
+    if (useAsDefault && snapshot.url.join('/').endsWith(`${this.assetId}`)) {
+      return true;
+    }
     return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 

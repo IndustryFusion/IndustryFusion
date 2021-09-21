@@ -36,6 +36,9 @@ const routes: Routes = [
     component: EquipmentEfficiencyPageComponent,
     data: {
       pageTypes: [DashboardPageType.EQUIPMENT_EFFICIENCY]
+    },
+    resolve: {
+      devices: OispDeviceResolver
     }
   },
 ];

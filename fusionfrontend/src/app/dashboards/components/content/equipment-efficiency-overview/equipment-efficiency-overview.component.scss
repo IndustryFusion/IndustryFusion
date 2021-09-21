@@ -1,0 +1,79 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'abstract/variables';
+@import 'base/typography';
+@import '../../pages/equipment-efficiency-page/equipment-efficiency-page.component.scss';
+
+.efficiency-dashboard-overview {
+  padding: 1%;
+  height: max-content;
+  width: 100%;
+  background: $grey-background;
+
+  .aggregated-stats {
+    display: flex;
+    padding-bottom: 1rem;
+  }
+}
+
+.aggregated-section {
+  background: $white-background !important;
+  height: $dashboard-height-high;
+  border-radius: 10px;
+  display: block;
+
+  &.status {
+    margin-left: 1.5rem;
+  }
+}
+
+.equipment-efficiency-dashboard-overview-title {
+  padding-left: 2rem;
+  padding-top: 1.5rem;
+  display: inline-block;
+
+  color: $basic-black;
+  text-align: left;
+  font-variant: normal;
+  font-style: normal;
+  font-size: $bigger-font-size;
+  line-height: $big-line-height;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.margin-right {
+  margin-right: 0.5rem;
+}
+
+span, label {
+  vertical-align: text-top;
+}
+
+table {
+  table-layout: fixed;
+  width: 80%;
+}
+
+tbody tr {
+  height: 2rem;
+}
+
+th,
+td {
+  width: 80%;
+  overflow: hidden;
+}

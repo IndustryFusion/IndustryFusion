@@ -24,6 +24,7 @@ import { OispService } from 'src/app/services/oisp.service';
 import * as moment from 'moment';
 import { PointWithId } from '../../../../../services/oisp.model';
 import { switchMap, takeUntil } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-asset-charts',
@@ -170,7 +171,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (this.initialized) {
       if (changes.options) {
-        console.log('options: ' + this.options);
         switch ( this.options ){
             case 'current':
               this.flushData();
@@ -212,7 +212,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   ngOnDestroy() {
-    console.log('[asset-charts.component] destroyed subscription');
     this.destroy$.next(true);
     this.destroy$.complete();
   }
@@ -230,13 +229,13 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     let gotFirstPoints = false;
     let currentTime = moment().valueOf();
     let startTime = currentTime - 600000;
-    this.latestPoints$ = timer(0, 5000)
+    this.latestPoints$ = timer(0, environment.dataUpdateIntervalMs)
         .pipe(
           switchMap(() => {
             // If we already received some points, only take points from last 5 seconds.
             if (gotFirstPoints) {
               currentTime = moment().valueOf();
-              startTime = currentTime - 5000;
+              startTime = currentTime - environment.dataUpdateIntervalMs;
               return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startTime, currentTime, '1');
             } else {
               gotFirstPoints = true;

@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ecoSystemManagerSubTitle$: Observable<string>;
 
   private intervalHandle: number;
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
   private static fetchOpenNotificationCount(oispAlertResolver: OispAlertResolver) {
     oispAlertResolver.resolve().subscribe();
