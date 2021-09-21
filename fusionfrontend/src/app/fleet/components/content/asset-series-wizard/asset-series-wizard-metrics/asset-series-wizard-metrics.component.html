@@ -52,11 +52,16 @@ under the License.
               <app-edit-button *ngIf="!isUnsaved(fieldSource)" class="edit-button"
                                (editItem)="fieldSource.get('saved').patchValue(false)">
               </app-edit-button>
-               <app-trash-button (deleteItem)="removeMetric(fieldSource)"
+              <app-trash-button (deleteItem)="removeMetric(fieldSource)"
                                  [disabled]="!isDeletable(fieldSource)"></app-trash-button>
             </span>
           </ng-container>
         </div>
+      </div>
+
+      <div class="custom-script">
+        <div class="wizard-title">Custom script</div>
+        <textarea pInputTextarea [(ngModel)]="assetSeries.customScript"></textarea>
       </div>
     </div>
   </div>
