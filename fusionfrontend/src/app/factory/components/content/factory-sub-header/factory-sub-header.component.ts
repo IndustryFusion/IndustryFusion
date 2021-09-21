@@ -84,10 +84,6 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  isSettingsActive = () => {
-    return false;
-  }
-
   onFactoriesClick() {
     const companyId = this.route.split('/')[3];
     if (companyId) {
