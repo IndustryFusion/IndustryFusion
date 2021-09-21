@@ -24,7 +24,10 @@ import { Company } from 'src/app/store/company/company.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { Room } from 'src/app/store/room/room.model';
-import { FactoryAssetDetails, FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import {
+  FactoryAssetDetails,
+  FactoryAssetDetailsWithFields
+} from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetService } from '../../../../store/asset/asset.service';
 import { RoomService } from '../../../../store/room/room.service';

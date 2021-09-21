@@ -131,7 +131,7 @@ export class AssetInstantiationComponent implements OnInit {
     }
   }
 
-  assignFactorySite(selectedFactorySite?: FactorySite) {
+  private assignFactorySite(selectedFactorySite?: FactorySite) {
     if (selectedFactorySite) {
       this.selectedFactorySite = selectedFactorySite;
     }

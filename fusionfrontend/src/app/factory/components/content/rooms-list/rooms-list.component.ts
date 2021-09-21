@@ -158,7 +158,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
       if (room) {
         this.factorySitesAndRoomsMap.set(room.id, this.factorySites.find(factorySite => factorySite.id.toString()
           === room.factorySiteId.toString()).name);
-        this.createRoom(room);
+        this.createOrUpdateRoom(room);
       }
     });
   }
@@ -222,12 +222,11 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
     ref.onClose.subscribe((assets: Asset[]) => {
       if (assets) {
-        const roomId = this.activeListItem.id;
-        this.oldRoomIds.push(roomId);
+        const newRoomId = this.activeListItem.id;
         assets.forEach(asset => {
           this.oldRoomIds.push(asset.roomId);
         });
-        this.assignAssetsToRoom(this.oldRoomIds, assets);
+        this.assignAssetsToRoom(newRoomId, this.oldRoomIds, assets);
         this.oldRoomIds = [];
       }
     });
@@ -249,7 +248,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
     }
   }
 
-  private createRoom(room: Room) {
+  private createOrUpdateRoom(room: Room) {
     if (room) {
       if (room.id) {
         this.roomService.updateRoom(this.companyId, room).subscribe();
@@ -259,16 +258,17 @@ export class RoomsListComponent implements OnInit, OnChanges {
     }
   }
 
-  private assignAssetsToRoom(oldRoomIds: ID[], assets: Asset[]) {
-    const room = this.roomQuery.getEntity(oldRoomIds[0]);
+  private assignAssetsToRoom(newRoomId: ID, oldRoomIds: ID[], assets: Asset[]) {
+    const newRoom = this.roomQuery.getEntity(newRoomId);
     const oldFactoryIdSet: Set<ID> = new Set<ID>();
     oldRoomIds.forEach(id => {
       oldFactoryIdSet.add(this.roomQuery.getEntity(id).factorySiteId);
     });
-    this.assetService.assignAssetsToRoom(this.companyId, room.factorySiteId, oldRoomIds[0], assets)
+
+    this.assetService.assignAssetsToRoom(this.companyId, newRoom.factorySiteId, newRoom.id, assets)
       .subscribe(
         _ => {
-          oldFactoryIdSet.forEach(factoryId => {
+          oldFactoryIdSet.forEach(factoryId => { // TODO (fpa): only factories of oldRooms?
             this.roomService.getRoomsOfFactorySite(this.companyId, factoryId, true).subscribe();
           });
         },
