@@ -66,6 +66,7 @@ import { AssetSubsystemsComponent } from './components/pages/asset-details/asset
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [
@@ -113,16 +114,17 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
     AssetSubsystemsComponent,
     AssetNotificationsComponent
   ],
-  imports: [
-    IFCommon,
-    FactoryRoutingModule,
-    ClarityModule,
-    ChartsModule,
-    ReactiveFormsModule,
-    TableModule,
-    CardModule,
-    FusionAppletsModule,
-  ],
+    imports: [
+        IFCommon,
+        FactoryRoutingModule,
+        ClarityModule,
+        ChartsModule,
+        ReactiveFormsModule,
+        TableModule,
+        CardModule,
+        FusionAppletsModule,
+        AccordionModule,
+    ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

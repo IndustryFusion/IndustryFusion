@@ -111,7 +111,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   private initObservers() {
     this.factorySites$ = this.factoryResolver.factorySites$;
-    this.factorySites$.subscribe(factorySites => factorySites);
+    this.factorySites$.subscribe(factorySites => this.factorySites = factorySites);
     this.factoryAssetsDetails$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.factoryAssetsDetails$.subscribe(assets => this.factoryAssets = assets);
 

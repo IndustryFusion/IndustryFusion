@@ -15,13 +15,21 @@ under the License.
 
 <app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
 
-<app-assets-list [company]="(company$ | async)"
-                 [factorySites]="(factorySites$ | async)"
-                 [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)"
-                 [allRoomsOfFactorySite]="(roomsOfFactorySite$ | async)"
-                 [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
-                 (toolBarClickEvent)="toolbarClick($event)"
-                 (selectedEvent)="selectTheAssets($event)"
-                 (assetDetailsSelected)="updateAssetData($event)"
-                 (updateAssetEvent)="updateRoom($event)">
-</app-assets-list>
+<p-accordion class="factory-site-content">
+  <p-accordionTab header="Assets">
+    <app-assets-list [company]="(company$ | async)"
+                     [factorySites]="(factorySites$ | async)"
+                     [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)"
+                     [allRoomsOfFactorySite]="(roomsOfFactorySite$ | async)"
+                     [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
+                     (toolBarClickEvent)="toolbarClick($event)"
+                     (selectedEvent)="selectTheAssets($event)"
+                     (assetDetailsSelected)="updateAssetData($event)"
+                     (updateAssetEvent)="updateRoom($event)">
+    </app-assets-list>
+  </p-accordionTab>
+
+  <p-accordionTab header="Rooms">
+    <app-rooms-list></app-rooms-list>
+  </p-accordionTab>
+</p-accordion>
