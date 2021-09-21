@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
@@ -40,7 +40,7 @@ import { RoomQuery } from '../../../../store/room/room.query';
   styleUrls: ['./rooms-list.component.scss'],
   providers: [DialogService]
 })
-export class RoomsListComponent implements OnInit, OnChanges {
+export class RoomsListComponent implements OnInit {
 
   companyId: ID;
   factorySites$: Observable<FactorySite[]>;
@@ -73,10 +73,10 @@ export class RoomsListComponent implements OnInit, OnChanges {
               public dialogService: DialogService,
               public factoryResolver: FactoryResolver,
               private factorySiteQuery: FactorySiteQuery,
-              activatedRoute: ActivatedRoute,
+              private activatedRoute: ActivatedRoute,
               private assetService: AssetService,
               private roomQuery: RoomQuery) {
-    this.factoryResolver.resolve(activatedRoute);
+    this.factoryResolver.resolve(this.activatedRoute);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     this.factorySite$ = this.factoryResolver.factorySite$;
   }
@@ -111,7 +111,10 @@ export class RoomsListComponent implements OnInit, OnChanges {
 
   private initObservers() {
     this.factorySites$ = this.factoryResolver.factorySites$;
-    this.factorySites$.subscribe(factorySites => this.factorySites = factorySites);
+    this.factorySites$.subscribe(factorySites => {
+      this.factorySites = factorySites;
+      this.initFactorySitesAndRoomsMap();
+    });
     this.factoryAssetsDetails$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.factoryAssetsDetails$.subscribe(assets => this.factoryAssets = assets);
 
@@ -125,11 +128,14 @@ export class RoomsListComponent implements OnInit, OnChanges {
       this.rooms$ = this.factoryResolver.rooms$;
     }
 
-    this.rooms$.subscribe(rooms => this.rooms = rooms);
+    this.rooms$.subscribe(rooms =>  {
+      this.rooms = rooms;
+      this.initFactorySitesAndRoomsMap();
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.rooms) {
+  private initFactorySitesAndRoomsMap() {
+    if (this.rooms && this.factorySites) {
       this.rooms.forEach(room => {
         this.factorySitesAndRoomsMap.set(room.id, this.factorySites?.find(factorySite => factorySite.id === room.factorySiteId).name);
       });
@@ -163,7 +169,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
     });
   }
 
-  showEditDialog() {
+  private showEditDialog() {
     this.createRoomForm(this.formBuilder, this.activeListItem);
     const ref = this.dialogService.open(RoomDialogComponent, {
       data: {
@@ -187,7 +193,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
   }
 
   // TODO: put method in dialog
-  createRoomForm(formBuilder: FormBuilder, room?: Room) {
+  private createRoomForm(formBuilder: FormBuilder, room?: Room) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.roomForm = formBuilder.group({
       id: [null],
@@ -206,7 +212,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
     this.deleteRoom(this.activeListItem);
   }
 
-  showAssignAssetToRoomModal() {
+  private showAssignAssetToRoomModal() {
     this.createRoomForm(this.formBuilder, this.activeListItem);
     const ref = this.dialogService.open(AssignAssetToRoomComponent, {
       data: {

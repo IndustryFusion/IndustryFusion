@@ -76,7 +76,7 @@ export class PageTitleComponent implements OnInit, OnDestroy {
       .subscribe((object: any) => {
         // Only add (last) active item matching with id at end of url to avoid concurrency issues
         const lastUrlParameter = url.split('/')[url.split('/').length - 1];
-        if (String(object.id) === String(lastUrlParameter)) {
+        if (String(object?.id) === String(lastUrlParameter)) {
           breadcrumbs.push({ label: subtitleQuery.getSubtitleName(object), url });
         }
       });
