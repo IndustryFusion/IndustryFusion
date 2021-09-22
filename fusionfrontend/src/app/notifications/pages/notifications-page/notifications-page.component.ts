@@ -20,6 +20,7 @@ import { Observable } from 'rxjs';
 import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
 import { OispAlertStatus } from '../../../store/oisp/oisp-alert/oisp-alert.model';
 import { OispNotificationService } from '../../../store/oisp/oisp-notification/oisp-notification.service';
+import { RouteHelpers } from '../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-notifications-page',
@@ -40,13 +41,8 @@ export class NotificationsPageComponent implements OnInit {
     );
   }
 
-  isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(segment => segment.path).includes(subroute);
-  }
-
   private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
-    if (this.isRouteActive('open')) {
+    if (RouteHelpers.isRouteActive('open', this.activatedRoute)) {
       return notifications.filter(rule => rule.status !== OispAlertStatus.CLOSED);
     } else {
       return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
