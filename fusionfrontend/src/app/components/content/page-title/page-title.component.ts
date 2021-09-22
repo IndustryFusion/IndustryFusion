@@ -19,7 +19,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs/operators';
 import { BaseSubtitleQuery } from '../../../store/basesubtitlequery.model';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-page-title',
@@ -30,19 +30,27 @@ export class PageTitleComponent implements OnInit, OnDestroy {
 
   @Input()
   title: string;
-
   menuItems: MenuItem[];
   private readonly ROUTE_DATA_BREADCRUMB = 'breadcrumb';
   private routerSubscription = Subscription.EMPTY;
 
+  private breadcrumbItems: MenuItem[];
+  private finishedQueries = 0;
+  private pendingQueries = 0;
+  private queriesFinished$ = new BehaviorSubject<boolean>(false);
+
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
-              private injector: Injector) { }
-
-  ngOnInit(): void {
+              private injector: Injector) {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => this.menuItems = this.createBreadcrumbs(this.activatedRoute.root));
+      .subscribe(() => {
+        this.breadcrumbItems = this.createBreadcrumbs(this.activatedRoute.root);
+        this.setMenuItemsAfterPendingQueriesFinished();
+      });
+  }
+
+  ngOnInit(): void {
   }
 
   private createBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
@@ -72,12 +80,15 @@ export class PageTitleComponent implements OnInit, OnDestroy {
   private addQueryResult(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[]  {
     const query = this.injector.get(breadcrumbData);
     const subtitleQuery: BaseSubtitleQuery<typeof query> = this.injector.get(breadcrumbData);
+    this.pendingQueries++;
     subtitleQuery.waitForActives()
       .subscribe((object: any) => {
         // Only add (last) active item matching with id at end of url to avoid concurrency issues
         const lastUrlParameter = url.split('/')[url.split('/').length - 1];
         if (String(object?.id) === String(lastUrlParameter)) {
           breadcrumbs.push({ label: subtitleQuery.getSubtitleName(object), url });
+          this.finishedQueries++;
+          this.fireFinishedIfNoPendingQueries();
         }
       });
     return breadcrumbs;
@@ -89,6 +100,17 @@ export class PageTitleComponent implements OnInit, OnDestroy {
       breadcrumbs.push({ label, url });
     }
     return breadcrumbs;
+  }
+
+  private setMenuItemsAfterPendingQueriesFinished() {
+    this.fireFinishedIfNoPendingQueries();
+    this.queriesFinished$.subscribe(isFinished => { if (isFinished) { this.menuItems = this.breadcrumbItems; } });
+  }
+
+  private fireFinishedIfNoPendingQueries() {
+    if (this.finishedQueries === this.pendingQueries) {
+      this.queriesFinished$.next(true);
+    }
   }
 
   ngOnDestroy() {
