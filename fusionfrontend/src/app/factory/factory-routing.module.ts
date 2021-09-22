@@ -237,10 +237,8 @@ const routes: Routes = [
           },
           {
             path: 'notifications',
-            component: AssetNotificationsComponent,
-            data: {
-              breadcrumb: 'Notifications',
-            },
+            redirectTo: 'notifications/open',
+            pathMatch: 'full'
           },
           {
             path: 'notifications/:state',
