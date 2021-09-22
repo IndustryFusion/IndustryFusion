@@ -37,10 +37,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { BooleanPipe } from '../pipes/boolean.pipe';
 import { MaintenanceProgressbarComponent } from '../components/content/maintenance-progressbar/maintenance-progressbar.component';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
-import { NotificationsListHeaderComponent } from '../components/content/notifications-list/notifications-list-header/notifications-list-header.component';
-import { NotificationsListItemComponent } from '../components/content/notifications-list/notifications-list-item/notifications-list-item.component';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 @NgModule({
@@ -59,12 +57,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     TableFilterComponent,
     DateFilterComponent,
     DropdownFilterComponent,
-    NumericFilterComponent
+    NumericFilterComponent,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
-    NotificationsListHeaderComponent,
-    NotificationsListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -85,6 +81,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     CalendarModule,
     ReactiveFormsModule,
     ProgressBarModule,
+    TableModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -117,12 +114,11 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     TableFilterComponent,
     DateFilterComponent,
     DropdownFilterComponent,
-    NumericFilterComponent
+    NumericFilterComponent,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
-    NotificationsListHeaderComponent,
-    NotificationsListItemComponent,
+    TableModule,
   ],
   providers: [
     MessageService,

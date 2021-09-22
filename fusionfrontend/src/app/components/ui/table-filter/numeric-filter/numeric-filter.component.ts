@@ -38,7 +38,7 @@ export class NumericFilterComponent implements OnInit {
   @Output()
   itemsFiltered = new EventEmitter<any>();
 
-  checkBoxItemsSet: Set<any> = new Set;
+  checkBoxItemsSet: Set<any> = new Set();
   checkBoxItems: string[] = [SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY, LONGTERM_PRIORITY];
   selectedCheckBoxItems: any[] = [];
   filteredItems: any[] = [];
@@ -55,8 +55,9 @@ export class NumericFilterComponent implements OnInit {
     });
     if (this.numericFilterFormGroup.get('selectedCheckboxItems') !== null) {
       this.selectedCheckBoxItems = this.numericFilterFormGroup.get('selectedCheckboxItems').value;
+    } else {
+      this.selectedCheckBoxItems = [];
     }
-    this.selectedCheckBoxItems = []
   }
 
   filterItemsBySelectedValues() {
@@ -82,7 +83,7 @@ export class NumericFilterComponent implements OnInit {
       }
       case MEDIUMTERM_PRIORITY: {
         return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered)
-          .concat(this.removeBeyondThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered))
+          .concat(this.removeBeyondThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered));
       }
       case LONGTERM_PRIORITY: {
         return this.removeBelowThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered);

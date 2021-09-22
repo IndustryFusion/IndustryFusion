@@ -16,9 +16,9 @@ under the License.
 
 <button (click)="numericPanel.toggle($event);" class="open-filterpanel-btn">
   <span class="filter-panel-btn-grid">
-    <span *ngIf="this.numericFilterFormGroup.get('filteredItems').value !== null" class="filter-panel-btn-grid-text">
-      {{ this.numericFilterFormGroup.get('filteredItems').value.length | i18nPlural: selectedValueMapping }}</span>
-    <span *ngIf="this.numericFilterFormGroup.get('filteredItems').value === null" class="filter-panel-btn-grid-text">
+    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value !== null" class="filter-panel-btn-grid-text">
+      {{ this.numericFilterFormGroup.get('selectedCheckboxItems').value.length | i18nPlural: selectedValueMapping }}</span>
+    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value === null" class="filter-panel-btn-grid-text">
     not set</span>
     <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
   </span>

@@ -13,10 +13,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="notifications-list">
-  <div class="p-grid p-dir-row p-justify-between p-align-center list-header">
-    <div class="title">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</div>
-    <div class="p-col"></div>
+<div>
+  <div class="p-grid p-jc-between header-line">
+    <h3 class="table-header">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</h3>
+<!--    <div class="p-col"></div>-->
     <div *ngIf="isInline" class="notification-state-button">
       <button (click)="changeTab(notificationStates.OPEN)" [disabled]="getCurrentState() == notificationStates.OPEN"
               class="if-light-button">
@@ -29,52 +29,100 @@ under the License.
         Cleared
       </button>
     </div>
+    <div class="filter-panel">
+      <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.allNotifications"
+                         (filteredItems)="filterNotifications($event)">
+      </app-table-filter>
+    </div>
   </div>
-  <div>
-    <div class="list-container">
-      <div *ngIf="selected.size > 0" class="list-edit-bar">
-        <div [style.width.%]="5" class="list-edit-bar-item">
-          <clr-icon shape="check-circle" size="20"></clr-icon>
-        </div>
-        <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
-        <div [style.width.%]="50" class="list-edit-bar-item">
-          <button (click)="deleteItems()" class="btn btn-link button-white">
-            <clr-icon shape="trash"></clr-icon>
-          </button>
-        </div>
-        <div [style.width.%]="35" class="list-edit-bar-last-item">
-          <button (click)="deselectAllItems()" class="btn btn-link button-white">
-            <clr-icon shape="times"></clr-icon>
-            Close
-          </button>
-        </div>
+
+
+  <div class="table-selected-items-bar p-grid p-jc-between" *ngIf="selectedNotifications.length > 0">
+    <div class="table-selected-item p-col-4">
+      <fa-icon [icon]="faCheckCircle" class="check-box-icon fa-fw"></fa-icon>
+      <span class="table-selected-item">{{ selectedNotifications.length | i18nPlural: editBarMapping }}</span>
+    </div>
+
+    <div class="p-col-4 table-selected-item" style="text-align: center">
+      <div class="table-bar-button-div">
+        <p-button class="table-bar-button" icon="pi pi-trash" (click)="closeMultibleItmes()"></p-button>
       </div>
-      <app-notifications-list-header (sortEvent)="onSort($event)" [searchpanel]="searchpanel">
-      </app-notifications-list-header>
-      <app-notifications-list-item (itemDelete)="deleteItem($event)" (itemDeselected)="onItemDeselect($event)"
-                                   (itemSelected)="onItemSelect($event)"
-                                   *ngFor="let item of filteredNotifications"
-                                   [isCloseable]="getCurrentState() == notificationStates.OPEN"
-                                   [item]="item"
-                                   [selected]="isSelected(item.id)">
-      </app-notifications-list-item>
+    </div>
+
+    <div class="p-col-4 table-selected-item" style="text-align: end">
+      <p-button class="table-bar-button" (click)="deselectAllItems()">
+        <fa-icon [icon]="faTimes" class="fa-fw"></fa-icon>
+        <span>close</span>
+      </p-button>
+    </div>
+  </div>
+
+  <p-table [(selection)]="selectedNotifications" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
+           [showCurrentPageReport]="true" [value]="displayedNotifications" [rowHover]="true"
+           class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Notifications">
+    <ng-template pTemplate="header">
+      <tr>
+        <th [style.width.%]="5"></th>
+        <th [style.width.%]="3"></th>
+        <th [style.width.%]="30" pSortableColumn="ruleName">
+          <div class="p-d-flex p-ai-start">
+            <p-sortIcon field="ruleName"></p-sortIcon>
+            <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="this.allNotifications"
+                                 attributeToBeSearched="ruleName" (searchByName)="filterNotifications($event)">
+            </app-table-searchbar>
+          </div>
+        </th>
+        <th [style.width.%]="17">
+          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.allNotifications"
+                               attributeToBeSearched="assetName" (searchByName)="searchNotifications($event)">
+          </app-table-searchbar>
+        </th>
+        <th [style.width.%]="40">Condition</th>
+        <th [style.width.%]="10">Measured Value</th>
+        <th [style.width.%]="15" pSortableColumn="timestamp">Date & Time
+          <p-sortIcon field="timestamp"></p-sortIcon>
+        </th>
+        <th [style.width.%]="5"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template let-item pTemplate="body">
+      <tr class="p-selectable-row" id="rowElement" style="cursor: pointer;">
+        <td class="checkbox-td" [style.width.%]="5">
+          <p-tableCheckbox class="checkbox-column" [value]="item"></p-tableCheckbox>
+        </td>
+        <td [style.width.%]="3" class="notification-icons" [ngSwitch]="item.priority">
+          <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
+          <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
+          <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
+        </td>
+        <td [style.width.%]="30">{{ item.ruleName }}</td>
+        <td [style.width.%]="17">{{ item.assetName }}</td>
+        <td [style.width.%]="40">{{ item.condition }}</td>
+        <td [style.width.%]="10">
+          {{ isFloatingNumber(item.measuredValue) ? (item.measuredValue | number: '1.0-2') : item.measuredValue }}
+        </td>
+        <td [style.width.%]="15">{{ item.timestamp | date:'dd.MM.yyyy \'at\' hh:mm:ss' }}</td>
+        <td [style.width.%]="5">
+          <button *ngIf="item.status === alertstatusTypes.NEW || item.status === alertstatusTypes.OPEN"
+                  type="button" class="small-confirm-button" (click)="showCloseItem(item)"><i class="pi pi-check"></i></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div *ngIf="shouldShowDeleteItem && (activeItem.status ===  alertstatusTypes.NEW
+  || activeItem.status === alertstatusTypes.OPEN)">
+  <div class="backdrop"></div>
+  <div class="delete-modal">
+    <button class="button-close" (click)="shouldShowDeleteItem = false">
+      <clr-icon [style.width.px]="19" [style.height.px]="19" shape="times"></clr-icon>
+    </button>
+    <div class="delete-modal-title">Clear notification?</div>
+    <div class="delete-modal-footer">
+      <button type="button" class="if-button-cancel" (click)="shouldShowDeleteItem = false">Cancel</button>
+      <button type="button" class="button-confirm" (click)="closeItem()">Ok</button>
     </div>
   </div>
 </div>
-
-<p-overlayPanel #searchpanel [showCloseIcon]="true" class="assetSearchPanel">
-  <ng-template pTemplate>
-    <div class="panel-heading">Search</div>
-    <span class="p-input-icon-left">
-            <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
-            <input [(ngModel)]="searchText" class="search-input" pInputText placeholder="Name" type="text">
-        </span>
-    <br>
-    <div class="footer">
-      <button (click)="searchAssets(); searchpanel.hide()" class="if-button button-primary button-modal"
-              style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"
-              type="button">Apply
-      </button>
-    </div>
-  </ng-template>
-</p-overlayPanel>

@@ -58,15 +58,14 @@ export class TableFilterComponent implements OnInit {
     });
     if (this.position) {
       this.positionSet = true;
-      document.documentElement.style.setProperty('--postion-set', "true");
+      document.documentElement.style.setProperty('--postion-set', 'true');
       this.changeTheme(this.position[0], this.position[1]);
     } else {
-      document.documentElement.style.setProperty('--postion-set', "false");
+      document.documentElement.style.setProperty('--postion-set', 'false');
     }
   }
 
   changeTheme(top: string, left: string) {
-    console.log(top, left)
     document.documentElement.style.setProperty('--top-position', top);
     document.documentElement.style.setProperty('--left-position', left);
   }

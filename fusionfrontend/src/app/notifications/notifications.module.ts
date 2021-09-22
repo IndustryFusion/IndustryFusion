@@ -21,7 +21,6 @@ import { NotificationsPageComponent } from './pages/notifications-page/notificat
 import { NotificationsPageTitleComponent } from './content/notifications-page-title/notifications-page-title.component';
 import { NotificationsSubHeaderComponent } from './content/notifications-sub-header/notifications-sub-header.component';
 import { NotificationsRoutingModule } from './notifications-routing.module';
-import { NotificationsListComponent } from './content/notifications-list/notifications-list.component';
 import { ClrAlertModule, ClrIconModule } from '@clr/angular';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
@@ -30,7 +29,6 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     NotificationsPageTitleComponent,
     NotificationsSubHeaderComponent,
     NotificationsPageComponent,
-    NotificationsListComponent,
   ],
   imports: [
     IFCommon,

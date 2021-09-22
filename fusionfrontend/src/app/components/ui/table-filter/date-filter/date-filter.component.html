@@ -16,7 +16,7 @@ under the License.
 <button (click)="dateFilterPanel.toggle($event);" class="open-filterpanel-btn">
   <span class="filter-panel-btn-grid">
     <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value !== null" class="filter-panel-btn-grid-text">
-      {{ this.dateFilterFormGroup.get('filteredItems').value.length | i18nPlural: selectedValueMapping }}</span>
+      Date set</span>
     <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value === null" class="filter-panel-btn-grid-text">
       not set</span>
       <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>

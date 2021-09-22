@@ -3,7 +3,7 @@
     <h3 class="table-header">Maintenance Dashboard</h3>
     <div class="filter-panel">
       <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
-                        [position]="[50, -450]" (filteredItems)="filterAssets($event)">
+                        [position]="['70%', '-510%']" (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>
   </div>
@@ -23,8 +23,8 @@
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>
-        <th [style.width.%]="18" pSortableColumn="category">Asset Type
-          <p-sortIcon field="category"></p-sortIcon>
+        <th [style.width.%]="18" ttSortableColumn="category">Asset Type
+          <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
         </th>
         <th [style.width.%]="20">Manufacturer</th>
         <th [style.width.%]="12">Factory</th>

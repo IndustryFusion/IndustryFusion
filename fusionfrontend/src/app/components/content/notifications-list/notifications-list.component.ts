@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
@@ -25,10 +25,10 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle, faTimes } fro
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { FilterOption, FilterType } from 'src/app/components/ui/table-filter/filter-options';
 
-import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp-alert/oisp-alert.model';
+import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
 import { Location } from '@angular/common';
 
-export enum NotificationState { OPEN, CLEARED }
+export enum NotificationState { OPEN, CLEARED}
 
 @Component({
   selector: 'app-notifications-list',
@@ -37,18 +37,17 @@ export enum NotificationState { OPEN, CLEARED }
 })
 export class NotificationsListComponent implements OnInit, OnDestroy {
 
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertFetchingIntervalSec * 1000;
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
   @Input() notifications: Observable<OispNotification[]>;
-  @Input() isInline = false;
+  @Input() state: NotificationState;
+  @Input() isInline: false;
 
-  faSearch = faSearch;
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
   faExclamationTriangle = faExclamationTriangle;
   faCheckCircle = faCheckCircle;
   faTimes = faTimes;
-
 
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };
@@ -57,16 +56,16 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   searchText = '';
   allNotifications: OispNotification[] = [];
-  searchedNotifications: OispNotification[];
   displayedNotifications: OispNotification[];
   filteredNotifications: OispNotification[];
-  notificationStates = NotificationState;
-  notificationSubscription: Subscription;
+  searchedNotifications: OispNotification[];
+  OispPriority = OispAlertPriority;
   selectedNotifications: OispNotification[] = [];
+  alertstatusTypes = OispAlertStatus;
   activeItem: OispNotification;
   shouldShowDeleteItem = false;
-
-  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
+  notificationStates = NotificationState;
+  notificationSubscription: Subscription;
 
   possibleFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Priority', attributeToBeFiltered: 'priority' },
@@ -83,20 +82,15 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.initMappings();
     this.periodicallyFetchNotifications();
-    this.filteredNotifications = this.searchedNotifications = this.allNotifications;
+    this.initMappings();
+    this.displayedNotifications = this.filteredNotifications = this.searchedNotifications = this.allNotifications;
   }
 
   ngOnDestroy(): void {
     this.notificationSubscription?.unsubscribe();
     clearInterval(this.intervalId);
   }
-
-  private getStatusName(): string {
-    return this.isOpen ? 'Open' : 'Cleared';
-  }
-
 
   deleteItem(id: ID): void {
     const filteredItem = this.displayedNotifications.find(value => value.id === id);
@@ -108,22 +102,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.selectedNotifications = [];
   }
 
-  searchNotifications(event?) {
-    this.searchedNotifications = event;
-    this.updateNotifications();
-  }
-
-  filterNotifications(event?) {
-    this.filteredNotifications = event;
-    this.updateNotifications();
-  }
-
-  private updateNotifications(): void {
-    this.displayedNotifications = this.allNotifications;
-    if (this.searchedNotifications) {
-      this.displayedNotifications = this.filteredNotifications.filter(notification =>
-        this.searchedNotifications.includes(notification));
-
   public getCurrentState(): NotificationState {
     if (this.isRouteActive('cleared')) {
       return NotificationState.CLEARED;
@@ -132,13 +110,12 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeTab(state: NotificationState): void {
+  public changeTab(state: NotificationState) {
     if (state === NotificationState.CLEARED) {
-      this.navigateToSubroute('cleared').then(_ => this.initMappings());
+      this.navigateToSubroute('cleared');
     } else {
-      this.navigateToSubroute('open').then(_ => this.initMappings());
+      this.navigateToSubroute('open');
     }
-    this.fetchNotifications();
   }
 
   navigateToSubroute(subroute): Promise<boolean> {
@@ -176,24 +153,29 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private getStatusName(): string {
-    switch (this.getCurrentState()) {
+    switch (this.state) {
       case NotificationState.CLEARED:
         return 'Cleared';
-      default:
+      case NotificationState.OPEN:
         return 'Open';
     }
   }
 
-  private filterNotifications(): void {
-    this.filteredNotifications = this.allNotifications;
-
-    this.filterBySearchText();
+  searchNotifications(event?): void {
+    this.searchedNotifications = event;
+    this.updateNotifications();
   }
 
-  private filterBySearchText(): void {
-    if (this.searchText) {
-      this.filteredNotifications = this.filteredNotifications
-        .filter(notification => notification.assetName.toLowerCase().includes(this.searchText.toLowerCase()));
+  filterNotifications(event?) {
+    this.filteredNotifications = event;
+    this.updateNotifications();
+  }
+
+  private updateNotifications(): void {
+    this.displayedNotifications = this.allNotifications;
+    if (this.searchedNotifications) {
+      this.displayedNotifications = this.filteredNotifications.filter(notification =>
+        this.searchedNotifications.includes(notification));
     }
   }
 
@@ -202,14 +184,13 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => this.fetchNotifications(), this.FETCHING_INTERVAL_MILLISECONDS);
   }
 
-
-  private fetchNotifications(): void {
+  private fetchNotifications() {
     this.notificationSubscription?.unsubscribe();
-    this.notificationSubscription = this.notifications?.subscribe(notifications => {
-        if (notifications.length !== this.allNotifications.length) {
-          this.allNotifications = notifications;
-          this.updateNotifications();
-        }
+    this.notificationSubscription = this.notifications.subscribe(notifications => {
+      if (notifications.length !== this.allNotifications.length) {
+        this.allNotifications = notifications;
+        this.updateNotifications();
+      }
     });
   }
 

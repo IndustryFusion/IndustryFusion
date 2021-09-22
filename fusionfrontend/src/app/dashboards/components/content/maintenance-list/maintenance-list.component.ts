@@ -15,11 +15,10 @@
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { faChevronCircleDown, faChevronCircleUp, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
-import { OispAlertPriority } from 'src/app/store/oisp-alert/oisp-alert.model';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { TreeNode } from 'primeng/api';
 import { OispAlert, OispAlertPriority } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
@@ -29,9 +28,6 @@ import {
   AssetMaintenanceUtils as Utils,
   MaintenanceType
 } from '../../../../factory/util/asset-maintenance-utils';
-
-
-export enum MaintenanceState { CRITICAL, MEDIUMTERM, LONGTERM }
 
 
 @Component({
@@ -56,8 +52,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
 
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
-  faFilter = faFilter;
-  faSearch = faSearch;
   faChevronCircleDown = faChevronCircleDown;
   faChevronCircleUp = faChevronCircleUp;
   OispPriority = OispAlertPriority;
@@ -80,6 +74,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
+    this.updateTree();
   }
 
   searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
@@ -95,6 +90,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   updateDisplayedAssets() {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
     this.displayedFactoryAssets = this.searchedFactoryAssets.filter(asset => this.filteredFactoryAssets.includes(asset));
+    this.updateTree();
   }
 
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
