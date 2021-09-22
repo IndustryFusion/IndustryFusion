@@ -41,6 +41,7 @@ import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-
 import { CountryResolver } from '../../resolvers/country.resolver';
 import { OispDeviceResolver } from '../../resolvers/oisp-device-resolver';
 import { ID } from '@datorama/akita';
+import { RouteHelpers } from '../../common/utils/route-helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -103,8 +104,8 @@ export class FactoryResolver {
   private resolveCompany(activatedRoute: ActivatedRoute): ID {
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
-    let companyId = activatedRoute.snapshot.paramMap.get('companyId') as ID;
-    if (companyId == null && this.companyQuery.getActive() != null) {
+    let companyId = RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'companyId');
+    if (companyId == null && this.companyQuery.getActiveId() != null) {
       companyId = this.companyQuery.getActiveId();
     }
 
@@ -141,7 +142,7 @@ export class FactoryResolver {
   }
 
   private resolveFactorySite(activatedRoute: ActivatedRoute, companyId: ID): ID {
-    const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
+    const factorySiteId = RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
       this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
@@ -155,7 +156,7 @@ export class FactoryResolver {
   }
 
   private resolveRoom(activatedRoute: ActivatedRoute, factorySiteId: ID) {
-    const roomId = activatedRoute.snapshot.paramMap.get('roomId');
+    const roomId =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'roomId');
     this.roomService.setActive(roomId);
     if (roomId != null) {
       this.rooms$ = this.roomQuery.selectActive().pipe(map(room => Array(room)));
@@ -166,7 +167,7 @@ export class FactoryResolver {
   }
 
   private resolveAsset(activatedRoute: ActivatedRoute, companyId: ID) {
-    const assetId = activatedRoute.snapshot.paramMap.get('assetId');
+    const assetId =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'assetId');
     this.assetService.setActive(assetId);
     this.assetDetailsService.setActive(assetId);
     if (assetId != null) {

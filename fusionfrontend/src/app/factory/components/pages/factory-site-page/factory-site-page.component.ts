@@ -75,7 +75,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
 
     if (this.factorySiteQuery.getActive() == null) {
-      this.factorySite$.subscribe(factorySite =>  this.factorySiteService.setActive(factorySite.id));
+      this.factorySite$.subscribe(factorySite => { if (factorySite) { this.factorySiteService.setActive(factorySite.id); } });
     }
   }
 
