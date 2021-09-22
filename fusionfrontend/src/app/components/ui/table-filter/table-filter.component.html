@@ -23,7 +23,7 @@ under the License.
   </button>
 </div>
 
-<p-overlayPanel #filterpanel [dismissable]="false" class="filterPanel panel-class">
+<p-overlayPanel #filterpanel [dismissable]="false" [ngClass]="{'panel-postion': positionSet==true}" class="filterPanel panel-class">
   <ng-template pTemplate>
     <div class="if-panel-heading">Filter</div>
 

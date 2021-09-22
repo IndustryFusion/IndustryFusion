@@ -18,6 +18,7 @@
 
 $top: var(--top-position);
 $left: var(--left-position);
+$positionSet: var(--postion-set);
 
 .panel-class {
   ::ng-deep .p-overlaypanel:before {
@@ -26,12 +27,15 @@ $left: var(--left-position);
   ::ng-deep .p-overlaypanel:after {
     visibility: hidden !important;
   }
+  ::ng-deep .p-component {
+    margin-top: 0 !important;
+  }
+}
 
+.panel-postion {
   ::ng-deep .p-component {
     top: $top !important;
     left: $left !important;
-    //left: -400px !important;
-    margin-top: 0 !important;
   }
 }
 

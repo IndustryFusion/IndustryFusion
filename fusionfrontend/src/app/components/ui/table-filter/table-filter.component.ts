@@ -31,9 +31,11 @@ export class TableFilterComponent implements OnInit {
   @Input()
   itemsToBeFiltered: any;
   @Input()
-  position: [number, number];
+  position: [string, string];
   @Output()
   filteredItems = new EventEmitter<any>();
+
+  positionSet = false;
 
   combinedFilteredItems: any;
   filterFormMap: Map<string, FormGroup> = new Map();
@@ -45,7 +47,6 @@ export class TableFilterComponent implements OnInit {
   selectedFilter: FilterOption[] = [];
 
   constructor(private formBuilder: FormBuilder) {
-    this.changeTheme(0, 0);
   }
 
   faFilter = faFilter;
@@ -55,12 +56,19 @@ export class TableFilterComponent implements OnInit {
       this.createFilterForm(filter);
       this.filterOptions.push(filter);
     });
-    this.changeTheme(this.position[0], this.position[1]);
+    if (this.position) {
+      this.positionSet = true;
+      document.documentElement.style.setProperty('--postion-set', "true");
+      this.changeTheme(this.position[0], this.position[1]);
+    } else {
+      document.documentElement.style.setProperty('--postion-set', "false");
+    }
   }
 
-  changeTheme(top: number, left: number) {
-    document.documentElement.style.setProperty('--top-position', top.toString() + 'px');
-    document.documentElement.style.setProperty('--left-position', left.toString() + 'px');
+  changeTheme(top: string, left: string) {
+    console.log(top, left)
+    document.documentElement.style.setProperty('--top-position', top);
+    document.documentElement.style.setProperty('--left-position', left);
   }
 
   createFilterForm(filter: FilterOption) {
