@@ -13,7 +13,17 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div [ngSwitch]="viewMode">
-  <app-asset-realtime-view *ngSwitchCase="AssetPerformanceViewMode.REALTIME" [viewModeOptions]="viewModeOptions"></app-asset-realtime-view>
-  <app-asset-performance-view *ngSwitchCase="AssetPerformanceViewMode.PERFORMANCE" [viewModeOptions]="viewModeOptions"></app-asset-performance-view>
+<div class='asset-details-wrapper'>
+  <div class="caption-with-buttons">
+    <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
+      <div class="caption">Performance View</div>
+      <p-selectButton  class="space-right"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="viewModeOptions"
+                       [(ngModel)]="viewMode"
+                       (ngModelChange)="onChangeRoute()"
+      ></p-selectButton>
+    </div>
+  </div>
 </div>
