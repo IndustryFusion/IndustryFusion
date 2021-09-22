@@ -15,7 +15,7 @@ under the License.
 
 <div class="wrapper">
   <div class="p-grid p-justify-between p-align-center list-header">
-    <div class="title" >
+    <div class="title">
       {{ (rooms == null ? 0 : rooms.length) | i18nPlural: roomMapping }}
     </div>
     <app-create-button text="Create Room" class="p-col create-button" (createItem)="showCreateDialog()"></app-create-button>

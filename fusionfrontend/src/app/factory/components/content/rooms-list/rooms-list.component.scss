@@ -23,9 +23,14 @@
 }
 
 .wrapper {
-  margin: 0 80px;
+  margin-left: 80px;
+  margin-right: 80px;
 
   .list-header {
+    margin-right: 48px;
+    margin-left: 68px;
+    margin-top: 35px;
+
     .if-button {
       padding: 14px 20px 12px;
       margin-bottom: 5px;
@@ -42,6 +47,8 @@ clr-dg-row {
 
 ::ng-deep .p-datatable {
   overflow: visible;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 100px
 }
 
@@ -59,6 +66,7 @@ clr-dg-row {
     padding-top: 0.5em !important;
     padding-bottom: 0.5em !important;
     margin-top: 0.25em !important;
+    margin-left: -130px !important;
   }
 
   ::ng-deep .p-menu-overlay {
