@@ -66,8 +66,8 @@ export class BaseQueryEntityCached<S extends EntityState, T extends BaseEntity, 
     return this.getEntity(id as unknown as IDType);
   }
 
-  getSubtitleName(entity: any): string {
-    return entity.name;
+  selectSubtitleName(entity: any): Observable<string> {
+    return this.selectEntity(entity.id).pipe(map((item: any) => item.name));
   }
 }
 

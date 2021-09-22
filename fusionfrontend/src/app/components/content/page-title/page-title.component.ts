@@ -83,10 +83,27 @@ export class PageTitleComponent implements OnInit, OnDestroy {
     this.pendingQueries++;
     subtitleQuery.waitForActive()
       .subscribe((object: any) => {
-        breadcrumbs.push({ label: subtitleQuery.getSubtitleName(object), url });
-        this.finishedQueries++;
-        this.fireFinishedIfNoPendingQueries();
+        breadcrumbs = this.upsertLabel(object, query, url, subtitleQuery, breadcrumbs);
       });
+    return breadcrumbs;
+  }
+
+  private upsertLabel(object: any, query: any, url: string,
+                      subtitleQuery: BaseSubtitleQuery<typeof query>,
+                      breadcrumbs: MenuItem[]): MenuItem[] {
+
+    subtitleQuery.selectSubtitleName(object).subscribe(name => {
+      if (breadcrumbs.findIndex(x => x.url === url) !== -1) {
+        breadcrumbs[breadcrumbs.findIndex(x => x.url === url)].label = name;
+        this.breadcrumbItems = breadcrumbs;
+        this.fireFinishedIfNoPendingQueries();
+      } else {
+        breadcrumbs.push({ label: name, url });
+      }
+    });
+
+    this.finishedQueries++;
+    this.fireFinishedIfNoPendingQueries();
     return breadcrumbs;
   }
 
@@ -100,7 +117,13 @@ export class PageTitleComponent implements OnInit, OnDestroy {
 
   private setMenuItemsAfterPendingQueriesFinished() {
     this.fireFinishedIfNoPendingQueries();
-    this.queriesFinished$.subscribe(isFinished => { if (isFinished) { this.menuItems = this.breadcrumbItems; } });
+    this.queriesFinished$.subscribe(isFinished => {
+      if (isFinished) {
+        // noinspection UnnecessaryLocalVariableJS
+        const newItemsThatUpdateView = [...this.breadcrumbItems];
+        this.menuItems = newItemsThatUpdateView;
+      }
+    });
   }
 
   private fireFinishedIfNoPendingQueries() {

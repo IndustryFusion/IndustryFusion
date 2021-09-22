@@ -15,7 +15,7 @@
 
 import { EntityState, QueryEntity, getIDType, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { skipWhile, take } from 'rxjs/operators';
+import { map, skipWhile, take } from 'rxjs/operators';
 import { BaseEntity } from './baseentity.model';
 import { BaseSubtitleQuery } from './basesubtitlequery.model';
 
@@ -45,7 +45,7 @@ export class BaseQueryEntity<S extends EntityState, T extends BaseEntity, IDType
         take(1));
   }
 
-  getSubtitleName(entity: any): string {
-    return entity.name;
+  selectSubtitleName(entity: any): Observable<string> {
+    return this.selectEntity(entity.id).pipe(map((item: any) => item.name));
   }
 }
