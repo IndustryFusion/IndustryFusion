@@ -81,15 +81,11 @@ export class PageTitleComponent implements OnInit, OnDestroy {
     const query = this.injector.get(breadcrumbData);
     const subtitleQuery: BaseSubtitleQuery<typeof query> = this.injector.get(breadcrumbData);
     this.pendingQueries++;
-    subtitleQuery.waitForActives()
+    subtitleQuery.waitForActive()
       .subscribe((object: any) => {
-        // Only add (last) active item matching with id at end of url to avoid concurrency issues
-        const lastUrlParameter = url.split('/')[url.split('/').length - 1];
-        if (String(object?.id) === String(lastUrlParameter)) {
-          breadcrumbs.push({ label: subtitleQuery.getSubtitleName(object), url });
-          this.finishedQueries++;
-          this.fireFinishedIfNoPendingQueries();
-        }
+        breadcrumbs.push({ label: subtitleQuery.getSubtitleName(object), url });
+        this.finishedQueries++;
+        this.fireFinishedIfNoPendingQueries();
       });
     return breadcrumbs;
   }

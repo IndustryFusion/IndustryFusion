@@ -16,6 +16,6 @@
 import { Observable } from 'rxjs';
 
 export interface BaseSubtitleQuery<T> {
-  waitForActives(): Observable<T>;
+  waitForActive(): Observable<T>;
   getSubtitleName(entity: any): string;
 }

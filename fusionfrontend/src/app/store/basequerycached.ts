@@ -36,14 +36,6 @@ export class BaseQueryEntityCached<S extends EntityState, T extends BaseEntity, 
         take(1));
   }
 
-  waitForActives(): Observable<T> {
-    return this._selectActive()
-      .pipe(
-        skipWhile(entity => {
-          return entity == null || (entity && String(entity.id) !== String(this.getActiveId()));
-        }));
-  }
-
   private _selectActive(): Observable<T> {
     return this.selectActive() as Observable<T>;
   }
