@@ -19,27 +19,17 @@ import { FormGroup } from '@angular/forms';
 const SHORTTERM_PRIORITY = 'Critical (red)';
 const MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
 const LONGTERM_PRIORITY = 'Longterm (blue)';
-// const RADIX_DECIMAL = 10;
 
 @Component({
   selector: 'app-numeric-filter',
   templateUrl: './numeric-filter.component.html',
   styleUrls: ['./numeric-filter.component.scss']
 })
-
-
-
 export class NumericFilterComponent implements OnInit {
-
-  readonly MAINTENANCE_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
-  readonly MAINTENANCE_HOURS_LOWER_THRESHOLD = 150;
-  readonly MAINTENANCE_HOURS_UPPER_THRESHOLD = 750;
-  readonly MAINTENANCE_HOURS_OVERSHOOTING_LIMIT = 1500;
 
   readonly MAINTENANCE_DAYS_FIELD_NAME = 'Days till maintenance';
   readonly MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
   readonly MAINTENANCE_DAYS_UPPER_THRESHOLD = 180;
-  readonly MAINTENANCE_DAYS_OVERSHOOTING_LIMIT = 365;
 
   @Input()
   itemsToBeFiltered: any;
@@ -48,17 +38,11 @@ export class NumericFilterComponent implements OnInit {
   @Output()
   itemsFiltered = new EventEmitter<any>();
 
-  checkBoxItemsArray = [
-    { id: "0", value: SHORTTERM_PRIORITY } ,
-    { id: "1", value: MEDIUMTERM_PRIORITY } ,
-    { id: "2", value: LONGTERM_PRIORITY }
-  ];
+  checkBoxItemsSet: Set<any> = new Set;
+  checkBoxItems: string[] = [SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY, LONGTERM_PRIORITY];
   selectedCheckBoxItems: any[] = [];
-  filteredItems: [] = [];
+  filteredItems: any[] = [];
   index: number;
-
-
-  //   [{ value: SHORTTERM_PRIORITY, id: 0 }, { value: MEDIUMTERM_PRIORITY, id: 1 }, { value: LONGTERM_PRIORITY, id: 2 }];
 
   selectedValueMapping:
     { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
@@ -66,49 +50,68 @@ export class NumericFilterComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.itemsToBeFiltered);
+    this.checkBoxItems.forEach((item, index) => {
+      this.checkBoxItemsSet.add({ value: item, id: index });
+    });
     if (this.numericFilterFormGroup.get('selectedCheckboxItems') !== null) {
       this.selectedCheckBoxItems = this.numericFilterFormGroup.get('selectedCheckboxItems').value;
     }
+    this.selectedCheckBoxItems = []
   }
 
   filterItemsBySelectedValues() {
-    console.log(this.selectedCheckBoxItems)
-
+    this.filteredItems = this.itemsToBeFiltered;
     this.numericFilterFormGroup.get('selectedCheckboxItems').patchValue(this.selectedCheckBoxItems);
-
     if (this.selectedCheckBoxItems.length > 0) {
-      this.filteredItems = this.itemsToBeFiltered;
-
-      // this.selectedCheckBoxItems.forEach(item => {
-      //   this.filterItems(item);
-      // });
-
-      this.numericFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
+      this.checkBoxItems.forEach(checkBoxValue => {
+        this.filteredItems = this.selectedCheckBoxItems.includes(checkBoxValue) ? this.filteredItems :
+          this.filterItems(checkBoxValue).filter(item => this.filteredItems.includes(item));
+      });
+      this.numericFilterFormGroup.get('filteredItems').patchValue(this.filteredItems);
     } else {
       this.numericFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
     }
-    // this.itemsFiltered.emit();
-
-
-
-    // if (this.selectedCheckBoxItems.length > 0) {
-    //   this.numericFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered.filter(item =>
-    //     this.selectedCheckBoxItems.includes(item[this.numericFilterFormGroup.get('attributeToBeFiltered').value])));
-    // } else {
-    //   this.numericFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
-    // }
+    this.itemsFiltered.emit();
   }
 
-  // filterItems(item: any) {
-    // this.filteredItems = this.itemsToBeFiltered.filter(asset => {
-    //   this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
-    //   if (this.index !== -1) {
-    //     return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
-    //   }
-    // });
-  // }
+  filterItems(checkboxItem: string) {
+    const attributeToBeFiltered = 'fields';
+    switch (checkboxItem) {
+      case SHORTTERM_PRIORITY: {
+        return this.removeBeyondThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered);
+      }
+      case MEDIUMTERM_PRIORITY: {
+        return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered)
+          .concat(this.removeBeyondThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered))
+      }
+      case LONGTERM_PRIORITY: {
+        return this.removeBelowThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered);
+      }
+    }
+  }
 
+  removeBelowThreshold(lowerLimitValue, attributeToBeFiltered) {
+    return this.itemsToBeFiltered.filter(item => {
+      const fields: any[] = item[attributeToBeFiltered];
+      this.index = fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+
+      if (this.index !== -1 && fields[this.index].value !== null) {
+        return fields[this.index].value < lowerLimitValue;
+      }
+      return false;
+    });
+  }
+
+  removeBeyondThreshold(upperLimitValue, attributeToBeFiltered) {
+    return this.itemsToBeFiltered.filter(item => {
+      const fields: any[] = item[attributeToBeFiltered];
+      this.index = fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+      if (this.index !== -1 && fields[this.index].value !== null) {
+        return fields[this.index].value > upperLimitValue;
+      }
+      return false;
+    });
+  }
 
   clearSelectedValues() {
     this.numericFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
@@ -117,64 +120,3 @@ export class NumericFilterComponent implements OnInit {
     this.itemsFiltered.emit();
   }
 }
-
-
-
-// filterAssetsByTwoMaintenanceValues() {
-//   if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
-//     this.filterAssetsLowerThanMaintenanceValue(this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
-//   } else if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-//     this.filterAssetOutsideTwoMaintenanceValues(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
-//   } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY) && this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-//     this.filterAssetsGreaterThanMaintenanceValue(this.MAINTENANCE_DAYS_LOWER_THRESHOLD);
-//   }
-// }
-//
-// filterAssetsByOneMaintenanceValue() {
-//   if (this.selectedMaintenanceDue.includes(SHORTTERM_PRIORITY)) {
-//     this.filterAssetsLowerThanMaintenanceValue(this.MAINTENANCE_DAYS_LOWER_THRESHOLD);
-//   } else if (this.selectedMaintenanceDue.includes(MEDIUMTERM_PRIORITY)) {
-//     this.filterAssetsBetweenTwoMaintenanceValues(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
-//   } else if (this.selectedMaintenanceDue.includes(LONGTERM_PRIORITY)) {
-//     this.filterAssetsGreaterThanMaintenanceValue(this.MAINTENANCE_DAYS_UPPER_THRESHOLD);
-//   }
-// }
-//
-// filterAssetsLowerThanMaintenanceValue(value: number) {
-//   this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-//     this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
-//     if (this.index !== -1) {
-//       return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < value;
-//     }
-//   });
-// }
-//
-// filterAssetsGreaterThanMaintenanceValue(value: number) {
-//   this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-//     this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
-//     if (this.index !== -1) {
-//       return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > value;
-//     }
-//   });
-// }
-//
-// filterAssetOutsideTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
-//   this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-//     this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
-//     if (this.index !== -1) {
-//       return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < lowerValue ||
-//         Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > greaterValue;
-//     }
-//   });
-// }
-//
-// filterAssetsBetweenTwoMaintenanceValues(lowerValue: number, greaterValue: number) {
-//   this.displayedFactoryAssets = this.displayedFactoryAssets.filter(asset => {
-//     this.index = asset.fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
-//     if (this.index !== -1) {
-//       return Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) < greaterValue &&
-//         Number.parseInt(asset.fields[this.index].value, RADIX_DECIMAL) > lowerValue;
-//     }
-//   });
-// }
-//
