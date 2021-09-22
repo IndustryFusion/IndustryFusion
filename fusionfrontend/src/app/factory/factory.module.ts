@@ -70,6 +70,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { DashboardModule } from '../dashboards/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -130,6 +131,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     FusionAppletsModule,
     AccordionModule,
     SelectButtonModule,
+    DashboardModule,
   ],
   exports: [
     FactorySubHeaderComponent,

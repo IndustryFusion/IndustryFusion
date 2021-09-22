@@ -46,7 +46,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
   date: Date = new Date(Date.now());
 
-  fullyLoadedAssets = new Subject<FactoryAssetDetailsWithFields[]>();
+  fullyLoadedAssets$ = new Subject<FactoryAssetDetailsWithFields[]>();
 
   private assetsWithStatus: number;
   private loadedStatusCount = 0;
@@ -85,7 +85,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     this.addStatusHoursToAssets();
 
     if (this.assetsWithStatus === 0) {
-      this.fullyLoadedAssets.next(this.factoryAssetDetailsWithFields);
+      this.fullyLoadedAssets$.next(this.factoryAssetDetailsWithFields);
     }
   }
 
@@ -120,7 +120,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     assetWithFields.statusHours = statusHours;
     this.loadedStatusCount++;
     if (this.assetsWithStatus === this.loadedStatusCount) {
-      this.fullyLoadedAssets.next(this.factoryAssetDetailsWithFields);
+      this.fullyLoadedAssets$.next(this.factoryAssetDetailsWithFields);
     }
   }
 

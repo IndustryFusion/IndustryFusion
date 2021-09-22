@@ -16,3 +16,65 @@
 @import 'src/assets/sass/base/typography';
 @import 'src/assets/sass/abstract/variables';
 @import "../asset-performance.component";
+
+
+.efficiency-dashboard-overview {
+  padding: 1%;
+  height: max-content;
+  width: 100%;
+  background: $grey-background;
+
+  .aggregated-stats {
+    display: flex;
+    padding-bottom: 1rem;
+  }
+}
+
+.aggregated-section {
+  background: $white-background !important;
+  height: $dashboard-height-high;
+  border-radius: 10px;
+  display: block;
+
+  &.status {
+    margin-left: 1.5rem;
+  }
+}
+
+.equipment-efficiency-dashboard-overview-title {
+  padding-left: 2rem;
+  padding-top: 1.5rem;
+  display: inline-block;
+
+  color: $basic-black;
+  text-align: left;
+  font-variant: normal;
+  font-style: normal;
+  font-size: $bigger-font-size;
+  line-height: $big-line-height;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.margin-right {
+  margin-right: 0.5rem;
+}
+
+span, label {
+  vertical-align: text-top;
+}
+
+table {
+  table-layout: fixed;
+  width: 80%;
+}
+
+tbody tr {
+  height: 2rem;
+}
+
+th,
+td {
+  width: 80%;
+  overflow: hidden;
+}

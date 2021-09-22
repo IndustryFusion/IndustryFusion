@@ -13,9 +13,9 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'base/typography';
-@import '../equipment-efficiency-overview.component';
+@import 'src/assets/sass/abstract/variables';
+@import 'src/assets/sass/base/typography';
+@import 'src/app/dashboards/components/content/equipment-efficiency-overview/equipment-efficiency-overview.component';
 
 .status-overview-data {
   display: flex;

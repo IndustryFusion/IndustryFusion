@@ -26,4 +26,13 @@ under the License.
       ></p-selectButton>
     </div>
   </div>
+
+  <div>
+    <div class="aggregated-stats list-header p-grid">
+      <app-equipment-efficiency-overview-donut-chart class="aggregated-section p-col-4" *ngIf="isLoaded"
+                                                     [title]="'24 h performance summary'"
+                                                     [aggregatedStatusHours$]="aggregatedStatusHours$">
+      </app-equipment-efficiency-overview-donut-chart>
+    </div>
+  </div>
 </div>
