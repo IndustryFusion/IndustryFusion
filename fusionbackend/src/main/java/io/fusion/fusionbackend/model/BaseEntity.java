@@ -38,26 +38,10 @@ public abstract class BaseEntity implements Serializable {
     @Id
     @Column(updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
-    protected Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long id;
 
     @Version
     private Long version;
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
 
     @Override
     public boolean equals(Object o) {
