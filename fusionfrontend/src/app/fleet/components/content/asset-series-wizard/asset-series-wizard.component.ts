@@ -195,6 +195,7 @@ export class AssetSeriesWizardComponent implements OnInit {
   private updateAssetSeriesFromForm(): void {
     const updatedAssetSeries: AssetSeries = this.assetSeriesForm.getRawValue();
 
+    updatedAssetSeries.customScript = this.assetSeries.customScript;
     updatedAssetSeries.fieldSources = this.assetSeries.fieldSources;
     updatedAssetSeries.fieldSourceIds = this.assetSeries.fieldSourceIds;
 

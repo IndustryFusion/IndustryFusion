@@ -30,6 +30,7 @@ export class AssetSeries extends BaseEntity {
    name: string;
    description: string;
    imageKey: string;
+   customScript: string;
 }
 
 export class ConnectivitySettings extends BaseEntity {

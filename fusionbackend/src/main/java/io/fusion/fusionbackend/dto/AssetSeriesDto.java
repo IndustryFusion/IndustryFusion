@@ -41,6 +41,7 @@ public class AssetSeriesDto extends BaseAssetDto {
     protected String protectionClass;
     protected String handbookUrl;
     protected String videoUrl;
+    protected String customScript;
 
     private Long connectivitySettingsId;
     private ConnectivitySettingsDto connectivitySettings;

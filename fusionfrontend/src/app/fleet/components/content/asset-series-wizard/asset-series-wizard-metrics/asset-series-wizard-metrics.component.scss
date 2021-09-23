@@ -50,6 +50,18 @@
   }
 }
 
+.custom-script {
+  .wizard-title {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  textarea {
+    width: 100% !important;
+    min-height: 10rem !important;
+  }
+}
+
 :host ::ng-deep .if-warning-toast {
   margin-top: -1.2rem;
 }

@@ -56,6 +56,7 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .videoUrl(entity.getVideoUrl())
                 .fieldSourceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldSources()))
                 .connectivitySettingsId(entity.getConnectivitySettings().getId())
+                .customScript(entity.getCustomScript())
                 .build();
 
         baseAssetMapper.copyToDto(entity, dto);
@@ -99,6 +100,7 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .protectionClass(dto.getProtectionClass())
                 .handbookUrl(dto.getHandbookUrl())
                 .videoUrl(dto.getVideoUrl())
+                .customScript(dto.getCustomScript())
                 .build();
 
         baseAssetMapper.copyToEntity(dto, entity);
