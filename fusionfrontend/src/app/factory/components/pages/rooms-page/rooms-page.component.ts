@@ -13,9 +13,23 @@
  * under the License.
  */
 
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FactoryResolver } from '../../../services/factory-resolver.service';
 
-export interface BaseSubtitleQuery<T> {
-  waitForActive(): Observable<T>;
-  selectSubtitleName(entity: any): Observable<string>;
+@Component({
+  selector: 'app-rooms-page',
+  templateUrl: './rooms-page.component.html',
+  styleUrls: ['./rooms-page.component.scss']
+})
+export class RoomsPageComponent implements OnInit {
+
+  constructor(activatedRoute: ActivatedRoute,
+              private factoryResolver: FactoryResolver) {
+    this.factoryResolver.resolve(activatedRoute);
+  }
+
+  ngOnInit() {
+  }
+
 }

@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { CompanyPageComponent } from './company-page.component';
+ import { RoomsPageComponent } from './rooms-page.component';
 
-describe('CompanyPageComponent', () => {
-  let component: CompanyPageComponent;
-  let fixture: ComponentFixture<CompanyPageComponent>;
+ describe('FactorySiteRoomsPageComponent', () => {
+  let component: RoomsPageComponent;
+  let fixture: ComponentFixture<RoomsPageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompanyPageComponent ]
+      declarations: [ RoomsPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CompanyPageComponent);
+    fixture = TestBed.createComponent(RoomsPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

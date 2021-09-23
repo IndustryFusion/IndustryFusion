@@ -57,10 +57,12 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
     let newRoute = subroute2 ?  ['..', subroute, subroute2] : ['..', subroute];
-    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`) || this.isApplets()) {
-      newRoute = [subroute];
+    const endsWithTwoUrlSegmentsAfterID = this.isApplets() || this.isNotifications();
+    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`) || endsWithTwoUrlSegmentsAfterID) {
+      newRoute = newRoute.slice(1, newRoute.length);
     }
-    const relativeToRoute = this.isApplets() ? this.getActiveRouteSecondLastChild() : this.getActiveRouteLastChild();
+
+    const relativeToRoute = endsWithTwoUrlSegmentsAfterID ? this.getActiveRouteSecondLastChild() : this.getActiveRouteLastChild();
     return this.router.navigate(newRoute, { relativeTo: relativeToRoute });
   }
 
@@ -74,6 +76,10 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   isApplets() {
     return this.isRouteActive('active') || this.isRouteActive('archiv');
+  }
+
+  isNotifications() {
+    return this.isRouteActive('open') || this.isRouteActive('cleared');
   }
 
   private getActiveRouteLastChild() {

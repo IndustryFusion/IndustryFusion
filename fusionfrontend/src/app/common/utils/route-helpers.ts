@@ -13,10 +13,16 @@
  * under the License.
  */
 
-.wrapper {
-  margin: 0 80px;
-}
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { ID } from '@datorama/akita';
 
-clr-dg-row[ng-reflect-router-link] {
-  cursor: pointer;
+export class RouteHelpers {
+  public static findParamInFullActivatedRoute(activatedRouteSnapshot: ActivatedRouteSnapshot, paramName: string): ID {
+    let id = activatedRouteSnapshot.paramMap.get(paramName) as ID;
+    while (id == null && activatedRouteSnapshot.parent != null) {
+      activatedRouteSnapshot = activatedRouteSnapshot.parent;
+      id = activatedRouteSnapshot.paramMap.get(paramName) as ID;
+    }
+    return id;
+  }
 }

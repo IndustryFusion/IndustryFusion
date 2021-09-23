@@ -18,7 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
 import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
-import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
+import { MainAuthGuard } from '../services/main-auth-guard.service';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
 import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
@@ -30,7 +30,7 @@ const routes: Routes = [
   {
     path: 'fleetmanager/companies/:companyId/assetseries',
     component: AssetSeriesPageComponent,
-    canActivate: [MainAuthGuardGuard],
+    canActivate: [MainAuthGuard],
     data: {
       breadcrumb: 'Asset Series',
     },

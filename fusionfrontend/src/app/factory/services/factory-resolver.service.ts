@@ -36,12 +36,12 @@ import { RoomService } from 'src/app/store/room/room.service';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../../store/factory-asset-details/factory-asset-details.query';
 import { FactoryAssetDetailsService } from '../../store/factory-asset-details/factory-asset-details.service';
-import { FactoryManagerPageType, RouteData } from '../factory-routing.model';
 import { AssetSeriesDetails } from '../../store/asset-series-details/asset-series-details.model';
 import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details.query';
-import { Country } from '../../store/country/country.model';
 import { CountryResolver } from '../../resolvers/country.resolver';
 import { OispDeviceResolver } from '../../resolvers/oisp-device-resolver';
+import { ID } from '@datorama/akita';
+import { RouteHelpers } from '../../common/utils/route-helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +65,6 @@ export class FactoryResolver {
   public fields$: Observable<FieldDetails[]>;
   public factorySubTitle$: Subject<string>;
   public companies$: Observable<Company[]>;
-  public countries$: Observable<Country[]>;
 
   constructor(
     private companyService: CompanyService,
@@ -89,16 +88,27 @@ export class FactoryResolver {
     this.factorySite$ = this.factorySiteQuery.selectActive();
     this.room$ = this.roomQuery.selectActive();
     this.asset$ = this.assetQuery.selectActive();
-    this.factorySubTitle$ = new BehaviorSubject('Apps');
+    this.factorySubTitle$ = new BehaviorSubject('Launchpad');
   }
 
   resolve(activatedRoute: ActivatedRoute): void {
     this.countryResolver.resolve().subscribe();
     this.oispDeviceResolver.resolve().subscribe();
 
+    const companyId = this.resolveCompany(activatedRoute);
+    const factorySiteId = this.resolveFactorySite(activatedRoute, companyId);
+    this.resolveRoom(activatedRoute, factorySiteId);
+    this.resolveAsset(activatedRoute, companyId);
+  }
+
+  private resolveCompany(activatedRoute: ActivatedRoute): ID {
     this.companies$ = this.companyService.getCompanies();
     this.companyService.getCompanies().subscribe();
-    const companyId = activatedRoute.snapshot.paramMap.get('companyId');
+    let companyId = RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'companyId');
+    if (companyId == null && this.companyQuery.getActiveId() != null) {
+      companyId = this.companyQuery.getActiveId();
+    }
+
     this.companyService.setActive(companyId);
     if (companyId != null) {
       this.companyService.getCompany(companyId).subscribe();
@@ -126,9 +136,13 @@ export class FactoryResolver {
           )
         ),
       );
-
     }
-    const factorySiteId = activatedRoute.snapshot.paramMap.get('factorySiteId');
+
+    return companyId;
+  }
+
+  private resolveFactorySite(activatedRoute: ActivatedRoute, companyId: ID): ID {
+    const factorySiteId = RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'factorySiteId');
     this.factorySiteService.setActive(factorySiteId);
     if (factorySiteId != null) {
       this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(companyId);
@@ -138,7 +152,11 @@ export class FactoryResolver {
       this.assets$ = this.factoryComposedQuery.selectAssetsOfFactorySite(factorySiteId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId);
     }
-    const roomId = activatedRoute.snapshot.paramMap.get('roomId');
+    return factorySiteId;
+  }
+
+  private resolveRoom(activatedRoute: ActivatedRoute, factorySiteId: ID) {
+    const roomId =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'roomId');
     this.roomService.setActive(roomId);
     if (roomId != null) {
       this.rooms$ = this.roomQuery.selectActive().pipe(map(room => Array(room)));
@@ -146,7 +164,10 @@ export class FactoryResolver {
       this.assets$ = this.assetQuery.selectAssetsOfRoom(roomId);
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsByRoomId(roomId);
     }
-    const assetId = activatedRoute.snapshot.paramMap.get('assetId');
+  }
+
+  private resolveAsset(activatedRoute: ActivatedRoute, companyId: ID) {
+    const assetId =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'assetId');
     this.assetService.setActive(assetId);
     this.assetDetailsService.setActive(assetId);
     if (assetId != null) {
@@ -175,38 +196,6 @@ export class FactoryResolver {
             assets.map(asset => this.fieldService.getFieldsOfAsset(companyId, asset.id))))
       ).subscribe();
       this.assetsWithFields$ = this.factoryComposedQuery.selectFieldsOfSelectedAssets();
-    }
-
-    const pageTypes: FactoryManagerPageType[] = (activatedRoute.snapshot.data as RouteData).pageTypes || [];
-    if (pageTypes.includes(FactoryManagerPageType.COMPANY_DETAIL)) {
-      this.factorySubTitle$.next('My Factory Sites');
-    } else if (pageTypes.includes(FactoryManagerPageType.ASSET_DETAIL)) {
-      this.assetQuery
-        .waitForActive()
-        .subscribe(asset => this.factorySubTitle$.next('Assets > ' + asset.name));
-    } else if (
-      pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL)
-      && pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)
-      && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.roomQuery
-        .waitForActive()
-        .subscribe(room => this.factorySubTitle$.next('Rooms > ' + room.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL) && pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.factorySiteQuery
-        .waitForActive()
-        .subscribe(factorySite => this.factorySubTitle$.next('Assets > ' + factorySite.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.FACTORY_SITE_DETAIL) && pageTypes.includes(FactoryManagerPageType.ROOM_LIST)) {
-      this.factorySiteQuery
-        .waitForActive()
-        .subscribe(factorySite => this.factorySubTitle$.next('Rooms > ' + factorySite.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
-      this.roomQuery
-        .waitForActive()
-        .subscribe(room => this.factorySubTitle$.next('Rooms > ' + room.name));
-    } else if (pageTypes.includes(FactoryManagerPageType.ASSET_LIST)) {
-      this.factorySubTitle$.next('My Assets');
-    } else {
-      this.factorySubTitle$.next('Apps');
     }
   }
 }

@@ -20,6 +20,7 @@ import { BaseQueryEntity } from '../basequery';
 import { AssetTypeTemplate } from './asset-type-template.model';
 import { AssetTypeTemplateState, AssetTypeTemplateStore } from './asset-type-template.store';
 import { NameWithVersionPipe } from '../../pipes/namewithversion.pipe';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AssetTypeTemplateQuery extends BaseQueryEntity<AssetTypeTemplateState, AssetTypeTemplate> {
@@ -45,7 +46,9 @@ export class AssetTypeTemplateQuery extends BaseQueryEntity<AssetTypeTemplateSta
     this.store.setError(null);
   }
 
-  getSubtitleName(entity: any) {
-    return this.nameWithVersionPipe.transform(entity.name, entity.publishedVersion);
+  selectSubtitleName(entity: any): Observable<string> {
+    return this.selectEntity(entity.id).pipe(
+      map((item => this.nameWithVersionPipe.transform(item.name, item.publishedVersion)))
+    );
   }
 }
