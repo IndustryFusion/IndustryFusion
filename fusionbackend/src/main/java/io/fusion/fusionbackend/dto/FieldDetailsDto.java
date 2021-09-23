@@ -20,13 +20,14 @@ import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class FieldDetailsDto {
-    private Long id;
+public class FieldDetailsDto extends BaseEntityDto {
     private Long assetId;
     private String externalName;
     private FieldType fieldType;
