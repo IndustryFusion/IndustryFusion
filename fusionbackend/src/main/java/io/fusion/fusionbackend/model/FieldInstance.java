@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -27,7 +28,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "field_instance")
@@ -65,6 +65,9 @@ public class FieldInstance extends BaseEntity {
     private String value;
 
     public void copyFrom(final FieldInstance sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }
