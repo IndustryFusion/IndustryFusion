@@ -13,10 +13,9 @@
  * under the License.
  */
 
-import { ID } from '@datorama/akita';
+import { BaseEntity } from "../baseentity.model";
 
-export class User {
-  id: ID;
+export class User extends BaseEntity {
   name: string;
   email: string;
 }
