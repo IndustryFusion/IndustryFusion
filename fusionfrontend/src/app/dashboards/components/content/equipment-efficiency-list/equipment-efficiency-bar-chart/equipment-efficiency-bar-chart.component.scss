@@ -15,6 +15,8 @@
 
 @import "abstract/variables";
 
+$canvas-height: var(--canvas-height);
+
 .maintenance-value {
   display: flex;
   flex-direction: row;
@@ -37,6 +39,6 @@
 
 :host ::ng-deep canvas {
   border-radius: 0 8px 8px 0 !important;
-  width: 16rem !important;
-  height: 3rem !important;
+  width: 20rem !important;
+  height: $canvas-height !important;
 }

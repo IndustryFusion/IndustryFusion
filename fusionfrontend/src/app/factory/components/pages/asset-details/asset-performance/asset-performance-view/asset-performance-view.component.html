@@ -33,6 +33,16 @@ under the License.
                                                      [title]="'24 h performance summary'"
                                                      [aggregatedStatusHours$]="aggregatedStatusHours$">
       </app-equipment-efficiency-overview-donut-chart>
+
+      <div class="aggregated-section status p-col-4">
+        <label class="equipment-efficiency-dashboard-overview-title">{{ '3 days performance summary' }}</label>
+        <div class="bar-charts">
+          <app-equipment-efficiency-bar-chart *ngIf="isLoaded && getStatusHoursForBarChart() != null"
+                                              [showAxes]="true" [yLabels]="reversedYBarChartLabels" [maxXAxisValue]="24"
+                                              [assetStatusHoursOfDays]="getStatusHoursForBarChart()">
+          </app-equipment-efficiency-bar-chart>
+        </div>
+      </div>
     </div>
   </div>
 </div>

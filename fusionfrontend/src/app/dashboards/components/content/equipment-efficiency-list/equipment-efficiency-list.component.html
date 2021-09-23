@@ -78,8 +78,8 @@ under the License.
         </td>
         <td [style.width.%]="10">{{rowData.factorySiteName}}</td>
         <td [style.width.%]="25">
-          <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHours"
-                                              [assetStatusHours]="rowData.statusHours">
+          <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHoursOneDay"
+                                              [assetStatusHoursOfDays]="[rowData.statusHoursOneDay]">
           </app-equipment-efficiency-bar-chart>
         </td>
       </tr>

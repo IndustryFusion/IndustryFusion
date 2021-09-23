@@ -62,8 +62,8 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
     if (this.factoryAssetDetailsWithFields) {
       const aggregatedStatusHours = this.getNewAggregatedStatusHours();
       for (const assetWithField of this.factoryAssetDetailsWithFields) {
-        if (assetWithField.statusHours) {
-          assetWithField.statusHours.forEach(statusHours => {
+        if (assetWithField.statusHoursOneDay) {
+          assetWithField.statusHoursOneDay.statusHours.forEach(statusHours => {
             aggregatedStatusHours[statusHours.status].hours += statusHours.hours;
           });
         }

@@ -25,7 +25,7 @@ import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { KairosStatusAggregationService } from '../../../../services/kairos-status-aggregation.service';
-import { StatusHours } from '../../../../services/kairos-status-aggregation.model';
+import { StatusHours, StatusHoursOneDay } from '../../../../services/kairos-status-aggregation.model';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 
@@ -117,7 +117,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
   }
 
   private updateStatusHoursOfAsset(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]) {
-    assetWithFields.statusHours = statusHours;
+    assetWithFields.statusHoursOneDay = new StatusHoursOneDay(statusHours);
     this.loadedStatusCount++;
     if (this.assetsWithStatus === this.loadedStatusCount) {
       this.fullyLoadedAssets$.next(this.factoryAssetDetailsWithFields);

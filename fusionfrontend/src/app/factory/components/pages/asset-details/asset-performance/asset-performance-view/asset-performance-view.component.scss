@@ -17,10 +17,8 @@
 @import 'src/assets/sass/abstract/variables';
 @import "../asset-performance.component";
 
-
 .efficiency-dashboard-overview {
   padding: 1%;
-  height: max-content;
   width: 100%;
   background: $grey-background;
 
@@ -60,21 +58,11 @@
   margin-right: 0.5rem;
 }
 
-span, label {
-  vertical-align: text-top;
-}
-
-table {
-  table-layout: fixed;
-  width: 80%;
-}
-
-tbody tr {
-  height: 2rem;
-}
-
-th,
-td {
-  width: 80%;
-  overflow: hidden;
+.bar-charts {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: -1rem;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
 }
