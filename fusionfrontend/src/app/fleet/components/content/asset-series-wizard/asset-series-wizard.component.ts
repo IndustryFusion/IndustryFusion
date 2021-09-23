@@ -112,7 +112,7 @@ export class AssetSeriesWizardComponent implements OnInit {
       handbookUrl: [null, WizardHelper.maxTextLengthValidator],
       videoUrl: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [null, WizardHelper.maxTextLengthValidator],
-      assetTypeTemplateId: [{value: null, disabled: this.mode === DialogType.EDIT}, Validators.required],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT}, Validators.required],
       companyId: [null, Validators.required],
     });
 
