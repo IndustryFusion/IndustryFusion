@@ -21,7 +21,7 @@ import {
   RuleResetType,
   RuleStatus,
   SynchronizationStatus
-} from '../../../services/oisp.model';
+} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { EnumHelpers } from '../../../common/utils/enum-helpers';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { WizardHelper } from '../../../common/utils/wizard-helper';

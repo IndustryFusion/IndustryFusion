@@ -14,6 +14,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-asset-applets',
@@ -24,8 +25,14 @@ export class AssetAppletsComponent implements OnInit {
 
   public showActive = true;
 
-  constructor() { }
+  constructor(activatedRoute: ActivatedRoute) {
+    this.showActive = this.isRouteActive('active', activatedRoute.snapshot);
+  }
 
   ngOnInit(): void {
+  }
+
+  isRouteActive(subroute: string, activatedRouteSnapshot: ActivatedRouteSnapshot): boolean {
+    return activatedRouteSnapshot.url.map(segment => segment.path).includes(subroute);
   }
 }

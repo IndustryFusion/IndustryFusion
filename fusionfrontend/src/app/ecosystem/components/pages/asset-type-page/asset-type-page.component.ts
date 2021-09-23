@@ -21,7 +21,6 @@ import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
 import { ActivatedRoute } from '@angular/router';
 import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypesComposedQuery } from '../../../../store/composed/asset-types-composed.query';
-import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetTypeDialogComponent } from '../../content/asset-type-dialog/asset-type-dialog.component';
@@ -44,13 +43,11 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
               private assetTypeService: AssetTypeService,
               private activatedRoute: ActivatedRoute,
               private assetTypesComposedQuery: AssetTypesComposedQuery,
-              private ecoSystemManagerResolver: EcoSystemManagerResolver,
               public dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.assetTypeQuery.selectLoading();
     this.resolve(this.activatedRoute);
-    this.ecoSystemManagerResolver.resolve(this.activatedRoute);
     this.assetTypeTemplates$ = this.assetTypesComposedQuery.selectTemplatesOfAssetType(this.assetTypeId);
   }
 
@@ -64,6 +61,7 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
       this.assetType$ = this.assetTypeQuery.selectAssetType(assetTypeId);
       this.assetTypeId = assetTypeId;
       this.assetTypeService.setActive(assetTypeId);
+    } else {
     }
   }
 

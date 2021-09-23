@@ -13,18 +13,22 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { ActiveState, EntityState, EntityStore, ID, StoreConfig } from '@datorama/akita';
+import { Rule } from './oisp-rule.model';
 
-@Component({
-  selector: 'app-fleet-manager-page-component',
-  templateUrl: './fleet-manager-page-component.component.html',
-  styleUrls: ['./fleet-manager-page-component.component.scss']
-})
-export class FleetManagerPageComponentComponent implements OnInit {
+export interface OispRuleState extends EntityState<Rule, ID>, ActiveState { }
 
-  constructor() { }
+const initialState = {
+  active: null
+};
 
-  ngOnInit(): void {
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'oisp-rule', resettable: true })
+export class OispRuleStore extends EntityStore<OispRuleState, Rule> {
+
+  constructor() {
+    super(initialState);
   }
 
 }

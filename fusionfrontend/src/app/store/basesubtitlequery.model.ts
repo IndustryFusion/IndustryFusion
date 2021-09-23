@@ -13,19 +13,9 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-@Component({
-  selector: 'app-ecosystem-page-title',
-  templateUrl: './ecosystem-page-title.component.html',
-  styleUrls: ['./ecosystem-page-title.component.scss']
-})
-export class EcosystemPageTitleComponent implements OnInit {
-
-  @Input()
-  ecoSystemManagerSubTitle: string;
-
-  constructor() { }
-
-  ngOnInit() { }
+export interface BaseSubtitleQuery<T> {
+  waitForActives(): Observable<T>;
+  getSubtitleName(entity: any): string;
 }

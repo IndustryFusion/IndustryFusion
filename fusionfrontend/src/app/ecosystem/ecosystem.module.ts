@@ -25,7 +25,6 @@ import { AssetTypeTemplateListItemComponent } from './components/content/asset-t
 import { AssetTypeTemplateListComponent } from './components/content/asset-type-template/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypeTemplateWizardMainComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
-import { EcosystemPageTitleComponent } from './components/content/ecosystem-page-title/ecosystem-page-title.component';
 import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
@@ -58,7 +57,6 @@ import { AssetTypeTemplateWizardStepThreeComponent } from './components/content/
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateWizardStepFourComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-four/asset-type-template-wizard-step-four.component';
 // tslint:disable-next-line:max-line-length
-// tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateWizardStepFinishedComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-finished/asset-type-template-wizard-step-finished.component';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
@@ -89,7 +87,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     AssetTypeTemplateListComponent,
     AssetTypeTemplateWizardMainComponent,
     EcosystemSubHeaderComponent,
-    EcosystemPageTitleComponent,
     FieldsPageComponent,
     QuantityTypesPageComponent,
     UnitPageComponent,
@@ -140,7 +137,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
   ],
   exports: [
     EcosystemSubHeaderComponent,
-    EcosystemPageTitleComponent,
   ],
   providers: [
     DialogService,

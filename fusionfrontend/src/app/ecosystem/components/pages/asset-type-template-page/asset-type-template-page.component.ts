@@ -24,7 +24,6 @@ import { AssetTypeTemplateDialogPublishComponent } from '../../content/asset-typ
 import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
 import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
-import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { FormGroup } from '@angular/forms';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 
@@ -48,7 +47,6 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   constructor(private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private assetTypeTemplateService: AssetTypeTemplateService,
               private fieldTargetService: FieldTargetService,
-              private ecoSystemManagerResolver: EcoSystemManagerResolver,
               private dialogService: DialogService,
               public route: ActivatedRoute) { }
 
@@ -64,7 +62,6 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     }
 
     this.assetTypeTemplateService.setActive(assetTypeTemplateId);
-    this.ecoSystemManagerResolver.resolve(this.route);
   }
 
   private updateAssetTypeTemplate(assetTypeTemplate: AssetTypeTemplate) {

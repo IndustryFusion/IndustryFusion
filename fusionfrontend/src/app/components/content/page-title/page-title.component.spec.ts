@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FleetPageTitleComponent } from './fleet-page-title.component';
+import { PageTitleComponent } from './page-title.component';
 
-describe('FleetPageTitleComponent', () => {
-  let component: FleetPageTitleComponent;
-  let fixture: ComponentFixture<FleetPageTitleComponent>;
+describe('PageTitleComponent', () => {
+  let component: PageTitleComponent;
+  let fixture: ComponentFixture<PageTitleComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ FleetPageTitleComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ PageTitleComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FleetPageTitleComponent);
+    fixture = TestBed.createComponent(PageTitleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

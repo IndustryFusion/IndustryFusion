@@ -28,6 +28,7 @@ import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
 import { BooleanPipe } from '../pipes/boolean.pipe';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MaintenanceProgressbarComponent } from '../components/content/maintenance-progressbar/maintenance-progressbar.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
@@ -68,6 +69,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     RadioButtonModule,
     DialogModule,
     ToastModule,
+    BreadcrumbModule,
     OverlayPanelModule,
     ProgressBarModule,
     AgmCoreModule.forRoot({
@@ -98,6 +100,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     RadioButtonModule,
     LabelControlDirective,
     TooltipComponent,
+    BreadcrumbModule,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
@@ -106,7 +109,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   ],
   providers: [
     MessageService,
-    BooleanPipe
+    BooleanPipe,
   ]
 })
 export class IFCommon {

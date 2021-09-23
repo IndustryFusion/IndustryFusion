@@ -13,19 +13,24 @@
  * under the License.
  */
 
-export enum EcosystemManagerPageType {
-  ASSET_TYPE_LIST,
-  ASSET_TYPE_DETAIL,
-  ASSET_TYPE_TEMPLATE_LIST,
-  ASSET_TYPE_TEMPLATE_DETAIL,
-  FIELD_LIST,
-  FIELD_DETAIL,
-  QUANTITY_TYPE_LIST,
-  QUANTITY_TYPE_DETAIL,
-  UNIT_LIST,
-  UNIT_DETAIL,
-}
+import { Injectable } from '@angular/core';
+import { OispRuleState, OispRuleStore } from './oisp-rule.store';
+import { BaseQueryEntity } from '../../basequery';
+import { Rule } from './oisp-rule.model';
 
-export class RouteData {
-  public pageTypes: EcosystemManagerPageType[];
+@Injectable({ providedIn: 'root' })
+export class OispRuleQuery extends BaseQueryEntity<OispRuleState, Rule> {
+
+  constructor(protected store: OispRuleStore) {
+    super(store);
+  }
+
+  resetStore() {
+    this.store.reset();
+  }
+
+  resetError() {
+    this.store.setError(null);
+  }
+
 }

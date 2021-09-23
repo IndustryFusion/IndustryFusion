@@ -17,7 +17,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FusionAppletsListComponent } from './components/fusion-applets-list/fusion-applets-list.component';
 import { FusionAppletsRoutingModule } from './fusion-applets-routing.module';
-import { FusionAppletPageTitleComponent } from './components/fusion-applets-page-title/fusion-applet-page-title.component';
 import { TableModule } from 'primeng/table';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { IFCommon } from '../common/i-f-common.module';
@@ -52,8 +51,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [
+    FusionAppletsOverviewComponent,
     FusionAppletsListComponent,
-    FusionAppletPageTitleComponent,
     CreateFusionAppletComponent,
     FusionAppletDetailComponent,
     FusionAppletPageComponent,
@@ -68,28 +67,26 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     AppletConditionsValueComponent,
     ValidIconComponent,
     ControlLimitSelectorComponent,
-    FusionAppletsOverviewComponent,
   ],
-    imports: [
-        CommonModule,
-        FusionAppletsRoutingModule,
-        TableModule,
-        InputSwitchModule,
-        IFCommon,
-        ReactiveFormsModule,
-        CardModule,
-        AccordionModule,
-        MultiSelectModule,
-        InplaceModule,
-        FleetModule,
-        InputNumberModule,
-        SelectButtonModule,
-    ],
-    exports: [
-        FusionAppletPageTitleComponent,
-        FusionAppletsSubHeaderComponent,
-        FusionAppletsListComponent,
-    ],
+  imports: [
+    CommonModule,
+    FusionAppletsRoutingModule,
+    TableModule,
+    InputSwitchModule,
+    IFCommon,
+    ReactiveFormsModule,
+    CardModule,
+    AccordionModule,
+    MultiSelectModule,
+    InplaceModule,
+    FleetModule,
+    InputNumberModule,
+    SelectButtonModule,
+  ],
+  exports: [
+    FusionAppletsSubHeaderComponent,
+    FusionAppletsListComponent,
+  ],
   providers: [
     EnumHelpers,
     RuleStatusUtil,

@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { BaseQueryEntity } from '../basequery';
 import { Field } from './field.model';
-import { FieldState, FieldStore } from './field-store.service';
+import { FieldState, FieldStore } from './field.store';
 
 @Injectable({ providedIn: 'root' })
 export class FieldQuery extends BaseQueryEntity<FieldState, Field> {

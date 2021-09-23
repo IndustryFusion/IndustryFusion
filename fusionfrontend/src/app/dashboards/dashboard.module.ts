@@ -20,7 +20,6 @@ import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from 'ng2-charts';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { DashboardPageTitleComponent } from './components/content/dashboard-page-title/dashboard-page-title.component';
 import { DashboardSubHeaderComponent } from './components/content/dashboard-sub-header/dashboard-sub-header.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { environment } from 'src/environments/environment';
@@ -43,7 +42,6 @@ import { EquipmentEfficiencyOverviewDonutChartComponent } from './components/con
 
 @NgModule({
   declarations: [
-    DashboardPageTitleComponent,
     DashboardSubHeaderComponent,
     MaintenancePageComponent,
     MaintenanceListComponent,
@@ -76,7 +74,6 @@ import { EquipmentEfficiencyOverviewDonutChartComponent } from './components/con
   ],
   exports: [
     DashboardSubHeaderComponent,
-    DashboardPageTitleComponent,
   ]
 })
 export class DashboardModule {

@@ -15,12 +15,13 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OispService } from '../../../services/oisp.service';
-import { Rule, RuleResetType, RuleType, } from '../../../services/oisp.model';
+import { Rule, RuleResetType, RuleType, } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
 import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
+import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service';
+import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
 
 @Component({
   selector: 'app-fusion-applet-editor',
@@ -38,17 +39,19 @@ export class FusionAppletEditorComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private oispService: OispService,
+    private oispRuleService: OispRuleService,
     private oispDeviceQuery: OispDeviceQuery,
     public ruleStatusUtil: RuleStatusUtil,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private oispRuleQuery: OispRuleQuery
   ) {
     this.loadDevices();
     this.createRuleGroup();
-    const fusionAppletId = this.activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
-    this.oispService.getRule(fusionAppletId).subscribe(rule => {
-      this.rule = rule;
+    const fusionAppletId = this.activatedRoute.snapshot.paramMap.get('fusionAppletId');
+    this.oispRuleQuery.selectEntity(fusionAppletId).subscribe(rule => {
+      this.rule = JSON.parse(JSON.stringify(rule));
       this.ruleGroup.patchValue(this.rule);
+      this.oispRuleService.setActive(this.rule.id);
     });
   }
 
@@ -84,7 +87,7 @@ export class FusionAppletEditorComponent implements OnInit {
   save() {
     this.rule = this.ruleGroup.getRawValue();
     this.createPopulation();
-    this.oispService.updateRule(this.rule.id, this.rule).subscribe(rule => {
+    this.oispRuleService.updateRule(this.rule.id, this.rule).subscribe(rule => {
       this.rule = rule;
       this.router.navigate(['..', 'detail'], { relativeTo: this.activatedRoute });
     });
