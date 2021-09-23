@@ -13,31 +13,9 @@
  * under the License.
  */
 
-/*@import 'src/variables.scss';*/
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 @import 'abstract/variables';
 @import 'base/typography';
-@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
-
-
-.rooms-panel {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: lightgray;
-
-  button {
-    color: $basic-black;
-  }
-
-  .manage {
-    .home-icon {
-      margin-right: 10px;
-    }
-  }
-}
 
 .toolbar {
   border-radius: 10px;

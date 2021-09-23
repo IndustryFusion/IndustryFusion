@@ -45,6 +45,20 @@ export class RoomDialogComponent implements OnInit {
     this.factorySites = this.config.data.factorySites;
     this.factorySiteSelected = this.config.data.factorySiteSelected;
     this.editMode = this.config.data.editMode;
+
+    this.validateConfigData();
+  }
+
+  private validateConfigData() {
+    if (!this.roomForm) {
+      console.warn('[room dialog]: Form is missing');
+    }
+    if (!this.rooms) {
+      console.warn('[room dialog]: Rooms are missing');
+    }
+    if (!this.factorySites) {
+      console.warn('[room dialog]: Factory sites are missing');
+    }
   }
 
   onCancel() {

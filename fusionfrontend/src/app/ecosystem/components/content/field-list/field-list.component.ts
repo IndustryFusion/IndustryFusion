@@ -17,7 +17,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BaseListComponent } from '../base/base-list/base-list.component';
-import { FieldQuery } from '../../../../store/field/field-query.service';
+import { FieldQuery } from '../../../../store/field/field.query';
 import { FieldService } from '../../../../store/field/field.service';
 import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';

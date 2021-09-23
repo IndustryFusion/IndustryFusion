@@ -15,7 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import {  RuleActionType } from '../../../../../services/oisp.model';
+import {  RuleActionType } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 
 @Component({
   selector: 'app-applet-action',

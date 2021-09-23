@@ -31,6 +31,9 @@ header {
   @include flex-center-space;
   background: white;
   width: 100%;
+  > * {
+    flex: unset !important;
+  }
 
   .navigation {
     display: flex;

@@ -43,4 +43,8 @@ export class AssetSeriesDetailsService {
         this.assetSeriesDetailsStore.upsertManyByParentIdCached(cacheKey, entities);
       })));
   }
+
+  setActive(assetTypeId: ID) {
+    this.assetSeriesDetailsStore.setActive(assetTypeId);
+  }
 }

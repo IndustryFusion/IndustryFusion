@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FieldTargetQuery } from '../field-target/field-target.query';
 import { FieldTarget } from '../field-target/field-target.model';
-import { FieldQuery } from '../field/field-query.service';
+import { FieldQuery } from '../field/field.query';
 
 @Injectable({ providedIn: 'root' })
 export class FieldTargetComposedQuery {

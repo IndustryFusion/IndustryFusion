@@ -19,7 +19,7 @@ import {
   ConditionValue, ConditionValueComponent,
   ConditionValueOperator,
   displayConditionType
-} from '../../../../../services/oisp.model';
+} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { SelectItem } from 'primeng/api';
 import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
 import { FormGroup } from '@angular/forms';

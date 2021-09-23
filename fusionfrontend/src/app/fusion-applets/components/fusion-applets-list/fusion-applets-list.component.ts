@@ -14,13 +14,14 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { OispService } from '../../../services/oisp.service';
-import { Rule, RuleActionType, RuleStatus } from '../../../services/oisp.model';
+import { Rule, RuleActionType, RuleStatus } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { CreateFusionAppletComponent } from '../create-fusion-applet/create-fusion-applet.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RuleStatusUtil } from '../../util/rule-status-util';
+import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service';
+import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
 
 @Component({
   selector: 'app-fusion-applets-list',
@@ -37,13 +38,13 @@ export class FusionAppletsListComponent implements OnInit {
   RuleActionType = RuleActionType;
 
   filteredRules: Rule[];
-  rules: Rule[];
 
   public titleMapping:
     { [k: string]: string } = { '=0': 'No Applet', '=1': '# Applet', other: '# Applets' };
 
   constructor(
-    private oispService: OispService,
+    private oispRuleQuery: OispRuleQuery,
+    private oispRuleService: OispRuleService,
     private dialogService: DialogService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -51,29 +52,14 @@ export class FusionAppletsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.oispService.getAllRules().subscribe(rules => {
-      this.rules = rules;
-      this.updateFilter();
+    this.oispRuleQuery.selectAll().subscribe(rules => {
+      this.filteredRules = this.oispRuleService.filterRulesByStatus(rules, this.showActive);
     });
-  }
-
-  updateFilter() {
-    this.filteredRules = this.filterRulesByStatus(this.rules);
-    this.getRuleDetails();
-  }
-
-  filterRulesByStatus(rules: Rule[]): Rule[] {
-    const archivStatus: RuleStatus[] = [RuleStatus.Archived, RuleStatus.Deleted];
-    if (this.showActive) {
-      return rules.filter(rule => !archivStatus.includes(rule.status) );
-    } else {
-      return rules.filter(rule =>  archivStatus.includes(rule.status) );
-    }
   }
 
   isRouteActive(subroute: string): boolean {
     const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(sement => sement.path).includes(subroute);
+    return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
   isActive(status: string): boolean {
@@ -87,9 +73,9 @@ export class FusionAppletsListComponent implements OnInit {
     } else {
       status = RuleStatus.OnHold;
     }
-    this.oispService.setRuleStatus(this.filteredRules[rowIndex].id, status).subscribe(updatedRule => {
+    this.oispRuleService.setRuleStatus(this.filteredRules[rowIndex].id, status).subscribe(updatedRule => {
       this.filteredRules[rowIndex] = updatedRule;
-      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
+      this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
       }
     );
   }
@@ -101,30 +87,30 @@ export class FusionAppletsListComponent implements OnInit {
     const dynamicDialogRef = this.dialogService.open(CreateFusionAppletComponent, dialogConfig);
     dynamicDialogRef.onClose.subscribe(result => {
       if (result) {
-        this.oispService.createRuleDraft(result).subscribe(newRule => {
+        this.oispRuleService.createRuleDraft(result).subscribe(newRule => {
           this.filteredRules.push(newRule);
-          this.filteredRules = this.filterRulesByStatus(this.filteredRules);
-          this.router.navigate(['fusion-applets', newRule.id]);
+          this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
+          this.router.navigate(['fusion-applets', 'detail', newRule.id]);
         });
       }
     });
   }
 
   editItem(rowIndex: number) {
-    this.router.navigate(['fusion-applets', this.filteredRules[rowIndex].id]);
+    this.router.navigate(['fusion-applets', 'detail', this.filteredRules[rowIndex].id]);
   }
 
   deleteItem(rowIndex: number) {
-    this.oispService.deleteRule(this.filteredRules[rowIndex].id).subscribe(() => {
+    this.oispRuleService.deleteRule(this.filteredRules[rowIndex].id).subscribe(() => {
       this.filteredRules[rowIndex].status = RuleStatus.Deleted;
-      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
+      this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
     });
   }
 
   cloneItem(rowIndex: number) {
-    this.oispService.cloneRule(this.filteredRules[rowIndex].id).subscribe(clone => {
+    this.oispRuleService.cloneRule(this.filteredRules[rowIndex].id).subscribe(clone => {
       this.filteredRules.splice(rowIndex + 1, 0, clone);
-      this.filteredRules = this.filterRulesByStatus(this.filteredRules);
+      this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
     });
   }
 
@@ -151,18 +137,16 @@ export class FusionAppletsListComponent implements OnInit {
     return rule.actions?.map(action => action.type).includes(type);
   }
 
-  private getRuleDetails() {
-    for (let i = 0; i < this.filteredRules.length; i++) {
-      if (!this.filteredRules[i].actions) {
-        this.oispService.getRule(this.filteredRules[i].id).subscribe(rule => {
-          const ruleIndex = this.rules.findIndex(searchRule => searchRule.id === rule.id);
-          this.rules[ruleIndex] = rule;
-          const filteredRule = this.filterRulesByStatus([rule])[0];
-          if (filteredRule) {
-            this.filteredRules[i] = filteredRule;
-          }
-        });
-      }
+  onToggleRoute(): Promise<boolean> {
+    const newRoute = ['..', this.showActive ? 'active' : 'archiv'];
+    return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
+  }
+
+  private getActiveRouteLastChild() {
+    let route = this.activatedRoute;
+    while (route.firstChild !== null) {
+      route = route.firstChild;
     }
+    return route;
   }
 }

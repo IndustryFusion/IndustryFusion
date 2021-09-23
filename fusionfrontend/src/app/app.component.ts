@@ -13,15 +13,13 @@
  * under the License.
  */
 
-import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserQuery } from './store/user/user.query';
 import { User } from './store/user/user.model';
-import { akitaDevtools } from '@datorama/akita';
-import { enableAkitaProdMode } from '@datorama/akita';
+import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
-import { EcoSystemManagerResolver } from './ecosystem/services/ecosystem-resolver.service';
 import { OispAlertResolver } from './resolvers/oisp-alert-resolver';
 
 @Component({
@@ -31,14 +29,12 @@ import { OispAlertResolver } from './resolvers/oisp-alert-resolver';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  constructor(private ecoSystemManagerResolver: EcoSystemManagerResolver,
-              private oispAlertResolver: OispAlertResolver,
+  constructor(private oispAlertResolver: OispAlertResolver,
               private factoryResolver: FactoryResolver,
               private userQuery: UserQuery,
               private ngZone: NgZone) { }
   loggedUser$: Observable<User>;
   factorySubTitle$: Observable<string>;
-  ecoSystemManagerSubTitle$: Observable<string>;
 
   private intervalHandle: number;
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
@@ -49,7 +45,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
-    this.ecoSystemManagerSubTitle$ = this.ecoSystemManagerResolver.ecoSystemManagerSubTitle$;
     this.loggedUser$ = this.userQuery.selectActive();
     if (environment.production) {
       enableAkitaProdMode();
