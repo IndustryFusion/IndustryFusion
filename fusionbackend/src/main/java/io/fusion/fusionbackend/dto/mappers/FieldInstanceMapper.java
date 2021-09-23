@@ -42,6 +42,7 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
         }
         return FieldInstanceDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .assetId(EntityDtoMapper.getEntityId(entity.getAsset()))
                 .fieldSourceId(EntityDtoMapper.getEntityId(entity.getFieldSource()))
                 .name(entity.getName())
@@ -59,19 +60,15 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
         if (entity == null) {
             return null;
         }
-        return FieldInstanceDto.builder()
-                .id(entity.getId())
-                .assetId(EntityDtoMapper.getEntityId(entity.getAsset()))
-                .fieldSource(fieldSourceMapper.toDto(entity.getFieldSource(), true))
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .externalName(entity.getExternalName())
-                .sourceSensorLabel(entity.getSourceSensorLabel())
-                .value(entity.getValue())
-                .absoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false))
-                .idealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false))
-                .criticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false))
-                .build();
+
+        FieldInstanceDto fieldInstanceDto = toDtoShallow(entity);
+
+        fieldInstanceDto.setFieldSource(fieldSourceMapper.toDto(entity.getFieldSource(), true));
+        fieldInstanceDto.setAbsoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false));
+        fieldInstanceDto.setIdealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false));
+        fieldInstanceDto.setCriticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false));
+
+        return fieldInstanceDto;
     }
 
     @Override
@@ -89,6 +86,7 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
         }
         FieldInstance entity = FieldInstance.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .externalName(dto.getExternalName())

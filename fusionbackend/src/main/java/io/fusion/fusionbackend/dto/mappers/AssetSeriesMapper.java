@@ -48,6 +48,7 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
         }
         final AssetSeriesDto dto = AssetSeriesDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetTypeTemplateId(EntityDtoMapper.getEntityId(entity.getAssetTypeTemplate()))
                 .ceCertified(entity.getCeCertified())
@@ -95,6 +96,7 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
         }
         final AssetSeries entity = AssetSeries.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .ceCertified(dto.getCeCertified())
                 .protectionClass(dto.getProtectionClass())
                 .handbookUrl(dto.getHandbookUrl())

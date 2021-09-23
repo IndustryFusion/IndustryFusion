@@ -41,6 +41,7 @@ public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
         }
         return CompanyDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .type(entity.getType())
                 .factorySiteIds(EntityDtoMapper.getSetOfEntityIds(entity.getFactorySites()))
                 .assetIds(EntityDtoMapper.getSetOfEntityIds(entity.getAssets()))
@@ -74,6 +75,7 @@ public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
         }
         return Company.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .type(dto.getType())
                 .name(dto.getName())
                 .description(dto.getDescription())
