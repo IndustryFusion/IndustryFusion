@@ -58,12 +58,11 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
     let newRoute = subroute2 ?  ['..', subroute, subroute2] : ['..', subroute];
-    const endsWithTwoUrlSegmentsAfterID = this.isApplets() || this.isNotifications();
-    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`) || endsWithTwoUrlSegmentsAfterID) {
+    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`) || this.endsUrlWithTwoSubroutes()) {
       newRoute = newRoute.slice(1, newRoute.length);
     }
 
-    const relativeToRoute = endsWithTwoUrlSegmentsAfterID ? RouteHelpers.getActiveRouteSecondLastChild(this.activatedRoute) :
+    const relativeToRoute = this.endsUrlWithTwoSubroutes() ? RouteHelpers.getActiveRouteSecondLastChild(this.activatedRoute) :
       RouteHelpers.getActiveRouteLastChild(this.activatedRoute);
     return this.router.navigate(newRoute, { relativeTo: relativeToRoute });
   }
@@ -76,11 +75,21 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
     return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
-  isApplets() {
-    return this.isRouteActive('active') || this.isRouteActive('archiv');
+
+  endsUrlWithTwoSubroutes() {
+    return this.isPerformance() || this.isNotifications() || this.isApplets();
+  }
+
+  isPerformance() {
+    return this.isRouteActive('realtime') || this.isRouteActive('historical') || this.isRouteActive('performance');
   }
 
   isNotifications() {
     return this.isRouteActive('open') || this.isRouteActive('cleared');
   }
+
+  isApplets() {
+    return this.isRouteActive('active') || this.isRouteActive('archiv');
+  }
+
 }
