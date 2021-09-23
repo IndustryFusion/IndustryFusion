@@ -61,6 +61,7 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
                                    fieldInstance: FieldInstance): FormGroup {
     const group = this.formBuilder.group({
       id: [],
+      version: [],
       indexFieldInstances: [],
       indexInArray: [],
       name: [],

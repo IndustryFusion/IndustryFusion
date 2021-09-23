@@ -143,6 +143,7 @@ export class AssetsListItemComponent implements OnInit, OnChanges {
   createDetailsAssetForm(formBuilder: FormBuilder, assetWithDetailsAndFields: FactoryAssetDetailsWithFields) {
     this.assetDetailsForm = formBuilder.group({
       id: [null],
+      version: [],
       roomId: ['', WizardHelper.requiredTextValidator],
       name: ['', WizardHelper.requiredTextValidator],
       description: [''],

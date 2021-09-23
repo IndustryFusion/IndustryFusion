@@ -48,6 +48,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
     const valueValidator = fieldSource.fieldTarget.mandatory ? WizardHelper.requiredTextValidator :  WizardHelper.maxTextLengthValidator;
     return this.formBuilder.group({
       id: [fieldSource.id],
+      version: [fieldSource.version],
       indexFieldSources: [indexFieldSources],
       indexInArray: [indexInArray],
       sourceUnitName: [fieldSource.sourceUnit?.name],

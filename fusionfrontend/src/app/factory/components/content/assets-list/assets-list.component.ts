@@ -20,7 +20,12 @@ import { AssetService } from 'src/app/store/asset/asset.service';
 import { Company } from 'src/app/store/company/company.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
-import { FactoryAssetDetails, FactoryAssetDetailsWithFields, AssetModalMode, AssetModalType } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import {
+  AssetModalMode,
+  AssetModalType,
+  FactoryAssetDetails,
+  FactoryAssetDetailsWithFields
+} from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AssetWithFields } from '../../../../store/asset/asset.model';
@@ -114,6 +119,7 @@ export class AssetsListComponent implements OnInit {
   createDetailsAssetForm(formBuilder: FormBuilder) {
     this.assetDetailsForm = formBuilder.group({
       id: [null],
+      version: [],
       roomId: ['', WizardHelper.requiredTextValidator],
       name: ['', WizardHelper.requiredTextValidator],
       description: [''],

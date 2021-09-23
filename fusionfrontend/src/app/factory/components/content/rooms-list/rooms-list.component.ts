@@ -170,6 +170,7 @@ export class RoomsListComponent implements OnInit, OnChanges {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.roomForm = formBuilder.group({
       id: [null],
+      version: [],
       description: ['', requiredTextValidator],
       name: ['', requiredTextValidator],
       factorySiteId: [this.factorySiteId ? this.factorySiteId : '', requiredTextValidator],

@@ -90,6 +90,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
                                    fieldInstance: FieldInstance): FormGroup {
     const group = this.formBuilder.group({
       id: [],
+      version: [],
       indexFieldInstances: [],
       indexInArray: [],
       name: [],
@@ -128,6 +129,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
     const optionalThresholdNames = ['idealLower', 'idealUpper', 'criticalLower', 'criticalUpper'];
     const thresholdForm = this.formBuilder.group({
       id: [],
+      version: [],
       absoluteLower: [fieldInstance.absoluteThreshold?.valueLower,
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('absoluteUpper'),

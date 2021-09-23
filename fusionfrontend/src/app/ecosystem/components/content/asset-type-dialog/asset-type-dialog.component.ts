@@ -38,7 +38,8 @@ export class AssetTypeDialogComponent implements OnInit {
   constructor(private assetTypeService: AssetTypeService,
               private formBuilder: FormBuilder,
               public ref: DynamicDialogRef,
-              public config: DynamicDialogConfig) { }
+              public config: DynamicDialogConfig) {
+  }
 
   ngOnInit() {
     this.type = this.config.data.dialogType;
@@ -71,6 +72,7 @@ export class AssetTypeDialogComponent implements OnInit {
   private createAssetTypeForm(assetTypeToEdit: AssetTypeDetails) {
     this.assetTypeForm = this.formBuilder.group({
       id: [],
+      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       label: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator]

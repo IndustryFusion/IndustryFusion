@@ -55,6 +55,7 @@ export class UnitDialogComponent implements OnInit {
   createDialogFormGroup(unit: Unit): FormGroup {
     const unitGroup = this.formBuilder.group({
       id: [],
+      version: [],
       name: [null, WizardHelper.requiredTextValidator],
       label: [null, WizardHelper.maxTextLengthValidator],
       symbol: [null, WizardHelper.maxTextLengthValidator],
