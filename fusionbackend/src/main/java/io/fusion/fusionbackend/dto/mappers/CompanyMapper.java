@@ -51,18 +51,12 @@ public class CompanyMapper implements EntityDtoMapper<Company, CompanyDto> {
     }
 
     private CompanyDto toDtoDeep(final Company entity) {
-        if (entity == null) {
-            return null;
-        }
-        return CompanyDto.builder()
-                .id(entity.getId())
-                .type(entity.getType())
-                .factorySites(factorySiteMapper.toDtoSet(entity.getFactorySites(), false))
-                .assets(assetMapper.toDtoSet(entity.getAssets(), false))
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .imageKey(entity.getImageKey())
-                .build();
+        CompanyDto companyDto = toDtoShallow(entity);
+
+        companyDto.setFactorySites(factorySiteMapper.toDtoSet(entity.getFactorySites(), false));
+        companyDto.setAssets(assetMapper.toDtoSet(entity.getAssets(), false));
+
+        return companyDto;
     }
 
     @Override
