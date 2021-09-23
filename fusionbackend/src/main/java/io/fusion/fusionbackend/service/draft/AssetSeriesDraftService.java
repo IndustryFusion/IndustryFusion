@@ -57,7 +57,10 @@ public class AssetSeriesDraftService {
         final Company targetCompany = companyService.getCompany(targetCompanyId, false);
 
         final AssetSeries newAssetSeries = AssetSeries.builder().build();
-        newAssetSeries.copyFrom(assetTypeTemplate);
+
+        newAssetSeries.setName(assetTypeTemplate.getName());
+        newAssetSeries.setDescription(assetTypeTemplate.getDescription());
+        newAssetSeries.setImageKey(assetTypeTemplate.getImageKey());
 
         assetTypeTemplate.getAssetSeries().add(newAssetSeries);
         newAssetSeries.setAssetTypeTemplate(assetTypeTemplate);
