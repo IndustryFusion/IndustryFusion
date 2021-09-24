@@ -17,24 +17,18 @@
 
 $canvas-height: var(--canvas-height);
 
-.maintenance-value {
+.equipment-efficiency-bar-chart {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-}
 
-.container {
-  width: 16rem;
-  height: 2rem;
-  position: relative;
-}
-
-.progress-bar {
-  position: absolute;
-  left: 0;
-  top: 0;
+  .bar-chart {
+    width: 16rem;
+    height: 2rem;
+    position: relative;
+  }
 }
 
 :host ::ng-deep canvas {

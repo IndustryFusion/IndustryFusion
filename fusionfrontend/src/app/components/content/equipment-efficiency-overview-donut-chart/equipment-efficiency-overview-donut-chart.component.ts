@@ -15,7 +15,7 @@
 
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UIChart } from 'primeng/chart';
-import { EquipmentEfficiencyBarChartComponent } from '../../../dashboards/components/content/equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
+import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { StatusHours } from '../../../services/kairos-status-aggregation.model';
 import { OispDeviceStatus } from '../../../services/kairos.model';
 import { EnumHelpers } from '../../../common/utils/enum-helpers';
