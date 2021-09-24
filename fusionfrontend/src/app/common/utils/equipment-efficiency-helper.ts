@@ -20,6 +20,27 @@ import { EnumHelpers } from './enum-helpers';
 
 export class EquipmentEfficiencyHelper {
 
+  public static getAverageOfAggregatedStatusHours(aggregatedStatusHours: StatusHours[],
+                                                  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[]): StatusHours[] {
+    if (aggregatedStatusHours == null && factoryAssetDetailsWithFields == null) {
+      return null;
+    }
+
+    const assetCountWithStatusData = this.getAssetCountWithStatusData(factoryAssetDetailsWithFields);
+    for (const aggregatedStatusHour of aggregatedStatusHours) {
+      aggregatedStatusHour.hours /= assetCountWithStatusData;
+    }
+    return aggregatedStatusHours;
+  }
+
+  private static getAssetCountWithStatusData(factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[]): number {
+    let assetCountWithStatusData = 0;
+    factoryAssetDetailsWithFields.forEach(asset => {
+      assetCountWithStatusData += asset.statusHoursOneDay == null ? 0 : 1;
+    });
+    return assetCountWithStatusData;
+  }
+
   public static getAggregatedStatusHours(factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[],
                                          enumHelpers: EnumHelpers): StatusHours[] {
     if (factoryAssetDetailsWithFields) {
