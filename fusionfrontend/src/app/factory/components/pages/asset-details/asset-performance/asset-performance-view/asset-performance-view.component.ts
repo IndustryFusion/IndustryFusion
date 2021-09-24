@@ -44,6 +44,7 @@ export class AssetPerformanceViewComponent implements OnInit {
   reversedYBarChartLabels: string[];
   assetDetailsWithFieldsThreeDays: FactoryAssetDetailsWithFields[];
   fullyLoadedAssets$ = new Subject<FactoryAssetDetailsWithFields[]>();
+  assetStatusHoursOfThreeDays: StatusHoursOneDay[];
 
   isLoaded = false;
   private assetsWithStatus: number;
@@ -69,8 +70,9 @@ export class AssetPerformanceViewComponent implements OnInit {
       if (assetWithHours) {
         this.assetDetailsWithFieldsThreeDays = assetWithHours;
         this.updateAggregatedStatusHours();
+        this.updateStatusHoursForBarChart();
+        this.isLoaded = true;
       }
-      this.isLoaded = assetWithHours !== null;
     });
   }
 
@@ -135,18 +137,18 @@ export class AssetPerformanceViewComponent implements OnInit {
     return this.router.navigate(newRoute, { relativeTo: RouteHelpers.getActiveRouteLastChild(this.activatedRoute) });
   }
 
-  getStatusHoursForBarChart(): StatusHoursOneDay[] {
-    if (this.assetDetailsWithFieldsThreeDays == null || this.assetDetailsWithFieldsThreeDays.length !== 3) {
-      return null;
-    }
+  private updateStatusHoursForBarChart(): void {
+    this.assetStatusHoursOfThreeDays = null;
 
-    const statusHoursOfDays: StatusHoursOneDay[] = [];
-    for (let index = 2; index >= 0; index--) {
-      if (!this.assetDetailsWithFieldsThreeDays[index].statusHoursOneDay) {
-        return null;
+    if (this.assetDetailsWithFieldsThreeDays && this.assetDetailsWithFieldsThreeDays.length === 3) {
+      const statusHoursOfDays: StatusHoursOneDay[] = [];
+      for (let index = 2; index >= 0; index--) {
+        if (!this.assetDetailsWithFieldsThreeDays[index].statusHoursOneDay) {
+          return;
+        }
+        statusHoursOfDays.push(this.assetDetailsWithFieldsThreeDays[index].statusHoursOneDay);
       }
-      statusHoursOfDays.push(this.assetDetailsWithFieldsThreeDays[index].statusHoursOneDay);
+      this.assetStatusHoursOfThreeDays = statusHoursOfDays;
     }
-    return statusHoursOfDays;
   }
 }

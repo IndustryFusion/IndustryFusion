@@ -45,6 +45,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   stackedData: any;
 
   private numDisplayedDays: number;
+  private isInitialized = false;
 
   constructor(private enumHelpers: EnumHelpers) {
   }
@@ -72,13 +73,15 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
     this.numDisplayedDays = this.assetStatusHoursOfDays.length;
     this.initChartOptions();
     this.initChartData();
-    this.updateCanvasHeight();
+    this.initCanvasHeight();
+    this.isInitialized = true;
+
     this.updateChart(this.assetStatusHoursOfDays);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.assetStatusHours) {
-      this.updateChart(changes.assetStatusHours.currentValue);
+    if (changes.assetStatusHoursOfDays && this.isInitialized) {
+      this.updateChart(changes.assetStatusHoursOfDays.currentValue);
     }
   }
 
@@ -197,7 +200,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
     return array;
   }
 
-  private updateCanvasHeight() {
+  private initCanvasHeight() {
     const canvasHeight = this.numDisplayedDays * 3 + (this.showAxes ? 0.5 : 0);
     document.documentElement.style.setProperty('--canvas-height', `${ canvasHeight }rem`);
   }
