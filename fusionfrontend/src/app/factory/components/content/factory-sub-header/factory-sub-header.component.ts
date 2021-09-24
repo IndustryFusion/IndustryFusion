@@ -30,6 +30,7 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   route: string;
   companyId: ID;
   private unSubscribe$ = new Subject<void>();
+  private readonly URL_PREFIX = '^/factorymanager/companies/[0-9]+/';
 
   constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
   }
@@ -55,24 +56,24 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
 
   isFactoriesActive = () => {
     return this.route && (
-      this.route.match('^\/factorymanager\/companies\/[0-9]+/factorysites$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+/asset-cards/[0-9,]+$')
+      this.route.match(this.URL_PREFIX + 'factorysites$') ||
+      this.route.match(this.URL_PREFIX + 'factorysites/[0-9]+$') ||
+      this.route.match(this.URL_PREFIX + 'factorysites/[0-9]+/asset-cards/[0-9,]+$')
     );
   }
 
   isRoomsActive() {
     return this.route && (
-      this.route.match('^\/factorymanager\/companies\/[0-9]+/rooms$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/rooms/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/rooms/[0-9]+/asset-cards/[0-9,]+$')
+      this.route.match(this.URL_PREFIX + 'rooms$') ||
+      this.route.match(this.URL_PREFIX + 'rooms/[0-9]+$') ||
+      this.route.match(this.URL_PREFIX + 'rooms/[0-9]+/asset-cards/[0-9,]+$')
     );
   }
 
   isAssetsActive = () => {
     return this.route && (
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets/asset-cards/[0-9,]+$')
+      this.route.match(this.URL_PREFIX + 'assets$') ||
+      this.route.match(this.URL_PREFIX + 'assets/asset-cards/[0-9,]+$')
     );
   }
 

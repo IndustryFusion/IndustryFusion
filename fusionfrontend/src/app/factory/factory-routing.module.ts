@@ -21,7 +21,7 @@ import { AssetsGridPageComponent } from './components/pages/assets-grid-page/ass
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryManagerPageType } from './factory-routing.model';
-import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
+import { MainAuthGuard } from '../services/main-auth-guard.service';
 import { Role } from '../services/roles.model';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
@@ -40,7 +40,7 @@ import { AssetPerformanceComponent } from './components/pages/asset-details/asse
 const routes: Routes = [
   {
     path: 'factorymanager/companies/:companyId',
-    canActivate: [MainAuthGuardGuard],
+    canActivate: [MainAuthGuard],
     children: [
       {
         path: '',
@@ -103,7 +103,7 @@ const routes: Routes = [
   {
     path: 'factorymanager/companies/:companyId/rooms',
     component: RoomsPageComponent,
-    canActivate: [MainAuthGuardGuard],
+    canActivate: [MainAuthGuard],
     data: {
       roles: [Role.FACTORY_MANAGER],
       breadcrumb: 'Rooms'
@@ -122,7 +122,7 @@ const routes: Routes = [
         path: ':roomId',
         pathMatch: 'full',
         component: AssetsListPageComponent,
-        canActivate: [MainAuthGuardGuard],
+        canActivate: [MainAuthGuard],
         data: {
           pageTypes: [FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ROOM_LIST],
           roles: [Role.FACTORY_MANAGER],
@@ -155,7 +155,7 @@ const routes: Routes = [
 
   {
     path: 'factorymanager/companies/:companyId/assets',
-    canActivate: [MainAuthGuardGuard],
+    canActivate: [MainAuthGuard],
     data: {
       roles: [Role.FACTORY_MANAGER],
       breadcrumb: 'Assets',
@@ -173,7 +173,7 @@ const routes: Routes = [
       {
         path: 'asset-cards/:assetIdList',
         component: AssetsGridPageComponent,
-        canActivate: [MainAuthGuardGuard],
+        canActivate: [MainAuthGuard],
         resolve: {
           devices: OispDeviceResolver
         },
@@ -185,7 +185,7 @@ const routes: Routes = [
       },
       {
         path: ':assetId',
-        canActivate: [MainAuthGuardGuard],
+        canActivate: [MainAuthGuard],
         resolve: { assets: FactoryAssetDetailsResolver, OispDeviceResolver },
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_DETAIL],

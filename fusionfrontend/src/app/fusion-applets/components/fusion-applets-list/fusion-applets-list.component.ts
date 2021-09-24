@@ -22,6 +22,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RuleStatusUtil } from '../../util/rule-status-util';
 import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service';
 import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
+import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
 
 @Component({
   selector: 'app-fusion-applets-list',
@@ -35,10 +36,19 @@ export class FusionAppletsListComponent implements OnInit {
   @Input()
   showActions = true;
 
+  private filterDevice: Device = null;
+
+  @Input()
+  set filterByDevice(device: Device) {
+    this.filterDevice = device;
+    this.filteredRules = this.filterRulesByDevice(this.filteredRules);
+  }
+
+  get filterByDevice(): Device { return this.filterDevice; }
+
   RuleActionType = RuleActionType;
 
-  filteredRules: Rule[];
-
+  filteredRules: Rule[] = [];
   public titleMapping:
     { [k: string]: string } = { '=0': 'No Applet', '=1': '# Applet', other: '# Applets' };
 
@@ -53,8 +63,21 @@ export class FusionAppletsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.oispRuleQuery.selectAll().subscribe(rules => {
-      this.filteredRules = this.oispRuleService.filterRulesByStatus(rules, this.showActive);
+      rules = this.oispRuleService.filterRulesByStatus(rules, this.showActive);
+      this.filteredRules = this.filterRulesByDevice(rules);
     });
+  }
+
+  private filterRulesByDevice(rules: Rule[]) {
+    let result: Rule[] = rules;
+    if (this.filterByDevice) {
+      const deviceCids = this.filterByDevice.components.map(component => component.cid);
+      result = rules.filter(rule => {
+        const ruleCids = rule.conditions?.values.map(condition => condition.component.cid);
+        return deviceCids.filter(deviceCid => ruleCids?.includes(deviceCid)).length > 0;
+      });
+    }
+    return result;
   }
 
   isActive(status: string): boolean {

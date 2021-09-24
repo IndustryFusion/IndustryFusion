@@ -192,7 +192,7 @@ export class RoomsListComponent implements OnInit {
     });
   }
 
-  // TODO: put method in dialog
+  // TODO: put method in dialog [IF-429]
   private createRoomForm(formBuilder: FormBuilder, room?: Room) {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.roomForm = formBuilder.group({
