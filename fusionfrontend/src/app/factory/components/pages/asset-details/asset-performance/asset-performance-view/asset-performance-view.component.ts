@@ -20,11 +20,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FactoryResolver } from '../../../../../services/factory-resolver.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StatusHours, StatusHoursOneDay } from '../../../../../../services/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../../../../../../services/kairos.model';
 import { EnumHelpers } from '../../../../../../common/utils/enum-helpers';
 import { KairosStatusAggregationService } from '../../../../../../services/kairos-status-aggregation.service';
 import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
 import * as moment from 'moment';
+import { EquipmentEfficiencyHelper } from '../../../../../../common/utils/equipment-efficiency-helper';
 
 
 @Component({
@@ -123,24 +123,11 @@ export class AssetPerformanceViewComponent implements OnInit {
   }
 
   private updateAggregatedStatusHours() {
-    if (this.assetDetailsWithFieldsThreeDays) {
-      const aggregatedStatusHours = this.getNewAggregatedStatusHours();
-      const assetWithFieldOfToday = this.assetDetailsWithFieldsThreeDays[0];
-      if (assetWithFieldOfToday.statusHoursOneDay) {
-        assetWithFieldOfToday.statusHoursOneDay.statusHours.forEach(statusHours => {
-          aggregatedStatusHours[statusHours.status].hours += statusHours.hours;
-        });
-      }
+    if (this.assetDetailsWithFieldsThreeDays && this.assetDetailsWithFieldsThreeDays.length > 0) {
+      const aggregatedStatusHours = EquipmentEfficiencyHelper.updateAggregatedStatusHours([this.assetDetailsWithFieldsThreeDays[0]],
+        this.enumHelpers);
       this.aggregatedStatusHours$.next(aggregatedStatusHours);
     }
-  }
-
-  private getNewAggregatedStatusHours(): StatusHours[] {
-    const aggregatedStatusHours: StatusHours[] = [];
-    for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
-      aggregatedStatusHours.push({ status: i as OispDeviceStatus, hours: 0 });
-    }
-    return aggregatedStatusHours;
   }
 
   onChangeRoute(): Promise<boolean> {
