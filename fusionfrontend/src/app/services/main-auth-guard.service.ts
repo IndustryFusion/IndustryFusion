@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
-export class MainAuthGuardGuard extends KeycloakAuthGuard implements CanActivate {
+export class MainAuthGuard extends KeycloakAuthGuard implements CanActivate {
   constructor(
     protected readonly router: Router,
     protected readonly location: Location,

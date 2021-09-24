@@ -31,6 +31,7 @@ export class PageTitleComponent implements OnInit, OnDestroy {
   @Input()
   title: string;
   menuItems: MenuItem[];
+
   private readonly ROUTE_DATA_BREADCRUMB = 'breadcrumb';
   private routerSubscription = Subscription.EMPTY;
 
@@ -50,6 +51,14 @@ export class PageTitleComponent implements OnInit, OnDestroy {
       });
   }
 
+  private static addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
+    const label = breadcrumbData;
+    if (label) {
+      breadcrumbs.push({ label, url });
+    }
+    return breadcrumbs;
+  }
+
   ngOnInit(): void {
   }
 
@@ -59,21 +68,22 @@ export class PageTitleComponent implements OnInit, OnDestroy {
       return breadcrumbs;
     }
 
-    for (const child of children) {
-      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+    if (children.length > 0) {
+      const firstChild = children[0];
+      const routeURL: string = firstChild.snapshot.url.map(segment => segment.path).join('/');
       if (routeURL !== '') {
         url += `/${routeURL}`;
       }
 
-      const breadcrumbData = child.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
+      const breadcrumbData = firstChild.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
       const isQuery = typeof(breadcrumbData) === 'function';
       if (isQuery) {
         breadcrumbs = this.addQueryResult(breadcrumbData, url, breadcrumbs);
       } else {
-        breadcrumbs = this.addLabelIfExisting(breadcrumbData, url, breadcrumbs);
+        breadcrumbs = PageTitleComponent.addLabelIfExisting(breadcrumbData, url, breadcrumbs);
       }
 
-      return this.createBreadcrumbs(child, url, breadcrumbs);
+      return this.createBreadcrumbs(firstChild, url, breadcrumbs);
     }
   }
 
@@ -107,21 +117,11 @@ export class PageTitleComponent implements OnInit, OnDestroy {
     return breadcrumbs;
   }
 
-  private addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
-    const label = breadcrumbData;
-    if (label) {
-      breadcrumbs.push({ label, url });
-    }
-    return breadcrumbs;
-  }
-
   private setMenuItemsAfterPendingQueriesFinished() {
     this.fireFinishedIfNoPendingQueries();
     this.queriesFinished$.subscribe(isFinished => {
       if (isFinished) {
-        // noinspection UnnecessaryLocalVariableJS
-        const newItemsThatUpdateView = [...this.breadcrumbItems];
-        this.menuItems = newItemsThatUpdateView;
+        this.menuItems = this.breadcrumbItems.slice();
       }
     });
   }

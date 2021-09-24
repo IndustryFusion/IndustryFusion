@@ -76,6 +76,7 @@ public class AssetSeries extends BaseAsset {
     protected String protectionClass;
     protected String handbookUrl;
     protected String videoUrl;
+    protected String customScript;
 
     public void copyFrom(final AssetSeries sourceAssetSeries) {
         if (sourceAssetSeries.getName() != null) {
@@ -104,6 +105,9 @@ public class AssetSeries extends BaseAsset {
         }
         if (sourceAssetSeries.getCompany() != null) {
             setCompany(sourceAssetSeries.getCompany());
+        }
+        if (sourceAssetSeries.getCustomScript() != null) {
+            setCustomScript(sourceAssetSeries.getCustomScript());
         }
 
         if (!sourceAssetSeries.getFieldSources().isEmpty()) {
