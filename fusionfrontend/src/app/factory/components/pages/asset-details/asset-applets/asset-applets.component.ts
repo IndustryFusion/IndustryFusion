@@ -15,6 +15,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { Device } from '../../../../../store/oisp/oisp-device/oisp-device.model';
+import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
+import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
 
 @Component({
   selector: 'app-asset-applets',
@@ -24,8 +27,16 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 export class AssetAppletsComponent implements OnInit {
 
   public showActive = true;
+  device: Device;
 
-  constructor(activatedRoute: ActivatedRoute) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    oispDeviceQuery: OispDeviceQuery,
+    factoryAssetDetailsQuery: FactoryAssetDetailsQuery
+  ) {
+    factoryAssetDetailsQuery.waitForActive().subscribe(asset =>
+      this.device = oispDeviceQuery.getDeviceOfAsset(asset.externalName)
+    );
     this.showActive = this.isRouteActive('active', activatedRoute.snapshot);
   }
 
