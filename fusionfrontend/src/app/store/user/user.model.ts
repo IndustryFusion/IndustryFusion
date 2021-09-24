@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { BaseEntity } from "../baseentity.model";
+import { BaseEntity } from '../baseentity.model';
 
 export class User extends BaseEntity {
   name: string;
