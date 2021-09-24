@@ -20,10 +20,10 @@ import { EnumHelpers } from './enum-helpers';
 
 export class EquipmentEfficiencyHelper {
 
-  public static updateAggregatedStatusHours(factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[],
-                                            enumHelpers: EnumHelpers) {
+  public static getAggregatedStatusHours(factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[],
+                                         enumHelpers: EnumHelpers): StatusHours[] {
     if (factoryAssetDetailsWithFields) {
-      const aggregatedStatusHours = EquipmentEfficiencyHelper.getNewAggregatedStatusHours(enumHelpers);
+      const aggregatedStatusHours: StatusHours[] = this.getEmptyAggregatedStatusHours(enumHelpers);
       for (const assetWithField of factoryAssetDetailsWithFields) {
         if (assetWithField.statusHoursOneDay) {
           assetWithField.statusHoursOneDay.statusHours.forEach(statusHours => {
@@ -36,7 +36,7 @@ export class EquipmentEfficiencyHelper {
     return null;
   }
 
-  private static getNewAggregatedStatusHours(enumHelpers: EnumHelpers): StatusHours[] {
+  private static getEmptyAggregatedStatusHours(enumHelpers: EnumHelpers): StatusHours[] {
     const aggregatedStatusHours: StatusHours[] = [];
     for (let i = 0; i < enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
       aggregatedStatusHours.push({ status: i as OispDeviceStatus, hours: 0 });

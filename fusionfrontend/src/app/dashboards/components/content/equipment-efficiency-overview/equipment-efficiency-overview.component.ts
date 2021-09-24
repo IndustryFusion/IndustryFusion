@@ -60,8 +60,8 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
 
   private updateAggregatedStatusHours() {
     if (this.factoryAssetDetailsWithFields) {
-      const aggregatedStatusHours = EquipmentEfficiencyHelper.updateAggregatedStatusHours(this.factoryAssetDetailsWithFields,
-        this.enumHelpers);
+      const aggregatedStatusHours = EquipmentEfficiencyHelper
+        .getAggregatedStatusHours(this.factoryAssetDetailsWithFields, this.enumHelpers);
       this.aggregatedStatusHours$.next(aggregatedStatusHours);
     }
   }
