@@ -16,33 +16,34 @@
 @import "abstract/variables";
 
 .wrapper{
-    background: $light-grey;
-    padding: 0 15%;
-    margin: 0;
+  background: $light-grey;
+  padding: 0 5px;
+  margin: 0;
+  flex-basis: 0 !important;
+  flex-wrap: wrap;
+  display: flex;
 }
 
-
 .cards{
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 footer{
   padding: 40px 5%;
-    background: $light-grey;
+  background: $light-grey;
 }
 
 footer .clr-row{
-    background: $light-grey;
-
+  background: $light-grey;
 }
 
 footer .top-sign{
-    font-weight: bolder;
-    border-radius: 15px;
-    width: 75%;
-    height: auto;
-    margin-bottom: 20px;
-    font-size: 200%;
+  font-weight: bolder;
+  border-radius: 15px;
+  width: 75%;
+  height: auto;
+  margin-bottom: 20px;
+  font-size: 200%;
 }
 
 footer .right{
@@ -79,14 +80,14 @@ footer .left-field{
 }
 
 .sign > p{
-    margin: 0;
-    text-align: left;
+  margin: 0;
+  text-align: left;
 }
 
 footer .table{
-    margin: 0;
-    padding: 32px;
-    font-size: 16px;
+  margin: 0;
+  padding: 32px;
+  font-size: 16px;
 
   .label{
     border: 0;
