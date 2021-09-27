@@ -20,9 +20,12 @@
   border-radius: 10px;
   border: 0;
   box-shadow: none;
-  margin-top: 1.6rem;
   width: 22rem;
   background-color: $basic-white;
+  margin-top: 1.0rem;
+  margin-right: 6px;
+  margin-left: 6px;
+  margin-bottom: 0;
 
   .clickable {
     cursor: pointer;

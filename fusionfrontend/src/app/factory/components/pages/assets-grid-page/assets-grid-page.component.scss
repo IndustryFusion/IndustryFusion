@@ -22,6 +22,11 @@
   flex-basis: 0 !important;
   flex-wrap: wrap;
   display: flex;
+
+  .p-col {
+/*    padding: 0;*/
+    flex-grow: 0;
+  }
 }
 
 .cards{
