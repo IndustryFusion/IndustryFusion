@@ -17,7 +17,7 @@ under the License.
 
 <div class="p-row wrapper">
     <div *ngFor="let asset of assetsWithFields$ | async" class="cards p-col">
-       <app-asset-card [asset]="asset"></app-asset-card>
+       <app-asset-card [asset]="asset" [commonFields]="commonFields"></app-asset-card>
     </div>
 </div>
 
