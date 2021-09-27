@@ -1,0 +1,170 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class='asset-details-wrapper'>
+
+  <!--<div class="radio-wrapper">
+    <div class="btn-group">
+      <div class="radio btn">
+        <input type="radio" name="btn-group-demo-radios" id="btn-demo-radio-1" value="current" [(ngModel)]="timeSlotOptions" checked (click)="setOptions('current', false)">
+        <label for="btn-demo-radio-1">Current</label>
+      </div>
+      <div class="radio btn">
+        <input type="radio" name="btn-group-demo-radios" id="btn-demo-radio-2" value="1hour" [(ngModel)]="timeSlotOptions" (click)="setOptions('oneTimeSlot', false)">
+        <label for="btn-demo-radio-2">1h</label>
+      </div>
+      <div class="radio btn">
+        <input type="radio" name="btn-group-demo-radios" id="btn-demo-radio-3" value="1day" [(ngModel)]="timeSlotOptions" (click)="setOptions('oneTimeSlot', false)">
+        <label for="btn-demo-radio-3">24h</label>
+      </div>
+      <div class="radio btn">
+        <input type="radio" name="btn-group-demo-radios" id="btn-demo-radio-4" value="customDate" [(ngModel)]="timeSlotOptions" (click)="setOptions('customDate', false)">
+        <label for="btn-demo-radio-4">Custom Date</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="choiceOptions">
+    <ng-container *ngIf="currentChoiceConfiguration.chooseMaxPoints">
+      <div class="alert alert-info" role="alert">
+        <div class="alert-items">
+          <div class="alert-item static">
+            <div class="alert-icon-wrapper">
+              <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <span class="alert-text">
+              To efficiently display data for this time period, it has to be aggregated. Max points is the
+              maximal number of points which will be retrieved at a time.
+            </span>
+          </div>
+        </div>
+      </div>
+      <form clrForm>
+        <div class="maxpoints">
+          <clr-select-container>
+            <label class="pointslabel">Choose max points</label>
+            <select clrSelect name="maxItemsOptions" [(ngModel)]="maxPointsOptions">
+              <option value="200">200</option>
+              <option value="500">500</option>
+              <option value="1000">1000</option>
+            </select>
+          </clr-select-container>
+        </div>
+        <div class="dater">
+          <ng-container *ngIf="currentChoiceConfiguration.chooseStartDate">
+            <clr-date-container>
+              <label class="datelabel">Choose start date</label>
+              <input type="date" [(clrDate)]="startDate" (clrDateChange)="setMinAndMaxDate(startDate)">
+            </clr-date-container>
+          </ng-container>
+        </div>
+        <div class="dater2">
+          <ng-container *ngIf="currentChoiceConfiguration.chooseEndDate">
+            <clr-date-container>
+              <label class="datelabel">Choose end date (Maximal start date + 2 days)</label>
+              <input type="date" [(clrDate)]="endDate" min="{{minDate}}" max="{{maxDate}}">
+            </clr-date-container>
+          </ng-container>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="currentChoiceConfiguration.showWarning">
+    <div class="alert alert-warning" role="alert">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="exclamation-triangle"></clr-icon>
+          </div>
+          <span class="alert-text">options missing, please enter again</span>
+          <div class="alert-actions">
+            <div class="alert-action dropdown bottom-right open">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="gotIt" aria-label="Close" (click)="resetOptions()">
+        <clr-icon aria-hidden="true" shape="close"></clr-icon> Got it!
+      </button>
+    </div>
+  </ng-container>
+
+  <div class="okButton">
+    <ng-container *ngIf="currentChoiceConfiguration.chooseButton">
+      <button class="btn btn-primary" (click)="setOptions('onOkClick', true)">OK</button>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="asset$ | async as assetWithFields">
+    <div class="tables-wrapper">
+      <div class="custom-row-wrapper clr-row clr-justify-content-around">
+        <ng-container *ngFor="let field of assetWithFields.fields">
+          <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
+            <div class="clr-col-md-auto clr-align-self-start">
+              <app-asset-tables [asset]="assetWithFields" [field]="field" [options]="timeSlotOptions"></app-asset-tables>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="charts-container">
+      <ng-container *ngFor="let field of assetWithFields.fields">
+        <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
+          <app-asset-charts [asset]="assetWithFields" [field]="field" [options]="timeSlotOptions" [maxPointsOptions]="maxPointsOptions" [clickedOk]="currentChoiceConfiguration.clickedOk" [startDate]="startDate" [endDate]="endDate"></app-asset-charts>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>-->
+
+  <ng-container *ngIf="asset$ | async as assetWithFields">
+
+    <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
+      <div class="caption">Historical View</div>
+      <p-selectButton  class="space-right"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="viewModeOptions"
+                       [(ngModel)]="viewMode"
+                       (ngModelChange)="onChangeRoute()"
+      ></p-selectButton>
+    </div>
+
+    <div class="tables-wrapper">
+      <div class="custom-row-wrapper clr-row clr-justify-content-around">
+        <ng-container *ngFor="let field of assetWithFields.fields">
+          <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
+            <div class="clr-col-md-auto clr-align-self-start">
+              <app-asset-tables [asset]="assetWithFields" [field]="field"
+                                [options]="timeSlotOptions"></app-asset-tables>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="charts-container">
+      <ng-container *ngFor="let field of assetWithFields.fields">
+        <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
+          <app-asset-charts [asset]="assetWithFields" [clickedOk]="currentChoiceConfiguration.clickedOk"
+                            [endDate]="endDate" [field]="field" [maxPointsOptions]="maxPointsOptions"
+                            [options]="timeSlotOptions" [startDate]="startDate"></app-asset-charts>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+
+</div>

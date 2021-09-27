@@ -15,30 +15,28 @@
 
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, Observable, Subject, zip } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { OispService } from 'src/app/services/oisp.service';
 import { PointWithId } from 'src/app/services/oisp.model';
 import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-details/field-details.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { MaintenanceInterval } from '../../../../content/asset-details/maintenance-bar/maintenance-interval.model';
+import { map, switchMap } from 'rxjs/operators';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
 import * as moment from 'moment';
 import { OispDeviceQuery } from '../../../../../../store/oisp/oisp-device/oisp-device.query';
 import { FactoryAssetDetailsResolver } from '../../../../../../resolvers/factory-asset-details.resolver';
 import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
-import { AssetMaintenanceUtils } from '../../../../../util/asset-maintenance-utils';
 import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
 import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
 
 @Component({
-  selector: 'app-asset-realtime-view',
-  templateUrl: './asset-realtime-view.component.html',
-  styleUrls: ['./asset-realtime-view.component.scss']
+  selector: 'app-asset-historical-view',
+  templateUrl: './asset-historical-view.component.html',
+  styleUrls: ['./asset-historical-view.component.scss']
 })
-export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
+export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
   @Input()
   viewModeOptions;
@@ -49,8 +47,6 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
   assetId: ID;
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
-  hoursTillMaintenanceValue$: Observable<number>;
-  maintenanceIntervalValue$: Observable<number>;
   timeSlotOptions = 'current';
   maxPointsOptions: string;
   startDate: string;
@@ -69,11 +65,6 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
   };
 
   currentChoiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
-  maintenanceValues: MaintenanceInterval = {
-    hoursTillMaintenance: null,
-    maintenanceInterval: null
-  };
-  maintenanceUtils = AssetMaintenanceUtils;
   private unSubscribe$ = new Subject<void>();
 
 
@@ -96,9 +87,6 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
 
     this.initLastPoints();
     this.initMergedFields();
-    this.initHoursTillMaintencanceValue();
-    this.initMaintenanceIntervalValue();
-    this.zipHoursTillValueAndMaintenanceIntervalValue();
 
     this.initViewMode();
   }
@@ -128,42 +116,8 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
       );
   }
 
-  private initHoursTillMaintencanceValue() {
-    this.hoursTillMaintenanceValue$ = this.mergedFields$.pipe(
-      map(fields => {
-        const filteredFields = fields.filter(field => field.description === 'Hours till maintenance');
-        if (filteredFields.length > 0) {
-          return parseInt(filteredFields.find(field => field.description === 'Hours till maintenance')?.value, 10);
-        }
-      })
-    );
-  }
-
-  private initMaintenanceIntervalValue() {
-    this.maintenanceIntervalValue$ = this.mergedFields$.pipe(
-      map(fields => {
-        const filteredFields = fields.filter(field => field.description === 'Maintenance interval');
-        if (filteredFields.length > 0) {
-          return parseInt(filteredFields.find(field => field.description === 'Maintenance interval')?.value, 10);
-        }
-      })
-    );
-  }
-
-  private zipHoursTillValueAndMaintenanceIntervalValue() {
-    zip(this.hoursTillMaintenanceValue$,
-      this.maintenanceIntervalValue$
-    )
-      .pipe(
-        takeUntil(this.unSubscribe$)
-      ).subscribe(values => {
-      this.maintenanceValues.hoursTillMaintenance = isNaN(values[0]) ? 0 : values[0];
-      this.maintenanceValues.maintenanceInterval = isNaN(values[1]) ? 0 : values[1];
-    });
-  }
-
   private initViewMode() {
-    this.viewMode = AssetPerformanceViewMode.REALTIME;
+    this.viewMode = AssetPerformanceViewMode.HISTORICAL;
   }
 
   ngOnDestroy() {

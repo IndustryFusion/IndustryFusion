@@ -71,6 +71,7 @@ import { AssetPerformanceComponent } from './components/pages/asset-details/asse
 import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DashboardModule } from '../dashboards/dashboard.module';
+import { AssetHistoricalViewComponent } from './components/pages/asset-details/asset-performance/asset-historical-view/asset-historical-view.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { DashboardModule } from '../dashboards/dashboard.module';
     AssetsGridPageComponent,
     AssetsListPageComponent,
     AssetPerformanceComponent,
+    AssetHistoricalViewComponent,
     AssetRealtimeViewComponent,
     AssetPerformanceViewComponent,
     FactorySitesComponent,
