@@ -24,6 +24,14 @@
   width: 22rem;
   background-color: $basic-white;
 
+  .clickable {
+    cursor: pointer;
+  }
+
+  .description {
+    margin: 0;
+  }
+
   .card-block, .card-header {
     border: 0;
     padding: 1.6rem;
