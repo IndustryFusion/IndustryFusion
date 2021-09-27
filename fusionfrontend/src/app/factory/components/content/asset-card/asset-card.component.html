@@ -13,15 +13,14 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="card">
+<div class="asset-card">
     <div class="card-header">
-        <h4 style="font-weight: bold">{{asset.name}}</h4>
+        <label class="if-title">{{asset.name}}</label>
         <p style="margin: 0 "> {{asset.description}}</p>
         <p class="details-value" (click)="goToDetails()">
           <clr-icon shape="line-chart"></clr-icon>
           Go to Details
         </p>
-
     </div>
     <div class="card-img">
         <img src="assets/img/{{asset.imageKey}}">
