@@ -13,10 +13,11 @@
  * under the License.
  */
 
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ID } from '@datorama/akita';
 
 export class RouteHelpers {
+
   public static findParamInFullActivatedRoute(activatedRouteSnapshot: ActivatedRouteSnapshot, paramName: string): ID {
     let id = activatedRouteSnapshot.paramMap.get(paramName) as ID;
     while (id == null && activatedRouteSnapshot.parent != null) {
@@ -25,4 +26,28 @@ export class RouteHelpers {
     }
     return id;
   }
+
+  public static  getActiveRouteLastChild(activatedRoute: ActivatedRoute) {
+    let route = activatedRoute;
+    while (route.firstChild !== null) {
+      route = route.firstChild;
+    }
+    return route;
+  }
+
+  public static  getActiveRouteSecondLastChild(activatedRoute: ActivatedRoute) {
+    let route = activatedRoute;
+    let prevRoute = route;
+    while (route.firstChild !== null) {
+      prevRoute = route;
+      route = route.firstChild;
+    }
+    return prevRoute;
+  }
+
+  public static isRouteActive(subroute: string, activatedRoute: ActivatedRoute): boolean {
+    const snapshot = activatedRoute.snapshot;
+    return snapshot.url.map(segment => segment.path).includes(subroute);
+  }
+
 }

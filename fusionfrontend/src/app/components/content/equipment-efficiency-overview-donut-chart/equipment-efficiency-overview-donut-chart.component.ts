@@ -15,10 +15,10 @@
 
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UIChart } from 'primeng/chart';
-import { EquipmentEfficiencyBarChartComponent } from '../../equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
-import { StatusHours } from '../../../../../services/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../../../../../services/kairos.model';
-import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
+import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
+import { StatusHours } from '../../../services/kairos-status-aggregation.model';
+import { OispDeviceStatus } from '../../../services/kairos.model';
+import { EnumHelpers } from '../../../common/utils/enum-helpers';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -30,6 +30,9 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
 
   @Input()
   aggregatedStatusHours$: BehaviorSubject<StatusHours[]>;
+
+  @Input()
+  title: string;
 
   @ViewChild('chart') chart: UIChart;
 

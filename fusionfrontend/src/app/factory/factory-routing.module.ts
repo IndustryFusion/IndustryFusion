@@ -23,7 +23,6 @@ import { AssetsListPageComponent } from './components/pages/assets-list-page/ass
 import { FactoryManagerPageType } from './factory-routing.model';
 import { MainAuthGuard } from '../services/main-auth-guard.service';
 import { Role } from '../services/roles.model';
-import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
@@ -36,6 +35,7 @@ import { FactorySitesComponent } from './components/content/factory-sites/factor
 import { RoomQuery } from '../store/room/room.query';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
+import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 
 const routes: Routes = [
   {
@@ -195,16 +195,24 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'performance',
+            redirectTo: 'performance/realtime',
             pathMatch: 'full',
           },
           {
-            path: 'performance',
+            path: 'performance/realtime',
             component: AssetPerformanceComponent,
             data: {
               breadcrumb: 'Performance',
             },
           },
+          {
+            path: 'performance/performance',
+            component: AssetPerformanceComponent,
+            data: {
+              breadcrumb: 'Performance',
+            },
+          },
+
           {
             path: 'applets/active',
             component: AssetAppletsComponent,
@@ -221,6 +229,7 @@ const routes: Routes = [
               breadcrumb: 'Archived Applets',
             },
           },
+
           {
             path: 'digital-nameplate',
             component: AssetDigitalNameplateComponent,

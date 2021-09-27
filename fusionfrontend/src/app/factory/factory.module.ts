@@ -58,7 +58,7 @@ import { TableModule } from 'primeng/table';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
 import { AssetDetailsSubHeaderComponent } from './components/content/asset-details/asset-details-sub-header/asset-details-sub-header.component';
-import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetRealtimeViewComponent } from './components/pages/asset-details/asset-performance/asset-realtime-view/asset-realtime-view.component';
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
 import { CardModule } from 'primeng/card';
 import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
@@ -67,6 +67,10 @@ import { AssetAppletsComponent } from './components/pages/asset-details/asset-ap
 import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 import { AccordionModule } from 'primeng/accordion';
+import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { DashboardModule } from '../dashboards/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -75,6 +79,8 @@ import { AccordionModule } from 'primeng/accordion';
     AssetsGridPageComponent,
     AssetsListPageComponent,
     AssetPerformanceComponent,
+    AssetRealtimeViewComponent,
+    AssetPerformanceViewComponent,
     FactorySitesComponent,
     CompanyInfoComponent,
     AssetsListComponent,
@@ -114,17 +120,19 @@ import { AccordionModule } from 'primeng/accordion';
     AssetSubsystemsComponent,
     AssetNotificationsComponent
   ],
-    imports: [
-        IFCommon,
-        FactoryRoutingModule,
-        ClarityModule,
-        ChartsModule,
-        ReactiveFormsModule,
-        TableModule,
-        CardModule,
-        FusionAppletsModule,
-        AccordionModule,
-    ],
+  imports: [
+    IFCommon,
+    FactoryRoutingModule,
+    ClarityModule,
+    ChartsModule,
+    ReactiveFormsModule,
+    TableModule,
+    CardModule,
+    FusionAppletsModule,
+    AccordionModule,
+    SelectButtonModule,
+    DashboardModule,
+  ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

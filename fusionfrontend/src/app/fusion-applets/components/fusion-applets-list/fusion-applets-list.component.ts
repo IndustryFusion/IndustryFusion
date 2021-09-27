@@ -80,11 +80,6 @@ export class FusionAppletsListComponent implements OnInit {
     return result;
   }
 
-  isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(segment => segment.path).includes(subroute);
-  }
-
   isActive(status: string): boolean {
     return status === RuleStatus.Active;
   }

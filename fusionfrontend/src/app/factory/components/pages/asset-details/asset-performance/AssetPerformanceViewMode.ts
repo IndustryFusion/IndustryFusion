@@ -13,27 +13,8 @@
  * under the License.
  */
 
-@import 'base/typography';
-@import "abstract/variables";
-
-.p-button {
-  box-shadow: none !important;
-
-  &:hover {
-    background-color: $basic-white !important;
-    color: $basic-black !important;
-  }
-}
-
-.p-selectbutton .p-button.p-highlight {
-  background: $basic-white;
-  border-color: unset;
-  color: $dark-grey;
-}
-
-.p-selectbutton .p-button {
-  background: unset;
-  border: unset;
-  color: $dark-grey;
-  transition: background-color 0.05s, color 0.05s, border-color 0.05s, box-shadow 0.05s;
+export enum AssetPerformanceViewMode {
+  REALTIME = 'realtime',
+  HISTORICAL = 'historical',
+  PERFORMANCE = 'performance'
 }
