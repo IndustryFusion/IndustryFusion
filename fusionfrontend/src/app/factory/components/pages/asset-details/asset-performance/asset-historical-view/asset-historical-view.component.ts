@@ -168,7 +168,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   }
 
   isNotAttribute(field: FieldDetails) {
-    return (field.type !== FieldType.ATTRIBUTE);
+    return (field.fieldType !== FieldType.ATTRIBUTE);
   }
 
   onChangeRoute(): Promise<boolean> {
