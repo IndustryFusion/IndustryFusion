@@ -27,27 +27,17 @@
   border-bottom: 1px solid;
   border-color: lightgray;
 
-  button {
+  .navigation-bar-btn {
+    height: 38px;
+    background-color: $basic-white;
     color: $basic-black;
+    font-size: $small-font-size;
+    font-weight: 500;
+    line-height: $regular-line-height;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
   }
-
-  .manage {
-    .home-icon {
-      margin-right: 10px;
-    }
-  }
-}
-
-.navigation-bar-btn {
-  height: 38px;
-  background-color: $basic-white;
-  color: $basic-black;
-  font-size: $small-font-size;
-  font-weight: 500;
-  line-height: $regular-line-height;
-  border: none;
-  cursor: pointer;
-  margin-right: 5px;
 }
 
 .table-selected-items-bar {
@@ -74,65 +64,6 @@
     &:enabled:hover {
       background-color: $basic-black !important;
       color: $basic-white !important;
-    }
-  }
-}
-
-.toolbar {
-  border-radius: 10px;
-  display: flex;
-  background: black;
-  color: $basic-white;
-  justify-content: space-between;
-  align-items: baseline;
-
-  span {
-    margin: 0 0 0 50px;
-  }
-
-  .btn-group {
-    display: flex;
-    justify-content: center;
-
-    .btn {
-      color: $basic-white;
-      border: 0;
-      margin: auto 15px;
-      .icon{
-        transform:scale(1.45, 1.45);
-      }
-    }
-
-  }
-
-  .btn {
-    color: $basic-white;
-  }
-
-  .btn-link {
-    margin: 0 25px;
-  }
-}
-
-.asset-row {
-  cursor: pointer;
-}
-
-*:focus {
-    outline: none !important;
-    border: 0 !important;
-}
-
-.wrapper {
-  margin: 0 80px;
-
-  .list-header {
-    .if-button {
-      padding: 14px 20px 12px;
-      margin-bottom: 5px;
-      font-size: $regular-font-size;
-      line-height: $regular-line-height;
-      border-radius: 22px;
     }
   }
 }

@@ -45,26 +45,6 @@
   }
 }
 
-.check-box-icon {
-  padding-right: 20px;
-  background-color: $basic-black;
-  color: $basic-white;
-}
-
-.header-line {
-  height: 50px;
-  margin: 30px 80px;
-}
-
-.filter-btn {
-  height: 48px;
-  width: 48px;
-  margin-right: 40px;
-  background-color: $light-grey;
-  border-color: transparent;
-  border-radius: 10px;
-}
-
 :host ::ng-deep .checkbox-column {
   visibility: hidden;
 }
