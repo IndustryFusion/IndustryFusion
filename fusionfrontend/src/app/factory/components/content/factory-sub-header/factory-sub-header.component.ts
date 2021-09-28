@@ -30,6 +30,7 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   route: string;
   companyId: ID;
   private unSubscribe$ = new Subject<void>();
+  private readonly URL_PREFIX = '^/factorymanager/companies/[0-9]+/';
 
   constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
   }
@@ -54,36 +55,39 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isFactoriesActive = () => {
-    return this.route && this.route.match('^\/factorymanager\/companies\/[0-9]+$');
+    return this.route && (
+      this.route.match(this.URL_PREFIX + 'factorysites$') ||
+      this.route.match(this.URL_PREFIX + 'factorysites/[0-9]+$') ||
+      this.route.match(this.URL_PREFIX + 'factorysites/[0-9]+/asset-cards/[0-9,]+$')
+    );
+  }
+
+  isRoomsActive() {
+    return this.route && (
+      this.route.match(this.URL_PREFIX + 'rooms$') ||
+      this.route.match(this.URL_PREFIX + 'rooms/[0-9]+$') ||
+      this.route.match(this.URL_PREFIX + 'rooms/[0-9]+/asset-cards/[0-9,]+$')
+    );
   }
 
   isAssetsActive = () => {
     return this.route && (
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$') ||
-
-      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/assets$\'') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
-
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+/rooms/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+/rooms/[0-9]+/assets$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/factorysites/[0-9]+/rooms/[0-9]+/asset-cards/[0-9,]+$')
+      this.route.match(this.URL_PREFIX + 'assets$') ||
+      this.route.match(this.URL_PREFIX + 'assets/asset-cards/[0-9,]+$')
     );
-  }
-
-  isSettingsActive = () => {
-    return false;
   }
 
   onFactoriesClick() {
     const companyId = this.route.split('/')[3];
     if (companyId) {
       return this.router.navigate(['/factorymanager/companies', companyId]);
+    }
+  }
+
+  onRoomsClick() {
+    const companyId = this.route.split('/')[3];
+    if (companyId) {
+      return this.router.navigate(['/factorymanager/companies', companyId, 'rooms']);
     }
   }
 

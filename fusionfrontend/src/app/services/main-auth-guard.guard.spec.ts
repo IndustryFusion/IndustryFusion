@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MainAuthGuardGuard } from './main-auth-guard.guard';
+import { MainAuthGuard } from './main-auth-guard.service';
 
 describe('MainAuthGuardGuard', () => {
-  let guard: MainAuthGuardGuard;
+  let guard: MainAuthGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({ });
-    guard = TestBed.inject(MainAuthGuardGuard);
+    guard = TestBed.inject(MainAuthGuard);
   });
 
   it('should be created', () => {

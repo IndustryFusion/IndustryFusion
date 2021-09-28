@@ -14,13 +14,14 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ID, QueryEntity } from '@datorama/akita';
-import { AssetSeriesDetailsStore, AssetSeriesDetailsState } from './asset-series-details.store';
+import { ID } from '@datorama/akita';
+import { AssetSeriesDetailsState, AssetSeriesDetailsStore } from './asset-series-details.store';
 import { Observable } from 'rxjs';
 import { AssetSeriesDetails } from './asset-series-details.model';
+import { BaseQueryEntity } from '../basequery';
 
 @Injectable({ providedIn: 'root' })
-export class AssetSeriesDetailsQuery extends QueryEntity<AssetSeriesDetailsState> {
+export class AssetSeriesDetailsQuery extends BaseQueryEntity<AssetSeriesDetailsState, AssetSeriesDetails> {
 
   constructor(protected store: AssetSeriesDetailsStore) {
     super(store);

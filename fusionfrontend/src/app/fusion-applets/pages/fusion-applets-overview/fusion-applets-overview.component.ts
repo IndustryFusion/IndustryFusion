@@ -15,6 +15,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RouteHelpers } from '../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-fusion-applets-overview',
@@ -31,7 +32,6 @@ export class FusionAppletsOverviewComponent implements OnInit {
   }
 
   isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(sement => sement.path).includes(subroute);
+   return RouteHelpers.isRouteActive(subroute, this.activatedRoute);
   }
 }

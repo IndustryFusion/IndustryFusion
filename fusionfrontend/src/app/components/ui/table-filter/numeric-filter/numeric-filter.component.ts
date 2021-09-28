@@ -16,9 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-const SHORTTERM_PRIORITY = 'Critical (red)';
-const MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
-const LONGTERM_PRIORITY = 'Longterm (blue)';
+
 
 @Component({
   selector: 'app-numeric-filter',
@@ -31,6 +29,10 @@ export class NumericFilterComponent implements OnInit {
   readonly MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
   readonly MAINTENANCE_DAYS_UPPER_THRESHOLD = 180;
 
+  readonly SHORTTERM_PRIORITY = 'Critical (red)';
+  readonly MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
+  readonly LONGTERM_PRIORITY = 'Longterm (blue)';
+
   @Input()
   itemsToBeFiltered: any;
   @Input()
@@ -39,7 +41,7 @@ export class NumericFilterComponent implements OnInit {
   itemsFiltered = new EventEmitter<any>();
 
   checkBoxItemsSet: Set<any> = new Set();
-  checkBoxItems: string[] = [SHORTTERM_PRIORITY, MEDIUMTERM_PRIORITY, LONGTERM_PRIORITY];
+  checkBoxItems: string[] = [this.SHORTTERM_PRIORITY, this.MEDIUMTERM_PRIORITY, this.LONGTERM_PRIORITY];
   selectedCheckBoxItems: any[] = [];
   filteredItems: any[] = [];
   index: number;
@@ -78,20 +80,20 @@ export class NumericFilterComponent implements OnInit {
   filterItems(checkboxItem: string) {
     const attributeToBeFiltered = 'fields';
     switch (checkboxItem) {
-      case SHORTTERM_PRIORITY: {
-        return this.removeBeyondThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered);
+      case this.SHORTTERM_PRIORITY: {
+        return this.removeAboveThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered);
       }
-      case MEDIUMTERM_PRIORITY: {
+      case this.MEDIUMTERM_PRIORITY: {
         return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered)
-          .concat(this.removeBeyondThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered));
+          .concat(this.removeAboveThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered));
       }
-      case LONGTERM_PRIORITY: {
+      case this.LONGTERM_PRIORITY: {
         return this.removeBelowThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered);
       }
     }
   }
 
-  removeBelowThreshold(lowerLimitValue, attributeToBeFiltered) {
+  private removeBelowThreshold(lowerLimitValue, attributeToBeFiltered) {
     return this.itemsToBeFiltered.filter(item => {
       const fields: any[] = item[attributeToBeFiltered];
       this.index = fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
@@ -103,7 +105,7 @@ export class NumericFilterComponent implements OnInit {
     });
   }
 
-  removeBeyondThreshold(upperLimitValue, attributeToBeFiltered) {
+  private removeAboveThreshold(upperLimitValue, attributeToBeFiltered) {
     return this.itemsToBeFiltered.filter(item => {
       const fields: any[] = item[attributeToBeFiltered];
       this.index = fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);

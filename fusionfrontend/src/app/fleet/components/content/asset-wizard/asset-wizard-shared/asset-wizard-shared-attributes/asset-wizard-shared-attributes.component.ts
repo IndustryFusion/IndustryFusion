@@ -19,7 +19,7 @@ import { FieldInstance } from '../../../../../../store/field-instance/field-inst
 import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { FieldType } from '../../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../../store/field/field-query.service';
+import { FieldQuery } from '../../../../../../store/field/field.query';
 import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({

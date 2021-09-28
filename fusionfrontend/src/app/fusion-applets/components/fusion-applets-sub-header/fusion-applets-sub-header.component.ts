@@ -15,7 +15,8 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { RouteHelpers } from '../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-fusion-applet-sub-header',
@@ -30,7 +31,7 @@ export class FusionAppletsSubHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    public activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -42,19 +43,29 @@ export class FusionAppletsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   onRouteClick(subroute: string): Promise<boolean> {
-    return this.router.navigate(['..', subroute], { relativeTo: this.getActiveRouteLastChild()});
+    if (subroute === 'archiv' || subroute === 'overview') {
+      return this.router.navigate(['..', subroute], { relativeTo: this.getActiveRouteLastChild()});
+    } else if (subroute === 'detail' || subroute === 'editor') {
+      const fusionAppletId = this.getActiveRouteLastChild().snapshot.paramMap.get('fusionAppletId');
+      return this.router.navigate(['../..', subroute, fusionAppletId], { relativeTo: this.getActiveRouteLastChild()});
+    }
   }
 
   isRouteActive(subroute: string): boolean {
-    const snapshot = this.getActiveRouteLastChild().snapshot;
-    return snapshot.url.map(sement => sement.path).includes(subroute);
+    let snapshot: ActivatedRouteSnapshot;
+    if (subroute === 'archiv' || subroute === 'overview') {
+      snapshot = this.getActiveRouteLastChild().snapshot;
+    } else {
+      snapshot = this.getActiveRouteSecondLastChild().snapshot;
+    }
+    return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
   private getActiveRouteLastChild() {
-    let route = this.activatedRoute;
-    while (route.firstChild !== null) {
-      route = route.firstChild;
-    }
-    return route;
+    return RouteHelpers.getActiveRouteLastChild(this.activatedRoute);
+  }
+
+  private getActiveRouteSecondLastChild() {
+    return RouteHelpers.getActiveRouteSecondLastChild(this.activatedRoute);
   }
 }

@@ -23,6 +23,7 @@ import { OispAlertStatus } from '../../../../../store/oisp/oisp-alert/oisp-alert
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { RouteHelpers } from '../../../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-asset-notifications',
@@ -54,13 +55,8 @@ export class AssetNotificationsComponent implements OnInit {
     );
   }
 
-  isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(segment => segment.path).includes(subroute);
-  }
-
   private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
-    if (this.isRouteActive('cleared')) {
+    if (RouteHelpers.isRouteActive('cleared', this.activatedRoute)) {
       return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
     } else {
       return notifications.filter(rule => rule.status !== OispAlertStatus.CLOSED);

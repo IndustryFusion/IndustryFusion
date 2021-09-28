@@ -23,7 +23,7 @@ under the License.
   </button>
 </div>
 
-<p-overlayPanel #filterpanel [dismissable]="false" [ngClass]="{'panel-postion': positionSet==true}" class="filterPanel panel-class">
+<p-overlayPanel #filterpanel [dismissable]="false" [ngClass]="{'panel-position': haspositionSet==true}" class="filterPanel panel-class">
   <ng-template pTemplate>
     <div class="if-panel-heading">Filter</div>
 
@@ -55,7 +55,7 @@ under the License.
           <i class="pi pi-times remove-filter-btn-icon"></i>
         </button>
       </div>
-      <button (click)="addFilter()" *ngIf="activeFilterSet.size < possibleFilters.length" class="add-btn">
+      <button (click)="addFilter()" *ngIf="activeFilterSet.size < filters.length" class="add-btn">
         <i class="pi pi-plus add-btn-icon"></i>
         Add filter
       </button>

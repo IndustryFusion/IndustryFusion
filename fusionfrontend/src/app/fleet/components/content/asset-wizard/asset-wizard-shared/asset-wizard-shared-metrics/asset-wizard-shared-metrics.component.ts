@@ -22,7 +22,7 @@ import { QuantityDataType } from 'src/app/store/field-details/field-details.mode
 import { FieldThresholdType } from 'src/app/store/field/field.model';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { FieldType } from '../../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../../store/field/field-query.service';
+import { FieldQuery } from '../../../../../../store/field/field.query';
 import { QuantityTypeQuery } from '../../../../../../store/quantity-type/quantity-type.query';
 import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 

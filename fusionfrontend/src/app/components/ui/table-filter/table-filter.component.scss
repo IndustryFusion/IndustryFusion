@@ -18,7 +18,6 @@
 
 $top: var(--top-position);
 $left: var(--left-position);
-$positionSet: var(--postion-set);
 
 .panel-class {
   ::ng-deep .p-overlaypanel:before {
@@ -32,7 +31,7 @@ $positionSet: var(--postion-set);
   }
 }
 
-.panel-postion {
+.panel-position {
   ::ng-deep .p-component {
     top: $top !important;
     left: $left !important;
@@ -56,7 +55,7 @@ $positionSet: var(--postion-set);
   width: 48px;
   margin-right: 40px;
   background-color: $light-grey;
-  border-color: transparent;
+  border: none;
   border-radius: 10px;
 }
 
@@ -66,46 +65,18 @@ $positionSet: var(--postion-set);
   border: none;
 
   .add-btn-icon {
-    font-size: 12px;
+    font-size: $small-font-size;
     color: $basic-black;
   }
 }
 
 .remove-filter-btn {
-  border-color: transparent;
+  border: none;
   background-color: $basic-white;
 
   .remove-filter-btn-icon {
     font-size: $regular-font-size;
     color: $basic-black;
-  }
-}
-
-
-.open-filterpanel-btn {
-  width: 175px;
-  height: 38px;
-  border-radius: 8px;
-  border-color: transparent;
-  margin-left: 5px;
-  margin-right: 40px;
-  padding: 0 0;
-
-  .filter-panel-btn-grid {
-    display: grid;
-    grid-template-columns: 75% 25%;
-    margin-left: 10px;
-
-    .filter-panel-btn-grid-text {
-      font-weight: bold;
-      justify-self: start;
-      margin-left: 10px;
-    }
-
-    .filter-panel-btn-grid-icon {
-      font-size: 17.5px;
-      margin-top: 3px
-    }
   }
 }
 
@@ -115,33 +86,6 @@ $positionSet: var(--postion-set);
   color: $basic-black;
   margin-bottom: 10px;
   margin-left: 5px;
-}
-
-.search-panel-button {
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.search-input {
-  border-color: $basic-white;
-  touch-action: none;
-}
-
-.remove-searchtext-btn {
-  background-color: $basic-white !important;
-  border: none;
-  position: absolute;
-  top: 7.5px;
-  right: 2.5%;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  .searchtext-btn-icon {
-    font-size: $regular-font-size;
-  }
 }
 
 .remove-all-filters-btn {
@@ -154,7 +98,7 @@ $positionSet: var(--postion-set);
   cursor: pointer;
 
   .remove-all-filters-btn-icon {
-    font-size: 16px;
+    font-size: $medium-font-size;
     color: $basic-black;
   }
 }

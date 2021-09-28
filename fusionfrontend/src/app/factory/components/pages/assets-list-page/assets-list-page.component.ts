@@ -23,9 +23,11 @@ import { Company } from 'src/app/store/company/company.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
 import { Room } from 'src/app/store/room/room.model';
-import { FactoryAssetDetails, FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import {
+  FactoryAssetDetails,
+  FactoryAssetDetailsWithFields
+} from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { ID } from '@datorama/akita';
-import { FactoryManagerPageType, RouteData } from 'src/app/factory/factory-routing.model';
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
 import { RoomService } from '../../../../store/room/room.service';
@@ -96,15 +98,9 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   }
 
   toolbarClick(button: string) {
-    const pageTypes: FactoryManagerPageType[] = (this.activatedRoute.snapshot.data as RouteData).pageTypes || [];
-
     if (button === 'GRID') {
       this.assetQuery.setSelectedAssetIds(this.selectedIds);
-      if (pageTypes.includes(FactoryManagerPageType.ROOM_LIST) || pageTypes.includes(FactoryManagerPageType.ROOM_DETAIL)) {
-        this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
-      } else {
-        this.router.navigate(['..', 'asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
-      }
+      this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
     }
   }
 }

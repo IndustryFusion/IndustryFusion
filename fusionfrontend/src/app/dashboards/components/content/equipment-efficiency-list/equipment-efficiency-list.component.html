@@ -25,7 +25,7 @@ under the License.
       </div>
     </div>
     <div class="filter-panel">
-      <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
+      <app-table-filter class="filter-btn" [filters]="this.filters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
                         (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>
@@ -76,8 +76,8 @@ under the License.
         </td>
         <td [style.width.%]="10">{{rowData.factorySiteName}}</td>
         <td [style.width.%]="25">
-          <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHours"
-                                              [assetStatusHours]="rowData.statusHours">
+          <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHoursOneDay"
+                                              [assetStatusHoursOfDays]="[rowData.statusHoursOneDay]">
           </app-equipment-efficiency-bar-chart>
         </td>
       </tr>

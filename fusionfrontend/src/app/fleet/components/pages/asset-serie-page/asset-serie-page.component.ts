@@ -29,6 +29,7 @@ import { CompanyQuery } from '../../../../store/company/company.query';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDetailsService } from '../../../../store/asset-series-details/asset-series-details.service';
 
 @Component({
   selector: 'app-asset-serie-page',
@@ -48,6 +49,7 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
     { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
 
   constructor(private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
+              private assetSeriesDetailsService: AssetSeriesDetailsService,
               private assetQuery: AssetQuery,
               private activatedRoute: ActivatedRoute,
               private roomQuery: RoomQuery,
@@ -55,11 +57,11 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
               private dialogService: DialogService,
               private factorySiteQuery: FactorySiteQuery,
               private route: ActivatedRoute) {
+    this.resolve(this.activatedRoute);
   }
 
   ngOnInit(): void {
     this.isLoading$ = this.assetSeriesDetailsQuery.selectLoading();
-    this.resolve(this.activatedRoute);
   }
 
   ngOnDestroy(): void {
@@ -71,6 +73,7 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
     if (assetSeriesId != null) {
       this.assetSerieDetails$ = this.assetSeriesDetailsQuery.selectEntity(assetSeriesId);
       this.assetSerieId = assetSeriesId;
+      this.assetSeriesDetailsService.setActive(this.assetSerieId);
 
       const assets$ = this.assetQuery.selectAssetsOfAssetSerie(assetSeriesId);
       const rooms$ = this.roomQuery.selectAll();
