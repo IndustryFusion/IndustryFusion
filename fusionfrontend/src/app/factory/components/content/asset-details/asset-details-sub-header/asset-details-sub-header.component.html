@@ -19,7 +19,7 @@ under the License.
   <div class="flexbox"></div>
   <div class="wrapper if-subheader asset-details-subheader">
     <ul>
-      <li (click)="onRouteClick('performance')" [ngClass]="{'active': isRouteActive('performance')}">Performance</li>
+      <li (click)="onRouteClick('performance', 'realtime')" [ngClass]="{'active': isPerformance()}">Performance</li>
       <li (click)="onRouteClick('notifications', 'open')" [ngClass]="{'active': isNotifications()}">Notifications</li>
       <li (click)="onRouteClick('applets', 'active')" [ngClass]="{'active': isApplets()}">Applets</li>
       <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}">

@@ -14,10 +14,10 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { OispDeviceStatus } from '../../../../../services/kairos.model';
+import { OispDeviceStatus } from '../../../services/kairos.model';
 import { UIChart } from 'primeng/chart';
-import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
-import { StatusHours } from '../../../../../services/kairos-status-aggregation.model';
+import { EnumHelpers } from '../../../common/utils/enum-helpers';
+import { StatusHoursOneDay } from '../../../services/kairos-status-aggregation.model';
 
 
 @Component({
@@ -28,16 +28,26 @@ import { StatusHours } from '../../../../../services/kairos-status-aggregation.m
 export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
 
   @Input()
-  assetStatusHours: StatusHours[];
+  assetStatusHoursOfDays: StatusHoursOneDay[];
+
+  @Input()
+  showAxes = false;
+
+  @Input()
+  yLabels: string[];
+
+  @Input()
+  maxXAxisValue: number;
 
   @ViewChild('chart') chart: UIChart;
 
   stackedOptions: any;
   stackedData: any;
 
+  private numDisplayedDays: number;
+  private isInitialized = false;
+
   constructor(private enumHelpers: EnumHelpers) {
-    this.initChartOptions();
-    this.initChartData();
   }
 
   private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
@@ -53,30 +63,33 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
     }
   }
 
-  public static getHoursString(hoursWithMinutes: number) {
+  public static getHoursString(hoursWithMinutes: number): string {
       const hours = hoursWithMinutes > 99 ? Math.floor(hoursWithMinutes) : ('00' + Math.floor(hoursWithMinutes)).slice(-2);
       const minutes = ('00' + Math.round((hoursWithMinutes - Math.floor(hoursWithMinutes)) * 60)).slice(-2);
       return `${hours}:${minutes} h`;
   }
 
   ngOnInit(): void {
-    this.updateChart(this.assetStatusHours);
+    this.numDisplayedDays = this.assetStatusHoursOfDays.length;
+    this.initChartOptions();
+    this.initChartData();
+    this.initCanvasHeight();
+    this.isInitialized = true;
+
+    this.updateChart(this.assetStatusHoursOfDays);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.assetStatusHoursOfDays && this.isInitialized) {
+      this.updateChart(changes.assetStatusHoursOfDays.currentValue);
+    }
   }
 
   private initChartOptions() {
-    const axesOptions = [{
-      stacked: true,
-      display: false,
-      ticks: {
-        beginAtZero: false
-      },
-      gridLines: {
-        display: false
-      }
-    }];
+    const axesOptions = this.getAxesOptions();
 
     const tooltips = {
-      mode: 'dataset',
+      mode: this.numDisplayedDays === 1 ? 'dataset' : 'point',
       position: 'nearest',
       callbacks: {
         title(tooltipItem, data) {
@@ -109,7 +122,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
         }
       },
       legend: {
-        display: false
+        display: false,
       },
       scales: {
         xAxes: axesOptions,
@@ -118,58 +131,101 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
     };
   }
 
+  private getAxesOptions() {
+    if (this.showAxes) {
+      return [{
+        stacked: true,
+        display: true,
+        ticks: {
+          beginAtZero: true,
+          fontSize: 14,
+          stepSize: 2,
+          max: this.maxXAxisValue ?? undefined,
+          fontFamily: '\'Metropolis\', \'Avenir Next\', \'Helvetica\', serif'
+        },
+        gridLines: {
+          display: true,
+          drawOnChartArea: false
+        },
+      }];
+    } else {
+      return [{
+        stacked: true,
+        display: false,
+        ticks: {
+          beginAtZero: false
+        },
+        gridLines: {
+          display: false
+        }
+      }];
+    }
+  }
+
   private initChartData() {
+    let emptyLabels: string[] = [];
+    emptyLabels = this.fillArrayForDays(emptyLabels, '');
+
+    if (this.yLabels && this.numDisplayedDays !== this.yLabels.length) {
+      console.warn('[equipment efficiency bar chart]: There are more labels than existing datasets');
+    }
+
     this.stackedData = {
-      labels: [''],
+      labels: this.yLabels ?? emptyLabels,
       datasets: [{
         type: 'horizontalBar',
         label: 'Offline',
         backgroundColor: '#F0F0F0',
-        data: [ 0 ]
       }, {
         type: 'horizontalBar',
         label: 'Error',
         backgroundColor: '#A73737',
-        data: [ 0 ]
       }, {
         type: 'horizontalBar',
         label: 'Idle',
         backgroundColor: '#454F63',
-        data: [ 0 ]
       },
         {
           type: 'horizontalBar',
           label: 'Running',
           backgroundColor: '#2CA9CE',
-          data: [ 0 ]
         }]
     };
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.assetStatusHours) {
-      this.updateChart(changes.assetStatusHours.currentValue);
+  private fillArrayForDays(array: any[], content: any): any[] {
+    for (let i = 0; i < this.numDisplayedDays; i++) {
+      array.push(content);
     }
+    return array;
   }
 
-  private updateChart(assetStatusHours: StatusHours[]) {
+  private initCanvasHeight() {
+    const canvasHeight = this.numDisplayedDays * 3 + (this.showAxes ? 0.5 : 0);
+    document.documentElement.style.setProperty('--canvas-height', `${ canvasHeight }rem`);
+  }
+
+  private updateChart(assetStatusHoursOfDays: StatusHoursOneDay[]) {
     this.resetChartData();
-    this.setChartData(assetStatusHours);
+    this.setChartData(assetStatusHoursOfDays);
     this.chart?.reinit();
   }
 
   private resetChartData() {
     for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
-      this.stackedData.datasets[i].data = [0];
+      this.stackedData.datasets[i].data = [];
+      this.stackedData.datasets[i].data = this.fillArrayForDays(this.stackedData.datasets[i].data, 0);
     }
   }
 
-  private setChartData(assetStatusHours: StatusHours[]) {
-    if (assetStatusHours) {
-      assetStatusHours.forEach(statusHour => {
-        const index = EquipmentEfficiencyBarChartComponent.getDatasetIndexOfStatus(statusHour.status);
-        this.stackedData.datasets[index].data = [statusHour.hours];
-      });
+  private setChartData(assetStatusHoursOfDays: StatusHoursOneDay[]) {
+    if (assetStatusHoursOfDays) {
+      for (let dayIndex = 0; dayIndex < assetStatusHoursOfDays.length; dayIndex++) {
+        assetStatusHoursOfDays[dayIndex].statusHours.forEach(statusHour => {
+          const index = EquipmentEfficiencyBarChartComponent.getDatasetIndexOfStatus(statusHour.status);
+          this.stackedData.datasets[index].data[dayIndex] = statusHour.hours;
+        });
+      }
     }
   }
 }

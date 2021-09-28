@@ -29,7 +29,8 @@ under the License.
     </app-equipment-efficiency-overview-realtime-status>
 
     <app-equipment-efficiency-overview-donut-chart class="aggregated-section status p-col-4" *ngIf="isLoaded"
-                                                      [aggregatedStatusHours$]="aggregatedStatusHours$">
+                                                   [title]="'Status Overview (All Assets)'"
+                                                   [aggregatedStatusHours$]="aggregatedStatusHours$">
     </app-equipment-efficiency-overview-donut-chart>
   </div>
 

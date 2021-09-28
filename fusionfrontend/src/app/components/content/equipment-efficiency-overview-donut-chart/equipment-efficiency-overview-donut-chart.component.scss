@@ -13,30 +13,28 @@
  * under the License.
  */
 
-@import "abstract/variables";
+@import 'src/assets/sass/abstract/variables';
+@import 'src/assets/sass/base/typography';
+@import 'src/app/dashboards/components/content/equipment-efficiency-overview/equipment-efficiency-overview.component';
 
-.maintenance-value {
+.status-overview-data {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
+
+  .donut-chart {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: -1rem;
+    display: flex;
+    position: relative;
+  }
+
+  .legend {
+    margin-top: 0.5rem;
+  }
 }
 
-.container {
-  width: 16rem;
-  height: 2rem;
-  position: relative;
-}
 
-.progress-bar {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
 
-:host ::ng-deep canvas {
-  border-radius: 0 8px 8px 0 !important;
-  width: 16rem !important;
-  height: 3rem !important;
-}
+/*p-chart {
+  margin: 0 auto !important;
+}*/

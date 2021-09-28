@@ -17,8 +17,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StatusHours } from '../../../../services/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../../../../services/kairos.model';
 import { EnumHelpers } from '../../../../common/utils/enum-helpers';
+import { EquipmentEfficiencyHelper } from '../../../../common/utils/equipment-efficiency-helper';
 
 @Component({
   selector: 'app-equipment-efficiency-overview',
@@ -60,23 +60,10 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
 
   private updateAggregatedStatusHours() {
     if (this.factoryAssetDetailsWithFields) {
-      const aggregatedStatusHours = this.getNewAggregatedStatusHours();
-      for (const assetWithField of this.factoryAssetDetailsWithFields) {
-        if (assetWithField.statusHours) {
-          assetWithField.statusHours.forEach(statusHours => {
-            aggregatedStatusHours[statusHours.status].hours += statusHours.hours;
-          });
-        }
-      }
+      const aggregatedStatusHours = EquipmentEfficiencyHelper.updateAggregatedStatusHours(this.factoryAssetDetailsWithFields,
+        this.enumHelpers);
       this.aggregatedStatusHours$.next(aggregatedStatusHours);
     }
   }
 
-  private getNewAggregatedStatusHours(): StatusHours[] {
-    const aggregatedStatusHours: StatusHours[] = [];
-    for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
-      aggregatedStatusHours.push({ status: i as OispDeviceStatus, hours: 0 });
-    }
-    return aggregatedStatusHours;
-  }
 }

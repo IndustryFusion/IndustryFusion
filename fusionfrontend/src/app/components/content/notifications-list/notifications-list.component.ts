@@ -27,6 +27,7 @@ import { FilterOption, FilterType } from 'src/app/components/ui/table-filter/fil
 
 import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
 import { Location } from '@angular/common';
+import { RouteHelpers } from '../../../common/utils/route-helpers';
 
 export enum NotificationState { OPEN, CLEARED}
 
@@ -104,7 +105,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   public getCurrentState(): NotificationState {
-    if (this.isRouteActive('cleared')) {
+    if (RouteHelpers.isRouteActive('cleared', this.activatedRoute)) {
       return NotificationState.CLEARED;
     } else {
       return NotificationState.OPEN;
@@ -125,11 +126,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
       newRoute = [subroute];
     }
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
-  }
-
-  isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
   private getActiveRouteLastChild() {

@@ -13,28 +13,26 @@
  * under the License.
  */
 
-@import 'abstract/variables';
-@import 'base/typography';
-@import '../equipment-efficiency-overview.component';
+@import "abstract/variables";
 
-.status-overview-data {
+$canvas-height: var(--canvas-height);
+
+.equipment-efficiency-bar-chart {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 
-  .donut-chart {
-    margin-top: 1rem;
-    margin-left: 1rem;
-    margin-right: -1rem;
-    display: flex;
+  .bar-chart {
+    width: 16rem;
+    height: 2rem;
     position: relative;
-  }
-
-  .legend {
-    margin-top: 0.5rem;
   }
 }
 
-
-
-/*p-chart {
-  margin: 0 auto !important;
-}*/
+:host ::ng-deep canvas {
+  border-radius: 0 8px 8px 0 !important;
+  width: 20rem !important;
+  height: $canvas-height !important;
+}
