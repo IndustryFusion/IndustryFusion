@@ -40,7 +40,6 @@ import { PrecisionPipe } from '../pipes/precision.pipe';
 import { StatusComponent } from './components/content/status/status.component';
 import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
 import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
-import { ListFilterComponent } from './components/content/assets-list/list-filter/list-filter.component';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
@@ -93,7 +92,6 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
     StatusComponent,
     FactorySitesListHeaderComponent,
     FactorySitesListItemComponent,
-    ListFilterComponent,
     AssetInstantiationComponent,
     AssetInstantiationStartModalComponent,
     AssetInstantiationDescriptionModalComponent,
