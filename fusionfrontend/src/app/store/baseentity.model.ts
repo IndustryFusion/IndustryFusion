@@ -16,7 +16,6 @@
 import { ID } from '@datorama/akita';
 
 export class BaseEntity {
-
   id: ID;
   version: number;
 }
