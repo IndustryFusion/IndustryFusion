@@ -22,7 +22,7 @@ import { tap } from 'rxjs/operators';
 import { RestService } from '../../services/rest.service';
 import { environment } from '../../../environments/environment';
 import { Field } from './field.model';
-import { FieldStore } from './field-store.service';
+import { FieldStore } from './field.store';
 
 
 @Injectable({

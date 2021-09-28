@@ -16,9 +16,7 @@
 import { NgModule } from '@angular/core';
 
 import { FleetRoutingModule } from './fleet-routing.module';
-import { FleetManagerPageComponentComponent } from './components/pages/fleet-manager-page-component/fleet-manager-page-component.component';
 import { FleetSubHeaderComponent } from './components/content/fleet-sub-header/fleet-sub-header.component';
-import { FleetPageTitleComponent } from './components/content/fleet-page-title/fleet-page-title.component';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { ClarityModule } from '@clr/angular';
@@ -56,9 +54,7 @@ import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './compone
 
 @NgModule({
   declarations: [
-    FleetManagerPageComponentComponent,
     FleetSubHeaderComponent,
-    FleetPageTitleComponent,
     AssetSeriesPageComponent,
     AssetSeriesListComponent,
     AssetSeriesListHeaderComponent,
@@ -97,7 +93,6 @@ import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './compone
     ],
   exports: [
     FleetSubHeaderComponent,
-    FleetPageTitleComponent,
   ]
 })
 export class FleetModule { }

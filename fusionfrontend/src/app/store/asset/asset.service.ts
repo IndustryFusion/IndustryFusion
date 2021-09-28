@@ -101,7 +101,10 @@ export class AssetService {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}/assets/assign`;
     return this.http.put<Asset[]>(`${environment.apiUrlPrefix}/${path}`, assets, this.httpOptions)
       .pipe(tap(entities => {
-        entities.forEach(entity => this.assetStore.upsertCached(entity));
+        entities.forEach(asset => {
+          this.assetStore.upsertCached(asset);
+          this.assetDetailsService.updateRoom(asset.id, asset.roomId);
+        });
       }));
   }
 

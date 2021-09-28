@@ -3,7 +3,7 @@ import { AssetSeries } from '../../../../../store/asset-series/asset-series.mode
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldSource } from '../../../../../store/field-source/field-source.model';
 import { FieldType } from '../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../store/field/field-query.service';
+import { FieldQuery } from '../../../../../store/field/field.query';
 import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 
 @Component({

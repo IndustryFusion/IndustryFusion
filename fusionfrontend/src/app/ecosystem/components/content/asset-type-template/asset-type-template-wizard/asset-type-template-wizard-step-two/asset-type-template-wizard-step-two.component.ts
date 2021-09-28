@@ -18,7 +18,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Field } from '../../../../../../store/field/field.model';
-import { FieldQuery } from '../../../../../../store/field/field-query.service';
+import { FieldQuery } from '../../../../../../store/field/field.query';
 import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';

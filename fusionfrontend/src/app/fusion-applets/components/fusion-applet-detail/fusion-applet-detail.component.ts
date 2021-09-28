@@ -14,9 +14,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Rule } from '../../../services/oisp.model';
-import { OispService } from '../../../services/oisp.service';
+import { Rule } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
 
 @Component({
   selector: 'app-fusion-applet-detail',
@@ -27,18 +27,18 @@ export class FusionAppletDetailComponent implements OnInit {
   rule: Rule;
 
   constructor(
-    private oispService: OispService,
     private activatedRoute: ActivatedRoute,
+    private oispRuleQuery: OispRuleQuery,
     private router: Router,
   ) {
-    const fusionAppletId = activatedRoute.snapshot.parent.paramMap.get('fusionAppletId');
-    this.oispService.getRule(fusionAppletId).subscribe(rule => this.rule = rule);
+    const fusionAppletId = this.activatedRoute.snapshot.paramMap.get('fusionAppletId');
+    this.oispRuleQuery.selectEntity(fusionAppletId).subscribe(rule => this.rule = rule);
   }
 
   ngOnInit(): void {
   }
 
   navigateToEditor() {
-    this.router.navigate(['..', 'editor'], { relativeTo: this.activatedRoute});
+    this.router.navigate(['../..', 'editor', this.rule.id], { relativeTo: this.activatedRoute});
   }
 }

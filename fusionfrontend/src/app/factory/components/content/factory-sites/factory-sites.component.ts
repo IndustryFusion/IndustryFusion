@@ -35,24 +35,26 @@ import { ActivatedRoute } from '@angular/router';
 export class FactorySitesComponent implements OnInit, OnDestroy {
 
   isLoading$: Observable<boolean>;
+  factorySites: FactorySite[];
   companyId: ID;
+  selectedFactorySite: ID;
+
   factorySites$: Observable<FactorySiteWithAssetCount[]>;
   factorySiteMapping:
     { [k: string]: string } = { '=0': 'No Factory sites', '=1': '# Factory site', other: '# Factory sites' };
   sortField: string;
   sortType: string;
 
-  factorySite: FactorySite;
-  ref: DynamicDialogRef;
+  private ref: DynamicDialogRef;
 
   constructor(
-    private factoryResolver: FactoryResolver,
     activatedRoute: ActivatedRoute,
+    private factoryResolver: FactoryResolver,
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private factoryComposedQuery: FactoryComposedQuery,
-    public dialogService: DialogService) {
-
+    public dialogService: DialogService
+  ) {
     this.factoryResolver.resolve(activatedRoute);
   }
 
@@ -82,5 +84,9 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     if (this.ref) {
       this.ref.close();
     }
+  }
+
+  setSelectedFactorySite(id: ID) {
+    this.selectedFactorySite = id;
   }
 }

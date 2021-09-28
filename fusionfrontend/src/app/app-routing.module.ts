@@ -17,14 +17,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LaunchpadPageComponent } from './components/pages/launchpad-page/launchpad-page.component';
-import { MainAuthGuardGuard } from './services/main-auth-guard.guard';
+import { MainAuthGuard } from './services/main-auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'home',
     component: LaunchpadPageComponent,
-    canActivate: [MainAuthGuardGuard]
+    canActivate: [MainAuthGuard],
+    data: {
+      breadcrumb: 'Launchpad'
+    }
   },
   {
      path: 'ecosystemmanager',

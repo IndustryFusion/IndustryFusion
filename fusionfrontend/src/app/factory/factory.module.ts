@@ -19,8 +19,7 @@ import { ClarityModule } from '@clr/angular';
 import { ChartsModule } from 'ng2-charts';
 
 import { FactoryRoutingModule } from './factory-routing.module';
-import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
-import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
+import { FactorySitesPageComponent } from './components/pages/factory-sites-page/factory-sites-page.component';
 import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
@@ -31,7 +30,7 @@ import { AssetDetailsInfoComponent } from './components/content/asset-details/as
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
-import { FactorySiteRoomsPageComponent } from './components/pages/factory-site-rooms-page/factory-site-rooms-page.component';
+import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
@@ -67,11 +66,11 @@ import { AssetSubsystemsComponent } from './components/pages/asset-details/asset
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [
-    CompaniesPageComponent,
-    CompanyPageComponent,
+    FactorySitesPageComponent,
     FactorySitePageComponent,
     AssetsGridPageComponent,
     AssetsListPageComponent,
@@ -90,7 +89,7 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
     MaintenanceBarComponent,
     AssetChartsComponent,
     RoomDialogComponent,
-    FactorySiteRoomsPageComponent,
+    RoomsPageComponent,
     AssetTablesComponent,
     StatusComponent,
     FactorySitesListHeaderComponent,
@@ -115,16 +114,17 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
     AssetSubsystemsComponent,
     AssetNotificationsComponent
   ],
-  imports: [
-    IFCommon,
-    FactoryRoutingModule,
-    ClarityModule,
-    ChartsModule,
-    ReactiveFormsModule,
-    TableModule,
-    CardModule,
-    FusionAppletsModule,
-  ],
+    imports: [
+        IFCommon,
+        FactoryRoutingModule,
+        ClarityModule,
+        ChartsModule,
+        ReactiveFormsModule,
+        TableModule,
+        CardModule,
+        FusionAppletsModule,
+        AccordionModule,
+    ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

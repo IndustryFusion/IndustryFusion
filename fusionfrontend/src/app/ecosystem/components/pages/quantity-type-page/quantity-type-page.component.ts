@@ -15,7 +15,6 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EcoSystemManagerResolver } from '../../../services/ecosystem-resolver.service';
 import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
 import { Observable } from 'rxjs';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
@@ -43,13 +42,11 @@ export class QuantityTypePageComponent implements OnInit, OnDestroy {
               private quantityTypeQuery: QuantityTypeQuery,
               private quantityTypeService: QuantityTypeService,
               private unitQuery: UnitQuery,
-              private activatedRoute: ActivatedRoute,
-              private ecoSystemManagerResolver: EcoSystemManagerResolver) { }
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.quantityTypeQuery.selectLoading();
     this.resolve(this.activatedRoute);
-    this.ecoSystemManagerResolver.resolve(this.activatedRoute);
   }
 
   private resolve(activatedRoute: ActivatedRoute): void {

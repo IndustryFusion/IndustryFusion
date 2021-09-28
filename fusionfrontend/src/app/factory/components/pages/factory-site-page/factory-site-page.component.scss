@@ -13,6 +13,52 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 .children-wrapper {
-  margin: 0 75px ;
+  margin: 0 75px;
+}
+
+.factory-site-content {
+  a {
+    border: none !important;
+  }
+}
+
+:host ::ng-deep p-accordiontab a {
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+  margin-top: 1rem;
+  border: 2px solid $basic-black !important;
+  background: $grey-background !important;
+  color: $basic-black !important;
+
+  padding: 1rem !important;
+  padding-left: 3rem !important;
+
+  &:hover {
+    color: $hover-grey !important;
+    text-decoration: none !important;
+  }
+
+  &.p-menuitem-link {
+    border: unset !important;
+    background: unset !important;
+    margin: unset !important;
+    padding: unset !important;
+  }
+}
+
+:host ::ng-deep .p-accordion .p-accordion-content {
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+  border: 2px solid $basic-grey !important;
+  background: none !important;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-toggle-icon {
+  position: relative;
+  left: 0 !important;
+
+  font-size: 1.0rem;
 }

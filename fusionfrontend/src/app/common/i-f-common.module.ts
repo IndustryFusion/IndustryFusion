@@ -35,6 +35,7 @@ import { DropdownFilterComponent } from '../components/ui/table-filter/dropdown-
 import { NumericFilterComponent } from '../components/ui/table-filter/numeric-filter/numeric-filter.component';
 import { CalendarModule } from 'primeng/calendar';
 import { BooleanPipe } from '../pipes/boolean.pipe';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MaintenanceProgressbarComponent } from '../components/content/maintenance-progressbar/maintenance-progressbar.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
@@ -76,6 +77,7 @@ import { NotificationsListComponent } from '../components/content/notifications-
     RadioButtonModule,
     DialogModule,
     ToastModule,
+    BreadcrumbModule,
     OverlayPanelModule,
     CheckboxModule,
     CalendarModule,
@@ -110,6 +112,7 @@ import { NotificationsListComponent } from '../components/content/notifications-
     RadioButtonModule,
     LabelControlDirective,
     TooltipComponent,
+    BreadcrumbModule,
     TableSearchbarComponent,
     TableFilterComponent,
     DateFilterComponent,
@@ -122,7 +125,7 @@ import { NotificationsListComponent } from '../components/content/notifications-
   ],
   providers: [
     MessageService,
-    BooleanPipe
+    BooleanPipe,
   ]
 })
 export class IFCommon {

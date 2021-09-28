@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { RuleAction, RuleActionType } from '../../../../services/oisp.model';
+import { RuleAction, RuleActionType } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 

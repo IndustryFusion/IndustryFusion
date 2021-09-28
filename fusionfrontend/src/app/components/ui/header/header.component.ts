@@ -31,8 +31,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
   factorySubTitle$: Subject<string>;
   @Input()
-  ecoSystemManagerSubTitle$: Subject<string>;
-  @Input()
   user: User;
   route: string;
   show: boolean;
@@ -98,7 +96,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   isAssetDetails() {
-    return this.route && this.route.match(`\/assets\/[0-9]*`);
+    return this.route && this.route.match(`\/assets\/[0-9]*`) &&
+      !this.route.match('\/assets\/asset-cards/*');
+  }
+
+  getPageTitle() {
+    let title = '';
+    if (this.isManager(ManagerType.FACTORY_MANAGER)) {
+      title = 'Factory Manager';
+    } else if (this.isManager(ManagerType.FLEET_MANAGER)) {
+      title = 'Fleet Manager';
+    } else if (this.isManager(ManagerType.ECOSYSTEM_MANAGER)) {
+      title = 'Ecosystem Manager';
+    } else if (this.isFusionApplet()) {
+      title = 'Applets';
+    } else if (this.isDashboards()) {
+      title = 'Dashboards';
+    } else if (this.isNotifications()) {
+      title = 'Notifications';
+    } else if (this.isHome()) {
+      title = 'Smart Factory';
+    }
+    return title;
   }
 
   ngOnDestroy(): void {
