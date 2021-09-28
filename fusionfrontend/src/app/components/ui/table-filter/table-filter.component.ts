@@ -27,7 +27,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class TableFilterComponent implements OnInit {
 
   @Input()
-  possibleFilters: FilterOption[];
+  filters: FilterOption[];
   @Input()
   itemsToBeFiltered: any;
   @Input()
@@ -35,7 +35,7 @@ export class TableFilterComponent implements OnInit {
   @Output()
   filteredItems = new EventEmitter<any>();
 
-  positionSet = false;
+  haspositionSet = false;
 
   combinedFilteredItems: any;
   filterFormMap: Map<string, FormGroup> = new Map();
@@ -52,25 +52,22 @@ export class TableFilterComponent implements OnInit {
   faFilter = faFilter;
 
   ngOnInit(): void {
-    this.possibleFilters.forEach(filter => {
+    this.filters.forEach(filter => {
       this.createFilterForm(filter);
       this.filterOptions.push(filter);
     });
     if (this.position) {
-      this.positionSet = true;
-      document.documentElement.style.setProperty('--postion-set', 'true');
+      this.haspositionSet = true;
       this.changeTheme(this.position[0], this.position[1]);
-    } else {
-      document.documentElement.style.setProperty('--postion-set', 'false');
     }
   }
 
-  changeTheme(top: string, left: string) {
+  private changeTheme(top: string, left: string) {
     document.documentElement.style.setProperty('--top-position', top);
     document.documentElement.style.setProperty('--left-position', left);
   }
 
-  createFilterForm(filter: FilterOption) {
+  private createFilterForm(filter: FilterOption) {
     if (filter.filterType === FilterType.DATEFILTER) {
       this.createDateFilterForm(this.formBuilder, filter);
     } else if (filter.filterType === FilterType.DROPDOWNFILTER) {
@@ -80,7 +77,7 @@ export class TableFilterComponent implements OnInit {
     }
   }
 
-  createDateFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
+  private createDateFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
     this.filterFormMap.set(filter.attributeToBeFiltered, formBuilder.group({
       filterType: filter.filterType,
       attributeToBeFiltered: filter.attributeToBeFiltered,
@@ -91,7 +88,7 @@ export class TableFilterComponent implements OnInit {
     }));
   }
 
-  createDropDownFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
+  private createDropDownFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
     this.filterFormMap.set(filter.attributeToBeFiltered, formBuilder.group({
       filterType: filter.filterType,
       attributeToBeFiltered: filter.attributeToBeFiltered,
@@ -101,7 +98,7 @@ export class TableFilterComponent implements OnInit {
     }));
   }
 
-  createNumericFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
+  private createNumericFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
     this.filterFormMap.set(filter.attributeToBeFiltered, formBuilder.group({
       filterType: filter.filterType,
       attributeToBeFiltered: filter.attributeToBeFiltered,
@@ -112,7 +109,7 @@ export class TableFilterComponent implements OnInit {
   }
 
   addFilter() {
-    this.possibleFilters.every(filter => {
+    this.filters.every(filter => {
       if (!this.activeFilterSet.has(filter)) {
         this.selectedFilter[this.activeFilterSet.size] = filter;
         this.activeFilterSet.add(filter);
@@ -148,7 +145,7 @@ export class TableFilterComponent implements OnInit {
     this.filterItems();
   }
 
-  clearFormValues(form: FormGroup) {
+  private clearFormValues(form: FormGroup) {
     form.get('filteredItems').patchValue(null);
     if (form.get('filterType').value === FilterType.DATEFILTER) {
       form.get('startTimeValue').patchValue(null);

@@ -51,12 +51,12 @@ export class DateFilterComponent implements OnInit {
     this.itemsFiltered.emit();
   }
 
-  filterLowerLimit(lowerLimitValue, attributeToBeFiltered) {
+  private filterLowerLimit(lowerLimitValue, attributeToBeFiltered) {
     return lowerLimitValue ? this.itemsToBeFiltered.filter(item => item[attributeToBeFiltered]
       > lowerLimitValue) : this.itemsToBeFiltered;
   }
 
-  filterUpperLimit(upperLimitValue, attributeToBeFiltered) {
+  private filterUpperLimit(upperLimitValue, attributeToBeFiltered) {
     return upperLimitValue ? this.itemsToBeFiltered.filter(item => item[attributeToBeFiltered]
       < upperLimitValue) : this.itemsToBeFiltered;
   }

@@ -49,7 +49,7 @@ export class DropdownFilterComponent implements OnInit {
     this.getDropdownItems(this.dropDownFilterFormGroup.get('attributeToBeFiltered').value);
   }
 
-  getDropdownItems(attributeToBeFiltered) {
+  private getDropdownItems(attributeToBeFiltered) {
     this.itemsToBeFiltered.forEach(item => {
       this.attributeToBeFilteredSet.add(item[attributeToBeFiltered]);
     });

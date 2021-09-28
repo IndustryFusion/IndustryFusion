@@ -16,7 +16,6 @@ under the License.
 <div>
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</h3>
-<!--    <div class="p-col"></div>-->
     <div *ngIf="isInline" class="notification-state-button">
       <button (click)="changeTab(notificationStates.OPEN)" [disabled]="getCurrentState() == notificationStates.OPEN"
               class="if-light-button">
@@ -30,7 +29,7 @@ under the License.
       </button>
     </div>
     <div class="filter-panel">
-      <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.allNotifications"
+      <app-table-filter class="filter-btn" [filters]="filters" [itemsToBeFiltered]="allNotifications"
                          (filteredItems)="filterNotifications($event)">
       </app-table-filter>
     </div>
@@ -45,12 +44,12 @@ under the License.
 
     <div class="p-col-4 table-selected-item" style="text-align: center">
       <div class="table-bar-button-div">
-        <p-button class="table-bar-button" icon="pi pi-trash" (click)="closeMultibleItmes()"></p-button>
+        <p-button class="table-bar-button" icon="pi pi-trash" (click)="closeMultibleNotifications()"></p-button>
       </div>
     </div>
 
     <div class="p-col-4 table-selected-item" style="text-align: end">
-      <p-button class="table-bar-button" (click)="deselectAllItems()">
+      <p-button class="table-bar-button" (click)="deselectAllNotifications()">
         <fa-icon [icon]="faTimes" class="fa-fw"></fa-icon>
         <span>close</span>
       </p-button>
@@ -67,13 +66,13 @@ under the License.
         <th [style.width.%]="30" pSortableColumn="ruleName">
           <div class="p-d-flex p-ai-start">
             <p-sortIcon field="ruleName"></p-sortIcon>
-            <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="this.allNotifications"
+            <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="allNotifications"
                                  attributeToBeSearched="ruleName" (searchByName)="filterNotifications($event)">
             </app-table-searchbar>
           </div>
         </th>
         <th [style.width.%]="17">
-          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.allNotifications"
+          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="allNotifications"
                                attributeToBeSearched="assetName" (searchByName)="searchNotifications($event)">
           </app-table-searchbar>
         </th>
@@ -86,43 +85,43 @@ under the License.
       </tr>
     </ng-template>
 
-    <ng-template let-item pTemplate="body">
+    <ng-template let-notification pTemplate="body">
       <tr class="p-selectable-row" id="rowElement" style="cursor: pointer;">
         <td class="checkbox-td" [style.width.%]="5">
-          <p-tableCheckbox class="checkbox-column" [value]="item"></p-tableCheckbox>
+          <p-tableCheckbox class="checkbox-column" [value]="notification"></p-tableCheckbox>
         </td>
-        <td [style.width.%]="3" class="notification-icons" [ngSwitch]="item.priority">
+        <td [style.width.%]="3" class="notification-icons" [ngSwitch]="notification.priority">
           <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
           <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
           <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
         </td>
-        <td [style.width.%]="30">{{ item.ruleName }}</td>
-        <td [style.width.%]="17">{{ item.assetName }}</td>
-        <td [style.width.%]="40">{{ item.condition }}</td>
+        <td [style.width.%]="30">{{ notification.ruleName }}</td>
+        <td [style.width.%]="17">{{ notification.assetName }}</td>
+        <td [style.width.%]="40">{{ notification.condition }}</td>
         <td [style.width.%]="10">
-          {{ isFloatingNumber(item.measuredValue) ? (item.measuredValue | number: '1.0-2') : item.measuredValue }}
+          {{ isFloatingNumber(notification.measuredValue) ? (notification.measuredValue | number: '1.0-2') : notification.measuredValue }}
         </td>
-        <td [style.width.%]="15">{{ item.timestamp | date:'dd.MM.yyyy \'at\' hh:mm:ss' }}</td>
+        <td [style.width.%]="15">{{ notification.timestamp | date:'dd.MM.yyyy \'at\' hh:mm:ss' }}</td>
         <td [style.width.%]="5">
-          <button *ngIf="item.status === alertstatusTypes.NEW || item.status === alertstatusTypes.OPEN"
-                  type="button" class="small-confirm-button" (click)="showCloseItem(item)"><i class="pi pi-check"></i></button>
+          <button *ngIf="notification.status === alertStatusTypes.NEW || notification.status === alertStatusTypes.OPEN"
+                  type="button" class="small-confirm-button" (click)="showCloseNotification(notification)"><i class="pi pi-check"></i></button>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 
-<div *ngIf="shouldShowDeleteItem && (activeItem.status ===  alertstatusTypes.NEW
-  || activeItem.status === alertstatusTypes.OPEN)">
+<div *ngIf="shouldShowDeleteNotification && (activeNotification.status ===  alertStatusTypes.NEW
+  || activeNotification.status === alertStatusTypes.OPEN)">
   <div class="backdrop"></div>
   <div class="delete-modal">
-    <button class="button-close" (click)="shouldShowDeleteItem = false">
+    <button class="button-close" (click)="shouldShowDeleteNotification = false">
       <clr-icon [style.width.px]="19" [style.height.px]="19" shape="times"></clr-icon>
     </button>
     <div class="delete-modal-title">Clear notification?</div>
     <div class="delete-modal-footer">
-      <button type="button" class="if-button-cancel" (click)="shouldShowDeleteItem = false">Cancel</button>
-      <button type="button" class="button-confirm" (click)="closeItem()">Ok</button>
+      <button type="button" class="if-button-cancel" (click)="shouldShowDeleteNotification = false">Cancel</button>
+      <button type="button" class="button-confirm" (click)="closeNotification()">Ok</button>
     </div>
   </div>
 </div>

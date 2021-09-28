@@ -25,7 +25,7 @@ under the License.
       </div>
     </div>
     <div class="filter-panel">
-      <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
+      <app-table-filter class="filter-btn" [filters]="this.filters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
                         (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>

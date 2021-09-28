@@ -40,8 +40,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
   @Input() notifications: Observable<OispNotification[]>;
-  @Input() state: NotificationState;
-  @Input() isInline: false;
+  @Input() isInline = false;
+  state: NotificationState;
 
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
@@ -61,13 +61,13 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   searchedNotifications: OispNotification[];
   OispPriority = OispAlertPriority;
   selectedNotifications: OispNotification[] = [];
-  alertstatusTypes = OispAlertStatus;
-  activeItem: OispNotification;
-  shouldShowDeleteItem = false;
+  alertStatusTypes = OispAlertStatus;
+  activeNotification: OispNotification;
+  shouldShowDeleteNotification = false;
   notificationStates = NotificationState;
   notificationSubscription: Subscription;
 
-  possibleFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
+  filters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Priority', attributeToBeFiltered: 'priority' },
     { filterType: FilterType.DATEFILTER, columnName: 'Date & Time', attributeToBeFiltered: 'timestamp'}];
 
@@ -81,6 +81,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.state = this.getCurrentState();
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.periodicallyFetchNotifications();
     this.initMappings();
@@ -92,13 +93,13 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     clearInterval(this.intervalId);
   }
 
-  deleteItem(id: ID): void {
-    const filteredItem = this.displayedNotifications.find(value => value.id === id);
-    this.oispAlertService.closeAlert(filteredItem.id).subscribe(() => {
+  deleteNotification(id: ID): void {
+    const filteredNotification = this.displayedNotifications.find(value => value.id === id);
+    this.oispAlertService.closeAlert(filteredNotification.id).subscribe(() => {
     });
   }
 
-  deselectAllItems(): void {
+  deselectAllNotifications(): void {
     this.selectedNotifications = [];
   }
 
@@ -194,22 +195,22 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  closeMultibleItmes() {
+  closeMultibleNotifications() {
     this.selectedNotifications.forEach(notification => {
-      this.deleteItem(notification.id);
+      this.deleteNotification(notification.id);
     });
     this.selectedNotifications = [];
   }
 
-  showCloseItem(item: OispNotification) {
-    this.activeItem = item;
-    this.shouldShowDeleteItem = true;
+  showCloseNotification(notification: OispNotification) {
+    this.activeNotification = notification;
+    this.shouldShowDeleteNotification = true;
   }
 
-  closeItem() {
-    if (this.activeItem.status === this.alertstatusTypes.NEW || this.activeItem.status === this.alertstatusTypes.OPEN) {
-      this.shouldShowDeleteItem = false;
-      this.deleteItem(this.activeItem.id);
+  closeNotification() {
+    if (this.activeNotification.status === this.alertStatusTypes.NEW || this.activeNotification.status === this.alertStatusTypes.OPEN) {
+      this.shouldShowDeleteNotification = false;
+      this.deleteNotification(this.activeNotification.id);
     }
   }
 
