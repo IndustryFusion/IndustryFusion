@@ -16,3 +16,74 @@
 @import 'src/assets/sass/base/typography';
 @import "src/assets/sass/abstract/variables";
 @import "../asset-performance.component";
+
+.time-interval-selectors {
+
+  .choiceOptions{
+    margin: 1.25rem 3rem;
+  }
+
+  .radio-wrapper {
+    display: flex;
+    background: $light-grey;
+    padding-top: 1rem;
+    margin: 0 3.1rem 0;
+  }
+
+  .okButton{
+    margin: 1rem 3.1rem;
+  }
+
+  .interval-options {
+    display: flex;
+    margin-top: 1rem;
+
+    .maxpoints{
+      margin: 0px;
+
+      .pointslabel{
+        margin: 0px;
+      }
+
+      .pointsdropdown {
+        /*      width: 10% !important;*/
+        display: flex;
+      }
+    }
+
+    .dater{
+      margin-left: 1.5rem;
+
+      .datelabel{
+        display: flex;
+        max-width: 100% !important;
+      }
+
+      .calendar {
+        width: 60% !important;
+      }
+    }
+  }
+
+  .alert{
+    width: 45%;
+  }
+
+  .alert-warning{
+    margin: 25px 50px;
+    width: 30%;
+    .gotIt{
+      border: 5px rgba(0, 0, 0, 0.32);
+      background-color: inherit;
+      color: hsl(198, 0%, 40%);
+      // padding: 14px 28px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-block;
+    }
+  }
+}
+
+:host ::ng-deep .radio-wrapper > .p-selectbutton {
+  width: 20rem !important;
+}

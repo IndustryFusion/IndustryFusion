@@ -26,9 +26,9 @@
 }
 
 .p-selectbutton .p-button.p-highlight {
-  background: $basic-white;
-  border-color: unset;
-  color: $dark-grey;
+  background: $basic-white !important;
+  border-color: unset !important;
+  color: $dark-grey !important;
 }
 
 .p-selectbutton .p-button {

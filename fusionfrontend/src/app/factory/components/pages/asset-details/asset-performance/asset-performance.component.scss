@@ -28,17 +28,11 @@
     border: 0;
   }
 
-  .radio-wrapper {
-    background: $light-grey;
-    padding-top: 20px;
-    margin: 0 50px 25px;
-  }
-
   .charts-container {
     background: $light-grey;
     border: 0;
     justify-content: center;
-    margin: 25px 50px;
+    margin: 15px 50px;
   }
 
   .progress-bar-container {
@@ -65,4 +59,19 @@
     font-weight: bold;
     margin: 1rem 2rem;
   }
+}
+
+:host ::ng-deep .performance-views > .p-selectbutton {
+  width: 27.5rem !important;
+}
+
+:host ::ng-deep .p-selectbutton .p-button.p-highlight {
+  background: $dark-white !important;
+  border-radius: 44px;
+}
+
+:host ::ng-deep .p-selectbutton {
+  background: $basic-white;
+  border-radius: 44px;
+  width: 20rem;
 }
