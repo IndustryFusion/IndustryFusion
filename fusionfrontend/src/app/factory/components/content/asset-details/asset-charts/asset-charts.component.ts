@@ -189,6 +189,9 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
               break;
           }
       }
+      if (changes.startDate || changes.endDate) {
+        this.flushData();
+      }
       if (changes.clickedOk) {
         if (this.clickedOk) {
           switch ( this.options ) {
