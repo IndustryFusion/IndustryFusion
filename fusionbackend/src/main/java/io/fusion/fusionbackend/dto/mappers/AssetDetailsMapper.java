@@ -51,6 +51,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
     private AssetDetailsDto buildFromAsset(Asset entity) {
         AssetDetailsDto dto = AssetDetailsDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))

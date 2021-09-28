@@ -73,6 +73,7 @@ export class QuantityTypeDialogComponent implements OnInit {
   private createQuantityTypeForm(quantityType: QuantityType): void {
     this.quantityTypeForm = this.formBuilder.group({
       id: [],
+      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       label: ['', WizardHelper.maxTextLengthValidator],
       description: ['', WizardHelper.maxTextLengthValidator],

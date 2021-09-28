@@ -20,7 +20,6 @@ import { AssetType } from '../asset-type/asset-type.model';
 import { FieldTarget } from '../field-target/field-target.model';
 
 export class AssetTypeTemplate extends BaseEntity {
-  version: bigint;
   name: string;
   description: string;
   imageKey: string;

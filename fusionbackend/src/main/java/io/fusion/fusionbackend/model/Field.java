@@ -22,6 +22,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,8 +31,6 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
 
 @Entity
 @NamedEntityGraph(name = "Field.allChildrenDeep",
@@ -59,6 +59,9 @@ public class Field extends BaseEntity {
     private FieldThresholdType thresholdType;
 
     public void copyFrom(final Field sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }

@@ -40,6 +40,7 @@ public class AssetSeriesDetailsMapper extends EntityDetailsDtoMapper<AssetSeries
 
         return AssetSeriesDetailsDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .assetType(assetTypeTemplate.map(BaseAsset::getName).orElse(""))
                 .templateVersion("000")
