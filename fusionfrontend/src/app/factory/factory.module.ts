@@ -72,6 +72,7 @@ import { AssetPerformanceViewComponent } from './components/pages/asset-details/
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DashboardModule } from '../dashboards/dashboard.module';
 import { AssetHistoricalViewComponent } from './components/pages/asset-details/asset-performance/asset-historical-view/asset-historical-view.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -122,19 +123,20 @@ import { AssetHistoricalViewComponent } from './components/pages/asset-details/a
     AssetSubsystemsComponent,
     AssetNotificationsComponent
   ],
-  imports: [
-    IFCommon,
-    FactoryRoutingModule,
-    ClarityModule,
-    ChartsModule,
-    ReactiveFormsModule,
-    TableModule,
-    CardModule,
-    FusionAppletsModule,
-    AccordionModule,
-    SelectButtonModule,
-    DashboardModule,
-  ],
+    imports: [
+        IFCommon,
+        FactoryRoutingModule,
+        ClarityModule,
+        ChartsModule,
+        ReactiveFormsModule,
+        TableModule,
+        CardModule,
+        FusionAppletsModule,
+        AccordionModule,
+        SelectButtonModule,
+        DashboardModule,
+        CalendarModule,
+    ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

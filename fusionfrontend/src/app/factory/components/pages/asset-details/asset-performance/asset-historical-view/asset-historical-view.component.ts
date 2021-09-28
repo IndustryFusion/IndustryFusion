@@ -13,7 +13,6 @@
  * under the License.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { OispService } from 'src/app/services/oisp.service';
@@ -24,12 +23,12 @@ import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { map, switchMap } from 'rxjs/operators';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
-import * as moment from 'moment';
 import { OispDeviceQuery } from '../../../../../../store/oisp/oisp-device/oisp-device.query';
 import { FactoryAssetDetailsResolver } from '../../../../../../resolvers/factory-asset-details.resolver';
 import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
 import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
 import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -39,20 +38,24 @@ import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
 export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
   @Input()
-  viewModeOptions;
-
+  viewModeOptions: { name: string; value: string; }[];
   viewMode: AssetPerformanceViewMode;
+
   isLoading$: Observable<boolean>;
   asset$: Observable<FactoryAssetDetailsWithFields>;
   assetId: ID;
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
-  timeSlotOptions = 'current';
-  maxPointsOptions: string;
-  startDate: string;
-  endDate: string;
-  minDate: string;
-  maxDate: string;
+
+  timeSlotOptions: { name: string; value: string; }[];
+  currentTimeslot = 'current';
+  startDate: Date;
+  endDate: Date = new Date(Date.now());
+  minDate: Date;
+  maxDate: Date;
+
+  maxItemsOptions: SelectItem[];
+  maxPoints: number;
 
   choiceConfigurationMapping:
     { [k: string]: ChoiceConfiguration } = {
@@ -63,8 +66,8 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     onOkClick: new ChoiceConfiguration(false, false, false, false, true, false),
     onOkClickShowWarning: new ChoiceConfiguration(false, false, false, false, false, true),
   };
-
   currentChoiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
+
   private unSubscribe$ = new Subject<void>();
 
 
@@ -73,7 +76,6 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
               private oispDeviceQuery: OispDeviceQuery,
               private factoryResolver: FactoryResolver,
               private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
-              private datePipe: DatePipe,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
   }
@@ -87,8 +89,8 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
     this.initLastPoints();
     this.initMergedFields();
-
     this.initViewMode();
+    this.initPointAndTimeSlotOptions();
   }
 
   private initLastPoints() {
@@ -120,21 +122,40 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     this.viewMode = AssetPerformanceViewMode.HISTORICAL;
   }
 
-  ngOnDestroy() {
-    this.unSubscribe$.next();
-    this.unSubscribe$.complete();
+  private initPointAndTimeSlotOptions() {
+    this.maxItemsOptions = [
+      { label: '50', value: 50 }, { label: '200', value: 200 }, { label: '500', value: 500 }, { label: '1000', value: 1000 },
+    ];
+    this.maxPoints = 50;
+
+    this.timeSlotOptions = [{ name: 'Current', value: 'current' },
+      { name: '1h', value: '1hour' },
+      { name: '24h', value: '1day' },
+      { name: 'Custom Date', value: 'customDate' }
+    ];
   }
 
-  setOptions(key: string,
-             validateOptions: boolean = false) {
+  onTimeslotChanged(): void {
+    const timeslotText = (this.currentTimeslot === 'current' || this.currentTimeslot === 'customDate') ? this.currentTimeslot : 'oneTimeSlot';
+    this.setOptions(timeslotText, false);
+  }
+
+  onOkClicked(): void {
+    const old = this.currentTimeslot;
+    this.currentTimeslot = undefined;
+    this.setOptions('onOkClick', true);
+    this.currentTimeslot = old;
+  }
+
+  private setOptions(key: string,
+                     validateOptions: boolean = false) {
     if (validateOptions) {
-      if (!this.maxPointsOptions) {
+      if (!this.maxPoints) {
         this.currentChoiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
-        console.log('current Choices show warning: ' + this.currentChoiceConfiguration.showWarning);
         return;
       } else {
-        if (this.timeSlotOptions === 'customDate') {
-          if (!(this.startDate && this.endDate)) {
+        if (this.currentTimeslot === 'customDate') {
+          if (!this.startDate || !this.endDate) {
             this.currentChoiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
             return;
           }
@@ -145,17 +166,17 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   }
 
   resetOptions() {
-    if (this.timeSlotOptions === 'customDate') {
+    if (this.currentTimeslot === 'customDate') {
       this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDate;
     } else {
       this.currentChoiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
     }
   }
 
-  setMinAndMaxDate(date: string) {
-    const localDate: Date = new Date(date);
-    this.minDate = this.datePipe.transform(localDate, 'yyyy-MM-dd');
-    this.maxDate = this.datePipe.transform(moment(localDate).add(2, 'days').toDate(), 'yyyy-MM-dd');
+  setMinAndMaxDate(startDate: Date) {
+    this.startDate = startDate;
+    this.minDate = startDate;
+    this.maxDate = new Date(Date.now());
     this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
   }
 
@@ -174,6 +195,11 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   onChangeRoute(): Promise<boolean> {
     const newRoute = ['..', this.viewMode];
     return this.router.navigate(newRoute, { relativeTo: RouteHelpers.getActiveRouteLastChild(this.activatedRoute) });
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe$.next();
+    this.unSubscribe$.complete();
   }
 }
 
