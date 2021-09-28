@@ -17,10 +17,15 @@
 @import 'base/typography';
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
+.header-line {
+  height: 50px;
+  margin: 30px 80px;
+}
 
 .filter-btn {
   height: 48px;
   width: 48px;
+  margin-right: 40px;
   background-color: $light-grey;
   border-color: transparent;
   border-radius: 10px;
@@ -186,100 +191,6 @@
   }
 }
 
-:host ::ng-deep .p-paginator {
-  height: 45px;
-  background-color: $basic-white;
-  border-color: transparent;
-  border: none;
-  margin-top: 5px;
-  padding-bottom: 5px;
-
-  .p-dropdown {
-    height: 40px;
-    float: right;
-    margin-right: 50px;
-  }
-
-  .p-paginator-current {
-    float: left;
-  }
-
-  .p-paginator-pages .p-paginator-page {
-    height: 38px;
-    width: 38px;
-    margin: 2px;
-    background-color: $basic-white !important;
-    color: $basic-black !important;
-    font-size: $medium-font-size;
-    font-weight: 600;
-    border-color: $basic-black;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 10px;
-    align-content: center;
-    justify-content: center;
-  }
-
-  .p-widget {
-    border-color: $basic-black;
-    border-style: solid;
-    border-width: 1px !important;
-    border-radius: 10px !important;
-
-    .p-inputtext {
-      height: 38px !important;
-      font-weight: normal;
-      border-color: $basic-black;
-      border-width: 2px !important;
-      border-radius: 10px;
-      width: 60px;
-    }
-
-
-    .p-state-highlight {
-      background-color: $basic-white !important;
-      color: $basic-black !important;
-      font-weight: bold;
-      border-radius: 10px;
-    }
-
-    .p-dropdown-trigger {
-      border-radius: 10px;
-    }
-  }
-
-  .p-paginator-prev {
-    height: 38px;
-    width: 38px;
-    margin: 2px;
-    color: $basic-black;
-    border-color: $basic-black;
-    border-style: solid;
-    border-width: 1px !important;
-    border-radius: 10px !important;
-  }
-
-  .p-paginator-next {
-    height: 38px;
-    width: 38px;
-    margin: 2px;
-    color: $basic-black;
-    border-color: $basic-black;
-    border-style: solid;
-    border-width: 1px !important;
-    border-radius: 10px !important;
-  }
-
-  .p-paginator-first {
-    display: none !important;
-  }
-
-  .p-paginator-last {
-    display: none !important;
-  }
-
-}
-
 .asset-needs-maintenance {
   color: red !important;
 }
@@ -304,6 +215,10 @@
 
 .filter-panel {
   position: relative;
+}
+
+:host ::ng-deep .p-dropdown {
+  width: 45%;
 }
 
 .asset-column {

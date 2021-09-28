@@ -79,6 +79,9 @@ public class Company extends BaseEntity {
     private String imageKey;
 
     public void copyFrom(final Company sourceCompany) {
+
+        super.copyFrom(sourceCompany);
+
         if (sourceCompany.getType() != null) {
             setType(sourceCompany.getType());
         }

@@ -14,9 +14,17 @@
  */
 
 @import "abstract/variables";
+@import "base/_typography.scss";
 
 clr-dg-row.datagrid-row {
   border-top: 0;
+}
+
+h3.table-header{
+  font-size: $big-font-size;
+  font-weight: bold;
+  margin-top: .5rem;
+  margin-left: 68px;
 }
 
 .basic-table {

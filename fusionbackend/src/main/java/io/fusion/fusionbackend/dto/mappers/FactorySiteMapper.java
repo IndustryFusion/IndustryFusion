@@ -41,6 +41,7 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
         }
         FactorySiteDto dto = FactorySiteDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .type(entity.getType())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .roomIds(EntityDtoMapper.getSetOfEntityIds(entity.getRooms()))
@@ -66,21 +67,13 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
         if (entity == null) {
             return null;
         }
-        return FactorySiteDto.builder()
-                .id(entity.getId())
-                .type(entity.getType())
-                .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
-                .rooms(roomMapper.toDtoSet(entity.getRooms(), false))
-                .name(entity.getName())
-                .line1(entity.getLine1())
-                .line2(entity.getLine2())
-                .city(entity.getCity())
-                .zip(entity.getZip())
-                .country(countryMapper.toDto(entity.getCountry(), false))
-                .longitude(entity.getLongitude())
-                .latitude(entity.getLatitude())
-                .imageKey(entity.getImageKey())
-                .build();
+
+        FactorySiteDto dto = toDtoShallow(entity);
+
+        dto.setRooms(roomMapper.toDtoSet(entity.getRooms(), false));
+        dto.setCountry(countryMapper.toDto(entity.getCountry(), false));
+
+        return dto;
     }
 
     @Override
@@ -98,6 +91,7 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
         }
         final FactorySite entity = FactorySite.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .type(dto.getType())
                 .name(dto.getName())
                 .line1(dto.getLine1())

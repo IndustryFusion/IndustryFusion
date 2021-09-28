@@ -20,16 +20,18 @@ import io.fusion.fusionbackend.model.enums.CompanyType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
-public class CompanyDto {
-    private Long id;
+public class CompanyDto extends BaseEntityDto {
 
     @Builder.Default
     private Set<Long> factorySiteIds = new LinkedHashSet<>();

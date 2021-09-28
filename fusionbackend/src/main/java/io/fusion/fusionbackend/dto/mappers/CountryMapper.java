@@ -32,6 +32,7 @@ public class CountryMapper implements EntityDtoMapper<Country, CountryDto> {
 
         return CountryDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .build();
     }
@@ -53,6 +54,7 @@ public class CountryMapper implements EntityDtoMapper<Country, CountryDto> {
 
         return Country.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .build();
     }

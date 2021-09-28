@@ -69,6 +69,9 @@ public class FieldSource extends BaseEntity {
     private Threshold criticalThreshold;
 
     public void copyFrom(final FieldSource sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getSourceSensorLabel() != null) {
             setSourceSensorLabel(sourceField.getSourceSensorLabel());
         }

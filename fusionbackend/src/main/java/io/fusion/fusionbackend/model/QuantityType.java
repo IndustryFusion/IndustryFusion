@@ -60,6 +60,9 @@ public class QuantityType extends BaseEntity {
     private QuantityDataType dataType;
 
     public void copyFrom(final QuantityType sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }

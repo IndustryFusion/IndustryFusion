@@ -15,11 +15,11 @@
 
 import { Injectable } from '@angular/core';
 import { OispRuleState, OispRuleStore } from './oisp-rule.store';
-import { BaseQueryEntity } from '../../basequery';
 import { Rule } from './oisp-rule.model';
+import { BaseSubtitleQueryEntity } from '../../basesubtitlequery';
 
 @Injectable({ providedIn: 'root' })
-export class OispRuleQuery extends BaseQueryEntity<OispRuleState, Rule> {
+export class OispRuleQuery extends BaseSubtitleQueryEntity<OispRuleState, Rule> {
 
   constructor(protected store: OispRuleStore) {
     super(store);

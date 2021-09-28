@@ -36,6 +36,7 @@ public class ConnectivityTypeMapper implements EntityDtoMapper<ConnectivityType,
     public ConnectivityTypeDto toDto(ConnectivityType entity, boolean embedChildren) {
         return ConnectivityTypeDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .infoText(entity.getInfoText())
                 .availableProtocols(connectivityProtocolMapper.toDtoSet(entity.getAvailableProtocols(), false))
@@ -46,6 +47,7 @@ public class ConnectivityTypeMapper implements EntityDtoMapper<ConnectivityType,
     public ConnectivityType toEntity(ConnectivityTypeDto dto) {
         return ConnectivityType.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .infoText(dto.getInfoText())
                 .availableProtocols(connectivityProtocolMapper.toEntitySet(dto.getAvailableProtocols()))
