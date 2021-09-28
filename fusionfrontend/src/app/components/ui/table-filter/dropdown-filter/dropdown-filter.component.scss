@@ -30,26 +30,6 @@
     margin-top: -10px !important;
     margin-left: 60px !important;
   }
-
-  .filter-buttons-box {
-    margin-top: 10px;
-  }
-
-  .clear-filter-btn {
-    font-weight: bold;
-    font-size: 12px;
-    height: 30px;
-
-    .btn-icon {
-      font-size: 14px;
-      color: $basic-black;
-    }
-  }
-
-  .select-filter-btn {
-    font-size: 12px;
-    height: 30px;
-  }
 }
 
 .checkbox-class {
@@ -62,33 +42,6 @@
     color: $regular-grey !important;
     &.p-checkbox-label-active {
       color: $highlighted !important;
-    }
-  }
-}
-
-.open-filterpanel-btn {
-  width: 175px;
-  height: 38px;
-  border-radius: 8px;
-  border-color: transparent;
-  margin-left: 5px;
-  margin-right: 40px;
-  padding: 0 0;
-
-  .filter-panel-btn-grid {
-    display: grid;
-    grid-template-columns: 75% 25%;
-    margin-left: 10px;
-
-    .filter-panel-btn-grid-text {
-      font-weight: bold;
-      justify-self: start;
-      margin-left: 10px;
-    }
-
-    .filter-panel-btn-grid-icon {
-      font-size: 17.5px;
-      margin-top: 3px
     }
   }
 }
