@@ -20,16 +20,17 @@ import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class QuantityTypeDto {
-    private Long id;
+public class QuantityTypeDto extends BaseEntityDto {
     private String name;
     private String description;
     private String label;

@@ -76,6 +76,7 @@ public class AssetTypeTemplate extends BaseAsset {
     private Long publishedVersion;
 
     public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
+
         super.copyFrom(sourceAssetTypeTemplate);
 
         if (sourceAssetTypeTemplate.getPublicationState() != null) {

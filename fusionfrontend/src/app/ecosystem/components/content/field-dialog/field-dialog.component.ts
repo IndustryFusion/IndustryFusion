@@ -67,6 +67,7 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
   private createFieldFormGroup(field: Field) {
     this.fieldForm = this.formBuilder.group({
       id: [],
+      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       label: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator],

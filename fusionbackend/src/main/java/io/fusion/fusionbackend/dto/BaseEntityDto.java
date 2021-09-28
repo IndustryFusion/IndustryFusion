@@ -13,33 +13,18 @@
  * under the License.
  */
 
-@import 'src/app/ecosystem/components/content/base/base-list-item/base-list-item.component';
+package io.fusion.fusionbackend.dto;
 
-.small-confirm-button {
-  width: 2rem;
-  height: 2rem;
-  border: none !important;
-  box-shadow: none !important;
-  background: $light-grey 0 0 no-repeat padding-box;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-  &:hover {
-    background: $hover-grey-border;
-  }
-}
-
-.notification-icons {
-  overflow: initial !important;
-  padding-top: -2px;
-
-  .notification-low {
-    color: $alert-low;
-  }
-
-  .notification-medium {
-    color: $alert-medium;
-  }
-
-  .notification-high {
-    color: $alert-high;
-  }
+@Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+public abstract class BaseEntityDto {
+    private Long id;
+    private Long version;
 }

@@ -1,0 +1,45 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<button (click)="numericPanel.toggle($event);" class="open-filterpanel-btn">
+  <span class="filter-panel-btn-grid">
+    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value !== null" class="filter-panel-btn-grid-text">
+      {{ this.numericFilterFormGroup.get('selectedCheckboxItems').value.length | i18nPlural: selectedValueMapping }}</span>
+    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value === null" class="filter-panel-btn-grid-text">
+    not set</span>
+    <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
+  </span>
+</button>
+
+<p-overlayPanel #numericPanel [showCloseIcon]="true" class="smallFilterPanel panel-class">
+  <div class="if-panel-heading">Select {{ this.numericFilterFormGroup.get('columnName').value }}</div>
+  <div *ngFor="let checkBoxItem of checkBoxItemsSet">
+    <p-checkbox class="checkbox-class" [(ngModel)]="selectedCheckBoxItems" [inputId]="checkBoxItem.id" [value]="checkBoxItem.value"
+                name="checkBoxValues" value="dropDownItem" [label]="checkBoxItem.value"></p-checkbox>
+  </div>
+
+  <div class="filter-buttons-box">
+    <button (click)="clearSelectedValues();"
+            class="if-button button-secondary button-modal clear-filter-btn">
+      Clear all
+      <i class="pi pi-times btn-icon"></i>
+    </button>
+    <button (click)="filterItemsBySelectedValues(); numericPanel.hide()"
+            class="if-button button-primary button-modal select-filter-btn">
+      Filter
+    </button>
+  </div>
+</p-overlayPanel>

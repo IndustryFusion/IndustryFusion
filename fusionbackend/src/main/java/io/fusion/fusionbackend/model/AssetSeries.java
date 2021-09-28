@@ -79,15 +79,9 @@ public class AssetSeries extends BaseAsset {
     protected String customScript;
 
     public void copyFrom(final AssetSeries sourceAssetSeries) {
-        if (sourceAssetSeries.getName() != null) {
-            setName(sourceAssetSeries.getName());
-        }
-        if (sourceAssetSeries.getDescription() != null) {
-            setDescription(sourceAssetSeries.getDescription());
-        }
-        if (sourceAssetSeries.getImageKey() != null) {
-            setImageKey(sourceAssetSeries.getImageKey());
-        }
+
+        super.copyFrom(sourceAssetSeries);
+
         if (sourceAssetSeries.getProtectionClass() != null) {
             setProtectionClass(sourceAssetSeries.getProtectionClass());
         }

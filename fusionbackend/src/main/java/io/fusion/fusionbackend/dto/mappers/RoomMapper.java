@@ -42,6 +42,7 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         }
         return RoomDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .factorySiteId(EntityDtoMapper.getEntityId(entity.getFactorySite()))
                 .assetIds(EntityDtoMapper.getSetOfEntityIds(entity.getAssets()))
                 .name(entity.getName())
@@ -54,14 +55,13 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         if (entity == null) {
             return null;
         }
-        return RoomDto.builder()
-                .id(entity.getId())
-                .factorySite(factorySiteMapper.toDto(entity.getFactorySite(), false))
-                .assets(assetMapper.toDtoSet(entity.getAssets(), false))
-                .name(entity.getName())
-                .imageKey(entity.getImageKey())
-                .description(entity.getDescription())
-                .build();
+
+        RoomDto roomDto = toDtoShallow(entity);
+
+        roomDto.setFactorySite(factorySiteMapper.toDto(entity.getFactorySite(), false));
+        roomDto.setAssets(assetMapper.toDtoSet(entity.getAssets(), false));
+
+        return roomDto;
     }
 
     @Override
@@ -79,6 +79,7 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         }
         final Room entity = Room.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .imageKey(dto.getImageKey())
                 .description(dto.getDescription())
