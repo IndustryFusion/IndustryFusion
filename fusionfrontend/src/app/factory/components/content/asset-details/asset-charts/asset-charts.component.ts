@@ -42,7 +42,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   options: string;
 
   @Input()
-  maxPointsOptions: string;
+  maxPoints: number;
 
   @Input()
   clickedOk: boolean;
@@ -196,13 +196,13 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
         if (this.clickedOk) {
           switch ( this.options ) {
             case '1hour':
-              this.loadHistoricData(this.maxPointsOptions, false, 3600);
+              this.loadHistoricData(this.maxPoints, false, 3600);
               break;
             case '1day':
-              this.loadHistoricData(this.maxPointsOptions, false, 86400);
+              this.loadHistoricData(this.maxPoints, false, 86400);
               break;
             case 'customDate':
-              this.loadHistoricData(this.maxPointsOptions, true);
+              this.loadHistoricData(this.maxPoints, true);
               break;
             default:
               break;
@@ -239,10 +239,10 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
             if (gotFirstPoints) {
               currentTime = moment().valueOf();
               startTime = currentTime - environment.dataUpdateIntervalMs;
-              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startTime, currentTime, '1');
+              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startTime, currentTime, 1);
             } else {
               gotFirstPoints = true;
-              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startTime, currentTime, '20', 'seconds', 5);
+              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startTime, currentTime, 20, 'seconds', 5);
             }
           })
         );
@@ -255,13 +255,13 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  public loadHistoricData(maxPointsOptions: string, useDate: boolean, secondsInPast?: number) {
+  public loadHistoricData(maxPoints: number, useDate: boolean, secondsInPast?: number) {
     if (useDate) {
       const startDate = this.startDate.valueOf();
       const endDate = moment(this.endDate).add(1, 'days').valueOf();
-      this.latestPoints$ =  this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startDate, endDate, maxPointsOptions);
+      this.latestPoints$ =  this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startDate, endDate, maxPoints);
     } else {
-      this.latestPoints$ =  this.oispService.getValuesOfSingleField(this.asset, this.field, secondsInPast, maxPointsOptions);
+      this.latestPoints$ =  this.oispService.getValuesOfSingleField(this.asset, this.field, secondsInPast, maxPoints);
     }
     this.latestPoints$.pipe(takeUntil(this.destroy$))
       .subscribe(
