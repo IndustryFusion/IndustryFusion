@@ -110,6 +110,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
     const quantityDataType = quantityType.dataType;
 
     group.get('id').patchValue(fieldInstance.id);
+    group.get('version').patchValue(fieldInstance.version);
     group.get('indexFieldInstances').patchValue(indexFieldInstances);
     group.get('indexInArray').patchValue(indexInArray);
     group.get('name').patchValue(fieldInstance.name);
@@ -128,8 +129,8 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
     // Constraints: Pairwise (not) empty, absolute has to be filled if any other has values
     const optionalThresholdNames = ['idealLower', 'idealUpper', 'criticalLower', 'criticalUpper'];
     const thresholdForm = this.formBuilder.group({
-      id: [],
-      version: [],
+      id: [fieldInstance.id],
+      version: [fieldInstance.version],
       absoluteLower: [fieldInstance.absoluteThreshold?.valueLower,
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('absoluteUpper'),

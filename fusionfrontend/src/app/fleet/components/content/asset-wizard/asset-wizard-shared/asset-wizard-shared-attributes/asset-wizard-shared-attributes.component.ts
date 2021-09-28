@@ -75,6 +75,7 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
     const field = this.fieldQuery.getEntity(fieldInstance.fieldSource.fieldTarget.fieldId);
 
     group.get('id').patchValue(fieldInstance.id);
+    group.get('version').patchValue(fieldInstance.version);
     group.get('indexFieldInstances').patchValue(indexFieldInstances);
     group.get('indexInArray').patchValue(indexInArray);
     group.get('name').patchValue(fieldInstance.name);

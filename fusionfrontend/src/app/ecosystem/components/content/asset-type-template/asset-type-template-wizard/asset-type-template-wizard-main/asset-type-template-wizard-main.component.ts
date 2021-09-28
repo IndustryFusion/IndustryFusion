@@ -166,6 +166,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
 
       if (this.type === DialogType.EDIT) {
         this.assetTypeTemplate.id = this.assetTypeTemplateForm.get('id')?.value;
+        this.assetTypeTemplate.version = this.assetTypeTemplateForm.get('version')?.value;
         this.updateTemplate();
       } else if (this.type === DialogType.CREATE)  {
         this.createTemplate(assetTypeId);

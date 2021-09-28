@@ -116,6 +116,7 @@ export class AssetsListComponent implements OnInit {
     });
   }
 
+  // TODO: Has to be extracted into Dialog/AssetInstantiationComponent (IF-429)
   createDetailsAssetForm(formBuilder: FormBuilder) {
     this.assetDetailsForm = formBuilder.group({
       id: [null],

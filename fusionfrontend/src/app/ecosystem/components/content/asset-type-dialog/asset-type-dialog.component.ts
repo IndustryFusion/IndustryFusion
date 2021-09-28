@@ -53,11 +53,7 @@ export class AssetTypeDialogComponent implements OnInit {
 
   onSave() {
     if (this.assetTypeForm.valid) {
-      const assetType = new AssetType();
-      assetType.id = this.assetTypeForm.get('id')?.value;
-      assetType.name = this.assetTypeForm.get('name')?.value;
-      assetType.label = this.assetTypeForm.get('label')?.value;
-      assetType.description = this.assetTypeForm.get('description')?.value;
+      const assetType = this.assetTypeForm.getRawValue() as AssetType;
 
       if (this.type === DialogType.CREATE) {
         this.assetTypeService.createItem(assetType).subscribe();

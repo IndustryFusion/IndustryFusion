@@ -16,7 +16,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../../../../store/room/room.model';
 import { FactorySite } from '../../../../store/factory-site/factory-site.model';
-import { FactoryAssetDetailsWithFields, AssetModalType, AssetModalMode } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import {
+  AssetModalMode,
+  AssetModalType,
+  FactoryAssetDetailsWithFields
+} from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -170,6 +174,7 @@ export class AssetInstantiationComponent implements OnInit {
   updateAssetDetailsObject() {
     const assetFormValues = this.assetDetailsForm.value;
     this.assetDetails.roomId = assetFormValues.roomId;
+    this.assetDetails.version = assetFormValues.version;
     this.assetDetails.name = assetFormValues.name;
     this.assetDetails.description = assetFormValues.description;
     this.assetDetails.imageKey = assetFormValues.imageKey;
