@@ -40,6 +40,7 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         }
         return QuantityTypeDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
