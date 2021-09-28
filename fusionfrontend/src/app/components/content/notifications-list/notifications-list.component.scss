@@ -12,8 +12,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@import '../../../ecosystem/components/content/base/base-list-item/base-list-item.component';
-@import '../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 @import 'abstract/variables';
 @import 'base/typography';
 
@@ -53,16 +51,6 @@
   .checkbox-column {
     visibility: visible;
   }
-}
-
-@import 'src/app/ecosystem/components/content/base/base-list/base-list.component';
-
-.folder-view {
-  margin-right: 16px;
-}
-
-.notifications-list {
-  margin: 0 80px;
 }
 
 .notification-state-button {

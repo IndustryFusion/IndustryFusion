@@ -13,68 +13,93 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="rooms-panel">
-    <button class="navigation-bar-btn" [routerLink]="getRoomsLink()">
-      <fa-icon [icon]="faHome" class="fa-fw"></fa-icon> Manage rooms
-    </button>
-    <button class="navigation-bar-btn" (click)="goBack()">
-      <fa-icon [icon]="faReply" class="fa-fw"></fa-icon> Go Back
-    </button>
-</div>
 
-<div>
-  <div class="p-grid p-jc-between header-line">
-    <h3 class="table-header">{{ displayedFactoryAssets?.length | i18nPlural: titleMapping }}</h3>
-    <div class="p-grid">
-      <app-create-button class="creat-btn-div" text="Onboard new Asset" (createItem)="showOnboardDialog()"></app-create-button>
-      <div class="filter-btn-div">
-        <app-table-filter class="filter-btn" [possibleFilters]="this.possibleFilters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
-                          [position]="['95%', '-445%']" (filteredItems)="filterAssets($event)">
-        </app-table-filter>
-      </div>
-    </div>
-  </div>
 
-  <div>
-    <div class="list-container">
-
-    <div class="list-edit-bar" *ngIf="selectedIds.size > 0">
-      <div class="list-edit-bar-item" [style.width.%]="5">
-        <clr-icon shape="check-circle" size="20"></clr-icon>
-      </div>
-      <div [style.width.%]="30">{{ selectedIds.size | i18nPlural: editBarMapping }}</div>
-      <div class="list-edit-bar-item" [style.width.%]="50">
-        <button class="btn btn-link button-white" (click)="onCardsViewClick()">
-          <clr-icon class="icon" shape="view-cards"></clr-icon>
-        </button>
-        <button class="btn btn-link button-white">
-          <clr-icon class="icon" shape="wrench"></clr-icon>
-        </button>
-        <button class="btn btn-link button-white">
-          <clr-icon class="icon" shape="trash"></clr-icon>
-        </button>
-      </div>
-      <div class="list-edit-bar-last-item" [style.width.%]="35">
-        <button class="btn btn-link button-white" (click)="unselect()">
-          <clr-icon shape="times"></clr-icon>Close
-        </button>
-      </div>
-    </div>
-      <app-assets-list-header [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields" (filterEvent)="onFilter($event)"></app-assets-list-header>
-      <app-assets-list-item *ngFor="let assetWithDetailsAndFields of factoryAssetDetailsWithFields | tablefilter:filterDict"
-                            [assetWithDetailsAndFields]="assetWithDetailsAndFields"
-                            [rooms]="rooms"
-                            [room]="room"
-                            [factorySites]="factorySites"
-                            [factorySite]="factorySite"
-                            [selected]="isSelected(assetWithDetailsAndFields.id)"
-                            (editAssetEvent)="assetUpdated($event)"
-                            (deleteAssetEvent)="deleteAsset($event)"
-                            (assetSelected)="onAssetSelect($event)" (assetDeselected)="onAssetDeselect($event)">
-      </app-assets-list-item>
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">{{ displayedFactoryAssets?.length | i18nPlural: titleMapping }}</h3>
+  <div class="p-grid">
+    <app-create-button class="create-btn" text="Onboard new Asset" (createItem)="showOnboardDialog()"></app-create-button>
+    <div class="filter-btn-div">
+      <app-table-filter class="filter-btn" [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                        [position]="['95%', '-445%']" (filteredItems)="filterAssets($event)">
+      </app-table-filter>
     </div>
   </div>
 </div>
+
+<div class="table-selected-items-bar p-grid p-jc-between" *ngIf="selectedFactoryAssets.length > 0">
+  <div class="table-selected-item p-col-4">
+    <fa-icon [icon]="faCheckCircle" class="check-box-icon fa-fw"></fa-icon>
+    <span class="table-selected-item">{{ selectedFactoryAssets.length | i18nPlural: editBarMapping }}</span>
+  </div>
+
+  <div class="p-col-4 table-selected-item" style="text-align: center">
+    <div class="table-bar-button-div">
+      <p-button class="table-bar-button" (click)="onCardsViewClick()">
+        <fa-icon [icon]="faThLarge" class="check-box-icon fa-fw"></fa-icon>
+      </p-button>
+      <p-button *ngIf="selectedFactoryAssets.length == 1" class="table-bar-button" (click)="setActiveRow(); showEditDialog();">
+        <fa-icon [icon]="faWrench" class="check-box-icon fa-fw"></fa-icon>
+      </p-button>
+      <p-button *ngIf="selectedFactoryAssets.length == 1" class="table-bar-button" (click)="setActiveRow(); showDeleteDialog();">
+        <fa-icon [icon]="faTrashAlt" class="check-box-icon fa-fw"></fa-icon>
+      </p-button>
+    </div>
+  </div>
+
+  <div class="p-col-4 table-selected-item" style="text-align: end">
+    <p-button class="table-bar-button" (click)="deselectAllItems()">
+      <fa-icon [icon]="faTimes" class="fa-fw"></fa-icon>
+      <span>deselect</span>
+    </p-button>
+  </div>
+</div>
+
+<p-table [(selection)]="selectedFactoryAssets" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
+         [showCurrentPageReport]="true" [value]="displayedFactoryAssets" [rowHover]="true"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="5"></th>
+      <th [style.width.%]="30">
+        <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
+                             attributeToBeSearched="name" (searchByName)="searchAssets($event)">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="35">Category</th>
+      <th [style.width.%]="20">Manufacturer</th>
+      <th [style.width.%]="20">Room</th>
+      <th [style.width.%]="15">Factory Site</th>
+      <th [style.width.%]="20">Status</th>
+      <th [style.width.%]="10"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template let-asset pTemplate="body">
+    <tr class="p-selectable-row" id="rowElement" style="cursor: pointer;">
+      <td class="checkbox-td" [style.width.%]="5">
+        <p-tableCheckbox class="checkbox-column table-checkbox" [value]="asset"></p-tableCheckbox>
+      </td>
+      <td [style.width.%]="30" [routerLink]="getAssetLink(asset)">{{ asset.name }}</td>
+      <td [style.width.%]="35" [routerLink]="getAssetLink(asset)">{{ asset.category }}</td>
+      <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">{{ asset.manufacturer }}</td>
+      <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">{{ asset.roomName }}</td>
+      <td [style.width.%]="15" [routerLink]="getAssetLink(asset)">{{ asset.factorySiteName }}</td>
+      <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">
+        <app-status [asset]="asset" [showInline]="true"></app-status>
+      </td>
+      <td [style.width.%]="5">
+        <div #div class="table-dropdown-menu">
+          <p-menu #menu [appendTo]="div" [model]="menuActions" [popup]="true"></p-menu>
+          <button (click)="menu.toggle($event); setActiveRow(asset)" class="table-dropdown-menu-button" icon="pi pi-ellipsis-h" pButton
+                  type="button"></button>
+        </div>
+      </td>
+      <td [style.width.%]="5"></td>
+    </tr>
+  </ng-template>
+</p-table>
+
 
 <p-confirmDialog class="confirm-dialog-style" rejectButtonStyleClass="if-button button-secondary"
                  acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>

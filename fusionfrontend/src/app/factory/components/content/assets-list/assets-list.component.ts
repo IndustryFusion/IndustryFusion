@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/store/asset/asset.service';
@@ -25,11 +25,10 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Asset, AssetWithFields } from '../../../../store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
-import { Location } from '@angular/common';
 import { WizardHelper } from '../../../../common/utils/wizard-helper';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
-import { faTimes, faWrench, faThLarge, faReply, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faWrench, faThLarge } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
@@ -38,7 +37,7 @@ import { faCheckCircle, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
   styleUrls: ['./assets-list.component.scss'],
   providers: [DialogService, ConfirmationService]
 })
-export class AssetsListComponent implements OnInit {
+export class AssetsListComponent implements OnInit, OnChanges {
   @Input()
   company: Company;
   @Input()
@@ -71,10 +70,6 @@ export class AssetsListComponent implements OnInit {
   faThLarge = faThLarge;
   faCheckCircle = faCheckCircle;
   faTrashAlt = faTrashAlt;
-  faReply = faReply;
-  faHome = faHome;
-  shouldShowDeleteItem = false;
-
 
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
@@ -93,7 +88,7 @@ export class AssetsListComponent implements OnInit {
       other: '# Assets selected'
     };
 
-  possibleFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
+  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'}];
@@ -102,19 +97,16 @@ export class AssetsListComponent implements OnInit {
     private assetService: AssetService,
     private formBuilder: FormBuilder,
     public dialogService: DialogService,
-    private confirmationService: ConfirmationService,
-    private routingLocation: Location) {
+    private confirmationService: ConfirmationService) {
       this.createDetailsAssetForm(this.formBuilder);
   }
 
   ngOnInit() {
-    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
     this.createDetailsAssetForm(this.formBuilder);
     this.menuActions = [{ label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
       { label: 'Assign Asset to room', icon: 'pi pw-fw pi-sign-in', command: (_) => { this.openAssignRoomDialog(); } },
       { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } }];
   }
-
   ngOnChanges(): void {
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
   }
@@ -177,14 +169,6 @@ export class AssetsListComponent implements OnInit {
     return this.rooms.filter(room => room.id === roomId).pop();
   }
 
-  getRoomsLink() {
-    if (this.room) {
-      return ['..'];
-    } else {
-      return ['rooms'];
-    }
-  }
-
   onCardsViewClick() {
     const selectedFactoryAssetIds = this.selectedFactoryAssets.map(asset => asset.id);
     this.selectedEvent.emit(selectedFactoryAssetIds);
@@ -195,10 +179,6 @@ export class AssetsListComponent implements OnInit {
     this.assetService.removeCompanyAsset(this.activeListItem.companyId, this.activeListItem.id).subscribe(() => {
       this.factoryAssetDetailsWithFields.splice(this.factoryAssetDetailsWithFields.indexOf(this.activeListItem), 1);
     });
-  }
-
-  goBack() {
-    this.routingLocation.back();
   }
 
   searchAssets(event?): void {
@@ -293,9 +273,4 @@ export class AssetsListComponent implements OnInit {
       }
     });
   }
-}
-
-export class FilterOptions {
-  filterAttribute: string;
-  filterFields: string[];
 }

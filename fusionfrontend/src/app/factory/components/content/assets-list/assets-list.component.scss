@@ -19,27 +19,6 @@
 @import 'base/typography';
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
-.rooms-panel {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: lightgray;
-
-  .navigation-bar-btn {
-    height: 38px;
-    background-color: $basic-white;
-    color: $basic-black;
-    font-size: $small-font-size;
-    font-weight: 500;
-    line-height: $regular-line-height;
-    border: none;
-    cursor: pointer;
-    margin-right: 5px;
-  }
-}
-
 .table-selected-items-bar {
   width: inherit;
   height: 56px;

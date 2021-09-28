@@ -183,20 +183,15 @@
     padding-left: 10px;
   }
 
-  .creat-btn-div {
+  .create-btn {
     margin-top: .5rem;
     align-self: center
   }
 
-}
-
-.filter-btn {
-  height: 48px;
-  width: 48px;
-  margin-right: 40px;
-  background-color: $light-grey;
-  border-color: transparent;
-  border-radius: 10px;
+  .create-btn-without-filter {
+    align-self: center;
+    margin-right: 48px;
+  }
 }
 
 
