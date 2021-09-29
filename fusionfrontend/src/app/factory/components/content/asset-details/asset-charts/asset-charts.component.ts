@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartPoint } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartPoint, ChartScales, LinearScale } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable, Subject, timer } from 'rxjs';
@@ -63,8 +63,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   lastReceivedTimestamp = 0;
 
-  slidingTimeWindow = 0;
-
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   latestPoints$: Observable<PointWithId[]>;
@@ -73,66 +71,11 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     { data: [], label: '', fill: false, borderWidth: 2 },
   ];
   public lineChartLabels: Label[] = [];
-  public lineChartOptions: (ChartOptions & { annotation: any }) = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        type: 'time',
-        distribution: 'series',
-        time: {
-              parser: 'MM/DD/YYYY HH:mm',
-              tooltipFormat: 'll HH:mm',
-              unit: 'day',
-              unitStepSize: 1,
-              displayFormats: {
-                day: 'MM/DD/YYYY HH:mm'
-              }
-              },
-        ticks: {
-          autoSkip: true,
-          maxRotation: 0,
-          minRotation: 0,
-          maxTicksLimit: 10
-        }
-      }],
-      yAxes: [
-        {
-          id: 'y-axis-0',
-          position: 'left',
-        }
-      ]
-    },
-    elements: {
-      line: {
-        borderWidth: 1
-      },
-      point: {
-        radius: 1
-      }
-    },
-    annotation: {
-      annotations: [
-        {
-          type: 'line',
-          mode: 'vertical',
-          scaleID: 'x-axis-0',
-          value: 'March',
-          borderColor: 'blue',
-          borderWidth: 2,
-          label: {
-            enabled: true,
-            fontColor: 'orange',
-            content: 'LineAnno'
-          }
-        },
-      ],
-    },
-  };
+  public lineChartOptions: (ChartOptions & { annotation: any });
   public lineChartColors: Color[] = [
     { // blue
       backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: '#0079AD',
+      borderColor: '#53a7ca',
       /*pointBackgroundColor: 'orange',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
@@ -166,6 +109,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.lineChartData[0].label = this.field.description;
+    this.initLineChartOptions();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -214,6 +158,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       this.loadNewData();
     }
   }
+
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
@@ -300,5 +245,123 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   public changeLabel() {
     this.lineChartLabels[2] = ['1st Line', '2nd Line'];
     this.chart.update();
+  }
+
+  private initLineChartOptions() {
+    const scales: ChartScales | LinearScale = {
+      xAxes: [{
+        type: 'time',
+        distribution: 'series',
+        time: {
+          parser: 'MM/DD/YYYY HH:mm',
+          tooltipFormat: 'll HH:mm',
+          unit: 'day',
+          unitStepSize: 1,
+          displayFormats: {
+            day: 'MM/DD/YYYY HH:mm'
+          }
+        },
+        ticks: {
+          autoSkip: true,
+          maxRotation: 0,
+          minRotation: 0,
+          maxTicksLimit: 10
+        }
+      }],
+      yAxes: [
+        {
+          id: 'y-axis-0',
+          position: 'left',
+        }
+      ]
+    };
+
+    const annotation = this.getAnnotationFromThresholds();
+
+    this.lineChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales,
+      elements: {
+        line: {
+          borderWidth: 1
+        },
+        point: {
+          radius: 1
+        }
+      },
+      annotation
+    };
+  }
+
+  private getAnnotationFromThresholds(): any {
+    return {
+      annotations: [
+        /* {
+           drawTime: 'afterDraw', // overrides annotation.drawTime if set
+           type: 'line',
+           mode: 'horizontal',
+           scaleID: 'y-axis-0',
+           value: '2.2',
+           borderColor: 'red',
+           borderWidth: 2,
+          /!* label: {
+             enabled: true,
+             fontColor: 'orange',
+             content: 'Max'
+           }*!/
+         },
+         {
+           drawTime: 'afterDraw', // overrides annotation.drawTime if set
+           type: 'line',
+           mode: 'horizontal',
+           scaleID: 'y-axis-0',
+           value: '1.0',
+           borderColor: 'red',
+           borderWidth: 2,
+         },*/
+        {
+          drawTime: 'beforeDatasetsDraw',
+          type: 'box',
+          yScaleID: 'y-axis-0',
+          yMin: 0.6,
+          yMax: 1.2,
+          backgroundColor: '#fceace',
+          borderColor: '#f5b352',
+          borderWidth: 2
+        },
+        {
+          drawTime: 'beforeDatasetsDraw',
+          type: 'box',
+          yScaleID: 'y-axis-0',
+          yMin: 2.0,
+          yMax: 2.4,
+          backgroundColor: '#fceace',
+          borderColor: '#f5b352',
+          borderWidth: 2
+        },
+
+        {
+          drawTime: 'beforeDatasetsDraw',
+          type: 'box',
+          yScaleID: 'y-axis-0',
+          yMin: 0.0,
+          yMax: 0.6,
+          backgroundColor: '#e6cfce',
+          borderColor: '#a14b47',
+          borderWidth: 2
+        },
+        {
+          drawTime: 'beforeDatasetsDraw',
+          type: 'box',
+          yScaleID: 'y-axis-0',
+          yMin: 2.4,
+          yMax: 3.0,
+          backgroundColor: '#e6cfce',
+          borderColor: '#a14b47',
+          borderWidth: 2
+        },
+      ],
+    };
   }
 }
