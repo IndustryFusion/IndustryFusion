@@ -16,7 +16,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Rule, RuleResetType, RuleType, } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
-import { RuleStatusUtil } from '../../util/rule-status-util';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
 import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
@@ -41,7 +40,6 @@ export class FusionAppletEditorComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private oispRuleService: OispRuleService,
     private oispDeviceQuery: OispDeviceQuery,
-    public ruleStatusUtil: RuleStatusUtil,
     private formBuilder: FormBuilder,
     private oispRuleQuery: OispRuleQuery
   ) {

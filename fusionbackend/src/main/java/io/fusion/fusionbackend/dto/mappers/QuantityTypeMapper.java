@@ -40,6 +40,7 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         }
         return QuantityTypeDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
@@ -53,15 +54,13 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         if (entity == null) {
             return null;
         }
-        return QuantityTypeDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .label(entity.getLabel())
-                .dataType(entity.getDataType())
-                .units(unitMapper.toDtoSet(entity.getUnits(), false))
-                .baseUnit(unitMapper.toDto(entity.getBaseUnit(), false))
-                .build();
+
+        QuantityTypeDto quantityTypeDto = toDtoShallow(entity);
+
+        quantityTypeDto.setUnits(unitMapper.toDtoSet(entity.getUnits(), false));
+        quantityTypeDto.setBaseUnit(unitMapper.toDto(entity.getBaseUnit(), false));
+
+        return quantityTypeDto;
     }
 
     @Override
@@ -80,6 +79,7 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
 
         return QuantityType.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())

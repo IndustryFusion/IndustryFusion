@@ -59,21 +59,10 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     }
 
     private AssetTypeTemplateDto toDtoDeep(final AssetTypeTemplate entity) {
-        if (entity == null) {
-            return null;
-        }
-        final AssetTypeTemplateDto dto = AssetTypeTemplateDto.builder()
-                .id(entity.getId())
-                .version(entity.getVersion())
-                .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
-                .publicationState(entity.getPublicationState())
-                .publishedDate(entity.getPublishedDate())
-                .publishedVersion(entity.getPublishedVersion())
-                .build();
+        final AssetTypeTemplateDto dto = toDtoShallow(entity);
+
         dto.setFieldTargets(fieldTargetMapper.toDtoSet(entity.getFieldTargets(), false));
         dto.setAssetType(assetTypeMapper.toDto(entity.getAssetType(), false));
-
-        baseAssetMapper.copyToDto(entity, dto);
 
         return dto;
     }

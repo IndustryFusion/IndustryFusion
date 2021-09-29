@@ -61,6 +61,7 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
   public addSubsystem(assetDetails: FleetAssetDetails): void {
     const subsystemGroup = this.formBuilder.group({
       id: [assetDetails.id, Validators.required],
+      version: [assetDetails.version],
       index: [this.subsystemFormArray.length],
       name: [assetDetails.name, Validators.required],
       assetTypeName: [assetDetails.assetTypeName, Validators.required],

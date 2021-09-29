@@ -60,6 +60,7 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
 
     this.factorySiteForm = this.formBuilder.group({
       id: [],
+      version: [],
       companyId: [null, Validators.required],
       name: [null, WizardHelper.maxTextLengthValidator],
       line1: ['', WizardHelper.maxTextLengthValidator],

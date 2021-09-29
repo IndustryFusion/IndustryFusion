@@ -19,14 +19,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class FieldTargetDto {
-    private Long id;
-    private Long version;
+public class FieldTargetDto extends BaseEntityDto {
     private Long assetTypeTemplateId;
     private Long fieldId;
     private FieldDto field;

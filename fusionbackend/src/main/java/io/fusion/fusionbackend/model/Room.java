@@ -69,6 +69,9 @@ public class Room extends BaseEntity {
     }
 
     public void copyFrom(final Room sourceRoom) {
+
+        super.copyFrom(sourceRoom);
+
         if (sourceRoom.getName() != null) {
             setName(sourceRoom.getName());
         }

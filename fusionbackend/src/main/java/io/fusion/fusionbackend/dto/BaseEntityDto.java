@@ -15,26 +15,16 @@
 
 package io.fusion.fusionbackend.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
-public class AssetDetailsDto extends AssetDto {
-    private String manufacturer;
-    private String assetSeriesName;
-    private String assetTypeName;
-    private String category;
-    private String roomName;
-    private String factorySiteName;
-    private String protocol;
-
-    @JsonCreator
-    public AssetDetailsDto() {
-    }
+@NoArgsConstructor
+public abstract class BaseEntityDto {
+    private Long id;
+    private Long version;
 }

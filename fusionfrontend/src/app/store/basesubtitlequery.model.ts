@@ -15,6 +15,7 @@
 
 import { Observable } from 'rxjs';
 
+// interface is needed for queries used in the page title with breadcrumbs
 export interface BaseSubtitleQuery<T> {
   waitForActive(): Observable<T>;
   selectSubtitleName(entity: any): Observable<string>;

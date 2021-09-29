@@ -82,6 +82,7 @@ export class FactorySiteDialogComponent implements OnInit {
 
     this.factorySiteForm = this.formBuilder.group({
       id: [],
+      version: [],
       companyId: [],
       name: ['', requiredTextValidator],
       line1: [''],

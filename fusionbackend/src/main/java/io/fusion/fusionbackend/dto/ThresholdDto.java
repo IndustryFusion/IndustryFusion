@@ -18,14 +18,14 @@ package io.fusion.fusionbackend.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class ThresholdDto {
-    private Long id;
-    private Long version;
+public class ThresholdDto extends BaseEntityDto {
     private Double valueLower;
     private Double valueUpper;
 
