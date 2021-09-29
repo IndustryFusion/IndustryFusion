@@ -63,7 +63,6 @@ export class CreateFusionAppletComponent implements OnInit {
 
     this.ruleForm = this.formBuilder.group({
       id: [],
-      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       description: ['', [Validators.maxLength(1000)]],
       type: [null, []],
