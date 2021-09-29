@@ -45,6 +45,8 @@ public class ConnectivitySettingsMapper implements EntityDtoMapper<ConnectivityS
     public ConnectivitySettingsDto toDto(ConnectivitySettings entity, boolean embedChildren) {
 
         ConnectivitySettingsDto dto = ConnectivitySettingsDto.builder()
+                .id(entity.getId())
+                .version(entity.getVersion())
                 .connectionString(entity.getConnectionString())
                 .build();
 
@@ -65,6 +67,8 @@ public class ConnectivitySettingsMapper implements EntityDtoMapper<ConnectivityS
     public ConnectivitySettings toEntity(ConnectivitySettingsDto dto) {
 
         ConnectivitySettings connectivitySettings = new ConnectivitySettings();
+        connectivitySettings.setId(dto.getId());
+        connectivitySettings.setVersion(dto.getVersion());
         connectivitySettings.setConnectionString(dto.getConnectionString());
 
         Long connectivityTypeId = dto.getConnectivityTypeId();

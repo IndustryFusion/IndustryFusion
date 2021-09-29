@@ -24,7 +24,6 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -35,6 +34,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -82,6 +82,9 @@ public class FactorySite extends BaseEntity {
     private String imageKey;
 
     public void copyFrom(final FactorySite sourceFactorySite) {
+
+        super.copyFrom(sourceFactorySite);
+
         if (sourceFactorySite.getType() != null) {
             setType(sourceFactorySite.getType());
         }

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto> {
+
     private AssetTypeDto toDtoShallow(final AssetType entity) {
         if (entity == null) {
             return null;
@@ -32,6 +33,7 @@ public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto>
 
         return AssetTypeDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
@@ -55,6 +57,7 @@ public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto>
 
         return AssetType.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())

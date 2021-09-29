@@ -1,0 +1,64 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'base/typography';
+@import 'abstract/variables';
+
+.open-filterpanel-btn {
+  width: 175px;
+  height: 38px;
+  border-radius: 8px;
+  border-color: transparent;
+  margin-left: 5px;
+  margin-right: 40px;
+  padding: 0 0;
+
+  .filter-panel-btn-grid {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    margin-left: 10px;
+
+    .filter-panel-btn-grid-text {
+      font-weight: bold;
+      justify-self: start;
+      margin-left: 10px;
+    }
+
+    .filter-panel-btn-grid-icon {
+      font-size: $bigger-font-size;
+      margin-top: 3px
+    }
+  }
+}
+
+.filter-buttons-box {
+  margin-top: 10px;
+}
+
+.clear-filter-btn {
+  font-weight: bold;
+  font-size: $small-font-size;
+  height: 30px;
+
+  .btn-icon {
+    font-size: $regular-font-size;
+    color: $basic-black;
+  }
+}
+
+.select-filter-btn {
+  font-size: $small-font-size;
+  height: 30px;
+}

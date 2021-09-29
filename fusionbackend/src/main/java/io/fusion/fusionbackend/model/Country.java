@@ -37,6 +37,9 @@ public class Country extends BaseEntity {
     private String name;
 
     public void copyFrom(final Country country) {
+
+        super.copyFrom(country);
+
         if (country.getName() != null) {
             setName(country.getName());
         }

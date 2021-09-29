@@ -21,42 +21,49 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AccuracyFormatPipe } from '../pipes/accuracyformat.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FactorySiteMapComponent } from '../components/content/factory-site-map/factory-site-map.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { LabelControlDirective } from '../components/ui/label-control/label-control.directive';
 import { TooltipComponent } from '../components/ui/tooltip/tooltip.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TableSearchbarComponent } from '../components/ui/table-searchbar/table-searchbar.component';
+import { TableFilterComponent } from '../components/ui/table-filter/table-filter.component';
+import { DateFilterComponent } from '../components/ui/table-filter/date-filter/date-filter.component';
+import { DropdownFilterComponent } from '../components/ui/table-filter/dropdown-filter/dropdown-filter.component';
+import { NumericFilterComponent } from '../components/ui/table-filter/numeric-filter/numeric-filter.component';
+import { CalendarModule } from 'primeng/calendar';
 import { BooleanPipe } from '../pipes/boolean.pipe';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MaintenanceProgressbarComponent } from '../components/content/maintenance-progressbar/maintenance-progressbar.component';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
-import { NotificationsListHeaderComponent } from '../components/content/notifications-list/notifications-list-header/notifications-list-header.component';
-import { NotificationsListItemComponent } from '../components/content/notifications-list/notifications-list-item/notifications-list-item.component';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { GermanNumberPipe } from '../pipes/germannumber.pipe';
 
-
 @NgModule({
-    declarations: [
-        CreateButtonComponent,
-        ItemOptionsMenuComponent,
-        TrashButtonComponent,
-        ConfirmButtonComponent,
-        EditButtonComponent,
-        EditDetailsButtonComponent,
-        FactorySiteMapComponent,
-        AccuracyFormatPipe,
-        LabelControlDirective,
-        TooltipComponent,
-        BooleanPipe,
-        MaintenanceProgressbarComponent,
-        NotificationsListComponent,
-        NotificationsListHeaderComponent,
-        NotificationsListItemComponent,
-        GermanNumberPipe,
-    ],
+  declarations: [
+    CreateButtonComponent,
+    ItemOptionsMenuComponent,
+    TrashButtonComponent,
+    ConfirmButtonComponent,
+    EditButtonComponent,
+    EditDetailsButtonComponent,
+    FactorySiteMapComponent,
+    AccuracyFormatPipe,
+    LabelControlDirective,
+    TooltipComponent,
+    TableSearchbarComponent,
+    TableFilterComponent,
+    DateFilterComponent,
+    DropdownFilterComponent,
+    NumericFilterComponent,
+    BooleanPipe,
+    MaintenanceProgressbarComponent,
+    NotificationsListComponent,
+    GermanNumberPipe,
+  ],
   imports: [
     CommonModule,
     BrowserModule,
@@ -73,7 +80,11 @@ import { GermanNumberPipe } from '../pipes/germannumber.pipe';
     ToastModule,
     BreadcrumbModule,
     OverlayPanelModule,
+    CheckboxModule,
+    CalendarModule,
+    ReactiveFormsModule,
     ProgressBarModule,
+    TableModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
@@ -103,11 +114,15 @@ import { GermanNumberPipe } from '../pipes/germannumber.pipe';
     LabelControlDirective,
     TooltipComponent,
     BreadcrumbModule,
+    TableSearchbarComponent,
+    TableFilterComponent,
+    DateFilterComponent,
+    DropdownFilterComponent,
+    NumericFilterComponent,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
-    NotificationsListHeaderComponent,
-    NotificationsListItemComponent,
+    TableModule,
     GermanNumberPipe,
   ],
   providers: [

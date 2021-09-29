@@ -51,6 +51,9 @@ public class FieldTarget extends BaseEntity {
     private String label;
 
     public void copyFrom(final FieldTarget sourceFieldTarget) {
+
+        super.copyFrom(sourceFieldTarget);
+
         if (sourceFieldTarget.getFieldType() != null) {
             setFieldType(sourceFieldTarget.getFieldType());
         }

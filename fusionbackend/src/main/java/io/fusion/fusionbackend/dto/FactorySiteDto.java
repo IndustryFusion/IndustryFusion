@@ -20,16 +20,17 @@ import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class FactorySiteDto {
-    private Long id;
+public class FactorySiteDto extends BaseEntityDto {
     private Long companyId;
 
     @Builder.Default

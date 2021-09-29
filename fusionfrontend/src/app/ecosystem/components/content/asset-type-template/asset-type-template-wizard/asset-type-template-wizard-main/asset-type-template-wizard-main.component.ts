@@ -16,7 +16,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
-import { AssetTypeTemplate, PublicationState } from '../../../../../../store/asset-type-template/asset-type-template.model';
+import {
+  AssetTypeTemplate,
+  PublicationState
+} from '../../../../../../store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../../../store/asset-type-template/asset-type-template.service';
 import { FieldTargetService } from '../../../../../../store/field-target/field-target.service';
 import { AssetTypesResolver } from '../../../../../../resolvers/asset-types.resolver';
@@ -63,6 +66,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
                                             prefilledAssetTypeIdOrNull: ID | null) {
     const assetTypeTemplateForm = formBuilder.group({
       id: [],
+      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator],
       publicationState: [PublicationState.DRAFT],
@@ -162,6 +166,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
 
       if (this.type === DialogType.EDIT) {
         this.assetTypeTemplate.id = this.assetTypeTemplateForm.get('id')?.value;
+        this.assetTypeTemplate.version = this.assetTypeTemplateForm.get('version')?.value;
         this.updateTemplate();
       } else if (this.type === DialogType.CREATE)  {
         this.createTemplate(assetTypeId);

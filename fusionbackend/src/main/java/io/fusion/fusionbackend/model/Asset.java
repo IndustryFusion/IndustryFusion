@@ -90,7 +90,9 @@ public class Asset extends BaseAsset {
     private String gatewayConnectivity;
 
     public void copyFrom(final Asset sourceAsset) {
+
         super.copyFrom(sourceAsset);
+
         if (sourceAsset.getExternalName() != null) {
             setExternalName(sourceAsset.getExternalName());
         }

@@ -33,6 +33,8 @@ public abstract class BaseAsset extends BaseEntity {
     protected String imageKey;
 
     public void copyFrom(final BaseAsset sourceBaseAsset) {
+        super.copyFrom(sourceBaseAsset);
+
         if (sourceBaseAsset.getName() != null) {
             setName(sourceBaseAsset.getName());
         }

@@ -56,6 +56,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         // Please mind editing AssetDetailsMapper on changes here too
         AssetDto dto = AssetDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
@@ -114,6 +115,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         }
         Asset entity = Asset.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .externalName(dto.getExternalName())
                 .controlSystemType(dto.getControlSystemType())
                 .hasGateway(dto.getHasGateway())

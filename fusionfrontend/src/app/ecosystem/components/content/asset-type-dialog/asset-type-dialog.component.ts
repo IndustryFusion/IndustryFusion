@@ -38,7 +38,8 @@ export class AssetTypeDialogComponent implements OnInit {
   constructor(private assetTypeService: AssetTypeService,
               private formBuilder: FormBuilder,
               public ref: DynamicDialogRef,
-              public config: DynamicDialogConfig) { }
+              public config: DynamicDialogConfig) {
+  }
 
   ngOnInit() {
     this.type = this.config.data.dialogType;
@@ -52,11 +53,7 @@ export class AssetTypeDialogComponent implements OnInit {
 
   onSave() {
     if (this.assetTypeForm.valid) {
-      const assetType = new AssetType();
-      assetType.id = this.assetTypeForm.get('id')?.value;
-      assetType.name = this.assetTypeForm.get('name')?.value;
-      assetType.label = this.assetTypeForm.get('label')?.value;
-      assetType.description = this.assetTypeForm.get('description')?.value;
+      const assetType = this.assetTypeForm.getRawValue() as AssetType;
 
       if (this.type === DialogType.CREATE) {
         this.assetTypeService.createItem(assetType).subscribe();
@@ -71,6 +68,7 @@ export class AssetTypeDialogComponent implements OnInit {
   private createAssetTypeForm(assetTypeToEdit: AssetTypeDetails) {
     this.assetTypeForm = this.formBuilder.group({
       id: [],
+      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       label: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator]

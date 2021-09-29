@@ -33,7 +33,6 @@ import java.util.UUID;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetDto extends BaseAssetDto {
-    private Long id;
     private Long companyId;
     private Long assetSeriesId;
     private Long roomId;

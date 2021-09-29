@@ -36,13 +36,12 @@ public class ThresholdMapper implements EntityDtoMapper<Threshold, ThresholdDto>
             return null;
         }
 
-        ThresholdDto dto = ThresholdDto.builder()
+        return ThresholdDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .valueLower(entity.getValueLower())
                 .valueUpper(entity.getValueUpper())
                 .build();
-
-        return dto;
     }
 
     private ThresholdDto toDtoDeep(final Threshold entity) {
@@ -62,13 +61,13 @@ public class ThresholdMapper implements EntityDtoMapper<Threshold, ThresholdDto>
         if (dto == null) {
             return null;
         }
-        Threshold entity = Threshold.builder()
+
+        return Threshold.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .valueLower(dto.getValueLower())
                 .valueUpper(dto.getValueUpper())
                 .build();
-
-        return entity;
     }
 
     @Override
