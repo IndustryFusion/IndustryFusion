@@ -126,7 +126,7 @@ export class AssetPerformanceViewComponent implements OnInit {
 
   private updateAggregatedStatusHours() {
     if (this.assetDetailsWithFieldsThreeDays && this.assetDetailsWithFieldsThreeDays.length > 0) {
-      const aggregatedStatusHours = EquipmentEfficiencyHelper.updateAggregatedStatusHours([this.assetDetailsWithFieldsThreeDays[0]],
+      const aggregatedStatusHours = EquipmentEfficiencyHelper.getAggregatedStatusHours([this.assetDetailsWithFieldsThreeDays[0]],
         this.enumHelpers);
       this.aggregatedStatusHours$.next(aggregatedStatusHours);
     }

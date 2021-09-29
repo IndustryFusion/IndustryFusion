@@ -43,7 +43,7 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   dateChanged = new EventEmitter<Date>();
 
   isLoaded = false;
-  aggregatedStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
+  averageOfStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
 
   constructor(private enumHelpers: EnumHelpers) {
   }
@@ -60,9 +60,11 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
 
   private updateAggregatedStatusHours() {
     if (this.factoryAssetDetailsWithFields) {
-      const aggregatedStatusHours = EquipmentEfficiencyHelper.updateAggregatedStatusHours(this.factoryAssetDetailsWithFields,
-        this.enumHelpers);
-      this.aggregatedStatusHours$.next(aggregatedStatusHours);
+      const aggregatedStatusHours = EquipmentEfficiencyHelper
+        .getAggregatedStatusHours(this.factoryAssetDetailsWithFields, this.enumHelpers);
+      const averageOfStatusHours = EquipmentEfficiencyHelper
+        .getAverageOfAggregatedStatusHours(aggregatedStatusHours, this.factoryAssetDetailsWithFields);
+      this.averageOfStatusHours$.next(averageOfStatusHours);
     }
   }
 
