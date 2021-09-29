@@ -32,7 +32,7 @@
     background: $light-grey;
     border: 0;
     justify-content: center;
-    margin: 15px 50px;
+    margin: 8px 50px;
   }
 
   .progress-bar-container {
@@ -62,16 +62,6 @@
 }
 
 :host ::ng-deep .performance-views > .p-selectbutton {
-  width: 27.5rem !important;
-}
-
-:host ::ng-deep .p-selectbutton .p-button.p-highlight {
-  background: $dark-white !important;
-  border-radius: 44px;
-}
-
-:host ::ng-deep .p-selectbutton {
-  background: $basic-white;
-  border-radius: 44px;
-  width: 20rem;
+  width: 23.4rem !important;
+  margin-right: 3.8rem;
 }

@@ -19,8 +19,11 @@
 
 .time-interval-selectors {
 
-  .choiceOptions{
-    margin: 1.25rem 3rem;
+  .choiceOptions {
+    margin-top: 1.25rem;
+    margin-right: 3rem;
+    margin-left: 3.2rem;
+    margin-bottom: 0.5rem;
   }
 
   .radio-wrapper {
@@ -30,7 +33,7 @@
     margin: 0 3.1rem 0;
   }
 
-  .okButton{
+  .okButton {
     margin: 1rem 3.1rem;
   }
 
@@ -38,15 +41,14 @@
     display: flex;
     margin-top: 1rem;
 
-    .maxpoints{
-      margin: 0px;
+    .maxpoints {
+      margin: 0;
 
-      .pointslabel{
-        margin: 0px;
+      .pointslabel {
+        margin: 0;
       }
 
       .pointsdropdown {
-        /*      width: 10% !important;*/
         display: flex;
       }
     }
@@ -76,7 +78,6 @@
       border: 5px rgba(0, 0, 0, 0.32);
       background-color: inherit;
       color: hsl(198, 0%, 40%);
-      // padding: 14px 28px;
       font-size: 12px;
       cursor: pointer;
       display: inline-block;
@@ -85,5 +86,5 @@
 }
 
 :host ::ng-deep .radio-wrapper > .p-selectbutton {
-  width: 20rem !important;
+  width: 18rem !important;
 }
