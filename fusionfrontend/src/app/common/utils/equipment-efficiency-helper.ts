@@ -22,7 +22,7 @@ export class EquipmentEfficiencyHelper {
 
   public static getAverageOfAggregatedStatusHours(aggregatedStatusHours: StatusHours[],
                                                   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[]): StatusHours[] {
-    if (aggregatedStatusHours == null && factoryAssetDetailsWithFields == null) {
+    if (aggregatedStatusHours == null || factoryAssetDetailsWithFields == null) {
       return null;
     }
 
