@@ -35,26 +35,28 @@ import { NotificationsListComponent } from '../components/content/notifications-
 import { NotificationsListHeaderComponent } from '../components/content/notifications-list/notifications-list-header/notifications-list-header.component';
 import { NotificationsListItemComponent } from '../components/content/notifications-list/notifications-list-item/notifications-list-item.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { GermanNumberPipe } from '../pipes/germannumber.pipe';
 
 
 @NgModule({
-  declarations: [
-    CreateButtonComponent,
-    ItemOptionsMenuComponent,
-    TrashButtonComponent,
-    ConfirmButtonComponent,
-    EditButtonComponent,
-    EditDetailsButtonComponent,
-    FactorySiteMapComponent,
-    AccuracyFormatPipe,
-    LabelControlDirective,
-    TooltipComponent,
-    BooleanPipe,
-    MaintenanceProgressbarComponent,
-    NotificationsListComponent,
-    NotificationsListHeaderComponent,
-    NotificationsListItemComponent,
-  ],
+    declarations: [
+        CreateButtonComponent,
+        ItemOptionsMenuComponent,
+        TrashButtonComponent,
+        ConfirmButtonComponent,
+        EditButtonComponent,
+        EditDetailsButtonComponent,
+        FactorySiteMapComponent,
+        AccuracyFormatPipe,
+        LabelControlDirective,
+        TooltipComponent,
+        BooleanPipe,
+        MaintenanceProgressbarComponent,
+        NotificationsListComponent,
+        NotificationsListHeaderComponent,
+        NotificationsListItemComponent,
+        GermanNumberPipe,
+    ],
   imports: [
     CommonModule,
     BrowserModule,
@@ -106,6 +108,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     NotificationsListComponent,
     NotificationsListHeaderComponent,
     NotificationsListItemComponent,
+    GermanNumberPipe,
   ],
   providers: [
     MessageService,
