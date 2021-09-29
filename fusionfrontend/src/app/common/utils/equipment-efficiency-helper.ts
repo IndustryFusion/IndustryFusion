@@ -20,10 +20,31 @@ import { EnumHelpers } from './enum-helpers';
 
 export class EquipmentEfficiencyHelper {
 
-  public static updateAggregatedStatusHours(factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[],
-                                            enumHelpers: EnumHelpers) {
+  public static getAverageOfAggregatedStatusHours(aggregatedStatusHours: StatusHours[],
+                                                  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[]): StatusHours[] {
+    if (aggregatedStatusHours == null || factoryAssetDetailsWithFields == null) {
+      return null;
+    }
+
+    const assetCountWithStatusData = this.getAssetCountWithStatusData(factoryAssetDetailsWithFields);
+    for (const aggregatedStatusHour of aggregatedStatusHours) {
+      aggregatedStatusHour.hours /= assetCountWithStatusData;
+    }
+    return aggregatedStatusHours;
+  }
+
+  private static getAssetCountWithStatusData(factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[]): number {
+    let assetCountWithStatusData = 0;
+    factoryAssetDetailsWithFields.forEach(asset => {
+      assetCountWithStatusData += asset.statusHoursOneDay == null ? 0 : 1;
+    });
+    return assetCountWithStatusData;
+  }
+
+  public static getAggregatedStatusHours(factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[],
+                                         enumHelpers: EnumHelpers): StatusHours[] {
     if (factoryAssetDetailsWithFields) {
-      const aggregatedStatusHours = EquipmentEfficiencyHelper.getNewAggregatedStatusHours(enumHelpers);
+      const aggregatedStatusHours: StatusHours[] = this.getEmptyAggregatedStatusHours(enumHelpers);
       for (const assetWithField of factoryAssetDetailsWithFields) {
         if (assetWithField.statusHoursOneDay) {
           assetWithField.statusHoursOneDay.statusHours.forEach(statusHours => {
@@ -36,7 +57,7 @@ export class EquipmentEfficiencyHelper {
     return null;
   }
 
-  private static getNewAggregatedStatusHours(enumHelpers: EnumHelpers): StatusHours[] {
+  private static getEmptyAggregatedStatusHours(enumHelpers: EnumHelpers): StatusHours[] {
     const aggregatedStatusHours: StatusHours[] = [];
     for (let i = 0; i < enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
       aggregatedStatusHours.push({ status: i as OispDeviceStatus, hours: 0 });
