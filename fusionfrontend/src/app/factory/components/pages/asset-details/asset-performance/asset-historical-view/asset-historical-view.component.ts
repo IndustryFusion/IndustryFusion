@@ -14,16 +14,12 @@
  */
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { OispService } from 'src/app/services/oisp.service';
-import { PointWithId } from 'src/app/services/oisp.model';
+import { Observable, Subject } from 'rxjs';
 import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-details/field-details.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { map, switchMap } from 'rxjs/operators';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
-import { OispDeviceQuery } from '../../../../../../store/oisp/oisp-device/oisp-device.query';
 import { FactoryAssetDetailsResolver } from '../../../../../../resolvers/factory-asset-details.resolver';
 import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
 import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
@@ -41,11 +37,8 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   viewModeOptions: { name: string; value: string; }[];
   viewMode: AssetPerformanceViewMode;
 
-  isLoading$: Observable<boolean>;
   asset$: Observable<FactoryAssetDetailsWithFields>;
   assetId: ID;
-  latestPoints$: Observable<PointWithId[]>;
-  mergedFields$: Observable<FieldDetails[]>;
 
   timeSlotOptions: { name: string; value: string; }[];
   currentTimeslot = 'current';
@@ -72,8 +65,6 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
 
   constructor(private assetQuery: AssetQuery,
-              private oispService: OispService,
-              private oispDeviceQuery: OispDeviceQuery,
               private factoryResolver: FactoryResolver,
               private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
               private router: Router,
@@ -81,41 +72,16 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isLoading$ = this.assetQuery.selectLoading();
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.assetId = this.assetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
-
-    this.initLastPoints();
-    this.initMergedFields();
+    this.resolve();
     this.initViewMode();
     this.initPointAndTimeSlotOptions();
   }
 
-  private initLastPoints() {
-    this.latestPoints$ = this.asset$
-      .pipe(
-        switchMap(asset => this.oispService.getLastValueOfAllFields(asset, asset.fields, 2))
-      );
-  }
-
-  private initMergedFields() {
-    this.mergedFields$ = combineLatest([this.asset$, this.latestPoints$])
-      .pipe(
-        map(([asset, latestPoints]) => {
-          return asset.fields.map(field => {
-            const fieldCopy = Object.assign({ }, field);
-            const point = latestPoints.find(latestPoint => latestPoint.id ===
-              this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName));
-
-            if (point) {
-              fieldCopy.value = point.value;
-            }
-            return fieldCopy;
-          });
-        })
-      );
+  private resolve() {
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetId = this.assetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
   }
 
   private initViewMode() {
