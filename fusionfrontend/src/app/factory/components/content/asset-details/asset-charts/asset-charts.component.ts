@@ -67,6 +67,11 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   latestPoints$: Observable<PointWithId[]>;
 
+  public thresholdColors = [
+    { backgroundColor: '#fceace', borderColor: '#f5b352' },
+    { backgroundColor: '#e6cfce', borderColor: '#a14b47' }
+  ];
+
   public lineChartData: ChartDataSets[] = [
     { data: [], label: '', fill: false, borderWidth: 2 },
   ];
@@ -225,6 +230,8 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       data.push({ y: point.value, t: currentDate });
       this.lineChartLabels.push(currentDate.toISOString());
     });
+
+    this.updateThresholds(points);
     this.chart.update();
   }
 
@@ -248,6 +255,8 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initLineChartOptions() {
+    const minMaxYAxis = this.getYMinMaxByAbsoluteThreshold();
+
     const scales: ChartScales | LinearScale = {
       xAxes: [{
         type: 'time',
@@ -272,11 +281,12 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
         {
           id: 'y-axis-0',
           position: 'left',
-        }
+          ticks: minMaxYAxis
+        },
       ]
     };
 
-    const annotation = this.getAnnotationFromThresholds();
+    const annotation = this.getAnnotationsByIdealAndCriticalThresholds(minMaxYAxis);
 
     this.lineChartOptions = {
       responsive: true,
@@ -294,74 +304,91 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
-  private getAnnotationFromThresholds(): any {
-    return {
-      annotations: [
-        /* {
-           drawTime: 'afterDraw', // overrides annotation.drawTime if set
-           type: 'line',
-           mode: 'horizontal',
-           scaleID: 'y-axis-0',
-           value: '2.2',
-           borderColor: 'red',
-           borderWidth: 2,
-          /!* label: {
-             enabled: true,
-             fontColor: 'orange',
-             content: 'Max'
-           }*!/
-         },
-         {
-           drawTime: 'afterDraw', // overrides annotation.drawTime if set
-           type: 'line',
-           mode: 'horizontal',
-           scaleID: 'y-axis-0',
-           value: '1.0',
-           borderColor: 'red',
-           borderWidth: 2,
-         },*/
-        {
-          drawTime: 'beforeDatasetsDraw',
-          type: 'box',
-          yScaleID: 'y-axis-0',
-          yMin: 0.6,
-          yMax: 1.2,
-          backgroundColor: '#fceace',
-          borderColor: '#f5b352',
-          borderWidth: 2
-        },
-        {
-          drawTime: 'beforeDatasetsDraw',
-          type: 'box',
-          yScaleID: 'y-axis-0',
-          yMin: 2.0,
-          yMax: 2.4,
-          backgroundColor: '#fceace',
-          borderColor: '#f5b352',
-          borderWidth: 2
-        },
+  private getYMinMaxByAbsoluteThreshold(): { min?: number, max?: number } {
+    if (this.field.absoluteThreshold) {
+      return {
+        min: this.field.absoluteThreshold.valueLower,
+        max: this.field.absoluteThreshold.valueUpper
+      };
+    } else {
+      return { };
+    }
+  }
 
-        {
-          drawTime: 'beforeDatasetsDraw',
-          type: 'box',
-          yScaleID: 'y-axis-0',
-          yMin: 0.0,
-          yMax: 0.6,
-          backgroundColor: '#e6cfce',
-          borderColor: '#a14b47',
-          borderWidth: 2
-        },
-        {
-          drawTime: 'beforeDatasetsDraw',
-          type: 'box',
-          yScaleID: 'y-axis-0',
-          yMin: 2.4,
-          yMax: 3.0,
-          backgroundColor: '#e6cfce',
-          borderColor: '#a14b47',
-          borderWidth: 2
-        },
-      ],
+  private getAnnotationsByIdealAndCriticalThresholds(minMax: { min?: number, max?: number }): any {
+    const annotations = [];
+
+/*    const isNoStrictMinMax = (minMax.min == null || minMax.max == null); // ! would also include zero
+    if (isNoStrictMinMax) {
+      minMax = { };
+    }*/
+
+    if (this.field.idealThreshold) {
+      const minLower = this.field.criticalThreshold?.valueLower ?? minMax.min;
+      const maxUpper = this.field.criticalThreshold?.valueUpper ?? minMax.max;
+      annotations.push(this.getAnnotation(ThresholdColorIndex.IDEAL, minLower, this.field.idealThreshold.valueLower));
+      annotations.push(this.getAnnotation(ThresholdColorIndex.IDEAL, this.field.idealThreshold.valueUpper, maxUpper));
+    }
+    if (this.field.criticalThreshold) {
+      console.log('criticalThreshold', this.field.criticalThreshold, minMax);
+      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL, minMax.min, this.field.criticalThreshold.valueLower));
+      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL,  this.field.criticalThreshold.valueUpper, minMax.max));
+    }
+
+    return { annotations };
+  }
+
+  private getAnnotation(colorIndex: ThresholdColorIndex, yMin?: number, yMax?: number): any {
+    return {
+      drawTime: 'beforeDatasetsDraw',
+      type: 'box',
+      yScaleID: 'y-axis-0',
+      yMin,
+      yMax,
+      backgroundColor: this.thresholdColors[colorIndex].backgroundColor,
+      borderColor: this.thresholdColors[colorIndex].borderColor,
+      borderWidth: 2
     };
   }
+
+  private updateThresholds(newPoints: PointWithId[]) {
+    const minMax = this.getUpdatedYMinMax(newPoints);
+    this.chart.chart.options.scales.yAxes[0].ticks.min = minMax.min;
+    this.chart.chart.options.scales.yAxes[0].ticks.max = minMax.max;
+    this.lineChartOptions.scales.yAxes[0].ticks.min = minMax.min;
+    this.lineChartOptions.scales.yAxes[0].ticks.max = minMax.max;
+
+    this.lineChartOptions.annotation = this.getAnnotationsByIdealAndCriticalThresholds(minMax);
+  }
+
+  private getYMinMaxOfPoints(points?: PointWithId[]): { min?: number, max?: number } {
+    let minMax: { min?: number, max?: number } = this.getYMinMaxByAbsoluteThreshold();
+
+    const isNoStrictMinMax = (minMax.min == null || minMax.max == null); // ! would also include zero
+    if (points && isNoStrictMinMax) {
+      const minValueOfData = Math.min.apply(Math, points.map(point => point.value));
+      const maxValueOfData = Math.max.apply(Math, points.map(point => point.value));
+      const space = 1;
+      minMax = { min: minValueOfData - space, max: maxValueOfData + space };
+    }
+
+    return minMax;
+  }
+
+  private getUpdatedYMinMax(newPoints?: PointWithId[]) {
+    const minMaxOfNewPoints = this.getYMinMaxOfPoints(newPoints);
+    const minMaxOfChart = {
+      min: this.chart.chart.options.scales.yAxes[0].ticks.min ?? 99999999,
+      max: this.chart.chart.options.scales.yAxes[0].ticks.max ?? -9999999
+    };
+    return {
+      min: Math.min(minMaxOfNewPoints.min, minMaxOfChart.min),
+      max: Math.max(minMaxOfNewPoints.max, minMaxOfChart.max)
+    };
+  }
+}
+
+enum ThresholdColorIndex {
+  IDEAL = 0,
+  CRITICAL = 1
 }
