@@ -38,10 +38,10 @@ under the License.
       <p-button class="table-bar-button" (click)="onCardsViewClick()">
         <fa-icon [icon]="faThLarge" class="check-box-icon fa-fw"></fa-icon>
       </p-button>
-      <p-button *ngIf="selectedFactoryAssets.length == 1" class="table-bar-button" (click)="setActiveRow(); showEditDialog();">
+      <p-button *ngIf="selectedFactoryAssets.length === 1" class="table-bar-button" (click)="setActiveRow(); showEditDialog();">
         <fa-icon [icon]="faWrench" class="check-box-icon fa-fw"></fa-icon>
       </p-button>
-      <p-button *ngIf="selectedFactoryAssets.length == 1" class="table-bar-button" (click)="setActiveRow(); showDeleteDialog();">
+      <p-button *ngIf="selectedFactoryAssets.length === 1" class="table-bar-button" (click)="setActiveRow(); showDeleteDialog();">
         <fa-icon [icon]="faTrashAlt" class="check-box-icon fa-fw"></fa-icon>
       </p-button>
     </div>
@@ -62,7 +62,7 @@ under the License.
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
-        <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
+        <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                              attributeToBeSearched="name" (searchByName)="searchAssets($event)">
         </app-table-searchbar>
       </th>

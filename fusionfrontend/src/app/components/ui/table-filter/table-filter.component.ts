@@ -109,14 +109,13 @@ export class TableFilterComponent implements OnInit {
   }
 
   addFilter() {
-    this.tableFilters.every(filter => {
+    for (const filter of this.tableFilters) {
       if (!this.activeFilterSet.has(filter)) {
         this.selectedFilter[this.activeFilterSet.size] = filter;
         this.activeFilterSet.add(filter);
-        return false;
+        break;
       }
-      return true;
-    });
+    }
   }
 
   changeSelectedFilter(oldActiveFilter: FilterOption, newActiveFilter: FilterOption) {
