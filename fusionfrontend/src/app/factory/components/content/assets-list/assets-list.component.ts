@@ -188,12 +188,12 @@ export class AssetsListComponent implements OnInit, OnChanges {
     });
   }
 
-  searchAssets(event?): void {
+  searchAssets(event?: FactoryAssetDetailsWithFields[]): void {
     this.searchedFactoryAssets = event;
     this.updateAssets();
   }
 
-  filterAssets(event?) {
+  filterAssets(event?: FactoryAssetDetailsWithFields[]) {
     this.filteredFactoryAssets = event;
     this.updateAssets();
   }

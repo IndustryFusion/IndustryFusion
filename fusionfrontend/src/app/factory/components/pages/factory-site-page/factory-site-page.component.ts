@@ -82,7 +82,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  selectTheAssets(selectedAssetIds: ID[]) {
+  selectAssets(selectedAssetIds: ID[]) {
     this.selectedIds = selectedAssetIds;
   }
 
