@@ -53,10 +53,10 @@ export class AssetCardComponent implements OnInit {
   ngOnInit() {
     this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
     this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.mergedFields$, this.asset);
-    this.mergedFields$ = this.getMergedFieldsExistingInCommonFields();
+    this.mergedFields$ = this.getMergedFieldsIntersectedWithCommonFields();
   }
 
-  private getMergedFieldsExistingInCommonFields(): Observable<FieldDetails[]> {
+  private getMergedFieldsIntersectedWithCommonFields(): Observable<FieldDetails[]> {
     return this.mergedFields$.pipe(
       map(fields => {
         const descriptionsOfCommonFields: string[] = this.commonFields.map(value => value.description);

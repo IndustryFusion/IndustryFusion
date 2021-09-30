@@ -60,7 +60,8 @@ export class AssetsGridPageComponent implements OnInit, OnDestroy {
     if (assetsWithFields && assetsWithFields.length > 0) {
       this.commonFields = assetsWithFields[0].fields;
       assetsWithFields.forEach(assetWithFields => {
-        this.commonFields = this.commonFields.filter(o => assetWithFields.fields.some(({ description}) => o.description === description));
+        this.commonFields = this.commonFields
+          .filter(commonField => assetWithFields.fields.some(assetField => commonField.description === assetField.description));
       });
     }
   }
