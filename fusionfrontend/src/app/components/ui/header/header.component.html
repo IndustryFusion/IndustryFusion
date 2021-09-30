@@ -25,18 +25,6 @@ under the License.
     </ul>
     <div class="page-header">
       <app-page-title [title]="getPageTitle()"></app-page-title>
-      <!--<app-page-title *ngIf="isManager(ManagerType.FACTORY_MANAGER);" [title]="'Factory Manager'"></app-page-title>
-      <app-factory-page-title *ngIf="isManager(ManagerType.FACTORY_MANAGER);"
-                              [factorySubTitle]="factorySubTitle$ | async"></app-factory-page-title>
-      <app-page-title *ngIf="isManager(ManagerType.FLEET_MANAGER);" [title]="'Fleet Manager'"></app-page-title>
-      <app-page-title *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER);" [title]="'Ecosystem Manager'"></app-page-title>
-      <app-page-title *ngIf="isDashboards();" [title]="'Dashboards'"></app-page-title>
-      <app-page-title *ngIf="isFusionApplet" [title]="'Applets'"></app-page-title>
-      <app-page-title *ngIf="isNotifications();" [title]="'Notifications'"></app-page-title>
-      <div *ngIf="isHome()">
-        <h1>Smart Factory</h1>
-        <h2>Launchpad</h2>
-      </div>-->
     </div>
     <ul class="toolbox">
       <li>
@@ -56,11 +44,38 @@ under the License.
       </li>
       <li *ngIf="user" class="user"></li>
       <li *ngIf="user" class="user-name">
-        Michel-Markuse
-        <clr-icon class="user-name-more" shape="caret" style="transform: rotate(180deg);"></clr-icon>
+        {{ user.firstName }}
+        <clr-icon class="user-name-more" shape="caret" style="transform: rotate(180deg);" (click)="userpanel.show($event)"></clr-icon>
       </li>
     </ul>
   </section>
+
+  <p-overlayPanel #userpanel [showCloseIcon]="true" class="userpanel panel-class" (click)="$event.stopPropagation()"
+                  (keydown)="$event.stopPropagation()" >
+    <ng-template pTemplate>
+      <div class="header">
+        <div class="header-info">
+          <div class="if-panel-heading">{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="if-label-small">{{ user.email }}</div>
+        </div>
+      </div>
+
+      <div class="panel-content">
+        <span class="account" (click)="navigateToKeycloakAdmin()">
+          <fa-icon [icon]="faUserCircle" class="fa-fw account-icon"></fa-icon>
+          <label class="if-label account-label">Mein Konto</label>
+        </span>
+      </div>
+
+      <div class="footer">
+        <span class="logout-button">
+          <i class="pi pi-sign-out" (click)="logoutUser(); userpanel.hide()"></i>
+          <label class="logout-label">Logout</label>
+        </span>
+      </div>
+    </ng-template>
+  </p-overlayPanel>
+
   <section class="sub-header">
     <app-ecosystem-sub-header *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER)"></app-ecosystem-sub-header>
     <app-factory-sub-header

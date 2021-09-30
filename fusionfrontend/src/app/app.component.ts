@@ -21,6 +21,8 @@ import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
 import { OispAlertResolver } from './resolvers/oisp-alert-resolver';
+import { UserManagementService } from './services/user-management.service';
+import { KeycloakProfile } from 'keycloak-js';
 
 @Component({
   selector: 'app-root',
@@ -32,9 +34,11 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private oispAlertResolver: OispAlertResolver,
               private factoryResolver: FactoryResolver,
               private userQuery: UserQuery,
+              private userManagementService: UserManagementService,
               private ngZone: NgZone) { }
-  loggedUser$: Observable<User>;
+  loggedUser$: Observable<User>; // TODO (jsy): remove
   factorySubTitle$: Observable<string>;
+  keycloakUser$: Promise<KeycloakProfile>;
 
   private intervalHandle: number;
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
@@ -45,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
+    this.keycloakUser$ = this.userManagementService.getUserProfile();
     this.loggedUser$ = this.userQuery.selectActive();
     if (environment.production) {
       enableAkitaProdMode();

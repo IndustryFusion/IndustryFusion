@@ -18,9 +18,11 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { User } from 'src/app/store/user/user.model';
 import { ManagerType } from '../../content/manager-type/manager-type.enum';
 import { OispAlertQuery } from '../../../store/oisp/oisp-alert/oisp-alert.query';
+import { UserManagementService } from '../../../services/user-management.service';
+import { KeycloakProfile } from 'keycloak-js';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
@@ -31,16 +33,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
   factorySubTitle$: Subject<string>;
   @Input()
-  user: User;
+  user: KeycloakProfile;
   route: string;
   show: boolean;
 
   openAlertCount = 0;
   ManagerType = ManagerType;
   private unSubscribe$ = new Subject<void>();
+  faUserCircle = faUserCircle;
 
   constructor(private routingLocation: Location,
               private oispAlertQuery: OispAlertQuery,
+              private userManagementService: UserManagementService,
               private router: Router) {
   }
 
@@ -123,5 +127,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
+  }
+
+  logoutUser() {
+    this.userManagementService.logoutCurrentUser().catch(r => console.warn('logout not successful (', r, ')'));
+  }
+
+  navigateToKeycloakAdmin() {
+    this.userManagementService.navigateToAdminConsoleInNewTab();
   }
 }

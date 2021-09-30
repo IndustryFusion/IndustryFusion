@@ -40,6 +40,7 @@ import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { ToastModule } from 'primeng/toast';
 import { PageTitleComponent } from './components/content/page-title/page-title.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { PageTitleComponent } from './components/content/page-title/page-title.c
     BrowserAnimationsModule,
     KeycloakAngularModule,
     ToastModule,
+    OverlayPanelModule,
   ],
   bootstrap: [AppComponent],
   providers: [
