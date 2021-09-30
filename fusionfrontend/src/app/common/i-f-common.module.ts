@@ -40,6 +40,7 @@ import { MaintenanceProgressbarComponent } from '../components/content/maintenan
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import { NotificationsListComponent } from '../components/content/notifications-
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
+    SelectButtonModule,
   ],
   exports: [
     CommonModule,
@@ -122,6 +124,7 @@ import { NotificationsListComponent } from '../components/content/notifications-
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
     TableModule,
+    SelectButtonModule,
   ],
   providers: [
     MessageService,

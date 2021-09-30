@@ -112,8 +112,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeTab(state: NotificationState) {
-    if (state === NotificationState.CLEARED) {
+  onChangeTab() {
+    if (this.state === NotificationState.CLEARED) {
       this.navigateToSubroute('cleared');
     } else {
       this.navigateToSubroute('open');

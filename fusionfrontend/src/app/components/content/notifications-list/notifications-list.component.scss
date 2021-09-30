@@ -12,8 +12,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@import '../../../ecosystem/components/content/base/base-list-item/base-list-item.component';
-@import '../../../ecosystem/components/content/base/base-list/base-list.component.scss';
+@import 'src/app/ecosystem/components/content/base/base-list-item/base-list-item.component';
+@import 'src/app/ecosystem/components/content/base/base-list/base-list.component';
 @import 'abstract/variables';
 @import 'base/typography';
 
@@ -75,8 +75,6 @@
   }
 }
 
-@import 'src/app/ecosystem/components/content/base/base-list/base-list.component';
-
 .folder-view {
   margin-right: 16px;
 }
@@ -85,8 +83,8 @@
   margin: 0 80px;
 }
 
-.notification-state-button {
-  margin: 0 8px;
+.space-right {
+  margin-right: 20px;
 }
 
 .small-confirm-button {
@@ -116,4 +114,8 @@
   .notification-high {
     color: $alert-high;
   }
+}
+
+:host ::ng-deep .notifications > .p-selectbutton {
+  width: 8.9rem !important;
 }

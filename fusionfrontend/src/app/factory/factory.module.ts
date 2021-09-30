@@ -69,7 +69,6 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
 import { AccordionModule } from 'primeng/accordion';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { DashboardModule } from '../dashboards/dashboard.module';
 import { AssetHistoricalViewComponent } from './components/pages/asset-details/asset-performance/asset-historical-view/asset-historical-view.component';
 import { CalendarModule } from 'primeng/calendar';
@@ -133,7 +132,6 @@ import { CalendarModule } from 'primeng/calendar';
         CardModule,
         FusionAppletsModule,
         AccordionModule,
-        SelectButtonModule,
         DashboardModule,
         CalendarModule,
     ],
