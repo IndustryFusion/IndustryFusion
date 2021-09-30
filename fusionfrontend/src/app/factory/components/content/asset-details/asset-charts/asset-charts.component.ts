@@ -235,15 +235,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     this.chart.update();
   }
 
-  // events
-  public chartClicked(event: { event?: MouseEvent; active?: { }[] }): void {
-    console.log(event);
-  }
-
-  public chartHovered({ event, active }: { event: MouseEvent, active: { }[] }): void {
-    console.log(event, active);
-  }
-
   public changeColor() {
     this.lineChartColors[2].borderColor = 'green';
     this.lineChartColors[2].backgroundColor = `rgba(0, 255, 0, 0.3)`;
@@ -318,11 +309,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   private getAnnotationsByIdealAndCriticalThresholds(minMax: { min?: number, max?: number }): any {
     const annotations = [];
 
-/*    const isNoStrictMinMax = (minMax.min == null || minMax.max == null); // ! would also include zero
-    if (isNoStrictMinMax) {
-      minMax = { };
-    }*/
-
     if (this.field.idealThreshold) {
       const minLower = this.field.criticalThreshold?.valueLower ?? minMax.min;
       const maxUpper = this.field.criticalThreshold?.valueUpper ?? minMax.max;
@@ -330,7 +316,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       annotations.push(this.getAnnotation(ThresholdColorIndex.IDEAL, this.field.idealThreshold.valueUpper, maxUpper));
     }
     if (this.field.criticalThreshold) {
-      console.log('criticalThreshold', this.field.criticalThreshold, minMax);
       annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL, minMax.min, this.field.criticalThreshold.valueLower));
       annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL,  this.field.criticalThreshold.valueUpper, minMax.max));
     }

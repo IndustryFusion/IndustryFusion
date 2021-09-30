@@ -29,10 +29,8 @@ under the License.
                     [options]="lineChartOptions"
                     [colors]="lineChartColors"
                     [legend]="lineChartLegend"
-                    [chartType]="lineChartType"
-                    [plugins]="lineChartPlugins"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)">
+                    [chartType]="lineChartType //noinspection InvalidExpressionResultType"
+                    [plugins]="lineChartPlugins">
         </canvas>
       </div>
     </div>
