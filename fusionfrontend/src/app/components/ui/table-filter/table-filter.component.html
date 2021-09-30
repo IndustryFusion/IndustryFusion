@@ -23,12 +23,12 @@ under the License.
   </button>
 </div>
 
-<p-overlayPanel #filterpanel [dismissable]="false" [ngClass]="{'panel-position': haspositionSet==true}" class="filterPanel panel-class">
+<p-overlayPanel #filterpanel [dismissable]="false" [ngClass]="{'panel-position': hasPositionSet==true}" class="filterPanel panel-class">
   <ng-template pTemplate>
     <div class="if-panel-heading">Filter</div>
 
     <div>
-      <div *ngFor="let activeFilter of activeFilterSet; let i = index" class="filter-box">
+      <div *ngFor="let activeFilter of activeFilterSet; let i = index">
         <p-dropdown (onChange)="changeSelectedFilter(activeFilter, selectedFilter[i])" [(ngModel)]="selectedFilter[i]" [options]="filterOptions"
                     optionLabel="columnName" class="dropdown-class"></p-dropdown>
 
@@ -55,7 +55,7 @@ under the License.
           <i class="pi pi-times remove-filter-btn-icon"></i>
         </button>
       </div>
-      <button (click)="addFilter()" *ngIf="activeFilterSet.size < filters.length" class="add-btn">
+      <button (click)="addFilter()" *ngIf="activeFilterSet.size < tableFilters.length" class="add-btn">
         <i class="pi pi-plus add-btn-icon"></i>
         Add filter
       </button>

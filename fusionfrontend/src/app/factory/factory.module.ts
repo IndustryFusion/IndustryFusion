@@ -38,10 +38,7 @@ import { FactorySubHeaderComponent } from './components/content/factory-sub-head
 import { PrecisionPipe } from '../pipes/precision.pipe';
 import { StatusComponent } from './components/content/status/status.component';
 import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
-import { AssetsListItemComponent } from './components/content/assets-list/assets-list-item/assets-list-item.component';
-import { AssetsListHeaderComponent } from './components/content/assets-list/assets-list-header/assets-list-header.component';
 import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
-import { ListFilterComponent } from './components/content/assets-list/list-filter/list-filter.component';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
@@ -100,9 +97,6 @@ import { DashboardModule } from '../dashboards/dashboard.module';
     StatusComponent,
     FactorySitesListHeaderComponent,
     FactorySitesListItemComponent,
-    AssetsListItemComponent,
-    AssetsListHeaderComponent,
-    ListFilterComponent,
     AssetInstantiationComponent,
     AssetInstantiationStartModalComponent,
     AssetInstantiationDescriptionModalComponent,

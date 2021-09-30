@@ -82,17 +82,8 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  selectTheAssets(selectedAssetIds: Set<ID>) {
-    this.selectedIds = Array.from(selectedAssetIds.values());
-  }
-
-  updateAssetData(event: FactoryAssetDetails) {
-    event.id = event.id ? event.id : this.createdAssetDetailsId;
-    event.companyId = this.companyId;
-    this.assetService.updateCompanyAsset(this.companyId, event).subscribe(
-      () => { },
-      error => console.error(error)
-    );
+  selectAssets(selectedAssetIds: ID[]) {
+    this.selectedIds = selectedAssetIds;
   }
 
   toolbarClick(button: string) {

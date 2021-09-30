@@ -93,8 +93,8 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  selectTheAssets(selectedAssetIds: Set<ID>) {
-    this.selectedIds = Array.from(selectedAssetIds.values());
+  selectTheAssets(selectedAssetIds: ID[]) {
+    this.selectedIds = selectedAssetIds;
   }
 
   toolbarClick(button: string) {

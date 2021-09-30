@@ -23,8 +23,7 @@ under the License.
                      [allRoomsOfFactorySite]="(roomsOfFactorySite$ | async)"
                      [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
                      (toolBarClickEvent)="toolbarClick($event)"
-                     (selectedEvent)="selectTheAssets($event)"
-                     (assetDetailsSelected)="updateAssetData($event)"
+                     (selectedEvent)="selectAssets($event)"
                      (updateAssetEvent)="updateRoom($event)">
     </app-assets-list>
   </p-accordionTab>

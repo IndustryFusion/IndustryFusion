@@ -28,9 +28,9 @@ under the License.
         Cleared
       </button>
     </div>
-    <div class="filter-panel">
-      <app-table-filter class="filter-btn" [filters]="filters" [itemsToBeFiltered]="allNotifications"
-                         (filteredItems)="filterNotifications($event)">
+    <div class="filter-btn-div">
+      <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="allNotifications"
+                        [position]="['90%', '-450%']" (filteredItems)="filterNotifications($event)">
       </app-table-filter>
     </div>
   </div>
