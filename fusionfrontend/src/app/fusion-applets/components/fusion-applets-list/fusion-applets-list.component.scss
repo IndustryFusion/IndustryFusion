@@ -58,3 +58,7 @@
     }
   }
 }
+
+:host ::ng-deep .fusion-applet > .p-selectbutton {
+  width: 9.7rem !important;
+}

@@ -53,6 +53,14 @@
   }
 }
 
+.on-white-background > .p-selectbutton {
+  background-color: $light-grey !important;
+
+  &.p-highlight {
+    background: $basic-white !important;
+  }
+}
+
 .p-buttonset .p-button:not(:first-of-type):not(:last-of-type),
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
   border-radius: 44px !important;
