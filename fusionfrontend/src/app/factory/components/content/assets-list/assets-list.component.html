@@ -88,12 +88,11 @@ under the License.
       <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">
         <app-status [asset]="asset" [showInline]="true"></app-status>
       </td>
-      <td [style.width.%]="5">
-        <div #div class="table-dropdown-menu">
-          <p-menu #menu [appendTo]="div" [model]="menuActions" [popup]="true"></p-menu>
-          <button (click)="menu.toggle($event); setActiveRow(asset)" class="table-dropdown-menu-button" icon="pi pi-ellipsis-h" pButton
-                  type="button"></button>
-        </div>
+      <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(asset)">
+        <app-item-options-menu [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+                               [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
+                               (assignItem)="openAssignRoomDialog()" (deleteItem)="showDeleteDialog()">
+        </app-item-options-menu>
       </td>
       <td [style.width.%]="5"></td>
     </tr>
