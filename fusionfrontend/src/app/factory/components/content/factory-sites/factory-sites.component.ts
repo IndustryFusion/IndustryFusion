@@ -25,12 +25,13 @@ import { FactorySiteDialogComponent } from '../factory-site-dialog/factory-site-
 import { DialogType } from '../../../../common/models/dialog-type.model';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-factory-sites',
   templateUrl: './factory-sites.component.html',
   styleUrls: ['./factory-sites.component.scss'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
 export class FactorySitesComponent implements OnInit, OnDestroy {
 
@@ -38,12 +39,11 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   factorySites: FactorySite[];
   companyId: ID;
   selectedFactorySite: ID;
+  activeListItem: FactorySite;
 
   factorySites$: Observable<FactorySiteWithAssetCount[]>;
   factorySiteMapping:
     { [k: string]: string } = { '=0': 'No Factory sites', '=1': '# Factory site', other: '# Factory sites' };
-  sortField: string;
-  sortType: string;
 
   private ref: DynamicDialogRef;
 
@@ -53,8 +53,8 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private factoryComposedQuery: FactoryComposedQuery,
-    public dialogService: DialogService
-  ) {
+    public dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
     this.factoryResolver.resolve(activatedRoute);
   }
 
@@ -64,9 +64,8 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCountInFactoryManager(this.companyId);
   }
 
-  onSort(field: [string, string]) {
-    this.sortField = field[0];
-    this.sortType = field[1];
+  setActiveRow(factorySite?) {
+    this.activeListItem = factorySite;
   }
 
   showCreateDialog() {
@@ -80,13 +79,41 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     });
   }
 
+  showEditDialog() {
+    this.ref = this.dialogService.open(FactorySiteDialogComponent, {
+      data: {
+        factorySite: this.activeListItem,
+        type: DialogType.EDIT
+      },
+      header: `Update Factory Site ${this.activeListItem.name}`,
+      width: '70%',
+      contentStyle: { 'padding-left': '4%', 'padding-right': '4%' },
+    });
+  }
+
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the Factory ' + this.activeListItem.name + '?',
+      header: 'Delete Factory Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteFactorySite();
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  deleteFactorySite() {
+  }
+
   ngOnDestroy() {
     if (this.ref) {
       this.ref.close();
     }
   }
 
-  setSelectedFactorySite(id: ID) {
-    this.selectedFactorySite = id;
+  setSelectedFactorySite(factoryId: ID) {
+    this.selectedFactorySite = factoryId;
   }
 }

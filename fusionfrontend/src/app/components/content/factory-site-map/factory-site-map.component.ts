@@ -249,7 +249,7 @@ export class FactorySiteMapComponent implements OnInit, OnChanges {
   }
 
   navigateToFactorySite(id: ID): void {
-    this.router.navigate(['factory-sites', id], { relativeTo: this.route });
+    this.router.navigate([id], { relativeTo: this.route });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

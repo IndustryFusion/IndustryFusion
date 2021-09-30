@@ -194,6 +194,18 @@
   }
 }
 
+.table-bold-font {
+  font-weight: bold !important;
+  color: $basic-black !important;
+}
+
+.confirm-dialog-style {
+  .p-dialog .p-dialog-content {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
 
 .table-dropdown-menu-button {
   outline: none;
