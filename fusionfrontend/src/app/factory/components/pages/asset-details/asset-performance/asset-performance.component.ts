@@ -22,7 +22,7 @@ import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-d
 import { ActivatedRoute } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { MaintenanceInterval } from '../../../content/asset-details/maintenance-bar/maintenance-interval.model';
+import { MaintenanceInterval } from '../../../content/metrics-board/maintenance-interval.model';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
 import * as moment from 'moment';

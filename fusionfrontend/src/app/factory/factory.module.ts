@@ -27,7 +27,6 @@ import { AssetsListComponent } from './components/content/assets-list/assets-lis
 import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
-import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
@@ -87,7 +86,6 @@ import { MetricsBoardComponent } from './components/content/metrics-board/metric
     AssetDetailsInfoComponent,
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
-    MaintenanceBarComponent,
     AssetChartsComponent,
     RoomDialogComponent,
     RoomsPageComponent,
