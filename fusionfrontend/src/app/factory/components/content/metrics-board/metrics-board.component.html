@@ -12,19 +12,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<div class="metrics-board" *ngIf="!isLoading">
-    <div *ngFor="let metric of data" class="performance-widget">
-      <label class="if-label">
-        {{metric.fieldDetail.name}}
-      </label>
-      <h1>
-        {{metric.latesValue}} {{metric.fieldDetail.unit}}
-      </h1>
-      <div>
-        Debug:
-        {{metric.fieldDetail.name}}
-        {{metric.deviceComponent.cid}}
+
+<div class="metrics-board" *ngIf="isLoaded">
+    <div *ngFor="let metric of metricsDetails" class="performance-widget">
+      <div class="metric-container">
+        <label class="metric-title"> {{metric.fieldDetail.name}} </label>
+        <div> <label class="metric-value">{{metric.latestValue}}</label>  <label class="metric-unit">{{metric.fieldDetail.unit}}</label> </div>
       </div>
     </div>
-
-  </div>
+</div>

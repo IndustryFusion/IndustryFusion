@@ -13,7 +13,8 @@
  * under the License.
  */
 
-
+@import "base/typography";
+@import "abstract/variables";
 
 .metrics-board {
   margin: 1rem 2rem;
@@ -23,13 +24,50 @@
 
   .performance-widget {
     width: 30%;
-    height: 272px;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
+    height: 128px;
+    background: $basic-white 0 0 no-repeat padding-box;
     border-radius: 10px;
-    opacity: 1;
     &:not(:last-child) {
       margin-right: 16px;
       margin-bottom: 16px;
+    }
+
+    .metric-container {
+      border: 0;
+      margin: 25px 50px;
+
+      div {
+        display: flex;
+        align-self: center;
+
+        .metric-title {
+          text-align: left;
+          font-size: $medium-font-size;
+          line-height: $medium-line-height;
+          letter-spacing: 0;
+          color: $regular-grey;
+        }
+
+        .metric-value {
+          text-align: left;
+          font-size: 42px;
+          line-height: 53px;
+          font-weight: bold;
+          letter-spacing: 0;
+          color: $basic-black;
+        }
+
+        .metric-unit {
+          text-align: left;
+          font-size: $even-bigger-font-size;
+          line-height: $even-bigger-line-height;
+          letter-spacing: 0;
+          color: $inactive-infotext;
+
+          align-self: center;
+          padding-left: 0.5rem;
+        }
+      }
     }
   }
 }

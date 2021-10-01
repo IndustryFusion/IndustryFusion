@@ -30,34 +30,32 @@ import { PointWithId } from '../../../../services/oisp.model';
 })
 export class MetricsBoardComponent implements OnInit {
   fieldDetails: FieldDetails[];
-  metrics: Map<string, { externalName: string, fieldDetail: FieldDetails, deviceComponent: DeviceComponent, latesValue: number | string}>
-    = new Map();
+  metricsDetailMap: Map<string, MetricsDetail> = new Map();
   private asset: FactoryAssetDetailsWithFields;
-  isLoading = true;
-  data: { externalName: string; fieldDetail: FieldDetails; deviceComponent: DeviceComponent; latesValue: number | string }[] = [];
+  isLoaded = false;
+  metricsDetails: MetricsDetail[] = [];
 
-  constructor(
-    factoryComposedQuery: FactoryComposedQuery,
-    fieldDetailsQuery: FieldDetailsQuery,
-    oispDeviceQuery: OispDeviceQuery,
-    public oispService: OispService,
-  ) {
+  constructor(factoryComposedQuery: FactoryComposedQuery,
+              fieldDetailsQuery: FieldDetailsQuery,
+              private oispDeviceQuery: OispDeviceQuery,
+              public oispService: OispService) {
+
     factoryComposedQuery.selectActiveAssetsWithFieldInstanceDetails().subscribe(asset => {
       this.asset = asset;
       fieldDetailsQuery.selectFieldsOfAssetMetrics(asset.id).subscribe(fieldDetails => {
           if (fieldDetails?.length > 0) {
             this.fieldDetails = fieldDetails;
             fieldDetails.forEach(fieldDetail => {
-              const deviceComponent = oispDeviceQuery.getComponentOfFieldInstance(asset.externalName, fieldDetail.externalName);
-              this.metrics.set(fieldDetail.externalName, {
+              const deviceComponent = this.oispDeviceQuery.getComponentOfFieldInstance(asset.externalName, fieldDetail.externalName);
+              this.metricsDetailMap.set(deviceComponent.cid, {
                 externalName: fieldDetail.externalName,
                 deviceComponent,
                 fieldDetail,
-                latesValue: null
+                latestValue: null
               });
             });
-            this.data = [ ...this.metrics.values()];
-            // this.loadData();
+            this.metricsDetails = [ ...this.metricsDetailMap.values()];
+            this.loadData();
           }
         }
       );
@@ -66,26 +64,35 @@ export class MetricsBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData();
   }
 
   private loadData() {
-    console.log('loadData');
-
-    if (this.isLoading) {
-      this.isLoading = false;
-      this.oispService.getLastValueOfAllFields(
-        this.asset, [...this.metrics.values()].map(metric => metric.fieldDetail), 600
-      ).subscribe((data: PointWithId[]) => data.forEach(pointWithId => {
-        console.log(pointWithId);
-        if (this.metrics.has(pointWithId.id)) {
-          const metric = this.metrics.get(pointWithId.id);
-          metric.latesValue = pointWithId.value;
-          this.metrics.set(pointWithId.id, metric);
-          this.metrics = new Map(this.metrics);
-        }
-        this.data = [ ...this.metrics.values()];
-      }));
+    if (!this.isLoaded) {
+      this.oispService.getLastValueOfAllFields(this.asset, this.fieldDetails, 600)
+        .subscribe((metricPoints: PointWithId[]) => {
+         this.addPointValuesToMetricsMap(metricPoints);
+         this.isLoaded = true;
+      });
     }
   }
+
+  private addPointValuesToMetricsMap(metricPoints: PointWithId[]) {
+    metricPoints.forEach(pointWithId => {
+      if (this.metricsDetailMap.has(pointWithId.id)) {
+        const metric = this.metricsDetailMap.get(pointWithId.id);
+        metric.latestValue = pointWithId.value;
+        this.metricsDetailMap.set(pointWithId.id, metric);
+
+        this.metricsDetailMap = new Map(this.metricsDetailMap);
+      }
+      this.metricsDetails = [...this.metricsDetailMap.values()];
+    });
+  }
+}
+
+class MetricsDetail {
+  externalName: string;
+  fieldDetail: FieldDetails;
+  deviceComponent: DeviceComponent;
+  latestValue: number | string;
 }
