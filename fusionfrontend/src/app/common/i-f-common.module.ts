@@ -40,7 +40,7 @@ import { MaintenanceProgressbarComponent } from '../components/content/maintenan
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
-
+import { GermanNumberPipe } from '../pipes/germannumber.pipe';
 
 @NgModule({
   declarations: [
@@ -62,6 +62,7 @@ import { NotificationsListComponent } from '../components/content/notifications-
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
+    GermanNumberPipe,
   ],
   imports: [
     CommonModule,
@@ -122,6 +123,7 @@ import { NotificationsListComponent } from '../components/content/notifications-
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
     TableModule,
+    GermanNumberPipe,
   ],
   providers: [
     MessageService,

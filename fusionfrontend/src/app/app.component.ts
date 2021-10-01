@@ -21,6 +21,8 @@ import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
 import { OispAlertResolver } from './resolvers/oisp-alert-resolver';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 
 @Component({
   selector: 'app-root',
@@ -44,6 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    registerLocaleData(localeDe);
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
     this.loggedUser$ = this.userQuery.selectActive();
     if (environment.production) {
