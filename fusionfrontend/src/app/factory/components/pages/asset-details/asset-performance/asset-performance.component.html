@@ -41,16 +41,18 @@ under the License.
         </ng-container>
       </div>
     </div>
+    <app-metrics-board ></app-metrics-board>
 
-    <div class="charts-container">
-      <ng-container *ngFor="let field of assetWithFields.fields">
-        <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
-          <app-asset-charts [asset]="assetWithFields" [clickedOk]="currentChoiceConfiguration.clickedOk"
-                            [endDate]="endDate" [field]="field" [maxPointsOptions]="maxPointsOptions"
-                            [options]="timeSlotOptions" [startDate]="startDate"></app-asset-charts>
-        </ng-container>
-      </ng-container>
-    </div>
+
+    <!--    <div class="charts-container">
+          <ng-container *ngFor="let field of assetWithFields.fields">
+            <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
+              <app-asset-charts [asset]="assetWithFields" [clickedOk]="currentChoiceConfiguration.clickedOk"
+                                [endDate]="endDate" [field]="field" [maxPointsOptions]="maxPointsOptions"
+                                [options]="timeSlotOptions" [startDate]="startDate"></app-asset-charts>
+            </ng-container>
+          </ng-container>
+        </div>-->
   </ng-container>
 
 </div>

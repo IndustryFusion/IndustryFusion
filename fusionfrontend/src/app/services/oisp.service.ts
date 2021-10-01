@@ -70,6 +70,7 @@ export class OispService {
     if (request.metrics.length < 1) {
       return of(this.defaultPoints);
     }
+    console.log('getOISPPoints')
     return this.http.post<OispResponse>(`${environment.oispApiUrlPrefix}/${path}`, request, this.httpOptions)
       .pipe(
         catchError(() => {
@@ -111,7 +112,7 @@ export class OispService {
           op: 'none'
         }))
     };
-
+    console.log('getLastValueOfAllFields')
     return this.getOispPoints(path, request, true, useFieldNameAsId);
   }
 

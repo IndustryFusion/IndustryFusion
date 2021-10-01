@@ -67,6 +67,7 @@ import { AssetAppletsComponent } from './components/pages/asset-details/asset-ap
 import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 import { AccordionModule } from 'primeng/accordion';
+import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import { AccordionModule } from 'primeng/accordion';
     AssetSubsystemsComponent,
     AssetAppletsComponent,
     AssetSubsystemsComponent,
-    AssetNotificationsComponent
+    AssetNotificationsComponent,
+    MetricsBoardComponent
   ],
     imports: [
         IFCommon,
