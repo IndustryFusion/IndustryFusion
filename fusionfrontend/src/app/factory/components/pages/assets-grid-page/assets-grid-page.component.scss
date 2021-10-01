@@ -15,95 +15,20 @@
 
 @import "abstract/variables";
 
-.wrapper{
-    background: $light-grey;
-    padding: 0 15%;
-    margin: 0;
-}
+.wrapper {
+  background: $light-grey;
+  padding: 0 5px;
+  margin: 0;
+  flex-basis: 0 !important;
+  flex-wrap: wrap;
+  display: flex;
 
-
-.cards{
-    display: flex;
-    justify-content: center;
-}
-footer{
-  padding: 40px 5%;
-    background: $light-grey;
-}
-
-footer .clr-row{
-    background: $light-grey;
-
-}
-
-footer .top-sign{
-    font-weight: bolder;
-    border-radius: 15px;
-    width: 75%;
-    height: auto;
-    margin-bottom: 20px;
-    font-size: 200%;
-}
-
-footer .right{
-  position: relative;
-  background-image: url('//assets/img/IndustryFusion-hive-nav.png');
-  background-repeat: no-repeat;
-  background-position: 15% 50%;
-  background-color: $basic-white;
-
-  border-radius: 15px;
-  width: 75%;
-  height: auto;
-  text-align: center;
-  padding: 0 0;
-}
-
-.sign{
-  font-size: 150%;
-  font-weight: bolder;
-  position: absolute;
-  top: 50%;
-  left: 55%;
-  transform: translate(-50%,-50%);
-  text-align: left;
-  width: 60%;
-}
-
-footer .left-field{
-  background-color: $basic-white;
-  border-radius: 15px;
-  width: 75%;
-  height: auto;
-
-}
-
-.sign > p{
-    margin: 0;
-    text-align: left;
-}
-
-footer .table{
-    margin: 0;
-    padding: 32px;
-    font-size: 16px;
-
-  .label{
-    border: 0;
-    color: $basic-grey;
+  .p-col {
+    flex-grow: 0;
   }
+}
 
-  .value {
-    border: 0;
-    font-weight: bold;
-    text-align: right;
-    padding: 8px 0;
-    color: $basic-black;
-
-    span{
-      font-weight: normal;
-      color: $basic-grey;
-
-    }
-  }
+.asset-cards {
+  display: flex;
+  justify-content: center;
 }

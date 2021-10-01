@@ -13,45 +13,38 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="card">
+<div class="asset-card">
     <div class="card-header">
-        <h4 style="font-weight: bold">{{asset.name}}</h4>
-        <p style="margin: 0 "> {{asset.description}}</p>
-        <p class="details-value" (click)="goToDetails()">
-          <clr-icon shape="line-chart"></clr-icon>
-          Go to Details
-        </p>
-
+        <label class="if-title clickable" (click)="goToDetails()">{{asset.name}}</label>
+        <p class="description clickable" (click)="goToDetails()"> {{asset.description}}</p>
     </div>
     <div class="card-img">
-        <img src="assets/img/{{asset.imageKey}}">
+        <img class="clickable" src="assets/img/{{asset.imageKey}}" alt="image of asset" (click)="goToDetails()">
     </div>
     <div class="card-block">
         <div class="card-title">
-          <app-status [asset]="asset" [showInline]="false"></app-status>
+          <app-status class="clickable" [asset]="asset" [showInline]="false" (click)="goToDetails()"></app-status>
         </div>
-      <div class="table-wrapper">
-        <table class="table table-noborder">
-            <tbody>
-                <tr>
-                    <td class="left label">Description</td>
-                    <td class="value">{{asset.description}}</td>
-                </tr>
-                <tr>
-                    <td class="left label">Control System Type </td>
-                    <td class="value">{{asset.controlSystemType}}</td>
-                </tr>
-                <tr>
-                    <td class="left label">Gateway Connectivity</td>
-                    <td class="value">{{asset.gatewayConnectivity}}</td>
-                </tr>
-                <tr *ngFor="let field of mergedFields$ | async" >
-                  <td class="left label">{{field.description}}</td>
-                  <td class="value">{{ field.value | precision:field.type:field.accuracy }} <span>{{field.unit}}</span></td>
-                </tr>
-            </tbody>
+        <table class="table-wrapper table-noborder">
+          <tbody>
+              <tr>
+                  <td class="card-label">Description</td>
+                  <td class="card-value">{{asset.description}}</td>
+              </tr>
+              <tr>
+                  <td class="card-label">Control System Type</td>
+                  <td class="card-value">{{asset.controlSystemType}}</td>
+              </tr>
+              <tr>
+                  <td class="card-label">Gateway Connectivity</td>
+                  <td class="card-value">{{asset.gatewayConnectivity}}</td>
+              </tr>
+              <tr *ngFor="let field of mergedFields$ | async">
+                <td class="card-label">{{ field.description }}</td>
+                <td class="card-value">{{ formatValue(field.value, field.unit) | precision:field.type:field.accuracy }} <span>{{field.unit}}</span></td>
+              </tr>
+          </tbody>
         </table>
-      </div>
     </div>
   <!--TODO: progress bar should be integrated later -->
 <!--    <div class="card-footer clr-row" *ngIf="progress$ | async as progress; else ShowValueZero">

@@ -21,6 +21,7 @@ import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
+import { FieldDetails } from '../../../../store/field-details/field-details.model';
 
 @Component({
   selector: 'app-assets-grid-page',
@@ -33,6 +34,7 @@ export class AssetsGridPageComponent implements OnInit, OnDestroy {
   rooms$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   assetsWithFields$: Observable<AssetWithFields[]>;
+  commonFields: FieldDetails[] = [];
 
   constructor(
     private assetQuery: AssetQuery,
@@ -46,8 +48,21 @@ export class AssetsGridPageComponent implements OnInit, OnDestroy {
     this.rooms$ = this.factoryResolver.rooms$;
     this.assets$ = this.factoryResolver.assets$;
     this.assetsWithFields$ = this.factoryResolver.assetsWithFields$;
+
+    this.assetsWithFields$.subscribe(assetsWithFields => this.updateCommonFields(assetsWithFields));
   }
 
   ngOnDestroy() {
+  }
+
+  private updateCommonFields(assetsWithFields: AssetWithFields[]): void {
+    this.commonFields = [];
+    if (assetsWithFields && assetsWithFields.length > 0) {
+      this.commonFields = assetsWithFields[0].fields;
+      assetsWithFields.forEach(assetWithFields => {
+        this.commonFields = this.commonFields
+          .filter(commonField => assetWithFields.fields.some(assetField => commonField.description === assetField.description));
+      });
+    }
   }
 }
