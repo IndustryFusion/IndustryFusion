@@ -48,16 +48,10 @@ export class UserManagementService {
   public getUserProfile(): Promise<KeycloakProfile> {
     this.keycloakService.loadUserProfile().then(x =>     console.log(x));
     return this.keycloakService.loadUserProfile();
-
-   /* this.keycloakService.isLoggedIn().then(isLoggedIn => {
-      if (isLoggedIn) {
-      }
-    });
-    return Promise.reject('user is not logged in');*/
   }
 
   public navigateToAdminConsoleInNewTab(): void {
-    const url = this.router.serializeUrl(this.router.createUrlTree([environment.keycloakConfig.url, 'admin']));
+    const url = this.router.serializeUrl(this.router.createUrlTree([environment.keycloakConfig.url, 'realms', 'OISP', 'account']));
     window.open(url.slice(1), '_blank');
   }
 }
