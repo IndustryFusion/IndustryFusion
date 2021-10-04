@@ -22,6 +22,7 @@ import { DeviceComponent } from '../../../../store/oisp/oisp-device/oisp-device.
 import { OispService } from '../../../../services/oisp.service';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { PointWithId } from '../../../../services/oisp.model';
+import { FieldWidgetType } from '../../../../store/field/field.model';
 
 @Component({
   selector: 'app-metrics-board',
@@ -31,9 +32,11 @@ import { PointWithId } from '../../../../services/oisp.model';
 export class MetricsBoardComponent implements OnInit {
   fieldDetails: FieldDetails[];
   metricsDetailMap: Map<string, MetricsDetail> = new Map();
-  private asset: FactoryAssetDetailsWithFields;
+  asset: FactoryAssetDetailsWithFields;
   isLoaded = false;
   metricsDetails: MetricsDetail[] = [];
+
+  WidgetType = FieldWidgetType;
 
   constructor(factoryComposedQuery: FactoryComposedQuery,
               fieldDetailsQuery: FieldDetailsQuery,
