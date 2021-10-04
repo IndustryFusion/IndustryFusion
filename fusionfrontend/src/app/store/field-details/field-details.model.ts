@@ -15,6 +15,7 @@
 
 import { BaseEntity } from '../baseentity.model';
 import { ID } from '@datorama/akita';
+import { FieldWidgetType } from '../field/field.model';
 
 // Data come from entities field_instance, field_target and field
 export class FieldDetails extends BaseEntity {
@@ -29,6 +30,7 @@ export class FieldDetails extends BaseEntity {
   accuracy: number;
   value: string;
   quantityDataType: QuantityDataType;
+  widgetType: FieldWidgetType;
 }
 
 export enum FieldType {

@@ -16,9 +16,11 @@
 package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldDetailsDto;
+import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.enums.FieldType;
+import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import org.springframework.stereotype.Component;
 
@@ -34,18 +36,22 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
         }
         FieldType fieldType = null;
         Boolean mandatory = null;
-        String unit = null;
+        String unitSymbol = null;
         Double accuracy = null;
         QuantityDataType dataType = null;
+        FieldWidgetType widgetType = null;
         if (entity.getFieldSource() != null) {
             FieldTarget fieldTarget = entity.getFieldSource().getFieldTarget();
             if (fieldTarget != null) {
                 fieldType = fieldTarget.getFieldType();
                 mandatory = fieldTarget.getMandatory();
-                if (fieldTarget.getField() != null) {
-                    unit = fieldTarget.getField().getUnit().getSymbol();
-                    accuracy = fieldTarget.getField().getAccuracy();
-                    dataType = fieldTarget.getField().getUnit().getQuantityType().getDataType();
+
+                Field field = fieldTarget.getField();
+                if (field != null) {
+                    accuracy = field.getAccuracy();
+                    widgetType = field.getWidgetType();
+                    unitSymbol = field.getUnit().getSymbol();
+                    dataType = field.getUnit().getQuantityType().getDataType();
                 }
             }
         }
@@ -59,10 +65,11 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .type("type not implemented")
-                .unit(unit)
+                .unit(unitSymbol)
                 .accuracy(accuracy)
                 .value(entity.getValue())
                 .quantityDataType(dataType)
+                .widgetType(widgetType)
                 .build();
     }
 

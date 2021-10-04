@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.fusion.fusionbackend.model.enums.FieldType;
+import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,6 +39,7 @@ public class FieldDetailsDto {
     private Double accuracy;
     private String value;
     private QuantityDataType quantityDataType;
+    private FieldWidgetType widgetType;
 
     @JsonCreator
     public FieldDetailsDto() {
