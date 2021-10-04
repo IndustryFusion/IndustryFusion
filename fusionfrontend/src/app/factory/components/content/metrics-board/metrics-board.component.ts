@@ -23,6 +23,7 @@ import { OispService } from '../../../../services/oisp.service';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { PointWithId } from '../../../../services/oisp.model';
 import { FieldWidgetType } from '../../../../store/field/field.model';
+import { AssetMaintenanceUtils } from '../../../util/asset-maintenance-utils';
 
 @Component({
   selector: 'app-metrics-board',
@@ -37,6 +38,7 @@ export class MetricsBoardComponent implements OnInit {
   metricsDetails: MetricsDetail[] = [];
 
   WidgetType = FieldWidgetType;
+  maintenanceUtils = AssetMaintenanceUtils;
 
   constructor(factoryComposedQuery: FactoryComposedQuery,
               fieldDetailsQuery: FieldDetailsQuery,
@@ -89,6 +91,11 @@ export class MetricsBoardComponent implements OnInit {
         this.metricsDetailMap = new Map(this.metricsDetailMap);
       }
       this.metricsDetails = [...this.metricsDetailMap.values()];
+      this.asset.fields = [...this.metricsDetailMap.values()].map(metric => {
+        const fieldDetail: FieldDetails = { ...metric.fieldDetail};
+        fieldDetail.value = String(metric.latestValue);
+        return fieldDetail;
+      });
     });
   }
 }

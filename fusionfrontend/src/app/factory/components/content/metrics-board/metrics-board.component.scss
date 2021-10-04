@@ -36,38 +36,46 @@
       border: 0;
       margin: 25px 50px;
 
-      div {
+      .progress-bar-container {
+        display: block !important;
+      }
+
+      .metric-value-container {
         display: flex;
         align-self: center;
+      }
 
-        .metric-title {
-          text-align: left;
-          font-size: $medium-font-size;
-          line-height: $medium-line-height;
-          letter-spacing: 0;
-          color: $regular-grey;
-        }
+      .metric-title {
+        text-align: left;
+        font-size: $medium-font-size;
+        line-height: $medium-line-height;
+        letter-spacing: 0;
+        color: $regular-grey;
+      }
 
-        .metric-value {
-          text-align: left;
-          font-size: 42px;
-          line-height: 53px;
-          font-weight: bold;
-          letter-spacing: 0;
-          color: $basic-black;
-        }
+      .metric-value {
+        text-align: left;
+        font-size: 42px;
+        line-height: 53px;
+        font-weight: bold;
+        letter-spacing: 0;
+        color: $basic-black;
+      }
 
-        .metric-unit {
-          text-align: left;
-          font-size: $even-bigger-font-size;
-          line-height: $even-bigger-line-height;
-          letter-spacing: 0;
-          color: $inactive-infotext;
+      .metric-unit {
+        text-align: left;
+        font-size: $even-bigger-font-size;
+        line-height: $even-bigger-line-height;
+        letter-spacing: 0;
+        color: $inactive-infotext;
 
-          align-self: center;
-          padding-left: 0.5rem;
-        }
+        align-self: center;
+        padding-left: 0.5rem;
       }
     }
   }
+}
+
+:host ::ng-deep .maintenance-value {
+  padding-top: 8px !important;
 }
