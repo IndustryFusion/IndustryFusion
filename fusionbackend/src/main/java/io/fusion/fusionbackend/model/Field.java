@@ -16,12 +16,15 @@
 package io.fusion.fusionbackend.model;
 
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
+import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,8 +32,6 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
 
 @Entity
 @NamedEntityGraph(name = "Field.allChildrenDeep",
@@ -58,6 +59,9 @@ public class Field extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private FieldThresholdType thresholdType;
 
+    @Enumerated(EnumType.STRING)
+    private FieldWidgetType widgetType;
+
     public void copyFrom(final Field sourceField) {
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
@@ -79,6 +83,9 @@ public class Field extends BaseEntity {
         }
         if (sourceField.getThresholdType() != null) {
             setThresholdType(sourceField.getThresholdType());
+        }
+        if (sourceField.getWidgetType() != null) {
+            setWidgetType(sourceField.getWidgetType());
         }
     }
 }
