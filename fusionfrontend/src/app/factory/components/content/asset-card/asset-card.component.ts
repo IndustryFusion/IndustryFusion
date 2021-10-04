@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Status } from 'src/app/factory/models/status.model';
@@ -31,7 +31,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./asset-card.component.scss']
 })
 
-export class AssetCardComponent implements OnInit {
+export class AssetCardComponent implements OnInit, OnChanges {
   maxProgress = 1500;
 
   @Input()
@@ -40,7 +40,11 @@ export class AssetCardComponent implements OnInit {
   @Input()
   commonFields: FieldDetails[];
 
-  mergedFields$: Observable<FieldDetails[]>;
+  @Input()
+  isCommonFieldsUsed: boolean;
+
+  currentMergedFields$: Observable<FieldDetails[]>;
+  allMergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
 
   constructor(
@@ -51,18 +55,32 @@ export class AssetCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
-    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.mergedFields$, this.asset);
-    this.mergedFields$ = this.getMergedFieldsIntersectedWithCommonFields();
+    this.allMergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
+    this.updateMergedFields();
+    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.currentMergedFields$, this.asset);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.isCommonFieldsUsed && this.currentMergedFields$) {
+      this.updateMergedFields();
+    }
+  }
+
+  private updateMergedFields() {
+    this.currentMergedFields$ = this.getMergedFieldsIntersectedWithCommonFields();
   }
 
   private getMergedFieldsIntersectedWithCommonFields(): Observable<FieldDetails[]> {
-    return this.mergedFields$.pipe(
-      map(fields => {
-        const descriptionsOfCommonFields: string[] = this.commonFields.map(value => value.description);
-        return fields.filter(field => descriptionsOfCommonFields.includes(field.description));
-      })
-    );
+    if (this.isCommonFieldsUsed) {
+      return this.allMergedFields$.pipe(
+        map(fields => {
+          const descriptionsOfCommonFields: string[] = this.commonFields.map(value => value.description);
+          return fields.filter(field => descriptionsOfCommonFields.includes(field.description));
+        })
+      );
+    } else {
+      return this.allMergedFields$;
+    }
   }
 
   calculateMin(progress: number): number {

@@ -32,3 +32,22 @@
   display: flex;
   justify-content: center;
 }
+
+.header-line {
+  background: $light-grey;
+  padding: 30px 80px;
+  margin: 0 !important;
+
+  .checkbox {
+    display: flex;
+
+    .if-label {
+      align-self: center;
+      margin-left: 8px;
+    }
+  }
+}
+
+h3.table-header {
+  margin-left: 0 !important;
+}

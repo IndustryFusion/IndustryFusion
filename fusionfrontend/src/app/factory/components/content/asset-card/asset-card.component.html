@@ -39,7 +39,7 @@ under the License.
                   <td class="card-label">Gateway Connectivity</td>
                   <td class="card-value">{{asset.gatewayConnectivity}}</td>
               </tr>
-              <tr *ngFor="let field of mergedFields$ | async">
+              <tr *ngFor="let field of (currentMergedFields$ | async)">
                 <td class="card-label">{{ field.description }}</td>
                 <td class="card-value">{{ formatValue(field.value, field.unit) | precision:field.type:field.accuracy }} <span>{{field.unit}}</span></td>
               </tr>
