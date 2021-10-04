@@ -47,7 +47,7 @@ export class MetricsBoardComponent implements OnInit {
 
     factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails().subscribe(asset => {
       this.asset = asset;
-      fieldDetailsQuery.selectFieldsOfAssetMetrics(asset.id).subscribe(fieldDetails => {
+      fieldDetailsQuery.selectMetricFieldsOfAsset(asset.id).subscribe(fieldDetails => {
           if (fieldDetails?.length > 0) {
             this.fieldDetails = fieldDetails;
             fieldDetails.forEach(fieldDetail => {

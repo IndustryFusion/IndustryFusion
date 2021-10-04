@@ -36,3 +36,19 @@ under the License.
       </div>
     </div>
 </div>
+
+
+<!--    Table View for later
+<div class="tables-wrapper">
+    <div class="custom-row-wrapper clr-row clr-justify-content-around">
+      <ng-container *ngFor="let field of assetWithFields.fields">
+        <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
+          <div class="clr-col-md-auto clr-align-self-start">
+            <app-asset-tables [asset]="assetWithFields" [field]="field"
+                              [options]="timeSlotOptions"></app-asset-tables>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+-->

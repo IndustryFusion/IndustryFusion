@@ -32,7 +32,7 @@ export class FieldDetailsQuery extends BaseQueryEntityCached<FieldDetailsState, 
     });
   }
 
-  selectFieldsOfAssetMetrics(assetId: ID): Observable<FieldDetails[]> {
+  selectMetricFieldsOfAsset(assetId: ID): Observable<FieldDetails[]> {
     return this.selectAll({
       filterBy: entity => String(entity.assetId) === String(assetId) && entity.fieldType === FieldType.METRIC
     });
