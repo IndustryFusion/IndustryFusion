@@ -37,6 +37,9 @@ public class AssetType extends BaseEntity {
     private String label;
 
     public void copyFrom(final AssetType sourceAssetType) {
+
+        super.copyFrom(sourceAssetType);
+
         if (sourceAssetType.getDescription() != null) {
             setDescription(sourceAssetType.getDescription());
         }

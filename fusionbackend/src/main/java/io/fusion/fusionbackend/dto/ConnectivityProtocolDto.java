@@ -18,14 +18,16 @@ package io.fusion.fusionbackend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
-public class ConnectivityProtocolDto {
+public class ConnectivityProtocolDto extends BaseEntityDto {
 
-    private Long id;
     private String name;
     private String connectionStringPattern;
 

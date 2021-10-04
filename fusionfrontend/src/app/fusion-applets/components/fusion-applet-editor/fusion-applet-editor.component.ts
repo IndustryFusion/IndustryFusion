@@ -15,8 +15,13 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Rule, RuleResetType, RuleType, } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
-import { RuleStatusUtil } from '../../util/rule-status-util';
+import {
+  Rule,
+  RuleActionType,
+  RuleResetType,
+  RuleStatus,
+  RuleType,
+} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
 import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
@@ -41,7 +46,6 @@ export class FusionAppletEditorComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private oispRuleService: OispRuleService,
     private oispDeviceQuery: OispDeviceQuery,
-    public ruleStatusUtil: RuleStatusUtil,
     private formBuilder: FormBuilder,
     private oispRuleQuery: OispRuleQuery
   ) {
@@ -50,9 +54,17 @@ export class FusionAppletEditorComponent implements OnInit {
     const fusionAppletId = this.activatedRoute.snapshot.paramMap.get('fusionAppletId');
     this.oispRuleQuery.selectEntity(fusionAppletId).subscribe(rule => {
       this.rule = JSON.parse(JSON.stringify(rule));
+      this.emptyMailActionIfInDraftMode();
       this.ruleGroup.patchValue(this.rule);
       this.oispRuleService.setActive(this.rule.id);
     });
+  }
+
+  private emptyMailActionIfInDraftMode() {
+    const isSingleMailAction = this.rule.actions.length === 1 && this.rule.actions[0].type === RuleActionType.mail;
+    if (this.rule.status === RuleStatus.Draft && isSingleMailAction) {
+      this.rule.actions[0].type = null;
+    }
   }
 
   private createRuleGroup() {
@@ -89,7 +101,7 @@ export class FusionAppletEditorComponent implements OnInit {
     this.createPopulation();
     this.oispRuleService.updateRule(this.rule.id, this.rule).subscribe(rule => {
       this.rule = rule;
-      this.router.navigate(['..', 'detail'], { relativeTo: this.activatedRoute });
+      this.router.navigate(['../..', 'detail', this.rule.id], { relativeTo: this.activatedRoute });
     });
   }
 

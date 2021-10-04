@@ -39,6 +39,7 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         }
         return FieldDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
@@ -54,17 +55,11 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         if (entity == null) {
             return null;
         }
-        return FieldDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .label(entity.getLabel())
-                .accuracy(entity.getAccuracy())
-                .value(entity.getValue())
-                .unit(unitMapper.toDto(entity.getUnit(), false))
-                .thresholdType(entity.getThresholdType())
-                .widgetType(entity.getWidgetType())
-                .build();
+
+        FieldDto fieldDto = toDtoShallow(entity);
+        fieldDto.setUnit(unitMapper.toDto(entity.getUnit(), false));
+
+        return fieldDto;
     }
 
     @Override

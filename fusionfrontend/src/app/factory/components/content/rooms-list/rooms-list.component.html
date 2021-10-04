@@ -13,51 +13,44 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="wrapper">
-  <div class="p-grid p-justify-between p-align-center list-header">
-    <div class="title">
-      {{ (rooms == null ? 0 : rooms.length) | i18nPlural: roomMapping }}
-    </div>
-    <app-create-button text="Create Room" class="p-col create-button" (createItem)="showCreateDialog()"></app-create-button>
-  </div>
-
-  <div>
-    <div class="list-container">
-      <p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10" [showCurrentPageReport]="true" [value]="rooms"
-               class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
-        <ng-template pTemplate="header">
-          <tr>
-            <th [style.width.%]="5"></th>
-            <th [style.width.%]="12.5">Room ID</th>
-            <th [style.width.%]="20">Name</th>
-            <th [style.width.%]="12.5">Assets</th>
-            <th [style.width.%]="25">Description</th>
-            <th [style.width.%]="17.5">Factory Site</th>
-            <th [style.width.%]="7.5"></th>
-          </tr>
-        </ng-template>
-
-        <ng-template let-room pTemplate="body">
-          <tr style="cursor: pointer;">
-            <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="5"></td>
-            <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.id}}</td>
-            <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="20">{{room.name}}</td>
-            <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.assetIds.length}}</td>
-            <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25">{{room.description}}</td>
-            <td [routerLink]="getRoomAssetLink(room.id)"
-                [style.width.%]="17.5">{{factorySitesAndRoomsMap.get(room.id)}}</td>
-            <td [style.width.%]="2.5">
-              <div #div class="table-dropdown-menu">
-                <p-menu #menu [appendTo]="div" [model]="menuActions" [popup]="true"></p-menu>
-                <button (click)="menu.toggle($event); setActiveRow(room)" class="table-dropdown-menu-button" icon="pi pi-ellipsis-h" pButton
-                        type="button"></button>
-              </div>
-            </td>
-            <td [style.width.%]="5"></td>
-          </tr>
-        </ng-template>
-
-      </p-table>
-    </div>
-  </div>
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">{{ (rooms == null ? 0 : rooms.length) | i18nPlural: roomMapping }}</h3>
+  <app-create-button text="Create Room" class="create-btn-without-filter" (createItem)="showCreateDialog()"></app-create-button>
 </div>
+
+<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10" [showCurrentPageReport]="true" [value]="rooms"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="5"></th>
+      <th [style.width.%]="12.5">Room ID</th>
+      <th [style.width.%]="20">Name</th>
+      <th [style.width.%]="12.5">Assets</th>
+      <th [style.width.%]="25">Description</th>
+      <th [style.width.%]="17.5">Factory Site</th>
+      <th [style.width.%]="7.5"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template let-room pTemplate="body">
+    <tr style="cursor: pointer;">
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="5"></td>
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.id}}</td>
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="20">{{room.name}}</td>
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.assetIds.length}}</td>
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25">{{room.description}}</td>
+      <td [routerLink]="getRoomAssetLink(room.id)"
+          [style.width.%]="17.5">{{factorySitesAndRoomsMap.get(room.id)}}</td>
+      <td [style.width.%]="2.5" class="table-dropdown-menu-wide" (click)="setActiveRow(room)">
+        <app-item-options-menu [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+                               [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
+                               (assignItem)="showAssignAssetToRoomModal()" (deleteItem)="showDeleteDialog()">
+        </app-item-options-menu>
+      </td>
+      <td [style.width.%]="5"></td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmDialog class="confirm-dialog-style" rejectButtonStyleClass="if-button button-secondary"
+                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>

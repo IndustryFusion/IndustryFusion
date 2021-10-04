@@ -58,6 +58,7 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
 
         return FieldDetailsDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .assetId(EntityDtoMapper.getEntityId(entity.getAsset()))
                 .externalName(entity.getExternalName())
                 .fieldType(fieldType)

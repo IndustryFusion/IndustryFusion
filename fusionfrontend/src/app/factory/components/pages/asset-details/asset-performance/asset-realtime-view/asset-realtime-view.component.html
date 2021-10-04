@@ -1,0 +1,68 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class='asset-details-wrapper'>
+
+  <ng-container *ngIf="asset$ | async as assetWithFields">
+
+    <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
+      <div class="caption">Maintenance</div>
+      <p-selectButton  class="space-right"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="viewModeOptions"
+                       [(ngModel)]="viewMode"
+                       (ngModelChange)="onChangeRoute()"
+      ></p-selectButton>
+    </div>
+
+    <div class="progress-bar-container">
+      <label class="progress-bar-label">Operating Hours till Maintenance</label>
+      <app-maintenance-progressbar [asset]="assetWithFields" [type]="maintenanceUtils.maintenanceHours"
+                                   class="progress-bar"></app-maintenance-progressbar>
+    </div>
+    <div class="progress-bar-container">
+      <label class="progress-bar-label">Days till Maintenance</label>
+      <app-maintenance-progressbar [asset]="assetWithFields" [type]="maintenanceUtils.maintenanceDays"
+                                   class="progress-bar"></app-maintenance-progressbar>
+    </div>
+
+    <div class="tables-wrapper">
+      <div class="custom-row-wrapper clr-row clr-justify-content-around">
+        <ng-container *ngFor="let field of assetWithFields.fields">
+          <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
+            <div class="clr-col-md-auto clr-align-self-start">
+              <app-asset-tables [asset]="assetWithFields" [field]="field"
+                                [options]="timeSlotOptions"></app-asset-tables>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <app-metrics-board ></app-metrics-board>
+
+
+    <!--    <div class="charts-container">
+          <ng-container *ngFor="let field of assetWithFields.fields">
+            <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
+              <app-asset-charts [asset]="assetWithFields" [clickedOk]="currentChoiceConfiguration.clickedOk"
+                                [endDate]="endDate" [field]="field" [maxPointsOptions]="maxPointsOptions"
+                                [options]="timeSlotOptions" [startDate]="startDate"></app-asset-charts>
+            </ng-container>
+          </ng-container>
+        </div>-->
+  </ng-container>
+
+</div>

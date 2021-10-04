@@ -37,10 +37,7 @@ import { FactorySubHeaderComponent } from './components/content/factory-sub-head
 import { PrecisionPipe } from '../pipes/precision.pipe';
 import { StatusComponent } from './components/content/status/status.component';
 import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
-import { AssetsListItemComponent } from './components/content/assets-list/assets-list-item/assets-list-item.component';
-import { AssetsListHeaderComponent } from './components/content/assets-list/assets-list-header/assets-list-header.component';
 import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
-import { ListFilterComponent } from './components/content/assets-list/list-filter/list-filter.component';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
@@ -51,13 +48,11 @@ import { FactorySiteDialogComponent } from './components/content/factory-site-di
 import { IFCommon } from '../common/i-f-common.module';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 // tslint:disable-next-line:max-line-length
-import { FactorySitesListItemComponent } from './components/content/factory-sites/factory-sites-list-item/factory-sites-list-item.component';
-import { FactorySitesListHeaderComponent } from './components/content/factory-sites/factory-sites-list-header/factory-sites-list-header.component';
 import { TableModule } from 'primeng/table';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
 import { AssetDetailsSubHeaderComponent } from './components/content/asset-details/asset-details-sub-header/asset-details-sub-header.component';
-import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetRealtimeViewComponent } from './components/pages/asset-details/asset-performance/asset-realtime-view/asset-realtime-view.component';
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
 import { CardModule } from 'primeng/card';
 import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
@@ -66,6 +61,10 @@ import { AssetAppletsComponent } from './components/pages/asset-details/asset-ap
 import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 import { AccordionModule } from 'primeng/accordion';
+import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { DashboardModule } from '../dashboards/dashboard.module';
 import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
 
 @NgModule({
@@ -75,6 +74,8 @@ import { MetricsBoardComponent } from './components/content/metrics-board/metric
     AssetsGridPageComponent,
     AssetsListPageComponent,
     AssetPerformanceComponent,
+    AssetRealtimeViewComponent,
+    AssetPerformanceViewComponent,
     FactorySitesComponent,
     CompanyInfoComponent,
     AssetsListComponent,
@@ -91,11 +92,6 @@ import { MetricsBoardComponent } from './components/content/metrics-board/metric
     RoomsPageComponent,
     AssetTablesComponent,
     StatusComponent,
-    FactorySitesListHeaderComponent,
-    FactorySitesListItemComponent,
-    AssetsListItemComponent,
-    AssetsListHeaderComponent,
-    ListFilterComponent,
     AssetInstantiationComponent,
     AssetInstantiationStartModalComponent,
     AssetInstantiationDescriptionModalComponent,
@@ -114,17 +110,19 @@ import { MetricsBoardComponent } from './components/content/metrics-board/metric
     AssetNotificationsComponent,
     MetricsBoardComponent
   ],
-    imports: [
-        IFCommon,
-        FactoryRoutingModule,
-        ClarityModule,
-        ChartsModule,
-        ReactiveFormsModule,
-        TableModule,
-        CardModule,
-        FusionAppletsModule,
-        AccordionModule,
-    ],
+  imports: [
+    IFCommon,
+    FactoryRoutingModule,
+    ClarityModule,
+    ChartsModule,
+    ReactiveFormsModule,
+    TableModule,
+    CardModule,
+    FusionAppletsModule,
+    AccordionModule,
+    SelectButtonModule,
+    DashboardModule,
+  ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

@@ -63,6 +63,9 @@ public class Field extends BaseEntity {
     private FieldWidgetType widgetType;
 
     public void copyFrom(final Field sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }

@@ -12,17 +12,76 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+@import 'abstract/variables';
+@import 'base/typography';
 
-@import 'src/app/ecosystem/components/content/base/base-list/base-list.component';
-
-.folder-view {
-  margin-right: 16px;
+.table-selected-items-bar {
+  width: inherit;
+  height: 56px;
+  background-color: $basic-black;
+  color: $basic-white;
+  align-items: center;
+  margin: 0 80px 0 80px;
+  padding: 0 23px;
+  border-radius: 10px;
 }
 
-.notifications-list {
-  margin: 0 80px;
+.table-selected-item {
+  padding: 0 !important;
+  font-size: $medium-font-size;
+  align-self: center;
+}
+
+.table-bar-button {
+  ::ng-deep .p-button {
+    background-color: $basic-black;
+    border: none;
+    &:enabled:hover {
+      background-color: $basic-black !important;
+      color: $basic-white !important;
+    }
+  }
+}
+
+:host ::ng-deep .checkbox-column {
+  visibility: hidden;
+}
+
+#rowElement:hover {
+  .checkbox-column {
+    visibility: visible;
+  }
 }
 
 .notification-state-button {
   margin: 0 8px;
+}
+
+.small-confirm-button {
+  width: 2rem;
+  height: 2rem;
+  border: none !important;
+  box-shadow: none !important;
+  background: $light-grey 0 0 no-repeat padding-box;
+
+  &:hover {
+    background: $hover-grey-border;
+  }
+}
+
+.notification-icons {
+  overflow: initial !important;
+  padding-top: -2px;
+
+  .notification-low {
+    color: $alert-low;
+  }
+
+  .notification-medium {
+    color: $alert-medium;
+  }
+
+  .notification-high {
+    color: $alert-high;
+  }
 }

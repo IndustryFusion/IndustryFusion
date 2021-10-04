@@ -15,45 +15,16 @@ under the License.
 
 <app-company-info [numUsers]="6" [factorySite]="(factorySite$ | async)" [roomCount]="(rooms$ | async)?.length" [assets]="(assets$ | async)" *ngIf="(factorySite$ | async) != null"></app-company-info>
 
-<div class="clr-row wrapper">
-    <div *ngFor="let asset of assetsWithFields$ | async" class="cards clr-col">
-       <app-asset-card [asset]="asset"></app-asset-card>
-    </div>
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">Asset Card View</h3>
+  <div class="checkbox">
+    <p-checkbox class="checkbox-class" [ngModel]="isCommonFieldsUsed" binary="true" (onChange)="isCommonFieldsUsed = $event.checked"></p-checkbox>
+    <label class="if-label"> Display only matching Metrics </label>
+  </div>
 </div>
 
-<footer>
-    <div class="clr-row clr-justify-content-center clr-break-row">
-        <div class="clr-break-row top-sign">
-            Shared data
-        </div>
-        <div class="clr-col-4 left-field" >
-            <table class="table table-noborder">
-                <tbody>
-                    <tr>
-                        <td class="label">IndustryFusion connects all assets</td>
-                        <!-- <td class="value">Steel</td> -->
-                    </tr>
-                    <tr>
-                        <td class="label">in the SmartFactory to exchange data among the assets.</td>
-                        <!-- <td class="value">1.4301</td> -->
-                    </tr>
-                    <tr>
-                        <!-- <td class="label">Thickness</td> -->
-                        <!-- <td class="value">5 <span>mm</span></td> -->
-                    </tr>
-                    <tr>
-                        <!-- <td class="label">Laser pressure</td> -->
-                        <!-- <td class="value">5 <span>bar</span></td> -->
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="clr-col-1"></div>
-        <div class="clr-col-4 right">
-            <div class="sign">
-                True cross-vendor Interoperability
-                <p>with IndustryFusion</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<div class="p-row wrapper">
+  <div *ngFor="let asset of assetsWithFields$ | async" class="asset-cards p-col">
+    <app-asset-card [asset]="asset" [commonFields]="commonFields" [isCommonFieldsUsed]="isCommonFieldsUsed"></app-asset-card>
+  </div>
+</div>

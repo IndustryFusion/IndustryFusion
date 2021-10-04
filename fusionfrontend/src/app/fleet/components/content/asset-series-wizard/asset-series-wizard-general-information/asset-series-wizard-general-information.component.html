@@ -35,11 +35,17 @@ under the License.
           <input pInputText formControlName="name"
                  placeholder="Asset series name">
         </div>
+
+        <div class="input-div">
+          <label class="if-label">Description</label>
+          <input pInputText formControlName="description"
+                 placeholder="Asset series description">
+        </div>
       </div>
 
       <div id="column-right">
         <i class="if-icon-help"></i>
-        <span class="if-hint" > How will my asset be displayed in a factory?</span>
+        <span class="if-hint"> How will my asset be displayed in a factory?</span>
         <div class="sample-asset-display">
           <div>
             <span class="wizard-icon-title">{{ assetSeriesForm?.get('name')?.value }}</span>

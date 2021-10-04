@@ -47,6 +47,7 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         }
         return FieldSourceDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldTargetId(EntityDtoMapper.getEntityId(entity.getFieldTarget()))
                 .sourceUnitId(EntityDtoMapper.getEntityId(entity.getSourceUnit()))
@@ -65,20 +66,16 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         if (entity == null) {
             return null;
         }
-        return FieldSourceDto.builder()
-                .id(entity.getId())
-                .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
-                .fieldTarget(fieldTargetMapper.toDto(entity.getFieldTarget(), false))
-                .sourceUnit(unitMapper.toDto(entity.getSourceUnit(), false))
-                .sourceSensorLabel(entity.getSourceSensorLabel())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .value(entity.getValue())
-                .register(entity.getRegister())
-                .absoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false))
-                .idealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false))
-                .criticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false))
-                .build();
+
+        FieldSourceDto fieldSourceDto = toDtoShallow(entity);
+
+        fieldSourceDto.setFieldTarget(fieldTargetMapper.toDto(entity.getFieldTarget(), false));
+        fieldSourceDto.setSourceUnit(unitMapper.toDto(entity.getSourceUnit(), false));
+        fieldSourceDto.setAbsoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false));
+        fieldSourceDto.setIdealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false));
+        fieldSourceDto.setCriticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false));
+
+        return fieldSourceDto;
     }
 
     @Override
@@ -96,6 +93,7 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         }
         FieldSource fieldSource = FieldSource.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .sourceSensorLabel(dto.getSourceSensorLabel())
                 .name(dto.getName())
                 .description(dto.getDescription())

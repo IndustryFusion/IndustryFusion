@@ -92,7 +92,7 @@ export class AssetSeriesWizardComponent implements OnInit {
 
     if (this.mode === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
+        .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
     }
   }
 
@@ -104,6 +104,7 @@ export class AssetSeriesWizardComponent implements OnInit {
   private createAssetSeriesFormGroup(): void {
     this.assetSeriesForm = this.formBuilder.group({
       id: [],
+      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator],
       ceCertified: [null, Validators.required],
@@ -111,7 +112,7 @@ export class AssetSeriesWizardComponent implements OnInit {
       handbookUrl: [null, WizardHelper.maxTextLengthValidator],
       videoUrl: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [null, WizardHelper.maxTextLengthValidator],
-      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT}, Validators.required],
       companyId: [null, Validators.required],
     });
 
@@ -152,7 +153,7 @@ export class AssetSeriesWizardComponent implements OnInit {
 
   createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID): void {
     this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
-          .subscribe( assetSeries => this.updateAssetSeries(assetSeries));
+      .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
   }
 
 
@@ -177,7 +178,7 @@ export class AssetSeriesWizardComponent implements OnInit {
     switch (this.step) {
       case AssetSeriesWizardStep.GENERAL_INFORMATION:
         result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0 &&
-                 this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
+          this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
         break;
       case AssetSeriesWizardStep.CONNECTIVITY_SETTINGS:
         result = this.connectivitySettingsValid;
@@ -207,7 +208,7 @@ export class AssetSeriesWizardComponent implements OnInit {
 
     if (this.assetSeries.id) {
       this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
-      () => this.dynamicDialogRef.close()
+        () => this.dynamicDialogRef.close()
       );
     } else {
       this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)

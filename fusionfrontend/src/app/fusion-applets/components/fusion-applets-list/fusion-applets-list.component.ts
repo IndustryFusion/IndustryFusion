@@ -80,11 +80,6 @@ export class FusionAppletsListComponent implements OnInit {
     return result;
   }
 
-  isRouteActive(subroute: string): boolean {
-    const snapshot = this.activatedRoute.snapshot;
-    return snapshot.url.map(segment => segment.path).includes(subroute);
-  }
-
   isActive(status: string): boolean {
     return status === RuleStatus.Active;
   }
@@ -113,7 +108,7 @@ export class FusionAppletsListComponent implements OnInit {
         this.oispRuleService.createRuleDraft(result).subscribe(newRule => {
           this.filteredRules.push(newRule);
           this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
-          this.router.navigate(['fusion-applets', 'detail', newRule.id]);
+          this.router.navigate(['fusion-applets', 'editor', newRule.id]);
         });
       }
     });

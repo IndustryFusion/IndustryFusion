@@ -24,14 +24,10 @@ under the License.
         <span class="status-square offline"></span> <label class="badge-padding">Offline</label>
       </div>
     </div>
-    <div style="position: relative">
-      <button class="filter-btn" (click)="filterpanel.toggle($event)">
-        <fa-icon [icon]="faFilter" class="fa-fw"></fa-icon>
-      </button>
-      <button *ngIf="activeFilterSet.size > 0" (click)="clearAllFilters(); filterpanel.hide()"
-              class="remove-all-filters-btn">
-        <i class="pi pi-times-circle remove-all-filters-btn-icon"></i>
-      </button>
+    <div class="filter-btn-div">
+      <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                        (filteredItems)="filterAssets($event)">
+      </app-table-filter>
     </div>
   </div>
 
@@ -42,12 +38,13 @@ under the License.
     [rows]="10"
     [paginator]="true"
     [showCurrentPageReport]="true"
-    currentPageReportTemplate="{first} to {last} of {totalRecords} Assets"
-  >
+    currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
     <ng-template pTemplate="header">
       <tr>
-        <th [style.width.%]="30" (click)="searchpanel.toggle($event)">Asset
-          <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
+        <th [style.width.%]="30">
+          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                               attributeToBeSearched="name" (searchByName)="searchAssets($event)">
+          </app-table-searchbar>
         </th>
         <th [style.width.%]="15">Asset Type</th>
         <th [style.width.%]="20">Manufacturer</th>
@@ -78,8 +75,8 @@ under the License.
         </td>
         <td [style.width.%]="10">{{rowData.factorySiteName}}</td>
         <td [style.width.%]="25">
-          <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHours"
-                                              [assetStatusHours]="rowData.statusHours">
+          <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHoursOneDay"
+                                              [assetStatusHoursOfDays]="[rowData.statusHoursOneDay]">
           </app-equipment-efficiency-bar-chart>
         </td>
       </tr>
@@ -87,157 +84,3 @@ under the License.
 
   </p-treeTable>
 </div>
-
-<p-overlayPanel #searchpanel [showCloseIcon]="true" class="assetSearchPanel">
-  <ng-template pTemplate>
-    <div class="panel-heading">Search</div>
-    <span class="p-input-icon-left">
-            <fa-icon [icon]="faSearch" class="fa-fw"></fa-icon>
-            <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input">
-        </span>
-    <br>
-    <div class="footer">
-      <button type="button" class="if-button button-primary button-modal"
-              style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"
-              (click)="searchAssets(); searchpanel.hide()">Apply
-      </button>
-    </div>
-  </ng-template>
-</p-overlayPanel>
-
-<p-overlayPanel [dismissable]="false" #filterpanel class="dashboardFilterPanel">
-  <ng-template pTemplate>
-    <div class="panel-heading">Filter</div>
-    <div>
-      <div *ngFor="let activeFilter of activeFilterSet" style="margin-bottom: 10px;">
-        <div *ngIf="activeFilter.filterAttribute === assetType">
-          <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
-                      optionLabel="label"></p-dropdown>
-          <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.assetTypeFilterModal"
-            class="open-filterpanel-btn">
-            <div class="filter-panel-btn-grid">
-              <span
-                class="filter-panel-btn-grid-text">{{ selectedAssetTypes.length | i18nPlural: selectedValueMapping }}</span>
-              <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
-            </div>
-          </button>
-          <button class="remove-filter-btn" (click)="clearSingleFilter(activeFilter)">
-            <i class="pi pi-times remove-filter-btn-icon"></i>
-          </button>
-        </div>
-        <div *ngIf="activeFilter.filterAttribute === manufacturer">
-          <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
-                      optionLabel="label"></p-dropdown>
-          <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.manufacturerFilterModal"
-            class="open-filterpanel-btn">
-            <div class="filter-panel-btn-grid">
-              <span
-                class="filter-panel-btn-grid-text">{{ selectedCompanies.length | i18nPlural: selectedValueMapping }}</span>
-              <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
-            </div>
-          </button>
-          <button class="remove-filter-btn" (click)="clearSingleFilter(activeFilter)">
-            <i class="pi pi-times remove-filter-btn-icon"></i>
-          </button>
-        </div>
-        <div *ngIf="activeFilter.filterAttribute === factory">
-          <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
-                      optionLabel="label"></p-dropdown>
-          <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.factoryFilterModal"
-            class="open-filterpanel-btn">
-            <div class="filter-panel-btn-grid">
-              <span
-                class="filter-panel-btn-grid-text">{{ selectedFactorySites.length | i18nPlural: selectedValueMapping }}</span>
-              <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
-            </div>
-          </button>
-          <button class="remove-filter-btn" (click)="clearSingleFilter(activeFilter)">
-            <i class="pi pi-times remove-filter-btn-icon"></i>
-          </button>
-        </div>
-        <div *ngIf="activeFilter.filterAttribute === maintenanceDue">
-          <p-dropdown [options]="filterOptions" [(ngModel)]="activeFilter.filterAttribute"
-                      optionLabel="label"></p-dropdown>
-          <button
-            (click)="editFilterPanel.toggle($event); dashboardFilterTypeActive = dashboardFilterModalTypes.maintenanceDueFilterModal"
-            class="open-filterpanel-btn">
-            <div class="filter-panel-btn-grid">
-              <span
-                class="filter-panel-btn-grid-text">{{ selectedMaintenanceDue.length | i18nPlural: selectedValueMapping }}</span>
-              <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
-            </div>
-          </button>
-          <button class="remove-filter-btn" (click)="clearSingleFilter(activeFilter)">
-            <i class="pi pi-times remove-filter-btn-icon"></i>
-          </button>
-        </div>
-      </div>
-      <button class="add-btn" (click)="addFilter()" *ngIf="activeFilterSet.size < 4">
-        <i class="pi pi-plus add-btn-icon"></i>
-        Add filter
-      </button>
-    </div>
-  </ng-template>
-</p-overlayPanel>
-
-<p-overlayPanel #editFilterPanel class="editFilterPanel">
-  <ng-template pTemplate>
-    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.assetTypeFilterModal">
-      <div class="panel-heading">Select AssetType</div>
-      <div *ngFor="let assetType of assetTypes">
-        <p-checkbox name="assetTypeValues" value="assetType" [value]="assetType" [(ngModel)]="selectedAssetTypes"
-                    [inputId]="assetType.id"></p-checkbox>
-        <label style="margin-left: 7px;" [for]="assetType.id">{{assetType.description}}</label>
-      </div>
-    </div>
-    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.manufacturerFilterModal">
-      <div class="panel-heading">Select Manufacturer</div>
-      <div *ngFor="let company of companies">
-        <p-checkbox name="companyValues" value="company" [value]="company" [(ngModel)]="selectedCompanies"
-                    [inputId]="company.id"></p-checkbox>
-        <label style="margin-left: 7px;" [for]="company.id">{{company.description}}</label>
-      </div>
-    </div>
-    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.factoryFilterModal">
-      <div class="panel-heading">Select Factory Site</div>
-      <div *ngFor="let factorySite of factorySites">
-        <p-checkbox name="factorySitesValues" value="factorySite" [value]="factorySite"
-                    [(ngModel)]="selectedFactorySites" [inputId]="factorySite.id"></p-checkbox>
-        <label style="margin-left: 7px;" [for]="factorySite.id">{{factorySite.name}}</label>
-      </div>
-    </div>
-    <div *ngIf="dashboardFilterTypeActive == dashboardFilterModalTypes.maintenanceDueFilterModal">
-      <div class="panel-heading">Select Factory Site</div>
-      <div>
-        <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[0] }}"
-                    [(ngModel)]="selectedMaintenanceDue"></p-checkbox>
-        <label style="margin-left: 7px;">{{ maintenanceValues[0] }}</label>
-      </div>
-      <div>
-        <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[1] }}"
-                    [(ngModel)]="selectedMaintenanceDue"></p-checkbox>
-        <label style="margin-left: 7px;">{{ maintenanceValues[1] }}</label>
-      </div>
-      <div>
-        <p-checkbox name="maintenanceDueValues" value="{{ maintenanceValues[2] }}"
-                    [(ngModel)]="selectedMaintenanceDue"></p-checkbox>
-        <label style="margin-left: 7px;">{{ maintenanceValues[2] }}</label>
-      </div>
-    </div>
-
-    <div style="margin-top: 10px;">
-      <button class="if-button button-secondary button-modal clear-filter-btn"
-              (click)="clearSelectFilterValues(); filterAssets();">
-        Clear all
-        <i class="pi pi-times btn-icon"></i>
-      </button>
-      <button class="if-button button-primary button-modal select-filter-btn"
-              (click)="filterAssets(); editFilterPanel.hide()">
-        Select
-      </button>
-    </div>
-  </ng-template>
-</p-overlayPanel>

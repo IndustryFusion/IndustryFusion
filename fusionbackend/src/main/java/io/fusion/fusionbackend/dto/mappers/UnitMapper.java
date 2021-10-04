@@ -43,6 +43,7 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         }
         return UnitDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .label(entity.getLabel())
                 .symbol(entity.getSymbol())
@@ -55,14 +56,12 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         if (entity == null) {
             return null;
         }
-        return UnitDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .label(entity.getLabel())
-                .symbol(entity.getSymbol())
-                .createdDate(entity.getCreatedDate())
-                .quantityType(quantityTypeMapper.toDto(entity.getQuantityType(), false))
-                .build();
+
+        UnitDto unitDto = toDtoShallow(entity);
+
+        unitDto.setQuantityType(quantityTypeMapper.toDto(entity.getQuantityType(), false));
+
+        return unitDto;
     }
 
     @Override
@@ -80,6 +79,7 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         }
         Unit unit = Unit.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .label(dto.getLabel())
                 .symbol(dto.getSymbol())

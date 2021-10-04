@@ -215,6 +215,7 @@ export class AssetWizardComponent implements OnInit {
 
     this.assetForm = this.formBuilder.group({
       id: [],
+      version: [],
       name: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator],
       companyId: [companyId, Validators.required],

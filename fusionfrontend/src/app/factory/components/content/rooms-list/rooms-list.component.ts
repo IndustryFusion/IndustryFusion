@@ -24,7 +24,7 @@ import { CompanyQuery } from 'src/app/store/company/company.query';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset-to-room.component';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute } from '@angular/router';
@@ -33,12 +33,13 @@ import { RoomService } from '../../../../store/room/room.service';
 import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
 import { AssetService } from '../../../../store/asset/asset.service';
 import { RoomQuery } from '../../../../store/room/room.query';
+import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-rooms-list',
   templateUrl: './rooms-list.component.html',
   styleUrls: ['./rooms-list.component.scss'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
 export class RoomsListComponent implements OnInit {
 
@@ -55,7 +56,6 @@ export class RoomsListComponent implements OnInit {
 
   ref: DynamicDialogRef;
   roomForm: FormGroup;
-  menuActions: MenuItem[];
 
   rooms$: Observable<Room[]>;
   rooms: Room[];
@@ -66,6 +66,8 @@ export class RoomsListComponent implements OnInit {
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
 
+  ItemOptionsMenuType = ItemOptionsMenuType;
+
   constructor(private companyQuery: CompanyQuery,
               private roomService: RoomService,
               private assetDetailsService: FactoryAssetDetailsService,
@@ -75,7 +77,8 @@ export class RoomsListComponent implements OnInit {
               private factorySiteQuery: FactorySiteQuery,
               private activatedRoute: ActivatedRoute,
               private assetService: AssetService,
-              private roomQuery: RoomQuery) {
+              private roomQuery: RoomQuery,
+              private confirmationService: ConfirmationService) {
     this.factoryResolver.resolve(this.activatedRoute);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     this.factorySite$ = this.factoryResolver.factorySite$;
@@ -85,28 +88,7 @@ export class RoomsListComponent implements OnInit {
     this.isLoading$ = this.companyQuery.selectLoading();
 
     this.createRoomForm(this.formBuilder);
-    this.initMenuActions();
     this.initObservers();
-  }
-
-  private initMenuActions() {
-    this.menuActions = [
-      {
-        label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => {
-          this.showEditDialog();
-        }
-      },
-      {
-        label: 'Assign Asset to room', icon: 'pi pw-fw pi-sign-in', command: (_) => {
-          this.showAssignAssetToRoomModal();
-        }
-      },
-      {
-        label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => {
-          this.onDeleteClick();
-        }
-      },
-    ];
   }
 
   private initObservers() {
@@ -169,7 +151,7 @@ export class RoomsListComponent implements OnInit {
     });
   }
 
-  private showEditDialog() {
+  showEditDialog() {
     this.createRoomForm(this.formBuilder, this.activeListItem);
     const ref = this.dialogService.open(RoomDialogComponent, {
       data: {
@@ -197,6 +179,7 @@ export class RoomsListComponent implements OnInit {
     const requiredTextValidator = [Validators.required, Validators.minLength(1), Validators.maxLength(255)];
     this.roomForm = formBuilder.group({
       id: [null],
+      version: [],
       description: ['', requiredTextValidator],
       name: ['', requiredTextValidator],
       factorySiteId: [this.factorySiteId ? this.factorySiteId : '', requiredTextValidator],
@@ -208,11 +191,7 @@ export class RoomsListComponent implements OnInit {
     }
   }
 
-  onDeleteClick() {
-    this.deleteRoom(this.activeListItem);
-  }
-
-  private showAssignAssetToRoomModal() {
+  showAssignAssetToRoomModal() {
     this.createRoomForm(this.formBuilder, this.activeListItem);
     const ref = this.dialogService.open(AssignAssetToRoomComponent, {
       data: {
@@ -240,11 +219,6 @@ export class RoomsListComponent implements OnInit {
 
   getRoomAssetLink(roomId: ID) {
     return this.factorySiteSelected ? ['../..', 'rooms', roomId] : [roomId];
-  }
-
-  private deleteRoom(room: Room) {
-    const factorySiteId = this.factorySiteQuery.getActiveId();
-    this.roomService.deleteRoom(this.companyId, factorySiteId, room.id).subscribe();
   }
 
   private editRoom(room: Room) {
@@ -282,5 +256,23 @@ export class RoomsListComponent implements OnInit {
           console.error(error);
         }
       );
+  }
+
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the room ' + this.activeListItem.name + '?',
+      header: 'Delete Room Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteRoom(this.activeListItem);
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  private deleteRoom(room: Room) {
+    const factorySiteId = this.factorySiteQuery.getActiveId();
+    this.roomService.deleteRoom(this.companyId, factorySiteId, room.id).subscribe();
   }
 }

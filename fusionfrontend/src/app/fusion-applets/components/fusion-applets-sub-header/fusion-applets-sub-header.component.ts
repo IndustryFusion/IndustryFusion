@@ -16,6 +16,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { RouteHelpers } from '../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-fusion-applet-sub-header',
@@ -61,20 +62,10 @@ export class FusionAppletsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   private getActiveRouteLastChild() {
-    let route = this.activatedRoute;
-    while (route.firstChild !== null) {
-      route = route.firstChild;
-    }
-    return route;
+    return RouteHelpers.getActiveRouteLastChild(this.activatedRoute);
   }
 
   private getActiveRouteSecondLastChild() {
-    let route = this.activatedRoute;
-    let prevRoute = route;
-    while (route.firstChild !== null) {
-      prevRoute = route;
-      route = route.firstChild;
-    }
-    return prevRoute;
+    return RouteHelpers.getActiveRouteSecondLastChild(this.activatedRoute);
   }
 }

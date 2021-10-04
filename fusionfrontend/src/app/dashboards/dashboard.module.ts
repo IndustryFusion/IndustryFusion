@@ -31,14 +31,14 @@ import { IFCommon } from '../common/i-f-common.module';
 import { MaintenanceAssetSortPipe } from '../pipes/maintenance-asset-sort.pipe';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
 import { EquipmentEfficiencyListComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-list.component';
-import { EquipmentEfficiencyBarChartComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
+import { EquipmentEfficiencyBarChartComponent } from '../components/content/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { CalendarModule } from 'primeng/calendar';
 import { ChartModule } from 'primeng/chart';
 import { TreeTableModule } from 'primeng/treetable';
 import { TreeModule } from 'primeng/tree';
 import { EquipmentEfficiencyOverviewComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview.component';
 import { EquipmentEfficiencyOverviewRealtimeStatusComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview-realtime-status/equipment-efficiency-overview-realtime-status.component';
-import { EquipmentEfficiencyOverviewDonutChartComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview-donut-chart/equipment-efficiency-overview-donut-chart.component';
+import { EquipmentEfficiencyOverviewDonutChartComponent } from '../components/content/equipment-efficiency-overview-donut-chart/equipment-efficiency-overview-donut-chart.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +74,9 @@ import { EquipmentEfficiencyOverviewDonutChartComponent } from './components/con
   ],
   exports: [
     DashboardSubHeaderComponent,
+    EquipmentEfficiencyOverviewRealtimeStatusComponent,
+    EquipmentEfficiencyOverviewDonutChartComponent,
+    EquipmentEfficiencyBarChartComponent,
   ]
 })
 export class DashboardModule {
