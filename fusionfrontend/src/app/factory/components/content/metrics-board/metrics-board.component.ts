@@ -40,7 +40,7 @@ export class MetricsBoardComponent implements OnInit {
               private oispDeviceQuery: OispDeviceQuery,
               public oispService: OispService) {
 
-    factoryComposedQuery.selectActiveAssetsWithFieldInstanceDetails().subscribe(asset => {
+    factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails().subscribe(asset => {
       this.asset = asset;
       fieldDetailsQuery.selectFieldsOfAssetMetrics(asset.id).subscribe(fieldDetails => {
           if (fieldDetails?.length > 0) {

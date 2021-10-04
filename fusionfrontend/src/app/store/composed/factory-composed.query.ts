@@ -107,7 +107,7 @@ export class FactoryComposedQuery {
     );
   }
 
-  selectActiveAssetsWithFieldInstanceDetails(): Observable<FactoryAssetDetailsWithFields> {
+  selectActiveAssetWithFieldInstanceDetails(): Observable<FactoryAssetDetailsWithFields> {
     return combineQueries([
       this.factoryAssetDetailsQuery.waitForActive(),
       this.fieldDetailsQuery.selectAll()

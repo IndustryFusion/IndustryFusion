@@ -16,8 +16,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
-import {AssetQuery} from "../store/asset/asset.query";
-import {FieldDetailsService} from "../store/field-details/field-details.service";
+import { AssetQuery } from '../store/asset/asset.query';
+import { FieldDetailsService } from '../store/field-details/field-details.service';
 
 @Injectable({ providedIn: 'root' })
 export class FieldInstanceResolver implements Resolve<any>{

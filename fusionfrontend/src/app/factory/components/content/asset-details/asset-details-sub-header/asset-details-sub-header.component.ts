@@ -49,7 +49,7 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   updateAsset() {
     this.assetId = this.factoryAssetDetailsQuery.getActiveId();
-    this.factoryComposedQuery.selectActiveAssetsWithFieldInstanceDetails().subscribe(asset => {
+    this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails().subscribe(asset => {
       this.asset = asset;
       this.hasSubsystems = asset.subsystemIds?.length > 0;
     });

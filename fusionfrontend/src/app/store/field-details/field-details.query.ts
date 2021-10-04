@@ -13,12 +13,12 @@
  * under the License.
  */
 
-import {Injectable} from '@angular/core';
-import {ID} from '@datorama/akita';
-import {Observable} from 'rxjs';
-import {BaseQueryEntityCached} from '../basequerycached';
-import {FieldDetails, FieldType} from './field-details.model';
-import {FieldDetailsState, FieldDetailsStore} from './field-details.store';
+import { Injectable } from '@angular/core';
+import { ID } from '@datorama/akita';
+import { Observable } from 'rxjs';
+import { BaseQueryEntityCached } from '../basequerycached';
+import { FieldDetails, FieldType } from './field-details.model';
+import { FieldDetailsState, FieldDetailsStore } from './field-details.store';
 
 @Injectable({ providedIn: 'root' })
 export class FieldDetailsQuery extends BaseQueryEntityCached<FieldDetailsState, FieldDetails> {
