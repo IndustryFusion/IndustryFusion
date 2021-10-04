@@ -17,7 +17,13 @@ under the License.
     <div *ngFor="let metric of metricsDetails" class="performance-widget">
       <div class="metric-container">
         <label class="metric-title"> {{metric.fieldDetail.name}} </label>
-        <div> <label class="metric-value">{{metric.latestValue}}</label>  <label class="metric-unit">{{metric.fieldDetail.unit}}</label> </div>
+        <div *ngIf="metric.latestValue != null">
+          <label class="metric-value">{{metric.latestValue}}</label>
+          <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
+        </div>
+        <div *ngIf="metric.latestValue == null">
+          <label class="metric-value">n.a.</label>
+        </div>
       </div>
     </div>
 </div>
