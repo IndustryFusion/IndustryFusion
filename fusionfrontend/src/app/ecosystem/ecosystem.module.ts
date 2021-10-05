@@ -35,8 +35,6 @@ import { FieldListComponent } from './components/content/field-list/field-list.c
 import { FieldListHeaderComponent } from './components/content/field-list-header/field-list-header.component';
 import { FieldListItemComponent } from './components/content/field-list-item/field-list-item.component';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
-import { QuantityTypeListHeaderComponent } from './components/content/quantity-type-list-header/quantity-type-list-header.component';
-import { QuantityTypeListItemComponent } from './components/content/quantity-type-list-item/quantity-type-list-item.component';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
 import { UnitListHeaderComponent } from './components/content/unit-list-header/unit-list-header.component';
 import { UnitListItemComponent } from './components/content/unit-list-item/unit-list-item.component';
@@ -93,8 +91,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     FieldListHeaderComponent,
     FieldListItemComponent,
     QuantityTypeListComponent,
-    QuantityTypeListHeaderComponent,
-    QuantityTypeListItemComponent,
     UnitListComponent,
     UnitListHeaderComponent,
     UnitListItemComponent,
