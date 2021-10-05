@@ -320,7 +320,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     if (points && isNoStrictMinMax) {
       const minValueOfData = Math.min.apply(Math, points.map(point => point.value));
       const maxValueOfData = Math.max.apply(Math, points.map(point => point.value));
-      const space = 1;
+      const space = Math.max(1, (maxValueOfData - minValueOfData) / 4);
       minMax = { min: minValueOfData - space, max: maxValueOfData + space };
     }
 
