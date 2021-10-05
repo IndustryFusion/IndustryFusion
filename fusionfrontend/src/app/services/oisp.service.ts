@@ -52,7 +52,7 @@ export class OispService {
     private keycloakService: KeycloakService) {
   }
 
-  getUser(): Observable<OISPUser[]> {
+  getUsers(): Observable<OISPUser[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
     return this.http.get<OISPUser[]>(url, this.httpOptions);
   }

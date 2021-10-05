@@ -35,8 +35,7 @@ under the License.
       <th [style.width.%]="15" pSortableColumn="countryId">Country
         <p-sortIcon field="countryId"></p-sortIcon>
       </th>
-      <th [style.width.%]="7">Assets</th>
-      <th [style.width.%]="7">Users</th>
+      <th [style.width.%]="14">Assets</th>
       <th [style.width.%]="10"></th>
     </tr>
   </ng-template>
@@ -49,8 +48,7 @@ under the License.
       <td [style.width.%]="10" [routerLink]="factorySite.id">{{ factorySite.zip }}</td>
       <td [style.width.%]="20" [routerLink]="factorySite.id">{{ factorySite.city }}</td>
       <td [style.width.%]="15" [routerLink]="factorySite.id">{{ factorySite.country.name }}</td>
-      <td [style.width.%]="7" [routerLink]="factorySite.id">{{ factorySite.assetCount }}</td>
-      <td [style.width.%]="7" [routerLink]="factorySite.id">41</td>
+      <td [style.width.%]="14" [routerLink]="factorySite.id">{{ factorySite.assetCount }}</td>
       <td [style.width.%]="5" (click)="setActiveRow(factorySite)">
         <app-item-options-menu (editItem)="showEditDialog()"  (deleteItem)="showDeleteDialog()"></app-item-options-menu>
       </td>
@@ -61,4 +59,3 @@ under the License.
 
 <p-confirmDialog class="confirm-dialog-style" rejectButtonStyleClass="if-button button-secondary"
                  acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
-
