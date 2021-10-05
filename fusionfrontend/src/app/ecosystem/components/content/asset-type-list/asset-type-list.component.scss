@@ -12,16 +12,3 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-@import 'abstract/variables';
-@import 'base/typography';
-
-:host ::ng-deep .checkbox-column {
-  visibility: hidden;
-}
-
-#rowElement:hover {
-  .checkbox-column {
-    visibility: visible;
-  }
-}

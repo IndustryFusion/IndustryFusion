@@ -29,7 +29,6 @@ import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
-import { TableSelectedItemsBarType } from '../../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
 import { ConfirmationService } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../../components/ui/table-filter/filter-options';
 import { Observable } from 'rxjs';
@@ -63,11 +62,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   filteredAssetTypeTemplates: AssetTypeTemplate[];
   searchedAssetTypeTemplates: AssetTypeTemplate[];
 
-  selectedAssetTypeTemplates: AssetTypeTemplate[] = [];
   activeListItem: AssetTypeTemplate;
 
   public menuType: ItemOptionsMenuType[];
-  TableSelectedItemsBarType = TableSelectedItemsBarType;
 
 
   private updateWizardRef: DynamicDialogRef;
@@ -188,9 +185,4 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   deleteAssetTypeTemplate() {
   }
-
-  deslectAssetTypeTemplates() {
-    this.selectedAssetTypeTemplates = [];
-  }
-
 }

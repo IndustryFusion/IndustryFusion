@@ -24,7 +24,6 @@ import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { ConfirmationService } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { Observable } from 'rxjs';
-import { TableSelectedItemsBarType } from '../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
 
 @Component({
   selector: 'app-asset-type-list',
@@ -46,7 +45,6 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
       other: '# Asset type templates selected'
     };
 
-  selectedAssetTypes: AssetTypeDetails[] = [];
   activeListItem: AssetTypeDetails;
   assetTypes: AssetType[];
   assetTypes$: Observable<AssetType[]>;
@@ -55,7 +53,6 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
   filteredAssetTypes: AssetType[];
   searchedAssetTypes: AssetType[];
 
-  TableSelectedItemsBarType = TableSelectedItemsBarType;
 
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset type templates', attributeToBeFiltered: 'templateCount' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset series', attributeToBeFiltered: 'assetSeriesCount' },
@@ -148,10 +145,5 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
   }
 
   deleteAssetType() {
-
-  }
-
-  deslectAssetTypes() {
-    this.selectedAssetTypes = [];
   }
 }

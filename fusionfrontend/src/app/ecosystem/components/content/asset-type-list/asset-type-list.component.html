@@ -27,16 +27,7 @@ under the License.
   </div>
 </div>
 
-<app-table-selected-items-bar
-  [selectedItems]="selectedAssetTypes"
-  [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT, TableSelectedItemsBarType.DELETE]"
-  [itemType]="'Asset Type'"
-  (deselectAllItems)="deslectAssetTypes()"
-  (editItem)="showEditDialog()"
-  (deleteItem)="showDeleteDialog()">
-</app-table-selected-items-bar>
-
-<p-table [(selection)]="selectedAssetTypes" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
+<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
          [showCurrentPageReport]="true" [value]="displayedAssetTypes" [rowHover]="true"
          class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
   <ng-template pTemplate="header">
@@ -61,10 +52,8 @@ under the License.
   </ng-template>
 
   <ng-template let-assetType pTemplate="body">
-    <tr class="p-selectable-row" id="rowElement" style="cursor: pointer;">
-      <td class="checkbox-td" [style.width.%]="5">
-        <p-tableCheckbox class="checkbox-column table-checkbox" [value]="assetType"></p-tableCheckbox>
-      </td>
+    <tr class="p-selectable-row" style="cursor: pointer;">
+      <td [style.width.%]="5"></td>
       <td [style.width.%]="30" [routerLink]="assetType.id" class="table-bold-font">{{ assetType.name }}</td>
       <td [style.width.%]="20" [routerLink]="assetType.id">{{ assetType.templateCount }}</td>
       <td [style.width.%]="20" [routerLink]="assetType.id">{{ assetType.assetSeriesCount }}</td>

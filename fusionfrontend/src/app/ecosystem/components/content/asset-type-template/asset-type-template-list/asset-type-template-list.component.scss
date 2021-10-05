@@ -13,13 +13,3 @@
  * under the License.
  */
 
-
-:host ::ng-deep .checkbox-column {
-  visibility: hidden;
-}
-
-#rowElement:hover {
-  .checkbox-column {
-    visibility: visible;
-  }
-}
