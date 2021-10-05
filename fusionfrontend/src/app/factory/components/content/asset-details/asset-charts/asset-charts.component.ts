@@ -233,7 +233,13 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
         {
           id: 'y-axis-0',
           position: 'left',
-          ticks: minMaxYAxis
+          ticks: minMaxYAxis,
+          scaleLabel: {
+            display: true,
+            labelString: this.fieldDetails.unit,
+            fontSize: 14,
+            fontStyle: 'bold'
+          }
         },
       ]
     };
