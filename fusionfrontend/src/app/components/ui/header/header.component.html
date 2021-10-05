@@ -55,15 +55,18 @@ under the License.
     <ng-template pTemplate>
       <div class="header">
         <div class="header-info">
-          <div class="if-panel-heading">{{ user.firstName }} {{ user.lastName }}</div>
-          <div class="if-label-small">{{ user.email }}</div>
+          <i class="if-icon-avatar-example"></i>
+          <div class="header-text">
+            <div class="if-panel-heading">{{ user.firstName }} {{ user.lastName }}</div>
+            <div class="if-label-small">{{ user.email }}</div>
+          </div>
         </div>
       </div>
 
       <div class="panel-content">
         <span class="account" (click)="navigateToKeycloakAdmin()">
           <fa-icon [icon]="faUserCircle" class="fa-fw account-icon"></fa-icon>
-          <label class="if-label account-label">My Account</label>
+          <label class="if-label account-label">My Account (Open in Keycloak)</label>
           <i class="if-icon-popout"></i>
         </span>
       </div>

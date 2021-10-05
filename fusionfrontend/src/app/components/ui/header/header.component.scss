@@ -100,6 +100,12 @@ header {
   }
 }
 
+:host ::ng-deep .if-icon-popout {
+  margin-left: 10px;
+  margin-top: -4px;
+  cursor: pointer;
+}
+
 .page-header {
   h1 {
     margin: 0;
@@ -191,7 +197,7 @@ header {
     }
 
     &.user {
-      background-image: url("^assets/img/avatar.png");
+      background-image: url("^assets/icons/avatar-example.svg");
       align-items: center;
       height: 80px;
       width: 80px;
@@ -229,7 +235,16 @@ header {
 
     .header-info {
       padding: 0.571rem 1rem !important;
-      display: block;
+      display: flex;
+
+      .header-text {
+        padding-top: 15px;
+        padding-left: 15px;
+
+        .if-panel-heading {
+          margin-bottom: 0 !important;
+        }
+      }
     }
   }
 
