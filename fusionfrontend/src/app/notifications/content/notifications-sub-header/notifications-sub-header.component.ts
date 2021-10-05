@@ -58,10 +58,6 @@ export class NotificationsSubHeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match('^\/notifications\/cleared+$');
   }
 
-  isDashboard3Active = () => {
-    return false;
-  }
-
   onOpenClick() {
     return this.router.navigate(['/notifications/open']);
   }
