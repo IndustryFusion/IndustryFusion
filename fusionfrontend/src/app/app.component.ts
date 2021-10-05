@@ -14,7 +14,7 @@
  */
 
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { UserQuery } from './store/user/user.query';
 import { User } from './store/user/user.model';
 import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private userQuery: UserQuery,
               private ngZone: NgZone) { }
   loggedUser$: Observable<User>;
-  factorySubTitle$: Observable<string>;
+  factorySubTitle$: Subject<string>;
 
   private intervalHandle: number;
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
