@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Status } from 'src/app/factory/models/status.model';
@@ -23,6 +23,7 @@ import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-card',
@@ -30,13 +31,20 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./asset-card.component.scss']
 })
 
-export class AssetCardComponent implements OnInit, OnDestroy {
+export class AssetCardComponent implements OnInit, OnChanges {
   maxProgress = 1500;
 
   @Input()
   asset: AssetWithFields;
 
-  mergedFields$: Observable<FieldDetails[]>;
+  @Input()
+  commonFields: FieldDetails[];
+
+  @Input()
+  isCommonFieldsUsed: boolean;
+
+  currentMergedFields$: Observable<FieldDetails[]>;
+  allMergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
 
   constructor(
@@ -47,11 +55,32 @@ export class AssetCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
-    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.mergedFields$, this.asset);
+    this.allMergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
+    this.updateMergedFields();
+    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.currentMergedFields$, this.asset);
   }
 
-  ngOnDestroy() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.isCommonFieldsUsed && this.currentMergedFields$) {
+      this.updateMergedFields();
+    }
+  }
+
+  private updateMergedFields() {
+    this.currentMergedFields$ = this.getMergedFieldsIntersectedWithCommonFields();
+  }
+
+  private getMergedFieldsIntersectedWithCommonFields(): Observable<FieldDetails[]> {
+    if (this.isCommonFieldsUsed) {
+      return this.allMergedFields$.pipe(
+        map(fields => {
+          const descriptionsOfCommonFields: string[] = this.commonFields.map(value => value.description);
+          return fields.filter(field => descriptionsOfCommonFields.includes(field.description));
+        })
+      );
+    } else {
+      return this.allMergedFields$;
+    }
   }
 
   calculateMin(progress: number): number {

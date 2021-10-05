@@ -70,7 +70,7 @@ export class StatusService {
   }
 
   getStatusValue(category: string, fields: FieldDetails[]): string {
-    const assetStatusField = fields.filter(field => field.description === 'status')[0];
+    const assetStatusField = fields.filter(field => field.externalName === 'status')[0];
     const assetWarningField = fields.filter(field => field.description === 'Warning')[0];
     const assetErrorField = fields.filter(field => field.description === 'Alarm')[0];
     const assetIdleField = fields.filter(field => field.description === 'Idle')[0];
