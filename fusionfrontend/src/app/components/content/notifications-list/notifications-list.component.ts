@@ -85,7 +85,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.state = this.getCurrentState();
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.periodicallyFetchNotifications();
-    this.initMappings();
+    this.initNameMappings();
     this.displayedNotifications = this.filteredNotifications = this.searchedNotifications = this.allNotifications;
   }
 
@@ -118,6 +118,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     } else {
       this.navigateToSubroute('open');
     }
+    this.initNameMappings();
   }
 
   navigateToSubroute(subroute): Promise<boolean> {
@@ -136,7 +137,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     return route;
   }
 
-  private initMappings(): void {
+  private initNameMappings(): void {
     this.titleMapping = {
       '=0': `No ${this.getStatusName()} Notification`,
       '=1': `# ${this.getStatusName()} Notification`,
