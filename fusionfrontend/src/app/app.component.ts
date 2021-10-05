@@ -15,8 +15,6 @@
 
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserQuery } from './store/user/user.query';
-import { User } from './store/user/user.model';
 import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
@@ -35,10 +33,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private oispAlertResolver: OispAlertResolver,
               private factoryResolver: FactoryResolver,
-              private userQuery: UserQuery,
               private userManagementService: UserManagementService,
               private ngZone: NgZone) { }
-  loggedUser$: Observable<User>; // TODO (jsy): remove
   factorySubTitle$: Observable<string>;
   keycloakUser$: Promise<KeycloakProfile>;
 
@@ -53,7 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
     registerLocaleData(localeDe);
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
     this.keycloakUser$ = this.userManagementService.getUserProfile();
-    this.loggedUser$ = this.userQuery.selectActive();
     if (environment.production) {
       enableAkitaProdMode();
     } else {
