@@ -83,6 +83,13 @@
       display: inline-block;
     }
   }
+
+  .alert-icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    margin-top: 8px;
+  }
 }
 
 :host ::ng-deep .radio-wrapper > .p-selectbutton {

@@ -22,8 +22,8 @@ under the License.
                        optionValue="value"
                        [options]="[{name:'Open', value: notificationStates.OPEN},{name:'Cleared', value: notificationStates.CLEARED}]"
                        [(ngModel)]="state"
-                       (ngModelChange)="onChangeTab()"
-      ></p-selectButton>
+                       (ngModelChange)="onChangeTab()">
+      </p-selectButton>
       <div class="filter-btn-div">
         <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="allNotifications"
                           [position]="['90%', '-450%']" (filteredItems)="filterNotifications($event)">

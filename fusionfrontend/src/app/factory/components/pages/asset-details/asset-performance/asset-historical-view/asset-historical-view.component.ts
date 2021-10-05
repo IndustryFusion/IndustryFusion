@@ -25,6 +25,7 @@ import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-a
 import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
 import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
 import { SelectItem } from 'primeng/api';
+import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -46,6 +47,9 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   endDate: Date = new Date(Date.now());
   minDate: Date;
   maxDate: Date;
+
+  faExclamationCircle = faExclamationCircle;
+  faTimes = faTimes;
 
   maxItemsOptions: SelectItem[];
   maxPoints: number;
@@ -107,10 +111,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   }
 
   onOkClicked(): void {
-    const old = this.currentTimeslot;
-    this.currentTimeslot = undefined;
     this.setOptions('onOkClick', true);
-    this.currentTimeslot = old;
   }
 
   private setOptions(key: string,
