@@ -31,8 +31,6 @@ import { UnitsPageComponent } from './components/pages/units-page/units-page.com
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
 import { ArraySortPipe } from '../pipes/arraysort.pipe';
 import { AssetTypeListComponent } from './components/content/asset-type-list/asset-type-list.component';
-import { AssetTypeListHeaderComponent } from './components/content/asset-type-list-header/asset-type-list-header.component';
-import { AssetTypeListItemComponent } from './components/content/asset-type-list-item/asset-type-list-item.component';
 import { BaseListComponent } from './components/content/base/base-list/base-list.component';
 import { BaseListHeaderComponent } from './components/content/base/base-list-header/base-list-header.component';
 import { BaseListItemComponent } from './components/content/base/base-list-item/base-list-item.component';
@@ -93,8 +91,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     UnitsPageComponent,
     AssetTypesPageComponent,
     AssetTypeListComponent,
-    AssetTypeListHeaderComponent,
-    AssetTypeListItemComponent,
     BaseListComponent,
     BaseListHeaderComponent,
     BaseListItemComponent,

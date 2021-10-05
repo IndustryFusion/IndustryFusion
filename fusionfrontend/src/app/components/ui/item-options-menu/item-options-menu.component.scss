@@ -51,8 +51,9 @@
 
   ::ng-deep .p-menu-overlay {
     top: unset !important;
-    margin-top: 30px !important;
-    margin-left: -80px !important;
+    left: unset !important;
+    margin-top: 20px !important;
+    margin-left: -140px !important;
   }
 
   ::ng-deep .p-menuitem-icon {
