@@ -28,6 +28,7 @@ import { FilterOption, FilterType } from 'src/app/components/ui/table-filter/fil
 import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
 import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../common/utils/route-helpers';
+import { TableSelectedItemsBarType } from '../../ui/table-selected-items-bar/table-selected-items-bar.type';
 
 export enum NotificationState { OPEN, CLEARED}
 
@@ -67,6 +68,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   shouldShowDeleteNotification = false;
   notificationStates = NotificationState;
   notificationSubscription: Subscription;
+
+  TableSelectedItemsBarType = TableSelectedItemsBarType;
 
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Priority', attributeToBeFiltered: 'priority' },

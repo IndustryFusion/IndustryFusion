@@ -15,34 +15,6 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-.table-selected-items-bar {
-  width: inherit;
-  height: 56px;
-  background-color: $basic-black;
-  color: $basic-white;
-  align-items: center;
-  margin: 0 80px 0 80px;
-  padding: 0 23px;
-  border-radius: 10px;
-}
-
-.table-selected-item {
-  padding: 0 !important;
-  font-size: $medium-font-size;
-  align-self: center;
-}
-
-.table-bar-button {
-  ::ng-deep .p-button {
-    background-color: $basic-black;
-    border: none;
-    &:enabled:hover {
-      background-color: $basic-black !important;
-      color: $basic-white !important;
-    }
-  }
-}
-
 :host ::ng-deep .checkbox-column {
   visibility: hidden;
 }

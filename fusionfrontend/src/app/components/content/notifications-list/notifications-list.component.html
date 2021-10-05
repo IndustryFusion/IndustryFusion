@@ -35,26 +35,10 @@ under the License.
     </div>
   </div>
 
-
-  <div class="table-selected-items-bar p-grid p-jc-between" *ngIf="selectedNotifications.length > 0">
-    <div class="table-selected-item p-col-4">
-      <fa-icon [icon]="faCheckCircle" class="check-box-icon fa-fw"></fa-icon>
-      <span class="table-selected-item">{{ selectedNotifications.length | i18nPlural: editBarMapping }}</span>
-    </div>
-
-    <div class="p-col-4 table-selected-item" style="text-align: center">
-      <div class="table-bar-button-div">
-        <p-button class="table-bar-button" icon="pi pi-trash" (click)="closeMultibleNotifications()"></p-button>
-      </div>
-    </div>
-
-    <div class="p-col-4 table-selected-item" style="text-align: end">
-      <p-button class="table-bar-button" (click)="deselectAllNotifications()">
-        <fa-icon [icon]="faTimes" class="fa-fw"></fa-icon>
-        <span>close</span>
-      </p-button>
-    </div>
-  </div>
+  <app-table-selected-items-bar [selectedItems]="selectedNotifications"
+    [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.CLOSENOTIFICATION]" [itemType]="'Notification'"
+    (deselectAllItems)="deselectAllNotifications()" (closeNotification)="closeMultibleNotifications()">
+  </app-table-selected-items-bar>
 
   <p-table [(selection)]="selectedNotifications" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
            [showCurrentPageReport]="true" [value]="displayedNotifications" [rowHover]="true"
