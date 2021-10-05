@@ -19,6 +19,24 @@
 
 .time-interval-selectors {
 
+  .selector-with-points {
+    display: flex;
+
+    .maxpoints {
+      display: flex !important;
+      align-items: center;
+      margin: 8px 0 0;
+
+      .points-label {
+        margin: 0 8px 0 0;
+      }
+
+      .points-dropdown {
+        display: flex;
+      }
+    }
+  }
+
   .choiceOptions {
     margin-top: 1.25rem;
     margin-right: 3rem;
@@ -33,7 +51,7 @@
     margin: 0 3.1rem 0;
   }
 
-  .okButton {
+  .ok-button {
     margin: 1rem 3.1rem;
   }
 
@@ -42,13 +60,13 @@
     margin-top: 1rem;
 
     .maxpoints {
-      margin: 0;
+      margin: 5px 0 0;
 
-      .pointslabel {
+      .points-label {
         margin: 0;
       }
 
-      .pointsdropdown {
+      .points-dropdown {
         display: flex;
       }
     }
@@ -78,7 +96,7 @@
       border: 5px rgba(0, 0, 0, 0.32);
       background-color: inherit;
       color: hsl(198, 0%, 40%);
-      font-size: 12px;
+      font-size: $small-font-size;
       cursor: pointer;
       display: inline-block;
     }
@@ -89,6 +107,37 @@
     background-size: contain;
     vertical-align: middle;
     margin-top: 8px;
+  }
+}
+
+:host ::ng-deep .points-dropdown-inline > .p-dropdown {
+  background-color: transparent !important;
+  border: none !important;
+
+  .p-dropdown-label {
+    color: $basic-black;
+    background-color: transparent !important;
+  }
+
+  .p-dropdown-trigger {
+    background-color: transparent !important;
+    color: $basic-black !important;
+  }
+
+  p-dropdownitem {
+    .p-highlight {
+      background: $highlighted !important;
+      color: $basic-white !important;
+    }
+  }
+
+  &:hover {
+    border: none !important;
+  }
+
+  &:focus, &.p-focus {
+    border: none !important;
+    box-shadow: none !important;
   }
 }
 

@@ -27,16 +27,24 @@ under the License.
   </div>
 
   <div class="time-interval-selectors">
-    <p-selectButton  class="radio-wrapper space-right"
-                     optionLabel="name"
-                     optionValue="value"
-                     [options]="timeSlotOptions"
-                     [(ngModel)]="currentTimeslot"
-                     (ngModelChange)="onTimeslotChanged()">
-    </p-selectButton>
+    <div class="selector-with-points">
+      <p-selectButton  class="radio-wrapper"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="timeSlotOptions"
+                       [(ngModel)]="currentTimeslot"
+                       (ngModelChange)="onTimeslotChanged()">
+      </p-selectButton>
+      <div *ngIf="choiceConfiguration.chooseMaxPointsInline" class="maxpoints">
+        <label class="points-label">Choose max. Datapoints:</label>
+        <p-dropdown class="points-dropdown-inline" [options]="maxItemsOptions" [(ngModel)]="maxPoints"
+                    (ngModelChange)="onOkClicked()">
+        </p-dropdown>
+      </div>
+    </div>
 
     <div class="choiceOptions">
-      <ng-container *ngIf="currentChoiceConfiguration.chooseMaxPoints">
+      <ng-container *ngIf="choiceConfiguration.chooseMaxPoints">
         <div class="alert alert-info" role="alert">
           <div class="alert-items">
             <div class="alert-item static">
@@ -52,19 +60,19 @@ under the License.
         </div>
         <div class="interval-options">
           <div class="maxpoints">
-            <label class="pointslabel">Choose max points</label>
-            <p-dropdown class="pointsdropdown" [options]="maxItemsOptions" [(ngModel)]="maxPoints">
+            <label class="points-label">Choose max. Datapoints</label>
+            <p-dropdown class="points-dropdown" [options]="maxItemsOptions" [(ngModel)]="maxPoints">
             </p-dropdown>
           </div>
           <div class="dater">
-            <ng-container *ngIf="currentChoiceConfiguration.chooseStartDate">
+            <ng-container *ngIf="choiceConfiguration.chooseStartDate">
               <label class="datelabel">Choose start date</label>
               <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
                           [ngModel]="startDate" [maxDate]="maxDate" (ngModelChange)="setMinAndMaxDate($event)"></p-calendar>
             </ng-container>
           </div>
           <div class="dater">
-            <ng-container *ngIf="currentChoiceConfiguration.chooseEndDate">
+            <ng-container *ngIf="choiceConfiguration.chooseEndDate">
               <label class="datelabel">Choose end date</label>
               <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
                           [minDate]="minDate" [maxDate]="maxDate" [ngModel]="endDate"></p-calendar>
@@ -74,7 +82,7 @@ under the License.
       </ng-container>
     </div>
 
-    <ng-container *ngIf="currentChoiceConfiguration.showWarning">
+    <ng-container *ngIf="choiceConfiguration.showWarning">
       <div class="alert alert-warning" role="alert">
         <div class="alert-items">
           <div class="alert-item static">
@@ -94,8 +102,8 @@ under the License.
       </div>
     </ng-container>
 
-    <div class="okButton">
-      <ng-container *ngIf="currentChoiceConfiguration.chooseButton">
+    <div class="ok-button" *ngIf="currentTimeslot === 'customDate'">
+      <ng-container *ngIf="choiceConfiguration.chooseButton">
         <button class="if-button button button-primary" (click)="onOkClicked()">OK</button>
       </ng-container>
     </div>
@@ -118,7 +126,7 @@ under the License.
     <div class="charts-container">
       <ng-container *ngFor="let field of assetWithFields.fields">
         <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
-          <app-asset-charts [asset]="assetWithFields" [clickedOk]="currentChoiceConfiguration.clickedOk"
+          <app-asset-charts [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
                             [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
                             [options]="currentTimeslot" [startDate]="startDate"></app-asset-charts>
         </ng-container>

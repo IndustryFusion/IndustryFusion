@@ -92,7 +92,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.initialized) {
-      if (changes.options) {
+      if (changes.options || changes.maxPoints) {
         switch ( this.options ){
             case 'current':
               this.flushData();
@@ -100,12 +100,17 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
               break;
             case '1hour':
               this.flushData();
+              this.loadHistoricData(this.maxPoints, false, 3600);
               break;
             case '1day':
               this.flushData();
+              this.loadHistoricData(this.maxPoints, false, 86400);
               break;
             case 'customDate':
               this.flushData();
+              if (changes.maxPoints && this.clickedOk) {
+                this.loadHistoricData(this.maxPoints, true);
+              }
               break;
             default:
               break;
@@ -117,12 +122,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       if (changes.clickedOk) {
         if (this.clickedOk) {
           switch ( this.options ) {
-            case '1hour':
-              this.loadHistoricData(this.maxPoints, false, 3600);
-              break;
-            case '1day':
-              this.loadHistoricData(this.maxPoints, false, 86400);
-              break;
             case 'customDate':
               this.loadHistoricData(this.maxPoints, true);
               break;

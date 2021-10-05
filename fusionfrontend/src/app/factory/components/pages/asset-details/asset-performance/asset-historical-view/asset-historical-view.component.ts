@@ -56,14 +56,14 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
   choiceConfigurationMapping:
     { [k: string]: ChoiceConfiguration } = {
-    current: new ChoiceConfiguration(false, false, false, false, false, false),
-    oneTimeSlot: new ChoiceConfiguration(true, false, false, true, false, false),
-    customDate: new ChoiceConfiguration(true, true, false, true, false, false),
-    customDateWithEndDate: new ChoiceConfiguration(true, true, true, true, false, false),
-    onOkClick: new ChoiceConfiguration(false, false, false, false, true, false),
-    onOkClickShowWarning: new ChoiceConfiguration(false, false, false, false, false, true),
+    current: new ChoiceConfiguration(false, false, false, false, false, false, false),
+    oneTimeSlot: new ChoiceConfiguration(false, true, false, false, true, false, false),
+    customDate: new ChoiceConfiguration(true, false, true, false, true, false, false),
+    customDateWithEndDate: new ChoiceConfiguration(true, false, true, true, true, false, false),
+    onOkClick: new ChoiceConfiguration(false, false, false, false, false, true, false),
+    onOkClickShowWarning: new ChoiceConfiguration(false, false, false, false, false, false, true),
   };
-  currentChoiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
+  choiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
 
   private unSubscribe$ = new Subject<void>();
 
@@ -108,35 +108,44 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   onTimeslotChanged(): void {
     const timeslotText = (this.currentTimeslot === 'current' || this.currentTimeslot === 'customDate') ? this.currentTimeslot : 'oneTimeSlot';
     this.setOptions(timeslotText, false);
+
+    if (timeslotText === 'oneTimeSlot') {
+      this.onOkClicked();
+    }
   }
 
   onOkClicked(): void {
+    const prevConfiguration = this.choiceConfiguration;
     this.setOptions('onOkClick', true);
+
+    if (prevConfiguration !== this.choiceConfigurationMapping.current) {
+      this.choiceConfiguration.chooseMaxPointsInline = true;
+    }
   }
 
   private setOptions(key: string,
-                     validateOptions: boolean = false) {
+                     validateOptions: boolean) {
     if (validateOptions) {
       if (!this.maxPoints) {
-        this.currentChoiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
+        this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
         return;
       } else {
         if (this.currentTimeslot === 'customDate') {
           if (!this.startDate || !this.endDate) {
-            this.currentChoiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
+            this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
             return;
           }
         }
       }
     }
-    this.currentChoiceConfiguration = this.choiceConfigurationMapping[key];
+    this.choiceConfiguration = this.choiceConfigurationMapping[key];
   }
 
   resetOptions() {
     if (this.currentTimeslot === 'customDate') {
-      this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDate;
+      this.choiceConfiguration = this.choiceConfigurationMapping.customDate;
     } else {
-      this.currentChoiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
+      this.choiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
     }
   }
 
@@ -144,7 +153,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     this.startDate = startDate;
     this.minDate = startDate;
     this.maxDate = new Date(Date.now());
-    this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
+    this.choiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
   }
 
   hasTypeCategorical(field: FieldDetails): boolean {
@@ -172,6 +181,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
 class ChoiceConfiguration {
   chooseMaxPoints = false;
+  chooseMaxPointsInline = false;
   chooseStartDate = false;
   chooseEndDate = false;
   chooseButton = false;
@@ -179,12 +189,14 @@ class ChoiceConfiguration {
   showWarning = false;
 
   constructor(chooseMaxPoints: boolean,
+              chooseMaxPointsInline: boolean,
               chooseStartDate: boolean,
               chooseEndDate: boolean,
               chooseButton: boolean,
               clickedOk: boolean,
               showWarning: boolean) {
     this.chooseMaxPoints = chooseMaxPoints;
+    this.chooseMaxPointsInline = chooseMaxPointsInline;
     this.chooseStartDate = chooseStartDate;
     this.chooseButton = chooseButton;
     this.clickedOk = clickedOk;
