@@ -57,6 +57,10 @@
   margin: 0 8px;
 }
 
+.space-right {
+  margin-right: 20px;
+}
+
 .small-confirm-button {
   width: 2rem;
   height: 2rem;
@@ -84,4 +88,8 @@
   .notification-high {
     color: $alert-high;
   }
+}
+
+:host ::ng-deep .notifications > .p-selectbutton {
+  width: 8.9rem !important;
 }

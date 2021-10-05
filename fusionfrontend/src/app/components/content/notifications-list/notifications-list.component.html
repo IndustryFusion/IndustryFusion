@@ -16,22 +16,19 @@ under the License.
 <div>
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</h3>
-    <div *ngIf="isInline" class="notification-state-button">
-      <button (click)="changeTab(notificationStates.OPEN)" [disabled]="getCurrentState() == notificationStates.OPEN"
-              class="if-light-button">
-        Open
-      </button>
-    </div>
-    <div *ngIf="isInline" class="notification-state-button">
-      <button (click)="changeTab(notificationStates.CLEARED)" [disabled]="getCurrentState() == notificationStates.CLEARED"
-              class="if-light-button">
-        Cleared
-      </button>
-    </div>
-    <div class="filter-btn-div">
-      <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="allNotifications"
-                        [position]="['90%', '-450%']" (filteredItems)="filterNotifications($event)">
-      </app-table-filter>
+    <div class="p-row p-d-flex p-jc-between">
+      <p-selectButton *ngIf="isInline"  class="notifications on-white-background space-right"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="[{name:'Open', value: notificationStates.OPEN},{name:'Cleared', value: notificationStates.CLEARED}]"
+                       [(ngModel)]="state"
+                       (ngModelChange)="onChangeTab()">
+      </p-selectButton>
+      <div class="filter-btn-div">
+        <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="allNotifications"
+                          [position]="['90%', '-450%']" (filteredItems)="filterNotifications($event)">
+        </app-table-filter>
+      </div>
     </div>
   </div>
 

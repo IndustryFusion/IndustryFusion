@@ -45,8 +45,6 @@ import { ControlLimitSelectorComponent } from './components/fusion-applet-editor
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmationService } from 'primeng/api';
 import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
-import { SelectButtonModule } from 'primeng/selectbutton';
-
 
 
 @NgModule({
@@ -81,7 +79,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     InplaceModule,
     FleetModule,
     InputNumberModule,
-    SelectButtonModule,
   ],
   exports: [
     FusionAppletsSubHeaderComponent,

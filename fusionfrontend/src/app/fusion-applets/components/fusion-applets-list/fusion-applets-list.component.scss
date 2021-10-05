@@ -59,6 +59,6 @@
   }
 }
 
-:host ::ng-deep .p-selectbutton .p-button.p-highlight {
-  background: $dark-white !important;
+:host ::ng-deep .fusion-applet > .p-selectbutton {
+  width: 9.7rem !important;
 }
