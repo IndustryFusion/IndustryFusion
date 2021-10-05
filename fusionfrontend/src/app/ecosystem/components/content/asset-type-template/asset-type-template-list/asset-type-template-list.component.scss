@@ -13,8 +13,13 @@
  * under the License.
  */
 
-@import '../../base/base-list/base-list.component';
 
-.wrapper {
-  margin: 0 80px;
+:host ::ng-deep .checkbox-column {
+  visibility: hidden;
+}
+
+#rowElement:hover {
+  .checkbox-column {
+    visibility: visible;
+  }
 }

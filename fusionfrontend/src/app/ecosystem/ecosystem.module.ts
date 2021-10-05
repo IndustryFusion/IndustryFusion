@@ -19,9 +19,6 @@ import { ClarityModule } from '@clr/angular';
 
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateListHeaderComponent } from './components/content/asset-type-template/asset-type-template-list-header/asset-type-template-list-header.component';
-// tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateListItemComponent } from './components/content/asset-type-template/asset-type-template-list-item/asset-type-template-list-item.component';
 import { AssetTypeTemplateListComponent } from './components/content/asset-type-template/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypeTemplateWizardMainComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
@@ -79,8 +76,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
   declarations: [
     AssetTypeTemplatePageComponent,
     AssetTypeTemplatesPageComponent,
-    AssetTypeTemplateListHeaderComponent,
-    AssetTypeTemplateListItemComponent,
     ArraySortPipe,
     AssetTypeTemplateListComponent,
     AssetTypeTemplateWizardMainComponent,
