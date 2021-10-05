@@ -30,5 +30,4 @@ export enum HomeItemClass {
     ECOSYSTEM = 'ecosystem-manager',
     DASHBOARDS = 'dashboards',
     FUSION_APPLETS = 'fusion-applets',
-    SETTINGS = 'settings',
 }
