@@ -33,7 +33,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
-  field: FieldDetails;
+  fieldDetails: FieldDetails;
 
   @Input()
   asset: Asset;
@@ -54,22 +54,15 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   endDate: moment.Moment;
 
   name: string;
-
   initialized = false;
-
   currentNumberOfPoints = 0;
 
-  currentTimestamps: number[] = [];
-
-  lastReceivedTimestamp = 0;
-
   destroy$: Subject<boolean> = new Subject<boolean>();
-
   latestPoints$: Observable<PointWithId[]>;
 
   public thresholdColors = [
     { backgroundColor: '#fceace', borderColor: '#f5b352' },
-    { backgroundColor: '#e6cfce', borderColor: '#a14b47' }
+    { backgroundColor: '#e6cfce', borderColor: '#a14b47' },
   ];
 
   public lineChartData: ChartDataSets[] = [
@@ -81,26 +74,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     { // blue
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: '#53a7ca',
-      /*pointBackgroundColor: 'orange',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'*/
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // red
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      borderColor: 'red',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
   public lineChartLegend = true;
@@ -113,7 +86,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     private oispService: OispService) { }
 
   ngOnInit() {
-    this.lineChartData[0].label = this.field.description;
+    this.lineChartData[0].label = this.fieldDetails.description;
     this.initLineChartOptions();
   }
 
@@ -172,9 +145,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   flushData() {
     this.lineChartData[0].data = [];
     this.lineChartLabels = [];
-    this.currentTimestamps = [];
     this.currentNumberOfPoints = 0;
-    this.lastReceivedTimestamp = 0;
     this.destroy$.next(true);
   }
 
@@ -189,10 +160,11 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
             if (gotFirstPoints) {
               currentTime = moment().valueOf();
               startTime = currentTime - environment.dataUpdateIntervalMs;
-              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startTime, currentTime, 1);
+              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startTime, currentTime, 1);
             } else {
               gotFirstPoints = true;
-              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startTime, currentTime, 20, 'seconds', 5);
+              return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startTime, currentTime, 20,
+                'seconds', 5);
             }
           })
         );
@@ -209,9 +181,9 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     if (useDate) {
       const startDate = this.startDate.valueOf();
       const endDate = moment(this.endDate).add(1, 'days').valueOf();
-      this.latestPoints$ =  this.oispService.getValuesOfSingleFieldByDates(this.asset, this.field, startDate, endDate, maxPoints);
+      this.latestPoints$ =  this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startDate, endDate, maxPoints);
     } else {
-      this.latestPoints$ =  this.oispService.getValuesOfSingleField(this.asset, this.field, secondsInPast, maxPoints);
+      this.latestPoints$ =  this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
     }
     this.latestPoints$.pipe(takeUntil(this.destroy$))
       .subscribe(
@@ -223,7 +195,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   public updateChart(points: PointWithId[]) {
     points.forEach(point => {
-      this.currentTimestamps.push(point.ts);
       this.currentNumberOfPoints += 1;
       const data = this.lineChartData[0].data as ChartPoint[];
       const currentDate: moment.Moment = moment(point.ts);
@@ -232,16 +203,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.updateThresholds(points);
-    this.chart.update();
-  }
-
-  public changeColor() {
-    this.lineChartColors[2].borderColor = 'green';
-    this.lineChartColors[2].backgroundColor = `rgba(0, 255, 0, 0.3)`;
-  }
-
-  public changeLabel() {
-    this.lineChartLabels[2] = ['1st Line', '2nd Line'];
     this.chart.update();
   }
 
@@ -296,10 +257,10 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getYMinMaxByAbsoluteThreshold(): { min?: number, max?: number } {
-    if (this.field.absoluteThreshold) {
+    if (this.fieldDetails.absoluteThreshold) {
       return {
-        min: this.field.absoluteThreshold.valueLower,
-        max: this.field.absoluteThreshold.valueUpper
+        min: this.fieldDetails.absoluteThreshold.valueLower,
+        max: this.fieldDetails.absoluteThreshold.valueUpper
       };
     } else {
       return { };
@@ -309,15 +270,15 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   private getAnnotationsByIdealAndCriticalThresholds(minMax: { min?: number, max?: number }): any {
     const annotations = [];
 
-    if (this.field.idealThreshold) {
-      const minLower = this.field.criticalThreshold?.valueLower ?? minMax.min;
-      const maxUpper = this.field.criticalThreshold?.valueUpper ?? minMax.max;
-      annotations.push(this.getAnnotation(ThresholdColorIndex.IDEAL, minLower, this.field.idealThreshold.valueLower));
-      annotations.push(this.getAnnotation(ThresholdColorIndex.IDEAL, this.field.idealThreshold.valueUpper, maxUpper));
+    if (this.fieldDetails.idealThreshold) {
+      const minLower = this.fieldDetails.criticalThreshold?.valueLower ?? minMax.min;
+      const maxUpper = this.fieldDetails.criticalThreshold?.valueUpper ?? minMax.max;
+      annotations.push(this.getAnnotation(ThresholdColorIndex.IDEAL, minLower, this.fieldDetails.idealThreshold.valueLower));
+      annotations.push(this.getAnnotation(ThresholdColorIndex.IDEAL, this.fieldDetails.idealThreshold.valueUpper, maxUpper));
     }
-    if (this.field.criticalThreshold) {
-      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL, minMax.min, this.field.criticalThreshold.valueLower));
-      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL,  this.field.criticalThreshold.valueUpper, minMax.max));
+    if (this.fieldDetails.criticalThreshold) {
+      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL, minMax.min, this.fieldDetails.criticalThreshold.valueLower));
+      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL,  this.fieldDetails.criticalThreshold.valueUpper, minMax.max));
     }
 
     return { annotations };
