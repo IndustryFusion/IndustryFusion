@@ -69,13 +69,6 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService) {
   }
 
-  ngOnInit() {
-    this.assetTypes$ = this.assetTypeDetailsQuery.selectAll();
-    this.assetTypes$.subscribe(assetTypes => {
-      this.assetTypes = this.displayedAssetTypes = this.searchedAssetTypes = this.filteredAssetTypes = assetTypes;
-    })
-  }
-
   private static assetTypeFromDetails(assetTypeDetails: AssetTypeDetails): AssetType {
     const assetType: AssetType = new AssetType();
     assetType.id = assetTypeDetails.id;
@@ -84,6 +77,13 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
     assetType.description = assetTypeDetails.description;
 
     return assetType;
+  }
+
+  ngOnInit() {
+    this.assetTypes$ = this.assetTypeDetailsQuery.selectAll();
+    this.assetTypes$.subscribe(assetTypes => {
+      this.assetTypes = this.displayedAssetTypes = this.searchedAssetTypes = this.filteredAssetTypes = assetTypes;
+    });
   }
 
   ngOnDestroy() {

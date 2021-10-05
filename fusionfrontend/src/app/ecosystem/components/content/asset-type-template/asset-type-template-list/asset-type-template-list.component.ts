@@ -58,7 +58,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   public createWizardRef: DynamicDialogRef;
   public assetTypeTemplateForm: FormGroup;
 
-  assetTypeTemplates: AssetTypeTemplate[]
+  assetTypeTemplates: AssetTypeTemplate[];
   displayedAssetTypeTemplates: AssetTypeTemplate[];
   filteredAssetTypeTemplates: AssetTypeTemplate[];
   searchedAssetTypeTemplates: AssetTypeTemplate[];
@@ -73,7 +73,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   private updateWizardRef: DynamicDialogRef;
   private warningDialogRef: DynamicDialogRef;
 
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion' },
+  tableFilters: FilterOption[] = [
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion' },
     { filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState' }];
 
@@ -94,8 +95,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     this.assetTypeTemplates$.subscribe(assetTypeTemplates => {
       this.displayedAssetTypeTemplates = this.filteredAssetTypeTemplates = this.searchedAssetTypeTemplates =
         this.assetTypeTemplates = assetTypeTemplates;
-
-    })
+    });
   }
 
   setActiveRow(assetTypeTemplate?) {

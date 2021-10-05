@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faTimes, faWrench, faThLarge } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import { TableSelectedItemsBarType } from './table-selected-items-bar.type'
+import { TableSelectedItemsBarType } from './table-selected-items-bar.type';
 
 @Component({
   selector: 'app-table-selected-items-bar',
@@ -36,7 +36,7 @@ export class TableSelectedItemsBarComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.tableSelectedItemsBarTypes);
-    console.log(this.selectedItems)
+    console.log(this.selectedItems);
     this.editBarMapping = {
       '=0': 'No ' + this.itemType + 's selected',
       '=1': '# ' + this.itemType + ' selected',
@@ -55,14 +55,14 @@ export class TableSelectedItemsBarComponent implements OnInit {
 
 
   onEditClick() {
-    this.editItem.emit()
+    this.editItem.emit();
   }
 
   onDeleteClick() {
-    this.deleteItem.emit()
+    this.deleteItem.emit();
   }
 
   onCloseNotification() {
-    this.closeNotification.emit()
+    this.closeNotification.emit();
   }
 }
