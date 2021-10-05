@@ -16,59 +16,100 @@
 @import 'base/typography';
 @import "abstract/variables";
 
-.table-wrapper {
-  min-height: 500px;
-}
-
-.label {
-  border: 0;
-  color: $basic-grey;
-}
-
-.value {
-  font-weight: bold;
-  text-align: right;
-  padding: 12px 0;
-  color: $basic-black;
-  text-overflow: ellipsis;
-  max-width: 160px;
-  white-space: nowrap;
-  overflow: hidden;
-
-  span {
-    font-weight: normal;
-    color: $basic-grey;
-  }
-}
-
-.card {
+.asset-card {
   border-radius: 10px;
   border: 0;
   box-shadow: none;
-  margin-bottom: 25px;
-}
+  width: 22rem;
+  background-color: $basic-white;
+  margin-top: 1.0rem;
+  margin-right: 6px;
+  margin-left: 6px;
+  margin-bottom: 0;
 
-.card-block, .card-header {
-  border: 0;
-  padding: 32px;
-}
+  .clickable {
+    cursor: pointer;
+  }
 
-.card-footer {
-  padding: 0 32px 32px 32px;
-}
+  .description {
+    margin: 0;
+  }
 
-.card-img {
-  img {
-    max-height: 200px;
-    margin: 0 auto;
-    width: auto;
+  .card-block, .card-header {
+    border: 0;
+    padding: 1.6rem;
+  }
+
+  .card-footer {
+    padding: 0 1.6rem 1.6rem 1.6rem;
+  }
+
+  .card-img {
+    img {
+      max-height: 10rem;
+      margin: 0 auto;
+      width: auto;
+    }
+  }
+
+  .card-header {
+    min-height: 8rem;
+  }
+
+  table.table-noborder {
+    border-radius: 0;
+    -webkit-box-shadow:none;
+    box-shadow:none;
+    background-color:transparent;
+    border: 0;
+  }
+
+  .table-wrapper {
+    // min-height: 20rem;
+    width: 18.8rem;
+    padding-top: 0.8rem;
+
+    td {
+      width: 9.4rem;
+      padding-top: 1rem;
+    }
+
+    .card-label {
+      max-width: 8.8rem;
+      white-space: nowrap;
+      text-overflow:ellipsis;
+      overflow: hidden;
+
+      text-align: left;
+
+      color: $regular-grey;
+    }
+
+    .card-value {
+      max-width: 8.8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      text-align: right;
+      padding-left: 4px;
+
+      font-weight: bold;
+      color: $basic-black;
+
+      span {
+        font-weight: normal;
+        color: $basic-grey;
+      }
+    }
+  }
+
+  .details-value {
+    cursor: pointer;
   }
 }
 
-.card-header {
-  min-height: 160px;
-}
-
+/*
 .progress {
   line-height: 28px;
   width: 100%;
@@ -77,7 +118,6 @@
   display: table;
   border-radius: 5px;
   margin-top: 0;
-
 }
 
 .progress:before {
@@ -95,8 +135,4 @@
   height: 100%;
   color: $basic-white;
   text-align: center;
-}
-
-.details-value {
-  cursor: pointer;
-}
+}*/

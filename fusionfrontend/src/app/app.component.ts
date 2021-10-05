@@ -21,6 +21,8 @@ import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
 import { OispAlertResolver } from './resolvers/oisp-alert-resolver';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 import { UserManagementService } from './services/user-management.service';
 import { KeycloakProfile } from 'keycloak-js';
 
@@ -48,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    registerLocaleData(localeDe);
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
     this.keycloakUser$ = this.userManagementService.getUserProfile();
     this.loggedUser$ = this.userQuery.selectActive();

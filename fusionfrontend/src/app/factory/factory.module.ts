@@ -49,8 +49,6 @@ import { FactorySiteDialogComponent } from './components/content/factory-site-di
 import { IFCommon } from '../common/i-f-common.module';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 // tslint:disable-next-line:max-line-length
-import { FactorySitesListItemComponent } from './components/content/factory-sites/factory-sites-list-item/factory-sites-list-item.component';
-import { FactorySitesListHeaderComponent } from './components/content/factory-sites/factory-sites-list-header/factory-sites-list-header.component';
 import { TableModule } from 'primeng/table';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
@@ -95,8 +93,6 @@ import { DashboardModule } from '../dashboards/dashboard.module';
     RoomsPageComponent,
     AssetTablesComponent,
     StatusComponent,
-    FactorySitesListHeaderComponent,
-    FactorySitesListItemComponent,
     AssetInstantiationComponent,
     AssetInstantiationStartModalComponent,
     AssetInstantiationDescriptionModalComponent,

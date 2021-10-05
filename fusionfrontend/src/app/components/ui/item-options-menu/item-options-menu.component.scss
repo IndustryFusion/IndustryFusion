@@ -14,7 +14,7 @@
 */
 
 @import 'abstract/variables';
-@import "base/typography";
+@import 'base/typography';
 
 .table-dropdown-menu-button-inline {
   outline: none;
@@ -49,9 +49,22 @@
     white-space: nowrap !important;
   }
 
+  ::ng-deep .p-menu-overlay {
+    top: unset !important;
+    margin-top: 30px !important;
+    margin-left: -80px !important;
+  }
 
   ::ng-deep .p-menuitem-icon {
     font-size: $medium-icon-size;
+  }
+}
+
+.table-dropdown-menu-medium {
+  @extend .table-dropdown-menu;
+
+  ::ng-deep .p-menu {
+    width: 230px !important;
   }
 }
 

@@ -31,10 +31,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Asset, AssetWithFields } from '../../../../store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
 import { WizardHelper } from '../../../../common/utils/wizard-helper';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { faTimes, faWrench, faThLarge } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-assets-list',
@@ -68,7 +69,6 @@ export class AssetsListComponent implements OnInit, OnChanges {
   filteredFactoryAssets: FactoryAssetDetailsWithFields[];
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
   selectedFactoryAssets: FactoryAssetDetailsWithFields[] = [];
-  menuActions: MenuItem[];
   activeListItem: FactoryAssetDetailsWithFields;
   faTimes = faTimes;
   faWrench = faWrench;
@@ -93,6 +93,8 @@ export class AssetsListComponent implements OnInit, OnChanges {
       other: '# Assets selected'
     };
 
+  ItemOptionsMenuType = ItemOptionsMenuType;
+
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName' },
@@ -108,9 +110,6 @@ export class AssetsListComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.createDetailsAssetForm(this.formBuilder);
-    this.menuActions = [{ label: 'Edit item', icon: 'pi pi-fw pi-pencil', command: (_) => { this.showEditDialog(); } },
-      { label: 'Assign Asset to room', icon: 'pi pw-fw pi-sign-in', command: (_) => { this.openAssignRoomDialog(); } },
-      { label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => { this.showDeleteDialog(); } }];
   }
   ngOnChanges(): void {
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;

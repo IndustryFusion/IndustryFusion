@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
@@ -21,18 +21,21 @@ import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Room } from 'src/app/store/room/room.model';
+import { FieldDetails } from '../../../../store/field-details/field-details.model';
 
 @Component({
   selector: 'app-assets-grid-page',
   templateUrl: './assets-grid-page.component.html',
   styleUrls: ['./assets-grid-page.component.scss']
 })
-export class AssetsGridPageComponent implements OnInit, OnDestroy {
+export class AssetsGridPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   factorySite$: Observable<FactorySite>;
   rooms$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   assetsWithFields$: Observable<AssetWithFields[]>;
+  commonFields: FieldDetails[] = [];
+  isCommonFieldsUsed = true;
 
   constructor(
     private assetQuery: AssetQuery,
@@ -46,8 +49,18 @@ export class AssetsGridPageComponent implements OnInit, OnDestroy {
     this.rooms$ = this.factoryResolver.rooms$;
     this.assets$ = this.factoryResolver.assets$;
     this.assetsWithFields$ = this.factoryResolver.assetsWithFields$;
+
+    this.assetsWithFields$.subscribe(assetsWithFields => this.updateCommonFields(assetsWithFields));
   }
 
-  ngOnDestroy() {
+  private updateCommonFields(assetsWithFields: AssetWithFields[]): void {
+    this.commonFields = [];
+    if (assetsWithFields && assetsWithFields.length > 0) {
+      this.commonFields = assetsWithFields[0].fields;
+      assetsWithFields.forEach(assetWithFields => {
+        this.commonFields = this.commonFields
+          .filter(commonField => assetWithFields.fields.some(assetField => commonField.description === assetField.description));
+      });
+    }
   }
 }

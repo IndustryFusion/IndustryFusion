@@ -26,12 +26,14 @@ export class ItemOptionsMenuComponent implements OnInit {
 
   @Input() type: ItemOptionsMenuType[];
   @Input() createItemName: string;
+  @Input() assignItemText: string;
   @Input() showInline = true;
   @Output() createItem = new EventEmitter<void>();
   @Output() cloneItem = new EventEmitter<void>();
   @Output() renameItem = new EventEmitter<void>();
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
+  @Output() assignItem = new EventEmitter<void>();
   public menuActions: MenuItem[];
 
   public ItemOptionsMenuType = ItemOptionsMenuType;
@@ -55,6 +57,11 @@ export class ItemOptionsMenuComponent implements OnInit {
       label: this.createItemName ? `Create new ${this.createItemName}` : 'Create', icon: 'pi pi-fw pi-plus',
       command: (_) => { this.onCreateClick(); }
     };
+    const assignItem = {
+      label: this.assignItemText ? 'Assign ' + this.assignItemText : 'Assign', icon: 'pi pi-fw pi-sign-in',
+      command: (_) => { this.onAssignClick(); }
+    };
+
 
     this.menuActions = [];
 
@@ -80,6 +87,9 @@ export class ItemOptionsMenuComponent implements OnInit {
             break;
           case ItemOptionsMenuType.RENAME:
             this.menuActions.push(renameItem);
+            break;
+          case ItemOptionsMenuType.ASSIGN:
+            this.menuActions.push(assignItem);
         }
       }
     }
@@ -103,6 +113,10 @@ export class ItemOptionsMenuComponent implements OnInit {
 
   onDeleteClick() {
     this.deleteItem.emit();
+  }
+
+  onAssignClick() {
+    this.assignItem.emit();
   }
 
 }

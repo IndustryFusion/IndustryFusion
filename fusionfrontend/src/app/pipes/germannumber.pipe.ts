@@ -13,9 +13,18 @@
  * under the License.
  */
 
-@import '../../../../../ecosystem/components/content/base/base-list-header/base-list-header.component.scss';
+import { Pipe, PipeTransform } from '@angular/core';
+import { formatNumber } from '@angular/common';
 
+@Pipe({ name: 'germanNumber' })
+export class GermanNumberPipe implements PipeTransform {
 
-.list-header {
-  padding-left: 20px;
+  constructor() { }
+
+  transform(value: number, format?: string) {
+    if (value == null) { return ''; } // !value would also react to zeros.
+    if (!format) { format = '.0-2'; }
+
+    return formatNumber(value, 'de-de', format);
+  }
 }
