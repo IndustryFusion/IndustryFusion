@@ -12,8 +12,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@import 'src/app/ecosystem/components/content/base/base-list-item/base-list-item.component';
-@import 'src/app/ecosystem/components/content/base/base-list/base-list.component';
 @import 'abstract/variables';
 @import 'base/typography';
 
@@ -45,26 +43,6 @@
   }
 }
 
-.check-box-icon {
-  padding-right: 20px;
-  background-color: $basic-black;
-  color: $basic-white;
-}
-
-.header-line {
-  height: 50px;
-  margin: 30px 80px;
-}
-
-.filter-btn {
-  height: 48px;
-  width: 48px;
-  margin-right: 40px;
-  background-color: $light-grey;
-  border-color: transparent;
-  border-radius: 10px;
-}
-
 :host ::ng-deep .checkbox-column {
   visibility: hidden;
 }
@@ -75,12 +53,8 @@
   }
 }
 
-.folder-view {
-  margin-right: 16px;
-}
-
-.notifications-list {
-  margin: 0 80px;
+.notification-state-button {
+  margin: 0 8px;
 }
 
 .space-right {

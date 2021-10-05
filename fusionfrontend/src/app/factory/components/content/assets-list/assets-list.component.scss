@@ -13,65 +13,53 @@
  * under the License.
  */
 
+/*@import 'src/variables.scss';*/
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 @import 'abstract/variables';
 @import 'base/typography';
+@import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
-.toolbar {
-  border-radius: 10px;
-  display: flex;
-  background: black;
+.table-selected-items-bar {
+  width: inherit;
+  height: 56px;
+  background-color: $basic-black;
   color: $basic-white;
-  justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  margin: 0 80px 0 80px;
+  padding: 0 23px;
+  border-radius: 10px;
+}
 
-  span {
-    margin: 0 0 0 50px;
-  }
+.table-selected-item {
+  padding: 0 !important;
+  font-size: $medium-font-size;
+  align-self: center;
+}
 
-  .btn-group {
-    display: flex;
-    justify-content: center;
-
-    .btn {
-      color: $basic-white;
-      border: 0;
-      margin: auto 15px;
-      .icon{
-        transform:scale(1.45, 1.45);
-      }
+.table-bar-button {
+  ::ng-deep .p-button {
+    background-color: $basic-black;
+    border: none;
+    &:enabled:hover {
+      background-color: $basic-black !important;
+      color: $basic-white !important;
     }
-
-  }
-
-  .btn {
-    color: $basic-white;
-  }
-
-  .btn-link {
-    margin: 0 25px;
   }
 }
 
-.asset-row {
-  cursor: pointer;
+:host ::ng-deep .checkbox-column {
+  visibility: hidden;
 }
 
-*:focus {
-    outline: none !important;
-    border: 0 !important;
+#rowElement:hover {
+  .checkbox-column {
+    visibility: visible;
+  }
 }
 
-.wrapper {
-  margin: 0 80px;
-
-  .list-header {
-    .if-button {
-      padding: 14px 20px 12px;
-      margin-bottom: 5px;
-      font-size: $regular-font-size;
-      line-height: $regular-line-height;
-      border-radius: 22px;
-    }
+.confirm-dialog-style {
+  ::ng-deep .p-dialog .p-dialog-content {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 }

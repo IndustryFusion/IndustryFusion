@@ -20,4 +20,5 @@ export enum ItemOptionsMenuType {
   CREATE,
   RENAME,
   CLONE,
+  ASSIGN,
 }

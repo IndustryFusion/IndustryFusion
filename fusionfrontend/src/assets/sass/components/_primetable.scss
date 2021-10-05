@@ -165,4 +165,55 @@
   }
 }
 
+.header-line {
+  height: 50px;
+  margin: 30px 80px;
 
+  .table-header{
+    font-size: $big-font-size;
+    font-weight: bold;
+    margin-top: 14px;
+    margin-left: 68px;
+  }
+
+  .filter-btn-div {
+    position: relative;
+    margin-top: .5rem;
+    height: 50px;
+    padding-left: 10px;
+  }
+
+  .create-btn {
+    margin-top: .5rem;
+    align-self: center
+  }
+
+  .create-btn-without-filter {
+    align-self: center;
+    margin-right: 48px;
+  }
+}
+
+.table-bold-font {
+  font-weight: bold !important;
+  color: $basic-black !important;
+}
+
+.confirm-dialog-style {
+  .p-dialog .p-dialog-content {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.table-checkbox {
+  .p-checkbox .p-component {
+    border-radius: 4px !important;
+  }
+}
+
+.check-box-icon {
+  padding-right: 20px;
+  background-color: $basic-black;
+  color: $basic-white;
+}

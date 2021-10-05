@@ -27,7 +27,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class TableFilterComponent implements OnInit {
 
   @Input()
-  filters: FilterOption[];
+  tableFilters: FilterOption[];
   @Input()
   itemsToBeFiltered: any;
   @Input()
@@ -35,7 +35,7 @@ export class TableFilterComponent implements OnInit {
   @Output()
   filteredItems = new EventEmitter<any>();
 
-  haspositionSet = false;
+  hasPositionSet = false;
 
   combinedFilteredItems: any;
   filterFormMap: Map<string, FormGroup> = new Map();
@@ -52,12 +52,12 @@ export class TableFilterComponent implements OnInit {
   faFilter = faFilter;
 
   ngOnInit(): void {
-    this.filters.forEach(filter => {
+    this.tableFilters.forEach(filter => {
       this.createFilterForm(filter);
       this.filterOptions.push(filter);
     });
     if (this.position) {
-      this.haspositionSet = true;
+      this.hasPositionSet = true;
       this.changeTheme(this.position[0], this.position[1]);
     }
   }
@@ -109,14 +109,13 @@ export class TableFilterComponent implements OnInit {
   }
 
   addFilter() {
-    this.filters.every(filter => {
+    for (const filter of this.tableFilters) {
       if (!this.activeFilterSet.has(filter)) {
         this.selectedFilter[this.activeFilterSet.size] = filter;
         this.activeFilterSet.add(filter);
-        return false;
+        break;
       }
-      return true;
-    });
+    }
   }
 
   changeSelectedFilter(oldActiveFilter: FilterOption, newActiveFilter: FilterOption) {

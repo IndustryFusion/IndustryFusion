@@ -40,6 +40,7 @@ import { MaintenanceProgressbarComponent } from '../components/content/maintenan
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
+import { GermanNumberPipe } from '../pipes/germannumber.pipe';
 import { SelectButtonModule } from 'primeng/selectbutton';
 
 
@@ -63,6 +64,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
+    GermanNumberPipe,
   ],
   imports: [
     CommonModule,
@@ -124,6 +126,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
     TableModule,
+    GermanNumberPipe,
     SelectButtonModule,
   ],
   providers: [

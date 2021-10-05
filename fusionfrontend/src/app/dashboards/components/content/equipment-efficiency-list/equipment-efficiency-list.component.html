@@ -24,8 +24,8 @@ under the License.
         <span class="status-square offline"></span> <label class="badge-padding">Offline</label>
       </div>
     </div>
-    <div class="filter-panel">
-      <app-table-filter class="filter-btn" [filters]="this.filters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
+    <div class="filter-btn-div">
+      <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                         (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>
@@ -38,12 +38,11 @@ under the License.
     [rows]="10"
     [paginator]="true"
     [showCurrentPageReport]="true"
-    currentPageReportTemplate="{first} to {last} of {totalRecords} Assets"
-  >
+    currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="30">
-          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
+          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>

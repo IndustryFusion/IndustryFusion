@@ -1,9 +1,9 @@
 <div>
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">Maintenance Dashboard</h3>
-    <div class="filter-panel">
-      <app-table-filter class="filter-btn" [filters]="this.filters" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
-                        [position]="['70%', '-510%']" (filteredItems)="filterAssets($event)">
+    <div class="filter-btn-div">
+      <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                        [position]="['90%', '-450%']" (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>
   </div>
@@ -19,7 +19,7 @@
         <th [style.width.%]="2"></th>
         <th [style.width.%]="4"></th>
         <th [style.width.%]="20">
-          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="this.factoryAssetDetailsWithFields"
+          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>

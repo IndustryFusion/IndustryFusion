@@ -17,16 +17,16 @@ under the License.
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">{{ filteredNotifications?.length | i18nPlural: titleMapping }}</h3>
     <div class="p-row p-d-flex p-jc-between">
-      <p-selectButton class="notifications on-white-background space-right"
+      <p-selectButton *ngIf="isInline"  class="notifications on-white-background space-right"
                        optionLabel="name"
                        optionValue="value"
                        [options]="[{name:'Open', value: notificationStates.OPEN},{name:'Cleared', value: notificationStates.CLEARED}]"
                        [(ngModel)]="state"
                        (ngModelChange)="onChangeTab()"
       ></p-selectButton>
-      <div class="filter-panel">
-        <app-table-filter class="filter-btn" [filters]="filters" [itemsToBeFiltered]="allNotifications"
-                          (filteredItems)="filterNotifications($event)">
+      <div class="filter-btn-div">
+        <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="allNotifications"
+                          [position]="['90%', '-450%']" (filteredItems)="filterNotifications($event)">
         </app-table-filter>
       </div>
     </div>

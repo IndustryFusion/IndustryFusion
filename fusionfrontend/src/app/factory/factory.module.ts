@@ -38,10 +38,7 @@ import { FactorySubHeaderComponent } from './components/content/factory-sub-head
 import { PrecisionPipe } from '../pipes/precision.pipe';
 import { StatusComponent } from './components/content/status/status.component';
 import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
-import { AssetsListItemComponent } from './components/content/assets-list/assets-list-item/assets-list-item.component';
-import { AssetsListHeaderComponent } from './components/content/assets-list/assets-list-header/assets-list-header.component';
 import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
-import { ListFilterComponent } from './components/content/assets-list/list-filter/list-filter.component';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
@@ -52,8 +49,6 @@ import { FactorySiteDialogComponent } from './components/content/factory-site-di
 import { IFCommon } from '../common/i-f-common.module';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 // tslint:disable-next-line:max-line-length
-import { FactorySitesListItemComponent } from './components/content/factory-sites/factory-sites-list-item/factory-sites-list-item.component';
-import { FactorySitesListHeaderComponent } from './components/content/factory-sites/factory-sites-list-header/factory-sites-list-header.component';
 import { TableModule } from 'primeng/table';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
@@ -100,11 +95,6 @@ import { CalendarModule } from 'primeng/calendar';
     RoomsPageComponent,
     AssetTablesComponent,
     StatusComponent,
-    FactorySitesListHeaderComponent,
-    FactorySitesListItemComponent,
-    AssetsListItemComponent,
-    AssetsListHeaderComponent,
-    ListFilterComponent,
     AssetInstantiationComponent,
     AssetInstantiationStartModalComponent,
     AssetInstantiationDescriptionModalComponent,
