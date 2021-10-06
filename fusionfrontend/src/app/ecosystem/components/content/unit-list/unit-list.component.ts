@@ -90,15 +90,14 @@ export class UnitListComponent implements OnInit, OnDestroy {
   }
 
   searchUnitByQuantity(event?: Unit[]): void {
-    console.log("reached")
     this.unitsSearchedByQuantity = event;
     this.updateDisplayedUnits();
   }
 
   private updateDisplayedUnits(): void {
     this.displayedUnits = this.units;
-    this.displayedUnits = this.unitsSearchedByName.filter(unit => this.unitsSearchedBySymbol.filter(unit =>
-      this.unitsSearchedByQuantity.includes(unit)).includes(unit));
+    this.displayedUnits = this.unitsSearchedByName.filter(unitSearchedByName => this.unitsSearchedBySymbol.filter(
+      unitSearcedBySymbol => this.unitsSearchedByQuantity.includes(unitSearcedBySymbol)).includes(unitSearchedByName));
   }
 
   showCreateDialog() {

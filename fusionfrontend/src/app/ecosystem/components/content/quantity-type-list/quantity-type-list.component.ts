@@ -30,7 +30,7 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class QuantityTypeListComponent implements OnInit, OnDestroy {
 
-  quantityTypes$: Observable<QuantityType[]>
+  quantityTypes$: Observable<QuantityType[]>;
   quantityTypes: QuantityType[];
   displayedQuantityTypes: QuantityType[];
   quantityTypesSearchedByName: QuantityType[];
