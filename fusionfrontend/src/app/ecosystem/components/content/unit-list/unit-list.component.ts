@@ -14,9 +14,6 @@
  */
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { BaseListComponent } from '../base/base-list/base-list.component';
 import { UnitQuery } from '../../../../store/unit/unit.query';
 import { UnitService } from '../../../../store/unit/unit.service';
 import { Unit } from '../../../../store/unit/unit.model';
@@ -26,46 +23,85 @@ import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DialogType } from '../../../../common/models/dialog-type.model';
 import { ID } from '@datorama/akita';
+import { ConfirmationService } from 'primeng/api';
+import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
 
 @Component({
   selector: 'app-unit-list',
   templateUrl: './unit-list.component.html',
   styleUrls: ['./unit-list.component.scss'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
-export class UnitListComponent extends BaseListComponent implements OnInit, OnDestroy {
+export class UnitListComponent implements OnInit, OnDestroy {
 
-  @Input() itemsFromParent$: Observable<Unit[]>;
+
+
+  @Input() units$: Observable<Unit[]>;
   @Input() parentQuantityTypeId: ID | null;
+
+  units: Unit[];
+  displayedUnits: Unit[];
+  unitsSearchedByName: Unit[];
+  unitsSearchedBySymbol: Unit[];
+  unitsSearchedByQuantity: Unit[];
+
+  activeListItem: Unit;
 
   titleMapping:
     { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
 
-  editBarMapping:
-    { [k: string]: string } = {
-    '=0': 'No units selected',
-    '=1': '# unit selected',
-    other: '# units selected'
-  };
-
-  constructor(public route: ActivatedRoute, public router: Router, public unitQuery: UnitQuery,
-              public unitService: UnitService, public dialogService: DialogService, public formBuilder: FormBuilder) {
-    super(route, router, unitQuery, unitService);
+  constructor(
+    public unitQuery: UnitQuery,
+    public unitService: UnitService,
+    public quantityTypeService: QuantityTypeService,
+    public dialogService: DialogService,
+    public confirmationService: ConfirmationService,
+    public formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    super.ngOnInit();
-
-    if (this.itemsFromParent$ != null) {
-      this.items$ = this.itemsFromParent$;
+    if (this.units$ === undefined) {
+      this.units$ = this.unitQuery.selectAll();
     }
+    this.units$.subscribe(units => {
+      this.displayedUnits = this.units = this.unitsSearchedByName = this.unitsSearchedBySymbol
+        = this.unitsSearchedByQuantity = units;
+    });
   }
 
   ngOnDestroy() {
     this.unitQuery.resetError();
   }
 
-  openCreateDialog() {
+  setActiveRow(unit?: Unit) {
+    if (unit) {
+      this.activeListItem = unit;
+    }
+  }
+
+  searchUnitByName(event?: Unit[]): void {
+    this.unitsSearchedByName = event;
+    this.updateDisplayedUnits();
+  }
+
+  searchUnitBySymbol(event?: Unit[]): void {
+    this.unitsSearchedBySymbol = event;
+    this.updateDisplayedUnits();
+  }
+
+  searchUnitByQuantity(event?: Unit[]): void {
+    console.log("reached")
+    this.unitsSearchedByQuantity = event;
+    this.updateDisplayedUnits();
+  }
+
+  private updateDisplayedUnits(): void {
+    this.displayedUnits = this.units;
+    this.displayedUnits = this.unitsSearchedByName.filter(unit => this.unitsSearchedBySymbol.filter(unit =>
+      this.unitsSearchedByQuantity.includes(unit)).includes(unit));
+  }
+
+  showCreateDialog() {
     const ref = this.dialogService.open(UnitDialogComponent, {
       header: 'Create new Unit', width: '50%',
       data: { unit: null, type: DialogType.CREATE, prefilledQuantityTypeId: this.parentQuantityTypeId }
@@ -75,16 +111,46 @@ export class UnitListComponent extends BaseListComponent implements OnInit, OnDe
     });
   }
 
+  showEditDialog(): void {
+    const dialogRef = this.dialogService.open(UnitDialogComponent, {
+      header: 'Edit Unit', width: '50%',
+      data: { unit: this.activeListItem, type: DialogType.EDIT }
+    });
+    dialogRef.onClose.subscribe((unit) => {
+      this.updateUnitIfPresent(unit);
+    });
+  }
+
+  updateUnitIfPresent(unit: Unit): void {
+    if (unit) {
+      const patchedUnit = { ...this.activeListItem, ...unit };
+      this.quantityTypeService.getItem(patchedUnit.quantityTypeId).toPromise().then((quantityType) => {
+        patchedUnit.quantityType = quantityType;
+        this.unitService.editUnit(this.activeListItem.quantityType.id, this.activeListItem.id, patchedUnit).subscribe();
+      });
+    }
+  }
+
   onConfirmModal(unit: Unit) {
     if (unit) {
       this.unitService.createUnit(unit.quantityTypeId, unit).subscribe();
     }
   }
 
-  deleteItems() {
-    this.selected.forEach(id => {
-      const unit = this.unitQuery.getEntity(id);
-      this.unitService.deleteUnit(unit.quantityTypeId, id).subscribe(() => this.selected.delete(id));
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the assetType ' + this.activeListItem.name + '?',
+      header: 'Delete Asset Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteUnit(this.activeListItem);
+      },
+      reject: () => {
+      }
     });
+  }
+
+  deleteUnit(unit: Unit) {
+    this.unitService.deleteUnit(unit.quantityTypeId, unit.id).subscribe();
   }
 }
