@@ -18,6 +18,7 @@ import { OispDeviceStatus } from '../../../services/kairos.model';
 import { UIChart } from 'primeng/chart';
 import * as moment from 'moment';
 import { StatusPoint } from '../../../factory/models/status.model';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -42,8 +43,8 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   stackedData: any;
 
   private isInitialized = false;
-  private readonly MAX_DATASETS = 40;
-  private readonly START_GROUPING_FACTOR = 4;
+  private readonly MAX_DATASETS = 80;
+  private readonly START_GROUPING_DATASET_COUNT = 80;
 
   constructor() {
   }
@@ -72,6 +73,35 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     }
 
     return dataset;
+  }
+
+  private static fillOfflineGaps(statuses: StatusPoint[]): StatusPoint[] {
+    if (statuses && statuses.length > 0) {
+      const additionalStatuses: StatusPoint[] = [];
+      let prevTime = statuses[0].time;
+
+      for (const status of statuses) {
+        const timeDifference = status.time.valueOf() - prevTime.valueOf();
+
+        if (timeDifference > environment.assetStatusSampleRateMs * 2) {
+          for (let i = 1; i <= Math.floor(timeDifference / environment.assetStatusSampleRateMs - 1); i++) {
+            additionalStatuses.push({
+              status: OispDeviceStatus.OFFLINE,
+              time: moment(prevTime.valueOf() + environment.assetStatusSampleRateMs * i) }
+            );
+          }
+        }
+
+        prevTime = status.time;
+      }
+
+      if (additionalStatuses.length > 0) {
+        statuses.concat(additionalStatuses);
+        statuses = statuses.sort((a, b) => a.time.valueOf() - b.time.valueOf());
+      }
+    }
+
+    return statuses;
   }
 
   ngOnInit(): void {
@@ -122,7 +152,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
       layout: {
         padding: {
           bottom: 22,
-          right: 50
+          right: 30
         }
       },
       legend: {
@@ -162,10 +192,12 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
   private updateChartData(statuses: StatusPoint[]) {
     this.stackedData.datasets = [];
-    if (statuses) {
+    if (statuses && statuses.length > 0) {
+      statuses = HistoricalStatusBarChartComponent.fillOfflineGaps(statuses);
+
       let groupSize = 1;
       let aggregatedStatuses: StatusPoint[] = statuses;
-      if (statuses.length > this.MAX_DATASETS * this.START_GROUPING_FACTOR) {
+      if (statuses.length > this.START_GROUPING_DATASET_COUNT) {
         groupSize = Math.floor(statuses.length / this.MAX_DATASETS);
         aggregatedStatuses = this.aggregateStatuses(statuses, groupSize);
       }
