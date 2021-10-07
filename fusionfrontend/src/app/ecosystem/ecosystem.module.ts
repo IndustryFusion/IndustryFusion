@@ -32,8 +32,6 @@ import { BaseListComponent } from './components/content/base/base-list/base-list
 import { BaseListHeaderComponent } from './components/content/base/base-list-header/base-list-header.component';
 import { BaseListItemComponent } from './components/content/base/base-list-item/base-list-item.component';
 import { FieldListComponent } from './components/content/field-list/field-list.component';
-import { FieldListHeaderComponent } from './components/content/field-list-header/field-list-header.component';
-import { FieldListItemComponent } from './components/content/field-list-item/field-list-item.component';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
 import { QuantityTypeDialogComponent } from './components/content/quantity-type-dialog/quantity-type-dialog.component';
@@ -86,8 +84,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     BaseListHeaderComponent,
     BaseListItemComponent,
     FieldListComponent,
-    FieldListHeaderComponent,
-    FieldListItemComponent,
     QuantityTypeListComponent,
     UnitListComponent,
     QuantityTypeDialogComponent,

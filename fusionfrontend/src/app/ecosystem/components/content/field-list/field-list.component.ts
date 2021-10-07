@@ -14,54 +14,92 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { BaseListComponent } from '../base/base-list/base-list.component';
-import { FieldQuery } from '../../../../store/field/field.query';
-import { FieldService } from '../../../../store/field/field.service';
 import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Observable } from 'rxjs';
+import { Field } from '../../../../store/field/field.model';
+import { ConfirmationService } from 'primeng/api';
+import { FieldComposedQuery } from '../../../../store/composed/field-composed.query';
 
 @Component({
   selector: 'app-field-list',
   templateUrl: './field-list.component.html',
   styleUrls: ['./field-list.component.scss'],
 })
-export class FieldListComponent extends BaseListComponent implements OnInit, OnDestroy {
+export class FieldListComponent implements OnInit, OnDestroy {
 
   public titleMapping:
   { [k: string]: string} = { '=0': 'No Metrics & Attributes', '=1': '# Metric & Attribute', other: '# Metrics & Attributes' };
 
-  public editBarMapping:
-    { [k: string]: string } = {
-      '=0': 'No metrics & attributes selected',
-      '=1': '# metric or attribute selected',
-      other: '# metrics or attributes selected'
-    };
-  private createDialogRef: DynamicDialogRef;
+  private dialogRef: DynamicDialogRef;
+
+  fields$: Observable<Field[]>;
+  fields: Field[];
+  displayedFields: Field[];
+  fieldsSearchedByName: Field[];
+
+  activeListItem: Field;
 
 
-  constructor(public route: ActivatedRoute,
-              public router: Router,
-              public fieldQuery: FieldQuery,
-              public fieldService: FieldService,
-              private dialogService: DialogService) {
-    super(route, router, fieldQuery, fieldService);
-  }
+  constructor(
+    private fieldComposedQuery: FieldComposedQuery,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService) {  }
 
   ngOnInit() {
-    super.ngOnInit();
+    this.fields$ = this.fieldComposedQuery.selectAll();
+    this.fields$.subscribe(fields => {
+      this.displayedFields = this.fields = this.fieldsSearchedByName = fields;
+    });
   }
 
   ngOnDestroy() {
-    this.fieldQuery.resetError();
-    this.createDialogRef?.close();
+    this.dialogRef?.close();
+  }
+
+  setActiveRow(field?: Field) {
+    if (field) {
+      this.activeListItem = field;
+    }
+  }
+
+  searchFieldByName(event?: Field[]): void {
+    this.fieldsSearchedByName = event;
+    this.updateDisplayedFields();
+  }
+
+  private updateDisplayedFields(): void {
+    this.displayedFields = this.fieldsSearchedByName;
   }
 
   showCreateDialog() {
-    this.createDialogRef = this.dialogService.open(FieldDialogComponent, {
+    this.dialogRef = this.dialogService.open(FieldDialogComponent, {
       data: { },
       header: 'Create new Metric or Attribute',
     });
   }
+
+  showEditDialog() {
+    this.dialogRef = this.dialogService.open(FieldDialogComponent, {
+      data: { field: this.activeListItem },
+      header: 'Edit Metric or Attribute'
+    });
+  }
+
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the Metric or Attribute ' + this.activeListItem.name + '?',
+      header: 'Delete Metric or Attribute Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteField();
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  deleteField() {
+  }
+
 }
