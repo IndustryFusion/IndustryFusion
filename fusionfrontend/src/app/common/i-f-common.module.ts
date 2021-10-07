@@ -42,6 +42,7 @@ import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
 import { GermanNumberPipe } from '../pipes/germannumber.pipe';
 import { TableSelectedItemsBarComponent } from '../components/ui/table-selected-items-bar/table-selected-items-bar.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { TableSelectedItemsBarComponent } from '../components/ui/table-selected-
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
+    SelectButtonModule,
   ],
   exports: [
     CommonModule,
@@ -126,6 +128,7 @@ import { TableSelectedItemsBarComponent } from '../components/ui/table-selected-
     NotificationsListComponent,
     TableModule,
     GermanNumberPipe,
+    SelectButtonModule,
     TableSelectedItemsBarComponent,
   ],
   providers: [

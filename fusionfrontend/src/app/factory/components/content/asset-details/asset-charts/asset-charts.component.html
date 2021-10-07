@@ -16,7 +16,7 @@ under the License.
 <div class="chart-container">
 
   <div class="table-header" >
-    <h4 style="font-weight: bold">{{field.description}} </h4>
+    <h4 style="font-weight: bold">{{fieldDetails.description}} </h4>
      {{currentNumberOfPoints | germanNumber}} points
   </div>
 
@@ -29,10 +29,8 @@ under the License.
                     [options]="lineChartOptions"
                     [colors]="lineChartColors"
                     [legend]="lineChartLegend"
-                    [chartType]="lineChartType"
-                    [plugins]="lineChartPlugins"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)">
+                    [chartType]="lineChartType //noinspection InvalidExpressionResultType"
+                    [plugins]="lineChartPlugins">
         </canvas>
       </div>
     </div>

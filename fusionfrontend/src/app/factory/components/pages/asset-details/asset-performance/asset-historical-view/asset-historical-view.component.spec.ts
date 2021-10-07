@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { SettingsPageComponentComponent } from './settings-page-component.component';
+import { AssetHistoricalViewComponent } from './asset-historical-view.component';
 
-describe('SettingsPageComponentComponent', () => {
-  let component: SettingsPageComponentComponent;
-  let fixture: ComponentFixture<SettingsPageComponentComponent>;
+describe('AssetHistoricalViewComponent', () => {
+  let component: AssetHistoricalViewComponent;
+  let fixture: ComponentFixture<AssetHistoricalViewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsPageComponentComponent ]
+      declarations: [ AssetHistoricalViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsPageComponentComponent);
+    fixture = TestBed.createComponent(AssetHistoricalViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

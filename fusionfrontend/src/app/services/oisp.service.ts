@@ -52,7 +52,7 @@ export class OispService {
     private keycloakService: KeycloakService) {
   }
 
-  getUser(): Observable<OISPUser[]> {
+  getUsers(): Observable<OISPUser[]> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
     return this.http.get<OISPUser[]>(url, this.httpOptions);
   }
@@ -115,7 +115,7 @@ export class OispService {
     return this.getOispPoints(path, request, true, useFieldNameAsId);
   }
 
-  getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: string): Observable<PointWithId[]> {
+  getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: number): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
     let oispPoints$: Observable<PointWithId[]>;
     if (!maxPoints) {
@@ -140,7 +140,7 @@ export class OispService {
       });
       const request: OispRequestWithAggregation = {
         from: -secondsInPast,
-        maxItems: Number(maxPoints),
+        maxItems: maxPoints,
         targetFilter: { deviceList: [asset.externalName] },
         metrics: [metricsWithAggregation]
       };
@@ -153,7 +153,7 @@ export class OispService {
                                 field: FieldDetails,
                                 fromDate: number,
                                 toDate: number,
-                                maxPoints: string,
+                                maxPoints: number,
                                 samplingUnit?: string,
                                 samplingValue?: number): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
@@ -183,7 +183,7 @@ export class OispService {
       const request: OispRequestWithAggregation = {
         from: fromDate,
         to: toDate,
-        maxItems: Number(maxPoints),
+        maxItems: maxPoints,
         targetFilter: { deviceList: [asset.externalName] },
         metrics: [metricsWithAggregation]
       };

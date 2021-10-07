@@ -61,10 +61,6 @@ export class DashboardSubHeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match('^\/dashboards\/companies\/[0-9]\/equipment-efficiency+$');
   }
 
-  isDashboard3Active = () => {
-    return false;
-  }
-
   onMaintenanceClick(): Promise<boolean> {
     if (this.companyId) {
       return this.router.navigateByUrl(this.getUrlTree('maintenance'));
