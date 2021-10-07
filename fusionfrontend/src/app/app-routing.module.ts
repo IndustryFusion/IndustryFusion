@@ -55,11 +55,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'settings',
-    redirectTo: '/settings/template',
-    pathMatch: 'full'
-  },
-  {
     path: 'notifications',
     redirectTo: '/notifications/open',
     pathMatch: 'full'

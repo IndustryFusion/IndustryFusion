@@ -54,7 +54,8 @@
     .details {
       display: flex;
       height: 56px;
-      width: 434px;
+      width: 288px;
+      float: right;
       background: $light-grey 0 0 no-repeat padding-box;
       border-radius: 44px;
 
@@ -70,6 +71,7 @@
       align-items: center;
       justify-content: space-between;
       margin: 30px 0;
+      width: 434px;
 
       .status{
         background: #FFFFFF 0 0 no-repeat padding-box;

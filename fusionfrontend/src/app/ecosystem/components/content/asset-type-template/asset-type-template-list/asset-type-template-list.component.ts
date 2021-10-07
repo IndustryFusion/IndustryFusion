@@ -75,7 +75,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.menuType = [ItemOptionsMenuType.DELETE];
-    if (this.assetTypeTemplates$ === undefined) {
+    if (this.assetTypeTemplates$ == null) {
       this.assetTypeTemplates$ = this.assetTypeTemplateQuery.selectAll();
     }
     this.assetTypeTemplates$.subscribe(assetTypeTemplates => {

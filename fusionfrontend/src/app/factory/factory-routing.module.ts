@@ -206,6 +206,13 @@ const routes: Routes = [
             },
           },
           {
+            path: 'performance/historical',
+            component: AssetPerformanceComponent,
+            data: {
+              breadcrumb: 'Performance',
+            },
+          },
+          {
             path: 'performance/performance',
             component: AssetPerformanceComponent,
             data: {

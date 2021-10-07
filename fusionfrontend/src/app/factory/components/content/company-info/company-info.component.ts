@@ -26,9 +26,6 @@ import { WeatherService } from '../../../../services/weather.service';
 })
 export class CompanyInfoComponent implements OnChanges {
   @Input()
-  numUsers: number;
-
-  @Input()
   factorySite: FactorySite;
 
   @Input()
