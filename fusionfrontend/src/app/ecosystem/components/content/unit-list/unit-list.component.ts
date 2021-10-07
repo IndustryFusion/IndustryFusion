@@ -60,7 +60,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.units$ === undefined) {
+    if (this.units$ == null) {
       this.units$ = this.unitQuery.selectAll();
     }
     this.units$.subscribe(units => {
