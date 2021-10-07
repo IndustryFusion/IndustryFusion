@@ -16,6 +16,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { OispDeviceStatus } from '../../../services/kairos.model';
 import { UIChart } from 'primeng/chart';
+import * as moment from 'moment';
+import { StatusPoint } from '../../../factory/models/status.model';
 
 
 @Component({
@@ -26,16 +28,13 @@ import { UIChart } from 'primeng/chart';
 export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
   @Input()
-  statuses: OispDeviceStatus[];
+  statuses: StatusPoint[];
 
   @Input()
   showAxes = false;
 
   @Input()
   yLabels: string[];
-
-  @Input()
-  maxXAxisValue: number;
 
   @ViewChild('chart') chart: UIChart;
 
@@ -49,10 +48,30 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   constructor() {
   }
 
-  public static getHoursString(hoursWithMinutes: number): string {
-      const hours = hoursWithMinutes > 99 ? Math.floor(hoursWithMinutes) : ('00' + Math.floor(hoursWithMinutes)).slice(-2);
-      const minutes = ('00' + Math.round((hoursWithMinutes - Math.floor(hoursWithMinutes)) * 60)).slice(-2);
-      return `${hours}:${minutes} h`;
+  private static createDatasetByStatus(firstStatusPointOfGroup: StatusPoint, timeOfStartOfNextGroup: moment.Moment) {
+    const duration = timeOfStartOfNextGroup.toDate().valueOf() - firstStatusPointOfGroup.time.toDate().valueOf();
+    const dataset = { type: 'horizontalBar', data:  [ { x: duration, t: firstStatusPointOfGroup.time } ], label: '', backgroundColor: '' };
+
+    switch (firstStatusPointOfGroup.status) {
+      case OispDeviceStatus.OFFLINE:
+        dataset.label = 'Offline';
+        dataset.backgroundColor = '#F0F0F0';
+        break;
+      case OispDeviceStatus.IDLE:
+        dataset.label = 'Idle';
+        dataset.backgroundColor = '#454F63';
+        break;
+      case OispDeviceStatus.ONLINE:
+        dataset.label = 'Running';
+        dataset.backgroundColor = '#2CA9CE';
+        break;
+      case OispDeviceStatus.ERROR:
+        dataset.label = 'Error';
+        dataset.backgroundColor = '#A73737';
+        break;
+    }
+
+    return dataset;
   }
 
   ngOnInit(): void {
@@ -71,16 +90,16 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   }
 
   private initChartOptions() {
-    const axesOptions = this.getAxesOptions();
+    const axes = { stacked: true, display: false };
 
     const tooltips = {
       mode: 'dataset',
       position: 'nearest',
       callbacks: {
         title(tooltipItem, data) {
-          const value = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index];
+          const timestamp: moment.Moment = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index].t;
           const label = data.datasets[tooltipItem[0].datasetIndex].label;
-          return HistoricalStatusBarChartComponent.getHoursString(value) + ' (' + label + ') - grouped data';
+          return timestamp.format('ll HH:mm') + ' (' + label + ')';
         },
         label(_, _2) {
           return '';
@@ -110,41 +129,10 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
         display: false,
       },
       scales: {
-        xAxes: axesOptions,
-        yAxes: axesOptions
+        xAxes: [axes],
+        yAxes: [axes]
       }
     };
-  }
-
-  private getAxesOptions() {
-    if (this.showAxes) {
-      return [{
-        stacked: true,
-        display: true,
-        ticks: {
-          beginAtZero: true,
-          fontSize: 14,
-          stepSize: 2,
-          max: this.maxXAxisValue ?? undefined,
-          fontFamily: '\'Metropolis\', \'Avenir Next\', \'Helvetica\', serif'
-        },
-        gridLines: {
-          display: true,
-          drawOnChartArea: false
-        },
-      }];
-    } else {
-      return [{
-        stacked: true,
-        display: false,
-        ticks: {
-          beginAtZero: false
-        },
-        gridLines: {
-          display: false
-        }
-      }];
-    }
   }
 
   private initChartData() {
@@ -155,48 +143,57 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   }
 
   private initCanvasHeight() {
-    const canvasHeight = 6 + (this.showAxes ? 0.5 : 0);
+    const canvasHeight = 5 + (this.showAxes ? 0.5 : 0);
     document.documentElement.style.setProperty('--canvas-height', `${ canvasHeight }rem`);
   }
 
-  private updateChart(statuses: OispDeviceStatus[]) {
+  private updateChart(statuses: StatusPoint[]) {
+    this.flushData();
     this.updateChartData(statuses);
     this.chart?.reinit();
   }
 
-  private updateChartData(statuses: OispDeviceStatus[]) {
+  private flushData(): void {
+    if (this.chart) {
+      this.chart.data.datasets = [];
+      this.chart.refresh();
+    }
+  }
+
+  private updateChartData(statuses: StatusPoint[]) {
     this.stackedData.datasets = [];
     if (statuses) {
       let groupSize = 1;
-      let aggregatedStatuses = statuses;
+      let aggregatedStatuses: StatusPoint[] = statuses;
       if (statuses.length > this.MAX_DATASETS * this.START_GROUPING_FACTOR) {
         groupSize = Math.floor(statuses.length / this.MAX_DATASETS);
         aggregatedStatuses = this.aggregateStatuses(statuses, groupSize);
       }
 
-      this.addDatasetsForAggregatedStatuses(aggregatedStatuses, groupSize);
+      this.addDatasetsForAggregatedStatuses(aggregatedStatuses);
     }
   }
 
-  private addDatasetsForAggregatedStatuses(aggregatedStatuses: OispDeviceStatus[], groupSize: number) {
-    let prevStatus: OispDeviceStatus = aggregatedStatuses.length > 0 ? aggregatedStatuses[0] : null;
-    let sameStatusCount = 0;
+  private addDatasetsForAggregatedStatuses(aggregatedStatuses: StatusPoint[]) {
+    let firstStatusPointOfGroup: StatusPoint = aggregatedStatuses.length > 0 ? aggregatedStatuses[0] : null;
 
-    for (const status of aggregatedStatuses) {
-      if (status === prevStatus) {
-        sameStatusCount++;
-        // TODO (jsy): correct reduced weight of last one
-      } else {
-        const newDataset = this.createDatasetByStatus(prevStatus, sameStatusCount * groupSize);
+    for (const statusPoint of aggregatedStatuses) {
+      if (statusPoint.status !== firstStatusPointOfGroup.status) {
+        const newDataset = HistoricalStatusBarChartComponent.createDatasetByStatus(firstStatusPointOfGroup, statusPoint.time);
         this.stackedData.datasets.push(newDataset);
-        prevStatus = status;
-        sameStatusCount = 1;
+        firstStatusPointOfGroup = statusPoint;
       }
     }
+
+    if (aggregatedStatuses.length > 0) {
+      const lastStatusPoint = aggregatedStatuses[aggregatedStatuses.length - 1];
+      const newDataset = HistoricalStatusBarChartComponent.createDatasetByStatus(firstStatusPointOfGroup, lastStatusPoint.time);
+      this.stackedData.datasets.push(newDataset);
+    }
   }
 
-  private aggregateStatuses(statuses: OispDeviceStatus[], groupSize: number): OispDeviceStatus[] {
-    const aggregatedStatuses: OispDeviceStatus[] = [];
+  private aggregateStatuses(statuses: StatusPoint[], groupSize: number): StatusPoint[] {
+    const aggregatedStatuses: StatusPoint[] = [];
     if (statuses) {
       const statusGroups = this.getStatusGroups(statuses, groupSize);
       for (const statusGroup of statusGroups) {
@@ -215,11 +212,13 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     }, []);
   }
 
-  private aggregateGroupOfStatuses(statuses: OispDeviceStatus[]): OispDeviceStatus {
-    return this.getMode(statuses) as OispDeviceStatus;
+  private aggregateGroupOfStatuses(statuses: StatusPoint[]): StatusPoint {
+    const modeOfStatusGroup = this.getMode(statuses.map(status => status.status)) as OispDeviceStatus;
+    const firstTimeOfGroup = statuses[0].time;
+    return { status: modeOfStatusGroup, time: firstTimeOfGroup };
   }
 
-  private getMode(numbers: number[]): number {
+  private getMode(numbers: OispDeviceStatus[]): OispDeviceStatus {
     if (numbers.length === 0) {
       return 0;
     }
@@ -240,30 +239,5 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
       });
 
     return m[0].value;
-  }
-
-  private createDatasetByStatus(status: OispDeviceStatus, count: number) {
-    const dataset = { type: 'horizontalBar', data: [this.maxXAxisValue / this.statuses.length * count], label: '', backgroundColor: '' };
-
-    switch (status) {
-      case OispDeviceStatus.OFFLINE:
-        dataset.label = 'Offline';
-        dataset.backgroundColor = '#F0F0F0';
-        break;
-      case OispDeviceStatus.IDLE:
-        dataset.label = 'Idle';
-        dataset.backgroundColor = '#454F63';
-        break;
-      case OispDeviceStatus.ONLINE:
-        dataset.label = 'Running';
-        dataset.backgroundColor = '#2CA9CE';
-        break;
-      case OispDeviceStatus.ERROR:
-        dataset.label = 'Error';
-        dataset.backgroundColor = '#A73737';
-        break;
-    }
-
-    return dataset;
   }
 }

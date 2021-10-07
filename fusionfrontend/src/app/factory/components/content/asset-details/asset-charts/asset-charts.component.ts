@@ -25,6 +25,7 @@ import * as moment from 'moment';
 import { PointWithId } from '../../../../../services/oisp.model';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { StatusPoint } from '../../../../models/status.model';
 
 @Component({
   selector: 'app-asset-charts',
@@ -60,7 +61,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   latestPoints$: Observable<PointWithId[]>;
 
-  statuses: number[];
+  statuses: StatusPoint[];
   isStatus: boolean;
 
   public thresholdColors = [
@@ -304,9 +305,9 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     points.forEach(point => {
       this.currentNumberOfPoints += 1;
       const data = this.lineChartData[0].data as ChartPoint[];
-      const currentDate: moment.Moment = moment(point.ts);
-      data.push({ y: point.value, t: currentDate });
-      this.lineChartLabels.push(currentDate.toISOString());
+      const dateOfPoint: moment.Moment = moment(point.ts);
+      data.push({ y: point.value, t: dateOfPoint });
+      this.lineChartLabels.push(dateOfPoint.toISOString());
     });
 
     if (this.isStatus) {
@@ -329,9 +330,14 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateStatusPoints(): void {
     this.statuses = [];
+/*    this.statuses.push( { status: Math.round(1), time: moment(Date.parse('01.01.2021 1:20')) });
+    this.statuses.push( { status: Math.round(0), time: moment(Date.parse('01.01.2021 5:20')) });
+    this.statuses.push( { status: Math.round(3), time: moment(Date.parse('01.01.2021 5:40')) });
+    this.statuses.push( { status: Math.round(3), time: moment(Date.parse('01.01.2021 7:20')) });
+    this.statuses.push( { status: Math.round(2), time: moment(Date.parse('01.01.2021 23:20')) });*/
     this.lineChartData[0].data.forEach(chartPoint => {
       if (typeof chartPoint.y === 'number') {
-        this.statuses.push(Math.round(chartPoint.y));
+        this.statuses.push( { status: Math.round(chartPoint.y), time: chartPoint.t });
       }
     });
   }
