@@ -12,14 +12,12 @@ export class TableSelectedItemsBarComponent implements OnInit {
 
   @Input() selectedItems: any[] = [];
   @Input() tableSelectedItemsBarTypes: TableSelectedItemsBarType[];
-  @Input() itemType: string;
+  @Input() itemName: string;
   @Output() deselectAllItems = new EventEmitter<void>();
   @Output() showAssetCards = new EventEmitter<void>();
   @Output() closeNotification = new EventEmitter<void>();
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
-
-
 
   editBarMapping: { [k: string]: string };
 
@@ -29,7 +27,6 @@ export class TableSelectedItemsBarComponent implements OnInit {
   faTrashAlt = faTrashAlt;
   faTimes = faTimes;
 
-
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
   constructor() { }
@@ -38,12 +35,11 @@ export class TableSelectedItemsBarComponent implements OnInit {
     console.log(this.tableSelectedItemsBarTypes);
     console.log(this.selectedItems);
     this.editBarMapping = {
-      '=0': 'No ' + this.itemType + 's selected',
-      '=1': '# ' + this.itemType + ' selected',
-      other: '# ' + this.itemType + 's selected'
+      '=0': 'No ' + this.itemName + 's selected',
+      '=1': '# ' + this.itemName + ' selected',
+      other: '# ' + this.itemName + 's selected'
     };
   }
-
 
   onCardsViewClick() {
     this.showAssetCards.emit();
@@ -52,7 +48,6 @@ export class TableSelectedItemsBarComponent implements OnInit {
   onDeselectClick() {
     this.deselectAllItems.emit();
   }
-
 
   onEditClick() {
     this.editItem.emit();

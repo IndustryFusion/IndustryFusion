@@ -28,7 +28,7 @@ under the License.
 
 <app-table-selected-items-bar [selectedItems]="selectedFactoryAssets"
   [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT, TableSelectedItemsBarType.DELETE,
-  TableSelectedItemsBarType.SHOWASSETCARDS]" [itemType]="'Asset'"
+  TableSelectedItemsBarType.SHOWASSETCARDS]" [itemName]="'Asset'"
   (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); showEditDialog()"
   (deleteItem)="setActiveRow(); showDeleteDialog()" (showAssetCards)="onCardsViewClick()">
 </app-table-selected-items-bar>
@@ -78,5 +78,5 @@ under the License.
 </p-table>
 
 
-<p-confirmDialog class="confirm-dialog-style" rejectButtonStyleClass="if-button button-secondary"
+<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
                  acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
