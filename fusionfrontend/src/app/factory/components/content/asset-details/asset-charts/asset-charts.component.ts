@@ -60,6 +60,9 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   latestPoints$: Observable<PointWithId[]>;
 
+  statuses: number[];
+  isStatus: boolean;
+
   public thresholdColors = [
     { backgroundColor: '#fceace', borderColor: '#f5b352' },
     { backgroundColor: '#e6cfce', borderColor: '#a14b47' },
@@ -79,6 +82,11 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     private oispService: OispService) { }
 
   ngOnInit() {
+    this.isStatus = this.fieldDetails.externalName === 'status';
+    if (this.isStatus) {
+      this.maxPoints = 100000;
+    }
+
     this.lineChartData[0].label = this.fieldDetails.description;
     this.initLineChartOptions();
   }
@@ -301,8 +309,12 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       this.lineChartLabels.push(currentDate.toISOString());
     });
 
-    this.updateThresholds(points);
-    this.chart.update();
+    if (this.isStatus) {
+      this.updateStatusPoints();
+    } else {
+      this.updateThresholds(points);
+      this.chart.update();
+    }
   }
 
   private updateThresholds(newPoints: PointWithId[]): void {
@@ -313,6 +325,15 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     this.lineChartOptions.scales.yAxes[0].ticks.max = minMax.max;
 
     this.lineChartOptions.annotation = this.getAnnotationsByIdealAndCriticalThresholds(minMax);
+  }
+
+  private updateStatusPoints(): void {
+    this.statuses = [];
+    this.lineChartData[0].data.forEach(chartPoint => {
+      if (typeof chartPoint.y === 'number') {
+        this.statuses.push(Math.round(chartPoint.y));
+      }
+    });
   }
 
   private getUpdatedYMinMax(newPoints?: PointWithId[]): { min: number, max: number } {
