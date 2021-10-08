@@ -46,7 +46,6 @@ export class UserManagementService {
   }
 
   public getUserProfile(): Promise<KeycloakProfile> {
-    this.keycloakService.loadUserProfile().then(x =>     console.log(x));
     return this.keycloakService.loadUserProfile();
   }
 

@@ -209,10 +209,11 @@ header {
       height: auto;
       width: auto;
 
-      clr-icon {
+      .user-name-more {
+        font-size: inherit;
+        background: none !important;
         height: 16px;
         width: 16px;
-        margin: 0;
       }
     }
 

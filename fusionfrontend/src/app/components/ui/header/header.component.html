@@ -45,7 +45,7 @@ under the License.
       <li *ngIf="user" class="user"></li>
       <li *ngIf="user" class="user-name">
         {{ user.firstName }}
-        <clr-icon class="user-name-more" shape="caret" style="transform: rotate(180deg);" (click)="userpanel.show($event)"></clr-icon>
+        <i class="pi pi-chevron-down user-name-more" (click)="userpanel.show($event)"></i>
       </li>
     </ul>
   </section>
