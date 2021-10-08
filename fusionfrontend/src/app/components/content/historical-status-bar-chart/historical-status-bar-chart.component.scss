@@ -13,10 +13,6 @@
  * under the License.
  */
 
-@import "abstract/variables";
-
-$canvas-height: var(--canvas-height);
-
 .equipment-efficiency-bar-chart {
   display: block;
   flex-direction: row;
@@ -32,5 +28,5 @@ $canvas-height: var(--canvas-height);
 
 :host ::ng-deep canvas {
   border-radius: 0 8px 8px 0 !important;
-  height: $canvas-height !important;
+  height: 5rem !important;
 }

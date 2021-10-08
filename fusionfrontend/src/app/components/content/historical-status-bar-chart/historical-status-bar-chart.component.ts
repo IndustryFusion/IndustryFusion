@@ -19,6 +19,7 @@ import { UIChart } from 'primeng/chart';
 import * as moment from 'moment';
 import { StatusPoint } from '../../../factory/models/status.model';
 import { environment } from '../../../../environments/environment';
+import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 
 
 @Component({
@@ -30,12 +31,6 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
   @Input()
   statuses: StatusPoint[];
-
-  @Input()
-  showAxes = false;
-
-  @Input()
-  yLabels: string[];
 
   @ViewChild('chart') chart: UIChart;
 
@@ -50,8 +45,9 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   }
 
   private static createDatasetByStatus(firstStatusPointOfGroup: StatusPoint, timeOfStartOfNextGroup: moment.Moment) {
-    const duration = timeOfStartOfNextGroup.toDate().valueOf() - firstStatusPointOfGroup.time.toDate().valueOf();
-    const dataset = { type: 'horizontalBar', data:  [ { x: duration, t: firstStatusPointOfGroup.time } ], label: '', backgroundColor: '' };
+    const durationSec = (timeOfStartOfNextGroup.toDate().valueOf() - firstStatusPointOfGroup.time.toDate().valueOf()) / 1000.0;
+    const dataset = { type: 'horizontalBar', data:  [ { x: durationSec, t: firstStatusPointOfGroup.time } ],
+      label: '', backgroundColor: '' };
 
     switch (firstStatusPointOfGroup.status) {
       case OispDeviceStatus.OFFLINE:
@@ -107,7 +103,6 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.initChartOptions();
     this.initChartData();
-    this.initCanvasHeight();
     this.isInitialized = true;
 
     this.updateChart(this.statuses);
@@ -128,8 +123,14 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
       callbacks: {
         title(tooltipItem, data) {
           const timestamp: moment.Moment = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index].t;
+          const durationSec = Math.round(data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index].x);
+          const durationMin = Math.round(durationSec / 60);
+          const durationHoursNotRounded = durationMin / 60;
           const label = data.datasets[tooltipItem[0].datasetIndex].label;
-          return timestamp.format('ll HH:mm') + ' (' + label + ')';
+
+          const durationHoursText = EquipmentEfficiencyBarChartComponent.getHoursString(durationHoursNotRounded);
+          const durationText = durationMin > 59 ? durationHoursText : durationSec > 99 ? durationMin + ' min' : durationSec + 'sec';
+          return timestamp.format('d.M, HH:mm') + ' | ca. ' + durationText + ' (' + label + ')';
         },
         label(_, _2) {
           return '';
@@ -167,14 +168,9 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
   private initChartData() {
     this.stackedData = {
-      labels: this.yLabels ?? [''],
+      labels: [''],
       datasets: []
     };
-  }
-
-  private initCanvasHeight() {
-    const canvasHeight = 5 + (this.showAxes ? 0.5 : 0);
-    document.documentElement.style.setProperty('--canvas-height', `${ canvasHeight }rem`);
   }
 
   private updateChart(statuses: StatusPoint[]) {
