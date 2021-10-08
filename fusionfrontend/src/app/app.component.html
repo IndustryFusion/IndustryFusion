@@ -15,7 +15,7 @@ under the License.
 
 <div class="main-container">
   <app-header [factorySubTitle$]="factorySubTitle$"
-              [user]="(loggedUser$ | async)"></app-header>
+              [user]="(keycloakUser$ | async)"></app-header>
   <div class="content-container">
     <div class="content-area">
       <router-outlet></router-outlet>

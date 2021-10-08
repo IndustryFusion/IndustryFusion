@@ -39,12 +39,12 @@
   }
 
   &:hover {
-    background-color: $basic-white;
-    color: $basic-black
+    background-color: $basic-white !important;
+    color: $basic-black !important;
   }
   &:active {
-    border-color: $basic-white;
-    }
+   border-color: $basic-white !important;
+  }
 }
 
 .dashboardFilterPanel {
