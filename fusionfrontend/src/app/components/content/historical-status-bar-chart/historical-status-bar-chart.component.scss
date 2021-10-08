@@ -13,15 +13,20 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../services/kairos.model';
+.equipment-efficiency-bar-chart {
+  display: block;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 
-export class Status {
-  gotData: boolean;
-  type: string;
-  statusValue: string;
+  .bar-chart {
+    height: 2rem;
+    position: relative;
+  }
 }
 
-export class StatusPoint {
-  status: OispDeviceStatus;
-  time: moment.Moment;
+:host ::ng-deep canvas {
+  border-radius: 0 8px 8px 0 !important;
+  height: 5rem !important;
 }
