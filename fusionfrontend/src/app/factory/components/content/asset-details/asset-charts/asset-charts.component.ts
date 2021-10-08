@@ -330,14 +330,9 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateStatusPoints(): void {
     this.statuses = [];
-/*    this.statuses.push( { status: Math.round(1), time: moment(Date.parse('01.01.2021 1:20')) });
-    this.statuses.push( { status: Math.round(0), time: moment(Date.parse('01.01.2021 5:20')) });
-    this.statuses.push( { status: Math.round(3), time: moment(Date.parse('01.01.2021 5:40')) });
-    this.statuses.push( { status: Math.round(3), time: moment(Date.parse('01.01.2021 7:20')) });
-    this.statuses.push( { status: Math.round(2), time: moment(Date.parse('01.01.2021 23:20')) });*/
     this.lineChartData[0].data.forEach(chartPoint => {
       if (typeof chartPoint.y === 'number') {
-        this.statuses.push( { status: Math.round(chartPoint.y), time: chartPoint.t });
+        this.statuses.push( { status: Math.round(chartPoint.y), time: chartPoint.t } );
       }
     });
   }

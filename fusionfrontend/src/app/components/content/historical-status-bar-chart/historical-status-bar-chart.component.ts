@@ -191,10 +191,9 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     if (statuses && statuses.length > 0) {
       statuses = HistoricalStatusBarChartComponent.fillOfflineGaps(statuses);
 
-      let groupSize = 1;
       let aggregatedStatuses: StatusPoint[] = statuses;
       if (statuses.length > this.START_GROUPING_DATASET_COUNT) {
-        groupSize = Math.floor(statuses.length / this.MAX_DATASETS);
+        const groupSize = Math.floor(statuses.length / this.MAX_DATASETS);
         aggregatedStatuses = this.aggregateStatuses(statuses, groupSize);
       }
 
@@ -207,17 +206,25 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
     for (const statusPoint of aggregatedStatuses) {
       if (statusPoint.status !== firstStatusPointOfGroup.status) {
-        const newDataset = HistoricalStatusBarChartComponent.createDatasetByStatus(firstStatusPointOfGroup, statusPoint.time);
-        this.stackedData.datasets.push(newDataset);
+        this.addStatusToDataset(firstStatusPointOfGroup, statusPoint.time);
         firstStatusPointOfGroup = statusPoint;
       }
     }
 
+    // Cases: 1) Only 1 point -> initial status == status[0], therefore not added above -> add
+    // 2) last point has same status than some points before -> add last group
+    // 3) single last point -> not added, because adding excludes current point and marks the start of a new group -> same as 1)
+    // -> We always have to add a last group
     if (aggregatedStatuses.length > 0) {
       const lastStatusPoint = aggregatedStatuses[aggregatedStatuses.length - 1];
-      const newDataset = HistoricalStatusBarChartComponent.createDatasetByStatus(firstStatusPointOfGroup, lastStatusPoint.time);
-      this.stackedData.datasets.push(newDataset);
+      const timeOfLastStatusPointPlusOneSample = moment(lastStatusPoint.time.toDate().valueOf() + environment.assetStatusSampleRateMs);
+      this.addStatusToDataset(firstStatusPointOfGroup, timeOfLastStatusPointPlusOneSample);
     }
+  }
+
+  private addStatusToDataset(firstStatusPointOfGroup: StatusPoint, timeOfFirstStatusPointOfNextGroup: moment.Moment) {
+    const newDataset = HistoricalStatusBarChartComponent.createDatasetByStatus(firstStatusPointOfGroup, timeOfFirstStatusPointOfNextGroup);
+    this.stackedData.datasets.push(newDataset);
   }
 
   private aggregateStatuses(statuses: StatusPoint[], groupSize: number): StatusPoint[] {
@@ -246,26 +253,27 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     return { status: modeOfStatusGroup, time: firstTimeOfGroup };
   }
 
-  private getMode(numbers: OispDeviceStatus[]): OispDeviceStatus {
-    if (numbers.length === 0) {
+  private getMode(statuses: OispDeviceStatus[]): OispDeviceStatus {
+    if (statuses.length === 0) {
       return 0;
     }
 
-    const m = numbers.reduce((items, current) => {
+    const statusesWithCount: { value: OispDeviceStatus, count: number }[] = statuses.reduce((items, current) => {
       const item = (items.length === 0) ? null : items.find((x) => x.value === current);
-      (item) ? item.occurrence++ : items.push({ value: current, occurrence: 1 });
+      (item) ? item.count++ : items.push({ value: current, count: 1 });
       return items;
-    }, [])
-      .sort((a, b) => {
-        if (a.occurrence < b.occurrence) {
+    }, []);
+
+    const statusesWithDescendingCount = statusesWithCount.sort((a, b) => {
+        if (a.count < b.count) {
           return 1;
-        } else if (a.occurrence > b.occurrence || a.value < b.value) {
+        } else if (a.count > b.count || a.value < b.value) {
           return -1;
         } else {
           return (a.value === b.value) ? 0 : 1;
         }
       });
 
-    return m[0].value;
+    return statusesWithDescendingCount[0].value;
   }
 }
