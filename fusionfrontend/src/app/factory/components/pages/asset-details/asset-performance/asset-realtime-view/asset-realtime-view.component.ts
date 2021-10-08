@@ -13,19 +13,17 @@
  * under the License.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Observable, Subject, zip } from 'rxjs';
 import { OispService } from 'src/app/services/oisp.service';
 import { PointWithId } from 'src/app/services/oisp.model';
-import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-details/field-details.model';
+import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssetQuery } from 'src/app/store/asset/asset.query';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { MaintenanceInterval } from '../../../../content/asset-details/maintenance-bar/maintenance-interval.model';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
-import * as moment from 'moment';
 import { OispDeviceQuery } from '../../../../../../store/oisp/oisp-device/oisp-device.query';
 import { FactoryAssetDetailsResolver } from '../../../../../../resolvers/factory-asset-details.resolver';
 import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
@@ -49,31 +47,14 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
   assetId: ID;
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
-  hoursTillValue$: Observable<number>;
+  hoursTillMaintenanceValue$: Observable<number>;
   maintenanceIntervalValue$: Observable<number>;
-  timeSlotOptions = 'current';
-  maxPointsOptions: string;
-  startDate: string;
-  endDate: string;
-  minDate: string;
-  maxDate: string;
-
-  choiceConfigurationMapping:
-    { [k: string]: ChoiceConfiguration } = {
-    current: new ChoiceConfiguration(false, false, false, false, false, false),
-    oneTimeSlot: new ChoiceConfiguration(true, false, false, true, false, false),
-    customDate: new ChoiceConfiguration(true, true, false, true, false, false),
-    customDateWithEndDate: new ChoiceConfiguration(true, true, true, true, false, false),
-    onOkClick: new ChoiceConfiguration(false, false, false, false, true, false),
-    onOkClickShowWarning: new ChoiceConfiguration(false, false, false, false, false, true),
-  };
-
-  currentChoiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
+  maintenanceUtils = AssetMaintenanceUtils;
   maintenanceValues: MaintenanceInterval = {
     hoursTillMaintenance: null,
     maintenanceInterval: null
   };
-  maintenanceUtils = AssetMaintenanceUtils;
+
   private unSubscribe$ = new Subject<void>();
 
 
@@ -82,7 +63,6 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
               private oispDeviceQuery: OispDeviceQuery,
               private factoryResolver: FactoryResolver,
               private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
-              private datePipe: DatePipe,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
   }
@@ -96,7 +76,7 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
 
     this.initLastPoints();
     this.initMergedFields();
-    this.initHoursTillValue();
+    this.initHoursTillMaintencanceValue();
     this.initMaintenanceIntervalValue();
     this.zipHoursTillValueAndMaintenanceIntervalValue();
 
@@ -128,8 +108,8 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
       );
   }
 
-  private initHoursTillValue() {
-    this.hoursTillValue$ = this.mergedFields$.pipe(
+  private initHoursTillMaintencanceValue() {
+    this.hoursTillMaintenanceValue$ = this.mergedFields$.pipe(
       map(fields => {
         const filteredFields = fields.filter(field => field.description === 'Hours till maintenance');
         if (filteredFields.length > 0) {
@@ -151,7 +131,7 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
   }
 
   private zipHoursTillValueAndMaintenanceIntervalValue() {
-    zip(this.hoursTillValue$,
+    zip(this.hoursTillMaintenanceValue$,
       this.maintenanceIntervalValue$
     )
       .pipe(
@@ -171,77 +151,8 @@ export class AssetRealtimeViewComponent implements OnInit, OnDestroy {
     this.unSubscribe$.complete();
   }
 
-  setOptions(key: string,
-             validateOptions: boolean = false) {
-    if (validateOptions) {
-      if (!this.maxPointsOptions) {
-        this.currentChoiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
-        console.log('current Choices show warning: ' + this.currentChoiceConfiguration.showWarning);
-        return;
-      } else {
-        if (this.timeSlotOptions === 'customDate') {
-          if (!(this.startDate && this.endDate)) {
-            this.currentChoiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
-            return;
-          }
-        }
-      }
-    }
-    this.currentChoiceConfiguration = this.choiceConfigurationMapping[key];
-  }
-
-  resetOptions() {
-    if (this.timeSlotOptions === 'customDate') {
-      this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDate;
-    } else {
-      this.currentChoiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
-    }
-  }
-
-  setMinAndMaxDate(date: string) {
-    const localDate: Date = new Date(date);
-    this.minDate = this.datePipe.transform(localDate, 'yyyy-MM-dd');
-    this.maxDate = this.datePipe.transform(moment(localDate).add(2, 'days').toDate(), 'yyyy-MM-dd');
-    this.currentChoiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
-  }
-
-  hasTypeCategorical(field: FieldDetails): boolean {
-    return field.quantityDataType === QuantityDataType.CATEGORICAL;
-  }
-
-  hasTypeNumeric(field: FieldDetails): boolean {
-    return field.quantityDataType === QuantityDataType.NUMERIC;
-  }
-
-  isNotAttribute(field: FieldDetails) {
-    return (field.type !== FieldType.ATTRIBUTE);
-  }
-
   onChangeRoute(): Promise<boolean> {
     const newRoute = ['..', this.viewMode];
     return this.router.navigate(newRoute, { relativeTo: RouteHelpers.getActiveRouteLastChild(this.activatedRoute) });
-  }
-}
-
-class ChoiceConfiguration {
-  chooseMaxPoints = false;
-  chooseStartDate = false;
-  chooseEndDate = false;
-  chooseButton = false;
-  clickedOk = false;
-  showWarning = false;
-
-  constructor(chooseMaxPoints: boolean,
-              chooseStartDate: boolean,
-              chooseEndDate: boolean,
-              chooseButton: boolean,
-              clickedOk: boolean,
-              showWarning: boolean) {
-    this.chooseMaxPoints = chooseMaxPoints;
-    this.chooseStartDate = chooseStartDate;
-    this.chooseButton = chooseButton;
-    this.clickedOk = clickedOk;
-    this.chooseEndDate = chooseEndDate;
-    this.showWarning = showWarning;
   }
 }

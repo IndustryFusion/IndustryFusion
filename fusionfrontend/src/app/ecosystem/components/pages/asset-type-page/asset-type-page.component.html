@@ -36,5 +36,5 @@ under the License.
   </div>
 </section>
 
-<app-asset-type-template-list [optionalItems$]="assetTypeTemplates$"
+<app-asset-type-template-list [assetTypeTemplates$]="assetTypeTemplates$"
                               [parentAssetTypeId]="(assetType$ | async)?.id"></app-asset-type-template-list>

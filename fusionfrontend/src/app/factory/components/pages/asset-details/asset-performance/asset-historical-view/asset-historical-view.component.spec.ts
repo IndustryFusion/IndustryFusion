@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetTypeTemplateListItemComponent } from './asset-type-template-list-item.component';
+import { AssetHistoricalViewComponent } from './asset-historical-view.component';
 
-describe('AssetTypeTemplateListItemComponent', () => {
-  let component: AssetTypeTemplateListItemComponent;
-  let fixture: ComponentFixture<AssetTypeTemplateListItemComponent>;
+describe('AssetHistoricalViewComponent', () => {
+  let component: AssetHistoricalViewComponent;
+  let fixture: ComponentFixture<AssetHistoricalViewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetTypeTemplateListItemComponent ]
+      declarations: [ AssetHistoricalViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeTemplateListItemComponent);
+    fixture = TestBed.createComponent(AssetHistoricalViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

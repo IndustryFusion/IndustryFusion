@@ -14,7 +14,7 @@
  */
 
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private factoryResolver: FactoryResolver,
               private userManagementService: UserManagementService,
               private ngZone: NgZone) { }
-  factorySubTitle$: Observable<string>;
+  factorySubTitle$: Subject<string>;
   keycloakUser$: Promise<KeycloakProfile>;
 
   private intervalHandle: number;

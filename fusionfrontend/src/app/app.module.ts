@@ -29,7 +29,6 @@ import { HeaderComponent } from './components/ui/header/header.component';
 import { FactoryModule } from './factory/factory.module';
 import { FleetModule } from './fleet/fleet.module';
 import { EcosystemModule } from './ecosystem/ecosystem.module';
-import { SettingsModule } from './settings/settings.module';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { TokenInterceptor } from './services/token.interceptor';
@@ -58,7 +57,6 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     FactoryModule,
     FleetModule,
     EcosystemModule,
-    SettingsModule,
     DashboardModule,
     FusionAppletsModule,
     NotificationsModule,

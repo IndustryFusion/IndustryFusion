@@ -64,8 +64,9 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
 import { AccordionModule } from 'primeng/accordion';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { DashboardModule } from '../dashboards/dashboard.module';
+import { AssetHistoricalViewComponent } from './components/pages/asset-details/asset-performance/asset-historical-view/asset-historical-view.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { DashboardModule } from '../dashboards/dashboard.module';
     AssetsGridPageComponent,
     AssetsListPageComponent,
     AssetPerformanceComponent,
+    AssetHistoricalViewComponent,
     AssetRealtimeViewComponent,
     AssetPerformanceViewComponent,
     FactorySitesComponent,
@@ -110,19 +112,19 @@ import { DashboardModule } from '../dashboards/dashboard.module';
     AssetSubsystemsComponent,
     AssetNotificationsComponent
   ],
-  imports: [
-    IFCommon,
-    FactoryRoutingModule,
-    ClarityModule,
-    ChartsModule,
-    ReactiveFormsModule,
-    TableModule,
-    CardModule,
-    FusionAppletsModule,
-    AccordionModule,
-    SelectButtonModule,
-    DashboardModule,
-  ],
+    imports: [
+        IFCommon,
+        FactoryRoutingModule,
+        ClarityModule,
+        ChartsModule,
+        ReactiveFormsModule,
+        TableModule,
+        CardModule,
+        FusionAppletsModule,
+        AccordionModule,
+        DashboardModule,
+        CalendarModule,
+    ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

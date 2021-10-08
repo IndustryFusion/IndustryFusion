@@ -18,8 +18,8 @@ under the License.
   <ng-container *ngIf="asset$ | async as assetWithFields">
 
     <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-      <div class="caption">Maintenance</div>
-      <p-selectButton  class="space-right"
+      <div class="caption">Realtime View</div>
+      <p-selectButton  class="performance-views space-right"
                        optionLabel="name"
                        optionValue="value"
                        [options]="viewModeOptions"
@@ -37,29 +37,6 @@ under the License.
       <label class="progress-bar-label">Days till Maintenance</label>
       <app-maintenance-progressbar [asset]="assetWithFields" [type]="maintenanceUtils.maintenanceDays"
                                    class="progress-bar"></app-maintenance-progressbar>
-    </div>
-
-    <div class="tables-wrapper">
-      <div class="custom-row-wrapper clr-row clr-justify-content-around">
-        <ng-container *ngFor="let field of assetWithFields.fields">
-          <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
-            <div class="clr-col-md-auto clr-align-self-start">
-              <app-asset-tables [asset]="assetWithFields" [field]="field"
-                                [options]="timeSlotOptions"></app-asset-tables>
-            </div>
-          </ng-container>
-        </ng-container>
-      </div>
-    </div>
-
-    <div class="charts-container">
-      <ng-container *ngFor="let field of assetWithFields.fields">
-        <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
-          <app-asset-charts [asset]="assetWithFields" [clickedOk]="currentChoiceConfiguration.clickedOk"
-                            [endDate]="endDate" [field]="field" [maxPointsOptions]="maxPointsOptions"
-                            [options]="timeSlotOptions" [startDate]="startDate"></app-asset-charts>
-        </ng-container>
-      </ng-container>
     </div>
   </ng-container>
 

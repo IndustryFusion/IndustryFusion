@@ -14,7 +14,6 @@ under the License.
 -->
 
 
-
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedFactoryAssets?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
@@ -27,33 +26,12 @@ under the License.
   </div>
 </div>
 
-<div class="table-selected-items-bar p-grid p-jc-between" *ngIf="selectedFactoryAssets.length > 0">
-  <div class="table-selected-item p-col-4">
-    <fa-icon [icon]="faCheckCircle" class="check-box-icon fa-fw"></fa-icon>
-    <span class="table-selected-item">{{ selectedFactoryAssets.length | i18nPlural: editBarMapping }}</span>
-  </div>
-
-  <div class="p-col-4 table-selected-item" style="text-align: center">
-    <div class="table-bar-button-div">
-      <p-button class="table-bar-button" (click)="onCardsViewClick()">
-        <fa-icon [icon]="faThLarge" class="check-box-icon fa-fw"></fa-icon>
-      </p-button>
-      <p-button *ngIf="selectedFactoryAssets.length === 1" class="table-bar-button" (click)="setActiveRow(); showEditDialog();">
-        <fa-icon [icon]="faWrench" class="check-box-icon fa-fw"></fa-icon>
-      </p-button>
-      <p-button *ngIf="selectedFactoryAssets.length === 1" class="table-bar-button" (click)="setActiveRow(); showDeleteDialog();">
-        <fa-icon [icon]="faTrashAlt" class="check-box-icon fa-fw"></fa-icon>
-      </p-button>
-    </div>
-  </div>
-
-  <div class="p-col-4 table-selected-item" style="text-align: end">
-    <p-button class="table-bar-button" (click)="deselectAllItems()">
-      <fa-icon [icon]="faTimes" class="fa-fw"></fa-icon>
-      <span>deselect</span>
-    </p-button>
-  </div>
-</div>
+<app-table-selected-items-bar [selectedItems]="selectedFactoryAssets"
+  [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT, TableSelectedItemsBarType.DELETE,
+  TableSelectedItemsBarType.SHOWASSETCARDS]" [itemName]="'Asset'"
+  (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); showEditDialog()"
+  (deleteItem)="setActiveRow(); showDeleteDialog()" (showAssetCards)="onCardsViewClick()">
+</app-table-selected-items-bar>
 
 <p-table [(selection)]="selectedFactoryAssets" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
          [showCurrentPageReport]="true" [value]="displayedFactoryAssets" [rowHover]="true"
@@ -100,5 +78,5 @@ under the License.
 </p-table>
 
 
-<p-confirmDialog class="confirm-dialog-style" rejectButtonStyleClass="if-button button-secondary"
+<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
                  acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>

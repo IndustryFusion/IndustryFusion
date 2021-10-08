@@ -19,9 +19,6 @@ import { ClarityModule } from '@clr/angular';
 
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
 // tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateListHeaderComponent } from './components/content/asset-type-template/asset-type-template-list-header/asset-type-template-list-header.component';
-// tslint:disable-next-line:max-line-length
-import { AssetTypeTemplateListItemComponent } from './components/content/asset-type-template/asset-type-template-list-item/asset-type-template-list-item.component';
 import { AssetTypeTemplateListComponent } from './components/content/asset-type-template/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypeTemplateWizardMainComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
@@ -31,8 +28,6 @@ import { UnitsPageComponent } from './components/pages/units-page/units-page.com
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
 import { ArraySortPipe } from '../pipes/arraysort.pipe';
 import { AssetTypeListComponent } from './components/content/asset-type-list/asset-type-list.component';
-import { AssetTypeListHeaderComponent } from './components/content/asset-type-list-header/asset-type-list-header.component';
-import { AssetTypeListItemComponent } from './components/content/asset-type-list-item/asset-type-list-item.component';
 import { BaseListComponent } from './components/content/base/base-list/base-list.component';
 import { BaseListHeaderComponent } from './components/content/base/base-list-header/base-list-header.component';
 import { BaseListItemComponent } from './components/content/base/base-list-item/base-list-item.component';
@@ -81,8 +76,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
   declarations: [
     AssetTypeTemplatePageComponent,
     AssetTypeTemplatesPageComponent,
-    AssetTypeTemplateListHeaderComponent,
-    AssetTypeTemplateListItemComponent,
     ArraySortPipe,
     AssetTypeTemplateListComponent,
     AssetTypeTemplateWizardMainComponent,
@@ -93,8 +86,6 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     UnitsPageComponent,
     AssetTypesPageComponent,
     AssetTypeListComponent,
-    AssetTypeListHeaderComponent,
-    AssetTypeListItemComponent,
     BaseListComponent,
     BaseListHeaderComponent,
     BaseListItemComponent,
