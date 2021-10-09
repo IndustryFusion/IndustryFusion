@@ -87,13 +87,6 @@ export class AssetsListComponent implements OnInit, OnChanges {
   titleMapping:
     { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
 
-  editBarMapping:
-    { [k: string]: string } = {
-      '=0': 'No assets selected',
-      '=1': '# Asset selected',
-      other: '# Assets selected'
-    };
-
   ItemOptionsMenuType = ItemOptionsMenuType;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
@@ -202,8 +195,8 @@ export class AssetsListComponent implements OnInit, OnChanges {
   private updateAssets(): void {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
     if (this.searchedFactoryAssets) {
-      this.displayedFactoryAssets = this.filteredFactoryAssets.filter(notification =>
-        this.searchedFactoryAssets.includes(notification));
+      this.displayedFactoryAssets = this.filteredFactoryAssets.filter(asset =>
+        this.searchedFactoryAssets.includes(asset));
     }
   }
 
