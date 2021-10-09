@@ -44,18 +44,13 @@ under the License.
       <tr>
         <th [style.width.%]="5"></th>
         <th [style.width.%]="3"></th>
-        <th [style.width.%]="30" pSortableColumn="ruleName">
-          <div class="p-d-flex p-ai-start">
-            <p-sortIcon field="ruleName"></p-sortIcon>
-            <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="allNotifications"
-                                 attributeToBeSearched="ruleName" (searchByName)="filterNotifications($event)">
-            </app-table-searchbar>
-          </div>
-        </th>
-        <th [style.width.%]="17">
-          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="allNotifications"
-                               attributeToBeSearched="assetName" (searchByName)="searchNotifications($event)">
+        <th [style.width.%]="30" >
+          <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="allNotifications"
+                               attributeToBeSearched="ruleName" (searchByName)="searchNotifications($event)">
           </app-table-searchbar>
+        </th>
+        <th [style.width.%]="17" pSortableColumn="assetName">Asset
+          <p-sortIcon field="assetName"></p-sortIcon>
         </th>
         <th [style.width.%]="40">Condition</th>
         <th [style.width.%]="10">Measured Value</th>
@@ -85,7 +80,8 @@ under the License.
         <td [style.width.%]="15">{{ notification.timestamp | date:'dd.MM.yyyy \'at\' hh:mm:ss' }}</td>
         <td [style.width.%]="5">
           <button *ngIf="notification.status === alertStatusTypes.NEW || notification.status === alertStatusTypes.OPEN"
-                  type="button" class="small-confirm-button" (click)="showCloseNotification(notification)"><i class="pi pi-check"></i></button>
+                  type="button" class="small-confirm-button" (click)="showCloseNotification(notification)">
+          </button>
         </td>
       </tr>
     </ng-template>
