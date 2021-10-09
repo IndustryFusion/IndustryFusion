@@ -17,12 +17,12 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedFactoryAssets?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <app-create-button class="create-btn" text="Onboard new Asset" (createItem)="showOnboardDialog()"></app-create-button>
     <div class="filter-btn-div">
       <app-table-filter class="filter-btn" [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
-                        [position]="['95%', '-445%']" (filteredItems)="filterAssets($event)">
+                        (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>
+    <app-create-button class="create-btn" text="Onboard new Asset" (createItem)="showOnboardDialog()"></app-create-button>
   </div>
 </div>
 

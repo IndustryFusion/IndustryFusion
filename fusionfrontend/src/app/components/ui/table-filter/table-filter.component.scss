@@ -51,12 +51,39 @@ $left: var(--left-position);
 }
 
 .filter-btn {
-  height: 48px;
-  width: 48px;
-  margin-right: 40px;
-  background-color: $light-grey;
-  border: none;
-  border-radius: 10px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+
+  letter-spacing: 0;
+  color: $basic-black;
+
+  background: $light-grey 0 0% no-repeat padding-box;
+  border-color: transparent;
+  border-radius: .5rem;
+  opacity: 1;
+
+  padding: .4rem .8rem .4rem .8rem;
+  cursor: pointer;
+
+  &.filter-active {
+    width: 7.6rem;
+  }
+
+  &::ng-deep .active-filter {
+    margin: 0 .35rem !important;
+    padding: 0 .5rem !important;
+    color: white;
+    background: black;
+    width: .5rem;
+    height: .5rem;
+    border-radius: .5rem;
+  }
+
+  &:hover {
+    background: $hover-grey-border;
+  }
 }
 
 .add-btn {
@@ -84,8 +111,8 @@ $left: var(--left-position);
   font-size: large;
   font-weight: bold;
   color: $basic-black;
-  margin-bottom: 10px;
-  margin-left: 5px;
+  margin-bottom: .5rem;
+  margin-left: .25rem;
 }
 
 .remove-all-filters-btn {
@@ -93,12 +120,12 @@ $left: var(--left-position);
   border: transparent;
   background: none;
   position: absolute;
-  right: 35px;
-  top: 28px;
+  right: .25rem;
+  top: .45rem;
   cursor: pointer;
 
   .remove-all-filters-btn-icon {
-    font-size: $medium-font-size;
+    font-size: $regular-font-size;
     color: $basic-black;
   }
 }

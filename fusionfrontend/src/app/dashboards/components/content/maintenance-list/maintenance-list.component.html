@@ -1,9 +1,9 @@
 <div>
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">Maintenance Dashboard</h3>
-    <div class="filter-btn-div">
+    <div class="single-filter-btn-div">
       <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
-                        [position]="['90%', '-450%']" (filteredItems)="filterAssets($event)">
+                        (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>
   </div>

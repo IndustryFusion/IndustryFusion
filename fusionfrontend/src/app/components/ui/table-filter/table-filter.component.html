@@ -14,13 +14,15 @@ under the License.
 -->
 
 <div style="position: relative">
-  <button (click)="filterpanel.toggle($event)" class="filter-btn">
+  <button (click)="filterpanel.toggle($event)" class="filter-btn" [ngClass]="{'filter-active': activeFilterSet.size > 0}">
+    <span style="margin-right: 10px !important;">Filter</span>
     <fa-icon [icon]="faFilter" class="fa-fw"></fa-icon>
+    <span *ngIf="activeFilterSet.size > 0" class="active-filter">{{ activeFilterSet.size }}</span>
   </button>
-  <button (click)="clearAllFilters(); filterpanel.hide()" *ngIf="activeFilterSet.size > 0"
-          class="remove-all-filters-btn">
-    <i class="pi pi-times-circle remove-all-filters-btn-icon"></i>
-  </button>
+    <button (click)="clearAllFilters(); filterpanel.hide()" *ngIf="activeFilterSet.size > 0"
+            class="remove-all-filters-btn">
+      <i class="pi pi-times remove-all-filters-btn-icon"></i>
+    </button>
 </div>
 
 <p-overlayPanel #filterpanel [dismissable]="false" [ngClass]="{'panel-position': hasPositionSet==true}" class="filterPanel panel-class">

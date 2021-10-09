@@ -24,9 +24,9 @@ under the License.
                        [(ngModel)]="state"
                        (ngModelChange)="onChangeTab()">
       </p-selectButton>
-      <div class="filter-btn-div">
+      <div class="single-filter-btn-div">
         <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="allNotifications"
-                          [position]="['90%', '-450%']" (filteredItems)="filterNotifications($event)">
+                         (filteredItems)="filterNotifications($event)">
         </app-table-filter>
       </div>
     </div>
@@ -44,7 +44,7 @@ under the License.
       <tr>
         <th [style.width.%]="5"></th>
         <th [style.width.%]="3"></th>
-        <th [style.width.%]="30" >
+        <th [style.width.%]="30">
           <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="allNotifications"
                                attributeToBeSearched="ruleName" (searchByName)="searchNotifications($event)">
           </app-table-searchbar>
