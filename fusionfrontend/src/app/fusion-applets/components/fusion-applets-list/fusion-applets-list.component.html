@@ -14,7 +14,7 @@ under the License.
 -->
 <div class="wrapper">
   <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="if-title">{{ filteredRules?.length | i18nPlural: titleMapping }}</div>
+    <div class="if-title">{{ displayedRules?.length | i18nPlural: titleMapping }}</div>
     <div class="clr-row list-header">
       <p-selectButton  class="fusion-applet on-white-background space-right"
                        *ngIf="!showActions"
@@ -33,14 +33,24 @@ under the License.
 </div>
 
 
-<p-table #table [value]="filteredRules">
+<p-table #table [value]="displayedRules">
   <ng-template pTemplate="header">
     <tr>
       <th ></th>
-      <th [style.width.%]="25">AppletName</th>
-      <th [style.width.%]="40">Condition Summary</th>
+      <th [style.width.%]="25">
+        <app-table-searchbar filterColumn="AppletName" [itemsToBeFiltered]="filteredRules"
+                             attributeToBeSearched="name" (searchByName)="searchRulesByName($event)">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="40">
+        <app-table-searchbar filterColumn="Condition Summary" [itemsToBeFiltered]="filteredRules"
+                             attributeToBeSearched="naturalLanguage" (searchByName)="searchRulesByCondition($event)">
+        </app-table-searchbar>
+      </th>
       <th [style.width.%]="10"></th>
-      <th [style.width.%]="10">Status</th>
+      <th [style.width.%]="10" pSortableColumn="status">Status
+        <p-sortIcon field="status"></p-sortIcon>
+      </th>
       <th *ngIf="showActions"></th>
     </tr>
   </ng-template>
