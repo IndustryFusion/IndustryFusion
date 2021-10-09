@@ -97,7 +97,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
   private updateDisplayedUnits(): void {
     this.displayedUnits = this.units;
     this.displayedUnits = this.unitsSearchedByName.filter(unitSearchedByName => this.unitsSearchedBySymbol.filter(
-      unitSearcedBySymbol => this.unitsSearchedByQuantity.includes(unitSearcedBySymbol)).includes(unitSearchedByName));
+      unitSearchedBySymbol => this.unitsSearchedByQuantity.includes(unitSearchedBySymbol)).includes(unitSearchedByName));
   }
 
   showCreateDialog() {

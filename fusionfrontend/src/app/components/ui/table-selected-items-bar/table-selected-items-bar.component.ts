@@ -32,8 +32,6 @@ export class TableSelectedItemsBarComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.tableSelectedItemsBarTypes);
-    console.log(this.selectedItems);
     this.editBarMapping = {
       '=0': 'No ' + this.itemName + 's selected',
       '=1': '# ' + this.itemName + ' selected',
