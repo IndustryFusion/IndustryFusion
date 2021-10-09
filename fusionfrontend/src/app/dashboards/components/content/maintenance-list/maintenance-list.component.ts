@@ -61,7 +61,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'},
-    { filterType: FilterType.NUMBERBASEDFILTER, columnName: 'Maintenance Due (Days)', attributeToBeFiltered: 'maintenanceDue'}];
+    { filterType: FilterType.NUMBERBASEDFILTER, columnName: 'Maintenance Due', attributeToBeFiltered: 'maintenanceDue'}];
 
   utils = Utils;
 
