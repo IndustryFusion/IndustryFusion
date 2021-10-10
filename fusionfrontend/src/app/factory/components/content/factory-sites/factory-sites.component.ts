@@ -76,12 +76,12 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     this.activeListItem = factorySite;
   }
 
-  searchFactorySitesByName(event?: FactorySite[]) {
+  searchFactorySitesByName(event: FactorySite[]) {
     this.factorySitesSearchedByName = event;
     this.updateDisplayedFactorySites();
   }
 
-  searchFactorySitesByStreet(event?: FactorySite[]) {
+  searchFactorySitesByStreet(event: FactorySite[]) {
     this.factorySitesSearchedByStreet = event;
     this.updateDisplayedFactorySites();
   }

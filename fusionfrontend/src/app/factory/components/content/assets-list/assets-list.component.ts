@@ -33,8 +33,6 @@ import { AssetInstantiationComponent } from '../asset-instantiation/asset-instan
 import { WizardHelper } from '../../../../common/utils/wizard-helper';
 import { ConfirmationService } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
-import { faTimes, faWrench, faThLarge } from '@fortawesome/free-solid-svg-icons';
-import { faCheckCircle, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
 import { TableSelectedItemsBarType } from '../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
 
@@ -71,11 +69,6 @@ export class AssetsListComponent implements OnInit, OnChanges {
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
   selectedFactoryAssets: FactoryAssetDetailsWithFields[] = [];
   activeListItem: FactoryAssetDetailsWithFields;
-  faTimes = faTimes;
-  faWrench = faWrench;
-  faThLarge = faThLarge;
-  faCheckCircle = faCheckCircle;
-  faTrashAlt = faTrashAlt;
 
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
@@ -98,7 +91,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   constructor(
     private assetService: AssetService,
     private formBuilder: FormBuilder,
-    public dialogService: DialogService,
+    private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
       this.createDetailsAssetForm(this.formBuilder);
   }
@@ -182,7 +175,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
     });
   }
 
-  searchAssets(event?: FactoryAssetDetailsWithFields[]): void {
+  searchAssets(event: FactoryAssetDetailsWithFields[]): void {
     this.searchedFactoryAssets = event;
     this.updateAssets();
   }
