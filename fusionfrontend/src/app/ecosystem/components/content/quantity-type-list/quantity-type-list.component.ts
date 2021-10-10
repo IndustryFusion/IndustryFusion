@@ -44,9 +44,9 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
   public ref: DynamicDialogRef;
 
   constructor(
-    public quantityQuery: QuantityTypeQuery,
-    public dialogService: DialogService,
-    public confirmationService: ConfirmationService) {
+    private quantityQuery: QuantityTypeQuery,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
@@ -70,12 +70,12 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchQuantityTypesByName(event?: QuantityType[]): void {
+  searchQuantityTypesByName(event: QuantityType[]): void {
     this.quantityTypesSearchedByName = event;
     this.updateDisplayedQuantityTypes();
   }
 
-  searchQuantityTypesByDescription(event?: QuantityType[]): void {
+  searchQuantityTypesByDescription(event: QuantityType[]): void {
     this.quantityTypesSearchedByDescription = event;
     this.updateDisplayedQuantityTypes();
   }

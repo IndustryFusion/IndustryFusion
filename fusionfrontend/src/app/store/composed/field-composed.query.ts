@@ -37,16 +37,8 @@ export class FieldComposedQuery {
         fields = [ ...fields];
 
         for (let i = 0; i < fields.length; i++) {
-          const field = new Field();
-          field.id = fields[i].id;
-          field.name = fields[i].name;
-          field.description = fields[i].description;
-          field.label = fields[i].label;
-          field.accuracy = fields[i].accuracy;
-          field.value = fields[i].value;
-          field.unitId = fields[i].unitId;
+          const field = { ...fields[i] };
           field.unit = units.find(unit => unit.id === fields[i].unitId);
-          field.thresholdType = fields[i].thresholdType;
 
           fields[i] = field;
         }

@@ -51,11 +51,11 @@ export class UnitListComponent implements OnInit, OnDestroy {
     { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
 
   constructor(
-    public unitQuery: UnitQuery,
-    public unitService: UnitService,
-    public quantityTypeService: QuantityTypeService,
-    public dialogService: DialogService,
-    public confirmationService: ConfirmationService,
+    private unitQuery: UnitQuery,
+    private unitService: UnitService,
+    private quantityTypeService: QuantityTypeService,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService,
     public formBuilder: FormBuilder) {
   }
 
@@ -79,17 +79,17 @@ export class UnitListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchUnitByName(event?: Unit[]): void {
+  searchUnitByName(event: Unit[]): void {
     this.unitsSearchedByName = event;
     this.updateDisplayedUnits();
   }
 
-  searchUnitBySymbol(event?: Unit[]): void {
+  searchUnitBySymbol(event: Unit[]): void {
     this.unitsSearchedBySymbol = event;
     this.updateDisplayedUnits();
   }
 
-  searchUnitByQuantity(event?: Unit[]): void {
+  searchUnitByQuantity(event: Unit[]): void {
     this.unitsSearchedByQuantity = event;
     this.updateDisplayedUnits();
   }

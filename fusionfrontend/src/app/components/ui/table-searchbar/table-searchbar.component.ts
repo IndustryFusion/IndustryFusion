@@ -34,6 +34,7 @@ export class TableSearchbarComponent implements OnInit {
   searchByName = new EventEmitter<any>();
 
   searchText: string;
+  dotToSplitNestedVariables = '.';
   faSearch = faSearch;
 
   constructor() { }
@@ -50,7 +51,7 @@ export class TableSearchbarComponent implements OnInit {
   }
 
   filterItemsBySearchText<ItemType extends BaseEntity>(): ItemType {
-    if (this.attributeToBeSearched.includes('.')) {
+    if (this.attributeToBeSearched.includes(this.dotToSplitNestedVariables)) {
       const attributesToBeSearched = this.attributeToBeSearched.split('.');
       return this.itemsToBeFiltered.filter(item => {
         if (item[attributesToBeSearched[0]] != null && item[attributesToBeSearched[1]] != null) {

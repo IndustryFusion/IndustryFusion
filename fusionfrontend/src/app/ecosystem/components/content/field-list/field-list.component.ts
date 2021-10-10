@@ -63,7 +63,7 @@ export class FieldListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchFieldByName(event?: Field[]): void {
+  searchFieldByName(event: Field[]): void {
     this.fieldsSearchedByName = event;
     this.updateDisplayedFields();
   }
