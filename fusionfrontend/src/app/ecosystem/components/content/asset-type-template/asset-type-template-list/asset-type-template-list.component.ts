@@ -67,10 +67,10 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState' }];
 
   constructor(
-    public assetTypeTemplateQuery: AssetTypeTemplateQuery,
-    public assetTypeTemplateService: AssetTypeTemplateService,
-    public dialogService: DialogService,
-    public confirmationService: ConfirmationService) {
+    private assetTypeTemplateQuery: AssetTypeTemplateQuery,
+    private assetTypeTemplateService: AssetTypeTemplateService,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
      }
 
   ngOnInit() {
@@ -92,12 +92,12 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchAssetTypeTemplates(event?: AssetTypeTemplate[]): void {
+  searchAssetTypeTemplates(event: AssetTypeTemplate[]): void {
     this.searchedAssetTypeTemplates = event;
     this.updateAssetTypeTemplates();
   }
 
-  filterAssetTypeTemplates(event?: AssetTypeTemplate[]) {
+  filterAssetTypeTemplates(event: AssetTypeTemplate[]) {
     this.filteredAssetTypeTemplates = event;
     this.updateAssetTypeTemplates();
   }

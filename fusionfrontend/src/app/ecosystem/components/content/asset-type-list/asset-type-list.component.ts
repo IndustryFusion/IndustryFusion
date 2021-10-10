@@ -51,7 +51,7 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Assets', attributeToBeFiltered: 'assetCount' }];
 
   constructor(
-    public assetTypeDetailsQuery: AssetTypeDetailsQuery,
+    private assetTypeDetailsQuery: AssetTypeDetailsQuery,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
   }
@@ -83,12 +83,12 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchAssetTypes(event?: AssetType[]): void {
+  searchAssetTypes(event: AssetType[]): void {
     this.searchedAssetTypes = event;
     this.updateAssetTypes();
   }
 
-  filterAssetTypes(event?: AssetType[]) {
+  filterAssetTypes(event: AssetType[]) {
     this.filteredAssetTypes = event;
     this.updateAssetTypes();
   }
