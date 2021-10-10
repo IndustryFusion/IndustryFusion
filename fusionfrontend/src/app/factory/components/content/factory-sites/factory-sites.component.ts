@@ -36,12 +36,16 @@ import { ConfirmationService } from 'primeng/api';
 export class FactorySitesComponent implements OnInit, OnDestroy {
 
   isLoading$: Observable<boolean>;
-  factorySites: FactorySite[];
   companyId: ID;
   selectedFactorySite: ID;
   activeListItem: FactorySite;
 
   factorySites$: Observable<FactorySiteWithAssetCount[]>;
+  factorySites: FactorySite[];
+  displayedFactorySites: FactorySite[];
+  factorySitesSearchedByName: FactorySite[];
+  factorySitesSearchedByStreet: FactorySite[];
+
   factorySiteMapping:
     { [k: string]: string } = { '=0': 'No Factory sites', '=1': '# Factory site', other: '# Factory sites' };
 
@@ -62,10 +66,31 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.companyId = this.companyQuery.getActiveId();
     this.factorySites$ = this.factoryComposedQuery.selectFactorySitesOfCompanyWithAssetCountInFactoryManager(this.companyId);
+    this.factorySites$.subscribe(factorySites => {
+      this.factorySites = this.displayedFactorySites = this.factorySitesSearchedByName =
+        this.factorySitesSearchedByStreet = factorySites;
+    });
   }
 
   setActiveRow(factorySite?) {
     this.activeListItem = factorySite;
+  }
+
+  searchFactorySitesByName(event?: FactorySite[]) {
+    this.factorySitesSearchedByName = event;
+    this.updateDisplayedFactorySites();
+  }
+
+  searchFactorySitesByStreet(event?: FactorySite[]) {
+    this.factorySitesSearchedByStreet = event;
+    this.updateDisplayedFactorySites();
+  }
+
+  updateDisplayedFactorySites() {
+    this.displayedFactorySites = this.factorySites;
+    const factorySitesIdsSearchedByStreet = this.factorySitesSearchedByStreet.map(factorySite => factorySite.id);
+    this.displayedFactorySites = this.factorySitesSearchedByName.filter(factorySite =>
+      factorySitesIdsSearchedByStreet.includes(factorySite.id));
   }
 
   showCreateDialog() {
