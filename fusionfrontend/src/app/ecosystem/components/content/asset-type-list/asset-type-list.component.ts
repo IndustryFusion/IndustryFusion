@@ -14,7 +14,6 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AssetTypeDetailsQuery } from '../../../../store/asset-type-details/asset-type-details.query';
 import { AssetTypeDialogComponent } from '../asset-type-dialog/asset-type-dialog.component';
 import { DialogType } from '../../../../common/models/dialog-type.model';
@@ -38,13 +37,6 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
   titleMapping:
     { [k: string]: string } = { '=0': 'No Asset types', '=1': '# Asset type', other: '# Asset types' };
 
-  editBarMapping:
-    { [k: string]: string } = {
-      '=0': 'No asset type templates selected',
-      '=1': '# Asset type template selected',
-      other: '# Asset type templates selected'
-    };
-
   activeListItem: AssetTypeDetails;
   assetTypes: AssetType[];
   assetTypes$: Observable<AssetType[]>;
@@ -59,9 +51,7 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Assets', attributeToBeFiltered: 'assetCount' }];
 
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public assetTypeDetailsQuery: AssetTypeDetailsQuery,
+    private assetTypeDetailsQuery: AssetTypeDetailsQuery,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
   }
@@ -93,12 +83,12 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchAssetTypes(event?: AssetType[]): void {
+  searchAssetTypes(event: AssetType[]): void {
     this.searchedAssetTypes = event;
     this.updateAssetTypes();
   }
 
-  filterAssetTypes(event?: AssetType[]) {
+  filterAssetTypes(event: AssetType[]) {
     this.filteredAssetTypes = event;
     this.updateAssetTypes();
   }
@@ -133,8 +123,8 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the assetType ' + this.activeListItem.name + '?',
-      header: 'Delete Asset Confirmation',
+      message: 'Are you sure you want to delete the Asset Type ' + this.activeListItem.name + '?',
+      header: 'Delete Asset Type Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteAssetType();

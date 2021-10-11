@@ -14,8 +14,6 @@
  */
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
 import {
@@ -47,13 +45,6 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   public titleMapping:
     { [k: string]: string } = { '=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates' };
 
-  public editBarMapping:
-    { [k: string]: string } = {
-      '=0': 'No asset type templates selected',
-      '=1': '# Asset type template selected',
-      other: '# Asset type templates selected'
-    };
-
   public createWizardRef: DynamicDialogRef;
   public assetTypeTemplateForm: FormGroup;
 
@@ -76,12 +67,10 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState' }];
 
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public assetTypeTemplateQuery: AssetTypeTemplateQuery,
-    public assetTypeTemplateService: AssetTypeTemplateService,
-    public dialogService: DialogService,
-    public confirmationService: ConfirmationService) {
+    private assetTypeTemplateQuery: AssetTypeTemplateQuery,
+    private assetTypeTemplateService: AssetTypeTemplateService,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
      }
 
   ngOnInit() {
@@ -103,12 +92,12 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchAssetTypeTemplates(event?: AssetTypeTemplate[]): void {
+  searchAssetTypeTemplates(event: AssetTypeTemplate[]): void {
     this.searchedAssetTypeTemplates = event;
     this.updateAssetTypeTemplates();
   }
 
-  filterAssetTypeTemplates(event?: AssetTypeTemplate[]) {
+  filterAssetTypeTemplates(event: AssetTypeTemplate[]) {
     this.filteredAssetTypeTemplates = event;
     this.updateAssetTypeTemplates();
   }
@@ -172,8 +161,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the asset type template ' + this.activeListItem.name + '?',
-      header: 'Delete asset type template Confirmation',
+      message: 'Are you sure you want to delete the Asset Type Template ' + this.activeListItem.name + '?',
+      header: 'Delete Asset Type Template Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteAssetTypeTemplate();

@@ -16,7 +16,7 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedAssetTypeTemplates?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <app-create-button class="create-btn" [text]="'Create Asset type template'" (createItem)="onCreate()"></app-create-button>
+    <app-create-button class="create-btn" [text]="'Create Asset Type Template'" (createItem)="onCreate()"></app-create-button>
     <div class="filter-btn-div">
       <app-table-filter class="filter-btn" [tableFilters]="tableFilters" [itemsToBeFiltered]="assetTypeTemplates"
                         [position]="['95%', '-445%']" (filteredItems)="filterAssetTypeTemplates($event)">
