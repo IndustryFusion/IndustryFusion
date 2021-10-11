@@ -109,7 +109,7 @@ export class FactoryComposedQuery {
 
   selectActiveAssetsWithFieldInstanceDetails(): Observable<FactoryAssetDetailsWithFields> {
     return combineQueries([
-      this.factoryAssetDetailsQuery.waitForActive(),
+      this.factoryAssetDetailsQuery.waitForActives(),
       this.fieldDetailsQuery.selectAll()
     ]).pipe(
       map(([activeAsset, fieldDetails]) => {
