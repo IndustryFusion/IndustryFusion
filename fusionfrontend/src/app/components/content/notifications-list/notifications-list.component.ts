@@ -41,7 +41,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
-  @Input() notifications: Observable<OispNotification[]>;
+  @Input() notifications$: Observable<OispNotification[]>;
   @Input() isInline = false;
   state: NotificationState;
 
@@ -89,6 +89,10 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.periodicallyFetchNotifications();
     this.initNameMappings();
+    this.resetNotificationVariablesToAllNotifications();
+  }
+
+  private resetNotificationVariablesToAllNotifications() {
     this.displayedNotifications = this.filteredNotifications = this.searchedNotifications = this.allNotifications;
   }
 
@@ -187,9 +191,10 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   private fetchNotifications() {
     this.notificationSubscription?.unsubscribe();
-    this.notificationSubscription = this.notifications.subscribe(notifications => {
+    this.notificationSubscription = this.notifications$.subscribe(notifications => {
       if (notifications.length !== this.allNotifications.length) {
         this.allNotifications = notifications;
+        this.resetNotificationVariablesToAllNotifications();
         this.updateNotifications();
       }
     });
