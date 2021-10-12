@@ -200,7 +200,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  closeMultibleNotifications() {
+  closeMultipleNotifications() {
     this.selectedNotifications.forEach(notification => {
       this.deleteNotification(notification.id);
     });
