@@ -50,7 +50,6 @@ export class AppletConditionsValueComponent implements OnInit {
 
   ngOnInit(): void {
     this.prefillSelectedDevices();
-    console.log(this.devices);
   }
 
   private prefillSelectedDevices() {
