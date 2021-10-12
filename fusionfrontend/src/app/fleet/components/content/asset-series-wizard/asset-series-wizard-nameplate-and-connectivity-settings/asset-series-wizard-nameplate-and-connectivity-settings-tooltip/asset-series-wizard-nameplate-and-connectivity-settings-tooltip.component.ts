@@ -16,11 +16,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-asset-series-wizard-connectivity-settings-tooltip',
-  templateUrl: './asset-series-wizard-connectivity-settings-tooltip.component.html',
-  styleUrls: ['./asset-series-wizard-connectivity-settings-tooltip.component.scss']
+  selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings-tooltip',
+  templateUrl: './asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component.html',
+  styleUrls: ['./asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component.scss']
 })
-export class AssetSeriesWizardConnectivitySettingsTooltipComponent implements OnInit {
+export class AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent implements OnInit {
 
   constructor() {
   }

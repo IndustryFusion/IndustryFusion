@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/connectivity-type.query';
 import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
+import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } from './asset-series-wizard-nameplate-and-connectivity-settings-tooltip/asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component';
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { WizardHelper } from '../../../../../common/utils/wizard-helper';
@@ -10,11 +10,11 @@ import { SelectItem } from 'primeng/api';
 import { ProtectionClassService } from '../../../../../services/protection-class.service';
 
 @Component({
-  selector: 'app-asset-series-wizard-connectivity-settings',
-  templateUrl: './asset-series-wizard-connectivity-settings.component.html',
-  styleUrls: ['./asset-series-wizard-connectivity-settings.component.scss']
+  selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings',
+  templateUrl: './asset-series-wizard-nameplate-and-connectivity-settings.component.html',
+  styleUrls: ['./asset-series-wizard-nameplate-and-connectivity-settings.component.scss']
 })
-export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
+export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implements OnInit {
   @Input() mode: DialogType;
   @Input() assetSeries: AssetSeries;
   @Input() assetSeriesForm: FormGroup;
@@ -27,7 +27,7 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
   public connectivityProtocolOptions: ConnectivityProtocol[];
   public infoText = '';
 
-  AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesWizardConnectivitySettingsTooltipComponent;
+  AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent;
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
               private protectionClassService: ProtectionClassService,

@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-series-wizard-connectivity-settings-tooltip.component';
+import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } from './asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component';
 
 describe('AssetSeriesCreateConnectivitySettingsTooltipComponent', () => {
-  let component: AssetSeriesWizardConnectivitySettingsTooltipComponent;
-  let fixture: ComponentFixture<AssetSeriesWizardConnectivitySettingsTooltipComponent>;
+  let component: AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent;
+  let fixture: ComponentFixture<AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetSeriesWizardConnectivitySettingsTooltipComponent ]
+      declarations: [ AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesWizardConnectivitySettingsTooltipComponent);
+    fixture = TestBed.createComponent(AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
