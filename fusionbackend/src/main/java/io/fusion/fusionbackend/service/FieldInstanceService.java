@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.FieldSource;
+import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
@@ -25,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -45,16 +48,30 @@ public class FieldInstanceService {
             return null;
         }
 
+        String generatedExternalName = this.createExternalNameFromFieldTarget(fieldSource.getFieldTarget());
+
         return FieldInstance.builder()
                 .fieldSource(fieldSource)
                 .name(fieldSource.getName())
                 .description(fieldSource.getDescription())
+                .externalName(generatedExternalName)
                 .sourceSensorLabel(fieldSource.getSourceSensorLabel())
                 .absoluteThreshold(thresholdService.initThresholdDraft(fieldSource.getAbsoluteThreshold()))
                 .idealThreshold(thresholdService.initThresholdDraft(fieldSource.getIdealThreshold()))
                 .criticalThreshold(thresholdService.initThresholdDraft(fieldSource.getCriticalThreshold()))
                 .value(fieldSource.getValue())
                 .build();
+    }
+
+    private String createExternalNameFromFieldTarget(FieldTarget fieldTarget) {
+        if (fieldTarget == null) {
+            return null;
+        }
+
+        String nameWithUnderscores = fieldTarget.getName().replace(' ', '_');
+        String nameWithOnlyCharactersAndUnderscores = nameWithUnderscores.replaceAll("[^a-zA-Z_]", "");
+
+        return nameWithOnlyCharactersAndUnderscores.toLowerCase();
     }
 
     public boolean isThresholdsValid(FieldInstance fieldInstance,
