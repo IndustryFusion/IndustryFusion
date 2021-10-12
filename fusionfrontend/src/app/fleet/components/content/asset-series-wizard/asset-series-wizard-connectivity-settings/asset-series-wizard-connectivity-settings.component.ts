@@ -6,6 +6,8 @@ import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-s
 import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { WizardHelper } from '../../../../../common/utils/wizard-helper';
+import { SelectItem } from 'primeng/api';
+import { ProtectionClassService } from '../../../../../services/protection-class.service';
 
 @Component({
   selector: 'app-asset-series-wizard-connectivity-settings',
@@ -19,6 +21,7 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
   @Output() stepChange = new EventEmitter<number>();
   @Output() valid = new EventEmitter<boolean>();
 
+  public protectionClassOptions: SelectItem[] = [];
   public connectivitySettingsForm: FormGroup;
   public connectivityTypeOptions: ConnectivityType[];
   public connectivityProtocolOptions: ConnectivityProtocol[];
@@ -27,6 +30,7 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
   AssetSeriesCreateConnectivitySettingsTooltipComponent = AssetSeriesWizardConnectivitySettingsTooltipComponent;
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
+              private protectionClassService: ProtectionClassService,
               private formBuilder: FormBuilder) {
     this.connectivityTypeOptions = this.connectivityTypeQuery.getAll();
   }
@@ -34,6 +38,7 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
   ngOnInit(): void {
     this.createFormGroup();
     this.disableFormGroupOnEditMode();
+    this.initProtectionClassOptions();
 
     this.updateConnectivityProtocolOptionsAndInfoText();
     if (this.mode === DialogType.CREATE) {
@@ -64,6 +69,16 @@ export class AssetSeriesWizardConnectivitySettingsComponent implements OnInit {
       this.connectivitySettingsForm.get('connectionString').disable( { onlySelf: true });
     }
   }
+
+  private initProtectionClassOptions() {
+    this.protectionClassService.getProtectionClasses().subscribe(protectionClasses => {
+      protectionClasses.forEach(protectionClass => {
+        this.protectionClassOptions.push({ label: protectionClass.toString(), value: protectionClass.toString() });
+        this.assetSeriesForm.get('protectionClass').setValue(this.assetSeriesForm.get('protectionClass')?.value);
+      });
+    });
+  }
+
 
   private selectFirstItemsInDropdowns(): void {
     this.connectivitySettingsForm.get('connectivityTypeId').setValue(1);

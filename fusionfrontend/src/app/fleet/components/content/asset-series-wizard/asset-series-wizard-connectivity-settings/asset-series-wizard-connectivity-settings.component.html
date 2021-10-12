@@ -13,38 +13,76 @@ specific language governing permissions and limitations
 under the License.
 -->
 <div class="asset-series-create-step-three">
-  <form [formGroup]="connectivitySettingsForm">
     <div class="content">
-      <div class="wizard-title">Connectivity Settings</div>
+      <form [formGroup]="assetSeriesForm">
 
-      <div class="input-div">
-        <label class="if-label">Select&nbsp;connectivity&nbsp;type&nbsp;*</label>
-        <div>
-          <p-dropdown [options]="connectivityTypeOptions" formControlName="connectivityTypeId" optionLabel="name"
-                      optionValue="id" (onChange)="onChangeConnectivityType()">
-          </p-dropdown>
-          <div class="info-text">
-            <i class="pi pi-info-circle"></i>
-            <label class="if-label-small"> {{ infoText }} </label>
+        <div class="wizard-title">Create Digital Nameplate</div>
+
+        <div class="input-div">
+          <label class="if-label">CE Certification&nbsp;*</label>
+          <div class="dialog-grid">
+            <div>
+              <p-radioButton [value]="true" label="Yes" formControlName="ceCertified"
+                             inputId="certified1"></p-radioButton>
+            </div>
+            <div class="dialog-grid-col">
+              <p-radioButton [value]="false" label="No" formControlName="ceCertified"
+                             inputId="certified2"></p-radioButton>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="input-div">
-        <label class="if-label">Select&nbsp;protocol&nbsp;*</label>
-        <p-dropdown [options]="connectivityProtocolOptions" formControlName="connectivityProtocolId" optionLabel="name"
-                    optionValue="id" (onChange)="onChangeProtocolType()">
-        </p-dropdown>
-      </div>
-
-      <div class="input-div">
-        <div style="display: flex">
-          <label class="if-label">Connection&nbsp;string&nbsp;*</label>
-          <app-tooltip [component]="AssetSeriesCreateConnectivitySettingsTooltipComponent"></app-tooltip>
+        <div class="selection">
+          <div class="input-div">
+            <label class="if-label">Protection Class&nbsp;*</label>
+            <p-dropdown [options]="protectionClassOptions" formControlName="protectionClass"
+                        filter="true" resetFilterOnHide="true"
+                        placeholder="Select a protection class...">
+            </p-dropdown>
+          </div>
         </div>
-        <input type="text" pInputText formControlName="connectionString" />
-      </div>
 
-    </div>
-  </form>
+        <div class="input-div">
+          <label class="if-label">Asset Handbook</label>
+          <input type="text" pInputText formControlName="handbookUrl" />
+        </div>
+
+        <div class="input-div">
+          <label class="if-label">Asset Video</label>
+          <input type="text" pInputText formControlName="videoUrl" />
+        </div>
+      </form>
+
+      <div class="wizard-title">Connectivity Settings</div>
+
+      <form [formGroup]="connectivitySettingsForm">
+        <div class="input-div">
+          <label class="if-label">Select&nbsp;connectivity&nbsp;type&nbsp;*</label>
+          <div>
+            <p-dropdown [options]="connectivityTypeOptions" formControlName="connectivityTypeId" optionLabel="name"
+                        optionValue="id" (onChange)="onChangeConnectivityType()">
+            </p-dropdown>
+            <div class="info-text">
+              <i class="pi pi-info-circle"></i>
+              <label class="if-label-small"> {{ infoText }} </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-div">
+          <label class="if-label">Select&nbsp;protocol&nbsp;*</label>
+          <p-dropdown [options]="connectivityProtocolOptions" formControlName="connectivityProtocolId" optionLabel="name"
+                      optionValue="id" (onChange)="onChangeProtocolType()">
+          </p-dropdown>
+        </div>
+
+        <div class="input-div">
+          <div style="display: flex">
+            <label class="if-label">Connection&nbsp;string&nbsp;*</label>
+            <app-tooltip [component]="AssetSeriesCreateConnectivitySettingsTooltipComponent"></app-tooltip>
+          </div>
+          <input type="text" pInputText formControlName="connectionString" />
+        </div>
+    </form>
+  </div>
 </div>
