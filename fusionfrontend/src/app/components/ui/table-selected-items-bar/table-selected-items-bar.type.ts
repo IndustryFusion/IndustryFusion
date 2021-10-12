@@ -1,6 +1,6 @@
 export enum TableSelectedItemsBarType {
   DELETE,
   EDIT,
-  SHOWASSETCARDS,
-  CLOSENOTIFICATION,
+  SHOW_ASSET_CARDS,
+  CLOSE_NOTIFICATION,
 }

@@ -33,8 +33,8 @@ under the License.
   </div>
 
   <app-table-selected-items-bar [selectedItems]="selectedNotifications"
-    [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.CLOSENOTIFICATION]" [itemName]="'Notification'"
-    (deselectAllItems)="deselectAllNotifications()" (closeNotification)="closeMultibleNotifications()">
+                                [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.CLOSE_NOTIFICATION]" [itemName]="'Notification'"
+                                (deselectAllItems)="deselectAllNotifications()" (closeNotification)="closeMultibleNotifications()">
   </app-table-selected-items-bar>
 
   <p-table [(selection)]="selectedNotifications" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
