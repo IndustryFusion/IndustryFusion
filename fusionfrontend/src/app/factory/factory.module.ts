@@ -67,6 +67,8 @@ import { AssetPerformanceViewComponent } from './components/pages/asset-details/
 import { DashboardModule } from '../dashboards/dashboard.module';
 import { AssetHistoricalViewComponent } from './components/pages/asset-details/asset-performance/asset-historical-view/asset-historical-view.component';
 import { CalendarModule } from 'primeng/calendar';
+import { TreeTableModule } from 'primeng/treetable';
+import { TreeModule } from 'primeng/tree';
 
 @NgModule({
   declarations: [
@@ -113,17 +115,19 @@ import { CalendarModule } from 'primeng/calendar';
     AssetNotificationsComponent
   ],
     imports: [
-        IFCommon,
-        FactoryRoutingModule,
-        ClarityModule,
-        ChartsModule,
-        ReactiveFormsModule,
-        TableModule,
-        CardModule,
-        FusionAppletsModule,
-        AccordionModule,
-        DashboardModule,
-        CalendarModule,
+      IFCommon,
+      FactoryRoutingModule,
+      ClarityModule,
+      ChartsModule,
+      ReactiveFormsModule,
+      TableModule,
+      CardModule,
+      FusionAppletsModule,
+      AccordionModule,
+      DashboardModule,
+      CalendarModule,
+      TreeTableModule,
+      TreeModule,
     ],
   exports: [
     FactorySubHeaderComponent,

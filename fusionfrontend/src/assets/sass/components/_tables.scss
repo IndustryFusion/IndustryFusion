@@ -94,6 +94,17 @@ h3.table-header{
   @extend .basic-table-cell;
 }
 
+.table-bold-font {
+  font-weight: bold !important;
+  color: $basic-black !important;
+}
+
+.table-checkbox {
+  .p-checkbox .p-checkbox-box {
+    border-radius: .2rem !important;
+  }
+}
+
 .p-paginator {
   height: 45px;
   background-color: $basic-white;
