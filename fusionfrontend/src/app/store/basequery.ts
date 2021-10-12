@@ -31,6 +31,17 @@ export class BaseQueryEntity<S extends EntityState, T extends BaseEntity, IDType
         take(1));
   }
 
+  /**
+   * @description Do not forget to unsubscribe when component is destroyed.
+   */
+  waitForActives(): Observable<T> {
+    return this._selectActive()
+      .pipe(
+        skipWhile(entity => {
+          return entity == null || (entity && String(entity.id) !== String(this.getActiveId()));
+        }));
+  }
+
   private _selectActive(): Observable<T> {
     return this.selectActive() as Observable<T>;
   }

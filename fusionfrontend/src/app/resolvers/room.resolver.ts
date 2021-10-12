@@ -18,6 +18,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 import { CompanyService } from '../store/company/company.service';
 import { RoomService } from '../store/room/room.service';
+import { RouteHelpers } from '../common/utils/route-helpers';
 
 @Injectable({ providedIn: 'root' })
 export class RoomResolver implements Resolve<any>{
@@ -27,7 +28,7 @@ export class RoomResolver implements Resolve<any>{
   resolve(route: ActivatedRouteSnapshot): void {
 
     this.companyService.getCompanies().subscribe();
-    const companyId = route.paramMap.get('companyId');
+    const companyId = RouteHelpers.findParamInFullActivatedRoute(route, 'companyId');
     this.companyService.setActive(companyId);
     if (companyId != null) {
       this.roomService.getRoomsOfCompany(companyId).subscribe();
