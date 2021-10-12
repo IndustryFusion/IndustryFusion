@@ -33,6 +33,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../common/utils/wizard-helper';
+import { EnumHelpers } from '../../../../common/utils/enum-helpers';
 
 @Component({
   selector: 'app-asset-series-wizard',
@@ -44,7 +45,7 @@ export class AssetSeriesWizardComponent implements OnInit {
   assetType: ID;
   companyId: ID;
   step: AssetSeriesWizardStep = AssetSeriesWizardStep.GENERAL_INFORMATION;
-  totalSteps: number = AssetSeriesWizardStep.METRICS;
+  totalSteps: number = this.enumHelpers.getIterableArray(AssetSeriesWizardStep).length;
 
   assetSeries: AssetSeries;
   assetSeriesForm: FormGroup;
@@ -69,6 +70,7 @@ export class AssetSeriesWizardComponent implements OnInit {
               private changeDetectorRef: ChangeDetectorRef,
               private fieldsResolver: FieldsResolver,
               private formBuilder: FormBuilder,
+              private enumHelpers: EnumHelpers,
               private connectivityTypeResolver: ConnectivityTypeResolver,
               private dialogConfig: DynamicDialogConfig,
               private dynamicDialogRef: DynamicDialogRef,
@@ -183,11 +185,11 @@ export class AssetSeriesWizardComponent implements OnInit {
       case AssetSeriesWizardStep.NAMEPLATE_AND_CONNECTIVITY_SETTINGS:
         result = this.connectivitySettingsValid;
         break;
-      case AssetSeriesWizardStep.ATTRIBUTES:
-        result = this.attributesValid;
-        break;
       case AssetSeriesWizardStep.METRICS:
         result = this.metricsValid;
+        break;
+      case AssetSeriesWizardStep.ATTRIBUTES:
+        result = this.attributesValid;
         break;
     }
     return result;
