@@ -135,6 +135,10 @@ export class AssetInstantiationComponent implements OnInit {
     }
   }
 
+  resetSelectedRoomWhenFactorySiteChanged() {
+    this.selectedRoom = null;
+  }
+
   private assignFactorySite(selectedFactorySite?: FactorySite) {
     if (selectedFactorySite) {
       this.selectedFactorySite = selectedFactorySite;
@@ -184,5 +188,4 @@ export class AssetInstantiationComponent implements OnInit {
     this.assetDetails.roomName = assetFormValues.roomName;
     this.assetDetails.factorySiteName = assetFormValues.factorySiteName;
   }
-
 }
