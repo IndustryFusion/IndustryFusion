@@ -32,7 +32,6 @@ public class FieldInstanceDto extends BaseEntityDto {
     private String name;
     private String description;
     private String externalName;
-    private String sourceSensorLabel;
     private String value;
     private Long absoluteThresholdId;
     private ThresholdDto absoluteThreshold;

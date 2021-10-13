@@ -58,7 +58,6 @@ public class FieldInstance extends BaseEntity {
     @JoinColumn(name = "critical_threshold_id")
     private Threshold criticalThreshold;
 
-    private String sourceSensorLabel;
     private String externalName;
     private String name;
     private String description;
@@ -79,9 +78,6 @@ public class FieldInstance extends BaseEntity {
         }
         if (sourceField.getExternalName() != null) {
             setExternalName(sourceField.getExternalName());
-        }
-        if (sourceField.getSourceSensorLabel() != null) {
-            setSourceSensorLabel(sourceField.getSourceSensorLabel());
         }
         if (sourceField.getAbsoluteThreshold() != null) {
             setAbsoluteThreshold(sourceField.getAbsoluteThreshold());

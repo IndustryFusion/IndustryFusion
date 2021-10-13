@@ -50,7 +50,6 @@ public class FieldSource extends BaseEntity {
     @JoinColumn(name = "source_unit_id", nullable = false)
     private Unit sourceUnit;
 
-    private String sourceSensorLabel;
     private String name;
     private String description;
     private String value;
@@ -72,9 +71,6 @@ public class FieldSource extends BaseEntity {
 
         super.copyFrom(sourceField);
 
-        if (sourceField.getSourceSensorLabel() != null) {
-            setSourceSensorLabel(sourceField.getSourceSensorLabel());
-        }
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }
