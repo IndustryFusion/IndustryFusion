@@ -105,7 +105,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   isAssetSerieDetails() {
-    return this.route && this.route.match(`\/assetseries\/[0-9]*`);
+    return this.route && this.route.match(`\/assetseries\/[0-9]*`) && !this.isAssetSeriesInstance();
+  }
+
+  isAssetSeriesInstance() {
+    return this.route && this.route.match(`\/assetseries\/[0-9]*\/assets\/[0-9]*`);
   }
 
   getPageTitle() {

@@ -17,34 +17,34 @@ under the License.
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
   {{ (assetsCombined$ | async)?.length | i18nPlural: assetsMapping }}
   <div>
-    <app-create-button [text]="'Create Asset'" (createItem)="createAssetFromAssetSeries()"></app-create-button>
+    <app-create-button (createItem)="createAssetFromAssetSeries()" [text]="'Create Asset'"></app-create-button>
   </div>
 </div>
-<p-table class="list-container"
-         [value]="assetsCombined$ | async"
+<p-table [paginator]="false"
          [rows]="10"
-         [paginator]="false" >
+         [value]="assetsCombined$ | async"
+         class="list-container">
   <ng-template pTemplate="header">
     <tr>
-      <th >Asset&nbsp;name</th>
-      <th >Customer</th>
-      <th >Street</th>
-      <th >ZIP</th>
-      <th >City</th>
-      <th >Country</th>
-      <th >Activation&nbsp;date</th>
+      <th>Asset&nbsp;name</th>
+      <th>Customer</th>
+      <th>Street</th>
+      <th>ZIP</th>
+      <th>City</th>
+      <th>Country</th>
+      <th>Activation&nbsp;date</th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-assetsCombined>
-    <tr>
-      <td >{{assetsCombined.asset?.name}}</td>
-      <td >{{assetsCombined.factorySite?.name}}</td>
-      <td >{{assetsCombined.factorySite?.line1}} {{assetsCombined.factorySite?.line2}}</td>
-      <td >{{assetsCombined.factorySite?.zip}}</td>
-      <td >{{assetsCombined.factorySite?.city}}</td>
-      <td >{{assetsCombined.factorySite?.country?.name}}</td>
-      <td >{{assetsCombined.asset?.installationDate | date}}</td>
+  <ng-template let-assetsCombined pTemplate="body">
+    <tr [routerLink]="assetsCombined.asset.id+'/digital-nameplate'" class="asset-series-item">
+      <td>{{assetsCombined.asset?.name}}</td>
+      <td>{{assetsCombined.factorySite?.name}}</td>
+      <td>{{assetsCombined.factorySite?.line1}} {{assetsCombined.factorySite?.line2}}</td>
+      <td>{{assetsCombined.factorySite?.zip}}</td>
+      <td>{{assetsCombined.factorySite?.city}}</td>
+      <td>{{assetsCombined.factorySite?.country?.name}}</td>
+      <td>{{assetsCombined.asset?.installationDate | date}}</td>
     </tr>
   </ng-template>
 

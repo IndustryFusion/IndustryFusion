@@ -1,0 +1,94 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'src/assets/sass/base/typography';
+@import 'src/assets/sass/abstract/variables';
+
+.nameplate {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 5%;
+  background-color: $light-grey;
+  width: 100%;
+
+  .card {
+    width: 100%;
+    background-color: $basic-white;
+    border-radius: 10px;
+    border: 0;
+    box-shadow: none;
+    margin: 1rem 0;
+    padding: 0 2rem;
+  }
+
+  ::ng-deep .p-card {
+    box-shadow: none !important;
+  }
+
+  .caption {
+    color: $basic-black;
+    font-size: $bigger-font-size;
+    font-weight: bold;
+    padding: 1rem 3rem;
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flexbox {
+    flex: 1;
+  }
+
+  .card-button-box {
+    padding-left: 1rem;
+  }
+
+  .card-button {
+    font-style: normal;
+    font-weight: bold;
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+    text-align: left;
+
+    letter-spacing: 0;
+    color: $basic-white;
+
+    background: $highlighted 0 0% no-repeat padding-box;
+    border: 1px solid $basic-grey;
+    border-radius: 10px;
+    opacity: 1;
+
+    padding: 8px 32px 8px 16px;
+    cursor: pointer;
+
+    &:hover {
+      background: $hover-grey;
+    }
+
+    &:disabled {
+      background-color: $middle-grey;
+      border: none;
+    }
+  }
+
+  .caption-with-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+  }
+}

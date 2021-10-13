@@ -24,6 +24,7 @@ import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
 import { AssetSeriesDetailsQuery } from '../store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
 
 
 const routes: Routes = [
@@ -56,12 +57,22 @@ const routes: Routes = [
           room: RoomResolver,
           factorySite: FactorySiteResolver
         },
-        children: [
-          {
-            path: 'assets',
-            component: AssetSeriesPageComponent
-          },
-        ]
+      },
+      {
+        path: ':assetSeriesId/assets',
+        component: AssetSeriePageComponent,
+      },
+      {
+        path: ':assetSeriesId/assets/:assetInstanceId/digital-nameplate',
+        component: AssetSeriesDigitalNameplateComponent,
+        resolve: {
+          asset: AssetResolver,
+          room: RoomResolver,
+          factorySite: FactorySiteResolver
+        },
+        data : {
+          breadcrumb: AssetSeriesDetailsQuery
+        }
       }
     ]
   },

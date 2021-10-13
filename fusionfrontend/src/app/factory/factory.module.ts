@@ -56,7 +56,6 @@ import { AssetDetailsSubHeaderComponent } from './components/content/asset-detai
 import { AssetRealtimeViewComponent } from './components/pages/asset-details/asset-performance/asset-realtime-view/asset-realtime-view.component';
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
 import { CardModule } from 'primeng/card';
-import { NameplateItemComponent } from './components/content/asset-details/nameplate-item/nameplate-item.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
@@ -108,7 +107,6 @@ import { ChartModule } from 'primeng/chart';
         AssignAssetToRoomComponent,
         AssetDetailsSubHeaderComponent,
         AssetCardComponent,
-        NameplateItemComponent,
         AssetSubsystemsComponent,
         AssetAppletsComponent,
         AssetSubsystemsComponent,

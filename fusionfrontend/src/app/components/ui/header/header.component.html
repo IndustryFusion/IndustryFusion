@@ -84,12 +84,13 @@ under the License.
     <app-ecosystem-sub-header *ngIf="isManager(ManagerType.ECOSYSTEM_MANAGER)"></app-ecosystem-sub-header>
     <app-factory-sub-header
       *ngIf="isManager(ManagerType.FACTORY_MANAGER) && !isAssetDetails()"></app-factory-sub-header>
-    <app-fleet-sub-header *ngIf="isManager(ManagerType.FLEET_MANAGER) && !isAssetSerieDetails()"></app-fleet-sub-header>
+    <app-fleet-sub-header *ngIf="isManager(ManagerType.FLEET_MANAGER) && !isAssetSerieDetails() && !isAssetSeriesInstance()"></app-fleet-sub-header>
     <app-dashboard-sub-header *ngIf=" isDashboards()"></app-dashboard-sub-header>
     <app-fusion-applet-sub-header *ngIf="isFusionApplet()"></app-fusion-applet-sub-header>
     <app-notifications-sub-header *ngIf="isNotifications()"></app-notifications-sub-header>
-    <app-asset-details-sub-header *ngIf="isAssetDetails()"></app-asset-details-sub-header>
-    <app-asset-serie-details-sub-header *ngIf="isAssetSerieDetails()"></app-asset-serie-details-sub-header>
+    <app-asset-details-sub-header *ngIf="isAssetDetails() && !isAssetSeriesInstance()"></app-asset-details-sub-header>
+    <app-asset-serie-details-sub-header *ngIf="isAssetSerieDetails() && !isAssetSeriesInstance()"></app-asset-serie-details-sub-header>
+    <app-asset-series-instance-sub-header *ngIf="isAssetSeriesInstance()"></app-asset-series-instance-sub-header>
     <p-toast class="error-toast" position="top-center"></p-toast>
   </section>
 </header>

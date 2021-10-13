@@ -52,6 +52,9 @@ import { AssetWizardSharedSubsystemsComponent } from './components/content/asset
 import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-connectivity-settings/asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
 import { AssetSerieDetailsSubHeaderComponent } from './components/content/asset-serie-details/asset-serie-details-sub-header/asset-serie-details-sub-header.component';
 import { AssetSerieDetailsInfoComponent } from './components/content/asset-serie-details/asset-serie-details-info/asset-serie-details-info.component';
+import { AssetSeriesInstanceSubHeaderComponent } from './components/content/asset-series-instance/asset-series-instance-sub-header/asset-series-instance-sub-header.component';
+import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
@@ -84,6 +87,8 @@ import { AssetSerieDetailsInfoComponent } from './components/content/asset-serie
     AssetWizardSharedSubsystemsComponent,
     AssetSerieDetailsSubHeaderComponent,
     AssetSerieDetailsInfoComponent,
+    AssetSeriesInstanceSubHeaderComponent,
+    AssetSeriesDigitalNameplateComponent
   ],
   imports: [
     IFCommon,
@@ -94,10 +99,12 @@ import { AssetSerieDetailsInfoComponent } from './components/content/asset-serie
     CalendarModule,
     AccordionModule,
     AgmCoreModule,
+    CardModule
   ],
   exports: [
     FleetSubHeaderComponent,
     AssetSerieDetailsSubHeaderComponent,
+    AssetSeriesInstanceSubHeaderComponent,
   ]
 })
 export class FleetModule {
