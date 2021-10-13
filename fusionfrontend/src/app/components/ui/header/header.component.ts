@@ -104,6 +104,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       !this.route.match('\/assets\/asset-cards/*');
   }
 
+  isAssetSerieDetails() {
+    return this.route && this.route.match(`\/assetseries\/[0-9]*`);
+  }
+
   getPageTitle() {
     let title = '';
     if (this.isManager(ManagerType.FACTORY_MANAGER)) {

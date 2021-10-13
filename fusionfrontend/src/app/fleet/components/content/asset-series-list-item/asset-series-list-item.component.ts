@@ -46,14 +46,15 @@ export class AssetSeriesListItemComponent implements OnInit {
   @Input()
   selected = false;
 
+  detailsLink: string;
   shouldShowDeleteItem = false;
-
   ItemOptionsMenuType = ItemOptionsMenuType;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.detailsLink = `${this.item.id}/assets`;
   }
 
   createItem() {

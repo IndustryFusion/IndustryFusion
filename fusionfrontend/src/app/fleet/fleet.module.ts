@@ -50,6 +50,8 @@ import { AssetWizardStepSubsystemsComponent } from './components/content/asset-w
 // tslint:disable-next-line:max-line-length
 import { AssetWizardSharedSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
 import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-connectivity-settings/asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
+import { AssetSerieDetailsSubHeaderComponent } from './components/content/asset-serie-details/asset-serie-details-sub-header/asset-serie-details-sub-header.component';
+import { AssetSerieDetailsInfoComponent } from './components/content/asset-serie-details/asset-serie-details-info/asset-serie-details-info.component';
 
 
 @NgModule({
@@ -80,19 +82,23 @@ import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './compone
     AssetWizardSharedAttributesComponent,
     AssetWizardStepSubsystemsComponent,
     AssetWizardSharedSubsystemsComponent,
+    AssetSerieDetailsSubHeaderComponent,
+    AssetSerieDetailsInfoComponent,
   ],
-    imports: [
-        IFCommon,
-        FleetRoutingModule,
-        ClarityModule,
-        ReactiveFormsModule,
-        TableModule,
-        CalendarModule,
-        AccordionModule,
-        AgmCoreModule,
-    ],
+  imports: [
+    IFCommon,
+    FleetRoutingModule,
+    ClarityModule,
+    ReactiveFormsModule,
+    TableModule,
+    CalendarModule,
+    AccordionModule,
+    AgmCoreModule,
+  ],
   exports: [
     FleetSubHeaderComponent,
+    AssetSerieDetailsSubHeaderComponent,
   ]
 })
-export class FleetModule { }
+export class FleetModule {
+}

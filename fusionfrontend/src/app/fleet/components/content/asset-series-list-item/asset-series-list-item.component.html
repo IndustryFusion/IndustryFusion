@@ -16,27 +16,31 @@ under the License.
 <div *ngIf="shouldShowDeleteItem">
   <div class="backdrop"></div>
   <div class="delete-modal">
-    <button class="button-close" (click)="shouldShowDeleteItem = false">
-      <clr-icon [style.width.px]="19" [style.height.px]="19" shape="times"></clr-icon>
+    <button (click)="shouldShowDeleteItem = false" class="button-close">
+      <clr-icon [style.height.px]="19" [style.width.px]="19" shape="times"></clr-icon>
     </button>
     <div class="delete-modal-title">Delete item?</div>
     <div class="delete-modal-footer">
-      <button type="button" class="if-button-cancel" (click)="shouldShowDeleteItem = false">Cancel</button>
-      <button type="button" class="button-confirm" (click)="deleteItem()">Ok</button>
+      <button (click)="shouldShowDeleteItem = false" class="if-button-cancel" type="button">Cancel</button>
+      <button (click)="deleteItem()" class="button-confirm" type="button">Ok</button>
     </div>
   </div>
 </div>
-<div class="list-item" [ngClass]="{'selected': selected}">
-  <div class="list-item-cell check" [style.width.%]="5" [ngClass]="{'hidden': !selected}"><input type="checkbox" [(ngModel)]="selected" (click)="select()" /></div>
-  <div class="list-item-cell bold black" [routerLink]="item.id" [style.width.%]="30">{{ item.name }}</div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.assetType}}</div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.templateVersion}}</div>
-  <div class="list-item-cell grey label-success" [routerLink]="item.id" [style.width.%]="20"><span class="badge badge-light-blue"></span> {{item.status}}</div>
-  <div class="list-item-cell grey" [routerLink]="item.id" [style.width.%]="20">{{item.assetCount}}</div>
-  <div class="list-item-cell grey"  [style.width.%]="5" [ngClass]="{'hidden': !selected}">
-    <app-item-options-menu [type]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
-                           [createItemName]="'Asset'"
-                           (createItem)="createItem()" (editItem)="editItem()" (deleteItem)="showDeleteItem()">
+<div [ngClass]="{'selected': selected}" class="list-item">
+  <div [ngClass]="{'hidden': !selected}" [style.width.%]="5" class="list-item-cell check">
+    <input (click)="select()" [(ngModel)]="selected" type="checkbox"/>
+  </div>
+  <div [routerLink]="detailsLink" [style.width.%]="30" class="list-item-cell bold black">{{ item.name }}</div>
+  <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey">{{item.assetType}}</div>
+  <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey">{{item.templateVersion}}</div>
+  <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey label-success"><span
+    class="badge badge-light-blue"></span> {{item.status}}</div>
+  <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey">{{item.assetCount}}</div>
+  <div [ngClass]="{'hidden': !selected}" [style.width.%]="5" class="list-item-cell grey">
+    <app-item-options-menu (createItem)="createItem()"
+                           (deleteItem)="showDeleteItem()"
+                           (editItem)="editItem()" [createItemName]="'Asset'"
+                           [type]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]">
     </app-item-options-menu>
   </div>
 </div>

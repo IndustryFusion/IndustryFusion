@@ -55,7 +55,13 @@ const routes: Routes = [
           asset: AssetResolver,
           room: RoomResolver,
           factorySite: FactorySiteResolver
-        }
+        },
+        children: [
+          {
+            path: 'assets',
+            component: AssetSeriesPageComponent
+          },
+        ]
       }
     ]
   },
@@ -65,4 +71,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FleetRoutingModule { }
+export class FleetRoutingModule {
+}
