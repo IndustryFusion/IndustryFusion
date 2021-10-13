@@ -14,7 +14,8 @@ under the License.
 -->
 
 <div class="metrics-board" *ngIf="isLoaded">
-    <div *ngFor="let metric of metricsDetails" class="performance-widget">
+  <ng-container *ngFor="let metric of metricsDetails">
+    <div [ngClass]=" metric.fieldDetail.widgetType === WidgetType.GAUGE ? 'performance-widget-large' : 'performance-widget' ">
       <div class="metric-container">
         <label class="metric-title"> {{metric.fieldDetail.name}} </label>
         <div [ngSwitch]="metric.fieldDetail.widgetType" [ngClass]="metric.fieldDetail.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
@@ -24,10 +25,13 @@ under the License.
                                          [type]="metric.fieldDetail.name.startsWith('Days') ? maintenanceUtils.maintenanceDays : maintenanceUtils.maintenanceHours">
             </app-maintenance-progressbar>
           </div>
+          <div *ngSwitchCase="WidgetType.GAUGE" class="progress-bar-container">
+            <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetail" [metricValue]="metric.latestValue"></app-gauge-chart>
+          </div>
           <div *ngSwitchDefault> <!-- *ngIf="metric.latestValue != null">-->
-           <label class="metric-value">{{metric.latestValue}}</label>
-           <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
-         </div>
+            <label class="metric-value">{{metric.latestValue}}</label>
+            <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
+          </div>
         </div>
         <div *ngIf="metric.latestValue == null && (metric.fieldDetail.widgetType !== WidgetType.STATUS &&
           metric.fieldDetail.widgetType !== WidgetType.BARCHART)">
@@ -35,6 +39,7 @@ under the License.
         </div>
       </div>
     </div>
+  </ng-container>
 </div>
 
 

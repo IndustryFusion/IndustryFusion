@@ -24,7 +24,7 @@
 
   .performance-widget {
     width: 22%;
-    height: 128px;
+    height: 6.4rem;
     background: $basic-white 0 0 no-repeat padding-box;
     border-radius: 10px;
     &:not(:last-child) {
@@ -73,6 +73,11 @@
         padding-left: 0.5rem;
       }
     }
+  }
+
+  .performance-widget-large {
+    @extend .performance-widget;
+    height: 12.8rem !important;
   }
 }
 
