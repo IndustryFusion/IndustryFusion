@@ -24,7 +24,6 @@ export class FieldSource  extends BaseEntity{
   description: string;
   name: string;
   register: string;
-  sourceSensorLabel: string;
   value: string;
   assetSeriesId: ID;
   fieldTargetId: ID;
