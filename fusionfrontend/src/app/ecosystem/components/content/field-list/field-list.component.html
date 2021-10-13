@@ -13,44 +13,50 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
-  <clr-alert-item>
-    <span class="alert-text">
-      {{ getErrorMessage() }}
-    </span>
-  </clr-alert-item>
-</clr-alert>
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">{{ displayedFields?.length | i18nPlural: titleMapping }}</h3>
+  <div class="p-grid">
+    <app-create-button class="create-btn-without-filter" text="Create Metric or Attribute"
+                       (createItem)="showCreateDialog()"></app-create-button>
+  </div>
+</div>
 
-<div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-  <div class="title">{{ (items$ | async).length | i18nPlural: titleMapping }}</div>
-  <div>
-    <app-create-button [text]="'Create Metric or Attribute'" (createItem)="showCreateDialog()"></app-create-button>
-  </div>
-</div>
-<div>
-  <div class="list-container">
-    <div class="list-edit-bar" *ngIf="selected.size > 0">
-      <div class="list-edit-bar-item" [style.width.%]="5">
-        <clr-icon shape="check-circle" size="20"></clr-icon>
-      </div>
-      <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
-      <div class="list-edit-bar-item" [style.width.%]="50">
-        <button class="btn btn-link button-white">
-          <clr-icon shape="wrench"></clr-icon>
-        </button>
-        <button class="btn btn-link button-white" (click)="deleteItems()">
-          <clr-icon shape="trash"></clr-icon>
-        </button>
-      </div>
-      <div class="list-edit-bar-last-item" [style.width.%]="35">
-        <button class="btn btn-link button-white" (click)="deselectAllItems()">
-          <clr-icon shape="times"></clr-icon>Close
-        </button>
-      </div>
-    </div>
-    <app-field-list-header (sortEvent)="onSort($event)"></app-field-list-header>
-    <app-field-list-item *ngFor="let item of (items$ | async) | sort:sortField" [item]="item"
-                         (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)" [selected]="isSelected(item.id)">
-    </app-field-list-item>
-  </div>
-</div>
+<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
+         [showCurrentPageReport]="true" [value]="displayedFields" [rowHover]="true"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="5"></th>
+      <th [style.width.%]="30">
+        <app-table-searchbar filterColumn="Field name" [itemsToBeFiltered]="(fields$ | async)"
+                             attributeToBeSearched="name" (searchByName)="searchFieldByName($event)">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="30" pSortableColumn="unit.symbol">Unit
+        <p-sortIcon field="unit.symbol"></p-sortIcon>
+      </th>
+      <th [style.width.%]="30" pSortableColumn="createdDate">Date created
+        <p-sortIcon field="createdDate"></p-sortIcon>
+      </th>
+      <th [style.width.%]="5"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template let-field pTemplate="body">
+    <tr class="p-selectable-row" style="cursor: pointer;">
+      <td [style.width.%]="5"></td>
+      <td [style.width.%]="30" [routerLink]="field.id" class="table-bold-font">{{ field.name }}</td>
+      <td [style.width.%]="30" [routerLink]="field.id">{{ field.unit?.symbol }}</td>
+<!--      <td [style.width.%]="30" [routerLink]="field.id">{{ field.createdDate | date: 'dd.MM.yyyy'}}</td>-->
+      <td [style.width.%]="30" [routerLink]="field.id">18.12.2019</td>
+      <td [style.width.%]="5" (click)="setActiveRow(field)">
+        <app-item-options-menu (editItem)="showEditDialog()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
+<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
+                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+

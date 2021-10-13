@@ -208,6 +208,13 @@ const routes: Routes = [
             },
           },
           {
+            path: 'performance/historical',
+            component: AssetPerformanceComponent,
+            data: {
+              breadcrumb: 'Performance',
+            },
+          },
+          {
             path: 'performance/performance',
             component: AssetPerformanceComponent,
             resolve: { fieldDetails: FieldInstanceResolver},
@@ -248,12 +255,14 @@ const routes: Routes = [
             },
           },
           {
-            path: 'notifications',
-            redirectTo: 'notifications/open',
-            pathMatch: 'full'
+            path: 'notifications/open',
+            component: AssetNotificationsComponent,
+            data: {
+              breadcrumb: 'Notifications',
+            },
           },
           {
-            path: 'notifications/:state',
+            path: 'notifications/cleared',
             component: AssetNotificationsComponent,
             data: {
               breadcrumb: 'Notifications',

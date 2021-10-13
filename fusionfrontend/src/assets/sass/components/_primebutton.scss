@@ -25,15 +25,47 @@
   }
 }
 
-.p-selectbutton .p-button.p-highlight {
-  background: $basic-white;
-  border-color: unset;
-  color: $dark-grey;
+p-selectButton {
+  align-self: center;
 }
 
-.p-selectbutton .p-button {
-  background: unset;
-  border: unset;
-  color: $dark-grey;
-  transition: background-color 0.05s, color 0.05s, border-color 0.05s, box-shadow 0.05s;
+.p-selectbutton {
+  background: $basic-white;
+  border-radius: 44px !important;
+  width: 20rem;
+
+  .p-button {
+    background: unset;
+    border: unset;
+    padding: 0.2rem 1rem;
+    font-size: $medium-font-size;
+    line-height: $medium-line-height;
+
+    transition: background-color 0.05s, color 0.05s, border-color 0.05s, box-shadow 0.05s;
+
+    &:not(.p-highlight) {
+      color: $inactive-infotext;
+    }
+
+    &.p-highlight {
+      background: $basic-white !important;
+      box-shadow: 0 0 6px #00000029 !important;
+      border-radius: 44px !important;
+      border-color: unset !important;
+      font-weight: bold !important;
+    }
+  }
+}
+
+.on-white-background > .p-selectbutton {
+  background-color: $light-grey !important;
+
+  &.p-highlight {
+    background: $basic-white !important;
+  }
+}
+
+.p-buttonset .p-button:not(:first-of-type):not(:last-of-type),
+.p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
+  border-radius: 44px !important;
 }

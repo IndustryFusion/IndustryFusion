@@ -25,6 +25,7 @@ import { FactoryComposedQuery } from '../../../../../store/composed/factory-comp
 import { ActivatedRoute, Router } from '@angular/router';
 import { FactoryAssetDetailsService } from '../../../../../store/factory-asset-details/factory-asset-details.service';
 import { OispAlertPriority } from '../../../../../store/oisp/oisp-alert/oisp-alert.model';
+import { Asset } from '../../../../../store/asset/asset.model';
 
 @Component({
   selector: 'app-asset-subsystems',
@@ -60,7 +61,7 @@ export class AssetSubsystemsComponent implements OnInit {
     );
   }
 
-  selectSubsystem(asset: any) {
+  selectSubsystem(asset: Asset) {
     this.factoryAssetDetailsService.setActive(asset.id);
     this.router.navigate(['../..', asset.id], { relativeTo: this.activatedRoute});
   }

@@ -32,7 +32,7 @@ export class AppletActionMailComponent implements OnInit {
   accordionIndex = -1;
 
   constructor(oispService: OispService) {
-    oispService.getUser().subscribe(users => this.emailRecipients = users.map(user => user.email));
+    oispService.getUsers().subscribe(users => this.emailRecipients = users.map(user => user.email));
   }
 
   ngOnInit(): void {

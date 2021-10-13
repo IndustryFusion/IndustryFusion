@@ -16,6 +16,7 @@
 import { BaseEntity } from '../baseentity.model';
 import { ID } from '@datorama/akita';
 import { FieldWidgetType } from '../field/field.model';
+import { Threshold } from '../threshold/threshold.model';
 
 // Data come from entities field_instance, field_target and field
 export class FieldDetails extends BaseEntity {
@@ -31,6 +32,9 @@ export class FieldDetails extends BaseEntity {
   value: string;
   quantityDataType: QuantityDataType;
   widgetType: FieldWidgetType;
+  absoluteThreshold: Threshold;
+  idealThreshold: Threshold;
+  criticalThreshold: Threshold;
 }
 
 export enum FieldType {

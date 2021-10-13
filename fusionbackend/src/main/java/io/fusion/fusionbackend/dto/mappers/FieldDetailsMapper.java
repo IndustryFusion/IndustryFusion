@@ -71,6 +71,9 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                 .value(entity.getValue())
                 .quantityDataType(dataType)
                 .widgetType(widgetType)
+                .absoluteThreshold(entity.getAbsoluteThreshold())
+                .idealThreshold(entity.getIdealThreshold())
+                .criticalThreshold(entity.getCriticalThreshold())
                 .build();
     }
 

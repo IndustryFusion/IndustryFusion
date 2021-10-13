@@ -13,44 +13,57 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="wrapper">
-  <clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
-    <clr-alert-item>
-      <span class="alert-text">
-        {{ getErrorMessage() }}
-      </span>
-    </clr-alert-item>
-  </clr-alert>
-  <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
-    <app-create-button [text]="'Create Asset type template'" (createItem)="onCreate()"></app-create-button>
-  </div>
-  <div>
-    <div class="list-container">
-      <div class="list-edit-bar" *ngIf="selected.size > 0">
-        <div class="list-edit-bar-item" [style.width.%]="5">
-          <clr-icon shape="check-circle" size="20"></clr-icon>
-        </div>
-        <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
-        <div class="list-edit-bar-item" [style.width.%]="50">
-          <button class="btn btn-link button-white">
-            <clr-icon shape="wrench"></clr-icon>
-          </button>
-          <button class="btn btn-link button-white" (click)="deleteItems()">
-            <clr-icon shape="trash"></clr-icon>
-          </button>
-        </div>
-        <div class="list-edit-bar-last-item" [style.width.%]="35">
-          <button class="btn btn-link button-white" (click)="deselectAllItems()">
-            <clr-icon shape="times"></clr-icon>Close
-          </button>
-        </div>
-      </div>
-      <app-asset-type-template-list-header (sortEvent)="onSort($event)"></app-asset-type-template-list-header>
-      <app-asset-type-template-list-item *ngFor="let item of (items$ | async) | sort:sortField" [item]="item"
-        (itemSelected)="onItemSelect($event)" (itemDeselected)="onItemDeselect($event)"
-        [selected]="isSelected(item.id)">
-      </app-asset-type-template-list-item>
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">{{ displayedAssetTypeTemplates?.length | i18nPlural: titleMapping }}</h3>
+  <div class="p-grid">
+    <app-create-button class="create-btn" [text]="'Create Asset Type Template'" (createItem)="onCreate()"></app-create-button>
+    <div class="filter-btn-div">
+      <app-table-filter class="filter-btn" [tableFilters]="tableFilters" [itemsToBeFiltered]="assetTypeTemplates"
+                        [position]="['95%', '-445%']" (filteredItems)="filterAssetTypeTemplates($event)">
+      </app-table-filter>
     </div>
   </div>
+
 </div>
+
+<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
+         [showCurrentPageReport]="true" [value]="displayedAssetTypeTemplates" [rowHover]="true"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="5"></th>
+      <th [style.width.%]="40">
+        <app-table-searchbar filterColumn="Template" [itemsToBeFiltered]="assetTypeTemplates"
+                             attributeToBeSearched="name" (searchByName)="searchAssetTypeTemplates($event)">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="15" pSortableColumn="publishedVersion">Version
+        <p-sortIcon field="publishedVersion"></p-sortIcon>
+      </th>
+      <th [style.width.%]="20" pSortableColumn="publishedDate">Publish date
+        <p-sortIcon field="publishedDate"></p-sortIcon>
+      </th>
+      <th [style.width.%]="15" pSortableColumn="publicationState">Status
+        <p-sortIcon field="publicationState"></p-sortIcon>
+      </th>
+      <th [style.width.%]="10"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template let-assetTypeTemplate pTemplate="body">
+    <tr class="p-selectable-row" style="cursor: pointer;">
+      <td [style.width.%]="5"></td>
+      <td [style.width.%]="30" [routerLink]="assetTypeTemplate.id" class="table-bold-font">{{ assetTypeTemplate.name | nameWithVersion : assetTypeTemplate?.publishedVersion }}</td>
+      <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedVersion }}</td>
+      <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</td>
+      <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publicationState | titlecase }}</td>
+      <td [style.width.%]="5" (click)="setActiveRow(assetTypeTemplate)">
+        <app-item-options-menu [type]="menuType" (editItem)="onUpdate()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
+<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
+                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>

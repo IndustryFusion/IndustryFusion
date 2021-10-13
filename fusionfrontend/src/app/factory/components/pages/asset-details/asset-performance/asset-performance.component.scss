@@ -28,17 +28,11 @@
     border: 0;
   }
 
-  .radio-wrapper {
-    background: $light-grey;
-    padding-top: 20px;
-    margin: 0 50px 25px;
-  }
-
   .charts-container {
     background: $light-grey;
     border: 0;
     justify-content: center;
-    margin: 25px 50px;
+    margin: 8px 50px;
   }
 
   .progress-bar-container {
@@ -65,4 +59,9 @@
     font-weight: bold;
     margin: 1rem 2rem;
   }
+}
+
+:host ::ng-deep .performance-views > .p-selectbutton {
+  width: 23.4rem !important;
+  margin-right: 3.8rem;
 }

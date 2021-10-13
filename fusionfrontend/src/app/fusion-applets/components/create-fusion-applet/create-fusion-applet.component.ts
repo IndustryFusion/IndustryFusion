@@ -66,7 +66,7 @@ export class CreateFusionAppletComponent implements OnInit {
       name: ['', WizardHelper.requiredTextValidator],
       description: ['', [Validators.maxLength(1000)]],
       type: [null, []],
-      resetType: [RuleResetType.Automatic, []],
+      resetType: [RuleResetType.Manual, []],
       synchronizationStatus: [SynchronizationStatus.NotSync, [Validators.required]],
       priority: [null, Validators.required],
       actions: new FormArray([actionGroup]),

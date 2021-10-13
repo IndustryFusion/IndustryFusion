@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
@@ -21,17 +21,21 @@ import { Location } from '@angular/common';
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
 import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
 import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-details-sub-header',
   templateUrl: './asset-details-sub-header.component.html',
   styleUrls: ['./asset-details-sub-header.component.scss']
 })
-export class AssetDetailsSubHeaderComponent implements OnInit {
+export class AssetDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   assetId: ID;
   asset: FactoryAssetDetailsWithFields;
   hasSubsystems = false;
+
+  private unSubscribe$ = new Subject<void>();
 
   constructor(public activatedRoute: ActivatedRoute,
               private router: Router,
@@ -50,7 +54,9 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   updateAsset() {
     this.assetId = this.factoryAssetDetailsQuery.getActiveId();
-    this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails().subscribe(asset => {
+    this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
+      .pipe(takeUntil(this.unSubscribe$))
+      .subscribe(asset => {
       this.asset = asset;
       this.hasSubsystems = asset.subsystemIds?.length > 0;
     });
@@ -90,6 +96,11 @@ export class AssetDetailsSubHeaderComponent implements OnInit {
 
   isApplets() {
     return this.isRouteActive('active') || this.isRouteActive('archiv');
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe$.next();
+    this.unSubscribe$.complete();
   }
 
 }

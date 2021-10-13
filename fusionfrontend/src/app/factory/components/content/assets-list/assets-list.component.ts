@@ -36,6 +36,7 @@ import { FilterOption, FilterType } from '../../../../components/ui/table-filter
 import { faTimes, faWrench, faThLarge } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
+import { TableSelectedItemsBarType } from '../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
 
 @Component({
   selector: 'app-assets-list',
@@ -94,6 +95,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
     };
 
   ItemOptionsMenuType = ItemOptionsMenuType;
+  TableSelectedItemsBarType = TableSelectedItemsBarType;
 
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
@@ -221,6 +223,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
     });
 
     ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
+      this.selectedFactoryAssets = [];
       if (assetFormValues) {
         this.assetUpdated(assetFormValues);
       }

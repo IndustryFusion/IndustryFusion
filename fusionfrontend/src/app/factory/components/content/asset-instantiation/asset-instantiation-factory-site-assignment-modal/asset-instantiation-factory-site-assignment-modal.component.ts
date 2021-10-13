@@ -32,14 +32,19 @@ export class AssetInstantiationFactorySiteAssignmentModalComponent implements On
   activeModalMode: AssetModalMode;
   @Output()
   factorySitesAssignedEvent = new EventEmitter<FactorySite>();
+  @Output()
+  factorySiteChangedEvent = new EventEmitter<void>();
 
   searchText: string;
   filteredFactorySite: FactorySite[];
   assetModalModes = AssetModalMode;
 
+  private initialFactorySite;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.initialFactorySite = this.selectedFactorySite;
     this.filteredFactorySite = this.factorySites;
   }
 
@@ -50,7 +55,13 @@ export class AssetInstantiationFactorySiteAssignmentModalComponent implements On
 
   onSubmit() {
     this.factorySitesAssignedEvent.emit(this.selectedFactorySite);
+    if (this.hasFactorySiteChanged()) {
+      this.factorySiteChangedEvent.emit();
+    }
+  }
 
+  private hasFactorySiteChanged() {
+    return this.initialFactorySite !== this.selectedFactorySite;
   }
 
   onBackButtonPressed() {

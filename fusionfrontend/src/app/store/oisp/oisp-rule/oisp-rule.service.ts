@@ -19,9 +19,9 @@ import { OispRuleStore } from './oisp-rule.store';
 import { Observable } from 'rxjs';
 import { ConditionType, Rule, RuleAction, RuleStatus } from './oisp-rule.model';
 import { environment } from '../../../../environments/environment';
-import { KeycloakService } from 'keycloak-angular';
 import { ID } from '@datorama/akita';
 import { tap } from 'rxjs/operators';
+import { UserManagementService } from '../../../services/user-management.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ import { tap } from 'rxjs/operators';
 export class OispRuleService {
 
   constructor(private oispRuleStore: OispRuleStore,
-              private keycloakService: KeycloakService,
+              private userManagementService: UserManagementService,
               private http: HttpClient) { }
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -37,7 +37,7 @@ export class OispRuleService {
   };
 
   getAllRules(): Observable<Rule[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules`;
     return this.http.get<Rule[]>(url, this.httpOptions).pipe(
       tap((rules: Rule[]) => this.oispRuleStore.upsertMany(rules))
     );
@@ -45,7 +45,7 @@ export class OispRuleService {
 
   getRuleDetails(ruleId: string): Observable<Rule> {
     // gets actions as well (unlike getAllRules)
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/${ruleId}`;
     return this.http.get<Rule>(url, this.httpOptions).pipe(
       tap((rule: Rule) => this.oispRuleStore.upsert(rule.id, rule))
     );
@@ -61,14 +61,14 @@ export class OispRuleService {
   }
 
   cloneRule(ruleId: string): Observable<Rule> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/clone/${ruleId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/clone/${ruleId}`;
     return this.http.post<Rule>(url, null, this.httpOptions).pipe(
       tap((rule: Rule) => this.oispRuleStore.upsert(rule.id, rule))
     );
   }
 
   createRuleDraft(ruleDraft: Rule): Observable<Rule> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/draft`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/draft`;
     return this.http.put<Rule>(url, ruleDraft, this.httpOptions).pipe(
       tap((rule: Rule) => this.oispRuleStore.upsert(rule.id, rule))
     );
@@ -78,7 +78,7 @@ export class OispRuleService {
     rule = JSON.parse(JSON.stringify(rule));
     this.prepareRuleForSending(rule);
 
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/${ruleId}`;
     return this.http.put<Rule>(url, rule, this.httpOptions).pipe(
       tap((updatedRule: Rule) => this.oispRuleStore.upsert(updatedRule.id, updatedRule))
     );
@@ -119,7 +119,7 @@ export class OispRuleService {
   }
 
   setRuleStatus(ruleId: string, status: RuleStatus.OnHold | RuleStatus.Active | RuleStatus.Archived): Observable<Rule> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/${ruleId}/status`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/${ruleId}/status`;
     const body = { status };
     return this.http.put<Rule>(url, body, this.httpOptions).pipe(
       tap((updatedRule: Rule) => this.oispRuleStore.upsert(updatedRule.id, updatedRule))
@@ -127,23 +127,10 @@ export class OispRuleService {
   }
 
   deleteRule(ruleId: string): Observable<any> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/rules/delete_rule_with_alerts/${ruleId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/delete_rule_with_alerts/${ruleId}`;
     return this.http.delete(url, this.httpOptions).pipe(
       tap((deletedRule: Rule) => this.oispRuleStore.remove(deletedRule.id))
     );
-  }
-
-  private getOispAccountId(): string {
-    const token = (this.keycloakService.getKeycloakInstance().tokenParsed as any);
-    let oispAccountId = '';
-
-    if (token.accounts && token.accounts.length > 0) {
-      oispAccountId = token.accounts[0].id;
-    } else {
-      console.warn('cannot retrieve OISP accountId, subsequent calls to OISP will hence most likely fail!');
-    }
-
-    return oispAccountId;
   }
 
   setActive(id: ID) {

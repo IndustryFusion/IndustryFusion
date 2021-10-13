@@ -31,7 +31,8 @@ under the License.
                                                        [factorySites]="factorySites"
                                                        [selectedFactorySite]="selectedFactorySite"
                                                        [activeModalMode]="activeModalMode"
-                                                       (factorySitesAssignedEvent)="finishedFactorySitesAssignment($event)">
+                                                       (factorySitesAssignedEvent)="finishedFactorySitesAssignment($event)"
+                                                       (factorySiteChangedEvent)="resetSelectedRoomWhenFactorySiteChanged()">
 </app-asset-instantiation-factory-site-assignment-modal>
 
 <app-asset-instantiation-room-assignment-modal *ngIf="activeModalType == assetModalTypes.roomAssignment"

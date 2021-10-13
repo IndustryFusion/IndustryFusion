@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { KeycloakService } from 'keycloak-angular';
+import { UserManagementService } from '../../../services/user-management.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,11 +33,11 @@ export class OispAlertService {
   };
 
   constructor(private oispAlertStore: OispAlertStore,
-              private keycloakService: KeycloakService,
+              private userManagementService: UserManagementService,
               private http: HttpClient) { }
 
   getItems(): Observable<OispAlert[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/alerts`;
     return this.http.get<OispAlert[]>(url, { observe: 'response' })
       .pipe(map(response => {
         if (response.status !== 304) {
@@ -48,7 +48,7 @@ export class OispAlertService {
   }
 
   getItem(alertId: ID): Observable<OispAlert> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts/${alertId}`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/alerts/${alertId}`;
     return this.http.get<OispAlert>(url, this.httpOptions)
       .pipe(map(alert => {
         this.oispAlertStore.upsert(alertId, alert);
@@ -57,24 +57,11 @@ export class OispAlertService {
   }
 
   closeAlert(alertId: ID): Observable<void> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/alerts/${alertId}/reset`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/alerts/${alertId}/reset`;
     return this.http.put<void>(url, null, this.httpOptions).pipe(
       tap(() => {
         this.getItem(alertId).subscribe();
       })
     );
-  }
-
-  private getOispAccountId(): string {
-    const token = (this.keycloakService.getKeycloakInstance().tokenParsed as any);
-    let oispAccountId = '';
-
-    if (token.accounts && token.accounts.length > 0) {
-      oispAccountId = token.accounts[0].id;
-    } else {
-      console.warn('cannot retrieve OISP accountId, subsequent calls to OISP will hence most likely fail!');
-    }
-
-    return oispAccountId;
   }
 }

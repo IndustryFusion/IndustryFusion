@@ -31,6 +31,7 @@ import { ID } from '@datorama/akita';
 import { AssetService } from 'src/app/store/asset/asset.service';
 import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
 import { RoomService } from '../../../../store/room/room.service';
+import { RouteHelpers } from '../../../../common/utils/route-helpers';
 
 
 @Component({
@@ -71,7 +72,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
-    this.companyId = this.activatedRoute.snapshot.paramMap.get('companyId');
+    this.companyId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'companyId');
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
   }
 

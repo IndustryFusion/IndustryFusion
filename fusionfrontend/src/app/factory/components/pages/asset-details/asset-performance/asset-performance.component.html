@@ -15,5 +15,6 @@ under the License.
 <div class='asset-details-wrapper'>
 <div [ngSwitch]="viewMode">
   <app-asset-realtime-view *ngSwitchCase="AssetPerformanceViewMode.REALTIME" [viewModeOptions]="viewModeOptions"></app-asset-realtime-view>
+  <app-asset-historical-view *ngSwitchCase="AssetPerformanceViewMode.HISTORICAL" [viewModeOptions]="viewModeOptions"></app-asset-historical-view>
   <app-asset-performance-view *ngSwitchCase="AssetPerformanceViewMode.PERFORMANCE" [viewModeOptions]="viewModeOptions"></app-asset-performance-view>
 </div>

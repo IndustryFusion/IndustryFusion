@@ -41,6 +41,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from '../components/content/notifications-list/notifications-list.component';
 import { GermanNumberPipe } from '../pipes/germannumber.pipe';
+import { TableSelectedItemsBarComponent } from '../components/ui/table-selected-items-bar/table-selected-items-bar.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { GermanNumberPipe } from '../pipes/germannumber.pipe';
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
     GermanNumberPipe,
+    TableSelectedItemsBarComponent,
   ],
   imports: [
     CommonModule,
@@ -88,6 +91,7 @@ import { GermanNumberPipe } from '../pipes/germannumber.pipe';
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsClientId
     }),
+    SelectButtonModule,
   ],
   exports: [
     CommonModule,
@@ -124,6 +128,8 @@ import { GermanNumberPipe } from '../pipes/germannumber.pipe';
     NotificationsListComponent,
     TableModule,
     GermanNumberPipe,
+    SelectButtonModule,
+    TableSelectedItemsBarComponent,
   ],
   providers: [
     MessageService,
