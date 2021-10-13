@@ -55,6 +55,7 @@ import { AssetSerieDetailsInfoComponent } from './components/content/asset-serie
 import { AssetSeriesInstanceSubHeaderComponent } from './components/content/asset-series-instance/asset-series-instance-sub-header/asset-series-instance-sub-header.component';
 import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
 import { CardModule } from 'primeng/card';
+import { AssetSeriesInstanceInfoComponent } from './components/content/asset-series-instance/asset-series-instance-info/asset-series-instance-info.component';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { CardModule } from 'primeng/card';
     AssetSerieDetailsSubHeaderComponent,
     AssetSerieDetailsInfoComponent,
     AssetSeriesInstanceSubHeaderComponent,
-    AssetSeriesDigitalNameplateComponent
+    AssetSeriesDigitalNameplateComponent,
+    AssetSeriesInstanceInfoComponent
   ],
   imports: [
     IFCommon,

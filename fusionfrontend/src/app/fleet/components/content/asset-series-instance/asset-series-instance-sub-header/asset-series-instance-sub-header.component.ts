@@ -20,8 +20,9 @@ import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../../../common/utils/route-helpers';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AssetSeriesDetailsQuery } from '../../../../../store/asset-series-details/asset-series-details.query';
-import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
+import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
 
 @Component({
   selector: 'app-asset-series-instance-sub-header',
@@ -31,29 +32,31 @@ import { AssetSeriesDetails } from '../../../../../store/asset-series-details/as
 export class AssetSeriesInstanceSubHeaderComponent implements OnInit, OnDestroy {
 
   assetId: ID;
-  assetSeries: AssetSeriesDetails;
+  asset: FactoryAssetDetailsWithFields;
 
   private unSubscribe$ = new Subject<void>();
 
   constructor(public activatedRoute: ActivatedRoute,
               private router: Router,
               private routingLocation: Location,
-              private assetSeriesDetailsQuery: AssetSeriesDetailsQuery) {
+              private factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
+              private factoryComposedQuery: FactoryComposedQuery) {
   }
 
   ngOnInit() {
     this.activatedRoute.fragment.subscribe(() => {
       this.updateAsset();
     });
+    this.factoryAssetDetailsQuery.selectLoading();
     this.updateAsset();
   }
 
   updateAsset() {
-    this.assetId = this.assetSeriesDetailsQuery.getActiveId();
-    this.assetSeriesDetailsQuery.selectActive()
+    this.assetId = this.factoryAssetDetailsQuery.getActiveId();
+    this.factoryComposedQuery.selectActiveAssetsWithFieldInstanceDetails()
       .pipe(takeUntil(this.unSubscribe$))
-      .subscribe(assetSeries => {
-        this.assetSeries = assetSeries;
+      .subscribe(asset => {
+        this.asset = asset;
       });
   }
 
