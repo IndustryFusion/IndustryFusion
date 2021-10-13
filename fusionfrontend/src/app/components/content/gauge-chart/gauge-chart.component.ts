@@ -15,13 +15,9 @@
 
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UIChart } from 'primeng/chart';
-import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
-import { StatusHours } from '../../../services/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../../../services/kairos.model';
-import { EnumHelpers } from '../../../common/utils/enum-helpers';
-import { BehaviorSubject } from 'rxjs';
 import { FieldDetails } from '../../../store/field-details/field-details.model';
 import { Asset } from '../../../store/asset/asset.model';
+import { ChartData } from 'chart.js';
 
 @Component({
   selector: 'app-gauge-chart',
@@ -31,13 +27,10 @@ import { Asset } from '../../../store/asset/asset.model';
 export class GaugeChartComponent implements OnInit {
 
   @Input()
-  aggregatedStatusHours$: BehaviorSubject<StatusHours[]>;
-
-  @Input()
   fieldDetail: FieldDetails;
 
   @Input()
-  metricValue: number | string;
+  metricValue: number;
 
   @Input()
   asset: Asset;
@@ -47,28 +40,19 @@ export class GaugeChartComponent implements OnInit {
 
   @ViewChild('chart') chart: UIChart;
 
-  statusHoursPercentage: number[] = [0, 0, 0, 0];
-  OispDeviceStatus = OispDeviceStatus;
-
-  data: any;
+  data: ChartData;
   chartOptions: any;
 
-  constructor(private enumHelpers: EnumHelpers) {
+  public gaugeLabels = [
+    { color: '#A73737', label: 'urgent' },
+    { color: '#FCA82B', label: 'critical' },
+    { color: '#2CA9CE', label: 'ideal' },
+    { color: '#000000', label: 'value' },
+  ];
+
+  constructor() {
     this.initChartOptions();
     this.initChartData();
-  }
-
-  private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
-    switch (status) {
-      case OispDeviceStatus.ONLINE:
-        return 0;
-      case OispDeviceStatus.OFFLINE:
-        return 1;
-      case OispDeviceStatus.ERROR:
-        return 2;
-      case OispDeviceStatus.IDLE:
-        return 3;
-    }
   }
 
   private initChartOptions() {
@@ -79,7 +63,7 @@ export class GaugeChartComponent implements OnInit {
         title(tooltipItem, data) {
           const value = data.datasets[0].data[tooltipItem[0].index];
           const label = data.labels[tooltipItem[0].index];
-          return EquipmentEfficiencyBarChartComponent.getHoursString(value) + ' (' + label + ')';
+          return value + ' (' + label + ')';
         },
         label(_, _2) {
           return '';
@@ -116,61 +100,99 @@ export class GaugeChartComponent implements OnInit {
 
   private initChartData() {
     this.data = {
-      labels: ['Running', 'Offline', 'Error', 'Idle'],
+      labels: [],
       datasets: [{
-        data: [20, 10, 24, 2, 24, 10, 20],
-        backgroundColor: [
-          '#A73737',
-          '#FCA82B',
-          '#2CA9CE',
-          '#000000',
-          '#2CA9CE',
-          '#FCA82B',
-          '#A73737',
-          /*'#F0F0F0',*/
-        ],
+        data: [],
+        backgroundColor: [],
         borderWidth: 0,
       }]
     };
   }
 
   ngOnInit() {
-    this.aggregatedStatusHours$?.subscribe(aggregatedStatusHours => {
-      if (aggregatedStatusHours) {
-        this.updateChart(aggregatedStatusHours);
-      }
-    });
+    this.updateChart();
   }
 
-  private updateChart(totalStatusHours: StatusHours[]) {
-    this.resetChartData();
-    this.setChartData(totalStatusHours);
-    this.updateLegend(totalStatusHours);
+  private updateChart() {
+    this.updateChartData();
     this.chart?.reinit();
   }
 
-  private resetChartData() {
-    for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
-      this.data.datasets[0].data[i] = 0;
-      this.statusHoursPercentage[i] = 0;
+  private updateChartData() {
+    const emptyBackgroundColors: string[] = [];
+    this.data.labels = [];
+    this.data.datasets = [{ backgroundColor: emptyBackgroundColors, data: [], borderWidth: 0 }];
+    this.addRangesForIdealAndCriticalThresholds();
+  }
+
+  private addRangesForIdealAndCriticalThresholds(): void {
+    const isRedSection = this.fieldDetail.criticalThreshold != null && this.fieldDetail.absoluteThreshold != null;
+    const isYellowSection = this.fieldDetail.idealThreshold != null && this.fieldDetail.criticalThreshold != null;
+    const isIdealSection = this.fieldDetail.idealThreshold != null;
+
+    const minMax = this.getMinMaxValuesOfChart(isRedSection, isYellowSection, isIdealSection);
+    const indicatorWidth = Math.max(2, (minMax.max - minMax.min) / 80);
+
+    if (isRedSection) {
+      this.addDataToDataset(GAUGE_INDEX.ABSOLUTE_CRITICAL,
+        this.fieldDetail.absoluteThreshold.valueLower, this.fieldDetail.criticalThreshold.valueLower);
+    }
+    if (isYellowSection) {
+      this.addDataToDataset(GAUGE_INDEX.CRITICAL_IDEAL,
+        this.fieldDetail.criticalThreshold.valueLower, this.fieldDetail.idealThreshold.valueLower);
+    }
+
+    if (isIdealSection) {
+      this.addDataToDataset(GAUGE_INDEX.IDEAL,
+        this.fieldDetail.idealThreshold.valueLower, this.metricValue);
+      this.addDataToDataset(GAUGE_INDEX.VALUE_INDICATOR,
+        this.metricValue - indicatorWidth / 2, this.metricValue + indicatorWidth / 2);
+      this.addDataToDataset(GAUGE_INDEX.IDEAL,
+        this.metricValue, this.fieldDetail.idealThreshold.valueUpper);
+    }
+
+    if (isYellowSection) {
+      this.addDataToDataset(GAUGE_INDEX.CRITICAL_IDEAL,
+        this.fieldDetail.idealThreshold.valueUpper, this.fieldDetail.criticalThreshold.valueUpper);
+    }
+    if (isRedSection) {
+      this.addDataToDataset(GAUGE_INDEX.ABSOLUTE_CRITICAL,
+        this.fieldDetail.criticalThreshold.valueUpper, this.fieldDetail.absoluteThreshold.valueUpper);
     }
   }
 
-  private setChartData(totalStatusHours: StatusHours[]): void {
-    if (totalStatusHours) {
-      totalStatusHours.forEach(statusHour => {
-        const index = GaugeChartComponent.getDatasetIndexOfStatus(statusHour.status);
-        this.data.datasets[0].data[index] = statusHour.hours;
-      });
+  private getMinMaxValuesOfChart(isRedSection: boolean, isYellowSection: boolean, isIdealSection: boolean):
+    { min?: number, max?: number }  {
+    if (isRedSection) {
+      return {
+        min: this.fieldDetail.absoluteThreshold.valueLower,
+        max: this.fieldDetail.absoluteThreshold.valueUpper
+      };
+    } else if (isYellowSection) {
+      return {
+        min: this.fieldDetail.criticalThreshold.valueLower,
+        max: this.fieldDetail.criticalThreshold.valueUpper
+      };
+    } else if (isIdealSection) {
+      return {
+        min: this.fieldDetail.idealThreshold.valueLower,
+        max: this.fieldDetail.idealThreshold.valueUpper
+      };
+    } else {
+      return { min: this.metricValue - 5, max: this.metricValue + 5 };  // random value
     }
   }
 
-  private updateLegend(totalStatusHours: StatusHours[]): void {
-    if (totalStatusHours) {
-      const totalSum = totalStatusHours.map(x => x.hours).reduce((accumulator, currentValue) => accumulator + currentValue);
-      totalStatusHours.forEach(statusHour => {
-        this.statusHoursPercentage[statusHour.status] = Math.round(statusHour.hours / totalSum * 100.0);
-      });
-    }
+  private addDataToDataset(index: GAUGE_INDEX, startThreshold: number, endThreshold: number): void {
+    this.data.labels.push(this.gaugeLabels[index].label);
+    this.data.datasets[0].data.push(endThreshold - startThreshold);
+    (this.data.datasets[0].backgroundColor as string[]).push(this.gaugeLabels[index].color);
   }
+}
+
+enum GAUGE_INDEX {
+  ABSOLUTE_CRITICAL,
+  CRITICAL_IDEAL,
+  IDEAL,
+  VALUE_INDICATOR,
 }
