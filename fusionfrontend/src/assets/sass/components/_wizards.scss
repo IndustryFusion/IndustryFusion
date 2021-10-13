@@ -51,11 +51,11 @@
       flex-direction: row;
       justify-content: space-between;
 
-      font: normal normal bold $big-font-size/$huge-line-height Multi;
+      font: normal normal bold $big-font-size/$even-bigger-line-height Multi;
       text-align: left;
       font-weight: bold;
       font-size: $big-font-size;
-      line-height: $huge-line-height;
+      line-height: $even-bigger-line-height;
       letter-spacing: 0;
       color: $highlighted;
       opacity: 1;
@@ -77,7 +77,7 @@
       text-align: left;
       font-weight: bold;
       font-size: $big-font-size;
-      line-height: $huge-line-height;
+      line-height: $even-bigger-line-height;
       letter-spacing: 0;
       color: $highlighted;
     }

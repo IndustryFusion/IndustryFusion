@@ -34,7 +34,7 @@
 
     .metric-container {
       border: 0;
-      margin: 25px 50px;
+      margin: 1.25rem 2.5rem;
 
       .progress-bar-container {
         display: block !important;
@@ -55,8 +55,8 @@
 
       .metric-value {
         text-align: left;
-        font-size: 42px;
-        line-height: 53px;
+        font-size: $huge-font-size;
+        line-height: $huge-line-height;
         font-weight: bold;
         letter-spacing: 0;
         color: $basic-black;
@@ -65,7 +65,7 @@
       .metric-unit {
         text-align: left;
         font-size: $even-bigger-font-size;
-        line-height: $even-bigger-line-height;
+        line-height: $much-bigger-line-height;
         letter-spacing: 0;
         color: $inactive-infotext;
 
