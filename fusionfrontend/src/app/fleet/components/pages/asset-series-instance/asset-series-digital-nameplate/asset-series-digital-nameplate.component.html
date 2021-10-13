@@ -14,7 +14,15 @@ under the License.
 -->
 
 <div class="nameplate">
-  <div class="caption">Digital Nameplate</div>
+  <div class="caption-with-buttons">
+    <div class="caption">Digital Nameplate</div>
+    <div class="flexbox"></div>
+    <div class="card-button-box">
+      <button [disabled]="true" class="card-button">
+        Generate Asset Onboarding File
+      </button>
+    </div>
+  </div>
   <p-card class="card">
     <div class="grid">
       <app-nameplate-item label="Asset type">{{(asset$ | async)?.assetTypeName}}</app-nameplate-item>
@@ -48,5 +56,11 @@ under the License.
     </div>
   </p-card>
   <div class="caption">Customer Data</div>
-  <p-card class="card"></p-card>
+  <p-card class="card">
+    <app-nameplate-item label="Customer"></app-nameplate-item>
+    <app-nameplate-item label="Street"></app-nameplate-item>
+    <app-nameplate-item label="ZIP"></app-nameplate-item>
+    <app-nameplate-item label="City"></app-nameplate-item>
+    <app-nameplate-item label="Country"></app-nameplate-item>
+  </p-card>
 </div>
