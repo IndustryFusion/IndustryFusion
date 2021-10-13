@@ -54,7 +54,6 @@ public class FieldInstanceService {
                 .name(fieldSource.getName())
                 .description(fieldSource.getDescription())
                 .externalName(generatedExternalName)
-                .sourceSensorLabel(fieldSource.getSourceSensorLabel())
                 .absoluteThreshold(thresholdService.initThresholdDraft(fieldSource.getAbsoluteThreshold()))
                 .idealThreshold(thresholdService.initThresholdDraft(fieldSource.getIdealThreshold()))
                 .criticalThreshold(thresholdService.initThresholdDraft(fieldSource.getCriticalThreshold()))
