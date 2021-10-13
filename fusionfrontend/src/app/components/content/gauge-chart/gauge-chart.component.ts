@@ -44,10 +44,10 @@ export class GaugeChartComponent implements OnInit {
   chartOptions: any;
 
   public gaugeLabels = [
-    { color: '#A73737', label: 'urgent' },
-    { color: '#FCA82B', label: 'critical' },
+    { color: '#A73737', label: 'critical' },
+    { color: '#FCA82B', label: 'warning' },
     { color: '#2CA9CE', label: 'ideal' },
-    { color: '#000000', label: 'value' },
+    { color: '#000000', label: 'current value' },
   ];
 
   constructor() {
@@ -61,9 +61,7 @@ export class GaugeChartComponent implements OnInit {
       position: 'nearest',
       callbacks: {
         title(tooltipItem, data) {
-          const value = data.datasets[0].data[tooltipItem[0].index];
-          const label = data.labels[tooltipItem[0].index];
-          return value + ' (' + label + ')';
+          return data.labels[tooltipItem[0].index];
         },
         label(_, _2) {
           return '';
@@ -131,7 +129,7 @@ export class GaugeChartComponent implements OnInit {
     const isIdealSection = this.fieldDetail.idealThreshold != null;
 
     const minMax = this.getMinMaxValuesOfChart(isRedSection, isYellowSection, isIdealSection);
-    const indicatorWidth = Math.max(2, (minMax.max - minMax.min) / 80);
+    const indicatorWidth = Math.max(2, Math.round((minMax.max - minMax.min) / 80));
 
     if (isRedSection) {
       this.addDataToDataset(GAUGE_INDEX.ABSOLUTE_CRITICAL,
@@ -143,12 +141,12 @@ export class GaugeChartComponent implements OnInit {
     }
 
     if (isIdealSection) {
-      this.addDataToDataset(GAUGE_INDEX.IDEAL,
-        this.fieldDetail.idealThreshold.valueLower, this.metricValue);
+      const tooltipLabelIdealRange = `${this.fieldDetail.idealThreshold.valueLower} - ${ this.fieldDetail.idealThreshold.valueUpper} (${this.gaugeLabels[GAUGE_INDEX.IDEAL].label})`;
+
+      this.addDataToDataset(GAUGE_INDEX.IDEAL, this.fieldDetail.idealThreshold.valueLower, this.metricValue, tooltipLabelIdealRange);
       this.addDataToDataset(GAUGE_INDEX.VALUE_INDICATOR,
         this.metricValue - indicatorWidth / 2, this.metricValue + indicatorWidth / 2);
-      this.addDataToDataset(GAUGE_INDEX.IDEAL,
-        this.metricValue, this.fieldDetail.idealThreshold.valueUpper);
+      this.addDataToDataset(GAUGE_INDEX.IDEAL, this.metricValue, this.fieldDetail.idealThreshold.valueUpper, tooltipLabelIdealRange);
     }
 
     if (isYellowSection) {
@@ -183,8 +181,15 @@ export class GaugeChartComponent implements OnInit {
     }
   }
 
-  private addDataToDataset(index: GAUGE_INDEX, startThreshold: number, endThreshold: number): void {
-    this.data.labels.push(this.gaugeLabels[index].label);
+  private addDataToDataset(index: GAUGE_INDEX, startThreshold: number, endThreshold: number, tooltipLabel?: string): void {
+    if (tooltipLabel == null) {
+      tooltipLabel = `${startThreshold} - ${endThreshold} (${this.gaugeLabels[index].label})`;
+      if (index === GAUGE_INDEX.VALUE_INDICATOR) {
+        tooltipLabel = `${this.metricValue} (${this.gaugeLabels[index].label})`;
+      }
+    }
+
+    this.data.labels.push(tooltipLabel);
     this.data.datasets[0].data.push(endThreshold - startThreshold);
     (this.data.datasets[0].backgroundColor as string[]).push(this.gaugeLabels[index].color);
   }
