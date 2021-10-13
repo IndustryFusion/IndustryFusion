@@ -67,10 +67,10 @@ public class FieldInstanceService {
             return null;
         }
 
-        String nameWithUnderscores = fieldTarget.getName().replace(' ', '_');
-        String nameWithOnlyCharactersAndUnderscores = nameWithUnderscores.replaceAll("[^a-zA-Z_]", "");
+        String nameWithUnderscores = fieldTarget.getName().replace(' ', '_').replace('-', '_');
+        String nameWithOnlyCharactersNumbersAndUnderscores = nameWithUnderscores.replaceAll("\\W", "");
 
-        return nameWithOnlyCharactersAndUnderscores.toLowerCase();
+        return nameWithOnlyCharactersNumbersAndUnderscores.toLowerCase();
     }
 
     public boolean isThresholdsValid(FieldInstance fieldInstance,
