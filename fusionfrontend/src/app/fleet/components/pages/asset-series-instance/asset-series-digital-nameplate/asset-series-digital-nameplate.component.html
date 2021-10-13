@@ -14,26 +14,7 @@ under the License.
 -->
 
 <div class="nameplate">
-  <div class="caption-with-buttons">
-    <div class="caption">Digital Nameplate</div>
-    <div class="flexbox"></div>
-    <div class="card-button-box">
-      <button (click)="openExternalUrl(asset.handbookUrl)" *ngIf="(asset$ | async) as asset"
-              [disabled]="!asset?.handbookUrl"
-              class="card-button">
-        <fa-icon [icon]="manualIcon" class="fa-fw"></fa-icon>
-        Manual
-      </button>
-    </div>
-    <div class="card-button-box">
-      <button (click)="openExternalUrl(asset.videoUrl)" *ngIf="(asset$ | async) as asset" [disabled]="!asset?.videoUrl"
-              class="card-button">
-        <fa-icon [icon]="videoIcon" class="fa-fw"></fa-icon>
-        Video
-      </button>
-    </div>
-  </div>
-
+  <div class="caption">Digital Nameplate</div>
   <p-card class="card">
     <div class="grid">
       <app-nameplate-item label="Asset type">{{(asset$ | async)?.assetTypeName}}</app-nameplate-item>
