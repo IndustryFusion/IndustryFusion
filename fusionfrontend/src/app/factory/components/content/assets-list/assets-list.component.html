@@ -90,7 +90,7 @@ under the License.
       <td [style.width.%]="13" [routerLink]="getAssetLink(rowData)">
         <app-status [asset]="rowData" [showInline]="true"></app-status>
       </td>
-      <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(asset)">
+      <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
         <app-item-options-menu [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
                                [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
                                (assignItem)="openAssignRoomDialog()" (deleteItem)="showDeleteDialog()">

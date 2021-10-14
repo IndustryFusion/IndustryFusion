@@ -71,10 +71,10 @@ export class AssetsListComponent implements OnInit, OnChanges {
   faExclamationTriangle = faExclamationTriangle;
 
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+  selectedFactoryAssets: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   displayedFactoryAssets: FactoryAssetDetailsWithFields[];
   filteredFactoryAssets: FactoryAssetDetailsWithFields[];
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
-  selectedFactoryAssets: FactoryAssetDetailsWithFields[] = [];
   activeListItem: FactoryAssetDetailsWithFields;
 
   OispPriority = OispAlertPriority;
@@ -116,7 +116,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
     if (asset) {
       this.activeListItem = asset;
     } else {
-      this.activeListItem = this.selectedFactoryAssets[0];
+      this.activeListItem = this.selectedFactoryAssets[0].data;
     }
   }
 
@@ -263,7 +263,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   }
 
   onCardsViewClick() {
-    const selectedFactoryAssetIds = this.selectedFactoryAssets.map(asset => asset.id);
+    const selectedFactoryAssetIds = this.selectedFactoryAssets.map(asset => asset.data.id);
     this.selectedEvent.emit(selectedFactoryAssetIds);
     this.toolBarClickEvent.emit('GRID');
   }
