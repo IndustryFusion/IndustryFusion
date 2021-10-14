@@ -71,15 +71,15 @@ export class AssetSeriesInstanceSubHeaderComponent implements OnInit, OnDestroy 
   }
 
   isRouteActive(subroute: string, useAsDefault: boolean = false): boolean {
-    const snapshot = RouteHelpers.getActiveRouteLastChild(this.activatedRoute).snapshot;
-    if (useAsDefault && snapshot.url.join('/').endsWith(`${this.assetId}`)) {
+    const url = this.routingLocation.path();
+    if (useAsDefault && url.endsWith(`${this.assetId}`)) {
       return true;
     }
-    return snapshot.url.map(segment => segment.path).includes(subroute);
+    return url.split('/').includes(subroute);
   }
 
   isDigitalNameplate() {
-    return this.isRouteActive('digital-nameplate');
+    return this.isRouteActive('digital-nameplate', true);
   }
 
   ngOnDestroy() {

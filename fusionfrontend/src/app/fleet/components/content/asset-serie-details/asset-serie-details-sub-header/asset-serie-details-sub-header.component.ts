@@ -68,16 +68,16 @@ export class AssetSerieDetailsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isRouteActive(subroute: string, useAsDefault: boolean = false): boolean {
-    const snapshot = RouteHelpers.getActiveRouteLastChild(this.activatedRoute).snapshot;
-    if (useAsDefault && snapshot.url.join('/').endsWith(`${this.assetSeriesID}`)) {
+    const url = this.routingLocation.path();
+    if (useAsDefault && url.endsWith(`${this.assetSeriesID}`)) {
       return true;
     }
-    return snapshot.url.map(segment => segment.path).includes(subroute);
+    return url.split('/').includes(subroute);
   }
 
 
   isAssets() {
-    return this.isRouteActive('assets');
+    return this.isRouteActive('assets', true);
   }
 
   isVersions() {
