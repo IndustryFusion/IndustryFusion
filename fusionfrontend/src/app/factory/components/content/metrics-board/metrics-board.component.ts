@@ -91,12 +91,22 @@ export class MetricsBoardComponent implements OnInit {
         this.metricsDetailMap = new Map(this.metricsDetailMap);
       }
       this.metricsDetails = [...this.metricsDetailMap.values()];
-      this.asset.fields = [...this.metricsDetailMap.values()].map(metric => {
+      this.asset.fields = [...this.metricsDetails].map(metric => {
         const fieldDetail: FieldDetails = { ...metric.fieldDetail};
         fieldDetail.value = String(metric.latestValue);
         return fieldDetail;
       });
     });
+  }
+/*
+  private sortMetricDetails() {
+    this.metricsDetails.sort((a,b) => a.fieldDetail.widgetType);
+  }
+
+  private metricOrd*/
+
+  hasAnyThreshold(fieldDetail: FieldDetails) {
+    return fieldDetail.absoluteThreshold != null || fieldDetail.criticalThreshold || fieldDetail.idealThreshold;
   }
 }
 

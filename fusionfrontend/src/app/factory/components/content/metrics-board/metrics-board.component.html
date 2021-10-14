@@ -15,7 +15,7 @@ under the License.
 
 <div class="metrics-board" *ngIf="isLoaded">
   <ng-container *ngFor="let metric of metricsDetails">
-    <div [ngClass]=" metric.fieldDetail.widgetType === WidgetType.GAUGE ? 'performance-widget-large' : 'performance-widget' ">
+    <div [ngClass]="metric.fieldDetail.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetail) ? 'performance-widget-large' : 'performance-widget'">
       <div class="metric-container">
 
         <label class="metric-title"> {{metric.fieldDetail.name}} </label>
@@ -30,17 +30,24 @@ under the License.
           </div>
 
           <div *ngSwitchCase="WidgetType.GAUGE" class="progress-bar-container">
-            <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetail" [metricValue]="metric.latestValue"></app-gauge-chart>
+            <ng-container *ngIf="hasAnyThreshold(metric.fieldDetail)">
+              <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetail" [metricValue]="metric.latestValue"></app-gauge-chart>
+            </ng-container>
+            <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetail) && metric.latestValue != null">
+              <label class="metric-value">{{metric.latestValue}}</label>
+              <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
+            </ng-container>
           </div>
 
-          <div *ngSwitchDefault> <!-- *ngIf="metric.latestValue != null">-->
-            <label class="metric-value">{{metric.latestValue}}</label>
-            <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
+          <div *ngSwitchDefault>
+            <ng-container *ngIf="metric.latestValue != null">
+              <label class="metric-value">{{metric.latestValue}}</label>
+              <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
+            </ng-container>
           </div>
         </div>
 
-        <div *ngIf="metric.latestValue == null && (metric.fieldDetail.widgetType !== WidgetType.STATUS &&
-          metric.fieldDetail.widgetType !== WidgetType.BARCHART)">
+        <div *ngIf="metric.latestValue == null && (metric.fieldDetail.widgetType === WidgetType.RAW)">
           <label class="metric-value">n.a.</label>
         </div>
 
