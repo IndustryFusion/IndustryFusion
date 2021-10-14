@@ -33,8 +33,9 @@ under the License.
   <div [routerLink]="detailsLink" [style.width.%]="30" class="list-item-cell bold black">{{ item.name }}</div>
   <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey">{{item.assetType}}</div>
   <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey">{{item.templateVersion}}</div>
-  <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey label-success"><span
-    class="badge badge-light-blue"></span> {{item.status}}</div>
+  <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey label-success">
+    <app-asset-series-status [assetSeries]="item" [showInline]="true"></app-asset-series-status>
+  </div>
   <div [routerLink]="detailsLink" [style.width.%]="20" class="list-item-cell grey">{{item.assetCount}}</div>
   <div [ngClass]="{'hidden': !selected}" [style.width.%]="5" class="list-item-cell grey">
     <app-item-options-menu (createItem)="createItem()"

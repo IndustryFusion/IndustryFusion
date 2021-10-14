@@ -57,7 +57,9 @@ under the License.
       <td>{{asset.assetTypeName}}</td>
       <td>{{asset.manufacturer}}</td>
       <td>{{asset.roomName}}</td>
-      <td><app-status [asset]="asset" [showInline]="true"></app-status></td>
+      <td>
+        <app-asset-status [asset]="asset" [showInline]="true"></app-asset-status>
+      </td>
     </tr>
   </ng-template>
 </p-table>

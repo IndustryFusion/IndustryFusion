@@ -33,6 +33,7 @@ under the License.
       <th>City</th>
       <th>Country</th>
       <th>Activation&nbsp;date</th>
+      <th>Status</th>
     </tr>
   </ng-template>
 
@@ -45,6 +46,9 @@ under the License.
       <td>{{assetsCombined.factorySite?.city}}</td>
       <td>{{assetsCombined.factorySite?.country?.name}}</td>
       <td>{{assetsCombined.asset?.installationDate | date}}</td>
+      <td>
+        <app-asset-activation-status [asset]="assetsCombined.asset" [showInline]="true"></app-asset-activation-status>
+      </td>
     </tr>
   </ng-template>
 

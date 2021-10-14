@@ -32,7 +32,6 @@ import { GermanNumberPipe } from '../../../../../pipes/germannumber.pipe';
 import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
 import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
-import { Company } from '../../../../../store/company/company.model';
 
 
 @Component({
@@ -53,7 +52,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
   videoIcon = faPlayCircle;
 
   factorySite$: Observable<FactorySite>;
-  customer$: Observable<Company>;
 
   private germanNumberPipe: GermanNumberPipe = new GermanNumberPipe();
 
@@ -84,12 +82,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
         return this.factoryResolver.factorySites$.pipe(
           map(sites => sites.find(site => site.id === assetRoom.factorySiteId)),
         );
-      })
-    );
-
-    this.customer$ = combineLatest([this.asset$, this.factoryResolver.companies$]).pipe(
-      switchMap(([asset, companies]) => {
-        return companies.filter((company) => company.id === asset.companyId);
       })
     );
 

@@ -56,6 +56,10 @@ import { AssetSeriesInstanceSubHeaderComponent } from './components/content/asse
 import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
 import { CardModule } from 'primeng/card';
 import { AssetSeriesInstanceInfoComponent } from './components/content/asset-series-instance/asset-series-instance-info/asset-series-instance-info.component';
+import { AssetSeriesStatusComponent } from './components/content/asset-series-status/asset-series-status.component';
+import { AssetSeriesStatusPipe } from '../pipes/asset-series-status-pipe';
+import { AssetActivationStatusComponent } from './components/content/asset-activation-status/asset-activation-status.component';
+import { AssetActivationStatusPipe } from '../pipes/asset-activation-status-pipe';
 
 
 @NgModule({
@@ -90,7 +94,11 @@ import { AssetSeriesInstanceInfoComponent } from './components/content/asset-ser
     AssetSerieDetailsInfoComponent,
     AssetSeriesInstanceSubHeaderComponent,
     AssetSeriesDigitalNameplateComponent,
-    AssetSeriesInstanceInfoComponent
+    AssetSeriesInstanceInfoComponent,
+    AssetSeriesStatusComponent,
+    AssetSeriesStatusPipe,
+    AssetActivationStatusComponent,
+    AssetActivationStatusPipe
   ],
   imports: [
     IFCommon,

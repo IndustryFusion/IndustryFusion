@@ -24,7 +24,7 @@ import { FactorySitePageComponent } from './components/pages/factory-site-page/f
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
-import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
+import { AssetStatusPipe } from '../pipes/asset-status-pipe';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
 import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
@@ -36,7 +36,7 @@ import { AssetsListPageComponent } from './components/pages/assets-list-page/ass
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
 import { FactorySubHeaderComponent } from './components/content/factory-sub-header/factory-sub-header.component';
 import { PrecisionPipe } from '../pipes/precision.pipe';
-import { StatusComponent } from './components/content/status/status.component';
+import { AssetStatusComponent } from './components/content/asset-status/asset-status.component';
 import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
 import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
@@ -70,63 +70,63 @@ import { HistoricalStatusBarChartComponent } from '../components/content/histori
 import { ChartModule } from 'primeng/chart';
 
 @NgModule({
-    declarations: [
-        FactorySitesPageComponent,
-        FactorySitePageComponent,
-        AssetsGridPageComponent,
-        AssetsListPageComponent,
-        AssetPerformanceComponent,
-        AssetHistoricalViewComponent,
-        AssetRealtimeViewComponent,
-        AssetPerformanceViewComponent,
-        FactorySitesComponent,
-        CompanyInfoComponent,
-        AssetsListComponent,
-        FusionFormatPipe,
-        PrecisionPipe,
-        ArraysortextendedPipe,
-        ArrayFilterPipe,
-        AssetDigitalNameplateComponent,
-        AssetDetailsInfoComponent,
-        FactorySubHeaderComponent,
-        FactoryPageTitleComponent,
-        MaintenanceBarComponent,
-        AssetChartsComponent,
-        RoomDialogComponent,
-        RoomsPageComponent,
-        AssetTablesComponent,
-        StatusComponent,
-        AssetInstantiationComponent,
-        AssetInstantiationStartModalComponent,
-        AssetInstantiationDescriptionModalComponent,
-        AssetInstantiationPairedModalComponent,
-        AssetInstantiationFactorySiteAssignmentModalComponent,
-        AssetInstantiationRoomAssignmentModalComponent,
-        FactorySiteDialogComponent,
-        RoomsListComponent,
-        AssignAssetToRoomComponent,
-        AssetDetailsSubHeaderComponent,
-        AssetCardComponent,
-        AssetSubsystemsComponent,
-        AssetAppletsComponent,
-        AssetSubsystemsComponent,
-        AssetNotificationsComponent,
-        HistoricalStatusBarChartComponent
-    ],
-    imports: [
-        IFCommon,
-        FactoryRoutingModule,
-        ClarityModule,
-        ChartsModule,
-        ReactiveFormsModule,
-        TableModule,
-        CardModule,
-        FusionAppletsModule,
-        AccordionModule,
-        DashboardModule,
-        CalendarModule,
-        ChartModule,
-    ],
+  declarations: [
+    FactorySitesPageComponent,
+    FactorySitePageComponent,
+    AssetsGridPageComponent,
+    AssetsListPageComponent,
+    AssetPerformanceComponent,
+    AssetHistoricalViewComponent,
+    AssetRealtimeViewComponent,
+    AssetPerformanceViewComponent,
+    FactorySitesComponent,
+    CompanyInfoComponent,
+    AssetsListComponent,
+    AssetStatusPipe,
+    PrecisionPipe,
+    ArraysortextendedPipe,
+    ArrayFilterPipe,
+    AssetDigitalNameplateComponent,
+    AssetDetailsInfoComponent,
+    FactorySubHeaderComponent,
+    FactoryPageTitleComponent,
+    MaintenanceBarComponent,
+    AssetChartsComponent,
+    RoomDialogComponent,
+    RoomsPageComponent,
+    AssetTablesComponent,
+    AssetStatusComponent,
+    AssetInstantiationComponent,
+    AssetInstantiationStartModalComponent,
+    AssetInstantiationDescriptionModalComponent,
+    AssetInstantiationPairedModalComponent,
+    AssetInstantiationFactorySiteAssignmentModalComponent,
+    AssetInstantiationRoomAssignmentModalComponent,
+    FactorySiteDialogComponent,
+    RoomsListComponent,
+    AssignAssetToRoomComponent,
+    AssetDetailsSubHeaderComponent,
+    AssetCardComponent,
+    AssetSubsystemsComponent,
+    AssetAppletsComponent,
+    AssetSubsystemsComponent,
+    AssetNotificationsComponent,
+    HistoricalStatusBarChartComponent
+  ],
+  imports: [
+    IFCommon,
+    FactoryRoutingModule,
+    ClarityModule,
+    ChartsModule,
+    ReactiveFormsModule,
+    TableModule,
+    CardModule,
+    FusionAppletsModule,
+    AccordionModule,
+    DashboardModule,
+    CalendarModule,
+    ChartModule,
+  ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

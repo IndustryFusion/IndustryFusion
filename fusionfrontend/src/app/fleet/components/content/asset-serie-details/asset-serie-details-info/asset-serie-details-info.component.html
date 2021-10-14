@@ -23,10 +23,7 @@ under the License.
   <div class="asset-info asset-status">
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
-      <p>
-        STATUS
-        <!--<app-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-status>-->
-      </p>
+      <app-asset-series-status [assetSeries]="assetSeries" [showInline]="false"></app-asset-series-status>
     </div>
     <p>{{(assetSeries)?.templateVersion}}</p>
   </div>

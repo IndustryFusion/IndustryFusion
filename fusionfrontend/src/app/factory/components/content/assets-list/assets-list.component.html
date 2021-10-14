@@ -64,7 +64,7 @@ under the License.
       <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">{{ asset.roomName }}</td>
       <td [style.width.%]="15" [routerLink]="getAssetLink(asset)">{{ asset.factorySiteName }}</td>
       <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">
-        <app-status [asset]="asset" [showInline]="true"></app-status>
+        <app-asset-status [asset]="asset" [showInline]="true"></app-asset-status>
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(asset)">
         <app-item-options-menu [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"

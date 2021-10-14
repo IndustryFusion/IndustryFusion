@@ -22,11 +22,11 @@ import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-d
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-status',
-  templateUrl: './status.component.html',
-  styleUrls: ['./status.component.scss']
+  selector: 'app-asset-status',
+  templateUrl: './asset-status.component.html',
+  styleUrls: ['./asset-status.component.scss']
 })
-export class StatusComponent implements OnInit {
+export class AssetStatusComponent implements OnInit {
 
   @Input()
   asset: FactoryAssetDetailsWithFields;

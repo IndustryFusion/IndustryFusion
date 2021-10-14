@@ -57,7 +57,7 @@ under the License.
   </p-card>
   <div class="caption">Customer Data</div>
   <p-card class="card">
-    <app-nameplate-item label="Customer">{{(customer$ | async)?.name}}</app-nameplate-item>
+    <app-nameplate-item label="Customer">{{(factorySite$ | async)?.name}}</app-nameplate-item>
     <app-nameplate-item label="Street">{{(factorySite$ | async)?.line1}}</app-nameplate-item>
     <app-nameplate-item label="ZIP">{{(factorySite$ | async)?.zip}}</app-nameplate-item>
     <app-nameplate-item label="City">{{(factorySite$ | async)?.city}}</app-nameplate-item>

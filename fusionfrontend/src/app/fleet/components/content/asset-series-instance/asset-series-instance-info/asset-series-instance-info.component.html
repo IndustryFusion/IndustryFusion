@@ -24,11 +24,13 @@ under the License.
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        STATUS
-        <!--<app-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-status>-->
+        <app-asset-activation-status [asset]="asset" [showInline]="false"></app-asset-activation-status>
       </p>
     </div>
-    <p>{{(asset)?.version}}</p>
+    <p>
+      current&nbsp;version&nbsp;
+      <span class="version-info">{{(asset)?.version}}</span>
+    </p>
   </div>
   <div class="asset-info asset-menu">
     <app-item-options-menu [showInline]="false" [type]="dropdownMenuOptions"></app-item-options-menu>

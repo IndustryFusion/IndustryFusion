@@ -25,7 +25,7 @@ under the License.
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-status>
+        <app-asset-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-asset-status>
       </p>
     </div>
     <p>{{(asset)?.factorySiteName}} ({{(asset)?.roomName}})</p>
