@@ -13,7 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [factorySite]="(factorySite$ | async)" [roomCount]="(rooms$ | async)?.length" [assets]="(assets$ | async)" *ngIf="(factorySite$ | async) != null"></app-company-info>
+<app-company-info  *ngIf="(factorySite$ | async) != null" [factorySite]="(factorySite$ | async)"
+                   [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
 
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">Asset Card View</h3>

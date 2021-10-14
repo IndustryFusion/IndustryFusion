@@ -14,15 +14,15 @@
  */
 
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { UserQuery } from './store/user/user.query';
-import { User } from './store/user/user.model';
+import { Subject } from 'rxjs';
 import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
 import { OispAlertResolver } from './resolvers/oisp-alert-resolver';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { UserManagementService } from './services/user-management.service';
+import { KeycloakProfile } from 'keycloak-js';
 
 @Component({
   selector: 'app-root',
@@ -33,10 +33,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private oispAlertResolver: OispAlertResolver,
               private factoryResolver: FactoryResolver,
-              private userQuery: UserQuery,
+              private userManagementService: UserManagementService,
               private ngZone: NgZone) { }
-  loggedUser$: Observable<User>;
   factorySubTitle$: Subject<string>;
+  keycloakUser$: Promise<KeycloakProfile>;
 
   private intervalHandle: number;
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     registerLocaleData(localeDe);
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
-    this.loggedUser$ = this.userQuery.selectActive();
+    this.keycloakUser$ = this.userManagementService.getUserProfile();
     if (environment.production) {
       enableAkitaProdMode();
     } else {

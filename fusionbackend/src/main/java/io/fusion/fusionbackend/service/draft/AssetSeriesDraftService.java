@@ -76,7 +76,6 @@ public class AssetSeriesDraftService {
                                 .sourceUnit(fieldTarget.getField().getUnit())
                                 .name(fieldTarget.getName())
                                 .description(fieldTarget.getDescription())
-                                .sourceSensorLabel(fieldTarget.getLabel())
                                 .build())
                 .collect(Collectors.toSet());
         newAssetSeries.setFieldSources(newFieldSources);

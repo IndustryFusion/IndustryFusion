@@ -13,9 +13,20 @@
  * under the License.
  */
 
-import { BaseEntity } from '../baseentity.model';
+.equipment-efficiency-bar-chart {
+  display: block;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 
-export class User extends BaseEntity {
-  name: string;
-  email: string;
+  .bar-chart {
+    height: 2rem;
+    position: relative;
+  }
+}
+
+:host ::ng-deep canvas {
+  border-radius: 0 8px 8px 0 !important;
+  height: 5rem !important;
 }

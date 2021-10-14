@@ -24,7 +24,7 @@ import { FormGroup } from '@angular/forms';
 export class DropdownFilterComponent implements OnInit {
 
   @Input()
-  itemsToBeFiltered: any;
+  itemsToBeFiltered: any[];
   @Input()
   dropDownFilterFormGroup: FormGroup;
   @Output()

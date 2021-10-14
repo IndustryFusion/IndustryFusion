@@ -290,6 +290,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
     });
 
     ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
+      this.selectedFactoryAssets = [];
       if (assetFormValues) {
         this.assetUpdated(assetFormValues);
       }

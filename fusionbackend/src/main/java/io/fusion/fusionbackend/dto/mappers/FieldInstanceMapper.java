@@ -48,7 +48,6 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .externalName(entity.getExternalName())
-                .sourceSensorLabel(entity.getSourceSensorLabel())
                 .value(entity.getValue())
                 .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
                 .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
@@ -90,7 +89,6 @@ public class FieldInstanceMapper implements EntityDtoMapper<FieldInstance, Field
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .externalName(dto.getExternalName())
-                .sourceSensorLabel(dto.getSourceSensorLabel())
                 .value(dto.getValue())
                 .build();
 

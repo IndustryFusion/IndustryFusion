@@ -37,7 +37,7 @@
     .p-menuitem-text {
       border: none !important;
 
-      font-family: Metropolis, "Avenir Next", Helvetica, serif;
+      font-family: $font-family-metropolis;
       color: $inactive-infotext !important;
       font-size: $bigger-font-size !important;
       line-height: $big-line-height;

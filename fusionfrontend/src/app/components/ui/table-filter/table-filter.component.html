@@ -13,9 +13,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div style="position: relative">
+<div class="button-div">
   <button (click)="filterpanel.toggle($event)" class="filter-btn" [ngClass]="{'filter-active': activeFilterSet.size > 0}">
-    <span style="margin-right: 10px !important;">Filter</span>
+    <span class="filter-btn-item">Filter</span>
     <fa-icon [icon]="faFilter" class="fa-fw"></fa-icon>
     <span *ngIf="activeFilterSet.size > 0" class="active-filter">{{ activeFilterSet.size }}</span>
   </button>
@@ -25,7 +25,8 @@ under the License.
     </button>
 </div>
 
-<p-overlayPanel #filterpanel [dismissable]="false" [ngClass]="{'panel-position': hasPositionSet==true}" class="filterPanel panel-class">
+<p-overlayPanel #filterpanel [ngClass]="{'panel-position': hasPositionSet==true}" [dismissable]="true"
+                [showCloseIcon]="true" class="filterPanel panel-class">
   <ng-template pTemplate>
     <div class="if-panel-heading">Filter</div>
 

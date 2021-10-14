@@ -50,6 +50,10 @@ $left: var(--left-position);
   width: 45%;
 }
 
+.button-div {
+  position: relative;
+}
+
 .filter-btn {
   font-style: normal;
   font-weight: bold;
@@ -66,6 +70,10 @@ $left: var(--left-position);
 
   padding: .4rem .8rem .4rem .8rem;
   cursor: pointer;
+
+  &::ng-deep .filter-btn-item {
+    margin-right: .5rem !important;
+  }
 
   &.filter-active {
     width: 7.6rem;
