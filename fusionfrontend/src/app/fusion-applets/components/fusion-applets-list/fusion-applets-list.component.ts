@@ -87,15 +87,15 @@ export class FusionAppletsListComponent implements OnInit {
 
   searchRulesByName(event?: Rule[]) {
     this.rulesSearchedByName = event;
-    this.updateRules();
+    this.updateDisplayedRules();
   }
 
   searchRulesByCondition(event?: Rule[]) {
     this.rulesSearchedCondition = event;
-    this.updateRules();
+    this.updateDisplayedRules();
   }
 
-  updateRules() {
+  updateDisplayedRules() {
     this.displayedRules = this.rulesSearchedByName.filter(rule => this.rulesSearchedCondition.includes(rule));
   }
 

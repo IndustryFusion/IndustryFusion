@@ -38,7 +38,7 @@ export class NumericFilterComponent implements OnInit {
   readonly LONGTERM_PRIORITY = 'Longterm (blue)';
 
   @Input()
-  itemsToBeFiltered: any;
+  itemsToBeFiltered: any[];
   @Input()
   numericFilterFormGroup: FormGroup;
   @Output()
