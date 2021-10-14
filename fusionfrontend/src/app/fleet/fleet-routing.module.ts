@@ -61,20 +61,28 @@ const routes: Routes = [
         children: [
           {
             path: 'assets',
-            component: AssetSeriePageComponent,
-          },
-          {
-            path: 'assets/:assetId/digital-nameplate',
-            component: AssetSeriesDigitalNameplateComponent,
-            resolve: {
-              asset: FactoryAssetDetailsResolver,
-              room: RoomResolver,
-              factorySite: FactorySiteResolver,
-            },
             data: {
-              breadcrumb: FactoryAssetDetailsQuery
-            }
-          }
+              breadcrumb: null,
+            },
+            children: [
+              {
+                path: '',
+                component: AssetSeriePageComponent,
+              },
+              {
+                path: ':assetId/digital-nameplate',
+                component: AssetSeriesDigitalNameplateComponent,
+                resolve: {
+                  asset: FactoryAssetDetailsResolver,
+                  room: RoomResolver,
+                  factorySite: FactorySiteResolver,
+                },
+                data: {
+                  breadcrumb: FactoryAssetDetailsQuery
+                }
+              }
+            ]
+          },
         ]
       },
     ]

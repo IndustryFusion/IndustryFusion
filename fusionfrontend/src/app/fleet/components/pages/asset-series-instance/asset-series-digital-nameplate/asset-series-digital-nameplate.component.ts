@@ -31,6 +31,8 @@ import { environment } from 'src/environments/environment';
 import { GermanNumberPipe } from '../../../../../pipes/germannumber.pipe';
 import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
+import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
+import { Company } from '../../../../../store/company/company.model';
 
 
 @Component({
@@ -50,6 +52,9 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
   manualIcon = faLayerGroup;
   videoIcon = faPlayCircle;
 
+  factorySite$: Observable<FactorySite>;
+  customer$: Observable<Company>;
+
   private germanNumberPipe: GermanNumberPipe = new GermanNumberPipe();
 
   constructor(
@@ -59,7 +64,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
     private factoryAssetQuery: FactoryAssetDetailsQuery,
-    private factoryAssetDetailsResolver: FactoryAssetDetailsResolver
+    private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
   ) {
   }
 
@@ -72,6 +77,21 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetId = this.factoryAssetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+
+    this.factorySite$ = combineLatest([this.asset$, this.factoryResolver.rooms$]).pipe(
+      switchMap(([asset, rooms]) => {
+        const assetRoom = rooms.find((room) => room.id === asset.roomId);
+        return this.factoryResolver.factorySites$.pipe(
+          map(sites => sites.find(site => site.id === assetRoom.factorySiteId)),
+        );
+      })
+    );
+
+    this.customer$ = combineLatest([this.asset$, this.factoryResolver.companies$]).pipe(
+      switchMap(([asset, companies]) => {
+        return companies.filter((company) => company.id === asset.companyId);
+      })
+    );
 
     // TODO: refactor using status.service.getStatusByAssetWithFields
     this.latestPoints$ = combineLatest([this.asset$, timer(0, environment.dataUpdateIntervalMs)]).pipe(

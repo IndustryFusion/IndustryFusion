@@ -30,7 +30,7 @@ import { AssetSeriesDetails } from '../../../../../store/asset-series-details/as
 })
 export class AssetSerieDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
-  assetId: ID;
+  assetSeriesID: ID;
   assetSeries: AssetSeriesDetails;
 
   private unSubscribe$ = new Subject<void>();
@@ -49,7 +49,7 @@ export class AssetSerieDetailsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   updateAsset() {
-    this.assetId = this.assetSeriesDetailsQuery.getActiveId();
+    this.assetSeriesID = this.assetSeriesDetailsQuery.getActiveId();
     this.assetSeriesDetailsQuery.selectActive()
       .pipe(takeUntil(this.unSubscribe$))
       .subscribe(assetSeries => {
@@ -69,7 +69,7 @@ export class AssetSerieDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   isRouteActive(subroute: string, useAsDefault: boolean = false): boolean {
     const snapshot = RouteHelpers.getActiveRouteLastChild(this.activatedRoute).snapshot;
-    if (useAsDefault && snapshot.url.join('/').endsWith(`${this.assetId}`)) {
+    if (useAsDefault && snapshot.url.join('/').endsWith(`${this.assetSeriesID}`)) {
       return true;
     }
     return snapshot.url.map(segment => segment.path).includes(subroute);
