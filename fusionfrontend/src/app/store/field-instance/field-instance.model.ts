@@ -23,7 +23,6 @@ export class FieldInstance extends BaseEntity{
   description: string;
   externalName: string;
   name: string;
-  sourceSensorLabel: string;
   value: string;
   assetId: ID;
   fieldSourceId: ID;

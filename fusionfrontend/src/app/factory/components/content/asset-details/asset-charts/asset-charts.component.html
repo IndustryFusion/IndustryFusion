@@ -20,10 +20,13 @@ under the License.
      {{currentNumberOfPoints | germanNumber}} points
   </div>
 
-  <div class="chart-wrapper" >
+  <div class="chart-wrapper">
     <div class="flex-item">
       <div style="display: block" class="actual-chart">
-        <canvas baseChart style="height: 300px"
+        <app-historical-status-bar-chart *ngIf="isStatus && statuses != null" [statuses]="statuses">
+        </app-historical-status-bar-chart>
+
+        <canvas *ngIf="isStatus === false" baseChart style="height: 300px"
                     [datasets]="lineChartData"
                     [labels]="lineChartLabels"
                     [options]="lineChartOptions"

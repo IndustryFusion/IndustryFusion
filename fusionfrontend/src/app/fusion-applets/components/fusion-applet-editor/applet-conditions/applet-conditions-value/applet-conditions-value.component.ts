@@ -39,11 +39,10 @@ export class AppletConditionsValueComponent implements OnInit {
 
   @Input()
   devices: Device[] = [];
-  selectedDevice: Device[] = [];
+  selectedDevices: Device[] = [];
 
-  contitionTypeDropdownValue: SelectItem[];
+  conditionTypeDropdownValue: SelectItem[];
   conditionOperatorDropdownValue: SelectItem[];
-  conditionTimeDropdownValue: SelectItem[];
 
   constructor(private enumHelpers: EnumHelpers) {
     this.setupDropdowns();
@@ -59,16 +58,16 @@ export class AppletConditionsValueComponent implements OnInit {
       const selectedDevice = this.devices.find(device =>
         device.components.find(deviceComponent => deviceComponent.cid === conditionValue.component.cid)
       );
-      this.selectedDevice = [];
+      this.selectedDevices = [];
       if (selectedDevice) {
-        this.selectedDevice.push(selectedDevice);
+        this.selectedDevices.push(selectedDevice);
       }
     }
   }
 
   private setupDropdowns() {
-    this.contitionTypeDropdownValue = this.getConditionTypeDropdownValue();
-    this.conditionOperatorDropdownValue = this.getConditionOperaterDropdownValue();
+    this.conditionTypeDropdownValue = this.getConditionTypeDropdownValue();
+    this.conditionOperatorDropdownValue = this.getConditionOperatorDropdownValue();
   }
 
   getConditionTypeDropdownValue(): SelectItem[] {
@@ -83,7 +82,7 @@ export class AppletConditionsValueComponent implements OnInit {
     return result;
   }
 
-  getConditionOperaterDropdownValue(): SelectItem[] {
+  getConditionOperatorDropdownValue(): SelectItem[] {
     const result = [];
 
     for (const element of this.enumHelpers.getIterableArray(ConditionValueOperator)) {
@@ -99,9 +98,9 @@ export class AppletConditionsValueComponent implements OnInit {
     this.conditionValueGroup.get('component').patchValue(component);
   }
 
-  mapDeviceToComponent(devices: Device[]): SelectItem[] {
+  mapDevicesToComponents(devices: Device[]): SelectItem<ConditionValueComponent>[] {
     const cid = this.conditionValueGroup.get('component.cid')?.value;
-    const result: SelectItem<ConditionValueComponent>[] = devices
+    const components: SelectItem<ConditionValueComponent>[] = devices
       .map(device => device.components
         .map<SelectItem<ConditionValueComponent>>(component => {
           return this.mapDeviceComponentToSelectItem(device, component);
@@ -112,11 +111,11 @@ export class AppletConditionsValueComponent implements OnInit {
       const deviceComponent = this.devices
         .map(device => ({ device, component: device.components.find(component => component.cid === cid)}))
         .find(component => component);
-      if (deviceComponent && result.find(selectItem => selectItem.value.cid === cid) === undefined) {
-        result.push(this.mapDeviceComponentToSelectItem(deviceComponent.device, deviceComponent.component));
+      if (deviceComponent && components.find(selectItem => selectItem.value.cid === cid) === undefined) {
+        components.push(this.mapDeviceComponentToSelectItem(deviceComponent.device, deviceComponent.component));
       }
     }
-    return result.filter(selectedItem => selectedItem);
+    return components.filter(selectedItem => selectedItem);
   }
 
   private mapDeviceComponentToSelectItem(device: Device, component: DeviceComponent): SelectItem<ConditionValueComponent> {
@@ -124,7 +123,7 @@ export class AppletConditionsValueComponent implements OnInit {
       return null;
     }
     return {
-      label: device.name + ': ' + component.name + '(' + component.componentType?.dataType + ')',
+      label: device.deviceId + ': ' + component.name + '(' + component.componentType?.dataType + ')',
       value: {
         name: component.name,
         dataType: component.componentType?.dataType,
@@ -137,7 +136,7 @@ export class AppletConditionsValueComponent implements OnInit {
     this.activeAccordionIndex = -1;
   }
 
-  isAnyConditonType(types: ConditionType[]): boolean {
+  isAnyConditionType(types: ConditionType[]): boolean {
     let result = false;
     for (const type of types) {
       result = result || this.conditionValueGroup.get('type').value === type;

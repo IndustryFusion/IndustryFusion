@@ -20,8 +20,8 @@ import { EMPTY, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { KeycloakService } from 'keycloak-angular';
 import { Device } from './oisp-device.model';
+import { UserManagementService } from '../../../services/user-management.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class OispDeviceService {
   };
 
   constructor(private oispDeviceStore: OispDeviceStore,
-              private keycloakService: KeycloakService,
+              private userManagementService: UserManagementService,
               private http: HttpClient) { }
 
   getItem(deviceUid: ID): Observable<Device> {
@@ -41,7 +41,7 @@ export class OispDeviceService {
       return EMPTY;
     }
 
-    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices/${deviceUid}`;
+    const deviceRequest = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/devices/${deviceUid}`;
     return this.http.get<Device>(deviceRequest, this.httpOptions).pipe(
       map((device: Device) => {
         this.oispDeviceStore.upsertCached(device);
@@ -51,7 +51,7 @@ export class OispDeviceService {
   }
 
   getItems(): Observable<Device[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/devices`;
+    const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/devices`;
     return this.http.get<Device[]>(url, this.httpOptions)
       .pipe(map((devices: Device[]) => {
         this.oispDeviceStore.upsertManyCached(devices);
@@ -59,16 +59,4 @@ export class OispDeviceService {
       }));
   }
 
-  private getOispAccountId(): string {
-    const token = (this.keycloakService.getKeycloakInstance().tokenParsed as any);
-    let oispAccountId = '';
-
-    if (token.accounts && token.accounts.length > 0) {
-      oispAccountId = token.accounts[0].id;
-    } else {
-      console.warn('cannot retrieve OISP accountId, subsequent calls to OISP will hence most likely fail!');
-    }
-
-    return oispAccountId;
-  }
 }

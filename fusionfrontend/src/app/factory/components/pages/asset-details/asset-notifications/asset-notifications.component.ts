@@ -34,7 +34,7 @@ export class AssetNotificationsComponent implements OnInit {
 
   asset$: Observable<FactoryAssetDetailsWithFields>;
 
-  allNotifications$: Observable<OispNotification[]>;
+  notificationsOfAsset$: Observable<OispNotification[]>;
 
   constructor(private factoryResolver: FactoryResolver,
               private oispNotificationService: OispNotificationService,
@@ -44,14 +44,14 @@ export class AssetNotificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allNotifications$ = this.asset$.pipe(first(),
-      mergeMap(asset => this.getFilteredNotifications(asset))
+    this.notificationsOfAsset$ = this.asset$.pipe(first(),
+      mergeMap(asset => this.getFilteredNotificationsOfAsset(asset))
     );
   }
 
-  getFilteredNotifications(asset: FactoryAssetDetailsWithFields): Observable<OispNotification[]> {
+  private getFilteredNotificationsOfAsset(asset: FactoryAssetDetailsWithFields): Observable<OispNotification[]> {
     return this.oispNotificationService.getNotificationsUsingAlertStore(asset.externalName).pipe(
-      map(notifications => this.filterNotificationsByStatus(notifications)),
+      map(notifications => this.filterNotificationsByStatus(notifications))
     );
   }
 

@@ -28,6 +28,8 @@ import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp/oisp-aler
 import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../common/utils/route-helpers';
 import { TableSelectedItemsBarType } from '../../ui/table-selected-items-bar/table-selected-items-bar.type';
+import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
+import { OispDeviceResolver } from '../../../resolvers/oisp-device-resolver';
 
 export enum NotificationState { OPEN, CLEARED}
 
@@ -40,7 +42,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
-  @Input() notifications: Observable<OispNotification[]>;
+  @Input() notifications$: Observable<OispNotification[]>;
   @Input() isInline = false;
   state: NotificationState;
 
@@ -77,6 +79,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     public router: Router,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
     private oispAlertService: OispAlertService,
+    private oispDeviceQuery: OispDeviceQuery,
+    private oispDeviceResolver: OispDeviceResolver,
     private routingLocation: Location
   ) {
   }
@@ -86,6 +90,10 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.periodicallyFetchNotifications();
     this.initNameMappings();
+    this.resetNotificationVariablesToAllNotifications();
+  }
+
+  private resetNotificationVariablesToAllNotifications() {
     this.displayedNotifications = this.filteredNotifications = this.searchedNotifications = this.allNotifications;
   }
 
@@ -178,21 +186,33 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private periodicallyFetchNotifications(): void {
-    this.fetchNotifications();
+    this.initialLoadOfNotificationsEnsureDevicesLoaded();
     this.intervalId = setInterval(() => this.fetchNotifications(), this.FETCHING_INTERVAL_MILLISECONDS);
+  }
+
+  private initialLoadOfNotificationsEnsureDevicesLoaded() {
+    if (this.oispDeviceQuery.getCount() < 1) {
+      this.oispDeviceResolver.resolve().subscribe(() => {
+        this.fetchNotifications();
+      });
+    } else {
+      this.fetchNotifications();
+    }
   }
 
   private fetchNotifications() {
     this.notificationSubscription?.unsubscribe();
-    this.notificationSubscription = this.notifications.subscribe(notifications => {
+
+    this.notificationSubscription = this.notifications$.subscribe(notifications => {
       if (notifications.length !== this.allNotifications.length) {
         this.allNotifications = notifications;
+        this.resetNotificationVariablesToAllNotifications();
         this.updateNotifications();
       }
     });
   }
 
-  closeMultibleNotifications() {
+  closeMultipleNotifications() {
     this.selectedNotifications.forEach(notification => {
       this.deleteNotification(notification.id);
     });

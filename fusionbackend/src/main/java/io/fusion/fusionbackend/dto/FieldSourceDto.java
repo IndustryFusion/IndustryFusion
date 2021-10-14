@@ -31,7 +31,6 @@ public class FieldSourceDto extends BaseEntityDto {
     private FieldTargetDto fieldTarget;
     private Long sourceUnitId;
     private UnitDto sourceUnit;
-    private String sourceSensorLabel;
     private String name;
     private String description;
     private String value;

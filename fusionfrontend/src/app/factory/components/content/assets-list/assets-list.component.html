@@ -27,10 +27,10 @@ under the License.
 </div>
 
 <app-table-selected-items-bar [selectedItems]="selectedFactoryAssets"
-  [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT, TableSelectedItemsBarType.DELETE,
-  TableSelectedItemsBarType.SHOWASSETCARDS]" [itemName]="'Asset'"
-  (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); showEditDialog()"
-  (deleteItem)="setActiveRow(); showDeleteDialog()" (showAssetCards)="onCardsViewClick()">
+                              [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT, TableSelectedItemsBarType.DELETE,
+  TableSelectedItemsBarType.SHOW_ASSET_CARDS]" [itemName]="'Asset'"
+                              (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); showEditDialog()"
+                              (deleteItem)="setActiveRow(); showDeleteDialog()" (showAssetCards)="onCardsViewClick()">
 </app-table-selected-items-bar>
 
 <p-table [(selection)]="selectedFactoryAssets" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"

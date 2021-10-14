@@ -31,7 +31,7 @@ import { FieldDetails } from '../../../../store/field-details/field-details.mode
 export class AssetsGridPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   factorySite$: Observable<FactorySite>;
-  rooms$: Observable<Room[]>;
+  roomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   assetsWithFields$: Observable<AssetWithFields[]>;
   commonFields: FieldDetails[] = [];
@@ -46,7 +46,7 @@ export class AssetsGridPageComponent implements OnInit {
     this.isLoading$ = this.assetQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
     this.factorySite$ = this.factoryResolver.factorySite$;
-    this.rooms$ = this.factoryResolver.rooms$;
+    this.roomsOfFactorySite$ = this.factoryResolver.roomsOfFactorySite$;
     this.assets$ = this.factoryResolver.assets$;
     this.assetsWithFields$ = this.factoryResolver.assetsWithFields$;
 

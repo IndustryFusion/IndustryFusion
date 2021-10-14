@@ -100,6 +100,12 @@ header {
   }
 }
 
+:host ::ng-deep .if-icon-popout {
+  margin-left: 10px;
+  margin-top: -4px;
+  cursor: pointer;
+}
+
 .page-header {
   h1 {
     margin: 0;
@@ -191,7 +197,7 @@ header {
     }
 
     &.user {
-      background-image: url("^assets/img/avatar.png");
+      background-image: url("^assets/icons/avatar-example.svg");
       align-items: center;
       height: 80px;
       width: 80px;
@@ -203,10 +209,11 @@ header {
       height: auto;
       width: auto;
 
-      clr-icon {
+      .user-name-more {
+        font-size: inherit;
+        background: none !important;
         height: 16px;
         width: 16px;
-        margin: 0;
       }
     }
 
@@ -217,6 +224,85 @@ header {
       margin: 20%;
     }
   }
+}
+
+.userpanel {
+/*  min-width: 24rem !important; // not working... */
+
+  .header {
+    background-color: $light-grey;
+    width: 100%;
+    display: table;
+
+    .header-info {
+      padding: 0.571rem 1rem !important;
+      display: flex;
+
+      .header-text {
+        padding-top: 15px;
+        padding-left: 15px;
+
+        .if-panel-heading {
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+  }
+
+  .panel-content {
+    margin: 0.571rem 1rem !important;
+
+    .account {
+      display: flex;
+
+      .account-icon {
+        align-self: center;
+        cursor: pointer;
+      }
+
+      .account-label {
+        padding-left: 8px;
+        cursor: pointer;
+        font-size: $medium-font-size;
+      }
+    }
+  }
+
+  .logout-button {
+    width: 100%;
+    background-color: $light-grey;
+    padding: 0.7rem 0;
+    display: flex;
+    justify-content: center;
+    color: $regular-grey;
+    cursor: pointer;
+
+    i {
+      font-size: $medium-font-size;
+      align-self: center;
+    }
+
+    .logout-label {
+      padding-top: 4px;
+      padding-left: 8px;
+      cursor: pointer;
+      font-size: $medium-font-size;
+    }
+  }
+}
+
+:host ::ng-deep .p-overlaypanel .p-overlaypanel-content {
+  padding: 0;
+  border: 1px solid $underlay;
+  border-radius: 10px;
+}
+
+:host ::ng-deep .p-overlaypanel .p-overlaypanel-close {
+  background-color: $light-grey !important;
+}
+
+:host ::ng-deep .p-overlaypanel::after, :host ::ng-deep .p-overlaypanel::before {
+  left: calc(var(--overlayArrowLeft, 0) - .5rem) !important;
 }
 
 .sub-header {
