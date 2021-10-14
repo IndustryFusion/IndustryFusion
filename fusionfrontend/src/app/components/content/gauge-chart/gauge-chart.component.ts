@@ -135,9 +135,9 @@ export class GaugeChartComponent implements OnInit {
     this.indicatorWidth = Math.max(2, Math.round(((Math.max(this.metricValue, minMax.max) - Math.min(this.metricValue, minMax.min)) / 80)));
 
     if (hasAtLeastTwoThresholds) {
-      this.addValueIndicatorAtStartIfBelowRanges(minMax, isAbsoluteThreshold && isIdealThreshold);
+      this.addValueIndicatorAtStartIfBelowRanges(minMax, isAbsoluteThreshold && isIdealThreshold && !isCriticalThreshold);
       this.addRangesForTwoOrThreeThresholds(isAbsoluteThreshold, isCriticalThreshold, isIdealThreshold);
-      this.addValueIndicatorAtStartIfAboveRanges(minMax, isAbsoluteThreshold && isIdealThreshold);
+      this.addValueIndicatorAtStartIfAboveRanges(minMax, isAbsoluteThreshold && isIdealThreshold && !isCriticalThreshold);
     } else {
       this.addRangesForOneThreshold(isAbsoluteThreshold, isCriticalThreshold, isIdealThreshold);
     }
