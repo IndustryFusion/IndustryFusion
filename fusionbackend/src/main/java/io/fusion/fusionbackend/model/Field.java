@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.model;
 
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
+import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,6 +59,9 @@ public class Field extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private FieldThresholdType thresholdType;
 
+    @Enumerated(EnumType.STRING)
+    private FieldWidgetType widgetType;
+
     public void copyFrom(final Field sourceField) {
 
         super.copyFrom(sourceField);
@@ -82,6 +86,9 @@ public class Field extends BaseEntity {
         }
         if (sourceField.getThresholdType() != null) {
             setThresholdType(sourceField.getThresholdType());
+        }
+        if (sourceField.getWidgetType() != null) {
+            setWidgetType(sourceField.getWidgetType());
         }
     }
 }

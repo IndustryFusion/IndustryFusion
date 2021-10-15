@@ -1,0 +1,56 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'abstract/variables';
+@import 'base/typography';
+
+.gauge-chart {
+  display: flex;
+
+  .container {
+    margin-top: 2rem;
+    margin-left: 2.1rem;
+    margin-right: -1rem;
+    text-align:center;
+
+    .label-container {
+      margin: -1rem auto auto;
+      display: block;
+
+      .metric-value {
+        display: block;
+
+        font-size: $much-bigger-font-size;
+        line-height: $small-line-height;
+        font-weight: bold;
+        color: $basic-black;
+      }
+
+      .metric-label {
+        display: block;
+        margin-top: 0.8rem;
+
+        font-size: $bigger-font-size;
+        line-height: $small-line-height;
+        color: $inactive-infotext;
+      }
+    }
+  }
+}
+
+:host ::ng-deep canvas {
+  width: 10rem !important;
+  height: 5rem !important;
+}

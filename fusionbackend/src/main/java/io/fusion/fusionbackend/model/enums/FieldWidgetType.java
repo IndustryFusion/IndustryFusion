@@ -13,7 +13,11 @@
  * under the License.
  */
 
-export interface MaintenanceInterval {
-    hoursTillMaintenance: number;
-    maintenanceInterval: number;
+package io.fusion.fusionbackend.model.enums;
+
+public enum FieldWidgetType {
+    STATUS,
+    RAW,
+    GAUGE,
+    BARCHART
 }

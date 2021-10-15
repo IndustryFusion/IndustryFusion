@@ -26,6 +26,7 @@ import { PointWithId } from '../../../../../services/oisp.model';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { StatusPoint } from '../../../../models/status.model';
+import { AssetChartHelper } from '../../../../../common/utils/asset-chart-helper';
 
 @Component({
   selector: 'app-asset-charts',
@@ -93,7 +94,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initLineChartOptions(): void {
-    const minMaxYAxis = this.getYMinMaxByAbsoluteThreshold();
+    const minMaxYAxis =  AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
 
     const scales: ChartScales | LinearScale = {
       xAxes: [{
@@ -148,17 +149,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
-  private getYMinMaxByAbsoluteThreshold(): { min?: number, max?: number } {
-    if (this.fieldDetails.absoluteThreshold) {
-      return {
-        min: this.fieldDetails.absoluteThreshold.valueLower,
-        max: this.fieldDetails.absoluteThreshold.valueUpper
-      };
-    } else {
-      return { };
-    }
-  }
-
   private getAnnotationsByIdealAndCriticalThresholds(minMax: { min?: number, max?: number }): any {
     const annotations = [];
 
@@ -190,7 +180,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getYMinMaxOfPoints(points?: PointWithId[]): { min?: number, max?: number } {
-    let minMax: { min?: number, max?: number } = this.getYMinMaxByAbsoluteThreshold();
+    let minMax: { min?: number, max?: number } = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
 
     const isNoStrictMinMax = (minMax.min == null || minMax.max == null); // ! would also include zero
     if (points && isNoStrictMinMax) {

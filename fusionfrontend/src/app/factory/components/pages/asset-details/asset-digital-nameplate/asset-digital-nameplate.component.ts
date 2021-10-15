@@ -30,7 +30,6 @@ import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-det
 import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
-import { GermanNumberPipe } from '../../../../../pipes/germannumber.pipe';
 
 
 @Component({
@@ -51,8 +50,6 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
   manualIcon = faLayerGroup;
   videoIcon = faPlayCircle;
 
-  private germanNumberPipe: GermanNumberPipe = new GermanNumberPipe();
-
   constructor(
     private oispService: OispService,
     private oispDeviceQuery: OispDeviceQuery,
@@ -61,10 +58,6 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
     private factoryAssetQuery: FactoryAssetDetailsQuery) {
-  }
-
-  private static isNumber(value: any): boolean {
-    return !Number.isNaN(Number(value));
   }
 
   ngOnInit() {
@@ -112,9 +105,5 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
-  }
-
-  asGermanNumberOrText(value: any): string {
-    return AssetDigitalNameplateComponent.isNumber(value) ? this.germanNumberPipe.transform(value) : String(value);
   }
 }

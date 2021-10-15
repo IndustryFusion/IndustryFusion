@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { BaseQueryEntityCached } from '../basequerycached';
-import { FieldDetails } from './field-details.model';
+import { FieldDetails, FieldType } from './field-details.model';
 import { FieldDetailsState, FieldDetailsStore } from './field-details.store';
 
 @Injectable({ providedIn: 'root' })
@@ -29,6 +29,12 @@ export class FieldDetailsQuery extends BaseQueryEntityCached<FieldDetailsState, 
   selectFieldsOfAsset(assetId: ID): Observable<FieldDetails[]> {
     return this.selectAll({
       filterBy: entity => String(entity.assetId) === String(assetId)
+    });
+  }
+
+  selectMetricFieldsOfAsset(assetId: ID): Observable<FieldDetails[]> {
+    return this.selectAll({
+      filterBy: entity => String(entity.assetId) === String(assetId) && entity.fieldType === FieldType.METRIC
     });
   }
 }

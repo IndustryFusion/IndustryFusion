@@ -54,7 +54,7 @@ export class AssetDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   updateAsset() {
     this.assetId = this.factoryAssetDetailsQuery.getActiveId();
-    this.factoryComposedQuery.selectActiveAssetsWithFieldInstanceDetails()
+    this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
       .pipe(takeUntil(this.unSubscribe$))
       .subscribe(asset => {
       this.asset = asset;
