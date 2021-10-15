@@ -14,21 +14,21 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AssetSeriesWizardConnectivitySettingsComponent } from './asset-series-wizard-connectivity-settings.component';
+import { AssetSeriesWizardNameplateAndConnectivitySettingsComponent } from './asset-series-wizard-nameplate-and-connectivity-settings.component';
 
 describe('AssetSeriesWizardConnectivitySettingsComponent', () => {
-  let component: AssetSeriesWizardConnectivitySettingsComponent;
-  let fixture: ComponentFixture<AssetSeriesWizardConnectivitySettingsComponent>;
+  let component: AssetSeriesWizardNameplateAndConnectivitySettingsComponent;
+  let fixture: ComponentFixture<AssetSeriesWizardNameplateAndConnectivitySettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetSeriesWizardConnectivitySettingsComponent ]
+      declarations: [ AssetSeriesWizardNameplateAndConnectivitySettingsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesWizardConnectivitySettingsComponent);
+    fixture = TestBed.createComponent(AssetSeriesWizardNameplateAndConnectivitySettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

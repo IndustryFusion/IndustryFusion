@@ -16,6 +16,11 @@
 @import "base/typography";
 @import "abstract/variables";
 
+$metric-small-height: var(--metric-small-height);
+$metric-large-height: var(--metric-large-height);
+$metric-margin-y: var(--metric-margin-y);
+$metrics-masonry-height: var(--metrics-masonry-height);
+
 .metrics-board {
   margin: 1rem 2rem;
   width: 100%;
@@ -24,7 +29,7 @@
 
   .performance-widget {
     width: 22%;
-    height: 6.4rem;
+    height: $metric-small-height;
     background: $basic-white 0 0 no-repeat padding-box;
     border-radius: 10px;
     &:not(:last-child) {
@@ -34,7 +39,7 @@
 
     .metric-container {
       border: 0;
-      margin: 1.25rem 2.5rem;
+      margin: $metric-margin-y 2.5rem;
 
       .progress-bar-container {
         display: block !important;
@@ -77,8 +82,23 @@
 
   .performance-widget-large {
     @extend .performance-widget;
-    height: 12.8rem !important;
+    height: $metric-large-height !important;
   }
+}
+
+.fake-masonry {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: flex-start;
+  height: $metrics-masonry-height;
+  width: 100%;
+}
+
+.fake-masonry::before,
+.fake-masonry::after {
+  content: "";
+  width: 0;
+  order: 3;
 }
 
 :host ::ng-deep .maintenance-value {

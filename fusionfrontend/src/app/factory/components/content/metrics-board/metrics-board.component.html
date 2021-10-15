@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="metrics-board" *ngIf="isLoaded">
+<div class="metrics-board fake-masonry" *ngIf="isLoaded">
   <ng-container *ngFor="let metric of metricsDetails">
     <div [ngClass]="metric.fieldDetails.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetails) ? 'performance-widget-large' : 'performance-widget'">
       <div class="metric-container">
