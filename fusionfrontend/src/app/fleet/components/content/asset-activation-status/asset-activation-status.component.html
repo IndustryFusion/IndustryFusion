@@ -17,11 +17,11 @@ under the License.
   <ng-container *ngIf="asset">
     <ng-container>
       <div [ngClass]="{'status-circle-small': showInline}"
-           [style.background-color]="(asset?.installationDate | assetActivationStatus).color" class="status-circle">
+           [style.background-color]="(asset | assetActivationStatus).color" class="status-circle">
       </div>
     </ng-container>
     <div [ngClass]="{'status-standalone': !showInline}" class="status">
-      {{(asset?.installationDate | assetActivationStatus).status}}
+      {{(asset | assetActivationStatus).status}}
     </div>
   </ng-container>
 </div>

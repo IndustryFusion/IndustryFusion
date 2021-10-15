@@ -33,6 +33,5 @@ export class AssetSeriesInstanceInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 }

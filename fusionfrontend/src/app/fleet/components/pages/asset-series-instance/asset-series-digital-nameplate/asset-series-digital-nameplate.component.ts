@@ -80,7 +80,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
       switchMap(([asset, rooms]) => {
         const assetRoom = rooms.find((room) => room.id === asset.roomId);
         return this.factoryResolver.factorySites$.pipe(
-          map(sites => sites.find(site => site.id === assetRoom.factorySiteId)),
+          map(sites => sites.find(site => site.id === assetRoom?.factorySiteId)),
         );
       })
     );

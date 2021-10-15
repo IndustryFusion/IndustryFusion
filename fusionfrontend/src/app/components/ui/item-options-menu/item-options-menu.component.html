@@ -18,6 +18,6 @@ under the License.
   <p-menu #menu [appendTo]="appendTo" [model]="menuActions" [popup]="true"></p-menu>
   <button (click)="menu.toggle($event);"
           [ngClass]="{'table-dropdown-menu-button-inline': showInline, 'table-dropdown-menu-button-standalone': !showInline}"
-          class="table-dropdown-menu-button" icon="pi pi-ellipsis-h" pButton
+          class="table-dropdown-menu-button" icon="pi pi-ellipsis-h" pButton [disabled]="disabled"
           type="button"></button>
 </div>
