@@ -14,9 +14,9 @@ under the License.
 -->
 
 <div class="efficiency-dashboard">
-  <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div>
-      <div class="title">Status Overview by Asset</div>
+  <div class="p-grid p-jc-between header-line">
+    <div class="table-header-with-status-info">
+      <h3 class="table-header">Status Overview by Asset</h3>
       <div class="status-key">
         <span class="status-square running"></span> <label class="badge-padding">Running</label>
         <span class="status-square idle"></span> <label class="badge-padding">Idle</label>
@@ -41,50 +41,56 @@ under the License.
     currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
     <ng-template pTemplate="header">
       <tr>
-        <th [style.width.%]="30">
+        <th [style.width.%]="2"></th>
+        <th [style.width.%]="3"></th>
+        <th [style.width.%]="20" class="first-header-item">
           <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>
-        <th [style.width.%]="15" ttSortableColumn="category">Asset Type
+        <th [style.width.%]="20" ttSortableColumn="category">Asset Type
           <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="20" ttSortableColumn="manufacturer">Manufacturer
+        <th [style.width.%]="15" ttSortableColumn="manufacturer">Manufacturer
           <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="10" ttSortableColumn="factorySiteName">Factory
+        <th [style.width.%]="12.5" ttSortableColumn="factorySiteName">Factory
           <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="25">Status Overview</th>
+        <th [style.width.%]="22.5">Status Overview</th>
+        <th [style.width.%]="3"></th>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
       <tr [ttRow]="rowNode">
-        <td [style.width.%]="100">
+        <td [style.width.%]="2"></td>
+        <td [style.width.%]="3">
+          <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
+            <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
+          </div>
+        </td>
+        <td [style.width.%]="20" class="table-bold-font">
           <div class="p-flex-row" style="display: flex">
             <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
             <span class="subsystem-grid p-col-" *ngIf="rowNode.parent">
               <span class="upper"></span>
               <span class="lower" [ngClass]="{'last-element': isLastChildElement(rowNode)}"></span>
             </span>
-            <div>
-              <label class="if-label">{{rowData.name}}</label><br>
-              <label class="if-label-small">{{rowData.assetSeriesName}}</label>
-            </div>
+            <span class="p-col">{{rowData.name}}</span>
           </div>
         </td>
-        <td [style.width.%]="15">{{rowData.category}}</td>
-        <td [style.width.%]="20" class="manufacturer-icon">
-          <img src="/assets/img/IndustryFusion-hive.png" alt="asset-symbol">
-          <label class="if-label">{{rowData.manufacturer}}</label>
-        </td>
-        <td [style.width.%]="10">{{rowData.factorySiteName}}</td>
-        <td [style.width.%]="25">
+        <td [style.width.%]="20">{{rowData.category}}</td>
+        <td [style.width.%]="15">{{rowData.manufacturer}}</td>
+        <td [style.width.%]="12.5">{{rowData.factorySiteName}}</td>
+        <td [style.width.%]="22.5">
           <app-equipment-efficiency-bar-chart *ngIf="rowData.statusHoursOneDay"
                                               [assetStatusHoursOfDays]="[rowData.statusHoursOneDay]">
           </app-equipment-efficiency-bar-chart>
         </td>
+        <td [style.width.%]="3"></td>
       </tr>
     </ng-template>
 

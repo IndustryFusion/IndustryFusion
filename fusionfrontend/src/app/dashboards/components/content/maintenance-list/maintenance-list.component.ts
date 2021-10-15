@@ -22,6 +22,7 @@ import { Company } from 'src/app/store/company/company.model';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { TreeNode } from 'primeng/api';
 import { OispAlert, OispAlertPriority } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
+import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
 import {
   AssetMaintenanceUtils,
@@ -54,6 +55,9 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   faChevronCircleDown = faChevronCircleDown;
   faChevronCircleUp = faChevronCircleUp;
+  faInfoCircle = faInfoCircle;
+  faExclamationCircle = faExclamationCircle;
+  faExclamationTriangle = faExclamationTriangle;
   OispPriority = OispAlertPriority;
 
   searchText = '';
