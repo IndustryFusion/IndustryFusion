@@ -24,7 +24,7 @@ import { FormGroup } from '@angular/forms';
 export class DateFilterComponent implements OnInit {
 
   @Input()
-  itemsToBeFiltered: any;
+  itemsToBeFiltered: any[];
   @Input()
   dateFilterFormGroup: FormGroup;
   @Output()

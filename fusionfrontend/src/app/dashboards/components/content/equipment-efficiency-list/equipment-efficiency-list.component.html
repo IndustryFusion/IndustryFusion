@@ -24,7 +24,7 @@ under the License.
         <span class="status-square offline"></span> <label class="badge-padding">Offline</label>
       </div>
     </div>
-    <div class="filter-btn-div">
+    <div class="single-filter-btn-div">
       <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                         (filteredItems)="filterAssets($event)">
       </app-table-filter>
@@ -46,9 +46,15 @@ under the License.
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>
-        <th [style.width.%]="15">Asset Type</th>
-        <th [style.width.%]="20">Manufacturer</th>
-        <th [style.width.%]="10">Factory</th>
+        <th [style.width.%]="15" ttSortableColumn="category">Asset Type
+          <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="20" ttSortableColumn="manufacturer">Manufacturer
+          <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="10" ttSortableColumn="factorySiteName">Factory
+          <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
+        </th>
         <th [style.width.%]="25">Status Overview</th>
       </tr>
     </ng-template>

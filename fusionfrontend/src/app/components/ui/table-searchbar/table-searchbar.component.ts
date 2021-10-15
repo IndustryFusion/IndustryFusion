@@ -53,11 +53,19 @@ export class TableSearchbarComponent implements OnInit {
   filterItemsBySearchText<ItemType extends BaseEntity>(): ItemType {
     if (this.attributeToBeSearched.includes(this.dotToSplitNestedVariables)) {
       const attributesToBeSearched = this.attributeToBeSearched.split('.');
-      return this.itemsToBeFiltered.filter(item => item[attributesToBeSearched[0]][attributesToBeSearched[1]]
-        .toLowerCase().includes(this.searchText.toLowerCase()));
+      return this.itemsToBeFiltered.filter(item => {
+        if (item[attributesToBeSearched[0]] != null && item[attributesToBeSearched[1]] != null) {
+          item[attributesToBeSearched[0]][attributesToBeSearched[1]]
+            .toLowerCase().includes(this.searchText.toLowerCase());
+        }
+      });
     } else {
       return this.itemsToBeFiltered
-        .filter(item => item[this.attributeToBeSearched].toLowerCase().includes(this.searchText.toLowerCase()));
+        .filter(item => {
+          if (item[this.attributeToBeSearched] != null) {
+            return item[this.attributeToBeSearched].toLowerCase().includes(this.searchText.toLowerCase());
+          }
+        });
     }
   }
 

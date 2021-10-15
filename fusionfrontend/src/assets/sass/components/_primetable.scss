@@ -13,30 +13,31 @@
  * under the License.
  */
 
+@import 'base/typography';
 @import "abstract/variables";
 
 .p-datatable {
-  margin: 30px 80px;
+  margin: 1.5rem 4rem;
   border: hidden !important;
 }
 
 .p-datatable .p-datatable-thead > tr > th {
-  margin-bottom: 10px;
-  height: 56px;
+  margin-bottom: 1rem;
+  height: 2.8rem;
   text-align: left;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: $medium-font-size;
+  line-height: 1rem;
   font-weight: 600;
   color: $basic-black;
   background-color: $light-grey;
   border: 0 none;
 
   &:first-child {
-    border-radius: 10px 0 0 10px;
+    border-radius: .5rem 0 0 .5rem;
   }
 
   &:last-child {
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 .5rem .5rem 0;
   }
 }
 
@@ -44,8 +45,8 @@
   background-color: $basic-white;
   border-color: transparent;
   text-align: left;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: $medium-font-size;
+  line-height: 1rem;
   font-weight: 400;
   letter-spacing: 0;
   color: $basic-grey;
@@ -53,7 +54,7 @@
 
 
   &:first-child {
-    border-radius: 10px 0 0 10px;
+    border-radius: .5rem 0 0 .5rem;
     color: $basic-black;
   }
 }
@@ -74,18 +75,18 @@
 }
 
 .p-paginator {
-  height: 45px;
+  height: 2.25rem;
   background-color: $basic-white;
   border-color: transparent;
   border: none;
-  margin-top: 5px;
-  padding-bottom: 5px;
+  margin-top: .25rem;
+  padding-bottom: .25rem;
 
   .p-dropdown {
-    height: 40px;
-    width: 80px !important;
+    height: 2rem;
+    width: 4rem !important;
     float: right;
-    margin-right: 50px;
+    margin-right: 2.5rem;
 
     .p-dropdown-label {
       background-color: transparent !important;
@@ -97,38 +98,38 @@
   }
 
   .p-paginator-pages .p-paginator-page {
-    height: 40px;
-    width: 40px;
-    margin: 2px;
+    height: 2rem;
+    width: 2rem;
+    margin: .1rem;
     background-color: $basic-white !important;
     color: $basic-black !important;
-    font-size: 16px;
+    font-size: $medium-font-size;
     font-weight: 600;
     border-color: $basic-black;
     border-style: solid;
-    border-width: 1px;
-    border-radius: 10px;
+    border-width: .05rem;
+    border-radius: .5rem;
     align-content: center;
     justify-content: center;
 
     &:hover {
-      border: 1px solid $basic-black !important;
+      border: .05rem solid $basic-black !important;
     }
   }
 
   .p-widget {
     border-color: $basic-black;
     border-style: solid;
-    border-width: 1px !important;
-    border-radius: 10px !important;
+    border-width: .05rem !important;
+    border-radius: .5rem !important;
 
     .p-inputtext {
-      height:40px !important;
+      height: 2rem !important;
       font-weight: normal;
       border-color: $basic-black;
-      border-width: 2px !important;
-      border-radius: 10px;
-      width: 60px;
+      border-width: .1rem !important;
+      border-radius: .5rem;
+      width: 3rem;
     }
 
 
@@ -136,28 +137,28 @@
       background-color: $basic-white !important;
       color: $basic-black !important;
       font-weight: bold;
-      border-radius: 10px;
+      border-radius: .5rem;
     }
 
     .p-dropdown-trigger {
-      border-radius: 10px;
+      border-radius: .5rem;
     }
   }
 
   .p-highlight {
-    border: 2px solid $basic-black !important;
+    border: .1rem solid $basic-black !important;
     box-shadow: none !important;
   }
 
   .p-paginator-prev, .p-paginator-next {
-    height: 40px;
-    width: 40px;
-    margin: 2px;
+    height: 2rem;
+    width: 2rem;
+    margin: .1rem;
     color: $basic-black;
     border-color: $basic-black;
     border-style: solid;
-    border-width: 1px !important;
-    border-radius: 10px !important;
+    border-width: .05rem !important;
+    border-radius: .5rem !important;
   }
 
   .p-paginator-first, .p-paginator-last {
@@ -166,31 +167,36 @@
 }
 
 .header-line {
-  height: 50px;
-  margin: 30px 80px;
+  height: 2.5rem;
+  margin: 1.5rem 4rem;
 
   .table-header{
     font-size: $big-font-size;
     font-weight: bold;
-    margin-top: 14px;
-    margin-left: 68px;
+    margin-top: .7rem;
+    margin-left: 3.4rem;
   }
 
   .filter-btn-div {
-    position: relative;
     margin-top: .5rem;
-    height: 50px;
-    padding-left: 10px;
+    align-self: center;
+    margin-right: 1rem;
   }
 
   .create-btn {
     margin-top: .5rem;
-    align-self: center
+    align-self: center;
+    margin-right: 2.4rem;
   }
 
-  .create-btn-without-filter {
+  .single-filter-btn-div {
     align-self: center;
-    margin-right: 48px;
+    margin-right: 2.4rem;
+  }
+
+  .single-create-btn {
+    align-self: center;
+    margin-right: 2.4rem;
   }
 }
 
@@ -208,12 +214,12 @@
 
 .table-checkbox {
   .p-checkbox .p-component {
-    border-radius: 4px !important;
+    border-radius: .2rem !important;
   }
 }
 
 .check-box-icon {
-  padding-right: 20px;
+  padding-right: 1rem;
   background-color: $basic-black;
   color: $basic-white;
 }

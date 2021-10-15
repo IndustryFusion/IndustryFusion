@@ -1,9 +1,9 @@
 <div>
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">Maintenance Dashboard</h3>
-    <div class="filter-btn-div">
+    <div class="single-filter-btn-div">
       <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
-                        [position]="['90%', '-450%']" (filteredItems)="filterAssets($event)">
+                        (filteredItems)="filterAssets($event)">
       </app-table-filter>
     </div>
   </div>
@@ -13,7 +13,8 @@
                [paginator]="true"
                [rowsPerPageOptions]="[5,10,50]"
                [rows]="10"
-               [value]="treeData" class="list-container">
+               [value]="treeData" class="list-container"
+               sortMode="multiple">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="2"></th>
@@ -26,8 +27,12 @@
         <th [style.width.%]="18" ttSortableColumn="category">Asset Type
           <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="20">Manufacturer</th>
-        <th [style.width.%]="12">Factory</th>
+        <th [style.width.%]="20" ttSortableColumn="manufacturer">Manufacturer
+          <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory
+          <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
+        </th>
         <th [style.width.%]="13">Days till Maintenance</th>
         <th [style.width.%]="13">Operating Hours till Maintenance</th>
         <th [style.width.%]="2"></th>

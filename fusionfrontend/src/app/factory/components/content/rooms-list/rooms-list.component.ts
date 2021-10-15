@@ -72,8 +72,8 @@ export class RoomsListComponent implements OnInit {
               private roomService: RoomService,
               private assetDetailsService: FactoryAssetDetailsService,
               private formBuilder: FormBuilder,
-              public dialogService: DialogService,
-              public factoryResolver: FactoryResolver,
+              private dialogService: DialogService,
+              private factoryResolver: FactoryResolver,
               private factorySiteQuery: FactorySiteQuery,
               private activatedRoute: ActivatedRoute,
               private assetService: AssetService,
@@ -111,8 +111,31 @@ export class RoomsListComponent implements OnInit {
     }
 
     this.rooms$.subscribe(rooms =>  {
-      this.rooms = rooms;
+      this.rooms = this.addFactorySideToRooms(rooms);
       this.initFactorySitesAndRoomsMap();
+    });
+  }
+
+  addFactorySideToRooms(rooms: Room[]): Room[] {
+    if (this.rooms$ && this.factorySites) {
+      const roomsWithFactorySite: Room[] = [];
+      rooms.forEach((room, index) =>  {
+        roomsWithFactorySite.push({ ...room });
+        roomsWithFactorySite[index].factorySite = this.factorySites.find(factorySite => factorySite.id === room.factorySiteId);
+      });
+      return this.sortRoomsByFactorySiteByDefault(roomsWithFactorySite);
+    }
+  }
+
+  sortRoomsByFactorySiteByDefault(rooms: Room[]): Room[] {
+    return rooms.sort((a, b) => {
+      if (a.factorySite.name > b.factorySite.name) {
+        return 1;
+      } else if (a.factorySite.name < b.factorySite.name) {
+        return -1;
+      } else {
+        return 0;
+      }
     });
   }
 

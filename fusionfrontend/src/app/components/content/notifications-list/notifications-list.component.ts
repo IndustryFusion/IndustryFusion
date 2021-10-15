@@ -21,8 +21,7 @@ import { Observable, Subscription } from 'rxjs';
 import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
 import { OispAlertService } from '../../../store/oisp/oisp-alert/oisp-alert.service';
 import { environment } from '../../../../environments/environment';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FilterOption, FilterType } from 'src/app/components/ui/table-filter/filter-options';
 
 import { OispAlertPriority, OispAlertStatus } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
@@ -50,8 +49,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
   faExclamationTriangle = faExclamationTriangle;
-  faCheckCircle = faCheckCircle;
-  faTimes = faTimes;
 
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };

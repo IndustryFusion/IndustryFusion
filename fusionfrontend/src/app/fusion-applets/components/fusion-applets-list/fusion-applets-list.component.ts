@@ -49,6 +49,10 @@ export class FusionAppletsListComponent implements OnInit {
   RuleActionType = RuleActionType;
 
   filteredRules: Rule[] = [];
+  displayedRules: Rule[] = [];
+  rulesSearchedByName: Rule[] = [];
+  rulesSearchedCondition: Rule[] = [];
+
   public titleMapping:
     { [k: string]: string } = { '=0': 'No Applet', '=1': '# Applet', other: '# Applets' };
 
@@ -66,6 +70,7 @@ export class FusionAppletsListComponent implements OnInit {
       rules = this.oispRuleService.filterRulesByStatus(rules, this.showActive);
       this.filteredRules = this.filterRulesByDevice(rules);
     });
+    this.displayedRules = this.rulesSearchedByName = this.rulesSearchedCondition = this.filteredRules;
   }
 
   private filterRulesByDevice(rules: Rule[]) {
@@ -78,6 +83,20 @@ export class FusionAppletsListComponent implements OnInit {
       });
     }
     return result;
+  }
+
+  searchRulesByName(event?: Rule[]) {
+    this.rulesSearchedByName = event;
+    this.updateDisplayedRules();
+  }
+
+  searchRulesByCondition(event?: Rule[]) {
+    this.rulesSearchedCondition = event;
+    this.updateDisplayedRules();
+  }
+
+  updateDisplayedRules() {
+    this.displayedRules = this.rulesSearchedByName.filter(rule => this.rulesSearchedCondition.includes(rule));
   }
 
   isActive(status: string): boolean {

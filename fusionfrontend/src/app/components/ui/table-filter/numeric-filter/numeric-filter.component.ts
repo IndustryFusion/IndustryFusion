@@ -29,12 +29,16 @@ export class NumericFilterComponent implements OnInit {
   readonly MAINTENANCE_DAYS_LOWER_THRESHOLD = 90;
   readonly MAINTENANCE_DAYS_UPPER_THRESHOLD = 180;
 
+  readonly MAINTENANCE_HOURS_FIELD_NAME = 'Operating Hours till maintenance';
+  readonly MAINTENANCE_HOURS_LOWER_THRESHOLD = 150;
+  readonly MAINTENANCE_HOURS_UPPER_THRESHOLD = 750;
+
   readonly SHORTTERM_PRIORITY = 'Critical (red)';
   readonly MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
   readonly LONGTERM_PRIORITY = 'Longterm (blue)';
 
   @Input()
-  itemsToBeFiltered: any;
+  itemsToBeFiltered: any[];
   @Input()
   numericFilterFormGroup: FormGroup;
   @Output()
@@ -43,7 +47,9 @@ export class NumericFilterComponent implements OnInit {
   checkBoxItemsSet: Set<any> = new Set();
   checkBoxItems: string[] = [this.SHORTTERM_PRIORITY, this.MEDIUMTERM_PRIORITY, this.LONGTERM_PRIORITY];
   selectedCheckBoxItems: any[] = [];
-  filteredItems: any[] = [];
+  filteredItems: Set<any> = new Set();
+  filteredItemsByMaintenanceHours: any[] = [];
+  filteredItemsByMaintenanceDays: any[] = [];
   index: number;
 
   selectedValueMapping:
@@ -63,40 +69,69 @@ export class NumericFilterComponent implements OnInit {
   }
 
   filterItemsBySelectedValues() {
-    this.filteredItems = this.itemsToBeFiltered;
+    this.filteredItemsByMaintenanceDays = this.itemsToBeFiltered;
+    this.filteredItemsByMaintenanceHours = this.itemsToBeFiltered;
     this.numericFilterFormGroup.get('selectedCheckboxItems').patchValue(this.selectedCheckBoxItems);
     if (this.selectedCheckBoxItems.length > 0) {
       this.checkBoxItems.forEach(checkBoxValue => {
-        this.filteredItems = this.selectedCheckBoxItems.includes(checkBoxValue) ? this.filteredItems :
-          this.filterItems(checkBoxValue).filter(item => this.filteredItems.includes(item));
+        this.filteredItemsByMaintenanceDays = this.selectedCheckBoxItems.includes(checkBoxValue) ? this.filteredItemsByMaintenanceDays :
+          this.filterItems(checkBoxValue, this.MAINTENANCE_DAYS_FIELD_NAME).filter(item =>
+            this.filteredItemsByMaintenanceDays.includes(item));
+        this.filteredItemsByMaintenanceHours = this.selectedCheckBoxItems.includes(checkBoxValue) ? this.filteredItemsByMaintenanceHours :
+          this.filterItems(checkBoxValue, this.MAINTENANCE_HOURS_FIELD_NAME).filter(item =>
+            this.filteredItemsByMaintenanceHours.includes(item));
       });
-      this.numericFilterFormGroup.get('filteredItems').patchValue(this.filteredItems);
+      this.filteredItems = new Set(this.filteredItemsByMaintenanceDays.concat(this.filteredItemsByMaintenanceHours));
+      this.numericFilterFormGroup.get('filteredItems').patchValue(Array.from(this.filteredItems));
+
     } else {
       this.numericFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
     }
     this.itemsFiltered.emit();
   }
 
-  filterItems(checkboxItem: string) {
+  filterItems(checkboxItem: string, fieldName: string) {
     const attributeToBeFiltered = 'fields';
     switch (checkboxItem) {
       case this.SHORTTERM_PRIORITY: {
-        return this.removeAboveThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered);
+        if (fieldName === this.MAINTENANCE_DAYS_FIELD_NAME) {
+          return this.removeAboveThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered,
+            this.MAINTENANCE_DAYS_FIELD_NAME);
+        } else if (fieldName === this.MAINTENANCE_HOURS_FIELD_NAME) {
+          return this.removeAboveThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered,
+            this.MAINTENANCE_HOURS_FIELD_NAME);
+        }
+        break;
       }
       case this.MEDIUMTERM_PRIORITY: {
-        return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered)
-          .concat(this.removeAboveThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered));
+        if (fieldName === this.MAINTENANCE_DAYS_FIELD_NAME) {
+          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME)
+            .concat(this.removeAboveThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered),
+              this.MAINTENANCE_DAYS_FIELD_NAME);
+        } else if (fieldName === this.MAINTENANCE_HOURS_FIELD_NAME) {
+          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered, this.MAINTENANCE_HOURS_FIELD_NAME)
+            .concat(this.removeAboveThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD, attributeToBeFiltered,
+              this.MAINTENANCE_HOURS_FIELD_NAME));
+        }
+        break;
       }
       case this.LONGTERM_PRIORITY: {
-        return this.removeBelowThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered);
+        if (fieldName === this.MAINTENANCE_DAYS_FIELD_NAME) {
+          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered,
+            this.MAINTENANCE_DAYS_FIELD_NAME);
+        } else if (fieldName === this.MAINTENANCE_HOURS_FIELD_NAME) {
+          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD, attributeToBeFiltered,
+            this.MAINTENANCE_HOURS_FIELD_NAME);
+        }
+        break;
       }
     }
   }
 
-  private removeBelowThreshold(lowerLimitValue, attributeToBeFiltered) {
+  private removeBelowThreshold(lowerLimitValue: number, attributeToBeFiltered: string, fieldName?: string) {
     return this.itemsToBeFiltered.filter(item => {
       const fields: any[] = item[attributeToBeFiltered];
-      this.index = fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+      this.index = fields.findIndex(field => field.name === fieldName);
 
       if (this.index !== -1 && fields[this.index].value !== null) {
         return fields[this.index].value < lowerLimitValue;
@@ -105,10 +140,11 @@ export class NumericFilterComponent implements OnInit {
     });
   }
 
-  private removeAboveThreshold(upperLimitValue, attributeToBeFiltered) {
+  private removeAboveThreshold(upperLimitValue: number, attributeToBeFiltered: string, fieldName?: string) {
     return this.itemsToBeFiltered.filter(item => {
       const fields: any[] = item[attributeToBeFiltered];
-      this.index = fields.findIndex(field => field.name === this.MAINTENANCE_DAYS_FIELD_NAME);
+      this.index = fields.findIndex(field => field.name === fieldName);
+
       if (this.index !== -1 && fields[this.index].value !== null) {
         return fields[this.index].value > upperLimitValue;
       }

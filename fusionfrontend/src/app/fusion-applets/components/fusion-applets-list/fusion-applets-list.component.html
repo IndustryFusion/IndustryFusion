@@ -12,10 +12,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<div class="wrapper">
-  <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="if-title">{{ filteredRules?.length | i18nPlural: titleMapping }}</div>
-    <div class="clr-row list-header">
+
+<div>
+  <div class="p-grid p-jc-between header-line">
+    <h3 class="table-header">{{ displayedRules?.length | i18nPlural: titleMapping }}</h3>
+    <div class="p-row p-d-flex p-jc-between">
       <p-selectButton  class="fusion-applet on-white-background space-right"
                        *ngIf="!showActions"
                        optionLabel="name"
@@ -26,21 +27,31 @@ under the License.
       ></p-selectButton>
       <app-create-button *ngIf="showActive || !showActions"
                          [text]="'Create Applet'"
+                         class="single-create-btn"
                          (createItem)="createItem()"
       ></app-create-button>
     </div>
   </div>
 </div>
 
-
-<p-table #table [value]="filteredRules">
+<p-table #table [value]="displayedRules">
   <ng-template pTemplate="header">
     <tr>
       <th ></th>
-      <th [style.width.%]="25">AppletName</th>
-      <th [style.width.%]="40">Condition Summary</th>
+      <th [style.width.%]="25">
+        <app-table-searchbar filterColumn="AppletName" [itemsToBeFiltered]="filteredRules"
+                             attributeToBeSearched="name" (searchByName)="searchRulesByName($event)">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="40">
+        <app-table-searchbar filterColumn="Condition Summary" [itemsToBeFiltered]="filteredRules"
+                             attributeToBeSearched="naturalLanguage" (searchByName)="searchRulesByCondition($event)">
+        </app-table-searchbar>
+      </th>
       <th [style.width.%]="10"></th>
-      <th [style.width.%]="10">Status</th>
+      <th [style.width.%]="10" pSortableColumn="status">Status
+        <p-sortIcon field="status"></p-sortIcon>
+      </th>
       <th *ngIf="showActions"></th>
     </tr>
   </ng-template>
