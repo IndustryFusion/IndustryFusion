@@ -14,8 +14,8 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
 import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
+import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-asset-serie-details-info',
@@ -27,7 +27,9 @@ export class AssetSerieDetailsInfoComponent implements OnInit {
   @Input()
   assetSeries: AssetSeriesDetails;
 
-  dropdownMenuOptions: ItemOptionsMenuType[] = [];
+  dropdownMenuOptions: ItemOptionsMenuType[] = [
+    ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE
+  ];
 
   constructor() {
   }

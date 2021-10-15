@@ -17,18 +17,18 @@ under the License.
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">{{ displayedRules?.length | i18nPlural: titleMapping }}</h3>
     <div class="p-row p-d-flex p-jc-between">
-      <p-selectButton  class="fusion-applet on-white-background space-right"
-                       *ngIf="!showActions"
-                       optionLabel="name"
-                       optionValue="value"
-                       [options]="[{name:'Active', value:true},{name:'Archived', value:false}]"
-                       [(ngModel)]="showActive"
-                       (ngModelChange)="onToggleRoute()"
+      <p-selectButton (ngModelChange)="onToggleRoute()"
+                      *ngIf="!showActions"
+                      [(ngModel)]="showActive"
+                      [options]="[{name:'Active', value:true},{name:'Archived', value:false}]"
+                      class="fusion-applet on-white-background space-right"
+                      optionLabel="name"
+                      optionValue="value"
       ></p-selectButton>
-      <app-create-button *ngIf="showActive || !showActions"
+      <app-create-button (createItem)="createItem()"
+                         *ngIf="showActive || !showActions"
                          [text]="'Create Applet'"
                          class="single-create-btn"
-                         (createItem)="createItem()"
       ></app-create-button>
     </div>
   </div>
@@ -37,15 +37,15 @@ under the License.
 <p-table #table [value]="displayedRules">
   <ng-template pTemplate="header">
     <tr>
-      <th ></th>
+      <th></th>
       <th [style.width.%]="25">
-        <app-table-searchbar filterColumn="AppletName" [itemsToBeFiltered]="filteredRules"
-                             attributeToBeSearched="name" (searchByName)="searchRulesByName($event)">
+        <app-table-searchbar (searchByName)="searchRulesByName($event)" [itemsToBeFiltered]="filteredRules"
+                             attributeToBeSearched="name" filterColumn="AppletName">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="40">
-        <app-table-searchbar filterColumn="Condition Summary" [itemsToBeFiltered]="filteredRules"
-                             attributeToBeSearched="naturalLanguage" (searchByName)="searchRulesByCondition($event)">
+        <app-table-searchbar (searchByName)="searchRulesByCondition($event)" [itemsToBeFiltered]="filteredRules"
+                             attributeToBeSearched="naturalLanguage" filterColumn="Condition Summary">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="10"></th>
@@ -55,11 +55,11 @@ under the License.
       <th *ngIf="showActions"></th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
+  <ng-template let-rowIndex="rowIndex" let-rule pTemplate="body">
     <tr>
       <td (click)="editItem(rowIndex)" style="direction: rtl">
-        <i class="if-icon-mail" *ngIf="hasActionType(rule,RuleActionType.mail)"></i>
-        <i class="if-icon-webhook" *ngIf="hasActionType(rule,RuleActionType.http)"></i>
+        <i *ngIf="hasActionType(rule,RuleActionType.mail)" class="if-icon-mail"></i>
+        <i *ngIf="hasActionType(rule,RuleActionType.http)" class="if-icon-webhook"></i>
       </td>
       <td (click)="editItem(rowIndex)">
 
@@ -69,22 +69,22 @@ under the License.
       <td (click)="editItem(rowIndex)">{{rule.naturalLanguage}}</td>
       <td>
         <p-inputSwitch
-          [disabled]="!ruleStatusUtil.canActivated(rule.status)"
           (ngModelChange)="changeStatus(rowIndex, $event)"
+          [disabled]="!ruleStatusUtil.canActivated(rule.status)"
           [ngModel]="ruleStatusUtil.isActive(rule.status)"
         ></p-inputSwitch>
       </td>
       <td (click)="editItem(rowIndex)">
-        <span class="if-badge" [ngClass]="{'if-badge-active': isActive(rule.status)}"></span> {{rule.status}}
+        <span [ngClass]="{'if-badge-active': isActive(rule.status)}" class="if-badge"></span> {{rule.status}}
       </td>
       <td *ngIf="showActions">
         <app-item-options-menu
-          (createItem)="createItem()"
           (cloneItem)="cloneItem(rowIndex)"
+          (createItem)="createItem()"
           (deleteItem)="deleteItem(rowIndex)"
           (editItem)="editItem(rowIndex)"
-          [appendTo]="table"
-          [type]="getMenuOptionsByStatus(rule.status)">
+          [actions]="getMenuOptionsByStatus(rule.status)"
+          [appendTo]="table">
         </app-item-options-menu>
       </td>
     </tr>

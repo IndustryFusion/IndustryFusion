@@ -18,34 +18,36 @@ under the License.
   <h3 class="table-header">{{ displayedFactoryAssets?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
     <div class="filter-btn-div">
-      <app-table-filter class="filter-btn" [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
-                        (filteredItems)="filterAssets($event)">
+      <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                        [tableFilters]="tableFilters"
+                        class="filter-btn">
       </app-table-filter>
     </div>
-    <app-create-button class="create-btn" text="Onboard new Asset" (createItem)="showOnboardDialog()"></app-create-button>
+    <app-create-button (createItem)="showOnboardDialog()" class="create-btn"
+                       text="Onboard new Asset"></app-create-button>
   </div>
 </div>
 
-<app-table-selected-items-bar [selectedItems]="selectedFactoryAssets"
-                              [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT, TableSelectedItemsBarType.DELETE,
-  TableSelectedItemsBarType.SHOW_ASSET_CARDS]" [itemName]="'Asset'"
+<app-table-selected-items-bar (deleteItem)="setActiveRow(); showDeleteDialog()"
                               (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); showEditDialog()"
-                              (deleteItem)="setActiveRow(); showDeleteDialog()" (showAssetCards)="onCardsViewClick()">
+                              (showAssetCards)="onCardsViewClick()" [itemName]="'Asset'"
+                              [selectedItems]="selectedFactoryAssets" [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT, TableSelectedItemsBarType.DELETE,
+  TableSelectedItemsBarType.SHOW_ASSET_CARDS]">
 </app-table-selected-items-bar>
 
-<p-table [(selection)]="selectedFactoryAssets" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
-         [showCurrentPageReport]="true" [value]="displayedFactoryAssets" [rowHover]="true"
+<p-table [(selection)]="selectedFactoryAssets" [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,50]"
+         [rows]="10" [showCurrentPageReport]="true" [value]="displayedFactoryAssets"
          class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
-        <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
-                             attributeToBeSearched="name" (searchByName)="searchAssets($event)">
+        <app-table-searchbar (searchByName)="searchAssets($event)" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                             attributeToBeSearched="name" filterColumn="Asset">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="35" pSortableColumn="category">Category
-                <p-sortIcon field="category"></p-sortIcon>
+        <p-sortIcon field="category"></p-sortIcon>
       </th>
       <th [style.width.%]="20" pSortableColumn="manufacturer">Manufacturer
         <p-sortIcon field="manufacturer"></p-sortIcon>
@@ -65,21 +67,22 @@ under the License.
 
   <ng-template let-asset pTemplate="body">
     <tr class="p-selectable-row" id="rowElement" style="cursor: pointer;">
-      <td class="checkbox-td" [style.width.%]="5">
-        <p-tableCheckbox class="checkbox-column table-checkbox" [value]="asset"></p-tableCheckbox>
+      <td [style.width.%]="5" class="checkbox-td">
+        <p-tableCheckbox [value]="asset" class="checkbox-column table-checkbox"></p-tableCheckbox>
       </td>
-      <td [style.width.%]="30" [routerLink]="getAssetLink(asset)">{{ asset.name }}</td>
-      <td [style.width.%]="35" [routerLink]="getAssetLink(asset)">{{ asset.category }}</td>
-      <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">{{ asset.manufacturer }}</td>
-      <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">{{ asset.roomName }}</td>
-      <td [style.width.%]="15" [routerLink]="getAssetLink(asset)">{{ asset.factorySiteName }}</td>
-      <td [style.width.%]="20" [routerLink]="getAssetLink(asset)">
+      <td [routerLink]="getAssetLink(asset)" [style.width.%]="30">{{ asset.name }}</td>
+      <td [routerLink]="getAssetLink(asset)" [style.width.%]="35">{{ asset.category }}</td>
+      <td [routerLink]="getAssetLink(asset)" [style.width.%]="20">{{ asset.manufacturer }}</td>
+      <td [routerLink]="getAssetLink(asset)" [style.width.%]="20">{{ asset.roomName }}</td>
+      <td [routerLink]="getAssetLink(asset)" [style.width.%]="15">{{ asset.factorySiteName }}</td>
+      <td [routerLink]="getAssetLink(asset)" [style.width.%]="20">
         <app-asset-status [asset]="asset" [showInline]="true"></app-asset-status>
       </td>
-      <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(asset)">
-        <app-item-options-menu [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
-                               [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
-                               (assignItem)="openAssignRoomDialog()" (deleteItem)="showDeleteDialog()">
+      <td (click)="setActiveRow(asset)" [style.width.%]="5" class="table-dropdown-menu-wide">
+        <app-item-options-menu
+          (assignItem)="openAssignRoomDialog()"
+          (deleteItem)="showDeleteDialog()" (editItem)="showEditDialog()"
+          [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]" [assignItemText]="'Asset to room'">
         </app-item-options-menu>
       </td>
       <td [style.width.%]="5"></td>
@@ -88,5 +91,5 @@ under the License.
 </p-table>
 
 
-<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
-                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
