@@ -20,15 +20,15 @@ under the License.
     <p>{{(assetSeries)?.assetType}}</p>
   </div>
   <div class="flex-box"></div>
-  <div class="asset-info asset-status">
-    <div class="asset-status-wrapper">
-      <div class="flex-box"></div>
-      <app-asset-series-status [assetSeries]="assetSeries" [showInline]="false"></app-asset-series-status>
-    </div>
-    <p>{{(assetSeries)?.templateVersion}}</p>
-  </div>
+  <!--  <div class="asset-info asset-status">
+      <div class="asset-status-wrapper">
+        <div class="flex-box"></div>
+        <app-asset-series-status [assetSeries]="assetSeries" [showInline]="false"></app-asset-series-status>
+      </div>
+      <p>{{(assetSeries)?.templateVersion}}</p>
+    </div>-->
   <div class="asset-info asset-menu">
-    <app-item-options-menu [showInline]="false" [actions]="dropdownMenuOptions" createItemName="Asset Instance"
+    <app-item-options-menu [actions]="dropdownMenuOptions" [showInline]="false" createItemName="Asset Instance"
                            updateItemText="Asset Series Version"></app-item-options-menu>
   </div>
 </section>
