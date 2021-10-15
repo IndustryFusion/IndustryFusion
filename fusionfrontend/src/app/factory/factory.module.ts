@@ -114,7 +114,7 @@ import { MetricsBoardComponent } from './components/content/metrics-board/metric
         AssetSubsystemsComponent,
         AssetNotificationsComponent,
         HistoricalStatusBarChartComponent,
-      MetricsBoardComponent
+        MetricsBoardComponent,
     ],
     imports: [
         IFCommon,

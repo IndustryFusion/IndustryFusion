@@ -24,8 +24,6 @@
     margin-left: 2.1rem;
     margin-right: -1rem;
     text-align:center;
-/*    display: flex;
-    position: relative;*/
 
     .label-container {
       margin: -1rem auto auto;
@@ -53,6 +51,6 @@
 }
 
 :host ::ng-deep canvas {
-  width: 200px !important;
-  height: 100px !important;
+  width: 10rem !important;
+  height: 5rem !important;
 }

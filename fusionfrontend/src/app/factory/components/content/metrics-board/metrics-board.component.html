@@ -15,39 +15,39 @@ under the License.
 
 <div class="metrics-board" *ngIf="isLoaded">
   <ng-container *ngFor="let metric of metricsDetails">
-    <div [ngClass]="metric.fieldDetail.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetail) ? 'performance-widget-large' : 'performance-widget'">
+    <div [ngClass]="metric.fieldDetails.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetails) ? 'performance-widget-large' : 'performance-widget'">
       <div class="metric-container">
 
-        <label class="metric-title"> {{metric.fieldDetail.name}} </label>
+        <label class="metric-title"> {{metric.fieldDetails.name}} </label>
 
-        <div [ngSwitch]="metric.fieldDetail.widgetType" [ngClass]="metric.fieldDetail.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
+        <div [ngSwitch]="metric.fieldDetails.widgetType" [ngClass]="metric.fieldDetails.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
           <app-status *ngSwitchCase="WidgetType.STATUS" class="metric-value" [asset]="asset" [showInline]="false"></app-status>
 
           <div *ngSwitchCase="WidgetType.BARCHART" class="progress-bar-container">
             <app-maintenance-progressbar class="progress-bar" [asset]="asset"
-                                         [type]="metric.fieldDetail.name.startsWith('Days') ? maintenanceUtils.maintenanceDays : maintenanceUtils.maintenanceHours">
+                                         [type]="metric.fieldDetails.name.startsWith('Days') ? maintenanceUtils.maintenanceDays : maintenanceUtils.maintenanceHours">
             </app-maintenance-progressbar>
           </div>
 
           <div *ngSwitchCase="WidgetType.GAUGE" class="progress-bar-container">
-            <ng-container *ngIf="hasAnyThreshold(metric.fieldDetail)">
-              <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetail" [metricValue]="metric.latestValue"></app-gauge-chart>
+            <ng-container *ngIf="hasAnyThreshold(metric.fieldDetails)">
+              <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetails" [metricValue]="metric.latestValue"></app-gauge-chart>
             </ng-container>
-            <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetail) && metric.latestValue != null">
+            <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetails) && metric.latestValue != null">
               <label class="metric-value">{{metric.latestValue}}</label>
-              <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
+              <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
             </ng-container>
           </div>
 
           <div *ngSwitchDefault>
             <ng-container *ngIf="metric.latestValue != null">
               <label class="metric-value">{{metric.latestValue}}</label>
-              <label class="metric-unit">{{metric.fieldDetail.unit}}</label>
+              <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
             </ng-container>
           </div>
         </div>
 
-        <div *ngIf="metric.latestValue == null && (metric.fieldDetail.widgetType === WidgetType.RAW)">
+        <div *ngIf="metric.latestValue == null && (metric.fieldDetails.widgetType === WidgetType.RAW)">
           <label class="metric-value">n.a.</label>
         </div>
 
