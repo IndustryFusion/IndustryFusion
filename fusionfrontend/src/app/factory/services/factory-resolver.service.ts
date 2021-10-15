@@ -39,7 +39,6 @@ import { FactoryAssetDetailsService } from '../../store/factory-asset-details/fa
 import { AssetSeriesDetails } from '../../store/asset-series-details/asset-series-details.model';
 import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details.query';
 import { CountryResolver } from '../../resolvers/country.resolver';
-import { OispDeviceResolver } from '../../resolvers/oisp-device-resolver';
 import { ID } from '@datorama/akita';
 import { RouteHelpers } from '../../common/utils/route-helpers';
 
@@ -81,8 +80,7 @@ export class FactoryResolver {
     private fieldService: FieldDetailsService,
     private fieldDetailsQuery: FieldDetailsQuery,
     private factoryComposedQuery: FactoryComposedQuery,
-    private countryResolver: CountryResolver,
-    private oispDeviceResolver: OispDeviceResolver) {
+    private countryResolver: CountryResolver) {
 
     this.company$ = this.companyQuery.selectActive();
     this.factorySite$ = this.factorySiteQuery.selectActive();
@@ -93,8 +91,6 @@ export class FactoryResolver {
 
   resolve(activatedRoute: ActivatedRoute): void {
     this.countryResolver.resolve().subscribe();
-    this.oispDeviceResolver.resolve().subscribe();
-
     const companyId = this.resolveCompany(activatedRoute);
     const factorySiteId = this.resolveFactorySite(activatedRoute, companyId);
     this.resolveRoom(activatedRoute, factorySiteId);

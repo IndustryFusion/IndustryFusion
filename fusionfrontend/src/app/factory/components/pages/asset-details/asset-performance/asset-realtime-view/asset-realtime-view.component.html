@@ -27,17 +27,7 @@ under the License.
                        (ngModelChange)="onChangeRoute()"
       ></p-selectButton>
     </div>
-
-    <div class="progress-bar-container">
-      <label class="progress-bar-label">Operating Hours till Maintenance</label>
-      <app-maintenance-progressbar [asset]="assetWithFields" [type]="maintenanceUtils.maintenanceHours"
-                                   class="progress-bar"></app-maintenance-progressbar>
-    </div>
-    <div class="progress-bar-container">
-      <label class="progress-bar-label">Days till Maintenance</label>
-      <app-maintenance-progressbar [asset]="assetWithFields" [type]="maintenanceUtils.maintenanceDays"
-                                   class="progress-bar"></app-maintenance-progressbar>
-    </div>
+    <app-metrics-board></app-metrics-board>
   </ng-container>
 
 </div>

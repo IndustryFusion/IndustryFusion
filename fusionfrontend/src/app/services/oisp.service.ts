@@ -111,7 +111,6 @@ export class OispService {
           op: 'none'
         }))
     };
-
     return this.getOispPoints(path, request, true, useFieldNameAsId);
   }
 

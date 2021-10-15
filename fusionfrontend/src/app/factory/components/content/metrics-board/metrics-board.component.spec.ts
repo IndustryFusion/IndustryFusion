@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MaintenanceBarComponent } from './maintenance-bar.component';
+import { MetricsBoardComponent } from './metrics-board.component';
 
-describe('MaintenanceBarComponent', () => {
-  let component: MaintenanceBarComponent;
-  let fixture: ComponentFixture<MaintenanceBarComponent>;
+describe('MetricsBoardComponent', () => {
+  let component: MetricsBoardComponent;
+  let fixture: ComponentFixture<MetricsBoardComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ MaintenanceBarComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ MetricsBoardComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MaintenanceBarComponent);
+    fixture = TestBed.createComponent(MetricsBoardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

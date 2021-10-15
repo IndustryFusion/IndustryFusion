@@ -13,40 +13,17 @@
  * under the License.
  */
 
-@import 'abstract/variables';
+import { FieldDetails } from '../../store/field-details/field-details.model';
 
-.wrapper {
-
-  margin: 25px 100px;
-  background: white;
-
-  .progress-label {
-    display: flex;
-    .hours{
-        margin-left: 75px;
-        font-weight: bold;
+export class AssetChartHelper {
+  public static getYMinMaxByAbsoluteThreshold(fieldDetails: FieldDetails): { min?: number, max?: number } {
+    if (fieldDetails.absoluteThreshold) {
+      return {
+        min: fieldDetails.absoluteThreshold.valueLower,
+        max: fieldDetails.absoluteThreshold.valueUpper
+      };
+    } else {
+      return { };
     }
-  }
-
-  .progress {
-    display: table;
-    width: 100%;
-    background: $light-grey;
-    color: $basic-white;
-    border-radius: 5px;
-  }
-
-  .progress-value {
-    display: inline-block;
-    border-radius: 5px;
-    background: $basic-grey;
-
-    .hours-number {
-      margin-left: 25px;
-    }
-  }
-
-  .info {
-      float: right;
   }
 }
