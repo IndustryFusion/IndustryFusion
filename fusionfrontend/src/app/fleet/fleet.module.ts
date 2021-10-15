@@ -26,7 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AssetSeriesWizardComponent } from './components/content/asset-series-wizard/asset-series-wizard.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
 import { AssetSeriesWizardGeneralInformationComponent } from './components/content/asset-series-wizard/asset-series-wizard-general-information/asset-series-wizard-general-information.component';
-import { AssetSeriesWizardConnectivitySettingsComponent } from './components/content/asset-series-wizard/asset-series-wizard-connectivity-settings/asset-series-wizard-connectivity-settings.component';
+import { AssetSeriesWizardNameplateAndConnectivitySettingsComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings.component';
 import { AssetSeriesWizardAttributesComponent } from './components/content/asset-series-wizard/asset-series-wizard-attributes/asset-series-wizard-attributes.component';
 import { IFCommon } from '../common/i-f-common.module';
 import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
@@ -49,7 +49,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AssetWizardStepSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-subsystems/asset-wizard-step-subsystems.component';
 // tslint:disable-next-line:max-line-length
 import { AssetWizardSharedSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
-import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-connectivity-settings/asset-series-wizard-connectivity-settings-tooltip/asset-series-wizard-connectivity-settings-tooltip.component';
+import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings-tooltip/asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component';
 
 
 @NgModule({
@@ -61,7 +61,7 @@ import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './compone
     AssetSeriesListItemComponent,
     AssetSeriesWizardComponent,
     AssetSeriesWizardGeneralInformationComponent,
-    AssetSeriesWizardConnectivitySettingsComponent,
+    AssetSeriesWizardNameplateAndConnectivitySettingsComponent,
     TimelineComponent,
     AssetSeriesWizardAttributesComponent,
     AssetSeriePageComponent,
@@ -73,7 +73,7 @@ import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './compone
     AssetWizardStepCustomerDataComponent,
     AssetWizardStepMetricsThresholdsComponent,
     AssetSeriesWizardFooterComponent,
-    AssetSeriesWizardConnectivitySettingsTooltipComponent,
+    AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent,
     AssetSeriesWizardGeneralInformationComponent,
     AssetWizardStepReviewComponent,
     AssetWizardSharedMetricsComponent,

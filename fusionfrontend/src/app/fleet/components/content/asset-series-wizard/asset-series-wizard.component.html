@@ -24,25 +24,25 @@ under the License.
     [relatedManufacturer]="relatedManufacturer"
     [relatedAssetType]="relatedAssetType">
   </app-asset-series-wizard-general-information>
-  <app-asset-series-wizard-connectivity-settings
-    *ngIf="step === AssetSeriesCreateSteps.CONNECTIVITY_SETTINGS"
+  <app-asset-series-wizard-nameplate-and-connectivity-settings
+    *ngIf="step === AssetSeriesCreateSteps.NAMEPLATE_AND_CONNECTIVITY_SETTINGS"
     [mode]="mode"
     [assetSeries]="assetSeries"
     [assetSeriesForm]="assetSeriesForm"
     (valid)="setConnectivitySettingsValid($event)">
-  </app-asset-series-wizard-connectivity-settings>
-  <app-asset-series-wizard-attributes
-    *ngIf="step === AssetSeriesCreateSteps.ATTRIBUTES"
-    [assetSeries]="assetSeries"
-    [fieldSourcesCanBeDeleted]="fieldSourcesCanBeDeleted"
-    (valid)="setAttributesValid($event)">
-  </app-asset-series-wizard-attributes>
+  </app-asset-series-wizard-nameplate-and-connectivity-settings>
   <app-asset-series-wizard-metrics
     *ngIf="step === AssetSeriesCreateSteps.METRICS"
     [assetSeries]="assetSeries"
     [fieldSourcesCanBeDeleted]="fieldSourcesCanBeDeleted"
     (valid)="setMetricsValid($event)">
   </app-asset-series-wizard-metrics>
+  <app-asset-series-wizard-attributes
+    *ngIf="step === AssetSeriesCreateSteps.ATTRIBUTES"
+    [assetSeries]="assetSeries"
+    [fieldSourcesCanBeDeleted]="fieldSourcesCanBeDeleted"
+    (valid)="setAttributesValid($event)">
+  </app-asset-series-wizard-attributes>
 
   <app-asset-series-wizard-footer [step]="step" (back)="back()" [isReadyForNextStep]="isReadyForNextStep()"
                                   (nextStep)="nextStep()" [toalSteps]="totalSteps"></app-asset-series-wizard-footer>

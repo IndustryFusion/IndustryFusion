@@ -13,20 +13,19 @@
  * under the License.
  */
 
-@import 'src/app/fleet/components/content/asset-series-wizard/asset-series-wizard.component';
+import { Component, OnInit } from '@angular/core';
 
-.content {
-  .info-text {
-    display: flex;
+@Component({
+  selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings-tooltip',
+  templateUrl: './asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component.html',
+  styleUrls: ['./asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component.scss']
+})
+export class AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent implements OnInit {
 
-    i {
-      margin-left: 2px;
-      margin-top: 10px;
-      margin-right: 5px;
-    }
-
-    label {
-      margin-top: 3px;
-    }
+  constructor() {
   }
+
+  ngOnInit() {
+  }
+
 }

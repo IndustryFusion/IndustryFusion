@@ -32,7 +32,7 @@ export class AssetWizardStepNameplateComponent implements OnInit {
   public protectionClasses: SelectItem[] = [];
   public yearRange: string;
 
-  constructor(private protectionClassService: ProtectionClassService ) { }
+  constructor(private protectionClassService: ProtectionClassService) { }
 
   ngOnInit(): void {
     this.yearRange = `${ new Date().getFullYear() - 8 }:${ new Date().getFullYear() + 2}`;
