@@ -192,7 +192,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
                   value: FactoryAssetDetailsWithFields, expandedNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
     const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
-      expanded: expandedNodeIDs.includes(value.id),
+      expanded: true,
       data: value,
       parent,
     };
