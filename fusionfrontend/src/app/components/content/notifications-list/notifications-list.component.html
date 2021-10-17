@@ -52,12 +52,12 @@ under the License.
         <th [style.width.%]="17" pSortableColumn="assetName">Asset
           <p-sortIcon field="assetName"></p-sortIcon>
         </th>
-        <th [style.width.%]="40">Condition</th>
+        <th [style.width.%]="37.5">Condition</th>
         <th [style.width.%]="10">Measured Value</th>
         <th [style.width.%]="15" pSortableColumn="timestamp">Date & Time
           <p-sortIcon field="timestamp"></p-sortIcon>
         </th>
-        <th [style.width.%]="5"></th>
+        <th [style.width.%]="7.5"></th>
       </tr>
     </ng-template>
 
@@ -71,9 +71,9 @@ under the License.
           <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
           <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
         </td>
-        <td [style.width.%]="30">{{ notification.ruleName }}</td>
+        <td [style.width.%]="30" class="table-bold-font">{{ notification.ruleName }}</td>
         <td [style.width.%]="17">{{ notification.assetName }}</td>
-        <td [style.width.%]="40">{{ notification.condition }}</td>
+        <td [style.width.%]="37.5">{{ notification.condition }}</td>
         <td [style.width.%]="10">
           {{ isFloatingNumber(notification.measuredValue) ? (notification.measuredValue | number: '1.0-2') : notification.measuredValue }}
         </td>
@@ -84,6 +84,7 @@ under the License.
             <i class="pi pi-check"></i>
           </button>
         </td>
+        <td [style.width.%]="2.5"></td>
       </tr>
     </ng-template>
   </p-table>
