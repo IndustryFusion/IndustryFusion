@@ -58,7 +58,7 @@ under the License.
       <td [style.width.%]="20" [routerLink]="unit.id">{{ unit.quantityType?.name }}</td>
       <td [style.width.%]="20" [routerLink]="unit.id">{{ unit.createdDate | date: 'dd.MM.yyyy'}}</td>
       <td [style.width.%]="5" (click)="setActiveRow(unit)">
-        <app-item-options-menu (editItem)="showEditDialog()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+        <app-item-options-menu class="column-visibility" (editItem)="showEditDialog()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
       </td>
     </tr>
   </ng-template>

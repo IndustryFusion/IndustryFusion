@@ -78,7 +78,7 @@ under the License.
         <span class="if-badge" [ngClass]="{'if-badge-active': isActive(rule.status)}"></span> {{rule.status}}
       </td>
       <td *ngIf="showActions">
-        <app-item-options-menu
+        <app-item-options-menu class="column-visibility"
           (createItem)="createItem()"
           (cloneItem)="cloneItem(rowIndex)"
           (deleteItem)="deleteItem(rowIndex)"

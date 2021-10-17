@@ -58,14 +58,14 @@ under the License.
       <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
         <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="10">Status</th>
+      <th [style.width.%]="13">Status</th>
       <th [style.width.%]="5"></th>
     </tr>
   </ng-template>
   <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
     <tr [ttRow]="rowNode" id="rowElement" style="cursor: pointer;">
       <td class="checkbox-td" [style.width.%]="3">
-        <p-treeTableCheckbox [value]="rowNode" class="checkbox-column table-checkbox"></p-treeTableCheckbox>
+        <p-treeTableCheckbox [value]="rowNode" class="column-visibility table-checkbox"></p-treeTableCheckbox>
       </td>
       <td [style.width.%]="3">
         <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
@@ -91,12 +91,11 @@ under the License.
         <app-status [asset]="rowData" [showInline]="true"></app-status>
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
-        <app-item-options-menu [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+        <app-item-options-menu class="column-visibility" [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
                                [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
                                (assignItem)="openAssignRoomDialog()" (deleteItem)="showDeleteDialog()">
         </app-item-options-menu>
       </td>
-      <td [style.width.%]="5"></td>
     </tr>
   </ng-template>
 </p-treeTable>

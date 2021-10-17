@@ -50,7 +50,7 @@ under the License.
 <!--      <td [style.width.%]="30" [routerLink]="field.id">{{ field.createdDate | date: 'dd.MM.yyyy'}}</td>-->
       <td [style.width.%]="30" [routerLink]="field.id">18.12.2019</td>
       <td [style.width.%]="5" (click)="setActiveRow(field)">
-        <app-item-options-menu (editItem)="showEditDialog()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+        <app-item-options-menu class="column-visibility" (editItem)="showEditDialog()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
       </td>
     </tr>
   </ng-template>

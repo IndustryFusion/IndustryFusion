@@ -184,6 +184,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
       if (node.expanded) {
         expanded.push(node.data.id);
         expanded.push(...this.getExpandedNodeIDs(node.children));
+        console.log(node.expanded);
       }
     }
     return expanded;
@@ -192,7 +193,8 @@ export class AssetsListComponent implements OnInit, OnChanges {
   private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
                   value: FactoryAssetDetailsWithFields, expandedNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
     const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
-      expanded: true,
+      // expanded: true,
+      expanded: expandedNodeIDs.includes(value.id),
       data: value,
       parent,
     };

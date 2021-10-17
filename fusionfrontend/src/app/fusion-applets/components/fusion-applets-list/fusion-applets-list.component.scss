@@ -62,3 +62,13 @@
 :host ::ng-deep .fusion-applet > .p-selectbutton {
   width: 9.7rem !important;
 }
+
+:host ::ng-deep .column-visibility {
+  visibility: hidden;
+}
+
+#rowElement:hover {
+  .column-visibility {
+    visibility: visible;
+  }
+}
