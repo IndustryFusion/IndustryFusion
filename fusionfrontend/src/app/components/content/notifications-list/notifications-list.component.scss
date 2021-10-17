@@ -33,6 +33,10 @@
   margin-right: 20px;
 }
 
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  line-height: 2rem !important;
+}
+
 .small-confirm-button {
   width: 2rem;
   height: 2rem;
