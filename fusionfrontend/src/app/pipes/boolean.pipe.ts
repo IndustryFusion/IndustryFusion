@@ -21,8 +21,7 @@ export class BooleanPipe implements PipeTransform {
   transform(value: boolean): string {
     if (!value) {
       return '';
-    }
-    else if (value === true) {
+    } else if (value === true) {
       return 'Yes';
     }
     return 'No';
