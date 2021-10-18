@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetActivationStatusComponent } from './asset-activation-status.component';
 
-describe('StatusComponent', () => {
+describe('AssetActivationStatusComponent', () => {
   let component: AssetActivationStatusComponent;
   let fixture: ComponentFixture<AssetActivationStatusComponent>;
 

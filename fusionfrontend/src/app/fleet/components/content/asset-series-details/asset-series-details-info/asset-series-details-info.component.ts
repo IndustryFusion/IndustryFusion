@@ -18,11 +18,11 @@ import { AssetSeriesDetails } from '../../../../../store/asset-series-details/as
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
-  selector: 'app-asset-serie-details-info',
-  templateUrl: './asset-serie-details-info.component.html',
-  styleUrls: ['./asset-serie-details-info.component.scss']
+  selector: 'app-asset-series-details-info',
+  templateUrl: './asset-series-details-info.component.html',
+  styleUrls: ['./asset-series-details-info.component.scss']
 })
-export class AssetSerieDetailsInfoComponent implements OnInit {
+export class AssetSeriesDetailsInfoComponent implements OnInit {
 
   @Input()
   assetSeries: AssetSeriesDetails;

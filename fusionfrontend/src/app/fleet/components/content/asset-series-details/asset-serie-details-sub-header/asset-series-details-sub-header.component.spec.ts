@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetSerieDetailsInfoComponent } from './asset-serie-details-info.component';
+import { AssetSeriesDetailsSubHeaderComponent } from './asset-series-details-sub-header.component';
 
-describe('AssetDetailsHeaderComponent', () => {
-  let component: AssetSerieDetailsInfoComponent;
-  let fixture: ComponentFixture<AssetSerieDetailsInfoComponent>;
+describe('AssetDetailsSubHeaderComponent', () => {
+  let component: AssetSeriesDetailsSubHeaderComponent;
+  let fixture: ComponentFixture<AssetSeriesDetailsSubHeaderComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AssetSerieDetailsInfoComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AssetSeriesDetailsSubHeaderComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSerieDetailsInfoComponent);
+    fixture = TestBed.createComponent(AssetSeriesDetailsSubHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

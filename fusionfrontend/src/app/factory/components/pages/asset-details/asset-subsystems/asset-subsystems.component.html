@@ -18,9 +18,9 @@ under the License.
 </div>
 {{selected?.id}}
 <p-table
-  [selectionMode]="'single'"
-  [(selection)]="selected"
   (onRowSelect)="selectSubsystem($event)"
+  [(selection)]="selected"
+  [selectionMode]="'single'"
   [value]="subsystems$ | async"
 >
   <ng-template pTemplate="header">
@@ -34,18 +34,18 @@ under the License.
       <th [style.width.%]="5"></th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-asset >
+  <ng-template let-asset pTemplate="body">
     <tr (click)="selectSubsystem(asset)">
-      <td >
+      <td>
         {{asset.openAlertPriority}}
-        <div class="list-item-cell notification-icons" [style.width.%]="3"
-             [ngSwitch]="asset.openAlertPriority">
-          <clr-icon *ngSwitchCase="OispPriority.LOW" size="20" shape="info-standard"
-                    class="is-solid notification-low"></clr-icon>
-          <clr-icon *ngSwitchCase="OispPriority.MEDIUM" size="20" shape="exclamation-circle"
-                    class="is-solid notification-medium"></clr-icon>
-          <clr-icon *ngSwitchCase="OispPriority.HIGH" size="20" shape="exclamation-triangle"
-                    class="is-solid notification-high"></clr-icon>
+        <div [ngSwitch]="asset.openAlertPriority" [style.width.%]="3"
+             class="list-item-cell notification-icons">
+          <clr-icon *ngSwitchCase="OispPriority.LOW" class="is-solid notification-low" shape="info-standard"
+                    size="20"></clr-icon>
+          <clr-icon *ngSwitchCase="OispPriority.MEDIUM" class="is-solid notification-medium" shape="exclamation-circle"
+                    size="20"></clr-icon>
+          <clr-icon *ngSwitchCase="OispPriority.HIGH" class="is-solid notification-high" shape="exclamation-triangle"
+                    size="20"></clr-icon>
         </div>
       </td>
       <td>

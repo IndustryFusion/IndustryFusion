@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetSeriePageComponent } from './asset-serie-page.component';
+import { AssetSeriesInstancePageComponent } from './asset-series-instance-page.component';
 
 describe('AssetSeriePageComponent', () => {
-  let component: AssetSeriePageComponent;
-  let fixture: ComponentFixture<AssetSeriePageComponent>;
+  let component: AssetSeriesInstancePageComponent;
+  let fixture: ComponentFixture<AssetSeriesInstancePageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetSeriePageComponent ]
+      declarations: [ AssetSeriesInstancePageComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriePageComponent);
+    fixture = TestBed.createComponent(AssetSeriesInstancePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

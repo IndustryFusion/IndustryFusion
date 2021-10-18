@@ -17,26 +17,26 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FactorySite } from '../../../../store/factory-site/factory-site.model';
-import { AssetQuery } from '../../../../store/asset/asset.query';
-import { Asset } from '../../../../store/asset/asset.model';
-import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
-import { Room } from '../../../../store/room/room.model';
-import { RoomQuery } from '../../../../store/room/room.query';
+import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
+import { AssetQuery } from '../../../../../store/asset/asset.query';
+import { Asset } from '../../../../../store/asset/asset.model';
+import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
+import { Room } from '../../../../../store/room/room.model';
+import { RoomQuery } from '../../../../../store/room/room.query';
 import { map } from 'rxjs/operators';
-import { AssetWizardComponent } from '../../content/asset-wizard/asset-wizard.component';
-import { CompanyQuery } from '../../../../store/company/company.query';
+import { AssetWizardComponent } from '../../../content/asset-wizard/asset-wizard.component';
+import { CompanyQuery } from '../../../../../store/company/company.query';
 import { DialogService } from 'primeng/dynamicdialog';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
-import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
-import { AssetSeriesDetailsService } from '../../../../store/asset-series-details/asset-series-details.service';
+import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
+import { AssetSeriesDetailsQuery } from '../../../../../store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
 
 @Component({
-  selector: 'app-asset-serie-page',
-  templateUrl: './asset-serie-page.component.html',
-  styleUrls: ['./asset-serie-page.component.scss']
+  selector: 'app-asset-series-instance-page',
+  templateUrl: './asset-series-instance-page.component.html',
+  styleUrls: ['./asset-series-instance-page.component.scss']
 })
-export class AssetSeriePageComponent implements OnInit, OnDestroy {
+export class AssetSeriesInstancePageComponent implements OnInit, OnDestroy {
 
   assetSerieId: ID;
   assetSerieDetails$: Observable<AssetSeriesDetails>;

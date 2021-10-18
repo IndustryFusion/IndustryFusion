@@ -24,11 +24,11 @@ import { AssetSeriesDetailsQuery } from '../../../../../store/asset-series-detai
 import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
 
 @Component({
-  selector: 'app-asset-serie-details-sub-header',
-  templateUrl: './asset-serie-details-sub-header.component.html',
-  styleUrls: ['./asset-serie-details-sub-header.component.scss']
+  selector: 'app-asset-series-details-sub-header',
+  templateUrl: './asset-series-details-sub-header.component.html',
+  styleUrls: ['./asset-series-details-sub-header.component.scss']
 })
-export class AssetSerieDetailsSubHeaderComponent implements OnInit, OnDestroy {
+export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   assetSeriesID: ID;
   assetSeries: AssetSeriesDetails;
