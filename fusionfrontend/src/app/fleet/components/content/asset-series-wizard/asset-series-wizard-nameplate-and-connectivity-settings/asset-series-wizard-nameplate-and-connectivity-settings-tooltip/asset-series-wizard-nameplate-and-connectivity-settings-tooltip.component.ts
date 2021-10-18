@@ -13,7 +13,19 @@
  * under the License.
  */
 
-export interface MaintenanceInterval {
-    hoursTillMaintenance: number;
-    maintenanceInterval: number;
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings-tooltip',
+  templateUrl: './asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component.html',
+  styleUrls: ['./asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component.scss']
+})
+export class AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent implements OnInit {
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
 }

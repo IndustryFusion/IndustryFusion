@@ -25,10 +25,18 @@ export class Field extends BaseEntity {
   unitId: ID;
   unit: any;
   thresholdType: FieldThresholdType;
+  widgetType: FieldWidgetType;
 }
 
 export enum FieldThresholdType {
   OPTIONAL = 'OPTIONAL',
   MANDATORY = 'MANDATORY',
   DISABLED = 'DISABLED',
+}
+
+export enum FieldWidgetType {
+  STATUS = 'STATUS',
+  RAW = 'RAW',
+  GAUGE = 'GAUGE',
+  BARCHART = 'BARCHART'
 }

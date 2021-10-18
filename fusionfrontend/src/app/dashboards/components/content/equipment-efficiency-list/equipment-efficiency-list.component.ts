@@ -21,7 +21,8 @@ import { Company } from 'src/app/store/company/company.model';
 import {  TreeNode } from 'primeng/api';
 import { ID } from '@datorama/akita';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
-
+import { OispAlert, OispAlertPriority } from '../../../../store/oisp/oisp-alert/oisp-alert.model';
+import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -43,6 +44,11 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+
+  faInfoCircle = faInfoCircle;
+  faExclamationCircle = faExclamationCircle;
+  faExclamationTriangle = faExclamationTriangle;
+  OispPriority = OispAlertPriority;
 
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
@@ -73,6 +79,20 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
     this.displayedFactoryAssets = this.searchedFactoryAssets.filter(asset => this.filteredFactoryAssets.includes(asset));
     this.updateTree();
+  }
+
+  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
+    let openAlertPriority = node.data?.openAlertPriority;
+    if (!node.expanded && node.children?.length > 0) {
+      for (const child of node.children) {
+        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
+        if (!openAlertPriority ||
+          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
+          openAlertPriority = childMaxOpenAlertPriority;
+        }
+      }
+    }
+    return openAlertPriority;
   }
 
   private updateTree() {

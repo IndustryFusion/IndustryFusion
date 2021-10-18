@@ -36,6 +36,7 @@ import { RoomQuery } from '../store/room/room.query';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { FieldInstanceResolver } from '../resolvers/field-instance.resolver';
 
 const routes: Routes = [
   {
@@ -200,6 +201,7 @@ const routes: Routes = [
           },
           {
             path: 'performance/realtime',
+            resolve: { fieldDetails: FieldInstanceResolver},
             component: AssetPerformanceComponent,
             data: {
               breadcrumb: 'Performance',
@@ -215,6 +217,7 @@ const routes: Routes = [
           {
             path: 'performance/performance',
             component: AssetPerformanceComponent,
+            resolve: { fieldDetails: FieldInstanceResolver},
             data: {
               breadcrumb: 'Performance',
             },

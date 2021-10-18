@@ -17,6 +17,17 @@
 @import 'base/typography';
 @import '../../pages/equipment-efficiency-page/equipment-efficiency-page.component.scss';
 
+.table-header-with-status-info {
+  margin-left: 68px;
+}
+
+.table-header {
+  font-size: $big-font-size;
+  font-weight: bold;
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+}
+
 .efficiency-dashboard {
   .manufacturer-icon {
     display: flex;
@@ -61,4 +72,25 @@
   &:first-child {
     padding-left: 70px;
   }
+}
+
+.notification-icons {
+  overflow: initial !important;
+  padding-top: -2px;
+
+  .notification-low {
+    color: $alert-low;
+  }
+
+  .notification-medium {
+    color: $alert-medium;
+  }
+
+  .notification-high {
+    color: $alert-high;
+  }
+}
+
+.first-header-item {
+  padding-left: 3.9rem !important;
 }

@@ -13,20 +13,11 @@
  * under the License.
  */
 
-@import 'src/app/fleet/components/content/asset-series-wizard/asset-series-wizard.component';
+package io.fusion.fusionbackend.model.enums;
 
-.content {
-  .info-text {
-    display: flex;
-
-    i {
-      margin-left: 2px;
-      margin-top: 10px;
-      margin-right: 5px;
-    }
-
-    label {
-      margin-top: 3px;
-    }
-  }
+public enum FieldWidgetType {
+    STATUS,
+    RAW,
+    GAUGE,
+    BARCHART
 }

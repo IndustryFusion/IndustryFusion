@@ -39,6 +39,7 @@ import { TreeModule } from 'primeng/tree';
 import { EquipmentEfficiencyOverviewComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview.component';
 import { EquipmentEfficiencyOverviewRealtimeStatusComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview-realtime-status/equipment-efficiency-overview-realtime-status.component';
 import { EquipmentEfficiencyOverviewDonutChartComponent } from '../components/content/equipment-efficiency-overview-donut-chart/equipment-efficiency-overview-donut-chart.component';
+import { GaugeChartComponent } from '../components/content/gauge-chart/gauge-chart.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { EquipmentEfficiencyOverviewDonutChartComponent } from '../components/co
     EquipmentEfficiencyOverviewComponent,
     EquipmentEfficiencyOverviewRealtimeStatusComponent,
     EquipmentEfficiencyOverviewDonutChartComponent,
+    GaugeChartComponent,
   ],
   imports: [
     IFCommon,
@@ -77,6 +79,7 @@ import { EquipmentEfficiencyOverviewDonutChartComponent } from '../components/co
     EquipmentEfficiencyOverviewRealtimeStatusComponent,
     EquipmentEfficiencyOverviewDonutChartComponent,
     EquipmentEfficiencyBarChartComponent,
+    GaugeChartComponent,
   ]
 })
 export class DashboardModule {

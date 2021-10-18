@@ -18,43 +18,38 @@
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="2"></th>
-        <th [style.width.%]="4"></th>
-        <th [style.width.%]="20">
+        <th [style.width.%]="3"></th>
+        <th [style.width.%]="20" class="first-header-item">
           <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>
-        <th [style.width.%]="18" ttSortableColumn="category">Asset Type
+        <th [style.width.%]="20" ttSortableColumn="category">Asset Type
           <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="20" ttSortableColumn="manufacturer">Manufacturer
+        <th [style.width.%]="15" ttSortableColumn="manufacturer">Manufacturer
           <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory
+        <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
           <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="13">Days till Maintenance</th>
-        <th [style.width.%]="13">Operating Hours till Maintenance</th>
-        <th [style.width.%]="2"></th>
+        <th [style.width.%]="15">Days till Maintenance</th>
+        <th [style.width.%]="15">Operating Hours till Maintenance</th>
+        <th [style.width.%]="3"></th>
       </tr>
     </ng-template>
     <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
       <tr [ttRow]="rowNode">
         <td [style.width.%]="2"></td>
-        <td [style.width.%]="4">
-          <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" [style.width.%]="3"
-               class="list-item-cell notification-icons">
-            <clr-icon *ngSwitchCase="OispPriority.LOW" class="is-solid notification-low" shape="info-standard"
-                      size="20"></clr-icon>
-            <clr-icon *ngSwitchCase="OispPriority.MEDIUM" class="is-solid notification-medium"
-                      shape="exclamation-circle"
-                      size="20"></clr-icon>
-            <clr-icon *ngSwitchCase="OispPriority.HIGH" class="is-solid notification-high" shape="exclamation-triangle"
-                      size="20"></clr-icon>
+        <td [style.width.%]="3">
+          <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
+            <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
           </div>
         </td>
         <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(rowNode.node)}"
-            class="asset-column p-flex-row">
+            class="asset-column p-flex-row table-bold-font">
           <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
           <span *ngIf="rowNode.parent" class="subsystem-grid p-col-">
             <span class="upper"></span>
@@ -62,8 +57,8 @@
           </span>
           <span class="p-col">{{rowData.name}}</span>
         </td>
-        <td [style.width.%]="18">{{rowData.category}}</td>
-        <td [style.width.%]="20">{{rowData.manufacturer}}</td>
+        <td [style.width.%]="20">{{rowData.category}}</td>
+        <td [style.width.%]="15">{{rowData.manufacturer}}</td>
         <td [style.width.%]="12">{{rowData.factorySiteName}}</td>
         <td [style.width.%]="13">
           <span class="progressbar-wrapper">
@@ -79,7 +74,7 @@
         <td [style.width.%]="13">
           <app-maintenance-progressbar [asset]="rowData" [type]="utils.maintenanceHours"></app-maintenance-progressbar>
         </td>
-        <td [style.width.%]="2"></td>
+        <td [style.width.%]="3"></td>
       </tr>
     </ng-template>
   </p-treeTable>

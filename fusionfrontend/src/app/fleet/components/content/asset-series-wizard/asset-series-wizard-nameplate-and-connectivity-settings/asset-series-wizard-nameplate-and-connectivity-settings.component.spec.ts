@@ -13,23 +13,22 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AssetSeriesWizardNameplateAndConnectivitySettingsComponent } from './asset-series-wizard-nameplate-and-connectivity-settings.component';
 
-import { AssetSeriesWizardConnectivitySettingsTooltipComponent } from './asset-series-wizard-connectivity-settings-tooltip.component';
+describe('AssetSeriesWizardConnectivitySettingsComponent', () => {
+  let component: AssetSeriesWizardNameplateAndConnectivitySettingsComponent;
+  let fixture: ComponentFixture<AssetSeriesWizardNameplateAndConnectivitySettingsComponent>;
 
-describe('AssetSeriesCreateConnectivitySettingsTooltipComponent', () => {
-  let component: AssetSeriesWizardConnectivitySettingsTooltipComponent;
-  let fixture: ComponentFixture<AssetSeriesWizardConnectivitySettingsTooltipComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AssetSeriesWizardConnectivitySettingsTooltipComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AssetSeriesWizardNameplateAndConnectivitySettingsComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesWizardConnectivitySettingsTooltipComponent);
+    fixture = TestBed.createComponent(AssetSeriesWizardNameplateAndConnectivitySettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

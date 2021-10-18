@@ -15,7 +15,7 @@ under the License.
 
 
 <div class="p-grid p-jc-between header-line">
-  <h3 class="table-header">{{ displayedFactoryAssets?.length | i18nPlural: titleMapping }}</h3>
+  <h3 class="table-header">{{ treeData?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
     <div class="filter-btn-div">
       <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
@@ -35,60 +35,73 @@ under the License.
   TableSelectedItemsBarType.SHOW_ASSET_CARDS]">
 </app-table-selected-items-bar>
 
-<p-table [(selection)]="selectedFactoryAssets" [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,50]"
-         [rows]="10" [showCurrentPageReport]="true" [value]="displayedFactoryAssets"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+<p-treeTable [(selection)]="selectedFactoryAssets" [paginator]="true" [pageLinks]="5" [alwaysShowPaginator]="true"
+             [rowsPerPageOptions]="[5,10,50]" [rows]="10" [showCurrentPageReport]="true"
+             [value]="treeData" sortMode="multiple"
+             class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
   <ng-template pTemplate="header">
     <tr>
-      <th [style.width.%]="5"></th>
-      <th [style.width.%]="30">
-        <app-table-searchbar (searchByName)="searchAssets($event)" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
-                             attributeToBeSearched="name" filterColumn="Asset">
+      <th [style.width.%]="3"></th>
+      <th [style.width.%]="3"></th>
+      <th [style.width.%]="20" class="first-header-item">
+        <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                             attributeToBeSearched="name" (searchByName)="searchAssets($event)">
         </app-table-searchbar>
       </th>
-      <th [style.width.%]="35" pSortableColumn="category">Category
-        <p-sortIcon field="category"></p-sortIcon>
+      <th [style.width.%]="20" ttSortableColumn="category">Asset Type
+        <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="20" pSortableColumn="manufacturer">Manufacturer
-        <p-sortIcon field="manufacturer"></p-sortIcon>
+      <th [style.width.%]="12.5" ttSortableColumn="manufacturer">Manufacturer
+        <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="20" pSortableColumn="roomName">Room
-        <p-sortIcon field="roomName"></p-sortIcon>
+      <th [style.width.%]="10" ttSortableColumn="roomName">Room
+        <p-treeTableSortIcon field="roomName"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="15" pSortableColumn="factorySiteName">Factory Site
-        <p-sortIcon field="factorySiteName"></p-sortIcon>
+      <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
+        <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="20" pSortableColumn="city">Status
-        <p-sortIcon field="city"></p-sortIcon>
-      </th>
-      <th [style.width.%]="10"></th>
+      <th [style.width.%]="10">Status</th>
+      <th [style.width.%]="5"></th>
     </tr>
   </ng-template>
-
-  <ng-template let-asset pTemplate="body">
-    <tr class="p-selectable-row" id="rowElement" style="cursor: pointer;">
-      <td [style.width.%]="5" class="checkbox-td">
-        <p-tableCheckbox [value]="asset" class="checkbox-column table-checkbox"></p-tableCheckbox>
+  <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
+    <tr [ttRow]="rowNode" id="rowElement" style="cursor: pointer;">
+      <td class="checkbox-td" [style.width.%]="3">
+        <p-treeTableCheckbox [value]="rowNode" class="checkbox-column table-checkbox"></p-treeTableCheckbox>
       </td>
-      <td [routerLink]="getAssetLink(asset)" [style.width.%]="30">{{ asset.name }}</td>
-      <td [routerLink]="getAssetLink(asset)" [style.width.%]="35">{{ asset.category }}</td>
-      <td [routerLink]="getAssetLink(asset)" [style.width.%]="20">{{ asset.manufacturer }}</td>
-      <td [routerLink]="getAssetLink(asset)" [style.width.%]="20">{{ asset.roomName }}</td>
-      <td [routerLink]="getAssetLink(asset)" [style.width.%]="15">{{ asset.factorySiteName }}</td>
-      <td [routerLink]="getAssetLink(asset)" [style.width.%]="20">
-        <app-asset-status [asset]="asset" [showInline]="true"></app-asset-status>
+      <td [style.width.%]="3">
+        <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
+          <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
+          <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
+          <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
+        </div>
       </td>
-      <td (click)="setActiveRow(asset)" [style.width.%]="5" class="table-dropdown-menu-wide">
-        <app-item-options-menu
-          (assignItem)="openAssignRoomDialog()"
-          (deleteItem)="showDeleteDialog()" (editItem)="showEditDialog()"
-          [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]" [assignItemText]="'Asset to room'">
+      <td [routerLink]="getAssetLink(rowData)"
+          class="asset-column p-flex-row table-bold-font">
+        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+        <span *ngIf="rowNode.parent" class="subsystem-grid p-col-">
+            <span class="upper"></span>
+            <span [ngClass]="{'last-element': isLastChildElement(rowNode)}" class="lower"></span>
+          </span>
+        <span class="p-col">{{rowData.name}}</span>
+      </td>
+      <td [style.width.%]="20" [routerLink]="getAssetLink(rowData)">{{rowData.category}}</td>
+      <td [style.width.%]="12.5" [routerLink]="getAssetLink(rowData)">{{rowData.manufacturer}}</td>
+      <td [style.width.%]="10" [routerLink]="getAssetLink(rowData)">{{rowData.roomName}}</td>
+      <td [style.width.%]="12" [routerLink]="getAssetLink(rowData)">{{rowData.factorySiteName}}</td>
+      <td [style.width.%]="13" [routerLink]="getAssetLink(rowData)">
+        <app-asset-status [asset]="rowData" [showInline]="true"></app-asset-status>
+      </td>
+      <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
+        <app-item-options-menu [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+                               [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
+                               (assignItem)="openAssignRoomDialog()" (deleteItem)="showDeleteDialog()">
         </app-item-options-menu>
       </td>
       <td [style.width.%]="5"></td>
     </tr>
   </ng-template>
-</p-table>
+</p-treeTable>
 
 
 <p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"

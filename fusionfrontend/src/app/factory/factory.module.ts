@@ -27,7 +27,6 @@ import { AssetsListComponent } from './components/content/assets-list/assets-lis
 import { AssetStatusPipe } from '../pipes/asset-status-pipe';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
-import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
 import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
@@ -63,11 +62,15 @@ import { AssetNotificationsComponent } from './components/pages/asset-details/as
 import { AccordionModule } from 'primeng/accordion';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { DashboardModule } from '../dashboards/dashboard.module';
 import { AssetHistoricalViewComponent } from './components/pages/asset-details/asset-performance/asset-historical-view/asset-historical-view.component';
 import { CalendarModule } from 'primeng/calendar';
+import { TreeTableModule } from 'primeng/treetable';
+import { TreeModule } from 'primeng/tree';
 import { HistoricalStatusBarChartComponent } from '../components/content/historical-status-bar-chart/historical-status-bar-chart.component';
 import { ChartModule } from 'primeng/chart';
+import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +93,6 @@ import { ChartModule } from 'primeng/chart';
     AssetDetailsInfoComponent,
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
-    MaintenanceBarComponent,
     AssetChartsComponent,
     RoomDialogComponent,
     RoomsPageComponent,
@@ -111,7 +113,8 @@ import { ChartModule } from 'primeng/chart';
     AssetAppletsComponent,
     AssetSubsystemsComponent,
     AssetNotificationsComponent,
-    HistoricalStatusBarChartComponent
+    HistoricalStatusBarChartComponent,
+    MetricsBoardComponent,
   ],
   imports: [
     IFCommon,
@@ -123,9 +126,12 @@ import { ChartModule } from 'primeng/chart';
     CardModule,
     FusionAppletsModule,
     AccordionModule,
+    SelectButtonModule,
     DashboardModule,
     CalendarModule,
     ChartModule,
+    TreeTableModule,
+    TreeModule,
   ],
   exports: [
     FactorySubHeaderComponent,

@@ -23,21 +23,19 @@ under the License.
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
-      <th [style.width.%]="12.5">Room ID</th>
-      <th [style.width.%]="20">Name</th>
-      <th [style.width.%]="12.5">Assets</th>
+      <th [style.width.%]="25">Name</th>
+      <th [style.width.%]="17.5">Assets</th>
       <th [style.width.%]="25">Description</th>
-      <th [style.width.%]="17.5">Factory Site</th>
-      <th [style.width.%]="7.5"></th>
+      <th [style.width.%]="22.5">Factory Site</th>
+      <th [style.width.%]="5"></th>
     </tr>
   </ng-template>
 
   <ng-template let-room pTemplate="body">
     <tr style="cursor: pointer;">
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="5"></td>
-      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.id}}</td>
-      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="20">{{room.name}}</td>
-      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="12.5">{{room.assetIds.length}}</td>
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25" class="table-bold-font">{{room.name}}</td>
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="17.5">{{room.assetIds.length}}</td>
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25">{{room.description}}</td>
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="17.5">{{room.factorySite.name}}</td>
       <td (click)="setActiveRow(room)" [style.width.%]="2.5" class="table-dropdown-menu-wide">
@@ -47,7 +45,7 @@ under the License.
           [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]" [assignItemText]="'Asset to room'">
         </app-item-options-menu>
       </td>
-      <td [style.width.%]="5"></td>
+      <td [style.width.%]="2.5"></td>
     </tr>
   </ng-template>
 </p-table>

@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
+import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +36,7 @@ public class FieldDto extends BaseEntityDto {
     private Long unitId;
     private UnitDto unit;
     private FieldThresholdType thresholdType;
+    private FieldWidgetType widgetType;
 
     @JsonCreator
     public FieldDto() {

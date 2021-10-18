@@ -31,10 +31,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Asset, AssetWithFields } from '../../../../store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
 import { WizardHelper } from '../../../../common/utils/wizard-helper';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
 import { TableSelectedItemsBarType } from '../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
+import { OispAlert, OispAlertPriority } from '../../../../store/oisp/oisp-alert/oisp-alert.model';
+import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-assets-list',
@@ -64,12 +66,18 @@ export class AssetsListComponent implements OnInit, OnChanges {
   @Output()
   updateAssetEvent = new EventEmitter<[Room, FactoryAssetDetails]>();
 
+  faInfoCircle = faInfoCircle;
+  faExclamationCircle = faExclamationCircle;
+  faExclamationTriangle = faExclamationTriangle;
+
+  treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+  selectedFactoryAssets: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   displayedFactoryAssets: FactoryAssetDetailsWithFields[];
   filteredFactoryAssets: FactoryAssetDetailsWithFields[];
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
-  selectedFactoryAssets: FactoryAssetDetailsWithFields[] = [];
   activeListItem: FactoryAssetDetailsWithFields;
 
+  OispPriority = OispAlertPriority;
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
   companyId: ID;
@@ -101,15 +109,106 @@ export class AssetsListComponent implements OnInit, OnChanges {
   }
   ngOnChanges(): void {
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
+    this.updateTree();
   }
 
   setActiveRow(asset?) {
     if (asset) {
       this.activeListItem = asset;
     } else {
-      this.activeListItem = this.selectedFactoryAssets[0];
+      this.activeListItem = this.selectedFactoryAssets[0].data;
     }
   }
+
+  searchAssets(event: FactoryAssetDetailsWithFields[]): void {
+    this.searchedFactoryAssets = event;
+    this.updateAssets();
+  }
+
+  filterAssets(event?: FactoryAssetDetailsWithFields[]) {
+    this.filteredFactoryAssets = event;
+    this.updateAssets();
+  }
+
+  private updateAssets(): void {
+    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
+    if (this.searchedFactoryAssets) {
+      this.displayedFactoryAssets = this.filteredFactoryAssets.filter(asset =>
+        this.searchedFactoryAssets.includes(asset));
+    }
+    this.updateTree();
+  }
+
+  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
+    let openAlertPriority = node.data?.openAlertPriority;
+    if (!node.expanded && node.children?.length > 0) {
+      for (const child of node.children) {
+        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
+        if (!openAlertPriority ||
+          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
+          openAlertPriority = childMaxOpenAlertPriority;
+        }
+      }
+    }
+    return openAlertPriority;
+  }
+
+  isLastChildElement(rowNode: any): boolean {
+    const subsystemIds = rowNode.parent?.data.subsystemIds;
+    if (subsystemIds) {
+      const index = subsystemIds.findIndex((value) => value === rowNode.node.data.id);
+      return index === subsystemIds.length - 1;
+    } else {
+      return false;
+    }
+  }
+
+  private updateTree() {
+    if (this.displayedFactoryAssets) {
+      const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
+      const subsystemIDs = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
+      const flattenedSubsystemIDs = subsystemIDs.reduce((acc, val) => acc.concat(val), []);
+      const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
+      this.displayedFactoryAssets
+        .filter(asset => !flattenedSubsystemIDs.includes(asset.id))
+        .forEach((value: FactoryAssetDetailsWithFields) => {
+          treeData.push(this.addNode(null, value, expandedNodeIDs));
+        });
+      this.treeData = treeData;
+    }
+  }
+
+  private getExpandedNodeIDs(treeData: TreeNode[]): ID[] {
+    const expanded: ID[] = [];
+    for (const node of treeData) {
+      if (node.expanded) {
+        expanded.push(node.data.id);
+        expanded.push(...this.getExpandedNodeIDs(node.children));
+      }
+    }
+    return expanded;
+  }
+
+  private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
+                  value: FactoryAssetDetailsWithFields, expandedNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
+    const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
+      expanded: true,
+      data: value,
+      parent,
+    };
+    if (value.subsystemIds?.length > 0) {
+      const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
+      value.subsystemIds.forEach(id => {
+        const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
+        if (subsytem) {
+          children.push(this.addNode(treeNode, subsytem, expandedNodeIDs));
+        }
+      });
+      treeNode.children = children;
+    }
+    return treeNode;
+  }
+
 
   showOnboardDialog() {
     const ref = this.dialogService.open(AssetInstantiationComponent, {
@@ -164,7 +263,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   }
 
   onCardsViewClick() {
-    const selectedFactoryAssetIds = this.selectedFactoryAssets.map(asset => asset.id);
+    const selectedFactoryAssetIds = this.selectedFactoryAssets.map(asset => asset.data.id);
     this.selectedEvent.emit(selectedFactoryAssetIds);
     this.toolBarClickEvent.emit('GRID');
   }
@@ -173,24 +272,6 @@ export class AssetsListComponent implements OnInit, OnChanges {
     this.assetService.removeCompanyAsset(this.activeListItem.companyId, this.activeListItem.id).subscribe(() => {
       this.factoryAssetDetailsWithFields.splice(this.factoryAssetDetailsWithFields.indexOf(this.activeListItem), 1);
     });
-  }
-
-  searchAssets(event: FactoryAssetDetailsWithFields[]): void {
-    this.searchedFactoryAssets = event;
-    this.updateAssets();
-  }
-
-  filterAssets(event?: FactoryAssetDetailsWithFields[]) {
-    this.filteredFactoryAssets = event;
-    this.updateAssets();
-  }
-
-  private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
-    if (this.searchedFactoryAssets) {
-      this.displayedFactoryAssets = this.filteredFactoryAssets.filter(asset =>
-        this.searchedFactoryAssets.includes(asset));
-    }
   }
 
   showEditDialog() {

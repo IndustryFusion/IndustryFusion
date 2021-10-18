@@ -21,10 +21,14 @@ export class GermanNumberPipe implements PipeTransform {
 
   constructor() { }
 
-  transform(value: number, format?: string) {
+  private static isNumber(value: any): boolean {
+    return !Number.isNaN(Number(value));
+  }
+
+  transform(value: any, format?: string) {
     if (value == null) { return ''; } // !value would also react to zeros.
     if (!format) { format = '.0-2'; }
 
-    return formatNumber(value, 'de-de', format);
+    return GermanNumberPipe.isNumber(value) ? formatNumber(value, 'de-de', format) : String(value);
   }
 }
