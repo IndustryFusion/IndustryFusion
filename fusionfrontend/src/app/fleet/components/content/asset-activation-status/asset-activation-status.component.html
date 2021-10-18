@@ -13,15 +13,5 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="wrapper">
-  <ng-container *ngIf="asset">
-    <ng-container>
-      <div [ngClass]="{'status-circle-small': showInline}"
-           [style.background-color]="(asset | assetActivationStatus).color" class="status-circle">
-      </div>
-    </ng-container>
-    <div [ngClass]="{'status-standalone': !showInline}" class="status">
-      {{(asset | assetActivationStatus).status}}
-    </div>
-  </ng-container>
-</div>
+<app-status [color]="(asset | assetActivationStatus).color" [showInline]="showInline"
+            [text]="(asset | assetActivationStatus).status"></app-status>

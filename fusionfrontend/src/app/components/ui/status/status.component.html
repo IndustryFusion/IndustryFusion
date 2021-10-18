@@ -13,5 +13,15 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-status [color]="(assetSeries?.status | assetSeriesStatus).color" [showInline]="showInline"
-            [text]="(assetSeries?.status | assetSeriesStatus).status"></app-status>
+<div class="wrapper">
+  <ng-container *ngIf="color && text">
+    <ng-container>
+      <div [ngClass]="{'status-circle-small': showInline}"
+           [style.background-color]="color" class="status-circle">
+      </div>
+    </ng-container>
+    <div [ngClass]="{'status-standalone': !showInline}" class="status">
+      {{text}}
+    </div>
+  </ng-container>
+</div>

@@ -12,3 +12,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { Component, Input, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-status',
+  templateUrl: './status.component.html',
+  styleUrls: ['./status.component.scss']
+})
+export class StatusComponent implements OnInit {
+
+  @Input()
+  text: string;
+
+  @Input()
+  color: string;
+
+  @Input()
+  showInline: boolean;
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+  }
+}

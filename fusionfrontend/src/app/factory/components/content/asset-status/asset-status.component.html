@@ -13,17 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="wrapper">
-  <ng-container *ngIf="status$ | async as currentStatus">
-    <ng-container>
-      <div
-        [ngClass]="{'status-circle-small': showInline}"
-        [style.background-color]="(currentStatus.gotData | assetStatus: currentStatus.type:currentStatus.statusValue).color"
-        class="status-circle">
-      </div>
-    </ng-container>
-    <div [ngClass]="{'status-standalone': !showInline}" class="status">
-      {{(currentStatus.gotData | assetStatus: currentStatus.type:currentStatus.statusValue).status}}
-    </div>
-  </ng-container>
-</div>
+<ng-container *ngIf="status$ | async as currentStatus">
+  <app-status [showInline]="showInline" [text]="(currentStatus.gotData | assetStatus: currentStatus.type:currentStatus.statusValue).status"
+  [color]="(currentStatus.gotData | assetStatus: currentStatus.type:currentStatus.statusValue).color"></app-status>
+</ng-container>
