@@ -60,7 +60,7 @@ under the License.
   <p-card class="card">
     <app-nameplate-item label="Customer">
       <span *ngIf="(factorySite$ | async)?.type === factorySiteTypes.FLEETMANAGER">
-        {{(factorySite$ | async).name}}
+        {{(factorySite$ | async)?.name}}
       </span>
       <span *ngIf="(factorySite$ | async)?.type !== factorySiteTypes.FLEETMANAGER">
         {{(company$ | async)?.name}}

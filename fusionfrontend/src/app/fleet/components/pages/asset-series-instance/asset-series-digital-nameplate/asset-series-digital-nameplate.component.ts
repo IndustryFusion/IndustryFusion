@@ -34,6 +34,7 @@ import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-as
 import { FactorySite, FactorySiteType } from '../../../../../store/factory-site/factory-site.model';
 import { Company } from '../../../../../store/company/company.model';
 import { CompanyQuery } from '../../../../../store/company/company.query';
+import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
 
 
 @Component({
@@ -68,6 +69,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     private factoryAssetQuery: FactoryAssetDetailsQuery,
     private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
     private companyQuery: CompanyQuery,
+    private factorySiteQuery: FactorySiteQuery
   ) {
   }
 
@@ -84,13 +86,13 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     this.factorySite$ = combineLatest([this.asset$, this.factoryResolver.rooms$]).pipe(
       switchMap(([asset, rooms]) => {
         const assetRoom = rooms.find((room) => room.id === asset.roomId);
-        return this.factoryResolver.factorySites$.pipe(
-          map(sites => sites.find(site => site.id === assetRoom?.factorySiteId)),
+        return this.factorySiteQuery.selectAll().pipe(
+          map(sites => sites.find(site => site.id === assetRoom.factorySiteId))
         );
       })
     );
 
-    this.company$ = this.factorySite$.pipe(switchMap(site => this.companyQuery.selectEntity(site.companyId)));
+    this.company$ = this.factorySite$.pipe(switchMap(site => this.companyQuery.selectEntity(site?.companyId)));
 
     // TODO: refactor using status.service.getStatusByAssetWithFields
     this.latestPoints$ = combineLatest([this.asset$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
