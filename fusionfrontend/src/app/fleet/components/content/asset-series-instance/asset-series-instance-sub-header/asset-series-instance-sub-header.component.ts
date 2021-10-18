@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../../../common/utils/route-helpers';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
@@ -32,7 +32,7 @@ import { FactoryComposedQuery } from '../../../../../store/composed/factory-comp
 export class AssetSeriesInstanceSubHeaderComponent implements OnInit, OnDestroy {
 
   assetId: ID;
-  asset: FactoryAssetDetailsWithFields;
+  asset$: Observable<FactoryAssetDetailsWithFields>;
 
   private unSubscribe$ = new Subject<void>();
 
@@ -53,11 +53,8 @@ export class AssetSeriesInstanceSubHeaderComponent implements OnInit, OnDestroy 
 
   updateAsset() {
     this.assetId = this.factoryAssetDetailsQuery.getActiveId();
-    this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
-      .pipe(takeUntil(this.unSubscribe$))
-      .subscribe(asset => {
-        this.asset = asset;
-      });
+    this.asset$ = this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
+      .pipe(takeUntil(this.unSubscribe$));
   }
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {

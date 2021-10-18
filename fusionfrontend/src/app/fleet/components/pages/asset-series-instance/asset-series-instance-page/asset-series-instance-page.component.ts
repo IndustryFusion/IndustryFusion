@@ -15,7 +15,7 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
 import { AssetQuery } from '../../../../../store/asset/asset.query';
@@ -47,6 +47,7 @@ export class AssetSeriesInstancePageComponent implements OnInit, OnDestroy {
 
   assetsMapping:
     { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+  of = of;
 
   constructor(private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
               private assetSeriesDetailsService: AssetSeriesDetailsService,

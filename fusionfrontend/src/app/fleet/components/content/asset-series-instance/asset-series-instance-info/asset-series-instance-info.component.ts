@@ -16,6 +16,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-asset-series-instance-info',
@@ -25,7 +26,7 @@ import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asse
 export class AssetSeriesInstanceInfoComponent implements OnInit {
 
   @Input()
-  asset: FactoryAssetDetailsWithFields;
+  asset$: Observable<FactoryAssetDetailsWithFields>;
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [];
 

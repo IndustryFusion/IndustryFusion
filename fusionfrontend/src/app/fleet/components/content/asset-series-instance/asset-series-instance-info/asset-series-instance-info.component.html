@@ -14,17 +14,17 @@ under the License.
 -->
 
 <section class="asset">
-  <img class="asset-img" src="assets/img/{{(asset)?.imageKey}}"/>
+  <img class="asset-img" src="assets/img/{{(asset$ | async)?.imageKey}}"/>
   <div class="asset-info">
-    <h3>{{(asset)?.name}}</h3>
-    <p>{{(asset)?.assetTypeName}}</p>
+    <h3>{{(asset$ | async)?.name}}</h3>
+    <p>{{(asset$ | async)?.assetTypeName}}</p>
   </div>
   <div class="flex-box"></div>
   <div class="asset-info asset-status">
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-asset-activation-status [asset]="asset" [showInline]="false"></app-asset-activation-status>
+        <app-asset-activation-status [asset$]="asset$" [showInline]="false"></app-asset-activation-status>
       </p>
     </div>
     <!--<p>

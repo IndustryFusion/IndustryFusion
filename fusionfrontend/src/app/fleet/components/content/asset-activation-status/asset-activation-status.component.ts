@@ -15,6 +15,9 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import { map, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 
 @Component({
   selector: 'app-asset-activation-status',
@@ -24,14 +27,25 @@ import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-d
 export class AssetActivationStatusComponent implements OnInit {
 
   @Input()
-  asset: FactoryAssetDetailsWithFields;
+  asset$: Observable<FactoryAssetDetailsWithFields>;
 
   @Input()
   showInline: boolean;
 
-  constructor() {
+  isActive$: Observable<boolean>;
+
+  constructor(
+    private assetSeriesQuery: AssetSeriesDetailsQuery
+  ) {
   }
 
   ngOnInit(): void {
+    const assetSeries$ = this.asset$.pipe(
+      switchMap(asset => this.assetSeriesQuery.selectAssetSeriesDetails(asset?.assetSeriesId))
+    );
+    this.isActive$ = combineLatest(([this.asset$, assetSeries$])).pipe(map(([asset, series]) => {
+      return series.companyId !== asset.companyId;
+    }));
   }
+
 }

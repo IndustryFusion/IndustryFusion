@@ -14,7 +14,6 @@
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 
 class MyFormat {
   status: string;
@@ -24,12 +23,10 @@ class MyFormat {
 @Pipe({ name: 'assetActivationStatus' })
 export class AssetActivationStatusPipe implements PipeTransform {
 
-  transform(asset: FactoryAssetDetailsWithFields): MyFormat {
-    if (!asset) {
-      return ({ status: 'no status available', color: '#e80707' });
-    } else if (!asset.installationDate) {
-      return ({ status: 'Activation pending', color: '#4f504f' });
+  transform(isActive: boolean): MyFormat {
+    if (isActive) {
+      return ({ status: 'Active', color: '#2CA9CE' });
     }
-    return ({ status: 'Active', color: '#2CA9CE' });
+    return ({ status: 'Activation pending', color: '#4f504f' });
   }
 }

@@ -47,7 +47,7 @@ under the License.
       <td>{{assetsCombined.factorySite?.country?.name}}</td>
       <td>{{assetsCombined.asset?.installationDate | date}}</td>
       <td>
-        <app-asset-activation-status [asset]="assetsCombined.asset" [showInline]="true"></app-asset-activation-status>
+        <app-asset-activation-status [asset$]="of(assetsCombined.asset)" [showInline]="true"></app-asset-activation-status>
       </td>
     </tr>
   </ng-template>

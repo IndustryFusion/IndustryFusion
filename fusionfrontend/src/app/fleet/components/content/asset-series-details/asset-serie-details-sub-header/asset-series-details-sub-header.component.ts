@@ -80,9 +80,11 @@ export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
     return this.isRouteActive('assets', true);
   }
 
+/*
   isVersions() {
     return this.isRouteActive('versions');
   }
+*/
 
   ngOnDestroy() {
     this.unSubscribe$.next();
