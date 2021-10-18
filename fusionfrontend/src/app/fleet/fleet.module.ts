@@ -29,7 +29,7 @@ import { AssetSeriesWizardGeneralInformationComponent } from './components/conte
 import { AssetSeriesWizardNameplateAndConnectivitySettingsComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings.component';
 import { AssetSeriesWizardAttributesComponent } from './components/content/asset-series-wizard/asset-series-wizard-attributes/asset-series-wizard-attributes.component';
 import { IFCommon } from '../common/i-f-common.module';
-import { AssetSeriesInstancePageComponent } from './components/pages/asset-series-instance/asset-series-instance-page/asset-series-instance-page.component';
+import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { TableModule } from 'primeng/table';
 import { AssetWizardComponent } from './components/content/asset-wizard/asset-wizard.component';
 import { AssetWizardStepGeneralInformationComponent } from './components/content/asset-wizard/asset-wizard-step/asset-wizard-step-general-information/asset-wizard-step-general-information.component';
@@ -74,7 +74,7 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     AssetSeriesWizardNameplateAndConnectivitySettingsComponent,
     TimelineComponent,
     AssetSeriesWizardAttributesComponent,
-    AssetSeriesInstancePageComponent,
+    AssetSeriesOverviewPageComponent,
     AssetSeriesWizardMetricsComponent,
     AssetWizardComponent,
     AssetWizardStepGeneralInformationComponent,

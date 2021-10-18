@@ -19,7 +19,7 @@ import { AssetSeriesPageComponent } from './components/pages/asset-series-page/a
 import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { MainAuthGuard } from '../services/main-auth-guard.service';
-import { AssetSeriesInstancePageComponent } from './components/pages/asset-series-instance/asset-series-instance-page/asset-series-instance-page.component';
+import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
@@ -67,7 +67,7 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                component: AssetSeriesInstancePageComponent,
+                component: AssetSeriesOverviewPageComponent,
               },
               {
                 path: ':assetId/digital-nameplate',

@@ -40,14 +40,22 @@ under the License.
   <ng-template let-assetsCombined pTemplate="body">
     <tr [routerLink]="assetsCombined.asset.id+'/digital-nameplate'" class="asset-series-item">
       <td>{{assetsCombined.asset?.name}}</td>
-      <td>{{assetsCombined.factorySite?.name}}</td>
+      <td>
+        <span *ngIf="assetsCombined.factorySite?.type === factorySiteTypes.FLEETMANAGER">
+        {{assetsCombined.factorySite?.name}}
+      </span>
+        <span *ngIf="assetsCombined.factorySite?.type !== factorySiteTypes.FLEETMANAGER">
+        {{assetsCombined.company?.name}}
+      </span>
+      </td>
       <td>{{assetsCombined.factorySite?.line1}} {{assetsCombined.factorySite?.line2}}</td>
       <td>{{assetsCombined.factorySite?.zip}}</td>
       <td>{{assetsCombined.factorySite?.city}}</td>
       <td>{{assetsCombined.factorySite?.country?.name}}</td>
       <td>{{assetsCombined.asset?.installationDate | date}}</td>
       <td>
-        <app-asset-activation-status [asset$]="of(assetsCombined.asset)" [showInline]="true"></app-asset-activation-status>
+        <app-asset-activation-status [asset$]="of(assetsCombined.asset)"
+                                     [showInline]="true"></app-asset-activation-status>
       </td>
     </tr>
   </ng-template>

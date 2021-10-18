@@ -31,7 +31,9 @@ import { environment } from 'src/environments/environment';
 import { GermanNumberPipe } from '../../../../../pipes/germannumber.pipe';
 import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
-import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
+import { FactorySite, FactorySiteType } from '../../../../../store/factory-site/factory-site.model';
+import { Company } from '../../../../../store/company/company.model';
+import { CompanyQuery } from '../../../../../store/company/company.query';
 
 
 @Component({
@@ -52,7 +54,9 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
   videoIcon = faPlayCircle;
 
   factorySite$: Observable<FactorySite>;
+  company$: Observable<Company>;
 
+  factorySiteTypes = FactorySiteType;
   private germanNumberPipe: GermanNumberPipe = new GermanNumberPipe();
 
   constructor(
@@ -63,6 +67,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private factoryAssetQuery: FactoryAssetDetailsQuery,
     private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
+    private companyQuery: CompanyQuery,
   ) {
   }
 
@@ -84,6 +89,8 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
         );
       })
     );
+
+    this.company$ = this.factorySite$.pipe(switchMap(site => this.companyQuery.selectEntity(site.companyId)));
 
     // TODO: refactor using status.service.getStatusByAssetWithFields
     this.latestPoints$ = combineLatest([this.asset$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
