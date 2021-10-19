@@ -36,6 +36,15 @@ export class AssetMaintenanceUtils {
   static readonly maintenanceHours = new MaintenanceType('Operating Hours till maintenance', 150, 750, 1500);
   static readonly maintenanceDays = new MaintenanceType('Days till maintenance', 90, 180, 365);
 
+
+  public static getMaintenanceValues(assets: FactoryAssetDetailsWithFields[]): FactoryAssetDetailsWithFields[] {
+    assets.forEach(asset => {
+      asset.daysTillMaintenance = AssetMaintenanceUtils.getMaintenanceValue(asset, AssetMaintenanceUtils.maintenanceDays);
+      asset.operatingHoursTillMaintenance = AssetMaintenanceUtils.getMaintenanceValue(asset, AssetMaintenanceUtils.maintenanceHours);
+    });
+    return assets;
+  }
+
   public static getMaintenanceValue(asset: FactoryAssetDetailsWithFields, type: MaintenanceType): number {
     return +asset.fields.find(field => field.name === type.fieldName)?.value;
   }
