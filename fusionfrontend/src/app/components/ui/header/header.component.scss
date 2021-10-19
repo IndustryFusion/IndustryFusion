@@ -68,7 +68,8 @@ header {
 
 
         &.home {
-          background-image: url("^assets/img/IndustryFusion-hive-nav.png");
+          background-image: url("^assets/icons/IndustryFusion-hive-black.svg");
+          background-size: contain;
         }
 
         &.back {
