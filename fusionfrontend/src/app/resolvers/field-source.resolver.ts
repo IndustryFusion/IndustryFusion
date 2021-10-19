@@ -18,20 +18,18 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { FieldSourceService } from '../store/field-source/field-source.service';
 import { FieldSource } from '../store/field-source/field-source.model';
 import { Observable } from 'rxjs';
+import { RouteHelpers } from '../common/utils/route-helpers';
+import { ID } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class FieldSourceResolver implements Resolve<FieldSource[]>{
   constructor(private fieldSourceService: FieldSourceService) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<FieldSource[]> {
-    const companyId = route.pathFromRoot[1].params.companyId;
-    if (companyId != null && route.queryParamMap.has('id')) {
-      const assetSeriesId = route.queryParamMap.get('id');
-      if (assetSeriesId.length > 0) {
-        const observable = this.fieldSourceService.getFieldSourcesOfAssetSeries(companyId, assetSeriesId);
-        observable.subscribe();
-        return observable;
-      }
+    const companyId: ID = RouteHelpers.findParamInFullActivatedRoute(route.pathFromRoot[1], 'companyId');
+    const assetSeriesId: ID = RouteHelpers.findParamInFullActivatedRoute(route, 'assetSeriesId');
+    if (companyId != null && assetSeriesId != null) {
+      return this.fieldSourceService.getFieldSourcesOfAssetSeries(companyId, assetSeriesId);
     }
   }
 }

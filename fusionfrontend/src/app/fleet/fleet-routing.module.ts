@@ -27,6 +27,8 @@ import { AssetSeriesDetailsQuery } from '../store/asset-series-details/asset-ser
 import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
+import { AssetSeriesResolver } from '../resolvers/asset-series.resolver';
+import { ConnectivityTypeResolver } from '../resolvers/connectivity-type.resolver';
 
 
 const routes: Routes = [
@@ -76,6 +78,8 @@ const routes: Routes = [
                   asset: FactoryAssetDetailsResolver,
                   room: RoomResolver,
                   factorySite: FactorySiteResolver,
+                  assetSeries: AssetSeriesResolver,
+                  connectivityTypes: ConnectivityTypeResolver
                 },
                 data: {
                   breadcrumb: FactoryAssetDetailsQuery
