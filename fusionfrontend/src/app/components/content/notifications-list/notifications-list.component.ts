@@ -209,14 +209,14 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  closeMultipleNotifications() {
+  private closeMultipleNotifications() {
     this.selectedNotifications.forEach(notification => {
       this.deleteNotification(notification.id);
     });
     this.selectedNotifications = [];
   }
 
-  closeNotification(notification: OispNotification) {
+  private closeNotification(notification: OispNotification) {
     if (notification.status === this.alertStatusTypes.NEW || notification.status === this.alertStatusTypes.OPEN) {
       this.deleteNotification(notification.id);
       if (this.selectedNotifications.includes(notification)) {
@@ -227,8 +227,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   showCloseDialog(notifications: OispNotification[]) {
     this.confirmationService.confirm({
-      message: notifications.length === 1 ? 'Are you sure you want to close the notification "' + notifications[0].ruleName + '"?' :
-        'Are you sure you want to close ' + notifications.length + ' notifications ?',
+      message: notifications.length === 1 ? 'Are you sure you want to clear the notification "' + notifications[0].ruleName + '"?' :
+        'Are you sure you want to clear ' + notifications.length + ' notifications ?',
       header: 'Close Notification Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
