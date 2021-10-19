@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -35,6 +35,8 @@ import { FactorySite, FactorySiteType } from '../../../../../store/factory-site/
 import { Company } from '../../../../../store/company/company.model';
 import { CompanyQuery } from '../../../../../store/company/company.query';
 import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
+import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
+import { AssetOnboardingService } from '../../../../../services/asset-onboarding.service';
 
 
 @Component({
@@ -69,12 +71,32 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     private factoryAssetQuery: FactoryAssetDetailsQuery,
     private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
     private companyQuery: CompanyQuery,
-    private factorySiteQuery: FactorySiteQuery
+    private factorySiteQuery: FactorySiteQuery,
+    private factoryComposedQuery: FactoryComposedQuery,
+    private assetOnboardingService: AssetOnboardingService,
   ) {
   }
 
   private static isNumber(value: any): boolean {
     return !Number.isNaN(Number(value));
+  }
+
+  private static downloadFile(fileContent: string, fileName: string) {
+    const blob = new Blob([fileContent], { type: 'text/yaml' });
+
+    if (window.navigator.msSaveOrOpenBlob) {
+      // modern way
+      window.navigator.msSaveBlob(blob, fileName);
+    } else {
+      // workaround
+      const anchor = window.document.createElement('a');
+      anchor.href = window.URL.createObjectURL(blob);
+      anchor.download = fileName;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      window.URL.revokeObjectURL(anchor.href);
+    }
   }
 
   ngOnInit() {
@@ -137,5 +159,15 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
 
   asGermanNumberOrText(value: any): string {
     return AssetSeriesDigitalNameplateComponent.isNumber(value) ? this.germanNumberPipe.transform(value) : String(value);
+  }
+
+
+  generateAssetOnboardingFile() {
+    this.asset$.subscribe(asset => {
+        this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
+          this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
+            .subscribe(fileContent => AssetSeriesDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
+      }
+    );
   }
 }
