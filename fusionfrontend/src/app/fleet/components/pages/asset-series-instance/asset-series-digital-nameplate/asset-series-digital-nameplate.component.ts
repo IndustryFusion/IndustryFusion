@@ -26,7 +26,6 @@ import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-devi
 import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
-import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
 import { GermanNumberPipe } from '../../../../../pipes/germannumber.pipe';
 import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
@@ -44,7 +43,7 @@ import { AssetOnboardingService } from '../../../../../services/asset-onboarding
   templateUrl: './asset-series-digital-nameplate.component.html',
   styleUrls: ['./asset-series-digital-nameplate.component.scss']
 })
-export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
+export class AssetSeriesDigitalNameplateComponent implements OnInit {
 
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;
@@ -52,9 +51,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
-
-  manualIcon = faLayerGroup;
-  videoIcon = faPlayCircle;
 
   factorySite$: Observable<FactorySite>;
   company$: Observable<Company>;
@@ -146,13 +142,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-  }
-
-  openExternalUrl(url: string) {
-    window.open(url, '_blank');
-  }
-
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
   }
@@ -160,7 +149,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
   asGermanNumberOrText(value: any): string {
     return AssetSeriesDigitalNameplateComponent.isNumber(value) ? this.germanNumberPipe.transform(value) : String(value);
   }
-
 
   generateAssetOnboardingFile() {
     this.asset$.subscribe(asset => {
