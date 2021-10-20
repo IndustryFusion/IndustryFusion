@@ -15,10 +15,12 @@
 
 @import '../../../../ecosystem/components/content/base/base-list/base-list.component.scss';
 
-.folder-view {
-  margin-right: 16px;
+:host ::ng-deep .column-visibility {
+  visibility: hidden;
 }
 
-.asset-series-list {
-  margin: 0 80px;
+#rowElement:hover {
+  .column-visibility {
+    visibility: visible;
+  }
 }

@@ -123,7 +123,7 @@ export class AppletConditionsValueComponent implements OnInit {
       return null;
     }
     return {
-      label: device.deviceId + ': ' + component.name + '(' + component.componentType?.dataType + ')',
+      label: device.name + ': ' + component.name + '(' + component.componentType?.dataType + ')',
       value: {
         name: component.name,
         dataType: component.componentType?.dataType,

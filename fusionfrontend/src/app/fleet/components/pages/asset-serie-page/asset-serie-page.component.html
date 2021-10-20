@@ -1,0 +1,62 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<section class="if-detail-page-section">
+  <div class="if-detail-page-div">
+    <h3>
+      {{ (assetSerieDetails$ | async)?.name }}
+    </h3>
+    <div class="if-detail-page-description">
+      <textarea [disabled]="true">{{ (assetSerieDetails$ | async)?.description  }}</textarea>
+    </div>
+  </div>
+
+</section>
+<app-factory-site-map [factorySites]="factorySites$ | async"></app-factory-site-map>
+
+<div class="clr-row clr-justify-content-between clr-align-items-center list-header">
+  {{ (assetsCombined$ | async)?.length | i18nPlural: assetsMapping }}
+  <div>
+    <app-create-button [text]="'Create Asset'" (createItem)="createAssetFromAssetSeries()"></app-create-button>
+  </div>
+</div>
+<p-table class="list-container"
+         [value]="assetsCombined$ | async"
+         [rows]="10"
+         [paginator]="false" >
+  <ng-template pTemplate="header">
+    <tr>
+      <th >Asset&nbsp;name</th>
+      <th >Customer</th>
+      <th >Street</th>
+      <th >ZIP</th>
+      <th >City</th>
+      <th >Country</th>
+      <th >Activation&nbsp;date</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-assetsCombined>
+    <tr>
+      <td class="table-bold-font">{{assetsCombined.asset?.name}}</td>
+      <td >{{assetsCombined.factorySite?.name}}</td>
+      <td >{{assetsCombined.factorySite?.line1}} {{assetsCombined.factorySite?.line2}}</td>
+      <td >{{assetsCombined.factorySite?.zip}}</td>
+      <td >{{assetsCombined.factorySite?.city}}</td>
+      <td >{{assetsCombined.factorySite?.country?.name}}</td>
+      <td >{{assetsCombined.asset?.installationDate | date}}</td>
+    </tr>
+  </ng-template>
+
+</p-table>
