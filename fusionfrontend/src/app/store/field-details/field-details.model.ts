@@ -26,6 +26,7 @@ export class FieldDetails extends BaseEntity {
   mandatory: boolean;
   name: string;
   description: string;
+  dashboardGroup: string;
   type: string;
   unit: string;
   accuracy: number;

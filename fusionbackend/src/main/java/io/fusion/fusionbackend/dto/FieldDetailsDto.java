@@ -36,6 +36,7 @@ public class FieldDetailsDto extends BaseEntityDto {
     private Boolean mandatory;
     private String name;
     private String description;
+    private String dashboardGroup;
     private String type;
     private String unit;
     private Double accuracy;
