@@ -34,6 +34,8 @@ import { FactorySite, FactorySiteType } from '../../../../../store/factory-site/
 import { Company } from '../../../../../store/company/company.model';
 import { CompanyQuery } from '../../../../../store/company/company.query';
 import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
+import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
 
 
 @Component({
@@ -67,15 +69,13 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     private factoryAssetQuery: FactoryAssetDetailsQuery,
     private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
     private companyQuery: CompanyQuery,
-    private factorySiteQuery: FactorySiteQuery
+    private factorySiteQuery: FactorySiteQuery,
+    private assetSeriesDetailsService: AssetSeriesDetailsService,
   ) {
   }
 
   ngOnInit() {
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.assetId = this.factoryAssetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+    this.resolve();
 
     this.factorySite$ = combineLatest([this.asset$, this.factoryResolver.rooms$]).pipe(
       switchMap(([asset, rooms]) => {
@@ -116,6 +116,18 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
         return this.statusService.determineStatus(fields, asset);
       })
     );
+  }
+
+  private resolve() {
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetId = this.factoryAssetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+
+    const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
+    if (assetSeriesId != null) {
+      this.assetSeriesDetailsService.setActive(assetSeriesId);
+    }
   }
 
   ngOnDestroy() {

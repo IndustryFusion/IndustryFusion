@@ -51,7 +51,7 @@ const routes: Routes = [
       {
         path: ':assetSeriesId',
         data: {
-          breadcrumb: AssetSeriesDetailsQuery,
+          breadcrumb: null,
         },
         resolve: {
           asset: AssetResolver,
@@ -62,12 +62,15 @@ const routes: Routes = [
           {
             path: 'assets',
             data: {
-              breadcrumb: null,
+              breadcrumb: AssetSeriesDetailsQuery,
             },
             children: [
               {
                 path: '',
                 component: AssetSeriesOverviewPageComponent,
+                data: {
+                  breadcrumb: null,
+                },
               },
               {
                 path: ':assetId/digital-nameplate',
