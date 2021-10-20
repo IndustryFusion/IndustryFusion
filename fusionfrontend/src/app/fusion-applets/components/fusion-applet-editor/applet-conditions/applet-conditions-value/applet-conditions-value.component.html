@@ -16,7 +16,7 @@ under the License.
 <p-accordion [multiple]="false" [(activeIndex)]="activeAccordionIndex">
   <p-accordionTab header="Choose Trigger Asset">
     <label class="if-label">Asset *</label>
-    <p-multiSelect class="full-width" [required]="true" [options]="devices" [optionLabel]="'deviceId'"
+    <p-multiSelect class="full-width" [required]="true" [options]="devices" [optionLabel]="'name'"
                    [(ngModel)]="selectedDevices" display="chip"></p-multiSelect>
     <button class="if-button button-primary full-width space-top"
             [disabled]="selectedDevices.length == 0" (click)="activeAccordionIndex = 1"

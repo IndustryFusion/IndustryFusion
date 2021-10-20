@@ -100,7 +100,7 @@ export class OispNotificationService {
     let assetName = null;
     if (devices && alert) {
       const deviceOfAlert = devices.find(device => String(device.uid) === String(alert.deviceUID));
-      assetName = deviceOfAlert?.deviceId;
+      assetName = deviceOfAlert?.name;
     }
     return OispNotificationService.mapAlertToNotification(alert, assetName);
   }
