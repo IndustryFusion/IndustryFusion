@@ -49,6 +49,7 @@ public class FieldTarget extends BaseEntity {
     private String name;
     private String description;
     private String label;
+    private String dashboardGroup;
 
     public void copyFrom(final FieldTarget sourceFieldTarget) {
 
@@ -68,6 +69,9 @@ public class FieldTarget extends BaseEntity {
         }
         if (sourceFieldTarget.getLabel() != null) {
             setLabel(sourceFieldTarget.getLabel());
+        }
+        if (sourceFieldTarget.getDashboardGroup() != null) {
+            setDashboardGroup(sourceFieldTarget.getDashboardGroup());
         }
     }
 }

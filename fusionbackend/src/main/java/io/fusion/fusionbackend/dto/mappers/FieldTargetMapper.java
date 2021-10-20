@@ -44,10 +44,11 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
                 .mandatory(entity.getMandatory())
                 .name(entity.getName())
                 .fieldType(entity.getFieldType())
-                .label(entity.getLabel())
                 .fieldId(EntityDtoMapper.getEntityId(entity.getField()))
                 .assetTypeTemplateId(EntityDtoMapper.getEntityId(entity.getAssetTypeTemplate()))
                 .description(entity.getDescription())
+                .label(entity.getLabel())
+                .dashboardGroup(entity.getDashboardGroup())
                 .build();
     }
 
@@ -71,8 +72,9 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
                 .mandatory(dto.getMandatory())
                 .name(dto.getName())
                 .fieldType(dto.getFieldType())
-                .label(dto.getLabel())
                 .description(dto.getDescription())
+                .label(dto.getLabel())
+                .dashboardGroup(dto.getDashboardGroup())
                 .build();
 
         if (dto.getFieldId() != null) {
