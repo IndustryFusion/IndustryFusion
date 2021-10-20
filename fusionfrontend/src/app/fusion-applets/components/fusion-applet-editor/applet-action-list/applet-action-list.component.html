@@ -24,7 +24,7 @@ under the License.
         <app-valid-icon [isValid]="actionGroup.valid"></app-valid-icon>
       </div>
       <div>
-        <app-item-options-menu (deleteItem)="removeAction(i)" [type]="[ItemOptionsMenuType.DELETE]">
+        <app-item-options-menu (deleteItem)="removeAction(i)" [actions]="[ItemOptionsMenuType.DELETE]">
         </app-item-options-menu>
       </div>
     </div>

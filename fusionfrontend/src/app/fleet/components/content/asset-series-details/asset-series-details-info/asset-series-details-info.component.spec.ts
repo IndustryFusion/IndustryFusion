@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { StatusComponent } from './status.component';
+import { AssetSeriesDetailsInfoComponent } from './asset-series-details-info.component';
 
-describe('StatusComponent', () => {
-  let component: StatusComponent;
-  let fixture: ComponentFixture<StatusComponent>;
+describe('AssetDetailsHeaderComponent', () => {
+  let component: AssetSeriesDetailsInfoComponent;
+  let fixture: ComponentFixture<AssetSeriesDetailsInfoComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ StatusComponent ]
+      declarations: [ AssetSeriesDetailsInfoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StatusComponent);
+    fixture = TestBed.createComponent(AssetSeriesDetailsInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

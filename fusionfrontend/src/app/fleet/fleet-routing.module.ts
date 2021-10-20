@@ -19,11 +19,14 @@ import { AssetSeriesPageComponent } from './components/pages/asset-series-page/a
 import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { MainAuthGuard } from '../services/main-auth-guard.service';
-import { AssetSeriePageComponent } from './components/pages/asset-serie-page/asset-serie-page.component';
+import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
 import { AssetSeriesDetailsQuery } from '../store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
+import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
+import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 
 
 const routes: Routes = [
@@ -47,7 +50,6 @@ const routes: Routes = [
       },
       {
         path: ':assetSeriesId',
-        component: AssetSeriePageComponent,
         data: {
           breadcrumb: AssetSeriesDetailsQuery,
         },
@@ -55,8 +57,34 @@ const routes: Routes = [
           asset: AssetResolver,
           room: RoomResolver,
           factorySite: FactorySiteResolver
-        }
-      }
+        },
+        children: [
+          {
+            path: 'assets',
+            data: {
+              breadcrumb: null,
+            },
+            children: [
+              {
+                path: '',
+                component: AssetSeriesOverviewPageComponent,
+              },
+              {
+                path: ':assetId/digital-nameplate',
+                component: AssetSeriesDigitalNameplateComponent,
+                resolve: {
+                  asset: FactoryAssetDetailsResolver,
+                  room: RoomResolver,
+                  factorySite: FactorySiteResolver,
+                },
+                data: {
+                  breadcrumb: FactoryAssetDetailsQuery
+                }
+              }
+            ]
+          },
+        ]
+      },
     ]
   },
 ];
@@ -65,4 +93,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FleetRoutingModule { }
+export class FleetRoutingModule {
+}

@@ -55,14 +55,12 @@ export class CachedStore<S extends EntityState = any, EntityType = getEntityType
   }
 
   setByParentIdCached(parentId: ID, entities: EntityType[]): void {
-    console.log(this.constructor.name + ': Adding ' + entities.length + ' entities to cache by parent ' + parentId);
     this.addEntitiesIdsByParentId(parentId, entities);
     super.set(entities);
     this.emitCachedParentIds();
   }
 
   setCached(entities: EntityType[]): void {
-    console.log(this.constructor.name + ': Adding ' + entities.length + ' entities to cache');
     this.cachedIds.clear();
     this.cachedParentIdMap.clear();
     entities.forEach(entity => this.cachedIds.add(String(entity[this.idKey])));
@@ -71,19 +69,16 @@ export class CachedStore<S extends EntityState = any, EntityType = getEntityType
   }
 
   upsertCached(entity: EntityType): void {
-    console.log(this.constructor.name + ': Adding entity to cache');
     this.cachedIds.add(String(entity[this.idKey]));
     super.upsert(entity[this.idKey], entity);
     this.emitCachedIds();
   }
 
   upsertManyCached(entities: EntityType[]): void {
-    console.log(this.constructor.name + ': Adding ' + entities.length + ' entities to cache');
     this.upsertManyCachedInternal(entities);
   }
 
   upsertManyByParentIdCached(parentId: ID, entities: EntityType[]): void {
-    console.log(this.constructor.name + ': Adding ' + entities.length + ' entities to cache by parent ' + parentId);
     this.addEntitiesIdsByParentId(parentId, entities);
     this.upsertManyCachedInternal(entities);
   }

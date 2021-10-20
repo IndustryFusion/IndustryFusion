@@ -14,30 +14,17 @@
  */
 
 @import 'abstract/variables';
-@import 'base/typography';
 
-.wrapper {
+.subheader-flex {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
+  flex-direction: row;
 
-.status-circle {
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  background: gray 0 0 no-repeat padding-box;
-  &.status-circle-small {
-    width: 10px !important;
-    height: 10px !important;
+  .flexbox {
+    flex: 1;
   }
 }
 
-.status {
-  margin: 0 0 0 10px;
+.asset-details-subheader {
+  border-top: 1px solid $light-grey;
 }
 
-.status-standalone {
-  font-weight: bolder;
-  font-size: $big-font-size;
-}

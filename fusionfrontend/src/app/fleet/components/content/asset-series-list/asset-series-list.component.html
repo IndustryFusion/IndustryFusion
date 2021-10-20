@@ -15,18 +15,19 @@ under the License.
 
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{  assetSeries.length | i18nPlural: assetSeriesMapping }}</h3>
-  <app-create-button class="single-create-btn" (createItem)="createAssetSeries()" [text]="'Create Asset Series'"></app-create-button>
+  <app-create-button (createItem)="createAssetSeries()" [text]="'Create Asset Series'"
+                     class="single-create-btn"></app-create-button>
 </div>
 
-<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
-         [showCurrentPageReport]="true" [value]="this.displayedAssetSeries" [rowHover]="true"
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,50]"
+         [rows]="10" [showCurrentPageReport]="true" [value]="this.displayedAssetSeries"
          currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="22.5">
-        <app-table-searchbar filterColumn="Asset series name" [itemsToBeFiltered]="assetSeries"
-                             attributeToBeSearched="name" (searchByName)="searchAssetSeriesByName($event)">
+        <app-table-searchbar (searchByName)="searchAssetSeriesByName($event)" [itemsToBeFiltered]="assetSeries"
+                             attributeToBeSearched="name" filterColumn="Asset series name">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="22.5" pSortableColumn="assetType">Asset Type
@@ -43,18 +44,21 @@ under the License.
     </tr>
   </ng-template>
 
-  <ng-template let-assetSerie pTemplate="body">
+  <ng-template let-assetSeries pTemplate="body">
     <tr id="rowElement">
       <td [style.width.%]="5"></td>
-      <td [style.width.%]="22.5" [routerLink]="assetSerie.id" class="table-bold-font">{{ assetSerie.name }}</td>
-      <td [style.width.%]="22.5" [routerLink]="assetSerie.id">{{ assetSerie.assetType }}</td>
-      <td [style.width.%]="15" [routerLink]="assetSerie.id">{{ assetSerie.templateVersion }}</td>
-      <td [style.width.%]="15" [routerLink]="assetSerie.id"><span class="badge badge-light-blue"></span>{{ assetSerie.status }}</td>
-      <td [style.width.%]="15" [routerLink]="assetSerie.id">{{ assetSerie.assetCount }}</td>
-      <td [style.width.%]="5" (click)="setActiveRow(assetSerie)">
-        <app-item-options-menu class="column-visibility" [type]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
-                               [createItemName]="'Asset'" (createItem)="createAsset(assetSerie.id)"
-                               (editItem)="modifyItem(assetSerie.id)" (deleteItem)="showDeleteDialog()">
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="22.5"
+          class="table-bold-font">{{ assetSeries.name }}</td>
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="22.5">{{ assetSeries.assetType }}</td>
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="15">{{ assetSeries.templateVersion }}</td>
+      <!-- <div [routerLink]="assetSeries.id + '/assets'" [style.width.%]="15" class="list-item-cell grey label-success">
+      <app-asset-series-status [assetSeries]="assetSeries" [showInline]="true"></app-asset-series-status> -->
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="15">{{ assetSeries.assetCount }}</td>
+      <td (click)="setActiveRow(assetSeries)" [style.width.%]="5">
+        <app-item-options-menu (createItem)="createAsset(assetSeries.id)"
+                               (deleteItem)="showDeleteDialog()"
+                               (editItem)="modifyItem(assetSeries.id)" [actions]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
+                               [createItemName]="'Asset'" class="column-visibility">
         </app-item-options-menu>
       </td>
     </tr>
@@ -62,6 +66,6 @@ under the License.
 </p-table>
 
 
-<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
-                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
 

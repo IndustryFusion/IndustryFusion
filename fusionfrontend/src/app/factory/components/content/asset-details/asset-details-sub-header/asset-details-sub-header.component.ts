@@ -57,13 +57,13 @@ export class AssetDetailsSubHeaderComponent implements OnInit, OnDestroy {
     this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
       .pipe(takeUntil(this.unSubscribe$))
       .subscribe(asset => {
-      this.asset = asset;
-      this.hasSubsystems = asset.subsystemIds?.length > 0;
-    });
+        this.asset = asset;
+        this.hasSubsystems = asset.subsystemIds?.length > 0;
+      });
   }
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
-    let newRoute = subroute2 ?  ['..', subroute, subroute2] : ['..', subroute];
+    let newRoute = subroute2 ? ['..', subroute, subroute2] : ['..', subroute];
     if (this.routingLocation.path().match(`\/assets\/[0-9]*$`) || this.endsUrlWithTwoSubroutes()) {
       newRoute = newRoute.slice(1, newRoute.length);
     }
@@ -74,13 +74,12 @@ export class AssetDetailsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isRouteActive(subroute: string, useAsDefault: boolean = false): boolean {
-    const snapshot = RouteHelpers.getActiveRouteLastChild(this.activatedRoute).snapshot;
-    if (useAsDefault && snapshot.url.join('/').endsWith(`${this.assetId}`)) {
+    const url = this.routingLocation.path();
+    if (useAsDefault && url.endsWith(`${this.assetId}`)) {
       return true;
     }
-    return snapshot.url.map(segment => segment.path).includes(subroute);
+    return url.split('/').includes(subroute);
   }
-
 
   endsUrlWithTwoSubroutes() {
     return this.isPerformance() || this.isNotifications() || this.isApplets();

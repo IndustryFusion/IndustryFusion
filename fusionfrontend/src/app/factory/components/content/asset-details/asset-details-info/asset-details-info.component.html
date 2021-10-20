@@ -25,12 +25,12 @@ under the License.
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-status>
+        <app-asset-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-asset-status>
       </p>
     </div>
     <p>{{(asset)?.factorySiteName}} ({{(asset)?.roomName}})</p>
   </div>
   <div class="asset-info asset-menu">
-    <app-item-options-menu [showInline]="false" [type]="dropdownMenuOptions"></app-item-options-menu>
+    <app-item-options-menu [showInline]="false" [actions]="dropdownMenuOptions"></app-item-options-menu>
   </div>
 </section>
