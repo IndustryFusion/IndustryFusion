@@ -98,7 +98,7 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     AssetSeriesStatusComponent,
     AssetSeriesStatusPipe,
     AssetActivationStatusComponent,
-    AssetActivationStatusPipe
+    AssetActivationStatusPipe,
   ],
   imports: [
     IFCommon,
@@ -109,7 +109,7 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     CalendarModule,
     AccordionModule,
     AgmCoreModule,
-    CardModule
+    CardModule,
   ],
   exports: [
     FleetSubHeaderComponent,

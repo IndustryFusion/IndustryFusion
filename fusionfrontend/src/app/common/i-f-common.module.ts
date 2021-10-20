@@ -135,7 +135,7 @@ import { StatusComponent } from '../components/ui/status/status.component';
     SelectButtonModule,
     TableSelectedItemsBarComponent,
     NameplateItemComponent,
-    StatusComponent
+    StatusComponent,
   ],
   providers: [
     MessageService,

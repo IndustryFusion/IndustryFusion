@@ -28,7 +28,6 @@ import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asse
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
 import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
-import { GermanNumberPipe } from '../../../../../pipes/germannumber.pipe';
 import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
 import { FactorySite, FactorySiteType } from '../../../../../store/factory-site/factory-site.model';
@@ -58,7 +57,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
   company$: Observable<Company>;
 
   factorySiteTypes = FactorySiteType;
-  private germanNumberPipe: GermanNumberPipe = new GermanNumberPipe();
 
   constructor(
     private oispService: OispService,
@@ -71,10 +69,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery
   ) {
-  }
-
-  private static isNumber(value: any): boolean {
-    return !Number.isNaN(Number(value));
   }
 
   ngOnInit() {
@@ -133,9 +127,5 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
-  }
-
-  asGermanNumberOrText(value: any): string {
-    return AssetSeriesDigitalNameplateComponent.isNumber(value) ? this.germanNumberPipe.transform(value) : String(value);
   }
 }
