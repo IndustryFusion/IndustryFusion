@@ -56,7 +56,7 @@ under the License.
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
-    <tr>
+    <tr id="rowElement">
       <td (click)="editItem(rowIndex)" style="direction: rtl">
         <i class="if-icon-mail" *ngIf="hasActionType(rule,RuleActionType.mail)"></i>
         <i class="if-icon-webhook" *ngIf="hasActionType(rule,RuleActionType.http)"></i>

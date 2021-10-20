@@ -52,7 +52,7 @@ under the License.
   </ng-template>
 
   <ng-template let-assetType pTemplate="body">
-    <tr class="p-selectable-row" style="cursor: pointer;">
+    <tr id="rowElement" style="cursor: pointer;">
       <td [style.width.%]="5"></td>
       <td [style.width.%]="30" [routerLink]="assetType.id" class="table-bold-font">{{ assetType.name }}</td>
       <td [style.width.%]="20" [routerLink]="assetType.id">{{ assetType.templateCount }}</td>

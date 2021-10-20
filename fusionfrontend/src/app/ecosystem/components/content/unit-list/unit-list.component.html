@@ -51,7 +51,7 @@ under the License.
   </ng-template>
 
   <ng-template let-unit pTemplate="body">
-    <tr class="p-selectable-row" style="cursor: pointer;">
+    <tr id="rowElement" style="cursor: pointer;">
       <td [style.width.%]="5"></td>
       <td [style.width.%]="30" [routerLink]="unit.id" class="table-bold-font">{{ unit.name }}</td>
       <td [style.width.%]="20" [routerLink]="unit.id">{{ unit.symbol }}</td>

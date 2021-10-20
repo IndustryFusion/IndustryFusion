@@ -48,7 +48,7 @@ under the License.
   </ng-template>
 
   <ng-template let-quantityType pTemplate="body">
-    <tr class="p-selectable-row" style="cursor: pointer;">
+    <tr id="rowElement" style="cursor: pointer;">
       <td [style.width.%]="5"></td>
       <td [style.width.%]="30" [routerLink]="quantityType.id" class="table-bold-font">{{ quantityType.name }}</td>
       <td [style.width.%]="20" [routerLink]="quantityType.id">{{ quantityType.description }}</td>

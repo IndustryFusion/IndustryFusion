@@ -165,36 +165,33 @@ export class AssetsListComponent implements OnInit, OnChanges {
 
   private updateTree() {
     if (this.displayedFactoryAssets) {
-      const expandedNodeIDs = this.getExpandedNodeIDs(this.treeData);
       const subsystemIDs = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
       const flattenedSubsystemIDs = subsystemIDs.reduce((acc, val) => acc.concat(val), []);
       const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       this.displayedFactoryAssets
         .filter(asset => !flattenedSubsystemIDs.includes(asset.id))
         .forEach((value: FactoryAssetDetailsWithFields) => {
-          treeData.push(this.addNode(null, value, expandedNodeIDs));
+          treeData.push(this.addNode(null, value));
         });
+      treeData.forEach(node => {
+        this.expandChildren(node);
+      });
       this.treeData = treeData;
     }
   }
 
-  private getExpandedNodeIDs(treeData: TreeNode[]): ID[] {
-    const expanded: ID[] = [];
-    for (const node of treeData) {
-      if (node.expanded) {
-        expanded.push(node.data.id);
-        expanded.push(...this.getExpandedNodeIDs(node.children));
-        console.log(node.expanded);
+  private expandChildren(node: TreeNode) {
+    if (node.children) {
+      node.expanded = true;
+      for (const cn of node.children) {
+        this.expandChildren(cn);
       }
     }
-    return expanded;
   }
 
   private addNode(parent: TreeNode<FactoryAssetDetailsWithFields>,
-                  value: FactoryAssetDetailsWithFields, expandedNodeIDs: ID[]): TreeNode<FactoryAssetDetailsWithFields> {
+                  value: FactoryAssetDetailsWithFields): TreeNode<FactoryAssetDetailsWithFields> {
     const treeNode: TreeNode<FactoryAssetDetailsWithFields> = {
-      // expanded: true,
-      expanded: expandedNodeIDs.includes(value.id),
       data: value,
       parent,
     };
@@ -203,7 +200,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
       value.subsystemIds.forEach(id => {
         const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
         if (subsytem) {
-          children.push(this.addNode(treeNode, subsytem, expandedNodeIDs));
+          children.push(this.addNode(treeNode, subsytem));
         }
       });
       treeNode.children = children;
