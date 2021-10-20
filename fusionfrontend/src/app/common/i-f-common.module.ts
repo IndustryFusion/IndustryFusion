@@ -92,6 +92,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
       apiKey: environment.googleMapsClientId
     }),
     SelectButtonModule,
+    ConfirmDialogModule,
   ],
   exports: [
     CommonModule,
