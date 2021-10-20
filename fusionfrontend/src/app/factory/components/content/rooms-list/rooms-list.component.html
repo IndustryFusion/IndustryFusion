@@ -39,7 +39,7 @@ under the License.
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25">{{room.description}}</td>
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="22.5">{{room.factorySite.name}}</td>
       <td [style.width.%]="2.5" class="table-dropdown-menu-wide" (click)="setActiveRow(room)">
-        <app-item-options-menu class="column-visibility" [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+        <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
                                [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
                                (assignItem)="showAssignAssetToRoomModal()" (deleteItem)="showDeleteDialog()">
         </app-item-options-menu>

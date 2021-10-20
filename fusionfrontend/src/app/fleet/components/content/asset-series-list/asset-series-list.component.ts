@@ -50,7 +50,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
 
   ItemOptionsMenuType = ItemOptionsMenuType;
 
-
   isLoading$: Observable<boolean>;
 
   constructor(

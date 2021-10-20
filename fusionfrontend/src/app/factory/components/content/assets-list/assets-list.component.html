@@ -96,7 +96,7 @@ under the License.
         <app-asset-status [asset]="rowData" [showInline]="true"></app-asset-status>
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
-        <app-item-options-menu class="column-visibility" [type]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+        <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
                                [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
                                (assignItem)="openAssignRoomDialog()" (deleteItem)="showDeleteDialog()">
         </app-item-options-menu>
