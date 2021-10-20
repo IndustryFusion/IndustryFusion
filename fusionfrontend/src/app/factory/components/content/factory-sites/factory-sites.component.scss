@@ -15,3 +15,13 @@
 
 @import 'abstract/variables';
 @import 'base/typography';
+
+:host ::ng-deep .column-visibility {
+  visibility: hidden;
+}
+
+#rowElement:hover {
+  .column-visibility {
+    visibility: visible;
+  }
+}

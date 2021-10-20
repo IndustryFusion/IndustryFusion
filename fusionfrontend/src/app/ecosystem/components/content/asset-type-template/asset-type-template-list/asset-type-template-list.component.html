@@ -50,14 +50,14 @@ under the License.
   </ng-template>
 
   <ng-template let-assetTypeTemplate pTemplate="body">
-    <tr class="p-selectable-row" style="cursor: pointer;">
+    <tr id="rowElement" style="cursor: pointer;">
       <td [style.width.%]="5"></td>
       <td [style.width.%]="30" [routerLink]="assetTypeTemplate.id" class="table-bold-font">{{ assetTypeTemplate.name | nameWithVersion : assetTypeTemplate?.publishedVersion }}</td>
       <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedVersion }}</td>
       <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</td>
       <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publicationState | titlecase }}</td>
       <td [style.width.%]="5" (click)="setActiveRow(assetTypeTemplate)">
-        <app-item-options-menu [type]="menuType" (editItem)="onUpdate()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+        <app-item-options-menu class="column-visibility" [type]="menuType" (editItem)="onUpdate()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
       </td>
     </tr>
   </ng-template>
