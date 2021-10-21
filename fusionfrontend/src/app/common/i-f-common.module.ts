@@ -96,6 +96,7 @@ import { StatusComponent } from '../components/ui/status/status.component';
       apiKey: environment.googleMapsClientId
     }),
     SelectButtonModule,
+    ConfirmDialogModule,
   ],
   exports: [
     CommonModule,
@@ -135,7 +136,7 @@ import { StatusComponent } from '../components/ui/status/status.component';
     SelectButtonModule,
     TableSelectedItemsBarComponent,
     NameplateItemComponent,
-    StatusComponent
+    StatusComponent,
   ],
   providers: [
     MessageService,

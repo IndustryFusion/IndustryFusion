@@ -16,12 +16,12 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-:host ::ng-deep .checkbox-column {
+:host ::ng-deep .column-visibility {
   visibility: hidden;
 }
 
 #rowElement:hover {
-  .checkbox-column {
+  .column-visibility {
     visibility: visible;
   }
 }

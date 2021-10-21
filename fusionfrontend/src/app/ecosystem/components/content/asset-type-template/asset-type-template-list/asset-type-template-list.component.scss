@@ -13,3 +13,12 @@
  * under the License.
  */
 
+:host ::ng-deep .column-visibility {
+  visibility: hidden;
+}
+
+#rowElement:hover {
+  .column-visibility {
+    visibility: visible;
+  }
+}

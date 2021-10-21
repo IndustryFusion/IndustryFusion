@@ -30,13 +30,15 @@ import { RouteHelpers } from '../../../common/utils/route-helpers';
 import { TableSelectedItemsBarType } from '../../ui/table-selected-items-bar/table-selected-items-bar.type';
 import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
 import { OispDeviceResolver } from '../../../resolvers/oisp-device-resolver';
+import { ConfirmationService } from 'primeng/api';
 
 export enum NotificationState { OPEN, CLEARED}
 
 @Component({
   selector: 'app-notifications-list',
   templateUrl: './notifications-list.component.html',
-  styleUrls: ['./notifications-list.component.scss']
+  styleUrls: ['./notifications-list.component.scss'],
+  providers: [ConfirmationService]
 })
 export class NotificationsListComponent implements OnInit, OnDestroy {
 
@@ -81,7 +83,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     private oispAlertService: OispAlertService,
     private oispDeviceQuery: OispDeviceQuery,
     private oispDeviceResolver: OispDeviceResolver,
-    private routingLocation: Location
+    private routingLocation: Location,
+    private confirmationService: ConfirmationService
   ) {
   }
 
@@ -100,12 +103,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.notificationSubscription?.unsubscribe();
     clearInterval(this.intervalId);
-  }
-
-  deleteNotification(id: ID): void {
-    const filteredNotification = this.displayedNotifications.find(value => value.id === id);
-    this.oispAlertService.closeAlert(filteredNotification.id).subscribe(() => {
-    });
   }
 
   deselectAllNotifications(): void {
@@ -212,23 +209,44 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  closeMultipleNotifications() {
+  private closeMultipleNotifications() {
     this.selectedNotifications.forEach(notification => {
       this.deleteNotification(notification.id);
     });
     this.selectedNotifications = [];
   }
 
-  showCloseNotification(notification: OispNotification) {
-    this.activeNotification = notification;
-    this.shouldShowDeleteNotification = true;
+  private closeNotification(notification: OispNotification) {
+    if (notification.status === this.alertStatusTypes.NEW || notification.status === this.alertStatusTypes.OPEN) {
+      this.deleteNotification(notification.id);
+      if (this.selectedNotifications.includes(notification)) {
+        this.selectedNotifications.splice(this.selectedNotifications.indexOf(notification), 1);
+      }
+    }
   }
 
-  closeNotification() {
-    if (this.activeNotification.status === this.alertStatusTypes.NEW || this.activeNotification.status === this.alertStatusTypes.OPEN) {
-      this.shouldShowDeleteNotification = false;
-      this.deleteNotification(this.activeNotification.id);
-    }
+  showCloseDialog(notifications: OispNotification[]) {
+    this.confirmationService.confirm({
+      message: notifications.length === 1 ? 'Are you sure you want to clear the notification "' + notifications[0].ruleName + '"?' :
+        'Are you sure you want to clear ' + notifications.length + ' notifications ?',
+      header: 'Close Notification Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (notifications.length === 1) {
+          this.closeNotification(notifications[0]);
+        } else {
+          this.closeMultipleNotifications();
+        }
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  deleteNotification(id: ID): void {
+    const filteredNotification = this.displayedNotifications.find(value => value.id === id);
+    this.oispAlertService.closeAlert(filteredNotification.id).subscribe(() => {
+    });
   }
 
   isFloatingNumber(text: string) {

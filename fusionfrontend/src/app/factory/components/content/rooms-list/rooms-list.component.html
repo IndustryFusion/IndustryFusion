@@ -32,17 +32,16 @@ under the License.
   </ng-template>
 
   <ng-template let-room pTemplate="body">
-    <tr style="cursor: pointer;">
+    <tr id="rowElement" style="cursor: pointer;">
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="5"></td>
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25" class="table-bold-font">{{room.name}}</td>
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="17.5">{{room.assetIds.length}}</td>
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="25">{{room.description}}</td>
-      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="17.5">{{room.factorySite.name}}</td>
-      <td (click)="setActiveRow(room)" [style.width.%]="2.5" class="table-dropdown-menu-wide">
-        <app-item-options-menu
-          (assignItem)="showAssignAssetToRoomModal()"
-          (deleteItem)="showDeleteDialog()" (editItem)="showEditDialog()"
-          [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]" [assignItemText]="'Asset to room'">
+      <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="22.5">{{room.factorySite.name}}</td>
+      <td [style.width.%]="2.5" class="table-dropdown-menu-wide" (click)="setActiveRow(room)">
+        <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+                               [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
+                               (assignItem)="showAssignAssetToRoomModal()" (deleteItem)="showDeleteDialog()">
         </app-item-options-menu>
       </td>
       <td [style.width.%]="2.5"></td>

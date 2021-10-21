@@ -17,23 +17,24 @@ under the License.
   <h3 class="table-header">{{ displayedAssetTypeTemplates?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
     <div class="filter-btn-div">
-      <app-table-filter class="filter-btn" [tableFilters]="tableFilters" [itemsToBeFiltered]="assetTypeTemplates"
-                        (filteredItems)="filterAssetTypeTemplates($event)">
+      <app-table-filter (filteredItems)="filterAssetTypeTemplates($event)" [itemsToBeFiltered]="assetTypeTemplates" [tableFilters]="tableFilters"
+                        class="filter-btn">
       </app-table-filter>
     </div>
-    <app-create-button class="create-btn" [text]="'Create Asset Type Template'" (createItem)="onCreate()"></app-create-button>
+    <app-create-button (createItem)="onCreate()" [text]="'Create Asset Type Template'"
+                       class="create-btn"></app-create-button>
   </div>
 </div>
 
-<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
-         [showCurrentPageReport]="true" [value]="displayedAssetTypeTemplates" [rowHover]="true"
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,50]"
+         [rows]="10" [showCurrentPageReport]="true" [value]="displayedAssetTypeTemplates"
          class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="40">
-        <app-table-searchbar filterColumn="Template" [itemsToBeFiltered]="assetTypeTemplates"
-                             attributeToBeSearched="name" (searchByName)="searchAssetTypeTemplates($event)">
+        <app-table-searchbar (searchByName)="searchAssetTypeTemplates($event)" [itemsToBeFiltered]="assetTypeTemplates"
+                             attributeToBeSearched="name" filterColumn="Template">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="15" pSortableColumn="publishedVersion">Version
@@ -50,19 +51,23 @@ under the License.
   </ng-template>
 
   <ng-template let-assetTypeTemplate pTemplate="body">
-    <tr class="p-selectable-row" style="cursor: pointer;">
+    <tr id="rowElement" style="cursor: pointer;">
       <td [style.width.%]="5"></td>
-      <td [style.width.%]="30" [routerLink]="assetTypeTemplate.id" class="table-bold-font">{{ assetTypeTemplate.name | nameWithVersion : assetTypeTemplate?.publishedVersion }}</td>
-      <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedVersion }}</td>
-      <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</td>
-      <td [style.width.%]="20" [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publicationState | titlecase }}</td>
-      <td [style.width.%]="5" (click)="setActiveRow(assetTypeTemplate)">
-        <app-item-options-menu [actions]="menuType" (editItem)="onUpdate()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+      <td [routerLink]="assetTypeTemplate.id" [style.width.%]="30"
+          class="table-bold-font">{{ assetTypeTemplate.name | nameWithVersion : assetTypeTemplate?.publishedVersion }}</td>
+      <td [routerLink]="assetTypeTemplate.id" [style.width.%]="20">{{ assetTypeTemplate?.publishedVersion }}</td>
+      <td [routerLink]="assetTypeTemplate.id"
+          [style.width.%]="20">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</td>
+      <td [routerLink]="assetTypeTemplate.id"
+          [style.width.%]="20">{{ assetTypeTemplate?.publicationState | titlecase }}</td>
+      <td (click)="setActiveRow(assetTypeTemplate)" [style.width.%]="5">
+        <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="onUpdate()" [actions]="menuType"
+                               class="column-visibility"></app-item-options-menu>
       </td>
     </tr>
   </ng-template>
 </p-table>
 
 
-<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
-                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>

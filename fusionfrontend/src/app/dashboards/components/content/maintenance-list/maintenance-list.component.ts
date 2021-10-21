@@ -38,8 +38,6 @@ import {
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
 
-  readonly MAINTENANCE_HIGHLIGHT_PERCENTAGE = 25;
-
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   @Input()
@@ -144,8 +142,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   private isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
-    return Utils.getMaintenanceValue(asset, type)
-      && Utils.getMaintenancePercentage(asset, type) < this.MAINTENANCE_HIGHLIGHT_PERCENTAGE;
+    const maintenanceValue = Utils.getMaintenanceValue(asset, type);
+    return maintenanceValue && maintenanceValue < type.lowerThreshold;
   }
 
   private updateTree() {

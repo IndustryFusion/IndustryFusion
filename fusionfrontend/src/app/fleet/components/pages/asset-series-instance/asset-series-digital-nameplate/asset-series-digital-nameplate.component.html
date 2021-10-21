@@ -52,7 +52,7 @@ under the License.
     <div class="grid">
       <ng-container *ngFor="let attribute of getAttributes((asset$ | async)?.fields)">
         <app-nameplate-item
-          label="{{ attribute.name }}">{{ asGermanNumberOrText(attribute.value) }} {{ attribute.unit }}</app-nameplate-item>
+          label="{{ attribute.name }}">{{ attribute.value | germanNumber }} {{ attribute.unit }}</app-nameplate-item>
       </ng-container>
     </div>
   </p-card>

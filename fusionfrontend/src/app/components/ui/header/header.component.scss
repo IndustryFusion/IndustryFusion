@@ -68,7 +68,8 @@ header {
 
 
         &.home {
-          background-image: url("^assets/img/IndustryFusion-hive-nav.png");
+          background-image: url("^assets/icons/IndustryFusion-hive-black.svg");
+          background-size: contain;
         }
 
         &.back {
@@ -208,6 +209,7 @@ header {
       background: none;
       height: auto;
       width: auto;
+      font-weight: bold;
 
       .user-name-more {
         font-size: inherit;

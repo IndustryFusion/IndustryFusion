@@ -27,13 +27,14 @@ import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
 import { environment } from 'src/environments/environment';
-import { GermanNumberPipe } from '../../../../../pipes/germannumber.pipe';
 import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
 import { FactorySite, FactorySiteType } from '../../../../../store/factory-site/factory-site.model';
 import { Company } from '../../../../../store/company/company.model';
 import { CompanyQuery } from '../../../../../store/company/company.query';
 import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
+import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
 import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
 import { AssetOnboardingService } from '../../../../../services/asset-onboarding.service';
 
@@ -56,7 +57,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit {
   company$: Observable<Company>;
 
   factorySiteTypes = FactorySiteType;
-  private germanNumberPipe: GermanNumberPipe = new GermanNumberPipe();
 
   constructor(
     private oispService: OispService,
@@ -68,13 +68,10 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit {
     private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
+    private assetSeriesDetailsService: AssetSeriesDetailsService,
     private factoryComposedQuery: FactoryComposedQuery,
     private assetOnboardingService: AssetOnboardingService,
   ) {
-  }
-
-  private static isNumber(value: any): boolean {
-    return !Number.isNaN(Number(value));
   }
 
   private static downloadFile(fileContent: string, fileName: string) {
@@ -96,10 +93,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.assetId = this.factoryAssetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+    this.resolve();
 
     this.factorySite$ = combineLatest([this.asset$, this.factoryResolver.rooms$]).pipe(
       switchMap(([asset, rooms]) => {
@@ -142,12 +136,20 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit {
     );
   }
 
-  getAttributes(fields: FieldDetails[]): FieldDetails[] {
-    return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
+  private resolve() {
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetId = this.factoryAssetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+
+    const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
+    if (assetSeriesId != null) {
+      this.assetSeriesDetailsService.setActive(assetSeriesId);
+    }
   }
 
-  asGermanNumberOrText(value: any): string {
-    return AssetSeriesDigitalNameplateComponent.isNumber(value) ? this.germanNumberPipe.transform(value) : String(value);
+  getAttributes(fields: FieldDetails[]): FieldDetails[] {
+    return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
   }
 
   generateAssetOnboardingFile() {

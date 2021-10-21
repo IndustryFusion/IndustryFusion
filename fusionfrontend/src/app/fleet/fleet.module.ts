@@ -20,8 +20,6 @@ import { FleetSubHeaderComponent } from './components/content/fleet-sub-header/f
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { ClarityModule } from '@clr/angular';
-import { AssetSeriesListHeaderComponent } from './components/content/asset-series-list-header/asset-series-list-header.component';
-import { AssetSeriesListItemComponent } from './components/content/asset-series-list-item/asset-series-list-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AssetSeriesWizardComponent } from './components/content/asset-series-wizard/asset-series-wizard.component';
 import { TimelineComponent } from './components/content/timeline/timeline.component';
@@ -67,8 +65,6 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     FleetSubHeaderComponent,
     AssetSeriesPageComponent,
     AssetSeriesListComponent,
-    AssetSeriesListHeaderComponent,
-    AssetSeriesListItemComponent,
     AssetSeriesWizardComponent,
     AssetSeriesWizardGeneralInformationComponent,
     AssetSeriesWizardNameplateAndConnectivitySettingsComponent,
@@ -98,7 +94,7 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     AssetSeriesStatusComponent,
     AssetSeriesStatusPipe,
     AssetActivationStatusComponent,
-    AssetActivationStatusPipe
+    AssetActivationStatusPipe,
   ],
   imports: [
     IFCommon,
@@ -109,7 +105,7 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     CalendarModule,
     AccordionModule,
     AgmCoreModule,
-    CardModule
+    CardModule,
   ],
   exports: [
     FleetSubHeaderComponent,

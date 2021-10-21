@@ -18,7 +18,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { tap } from 'rxjs/operators';
 import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -27,30 +26,31 @@ import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
 import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
+import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
+import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-asset-series-list',
   templateUrl: './asset-series-list.component.html',
-  styleUrls: ['./asset-series-list.component.scss']
+  styleUrls: ['./asset-series-list.component.scss'],
+  providers: [ConfirmationService]
 })
 export class AssetSeriesListComponent implements OnInit, OnDestroy {
 
-  titleMapping:
+  assetSeriesMapping:
     { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
 
-  editBarMapping:
-    { [k: string]: string } = {
-    '=0': 'No asset series templates selected',
-    '=1': '# Asset series template selected',
-    other: '# Asset series templates selected'
-  };
+  activeListItem: AssetSeriesDetails;
 
+  assetSeries$: Observable<AssetSeriesDetails[]>;
+  assetSeries: AssetSeriesDetails[];
+  displayedAssetSeries: AssetSeriesDetails[];
+  assetSeriesSearchedByName: AssetSeriesDetails[];
+
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   isLoading$: Observable<boolean>;
-  sortField: string;
-  items$: Observable<any[]>;
-  selected: Set<ID> = new Set();
-  error: any;
 
   constructor(
     public route: ActivatedRoute,
@@ -59,29 +59,41 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     public assetSeriesService: AssetSeriesService,
     public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    public  assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
+    public assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
     public unitsResolver: UnitsResolver,
-    public dialogService: DialogService) {
+    public dialogService: DialogService,
+    public confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
     this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
-    this.items$ = this.assetSeriesDetailsQuery.selectAll();
+    this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
-    this.assetSeriesDetailsQuery.selectError().pipe(tap((error) => {
-      if (error) {
-        this.error = error;
-      }
-    })).subscribe();
+    this.assetSeries$.subscribe(assetSeries => {
+      this.assetSeries = this.displayedAssetSeries = this.assetSeriesSearchedByName = assetSeries;
+    });
   }
 
   ngOnDestroy() {
-    this.assetSeriesDetailsQuery.resetError();
+  }
+
+  setActiveRow(assetSeries: AssetSeriesDetails) {
+    this.activeListItem = assetSeries;
   }
 
   createAssetSeries() {
     this.startAssetSeriesWizard('');
+  }
+
+
+  searchAssetSeriesByName(event?: AssetSeriesDetails[]) {
+    this.assetSeriesSearchedByName = event;
+    this.updateDisplayedAssetSeries();
+  }
+
+  updateDisplayedAssetSeries() {
+    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
 
   createAsset(assetSeriesId: ID) {
@@ -97,54 +109,8 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  onSort(field: string) {
-    this.sortField = field;
-  }
-
-  onItemSelect(id: ID) {
-    this.selected.add(id);
-  }
-
-  onItemDeselect(id: ID) {
-    this.selected.delete(id);
-  }
-
-  deleteItems() {
-    this.selected.forEach(id => {
-          this.deleteItem(id);
-    });
-  }
-
   deleteItem(id: number | string) {
-    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe(
-      () => this.selected.clear()
-    );
-  }
-
-  deselectAllItems() {
-    this.selected.clear();
-  }
-
-  isSelected(id: ID) {
-    return this.selected.has(id);
-  }
-
-  getErrorMessage() {
-    if (this.error) {
-      return this.error.error.message;
-    }
-    return undefined;
-  }
-
-  onCloseError() {
-    this.error = undefined;
-  }
-
-  modifyItems() {
-    if (this.selected.size === 1) {
-      const itemId: ID = Array.from(this.selected)[0];
-      this.modifyItem(itemId);
-    }
+    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
   }
 
   modifyItem(itemId: number | string) {
@@ -161,6 +127,19 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
       header: 'AssetSeries Implementation',
     });
     dynamicDialogRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
+  }
+
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the Asset Serie ' + this.activeListItem.name + '?',
+      header: 'Delete Asset Serie Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteItem(this.activeListItem.id);
+      },
+      reject: () => {
+      }
+    });
   }
 
 }
