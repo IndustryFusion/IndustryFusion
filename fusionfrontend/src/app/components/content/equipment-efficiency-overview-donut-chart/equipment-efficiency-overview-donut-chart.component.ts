@@ -108,7 +108,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
         data: [0, 0, 0, 0],
         backgroundColor: [
           '#2CA9CE',
-          '#F0F0F0',
+          '#EAEAEA',
           '#A73737',
           '#454F63'
         ],

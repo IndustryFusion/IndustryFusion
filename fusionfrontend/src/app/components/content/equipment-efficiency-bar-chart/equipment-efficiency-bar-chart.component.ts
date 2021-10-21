@@ -175,7 +175,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
       datasets: [{
         type: 'horizontalBar',
         label: 'Offline',
-        backgroundColor: '#F0F0F0',
+        backgroundColor: '#EAEAEA',
       }, {
         type: 'horizontalBar',
         label: 'Error',
