@@ -21,6 +21,13 @@ $metric-large-height: var(--metric-large-height);
 $metric-margin-y: var(--metric-margin-y);
 $metrics-masonry-height: var(--metrics-masonry-height);
 
+.caption {
+  color: $basic-black;
+  font-size: $bigger-font-size;
+  font-weight: bold;
+  margin: 1rem 2rem;
+}
+
 .metrics-board {
   margin: 1rem 2rem;
   width: 100%;

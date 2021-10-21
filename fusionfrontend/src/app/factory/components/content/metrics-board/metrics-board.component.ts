@@ -24,6 +24,7 @@ import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-d
 import { PointWithId } from '../../../../services/oisp.model';
 import { FieldWidgetType } from '../../../../store/field/field.model';
 import { AssetMaintenanceUtils } from '../../../util/asset-maintenance-utils';
+import { ArrayHelper } from '../../../../common/utils/array-helper';
 
 @Component({
   selector: 'app-metrics-board',
@@ -31,14 +32,16 @@ import { AssetMaintenanceUtils } from '../../../util/asset-maintenance-utils';
   styleUrls: ['./metrics-board.component.scss']
 })
 export class MetricsBoardComponent implements OnInit {
-  fieldDetails: FieldDetails[];
-  metricsDetailMap: Map<string, MetricDetail> = new Map();
-  asset: FactoryAssetDetailsWithFields;
-  isLoaded = false;
-  metricsDetails: MetricDetail[] = [];
 
+  isLoaded = false;
   WidgetType = FieldWidgetType;
   maintenanceUtils = AssetMaintenanceUtils;
+  metricGroups: Map<string, MetricDetail[]>  = new Map();
+  asset: FactoryAssetDetailsWithFields;
+
+  private fieldDetails: FieldDetails[];
+  private metricsDetailMap: Map<string, MetricDetail> = new Map();
+  metricsDetails: MetricDetail[] = [];
 
   constructor(factoryComposedQuery: FactoryComposedQuery,
               fieldDetailsQuery: FieldDetailsQuery,
@@ -52,13 +55,16 @@ export class MetricsBoardComponent implements OnInit {
             this.fieldDetails = fieldDetails;
             fieldDetails.forEach(fieldDetail => {
               const deviceComponent = this.oispDeviceQuery.getComponentOfFieldInstance(asset.externalName, fieldDetail.externalName);
-              this.metricsDetailMap.set(deviceComponent.cid, {
-                externalName: fieldDetail.externalName,
-                deviceComponent,
-                fieldDetails: fieldDetail,
-                latestValue: null
-              });
+              if (deviceComponent) {
+                this.metricsDetailMap.set(deviceComponent.cid, {
+                  externalName: fieldDetail.externalName,
+                  deviceComponent,
+                  fieldDetails: fieldDetail,
+                  latestValue: null
+                });
+              }
             });
+
             this.metricsDetails = [ ...this.metricsDetailMap.values()];
             this.loadData();
           }
@@ -96,7 +102,6 @@ export class MetricsBoardComponent implements OnInit {
       }
 
       this.metricsDetails = [...this.metricsDetailMap.values()];
-      this.updateMasonryLayout();
 
       this.asset.fields = [...this.metricsDetails].map(metric => {
         const fieldDetails: FieldDetails = { ...metric.fieldDetails};
@@ -104,14 +109,28 @@ export class MetricsBoardComponent implements OnInit {
         return fieldDetails;
       });
     });
+
+    this.groupMetricsByDashboardGroup();
+    this.updateMasonryLayoutForMetricGroups();
   }
 
-  private updateMasonryLayout() {
+  private groupMetricsByDashboardGroup(): void {
+    this.metricGroups = ArrayHelper.groupByToMap(this.metricsDetails, 'fieldDetails', 'dashboardGroup');
+  }
+
+  private updateMasonryLayoutForMetricGroups(): void {
+    for (const metricGroup of this.metricGroups.values()) {
+      this.updateMasonryLayout(metricGroup);
+    }
+  }
+
+  private updateMasonryLayout(metricDetails: MetricDetail[]): void {
     const metricHeight = 6.4;
     const metricMarginY = 1.25;
-    const numSmallItemPlacesUsed = this.metricsDetails.length + this.getLargeMetricsCount();
+    const numSmallItemPlacesUsed = metricDetails.length + this.getLargeMetricsCount(metricDetails);
     const numRows = Math.ceil(numSmallItemPlacesUsed / 4);
-    const metricsHeight = (metricHeight + metricMarginY) * (numRows + (this.getLargeMetricsCount() > 0 && numRows === 1 ? 1 : 0));
+    const metricsHeight = (metricHeight + metricMarginY) *
+      (numRows + (this.getLargeMetricsCount(metricDetails) > 0 && numRows === 1 ? 1 : 0));
 
     document.documentElement.style.setProperty('--metric-small-height', `${ metricHeight }rem`);
     document.documentElement.style.setProperty('--metric-large-height', `${ metricHeight * 2 + metricMarginY * 0.5 }rem`);
@@ -121,12 +140,12 @@ export class MetricsBoardComponent implements OnInit {
     this.orderMetricsForMasonryLayout(numRows);
   }
 
-  private getLargeMetricsCount() {
-    return this.metricsDetails.map(metric => MetricsBoardComponent.isLargeMetric(metric) ? 1 : 0 as number)
+  private getLargeMetricsCount(metricDetails: MetricDetail[]): number {
+    return metricDetails.map(metric => MetricsBoardComponent.isLargeMetric(metric) ? 1 : 0 as number)
       .reduce((accumulator, current) => accumulator + current);
   }
 
-  private orderMetricsForMasonryLayout(numRows: number) {
+  private orderMetricsForMasonryLayout(numRows: number): void {
     if (numRows > 1) {
         // reverse(): to preserve original order when using pop()
         const metricsForMasonryLayout: MetricDetail[] = [];
@@ -157,8 +176,8 @@ export class MetricsBoardComponent implements OnInit {
     }
   }
 
-  hasAnyThreshold(fieldDetail: FieldDetails) {
-    return fieldDetail.absoluteThreshold != null || fieldDetail.criticalThreshold || fieldDetail.idealThreshold;
+  hasAnyThreshold(fieldDetail: FieldDetails): boolean {
+    return fieldDetail.absoluteThreshold != null || fieldDetail.criticalThreshold != null || fieldDetail.idealThreshold != null;
   }
 }
 
