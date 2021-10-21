@@ -29,7 +29,7 @@ import { environment } from 'src/environments/environment';
 export class AssetStatusComponent implements OnInit {
 
   @Input()
-  asset: FactoryAssetDetailsWithFields;
+  assetWithFields: FactoryAssetDetailsWithFields;
 
   @Input()
   showInline: boolean;
@@ -40,6 +40,6 @@ export class AssetStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.status$ = this.statusService.getStatusByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
+   this.status$ = this.statusService.getStatusByAssetWithFields(this.assetWithFields, environment.dataUpdateIntervalMs);
   }
 }

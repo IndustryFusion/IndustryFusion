@@ -61,7 +61,7 @@ export class KairosStatusAggregationService {
   }
 
   public static getStatusFieldOfAsset(asset: FactoryAssetDetailsWithFields): FieldDetails {
-    return asset.fields.find(field => field.name === 'status');
+    return asset.fields.find(field => field.externalName === 'status');
   }
 
   private static sumOfGroupResults(group: KairosResponseGroup) {

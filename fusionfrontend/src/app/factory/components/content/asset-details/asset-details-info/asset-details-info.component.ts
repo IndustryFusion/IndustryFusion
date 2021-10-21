@@ -25,7 +25,7 @@ import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-m
 export class AssetDetailsInfoComponent implements OnInit {
 
   @Input()
-  asset: FactoryAssetDetailsWithFields;
+  assetWithFields: FactoryAssetDetailsWithFields;
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [];
 
