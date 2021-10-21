@@ -14,51 +14,8 @@ under the License.
 -->
 
 <ng-container *ngIf="isLoaded">
-  <div *ngFor="let metricGroup of metricGroups | keyvalue">
-    <label *ngIf="!['undefined', 'null'].includes(metricGroup.key)" class="caption">{{ metricGroup.key }}</label>
-
-    <div class="metrics-board fake-masonry">
-      <ng-container *ngFor="let metric of metricGroup.value">
-        <div [ngClass]="metric.fieldDetails.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetails) ? 'performance-widget-large' : 'performance-widget'">
-          <div class="metric-container">
-
-            <label class="metric-title"> {{metric.fieldDetails.name}} </label>
-
-            <div [ngSwitch]="metric.fieldDetails.widgetType" [ngClass]="metric.fieldDetails.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
-              <app-asset-status *ngSwitchCase="WidgetType.STATUS" class="metric-value" [assetWithFields]="asset"
-                                [showInline]="false"></app-asset-status>
-
-              <div *ngSwitchCase="WidgetType.BARCHART" class="progress-bar-container">
-                <app-maintenance-progressbar class="progress-bar" [asset]="asset"
-                                             [type]="metric.fieldDetails.name.startsWith('Days') ? maintenanceUtils.maintenanceDays : maintenanceUtils.maintenanceHours">
-                </app-maintenance-progressbar>
-              </div>
-
-              <div *ngSwitchCase="WidgetType.GAUGE" class="progress-bar-container">
-                <ng-container *ngIf="hasAnyThreshold(metric.fieldDetails)">
-                  <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetails" [metricValue]="metric.latestValue"></app-gauge-chart>
-                </ng-container>
-                <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetails) && metric.latestValue != null">
-                  <label class="metric-value">{{metric.latestValue}}</label>
-                  <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
-                </ng-container>
-              </div>
-
-              <div *ngSwitchDefault>
-                <ng-container *ngIf="metric.latestValue != null">
-                  <label class="metric-value">{{metric.latestValue}}</label>
-                  <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
-                </ng-container>
-              </div>
-            </div>
-
-            <div *ngIf="metric.latestValue == null && (metric.fieldDetails.widgetType === WidgetType.RAW)">
-              <label class="metric-value">n.a.</label>
-            </div>
-
-          </div>
-        </div>
-      </ng-container>
-    </div>
+  <div *ngFor="let metricGroup of metricGroups | keyvalue; let index = index">
+    <app-metrics-group [asset]="asset" [metricDetails]="metricGroup.value"
+                       [metricGroupName]="metricGroup.key" [index]="index+1"></app-metrics-group>
   </div>
 </ng-container>

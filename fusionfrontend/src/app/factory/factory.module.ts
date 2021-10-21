@@ -71,6 +71,7 @@ import { TreeModule } from 'primeng/tree';
 import { HistoricalStatusBarChartComponent } from '../components/content/historical-status-bar-chart/historical-status-bar-chart.component';
 import { ChartModule } from 'primeng/chart';
 import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
+import { MetricsGroupComponent } from './components/content/metrics-board/metrics-group/metrics-group.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { MetricsBoardComponent } from './components/content/metrics-board/metric
     AssetNotificationsComponent,
     HistoricalStatusBarChartComponent,
     MetricsBoardComponent,
+    MetricsGroupComponent,
   ],
   imports: [
     IFCommon,
