@@ -157,6 +157,9 @@ const routes: Routes = [
   {
     path: 'factorymanager/companies/:companyId/assets',
     canActivate: [MainAuthGuard],
+    resolve: {
+      devices: OispDeviceResolver
+    },
     data: {
       roles: [Role.FACTORY_MANAGER],
       breadcrumb: 'Assets',
