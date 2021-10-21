@@ -22,7 +22,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OispService } from './oisp.service';
 import { OispDeviceStatus } from './kairos.model';
-import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
+import { AssetStatusPipe } from '../pipes/asset-status-pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -127,8 +127,8 @@ export class StatusService {
   }
 
   transformStatusToOispDeviceStatus(status: Status): OispDeviceStatus {
-    const fusionFormat = new FusionFormatPipe();
-    const statusString = fusionFormat.transform(status.gotData, status.type, status.statusValue).status;
+    const assetStatusPipe = new AssetStatusPipe();
+    const statusString = assetStatusPipe.transform(status.gotData, status.type, status.statusValue).status;
 
     switch (statusString) {
       case 'offline':

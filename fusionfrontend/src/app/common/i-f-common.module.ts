@@ -43,6 +43,8 @@ import { NotificationsListComponent } from '../components/content/notifications-
 import { GermanNumberPipe } from '../pipes/germannumber.pipe';
 import { TableSelectedItemsBarComponent } from '../components/ui/table-selected-items-bar/table-selected-items-bar.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { NameplateItemComponent } from '../components/ui/nameplate-item/nameplate-item.component';
+import { StatusComponent } from '../components/ui/status/status.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     NotificationsListComponent,
     GermanNumberPipe,
     TableSelectedItemsBarComponent,
+    NameplateItemComponent,
+    StatusComponent
   ],
   imports: [
     CommonModule,
@@ -131,6 +135,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     GermanNumberPipe,
     SelectButtonModule,
     TableSelectedItemsBarComponent,
+    NameplateItemComponent,
+    StatusComponent,
   ],
   providers: [
     MessageService,

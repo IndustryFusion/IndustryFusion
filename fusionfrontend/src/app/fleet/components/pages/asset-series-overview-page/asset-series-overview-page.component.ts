@@ -15,13 +15,12 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FactorySite } from '../../../../store/factory-site/factory-site.model';
+import { FactorySite, FactorySiteType } from '../../../../store/factory-site/factory-site.model';
 import { AssetQuery } from '../../../../store/asset/asset.query';
 import { Asset } from '../../../../store/asset/asset.model';
 import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
-import { Room } from '../../../../store/room/room.model';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { map } from 'rxjs/operators';
 import { AssetWizardComponent } from '../../content/asset-wizard/asset-wizard.component';
@@ -30,23 +29,26 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { AssetSeriesDetailsService } from '../../../../store/asset-series-details/asset-series-details.service';
+import { Company } from '../../../../store/company/company.model';
 
 @Component({
-  selector: 'app-asset-serie-page',
-  templateUrl: './asset-serie-page.component.html',
-  styleUrls: ['./asset-serie-page.component.scss']
+  selector: 'app-asset-series-overview-page',
+  templateUrl: './asset-series-overview-page.component.html',
+  styleUrls: ['./asset-series-overview-page.component.scss']
 })
-export class AssetSeriePageComponent implements OnInit, OnDestroy {
+export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
 
   assetSerieId: ID;
   assetSerieDetails$: Observable<AssetSeriesDetails>;
 
   isLoading$: Observable<boolean>;
   factorySites$: Observable<FactorySite[]>;
-  assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite }[]>;
+  assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite, company: Company }[]>;
 
   assetsMapping:
     { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+  of = of;
+  public factorySiteTypes = FactorySiteType;
 
   constructor(private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
@@ -78,24 +80,23 @@ export class AssetSeriePageComponent implements OnInit, OnDestroy {
       const assets$ = this.assetQuery.selectAssetsOfAssetSerie(assetSeriesId);
       const rooms$ = this.roomQuery.selectAll();
       const factorySites$ = this.factorySiteQuery.selectAll();
+      const companies$ = this.companyQuery.selectAll();
 
-      this.assetsCombined$ = combineLatest([assets$, factorySites$, rooms$]).pipe(
-        map((value => {
-          const assets: Asset[] = value[0];
-          const factorySites: FactorySite[] = value[1];
-          const rooms: Room[] = value[2];
-          const combined: { id: ID, asset: Asset, factorySite: FactorySite}[] = [];
-          for (const asset of assets) {
-              const factorySite: FactorySite = factorySites.find(
+      this.assetsCombined$ = combineLatest([assets$, factorySites$, rooms$, companies$]).pipe(
+        map((([assets, factorySites, rooms, companies]) => {
+            const combined = [];
+            for (const asset of assets) {
+              const factorySite = factorySites.find(
                 factorySiteValue => factorySiteValue.id === rooms.find(
                   roomValue => roomValue.id === asset.roomId
                 )?.factorySiteId
               );
-              combined.push({ id: asset.id, asset, factorySite });
+              const assetCompany = companies.find(company => company.id === asset.companyId);
+              combined.push({ id: asset.id, asset, factorySite, company: assetCompany });
             }
-          return combined;
-        })
-      ));
+            return combined;
+          })
+        ));
 
       this.factorySites$ = this.assetsCombined$.pipe(
         map(assetsCombinedArray => assetsCombinedArray.map(assetsCombined => assetsCombined.factorySite)

@@ -21,8 +21,8 @@ class MyFormat {
 }
 
 // TODO: only the case microstep should be relevant in the end
-@Pipe({ name: 'fusionformat' })
-export class FusionFormatPipe implements PipeTransform {
+@Pipe({ name: 'assetStatus' })
+export class AssetStatusPipe implements PipeTransform {
   transform(gotData: boolean, type: string, statusValue: string): MyFormat {
     if (!gotData) {
       if (type === 'nofields') {

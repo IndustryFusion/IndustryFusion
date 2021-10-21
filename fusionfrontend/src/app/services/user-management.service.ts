@@ -50,7 +50,7 @@ export class UserManagementService {
   }
 
   public navigateToAdminConsoleInNewTab(): void {
-    const url = this.router.serializeUrl(this.router.createUrlTree([environment.keycloakConfig.url, 'realms', 'OISP', 'account']));
-    window.open(url.slice(1), '_blank');
+    const url = environment.keycloakConfig.url + 'realms/OISP/account';
+    window.open(url, '_blank');
   }
 }

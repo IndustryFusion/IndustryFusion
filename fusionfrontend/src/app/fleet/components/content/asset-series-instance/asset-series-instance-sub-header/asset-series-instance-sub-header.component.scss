@@ -13,10 +13,18 @@
  * under the License.
  */
 
-@import "base/typography";
+@import 'abstract/variables';
 
-.list-header {
-  font-size: $big-font-size;
-  font-weight: bolder;
-  margin: 1rem 5rem;
+.subheader-flex {
+  display: flex;
+  flex-direction: row;
+
+  .flexbox {
+    flex: 1;
+  }
 }
+
+.asset-details-subheader {
+  border-top: 1px solid $light-grey;
+}
+

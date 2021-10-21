@@ -14,14 +14,14 @@ under the License.
 -->
 
 <div class="wrapper">
-  <ng-container *ngIf="status$ | async as currentStatus">
+  <ng-container *ngIf="color && text">
     <ng-container>
-      <div [style.background-color]="(currentStatus.gotData | fusionformat: currentStatus.type:currentStatus.statusValue).color"
-           class="status-circle" [ngClass]="{'status-circle-small': showInline}" >
+      <div [ngClass]="{'status-circle-small': showInline}"
+           [style.background-color]="color" class="status-circle">
       </div>
     </ng-container>
     <div [ngClass]="{'status-standalone': !showInline}" class="status">
-      {{(currentStatus.gotData | fusionformat: currentStatus.type:currentStatus.statusValue).status}}
+      {{text}}
     </div>
   </ng-container>
 </div>

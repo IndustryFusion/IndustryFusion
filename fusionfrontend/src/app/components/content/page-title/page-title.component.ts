@@ -54,7 +54,7 @@ export class PageTitleComponent implements OnInit, OnDestroy {
   private static addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
     const label = breadcrumbData;
     if (label) {
-      breadcrumbs.push({ label, url });
+      breadcrumbs.push({ label, routerLink: url.substr(1).split('/')  });
     }
     return breadcrumbs;
   }
@@ -63,28 +63,25 @@ export class PageTitleComponent implements OnInit, OnDestroy {
   }
 
   private createBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
-    const children: ActivatedRoute[] = route.children;
-    if (children.length === 0) {
+    const firstChild: ActivatedRoute = route.firstChild;
+    if (firstChild == null) {
       return breadcrumbs;
     }
 
-    if (children.length > 0) {
-      const firstChild = children[0];
-      const routeURL: string = firstChild.snapshot.url.map(segment => segment.path).join('/');
-      if (routeURL !== '') {
-        url += `/${routeURL}`;
-      }
-
-      const breadcrumbData = firstChild.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
-      const isQuery = typeof(breadcrumbData) === 'function';
-      if (isQuery) {
-        breadcrumbs = this.addQueryResult(breadcrumbData, url, breadcrumbs);
-      } else {
-        breadcrumbs = PageTitleComponent.addLabelIfExisting(breadcrumbData, url, breadcrumbs);
-      }
-
-      return this.createBreadcrumbs(firstChild, url, breadcrumbs);
+    const routeURL: string = firstChild.snapshot.url.map(segment => segment.path).join('/');
+    if (routeURL !== '') {
+      url += `/${routeURL}`;
     }
+
+    const breadcrumbData = firstChild.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
+    const isQuery = typeof(breadcrumbData) === 'function';
+    if (isQuery) {
+      breadcrumbs = this.addQueryResult(breadcrumbData, url, breadcrumbs);
+    } else {
+      breadcrumbs = PageTitleComponent.addLabelIfExisting(breadcrumbData, url, breadcrumbs);
+    }
+
+    return this.createBreadcrumbs(firstChild, url, breadcrumbs);
   }
 
   private addQueryResult(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[]  {
@@ -102,13 +99,14 @@ export class PageTitleComponent implements OnInit, OnDestroy {
                       subtitleQuery: BaseSubtitleQuery<typeof query>,
                       breadcrumbs: MenuItem[]): MenuItem[] {
 
+    const routerLink = url.substr(1).split('/');
     subtitleQuery.selectSubtitleName(object).subscribe(name => {
-      if (breadcrumbs.findIndex(x => x.url === url) !== -1) {
-        breadcrumbs[breadcrumbs.findIndex(x => x.url === url)].label = name;
+      if (breadcrumbs.findIndex(x => x.routerLink === routerLink) !== -1) {
+        breadcrumbs[breadcrumbs.findIndex(x => x.routerLink === routerLink)].label = name;
         this.breadcrumbItems = breadcrumbs;
         this.fireFinishedIfNoPendingQueries();
       } else {
-        breadcrumbs.push({ label: name, url });
+        breadcrumbs.push({ label: name, routerLink });
       }
     });
 
