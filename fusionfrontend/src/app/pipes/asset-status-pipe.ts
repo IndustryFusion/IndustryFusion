@@ -27,7 +27,6 @@ enum AssetStatus {
   ERROR = 'error'
 }
 
-// TODO: only the case microstep should be relevant in the end
 @Pipe({ name: 'assetStatus' })
 export class AssetStatusPipe implements PipeTransform {
 
@@ -38,63 +37,22 @@ export class AssetStatusPipe implements PipeTransform {
     [ 'offline',  { status: 'offline', color: '#EAEAEA'} ],
   ]);
 
-  transform(gotData: boolean, type: string, statusValue: string): AssetStatusFormat {
+  transform(gotData: boolean, statusValue: string): AssetStatusFormat {
     if (!gotData) {
       return this.statuses.get(AssetStatus.OFFLINE);
-    } else { // gotData = true
-        switch (type) {
-          case 'microstep':
-            switch (String(statusValue)) {
-              case '0':
-                return this.statuses.get(AssetStatus.OFFLINE);
-              case '1':
-                return this.statuses.get(AssetStatus.IDLE);
-              case '2':
-                return this.statuses.get(AssetStatus.RUNNING);
-              case '3':
-                return this.statuses.get(AssetStatus.IDLE);
-              default:
-                return this.statuses.get(AssetStatus.OFFLINE);
-            }
-          case 'ZPF':
-            switch (String(statusValue)) {
-              case 'mldBetriebOn':
-                return this.statuses.get(AssetStatus.RUNNING);
-              case 'mldBetriebOff':
-                return this.statuses.get(AssetStatus.IDLE);
-              default:
-                return this.statuses.get(AssetStatus.OFFLINE);
-            }
-          case 'Novus':
-            switch (String(statusValue)) {
-              case 'mldBetriebOn':
-                return this.statuses.get(AssetStatus.RUNNING);
-              case 'mldWarningOn':
-                return this.statuses.get(AssetStatus.ERROR);
-              case 'mldErrorOn':
-                return this.statuses.get(AssetStatus.ERROR);
-              case 'mldIdleOn':
-                return this.statuses.get(AssetStatus.IDLE);
-              case 'mldBetriebOff':
-                return this.statuses.get(AssetStatus.OFFLINE);
-              default:
-                return this.statuses.get(AssetStatus.OFFLINE);
-            }
-          case 'Airtracker':
-            return this.statuses.get(AssetStatus.RUNNING);
-          case 'Gasversorgung':
-            switch (String(statusValue)) {
-              case '1':
-                return this.statuses.get(AssetStatus.IDLE);
-              case '2':
-                return this.statuses.get(AssetStatus.RUNNING);
-              default:
-                return this.statuses.get(AssetStatus.OFFLINE);
-            }
-          default:
-            console.warn('[asset status]: gotData but no type');
-            return this.statuses.get(AssetStatus.ERROR);
-        }
+    }
+
+    switch (String(statusValue)) {
+      case '0':
+        return this.statuses.get(AssetStatus.OFFLINE);
+      case '1':
+        return this.statuses.get(AssetStatus.IDLE);
+      case '2':
+        return this.statuses.get(AssetStatus.RUNNING);
+      case '3':
+        return this.statuses.get(AssetStatus.ERROR);
+      default:
+        return this.statuses.get(AssetStatus.OFFLINE);
     }
   }
 }

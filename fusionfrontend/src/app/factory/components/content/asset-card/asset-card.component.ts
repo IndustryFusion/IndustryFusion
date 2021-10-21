@@ -57,7 +57,7 @@ export class AssetCardComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.allMergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
     this.updateMergedFields();
-    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.currentMergedFields$, this.asset);
+    this.status$ = this.statusService.getStatusFromMergedFields(this.currentMergedFields$);
   }
 
   ngOnChanges(changes: SimpleChanges) {
