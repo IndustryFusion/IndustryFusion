@@ -190,7 +190,10 @@ const routes: Routes = [
       {
         path: ':assetId',
         canActivate: [MainAuthGuard],
-        resolve: { assets: FactoryAssetDetailsResolver, OispDeviceResolver },
+        resolve: {
+          assets: FactoryAssetDetailsResolver,
+          fieldDetails: FieldInstanceResolver
+        },
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
           roles: [Role.FACTORY_MANAGER],
@@ -204,7 +207,7 @@ const routes: Routes = [
           },
           {
             path: 'performance/realtime',
-            resolve: { fieldDetails: FieldInstanceResolver},
+            resolve: { },
             component: AssetPerformanceComponent,
             data: {
               breadcrumb: 'Performance',
