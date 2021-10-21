@@ -89,10 +89,8 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
         }));
 
 
-    this.status$ = combineLatest([this.asset$, this.mergedFields$]).pipe(
-      map(([asset, fields]) => {
-        return this.statusService.determineStatus(fields, asset);
-      })
+    this.status$ = this.mergedFields$.pipe(
+      map(fields => this.statusService.determineStatus(fields))
     );
   }
 

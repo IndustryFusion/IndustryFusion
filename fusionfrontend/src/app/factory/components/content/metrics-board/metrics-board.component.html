@@ -21,7 +21,8 @@ under the License.
         <label class="metric-title"> {{metric.fieldDetails.name}} </label>
 
         <div [ngSwitch]="metric.fieldDetails.widgetType" [ngClass]="metric.fieldDetails.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
-          <app-asset-status *ngSwitchCase="WidgetType.STATUS" class="metric-value" [asset]="asset" [showInline]="false"></app-asset-status>
+          <app-asset-status *ngSwitchCase="WidgetType.STATUS" class="metric-value" [assetWithFields]="asset"
+                            [showInline]="false"></app-asset-status>
 
           <div *ngSwitchCase="WidgetType.BARCHART" class="progress-bar-container">
             <app-maintenance-progressbar class="progress-bar" [asset]="asset"

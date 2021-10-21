@@ -14,21 +14,21 @@ under the License.
 -->
 
 <section class="asset">
-  <img class="asset-img" src="assets/img/{{(asset)?.imageKey}}"/>
+  <img class="asset-img" src="assets/img/{{(assetWithFields)?.imageKey}}"/>
   <div class="asset-info">
-    <h3>{{(asset)?.name}}</h3>
-    <p>{{(asset)?.assetTypeName}}</p>
-    <p>{{(asset)?.manufacturer}}</p>
+    <h3>{{(assetWithFields)?.name}}</h3>
+    <p>{{(assetWithFields)?.assetTypeName}}</p>
+    <p>{{(assetWithFields)?.manufacturer}}</p>
   </div>
   <div class="flex-box"></div>
   <div class="asset-info asset-status">
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-asset-status *ngIf="asset" [asset]="asset" [showInline]="false"></app-asset-status>
+        <app-asset-status *ngIf="assetWithFields" [assetWithFields]="assetWithFields" [showInline]="false"></app-asset-status>
       </p>
     </div>
-    <p>{{(asset)?.factorySiteName}} ({{(asset)?.roomName}})</p>
+    <p>{{(assetWithFields)?.factorySiteName}} ({{(assetWithFields)?.roomName}})</p>
   </div>
   <div class="asset-info asset-menu">
     <app-item-options-menu [showInline]="false" [actions]="dropdownMenuOptions"></app-item-options-menu>

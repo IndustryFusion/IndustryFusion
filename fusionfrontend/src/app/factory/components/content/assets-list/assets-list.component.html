@@ -93,7 +93,7 @@ under the License.
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="10">{{rowData.roomName}}</td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12">{{rowData.factorySiteName}}</td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="13">
-        <app-asset-status [asset]="rowData" [showInline]="true"></app-asset-status>
+        <app-asset-status [assetWithFields]="rowData" [showInline]="true"></app-asset-status>
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
         <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
