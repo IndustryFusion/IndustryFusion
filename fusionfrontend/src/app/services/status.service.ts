@@ -136,7 +136,7 @@ export class StatusService {
       case 'idle':
         return OispDeviceStatus.IDLE;
       case 'running':
-        return OispDeviceStatus.ONLINE;
+        return OispDeviceStatus.RUNNING;
       default:
         return OispDeviceStatus.ERROR;
     }

@@ -49,7 +49,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
 
   private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
     switch (status) {
-      case OispDeviceStatus.ONLINE:
+      case OispDeviceStatus.RUNNING:
         return 0;
       case OispDeviceStatus.OFFLINE:
         return 1;

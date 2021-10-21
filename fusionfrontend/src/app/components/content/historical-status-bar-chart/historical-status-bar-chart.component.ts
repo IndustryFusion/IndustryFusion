@@ -58,7 +58,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
         dataset.label = 'Idle';
         dataset.backgroundColor = '#454F63';
         break;
-      case OispDeviceStatus.ONLINE:
+      case OispDeviceStatus.RUNNING:
         dataset.label = 'Running';
         dataset.backgroundColor = '#2CA9CE';
         break;

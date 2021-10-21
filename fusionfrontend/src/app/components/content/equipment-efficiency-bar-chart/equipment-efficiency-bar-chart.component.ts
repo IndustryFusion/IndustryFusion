@@ -58,7 +58,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
         return 1;
       case OispDeviceStatus.IDLE:
         return 2;
-      case OispDeviceStatus.ONLINE:
+      case OispDeviceStatus.RUNNING:
         return 3;
     }
   }

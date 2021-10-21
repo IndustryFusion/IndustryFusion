@@ -85,7 +85,7 @@ export class KairosStatusAggregationService {
     // Idea: All devices send 3-4 status types at an almost regular interval.
     // Offline (0) is often sent only at shutdown, followed by a gap of data.
     // Therefore, we can derive the offline count by subtracting the expected messages of the selected day (or so far, if today)
-    // from the sum of Idle, Online and Error statuses including some existing offline points.
+    // from the sum of Idle, Running and Error statuses including some existing offline points.
     let pointsOfStatusesWithoutOffline = 0;
     let pointsOfOfflineStatus = 0;
     groups.forEach(group => {
