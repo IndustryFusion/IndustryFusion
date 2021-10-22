@@ -40,6 +40,7 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
         String unitSymbol = null;
         String fieldLabel = null;
         Double accuracy = null;
+        String dashboardGroup = null;
         FieldWidgetType widgetType = null;
         QuantityDataType dataType = null;
 
@@ -49,6 +50,7 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
             if (fieldTarget != null) {
                 fieldType = fieldTarget.getFieldType();
                 mandatory = fieldTarget.getMandatory();
+                dashboardGroup = fieldTarget.getDashboardGroup();
 
                 Field field = fieldTarget.getField();
                 if (field != null) {
@@ -71,6 +73,7 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                 .mandatory(mandatory)
                 .name(entity.getName())
                 .description(entity.getDescription())
+                .dashboardGroup(dashboardGroup)
                 .type("type not implemented")
                 .unit(unitSymbol)
                 .accuracy(accuracy)

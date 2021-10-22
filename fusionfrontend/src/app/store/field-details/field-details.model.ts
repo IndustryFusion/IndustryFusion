@@ -17,6 +17,7 @@ import { BaseEntity } from '../baseentity.model';
 import { ID } from '@datorama/akita';
 import { FieldWidgetType } from '../field/field.model';
 import { Threshold } from '../threshold/threshold.model';
+import { DeviceComponent } from '../oisp/oisp-device/oisp-device.model';
 
 // Data come from entities field_instance, field_target and field
 export class FieldDetails extends BaseEntity {
@@ -27,6 +28,7 @@ export class FieldDetails extends BaseEntity {
   mandatory: boolean;
   name: string;
   description: string;
+  dashboardGroup: string;
   type: string;
   unit: string;
   accuracy: number;
@@ -47,4 +49,11 @@ export enum FieldType {
 export enum QuantityDataType {
   CATEGORICAL = 'CATEGORICAL',
   NUMERIC = 'NUMERIC'
+}
+
+export class MetricDetail {
+  externalName: string;
+  fieldDetails: FieldDetails;
+  deviceComponent: DeviceComponent;
+  latestValue: number | string;
 }
