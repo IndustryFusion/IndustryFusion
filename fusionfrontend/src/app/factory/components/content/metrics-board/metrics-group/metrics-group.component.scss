@@ -52,6 +52,23 @@ $metric-margin-y: var(--metric-margin-y);
       border: 0;
       margin: $metric-margin-y 2.5rem;
 
+      .title-container {
+        display: flex;
+
+        .metric-title {
+          text-align: left;
+          font-size: $medium-font-size;
+          line-height: $medium-line-height;
+          letter-spacing: 0;
+          color: $regular-grey;
+        }
+
+        .if-icon-time {
+          margin-left: auto;
+          margin-right: -1rem;
+        }
+      }
+
       .progress-bar-container {
         display: block !important;
       }
@@ -59,14 +76,6 @@ $metric-margin-y: var(--metric-margin-y);
       .metric-value-container {
         display: flex;
         align-self: center;
-      }
-
-      .metric-title {
-        text-align: left;
-        font-size: $medium-font-size;
-        line-height: $medium-line-height;
-        letter-spacing: 0;
-        color: $regular-grey;
       }
 
       .metric-value {
