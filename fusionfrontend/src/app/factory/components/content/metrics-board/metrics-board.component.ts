@@ -105,8 +105,4 @@ export class MetricsBoardComponent {
   private groupMetricsByDashboardGroup(): void {
     this.metricGroups = ArrayHelper.groupByToMap(this.metricsDetails, 'fieldDetails', 'dashboardGroup');
   }
-
-  getMetricGroupsIndices(): number[] {
-    return Array(this.metricGroups.size).fill(0).map((_, index: number) => index);
-  }
 }

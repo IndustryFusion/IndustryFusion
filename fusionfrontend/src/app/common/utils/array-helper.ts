@@ -14,23 +14,32 @@
  */
 
 export class ArrayHelper {
+
   public static groupByToMap<T>(array: T[], keyLevel1: string, keyLevel2: string = null): Map<string, T[]> {
-    const groupArray = array.reduce((rv, item) => {
+    // groups item by key, either on one level ('dashboardLevel') or one 2 levels ('fieldDetails.dashboardLevel')
+    const groupArray = array.reduce((groups, item) => {
       if (keyLevel2) {
-        (rv[item[keyLevel1][keyLevel2]] = rv[item[keyLevel1][keyLevel2]] || []).push(item);
+        groups[item[keyLevel1][keyLevel2]] = groups[item[keyLevel1][keyLevel2]] || [];
+        groups[item[keyLevel1][keyLevel2]].push(item);
       } else {
-        (rv[item[keyLevel1]] = rv[item[keyLevel1]] || []).push(item);
+        groups[item[keyLevel1]] = groups[item[keyLevel1]] || [];
+        groups[item[keyLevel1]].push(item);
       }
-      return rv;
+      return groups;
     }, { });
 
+    return this.getMapFromGroupedArray<T>(groupArray);
+  }
+
+  private static getMapFromGroupedArray<T>(groupArray): Map<string, T[]> {
     const groupMap = new Map<string, T[]>();
     for (const key in groupArray) {
       if (groupArray.hasOwnProperty(key)) {
-        groupMap.set(key, groupArray[key]);
+        groupMap.set(key === 'null' || key === 'undefined' ? null : key, groupArray[key]);
       }
     }
 
     return groupMap;
   }
+
 }

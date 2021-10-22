@@ -38,6 +38,10 @@ export class MetricsGroupComponent implements OnInit, OnChanges {
   @Input()
   index: number;
 
+  @Input()
+  groupsCount: number;
+
+  showTitle: boolean;
   isHeightDifferent: boolean;
   isInitialized = false;
 
@@ -47,6 +51,7 @@ export class MetricsGroupComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
+    this.showTitle = this.metricGroupName != null || this.groupsCount > 1;
     this.updateMasonryLayout();
     this.isInitialized = true;
   }

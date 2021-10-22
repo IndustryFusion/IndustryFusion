@@ -15,7 +15,11 @@ under the License.
 
 <ng-container *ngIf="isLoaded">
   <div *ngFor="let metricGroup of metricGroups | keyvalue; let index = index">
-    <app-metrics-group [asset]="asset" [metricDetails]="metricGroup.value"
-                       [metricGroupName]="metricGroup.key" [index]="index+1"></app-metrics-group>
+    <app-metrics-group [asset]="asset"
+                       [metricDetails]="metricGroup.value"
+                       [metricGroupName]="metricGroup.key"
+                       [groupsCount]="metricGroups.size"
+                       [index]="index+1">
+    </app-metrics-group>
   </div>
 </ng-container>

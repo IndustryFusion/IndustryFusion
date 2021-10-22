@@ -14,50 +14,53 @@ under the License.
 -->
 
 <ng-container *ngIf="isInitialized">
-  <label *ngIf="!['undefined', 'null'].includes(metricGroupName)" class="caption">{{ metricGroupName }}</label>
+  <label *ngIf="showTitle" class="caption">{{ metricGroupName != null ? metricGroupName : 'General' }}</label>
 
   <div  class="metrics-board" [ngClass]="(isHeightDifferent ? 'fake-masonry fake-masonry-' + index : '')">
     <ng-container *ngFor="let metric of metricDetails">
-      <div [ngClass]="metric.fieldDetails.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetails) ? 'performance-widget-large' : 'performance-widget'">
-        <div class="metric-container">
+      <ng-container *ngIf="metric != null && metric.fieldDetails != null">
 
-          <label class="metric-title"> {{metric.fieldDetails.name}} </label>
+        <div [ngClass]="metric.fieldDetails.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetails) ? 'performance-widget-large' : 'performance-widget'">
+          <div class="metric-container">
 
-          <div [ngSwitch]="metric.fieldDetails.widgetType" [ngClass]="metric.fieldDetails.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
-            <app-asset-status *ngSwitchCase="WidgetType.STATUS" class="metric-value" [assetWithFields]="asset"
-                              [showInline]="false"></app-asset-status>
+            <label class="metric-title"> {{metric.fieldDetails.name}} </label>
 
-            <div *ngSwitchCase="WidgetType.BARCHART" class="progress-bar-container">
-              <app-maintenance-progressbar class="progress-bar" [asset]="asset"
-                                           [type]="metric.fieldDetails.name.startsWith('Days') ? maintenanceUtils.maintenanceDays : maintenanceUtils.maintenanceHours">
-              </app-maintenance-progressbar>
+            <div [ngSwitch]="metric.fieldDetails.widgetType" [ngClass]="metric.fieldDetails.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
+              <app-asset-status *ngSwitchCase="WidgetType.STATUS" class="metric-value" [assetWithFields]="asset"
+                                [showInline]="false"></app-asset-status>
+
+              <div *ngSwitchCase="WidgetType.BARCHART" class="progress-bar-container">
+                <app-maintenance-progressbar class="progress-bar" [asset]="asset"
+                                             [type]="metric.fieldDetails.name.startsWith('Days') ? maintenanceUtils.maintenanceDays : maintenanceUtils.maintenanceHours">
+                </app-maintenance-progressbar>
+              </div>
+
+              <div *ngSwitchCase="WidgetType.GAUGE" class="progress-bar-container">
+                <ng-container *ngIf="hasAnyThreshold(metric.fieldDetails)">
+                  <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetails" [metricValue]="metric.latestValue"></app-gauge-chart>
+                </ng-container>
+                <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetails) && metric.latestValue != null">
+                  <label class="metric-value">{{metric.latestValue}}</label>
+                  <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
+                </ng-container>
+              </div>
+
+              <div *ngSwitchDefault>
+                <ng-container *ngIf="metric.latestValue != null">
+                  <label class="metric-value">{{metric.latestValue}}</label>
+                  <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
+                </ng-container>
+              </div>
             </div>
 
-            <div *ngSwitchCase="WidgetType.GAUGE" class="progress-bar-container">
-              <ng-container *ngIf="hasAnyThreshold(metric.fieldDetails)">
-                <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetails" [metricValue]="metric.latestValue"></app-gauge-chart>
-              </ng-container>
-              <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetails) && metric.latestValue != null">
-                <label class="metric-value">{{metric.latestValue}}</label>
-                <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
-              </ng-container>
+            <div *ngIf="metric.latestValue == null && (metric.fieldDetails.widgetType === WidgetType.RAW)">
+              <label class="metric-value">n.a.</label>
             </div>
 
-            <div *ngSwitchDefault>
-              <ng-container *ngIf="metric.latestValue != null">
-                <label class="metric-value">{{metric.latestValue}}</label>
-                <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
-              </ng-container>
-            </div>
           </div>
-
-          <div *ngIf="metric.latestValue == null && (metric.fieldDetails.widgetType === WidgetType.RAW)">
-            <label class="metric-value">n.a.</label>
-          </div>
-
         </div>
-      </div>
-  </ng-container>
 
+      </ng-container>
+    </ng-container>
   </div>
 </ng-container>
