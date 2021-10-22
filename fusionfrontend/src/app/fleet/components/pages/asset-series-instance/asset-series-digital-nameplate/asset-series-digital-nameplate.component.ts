@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -26,7 +26,6 @@ import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-devi
 import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
-import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
 import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
 import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
@@ -36,6 +35,8 @@ import { CompanyQuery } from '../../../../../store/company/company.query';
 import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
 import { RouteHelpers } from '../../../../../common/utils/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
+import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
+import { AssetOnboardingService } from '../../../../../services/asset-onboarding.service';
 
 
 @Component({
@@ -43,7 +44,7 @@ import { AssetSeriesDetailsService } from '../../../../../store/asset-series-det
   templateUrl: './asset-series-digital-nameplate.component.html',
   styleUrls: ['./asset-series-digital-nameplate.component.scss']
 })
-export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
+export class AssetSeriesDigitalNameplateComponent implements OnInit {
 
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;
@@ -51,9 +52,6 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
-
-  manualIcon = faLayerGroup;
-  videoIcon = faPlayCircle;
 
   factorySite$: Observable<FactorySite>;
   company$: Observable<Company>;
@@ -71,7 +69,27 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private assetSeriesDetailsService: AssetSeriesDetailsService,
+    private factoryComposedQuery: FactoryComposedQuery,
+    private assetOnboardingService: AssetOnboardingService,
   ) {
+  }
+
+  private static downloadFile(fileContent: string, fileName: string) {
+    const blob = new Blob([fileContent], { type: 'text/yaml' });
+
+    if (window.navigator.msSaveOrOpenBlob) {
+      // modern way
+      window.navigator.msSaveBlob(blob, fileName);
+    } else {
+      // workaround
+      const anchor = window.document.createElement('a');
+      anchor.href = window.URL.createObjectURL(blob);
+      anchor.download = fileName;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      window.URL.revokeObjectURL(anchor.href);
+    }
   }
 
   ngOnInit() {
@@ -128,14 +146,16 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-  }
-
-  openExternalUrl(url: string) {
-    window.open(url, '_blank');
-  }
-
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
+  }
+
+  generateAssetOnboardingFile() {
+    this.asset$.subscribe(asset => {
+        this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
+          this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
+            .subscribe(fileContent => AssetSeriesDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
+      }
+    );
   }
 }

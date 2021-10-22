@@ -22,6 +22,7 @@ import { DeviceComponent } from '../oisp/oisp-device/oisp-device.model';
 // Data come from entities field_instance, field_target and field
 export class FieldDetails extends BaseEntity {
   assetId: ID;
+  fieldSourceId: ID;
   externalName: string;
   fieldType: FieldType;
   mandatory: boolean;
@@ -34,6 +35,7 @@ export class FieldDetails extends BaseEntity {
   value: string;
   quantityDataType: QuantityDataType;
   widgetType: FieldWidgetType;
+  fieldLabel: string;
   absoluteThreshold: Threshold;
   idealThreshold: Threshold;
   criticalThreshold: Threshold;

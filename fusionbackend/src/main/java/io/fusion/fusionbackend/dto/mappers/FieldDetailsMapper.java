@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.dto.mappers;
 import io.fusion.fusionbackend.dto.FieldDetailsDto;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldInstance;
+import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.FieldWidgetType;
@@ -37,13 +38,15 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
         FieldType fieldType = null;
         Boolean mandatory = null;
         String unitSymbol = null;
+        String fieldLabel = null;
         Double accuracy = null;
         String dashboardGroup = null;
-        QuantityDataType dataType = null;
         FieldWidgetType widgetType = null;
+        QuantityDataType dataType = null;
 
-        if (entity.getFieldSource() != null) {
-            FieldTarget fieldTarget = entity.getFieldSource().getFieldTarget();
+        FieldSource fieldSource = entity.getFieldSource();
+        if (fieldSource != null) {
+            FieldTarget fieldTarget = fieldSource.getFieldTarget();
             if (fieldTarget != null) {
                 fieldType = fieldTarget.getFieldType();
                 mandatory = fieldTarget.getMandatory();
@@ -52,6 +55,7 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                 Field field = fieldTarget.getField();
                 if (field != null) {
                     accuracy = field.getAccuracy();
+                    fieldLabel = field.getLabel();
                     widgetType = field.getWidgetType();
                     unitSymbol = field.getUnit().getSymbol();
                     dataType = field.getUnit().getQuantityType().getDataType();
@@ -63,6 +67,7 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                 .id(entity.getId())
                 .version(entity.getVersion())
                 .assetId(EntityDtoMapper.getEntityId(entity.getAsset()))
+                .fieldSourceId(EntityDtoMapper.getEntityId(fieldSource))
                 .externalName(entity.getExternalName())
                 .fieldType(fieldType)
                 .mandatory(mandatory)
@@ -75,6 +80,7 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                 .value(entity.getValue())
                 .quantityDataType(dataType)
                 .widgetType(widgetType)
+                .fieldLabel(fieldLabel)
                 .absoluteThreshold(entity.getAbsoluteThreshold())
                 .idealThreshold(entity.getIdealThreshold())
                 .criticalThreshold(entity.getCriticalThreshold())
