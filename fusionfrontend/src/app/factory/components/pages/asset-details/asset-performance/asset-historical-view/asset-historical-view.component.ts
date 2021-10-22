@@ -26,6 +26,7 @@ import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
 import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
 import { SelectItem } from 'primeng/api';
 import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -181,31 +182,22 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
   isChartLoaded(field: FieldDetails) {
     if (!this.wasSrcolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
-      // this.scrollToView().subscribe(wasScrolled => this.wasSrcolled = wasScrolled);
-      this.scrollToViewFallback();
+      this.scrollToMetric().subscribe(success => this.wasSrcolled = success);
     }
   }
 
-/*  private scrollToView(): Observable<boolean> {
-    const element = document.getElementById(this.activatedRoute.snapshot.fragment);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest'});
-      this.router.navigate([], { fragment: this.activatedRoute.snapshot.fragment });
-      return of(true);
-    }
-
-    return of(false);
-  }*/
-
-  private scrollToViewFallback() {
-    this.activatedRoute.fragment.subscribe(fragment => {
-      const element = document.querySelector('#' + fragment);
-      this.wasSrcolled = false;
-      if (element) {
-        element.scrollIntoView();
-        this.wasSrcolled = true;
-      }
-    });
+  private scrollToMetric(): Observable<boolean> {
+    return this.activatedRoute.fragment.pipe(
+      map(fragment => {
+        const element = document.querySelector('#' + fragment);
+        if (element) {
+          element.scrollIntoView();
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
   }
 }
 

@@ -92,7 +92,6 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('[asset-tables.component] destroyed subscription');
     this.destroy$.next(true);
     this.destroy$.complete();
   }
