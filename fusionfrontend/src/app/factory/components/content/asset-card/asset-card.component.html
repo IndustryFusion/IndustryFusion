@@ -41,7 +41,7 @@ under the License.
               </tr>
               <tr *ngFor="let field of (currentMergedFields$ | async)">
                 <td class="card-label">{{ field.description }}</td>
-                <td class="card-value">{{ formatValue(field.value, field.unit) | precision:field.type:field.accuracy }} <span>{{field.unit}}</span></td>
+                <td class="card-value">{{ field.value | precision: field.type:field.accuracy }} <span>{{field.unit}}</span></td>
               </tr>
           </tbody>
         </table>

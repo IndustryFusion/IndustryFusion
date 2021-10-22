@@ -87,15 +87,6 @@ export class AssetCardComponent implements OnInit, OnChanges {
     return Math.min(progress / this.maxProgress * 100, 7);
   }
 
-  formatValue(value: any, unit: any) {
-    if (unit === 'bar' || unit === 'l/min') {
-      return (Math.round(value * 10000) / 10000).toFixed(4);
-
-    } else {
-      return value;
-    }
-  }
-
   goToDetails() {
     const companyId = this.companyQuery.getActiveId();
     const assetId = this.asset.id;
