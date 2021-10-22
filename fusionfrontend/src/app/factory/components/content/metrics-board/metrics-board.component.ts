@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FactoryComposedQuery } from '../../../../store/composed/factory-composed.query';
 import { FieldDetailsQuery } from '../../../../store/field-details/field-details.query';
 import { FieldDetails, MetricDetail } from '../../../../store/field-details/field-details.model';
@@ -22,18 +22,24 @@ import { OispService } from '../../../../services/oisp.service';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { PointWithId } from '../../../../services/oisp.model';
 import { ArrayHelper } from '../../../../common/utils/array-helper';
+import { Observable, Subscription, timer } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-metrics-board',
   templateUrl: './metrics-board.component.html',
   styleUrls: ['./metrics-board.component.scss']
 })
-export class MetricsBoardComponent {
+export class MetricsBoardComponent implements OnDestroy {
 
   isLoaded = false;
   asset: FactoryAssetDetailsWithFields;
 
   metricGroups: Map<string, MetricDetail[]>  = new Map();
+
+  private assetWithFields$: Observable<FactoryAssetDetailsWithFields>;
+  private loadDataTimer$: Subscription;
 
   private fieldDetails: FieldDetails[];
   private metricsDetailMap: Map<string, MetricDetail> = new Map();
@@ -44,43 +50,61 @@ export class MetricsBoardComponent {
               private oispDeviceQuery: OispDeviceQuery,
               public oispService: OispService) {
 
-    factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails().subscribe(asset => {
+    this.assetWithFields$ = factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails();
+
+    this.assetWithFields$.subscribe(asset => {
       this.asset = asset;
       fieldDetailsQuery.selectMetricFieldsOfAsset(asset.id).subscribe(fieldDetails => {
           if (fieldDetails?.length > 0) {
             this.fieldDetails = fieldDetails;
-            fieldDetails.forEach(fieldDetail => {
-              const deviceComponent = this.oispDeviceQuery.getComponentOfFieldInstance(asset.externalName, fieldDetail.externalName);
-              if (deviceComponent) {
-                this.metricsDetailMap.set(deviceComponent.cid, {
-                  externalName: fieldDetail.externalName,
-                  deviceComponent,
-                  fieldDetails: fieldDetail,
-                  latestValue: null
-                });
-              }
-            });
+            this.updateMetricDetails(fieldDetails, asset);
+            this.loadMetricsData();
 
-            this.metricsDetails = [ ...this.metricsDetailMap.values()];
-            this.loadData();
+            this.unsubscribeFromTimerIfExisting();
+            this.loadDataTimer$ = timer(0, environment.dataUpdateIntervalMs)
+              .pipe(tap(() => this.loadMetricsData()))
+              .subscribe();
           }
         }
       );
-
     });
   }
 
-  private loadData() {
-    if (!this.isLoaded) {
-      this.oispService.getLastValueOfAllFields(this.asset, this.fieldDetails, 600)
-        .subscribe((metricPoints: PointWithId[]) => {
-         this.addPointValuesToMetricsMap(metricPoints);
-         this.isLoaded = true;
-      });
+  ngOnDestroy() {
+    this.unsubscribeFromTimerIfExisting();
+  }
+
+  private unsubscribeFromTimerIfExisting() {
+    if (this.loadDataTimer$) {
+      this.loadDataTimer$.unsubscribe();
     }
   }
 
-  private addPointValuesToMetricsMap(metricPoints: PointWithId[]) {
+  private updateMetricDetails(fieldDetails: FieldDetails[], asset: FactoryAssetDetailsWithFields): void {
+    fieldDetails.forEach(fieldDetail => {
+      const deviceComponent = this.oispDeviceQuery.getComponentOfFieldInstance(asset.externalName, fieldDetail.externalName);
+      if (deviceComponent) {
+        this.metricsDetailMap.set(deviceComponent.cid, {
+          externalName: fieldDetail.externalName,
+          deviceComponent,
+          fieldDetails: fieldDetail,
+          latestValue: null
+        });
+      }
+    });
+
+    this.metricsDetails = [...this.metricsDetailMap.values()];
+  }
+
+  private loadMetricsData(): void {
+    this.oispService.getLastValueOfAllFields(this.asset, this.fieldDetails, 600)
+      .subscribe((metricPoints: PointWithId[]) => {
+       this.addPointValuesToMetricsMap(metricPoints);
+       this.isLoaded = true;
+    });
+  }
+
+  private addPointValuesToMetricsMap(metricPoints: PointWithId[]): void {
     metricPoints.forEach(pointWithId => {
       if (this.metricsDetailMap.has(pointWithId.id)) {
         const metric = this.metricsDetailMap.get(pointWithId.id);
