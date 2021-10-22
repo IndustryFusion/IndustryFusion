@@ -66,6 +66,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   choiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
 
   private unSubscribe$ = new Subject<void>();
+  private wasSrcolled = false;
 
 
   constructor(private assetQuery: AssetQuery,
@@ -176,6 +177,35 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
+  }
+
+  isChartLoaded(field: FieldDetails) {
+    if (!this.wasSrcolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
+      // this.scrollToView().subscribe(wasScrolled => this.wasSrcolled = wasScrolled);
+      this.scrollToViewFallback();
+    }
+  }
+
+/*  private scrollToView(): Observable<boolean> {
+    const element = document.getElementById(this.activatedRoute.snapshot.fragment);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest'});
+      this.router.navigate([], { fragment: this.activatedRoute.snapshot.fragment });
+      return of(true);
+    }
+
+    return of(false);
+  }*/
+
+  private scrollToViewFallback() {
+    this.activatedRoute.fragment.subscribe(fragment => {
+      const element = document.querySelector('#' + fragment);
+      this.wasSrcolled = false;
+      if (element) {
+        element.scrollIntoView();
+        this.wasSrcolled = true;
+      }
+    });
   }
 }
 

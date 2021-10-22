@@ -25,7 +25,7 @@ under the License.
 
             <div class="title-container">
               <label class="metric-title">{{metric.fieldDetails.name}}</label>
-              <i class="if-icon-time"></i>
+              <i class="if-icon-time" (click)="navigateToMetric(metric)"></i>
             </div>
 
             <div [ngSwitch]="metric.fieldDetails.widgetType" [ngClass]="metric.fieldDetails.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
