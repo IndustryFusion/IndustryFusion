@@ -223,3 +223,8 @@
   background-color: $basic-black;
   color: $basic-white;
 }
+
+.p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler {
+  width: auto;
+  margin-right: 0;
+}
