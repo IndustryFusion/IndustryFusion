@@ -84,7 +84,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     });
   }
 
-  setActiveRow(assetTypeTemplate?) {
+  setActiveRow(assetTypeTemplate?: AssetTypeTemplate): void {
     if (assetTypeTemplate) {
       this.activeListItem = assetTypeTemplate;
       this.menuType = assetTypeTemplate.publicationState === PublicationState.PUBLISHED ?
