@@ -27,7 +27,6 @@ export class GermanNumberPipe implements PipeTransform {
 
   transform(value: any, format?: string) {
     if (value == null) { return ''; } // !value would also react to zeros.
-    if (!format) { format = '.0-2'; }
 
     return GermanNumberPipe.isNumber(value) ? formatNumber(value, 'de-de', format) : String(value);
   }
