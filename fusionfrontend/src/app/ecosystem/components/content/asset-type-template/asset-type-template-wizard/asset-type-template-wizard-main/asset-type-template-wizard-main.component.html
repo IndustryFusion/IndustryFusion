@@ -48,11 +48,11 @@ under the License.
                                            [isAssetTypeLocked]="isAssetTypeLocked">
   </app-asset-type-template-wizard-step-one>
   <app-asset-type-template-wizard-step-two *ngIf="step === 2" (stepChange)="onStepChange($event)"
-                                           (metricSelect)="onMetricsSelect($event)" [inputMetrics]="getMetrics()"
+                                           (metricsChanged)="onMetricsChanged($event)" [inputMetrics]="getMetrics()"
                                            [assetTypeTemplateForm]="assetTypeTemplateForm" [type]="type">
   </app-asset-type-template-wizard-step-two>
   <app-asset-type-template-wizard-step-three *ngIf="step === 3" (stepChange)="onStepChange($event)"
-                                             (attributeSelect)="onAttributesSelect($event)"
+                                             (attributesChanged)="onAttributesChanged($event)"
                                              [inputAttributes]="getAttributes()"
                                              [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-wizard-step-three>

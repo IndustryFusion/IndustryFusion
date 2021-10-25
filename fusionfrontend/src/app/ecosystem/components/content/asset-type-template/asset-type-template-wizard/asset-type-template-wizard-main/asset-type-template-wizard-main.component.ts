@@ -121,12 +121,22 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
     this.step = step;
   }
 
-  onMetricsSelect(metrics: FieldTarget[]) {
-    this.assetTypeTemplate.fieldTargets =  this.getAttributes().concat(metrics);
+  onMetricsChanged(metrics: FieldTarget[]) {
+    this.assetTypeTemplate.fieldTargets = this.getAttributes().concat(this.replaceEmptyCustomNameWithName(metrics));
   }
 
-  onAttributesSelect(attributes: FieldTarget[]) {
-    this.assetTypeTemplate.fieldTargets =  this.getMetrics().concat(attributes);
+  onAttributesChanged(attributes: FieldTarget[]) {
+    this.assetTypeTemplate.fieldTargets = this.getMetrics().concat(this.replaceEmptyCustomNameWithName(attributes));
+  }
+
+  // noinspection JSMethodCanBeStatic
+  private replaceEmptyCustomNameWithName(fieldTargets: FieldTarget[]): FieldTarget[] {
+    return fieldTargets.map(fieldTarget => {
+      if (fieldTarget.name == null || fieldTarget.name.length < 1) {
+        fieldTarget.name = fieldTarget.field?.name;
+      }
+      return fieldTarget;
+    });
   }
 
   onChangeUseOfTemplate(assetTypeTemplateId: number) {

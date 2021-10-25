@@ -35,7 +35,7 @@ export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
   @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
-  @Output() metricSelect = new EventEmitter<FieldTarget[]>();
+  @Output() metricsChanged = new EventEmitter<FieldTarget[]>();
 
   public DialogType = DialogType;
 
@@ -72,7 +72,7 @@ export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
 
   private changeStep(step: number) {
     if (this.confirmedMetrics.length === this.selectedMetrics.length && this.assetTypeTemplateForm?.valid) {
-      this.metricSelect.emit(this.confirmedMetrics);
+      this.metricsChanged.emit(this.confirmedMetrics);
       this.stepChange.emit(step);
     }
   }
