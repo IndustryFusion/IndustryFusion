@@ -15,8 +15,9 @@ under the License.
 
 <div class="field-row" [ngStyle]="{'margin-bottom': editable === true ? '' :  '2.5rem'}">
   <div class="col-margin" [ngClass]="editable === true ? 'col-20' : 'col-30'">
-    <input type="text" pInputText class="field-row-inputs" *ngIf="!confirmed"
-           [placeholder]="'Custom Metric name'" [(ngModel)]="fieldTarget.name" name="name" />
+    <input type="text" pInputText class="field-row-inputs" *ngIf="!confirmed" name="name"
+           [placeholder]="'Custom ' + (fieldType === FieldType.METRIC ? 'Metric' : 'Attribute') + ' name'"
+           [(ngModel)]="fieldTarget.name" />
     <div *ngIf="confirmed" class="confirmed-name" [ngClass]="editable === true ? 'confirmed-padding' : ''">{{ fieldTarget.name }}</div>
   </div>
   <div class="info-text col-margin confirmed-name" [ngClass]="editable === true ? 'col-15' : 'col-20'">

@@ -18,7 +18,7 @@ import { ID } from '@datorama/akita';
 
 import { UnitQuery } from '../../../../../store/unit/unit.query';
 import { QuantityTypeQuery } from '../../../../../store/quantity-type/quantity-type.query';
-import { FieldTarget } from '../../../../../store/field-target/field-target.model';
+import { FieldTarget, FieldType } from '../../../../../store/field-target/field-target.model';
 
 @Component({
   selector: 'app-asset-type-template-field-row',
@@ -29,12 +29,14 @@ export class AssetTypeTemplateFieldRowComponent implements OnInit {
 
   @Input() confirmed = false;
   @Input() editable = true;
+  @Input() fieldType: FieldType = FieldType.METRIC;
 
   @Input() fieldTarget: FieldTarget;
   @Output() confirmSignal = new EventEmitter<FieldTarget>();
   @Output() editSignal = new EventEmitter<FieldTarget>();
   @Output() deleteSignal = new EventEmitter<FieldTarget>();
 
+  public FieldType = FieldType;
 
   constructor(private unitQuery: UnitQuery, private quantityQuery: QuantityTypeQuery) { }
 
