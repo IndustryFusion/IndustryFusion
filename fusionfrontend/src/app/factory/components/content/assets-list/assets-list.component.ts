@@ -52,7 +52,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   @Input()
   factorySite: FactorySite;
   @Input()
-  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
+  factoryAssetsDetailsWithFields: FactoryAssetDetailsWithFields[];
   @Input()
   rooms: Room[];
   @Input()
@@ -111,7 +111,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
+    this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetsDetailsWithFields;
     this.updateTree();
   }
 
@@ -161,7 +161,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
     const ref = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
-        assetsToBeOnboarded: this.factoryAssetDetailsWithFields,
+        assetsToBeOnboarded: this.factoryAssetsDetailsWithFields,
         factorySites: this.factorySites,
         rooms: this.rooms,
         activeModalType: AssetModalType.startInitialization,
@@ -185,7 +185,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   }
 
   getOldRoomForAsset(updatedAsset) {
-    const roomId = this.factoryAssetDetailsWithFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
+    const roomId = this.factoryAssetsDetailsWithFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
     return this.rooms.filter(room => room.id === roomId).pop();
   }
 
@@ -197,17 +197,17 @@ export class AssetsListComponent implements OnInit, OnChanges {
 
   deleteAsset() {
     this.assetService.removeCompanyAsset(this.activeListItem.companyId, this.activeListItem.id).subscribe(() => {
-      this.factoryAssetDetailsWithFields.splice(this.factoryAssetDetailsWithFields.indexOf(this.activeListItem), 1);
+      this.factoryAssetsDetailsWithFields.splice(this.factoryAssetsDetailsWithFields.indexOf(this.activeListItem), 1);
     });
   }
 
-  showEditDialog() {
+  openEditDialog() {
     this.assetDetailMenuService.showEditDialog(this.activeListItem, this.factorySite, this.factorySites, this.rooms,
-      () => this.onCloseEditDialog(), (details) => this.assetUpdated(details));
+      () => this.deselectAllItems(), (details) => this.assetUpdated(details));
   }
 
-  onCloseEditDialog() {
-    this.selectedFactoryAssets = [];
+  openDeleteDialog() {
+    this.assetDetailMenuService.showDeleteDialog(this.activeListItem.name, () => this.deleteAsset());
   }
 
   openAssignRoomDialog() {
@@ -228,17 +228,13 @@ export class AssetsListComponent implements OnInit, OnChanges {
     return ['/factorymanager', 'companies', asset.companyId, 'assets', asset.id];
   }
 
-  showDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.activeListItem.name, () => this.deleteAsset());
-  }
-
   private showAssignRoomDialog(modalType: AssetModalType, modalMode: AssetModalMode, header: string) {
     this.assetDetailMenuService.showAssignRoomDialog(this.activeListItem, this.factorySite, this.factorySites,
       this.rooms, modalType, modalMode, header, (details) => this.assetUpdated(details));
   }
 
   private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
+    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields;
     if (this.searchedFactoryAssets) {
       this.displayedFactoryAssets = this.filteredFactoryAssets.filter(asset =>
         this.searchedFactoryAssets.includes(asset));
@@ -281,7 +277,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
     if (value.subsystemIds?.length > 0) {
       const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       value.subsystemIds.forEach(id => {
-        const subsytem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
+        const subsytem = this.factoryAssetsDetailsWithFields.find(asset => asset.id === id);
         if (subsytem) {
           children.push(this.addNode(treeNode, subsytem));
         }

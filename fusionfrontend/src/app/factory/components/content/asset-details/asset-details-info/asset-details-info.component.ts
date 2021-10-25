@@ -14,8 +14,21 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import {
+  AssetModalMode,
+  AssetModalType,
+  FactoryAssetDetails,
+  FactoryAssetDetailsWithFields
+} from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
+import { AssetDetailMenuService } from '../../../../../services/asset-detail-menu.service';
+import { FactoryResolver } from '../../../../services/factory-resolver.service';
+import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
+import { Room } from '../../../../../store/room/room.model';
+import { AssetService } from '../../../../../store/asset/asset.service';
+import { RoomService } from '../../../../../store/room/room.service';
+import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
+import { RoomQuery } from '../../../../../store/room/room.query';
 
 @Component({
   selector: 'app-asset-details-info',
@@ -27,12 +40,73 @@ export class AssetDetailsInfoComponent implements OnInit {
   @Input()
   assetWithFields: FactoryAssetDetailsWithFields;
 
-  dropdownMenuOptions: ItemOptionsMenuType[] = [];
+  factorySite: FactorySite;
+  factorySites: FactorySite[];
+  rooms: Room[];
 
-  constructor() {
+  dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE];
+
+  constructor(private assetDetailMenuService: AssetDetailMenuService,
+              private factoryResolver: FactoryResolver,
+              private assetService: AssetService,
+              private roomService: RoomService,
+              private factoryQuery: FactorySiteQuery,
+              private roomQuery: RoomQuery) {
   }
 
   ngOnInit() {
+    this.factoryResolver.factorySite$.subscribe((site) => this.factorySite = site);
+    this.factoryQuery.selectAll().subscribe((sites) => this.factorySites = sites);
+    this.roomQuery.selectAll().subscribe((rooms) => this.rooms = rooms);
+  }
 
+  openEditDialog() {
+    this.assetDetailMenuService.showEditDialog(this.assetWithFields, this.factorySite, this.factorySites, this.rooms,
+      () => { }, (details) => this.assetUpdated(details));
+  }
+
+  openDeleteDialog() {
+    this.assetDetailMenuService.showDeleteDialog(this.assetWithFields.name, () => this.deleteAsset());
+  }
+
+  openAssignRoomDialog() {
+    if (this.factorySite) {
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
+        `Room Assignment (${this.factorySite.name})`);
+    } else {
+      this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,
+        'Factory Site Assignment');
+    }
+  }
+
+  updateAssetData(oldRoom, assetDetails) {
+    this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(
+      () => {
+        if (oldRoom.id !== assetDetails.roomId) {
+          this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
+  private showAssignRoomDialog(modalType: AssetModalType, modalMode: AssetModalMode, header: string) {
+    this.assetDetailMenuService.showAssignRoomDialog(this.assetWithFields, this.factorySite, this.factorySites,
+      this.rooms, modalType, modalMode, header, (details) => this.assetUpdated(details));
+  }
+
+  private assetUpdated(newAssetDetails: FactoryAssetDetails): void {
+    const oldRoom = this.getOldRoomForAsset();
+    this.updateAssetData(oldRoom, newAssetDetails);
+  }
+
+  private getOldRoomForAsset() {
+    const roomId = this.assetWithFields.roomId;
+    return this.rooms.filter(room => room.id === roomId).pop();
+  }
+
+  private deleteAsset() {
+    this.assetService.removeCompanyAsset(this.assetWithFields.companyId, this.assetWithFields.id).subscribe(() => {
+    });
   }
 }
