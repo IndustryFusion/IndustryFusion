@@ -107,8 +107,12 @@ export class FactoryComposedQuery {
     );
   }
 
+  /**
+   * @description Do not forget to unsubscribe when component is destroyed.
+   */
   selectActiveAssetWithFieldInstanceDetails(): Observable<FactoryAssetDetailsWithFields> {
     return combineQueries([
+      // Wait here for multiple actives (not the first as elsewhere) to get asset detail info updated when a subsystem is selected
       this.factoryAssetDetailsQuery.waitForActives(),
       this.fieldDetailsQuery.selectAll()
     ]).pipe(

@@ -22,9 +22,9 @@ import { OispService } from '../../../../services/oisp.service';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { PointWithId } from '../../../../services/oisp.model';
 import { ArrayHelper } from '../../../../common/utils/array-helper';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Observable, Subject, Subscription, timer } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-metrics-board',
@@ -40,6 +40,7 @@ export class MetricsBoardComponent implements OnDestroy {
 
   private assetWithFields$: Observable<FactoryAssetDetailsWithFields>;
   private loadDataTimer$: Subscription;
+  private unSubscribe$ = new Subject<void>();
 
   private fieldDetails: FieldDetails[];
   private metricsDetailMap: Map<string, MetricDetail> = new Map();
@@ -50,7 +51,8 @@ export class MetricsBoardComponent implements OnDestroy {
               private oispDeviceQuery: OispDeviceQuery,
               public oispService: OispService) {
 
-    this.assetWithFields$ = factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails();
+    this.assetWithFields$ = factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
+      .pipe(takeUntil(this.unSubscribe$));
 
     this.assetWithFields$.subscribe(asset => {
       this.asset = asset;
@@ -72,6 +74,8 @@ export class MetricsBoardComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.unsubscribeFromTimerIfExisting();
+    this.unSubscribe$.next();
+    this.unSubscribe$.complete();
   }
 
   private unsubscribeFromTimerIfExisting() {
