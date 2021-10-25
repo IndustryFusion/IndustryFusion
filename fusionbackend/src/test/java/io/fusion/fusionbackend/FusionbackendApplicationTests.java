@@ -509,7 +509,7 @@ class FusionbackendApplicationTests {
 
         assertThat(assetTypeIds)
                 .hasSize(3)
-                .containsExactlyInAnyOrder(fieldIdDifferenzDruck, fieldIdHeadCount, fieldIdHeadTemperature);
+                .containsExactly(fieldIdDifferenzDruck, fieldIdHeadCount, fieldIdHeadTemperature);
     }
 
     @Test
