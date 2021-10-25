@@ -18,6 +18,7 @@ import { FieldWidgetType } from '../../../../../store/field/field.model';
 import { AssetMaintenanceUtils } from '../../../../util/asset-maintenance-utils';
 import { FieldDetails, MetricDetail } from '../../../../../store/field-details/field-details.model';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-metrics-group',
@@ -48,7 +49,8 @@ export class MetricsGroupComponent implements OnInit, OnChanges {
   WidgetType = FieldWidgetType;
   maintenanceUtils = AssetMaintenanceUtils;
 
-  constructor() { }
+  constructor(private readonly router: Router,
+              private readonly activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.showTitle = this.metricGroupName != null || this.groupsCount > 1;
@@ -126,5 +128,10 @@ export class MetricsGroupComponent implements OnInit, OnChanges {
 
   hasAnyThreshold(fieldDetail: FieldDetails): boolean {
     return fieldDetail.absoluteThreshold != null || fieldDetail.criticalThreshold != null || fieldDetail.idealThreshold != null;
+  }
+
+  navigateToMetric(metric: MetricDetail) {
+    const navigationOptions = { fragment: 'metric-' + metric.externalName, relativeTo: this.activatedRoute };
+    return this.router.navigate(['..', 'historical'], navigationOptions);
   }
 }

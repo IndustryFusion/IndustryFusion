@@ -26,6 +26,7 @@ import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
 import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
 import { SelectItem } from 'primeng/api';
 import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -66,6 +67,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   choiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
 
   private unSubscribe$ = new Subject<void>();
+  private wasSrcolled = false;
 
 
   constructor(private assetQuery: AssetQuery,
@@ -176,6 +178,26 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
+  }
+
+  isChartOrTableLoaded(field: FieldDetails) {
+    if (!this.wasSrcolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
+      this.scrollToMetric().subscribe(success => this.wasSrcolled = success);
+    }
+  }
+
+  private scrollToMetric(): Observable<boolean> {
+    return this.activatedRoute.fragment.pipe(
+      map(fragment => {
+        const element = document.querySelector('#' + fragment);
+        if (element) {
+          element.scrollIntoView();
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
   }
 }
 

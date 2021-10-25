@@ -23,7 +23,10 @@ under the License.
         <div [ngClass]="metric.fieldDetails.widgetType === WidgetType.GAUGE && hasAnyThreshold(metric.fieldDetails) ? 'performance-widget-large' : 'performance-widget'">
           <div class="metric-container">
 
-            <label class="metric-title"> {{metric.fieldDetails.name}} </label>
+            <div class="title-container">
+              <label class="metric-title">{{metric.fieldDetails.name}}</label>
+              <i class="if-icon-time" (click)="navigateToMetric(metric)"></i>
+            </div>
 
             <div [ngSwitch]="metric.fieldDetails.widgetType" [ngClass]="metric.fieldDetails.widgetType !== WidgetType.BARCHART ? 'metric-value-container' : ''">
               <app-asset-status *ngSwitchCase="WidgetType.STATUS" class="metric-value" [assetWithFields]="asset"
