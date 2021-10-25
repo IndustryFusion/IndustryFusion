@@ -29,6 +29,8 @@ import { AssetService } from '../../../../../store/asset/asset.service';
 import { RoomService } from '../../../../../store/room/room.service';
 import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site.query';
 import { RoomQuery } from '../../../../../store/room/room.query';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-asset-details-info',
@@ -51,7 +53,9 @@ export class AssetDetailsInfoComponent implements OnInit {
               private assetService: AssetService,
               private roomService: RoomService,
               private factoryQuery: FactorySiteQuery,
-              private roomQuery: RoomQuery) {
+              private roomQuery: RoomQuery,
+              private router: Router,
+              private routingLocation: Location) {
   }
 
   ngOnInit() {
@@ -107,6 +111,9 @@ export class AssetDetailsInfoComponent implements OnInit {
 
   private deleteAsset() {
     this.assetService.removeCompanyAsset(this.assetWithFields.companyId, this.assetWithFields.id).subscribe(() => {
+      const currentUrlSeparated = this.routingLocation.path().split('/');
+      const newRoutingLocation = currentUrlSeparated.slice(0, currentUrlSeparated.findIndex(elem => elem === 'assets') + 1);
+      this.router.navigateByUrl(newRoutingLocation.join('/')).then((res) => console.warn('routing:::', res));
     });
   }
 }

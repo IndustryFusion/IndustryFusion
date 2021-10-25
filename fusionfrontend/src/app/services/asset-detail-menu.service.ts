@@ -41,7 +41,7 @@ export class AssetDetailMenuService {
       message: `Are you sure you want to delete the asset ${assetName}?`,
       header: 'Delete Asset Confirmation',
       icon: 'pi pi-exclamation-triangle',
-      accept: acceptCallback(),
+      accept: acceptCallback,
       reject: () => { }
     });
   }
