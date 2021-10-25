@@ -180,7 +180,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     this.unSubscribe$.complete();
   }
 
-  isChartLoaded(field: FieldDetails) {
+  isChartOrTableLoaded(field: FieldDetails) {
     if (!this.wasSrcolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
       this.scrollToMetric().subscribe(success => this.wasSrcolled = success);
     }
