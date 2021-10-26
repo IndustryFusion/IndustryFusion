@@ -16,9 +16,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FieldDetails } from '../../../../../store/field-details/field-details.model';
 import { Observable, Subject, timer } from 'rxjs';
-import { PointWithId } from '../../../../../services/oisp.model';
+import { PointWithId } from '../../../../../services/api/oisp.model';
 import { Asset } from '../../../../../store/asset/asset.model';
-import { OispService } from '../../../../../services/oisp.service';
+import { OispService } from '../../../../../services/api/oisp.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from '../../../../../../environments/environment';
 

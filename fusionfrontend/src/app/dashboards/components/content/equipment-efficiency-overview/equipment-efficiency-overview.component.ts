@@ -16,7 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { StatusHours } from '../../../../services/kairos-status-aggregation.model';
+import { StatusHours } from '../../../../services/api/kairos-status-aggregation.model';
 import { EnumHelpers } from '../../../../common/utils/enum-helpers';
 import { EquipmentEfficiencyHelper } from '../../../../common/utils/equipment-efficiency-helper';
 

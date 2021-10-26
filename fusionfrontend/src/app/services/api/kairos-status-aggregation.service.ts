@@ -18,10 +18,10 @@ import * as moment from 'moment';
 import { catchError, map } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { KairosResponseGroup, OispDeviceStatus } from './kairos.model';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { KairosService } from './kairos.service';
-import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
-import { FieldDetails } from '../store/field-details/field-details.model';
+import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
+import { FieldDetails } from '../../store/field-details/field-details.model';
 import { StatusHours } from './kairos-status-aggregation.model';
 
 @Injectable({

@@ -17,8 +17,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
 import { Status } from '../../../../../factory/models/status.model';
 import { switchMap } from 'rxjs/operators';
-import { StatusService } from '../../../../../services/status.service';
-import { OispDeviceStatus } from '../../../../../services/kairos.model';
+import { StatusService } from '../../../../../services/logic/status.service';
+import { OispDeviceStatus } from '../../../../../services/api/kairos.model';
 import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
 import { environment } from 'src/environments/environment';
 

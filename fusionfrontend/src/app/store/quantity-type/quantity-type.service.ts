@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { RestService } from 'src/app/services/rest.service';
+import { RestService } from 'src/app/services/api/rest.service';
 import { Injectable } from '@angular/core';
 import { QuantityType } from './quantity-type.model';
 import { HttpHeaders, HttpClient } from '@angular/common/http';

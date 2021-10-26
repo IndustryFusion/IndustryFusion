@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { OispDeviceStatus } from '../../../services/kairos.model';
+import { OispDeviceStatus } from '../../../services/api/kairos.model';
 import { UIChart } from 'primeng/chart';
 import * as moment from 'moment';
 import { StatusPoint } from '../../../factory/models/status.model';

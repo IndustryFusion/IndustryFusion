@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetSeriesInstanceSubHeaderComponent } from './asset-series-instance-sub-header.component';
+import { AssetSeriesAssetSubHeaderComponent } from './asset-series-asset-sub-header.component';
 
 describe('AssetDetailsSubHeaderComponent', () => {
-  let component: AssetSeriesInstanceSubHeaderComponent;
-  let fixture: ComponentFixture<AssetSeriesInstanceSubHeaderComponent>;
+  let component: AssetSeriesAssetSubHeaderComponent;
+  let fixture: ComponentFixture<AssetSeriesAssetSubHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssetSeriesInstanceSubHeaderComponent ]
+      declarations: [ AssetSeriesAssetSubHeaderComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetSeriesInstanceSubHeaderComponent);
+    fixture = TestBed.createComponent(AssetSeriesAssetSubHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

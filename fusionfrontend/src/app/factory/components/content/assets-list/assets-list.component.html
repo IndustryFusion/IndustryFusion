@@ -42,8 +42,8 @@ under the License.
              currentPageReportTemplate="{first} to {last} of {totalRecords} Assets" sortMode="multiple">
   <ng-template pTemplate="header">
     <tr>
-      <th [style.width.%]="3"></th>
-      <th [style.width.%]="3"></th>
+      <th [style.width.%]="1.5"></th>
+      <th [style.width.%]="1.5"></th>
       <th [style.width.%]="20" class="first-header-item">
         <app-table-searchbar (searchByName)="searchAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
                              attributeToBeSearched="name" filterColumn="Asset">
@@ -55,22 +55,22 @@ under the License.
       <th [style.width.%]="12.5" ttSortableColumn="manufacturer">Manufacturer
         <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="10" ttSortableColumn="roomName">Room
+      <th [style.width.%]="12" ttSortableColumn="roomName">Room
         <p-treeTableSortIcon field="roomName"></p-treeTableSortIcon>
       </th>
       <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
         <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="13">Status</th>
+      <th [style.width.%]="11">Status</th>
       <th [style.width.%]="5"></th>
     </tr>
   </ng-template>
   <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
     <tr [ttRow]="rowNode" id="rowElement" style="cursor: pointer;">
-      <td class="checkbox-td" [style.width.%]="3">
+      <td class="checkbox-td column-without-padding" [style.width.%]="1.5">
         <p-treeTableCheckbox [value]="rowNode" class="column-visibility table-checkbox"></p-treeTableCheckbox>
       </td>
-      <td [style.width.%]="3">
+      <td class="column-without-padding" [style.width.%]="1.5">
         <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
           <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
           <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle"
@@ -80,7 +80,7 @@ under the License.
         </div>
       </td>
       <td [routerLink]="getAssetLink(rowData)"
-          class="asset-column p-flex-row table-bold-font">
+          class="asset-column p-flex-row table-bold-font right-column-padding">
         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
         <span *ngIf="rowNode.parent" class="subsystem-grid p-col-">
             <span class="upper"></span>
@@ -90,9 +90,9 @@ under the License.
       </td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="20">{{rowData.category}}</td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12.5">{{rowData.manufacturer}}</td>
-      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="10">{{rowData.roomName}}</td>
+      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12">{{rowData.roomName}}</td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12">{{rowData.factorySiteName}}</td>
-      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="13">
+      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="11">
         <app-asset-status [assetWithFields]="rowData" [showInline]="true"></app-asset-status>
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">

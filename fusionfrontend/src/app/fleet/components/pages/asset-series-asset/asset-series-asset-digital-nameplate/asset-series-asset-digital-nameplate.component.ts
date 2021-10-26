@@ -18,9 +18,9 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Status } from 'src/app/factory/models/status.model';
-import { PointWithId } from 'src/app/services/oisp.model';
-import { OispService } from 'src/app/services/oisp.service';
-import { StatusService } from 'src/app/services/status.service';
+import { PointWithId } from 'src/app/services/api/oisp.model';
+import { OispService } from 'src/app/services/api/oisp.service';
+import { StatusService } from 'src/app/services/logic/status.service';
 import { FieldDetails, FieldType } from 'src/app/store/field-details/field-details.model';
 import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
 import { ID } from '@datorama/akita';
@@ -36,15 +36,15 @@ import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site
 import { RouteHelpers } from '../../../../../common/utils/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
 import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
-import { AssetOnboardingService } from '../../../../../services/asset-onboarding.service';
+import { AssetOnboardingService } from '../../../../../services/logic/asset-onboarding.service';
 
 
 @Component({
-  selector: 'app-asset-series-digital-nameplate',
-  templateUrl: './asset-series-digital-nameplate.component.html',
-  styleUrls: ['./asset-series-digital-nameplate.component.scss']
+  selector: 'app-asset-series-asset-digital-nameplate',
+  templateUrl: './asset-series-asset-digital-nameplate.component.html',
+  styleUrls: ['./asset-series-asset-digital-nameplate.component.scss']
 })
-export class AssetSeriesDigitalNameplateComponent implements OnInit {
+export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
 
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;
@@ -154,7 +154,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit {
     this.asset$.subscribe(asset => {
         this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
           this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
-            .subscribe(fileContent => AssetSeriesDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
+            .subscribe(fileContent => AssetSeriesAssetDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
       }
     );
   }

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../services/kairos.model';
+import { OispDeviceStatus } from '../../services/api/kairos.model';
 
 export class Status {
   gotData: boolean;

@@ -16,7 +16,7 @@
 import { Asset } from '../asset/asset.model';
 import { FieldDetails } from '../field-details/field-details.model';
 import { OispAlertPriority } from '../oisp/oisp-alert/oisp-alert.model';
-import { StatusHoursOneDay } from '../../services/kairos-status-aggregation.model';
+import { StatusHoursOneDay } from '../../services/api/kairos-status-aggregation.model';
 
 
 export class FactoryAssetDetails extends Asset {

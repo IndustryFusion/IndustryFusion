@@ -18,7 +18,7 @@ import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { ID } from '@datorama/akita';
 import { AgmMap } from '@agm/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Coordinate, GeocoderService } from '../../../services/geocoder.service';
+import { Coordinate, GeocoderService } from '../../../services/api/geocoder.service';
 
 @Component({
   selector: 'app-factory-site-map',

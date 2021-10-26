@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Role } from 'src/app/services/roles.model';
+import { Role } from 'src/app/services/logic/roles.model';
 
 export interface LaunchpadItem {
     name: string;

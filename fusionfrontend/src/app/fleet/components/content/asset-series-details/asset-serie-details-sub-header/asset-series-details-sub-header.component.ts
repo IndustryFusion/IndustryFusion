@@ -43,12 +43,12 @@ export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activatedRoute.fragment.subscribe(() => {
-      this.updateAsset();
+      this.updateAssetSeries();
     });
-    this.updateAsset();
+    this.updateAssetSeries();
   }
 
-  updateAsset() {
+  private updateAssetSeries() {
     this.assetSeriesID = this.assetSeriesDetailsQuery.getActiveId();
     this.assetSeriesDetailsQuery.selectActive()
       .pipe(takeUntil(this.unSubscribe$))

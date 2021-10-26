@@ -16,8 +16,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UIChart } from 'primeng/chart';
 import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
-import { StatusHours } from '../../../services/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../../../services/kairos.model';
+import { StatusHours } from '../../../services/api/kairos-status-aggregation.model';
+import { OispDeviceStatus } from '../../../services/api/kairos.model';
 import { EnumHelpers } from '../../../common/utils/enum-helpers';
 import { BehaviorSubject } from 'rxjs';
 

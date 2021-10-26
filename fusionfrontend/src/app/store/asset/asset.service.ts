@@ -30,9 +30,9 @@ import {
 } from '../factory-asset-details/factory-asset-details.model';
 import { FactorySiteService } from '../factory-site/factory-site.service';
 import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
-import { PointWithId } from '../../services/oisp.model';
+import { PointWithId } from '../../services/api/oisp.model';
 import { FieldDetails } from '../field-details/field-details.model';
-import { OispService } from '../../services/oisp.service';
+import { OispService } from '../../services/api/oisp.service';
 
 @Injectable({
   providedIn: 'root'

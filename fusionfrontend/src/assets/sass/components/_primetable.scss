@@ -31,6 +31,7 @@
   color: $basic-black;
   background-color: $light-grey;
   border: 0 none;
+  font-family: $font-family-mulish;
 
   &:first-child {
     border-radius: .5rem 0 0 .5rem;
@@ -52,6 +53,7 @@
   color: $basic-grey;
   overflow: hidden;
   cursor: pointer;
+  font-family: $font-family-mulish;
 
   &:first-child {
     border-radius: .5rem 0 0 .5rem;
@@ -222,4 +224,9 @@
   padding-right: 1rem;
   background-color: $basic-black;
   color: $basic-white;
+}
+
+.p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler {
+  width: auto;
+  margin-right: 0;
 }

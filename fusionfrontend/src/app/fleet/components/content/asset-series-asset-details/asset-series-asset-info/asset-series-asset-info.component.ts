@@ -19,11 +19,11 @@ import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asse
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-asset-series-instance-info',
-  templateUrl: './asset-series-instance-info.component.html',
-  styleUrls: ['./asset-series-instance-info.component.scss']
+  selector: 'app-asset-series-asset-info',
+  templateUrl: './asset-series-asset-info.component.html',
+  styleUrls: ['./asset-series-asset-info.component.scss']
 })
-export class AssetSeriesInstanceInfoComponent implements OnInit {
+export class AssetSeriesAssetInfoComponent implements OnInit {
 
   @Input()
   asset$: Observable<FactoryAssetDetailsWithFields>;

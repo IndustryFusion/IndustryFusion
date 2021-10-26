@@ -20,7 +20,7 @@ import { CountryQuery } from '../../../../../../store/country/country.query';
 import { SelectItem } from 'primeng/api';
 import { Asset } from '../../../../../../store/asset/asset.model';
 import { FactorySite, FactorySiteType } from '../../../../../../store/factory-site/factory-site.model';
-import { Coordinate, GeocoderService } from '../../../../../../services/geocoder.service';
+import { Coordinate, GeocoderService } from '../../../../../../services/api/geocoder.service';
 import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
 
 @Component({

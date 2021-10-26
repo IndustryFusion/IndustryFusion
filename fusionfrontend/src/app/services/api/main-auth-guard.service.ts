@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
-import { Role } from './roles.model';
+import { Role } from '../logic/roles.model';
 import { Location } from '@angular/common';
 
 @Injectable({
