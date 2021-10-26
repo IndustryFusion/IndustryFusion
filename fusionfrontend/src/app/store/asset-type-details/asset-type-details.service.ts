@@ -21,7 +21,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AssetTypeDetails } from './asset-type-details.model';
 import { AssetTypeDetailsStore } from './asset-type-details.store';
-import { RestService } from '../../services/rest.service';
+import { RestService } from '../../services/api/rest.service';
 
 @Injectable({
   providedIn: 'root'

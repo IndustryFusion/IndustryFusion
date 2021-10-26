@@ -19,7 +19,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { RestService } from '../../services/rest.service';
+import { RestService } from '../../services/api/rest.service';
 import { environment } from '../../../environments/environment';
 import { Field } from './field.model';
 import { FieldStore } from './field.store';

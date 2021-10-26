@@ -18,9 +18,9 @@ import { FactoryComposedQuery } from '../../../../store/composed/factory-compose
 import { FieldDetailsQuery } from '../../../../store/field-details/field-details.query';
 import { FieldDetails, MetricDetail } from '../../../../store/field-details/field-details.model';
 import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
-import { OispService } from '../../../../services/oisp.service';
+import { OispService } from '../../../../services/api/oisp.service';
 import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
-import { PointWithId } from '../../../../services/oisp.model';
+import { PointWithId } from '../../../../services/api/oisp.model';
 import { ArrayHelper } from '../../../../common/utils/array-helper';
 import { Observable, Subject, Subscription, timer } from 'rxjs';
 import { environment } from '../../../../../environments/environment';

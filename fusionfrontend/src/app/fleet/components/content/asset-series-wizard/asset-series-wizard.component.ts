@@ -180,7 +180,7 @@ export class AssetSeriesWizardComponent implements OnInit {
     switch (this.step) {
       case AssetSeriesWizardStep.GENERAL_INFORMATION:
         result = this.assetSeries?.name?.length && this.assetSeries?.name?.length !== 0 &&
-          this.assetSeriesForm.get('assetTypeTemplateId')?.value != null;
+          this.assetSeriesForm.get('assetTypeTemplateId')?.value != null && this.assetSeriesForm.get('name').valid;
         break;
       case AssetSeriesWizardStep.NAMEPLATE_AND_CONNECTIVITY_SETTINGS:
         result = this.connectivitySettingsValid;

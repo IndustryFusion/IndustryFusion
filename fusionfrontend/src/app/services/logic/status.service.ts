@@ -15,14 +15,14 @@
 
 import { Injectable } from '@angular/core';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { Status } from '../factory/models/status.model';
+import { Status } from '../../factory/models/status.model';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
-import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { OispService } from './oisp.service';
-import { OispDeviceStatus } from './kairos.model';
-import { AssetStatusPipe } from '../pipes/asset-status-pipe';
+import { OispService } from '../api/oisp.service';
+import { OispDeviceStatus } from '../api/kairos.model';
+import { AssetStatusPipe } from '../../pipes/asset-status-pipe';
 
 @Injectable({
   providedIn: 'root'

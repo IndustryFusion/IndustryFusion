@@ -14,8 +14,8 @@
  */
 
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
-import { StatusHours } from '../../services/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../../services/kairos.model';
+import { StatusHours } from '../../services/api/kairos-status-aggregation.model';
+import { OispDeviceStatus } from '../../services/api/kairos.model';
 import { EnumHelpers } from './enum-helpers';
 
 export class EquipmentEfficiencyHelper {

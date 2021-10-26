@@ -184,9 +184,6 @@ public class AssetService {
         if (asset.getGuid() == null) {
             throw new RuntimeException("GUID has to exist in an Asset");
         }
-        if (asset.getProtectionClass() == null) {
-            throw new RuntimeException("ProtectionClass has to exist in an Asset");
-        }
         if (asset.getName() == null) {
             throw new RuntimeException("Asset must have a name");
         }
@@ -355,8 +352,7 @@ public class AssetService {
 
     public Set<FieldInstance> getFieldInstances(final Long companyId, final Long assetId) {
         final Asset asset = getAssetByCompany(companyId, assetId);
-        Set<FieldInstance> assetFields = asset.getFieldInstances();
-        return assetFields;
+        return asset.getFieldInstances();
     }
 
     public FieldInstance getFieldInstance(final Long companyId, final Long assetId, final Long fieldInstanceId) {

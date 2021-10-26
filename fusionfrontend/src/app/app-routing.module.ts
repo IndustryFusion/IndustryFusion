@@ -17,7 +17,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LaunchpadPageComponent } from './components/pages/launchpad-page/launchpad-page.component';
-import { MainAuthGuard } from './services/main-auth-guard.service';
+import { MainAuthGuard } from './services/api/main-auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },

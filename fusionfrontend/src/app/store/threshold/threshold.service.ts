@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { RestService } from 'src/app/services/rest.service';
+import { RestService } from 'src/app/services/api/rest.service';
 import { Injectable } from '@angular/core';
 import { Threshold } from './threshold.model';
 import { HttpHeaders } from '@angular/common/http';

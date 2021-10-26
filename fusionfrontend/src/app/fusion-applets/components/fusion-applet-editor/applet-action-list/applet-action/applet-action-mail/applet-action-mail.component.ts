@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { OispService } from '../../../../../../services/oisp.service';
+import { OispService } from '../../../../../../services/api/oisp.service';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({

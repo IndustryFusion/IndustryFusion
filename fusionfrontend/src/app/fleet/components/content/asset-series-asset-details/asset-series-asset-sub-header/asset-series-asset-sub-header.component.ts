@@ -25,11 +25,11 @@ import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-det
 import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
 
 @Component({
-  selector: 'app-asset-series-instance-sub-header',
-  templateUrl: './asset-series-instance-sub-header.component.html',
-  styleUrls: ['./asset-series-instance-sub-header.component.scss']
+  selector: 'app-asset-series-asset-sub-header',
+  templateUrl: './asset-series-asset-sub-header.component.html',
+  styleUrls: ['./asset-series-asset-sub-header.component.scss']
 })
-export class AssetSeriesInstanceSubHeaderComponent implements OnInit, OnDestroy {
+export class AssetSeriesAssetSubHeaderComponent implements OnInit, OnDestroy {
 
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;

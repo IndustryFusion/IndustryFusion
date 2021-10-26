@@ -17,8 +17,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Status } from 'src/app/factory/models/status.model';
-import { OispService } from 'src/app/services/oisp.service';
-import { StatusService } from 'src/app/services/status.service';
+import { OispService } from 'src/app/services/api/oisp.service';
+import { StatusService } from 'src/app/services/logic/status.service';
 import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
