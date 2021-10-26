@@ -103,6 +103,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   constructor(
     private assetService: AssetService,
     private dialogService: DialogService,
+    private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService) {
   }
 
@@ -207,7 +208,8 @@ export class AssetsListComponent implements OnInit, OnChanges {
   }
 
   openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.activeListItem.name, () => this.deleteAsset());
+    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-delete-dialog-list',
+      this.activeListItem.name, () => this.deleteAsset());
   }
 
   openAssignRoomDialog() {

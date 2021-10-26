@@ -33,11 +33,12 @@ import { Room } from '../store/room/room.model';
 })
 export class AssetDetailMenuService {
 
-  constructor(private confirmationService: ConfirmationService, private dialogService: DialogService, private formBuilder: FormBuilder) {
+  constructor(private dialogService: DialogService, private formBuilder: FormBuilder) {
   }
 
-  public showDeleteDialog(assetName: string, acceptCallback: () => any) {
-    this.confirmationService.confirm({
+  public showDeleteDialog(confirmationService: ConfirmationService, dialogKey: string, assetName: string, acceptCallback: () => any) {
+    confirmationService.confirm({
+      key: dialogKey,
       message: `Are you sure you want to delete the asset ${assetName}?`,
       header: 'Delete Asset Confirmation',
       icon: 'pi pi-exclamation-triangle',

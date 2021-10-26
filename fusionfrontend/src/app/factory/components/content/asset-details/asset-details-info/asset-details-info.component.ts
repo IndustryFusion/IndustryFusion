@@ -31,6 +31,7 @@ import { FactorySiteQuery } from '../../../../../store/factory-site/factory-site
 import { RoomQuery } from '../../../../../store/room/room.query';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-asset-details-info',
@@ -55,7 +56,8 @@ export class AssetDetailsInfoComponent implements OnInit {
               private factoryQuery: FactorySiteQuery,
               private roomQuery: RoomQuery,
               private router: Router,
-              private routingLocation: Location) {
+              private routingLocation: Location,
+              private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
@@ -70,7 +72,8 @@ export class AssetDetailsInfoComponent implements OnInit {
   }
 
   openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.assetWithFields.name, () => this.deleteAsset());
+    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-delete-dialog-detail',
+      this.assetWithFields.name, () => this.deleteAsset());
   }
 
   openAssignRoomDialog() {

@@ -25,7 +25,8 @@ under the License.
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-asset-status *ngIf="assetWithFields" [assetWithFields]="assetWithFields" [showInline]="false"></app-asset-status>
+        <app-asset-status *ngIf="assetWithFields" [assetWithFields]="assetWithFields"
+                          [showInline]="false"></app-asset-status>
       </p>
     </div>
     <p>{{(assetWithFields)?.factorySiteName}} ({{(assetWithFields)?.roomName}})</p>
@@ -39,4 +40,4 @@ under the License.
 </section>
 
 <p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
-                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+                 key="asset-delete-dialog-detail" rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
