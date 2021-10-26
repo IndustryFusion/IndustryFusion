@@ -25,12 +25,19 @@ under the License.
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-asset-status *ngIf="assetWithFields" [assetWithFields]="assetWithFields" [showInline]="false"></app-asset-status>
+        <app-asset-status *ngIf="assetWithFields" [assetWithFields]="assetWithFields"
+                          [showInline]="false"></app-asset-status>
       </p>
     </div>
     <p>{{(assetWithFields)?.factorySiteName}} ({{(assetWithFields)?.roomName}})</p>
   </div>
   <div class="asset-info asset-menu">
-    <app-item-options-menu [showInline]="false" [actions]="dropdownMenuOptions"></app-item-options-menu>
+    <app-item-options-menu (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()"
+                           (editItem)="openEditDialog()" [actions]="dropdownMenuOptions"
+                           [assignItemText]="'Asset to room'"
+                           [showInline]="false"></app-item-options-menu>
   </div>
 </section>
+
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 key="asset-delete-dialog-detail" rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>

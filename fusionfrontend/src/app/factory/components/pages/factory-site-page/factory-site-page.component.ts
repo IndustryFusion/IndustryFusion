@@ -104,7 +104,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
           this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
         }
       },
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 }
