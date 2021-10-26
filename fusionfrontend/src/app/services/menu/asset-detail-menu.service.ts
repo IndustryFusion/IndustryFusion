@@ -36,14 +36,48 @@ export class AssetDetailMenuService {
   constructor(private dialogService: DialogService, private formBuilder: FormBuilder) {
   }
 
-  public showDeleteDialog(confirmationService: ConfirmationService, dialogKey: string, assetName: string, acceptCallback: () => any) {
-    confirmationService.confirm({
-      key: dialogKey,
-      message: `Are you sure you want to delete the asset ${assetName}?`,
-      header: 'Delete Asset Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: acceptCallback,
-      reject: () => { }
+  // TODO: Has to be extracted into Dialog/AssetInstantiationComponent (IF-429)
+  public createAssetDetailsForm(factoryAsset?: FactoryAssetDetailsWithFields): FormGroup {
+    const assetDetailsForm = this.formBuilder.group({
+      id: [null],
+      version: [],
+      roomId: ['', WizardHelper.requiredTextValidator],
+      name: ['', WizardHelper.requiredTextValidator],
+      description: [''],
+      imageKey: [''],
+      manufacturer: ['', WizardHelper.requiredTextValidator],
+      assetSeriesName: ['', WizardHelper.requiredTextValidator],
+      category: ['', WizardHelper.requiredTextValidator],
+      roomName: ['', WizardHelper.requiredTextValidator],
+      factorySiteName: ['', WizardHelper.requiredTextValidator]
+    });
+    if (factoryAsset) {
+      assetDetailsForm.patchValue(factoryAsset);
+    }
+    return assetDetailsForm;
+  }
+
+  public showEditDialog(asset: FactoryAssetDetailsWithFields, factorySite: FactorySite, factorySites: FactorySite[],
+                        rooms: Room[], closeCallback: () => any, updateCallback: (FactoryAssetDetails) => any) {
+    const assetDetailsForm = this.createAssetDetailsForm(asset);
+    const ref = this.dialogService.open(AssetInstantiationComponent, {
+      data: {
+        assetDetailsForm,
+        assetToBeEdited: asset,
+        factorySites,
+        factorySite,
+        rooms,
+        activeModalType: AssetModalType.customizeAsset,
+        activeModalMode: AssetModalMode.editAssetMode
+      },
+      header: 'General Information',
+    });
+
+    ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
+      closeCallback();
+      if (assetFormValues) {
+        updateCallback(assetFormValues);
+      }
     });
   }
 
@@ -71,48 +105,14 @@ export class AssetDetailMenuService {
     });
   }
 
-  // TODO: move to the corresponding dialog component
-  public createAssetDetailsForm(factoryAsset?: FactoryAssetDetailsWithFields): FormGroup {
-    const assetDetailsForm = this.formBuilder.group({
-      id: [null],
-      version: [],
-      roomId: ['', WizardHelper.requiredTextValidator],
-      name: ['', WizardHelper.requiredTextValidator],
-      description: [''],
-      imageKey: [''],
-      manufacturer: ['', WizardHelper.requiredTextValidator],
-      assetSeriesName: ['', WizardHelper.requiredTextValidator],
-      category: ['', WizardHelper.requiredTextValidator],
-      roomName: ['', WizardHelper.requiredTextValidator],
-      factorySiteName: ['', WizardHelper.requiredTextValidator]
-    });
-    if (factoryAsset) {
-      assetDetailsForm.patchValue(factoryAsset);
-    }
-    return assetDetailsForm;
-  }
-
-  showEditDialog(asset: FactoryAssetDetailsWithFields, factorySite: FactorySite, factorySites: FactorySite[],
-                 rooms: Room[], closeCallback: () => any, updateCallback: (FactoryAssetDetails) => any) {
-    const assetDetailsForm = this.createAssetDetailsForm(asset);
-    const ref = this.dialogService.open(AssetInstantiationComponent, {
-      data: {
-        assetDetailsForm,
-        assetToBeEdited: asset,
-        factorySites,
-        factorySite,
-        rooms,
-        activeModalType: AssetModalType.customizeAsset,
-        activeModalMode: AssetModalMode.editAssetMode
-      },
-      header: 'General Information',
-    });
-
-    ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
-      closeCallback();
-      if (assetFormValues) {
-        updateCallback(assetFormValues);
-      }
+  public showDeleteDialog(confirmationService: ConfirmationService, dialogKey: string, assetName: string, acceptCallback: () => any) {
+    confirmationService.confirm({
+      key: dialogKey,
+      message: `Are you sure you want to delete the asset ${assetName}?`,
+      header: 'Delete Asset Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: acceptCallback,
+      reject: () => { }
     });
   }
 }
