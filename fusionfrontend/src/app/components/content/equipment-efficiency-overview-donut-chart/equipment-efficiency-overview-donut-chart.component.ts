@@ -49,7 +49,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
 
   private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
     switch (status) {
-      case OispDeviceStatus.ONLINE:
+      case OispDeviceStatus.RUNNING:
         return 0;
       case OispDeviceStatus.OFFLINE:
         return 1;
@@ -108,7 +108,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
         data: [0, 0, 0, 0],
         backgroundColor: [
           '#2CA9CE',
-          '#F0F0F0',
+          '#EAEAEA',
           '#A73737',
           '#454F63'
         ],

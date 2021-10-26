@@ -26,8 +26,6 @@
 }
 
 :host ::ng-deep p-accordiontab a {
-  margin-left: 1rem !important;
-  margin-right: 1rem !important;
   margin-top: 1rem;
   border: 2px solid $basic-black !important;
   background: $grey-background !important;
@@ -37,8 +35,8 @@
   padding-left: 3rem !important;
 
   &:hover {
-    color: $hover-grey !important;
-    text-decoration: none !important;
+    color: $hover-grey;
+    text-decoration: none;
   }
 
   &.p-menuitem-link {
@@ -50,10 +48,8 @@
 }
 
 :host ::ng-deep .p-accordion .p-accordion-content {
-  margin-left: 1rem !important;
-  margin-right: 1rem !important;
-  border: 2px solid $basic-grey !important;
-  background: none !important;
+  padding: 0;
+  background: none;
 }
 
 :host ::ng-deep .p-accordion .p-accordion-toggle-icon {

@@ -52,13 +52,13 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     switch (firstStatusPointOfGroup.status) {
       case OispDeviceStatus.OFFLINE:
         dataset.label = 'Offline';
-        dataset.backgroundColor = '#F0F0F0';
+        dataset.backgroundColor = '#EAEAEA';
         break;
       case OispDeviceStatus.IDLE:
         dataset.label = 'Idle';
         dataset.backgroundColor = '#454F63';
         break;
-      case OispDeviceStatus.ONLINE:
+      case OispDeviceStatus.RUNNING:
         dataset.label = 'Running';
         dataset.backgroundColor = '#2CA9CE';
         break;

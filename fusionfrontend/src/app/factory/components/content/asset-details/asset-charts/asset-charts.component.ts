@@ -13,7 +13,17 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartPoint, ChartScales, LinearScale } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
@@ -54,6 +64,9 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   endDate: moment.Moment;
+
+  @Output()
+  loadedEvent = new EventEmitter<void>();
 
   name: string;
   initialized = false;
@@ -306,6 +319,8 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       this.updateThresholds(points);
       this.chart.update();
     }
+
+    this.loadedEvent.emit();
   }
 
   private updateThresholds(newPoints: PointWithId[]): void {

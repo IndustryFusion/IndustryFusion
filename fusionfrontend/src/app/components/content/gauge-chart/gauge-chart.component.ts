@@ -19,6 +19,7 @@ import { FieldDetails } from '../../../store/field-details/field-details.model';
 import { Asset } from '../../../store/asset/asset.model';
 import { ChartData } from 'chart.js';
 import { Threshold } from '../../../store/threshold/threshold.model';
+import { GermanNumberPipe } from '../../../pipes/germannumber.pipe';
 
 @Component({
   selector: 'app-gauge-chart',
@@ -51,6 +52,8 @@ export class GaugeChartComponent implements OnInit {
     { color: '#2CA9CE', label: 'ideal' },
     { color: '#000000', label: 'current value' },
   ];
+
+  private germanNumberPipe: GermanNumberPipe = new GermanNumberPipe();
 
   constructor() {
     this.initChartOptions();
@@ -270,7 +273,7 @@ export class GaugeChartComponent implements OnInit {
   private addRangeWithValueIndicator(rangeIndex: RANGE_INDEX,
                                      valueLower: number,
                                      valueUpper: number): void {
-    const tooltipLabelIdealRange = `${valueLower} - ${valueUpper} (${this.gaugeLabels[rangeIndex].label})`;
+    const tooltipLabelIdealRange = `${this.germanNumberPipe.transform(valueLower)} - ${this.germanNumberPipe.transform(valueUpper)} (${this.gaugeLabels[rangeIndex].label})`;
 
     this.addDataToDataset(rangeIndex, valueLower, this.metricValue, tooltipLabelIdealRange);
     this.addValueIndicatorToDataset();
@@ -301,9 +304,9 @@ export class GaugeChartComponent implements OnInit {
 
   private addDataToDataset(rangeIndex: RANGE_INDEX, startThreshold: number, endThreshold: number, tooltipLabel?: string): void {
     if (tooltipLabel == null) {
-      tooltipLabel = `${startThreshold} - ${endThreshold} (${this.gaugeLabels[rangeIndex].label})`;
+      tooltipLabel = `${this.germanNumberPipe.transform(startThreshold)} - ${this.germanNumberPipe.transform(endThreshold)} (${this.gaugeLabels[rangeIndex].label})`;
       if (rangeIndex === RANGE_INDEX.VALUE_INDICATOR) {
-        tooltipLabel = `${this.metricValue} (${this.gaugeLabels[rangeIndex].label})`;
+        tooltipLabel = `${this.germanNumberPipe.transform(this.metricValue)} (${this.gaugeLabels[rangeIndex].label})`;
       }
     }
 

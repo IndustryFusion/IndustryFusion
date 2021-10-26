@@ -23,7 +23,7 @@ under the License.
     </div>
     <div class="card-block">
         <div class="card-title">
-          <app-asset-status class="clickable" [asset]="asset" [showInline]="false" (click)="goToDetails()"></app-asset-status>
+          <app-asset-status class="clickable" [assetWithFields]="asset" [showInline]="false" (click)="goToDetails()"></app-asset-status>
         </div>
         <table class="table-wrapper table-noborder">
           <tbody>
@@ -41,7 +41,7 @@ under the License.
               </tr>
               <tr *ngFor="let field of (currentMergedFields$ | async)">
                 <td class="card-label">{{ field.description }}</td>
-                <td class="card-value">{{ formatValue(field.value, field.unit) | precision:field.type:field.accuracy }} <span>{{field.unit}}</span></td>
+                <td class="card-value">{{ field.value | precision: field.type:field.accuracy }} <span>{{field.unit}}</span></td>
               </tr>
           </tbody>
         </table>

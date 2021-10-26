@@ -31,17 +31,20 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class FieldDetailsDto extends BaseEntityDto {
     private Long assetId;
+    private Long fieldSourceId;
     private String externalName;
     private FieldType fieldType;
     private Boolean mandatory;
     private String name;
     private String description;
+    private String dashboardGroup;
     private String type;
     private String unit;
     private Double accuracy;
     private String value;
     private QuantityDataType quantityDataType;
     private FieldWidgetType widgetType;
+    private String fieldLabel;
     private Threshold absoluteThreshold;
     private Threshold idealThreshold;
     private Threshold criticalThreshold;

@@ -14,7 +14,7 @@
  */
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
@@ -70,6 +70,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   bootstrap: [AppComponent],
   providers: [
     DatePipe,
+    {
+      provide: LOCALE_ID,
+      useValue: 'de-de'
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

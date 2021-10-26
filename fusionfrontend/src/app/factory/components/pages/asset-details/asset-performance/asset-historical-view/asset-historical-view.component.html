@@ -110,27 +110,29 @@ under the License.
   </div>
 
   <ng-container *ngIf="asset$ | async as assetWithFields">
+    <div class="charts-container">
+      <ng-container *ngFor="let field of assetWithFields.fields">
+        <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
+          <!--suppress XmlDuplicatedId -->
+          <app-asset-charts id="metric-{{field.externalName}}" [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
+                            [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
+                            [options]="currentTimeslot" [startDate]="startDate" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-charts>
+        </ng-container>
+      </ng-container>
+    </div>
+
     <div class="tables-wrapper">
       <div class="custom-row-wrapper clr-row clr-justify-content-around">
         <ng-container *ngFor="let field of assetWithFields.fields">
           <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
             <div class="p-md-12 p-col-align-start">
-              <app-asset-tables [asset]="assetWithFields" [field]="field"
-                                [options]="currentTimeslot"></app-asset-tables>
+              <!--suppress XmlDuplicatedId -->
+              <app-asset-tables id="metric-{{field.externalName}}" [asset]="assetWithFields" [field]="field"
+                                [options]="currentTimeslot" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-tables>
             </div>
           </ng-container>
         </ng-container>
       </div>
-    </div>
-
-    <div class="charts-container">
-      <ng-container *ngFor="let field of assetWithFields.fields">
-        <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
-          <app-asset-charts [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
-                            [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
-                            [options]="currentTimeslot" [startDate]="startDate"></app-asset-charts>
-        </ng-container>
-      </ng-container>
     </div>
   </ng-container>
 

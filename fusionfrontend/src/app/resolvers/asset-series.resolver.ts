@@ -29,7 +29,7 @@ export class AssetSeriesResolver implements Resolve<any>{
   resolve(route: ActivatedRouteSnapshot): void {
 
     let companyId = this.companyQuery.getActiveId();
-    if (route.parent) {
+    if (route.parent?.params?.companyId) {
       this.companyService.getCompanies().subscribe();
       companyId = route.parent.params.companyId;
       this.companyService.setActive(companyId);
