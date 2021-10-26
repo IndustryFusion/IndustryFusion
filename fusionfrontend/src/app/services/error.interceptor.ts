@@ -23,6 +23,8 @@ import { MessageService } from 'primeng/api';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
+  private static DISPLAY_MESSAGES = false;
+
   private prevErrorSummary = '';
   private prevErrorTime = new Date('1.1.2000').getTime();
   private readonly SECONDS_OF_HIDING_SAME_ERROR = 60;
@@ -33,23 +35,26 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error) => {
-        const errorSummary = `Error: ${error.error?.message ? error.error.message : error.message}`;
-        const errorMessage = error.error?.error ? `${error.error?.error} (${error.error?.status})` : error.statusText;
+        if (ErrorInterceptor.DISPLAY_MESSAGES) {
+          const errorSummary = `Error: ${error.error?.message ? error.error.message : error.message}`;
+          const errorMessage = error.error?.error ? `${error.error?.error} (${error.error?.status})` : error.statusText;
 
-        const secondsToPrevError = Math.abs((new Date().getTime() - this.prevErrorTime) / 1000);
-        if (errorSummary !== this.prevErrorSummary || secondsToPrevError > this.SECONDS_OF_HIDING_SAME_ERROR) {
-          this.messageService.add(({
-            severity: 'info',
-            summary: errorSummary,
-            detail: errorMessage,
-            sticky: true,
-          }));
+          const secondsToPrevError = Math.abs((new Date().getTime() - this.prevErrorTime) / 1000);
+          if (errorSummary !== this.prevErrorSummary || secondsToPrevError > this.SECONDS_OF_HIDING_SAME_ERROR) {
+            const message = {
+              severity: 'info',
+              summary: errorSummary,
+              detail: errorMessage,
+              sticky: true,
+            };
+            this.messageService.add(message);
 
-          this.prevErrorSummary = errorSummary;
-          this.prevErrorTime = Date.now();
+            this.prevErrorSummary = errorSummary;
+            this.prevErrorTime = Date.now();
+          }
+
+          return throwError(error.message);
         }
-
-        return throwError(error.message);
       })
     );
   }
