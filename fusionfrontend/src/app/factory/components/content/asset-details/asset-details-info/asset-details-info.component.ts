@@ -21,7 +21,7 @@ import {
   FactoryAssetDetailsWithFields
 } from 'src/app/store/factory-asset-details/factory-asset-details.model';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
-import { AssetDetailMenuService } from '../../../../../services/asset-detail-menu.service';
+import { AssetDetailMenuService } from '../../../../../services/menu/asset-detail-menu.service';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
 import { Room } from '../../../../../store/room/room.model';

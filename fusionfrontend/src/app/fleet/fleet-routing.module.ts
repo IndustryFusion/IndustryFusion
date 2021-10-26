@@ -18,7 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
 import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
-import { MainAuthGuard } from '../services/main-auth-guard.service';
+import { MainAuthGuard } from '../services/api/main-auth-guard.service';
 import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';

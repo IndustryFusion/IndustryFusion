@@ -20,7 +20,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ManagerType } from '../../content/manager-type/manager-type.enum';
 import { OispAlertQuery } from '../../../store/oisp/oisp-alert/oisp-alert.query';
-import { UserManagementService } from '../../../services/user-management.service';
+import { UserManagementService } from '../../../services/api/user-management.service';
 import { KeycloakProfile } from 'keycloak-js';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 

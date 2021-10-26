@@ -65,19 +65,6 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
     });
   }
 
-  showDeleteDialog() {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Asset Serie ' + this.assetSeries.name + '?',
-      header: 'Delete Asset Serie Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.deleteItem(this.assetSeries.id);
-      },
-      reject: () => {
-      }
-    });
-  }
-
   showAssetSeriesEditWizard() {
     const dynamicDialogRef = this.dialogService.open(AssetSeriesWizardComponent, {
       data: {
@@ -90,6 +77,19 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
     dynamicDialogRef.onClose.subscribe(() => {
       this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
       this.assetSeriesDetailsService.setActive(this.assetSeries.id);
+    });
+  }
+
+  showDeleteAssetSeries() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the Asset Serie ' + this.assetSeries.name + '?',
+      header: 'Delete Asset Serie Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteItem(this.assetSeries.id);
+      },
+      reject: () => {
+      }
     });
   }
 

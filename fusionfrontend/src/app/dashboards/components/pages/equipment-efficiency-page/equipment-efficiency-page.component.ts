@@ -24,8 +24,8 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/store/company/company.query';
-import { KairosStatusAggregationService } from '../../../../services/kairos-status-aggregation.service';
-import { StatusHours, StatusHoursOneDay } from '../../../../services/kairos-status-aggregation.model';
+import { KairosStatusAggregationService } from '../../../../services/api/kairos-status-aggregation.service';
+import { StatusHours, StatusHoursOneDay } from '../../../../services/api/kairos-status-aggregation.model';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 

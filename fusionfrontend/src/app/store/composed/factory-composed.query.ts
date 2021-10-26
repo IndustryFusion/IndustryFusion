@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { combineQueries, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { OispService } from '../../services/oisp.service';
+import { OispService } from '../../services/api/oisp.service';
 import {
   FactoryAssetDetails,
   FactoryAssetDetailsWithFields

@@ -48,7 +48,7 @@ export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
     this.updateAssetSeries();
   }
 
-  updateAssetSeries() {
+  private updateAssetSeries() {
     this.assetSeriesID = this.assetSeriesDetailsQuery.getActiveId();
     this.assetSeriesDetailsQuery.selectActive()
       .pipe(takeUntil(this.unSubscribe$))

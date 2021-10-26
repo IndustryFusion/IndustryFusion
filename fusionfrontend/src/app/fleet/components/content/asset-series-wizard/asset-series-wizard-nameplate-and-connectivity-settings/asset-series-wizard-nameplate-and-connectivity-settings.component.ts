@@ -7,7 +7,7 @@ import { AssetSeries } from '../../../../../store/asset-series/asset-series.mode
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 import { SelectItem } from 'primeng/api';
-import { ProtectionClassService } from '../../../../../services/protection-class.service';
+import { ProtectionClassService } from '../../../../../services/api/protection-class.service';
 
 @Component({
   selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings',

@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { UserManagementService } from '../../../services/user-management.service';
+import { UserManagementService } from '../../../services/api/user-management.service';
 
 @Injectable({
   providedIn: 'root'

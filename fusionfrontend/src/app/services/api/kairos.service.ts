@@ -13,14 +13,14 @@
  * under the License.
  */
 
-import { Asset } from '../store/asset/asset.model';
-import { FieldDetails } from '../store/field-details/field-details.model';
+import { Asset } from '../../store/asset/asset.model';
+import { FieldDetails } from '../../store/field-details/field-details.model';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Aggregator, Sampling } from './oisp.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { OispDeviceQuery } from '../store/oisp/oisp-device/oisp-device.query';
-import { environment } from '../../environments/environment';
+import { OispDeviceQuery } from '../../store/oisp/oisp-device/oisp-device.query';
+import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import {
   KairosGroupBy,

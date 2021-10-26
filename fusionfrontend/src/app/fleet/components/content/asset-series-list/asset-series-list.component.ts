@@ -107,10 +107,6 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  private deleteItem(id: ID) {
-    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
-  }
-
   editAssetSeries(itemId: ID) {
     this.openAssetSeriesWizard(itemId.toString());
   }
@@ -138,6 +134,10 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
       reject: () => {
       }
     });
+  }
+
+  private deleteItem(id: ID) {
+    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
   }
 
 }

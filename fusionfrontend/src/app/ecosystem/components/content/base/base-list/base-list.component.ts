@@ -20,7 +20,7 @@ import { QueryEntity, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { RestService } from '../../../../../services/rest.service';
+import { RestService } from '../../../../../services/api/rest.service';
 import { BaseEntity } from '../../../../../store/baseentity.model';
 
 @Component({

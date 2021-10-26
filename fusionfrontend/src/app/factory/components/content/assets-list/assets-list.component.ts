@@ -36,7 +36,7 @@ import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/ite
 import { TableSelectedItemsBarType } from '../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
 import { OispAlert, OispAlertPriority } from '../../../../store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { AssetDetailMenuService } from '../../../../services/asset-detail-menu.service';
+import { AssetDetailMenuService } from '../../../../services/menu/asset-detail-menu.service';
 
 @Component({
   selector: 'app-assets-list',

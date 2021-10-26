@@ -20,13 +20,13 @@ import {
   AssetModalType,
   FactoryAssetDetails,
   FactoryAssetDetailsWithFields
-} from '../store/factory-asset-details/factory-asset-details.model';
-import { AssetInstantiationComponent } from '../factory/components/content/asset-instantiation/asset-instantiation.component';
+} from '../../store/factory-asset-details/factory-asset-details.model';
+import { AssetInstantiationComponent } from '../../factory/components/content/asset-instantiation/asset-instantiation.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { WizardHelper } from '../common/utils/wizard-helper';
+import { WizardHelper } from '../../common/utils/wizard-helper';
 import { DialogService } from 'primeng/dynamicdialog';
-import { FactorySite } from '../store/factory-site/factory-site.model';
-import { Room } from '../store/room/room.model';
+import { FactorySite } from '../../store/factory-site/factory-site.model';
+import { Room } from '../../store/room/room.model';
 
 @Injectable({
   providedIn: 'root'
