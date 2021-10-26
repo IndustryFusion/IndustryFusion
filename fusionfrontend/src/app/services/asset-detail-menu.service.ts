@@ -43,8 +43,7 @@ export class AssetDetailMenuService {
       header: 'Delete Asset Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: acceptCallback,
-      reject: () => {
-      }
+      reject: () => { }
     });
   }
 
@@ -72,7 +71,7 @@ export class AssetDetailMenuService {
     });
   }
 
-  //TODO: move to the dialog component
+  // TODO: move to the corresponding dialog component
   public createAssetDetailsForm(factoryAsset?: FactoryAssetDetailsWithFields): FormGroup {
     const assetDetailsForm = this.formBuilder.group({
       id: [null],
