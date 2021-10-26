@@ -61,9 +61,9 @@ export class AssetDetailsInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.factoryResolver.factorySite$.subscribe((site) => this.factorySite = site);
-    this.factoryQuery.selectAll().subscribe((sites) => this.factorySites = sites);
-    this.roomQuery.selectAll().subscribe((rooms) => this.rooms = rooms);
+    this.factoryResolver.factorySite$.subscribe(site => this.factorySite = site);
+    this.factoryQuery.selectAll().subscribe(sites => this.factorySites = sites);
+    this.roomQuery.selectAll().subscribe(rooms => this.rooms = rooms);
   }
 
   openEditDialog() {
@@ -93,7 +93,7 @@ export class AssetDetailsInfoComponent implements OnInit {
           this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
         }
       },
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 
@@ -116,7 +116,7 @@ export class AssetDetailsInfoComponent implements OnInit {
     this.assetService.removeCompanyAsset(this.assetWithFields.companyId, this.assetWithFields.id).subscribe(() => {
       const currentUrlSeparated = this.routingLocation.path().split('/');
       const newRoutingLocation = currentUrlSeparated.slice(0, currentUrlSeparated.findIndex(elem => elem === 'assets') + 1);
-      this.router.navigateByUrl(newRoutingLocation.join('/')).then((res) => console.warn('routing:::', res));
+      this.router.navigateByUrl(newRoutingLocation.join('/'));
     });
   }
 }

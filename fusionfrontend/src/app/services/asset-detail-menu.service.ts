@@ -72,6 +72,7 @@ export class AssetDetailMenuService {
     });
   }
 
+  //TODO: move to the dialog component
   public createAssetDetailsForm(factoryAsset?: FactoryAssetDetailsWithFields): FormGroup {
     const assetDetailsForm = this.formBuilder.group({
       id: [null],
