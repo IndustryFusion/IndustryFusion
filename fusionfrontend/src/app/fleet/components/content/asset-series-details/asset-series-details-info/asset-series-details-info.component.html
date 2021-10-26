@@ -29,13 +29,13 @@ under the License.
     </div>-->
   <div class="asset-info asset-menu">
     <app-item-options-menu [actions]="dropdownMenuOptions" [showInline]="false"
-                           (createItem)="createAssetFromAssetSeries()"
-                           (editItem)="showAssetSeriesEditWizard()"
-                           (deleteItem)="showDeleteAssetSeries()"
+                           (createItem)="openCreateWizard()"
+                           (editItem)="openEditWizard()"
+                           (deleteItem)="openDeleteDialog()"
                            createItemName="Asset"
                            updateItemText="Asset Series Version"></app-item-options-menu>
   </div>
 </section>
 
 <p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
-                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+                 rejectButtonStyleClass="if-button button-secondary" key="asset-series-delete-dialog-detail"></p-confirmDialog>

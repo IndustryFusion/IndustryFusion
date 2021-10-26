@@ -25,10 +25,10 @@ import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 import { ConfirmationService } from 'primeng/api';
+import { AssetSeriesDetailMenuService } from '../../../../services/menu/asset-series-detail-menu.service';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -61,6 +61,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
     private unitsResolver: UnitsResolver,
     private dialogService: DialogService,
+    private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
     private confirmationService: ConfirmationService) {
   }
 
@@ -94,21 +95,14 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
 
-  createAsset(assetSeriesId: ID) {
-    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
-      data: {
-        companyId: this.companyQuery.getActiveId(),
-        prefilledAssetSeriesId: assetSeriesId,
-      },
-      header: 'Digital Twin Creator for Assets',
-      width: '75%'
-    });
-
-    assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
+  createAssetFromAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
+      () => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  editAssetSeries(itemId: ID) {
-    this.openAssetSeriesWizard(itemId.toString());
+  editAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showEditWizard(assetSeriesId.toString(),
+      () => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
   private openAssetSeriesWizard(idString: string) {
@@ -124,16 +118,8 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   showDeleteDialog() {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Asset Serie ' + this.activeListItem.name + '?',
-      header: 'Delete Asset Serie Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.deleteItem(this.activeListItem.id);
-      },
-      reject: () => {
-      }
-    });
+    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
+      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
   }
 
   private deleteItem(id: ID) {

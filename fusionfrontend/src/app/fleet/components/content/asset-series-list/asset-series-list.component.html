@@ -55,7 +55,7 @@ under the License.
       <app-asset-series-status [assetSeries]="assetSeries" [showInline]="true"></app-asset-series-status> -->
       <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="15">{{ assetSeries.assetCount }}</td>
       <td (click)="setActiveRow(assetSeries)" [style.width.%]="5">
-        <app-item-options-menu (createItem)="createAsset(assetSeries.id)"
+        <app-item-options-menu (createItem)="createAssetFromAssetSeries(assetSeries.id)"
                                (deleteItem)="showDeleteDialog()"
                                (editItem)="editAssetSeries(assetSeries.id)"
                                [actions]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
@@ -68,4 +68,4 @@ under the License.
 
 
 <p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
-                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+                 rejectButtonStyleClass="if-button button-secondary" key="asset-series-delete-dialog"></p-confirmDialog>
