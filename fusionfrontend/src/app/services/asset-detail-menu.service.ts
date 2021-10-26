@@ -43,7 +43,8 @@ export class AssetDetailMenuService {
       header: 'Delete Asset Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: acceptCallback,
-      reject: () => { }
+      reject: () => {
+      }
     });
   }
 

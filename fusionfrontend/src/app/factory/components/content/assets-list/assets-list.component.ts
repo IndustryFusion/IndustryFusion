@@ -91,14 +91,10 @@ export class AssetsListComponent implements OnInit, OnChanges {
   ItemOptionsMenuType = ItemOptionsMenuType;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
-  tableFilters: FilterOption[] = [{
-    filterType: FilterType.DROPDOWNFILTER,
-    columnName: 'Category',
-    attributeToBeFiltered: 'category'
-  },
+  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName' }];
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'}];
 
   constructor(
     private assetService: AssetService,
