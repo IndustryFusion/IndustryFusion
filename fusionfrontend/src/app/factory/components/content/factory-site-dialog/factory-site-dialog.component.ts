@@ -145,13 +145,13 @@ export class FactorySiteDialogComponent implements OnInit {
     this.factorySiteService.createFactorySite(this.factorySite).subscribe(newFactorySite => {
         this.roomService.getRoomsOfFactorySite(this.factorySite.companyId, newFactorySite.id).subscribe();
       },
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 
   private edit() {
     this.factorySiteService.updateFactorySite(this.factorySite).subscribe(
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 
