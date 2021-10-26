@@ -120,10 +120,10 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
       }
     };
 
-    const menuActions = [];
+    let menuActions = [];
 
-    if (!this.actions) {
-      this.menuActions = [editItem, deleteItem];
+    if (!this.actions || this.actions.length === 0) {
+      menuActions = [editItem, deleteItem];
     } else {
       for (const itemOptionsMenuType of this.actions) {
         switch (itemOptionsMenuType) {
