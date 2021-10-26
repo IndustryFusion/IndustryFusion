@@ -21,7 +21,7 @@ under the License.
 
   <div *ngIf="selectedAttributes && selectedAttributes.length > 0" class="fields-list">
     <app-asset-type-template-field-header [type]="FieldType.ATTRIBUTE"></app-asset-type-template-field-header>
-    <app-asset-type-template-field-row *ngFor="let attribute of selectedAttributes" [fieldTarget]="attribute"
+    <app-asset-type-template-field-row *ngFor="let attribute of selectedAttributes" [fieldTarget]="attribute" [fieldType]="FieldType.ATTRIBUTE"
                                         (confirmSignal)="onConfirm(attribute)" (editSignal)="onEdit($event)" (deleteSignal)="onDelete($event)" [confirmed]="isConfirmed(attribute)">
     </app-asset-type-template-field-row>
   </div>

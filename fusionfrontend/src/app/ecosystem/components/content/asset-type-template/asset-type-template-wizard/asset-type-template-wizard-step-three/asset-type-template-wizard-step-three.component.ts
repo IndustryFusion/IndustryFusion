@@ -34,7 +34,7 @@ export class AssetTypeTemplateWizardStepThreeComponent implements OnInit {
   @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputAttributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
-  @Output() attributeSelect = new EventEmitter<FieldTarget[]>();
+  @Output() attributesChanged = new EventEmitter<FieldTarget[]>();
 
   public FieldType = FieldType;
 
@@ -60,7 +60,7 @@ export class AssetTypeTemplateWizardStepThreeComponent implements OnInit {
 
   private changeStep(step: number) {
     if (this.confirmedAttributes.length === this.selectedAttributes.length  && this.assetTypeTemplateForm?.valid) {
-      this.attributeSelect.emit(this.confirmedAttributes);
+      this.attributesChanged.emit(this.confirmedAttributes);
       this.stepChange.emit(step);
     }
   }
