@@ -19,6 +19,11 @@ import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-m
 import { AssetWizardComponent } from '../../asset-wizard/asset-wizard.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CompanyQuery } from '../../../../../store/company/company.query';
+import { ID } from '@datorama/akita';
+import { ConfirmationService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { AssetSeriesService } from '../../../../../store/asset-series/asset-series.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-asset-series-details-info',
@@ -32,7 +37,11 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE];
 
-  constructor(private dialogService: DialogService,
+  constructor(private router: Router,
+              private routingLocation: Location,
+              private dialogService: DialogService,
+              private confirmationService: ConfirmationService,
+              private assetSeriesService: AssetSeriesService,
               private companyQuery: CompanyQuery) {
   }
 
@@ -48,7 +57,26 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
       header: 'Digital Twin Creator for Assets',
       width: '80%'
     });
+  }
 
-    /*assetWizardRef.onClose.subscribe(() => this.resolve(this.route));*/
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the Asset Serie ' + this.assetSeries.name + '?',
+      header: 'Delete Asset Serie Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteItem(this.assetSeries.id);
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  private deleteItem(id: ID) {
+    this.assetSeriesService.deleteItem(this.companyQuery.getActiveId(), id).subscribe(() => {
+      const currentUrlSeparated = this.routingLocation.path().split('/');
+      const newRoutingLocation = currentUrlSeparated.slice(0, currentUrlSeparated.findIndex(elem => elem === 'assetseries') + 1);
+      this.router.navigateByUrl(newRoutingLocation.join('/')).catch(error => console.warn('Routing error: ', error));
+    });
   }
 }
