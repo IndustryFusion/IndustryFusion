@@ -86,6 +86,6 @@ export class OispStatus {
 export enum OispDeviceStatus {
   OFFLINE = 0,
   IDLE = 1,
-  ONLINE = 2,
+  RUNNING = 2,
   ERROR = 3
 }

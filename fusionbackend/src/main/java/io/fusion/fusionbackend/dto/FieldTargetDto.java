@@ -32,9 +32,10 @@ public class FieldTargetDto extends BaseEntityDto {
     private FieldDto field;
     private FieldType fieldType;
     private Boolean mandatory;
-    private String label;
     private String name;
     private String description;
+    private String label;
+    private String dashboardGroup;
 
     @JsonCreator
     public FieldTargetDto() {

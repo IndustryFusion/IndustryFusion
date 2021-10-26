@@ -24,9 +24,10 @@ export class FieldTarget extends BaseEntity {
   field: Field;
   fieldType: FieldType;
   mandatory: boolean;
-  label: string;
   name: string;
   description: string;
+  label: string;
+  dashboardGroup: string;
 }
 
 export enum FieldType {

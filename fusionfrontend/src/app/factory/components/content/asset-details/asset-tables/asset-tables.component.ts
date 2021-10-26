@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FieldDetails } from '../../../../../store/field-details/field-details.model';
 import { Observable, Subject, timer } from 'rxjs';
 import { PointWithId } from '../../../../../services/oisp.model';
@@ -39,6 +39,9 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   options: string;
+
+  @Output()
+  loadedEvent = new EventEmitter<void>();
 
   latestPoints$: Observable<PointWithId[]>;
 
@@ -92,7 +95,6 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('[asset-tables.component] destroyed subscription');
     this.destroy$.next(true);
     this.destroy$.complete();
   }
@@ -140,6 +142,8 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
         }
         // only memorize last 50 values
         this.currentTimestamps = this.currentTimestamps.slice(Math.max(this.currentTimestamps.length - 50, 0));
+
+        this.loadedEvent.emit();
       });
   }
 }

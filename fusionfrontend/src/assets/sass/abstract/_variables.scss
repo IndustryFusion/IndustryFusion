@@ -17,7 +17,8 @@
   $basic-white:       #FFFFFF;
   $light-white:       #F0F0F0;
   $light-grey:        #F8F8F8;
-  $dark-white:        #E6E6E6;
+  $middle-white:      #E6E6E6;
+  $dark-white:        #EAEAEA;
   $middle-grey:       #B9B9B9;
   $basic-grey:        #95989A;
   $slight-grey:       #707070;
@@ -49,15 +50,15 @@
   $inactive-infotext:         $basic-grey;
   $hover-grey:                $dark-grey;
   $hover-grey-border:         $basic-grey;
-  $disabled-button:           $dark-white;
+  $disabled-button:           $middle-white;
   $onboarding-text:           $fusion-blue;
-  $underlay:                  $dark-white;
+  $underlay:                  $middle-white;
 
   $status-active:             $fusion-blue;
   $status-running:            $fusion-blue;
   $status-idle:               $grey;
   $status-error:              $fusion-red;
-  $status-offline:            $light-white;
+  $status-offline:            $dark-white;
 
   $trash-button:              $saturated-red;
   $trash-button-hover:        $light-red;

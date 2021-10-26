@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { FieldDetails } from 'src/app/store/field-details/field-details.model';
 import { Status } from '../factory/models/status.model';
-import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
+import { AssetWithFields } from 'src/app/store/asset/asset.model';
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -32,9 +32,9 @@ export class StatusService {
   constructor(private oispService: OispService) {
   }
 
-  determineStatus(fields: FieldDetails[], asset: Asset): Status {
+  determineStatus(fields: FieldDetails[]): Status {
     if (fields.length <= 0) {
-      return ({ gotData: false, type: 'nofields', statusValue: 'none'});
+      return ({ gotData: false, statusValue: 'none'});
     }
     let gotAnyValues = false;
     fields.forEach( field => {
@@ -44,69 +44,16 @@ export class StatusService {
     });
 
     if (!gotAnyValues) {
-      return ({ gotData: false, type: 'none', statusValue: 'none'});
+      return ({ gotData: false, statusValue: 'none'});
     } else {
-      const category = this.getCategory(asset);
-      const value = this.getStatusValue(category, fields);
-      return ({ gotData: true, type: category, statusValue: value});
+      return ({ gotData: true, statusValue: this.getStatusValue(fields)});
     }
   }
 
-  getCategory(asset: Asset): string {
-    switch (asset.name) {
-          case('ZPF 6H'):
-            return 'ZPF';
-          case('Gasversorgung aus 2x2 Sauerstoffflaschen'):
-            return 'Gasversorgung';
-          case('Airtracker Raumluftüberwachung'):
-            return 'Airtracker';
-          case('Novus Airline ALG26P'):
-            return 'Novus';
-          case('Novus Airtower 360M'):
-            return 'Novus';
-          default:
-            return 'microstep';
-    }
-  }
-
-  getStatusValue(category: string, fields: FieldDetails[]): string {
+  getStatusValue(fields: FieldDetails[]): string {
     const assetStatusField = fields.filter(field => field.externalName === 'status')[0];
-    const assetWarningField = fields.filter(field => field.description === 'Warning')[0];
-    const assetErrorField = fields.filter(field => field.description === 'Alarm')[0];
-    const assetIdleField = fields.filter(field => field.description === 'Idle')[0];
     if (assetStatusField) {
-      if (!assetStatusField.value) {
-        return null;
-      } else {
-        switch (category) {
-          case 'Airtracker':
-            return '';
-          case 'Gasversorgung':
-            return assetStatusField.value;
-          case 'microstep':
-            return assetStatusField.value;
-          case 'ZPF':
-            if (assetStatusField.value === 'true') {
-              return 'mldBetriebOn';
-            } else {
-              return 'mldBetriebOff';
-            }
-          case 'Novus':
-            if (assetStatusField.value === 'true') {
-              return 'mldBetriebOn';
-            } else if (assetWarningField.value === 'true') {
-              return 'mldWarningOn';
-            } else if (assetErrorField.value === 'true') {
-              return 'mldErrorOn';
-            } else if (assetIdleField.value === 'true') {
-              return 'mldIdleOn';
-            } else {
-              return 'mldBetriebOff';
-            }
-          default:
-            return null;
-        }
-      }
+      return assetStatusField?.value;
     } else {
       return '';
     }
@@ -114,21 +61,20 @@ export class StatusService {
 
   getStatusByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<Status> {
     const mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(assetWithFields, period);
-    return this.getStatusFromMergedFieldsAndAsset(mergedFields$, assetWithFields);
+    return this.getStatusFromMergedFields(mergedFields$);
   }
 
-  getStatusFromMergedFieldsAndAsset(mergedFields$: Observable<FieldDetails[]>,
-                                    assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): Observable<Status> {
+  getStatusFromMergedFields(mergedFields$: Observable<FieldDetails[]>): Observable<Status> {
     return mergedFields$.pipe(
       map((fields) => {
-        return this.determineStatus(fields, assetWithFields);
+        return this.determineStatus(fields);
       })
     );
   }
 
   transformStatusToOispDeviceStatus(status: Status): OispDeviceStatus {
     const assetStatusPipe = new AssetStatusPipe();
-    const statusString = assetStatusPipe.transform(status.gotData, status.type, status.statusValue).status;
+    const statusString = assetStatusPipe.transform(status.gotData, status.statusValue).status;
 
     switch (statusString) {
       case 'offline':
@@ -136,7 +82,7 @@ export class StatusService {
       case 'idle':
         return OispDeviceStatus.IDLE;
       case 'running':
-        return OispDeviceStatus.ONLINE;
+        return OispDeviceStatus.RUNNING;
       default:
         return OispDeviceStatus.ERROR;
     }

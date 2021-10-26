@@ -17,7 +17,6 @@ import { OispDeviceStatus } from '../../services/kairos.model';
 
 export class Status {
   gotData: boolean;
-  type: string;
   statusValue: string;
 }
 

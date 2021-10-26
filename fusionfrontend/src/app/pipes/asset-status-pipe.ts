@@ -15,74 +15,44 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 
-class MyFormat {
+class AssetStatusFormat {
   status: string;
   color: string;
 }
 
-// TODO: only the case microstep should be relevant in the end
+enum AssetStatus {
+  OFFLINE = 'offline',
+  IDLE = 'idle',
+  RUNNING = 'running',
+  ERROR = 'error'
+}
+
 @Pipe({ name: 'assetStatus' })
 export class AssetStatusPipe implements PipeTransform {
-  transform(gotData: boolean, type: string, statusValue: string): MyFormat {
+
+  private statuses: Map<string, AssetStatusFormat> = new Map( [
+    [ 'running', { status: 'running', color: '#2CA9CE' } ],
+    [ 'idle',  { status: 'idle', color: '#454F63'} ],
+    [ 'error',  { status: 'error', color: '#A73737'} ],
+    [ 'offline',  { status: 'offline', color: '#EAEAEA'} ],
+  ]);
+
+  transform(gotData: boolean, statusValue: string): AssetStatusFormat {
     if (!gotData) {
-      if (type === 'nofields') {
-        return ({ status: 'no status available', color: '#4f504f'});
-      } else {
-        return ({ status: 'offline', color: '#4f504f'});
-      }
-    } else { // gotData = true
-        switch (type) {
-          case 'microstep':
-            switch (String(statusValue)) {
-              case '0':
-                return ({ status: 'offline', color: '#4f504f'});
-              case '1':
-                return ({ status: 'idle', color: '#2CA9CE'});
-              case '2':
-                return ({ status: 'running', color: 'rgba(44,206,79,0.73)'});
-              case '3':
-                return ({ status: 'idle', color: '#2CA9CE'});
-              default:
-                return ({ status: 'no status available', color: '#e80707'});
-            }
-          case 'ZPF':
-            switch (String(statusValue)) {
-              case 'mldBetriebOn':
-                return ({ status: 'running', color: 'rgba(44,206,79,0.73)'});
-              case 'mldBetriebOff':
-                return ({ status: 'idle', color: '#2CA9CE'});
-              default:
-                return ({ status: 'no status available', color: '#e80707'});
-            }
-          case 'Novus':
-            switch (String(statusValue)) {
-              case 'mldBetriebOn':
-                return ({ status: 'running', color: 'rgba(44,206,79,0.73)'});
-              case 'mldWarningOn':
-                return ({ status: 'Warning', color: '#e80707'});
-              case 'mldErrorOn':
-                return ({ status: 'Error', color: '#e80707'});
-              case 'mldIdleOn':
-                return ({ status: 'idle', color: '#2CA9CE'});
-              case 'mldBetriebOff':
-                return ({ status: 'offline', color: '#4f504f'});
-              default:
-                return ({ status: 'no status available', color: '#e80707'});
-            }
-          case 'Airtracker':
-            return ({ status: 'running', color: 'rgba(44,206,79,0.73)'});
-          case 'Gasversorgung':
-            switch (String(statusValue)) {
-              case '1':
-                return ({ status: 'idle', color: '#2CA9CE'});
-              case '2':
-                return ({ status: 'running', color: 'rgba(44,206,79,0.73)'});
-              default:
-                return ({ status: 'no status available', color: '#e80707'});
-            }
-          default:
-            return ({ status: 'gotData but no type', color: '#e80707'});
-        }
+      return this.statuses.get(AssetStatus.OFFLINE);
+    }
+
+    switch (String(statusValue)) {
+      case '0':
+        return this.statuses.get(AssetStatus.OFFLINE);
+      case '1':
+        return this.statuses.get(AssetStatus.IDLE);
+      case '2':
+        return this.statuses.get(AssetStatus.RUNNING);
+      case '3':
+        return this.statuses.get(AssetStatus.ERROR);
+      default:
+        return this.statuses.get(AssetStatus.OFFLINE);
     }
   }
 }

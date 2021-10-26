@@ -13,7 +13,7 @@
 * under the License.
 */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ItemOptionsMenuType } from './item-options-menu.type';
 
@@ -22,7 +22,9 @@ import { ItemOptionsMenuType } from './item-options-menu.type';
   templateUrl: './item-options-menu.component.html',
   styleUrls: ['./item-options-menu.component.scss']
 })
-export class ItemOptionsMenuComponent implements OnInit {
+export class ItemOptionsMenuComponent implements OnInit, OnChanges {
+
+  @Input() appendTo: any = null;
 
   @Input() actions: ItemOptionsMenuType[];
   @Input() createItemName: string;
@@ -36,16 +38,21 @@ export class ItemOptionsMenuComponent implements OnInit {
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
   @Output() assignItem = new EventEmitter<void>();
-  public menuActions: MenuItem[];
 
+  public menuActions: MenuItem[];
   public ItemOptionsMenuType = ItemOptionsMenuType;
-  @Input() appendTo: any = null;
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.menuActions = this.generateMenuItems();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.actions) {
+      this.menuActions = this.generateMenuItems();
+    }
   }
 
   onCreateClick() {
@@ -113,10 +120,10 @@ export class ItemOptionsMenuComponent implements OnInit {
       }
     };
 
-    const menuActions = [];
+    let menuActions = [];
 
-    if (!this.actions) {
-      this.menuActions = [editItem, deleteItem];
+    if (!this.actions || this.actions.length === 0) {
+      menuActions = [editItem, deleteItem];
     } else {
       for (const itemOptionsMenuType of this.actions) {
         switch (itemOptionsMenuType) {

@@ -57,7 +57,7 @@ export class AssetCardComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.allMergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
     this.updateMergedFields();
-    this.status$ = this.statusService.getStatusFromMergedFieldsAndAsset(this.currentMergedFields$, this.asset);
+    this.status$ = this.statusService.getStatusFromMergedFields(this.currentMergedFields$);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -85,15 +85,6 @@ export class AssetCardComponent implements OnInit, OnChanges {
 
   calculateMin(progress: number): number {
     return Math.min(progress / this.maxProgress * 100, 7);
-  }
-
-  formatValue(value: any, unit: any) {
-    if (unit === 'bar' || unit === 'l/min') {
-      return (Math.round(value * 10000) / 10000).toFixed(4);
-
-    } else {
-      return value;
-    }
   }
 
   goToDetails() {

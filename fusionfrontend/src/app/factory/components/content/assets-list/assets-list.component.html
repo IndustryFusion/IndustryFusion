@@ -18,7 +18,7 @@ under the License.
   <h3 class="table-header">{{ treeData?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
     <div class="filter-btn-div">
-      <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+      <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
                         [tableFilters]="tableFilters"
                         class="filter-btn">
       </app-table-filter>
@@ -28,8 +28,8 @@ under the License.
   </div>
 </div>
 
-<app-table-selected-items-bar (deleteItem)="setActiveRow(); showDeleteDialog()"
-                              (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); showEditDialog()"
+<app-table-selected-items-bar (deleteItem)="setActiveRow(); openDeleteDialog()"
+                              (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); openEditDialog()"
                               (showAssetCards)="onCardsViewClick()" [itemName]="'Asset'"
                               [selectedItems]="selectedFactoryAssets"
                               [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT,
@@ -45,7 +45,7 @@ under the License.
       <th [style.width.%]="1.5"></th>
       <th [style.width.%]="1.5"></th>
       <th [style.width.%]="20" class="first-header-item">
-        <app-table-searchbar (searchByName)="searchAssets($event)" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+        <app-table-searchbar (searchByName)="searchAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
                              attributeToBeSearched="name" filterColumn="Asset">
         </app-table-searchbar>
       </th>
@@ -79,7 +79,6 @@ under the License.
                    class="fa-fw notification-high"></fa-icon>
         </div>
       </td>
-
       <td [routerLink]="getAssetLink(rowData)"
           class="asset-column p-flex-row table-bold-font right-column-padding">
         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
@@ -94,18 +93,17 @@ under the License.
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12">{{rowData.roomName}}</td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12">{{rowData.factorySiteName}}</td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="11">
-        <app-asset-status [asset]="rowData" [showInline]="true"></app-asset-status>
+        <app-asset-status [assetWithFields]="rowData" [showInline]="true"></app-asset-status>
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
         <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
-                               [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
-                               (assignItem)="openAssignRoomDialog()" (deleteItem)="showDeleteDialog()">
+                               [assignItemText]="'Asset to room'" (editItem)="openEditDialog()"
+                               (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()">
         </app-item-options-menu>
       </td>
     </tr>
   </ng-template>
 </p-treeTable>
 
-
 <p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
-                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+                 rejectButtonStyleClass="if-button button-secondary" key="asset-delete-dialog-list"></p-confirmDialog>

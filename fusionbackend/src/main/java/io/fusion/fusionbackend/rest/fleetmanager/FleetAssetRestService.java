@@ -33,6 +33,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -127,10 +130,15 @@ public class FleetAssetRestService {
     }
 
     @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances")
-    public Set<FieldInstanceDto> getFieldInstances(@PathVariable final Long companyId,
+    public List<FieldInstanceDto> getFieldInstances(@PathVariable final Long companyId,
                                                    @PathVariable final Long assetId,
                                                    @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return fieldInstanceMapper.toDtoSet(assetService.getFieldInstances(companyId, assetId), embedChildren);
+        Set<FieldInstanceDto> unsortedFieldInstances = fieldInstanceMapper
+                .toDtoSet(assetService.getFieldInstances(companyId, assetId), embedChildren);
+
+        List<FieldInstanceDto> sortedFieldInstances = new ArrayList<>(unsortedFieldInstances);
+        sortedFieldInstances.sort(Comparator.comparing(FieldInstanceDto::getId));
+        return  sortedFieldInstances;
     }
 
     @GetMapping(path = "/companies/{companyId}/assets/{assetId}/fieldinstances/{fieldInstanceId}")

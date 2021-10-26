@@ -16,12 +16,12 @@ under the License.
 <app-company-info [factorySite]="(factorySite$ | async)" [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
 
 <p-accordion class="factory-site-content">
-  <p-accordionTab header="Assets">
+  <p-accordionTab header="Assets" [selected]="true">
     <app-assets-list [company]="(company$ | async)"
                      [factorySites]="(factorySites$ | async)"
                      [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)"
                      [allRoomsOfFactorySite]="(roomsOfFactorySite$ | async)"
-                     [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
+                     [factoryAssetsDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
                      (toolBarClickEvent)="toolbarClick($event)"
                      (selectedEvent)="selectAssets($event)"
                      (updateAssetEvent)="updateRoom($event)">
