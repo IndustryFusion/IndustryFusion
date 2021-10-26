@@ -50,4 +50,12 @@ export class MaintenanceProgressbarComponent implements OnInit {
     this.state = AssetMaintenanceUtils.getMaintenanceState(this.maintenanceValue, this.type);
   }
 
+  isNaN(maintenanceValue: number) {
+    return Number.isNaN(maintenanceValue);
+  }
+
+  isZero(maintenanceValue: number) {
+    return maintenanceValue === 0;
+  }
+
 }
