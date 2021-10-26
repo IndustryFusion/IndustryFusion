@@ -57,7 +57,7 @@ under the License.
       <td (click)="setActiveRow(assetSeries)" [style.width.%]="5">
         <app-item-options-menu (createItem)="createAsset(assetSeries.id)"
                                (deleteItem)="showDeleteDialog()"
-                               (editItem)="modifyItem(assetSeries.id)"
+                               (editItem)="editAssetSeries(assetSeries.id)"
                                [actions]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
                                [createItemName]="'Asset'" class="column-visibility">
         </app-item-options-menu>

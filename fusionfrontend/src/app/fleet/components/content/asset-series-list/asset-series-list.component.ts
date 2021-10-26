@@ -14,7 +14,7 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
@@ -53,16 +53,15 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
 
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public companyQuery: CompanyQuery,
-    public assetSeriesService: AssetSeriesService,
-    public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
-    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    public assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
-    public unitsResolver: UnitsResolver,
-    public dialogService: DialogService,
-    public confirmationService: ConfirmationService) {
+    private route: ActivatedRoute,
+    private companyQuery: CompanyQuery,
+    private assetSeriesService: AssetSeriesService,
+    private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
+    private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+    private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
+    private unitsResolver: UnitsResolver,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
@@ -83,9 +82,8 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   createAssetSeries() {
-    this.startAssetSeriesWizard('');
+    this.openAssetSeriesWizard('');
   }
-
 
   searchAssetSeriesByName(event?: AssetSeriesDetails[]) {
     this.assetSeriesSearchedByName = event;
@@ -109,15 +107,15 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  deleteItem(id: number | string) {
+  private deleteItem(id: ID) {
     this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
   }
 
-  modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString());
+  editAssetSeries(itemId: ID) {
+    this.openAssetSeriesWizard(itemId.toString());
   }
 
-  public startAssetSeriesWizard(idString: string) {
+  private openAssetSeriesWizard(idString: string) {
     const dynamicDialogRef = this.dialogService.open(AssetSeriesWizardComponent, {
       data: {
         companyId: this.companyQuery.getActiveId(),
