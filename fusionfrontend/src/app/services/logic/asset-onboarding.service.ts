@@ -17,13 +17,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AssetWithFields } from '../store/asset/asset.model';
-import { FieldSourceQuery } from '../store/field-source/field-source.query';
-import { FieldSourceResolver } from '../resolvers/field-source.resolver';
+import { AssetWithFields } from '../../store/asset/asset.model';
+import { FieldSourceQuery } from '../../store/field-source/field-source.query';
+import { FieldSourceResolver } from '../../resolvers/field-source.resolver';
 import { map } from 'rxjs/operators';
-import { FieldType } from '../store/field-details/field-details.model';
-import { AssetSeriesQuery } from '../store/asset-series/asset-series.query';
-import { ConnectivityTypeQuery } from '../store/connectivity-type/connectivity-type.query';
+import { FieldType } from '../../store/field-details/field-details.model';
+import { AssetSeriesQuery } from '../../store/asset-series/asset-series.query';
+import { ConnectivityTypeQuery } from '../../store/connectivity-type/connectivity-type.query';
 
 @Injectable({
   providedIn: 'root'

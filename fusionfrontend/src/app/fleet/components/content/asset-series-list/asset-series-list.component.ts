@@ -14,7 +14,7 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
@@ -25,10 +25,10 @@ import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-
 import { CompanyQuery } from '../../../../store/company/company.query';
 import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
 import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
 import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
 import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 import { ConfirmationService } from 'primeng/api';
+import { AssetSeriesDetailMenuService } from '../../../../services/menu/asset-series-detail-menu.service';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -53,16 +53,16 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
 
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public companyQuery: CompanyQuery,
-    public assetSeriesService: AssetSeriesService,
-    public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
-    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    public assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
-    public unitsResolver: UnitsResolver,
-    public dialogService: DialogService,
-    public confirmationService: ConfirmationService) {
+    private route: ActivatedRoute,
+    private companyQuery: CompanyQuery,
+    private assetSeriesService: AssetSeriesService,
+    private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
+    private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+    private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
+    private unitsResolver: UnitsResolver,
+    private dialogService: DialogService,
+    private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
+    private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
@@ -83,9 +83,8 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   createAssetSeries() {
-    this.startAssetSeriesWizard('');
+    this.openAssetSeriesWizard('');
   }
-
 
   searchAssetSeriesByName(event?: AssetSeriesDetails[]) {
     this.assetSeriesSearchedByName = event;
@@ -96,28 +95,17 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
 
-  createAsset(assetSeriesId: ID) {
-    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
-      data: {
-        companyId: this.companyQuery.getActiveId(),
-        prefilledAssetSeriesId: assetSeriesId,
-      },
-      header: 'Digital Twin Creator for Assets',
-      width: '75%'
-    });
-
-    assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
+  createAssetFromAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
+      () => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  deleteItem(id: number | string) {
-    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
+  editAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showEditWizard(assetSeriesId.toString(),
+      () => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
   }
 
-  modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString());
-  }
-
-  public startAssetSeriesWizard(idString: string) {
+  private openAssetSeriesWizard(idString: string) {
     const dynamicDialogRef = this.dialogService.open(AssetSeriesWizardComponent, {
       data: {
         companyId: this.companyQuery.getActiveId(),
@@ -130,16 +118,12 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   showDeleteDialog() {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Asset Serie ' + this.activeListItem.name + '?',
-      header: 'Delete Asset Serie Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.deleteItem(this.activeListItem.id);
-      },
-      reject: () => {
-      }
-    });
+    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
+      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+  }
+
+  private deleteItem(id: ID) {
+    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
   }
 
 }

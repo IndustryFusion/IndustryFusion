@@ -14,6 +14,7 @@
  */
 
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FieldThresholdType } from 'src/app/store/field/field.model';
 
 export class CustomFormValidators {
   static FLOAT_REGEX = /^[+-]?([0-9]*[.])?[0-9]+$/;
@@ -63,6 +64,27 @@ export class CustomFormValidators {
               required: true
             };
           }
+        }
+      }
+
+      return null;
+    };
+  }
+
+  /**
+   * The FormControl using this validator is required
+   * if the fieldThresholdType is mandatory and the control is not "empty".
+   * Hereby, null and '' are considered as empty.
+   *
+   * @param fieldThresholdType: Specifies if field is mandatory, optional or disabled
+   */
+  public static requiredIfMandatoryField(fieldThresholdType: FieldThresholdType): ValidatorFn {
+    return (control: FormControl) => {
+      if (control.parent instanceof FormGroup && (control.value === null || control.value === '' )) {
+        if (fieldThresholdType === FieldThresholdType.MANDATORY) {
+          return {
+            required: true
+          };
         }
       }
 

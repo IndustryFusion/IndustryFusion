@@ -14,10 +14,10 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { OispDeviceStatus } from '../../../services/kairos.model';
+import { OispDeviceStatus } from '../../../services/api/kairos.model';
 import { UIChart } from 'primeng/chart';
 import { EnumHelpers } from '../../../common/utils/enum-helpers';
-import { StatusHoursOneDay } from '../../../services/kairos-status-aggregation.model';
+import { StatusHoursOneDay } from '../../../services/api/kairos-status-aggregation.model';
 
 
 @Component({

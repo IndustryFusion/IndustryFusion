@@ -23,7 +23,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AssetTypeTemplate } from './asset-type-template.model';
 import { AssetTypeTemplateStore } from './asset-type-template.store';
-import { RestService } from '../../services/rest.service';
+import { RestService } from '../../services/api/rest.service';
 
 @Injectable({
   providedIn: 'root'

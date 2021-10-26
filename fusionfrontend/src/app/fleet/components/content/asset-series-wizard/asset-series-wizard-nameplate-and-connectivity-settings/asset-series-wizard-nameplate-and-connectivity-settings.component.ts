@@ -7,7 +7,7 @@ import { AssetSeries } from '../../../../../store/asset-series/asset-series.mode
 import { DialogType } from '../../../../../common/models/dialog-type.model';
 import { WizardHelper } from '../../../../../common/utils/wizard-helper';
 import { SelectItem } from 'primeng/api';
-import { ProtectionClassService } from '../../../../../services/protection-class.service';
+import { ProtectionClassService } from '../../../../../services/api/protection-class.service';
 
 @Component({
   selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings',
@@ -54,12 +54,18 @@ export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implemen
       connectivityProtocolId: [null, Validators.required],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });
-    this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
+    this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.isValid()));
+    this.assetSeriesForm.valueChanges.subscribe(() => this.valid.emit(this.isValid()));
 
     this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
     if (this.mode === DialogType.CREATE) {
       this.selectFirstItemsInDropdowns();
     }
+  }
+
+  private isValid(): boolean {
+    return (this.connectivitySettingsForm.valid || this.connectivitySettingsForm.disabled) &&
+      this.assetSeriesForm.get('ceCertified').valid && this.assetSeriesForm.get('protectionClass').valid;
   }
 
   private disableFormGroupOnEditMode() {

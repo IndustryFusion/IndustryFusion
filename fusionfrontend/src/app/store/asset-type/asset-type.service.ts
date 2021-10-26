@@ -23,7 +23,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AssetType } from './asset-type.model';
 import { AssetTypeStore } from './asset-type.store';
-import { RestService } from 'src/app/services/rest.service';
+import { RestService } from 'src/app/services/api/rest.service';
 import { AssetTypeDetailsStore } from '../asset-type-details/asset-type-details.store';
 import { AssetTypeDetails } from '../asset-type-details/asset-type-details.model';
 import { AssetTypeDetailsQuery } from '../asset-type-details/asset-type-details.query';

@@ -21,7 +21,7 @@ import { ConditionType, Rule, RuleAction, RuleStatus } from './oisp-rule.model';
 import { environment } from '../../../../environments/environment';
 import { ID } from '@datorama/akita';
 import { tap } from 'rxjs/operators';
-import { UserManagementService } from '../../../services/user-management.service';
+import { UserManagementService } from '../../../services/api/user-management.service';
 
 @Injectable({
   providedIn: 'root'

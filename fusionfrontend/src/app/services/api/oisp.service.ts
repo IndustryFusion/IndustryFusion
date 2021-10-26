@@ -17,9 +17,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of, timer } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { Asset, AssetWithFields } from '../store/asset/asset.model';
-import { FieldDetails, FieldType } from '../store/field-details/field-details.model';
+import { environment } from '../../../environments/environment';
+import { Asset, AssetWithFields } from '../../store/asset/asset.model';
+import { FieldDetails, FieldType } from '../../store/field-details/field-details.model';
 import {
   Aggregator,
   Metrics,
@@ -33,9 +33,9 @@ import {
   Series
 } from './oisp.model';
 import { KeycloakService } from 'keycloak-angular';
-import { OispDeviceQuery } from '../store/oisp/oisp-device/oisp-device.query';
-import { ComponentType } from '../store/oisp/oisp-device/oisp-device.model';
-import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
+import { OispDeviceQuery } from '../../store/oisp/oisp-device/oisp-device.query';
+import { ComponentType } from '../../store/oisp/oisp-device/oisp-device.model';
+import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 
 @Injectable({
   providedIn: 'root'

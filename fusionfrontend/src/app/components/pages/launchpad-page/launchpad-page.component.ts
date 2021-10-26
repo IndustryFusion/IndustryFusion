@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomeItemClass, LaunchpadItem } from '../../content/launchpad-item/launchpad-item.model';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Role } from 'src/app/services/roles.model';
+import { Role } from 'src/app/services/logic/roles.model';
 import { KeycloakService } from 'keycloak-angular';
 
 @Component({

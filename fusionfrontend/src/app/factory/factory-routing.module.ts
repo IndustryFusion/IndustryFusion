@@ -21,8 +21,8 @@ import { AssetsGridPageComponent } from './components/pages/assets-grid-page/ass
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryManagerPageType } from './factory-routing.model';
-import { MainAuthGuard } from '../services/main-auth-guard.service';
-import { Role } from '../services/roles.model';
+import { MainAuthGuard } from '../services/api/main-auth-guard.service';
+import { Role } from '../services/logic/roles.model';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
