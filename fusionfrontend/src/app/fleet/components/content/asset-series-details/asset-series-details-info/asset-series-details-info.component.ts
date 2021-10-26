@@ -16,6 +16,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
 import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
+import { AssetWizardComponent } from '../../asset-wizard/asset-wizard.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { CompanyQuery } from '../../../../../store/company/company.query';
 
 @Component({
   selector: 'app-asset-series-details-info',
@@ -31,10 +34,23 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
     ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE
   ];
 
-  constructor() {
+  constructor(private dialogService: DialogService,
+              private companyQuery: CompanyQuery) {
   }
 
   ngOnInit() {
+  }
 
+  createAssetFromAssetSeries() {
+    this.dialogService.open(AssetWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        prefilledAssetSeriesId: this.assetSeries.id,
+      },
+      header: 'Digital Twin Creator for Assets',
+      width: '80%'
+    });
+
+    /*assetWizardRef.onClose.subscribe(() => this.resolve(this.route));*/
   }
 }

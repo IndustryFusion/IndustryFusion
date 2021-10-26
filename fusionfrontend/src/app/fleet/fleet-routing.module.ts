@@ -24,7 +24,7 @@ import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
 import { AssetSeriesDetailsQuery } from '../store/asset-series-details/asset-series-details.query';
-import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
+import { AssetSeriesAssetDigitalNameplateComponent } from './components/pages/asset-series-asset/asset-series-asset-digital-nameplate/asset-series-asset-digital-nameplate.component';
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 import { AssetSeriesResolver } from '../resolvers/asset-series.resolver';
@@ -76,7 +76,7 @@ const routes: Routes = [
               },
               {
                 path: ':assetId/digital-nameplate',
-                component: AssetSeriesDigitalNameplateComponent,
+                component: AssetSeriesAssetDigitalNameplateComponent,
                 resolve: {
                   asset: FactoryAssetDetailsResolver,
                   room: RoomResolver,

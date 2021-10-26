@@ -28,7 +28,9 @@ under the License.
       <p>{{(assetSeries)?.templateVersion}}</p>
     </div>-->
   <div class="asset-info asset-menu">
-    <app-item-options-menu [actions]="dropdownMenuOptions" [showInline]="false" createItemName="Asset Instance"
+    <app-item-options-menu [actions]="dropdownMenuOptions" [showInline]="false"
+                           (createItem)="createAssetFromAssetSeries()"
+                           createItemName="Asset"
                            updateItemText="Asset Series Version"></app-item-options-menu>
   </div>
 </section>

@@ -40,11 +40,11 @@ import { AssetOnboardingService } from '../../../../../services/asset-onboarding
 
 
 @Component({
-  selector: 'app-asset-series-digital-nameplate',
-  templateUrl: './asset-series-digital-nameplate.component.html',
-  styleUrls: ['./asset-series-digital-nameplate.component.scss']
+  selector: 'app-asset-series-asset-digital-nameplate',
+  templateUrl: './asset-series-asset-digital-nameplate.component.html',
+  styleUrls: ['./asset-series-asset-digital-nameplate.component.scss']
 })
-export class AssetSeriesDigitalNameplateComponent implements OnInit {
+export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
 
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;
@@ -154,7 +154,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit {
     this.asset$.subscribe(asset => {
         this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
           this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
-            .subscribe(fileContent => AssetSeriesDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
+            .subscribe(fileContent => AssetSeriesAssetDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
       }
     );
   }
