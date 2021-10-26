@@ -54,12 +54,18 @@ export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implemen
       connectivityProtocolId: [null, Validators.required],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });
-    this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.connectivitySettingsForm.valid));
+    this.connectivitySettingsForm.valueChanges.subscribe(() => this.valid.emit(this.isValid()));
+    this.assetSeriesForm.valueChanges.subscribe(() => this.valid.emit(this.isValid()));
 
     this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
     if (this.mode === DialogType.CREATE) {
       this.selectFirstItemsInDropdowns();
     }
+  }
+
+  private isValid(): boolean {
+    return (this.connectivitySettingsForm.valid || this.connectivitySettingsForm.disabled) &&
+      this.assetSeriesForm.get('ceCertified').valid && this.assetSeriesForm.get('protectionClass').valid;
   }
 
   private disableFormGroupOnEditMode() {
