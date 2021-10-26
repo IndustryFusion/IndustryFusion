@@ -30,9 +30,7 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
   @Input()
   assetSeries: AssetSeriesDetails;
 
-  dropdownMenuOptions: ItemOptionsMenuType[] = [
-    ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE
-  ];
+  dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE];
 
   constructor(private dialogService: DialogService,
               private companyQuery: CompanyQuery) {
