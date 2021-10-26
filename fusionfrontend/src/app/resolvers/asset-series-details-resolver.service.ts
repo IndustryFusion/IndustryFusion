@@ -19,16 +19,25 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { AssetSeriesDetailsService } from '../store/asset-series-details/asset-series-details.service';
 import { CompanyService } from '../store/company/company.service';
 import { ID } from '@datorama/akita';
+import { RouteHelpers } from '../common/utils/route-helpers';
+import { CompanyQuery } from '../store/company/company.query';
 
 @Injectable({ providedIn: 'root' })
 export class AssetSeriesDetailsResolver implements Resolve<any>{
   constructor(private companyService: CompanyService,
+              private companyQuery: CompanyQuery,
               private assetSeriesDetailsService: AssetSeriesDetailsService) { }
 
   resolve(route: ActivatedRouteSnapshot): void {
     this.companyService.getCompanies().subscribe();
-    const companyId = route.params.companyId;
-    this.companyService.setActive(companyId);
+
+    let companyId = RouteHelpers.findParamInFullActivatedRoute(route, 'companyId');
+    if (!companyId) {
+      companyId = this.companyQuery.getActiveId();
+    } else {
+      this.companyService.setActive(companyId);
+    }
+
     this.resolveUsingCompanyId(companyId);
   }
 

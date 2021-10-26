@@ -21,9 +21,12 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { CompanyQuery } from '../../../../../store/company/company.query';
 import { ID } from '@datorama/akita';
 import { ConfirmationService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AssetSeriesService } from '../../../../../store/asset-series/asset-series.service';
 import { Location } from '@angular/common';
+import { AssetSeriesWizardComponent } from '../../asset-series-wizard/asset-series-wizard.component';
+import { AssetSeriesDetailsResolver } from '../../../../../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
 
 @Component({
   selector: 'app-asset-series-details-info',
@@ -38,10 +41,13 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE];
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private routingLocation: Location,
               private dialogService: DialogService,
               private confirmationService: ConfirmationService,
               private assetSeriesService: AssetSeriesService,
+              private assetSeriesDetailsService: AssetSeriesDetailsService,
+              private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
               private companyQuery: CompanyQuery) {
   }
 
@@ -69,6 +75,21 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
       },
       reject: () => {
       }
+    });
+  }
+
+  showAssetSeriesEditWizard() {
+    const dynamicDialogRef = this.dialogService.open(AssetSeriesWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        assetSeriesId: this.assetSeries.id.toString(),
+      },
+      width: '90%',
+      header: 'AssetSeries Implementation',
+    });
+    dynamicDialogRef.onClose.subscribe(() => {
+      this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
+      this.assetSeriesDetailsService.setActive(this.assetSeries.id);
     });
   }
 

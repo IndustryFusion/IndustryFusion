@@ -30,6 +30,7 @@ under the License.
   <div class="asset-info asset-menu">
     <app-item-options-menu [actions]="dropdownMenuOptions" [showInline]="false"
                            (createItem)="createAssetFromAssetSeries()"
+                           (editItem)="showAssetSeriesEditWizard()"
                            (deleteItem)="showDeleteDialog()"
                            createItemName="Asset"
                            updateItemText="Asset Series Version"></app-item-options-menu>
