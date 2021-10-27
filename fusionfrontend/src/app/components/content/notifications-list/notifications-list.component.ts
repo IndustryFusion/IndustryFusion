@@ -65,8 +65,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   OispPriority = OispAlertPriority;
   selectedNotifications: OispNotification[] = [];
   alertStatusTypes = OispAlertStatus;
-  activeNotification: OispNotification;
-  shouldShowDeleteNotification = false;
   notificationStates = NotificationState;
   notificationSubscription: Subscription;
 
