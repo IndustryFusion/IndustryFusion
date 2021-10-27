@@ -37,6 +37,7 @@ import { RoomsListComponent } from './components/content/rooms-list/rooms-list.c
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { FieldInstanceResolver } from '../resolvers/field-instance.resolver';
+import { CompanyResolver } from '../resolvers/company.resolver';
 
 const routes: Routes = [
   {
@@ -54,6 +55,9 @@ const routes: Routes = [
         data: {
           roles: [Role.FACTORY_MANAGER],
           breadcrumb: 'Factory Sites'
+        },
+        resolve: {
+          company: CompanyResolver
         },
         children: [
           {
@@ -109,6 +113,9 @@ const routes: Routes = [
       roles: [Role.FACTORY_MANAGER],
       breadcrumb: 'Rooms'
     },
+    resolve: {
+      company: CompanyResolver
+    },
     children: [
       {
         path: '',
@@ -158,7 +165,8 @@ const routes: Routes = [
     path: 'factorymanager/companies/:companyId/assets',
     canActivate: [MainAuthGuard],
     resolve: {
-      devices: OispDeviceResolver
+      devices: OispDeviceResolver,
+      company: CompanyResolver,
     },
     data: {
       roles: [Role.FACTORY_MANAGER],
