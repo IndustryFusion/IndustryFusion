@@ -23,7 +23,7 @@ import { RouteHelpers } from '../common/utils/route-helpers';
 export class CompanyResolver implements Resolve<any>{
   constructor(private companyService: CompanyService) { }
 
-  resolve(route: ActivatedRouteSnapshot): void { // using Observable will result in deadlock
+  resolve(route: ActivatedRouteSnapshot): void { // using Observable will result in deadlock when called from routing module
     const companyId = RouteHelpers.findParamInFullActivatedRoute(route, 'companyId');
     this.companyService.setActive(companyId);
 

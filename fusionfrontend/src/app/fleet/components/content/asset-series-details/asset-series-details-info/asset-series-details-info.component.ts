@@ -57,7 +57,7 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
 
   openEditWizard() {
     this.assetSeriesDetailMenuService.showEditWizard(this.assetSeries.id.toString(), () => {
-      this.assetSeriesDetailsResolver.resolve().subscribe();
+      this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
       this.assetSeriesDetailsService.setActive(this.assetSeries.id);
     });
   }

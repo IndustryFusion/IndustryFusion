@@ -90,7 +90,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.state = this.getCurrentState();
-    this.assetSeriesDetailsResolver.resolve().subscribe();
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
     this.periodicallyFetchNotifications();
     this.initNameMappings();
     this.resetNotificationVariablesToAllNotifications();

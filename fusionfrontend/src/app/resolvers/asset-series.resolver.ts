@@ -28,7 +28,7 @@ export class AssetSeriesResolver implements Resolve<AssetSeries[]>{
 
   resolve(): Observable<AssetSeries[]> {
     const companyId = this.companyQuery.getActiveId();
-    if (companyId != null) {
+    if (companyId) {
       return this.assetSeriesService.getAssetSeriesOfCompany(companyId);
     } else {
       console.error('[asset series resolver]: company unknown');

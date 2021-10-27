@@ -66,7 +66,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
-    this.assetSeriesDetailsResolver.resolve().subscribe();
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
     this.company$ = this.factoryResolver.company$;
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.rooms$ = this.factoryResolver.rooms$;

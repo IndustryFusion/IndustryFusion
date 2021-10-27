@@ -20,22 +20,23 @@ import { AssetSeriesDetailsService } from '../store/asset-series-details/asset-s
 import { CompanyQuery } from '../store/company/company.query';
 import { EMPTY, Observable } from 'rxjs';
 import { AssetSeriesDetails } from '../store/asset-series-details/asset-series-details.model';
-import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class AssetSeriesDetailsResolver implements Resolve<AssetSeriesDetails[]>{
+export class AssetSeriesDetailsResolver implements Resolve<void>{
   constructor(private companyQuery: CompanyQuery,
               private assetSeriesDetailsService: AssetSeriesDetailsService) { }
 
-  resolve(): Observable<AssetSeriesDetails[]> {
-    return this.companyQuery.waitForActive().pipe(switchMap(company => {
-      if (company) {
-        return this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(company.id);
-      } else {
-        console.error('[asset series details resolver]: company unknown');
-        return EMPTY;
-      }
-    }));
+  resolve(): void { // using Observable will result in deadlock when called from routing module
+    this.resolveFromComponent().subscribe();
+  }
 
+  resolveFromComponent(): Observable<AssetSeriesDetails[]> {
+    const companyId = this.companyQuery.getActiveId();
+    if (companyId) {
+      return this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(companyId);
+    } else {
+      console.error('[asset series details resolver]: company unknown');
+      return EMPTY;
+    }
   }
 }

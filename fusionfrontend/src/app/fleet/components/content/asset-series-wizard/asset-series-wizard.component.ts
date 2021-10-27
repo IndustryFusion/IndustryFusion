@@ -83,7 +83,7 @@ export class AssetSeriesWizardComponent implements OnInit {
     this.fieldsResolver.resolve().subscribe();
     this.connectivityTypeResolver.resolve().subscribe();
     this.assetTypesResolver.resolve().subscribe();
-    this.assetSeriesDetailsResolver.resolve().subscribe();
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
   }
 
   private initFromConfigData(dialogConfig: DynamicDialogConfig): void {

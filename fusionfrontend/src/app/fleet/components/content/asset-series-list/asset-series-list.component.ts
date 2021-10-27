@@ -76,7 +76,7 @@ export class AssetSeriesListComponent implements OnInit {
   }
 
   private resolveAssetSeriesDetails() {
-    this.assetSeriesDetailsResolver.resolve().subscribe();
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
   }
 
   setActiveRow(assetSeries: AssetSeriesDetails) {
