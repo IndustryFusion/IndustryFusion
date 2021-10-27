@@ -198,7 +198,7 @@ export class AssetWizardComponent implements OnInit {
   }
 
   private resolveWizard(): void {
-    this.assetSeriesResolver.resolve(this.activatedRoute.snapshot);
+    this.assetSeriesResolver.resolve().subscribe();
     this.assetResolver.resolve(this.activatedRoute.snapshot);
     this.fleetAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetTypesResolver.resolve().subscribe();

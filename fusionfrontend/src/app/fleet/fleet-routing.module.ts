@@ -16,7 +16,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
-import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { MainAuthGuard } from '../services/api/main-auth-guard.service';
 import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
@@ -29,6 +29,7 @@ import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 import { AssetSeriesResolver } from '../resolvers/asset-series.resolver';
 import { ConnectivityTypeResolver } from '../resolvers/connectivity-type.resolver';
+import { CompanyResolver } from '../resolvers/company.resolver';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
       breadcrumb: 'Asset Series',
     },
     resolve: {
+      company: CompanyResolver,
       assetSeriesDetails: AssetSeriesDetailsResolver,
     },
     children: [

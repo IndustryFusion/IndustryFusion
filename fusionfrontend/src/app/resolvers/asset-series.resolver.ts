@@ -14,33 +14,24 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Resolve } from '@angular/router';
 
 import { AssetSeriesService } from '../store/asset-series/asset-series.service';
-import { CompanyService } from '../store/company/company.service';
 import { CompanyQuery } from '../store/company/company.query';
+import { Observable } from 'rxjs';
+import { AssetSeries } from '../store/asset-series/asset-series.model';
 
 @Injectable({ providedIn: 'root' })
-export class AssetSeriesResolver implements Resolve<any>{
-  constructor(private companyService: CompanyService,
-              private companyQuery: CompanyQuery,
+export class AssetSeriesResolver implements Resolve<AssetSeries[]>{
+  constructor(private companyQuery: CompanyQuery,
               private assetSeriesService: AssetSeriesService) { }
 
-  resolve(route: ActivatedRouteSnapshot): void {
-
-    let companyId = this.companyQuery.getActiveId();
-    if (route.parent?.params?.companyId) {
-      this.companyService.getCompanies().subscribe();
-      companyId = route.parent.params.companyId;
-      this.companyService.setActive(companyId);
-    }
-
+  resolve(): Observable<AssetSeries[]> {
+    const companyId = this.companyQuery.getActiveId();
     if (companyId != null) {
-      this.assetSeriesService.getAssetSeriesOfCompany(companyId).subscribe();
-      if (route.paramMap.has('id')) {
-        const assetSeriesId = route.paramMap.get('id');
-        this.assetSeriesService.getItem(companyId, assetSeriesId).subscribe();
-      }
+      return this.assetSeriesService.getAssetSeriesOfCompany(companyId);
+    } else {
+      console.error('[asset series resolver]: company unknown');
     }
   }
 }
