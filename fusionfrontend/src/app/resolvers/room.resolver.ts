@@ -14,24 +14,22 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-
-import { CompanyService } from '../store/company/company.service';
+import { Resolve } from '@angular/router';
 import { RoomService } from '../store/room/room.service';
-import { RouteHelpers } from '../common/utils/route-helpers';
+import { ID } from '@datorama/akita';
+import { CompanyQuery } from '../store/company/company.query';
 
 @Injectable({ providedIn: 'root' })
-export class RoomResolver implements Resolve<any>{
-  constructor(private companyService: CompanyService,
+export class RoomResolver implements Resolve<void>{
+  constructor(private companyQuery: CompanyQuery,
               private roomService: RoomService) { }
 
-  resolve(route: ActivatedRouteSnapshot): void {
-
-    this.companyService.getCompanies().subscribe();
-    const companyId = RouteHelpers.findParamInFullActivatedRoute(route, 'companyId');
-    this.companyService.setActive(companyId);
-    if (companyId != null) {
+  resolve(): void { // using Observable will result in deadlock when called from routing module
+    const companyId: ID = this.companyQuery.getActiveId();
+    if (companyId) {
       this.roomService.getRoomsOfCompany(companyId).subscribe();
+    } else {
+      console.error('[room resolver]: company unknown');
     }
   }
 }
