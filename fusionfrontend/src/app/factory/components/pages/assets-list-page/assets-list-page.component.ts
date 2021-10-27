@@ -29,7 +29,7 @@ import {
 } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { ID } from '@datorama/akita';
 import { AssetService } from 'src/app/store/asset/asset.service';
-import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver';
 import { RoomService } from '../../../../store/room/room.service';
 import { RouteHelpers } from '../../../../common/utils/route-helpers';
 
@@ -66,7 +66,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
-    this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetSeriesDetailsResolver.resolve().subscribe();
     this.company$ = this.factoryResolver.company$;
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.rooms$ = this.factoryResolver.rooms$;

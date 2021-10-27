@@ -18,16 +18,15 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 import { CompanyService } from '../store/company/company.service';
 import { RouteHelpers } from '../common/utils/route-helpers';
-import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyResolver implements Resolve<any>{
   constructor(private companyService: CompanyService) { }
 
-  resolve(route: ActivatedRouteSnapshot): void { // using Observable will crash routing
-    this.companyService.getCompanies().pipe(tap(() => {
-      const companyId = RouteHelpers.findParamInFullActivatedRoute(route, 'companyId');
-      this.companyService.setActive(companyId);
-    })).subscribe();
+  resolve(route: ActivatedRouteSnapshot): void { // using Observable will result in deadlock
+    const companyId = RouteHelpers.findParamInFullActivatedRoute(route, 'companyId');
+    this.companyService.setActive(companyId);
+
+    this.companyService.getCompanies().subscribe();
   }
 }
