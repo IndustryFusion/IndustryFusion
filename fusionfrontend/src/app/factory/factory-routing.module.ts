@@ -36,7 +36,7 @@ import { RoomQuery } from '../store/room/room.query';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
-import { FieldInstanceResolver } from '../resolvers/field-instance.resolver';
+import { FieldInstanceDetailsResolver } from '../resolvers/field-instance-details.resolver';
 import { CompanyResolver } from '../resolvers/company.resolver';
 
 const routes: Routes = [
@@ -200,7 +200,7 @@ const routes: Routes = [
         canActivate: [MainAuthGuard],
         resolve: {
           assets: FactoryAssetDetailsResolver,
-          fieldDetails: FieldInstanceResolver
+          fieldInstanceDetails: FieldInstanceDetailsResolver
         },
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
@@ -231,7 +231,7 @@ const routes: Routes = [
           {
             path: 'performance/performance',
             component: AssetPerformanceComponent,
-            resolve: { fieldDetails: FieldInstanceResolver},
+            resolve: { fieldInstanceDetails: FieldInstanceDetailsResolver},
             data: {
               breadcrumb: 'Performance',
             },
