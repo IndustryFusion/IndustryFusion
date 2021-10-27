@@ -60,13 +60,15 @@ const routes: Routes = [
         resolve: {
           asset: AssetResolver,
           room: RoomResolver,
-          factorySite: FactorySiteResolver
         },
         children: [
           {
             path: 'assets',
             data: {
               breadcrumb: AssetSeriesDetailsQuery,
+            },
+            resolve: {
+              factorySite: FactorySiteResolver
             },
             children: [
               {
@@ -81,8 +83,8 @@ const routes: Routes = [
                 component: AssetSeriesAssetDigitalNameplateComponent,
                 resolve: {
                   asset: FactoryAssetDetailsResolver,
-                  room: RoomResolver,
-                  factorySite: FactorySiteResolver,
+                 /* room: RoomResolver,*/
+                  /*factorySite: FactorySiteResolver,*/
                   assetSeries: AssetSeriesResolver,
                   connectivityTypes: ConnectivityTypeResolver
                 },
