@@ -22,7 +22,7 @@ import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AssetSeriesService } from '../../../../../store/asset-series/asset-series.service';
 import { Location } from '@angular/common';
-import { AssetSeriesDetailsResolver } from '../../../../../resolvers/asset-series-details-resolver';
+import { AssetSeriesDetailsResolver } from '../../../../../resolvers/asset-series-details.resolver';
 import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
 import { AssetSeriesDetailMenuService } from '../../../../../services/menu/asset-series-detail-menu.service';
 

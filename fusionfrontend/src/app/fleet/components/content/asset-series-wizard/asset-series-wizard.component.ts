@@ -30,7 +30,7 @@ import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
 import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver';
+import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details.resolver';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../common/utils/wizard-helper';
 import { EnumHelpers } from '../../../../common/utils/enum-helpers';

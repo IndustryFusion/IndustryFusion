@@ -16,13 +16,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
-import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver';
+import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details.resolver';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
 import { MainAuthGuard } from '../services/api/main-auth-guard.service';
 import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { AssetResolver } from '../resolvers/asset.resolver';
 import { RoomResolver } from '../resolvers/room.resolver';
-import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
+import { FactorySiteResolver } from '../resolvers/factory-site.resolver';
 import { AssetSeriesDetailsQuery } from '../store/asset-series-details/asset-series-details.query';
 import { AssetSeriesAssetDigitalNameplateComponent } from './components/pages/asset-series-asset/asset-series-asset-digital-nameplate/asset-series-asset-digital-nameplate.component';
 import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';

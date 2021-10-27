@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver';
+import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details.resolver';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-wizard.component';

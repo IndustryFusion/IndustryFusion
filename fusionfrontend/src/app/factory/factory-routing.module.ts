@@ -29,7 +29,7 @@ import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
-import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
+import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status.resolver';
 import { FactorySiteQuery } from '../store/factory-site/factory-site.query';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 import { RoomQuery } from '../store/room/room.query';

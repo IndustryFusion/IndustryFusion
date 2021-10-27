@@ -16,7 +16,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver';
+import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details.resolver';
 import { Observable, Subscription } from 'rxjs';
 import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
 import { OispAlertService } from '../../../store/oisp/oisp-alert/oisp-alert.service';

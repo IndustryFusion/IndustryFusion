@@ -29,7 +29,7 @@ import {
 } from '../../../../store/factory-asset-details/factory-asset-details.model';
 import { ID } from '@datorama/akita';
 import { AssetService } from 'src/app/store/asset/asset.service';
-import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver';
+import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details.resolver';
 import { RoomService } from '../../../../store/room/room.service';
 import { RouteHelpers } from '../../../../common/utils/route-helpers';
 
