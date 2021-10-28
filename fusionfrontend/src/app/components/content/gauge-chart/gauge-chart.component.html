@@ -14,8 +14,9 @@ under the License.
 -->
 
 <div class="gauge-chart">
-  <div class="container">
-    <p-chart #chart type="doughnut" [data]="data" [options]="chartOptions"></p-chart>
+  <div class="container p-d-flex p-jc-center">
+    <p-chart #chart class="chart-on-top" type="doughnut" [data]="data" [options]="chartOptions"></p-chart>
+
     <div class="label-container">
       <label class="metric-value">{{metricValue == null ? 'n.a.' : metricValue | germanNumber}}</label>
       <label class="metric-label">{{fieldDetail.unit}}</label>
