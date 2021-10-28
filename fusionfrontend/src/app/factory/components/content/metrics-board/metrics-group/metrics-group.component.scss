@@ -61,6 +61,11 @@ $metric-margin-y: var(--metric-margin-y);
           line-height: $medium-line-height;
           letter-spacing: 0;
           color: $regular-grey;
+
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          width: 95%;
+          overflow: hidden;
         }
 
         .if-icon-time {
