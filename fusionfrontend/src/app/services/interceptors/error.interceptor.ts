@@ -23,7 +23,7 @@ import { MessageService } from 'primeng/api';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  private static DISPLAY_MESSAGES = false;
+  private static DISPLAY_MESSAGES = true;
 
   private prevErrorSummary = '';
   private prevErrorTime = new Date('1.1.2000').getTime();
