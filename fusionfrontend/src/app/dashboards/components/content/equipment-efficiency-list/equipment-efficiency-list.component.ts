@@ -23,6 +23,8 @@ import { ID } from '@datorama/akita';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { OispAlert, OispAlertPriority } from '../../../../store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { TableHelper } from '../../../../common/utils/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -40,6 +42,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   @Input()
   assetTypes: AssetType[];
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
@@ -53,13 +58,12 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'}];
-  rows = 5;
 
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.rows = 50;
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnChanges(): void {
@@ -151,5 +155,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     } else {
       return null;
     }
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

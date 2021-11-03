@@ -31,14 +31,16 @@ under the License.
     </div>
   </div>
 
-  <p-treeTable
-    class="list-container"
-    [value]="treeData"
-    [rowsPerPageOptions]="[5,10,50]"
-    [rows]="rows"
-    [paginator]="true"
-    [showCurrentPageReport]="true"
-    currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+  <p-treeTable [alwaysShowPaginator]="true"
+               [pageLinks]="5"
+               [paginator]="true"
+               [rowsPerPageOptions]="rowsPerPageOptions"
+               [rows]="rowCount"
+               [showCurrentPageReport]="true"
+               [value]="treeData"
+               (onPage)="updateRowCountInUrl($event.rows)"
+               class="list-container"
+               currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="2"></th>
