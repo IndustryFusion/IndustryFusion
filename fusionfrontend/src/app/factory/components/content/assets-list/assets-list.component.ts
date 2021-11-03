@@ -240,11 +240,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     return ['/factorymanager', 'companies', asset.companyId, 'assets', asset.id];
   }
 
-  updateRowCountInUrl(rowCount: number): void {
-    this.rowCount = rowCount;
-    TableHelper.updateRowCountInUrl(rowCount, this.router);
-  }
-
   private showAssignRoomDialog(modalType: AssetModalType, modalMode: AssetModalMode, header: string) {
     this.assetDetailMenuService.showAssignRoomDialog(this.activeListItem, this.factorySite, this.factorySites,
       this.rooms, modalType, modalMode, header, (details) => this.assetUpdated(details));
@@ -294,13 +289,18 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (value.subsystemIds?.length > 0) {
       const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       value.subsystemIds.forEach(id => {
-        const subsytem = this.factoryAssetsDetailsWithFields.find(asset => asset.id === id);
-        if (subsytem) {
-          children.push(this.addNode(treeNode, subsytem));
+        const subsystem = this.factoryAssetsDetailsWithFields.find(asset => asset.id === id);
+        if (subsystem) {
+          children.push(this.addNode(treeNode, subsystem));
         }
       });
       treeNode.children = children;
     }
     return treeNode;
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    this.rowCount = rowCount;
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

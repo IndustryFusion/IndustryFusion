@@ -18,6 +18,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { RouteHelpers } from '../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-notifications-sub-header',
@@ -51,11 +52,11 @@ export class NotificationsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isOpenActive = () => {
-    return this.route && this.route.match('^\/notifications\/open+$');
+    return RouteHelpers.matchFullRoutes(this.route, ['^\/notifications\/open+']);
   }
 
   isClearedActive = () => {
-    return this.route && this.route.match('^\/notifications\/cleared+$');
+    return RouteHelpers.matchFullRoutes(this.route, ['^\/notifications\/cleared+']);
   }
 
   onOpenClick() {

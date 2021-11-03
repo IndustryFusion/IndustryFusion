@@ -19,6 +19,7 @@ import { Router, UrlTree } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
+import { RouteHelpers } from '../../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-dashboard-sub-header',
@@ -53,12 +54,12 @@ export class DashboardSubHeaderComponent implements OnInit, OnDestroy {
     this.companyId = this.route.split('/')[3];
   }
 
-  isMaintenanceActive = () => {
-    return this.route && this.route.match('^\/dashboards\/companies\/[0-9]\/maintenance+$');
+  isMaintenanceActive(): boolean {
+    return RouteHelpers.matchFullRoutes(this.route, ['^\/dashboards\/companies\/[0-9]\/maintenance+']);
   }
 
-  isEquipmentEfficiencyActive = () => {
-    return this.route && this.route.match('^\/dashboards\/companies\/[0-9]\/equipment-efficiency+$');
+  isEquipmentEfficiencyActive(): boolean {
+    return RouteHelpers.matchFullRoutes(this.route, ['^\/dashboards\/companies\/[0-9]\/equipment-efficiency+']);
   }
 
   onMaintenanceClick(): Promise<boolean> {

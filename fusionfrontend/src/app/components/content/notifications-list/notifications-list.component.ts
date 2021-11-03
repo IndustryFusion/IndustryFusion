@@ -128,7 +128,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   navigateToSubroute(subroute): Promise<boolean> {
     let newRoute = ['..', subroute];
-    if (this.routingLocation.path().match(`\/notifications$`)) {
+    if (RouteHelpers.matchFullRoute(this.routingLocation.path(), `\/notifications`)) {
       newRoute = [subroute];
     }
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
