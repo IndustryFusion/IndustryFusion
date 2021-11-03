@@ -16,10 +16,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
-import {
-  AssetTypeTemplate,
-  PublicationState
-} from '../../../../../store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplate, PublicationState } from '../../../../../store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
@@ -30,6 +27,8 @@ import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-m
 import { ConfirmationService } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../../components/ui/table-filter/filter-options';
 import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TableHelper } from '../../../../../common/utils/table-helper';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -56,7 +55,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   activeListItem: AssetTypeTemplate;
 
   public menuType: ItemOptionsMenuType[];
-
+  public rowsPerPageOptions: number[] = [5, 10, 50];
+  public rowCount = 10;
 
   private updateWizardRef: DynamicDialogRef;
   private warningDialogRef: DynamicDialogRef;
@@ -70,6 +70,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
     private assetTypeTemplateService: AssetTypeTemplateService,
     private dialogService: DialogService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private confirmationService: ConfirmationService) {
      }
 
@@ -82,6 +84,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
       this.displayedAssetTypeTemplates = this.filteredAssetTypeTemplates = this.searchedAssetTypeTemplates =
         this.assetTypeTemplates = assetTypeTemplates;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.rowsPerPageOptions, this.activatedRoute.snapshot);
+    this.updateRowCountInUrl(this.rowCount);
   }
 
   setActiveRow(assetTypeTemplate?: AssetTypeTemplate): void {
@@ -173,5 +178,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   deleteAssetTypeTemplate() {
+  }
+
+  updateRowCountInUrl(rowCount: number) {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }
