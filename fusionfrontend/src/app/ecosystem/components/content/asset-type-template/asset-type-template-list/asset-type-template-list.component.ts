@@ -16,7 +16,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
 import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
-import { AssetTypeTemplate, PublicationState } from '../../../../../store/asset-type-template/asset-type-template.model';
+import {
+  AssetTypeTemplate,
+  PublicationState
+} from '../../../../../store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
@@ -41,11 +44,12 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   @Input() assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
   @Input() parentAssetTypeId: ID | null;
 
-  public titleMapping:
+  titleMapping:
     { [k: string]: string } = { '=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates' };
 
-  public createWizardRef: DynamicDialogRef;
-  public assetTypeTemplateForm: FormGroup;
+  menuType: ItemOptionsMenuType[];
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
 
   assetTypeTemplates: AssetTypeTemplate[];
   displayedAssetTypeTemplates: AssetTypeTemplate[];
@@ -54,24 +58,23 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   activeListItem: AssetTypeTemplate;
 
-  public menuType: ItemOptionsMenuType[];
-  public rowsPerPageOptions: number[] = [5, 10, 50];
-  public rowCount = 10;
-
-  private updateWizardRef: DynamicDialogRef;
-  private warningDialogRef: DynamicDialogRef;
-
   tableFilters: FilterOption[] = [
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion' },
     { filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState' }];
 
+
+  private createWizardRef: DynamicDialogRef;
+  private updateWizardRef: DynamicDialogRef;
+  private warningDialogRef: DynamicDialogRef;
+
+
   constructor(
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
     private assetTypeTemplateService: AssetTypeTemplateService,
-    private dialogService: DialogService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
      }
 
@@ -85,8 +88,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
         this.assetTypeTemplates = assetTypeTemplates;
     });
 
-    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.rowsPerPageOptions, this.activatedRoute.snapshot);
-    this.updateRowCountInUrl(this.rowCount);
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   setActiveRow(assetTypeTemplate?: AssetTypeTemplate): void {
@@ -180,7 +182,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   deleteAssetTypeTemplate() {
   }
 
-  updateRowCountInUrl(rowCount: number) {
+  updateRowCountInUrl(rowCount: number): void {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

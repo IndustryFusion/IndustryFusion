@@ -17,26 +17,40 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 export class TableHelper {
 
+  public static rowsPerPageOptions: number[] = [5, 10, 50];
+  public static defaultRowCount = 10;
+
   public static updateRowCountInUrl(rowCount: number, router: Router) {
     router.navigate([], { queryParams: { rows: rowCount } });
   }
 
   public static getValidRowCountFromUrl(currentRowCount: number,
-                                        options: number[],
-                                        activatedRouteSnapshot: ActivatedRouteSnapshot): number {
+                                        activatedRouteSnapshot: ActivatedRouteSnapshot,
+                                        router: Router,
+                                        rowsPerPageOptions?: number[]): number {
+    if (!rowsPerPageOptions) {
+      rowsPerPageOptions = this.rowsPerPageOptions;
+    }
+
     let rowCount = currentRowCount;
     if (activatedRouteSnapshot?.queryParams.rows) {
       const rowCountFromParams = Number(activatedRouteSnapshot.queryParams.rows);
 
-      if (this.isRowCountValid(rowCountFromParams, options)) {
+      if (this.isRowCountValid(rowCountFromParams, rowsPerPageOptions)) {
         rowCount = rowCountFromParams;
+      } else {
+        this.removeRowCountFromUrl(router);
       }
     }
 
     return rowCount;
   }
 
-  private static isRowCountValid(rowCount: number, options: number[], ) {
-    return options.includes(rowCount);
+  private static removeRowCountFromUrl(router: Router) {
+    router.navigate([], { queryParams: { } });
+  }
+
+  private static isRowCountValid(rowCount: number, rowsPerPageOptions: number[], ) {
+    return rowsPerPageOptions.includes(rowCount);
   }
 }

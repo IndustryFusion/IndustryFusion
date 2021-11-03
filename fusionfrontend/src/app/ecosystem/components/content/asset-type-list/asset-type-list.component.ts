@@ -23,6 +23,8 @@ import { AssetType } from '../../../../store/asset-type/asset-type.model';
 import { ConfirmationService } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { Observable } from 'rxjs';
+import { TableHelper } from '../../../../common/utils/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-asset-type-list',
@@ -36,6 +38,9 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
 
   titleMapping:
     { [k: string]: string } = { '=0': 'No Asset types', '=1': '# Asset type', other: '# Asset types' };
+
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
 
   activeListItem: AssetTypeDetails;
   assetTypes: AssetType[];
@@ -52,6 +57,8 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetTypeDetailsQuery: AssetTypeDetailsQuery,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
   }
@@ -71,6 +78,8 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
     this.assetTypes$.subscribe(assetTypes => {
       this.assetTypes = this.displayedAssetTypes = this.searchedAssetTypes = this.filteredAssetTypes = assetTypes;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnDestroy() {
@@ -135,5 +144,9 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
   }
 
   deleteAssetType() {
+  }
+
+  updateRowCountInUrl(rowCount: number) {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

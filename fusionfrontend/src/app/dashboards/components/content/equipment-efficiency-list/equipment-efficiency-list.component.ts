@@ -53,11 +53,13 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'}];
+  rows = 5;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.rows = 50;
   }
 
   ngOnChanges(): void {

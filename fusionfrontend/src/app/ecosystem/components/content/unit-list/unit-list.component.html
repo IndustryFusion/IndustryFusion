@@ -22,9 +22,9 @@ under the License.
   </div>
 </div>
 
-<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
-         [showCurrentPageReport]="true" [value]="displayedUnits" [rowHover]="true"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
+         [showCurrentPageReport]="true" [value]="displayedUnits" (rowsChange)="updateRowCountInUrl($event)"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Units">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>

@@ -26,9 +26,9 @@ under the License.
   </div>
 </div>
 
-<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions"
-         [rows]="rowCount" [showCurrentPageReport]="true" [value]="displayedAssetTypeTemplates" (rowsChange)="updateRowCountInUrl($event)"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
+         [showCurrentPageReport]="true" [value]="displayedAssetTypeTemplates" (rowsChange)="updateRowCountInUrl($event)"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Asset Type Templates">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
