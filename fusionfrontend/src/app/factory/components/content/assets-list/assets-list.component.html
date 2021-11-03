@@ -37,8 +37,8 @@ under the License.
 </app-table-selected-items-bar>
 
 <p-treeTable [(selection)]="selectedFactoryAssets" [alwaysShowPaginator]="true" [pageLinks]="5" [paginator]="true"
-             [rowsPerPageOptions]="[5,10,50]" [rows]="10" [showCurrentPageReport]="true"
-             [value]="treeData" class="list-container"
+             [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount" [showCurrentPageReport]="true"
+             [value]="treeData" (onPage)="updateRowCountInUrl($event.rows)" class="list-container"
              currentPageReportTemplate="{first} to {last} of {totalRecords} Assets" sortMode="multiple">
   <ng-template pTemplate="header">
     <tr>
