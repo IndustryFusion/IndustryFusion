@@ -19,9 +19,9 @@ under the License.
                      class="single-create-btn"></app-create-button>
 </div>
 
-<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,50]"
-         [rows]="10" [showCurrentPageReport]="true" [value]="this.displayedAssetSeries"
-         currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
+         [showCurrentPageReport]="true" [value]="displayedAssetSeries" (rowsChange)="updateRowCountInUrl($event)"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Asset Series">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
