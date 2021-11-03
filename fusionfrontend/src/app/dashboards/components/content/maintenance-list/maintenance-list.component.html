@@ -13,7 +13,9 @@
                [paginator]="true"
                [rowsPerPageOptions]="[5,10,50]"
                [rows]="10"
-               [value]="treeData" class="list-container">
+               [value]="treeData" class="list-container"
+               (sortFunction)="customSort($event)"
+               [customSort]="true">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="2"></th>

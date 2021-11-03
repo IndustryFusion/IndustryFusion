@@ -20,7 +20,7 @@ import { AssetType } from 'src/app/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
 import { Company } from 'src/app/store/company/company.model';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
-import { TreeNode } from 'primeng/api';
+import { SortEvent, TreeNode } from 'primeng/api';
 import { OispAlert, OispAlertPriority } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
@@ -193,5 +193,38 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       treeNode.children = children;
     }
     return treeNode;
+  }
+
+  customSort(event: SortEvent) {
+    const data = 'data';
+    event.data.sort((data1, data2) => {
+      const value1 = data1[data][event.field];
+      const value2 = data2[data][event.field];
+      let result;
+
+      if (value1 == null && value2 != null) {
+        result = -1;
+      }
+      else if (value1 != null && value2 == null) {
+        result = 1;
+      }
+      else if (value1 == null && value2 == null) {
+        result = 0;
+      }
+      else if (typeof value1 === 'string' && typeof value2 === 'string') {
+        result = value1.localeCompare(value2);
+      }
+      else if (isNaN(value1) && !isNaN(value2)) {
+        result = event.order;
+      }
+      else if (!isNaN(value1) && isNaN(value2)) {
+        result = event.order * -1;
+      }
+      else {
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+      }
+
+      return (event.order * result);
+    });
   }
 }
