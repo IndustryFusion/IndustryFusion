@@ -17,17 +17,24 @@
 @import 'base/typography';
 
 .gauge-chart {
-  display: flex;
+   display: flex;
 
   .container {
     margin-top: 2rem;
-    margin-left: 2.1rem;
-    margin-right: -1rem;
-    text-align:center;
+    text-align: center;
+    width: 100%;
+    position: relative;
+
+    .chart-on-top {
+      width: 66%;
+      z-index: 10000;
+    }
 
     .label-container {
-      margin: -1rem auto auto;
       display: block;
+      position: absolute;
+      margin: 0 auto auto;
+      bottom: 0;
 
       .metric-value {
         display: block;
@@ -48,9 +55,4 @@
       }
     }
   }
-}
-
-:host ::ng-deep canvas {
-  width: 10rem !important;
-  height: 5rem !important;
 }
