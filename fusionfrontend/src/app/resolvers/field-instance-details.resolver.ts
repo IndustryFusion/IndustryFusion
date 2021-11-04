@@ -15,17 +15,17 @@
 
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-
 import { AssetQuery } from '../store/asset/asset.query';
 import { FieldDetailsService } from '../store/field-details/field-details.service';
 
 @Injectable({ providedIn: 'root' })
-export class FieldInstanceDetailsResolver implements Resolve<void>{
+export class FieldInstanceDetailsResolver implements Resolve<void> {
   constructor(private fieldDetailsService: FieldDetailsService,
-              private assetQuery: AssetQuery) { }
+              private assetQuery: AssetQuery) {
+  }
 
   resolve(): void { // using Observable will (probably) result in deadlock when called from routing module
-    this.assetQuery.waitForActive().subscribe( asset => {
+    this.assetQuery.waitForActive().subscribe(asset => {
       this.fieldDetailsService.getFieldsOfAsset(asset.companyId, asset.id).subscribe();
     });
   }

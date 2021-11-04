@@ -75,10 +75,6 @@ export class AssetSeriesListComponent implements OnInit {
     });
   }
 
-  private resolveAssetSeriesDetails() {
-    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
-  }
-
   setActiveRow(assetSeries: AssetSeriesDetails) {
     this.activeListItem = assetSeries;
   }
@@ -92,10 +88,6 @@ export class AssetSeriesListComponent implements OnInit {
     this.updateDisplayedAssetSeries();
   }
 
-  private updateDisplayedAssetSeries() {
-    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
-  }
-
   createAssetFromAssetSeries(assetSeriesId: ID) {
     this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
       () => this.resolveAssetSeriesDetails());
@@ -104,6 +96,19 @@ export class AssetSeriesListComponent implements OnInit {
   editAssetSeries(assetSeriesId: ID) {
     this.assetSeriesDetailMenuService.showEditWizard(assetSeriesId.toString(),
       () => this.resolveAssetSeriesDetails());
+  }
+
+  showDeleteDialog() {
+    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
+      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+  }
+
+  private resolveAssetSeriesDetails() {
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
+  }
+
+  private updateDisplayedAssetSeries() {
+    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
 
   private openAssetSeriesWizard(idString: string) {
@@ -115,12 +120,7 @@ export class AssetSeriesListComponent implements OnInit {
       width: '90%',
       header: 'AssetSeries Implementation',
     });
-    dynamicDialogRef.onClose.subscribe(() => this.resolveAssetSeriesDetails() );
-  }
-
-  showDeleteDialog() {
-    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
-      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+    dynamicDialogRef.onClose.subscribe(() => this.resolveAssetSeriesDetails());
   }
 
   private deleteItem(id: ID) {
