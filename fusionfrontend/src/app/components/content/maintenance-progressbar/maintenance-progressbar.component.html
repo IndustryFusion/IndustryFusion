@@ -34,6 +34,7 @@ under the License.
       <p *ngIf="maintenancePercentage > 100" class="overshooting-indicator"></p>
     </div>
   </div>
+
   <div *ngIf="!maintenanceValue" class="container">
     <p-progressBar [showValue]="false" [value]="0" class="unknown-bar" class="light-grey-bar"></p-progressBar>
     <p class="progress-bar-label na-label">n.a.</p>

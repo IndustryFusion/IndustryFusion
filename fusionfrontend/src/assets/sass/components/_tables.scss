@@ -42,6 +42,7 @@ h3.table-header{
   color: $basic-black;
   background-color: $light-grey;
   border: 0 none;
+  font-family: $font-family-mulish;
 
   &:first-child {
     border-radius: 10px 0 0 10px;
@@ -62,7 +63,7 @@ h3.table-header{
   letter-spacing: 0;
   color: $basic-grey;
   overflow: hidden;
-
+  font-family: $font-family-mulish;
 
   &:first-child {
     border-radius: 10px 0 0 10px;

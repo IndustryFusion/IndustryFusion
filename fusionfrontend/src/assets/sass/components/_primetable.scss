@@ -31,6 +31,7 @@
   color: $basic-black;
   background-color: $light-grey;
   border: 0 none;
+  font-family: $font-family-mulish;
 
   &:first-child {
     border-radius: .5rem 0 0 .5rem;
@@ -52,6 +53,7 @@
   color: $basic-grey;
   overflow: hidden;
   cursor: pointer;
+  font-family: $font-family-mulish;
 
   &:first-child {
     border-radius: .5rem 0 0 .5rem;
@@ -77,35 +79,45 @@
 .p-paginator {
   height: 2.25rem;
   background-color: $basic-white;
-  border-color: transparent;
   border: none;
   margin-top: .25rem;
   padding-bottom: .25rem;
 
-  .p-dropdown {
-    height: 2rem;
-    width: 4rem !important;
-    float: right;
-    margin-right: 2.5rem;
+  .p-highlight {
+    border: .1rem solid $basic-black !important;
+    box-shadow: none !important;
+  }
 
-    .p-dropdown-label {
-      background-color: transparent !important;
+  .p-paginator-prev, .p-paginator-next {
+    height: 2rem;
+    width: 2rem;
+    margin: .1rem .2rem;
+    color: $inactive-infotext;
+    background-color: $basic-white;
+    border-color: $underlay;
+    border-style: solid;
+    border-width: .05rem !important;
+    border-radius: .5rem !important;
+
+    &:hover {
+      background-color: $basic-white !important;
+      border: .05rem solid $basic-black !important;
     }
   }
 
-  .p-paginator-current {
-    float: left;
+  .p-paginator-first, .p-paginator-last {
+    display: none !important;
   }
 
   .p-paginator-pages .p-paginator-page {
     height: 2rem;
     width: 2rem;
-    margin: .1rem;
+    margin: .1rem .2rem;
     background-color: $basic-white !important;
     color: $basic-black !important;
     font-size: $medium-font-size;
     font-weight: 600;
-    border-color: $basic-black;
+    border-color: $underlay;
     border-style: solid;
     border-width: .05rem;
     border-radius: .5rem;
@@ -115,6 +127,27 @@
     &:hover {
       border: .05rem solid $basic-black !important;
     }
+  }
+
+  .p-dropdown {
+    height: 2rem;
+    width: 4rem !important;
+    float: right;
+    margin-right: 2.5rem;
+    border-color: $underlay;
+    border-width: .05rem;
+
+    .p-dropdown-label {
+      background-color: transparent !important;
+    }
+
+    &:hover {
+      border: .05rem solid $basic-black !important;
+    }
+  }
+
+  .p-paginator-current {
+    float: left;
   }
 
   .p-widget {
@@ -132,7 +165,6 @@
       width: 3rem;
     }
 
-
     .p-state-highlight {
       background-color: $basic-white !important;
       color: $basic-black !important;
@@ -143,26 +175,6 @@
     .p-dropdown-trigger {
       border-radius: .5rem;
     }
-  }
-
-  .p-highlight {
-    border: .1rem solid $basic-black !important;
-    box-shadow: none !important;
-  }
-
-  .p-paginator-prev, .p-paginator-next {
-    height: 2rem;
-    width: 2rem;
-    margin: .1rem;
-    color: $basic-black;
-    border-color: $basic-black;
-    border-style: solid;
-    border-width: .05rem !important;
-    border-radius: .5rem !important;
-  }
-
-  .p-paginator-first, .p-paginator-last {
-    display: none !important;
   }
 }
 
@@ -222,4 +234,9 @@
   padding-right: 1rem;
   background-color: $basic-black;
   color: $basic-white;
+}
+
+.p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler {
+  width: auto;
+  margin-right: 0;
 }
