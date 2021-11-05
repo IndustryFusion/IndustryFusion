@@ -18,7 +18,8 @@
                (onPage)="updateRowCountInUrl($event.rows)"
                class="list-container"
                currentPageReportTemplate="{first} to {last} of {totalRecords} Assets"
-               sortMode="multiple">
+               (sortFunction)="customSort($event)"
+               [customSort]="true">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="2"></th>
@@ -37,8 +38,12 @@
         <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
           <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="15">Days till Maintenance</th>
-        <th [style.width.%]="15">Operating Hours till Maintenance</th>
+        <th [style.width.%]="15" ttSortableColumn="daysTillMaintenance">Days till Maintenance
+          <p-treeTableSortIcon field="daysTillMaintenance"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="15" ttSortableColumn="operatingHoursTillMaintenance">Operating Hours till Maintenance
+          <p-treeTableSortIcon field="operatingHoursTillMaintenance"></p-treeTableSortIcon>
+        </th>
         <th [style.width.%]="3"></th>
       </tr>
     </ng-template>

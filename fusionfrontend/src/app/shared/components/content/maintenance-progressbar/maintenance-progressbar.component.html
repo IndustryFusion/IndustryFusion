@@ -35,8 +35,12 @@ under the License.
     </div>
   </div>
 
-  <div *ngIf="!maintenanceValue" class="container">
+  <div *ngIf="isNaN(maintenanceValue)" class="container">
     <p-progressBar [showValue]="false" [value]="0" class="unknown-bar" class="light-grey-bar"></p-progressBar>
     <p class="progress-bar-label na-label">n.a.</p>
+  </div>
+  <div *ngIf="isZero(maintenanceValue)" class="container">
+    <p-progressBar [showValue]="false" [value]="0" class="unknown-bar" class="light-grey-bar"></p-progressBar>
+    <p class="progress-bar-label na-label">{{ maintenanceValue | germanNumber }}</p>
   </div>
 </div>

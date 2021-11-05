@@ -202,4 +202,49 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   updateRowCountInUrl(rowCount: number): void {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
+
+  customSort(event: SortEvent) {
+    const daysTillMaintenace = 'daysTillMaintenance';
+    const operatingHoursTillMaintenance = 'operatingHoursTillMaintenance';
+    const type = (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) ? event.field ===
+      daysTillMaintenace ? AssetMaintenanceUtils.maintenanceDays : AssetMaintenanceUtils.maintenanceHours : null;
+
+    event.data.sort((data1, data2) => {
+      let value1;
+      let value2;
+      let result;
+
+      if (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) {
+        value1 = AssetMaintenanceUtils.getMaintenanceValue(data1.data, type);
+        value2 = AssetMaintenanceUtils.getMaintenanceValue(data2.data, type);
+      } else {
+        value1 = data1.data[event.field];
+        value2 = data2.data[event.field];
+      }
+
+      if (value1 == null && value2 != null) {
+        result = -1;
+      }
+      else if (value1 != null && value2 == null) {
+        result = 1;
+      }
+      else if (value1 == null && value2 == null) {
+        result = 0;
+      }
+      else if (typeof value1 === 'string' && typeof value2 === 'string') {
+        result = value1.localeCompare(value2);
+      }
+      else if (isNaN(value1) && !isNaN(value2)) {
+        result = event.order;
+      }
+      else if (!isNaN(value1) && isNaN(value2)) {
+        result = event.order * -1;
+      }
+      else {
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+      }
+
+      return (event.order * result);
+    });
+  }
 }
