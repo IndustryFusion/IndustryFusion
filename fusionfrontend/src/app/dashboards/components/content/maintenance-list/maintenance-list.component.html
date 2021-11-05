@@ -1,0 +1,91 @@
+<div>
+  <div class="p-grid p-jc-between header-line">
+    <h3 class="table-header">Maintenance Dashboard</h3>
+    <div class="single-filter-btn-div">
+      <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                        (filteredItems)="filterAssets($event)">
+      </app-table-filter>
+    </div>
+  </div>
+
+  <p-treeTable [alwaysShowPaginator]="true"
+               [pageLinks]="5"
+               [paginator]="true"
+               [rowsPerPageOptions]="rowsPerPageOptions"
+               [rows]="rowCount"
+               [showCurrentPageReport]="true"
+               [value]="treeData"
+               (onPage)="updateRowCountInUrl($event.rows)"
+               class="list-container"
+               currentPageReportTemplate="{first} to {last} of {totalRecords} Assets"
+               (sortFunction)="customSort($event)"
+               [customSort]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th [style.width.%]="2"></th>
+        <th [style.width.%]="3"></th>
+        <th [style.width.%]="20" class="first-header-item">
+          <app-table-searchbar filterColumn="Asset" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                               attributeToBeSearched="name" (searchByName)="searchAssets($event)">
+          </app-table-searchbar>
+        </th>
+        <th [style.width.%]="20" ttSortableColumn="category">Asset Type
+          <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="15" ttSortableColumn="manufacturer">Manufacturer
+          <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
+          <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="15" ttSortableColumn="daysTillMaintenance">Days till Maintenance
+          <p-treeTableSortIcon field="daysTillMaintenance"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="15" ttSortableColumn="operatingHoursTillMaintenance">Operating Hours till Maintenance
+          <p-treeTableSortIcon field="operatingHoursTillMaintenance"></p-treeTableSortIcon>
+        </th>
+        <th [style.width.%]="3"></th>
+      </tr>
+    </ng-template>
+    <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
+      <tr [ttRow]="rowNode">
+        <td [style.width.%]="2"></td>
+        <td [style.width.%]="3">
+          <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
+            <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
+          </div>
+        </td>
+        <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(rowNode.node)}"
+            class="asset-column p-flex-row table-bold-font">
+          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+          <span *ngIf="rowNode.parent" class="subsystem-grid p-col-">
+            <span class="upper"></span>
+            <span [ngClass]="{'last-element': isLastChildElement(rowNode)}" class="lower"></span>
+          </span>
+          <span class="p-col">{{rowData.name}}</span>
+        </td>
+        <td [style.width.%]="20">{{rowData.category}}</td>
+        <td [style.width.%]="15">{{rowData.manufacturer}}</td>
+        <td [style.width.%]="12">{{rowData.factorySiteName}}</td>
+        <td [style.width.%]="13">
+          <span class="progressbar-wrapper">
+            <app-maintenance-progressbar [asset]="rowData" [type]="utils.maintenanceDays"></app-maintenance-progressbar>
+            <span *ngIf="isChildrenMaintenanceNeededSoon(rowNode.node)" class="progressbar-icon">
+              <fa-icon (click)="openNode(rowNode.node)" *ngIf="rowNode.node.expanded" [icon]="faChevronCircleDown"
+                       class="fa-fw"></fa-icon>
+              <fa-icon (click)="openNode(rowNode.node)" *ngIf="!rowNode.node.expanded" [icon]="faChevronCircleUp"
+                       class="fa-fw"></fa-icon>
+            </span>
+          </span>
+        </td>
+        <td [style.width.%]="13">
+          <app-maintenance-progressbar [asset]="rowData" [type]="utils.maintenanceHours"></app-maintenance-progressbar>
+        </td>
+        <td [style.width.%]="3"></td>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+</div>
+

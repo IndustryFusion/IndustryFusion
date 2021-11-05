@@ -21,18 +21,25 @@ import io.fusion.fusionbackend.dto.AssetTypeDto;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.BaseAssetDto;
 import io.fusion.fusionbackend.dto.CompanyDto;
+import io.fusion.fusionbackend.dto.ConnectivityProtocolDto;
+import io.fusion.fusionbackend.dto.ConnectivitySettingsDto;
+import io.fusion.fusionbackend.dto.ConnectivityTypeDto;
+import io.fusion.fusionbackend.dto.CountryDto;
+import io.fusion.fusionbackend.dto.FactorySiteDto;
 import io.fusion.fusionbackend.dto.FieldDto;
 import io.fusion.fusionbackend.dto.FieldTargetDto;
-import io.fusion.fusionbackend.dto.LocationDto;
 import io.fusion.fusionbackend.dto.QuantityTypeDto;
 import io.fusion.fusionbackend.dto.RoomDto;
 import io.fusion.fusionbackend.dto.UnitDto;
 import io.fusion.fusionbackend.model.enums.CompanyType;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
+import io.fusion.fusionbackend.model.enums.FieldThresholdType;
 import io.fusion.fusionbackend.model.enums.FieldType;
-import io.fusion.fusionbackend.model.enums.LocationType;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.groups.Tuple;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
@@ -43,9 +50,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,11 +80,13 @@ class FusionbackendApplicationTests {
     private static Integer companySteelgradeFabId;
     private static Integer companyStruumpFabId;
 
-    private static Integer locationStruumpHqId;
-    private static Integer locationStruumpFabId;
+    private static Integer factorySiteStruumpHqId;
+    private static Integer factorySiteStruumpFabId;
 
     private static Integer roomWestStruumpFabId;
     private static Integer roomEastStruumpFabId;
+
+    private static final Integer countryGermanyId = 80;
 
     private static Integer assetRoomWestStruumpFabId;
     private static Integer assetRoomEastStruumpFabId;
@@ -83,8 +94,8 @@ class FusionbackendApplicationTests {
     private static Integer assetTypeTemplateGasSupplyId;
     private static Integer assetTypeTemplateLaserCutterId;
 
-    private static Integer assetSeriesAiristGasSupplyId;
-    private static Integer assetSeriesLaserlyLaserCutterId;
+    private static Long assetSeriesAiristGasSupplyId;
+    private static Long assetSeriesLaserlyLaserCutterId;
 
     private static Integer assetTypeGasSupplyId;
     private static Integer assetTypeLaserCutterId;
@@ -228,75 +239,82 @@ class FusionbackendApplicationTests {
     }
 
     @Test
+    @Order(299)
+    void testCreateTestCountry() {
+        CountryDto country = CountryDto.builder()
+                .name("Testcountry")
+                .build();
+
+        createAndTestCountry(country);
+    }
+
+    @Test
     @Order(300)
-    void createLocationStruumpHq() {
-        LocationDto location = LocationDto.builder()
+    void createFactorySiteStruumpHq() {
+        FactorySiteDto factorySite = FactorySiteDto.builder()
                 .name("World Headquarter")
-                .type(LocationType.HEADQUARTER)
+                .type(FactorySiteType.HEADQUARTER)
                 .line1("Sudetenstr. 1001")
                 .line2("Rückgebäude")
                 .city("Gräfelfing")
                 .zip("90011")
-                .country("Germany")
                 .latitude(48.127936)
                 .longitude(11.604835)
                 .build();
 
-        locationStruumpHqId = createAndTestLocation(companyStruumpFabId, location);
+        factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
     @Order(301)
-    void createLocationStruumpFab() {
-        LocationDto location = LocationDto.builder()
+    void createFactorySiteStruumpFab() {
+        FactorySiteDto factorySite = FactorySiteDto.builder()
                 .name("Landau")
-                .type(LocationType.FABRICATION)
+                .type(FactorySiteType.FABRICATION)
                 .line1("Kerrystr. 2001")
                 .line2("Hinterhof")
                 .city("Lindau")
                 .zip("10011")
-                .country("Germany")
                 .latitude(48.024522)
                 .longitude(11.679882)
                 .build();
 
-        locationStruumpFabId = createAndTestLocation(companyStruumpFabId, location);
+        factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @RepeatedTest(10)
     @Order(305)
-    void createLocationMultiple(final RepetitionInfo repetitionInfo) {
-        LocationDto location = LocationDto.builder()
+    void createFactorySiteMultiple(final RepetitionInfo repetitionInfo) {
+        FactorySiteDto factorySite = FactorySiteDto.builder()
                 .name("Spandau Random " + repetitionInfo.getCurrentRepetition())
-                .type(LocationType.FABRICATION)
+                .type(FactorySiteType.FABRICATION)
                 .line1("Clarestr. 2001")
                 .line2("Hintermhof")
                 .city("Spandau")
                 .zip("10011")
-                .country("Germany")
                 .latitude(48.024522)
                 .longitude(11.679882)
                 .build();
-        createAndTestLocation(companyStruumpFabId, location);
+        createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
     @Test
     @Order(309)
-    void testGetAllCompanyLocations() {
-        List<Integer> locationIds = given()
+    void testGetAllCompanyFactorySites() {
+        List<Integer> factorySiteIds = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites")
 
                 .then()
                 .statusCode(200)
                 .extract().path("id");
 
-        assertThat(locationIds)
+        assertThat(factorySiteIds)
                 .hasSize(12)
-                .contains(locationStruumpFabId, locationStruumpHqId);
+                .contains(factorySiteStruumpFabId, factorySiteStruumpHqId);
     }
 
     @Test
@@ -307,7 +325,7 @@ class FusionbackendApplicationTests {
                 .description("Shop floor east room")
                 .build();
 
-        roomEastStruumpFabId = createAndTestRoom(companyStruumpFabId, locationStruumpFabId, room);
+        roomEastStruumpFabId = createAndTestRoom(companyStruumpFabId, factorySiteStruumpFabId, room);
     }
 
     @Test
@@ -318,7 +336,7 @@ class FusionbackendApplicationTests {
                 .description("Shop floor west room")
                 .build();
 
-        roomWestStruumpFabId = createAndTestRoom(companyStruumpFabId, locationStruumpFabId, room);
+        roomWestStruumpFabId = createAndTestRoom(companyStruumpFabId, factorySiteStruumpFabId, room);
     }
 
     @RepeatedTest(10)
@@ -327,25 +345,25 @@ class FusionbackendApplicationTests {
         RoomDto room = RoomDto.builder()
                 .name("Shop Floor " + repetitionInfo.getCurrentRepetition())
                 .build();
-        createAndTestRoom(companyStruumpFabId, locationStruumpFabId, room);
+        createAndTestRoom(companyStruumpFabId, factorySiteStruumpFabId, room);
     }
 
     @Test
     @Order(409)
-    void testGetAllLocationRooms() {
-        List<Integer> locationIds = given()
+    void testGetAllFactorySiteRooms() {
+        List<Integer> factorySiteIds = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations/" + locationStruumpFabId + "/rooms")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites/" + factorySiteStruumpFabId + "/rooms")
 
                 .then()
                 .statusCode(200)
                 .extract().path("id");
 
-        assertThat(locationIds)
-                .hasSize(12)
+        assertThat(factorySiteIds)
+                .hasSize(13)
                 .contains(roomWestStruumpFabId, roomEastStruumpFabId);
     }
 
@@ -394,49 +412,42 @@ class FusionbackendApplicationTests {
     void createPressureUnits() {
         UnitDto unitDto = UnitDto.builder()
                 .name("Pascal")
-                .description("Pascal unit")
                 .symbol("pa")
                 .build();
         unitIdPa = createAndTestUnit(quantityTypePressureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Pounds per square inch")
-                .description("PSI unit")
                 .symbol("psi")
                 .build();
         unitIdPsi = createAndTestUnit(quantityTypePressureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Meter")
-                .description("Meter unit")
                 .symbol("m")
                 .build();
         unitIdMeter = createAndTestUnit(quantityTypeMassId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Inch")
-                .description("Inch unit")
                 .symbol("in")
                 .build();
         unitIdInch = createAndTestUnit(quantityTypeMassId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Count")
-                .description("Count unit")
                 .symbol("")
                 .build();
         unitIdCount = createAndTestUnit(quantityTypeCountId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Celcius")
-                .description("Celcius unit")
                 .symbol("")
                 .build();
         unitIdCelcius = createAndTestUnit(quantityTypeTemperatureId, unitDto);
 
         unitDto = UnitDto.builder()
                 .name("Fahrenheit")
-                .description("Fahrenheit unit")
                 .symbol("")
                 .build();
         unitIdFahrenheit = createAndTestUnit(quantityTypeTemperatureId, unitDto);
@@ -458,6 +469,7 @@ class FusionbackendApplicationTests {
                 .accuracy(2.2)
                 .name("Differenzdruck")
                 .description("Differenz Druck...")
+                .thresholdType(FieldThresholdType.OPTIONAL)
                 .build();
 
         fieldIdDifferenzDruck = createAndTestField(fieldDto, unitIdPa);
@@ -466,6 +478,7 @@ class FusionbackendApplicationTests {
                 .accuracy(2.2)
                 .name("Head temperature")
                 .description("Head temperature...")
+                .thresholdType(FieldThresholdType.OPTIONAL)
                 .build();
 
         fieldIdHeadTemperature = createAndTestField(fieldDto, unitIdCelcius);
@@ -474,6 +487,7 @@ class FusionbackendApplicationTests {
                 .accuracy(2.2)
                 .name("Number of heads")
                 .description("Number of heads...")
+                .thresholdType(FieldThresholdType.OPTIONAL)
                 .build();
 
         fieldIdHeadCount = createAndTestField(fieldDto, unitIdCount);
@@ -495,7 +509,7 @@ class FusionbackendApplicationTests {
 
         assertThat(assetTypeIds)
                 .hasSize(3)
-                .containsExactlyInAnyOrder(fieldIdDifferenzDruck, fieldIdHeadCount, fieldIdHeadTemperature);
+                .containsExactly(fieldIdDifferenzDruck, fieldIdHeadTemperature, fieldIdHeadCount);
     }
 
     @Test
@@ -590,6 +604,8 @@ class FusionbackendApplicationTests {
                 .name("Gas Supply")
                 .description("ATT Gas Supply")
                 .imageKey("genericgasimagekey")
+                .publishedDate(OffsetDateTime.now())
+                .publicationState(PublicationState.PUBLISHED)
                 .build();
 
         assetTypeTemplateGasSupplyId = createAndTestAssetTypeTemplate(assetTypeGasSupplyId, assetTypeTemplate);
@@ -602,21 +618,39 @@ class FusionbackendApplicationTests {
                 .name("Laser Cutter")
                 .description("ATT Laser Cutter")
                 .imageKey("genericcutterimagekey")
+                .publishedDate(OffsetDateTime.now())
+                .publicationState(PublicationState.PUBLISHED)
                 .build();
 
         assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(9)
     @Order(502)
     void createAssetTypeTemplateMultiple(final RepetitionInfo repetitionInfo) {
         AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
                 .name("Laser Cutter " + repetitionInfo.getCurrentRepetition())
                 .description("ATT Laser Cutter" + repetitionInfo.getCurrentRepetition())
                 .imageKey("genericcutterimagekey" + repetitionInfo.getCurrentRepetition())
+                .publishedDate(OffsetDateTime.now())
+                .publicationState(PublicationState.PUBLISHED)
                 .build();
 
         createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
+    }
+
+    @Test
+    @Order(503)
+    void createAssetTypeTemplateDrafts_shouldFail() {
+        AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
+                .name("Laser Cutter")
+                .description("ATT Laser Cutter")
+                .imageKey("genericcutterimagekey")
+                .publicationState(PublicationState.DRAFT)
+                .build();
+
+        assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
+        createAndTestAssetTypeTemplateExpectError(assetTypeLaserCutterId, assetTypeTemplate);
     }
 
     @Test
@@ -676,14 +710,20 @@ class FusionbackendApplicationTests {
                 .name("Airist Gas Supply")
                 .description("Airist Gas Supply")
                 .ceCertified(true)
-                .protectionClass("1c")
+                .protectionClass("IP20")
                 .imageKey("airisgasimagekey")
-                .handbookKey("airistgashandbookkey")
-                .videoKey("airistgasvideokey")
+                .handbookUrl("https://airistgashandbookkey")
+                .videoUrl("https://airistgasvideokey")
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
-        assetSeriesAiristGasSupplyId = createAndTestAssetSeries(companyAiristMachId, companyEcosystemId,
+        assetSeriesAiristGasSupplyId = createAndTestAssetSeries(companyAiristMachId,
                 assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManAirist);
+    }
+
+    @NotNull
+    private ConnectivitySettingsDto createConnectivitySettings() {
+        return new ConnectivitySettingsDto("Some String", 1L, 1L);
     }
 
     @Test
@@ -695,12 +735,13 @@ class FusionbackendApplicationTests {
                 .ceCertified(true)
                 .protectionClass("1c")
                 .imageKey("lascutterimagekey")
-                .handbookKey("lascutterhandbookkey")
-                .videoKey("lascuttervideokey")
+                .handbookUrl("https://lascutterhandbookkey")
+                .videoUrl("https://lascuttervideokey")
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
-        assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId, companyEcosystemId,
-                assetTypeTemplateLaserCutterId, assetSeries, accessTokenFleetManLaserly);
+        assetSeriesLaserlyLaserCutterId = createAndTestAssetSeries(companyLaserlyMachId,
+                assetTypeTemplateGasSupplyId, assetSeries, accessTokenFleetManLaserly);
     }
 
     @RepeatedTest(10)
@@ -712,18 +753,19 @@ class FusionbackendApplicationTests {
                 .ceCertified(true)
                 .protectionClass("1c")
                 .imageKey("genericcutterimagekey" + repetitionInfo.getCurrentRepetition())
-                .handbookKey("genericcutterhandbookkey" + repetitionInfo.getCurrentRepetition())
-                .videoKey("genericcuttervideokey" + repetitionInfo.getCurrentRepetition())
+                .handbookUrl("https://genericcutterhandbookkey" + repetitionInfo.getCurrentRepetition())
+                .videoUrl("https://genericcuttervideokey" + repetitionInfo.getCurrentRepetition())
+                .connectivitySettings(createConnectivitySettings())
                 .build();
 
-        createAndTestAssetSeries(companyAiristMachId, companyEcosystemId, assetTypeTemplateGasSupplyId, assetSeries,
+        createAndTestAssetSeries(companyAiristMachId, assetTypeTemplateGasSupplyId, assetSeries,
                 accessTokenFleetManAirist);
     }
 
     @Test
     @Order(609)
     void testGetAllAssetSeries() {
-        List<Integer> assetIds = given()
+        List<AssetSeriesDto> assetSeriesList = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFleetManAirist)
 
@@ -732,11 +774,48 @@ class FusionbackendApplicationTests {
 
                 .then()
                 .statusCode(200)
-                .extract().path("id");
+                .extract().body().jsonPath().getList(".", AssetSeriesDto.class);
 
-        assertThat(assetIds)
+        List<Long> assetSeriesIds = assetSeriesList.stream()
+                .map(AssetSeriesDto::getId)
+                .collect(Collectors.toList());
+
+        assertThat(assetSeriesIds)
                 .hasSize(11)
                 .contains(assetSeriesAiristGasSupplyId);
+    }
+
+    @Test
+    @Order(610)
+    void testUpdateAssetSeriesConnectivitySettings() {
+
+        List<ConnectivityTypeDto> connectivityTypesFromMasterData = getConnectivityTypeDtos(accessTokenFleetManAirist);
+        ConnectivityTypeDto newConnectivityTypeDto = connectivityTypesFromMasterData.get(2);
+        ConnectivityProtocolDto newConnectivityProtocolDto =
+                List.copyOf(newConnectivityTypeDto.getAvailableProtocols()).get(0);
+
+        AssetSeriesDto existingAssetSeriesDto = createAssetSeries(companyAiristMachId,
+                assetTypeTemplateGasSupplyId, accessTokenFleetManAirist);
+
+        existingAssetSeriesDto.getConnectivitySettings().setConnectivityTypeId(newConnectivityTypeDto.getId());
+        existingAssetSeriesDto.getConnectivitySettings().setConnectivityProtocolId(newConnectivityProtocolDto.getId());
+
+        AssetSeriesDto patchedAssetSeries = given()
+                .contentType(ContentType.JSON)
+                .body(existingAssetSeriesDto)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+
+                .when()
+                .patch(baseUrl + "/companies/" + companyAiristMachId + "/assetseries/" + existingAssetSeriesDto.getId())
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+
+        assertThat(patchedAssetSeries.getConnectivitySettings().getConnectivityTypeId())
+                .isEqualTo(newConnectivityTypeDto.getId());
+        assertThat(patchedAssetSeries.getConnectivitySettings().getConnectivityProtocolId())
+                .isEqualTo(newConnectivityProtocolDto.getId());
     }
 
     @Test
@@ -744,23 +823,31 @@ class FusionbackendApplicationTests {
     void createAssetInRoomEastInAiristFab() {
         AssetDto asset = AssetDto.builder()
                 .name("Gas Supply Oxygen")
-                .externalId("ubuntu1804")
+                .externalName("ubuntu1804")
                 .description("Central Gas Supply")
                 .controlSystemType("PLC")
                 .gatewayConnectivity("NETWORK")
                 .imageKey("gskey")
                 .hasGateway(true)
                 .ceCertified(true)
+                .installationDate(null)
+                .constructionDate(OffsetDateTime.now())
+                .guid(UUID.randomUUID())
+                .protectionClass("IP20")
+                .fieldInstances(new HashSet<>())
                 .build();
 
-        assetRoomEastStruumpFabId = createAndTestAsset(companyAiristMachId, assetSeriesAiristGasSupplyId,
-                companyStruumpFabId, asset, accessTokenFleetManAirist);
+        assetRoomEastStruumpFabId = createAndTestFleetAsset(companyAiristMachId, assetSeriesAiristGasSupplyId,
+                asset, accessTokenFleetManAirist);
 
-        assignAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetRoomEastStruumpFabId);
+        transferFleetAssetToFactoryAsset(assetRoomEastStruumpFabId, assetSeriesAiristGasSupplyId,
+                companyAiristMachId, companyStruumpFabId, accessTokenFleetManAirist);
+
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomEastStruumpFabId, assetRoomEastStruumpFabId);
     }
 
     @Test
-    @Order(701)
+    @Order(702)
     void createAssetInRoomWestInAiristFab() {
         AssetDto asset = AssetDto.builder()
                 .name("FiberLaser Compact")
@@ -772,14 +859,30 @@ class FusionbackendApplicationTests {
                 .ceCertified(true)
                 .build();
 
-        assetRoomWestStruumpFabId = createAndTestAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
-                companyStruumpFabId, asset, accessTokenFleetManLaserly);
+        assetRoomWestStruumpFabId = createAndTestFleetAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
+                asset, accessTokenFleetManLaserly);
 
-        assignAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomWestStruumpFabId, assetRoomWestStruumpFabId);
+        transferFleetAssetToFactoryAsset(assetRoomWestStruumpFabId, assetSeriesLaserlyLaserCutterId,
+                companyLaserlyMachId, companyStruumpFabId, accessTokenFleetManLaserly);
+
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomWestStruumpFabId, assetRoomWestStruumpFabId);
+    }
+
+    @Test
+    @Order(703)
+    void createAssetWithSubsystem() {
+        AssetDto subsystem = AssetDto.builder()
+                .assetSeriesId(assetSeriesAiristGasSupplyId)
+                .companyId(companyAiristMachId.longValue())
+                .build();
+
+        addSubsystemToParentAndTest(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId, assetRoomWestStruumpFabId,
+                subsystem, accessTokenFleetManAirist, accessTokenFleetManLaserly);
+
     }
 
     @RepeatedTest(10)
-    @Order(702)
+    @Order(706)
     void createAssetsInRoomMultiple(final RepetitionInfo repetitionInfo) {
         AssetDto asset = AssetDto.builder()
                 .name("Laser machine " + repetitionInfo.getCurrentRepetition())
@@ -789,10 +892,13 @@ class FusionbackendApplicationTests {
                 .imageKey("gskey" + repetitionInfo.getCurrentRepetition())
                 .hasGateway(repetitionInfo.getCurrentRepetition() % 2 == 0)
                 .build();
-        final Integer assetId = createAndTestAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
-                companyStruumpFabId, asset, accessTokenFleetManLaserly);
+        final Integer assetId = createAndTestFleetAsset(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId,
+                asset, accessTokenFleetManLaserly);
 
-        assignAssetToRoomAndTest(companyStruumpFabId, locationStruumpFabId, roomEastStruumpFabId, assetId);
+        transferFleetAssetToFactoryAsset(assetId, assetSeriesLaserlyLaserCutterId,
+                companyLaserlyMachId, companyStruumpFabId, accessTokenFleetManLaserly);
+
+        assignFactoryAssetToRoomAndTest(companyStruumpFabId, factorySiteStruumpFabId, roomEastStruumpFabId, assetId);
     }
 
     @Test
@@ -821,7 +927,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations/" + locationStruumpFabId + "/rooms/" + roomEastStruumpFabId + "/assets")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites/" + factorySiteStruumpFabId + "/rooms/" + roomEastStruumpFabId + "/assets")
 
                 .then()
                 .statusCode(200)
@@ -834,13 +940,13 @@ class FusionbackendApplicationTests {
 
     @Test
     @Order(709)
-    void testGetAllLocationAssets() {
+    void testGetAllFactorySiteAssets() {
         List<Integer> assetIds = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyStruumpFabId + "/locations/" + locationStruumpFabId + "/assets")
+                .get(baseUrl + "/companies/" + companyStruumpFabId + "/factorysites/" + factorySiteStruumpFabId + "/assets")
 
                 .then()
                 .statusCode(200)
@@ -849,6 +955,16 @@ class FusionbackendApplicationTests {
         assertThat(assetIds)
                 .hasSize(12)
                 .contains(assetRoomEastStruumpFabId, assetRoomWestStruumpFabId);
+    }
+
+
+    @Test
+    @Order(710)
+    void testGetAllConnectivityTypes() {
+        List<ConnectivityTypeDto> connectivityTypeDtos = getConnectivityTypeDtos(accessTokenFabManStruump);
+
+        assertThat(connectivityTypeDtos.size()).isGreaterThan(1);
+        assertThat(connectivityTypeDtos.get(0).getAvailableProtocols().size()).isGreaterThanOrEqualTo(1);
     }
 
     private Integer createAndTestCompany(final CompanyDto company) {
@@ -886,64 +1002,105 @@ class FusionbackendApplicationTests {
         return newCompanyId;
     }
 
+    private void createAndTestCountry(final CountryDto country) {
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .body(country)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+
+                .when()
+                .post(baseUrl + "/countries")
+
+                .then()
+                .statusCode(200)
+                .body("name", equalTo(country.getName()));
+
+        Integer newCountryId = response.extract().path("id");
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+
+                .when()
+                .get(baseUrl + "/countries/" + newCountryId)
+
+                .then()
+                .statusCode(200)
+                .body("name", equalTo(country.getName()));
+    }
+
     // TODO: test getter with embed
     // TODO: test create with entityDto with ID
     // TODO: Test fields in assettypetemplate, series, assets
 
-    private Integer createAndTestLocation(final Integer companyId, final LocationDto location) {
+    private Integer createAndTestFactorySite(final Integer companyId, final FactorySiteDto factorySite) {
+
+        if (factorySite.getCountry() == null) {
+            ValidatableResponse response = given()
+                    .contentType(ContentType.JSON)
+                    .header("Authorization", "Bearer " + accessTokenFabManStruump)
+
+                    .when()
+                    .get(baseUrl + "/countries/" + FusionbackendApplicationTests.countryGermanyId)
+
+                    .then()
+                    .statusCode(200);
+
+            factorySite.setCountry(response.extract().body().as(CountryDto.class));
+        }
+
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
-                .body(location)
+                .body(factorySite)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .post(baseUrl + "/companies/" + companyId + "/locations")
+                .post(baseUrl + "/companies/" + companyId + "/factorysites")
 
                 .then()
                 .statusCode(200)
-                .body("name", equalTo(location.getName()))
-                .body("line1", equalTo(location.getLine1()))
-                .body("line2", equalTo(location.getLine2()))
-                .body("city", equalTo(location.getCity()))
-                .body("zip", equalTo(location.getZip()))
-                .body("country", equalTo(location.getCountry()));
+                .body("name", equalTo(factorySite.getName()))
+                .body("line1", equalTo(factorySite.getLine1()))
+                .body("line2", equalTo(factorySite.getLine2()))
+                .body("city", equalTo(factorySite.getCity()))
+                .body("zip", equalTo(factorySite.getZip()));
 
         Float longitude = response.extract().path("longitude");
         Float latitude = response.extract().path("latitude");
-        assertThat(longitude.doubleValue()).isCloseTo(location.getLongitude(), within(0.001));
-        assertThat(latitude.doubleValue()).isCloseTo(location.getLatitude(), within(0.001));
+        assertThat(longitude.doubleValue()).isCloseTo(factorySite.getLongitude(), within(0.001));
+        assertThat(latitude.doubleValue()).isCloseTo(factorySite.getLatitude(), within(0.001));
         String type = response.extract().path("type");
-        assertThat(type).isEqualTo(location.getType().name());
+        assertThat(type).isEqualTo(factorySite.getType().name());
 
-        Integer newLocationId = response.extract().path("id");
+        Integer newfactorySiteId = response.extract().path("id");
 
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/locations/" + newLocationId)
+                .get(baseUrl + "/companies/" + companyId + "/factorysites/" + newfactorySiteId)
 
                 .then()
                 .statusCode(200)
-                .body("name", equalTo(location.getName()))
-                .body("line1", equalTo(location.getLine1()))
-                .body("line2", equalTo(location.getLine2()))
-                .body("city", equalTo(location.getCity()))
-                .body("zip", equalTo(location.getZip()))
-                .body("country", equalTo(location.getCountry()));
+                .body("name", equalTo(factorySite.getName()))
+                .body("line1", equalTo(factorySite.getLine1()))
+                .body("line2", equalTo(factorySite.getLine2()))
+                .body("city", equalTo(factorySite.getCity()))
+                .body("zip", equalTo(factorySite.getZip()));
+        // TODO: Check country
 
-        return newLocationId;
+        return newfactorySiteId;
     }
 
-    private Integer createAndTestRoom(final Integer companyId, final Integer locationId, final RoomDto room) {
+    private Integer createAndTestRoom(final Integer companyId, final Integer factorySiteId, final RoomDto room) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(room)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .post(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms")
+                .post(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms")
 
                 .then()
                 .statusCode(200)
@@ -957,7 +1114,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms/" + newRoomId)
+                .get(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + newRoomId)
 
                 .then()
                 .statusCode(200)
@@ -1080,8 +1237,25 @@ class FusionbackendApplicationTests {
                 .body("baseUnitId", equalTo(baseUnitId));
     }
 
+    private void createAndTestAssetTypeTemplateExpectError(final Integer assetTypeId,
+                                                           final AssetTypeTemplateDto assetTypeTemplate) {
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(assetTypeTemplate)
+                .header("Authorization", "Bearer " + accessTokenEcoMan)
+
+                .when()
+                .queryParam("assetTypeId", assetTypeId)
+                .post(baseUrl + "/assettypetemplates")
+
+                .then()
+                .statusCode(500);
+    }
+
     private Integer createAndTestAssetTypeTemplate(final Integer assetTypeId,
                                                    final AssetTypeTemplateDto assetTypeTemplate) {
+
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(assetTypeTemplate)
@@ -1112,9 +1286,9 @@ class FusionbackendApplicationTests {
         return newAssetTypeTemplateId;
     }
 
-    private Integer createAndTestAssetTypeTemplateFieldTarget(final Integer assetTypeTemplateId,
-                                                              final Integer fieldId,
-                                                              final FieldTargetDto fieldTarget) {
+    private void createAndTestAssetTypeTemplateFieldTarget(final Integer assetTypeTemplateId,
+                                                           final Integer fieldId,
+                                                           final FieldTargetDto fieldTarget) {
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .body(fieldTarget)
@@ -1143,7 +1317,6 @@ class FusionbackendApplicationTests {
         String fieldType = response.extract().path("fieldType");
         assertThat(fieldType).isEqualTo(fieldTarget.getFieldType().name());
 
-        return newFieldId;
     }
 
     private Integer createAndTestAssetType(final AssetTypeDto assetType) {
@@ -1189,40 +1362,22 @@ class FusionbackendApplicationTests {
         }
     }
 
-    private void validateFieldDto(ValidatableResponse response, FieldDto dto) {
-        if (dto.getName() != null) {
-            response.body("name", equalTo(dto.getName()));
-        }
-        if (dto.getDescription() != null) {
-            response.body("description", equalTo(dto.getDescription()));
-        }
-        if (dto.getUnit() != null) {
-            response.body("unit", equalTo(dto.getUnit()));
-        }
-
-        Float accuracy = response.extract().path("accuracy");
-        assertThat(accuracy.doubleValue()).isCloseTo(dto.getAccuracy(), within(0.001));
+    private void validateAssetDto(ValidatableResponse response, AssetDto dto) {
+        response.body("controlSystemType", equalTo(dto.getControlSystemType()));
+        response.body("hasGateway", equalTo(dto.getHasGateway()));
+        response.body("gatewayConnectivity", equalTo(dto.getGatewayConnectivity()));
     }
 
-    private Integer createAndTestAssetSeries(final Integer companyId, final Integer assetTypeTemplateCompanyId,
-                                             final Integer assetTypeTemplateId, final AssetSeriesDto assetSeries,
-                                             final String accessToken) {
+    private Long createAndTestAssetSeries(final Integer companyId,
+                                          final Integer assetTypeTemplateId,
+                                          final AssetSeriesDto assetSeries,
+                                          final String accessToken) {
+
+        AssetSeriesDto persistedAssetSeriesDto = createAssetSeries(companyId, assetTypeTemplateId, accessToken);
+
+        Long newAssetSeriesId = persistedAssetSeriesDto.getId();
 
         ValidatableResponse response = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-
-                .when()
-                .queryParam("assetTypeTemplateCompanyId", assetTypeTemplateCompanyId)
-                .queryParam("assetTypeTemplateId", assetTypeTemplateId)
-                .post(baseUrl + "/companies/" + companyId + "/assetseries")
-
-                .then()
-                .statusCode(200);
-
-        Integer newAssetSeriesId = response.extract().path("id");
-
-        response = given()
                 .contentType(ContentType.JSON)
                 .body(assetSeries)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1250,24 +1405,112 @@ class FusionbackendApplicationTests {
         return newAssetSeriesId;
     }
 
-    private Integer createAndTestAsset(final Integer companyId, final Integer assetSeriesId,
-                                       final Integer targetCompanyId, final AssetDto asset,
-                                       final String accessToken) {
+    private AssetSeriesDto createAssetSeries(Integer companyId, Integer assetTypeTemplateId, String accessToken) {
+        ConnectivityTypeDto connectivityTypeDto = getConnectivityTypeDtos(accessTokenFleetManAirist).get(0);
+
+
+        AssetSeriesDto assetSeriesDto = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl +
+                        "/companies/" +
+                        companyId +
+                        "/assettypetemplates/" +
+                        assetTypeTemplateId +
+                        "/init-asset-series-draft")
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+
+        ConnectivitySettingsDto connectivitySettings = assetSeriesDto.getConnectivitySettings();
+        connectivitySettings.setConnectionString("Some Connection");
+        connectivitySettings.setConnectivityTypeId(connectivityTypeDto.getId());
+        connectivitySettings.setConnectivityProtocolId(
+                List.copyOf(connectivityTypeDto.getAvailableProtocols()).get(0).getId());
+
+        return given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .body(assetSeriesDto)
+                .post(baseUrl + "/companies/" + companyId + "/assetseries")
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(AssetSeriesDto.class);
+    }
+
+    private List<ConnectivityTypeDto> getConnectivityTypeDtos(String accessTokenFleetManAirist) {
+        return given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleetManAirist)
+                .when()
+                .get(baseUrl + "/connectivity-types")
+                .then()
+                .statusCode(200)
+                .extract().body().jsonPath().getList(".", ConnectivityTypeDto.class);
+    }
+
+    private void transferFleetAssetToFactoryAsset(final Integer assetId,
+                                                  final Long assetSeriesId,
+                                                  final Integer fleetCompanyId,
+                                                  final Integer factoryCompanyId,
+                                                  final String accessTokenFleet) {
+        given()
+                .contentType(ContentType.JSON)
+                .body(factoryCompanyId)
+                .header("Authorization", "Bearer " + accessTokenFleet)
+
+                .when()
+                .patch(baseUrl + "/companies/" + fleetCompanyId + "/assetseries/" + assetSeriesId + "/assets/" + assetId + "/company-transfer")
+
+                .then()
+                .statusCode(200);
+
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFleet)
+
+                .when()
+                .get(baseUrl + "/companies/" + fleetCompanyId + "/assetseries/" + assetSeriesId + "/assets/" + assetId)
+
+                .then()
+                .statusCode(200);
+
+        response.body("companyId", equalTo(factoryCompanyId));
+    }
+
+    private Integer createAndTestFleetAsset(final Integer companyId, final Long assetSeriesId,
+                                            final AssetDto asset, final String accessToken) {
 
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .post(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId +
-                        "/assets?targetCompanyId=" + targetCompanyId)
+                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/init-asset-draft")
+
+                .then()
+                .statusCode(200);
+
+        response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .body(response.extract().body().asString())
+                .post(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets")
 
                 .then()
                 .statusCode(200);
 
         Integer newAssetId = response.extract().path("id");
 
-        response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .body(asset)
                 .header("Authorization", "Bearer " + accessToken)
@@ -1276,12 +1519,7 @@ class FusionbackendApplicationTests {
                 .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + newAssetId)
 
                 .then()
-                .statusCode(200)
-                .body("controlSystemType", equalTo(asset.getControlSystemType()))
-                .body("hasGateway", equalTo(asset.getHasGateway()))
-                .body("gatewayConnectivity", equalTo(asset.getGatewayConnectivity()));
-
-        validateBaseAssetDto(response, asset);
+                .statusCode(200);
 
         response = given()
                 .contentType(ContentType.JSON)
@@ -1291,24 +1529,112 @@ class FusionbackendApplicationTests {
                 .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + newAssetId)
 
                 .then()
-                .statusCode(200)
-                .body("controlSystemType", equalTo(asset.getControlSystemType()))
-                .body("hasGateway", equalTo(asset.getHasGateway()))
-                .body("gatewayConnectivity", equalTo(asset.getGatewayConnectivity()));
+                .statusCode(200);
 
         validateBaseAssetDto(response, asset);
+        validateAssetDto(response, asset);
 
         return newAssetId;
     }
 
-    private void assignAssetToRoomAndTest(final Integer companyId, final Integer locationId, final Integer roomId,
-                                          final Integer assetId) {
+    private void addSubsystemToParentAndTest(final Integer companyId,
+                                             final Long assetSeriesId,
+                                             final Integer parentAssetId,
+                                             final AssetDto newSubsystem,
+                                             final String subsystemAccessToken,
+                                             final String parentAccessToken) {
+
+        Integer newSubsystemId = persistNewAsset(newSubsystem, subsystemAccessToken);
+
+        addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
+
+        validateSubsystemExists(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
+
+    }
+
+    private void validateSubsystemExists(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+
+                .then()
+                .statusCode(200)
+                .body("subsystemIds", equalTo(Collections.singletonList(newSubsystemId)));
+    }
+
+    private void addSubstemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+        AssetDto parent = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+
+                .then()
+                .statusCode(200)
+                .extract().as(AssetDto.class);
+
+        parent.getSubsystemIds().add(newSubsystemId.longValue());
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(parent)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+
+                .then()
+                .statusCode(200);
+    }
+
+    private Integer persistNewAsset(AssetDto newSubsystem, String accessToken) {
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .get(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/init-asset-draft")
+
+                .then()
+                .statusCode(200);
+
+        Integer newSubsystemId = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .body(response.extract().body().asString())
+                .post(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets")
+
+                .then()
+                .statusCode(200)
+                .extract().path("id");
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(newSubsystem)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .when()
+                .patch(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets/" + newSubsystemId)
+
+                .then()
+                .statusCode(200);
+        return newSubsystemId;
+    }
+
+    private void assignFactoryAssetToRoomAndTest(final Integer companyId, final Integer factorySiteId, final Integer roomId,
+                                                 final Integer assetId) {
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .put(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms/" + roomId + "/assets/" + assetId)
+                .put(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId + "/assets/" + assetId + "/assign")
 
                 .then()
                 .statusCode(200);
@@ -1318,7 +1644,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenFabManStruump)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/locations/" + locationId + "/rooms/" + roomId +
+                .get(baseUrl + "/companies/" + companyId + "/factorysites/" + factorySiteId + "/rooms/" + roomId +
                         "/assets/" + assetId)
 
                 .then()
@@ -1343,9 +1669,4 @@ class FusionbackendApplicationTests {
         return response.extract().path("access_token");
     }
 
-    private void assertOffsetDateTimesEqualToSecond(final OffsetDateTime odt1, final OffsetDateTime odt2) {
-        OffsetDateTime convertedOdt1 = odt1.withOffsetSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-        OffsetDateTime convertedOdt2 = odt2.withOffsetSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-        assertThat(convertedOdt1).isAtSameInstantAs(convertedOdt2);
-    }
 }

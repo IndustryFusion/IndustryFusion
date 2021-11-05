@@ -45,7 +45,12 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
         }
         final AssetTypeTemplateDto dto = AssetTypeTemplateDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
+                .publicationState(entity.getPublicationState())
+                .publishedDate(entity.getPublishedDate())
+                .publishedVersion(entity.getPublishedVersion())
+                .creationDate(entity.getCreationDate())
                 .build();
         dto.setFieldTargetIds(fieldTargetMapper.toEntityIdSet(entity.getFieldTargets()));
 
@@ -55,17 +60,10 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     }
 
     private AssetTypeTemplateDto toDtoDeep(final AssetTypeTemplate entity) {
-        if (entity == null) {
-            return null;
-        }
-        final AssetTypeTemplateDto dto = AssetTypeTemplateDto.builder()
-                .id(entity.getId())
-                .assetTypeId(EntityDtoMapper.getEntityId(entity.getAssetType()))
-                .build();
-        dto.setFieldTargets(fieldTargetMapper.toDtoSet(entity.getFieldTargets()));
-        dto.setAssetType(assetTypeMapper.toDto(entity.getAssetType(), false));
+        final AssetTypeTemplateDto dto = toDtoShallow(entity);
 
-        baseAssetMapper.copyToDto(entity, dto);
+        dto.setFieldTargets(fieldTargetMapper.toDtoSet(entity.getFieldTargets(), false));
+        dto.setAssetType(assetTypeMapper.toDto(entity.getAssetType(), false));
 
         return dto;
     }
@@ -85,6 +83,10 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
         }
         AssetTypeTemplate entity = AssetTypeTemplate.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
+                .publicationState(dto.getPublicationState())
+                .publishedDate(dto.getPublishedDate())
+                .publishedVersion(dto.getPublishedVersion())
                 .build();
 
         baseAssetMapper.copyToEntity(dto, entity);
@@ -93,7 +95,10 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     }
 
     @Override
-    public Set<AssetTypeTemplateDto> toDtoSet(Set<AssetTypeTemplate> entitySet) {
+    public Set<AssetTypeTemplateDto> toDtoSet(Set<AssetTypeTemplate> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

@@ -13,6 +13,44 @@
  * under the License.
  */
 
+@import 'abstract/variables';
+@import '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
+
 .wrapper {
-  height: 100%;
+  padding-right: 7.71%;
+  padding-left: 7.71%;
+  margin-top: 0;
+  width: 100%;
+  background: $basic-white;
+}
+
+.if-detail-page-section {
+  margin-top: 40px;
+  margin-left: 0;
+  margin-bottom: 16px;
+  background: $basic-white !important;
+}
+
+.if-button-edit {
+  width: 115px;
+  margin-right: 16px;
+}
+
+.button-section {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+p {
+  margin-top: 0 !important;
+  margin-right: 16px;
+}
+
+.subtitle {
+  margin-top: 16px !important;
+}
+
+.content {
+  height: unset !important;
 }

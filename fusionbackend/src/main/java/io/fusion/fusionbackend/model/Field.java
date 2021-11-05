@@ -15,12 +15,18 @@
 
 package io.fusion.fusionbackend.model;
 
+import io.fusion.fusionbackend.model.enums.FieldThresholdType;
+import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,6 +34,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
+import java.time.OffsetDateTime;
 
 @Entity
 @NamedEntityGraph(name = "Field.allChildrenDeep",
@@ -36,7 +43,7 @@ import javax.persistence.SequenceGenerator;
         subgraphs = {
                 @NamedSubgraph(name = "unitChildren", attributeNodes = {
                         @NamedAttributeNode(value = "quantityType")})})
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_field")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_field")
 @Getter
 @Setter
 @SuperBuilder
@@ -52,7 +59,20 @@ public class Field extends BaseEntity {
     private Double accuracy;
     private String value;
 
+    @Column(updatable = false)
+    @CreationTimestamp
+    private OffsetDateTime creationDate;
+
+    @Enumerated(EnumType.STRING)
+    private FieldThresholdType thresholdType;
+
+    @Enumerated(EnumType.STRING)
+    private FieldWidgetType widgetType;
+
     public void copyFrom(final Field sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }
@@ -70,6 +90,15 @@ public class Field extends BaseEntity {
         }
         if (sourceField.getLabel() != null) {
             setLabel(sourceField.getLabel());
+        }
+        if (sourceField.getThresholdType() != null) {
+            setThresholdType(sourceField.getThresholdType());
+        }
+        if (sourceField.getWidgetType() != null) {
+            setWidgetType(sourceField.getWidgetType());
+        }
+        if (sourceField.getCreationDate() != null) {
+            setCreationDate(sourceField.getCreationDate());
         }
     }
 }

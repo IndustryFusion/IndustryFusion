@@ -18,23 +18,29 @@ package io.fusion.fusionbackend.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class FieldSourceDto {
-    private Long id;
+public class FieldSourceDto extends BaseEntityDto {
     private Long assetSeriesId;
     private Long fieldTargetId;
     private FieldTargetDto fieldTarget;
     private Long sourceUnitId;
     private UnitDto sourceUnit;
-    private String sourceSensorLabel;
     private String name;
     private String description;
     private String value;
     private String register;
+    private Long absoluteThresholdId;
+    private ThresholdDto absoluteThreshold;
+    private Long idealThresholdId;
+    private ThresholdDto idealThreshold;
+    private Long criticalThresholdId;
+    private ThresholdDto criticalThreshold;
 
     @JsonCreator
     public FieldSourceDto() {

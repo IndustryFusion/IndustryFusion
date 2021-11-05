@@ -28,13 +28,17 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/primeflex/primeflex.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/nova/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/@clr/icons/clr-icons.min.css",
               "node_modules/@clr/ui/clr-ui.min.css",
-              "src/assets/sass/styles.scss"
+              "src/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/assets/sass"
+                "src/styles"
               ]
             },
             "scripts": [
@@ -53,7 +57,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -70,6 +73,22 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "local_dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local_dev.ts"
+                }
+              ]
+            },
+            "local_dev-cluster": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local_dev-cluster.ts"
+                }
+              ]
             }
           }
         },
@@ -82,6 +101,12 @@
           "configurations": {
             "production": {
               "browserTarget": "fusionfrontend:build:production"
+            },
+            "local_dev": {
+              "browserTarget": "fusionfrontend:build:local_dev"
+            },
+            "local_dev-cluster": {
+              "browserTarget": "fusionfrontend:build:local_dev-cluster"
             }
           }
         },

@@ -1,0 +1,49 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="if-wizard-wrapper">
+  <app-timeline [currentStep]="step" [totalSteps]="totalSteps"></app-timeline>
+
+  <app-asset-series-wizard-general-information
+    *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
+    [mode]="mode"
+    [assetSeriesForm]="assetSeriesForm"
+    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)"
+    [relatedManufacturer]="relatedManufacturer"
+    [relatedAssetType]="relatedAssetType">
+  </app-asset-series-wizard-general-information>
+  <app-asset-series-wizard-nameplate-and-connectivity-settings
+    *ngIf="step === AssetSeriesCreateSteps.NAMEPLATE_AND_CONNECTIVITY_SETTINGS"
+    [mode]="mode"
+    [assetSeries]="assetSeries"
+    [assetSeriesForm]="assetSeriesForm"
+    (valid)="setConnectivitySettingsValid($event)">
+  </app-asset-series-wizard-nameplate-and-connectivity-settings>
+  <app-asset-series-wizard-metrics
+    *ngIf="step === AssetSeriesCreateSteps.METRICS"
+    [assetSeries]="assetSeries"
+    [fieldSourcesCanBeDeleted]="fieldSourcesCanBeDeleted"
+    (valid)="setMetricsValid($event)">
+  </app-asset-series-wizard-metrics>
+  <app-asset-series-wizard-attributes
+    *ngIf="step === AssetSeriesCreateSteps.ATTRIBUTES"
+    [assetSeries]="assetSeries"
+    [fieldSourcesCanBeDeleted]="fieldSourcesCanBeDeleted"
+    (valid)="setAttributesValid($event)">
+  </app-asset-series-wizard-attributes>
+
+  <app-asset-series-wizard-footer [step]="step" (back)="back()" [isReadyForNextStep]="isReadyForNextStep()"
+                                  (nextStep)="nextStep()" [toalSteps]="totalSteps"></app-asset-series-wizard-footer>
+</div>

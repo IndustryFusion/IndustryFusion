@@ -1,0 +1,49 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<p-confirmDialog header="Attention" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<div class="if-fusion-applet-editor" *ngIf="rule">
+  <div class="p-grid p-jc-between full-width p-align-center p-justify-center">
+    <p-inplace class="p-col-" [formGroup]="ruleGroup" [closable]="true" [closeIcon]="'pi pi-check'">
+      <ng-template pTemplate="display">
+        <i class="pi pi-pencil"></i>&nbsp;
+        <label class="if-title p-col-" displayControlValue="name"></label>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <input formControlName="name" type="text" pInputText>
+      </ng-template>
+    </p-inplace>
+    <div class="p-col-">
+      <p-checkbox binary="true"
+                  [ngModel]="ruleGroup.get('resetType').value === RuleResetType.Automatic"
+                  (onChange)="setResetTypeAutomatic($event.checked)"
+      ></p-checkbox>
+      Enable automatic Reset
+    </div>
+  </div>
+  <app-applet-conditions *ngIf="devices" class="full-width"
+                         [ruleGroup]="ruleGroup"
+                         [rule]="rule"
+                         [devices]="devices"
+  ></app-applet-conditions>
+  <div class="vl"></div>
+  <app-applet-action-list class="full-width"
+                          [actionsArray]="ruleGroup.get('actions')"
+                          [actions]="rule.actions"
+  ></app-applet-action-list>
+  <div class="full-width p-grid p-justify-end">
+    <button class="if-button button-primary" [disabled]="ruleGroup.invalid" (click)="save()">Save</button>
+  </div>
+</div>

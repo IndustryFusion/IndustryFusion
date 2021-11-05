@@ -13,47 +13,54 @@
  * under the License.
  */
 
-import { Location as loc } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { Location } from 'src/app/store/location/location.model';
-import { Room } from 'src/app/store/room/room.model';
+import { Asset, AssetWithFields } from 'src/app/core/store/asset/asset.model';
+import { AssetQuery } from 'src/app/core/store/asset/asset.query';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Room } from 'src/app/core/store/room/room.model';
+import { FieldDetails } from '../../../../core/store/field-details/field-details.model';
 
 @Component({
   selector: 'app-assets-grid-page',
   templateUrl: './assets-grid-page.component.html',
   styleUrls: ['./assets-grid-page.component.scss']
 })
-export class AssetsGridPageComponent implements OnInit, OnDestroy {
+export class AssetsGridPageComponent implements OnInit {
   isLoading$: Observable<boolean>;
-  location$: Observable<Location>;
-  rooms$: Observable<Room[]>;
+  factorySite$: Observable<FactorySite>;
+  roomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
   assetsWithFields$: Observable<AssetWithFields[]>;
+  commonFields: FieldDetails[] = [];
+  isCommonFieldsUsed = true;
 
   constructor(
     private assetQuery: AssetQuery,
-    private routingLocation: loc,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.isLoading$ = this.assetQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
-    this.location$ = this.factoryResolver.location$;
-    this.rooms$ = this.factoryResolver.rooms$;
+    this.factorySite$ = this.factoryResolver.factorySite$;
+    this.roomsOfFactorySite$ = this.factoryResolver.roomsOfFactorySite$;
     this.assets$ = this.factoryResolver.assets$;
     this.assetsWithFields$ = this.factoryResolver.assetsWithFields$;
+
+    this.assetsWithFields$.subscribe(assetsWithFields => this.updateCommonFields(assetsWithFields));
   }
 
-  ngOnDestroy() {
-  }
-
-  goBack() {
-    this.routingLocation.back();
+  private updateCommonFields(assetsWithFields: AssetWithFields[]): void {
+    this.commonFields = [];
+    if (assetsWithFields && assetsWithFields.length > 0) {
+      this.commonFields = assetsWithFields[0].fields;
+      assetsWithFields.forEach(assetWithFields => {
+        this.commonFields = this.commonFields
+          .filter(commonField => assetWithFields.fields.some(assetField => commonField.description === assetField.description));
+      });
+    }
   }
 }

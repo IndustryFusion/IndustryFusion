@@ -13,116 +13,41 @@
  * under the License.
  */
 
-.wrapper{
-    background: #F8F8F8;
-    padding: 0 15%;
-    margin: 0;
-}
+@import "abstract/variables";
 
-
-.cards{
-    display: flex;
-    justify-content: center;
-}
-footer{
-  padding: 40px 5%;
-    background: #F8F8F8;
-}
-
-footer .clr-row{
-    background: #F8F8F8;
-
-}
-
-footer .top-sign{
-    font-weight: bolder;
-    border-radius: 15px;
-    width: 75%;
-    height: auto;
-    margin-bottom: 20px;
-    font-size: 200%;
-}
-
-footer .right{
-  position: relative;
-  background-image: url(~/assets/img/IndustryFusion-hive-nav.png);
-  background-repeat: no-repeat;
-  background-position: 15% 50%;
-  background-color: white;
-
-  border-radius: 15px;
-  width: 75%;
-  height: auto;
-  text-align: center;
-  padding: 0 0;
-}
-
-.sign{
-  font-size: 150%;
-  font-weight: bolder;
-  position: absolute;
-  top: 50%;
-  left: 55%;
-  transform: translate(-50%,-50%);
-  text-align: left;
-  width: 60%;
-}
-
-footer .left-field{
-  background-color: white;
-  border-radius: 15px;
-  width: 75%;
-  height: auto;
-
-}
-
-.sign > p{
-    margin: 0;
-    text-align: left;
-}
-
-footer .table{
-    margin: 0;
-    padding: 32px;
-    font-size: 16px;
-
-  .label{
-    border: 0;
-    color: #95989A;
-  }
-
-  .value {
-    border: 0;
-    font-weight: bold;
-    text-align: right;
-    padding: 8px 0;
-    color: black;
-
-    span{
-      font-weight: normal;
-      color: #95989A;
-
-    }
-  }
-}
-
-.go-back-panel{
+.wrapper {
+  background: $light-grey;
+  padding: 0 5px;
+  margin: 0;
+  flex-basis: 0 !important;
+  flex-wrap: wrap;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: lightgray;
 
-  button{
-    color: black;
+  .p-col {
+    flex-grow: 0;
   }
+}
 
+.asset-cards {
+  display: flex;
+  justify-content: center;
+}
 
-  .goback{
-    clr-icon {
-      margin-right: 10px;
-      color: black;
+.header-line {
+  background: $light-grey;
+  padding: 30px 80px;
+  margin: 0 !important;
+
+  .checkbox {
+    display: flex;
+
+    .if-label {
+      align-self: center;
+      margin-left: 8px;
     }
   }
+}
+
+h3.table-header {
+  margin-left: 0 !important;
 }

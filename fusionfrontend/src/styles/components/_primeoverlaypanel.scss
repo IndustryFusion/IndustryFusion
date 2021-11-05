@@ -1,0 +1,76 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+.if-panel-heading {
+  font-size: $bigger-font-size;
+  font-weight: bold;
+  color: $basic-black;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.p-overlaypanel .p-overlaypanel-close {
+  background-color: $basic-white;
+  color: $basic-black;
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  border-radius: 8px;
+  width: 20px;
+  height: 20px;
+  box-shadow: none !important;
+
+  .pi-times:before {
+    font-size: $regular-font-size !important;
+    font-weight: bolder !important;
+  }
+
+  &:hover {
+    background-color: $basic-white !important;
+    color: $basic-black !important;
+  }
+  &:active {
+   border-color: $basic-white !important;
+  }
+}
+
+.dashboardFilterPanel {
+  .p-overlaypanel {
+      border-radius: 8px;
+      width: 500px;
+  }
+}
+
+.searchPanel {
+  .p-overlaypanel {
+    border-radius: 8px;
+    width: 330px;
+  }
+}
+
+.filterPanel {
+  .p-overlaypanel {
+    border-radius: 8px;
+    width: 500px;
+  }
+  .smallFilterPanel {
+    .p-overlaypanel {
+      width: 330px;
+      border-radius: 8px;
+    }
+  }
+
+}

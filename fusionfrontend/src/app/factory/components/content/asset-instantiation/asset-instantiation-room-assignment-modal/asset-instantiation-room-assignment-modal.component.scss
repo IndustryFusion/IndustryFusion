@@ -14,29 +14,49 @@
  */
 
 @import 'abstract/variables';
-@import 'components/radiobuttons';
+@import 'base/typography';
 
-.if-radiobutton {
-  display: flex;
-  justify-content: flex-start;
-  margin-right: 5px;
-  align-items: center;
+.room-text {
+  font-size: $bigger-font-size;
+  color: $basic-black;
 }
 
-.fieldLabel {
-  margin-left: 3px;
+.room-search-input {
+  height: 56px;
+  width: 82.0%;
+}
+
+.search-input {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .room-field {
-  padding: 15px;
-  background-color: white;
- }
+  width: 82.0%;
+  border-radius: 10px;
+  padding: 3.5% 3.5% 1.5% 3.5%;
+  margin-top: 1%;
+  background-color: $basic-white;
+  font-size: $medium-font-size;
 
-.add-button {
-  padding-top: 10px;
-  border: none;
-  border-color: hsl(198, 0%, 95%);
-  font-size: 15px;
-  color: black;
-  cursor:pointer;
+  :hover {
+    cursor: pointer;
+  }
+
+  .if-radiobutton {
+    width: 18px;
+    height: 18px;
+    display: flex;
+  }
+
+  .room-info {
+    color: $basic-grey;
+    text-align: right;
+  }
+}
+
+.assign-room-dialog-footer {
+  margin-top: 8.1%;
+  margin-bottom: 5%;
+  text-align: right;
 }

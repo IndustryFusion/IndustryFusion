@@ -50,13 +50,17 @@ public class AssetSeriesRestService {
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries")
-    public Set<AssetSeriesDto> getAssetSeriesSet(@PathVariable final Long companyId) {
-        return assetSeriesMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId));
+    public Set<AssetSeriesDto> getAssetSeriesSet(@PathVariable final Long companyId,
+                                                 @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetSeriesMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseriesdetails")
-    public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(@PathVariable final Long companyId) {
-        return assetSeriesDetailsMapper.toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId));
+    public Set<AssetSeriesDetailsDto> getAssetSeriesDetailsSet(
+            @PathVariable final Long companyId,
+            @RequestParam(defaultValue = "true") final boolean embedChildren) {
+        return assetSeriesDetailsMapper
+                .toDtoSet(assetSeriesService.getAssetSeriesSetByCompany(companyId), embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")
@@ -68,11 +72,17 @@ public class AssetSeriesRestService {
     }
 
     @PostMapping(path = "/companies/{companyId}/assetseries")
-    public AssetSeriesDto createAssetSeriesFromAssetTypeTemplate(@PathVariable final Long companyId,
-                                                                 @RequestParam final Long assetTypeTemplateId) {
+    public AssetSeriesDto createAssetSeries(@PathVariable final Long companyId,
+                                            @RequestBody final AssetSeriesDto assetSeriesDto) {
         return assetSeriesMapper.toDto(
-                assetSeriesService.createAssetSeriesFromAssetTypeTemplate(companyId, assetTypeTemplateId),
-                false);
+                assetSeriesService.createAssetSeries(
+                        companyId,
+                        assetSeriesDto.getAssetTypeTemplateId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityTypeId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
+                        assetSeriesMapper.toEntity(assetSeriesDto)
+                ),
+                true);
     }
 
     @PatchMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")
@@ -80,7 +90,7 @@ public class AssetSeriesRestService {
                                             @PathVariable final Long assetSeriesId,
                                             @RequestBody final AssetSeriesDto assetSeriesDto) {
         return assetSeriesMapper.toDto(assetSeriesService.updateAssetSeries(companyId, assetSeriesId,
-                assetSeriesMapper.toEntity(assetSeriesDto)), false);
+                assetSeriesMapper.toEntity(assetSeriesDto)), true);
     }
 
     @DeleteMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}")

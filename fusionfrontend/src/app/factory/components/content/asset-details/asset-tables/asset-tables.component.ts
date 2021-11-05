@@ -13,13 +13,14 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Field } from '../../../../../store/field/field.model';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FieldDetails } from '../../../../../core/store/field-details/field-details.model';
 import { Observable, Subject, timer } from 'rxjs';
-import { PointWithId } from '../../../../../services/oisp.model';
-import { Asset } from '../../../../../store/asset/asset.model';
-import { OispService } from '../../../../../services/oisp.service';
+import { PointWithId } from '../../../../../core/services/api/oisp.model';
+import { Asset } from '../../../../../core/store/asset/asset.model';
+import { OispService } from '../../../../../core/services/api/oisp.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
+import { environment } from '../../../../../../environments/environment';
 
 
 @Component({
@@ -31,13 +32,16 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
-  field: Field;
+  field: FieldDetails;
 
   @Input()
   asset: Asset;
 
   @Input()
   options: string;
+
+  @Output()
+  loadedEvent = new EventEmitter<void>();
 
   latestPoints$: Observable<PointWithId[]>;
 
@@ -66,7 +70,7 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
         switch ( this.options ){
           case 'current':
             this.flushData();
-            this.loadNewData(5);
+            this.loadNewData(environment.dataUpdateIntervalMs / 1000);
             break;
           case '10min':
             this.flushData();
@@ -86,12 +90,11 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
     }
     } else {
       this.initialized = true;
-      this.loadNewData(5);
+      this.loadNewData(environment.dataUpdateIntervalMs / 1000);
     }
   }
 
   ngOnDestroy() {
-    console.log('[asset-tables.component] destroyed subscription');
     this.destroy$.next(true);
     this.destroy$.complete();
   }
@@ -103,12 +106,12 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
   loadNewData(secondsInPast: number) {
     let gotFirstPoints = false;
-    this.latestPoints$ = timer(0, 5000)
+    this.latestPoints$ = timer(0, environment.dataUpdateIntervalMs)
         .pipe(
           switchMap(() => {
-            // If we already received some points, only take points from relevant past + 5 seconds margin.
+            // If we already received some points, only take points from relevant past + n seconds margin.
             if (gotFirstPoints) {
-              secondsInPast = this.slidingTimeWindow + 5;
+              secondsInPast = this.slidingTimeWindow + environment.dataUpdateIntervalMs / 1000;
             } else {
               gotFirstPoints = true;
             }
@@ -118,7 +121,6 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
     this.latestPoints$.pipe(takeUntil(this.destroy$))
       .subscribe(points => {
-        console.log('[asset-tables.component] points length ' + points.length);
         points.filter(point => !this.currentTimestamps.includes(point.ts)).forEach(point => {
           if (this.lastReceivedTimestamp < point.ts) {
             this.lastReceivedTimestamp = point.ts;
@@ -131,15 +133,17 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
           } else {
             this.allPoints.unshift([point.value, point.ts]);
           }
-        })
+        });
 
         if (this.lastReceivedTimestamp > 0) {
           this.slidingTimeWindow = (Date.now() - this.lastReceivedTimestamp) / 1000;
-        } else { // no points received -> set default value 5s
-          this.slidingTimeWindow = 5;
+        } else { // no points received -> set default value n s
+          this.slidingTimeWindow = environment.dataUpdateIntervalMs / 1000;
         }
         // only memorize last 50 values
         this.currentTimestamps = this.currentTimestamps.slice(Math.max(this.currentTimestamps.length - 50, 0));
+
+        this.loadedEvent.emit();
       });
   }
 }

@@ -22,10 +22,15 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.ConnectivityProtocol;
+import io.fusion.fusionbackend.model.ConnectivitySettings;
+import io.fusion.fusionbackend.model.ConnectivityType;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.repository.AssetSeriesRepository;
+import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
+import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;
 import io.fusion.fusionbackend.repository.FieldSourceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +40,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -46,6 +49,10 @@ public class AssetSeriesService {
     private final FieldSourceRepository fieldSourceRepository;
     private final CompanyService companyService;
     private final UnitService unitService;
+    private final FieldSourceService fieldSourceService;
+    private final ConnectivityTypeRepository connectivityTypeRepository;
+    private final ConnectivityProtocolRepository connectivityProtocolRepository;
+
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
 
@@ -54,12 +61,18 @@ public class AssetSeriesService {
                               AssetTypeTemplateService assetTypeTemplateService,
                               FieldSourceRepository fieldSourceRepository,
                               CompanyService companyService,
-                              UnitService unitService) {
+                              UnitService unitService,
+                              FieldSourceService fieldSourceService,
+                              ConnectivityTypeRepository connectivityTypeRepository,
+                              ConnectivityProtocolRepository connectivityProtocolRepository) {
         this.assetSeriesRepository = assetSeriesRepository;
         this.assetTypeTemplateService = assetTypeTemplateService;
         this.fieldSourceRepository = fieldSourceRepository;
         this.companyService = companyService;
         this.unitService = unitService;
+        this.fieldSourceService = fieldSourceService;
+        this.connectivityTypeRepository = connectivityTypeRepository;
+        this.connectivityProtocolRepository = connectivityProtocolRepository;
     }
 
     public Set<AssetSeries> getAssetSeriesSetByCompany(final Long companyId) {
@@ -71,47 +84,68 @@ public class AssetSeriesService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public AssetSeries createAssetSeriesFromAssetTypeTemplate(final Long targetCompanyId,
-                                                              final Long assetTypeTemplateId) {
+    @Transactional
+    public AssetSeries createAssetSeries(final Long targetCompanyId,
+                                         final Long assetTypeTemplateId,
+                                         final Long connectivityTypeId,
+                                         final Long connectivityProtocolId,
+                                         final AssetSeries assetSeries) {
+
+        validate(assetSeries);
+
         final AssetTypeTemplate assetTypeTemplate =
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
 
         final Company targetCompany = companyService.getCompany(targetCompanyId, false);
 
-        final AssetSeries newAssetSeries = AssetSeries.builder()
-                .build();
-        newAssetSeries.copyFrom(assetTypeTemplate);
+        assetSeries.setCompany(targetCompany);
+        assetSeries.setAssetTypeTemplate(assetTypeTemplate);
 
-        assetTypeTemplate.getAssetSeries().add(newAssetSeries);
-        newAssetSeries.setAssetTypeTemplate(assetTypeTemplate);
+        assetSeries.getFieldSources().forEach(fieldSource -> {
+            fieldSource.setAssetSeries(assetSeries);
+            Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
+            fieldSource.setSourceUnit(unit);
+        });
 
-        newAssetSeries.setCompany(targetCompany);
-        targetCompany.getAssetSeries().add(newAssetSeries);
-        final AssetSeries savedAssetSeries = assetSeriesRepository.save(newAssetSeries);
+        ConnectivityType connectivityType =
+                connectivityTypeRepository.findById(connectivityTypeId).orElseThrow();
+        ConnectivityProtocol connectivityProtocol =
+                connectivityProtocolRepository.findById(connectivityProtocolId).orElseThrow();
 
-        List<FieldSource> newFieldSources = assetTypeTemplate.getFieldTargets().stream()
-                .map(fieldTarget ->
-                        FieldSource.builder()
-                                .fieldTarget(fieldTarget)
-                                .assetSeries(savedAssetSeries)
-                                .sourceUnit(fieldTarget.getField().getUnit())
-                                .build())
-                .collect(Collectors.toList());
-        List<FieldSource> savedFieldSources =
-                StreamSupport.stream(fieldSourceRepository.saveAll(newFieldSources).spliterator(), false)
-                        .collect(Collectors.toList());
-        newAssetSeries.getFieldSources().addAll(savedFieldSources);
+        ConnectivitySettings connectivitySettings = assetSeries.getConnectivitySettings();
+        connectivitySettings.setConnectivityType(connectivityType);
+        connectivitySettings.setConnectivityProtocol(connectivityProtocol);
 
-        return newAssetSeries;
+        return assetSeriesRepository.save(assetSeries);
     }
 
     public AssetSeries updateAssetSeries(final Long companyId, final Long assetSeriesId,
                                          final AssetSeries sourceAssetSeries) {
         final AssetSeries targetAssetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
+        validate(sourceAssetSeries);
+
+        validateForUpdates(sourceAssetSeries, targetAssetSeries);
+
+        List<FieldSource> deletedFieldSources = targetAssetSeries.calculateDeletedFieldSources(sourceAssetSeries);
+
+        deletedFieldSources.forEach(fieldSourceService::delete);
+
         targetAssetSeries.copyFrom(sourceAssetSeries);
 
         return targetAssetSeries;
+    }
+
+    private void validateForUpdates(AssetSeries sourceAssetSeries, AssetSeries targetAssetSeries) {
+        if (!targetAssetSeries.isConnectivitySettingsUnchanged(sourceAssetSeries)) {
+            throw new RuntimeException("It is not allowed to change the connectivity settings.");
+        }
+    }
+
+    private void validate(AssetSeries sourceAssetSeries) {
+        if (sourceAssetSeries.getConnectivitySettings() == null) {
+            throw new RuntimeException("There must be connectivity settings for every asset series");
+        }
     }
 
     public void deleteAssetSeries(final Long companyId, final Long assetSeriesId) {

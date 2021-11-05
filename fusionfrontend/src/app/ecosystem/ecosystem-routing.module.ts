@@ -17,106 +17,225 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
-import { AssetTypeTemplateListComponent } from './components/content/asset-type-template-list/asset-type-template-list.component';
-import { AssetTypeTemplateEditComponent } from './components/content/asset-type-template-edit/asset-type-template-edit.component';
+import { AssetTypeTemplateListComponent } from './components/content/asset-type-template/asset-type-template-list/asset-type-template-list.component';
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
-import { MetricsAttributesPageComponent } from './components/pages/metrics-attributes-page/metrics-attributes-page.component';
+import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
-import { AssetTypeTemplatesResolver } from '../resolvers/asset-type-templates.resolver';
-import { AssetTypesResolver } from '../resolvers/asset-types.resolver';
+import { AssetTypeTemplatesResolver } from '../core/resolvers/asset-type-templates.resolver';
+import { AssetTypesResolver } from '../core/resolvers/asset-types.resolver';
 import { AssetTypeListComponent } from './components/content/asset-type-list/asset-type-list.component';
-import { MetricListComponent } from './components/content/metric-list/metric-list.component';
-import { MetricsResolver } from '../resolvers/metrics.resolver';
-import { QuantityTypesResolver } from '../resolvers/quantity-types.resolver';
+import { FieldListComponent } from './components/content/field-list/field-list.component';
+import { FieldsResolver } from '../core/resolvers/fields-resolver';
+import { QuantityTypesResolver } from '../core/resolvers/quantity-types.resolver';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
-import { UnitsResolver } from '../resolvers/units.resolver';
+import { UnitsResolver } from '../core/resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
-import { AssetTypeTemplateCreateComponent } from './components/content/asset-type-template-create/asset-type-template-create.component';
-import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
+import { MainAuthGuard } from '../core/guards/main-auth.guard';
+import { Role } from '../core/models/roles.model';
+import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
+import { AssetTypeDetailsResolver } from '../core/resolvers/asset-type-details.resolver';
+import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
+import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
+import { FieldPageComponent } from './components/pages/field-page/field-page.component';
+import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
+import { AssetTypeTemplateQuery } from '../core/store/asset-type-template/asset-type-template.query';
+import { AssetTypeQuery } from '../core/store/asset-type/asset-type.query';
+import { FieldQuery } from '../core/store/field/field.query';
+import { QuantityTypeQuery } from '../core/store/quantity-type/quantity-type.query';
+import { UnitQuery } from '../core/store/unit/unit.query';
 
 const routes: Routes = [
   {
+    path: 'ecosystemmanager/assettypes',
+    component: AssetTypesPageComponent,
+    canActivate: [MainAuthGuard],
+    resolve: {
+      assetTypes: AssetTypeDetailsResolver,
+    },
+    data: {
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Asset Types',
+    },
+    children: [
+      {
+        path: '',
+        component: AssetTypeListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':assettypeId',
+        component: AssetTypePageComponent,
+        canActivate: [MainAuthGuard],
+        resolve: {
+          assetTypes: AssetTypesResolver,
+          templates: AssetTypeTemplatesResolver,
+        },
+        data: {
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: AssetTypeQuery,
+        },
+        children: [{
+          path: '',
+          component: AssetTypeTemplateListComponent,
+          data: {
+            breadcrumb: null,
+          }
+        }]
+      }]
+  },
+  {
     path: 'ecosystemmanager/assettypetemplate',
-    component: AssetTypeTemplatePageComponent,
-    canActivate: [MainAuthGuardGuard],
+    component: AssetTypeTemplatesPageComponent,
+    canActivate: [MainAuthGuard],
     resolve: {
       templates: AssetTypeTemplatesResolver,
     },
-    children: [{
-      path: '',
-      component: AssetTypeTemplateListComponent
+    data: {
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Asset Type Templates',
     },
-    {
-      path: 'create',
-      component: AssetTypeTemplateCreateComponent,
-      resolve: {
-        assetTypes: AssetTypesResolver,
-        metrics: MetricsResolver,
-        units: UnitsResolver,
-        quantity: QuantityTypesResolver,
+    children: [
+      {
+        path: '',
+        component: AssetTypeTemplateListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':assetTypeTemplateId',
+        component: AssetTypeTemplatePageComponent,
+        resolve: {
+          assetTypes: AssetTypesResolver,
+          fields: FieldsResolver,
+          units: UnitsResolver,
+        },
+        data: {
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: AssetTypeTemplateQuery,
+        },
       }
-    },
-    {
-      path: ':id/edit',
-      component: AssetTypeTemplateEditComponent
-    }]
+    ],
   },
   {
-    path: 'ecosystemmanager/assettypes',
-    component: AssetTypesPageComponent,
-    canActivate: [MainAuthGuardGuard],
+    path: 'ecosystemmanager/fields',
+    component: FieldsPageComponent,
+    canActivate: [MainAuthGuard],
     resolve: {
-      assetTypes: AssetTypesResolver,
-    },
-    children: [{
-      path: '',
-      component: AssetTypeListComponent,
-    }]
-  },
-  {
-    path: 'ecosystemmanager/metrics',
-    component: MetricsAttributesPageComponent,
-    canActivate: [MainAuthGuardGuard],
-    resolve: {
-      metrics: MetricsResolver,
+      fields: FieldsResolver,
       units: UnitsResolver,
+      quantityTypes: QuantityTypesResolver,
     },
-    children: [{
-      path: '',
-      component: MetricListComponent,
-    }]
+    data: {
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Metrics & Attributes',
+    },
+    children: [
+      {
+        path: '',
+        component: FieldListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':fieldId',
+        component: FieldPageComponent,
+        canActivate: [MainAuthGuard],
+        resolve: {
+          fields: FieldsResolver,
+          units: UnitsResolver,
+          quantityTypes: QuantityTypesResolver,
+        },
+        data: {
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: FieldQuery,
+        }
+      }]
   },
   {
-    path: 'ecosystemmanager/quantity',
+    path: 'ecosystemmanager/quantitytypes',
     component: QuantityTypesPageComponent,
-    canActivate: [MainAuthGuardGuard],
+    canActivate: [MainAuthGuard],
     resolve: {
-      quantity: QuantityTypesResolver,
+      quantityTypes: QuantityTypesResolver,
       units: UnitsResolver,
     },
-    children: [{
-      path: '',
-      component: QuantityTypeListComponent,
-    }]
+    data: {
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Quantity Types',
+    },
+    children: [
+      {
+        path: '',
+        component: QuantityTypeListComponent,
+        data: {
+          breadcrumb: null,
+        }
+      },
+      {
+        path: ':quantitytypeId',
+        component: QuantityTypePageComponent,
+        canActivate: [MainAuthGuard],
+        resolve: {
+          quantityTypes: QuantityTypesResolver,
+          units: UnitsResolver,
+        },
+        data: {
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: QuantityTypeQuery,
+        },
+        children: [{
+          path: '',
+          component: UnitListComponent,
+          data: {
+            breadcrumb: null,
+          }
+        }]
+      }]
   },
   {
     path: 'ecosystemmanager/units',
     component: UnitsPageComponent,
-    canActivate: [MainAuthGuardGuard],
+    canActivate: [MainAuthGuard],
     resolve: {
-      quantity: QuantityTypesResolver,
+      quantityTypes: QuantityTypesResolver,
       units: UnitsResolver,
     },
-    children: [{
-      path: '',
-      component: UnitListComponent,
-    }]
-  }
+    data: {
+      roles: [Role.ECOSYSTEM_MANAGER],
+      breadcrumb: 'Units'
+    },
+    children: [
+      {
+        path: '',
+        component: UnitListComponent,
+        data: {
+          breadcrumb: null
+        }
+      },
+      {
+        path: ':unitId',
+        component: UnitPageComponent,
+        canActivate: [MainAuthGuard],
+        resolve: {
+          quantityTypes: QuantityTypesResolver,
+          units: UnitsResolver,
+        },
+        data: {
+          roles: [Role.ECOSYSTEM_MANAGER],
+          breadcrumb: UnitQuery,
+        },
+      }]
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class EcosystemRoutingModule { }
+export class EcosystemRoutingModule {
+}

@@ -44,8 +44,8 @@ public class UnitRestService {
     }
 
     @GetMapping(path = "/quantitytypes/{quantityTypeId}/units")
-    public Set<UnitDto> getUnitsOfQuantityType() {
-        return unitMapper.toDtoSet(unitService.getAllUnits());
+    public Set<UnitDto> getUnitsOfQuantityType(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return unitMapper.toDtoSet(unitService.getAllUnits(), embedChildren);
     }
 
     @GetMapping(path = "/quantitytypes/{quantityTypeId}/units/{unitId}")
@@ -57,17 +57,19 @@ public class UnitRestService {
 
     @PostMapping(path = "/quantitytypes/{quantityTypeId}/units")
     public UnitDto createUnitOfQuantityType(@PathVariable final Long quantityTypeId,
-                                            @RequestBody final UnitDto companyDto) {
-        return unitMapper.toDto(unitService.createUnit(quantityTypeId, unitMapper.toEntity(companyDto)),
-                false);
+                                            @RequestBody final UnitDto unitDto,
+                                            @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return unitMapper.toDto(unitService.createUnit(quantityTypeId, unitMapper.toEntity(unitDto)),
+                embedChildren);
     }
 
     @PatchMapping(path = "/quantitytypes/{quantityTypeId}/units/{unitId}")
     public UnitDto updateUnitOfQuantityType(@PathVariable final Long quantityTypeId,
                                             @PathVariable final Long unitId,
-                                            @RequestBody final UnitDto companyDto) {
-        return unitMapper.toDto(unitService.updateUnit(quantityTypeId, unitId, unitMapper.toEntity(companyDto)),
-                false);
+                                            @RequestBody final UnitDto unitDto,
+                                            @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return unitMapper.toDto(unitService.updateUnit(quantityTypeId, unitId, unitMapper.toEntity(unitDto)),
+                embedChildren);
     }
 
     @DeleteMapping(path = "/quantitytypes/{quantityTypeId}/units/{unitId}")

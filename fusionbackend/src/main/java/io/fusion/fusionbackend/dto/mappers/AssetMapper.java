@@ -17,8 +17,10 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.model.Asset;
+import io.fusion.fusionbackend.service.AssetService;
 import io.fusion.fusionbackend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -28,24 +30,38 @@ import java.util.stream.Collectors;
 @Component
 public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     private final BaseAssetMapper baseAssetMapper;
+    private final FieldInstanceMapper fieldInstanceMapper;
     private final RoomService roomService;
+    private final RoomMapper roomMapper;
+    private final AssetService assetService;
+
 
     @Autowired
     public AssetMapper(BaseAssetMapper baseAssetMapper,
-                       RoomService roomService) {
+                       FieldInstanceMapper fieldInstanceMapper,
+                       RoomService roomService,
+                       @Lazy RoomMapper roomMapper,
+                       AssetService assetService) {
         this.baseAssetMapper = baseAssetMapper;
+        this.fieldInstanceMapper = fieldInstanceMapper;
         this.roomService = roomService;
+        this.roomMapper = roomMapper;
+        this.assetService = assetService;
     }
 
     private AssetDto toDtoShallow(final Asset entity) {
         if (entity == null) {
             return null;
         }
+        // Please mind editing AssetDetailsMapper on changes here too
         AssetDto dto = AssetDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
+                .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
+                .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
                 .roomId(EntityDtoMapper.getEntityId(entity.getRoom()))
-                .externalId(entity.getExternalId())
+                .externalName(entity.getExternalName())
                 .controlSystemType(entity.getControlSystemType())
                 .hasGateway(entity.getHasGateway())
                 .gatewayConnectivity(entity.getGatewayConnectivity())
@@ -54,14 +70,12 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .serialNumber(entity.getSerialNumber())
                 .constructionDate(entity.getConstructionDate())
                 .protectionClass(entity.getProtectionClass())
-                .handbookKey(entity.getHandbookKey())
-                .videoKey(entity.getVideoKey())
+                .handbookUrl(entity.getHandbookUrl())
+                .videoUrl(entity.getVideoUrl())
                 .installationDate(entity.getInstallationDate())
+                .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .connectionString(entity.getConnectionString())
                 .build();
-
-        if (entity.getRoom() != null) {
-            dto.setRoomId(entity.getRoom().getId());
-        }
 
         baseAssetMapper.copyToDto(entity, dto);
 
@@ -69,7 +83,21 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
     }
 
     private AssetDto toDtoDeep(final Asset entity) {
-        return toDtoShallow(entity);
+        AssetDto dto = toDtoShallow(entity);
+        if (dto == null) {
+            return null;
+        }
+
+        if (entity.getFieldInstances() != null) {
+            dto.setFieldInstances(this.fieldInstanceMapper.toDtoSet(entity.getFieldInstances(), true));
+        }
+        if (entity.getRoom() != null) {
+            dto.setRoom(this.roomMapper.toDto(entity.getRoom(), true));
+        }
+
+        baseAssetMapper.copyToDto(entity, dto);
+
+        return dto;
     }
 
     @Override
@@ -87,7 +115,8 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         }
         Asset entity = Asset.builder()
                 .id(dto.getId())
-                .externalId(dto.getExternalId())
+                .version(dto.getVersion())
+                .externalName(dto.getExternalName())
                 .controlSystemType(dto.getControlSystemType())
                 .hasGateway(dto.getHasGateway())
                 .gatewayConnectivity(dto.getGatewayConnectivity())
@@ -96,22 +125,50 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .serialNumber(dto.getSerialNumber())
                 .constructionDate(dto.getConstructionDate())
                 .protectionClass(dto.getProtectionClass())
-                .handbookKey(dto.getHandbookKey())
-                .videoKey(dto.getVideoKey())
+                .handbookUrl(dto.getHandbookUrl())
+                .videoUrl(dto.getVideoUrl())
                 .installationDate(dto.getInstallationDate())
+                .connectionString(dto.getConnectionString())
                 .build();
 
-        if (dto.getRoomId() != null) {
-            entity.setRoom(roomService.getRoomById(dto.getRoomId()));
+        addRoomToEntity(dto, entity);
+        if (dto.getFieldInstances() != null) {
+            entity.setFieldInstances(fieldInstanceMapper.toEntitySet(dto.getFieldInstances()));
         }
+
+        addSubsystemsToEntity(dto, entity);
 
         baseAssetMapper.copyToEntity(dto, entity);
 
         return entity;
     }
 
+    private void addSubsystemsToEntity(AssetDto dto, Asset entity) {
+        if (dto.getSubsystemIds() != null) {
+            dto.getSubsystemIds().forEach(id -> {
+                Asset asset = assetService.getAssetById(id);
+                entity.getSubsystems().add(asset);
+            });
+        }
+    }
+
+    private void addRoomToEntity(final AssetDto dto, final Asset entity) {
+        if (dto.getRoom() != null && dto.getRoomId() != null && !dto.getRoomId().equals(dto.getRoom().getId())) {
+            throw new IllegalArgumentException("Id of room is different to roomId");
+        }
+
+        if (dto.getRoom() != null) {
+            entity.setRoom(roomMapper.toEntity(dto.getRoom()));
+        } else if (dto.getRoomId() != null) {
+            entity.setRoom(roomService.getRoomById(dto.getRoomId()));
+        }
+    }
+
     @Override
-    public Set<AssetDto> toDtoSet(Set<Asset> entitySet) {
+    public Set<AssetDto> toDtoSet(Set<Asset> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

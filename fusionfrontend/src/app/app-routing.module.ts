@@ -16,15 +16,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LaunchpadPageComponent } from './components/pages/launchpad-page/launchpad-page.component';
-import { MainAuthGuardGuard } from './services/main-auth-guard.guard';
+import { LaunchpadPageComponent } from './shared/components/pages/launchpad-page/launchpad-page.component';
+import { MainAuthGuard } from './core/guards/main-auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'home',
     component: LaunchpadPageComponent,
-    canActivate: [MainAuthGuardGuard]
+    canActivate: [MainAuthGuard],
+    data: {
+      breadcrumb: 'Launchpad'
+    }
   },
   {
      path: 'ecosystemmanager',
@@ -42,14 +45,24 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'settings',
-    redirectTo: '/settings/template',
+    path: 'dashboards',
+    redirectTo: '/dashboards/companies/',
     pathMatch: 'full'
-  }
+  },
+  {
+    path: 'fusion-applets',
+    redirectTo: '/fusion-applets/overview',
+    pathMatch: 'full'
+  },
+  {
+    path: 'notifications',
+    redirectTo: '/notifications/open',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy', anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

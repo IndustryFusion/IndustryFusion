@@ -17,8 +17,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 
-import { RestService } from '../../../../../services/rest.service';
-import { BaseEntity } from '../../../../../store/baseentity.model';
+import { RestService } from '../../../../../core/services/api/rest.service';
+import { BaseEntity } from '../../../../../core/store/baseentity.model';
 
 @Component({
   template: '',

@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.dto.mappers;
 import io.fusion.fusionbackend.dto.RoomDto;
 import io.fusion.fusionbackend.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -27,10 +28,12 @@ import java.util.stream.Collectors;
 @Component
 public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
     private final AssetMapper assetMapper;
+    private final FactorySiteMapper factorySiteMapper;
 
     @Autowired
-    public RoomMapper(AssetMapper assetMapper) {
+    public RoomMapper(AssetMapper assetMapper, @Lazy FactorySiteMapper factorySiteMapper) {
         this.assetMapper = assetMapper;
+        this.factorySiteMapper = factorySiteMapper;
     }
 
     private RoomDto toDtoShallow(final Room entity) {
@@ -39,7 +42,8 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         }
         return RoomDto.builder()
                 .id(entity.getId())
-                .locationId(EntityDtoMapper.getEntityId(entity.getLocation()))
+                .version(entity.getVersion())
+                .factorySiteId(EntityDtoMapper.getEntityId(entity.getFactorySite()))
                 .assetIds(EntityDtoMapper.getSetOfEntityIds(entity.getAssets()))
                 .name(entity.getName())
                 .imageKey(entity.getImageKey())
@@ -51,14 +55,13 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         if (entity == null) {
             return null;
         }
-        return RoomDto.builder()
-                .id(entity.getId())
-                .locationId(EntityDtoMapper.getEntityId(entity.getLocation()))
-                .assets(assetMapper.toDtoSet(entity.getAssets()))
-                .name(entity.getName())
-                .imageKey(entity.getImageKey())
-                .description(entity.getDescription())
-                .build();
+
+        RoomDto roomDto = toDtoShallow(entity);
+
+        roomDto.setFactorySite(factorySiteMapper.toDto(entity.getFactorySite(), false));
+        roomDto.setAssets(assetMapper.toDtoSet(entity.getAssets(), false));
+
+        return roomDto;
     }
 
     @Override
@@ -74,16 +77,26 @@ public class RoomMapper implements EntityDtoMapper<Room, RoomDto> {
         if (dto == null) {
             return null;
         }
-        return Room.builder()
+        final Room entity = Room.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .imageKey(dto.getImageKey())
                 .description(dto.getDescription())
                 .build();
+
+        if (dto.getFactorySite() != null) {
+            entity.setFactorySite(factorySiteMapper.toEntity(dto.getFactorySite()));
+        }
+
+        return entity;
     }
 
     @Override
-    public Set<RoomDto> toDtoSet(Set<Room> entitySet) {
+    public Set<RoomDto> toDtoSet(Set<Room> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

@@ -18,17 +18,20 @@ package io.fusion.fusionbackend.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+import java.time.OffsetDateTime;
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class UnitDto {
-    private Long id;
+public class UnitDto extends BaseEntityDto {
     private String name;
-    private String description;
     private String symbol;
     private String label;
+    private OffsetDateTime creationDate;
     private Long quantityTypeId;
     private QuantityTypeDto quantityType;
 

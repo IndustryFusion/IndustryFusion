@@ -45,8 +45,8 @@ public class CompanyRestService {
 
     @IsEcosystemUser
     @GetMapping(path = "/companies")
-    public Set<CompanyDto> getCompanies() {
-        return companyMapper.toDtoSet(companyService.getAllCompanies());
+    public Set<CompanyDto> getCompanies(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return companyMapper.toDtoSet(companyService.getAllCompanies(), embedChildren);
     }
 
     @IsAnyFusionUser

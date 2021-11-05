@@ -38,25 +38,20 @@ public abstract class BaseEntity implements Serializable {
     @Id
     @Column(updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
-    protected Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long id;
 
     @Version
     private Long version;
 
-    public Long getVersion() {
-        return version;
-    }
+    protected void copyFrom(BaseEntity sourceBaseEntity) {
 
-    public void setVersion(Long version) {
-        this.version = version;
+        if (sourceBaseEntity.getId() != null) {
+            setId(sourceBaseEntity.getId());
+        }
+
+        if (sourceBaseEntity.getVersion() != null) {
+            setVersion(sourceBaseEntity.getVersion());
+        }
     }
 
     @Override
@@ -68,12 +63,23 @@ public abstract class BaseEntity implements Serializable {
             return false;
         }
         BaseEntity that = (BaseEntity) o;
+        if (id == null) {
+            return false;
+        }
         return Objects.equals(id, that.id);
     }
 
+    /* Fixing the entity identifier equals and hashCode
+        The problem with id as hashcode:
+        When the entity was first stored in the Set, the identifier was null. After the entity was persisted,
+        the identifier was assigned to a value that was automatically generated, hence the hashCode differs.
+        For this reason, the entity cannot be found in the Set after it got persisted.
+        https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+     */
+
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 
     @Override

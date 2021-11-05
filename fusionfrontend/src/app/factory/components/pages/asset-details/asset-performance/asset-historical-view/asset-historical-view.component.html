@@ -1,0 +1,139 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class='asset-details-wrapper'>
+
+  <div class="p-grid p-jc-between list-header list-header">
+    <div class="caption">Historical View</div>
+    <p-selectButton  class="performance-views space-right"
+                     optionLabel="name"
+                     optionValue="value"
+                     [options]="viewModeOptions"
+                     [(ngModel)]="viewMode"
+                     (ngModelChange)="onChangeRoute()">
+    </p-selectButton>
+  </div>
+
+  <div class="time-interval-selectors">
+    <div class="selector-with-points">
+      <p-selectButton  class="radio-wrapper"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="timeSlotOptions"
+                       [(ngModel)]="currentTimeslot"
+                       (ngModelChange)="onTimeslotChanged()">
+      </p-selectButton>
+      <div *ngIf="choiceConfiguration.chooseMaxPointsInline" class="maxpoints">
+        <label class="points-label">Choose max. Datapoints:</label>
+        <p-dropdown class="points-dropdown-inline" [options]="maxItemsOptions" [(ngModel)]="maxPoints"
+                    (ngModelChange)="onOkClicked()">
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="choiceOptions">
+      <ng-container *ngIf="choiceConfiguration.chooseMaxPoints">
+        <div class="alert alert-info" role="alert">
+          <div class="alert-items">
+            <div class="alert-item static">
+              <div class="alert-icon-wrapper">
+                <fa-icon [icon]="faExclamationCircle" class="fa-fw alert-icon"></fa-icon>
+              </div>
+              <span class="alert-text">
+              To efficiently display data for this time period, it has to be aggregated. Max points is the
+              maximal number of points which will be retrieved at a time.
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="interval-options">
+          <div class="maxpoints">
+            <label class="points-label">Choose max. Datapoints</label>
+            <p-dropdown class="points-dropdown" [options]="maxItemsOptions" [(ngModel)]="maxPoints">
+            </p-dropdown>
+          </div>
+          <div class="dater">
+            <ng-container *ngIf="choiceConfiguration.chooseStartDate">
+              <label class="datelabel">Choose start date</label>
+              <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
+                          [ngModel]="startDate" [maxDate]="maxDate" (ngModelChange)="setMinAndMaxDate($event)"></p-calendar>
+            </ng-container>
+          </div>
+          <div class="dater">
+            <ng-container *ngIf="choiceConfiguration.chooseEndDate">
+              <label class="datelabel">Choose end date</label>
+              <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
+                          [minDate]="minDate" [maxDate]="maxDate" [ngModel]="endDate"></p-calendar>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="choiceConfiguration.showWarning">
+      <div class="alert alert-warning" role="alert">
+        <div class="alert-items">
+          <div class="alert-item static">
+            <div class="alert-icon-wrapper">
+              <fa-icon [icon]="faExclamationCircle" class="fa-fw"></fa-icon>
+            </div>
+            <span class="alert-text">options missing, please enter again</span>
+            <div class="alert-actions">
+              <div class="alert-action dropdown bottom-right open">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="gotIt" aria-label="Close" (click)="resetOptions()">
+          <fa-icon  aria-hidden="true" [icon]="faTimes" class="fa-fw"></fa-icon> Got it!
+        </button>
+      </div>
+    </ng-container>
+
+    <div class="ok-button" *ngIf="currentTimeslot === 'customDate'">
+      <ng-container *ngIf="choiceConfiguration.chooseButton">
+        <button class="if-button button button-primary" (click)="onOkClicked()">OK</button>
+      </ng-container>
+    </div>
+  </div>
+
+  <ng-container *ngIf="asset$ | async as assetWithFields">
+    <div class="charts-container">
+      <ng-container *ngFor="let field of assetWithFields.fields">
+        <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
+          <!--suppress XmlDuplicatedId -->
+          <app-asset-charts id="metric-{{field.externalName}}" [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
+                            [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
+                            [options]="currentTimeslot" [startDate]="startDate" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-charts>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div class="tables-wrapper">
+      <div class="custom-row-wrapper clr-row clr-justify-content-around">
+        <ng-container *ngFor="let field of assetWithFields.fields">
+          <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
+            <div class="p-md-12 p-col-align-start">
+              <!--suppress XmlDuplicatedId -->
+              <app-asset-tables id="metric-{{field.externalName}}" [asset]="assetWithFields" [field]="field"
+                                [options]="currentTimeslot" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-tables>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

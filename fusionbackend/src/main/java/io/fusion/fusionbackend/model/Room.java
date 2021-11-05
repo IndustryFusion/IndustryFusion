@@ -43,25 +43,35 @@ import java.util.Set;
         subgraphs = {
                 @NamedSubgraph(name = "assetChildren", attributeNodes = {
                         @NamedAttributeNode("fieldInstances")})})
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_room")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_room")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 public class Room extends BaseEntity {
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    public static final String NO_SPECIFIC_ROOM_NAME = "No specific room";
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "factory_site_id", nullable = false)
+    private FactorySite factorySite;
     @OneToMany(mappedBy = "room")
     @Builder.Default
     private Set<Asset> assets = new LinkedHashSet<>();
-
     private String name;
     private String imageKey;
     private String description;
 
+    public static Room getUnspecificRoomInstance() {
+        Room unspecificRoom = new Room();
+        unspecificRoom.name = NO_SPECIFIC_ROOM_NAME;
+        unspecificRoom.description = NO_SPECIFIC_ROOM_NAME;
+        return unspecificRoom;
+    }
+
     public void copyFrom(final Room sourceRoom) {
+
+        super.copyFrom(sourceRoom);
+
         if (sourceRoom.getName() != null) {
             setName(sourceRoom.getName());
         }
@@ -70,6 +80,9 @@ public class Room extends BaseEntity {
         }
         if (sourceRoom.getDescription() != null) {
             setDescription(sourceRoom.getDescription());
+        }
+        if (sourceRoom.getFactorySite() != null) {
+            setFactorySite(sourceRoom.getFactorySite());
         }
     }
 }

@@ -18,7 +18,7 @@ import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { Router, UrlTree } from '@angular/router';
-import { CompanyQuery } from '../../../../store/company/company.query';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
 
 @Component({
@@ -33,7 +33,8 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
   companyId: ID;
   sub: Subscription;
 
-  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) { }
+  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
+  }
 
   ngOnInit() {
     this.sub = this.router.events
@@ -46,7 +47,7 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
           this.route = '/';
         }
       });
-    this.companyId = this.companyQuery.getActiveId();
+    this.companyQuery.selectLoading().subscribe( () => this.companyId = this.companyQuery.getActiveId());
   }
 
   ngOnDestroy(): void {
@@ -54,7 +55,7 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
     this.unSubscribe$.complete();
   }
 
-  onRouteClick(subroute: string) : Promise<boolean> {
+  onRouteClick(subroute: string): Promise<boolean> {
       if (this.companyId) {
         return this.router.navigateByUrl(this.getUrlTree(subroute));
       } else {

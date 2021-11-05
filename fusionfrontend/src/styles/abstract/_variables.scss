@@ -1,0 +1,93 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+  /** colors **/
+  $basic-white:       #FFFFFF;
+  $light-white:       #F0F0F0;
+  $light-grey:        #F8F8F8;
+  $middle-white:      #E6E6E6;
+  $dark-white:        #EAEAEA;
+  $middle-grey:       #B9B9B9;
+  $basic-grey:        #95989A;
+  $slight-grey:       #707070;
+  $regular-grey:      #666666;
+  $grey:              #454F63;
+  $regular-dark-grey: #455B631A;
+  $dark-grey:         #333333;
+  $dark-gray:         #00000029;
+  $basic-black:       #000000;
+
+  $saturated-red:     #C42326;
+  $fusion-red:        #A73737;
+  $light-red:         #D56365;
+  $yellow:            #FCA82B;
+
+  $fusion-blue:       #2CA9CE;
+
+  $header-gradient-light: #8AC9C1 0%;
+  $header-gradient-dark:  #0089D8 100%;
+
+
+  /** function colors **/
+  $applet-editor-line-grey:   $slight-grey;
+  $tree-line-grey:            $middle-grey;
+  $warning:                   $yellow;
+  $error:                     $fusion-red;
+  $highlighted:               $basic-black;
+  $inactive:                  $basic-grey;
+  $inactive-infotext:         $basic-grey;
+  $hover-grey:                $dark-grey;
+  $hover-grey-border:         $basic-grey;
+  $disabled-button:           $middle-white;
+  $onboarding-text:           $fusion-blue;
+  $underlay:                  $dark-white;
+
+  $status-active:             $fusion-blue;
+  $status-running:            $fusion-blue;
+  $status-idle:               $grey;
+  $status-error:              $fusion-red;
+  $status-offline:            $dark-white;
+
+  $trash-button:              $saturated-red;
+  $trash-button-hover:        $light-red;
+
+  $alert-low:                 $fusion-blue;
+  $alert-medium:              $warning;
+  $alert-high:                $error;
+
+
+  /** backgrounds **/
+  $grey-background:  $light-grey  50% 50% no-repeat padding-box;
+  $white-background: $basic-white 50% 50% no-repeat padding-box;
+  $black-background: $basic-black 50% 50% no-repeat padding-box;
+
+
+  $dark-box-shadow: 0px 3px 6px  $dark-gray;
+  $grey-box-shadow: 0px 4px 16px $regular-dark-grey;
+
+  /** checkbox size **/
+  $checkbox-height: 16px;
+  $checkbox-width: 16px;
+
+  /** radiobutton size **/
+  $radiobutton-height: 12px;
+  $radiobutton-width: 12px;
+
+ /** dashboard sizes **/
+ $dashboard-height-low: 8.2rem;
+ $dashboard-height-high: 14.4rem;
+
+  /** icon sizes **/
+  $medium-icon-size: 16px;

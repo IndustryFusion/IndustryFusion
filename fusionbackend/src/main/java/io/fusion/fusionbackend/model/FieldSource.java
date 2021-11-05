@@ -20,16 +20,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "field_source")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldsource")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldsource")
 @Getter
 @Setter
 @SuperBuilder
@@ -47,16 +50,27 @@ public class FieldSource extends BaseEntity {
     @JoinColumn(name = "source_unit_id", nullable = false)
     private Unit sourceUnit;
 
-    private String sourceSensorLabel;
     private String name;
     private String description;
     private String value;
     private String register;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "absolute_threshold_id")
+    private Threshold absoluteThreshold;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ideal_threshold_id")
+    private Threshold idealThreshold;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "critical_threshold_id")
+    private Threshold criticalThreshold;
+
     public void copyFrom(final FieldSource sourceField) {
-        if (sourceField.getSourceSensorLabel() != null) {
-            setSourceSensorLabel(sourceField.getSourceSensorLabel());
-        }
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }
@@ -68,6 +82,15 @@ public class FieldSource extends BaseEntity {
         }
         if (sourceField.getRegister() != null) {
             setRegister(sourceField.getRegister());
+        }
+        if (sourceField.getAbsoluteThreshold() != null) {
+            setAbsoluteThreshold(sourceField.getAbsoluteThreshold());
+        }
+        if (sourceField.getIdealThreshold() != null) {
+            setIdealThreshold(sourceField.getIdealThreshold());
+        }
+        if (sourceField.getCriticalThreshold() != null) {
+            setCriticalThreshold(sourceField.getCriticalThreshold());
         }
     }
 }

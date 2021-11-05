@@ -13,75 +13,97 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="rooms-panel">
 
-  <div class="manage">
-    <ng-template [ngIf]="location != null">
-      <button class="btn btn-sm btn-link" [routerLink]="getRoomsLink()">
-        <clr-icon class="home-icon" shape="home"></clr-icon>Manage rooms
-      </button>
-    </ng-template>
-    <button class="btn btn-sm btn-link" (click)="goBack()">
-      <clr-icon shape="undo"></clr-icon> Go Back
-    </button>
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">{{ treeData?.length | i18nPlural: titleMapping }}</h3>
+  <div class="p-grid">
+    <div class="filter-btn-div">
+      <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
+                        [tableFilters]="tableFilters"
+                        class="filter-btn">
+      </app-table-filter>
+    </div>
+    <app-create-button (createItem)="showOnboardDialog()" class="create-btn"
+                       text="Onboard new Asset"></app-create-button>
   </div>
 </div>
 
-<div class="wrapper">
-  <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-    <div class="title" >{{ assetsWithDetailsAndFields?.length | i18nPlural: assetsMapping }}</div>
-    <button class="if-button button-secondary" (click)="modalsActive = true">Initialize new asset</button>
-  </div>
+<app-table-selected-items-bar (deleteItem)="setActiveRow(); openDeleteDialog()"
+                              (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); openEditDialog()"
+                              (showAssetCards)="onCardsViewClick()" [itemName]="'Asset'"
+                              [selectedItems]="selectedFactoryAssets"
+                              [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT,
+                              TableSelectedItemsBarType.DELETE, TableSelectedItemsBarType.SHOW_ASSET_CARDS]">
+</app-table-selected-items-bar>
 
-  <app-asset-instantiation [assetSeries]="assetSeries"
-                           [rooms]="rooms"
-                           [locations]="locations"
-                           [location]="location"
-                           [modalsActive]="modalsActive"
-                           [initializeModalType]="assetModalTypes.startInitialitation"
-                           (stoppedAssetAssignment)="assetInstantiationStopped($event)"
-                           (assetSeriesSelectedEvent)="forwardAssetSeriesSelected($event)"
-                           (assetDetailsEvent)="forwardAssetDetails($event)">
-  </app-asset-instantiation>
+<p-treeTable [(selection)]="selectedFactoryAssets" [alwaysShowPaginator]="true" [pageLinks]="5" [paginator]="true"
+             [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount" [showCurrentPageReport]="true"
+             [value]="treeData" (onPage)="updateRowCountInUrl($event.rows)" class="list-container"
+             currentPageReportTemplate="{first} to {last} of {totalRecords} Assets" sortMode="multiple">
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="1.5"></th>
+      <th [style.width.%]="1.5"></th>
+      <th [style.width.%]="20" class="first-header-item">
+        <app-table-searchbar (searchByName)="searchAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
+                             attributeToBeSearched="name" filterColumn="Asset">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="20" ttSortableColumn="category">Asset Type
+        <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
+      </th>
+      <th [style.width.%]="12.5" ttSortableColumn="manufacturer">Manufacturer
+        <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
+      </th>
+      <th [style.width.%]="12" ttSortableColumn="roomName">Room
+        <p-treeTableSortIcon field="roomName"></p-treeTableSortIcon>
+      </th>
+      <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
+        <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
+      </th>
+      <th [style.width.%]="11">Status</th>
+      <th [style.width.%]="5"></th>
+    </tr>
+  </ng-template>
+  <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
+    <tr [ttRow]="rowNode" id="rowElement" style="cursor: pointer;">
+      <td class="checkbox-td column-without-padding" [style.width.%]="1.5">
+        <p-treeTableCheckbox [value]="rowNode" class="column-visibility table-checkbox"></p-treeTableCheckbox>
+      </td>
+      <td class="column-without-padding" [style.width.%]="1.5">
+        <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
+          <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
+          <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle"
+                   class="fa-fw notification-medium"></fa-icon>
+          <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle"
+                   class="fa-fw notification-high"></fa-icon>
+        </div>
+      </td>
+      <td [routerLink]="getAssetLink(rowData)"
+          class="asset-column p-flex-row table-bold-font right-column-padding">
+        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+        <span *ngIf="rowNode.parent" class="subsystem-grid p-col-">
+            <span class="upper"></span>
+            <span [ngClass]="{'last-element': isLastChildElement(rowNode)}" class="lower"></span>
+          </span>
+        <span class="p-col">{{rowData.name}}</span>
+      </td>
+      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="20">{{rowData.category}}</td>
+      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12.5">{{rowData.manufacturer}}</td>
+      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12">{{rowData.roomName}}</td>
+      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="12">{{rowData.factorySiteName}}</td>
+      <td [routerLink]="getAssetLink(rowData)" [style.width.%]="11">
+        <app-asset-status [assetWithFields]="rowData" [showInline]="true"></app-asset-status>
+      </td>
+      <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
+        <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+                               [assignItemText]="'Asset to room'" (editItem)="openEditDialog()"
+                               (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()">
+        </app-item-options-menu>
+      </td>
+    </tr>
+  </ng-template>
+</p-treeTable>
 
-  <div>
-    <div class="list-container">
-
-    <div class="list-edit-bar" *ngIf="selectedIds.size > 0">
-      <div class="list-edit-bar-item" [style.width.%]="5">
-        <clr-icon shape="check-circle" size="20"></clr-icon>
-      </div>
-      <div [style.width.%]="30">{{ selectedIds.size | i18nPlural: editBarMapping }}</div>
-      <div class="list-edit-bar-item" [style.width.%]="50">
-        <button class="btn btn-link button-white" (click)="onCardsViewClick()">
-          <clr-icon class="icon" shape="view-cards"></clr-icon>
-        </button>
-        <button class="btn btn-link button-white">
-          <clr-icon class="icon" shape="wrench"></clr-icon>
-        </button>
-        <button class="btn btn-link button-white">
-          <clr-icon class="icon" shape="trash"></clr-icon>
-        </button>
-      </div>
-      <div class="list-edit-bar-last-item" [style.width.%]="35">
-        <button class="btn btn-link button-white" (click)="unselect()">
-          <clr-icon shape="times"></clr-icon>Close
-        </button>
-      </div>
-    </div>
-      <app-assets-list-header [assets]="assetsWithDetailsAndFields" (filterEvent)="onFilter($event)"></app-assets-list-header>
-      <app-assets-list-item *ngFor="let assetWithDetailsAndFields of assetsWithDetailsAndFields | tablefilter:filterDict"
-                            [assetWithDetailsAndFields]="assetWithDetailsAndFields"
-                            [rooms]="rooms"
-                            [allRoomsOfLocations]="allRoomsOfLocation"
-                            [room]="room"
-                            [locations]="locations"
-                            [location]="location"
-                            [selected]="isSelected(assetWithDetailsAndFields.id)"
-                            (assetDetailsEdited)="forwardAssetDetails($event)"
-                            (assetDeleted)="deleteAsset($event)"
-                            (assetSelected)="onAssetSelect($event)" (assetDeselected)="onAssetDeselect($event)" (editRoom)="assignAsset($event, assetWithDetailsAndFields)">
-      </app-assets-list-item>
-    </div>
-  </div>
-</div>
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 rejectButtonStyleClass="if-button button-secondary" key="asset-delete-dialog-list"></p-confirmDialog>

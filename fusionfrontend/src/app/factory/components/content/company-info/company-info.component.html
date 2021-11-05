@@ -14,15 +14,15 @@ under the License.
 -->
 
 <section class="company">
-  <img class="company-img" src="{{ imgUrl }}"/>
+  <img class="company-img" src="{{ imgUrl }}" alt="company image"/>
   <div class="company-info">
     <h3>
-      {{location?.name}}
+      {{factorySite?.name}}
     </h3>
     <div class="address">
-      <p>{{location?.line1}}</p>
-      <p>{{location?.line2}}</p>
-      <p>{{location?.country}}</p>
+      <p>{{factorySite?.line1}}</p>
+      <p>{{factorySite?.line2}}</p>
+      <p>{{factorySite?.country?.name}}</p>
     </div>
   </div>
   <div class="info-details">
@@ -43,16 +43,12 @@ under the License.
     </div>
     <div class="details">
       <p>
-        <span class="c-value">{{rooms?.length}}</span>
-        <span class="c-label">Rooms</span>
+        <span class="c-value">{{roomCount}}</span>
+        <span class="c-label">{{roomCount === 1 ? 'Room' : 'Rooms'}}</span>
       </p>
       <p>
         <span class="c-value">{{assets?.length}}</span>
-        <span class="c-label">Assets</span>
-      </p>
-      <p>
-        <span class="c-value">{{numUsers}}</span>
-        <span class="c-label">Users</span>
+        <span class="c-label">{{assets?.length === 1 ? 'Asset' : 'Assets'}}</span>
       </p>
     </div>
   </div>

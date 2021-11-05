@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -45,8 +48,12 @@ public class FieldRestService {
     }
 
     @GetMapping(path = "/fields")
-    public Set<FieldDto> getFields() {
-        return fieldMapper.toDtoSet(fieldService.getAllFields());
+    public List<FieldDto> getFields(@RequestParam(defaultValue = "false") final boolean embedChildren) {
+        Set<FieldDto> unsortedFields = fieldMapper.toDtoSet(fieldService.getAllFields(), embedChildren);
+
+        List<FieldDto> sortedFields = new ArrayList<>(unsortedFields);
+        sortedFields.sort(Comparator.comparing(FieldDto::getId));
+        return  sortedFields;
     }
 
     @GetMapping(path = "/fields/{fieldId}")
@@ -65,8 +72,8 @@ public class FieldRestService {
     @PatchMapping(path = "/fields/{fieldId}")
     public FieldDto updateField(@PathVariable final Long fieldId,
                                 @RequestBody final FieldDto fieldDto) {
-        return fieldMapper.toDto(fieldService.updateField(fieldId, fieldMapper.toEntity(fieldDto)),
-                false);
+        return fieldMapper.toDto(fieldService.updateField(fieldId, fieldMapper.toEntity(fieldDto),
+                        fieldDto.getUnitId()), false);
     }
 
     @DeleteMapping(path = "/fields/{fieldId}")

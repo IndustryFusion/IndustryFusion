@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.UnitDto;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.service.QuantityTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -28,10 +29,12 @@ import java.util.stream.Collectors;
 @Component
 public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
     private final QuantityTypeMapper quantityTypeMapper;
+    private final QuantityTypeService quantityTypeService;
 
     @Autowired
-    public UnitMapper(@Lazy QuantityTypeMapper quantityTypeMapper) {
+    public UnitMapper(@Lazy QuantityTypeMapper quantityTypeMapper, QuantityTypeService quantityTypeService) {
         this.quantityTypeMapper = quantityTypeMapper;
+        this.quantityTypeService = quantityTypeService;
     }
 
     private UnitDto toDtoShallow(Unit entity) {
@@ -40,10 +43,11 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         }
         return UnitDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .label(entity.getLabel())
-                .description(entity.getDescription())
                 .symbol(entity.getSymbol())
+                .creationDate(entity.getCreationDate())
                 .quantityTypeId(EntityDtoMapper.getEntityId(entity.getQuantityType()))
                 .build();
     }
@@ -52,13 +56,12 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         if (entity == null) {
             return null;
         }
-        return UnitDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .label(entity.getLabel())
-                .quantityType(quantityTypeMapper.toDto(entity.getQuantityType(), false))
-                .build();
+
+        UnitDto unitDto = toDtoShallow(entity);
+
+        unitDto.setQuantityType(quantityTypeMapper.toDto(entity.getQuantityType(), false));
+
+        return unitDto;
     }
 
     @Override
@@ -74,17 +77,25 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
         if (dto == null) {
             return null;
         }
-        return Unit.builder()
+        Unit unit = Unit.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
-                .description(dto.getDescription())
                 .label(dto.getLabel())
                 .symbol(dto.getSymbol())
                 .build();
+
+        if (dto.getQuantityType() != null) {
+            unit.setQuantityType(quantityTypeService.getQuantityType(dto.getQuantityType().getId()));
+        }
+        return unit;
     }
 
     @Override
-    public Set<UnitDto> toDtoSet(Set<Unit> entitySet) {
+    public Set<UnitDto> toDtoSet(Set<Unit> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

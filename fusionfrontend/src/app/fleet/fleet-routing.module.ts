@@ -15,45 +15,85 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FleetManagerPageComponentComponent } from './components/pages/fleet-manager-page-component/fleet-manager-page-component.component';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
-import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from '../core/resolvers/asset-series-details.resolver';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
-import { AssetSeriesCreateComponent } from './components/content/asset-series-create/asset-series-create.component';
-import { AssetSeriesResolver } from '../resolvers/asset-series.resolver';
-import { AssetTypeTemplatesResolver } from '../resolvers/asset-type-templates.resolver';
-import { FieldSourceResolver } from '../resolvers/field-source.resolver';
-import { UnitsResolver } from '../resolvers/units.resolver';
-import { MainAuthGuardGuard } from '../services/main-auth-guard.guard';
+import { MainAuthGuard } from '../core/guards/main-auth.guard';
+import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
+import { AssetResolver } from '../core/resolvers/asset.resolver';
+import { RoomResolver } from '../core/resolvers/room.resolver';
+import { FactorySiteResolver } from '../core/resolvers/factory-site.resolver';
+import { AssetSeriesDetailsQuery } from '../core/store/asset-series-details/asset-series-details.query';
+import { AssetSeriesAssetDigitalNameplateComponent } from './components/pages/asset-series-asset/asset-series-asset-digital-nameplate/asset-series-asset-digital-nameplate.component';
+import { FactoryAssetDetailsResolver } from '../core/resolvers/factory-asset-details.resolver';
+import { FactoryAssetDetailsQuery } from '../core/store/factory-asset-details/factory-asset-details.query';
+import { AssetSeriesResolver } from '../core/resolvers/asset-series.resolver';
+import { ConnectivityTypeResolver } from '../core/resolvers/connectivity-type.resolver';
+import { CompanyResolver } from '../core/resolvers/company.resolver';
 
 
 const routes: Routes = [
   {
-    path: 'fleetmanager/template',
-    component: FleetManagerPageComponentComponent,
-  },
-  {
     path: 'fleetmanager/companies/:companyId/assetseries',
     component: AssetSeriesPageComponent,
-    canActivate: [MainAuthGuardGuard],
+    canActivate: [MainAuthGuard],
+    data: {
+      breadcrumb: 'Asset Series',
+    },
     resolve: {
+      company: CompanyResolver,
       assetSeriesDetails: AssetSeriesDetailsResolver,
     },
     children: [
       {
-      path: '',
-      component: AssetSeriesListComponent,
-    },
+        path: '',
+        component: AssetSeriesListComponent,
+        data: {
+          breadcrumb: null,
+        },
+      },
       {
-        path: 'edit',
-        component: AssetSeriesCreateComponent,
+        path: ':assetSeriesId',
+        data: {
+          breadcrumb: null,
+        },
         resolve: {
-          assetTypeTemplates: AssetTypeTemplatesResolver,
-          assetSeries: AssetSeriesResolver,
-          fieldSources: FieldSourceResolver,
-          units: UnitsResolver,
-        }
-      }
+          asset: AssetResolver,
+          room: RoomResolver,
+        },
+        children: [
+          {
+            path: 'assets',
+            data: {
+              breadcrumb: AssetSeriesDetailsQuery,
+            },
+            resolve: {
+              factorySite: FactorySiteResolver
+            },
+            children: [
+              {
+                path: '',
+                component: AssetSeriesOverviewPageComponent,
+                data: {
+                  breadcrumb: null,
+                },
+              },
+              {
+                path: ':assetId/digital-nameplate',
+                component: AssetSeriesAssetDigitalNameplateComponent,
+                resolve: {
+                  asset: FactoryAssetDetailsResolver,
+                  assetSeries: AssetSeriesResolver,
+                  connectivityTypes: ConnectivityTypeResolver
+                },
+                data: {
+                  breadcrumb: FactoryAssetDetailsQuery
+                }
+              }
+            ]
+          },
+        ]
+      },
     ]
   },
 ];
@@ -62,4 +102,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FleetRoutingModule { }
+export class FleetRoutingModule {
+}

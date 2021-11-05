@@ -1,0 +1,73 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<app-factory-site-map [factorySites]="(factorySites$ | async)" (selectedFactorySite)="setSelectedFactorySite($event)"></app-factory-site-map>
+
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">{{ (factorySites$ | async)?.length | i18nPlural: factorySiteMapping }}</h3>
+  <app-create-button class="single-create-btn" (createItem)="showCreateDialog()" [text]="'Create factory site'"></app-create-button>
+</div>
+
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
+         [showCurrentPageReport]="true" [value]="displayedFactorySites" (rowsChange)="updateRowCountInUrl($event)"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Factory Sites">
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="5"></th>
+      <th [style.width.%]="16">
+        <app-table-searchbar filterColumn="Factory name" [itemsToBeFiltered]="(factorySites$ | async)"
+                             attributeToBeSearched="name" (searchByName)="searchFactorySitesByName($event)">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="20">
+        <app-table-searchbar filterColumn="Street" [itemsToBeFiltered]="(factorySites$ | async)"
+                             attributeToBeSearched="line1" (searchByName)="searchFactorySitesByStreet($event)">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="10" pSortableColumn="zip">ZIP
+        <p-sortIcon field="zip"></p-sortIcon>
+      </th>
+      <th [style.width.%]="20" pSortableColumn="city">City
+        <p-sortIcon field="city"></p-sortIcon>
+      </th>
+      <th [style.width.%]="15" pSortableColumn="countryId">Country
+        <p-sortIcon field="countryId"></p-sortIcon>
+      </th>
+      <th [style.width.%]="14" pSortableColumn="assetCount">Assets
+        <p-sortIcon field="assetCount"></p-sortIcon>
+      </th>
+      <th [style.width.%]="10"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template let-factorySite pTemplate="body">
+    <tr id="rowElement" style="cursor: pointer;">
+      <td [style.width.%]="5"></td>
+      <td [style.width.%]="16" [routerLink]="factorySite.id" class="table-bold-font">{{ factorySite.name }}</td>
+      <td [style.width.%]="20" [routerLink]="factorySite.id">{{ factorySite.line1 }}</td>
+      <td [style.width.%]="10" [routerLink]="factorySite.id">{{ factorySite.zip }}</td>
+      <td [style.width.%]="20" [routerLink]="factorySite.id">{{ factorySite.city }}</td>
+      <td [style.width.%]="15" [routerLink]="factorySite.id">{{ factorySite.country.name }}</td>
+      <td [style.width.%]="14" [routerLink]="factorySite.id">{{ factorySite.assetCount }}</td>
+      <td [style.width.%]="5" (click)="setActiveRow(factorySite)">
+        <app-item-options-menu class="column-visibility" (editItem)="showEditDialog()"  (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
+<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
+                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>

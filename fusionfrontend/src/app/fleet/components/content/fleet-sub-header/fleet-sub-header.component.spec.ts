@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FleetSubHeaderComponent } from './fleet-sub-header.component';
 
@@ -21,7 +21,7 @@ describe('FleetSubHeaderComponent', () => {
   let component: FleetSubHeaderComponent;
   let fixture: ComponentFixture<FleetSubHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FleetSubHeaderComponent ]
     })

@@ -12,40 +12,32 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<div *ngIf="modalsActive">
-  <app-asset-instantiation-start-modal  *ngIf="modalTypeActive == assetModalTypes.startInitialitation"
-                                        [assetSeries]="assetSeries"
-                                        (stoppedAssetAssignment)="closeModal($event)"
-                                        (clickedStartEvent)="clickedStartInstantiation($event)">
-  </app-asset-instantiation-start-modal>
+<app-asset-instantiation-start-modal  *ngIf="activeModalType == assetModalTypes.startInitialization"
+                                      [assetsToBeOnboarded]="assetsToBeOnboarded"
+                                      (assetOnboardingEvent)="onboardingStarted($event)">
+</app-asset-instantiation-start-modal>
 
-  <app-asset-instantiation-paired-modal *ngIf="modalTypeActive == assetModalTypes.customizeAsset"
-                                        [assetSeries]="selectedAssetSeries"
-                                        (stoppedAssetAssignment)="closeModal($event)"
-                                        (clickedCustomizeEvent)="clickedCustomize($event)">
-  </app-asset-instantiation-paired-modal>
+<app-asset-instantiation-paired-modal *ngIf="activeModalType == assetModalTypes.pairAsset"
+                                      [assetDetailsForm]="assetDetailsForm"
+                                      (assetPairedEvent)="finishedPairing($event)">
+</app-asset-instantiation-paired-modal>
 
-  <app-asset-instantiation-description-modal  *ngIf="modalTypeActive == assetModalTypes.addDescription"
-                                              [assetDetailsForm]="assetDetailsForm"
-                                              (stoppedAssetAssignment)="closeModal($event)"
-                                              (clickedButtonEvent)="clickedButtonOnDescription($event)">
-  </app-asset-instantiation-description-modal>
+<app-asset-instantiation-description-modal  *ngIf="activeModalType == assetModalTypes.customizeAsset"
+                                            [assetDetailsForm]="assetDetailsForm"
+                                            (descriptionAddedEvent)="finishedAddDescription($event)">
+</app-asset-instantiation-description-modal>
 
-  <app-asset-instantiation-location-assignment-modal  *ngIf="modalTypeActive == assetModalTypes.locationAssignment"
-                                                      [locations] = "locations"
-                                                      [selectedLocation]="selectedLocation"
-                                                      [assetDetailsForm]="assetDetailsForm"
-                                                      (stoppedAssetAssignment)="closeModal($event)"
-                                                      (finishedLocationAssignmentEvent)="finishedLocationAssignmentEvent($event)">
-  </app-asset-instantiation-location-assignment-modal>
+<app-asset-instantiation-factory-site-assignment-modal *ngIf="activeModalType == assetModalTypes.factorySiteAssignment"
+                                                       [factorySites]="factorySites"
+                                                       [selectedFactorySite]="selectedFactorySite"
+                                                       [activeModalMode]="activeModalMode"
+                                                       (factorySitesAssignedEvent)="finishedFactorySitesAssignment($event)"
+                                                       (factorySiteChangedEvent)="resetSelectedRoomWhenFactorySiteChanged()">
+</app-asset-instantiation-factory-site-assignment-modal>
 
-  <app-asset-instantiation-room-assignment-modal *ngIf="modalTypeActive == assetModalTypes.roomAssigntment"
-                                                  [rooms]="allRoomsOfLocation"
-                                                  [assetDetailsForm]="assetDetailsForm"
-                                                  (stoppedAssetAssignment)="closeModal($event)"
-                                                  (closedRoomAssignmentModalEvent)="finishInstantiation($event)">
-  </app-asset-instantiation-room-assignment-modal>
-</div>
-
-
-
+<app-asset-instantiation-room-assignment-modal *ngIf="activeModalType == assetModalTypes.roomAssignment"
+                                               [rooms]="allRoomsOfFactorySite"
+                                               [selectedRoom]="selectedRoom"
+                                               [activeModalMode]="activeModalMode"
+                                               (roomAssignedEvent)="finishedRoomAssignment($event)">
+</app-asset-instantiation-room-assignment-modal>

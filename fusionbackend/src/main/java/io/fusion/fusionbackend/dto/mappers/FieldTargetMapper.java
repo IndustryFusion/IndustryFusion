@@ -17,6 +17,8 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldTargetDto;
 import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.service.FieldService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -25,20 +27,33 @@ import java.util.stream.Collectors;
 
 @Component
 public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTargetDto> {
+    private final FieldService fieldService;
+
+    @Autowired
+    public FieldTargetMapper(FieldService fieldService) {
+        this.fieldService = fieldService;
+    }
+
     private FieldTargetDto toDtoShallow(FieldTarget entity) {
         if (entity == null) {
             return null;
         }
         return FieldTargetDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .mandatory(entity.getMandatory())
                 .name(entity.getName())
                 .fieldType(entity.getFieldType())
-                .label(entity.getLabel())
                 .fieldId(EntityDtoMapper.getEntityId(entity.getField()))
                 .assetTypeTemplateId(EntityDtoMapper.getEntityId(entity.getAssetTypeTemplate()))
                 .description(entity.getDescription())
+                .label(entity.getLabel())
+                .dashboardGroup(entity.getDashboardGroup())
                 .build();
+    }
+
+    private FieldTargetDto toDtoDeep(final FieldTarget fieldTarget) {
+        return toDtoShallow(fieldTarget);
     }
 
     @Override
@@ -51,18 +66,29 @@ public class FieldTargetMapper implements EntityDtoMapper<FieldTarget, FieldTarg
         if (dto == null) {
             return null;
         }
-        return FieldTarget.builder()
+        FieldTarget entity = FieldTarget.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .mandatory(dto.getMandatory())
                 .name(dto.getName())
                 .fieldType(dto.getFieldType())
-                .label(dto.getLabel())
                 .description(dto.getDescription())
+                .label(dto.getLabel())
+                .dashboardGroup(dto.getDashboardGroup())
                 .build();
+
+        if (dto.getFieldId() != null) {
+            entity.setField(fieldService.getField(dto.getFieldId(), false));
+        }
+
+        return entity;
     }
 
     @Override
-    public Set<FieldTargetDto> toDtoSet(Set<FieldTarget> entitySet) {
+    public Set<FieldTargetDto> toDtoSet(Set<FieldTarget> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

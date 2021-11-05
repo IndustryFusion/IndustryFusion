@@ -40,9 +40,11 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         }
         return QuantityTypeDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
+                .dataType(entity.getDataType())
                 .unitIds(EntityDtoMapper.getSetOfEntityIds(entity.getUnits()))
                 .baseUnitId(EntityDtoMapper.getEntityId(entity.getBaseUnit()))
                 .build();
@@ -52,14 +54,13 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         if (entity == null) {
             return null;
         }
-        return QuantityTypeDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .label(entity.getLabel())
-                .units(unitMapper.toDtoSet(entity.getUnits()))
-                .baseUnit(unitMapper.toDto(entity.getBaseUnit(), false))
-                .build();
+
+        QuantityTypeDto quantityTypeDto = toDtoShallow(entity);
+
+        quantityTypeDto.setUnits(unitMapper.toDtoSet(entity.getUnits(), false));
+        quantityTypeDto.setBaseUnit(unitMapper.toDto(entity.getBaseUnit(), false));
+
+        return quantityTypeDto;
     }
 
     @Override
@@ -75,16 +76,22 @@ public class QuantityTypeMapper implements EntityDtoMapper<QuantityType, Quantit
         if (dto == null) {
             return null;
         }
+
         return QuantityType.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())
+                .dataType(dto.getDataType())
                 .build();
     }
 
     @Override
-    public Set<QuantityTypeDto> toDtoSet(Set<QuantityType> entitySet) {
+    public Set<QuantityTypeDto> toDtoSet(Set<QuantityType> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

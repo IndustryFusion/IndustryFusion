@@ -13,36 +13,60 @@
  * under the License.
  */
 
-import { Component, OnInit, NgZone } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserQuery } from './store/user/user.query';
-import { User } from './store/user/user.model';
-import { akitaDevtools } from '@datorama/akita';
-import { enableAkitaProdMode } from '@datorama/akita';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
+import { OispAlertResolver } from './core/resolvers/oisp-alert-resolver';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import { UserManagementService } from './core/services/api/user-management.service';
+import { KeycloakProfile } from 'keycloak-js';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  loggedUser$: Observable<User>;
-  subTitle$: Observable<string>;
+export class AppComponent implements OnInit, OnDestroy {
 
-  constructor(private factoryResolver: FactoryResolver,
-              private userQuery: UserQuery,
+  constructor(private oispAlertResolver: OispAlertResolver,
+              private factoryResolver: FactoryResolver,
+              private userManagementService: UserManagementService,
               private ngZone: NgZone) { }
+  factorySubTitle$: Subject<string>;
+  keycloakUser$: Promise<KeycloakProfile>;
+
+  private intervalHandle: number;
+  private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
+
+  private static fetchOpenNotificationCount(oispAlertResolver: OispAlertResolver) {
+    oispAlertResolver.resolve().subscribe();
+  }
 
   ngOnInit() {
-    this.subTitle$ = this.factoryResolver.subTitle$;
-    this.loggedUser$ = this.userQuery.selectActive();
+    registerLocaleData(localeDe);
+    this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
+    this.keycloakUser$ = this.userManagementService.getUserProfile();
     if (environment.production) {
       enableAkitaProdMode();
     } else {
       akitaDevtools(this.ngZone);
     }
+
+    this.periodicallyFetchOpenAlertCount();
   }
 
+  private periodicallyFetchOpenAlertCount() {
+    if (this.FETCHING_INTERVAL_MILLISECONDS > 0) {
+      AppComponent.fetchOpenNotificationCount(this.oispAlertResolver);
+      this.intervalHandle = setInterval(() => AppComponent.fetchOpenNotificationCount(this.oispAlertResolver),
+        this.FETCHING_INTERVAL_MILLISECONDS);
+    }
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalHandle);
+  }
 }

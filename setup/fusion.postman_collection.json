@@ -137,12 +137,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/",
+			"name": "localhost:8080/companies/2/factorysites/",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/",
+					"raw": "localhost:8080/companies/2/factorysites/",
 					"host": [
 						"localhost"
 					],
@@ -150,7 +150,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						""
 					]
 				}
@@ -158,12 +158,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17",
+			"name": "localhost:8080/companies/2/factorysites/17",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17",
+					"raw": "localhost:8080/companies/2/factorysites/17",
 					"host": [
 						"localhost"
 					],
@@ -171,7 +171,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17"
 					]
 				}
@@ -179,12 +179,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17?embedChildren=true",
+			"name": "localhost:8080/companies/2/factorysites/17?embedChildren=true",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17?embedChildren=true",
+					"raw": "localhost:8080/companies/2/factorysites/17?embedChildren=true",
 					"host": [
 						"localhost"
 					],
@@ -192,7 +192,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17"
 					],
 					"query": [
@@ -206,7 +206,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/1/locations/",
+			"name": "localhost:8080/companies/1/factorysites/",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -227,7 +227,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/companies/1/locations/",
+					"raw": "localhost:8080/companies/1/factorysites/",
 					"host": [
 						"localhost"
 					],
@@ -235,7 +235,7 @@
 					"path": [
 						"companies",
 						"1",
-						"locations",
+						"factorysites",
 						""
 					]
 				}
@@ -243,7 +243,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/1/locations/41",
+			"name": "localhost:8080/companies/1/factorysites/41",
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -264,7 +264,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/companies/1/locations/41",
+					"raw": "localhost:8080/companies/1/factorysites/41",
 					"host": [
 						"localhost"
 					],
@@ -272,7 +272,7 @@
 					"path": [
 						"companies",
 						"1",
-						"locations",
+						"factorysites",
 						"41"
 					]
 				}
@@ -280,12 +280,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17/rooms",
+					"raw": "localhost:8080/companies/2/factorysites/17/rooms",
 					"host": [
 						"localhost"
 					],
@@ -293,7 +293,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17",
 						"rooms"
 					]
@@ -302,12 +302,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms/33",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms/33",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17/rooms/33",
+					"raw": "localhost:8080/companies/2/factorysites/17/rooms/33",
 					"host": [
 						"localhost"
 					],
@@ -315,7 +315,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17",
 						"rooms",
 						"33"
@@ -325,12 +325,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms/33?embedChildren=true",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms/33?embedChildren=true",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17/rooms/33?embedChildren=true",
+					"raw": "localhost:8080/companies/2/factorysites/17/rooms/33?embedChildren=true",
 					"host": [
 						"localhost"
 					],
@@ -338,7 +338,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17",
 						"rooms",
 						"33"
@@ -354,7 +354,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -375,7 +375,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17/rooms",
+					"raw": "localhost:8080/companies/2/factorysites/17/rooms",
 					"host": [
 						"localhost"
 					],
@@ -383,7 +383,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17",
 						"rooms"
 					]
@@ -392,7 +392,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms/42",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms/42",
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -413,7 +413,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17/rooms/42",
+					"raw": "localhost:8080/companies/2/factorysites/17/rooms/42",
 					"host": [
 						"localhost"
 					],
@@ -421,7 +421,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17",
 						"rooms",
 						"42"
@@ -431,12 +431,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms/33/assets",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms/33/assets",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17/rooms/33/assets",
+					"raw": "localhost:8080/companies/2/factorysites/17/rooms/33/assets",
 					"host": [
 						"localhost"
 					],
@@ -444,7 +444,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17",
 						"rooms",
 						"33",
@@ -455,12 +455,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms/33/assets/42",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms/33/assets/42",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/2/locations/17/rooms/33/assets/42",
+					"raw": "localhost:8080/companies/2/factorysites/17/rooms/33/assets/42",
 					"host": [
 						"localhost"
 					],
@@ -468,7 +468,7 @@
 					"path": [
 						"companies",
 						"2",
-						"locations",
+						"factorysites",
 						"17",
 						"rooms",
 						"33",
@@ -480,12 +480,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/companies/2/locations/17/rooms/33/assets/42?embedChildren=true",
+			"name": "localhost:8080/companies/2/factorysites/17/rooms/33/assets/42?embedChildren=true",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/companies/1/locations/2/rooms/3/assets/4?embedChildren=true",
+					"raw": "localhost:8080/companies/1/factorysites/2/rooms/3/assets/4?embedChildren=true",
 					"host": [
 						"localhost"
 					],
@@ -493,7 +493,7 @@
 					"path": [
 						"companies",
 						"1",
-						"locations",
+						"factorysites",
 						"2",
 						"rooms",
 						"3",

@@ -17,6 +17,8 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldSourceDto;
 import io.fusion.fusionbackend.model.FieldSource;
+import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +30,15 @@ import java.util.stream.Collectors;
 public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSourceDto> {
     private final FieldTargetMapper fieldTargetMapper;
     private final UnitMapper unitMapper;
+    private final ThresholdMapper thresholdMapper;
 
     @Autowired
-    public FieldSourceMapper(FieldTargetMapper fieldTargetMapper, UnitMapper unitMapper) {
+    public FieldSourceMapper(FieldTargetMapper fieldTargetMapper,
+                             UnitMapper unitMapper,
+                             ThresholdMapper thresholdMapper) {
         this.fieldTargetMapper = fieldTargetMapper;
         this.unitMapper = unitMapper;
+        this.thresholdMapper = thresholdMapper;
     }
 
     private FieldSourceDto toDtoShallow(FieldSource entity) {
@@ -41,14 +47,17 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         }
         return FieldSourceDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldTargetId(EntityDtoMapper.getEntityId(entity.getFieldTarget()))
                 .sourceUnitId(EntityDtoMapper.getEntityId(entity.getSourceUnit()))
-                .sourceSensorLabel(entity.getSourceSensorLabel())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .value(entity.getValue())
                 .register(entity.getRegister())
+                .absoluteThresholdId(EntityDtoMapper.getEntityId(entity.getAbsoluteThreshold()))
+                .idealThresholdId(EntityDtoMapper.getEntityId(entity.getIdealThreshold()))
+                .criticalThresholdId(EntityDtoMapper.getEntityId(entity.getCriticalThreshold()))
                 .build();
     }
 
@@ -56,17 +65,16 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         if (entity == null) {
             return null;
         }
-        return FieldSourceDto.builder()
-                .id(entity.getId())
-                .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
-                .fieldTarget(fieldTargetMapper.toDto(entity.getFieldTarget(), false))
-                .sourceUnit(unitMapper.toDto(entity.getSourceUnit(), false))
-                .sourceSensorLabel(entity.getSourceSensorLabel())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .value(entity.getValue())
-                .register(entity.getRegister())
-                .build();
+
+        FieldSourceDto fieldSourceDto = toDtoShallow(entity);
+
+        fieldSourceDto.setFieldTarget(fieldTargetMapper.toDto(entity.getFieldTarget(), false));
+        fieldSourceDto.setSourceUnit(unitMapper.toDto(entity.getSourceUnit(), false));
+        fieldSourceDto.setAbsoluteThreshold(thresholdMapper.toDto(entity.getAbsoluteThreshold(), false));
+        fieldSourceDto.setIdealThreshold(thresholdMapper.toDto(entity.getIdealThreshold(), false));
+        fieldSourceDto.setCriticalThreshold(thresholdMapper.toDto(entity.getCriticalThreshold(), false));
+
+        return fieldSourceDto;
     }
 
     @Override
@@ -82,18 +90,29 @@ public class FieldSourceMapper implements EntityDtoMapper<FieldSource, FieldSour
         if (dto == null) {
             return null;
         }
-        return FieldSource.builder()
+        FieldSource fieldSource = FieldSource.builder()
                 .id(dto.getId())
-                .sourceSensorLabel(dto.getSourceSensorLabel())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .value(dto.getValue())
                 .register(dto.getRegister())
                 .build();
+
+        FieldTarget fieldTarget = fieldTargetMapper.toEntity(dto.getFieldTarget());
+        fieldSource.setFieldTarget(fieldTarget);
+
+        Unit unit = unitMapper.toEntity(dto.getSourceUnit());
+        fieldSource.setSourceUnit(unit);
+
+        return fieldSource;
     }
 
     @Override
-    public Set<FieldSourceDto> toDtoSet(Set<FieldSource> entitySet) {
+    public Set<FieldSourceDto> toDtoSet(Set<FieldSource> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

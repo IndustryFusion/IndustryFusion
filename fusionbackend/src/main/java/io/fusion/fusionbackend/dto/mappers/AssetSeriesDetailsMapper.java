@@ -36,17 +36,18 @@ public class AssetSeriesDetailsMapper extends EntityDetailsDtoMapper<AssetSeries
 
         Optional<AssetTypeTemplate> assetTypeTemplate = Optional.of(entity.getAssetTypeTemplate());
         AssetType assetType = assetTypeTemplate.map(AssetTypeTemplate::getAssetType).orElse(null);
-        int instances = Optional.of(entity).map(AssetSeries::getAssets).map(Set::size).orElse(0);
+        int assetCount = Optional.of(entity).map(AssetSeries::getAssets).map(Set::size).orElse(0);
 
         return AssetSeriesDetailsDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .assetType(assetTypeTemplate.map(BaseAsset::getName).orElse(""))
                 .templateVersion("000")
                 .status("Active")
-                .instances((long) instances)
+                .assetCount((long) assetCount)
                 .imageKey(entity.getImageKey())
-                .manufacturer(entity.getCompany().getDescription())
+                .manufacturer(entity.getCompany().getName())
                 .category(assetType.getDescription())
                 .companyId(entity.getCompany().getId())
                 .build();

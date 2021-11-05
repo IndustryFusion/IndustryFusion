@@ -13,172 +13,179 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
-import { Room } from '../../../../store/room/room.model';
-import { Location } from '../../../../store/location/location.model';
-import { AssetDetails, AssetModalType } from '../../../../store/asset-details/asset-details.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ID } from '@datorama/akita';
-import { AssetDetailsQuery } from 'src/app/store/asset-details/asset-details.query';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Room } from '../../../../core/store/room/room.model';
+import { FactorySite } from '../../../../core/store/factory-site/factory-site.model';
+import {
+  AssetModalMode,
+  AssetModalType,
+  FactoryAssetDetailsWithFields
+} from '../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { FormGroup } from '@angular/forms';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+
+enum FormAttributes {
+  assetSeriesName = 'assetSeriesName',
+  manufacturer = 'manufacturer',
+  category = 'category',
+  name = 'name',
+  description = 'description',
+  factorySiteName = 'factorySiteName',
+  roomId = 'roomId',
+  roomName = 'roomName'
+}
 
 @Component({
   selector: 'app-asset-instantiation',
   templateUrl: './asset-instantiation.component.html',
   styleUrls: ['./asset-instantiation.component.scss']
 })
-export class AssetInstantiationComponent implements OnInit, OnChanges {
-
-  @Input()
-  assetSeries: AssetSeriesDetails[];
-
-  @Input()
-  locations : Location[];
-
-  @Input()
-  rooms: Room[];
-
-  @Input()
-  location: Location;
-
-  @Input()
-  modalsActive;
-
-  @Input()
-  initializeModalType: AssetModalType;
-
-  @Input()
-  assetDetailsID: ID;
-
-  @Output()
-  closedEvent = new EventEmitter<boolean>();
-
-  @Output()
-  assetSeriesSelectedEvent = new EventEmitter<AssetSeriesDetails>();
-
-  @Output()
-  assetDetailsEvent = new EventEmitter<AssetDetails>();
-
-  @Output()
-  stoppedAssetAssignment = new EventEmitter<boolean>();
-
-  selectedAssetSeries: AssetSeriesDetails = new AssetSeriesDetails();
-  instantiatedAsset: AssetDetails = new AssetDetails();
-  assetToEdit: AssetDetails = new AssetDetails();
-  allRoomsOfLocation: Room[];
-  selectedLocation: Location;
+export class AssetInstantiationComponent implements OnInit {
   assetDetailsForm: FormGroup;
-  assetDetails$: Observable<AssetDetails>;
+  assetDetails: FactoryAssetDetailsWithFields;
+  assetsToBeOnboarded: FactoryAssetDetailsWithFields[];
+  factorySites: FactorySite[];
+  selectedFactorySite: FactorySite;
+  rooms: Room[];
+  allRoomsOfFactorySite: Room[];
+  selectedRoom: Room;
+  activeModalType: AssetModalType;
   assetModalTypes = AssetModalType;
-  modalTypeActive: AssetModalType;
-  customNameControl = 'customName';
-  descriptionControl = 'description';
-  locationControl = 'location';
-  roomNameControl = 'roomName';
+  activeModalMode: AssetModalMode;
+  assetModalModes = AssetModalMode;
 
   constructor(
-    private assetDetailsQuery: AssetDetailsQuery,
-    private formBuilder: FormBuilder) { }
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+  ) { }
 
   ngOnInit(): void {
-    this.modalTypeActive = this.initializeModalType;
-    if (this.assetDetailsID) {
-      this.assetToEdit = this.assetDetailsQuery.getEntity(this.assetDetailsID);
-      if (this.location) {
-        this.selectedLocation = this.location;
-      } else {
-        this.selectedLocation = this.locations.filter(location => location.name === this.assetToEdit.locationName).pop();
+    this.assetDetailsForm = this.config.data.assetDetailsForm ? this.config.data.assetDetailsForm : null;
+    this.assetDetails = { ...this.config.data.assetToBeEdited };
+    this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
+    this.factorySites = this.config.data.factorySites;
+    this.selectedFactorySite = this.config.data.factorySite;
+    this.rooms = this.config.data.rooms;
+    this.activeModalMode = this.config.data.activeModalMode;
+    this.activeModalType = this.config.data.activeModalType;
+
+    if (this.activeModalMode !== this.assetModalModes.onboardAssetMode) {
+      if (this.selectedFactorySite == null || this.assetDetailsForm.controls[FormAttributes.factorySiteName].value !== null) {
+        this.selectedFactorySite = this.factorySites.filter(factorySite => factorySite.name === this.assetDetailsForm
+          .controls[FormAttributes.factorySiteName].value).pop();
       }
-      this.createAssetDetailsForm(this.formBuilder, this.assetToEdit);
+      if (this.assetDetailsForm.controls[FormAttributes.roomId].value !== null) {
+        this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetailsForm.
+          controls[FormAttributes.roomId].value).pop();
+      }
+      this.allRoomsOfFactorySite = this.rooms.filter(room => room.factorySiteId === this.selectedRoom.factorySiteId);
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.assetSeries) {
-      this.selectedAssetSeries = this.assetSeries[0];
-    }
-  }
-
-  createAssetDetailsForm(formBuilder: FormBuilder, assetToEdit: AssetDetails) {
-    this.assetDetailsForm = formBuilder.group({
-      assetSeriesName: assetToEdit ? new FormControl(assetToEdit.assetSeriesName) : new FormControl(null),
-      manufacturer: assetToEdit ? new FormControl(assetToEdit.manufacturer) : new FormControl(null),
-      category: assetToEdit ? new FormControl(assetToEdit.category, Validators.required) : new FormControl(null, Validators.required),
-      customName: assetToEdit ? new FormControl(assetToEdit.name) : new FormControl(null),
-      description: assetToEdit ? new FormControl(assetToEdit.description) : new FormControl(null),
-      location: assetToEdit ? new FormControl(assetToEdit.locationName, Validators.required) : new FormControl(null, Validators.required),
-      roomName: assetToEdit ? new FormControl(assetToEdit.roomName , Validators.required) : new FormControl(null, Validators.required),
-    });
-  }
-
-  clickedStartInstantiation(event: AssetSeriesDetails) {
+  onboardingStarted(event: FactoryAssetDetailsWithFields) {
     if (event) {
-      this.selectedAssetSeries = event;
-      this.modalTypeActive = this.assetModalTypes.customizeAsset;
-      this.setAssetSeriesDetails();
-      this.assetSeriesSelectedEvent.emit(this.selectedAssetSeries);
+      this.assetDetails = event;
+      this.config.header = 'Pairing Asset';
+      this.config.width = '51%';
+      this.config.contentStyle = { 'padding-top': '3%' };
+      this.activeModalType = this.assetModalTypes.pairAsset;
+      this.updateAssetForm();
     }
   }
 
-  setAssetSeriesDetails() {
-    this.assetToEdit.assetSeriesName = this.selectedAssetSeries.name;
-    this.assetToEdit.manufacturer = this.selectedAssetSeries.manufacturer;
-    this.assetToEdit.category = this.selectedAssetSeries.category;
-
-    this.assetToEdit.name = this.selectedAssetSeries.name;
-    this.assetToEdit.description = this.selectedAssetSeries.category;
-    this.createAssetDetailsForm(this.formBuilder, this.assetToEdit);
+  updateAssetForm() {
+    this.assetDetailsForm.controls[FormAttributes.assetSeriesName].setValue(this.assetDetails.assetSeriesName);
+    this.assetDetailsForm.controls[FormAttributes.manufacturer].setValue(this.assetDetails.manufacturer);
+    this.assetDetailsForm.controls[FormAttributes.category].setValue(this.assetDetails.category);
+    this.assetDetailsForm.controls[FormAttributes.name].setValue(this.assetDetails.name ?
+      this.assetDetails.name : this.assetDetails.assetSeriesName);
+    this.assetDetailsForm.controls[FormAttributes.description].setValue(this.assetDetails.description ?
+      this.assetDetails.description : this.assetDetails.category);
   }
 
-  clickedCustomize(event: boolean) {
+  finishedPairing(event: boolean) {
     if (event) {
-      this.modalTypeActive = this.assetModalTypes.addDescription;
+      this.config.header = 'General Information';
+      this.config.contentStyle = { 'padding-top': '1.5%' };
+      this.activeModalType = this.assetModalTypes.customizeAsset;
     }
   }
 
-  clickedButtonOnDescription(event: boolean) {
+  finishedAddDescription(event: boolean) {
     if (event) {
-      this.modalTypeActive = this.assetModalTypes.locationAssignment;
-      this.instantiatedAsset.name = this.assetDetailsForm.controls[this.customNameControl].value;
-      this.instantiatedAsset.description = this.assetDetailsForm.controls[this.descriptionControl].value;
-      this.instantiatedAsset.id = this.assetToEdit.id ? this.assetToEdit.id : null;
+      this.config.header = 'Factory Site Assignment';
+      this.activeModalType = this.assetModalTypes.factorySiteAssignment;
     } else {
-      this.closeModal(true)
+      this.ref.close();
     }
   }
 
-  finishedLocationAssignmentEvent(event: [boolean, Location]) {
-    if (event[0]) {
-      this.modalTypeActive = this.assetModalTypes.roomAssigntment;
-      this.instantiatedAsset.locationName = this.assetDetailsForm.controls[this.locationControl].value;
-      this.selectedLocation = event[1]
-      this.allRoomsOfLocation = this.rooms.filter(room => room.locationId === event[1].id);
-      this.instantiatedAsset.id = this.assetToEdit.id ? this.assetToEdit.id : null;
-    } else {
-      this.modalTypeActive = this.assetModalTypes.addDescription;
-    }
-  }
-
-  finishInstantiation(event: [boolean, Room]) {
-    if (event[0]) {
-      this.modalTypeActive = null;
-      this.instantiatedAsset.roomName = this.assetDetailsForm.controls[this.roomNameControl].value;
-      this.instantiatedAsset.roomId = event[1].id;
-      this.instantiatedAsset.locationName = this.selectedLocation ? this.selectedLocation.name : this.location.name;
-      this.instantiatedAsset.id = this.assetToEdit.id ? this.assetToEdit.id : null;
-      this.assetDetailsEvent.emit(this.instantiatedAsset);
-      this.stoppedAssetAssignment.emit(false);
-    } else {
-      this.modalTypeActive = this.assetModalTypes.locationAssignment;
-    }
-  }
-
-  closeModal(event: boolean) {
+  finishedFactorySitesAssignment(event: FactorySite) {
     if (event) {
-      this.modalsActive = false;
-      this.modalTypeActive = this.initializeModalType;
-      this.stoppedAssetAssignment.emit(this.modalsActive);
+      this.config.header = 'Room Assignment ('  + event.name + ')';
+      this.activeModalType = this.assetModalTypes.roomAssignment;
+      this.assignFactorySite(event);
+    } else {
+      if (this.activeModalMode !== this.assetModalModes.editRoomForAssetMode) {
+        this.config.header = 'General Information';
+        this.activeModalType = this.assetModalTypes.customizeAsset;
+      } else {
+        this.ref.close();
+      }
     }
+  }
+
+  resetSelectedRoomWhenFactorySiteChanged() {
+    this.selectedRoom = null;
+  }
+
+  private assignFactorySite(selectedFactorySite?: FactorySite) {
+    if (selectedFactorySite) {
+      this.selectedFactorySite = selectedFactorySite;
+    }
+    this.allRoomsOfFactorySite = this.rooms.filter(room => room.factorySiteId === this.selectedFactorySite.id);
+    this.assetDetailsForm.controls[FormAttributes.factorySiteName].setValue(this.selectedFactorySite.name);
+  }
+
+  finishedRoomAssignment(room: Room) {
+    if (room) {
+      this.assignRoom(room);
+      this.assignFactorySite();
+      this.finishedAssetOnboarding();
+    } else {
+      if (this.activeModalMode !== this.assetModalModes.editRoomWithPreselecedFactorySiteMode) {
+        this.config.header = 'Factory Site Assignment';
+        this.activeModalType = this.assetModalTypes.factorySiteAssignment;
+      } else {
+        this.ref.close();
+      }
+    }
+  }
+
+  assignRoom(room: Room) {
+    this.selectedRoom = room;
+    this.assetDetailsForm.controls[FormAttributes.roomId].setValue(this.selectedRoom.id);
+    this.assetDetailsForm.controls[FormAttributes.roomName].setValue(this.selectedRoom.name);
+  }
+
+  finishedAssetOnboarding() {
+    if (this.assetDetailsForm.valid) {
+      this.updateAssetDetailsObject();
+      this.ref.close(this.assetDetails);
+    }
+  }
+
+  updateAssetDetailsObject() {
+    const assetFormValues = this.assetDetailsForm.value;
+    this.assetDetails.roomId = assetFormValues.roomId;
+    this.assetDetails.version = assetFormValues.version;
+    this.assetDetails.name = assetFormValues.name;
+    this.assetDetails.description = assetFormValues.description;
+    this.assetDetails.imageKey = assetFormValues.imageKey;
+    this.assetDetails.manufacturer = assetFormValues.manufacturer;
+    this.assetDetails.assetSeriesName = assetFormValues.assetSeriesName;
+    this.assetDetails.category = assetFormValues.category;
+    this.assetDetails.roomName = assetFormValues.roomName;
+    this.assetDetails.factorySiteName = assetFormValues.factorySiteName;
   }
 }

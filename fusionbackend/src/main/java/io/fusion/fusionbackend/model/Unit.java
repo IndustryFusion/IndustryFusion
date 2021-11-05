@@ -19,7 +19,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -28,6 +30,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
+import java.time.OffsetDateTime;
 
 @Entity
 @NamedEntityGraph(name = "Unit.allChildrenDeep",
@@ -49,21 +52,27 @@ public class Unit extends BaseEntity {
 
     private String name;
     private String label;
-    private String description;
     private String symbol;
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    private OffsetDateTime creationDate;
 
     public void copyFrom(final Unit sourceUnit) {
         if (sourceUnit.getName() != null) {
             setName(sourceUnit.getName());
         }
-        if (sourceUnit.getDescription() != null) {
-            setName(sourceUnit.getDescription());
-        }
         if (sourceUnit.getSymbol() != null) {
-            setName(sourceUnit.getSymbol());
+            setSymbol(sourceUnit.getSymbol());
         }
         if (sourceUnit.getLabel() != null) {
             setLabel(sourceUnit.getLabel());
+        }
+        if (sourceUnit.getCreationDate() != null) {
+            setCreationDate(sourceUnit.getCreationDate());
+        }
+        if (sourceUnit.getQuantityType() != null) {
+            setQuantityType(sourceUnit.getQuantityType());
         }
     }
 }

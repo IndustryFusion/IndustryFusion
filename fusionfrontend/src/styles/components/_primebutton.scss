@@ -1,0 +1,71 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'base/typography';
+@import "abstract/variables";
+
+.p-button {
+  box-shadow: none !important;
+
+  &:hover {
+    background-color: $basic-white !important;
+    color: $basic-black !important;
+  }
+}
+
+p-selectButton {
+  align-self: center;
+}
+
+.p-selectbutton {
+  background: $basic-white;
+  border-radius: 44px !important;
+  width: 20rem;
+
+  .p-button {
+    background: unset;
+    border: unset;
+    padding: 0.2rem 1rem;
+    font-size: $medium-font-size;
+    line-height: $medium-line-height;
+
+    transition: background-color 0.05s, color 0.05s, border-color 0.05s, box-shadow 0.05s;
+
+    &:not(.p-highlight) {
+      color: $inactive-infotext;
+    }
+
+    &.p-highlight {
+      background: $basic-white !important;
+      box-shadow: 0 0 6px #00000029 !important;
+      border-radius: 44px !important;
+      border-color: unset !important;
+      font-weight: bold !important;
+    }
+  }
+}
+
+.on-white-background > .p-selectbutton {
+  background-color: $light-grey !important;
+
+  &.p-highlight {
+    background: $basic-white !important;
+  }
+}
+
+.p-buttonset .p-button:not(:first-of-type):not(:last-of-type),
+.p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
+  border-radius: 44px !important;
+}

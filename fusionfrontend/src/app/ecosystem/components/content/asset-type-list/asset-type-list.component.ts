@@ -13,48 +13,140 @@
  * under the License.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AssetTypeDetailsQuery } from '../../../../core/store/asset-type-details/asset-type-details.query';
+import { AssetTypeDialogComponent } from '../asset-type-dialog/asset-type-dialog.component';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { DialogService } from 'primeng/dynamicdialog';
+import { AssetTypeDetails } from '../../../../core/store/asset-type-details/asset-type-details.model';
+import { AssetType } from '../../../../core/store/asset-type/asset-type.model';
+import { ConfirmationService } from 'primeng/api';
+import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
+import { Observable } from 'rxjs';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
-import { BaseListComponent } from '../base/base-list/base-list.component';
-import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
 
 @Component({
   selector: 'app-asset-type-list',
   templateUrl: './asset-type-list.component.html',
-  styleUrls: ['./asset-type-list.component.scss']
+  styleUrls: ['./asset-type-list.component.scss'],
+  providers: [DialogService, ConfirmationService]
 })
-export class AssetTypeListComponent extends BaseListComponent implements OnInit, OnDestroy {
+export class AssetTypeListComponent implements OnInit, OnDestroy {
+
+
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No asset types.', '=1': '# Asset type', other: '# Asset types' };
+    { [k: string]: string } = { '=0': 'No Asset types', '=1': '# Asset type', other: '# Asset types' };
 
-  editBarMapping:
-    { [k: string]: string } = {
-      '=0': 'No asset type templates selected',
-      '=1': '# Asset type template selected',
-      other: '# Asset type templates selected'
-    };
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
+  activeListItem: AssetTypeDetails;
+  assetTypes: AssetType[];
+  assetTypes$: Observable<AssetType[]>;
+
+  displayedAssetTypes: AssetType[];
+  filteredAssetTypes: AssetType[];
+  searchedAssetTypes: AssetType[];
+
+
+  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset type templates', attributeToBeFiltered: 'templateCount' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset series', attributeToBeFiltered: 'assetSeriesCount' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Assets', attributeToBeFiltered: 'assetCount' }];
 
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public assetTypeQuery: AssetTypeQuery,
-    public assetTypeService: AssetTypeService) {
-    super(route, router, assetTypeQuery, assetTypeService);
+    private assetTypeDetailsQuery: AssetTypeDetailsQuery,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService) {
+  }
+
+  private static assetTypeFromDetails(assetTypeDetails: AssetTypeDetails): AssetType {
+    const assetType: AssetType = new AssetType();
+    assetType.id = assetTypeDetails.id;
+    assetType.name = assetTypeDetails.name;
+    assetType.label = assetTypeDetails.label;
+    assetType.description = assetTypeDetails.description;
+
+    return assetType;
   }
 
   ngOnInit() {
-    super.ngOnInit();
+    this.assetTypes$ = this.assetTypeDetailsQuery.selectAll();
+    this.assetTypes$.subscribe(assetTypes => {
+      this.assetTypes = this.displayedAssetTypes = this.searchedAssetTypes = this.filteredAssetTypes = assetTypes;
+    });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnDestroy() {
-    this.assetTypeQuery.resetError();
+    this.assetTypeDetailsQuery.resetError();
   }
 
-  folderView() {
-    // TODO
+  setActiveRow(assetType?) {
+    if (assetType) {
+      this.activeListItem = assetType;
+    }
   }
 
+  searchAssetTypes(event: AssetType[]): void {
+    this.searchedAssetTypes = event;
+    this.updateAssetTypes();
+  }
+
+  filterAssetTypes(event: AssetType[]) {
+    this.filteredAssetTypes = event;
+    this.updateAssetTypes();
+  }
+
+  private updateAssetTypes(): void {
+    this.displayedAssetTypes = this.assetTypes;
+    if (this.searchedAssetTypes) {
+      this.displayedAssetTypes = this.filteredAssetTypes.filter(assetType =>
+        this.searchedAssetTypes.includes(assetType));
+    }
+  }
+
+  showCreateDialog() {
+    this.dialogService.open(AssetTypeDialogComponent, {
+      data: {
+        dialogType: DialogType.CREATE
+      },
+      header: `Create new Asset Type`,
+    });
+  }
+
+  showEditDialog(): void {
+    const assetType: AssetType = AssetTypeListComponent.assetTypeFromDetails(this.activeListItem);
+
+    this.dialogService.open(AssetTypeDialogComponent, {
+      data: {
+        assetType, dialogType: DialogType.EDIT
+      },
+      header: `Edit Asset type (${assetType?.name})`,
+    });
+  }
+
+  showDeleteDialog() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the Asset Type ' + this.activeListItem.name + '?',
+      header: 'Delete Asset Type Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteAssetType();
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  deleteAssetType() {
+  }
+
+  updateRowCountInUrl(rowCount: number) {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
+  }
 }

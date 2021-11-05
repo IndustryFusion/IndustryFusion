@@ -17,11 +17,15 @@ package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -29,11 +33,21 @@ import java.util.UUID;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetDto extends BaseAssetDto {
-    private Long id;
     private Long companyId;
+    private Long assetSeriesId;
     private Long roomId;
+    private RoomDto room;
 
-    private String externalId;
+    @Builder.Default
+    private Set<Long> fieldInstanceIds = new LinkedHashSet<>();
+
+    @Builder.Default
+    private Set<FieldInstanceDto> fieldInstances = new LinkedHashSet<>();
+
+    @Builder.Default
+    private Set<Long> subsystemIds = new HashSet<>();
+
+    private String externalName;
     private String controlSystemType;
     private Boolean hasGateway;
     private String gatewayConnectivity;
@@ -42,9 +56,10 @@ public class AssetDto extends BaseAssetDto {
     protected String serialNumber;
     protected OffsetDateTime constructionDate;
     protected String protectionClass;
-    protected String handbookKey;
-    protected String videoKey;
+    protected String handbookUrl;
+    protected String videoUrl;
     protected OffsetDateTime installationDate;
+    protected String connectionString;
 
     @JsonCreator
     public AssetDto() {

@@ -13,62 +13,31 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="modal" style="background-color: rgba(128,128,128,0.5);">
-  <div class="modal-dialog">
-    <div class="modal-content" style="background-color: hsl(198, 0%, 95%);">
-      <button type="button" (click)="closeModal(true)" class="close-modal-btn">
-        <clr-icon shape="times" size="20"></clr-icon>
-      </button>
-      <div class="modal-title">
-        <h3>Assign name and description to asset</h3><br>
-        <span style="font-size: 12px;">You can assign a specific name and description to your asset to customize them.</span>
+<div>
+  <div>
+    <form [formGroup]="assetDetailsForm">
+      <div class="p-grid asset-info">
+        <img class="asset-image p-col-4" src="assets/img/{{assetDetailsForm.get('imageKey').value}}" alt="Asset Image">
+        <div class="p-col-6 p-grid p-flex-column">
+          <span class="asset-name p-col">{{assetDetailsForm.get('name').value}}</span>
+          <span class="text-styling p-col">{{assetDetailsForm.get('category').value}}</span>
+          <span class="text-styling p-col">{{assetDetailsForm.get('manufacturer').value}}</span>
+        </div>
       </div>
-
-      <div class="modal-body">
-
-        <form class="clr-form-group" [formGroup]="assetDetailsForm">
-
-          <div class="asset-header">
-            <h4>{{assetDetailsForm.get('assetSeriesName').value}}</h4>
-            <span>{{assetDetailsForm.get('manufacturer').value}}</span> <br>
-            <span>{{assetDetailsForm.get('category').value}}</span>
-          </div>
-            <div class="clr-form-control">
-              <label for="vertical-textarea-basic" class="clr-control-label">Custom name</label>
-              <div class="clr-control-container">
-                <div class="clr-textarea-wrapper">
-                  <textarea
-                    placeholder="Enter value here"
-                    class="clr-textarea custom-name-input"
-                    formControlName="customName"
-                    name="name">
-                  </textarea>
-                  <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label for="vertical-textarea-basic" class="clr-control-label">Description</label>
-              <div class="clr-control-container">
-                <div class="clr-textarea-wrapper">
-                  <textarea
-                    id="vertical-textarea-basic"
-                    placeholder="Enter value here"
-                    class="clr-textarea label-input"
-                    formControlName="description"
-                    name="label">
-                  </textarea>
-                  <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-                </div>
-                <span class="clr-subtext">Maximal 300 characters</span>
-              </div>
-            </div>
-        </form>
+      <div class="input-div">
+        <label class="if-label">Custom name</label>
+        <input type="text" pInputText class="asset-description-dialog-inputs" formControlName="name" placeholder="Enter a custom name here">
       </div>
-      <div class="modal-footer">
-        <button type="button" class="if-button button-secondary button-modal" (click)="emitClickedButtonEvent(false)">Cancel</button>
-        <button type="button" class="if-button button-primary button-modal" (click)="emitClickedButtonEvent(true)">Next</button>
+      <div class="input-div">
+        <label class="if-label">Description</label>
+        <textarea pInputTextarea class="asset-description-dialog-textarea" formControlName="description"></textarea>
+        <label class="textarea-character-count if-label">{{ assetDetailsForm.get('description').value?.length }}/300</label>
       </div>
-    </div>
+      <div class="description-dialog-footer">
+        <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
+        <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="assetDetailsForm.get('name').invalid
+              || assetDetailsForm.get('description').invalid">Next</button>
+      </div>
+    </form>
   </div>
 </div>

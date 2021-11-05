@@ -14,109 +14,133 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from 'ng2-charts';
 
 import { FactoryRoutingModule } from './factory-routing.module';
-import { CompaniesPageComponent } from './components/pages/companies-page/companies-page.component';
-import { CompanyPageComponent } from './components/pages/company-page/company-page.component';
-import { LocationPageComponent } from './components/pages/location-page/location-page.component';
-import { AssetPageComponent } from './components/pages/asset-page/asset-page.component';
+import { FactorySitesPageComponent } from './components/pages/factory-sites-page/factory-sites-page.component';
+import { FactorySitePageComponent } from './components/pages/factory-site-page/factory-site-page.component';
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
-import { AssetDetailsPageComponent } from './components/pages/asset-details-page/asset-details-page.component';
-import { LocationsMapComponent } from './components/content/locations-map/locations-map.component';
-import { LocationsComponent } from './components/content/locations/locations.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
-import { FusionFormatPipe } from '../pipes/fusionformat.pipe';
-import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
-import { AssetDetailsHeaderComponent } from './components/content/asset-details/asset-details-header/asset-details-header.component';
-import { MaintenanceBarComponent } from './components/content/asset-details/maintenance-bar/maintenance-bar.component';
+import { AssetStatusPipe } from '../shared/pipes/asset-status-pipe';
+import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
+import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
-import { CreateRoomComponent } from './components/content/create-room/create-room.component';
+import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
-import { EditRoomComponent } from './components/content/edit-room/edit-room.component';
 import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
 import { FactorySubHeaderComponent } from './components/content/factory-sub-header/factory-sub-header.component';
-import { PrecisionPipe } from '../pipes/precision.pipe';
-import { StatusComponent } from './components/content/status/status.component';
-import { LocationsListHeaderComponent } from './components/content/locations/locations-list-header/locations-list-header.component';
-import { LocationsListItemComponent } from './components/content/locations/locations-list-item/locations-list-item.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
-import { AssetsListItemComponent } from './components/content/assets-list/assets-list-item/assets-list-item.component';
-import { AssetsListHeaderComponent } from './components/content/assets-list/assets-list-header/assets-list-header.component';
-import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
-import { ListFilterComponent } from './components/content/assets-list/list-filter/list-filter.component';
-import { environment } from 'src/environments/environment';
+import { PrecisionPipe } from '../shared/pipes/precision.pipe';
+import { AssetStatusComponent } from './components/content/asset-status/asset-status.component';
+import { ArraysortextendedPipe } from '../shared/pipes/arraysortextended.pipe';
+import { ArrayFilterPipe } from '../shared/pipes/tablefilter.pipe';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
 import { AssetInstantiationPairedModalComponent } from './components/content/asset-instantiation/asset-instantiation-paired-modal/asset-instantiation-paired-modal.component';
-import { AssetInstantiationLocationAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-location-assignment-modal/asset-instantiation-location-assignment-modal.component';
+import { AssetInstantiationFactorySiteAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-factory-site-assignment-modal/asset-instantiation-factory-site-assignment-modal.component';
 import { AssetInstantiationRoomAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-room-assignment-modal/asset-instantiation-room-assignment-modal.component';
+import { FactorySiteDialogComponent } from './components/content/factory-site-dialog/factory-site-dialog.component';
+import { SharedModule } from '../shared/shared.module';
+import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
+// tslint:disable-next-line:max-line-length
+import { TableModule } from 'primeng/table';
+import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
+import { AssignAssetToRoomComponent } from './components/content/assign-asset-to-room/assign-asset-to-room.component';
+import { AssetDetailsSubHeaderComponent } from './components/content/asset-details/asset-details-sub-header/asset-details-sub-header.component';
+import { AssetRealtimeViewComponent } from './components/pages/asset-details/asset-performance/asset-realtime-view/asset-realtime-view.component';
+import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
+import { CardModule } from 'primeng/card';
+import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
+import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
+import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
+import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
+import { AccordionModule } from 'primeng/accordion';
+import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import { AssetPerformanceViewComponent } from './components/pages/asset-details/asset-performance/asset-performance-view/asset-performance-view.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { DashboardModule } from '../dashboards/dashboard.module';
+import { AssetHistoricalViewComponent } from './components/pages/asset-details/asset-performance/asset-historical-view/asset-historical-view.component';
+import { CalendarModule } from 'primeng/calendar';
+import { TreeTableModule } from 'primeng/treetable';
+import { TreeModule } from 'primeng/tree';
+import { HistoricalStatusBarChartComponent } from '../shared/components/content/historical-status-bar-chart/historical-status-bar-chart.component';
+import { ChartModule } from 'primeng/chart';
+import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
+import { MetricsGroupComponent } from './components/content/metrics-board/metrics-group/metrics-group.component';
 
 @NgModule({
   declarations: [
-    CompaniesPageComponent,
-    CompanyPageComponent,
-    LocationPageComponent,
-    AssetPageComponent,
+    FactorySitesPageComponent,
+    FactorySitePageComponent,
     AssetsGridPageComponent,
     AssetsListPageComponent,
-    AssetDetailsPageComponent,
-    LocationsMapComponent,
-    LocationsComponent,
+    AssetPerformanceComponent,
+    AssetHistoricalViewComponent,
+    AssetRealtimeViewComponent,
+    AssetPerformanceViewComponent,
+    FactorySitesComponent,
     CompanyInfoComponent,
     AssetsListComponent,
-    FusionFormatPipe,
+    AssetStatusPipe,
     PrecisionPipe,
     ArraysortextendedPipe,
     ArrayFilterPipe,
-    AssetCardComponent,
-    AssetDetailsHeaderComponent,
+    AssetDigitalNameplateComponent,
+    AssetDetailsInfoComponent,
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
-    MaintenanceBarComponent,
     AssetChartsComponent,
-    CreateRoomComponent,
+    RoomDialogComponent,
     RoomsPageComponent,
-    EditRoomComponent,
     AssetTablesComponent,
-    StatusComponent,
-    LocationsListHeaderComponent,
-    LocationsListItemComponent,
-    AssetsListItemComponent,
-    AssetsListHeaderComponent,
-    ListFilterComponent,
+    AssetStatusComponent,
     AssetInstantiationComponent,
     AssetInstantiationStartModalComponent,
     AssetInstantiationDescriptionModalComponent,
     AssetInstantiationPairedModalComponent,
-    AssetInstantiationLocationAssignmentModalComponent,
+    AssetInstantiationFactorySiteAssignmentModalComponent,
     AssetInstantiationRoomAssignmentModalComponent,
+    FactorySiteDialogComponent,
+    RoomsListComponent,
+    AssignAssetToRoomComponent,
+    AssetDetailsSubHeaderComponent,
+    AssetCardComponent,
+    AssetSubsystemsComponent,
+    AssetAppletsComponent,
+    AssetSubsystemsComponent,
+    AssetNotificationsComponent,
+    HistoricalStatusBarChartComponent,
+    MetricsBoardComponent,
+    MetricsGroupComponent,
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     FactoryRoutingModule,
     ClarityModule,
-    AgmCoreModule.forRoot({
-      apiKey: environment.googleMapsClientId
-    }),
     ChartsModule,
-    FormsModule,
-    FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TableModule,
+    CardModule,
+    FusionAppletsModule,
+    AccordionModule,
+    SelectButtonModule,
+    DashboardModule,
+    CalendarModule,
+    ChartModule,
+    TreeTableModule,
+    TreeModule,
   ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
-    ArraysortextendedPipe
+    ArraysortextendedPipe,
+    AssetDetailsSubHeaderComponent,
   ]
 })
-export class FactoryModule { }
+export class FactoryModule {
+}

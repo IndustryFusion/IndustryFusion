@@ -30,7 +30,6 @@ import java.util.Set;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetSeriesDto extends BaseAssetDto {
-    private Long id;
     private Long companyId;
     private Long assetTypeTemplateId;
     @Builder.Default
@@ -39,8 +38,12 @@ public class AssetSeriesDto extends BaseAssetDto {
     private Set<FieldSourceDto> fieldSources = new LinkedHashSet<>();
     protected Boolean ceCertified;
     protected String protectionClass;
-    protected String handbookKey;
-    protected String videoKey;
+    protected String handbookUrl;
+    protected String videoUrl;
+    protected String customScript;
+
+    private Long connectivitySettingsId;
+    private ConnectivitySettingsDto connectivitySettings;
 
     @JsonCreator
     public AssetSeriesDto() {

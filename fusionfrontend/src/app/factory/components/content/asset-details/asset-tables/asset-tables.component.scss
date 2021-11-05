@@ -13,8 +13,10 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 .card{
-  background: #F8F8F8;
+  background: $light-grey;
   border: 0px;
   box-shadow: none;
 
@@ -26,6 +28,3 @@
     margin: 20px 20px;
   }
 }
-
-
-

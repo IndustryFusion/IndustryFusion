@@ -24,7 +24,6 @@ import io.fusion.fusionbackend.repository.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Set;
 
 @Service
@@ -63,10 +62,12 @@ public class FieldService {
         return field;
     }
 
-    public Field updateField(final Long fieldId, final Field sourceField) {
+    public Field updateField(final Long fieldId, final Field sourceField, final Long unitId) {
         final Field targetField = getField(fieldId, false);
+        final Unit unit = unitService.getUnit(unitId);
 
         targetField.copyFrom(sourceField);
+        targetField.setUnit(unit);
 
         return targetField;
     }

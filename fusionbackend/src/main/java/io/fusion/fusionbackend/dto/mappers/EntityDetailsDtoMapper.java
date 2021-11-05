@@ -23,7 +23,6 @@ public abstract class EntityDetailsDtoMapper<T, U> implements EntityDtoMapper<T,
 
     protected abstract U toDtoDeep(T entity);
 
-
     @Override
     public U toDto(T entity, boolean embedChildren) {
         return toDtoDeep(entity);
@@ -35,8 +34,11 @@ public abstract class EntityDetailsDtoMapper<T, U> implements EntityDtoMapper<T,
     }
 
     @Override
-    public Set<U> toDtoSet(Set<T> entitySet) {
-        return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+    public Set<U> toDtoSet(Set<T> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
+        throw new UnsupportedOperationException();
     }
 
     @Override

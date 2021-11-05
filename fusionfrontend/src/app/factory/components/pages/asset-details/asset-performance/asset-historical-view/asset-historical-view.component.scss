@@ -1,0 +1,146 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'src/styles/base/typography';
+@import "src/styles/abstract/variables";
+@import "../asset-performance.component";
+
+.time-interval-selectors {
+
+  .selector-with-points {
+    display: flex;
+
+    .maxpoints {
+      display: flex !important;
+      align-items: center;
+      margin: 8px 0 0;
+
+      .points-label {
+        margin: 0 8px 0 0;
+      }
+
+      .points-dropdown {
+        display: flex;
+      }
+    }
+  }
+
+  .choiceOptions {
+    margin-top: 1.25rem;
+    margin-right: 3rem;
+    margin-left: 3.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .radio-wrapper {
+    display: flex;
+    background: $light-grey;
+    padding-top: 1rem;
+    margin: 0 3.1rem 0;
+  }
+
+  .ok-button {
+    margin: 1rem 3.1rem;
+  }
+
+  .interval-options {
+    display: flex;
+    margin-top: 1rem;
+
+    .maxpoints {
+      margin: 5px 0 0;
+
+      .points-label {
+        margin: 0;
+      }
+
+      .points-dropdown {
+        display: flex;
+      }
+    }
+
+    .dater{
+      margin-left: 1.5rem;
+
+      .datelabel{
+        display: flex;
+        max-width: 100% !important;
+      }
+
+      .calendar {
+        width: 60% !important;
+      }
+    }
+  }
+
+  .alert{
+    width: 45%;
+  }
+
+  .alert-warning{
+    margin: 25px 50px;
+    width: 30%;
+    .gotIt{
+      border: 5px rgba(0, 0, 0, 0.32);
+      background-color: inherit;
+      color: hsl(198, 0%, 40%);
+      font-size: $small-font-size;
+      cursor: pointer;
+      display: inline-block;
+    }
+  }
+
+  .alert-icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    margin-top: 8px;
+  }
+}
+
+:host ::ng-deep .points-dropdown-inline > .p-dropdown {
+  background-color: transparent !important;
+  border: none !important;
+
+  .p-dropdown-label {
+    color: $basic-black;
+    background-color: transparent !important;
+  }
+
+  .p-dropdown-trigger {
+    background-color: transparent !important;
+    color: $basic-black !important;
+  }
+
+  p-dropdownitem {
+    .p-highlight {
+      background: $highlighted !important;
+      color: $basic-white !important;
+    }
+  }
+
+  &:hover {
+    border: none !important;
+  }
+
+  &:focus, &.p-focus {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+:host ::ng-deep .radio-wrapper > .p-selectbutton {
+  width: 18rem !important;
+}

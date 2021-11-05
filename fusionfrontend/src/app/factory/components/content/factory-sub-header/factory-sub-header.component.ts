@@ -14,13 +14,13 @@
  */
 
 import { Location } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { CompanyQuery } from 'src/app/store/company/company.query';
-import { ManagerType } from 'src/app/components/content/manager-type/manager-type.enum';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-factory-sub-header',
@@ -28,12 +28,13 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./factory-sub-header.component.scss']
 })
 export class FactorySubHeaderComponent implements OnInit, OnDestroy {
-  private unSubscribe$ = new Subject<void>();
-
   route: string;
   companyId: ID;
+  private unSubscribe$ = new Subject<void>();
+  private readonly URL_PREFIX = '^/factorymanager/companies/[0-9]+/';
 
-  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) { }
+  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
+  }
 
   ngOnInit() {
     this.checkUrl();
@@ -41,8 +42,8 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.unSubscribe$)
       ).subscribe(() => {
-        this.checkUrl();
-      });
+      this.checkUrl();
+    });
     this.companyId = this.companyQuery.getActiveId();
   }
 
@@ -54,27 +55,18 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  isFactoriesActive = () => {
-    return this.route && this.route.match('^\/factorymanager\/companies\/[0-9]+$');
+  isFactoriesActive(): boolean {
+    return RouteHelpers.matchFullRoutes(this.route,
+      ['factorysites', 'factorysites/[0-9]+', 'factorysites/[0-9]+/asset-cards/[0-9,]+'],
+           this.URL_PREFIX);
+  }
+
+  isRoomsActive(): boolean {
+    return RouteHelpers.matchFullRoutes(this.route, ['rooms', 'rooms/[0-9]+', 'rooms/[0-9]+/asset-cards/[0-9,]+'], this.URL_PREFIX);
   }
 
   isAssetsActive = () => {
-    return this.route && (
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/assets$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/rooms/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/rooms/[0-9]+/assets$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/rooms/[0-9]+/asset-cards/[0-9,]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/rooms/[0-9]+/assets/[0-9]+$') ||
-      this.route.match('^/factorymanager/companies/[0-9]+/locations/[0-9]+/rooms/[0-9]+/assets/[0-9]+/asset-details$')
-    );
-  }
-
-  isSettingsActive = () => {
-    return false;
+    return RouteHelpers.matchFullRoutes(this.route, ['assets$', 'assets/asset-cards/[0-9,]+'], this.URL_PREFIX);
   }
 
   onFactoriesClick() {
@@ -84,15 +76,18 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  onAssetsClick() {
+  onRoomsClick() {
     const companyId = this.route.split('/')[3];
     if (companyId) {
-      return this.router.navigate(['/factorymanager/companies', companyId , 'assets']);
+      return this.router.navigate(['/factorymanager/companies', companyId, 'rooms']);
     }
   }
 
-  isManager(manager: ManagerType) {
-    return this.route && this.route.match(`\/${manager}\/`);
+  onAssetsClick() {
+    const companyId = this.route.split('/')[3];
+    if (companyId) {
+      return this.router.navigate(['/factorymanager/companies', companyId, 'assets']);
+    }
   }
 
   ngOnDestroy(): void {

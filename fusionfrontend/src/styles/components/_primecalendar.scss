@@ -1,0 +1,165 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'base/typography';
+@import 'abstract/variables';
+
+p-calendar {
+
+  .p-calendar-w-btn {
+
+    border-radius: 10px;
+    border: 2px solid transparent;
+    box-shadow: none !important;
+    background: $basic-white;
+
+    &:hover {
+      border: 2px solid $basic-grey;
+    }
+    &.p-focus {
+      border: 2px solid $highlighted;
+    }
+
+    .p-inputtext {
+      border: none !important;
+    }
+
+    .p-datepicker-trigger {
+      color: $basic-black;
+      background: $basic-white !important;
+      border: none !important;
+      border-radius: 10px;
+
+      &:hover {
+        color: $hover-grey-border !important;
+      }
+      &:focus {
+        color: $highlighted !important;
+      }
+    }
+  }
+
+  .p-datepicker {
+
+    border-radius: 10px;
+    padding: 0.1rem 0.65rem;
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+    box-shadow: none !important;
+
+    .p-datepicker-month, .p-datepicker-year {
+      background: $basic-white;
+      border: none !important;
+    }
+
+    select:focus > option:hover {
+      background: $hover-grey !important;
+    }
+    select option:checked,
+    select option:hover {
+      background: $hover-grey !important;
+    }
+
+    option:hover {
+      background-color: $basic-white !important;
+
+      &:hover, &:focus {
+        background: $hover-grey !important;
+      }
+    }
+
+    .p-datepicker-calendar {
+      /*padding: 0;*/
+      font-size: $regular-font-size;
+      line-height: $regular-line-height;
+    }
+
+    .p-datepicker-prev,
+    .p-datepicker-next {
+      color: $basic-black !important;
+      width: 1rem !important;
+      height: 1rem  !important;
+      box-shadow: none !important;
+
+      &:hover {
+        color: $hover-grey-border !important;
+      }
+      &:focus {
+        color: $highlighted !important;
+      }
+
+      span {
+        font-size: 0.6rem !important;
+      }
+    }
+
+    thead {
+      border-bottom: 1px solid #d8dae2;
+    }
+
+    table td {
+      padding: 0 !important;
+
+      &.p-datepicker-today > span {
+        background: $basic-white !important;
+        color: #2CA9CE !important;
+      }
+
+      span {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 10px;
+
+        &.p-highlight {
+          color: $basic-white !important;
+          background: $basic-black !important;
+        }
+      }
+    }
+
+    .p-datepicker-buttonbar {
+      padding-top: 0.1rem !important;
+      padding-bottom: 0.2rem !important;
+    }
+  }
+
+  .p-button.p-button-text {
+    color: $basic-black;
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+  }
+}
+
+p-calendar {
+  &.calendar-only-button {
+    .p-calendar-w-btn {
+      border: none !important;
+      background: none !important;
+
+      .p-inputtext {
+        width: 0 !important;
+        background: none !important;
+      }
+
+      .p-datepicker-trigger {
+        background: none !important;
+      }
+    }
+
+    .p-datepicker {
+      margin-left: -3.9rem;
+    }
+  }
+}

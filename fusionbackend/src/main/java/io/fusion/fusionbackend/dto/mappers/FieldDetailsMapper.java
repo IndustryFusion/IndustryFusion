@@ -16,79 +16,79 @@
 package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldDetailsDto;
+import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldInstance;
+import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.enums.FieldType;
+import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
-public class FieldDetailsMapper implements EntityDtoMapper<FieldInstance, FieldDetailsDto> {
-    private FieldDetailsDto toDtoDeep(FieldInstance entity) {
+public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, FieldDetailsDto> {
+
+    @Override
+    protected FieldDetailsDto toDtoDeep(FieldInstance entity) {
         if (entity == null) {
             return null;
         }
         FieldType fieldType = null;
         Boolean mandatory = null;
-        String unit = null;
+        String unitSymbol = null;
+        String fieldLabel = null;
         Double accuracy = null;
+        String dashboardGroup = null;
+        FieldWidgetType widgetType = null;
         QuantityDataType dataType = null;
-        if (entity.getFieldSource() != null) {
-            FieldTarget fieldTarget = entity.getFieldSource().getFieldTarget();
+
+        FieldSource fieldSource = entity.getFieldSource();
+        if (fieldSource != null) {
+            FieldTarget fieldTarget = fieldSource.getFieldTarget();
             if (fieldTarget != null) {
                 fieldType = fieldTarget.getFieldType();
                 mandatory = fieldTarget.getMandatory();
-                if (fieldTarget.getField() != null) {
-                    unit = fieldTarget.getField().getUnit().getSymbol();
-                    accuracy = fieldTarget.getField().getAccuracy();
-                    dataType = fieldTarget.getField().getUnit().getQuantityType().getDataType();
+                dashboardGroup = fieldTarget.getDashboardGroup();
+
+                Field field = fieldTarget.getField();
+                if (field != null) {
+                    accuracy = field.getAccuracy();
+                    fieldLabel = field.getLabel();
+                    widgetType = field.getWidgetType();
+                    unitSymbol = field.getUnit().getSymbol();
+                    dataType = field.getUnit().getQuantityType().getDataType();
                 }
             }
         }
 
         return FieldDetailsDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .assetId(EntityDtoMapper.getEntityId(entity.getAsset()))
-                .externalId(entity.getExternalId())
+                .fieldSourceId(EntityDtoMapper.getEntityId(fieldSource))
+                .externalName(entity.getExternalName())
                 .fieldType(fieldType)
                 .mandatory(mandatory)
                 .name(entity.getName())
                 .description(entity.getDescription())
+                .dashboardGroup(dashboardGroup)
                 .type("type not implemented")
-                .unit(unit)
+                .unit(unitSymbol)
                 .accuracy(accuracy)
                 .value(entity.getValue())
                 .quantityDataType(dataType)
+                .widgetType(widgetType)
+                .fieldLabel(fieldLabel)
+                .absoluteThreshold(entity.getAbsoluteThreshold())
+                .idealThreshold(entity.getIdealThreshold())
+                .criticalThreshold(entity.getCriticalThreshold())
                 .build();
-    }
-
-
-    @Override
-    public FieldDetailsDto toDto(FieldInstance entity, boolean embedChildren) {
-        return toDtoDeep(entity);
-    }
-
-    @Override
-    public FieldInstance toEntity(FieldDetailsDto dto) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Set<FieldDetailsDto> toDtoSet(Set<FieldInstance> entitySet) {
-        return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
     public Set<Long> toEntityIdSet(Set<FieldInstance> entitySet) {
         return EntityDtoMapper.getSetOfEntityIds(entitySet);
-    }
-
-    @Override
-    public Set<FieldInstance> toEntitySet(Set<FieldDetailsDto> dtoSet) {
-        throw new UnsupportedOperationException();
     }
 }

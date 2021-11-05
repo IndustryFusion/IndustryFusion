@@ -15,13 +15,18 @@
 
 package io.fusion.fusionbackend.model;
 
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,6 +36,7 @@ import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -47,12 +53,13 @@ import java.util.Set;
                 @NamedSubgraph(name = "assetSeriesChildren", attributeNodes = {
                         @NamedAttributeNode("fieldSources")})})
 @Table(name = "asset_type_template")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 public class AssetTypeTemplate extends BaseAsset {
+
     @OneToMany(mappedBy = "assetTypeTemplate")
     @Builder.Default
     private Set<AssetSeries> assetSeries = new LinkedHashSet<>();
@@ -64,4 +71,31 @@ public class AssetTypeTemplate extends BaseAsset {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
     private AssetType assetType;
+
+    @Enumerated(EnumType.STRING)
+    private PublicationState publicationState;
+    private OffsetDateTime publishedDate;
+    private Long publishedVersion;
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    private OffsetDateTime creationDate;
+
+    public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        super.copyFrom(sourceAssetTypeTemplate);
+
+        if (sourceAssetTypeTemplate.getPublicationState() != null) {
+            setPublicationState(sourceAssetTypeTemplate.getPublicationState());
+        }
+        if (sourceAssetTypeTemplate.getPublishedDate() != null) {
+            setPublishedDate(sourceAssetTypeTemplate.getPublishedDate());
+        }
+        if (sourceAssetTypeTemplate.getPublishedVersion() != null) {
+            setPublishedVersion(sourceAssetTypeTemplate.getPublishedVersion());
+        }
+        if (sourceAssetTypeTemplate.getCreationDate() != null) {
+            setCreationDate(sourceAssetTypeTemplate.getCreationDate());
+        }
+    }
 }

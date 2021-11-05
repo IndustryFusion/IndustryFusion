@@ -1,0 +1,101 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'abstract/variables';
+@import 'base/typography';
+
+.notification-icons {
+  overflow: visible !important;
+  margin-top: -2px;
+
+  .notification-low {
+    color: $alert-low;
+  }
+
+  .notification-medium {
+    color: $alert-medium;
+  }
+
+  .notification-high {
+    color: $alert-high;
+  }
+}
+
+.first-header-item {
+  padding-left: 3.35rem !important;
+}
+
+.asset-needs-maintenance {
+  color: red !important;
+}
+
+:host ::ng-deep .p-dropdown {
+  width: 45%;
+}
+
+.asset-column {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.5rem;
+  margin-left: -0.5rem;
+  border: unset !important;
+
+  .subsystem-grid {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    margin-top: -2rem;
+    margin-bottom: -2rem;
+
+    .upper {
+      width: 10px;
+      height: 50%;
+      border-bottom: 1px solid $middle-grey;
+      border-left: 1px solid $middle-grey;
+    }
+
+    .lower {
+      border-left: 1px solid $middle-grey;
+      height: 50%;
+    }
+
+    .last-element {
+      border: unset;
+    }
+  }
+}
+
+.progressbar-wrapper {
+  position: relative;
+  width: 100%;
+
+  .progressbar-icon {
+    position: absolute;
+    bottom: 50%;
+    left: 86%;
+    width: 100%;
+    height: auto;
+    color: $alert-high;
+    &:hover {
+      color: $hover-grey;
+    }
+  }
+
+  app-maintenance-progressbar {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+  }
+}

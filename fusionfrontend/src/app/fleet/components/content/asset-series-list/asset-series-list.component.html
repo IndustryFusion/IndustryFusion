@@ -13,49 +13,59 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<clr-alert [clrAlertType]="'danger'" *ngIf="error" (clrAlertClosedChange)="onCloseError()">
-  <clr-alert-item>
-    <span class="alert-text">
-      {{ getErrorMessage() }}
-    </span>
-  </clr-alert-item>
-</clr-alert>
-<div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-  <div class="title">{{ (items$ | async)?.length | i18nPlural: titleMapping }}</div>
-  <div>
-    <button class="button-create" (click)="createItem()">
-      <clr-icon shape="plus"></clr-icon> Create Asset Series
-    </button>
-  </div>
+<div class="p-grid p-jc-between header-line">
+  <h3 class="table-header">{{  assetSeries.length | i18nPlural: assetSeriesMapping }}</h3>
+  <app-create-button (createItem)="createAssetSeries()" [text]="'Create Asset Series'"
+                     class="single-create-btn"></app-create-button>
 </div>
-<div>
-  <div class="list-container">
-    <div class="list-edit-bar" *ngIf="selected.size > 0">
-      <div class="list-edit-bar-item" [style.width.%]="5">
-        <clr-icon shape="check-circle" size="20"></clr-icon>
-      </div>
-      <div [style.width.%]="30">{{ selected.size | i18nPlural: editBarMapping }}</div>
-      <div class="list-edit-bar-item" [style.width.%]="50">
-        <button *ngIf="selected.size == 1" class="btn btn-link button-white" (click)="modifyItems()">
-          <clr-icon shape="wrench"></clr-icon>
-        </button>
-        <button class="btn btn-link button-white" (click)="deleteItems()">
-          <clr-icon shape="trash"></clr-icon>
-        </button>
-      </div>
-      <div class="list-edit-bar-last-item" [style.width.%]="35">
-        <button class="btn btn-link button-white" (click)="deselectAllItems()">
-          <clr-icon shape="times"></clr-icon>Close
-        </button>
-      </div>
-    </div>
-    <app-asset-series-list-header (sortEvent)="onSort($event)"></app-asset-series-list-header>
-    <app-asset-series-list-item *ngFor="let item of (items$ | async)" [item]="item"
-                              (itemSelected)="onItemSelect($event)"
-                              (itemDeselected)="onItemDeselect($event)"
-                                (itemEdit)="modifyItem($event)"
-                                (itemDelete)="deleteItem($event)"
-                              [selected]="isSelected(item.id)">
-    </app-asset-series-list-item>
-  </div>
-</div>
+
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
+         [showCurrentPageReport]="true" [value]="displayedAssetSeries" (rowsChange)="updateRowCountInUrl($event)"
+         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Asset Series">
+  <ng-template pTemplate="header">
+    <tr>
+      <th [style.width.%]="5"></th>
+      <th [style.width.%]="22.5">
+        <app-table-searchbar (searchByName)="searchAssetSeriesByName($event)" [itemsToBeFiltered]="assetSeries"
+                             attributeToBeSearched="name" filterColumn="Asset series name">
+        </app-table-searchbar>
+      </th>
+      <th [style.width.%]="22.5" pSortableColumn="assetType">Asset Type
+        <p-sortIcon field="assetType"></p-sortIcon>
+      </th>
+      <th [style.width.%]="15" pSortableColumn="templateVersion">Template Version
+        <p-sortIcon field="templateVersion"></p-sortIcon>
+      </th>
+      <!--<th [style.width.%]="15">Status</th>-->
+      <th [style.width.%]="15" pSortableColumn="assetCount">Assets
+        <p-sortIcon field="assetCount"></p-sortIcon>
+      </th>
+      <th [style.width.%]="5"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template let-assetSeries pTemplate="body">
+    <tr id="rowElement">
+      <td [style.width.%]="5"></td>
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="22.5"
+          class="table-bold-font">{{ assetSeries.name }}</td>
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="22.5">{{ assetSeries.assetType }}</td>
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="15">{{ assetSeries.templateVersion }}</td>
+      <!-- <div [routerLink]="assetSeries.id + '/assets'" [style.width.%]="15" class="list-item-cell grey label-success">
+      <app-asset-series-status [assetSeries]="assetSeries" [showInline]="true"></app-asset-series-status> -->
+      <td [routerLink]="assetSeries.id + '/assets'" [style.width.%]="15">{{ assetSeries.assetCount }}</td>
+      <td (click)="setActiveRow(assetSeries)" [style.width.%]="5">
+        <app-item-options-menu (createItem)="createAssetFromAssetSeries(assetSeries.id)"
+                               (deleteItem)="showDeleteDialog()"
+                               (editItem)="editAssetSeries(assetSeries.id)"
+                               [actions]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
+                               [createItemName]="'Asset'" class="column-visibility">
+        </app-item-options-menu>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 rejectButtonStyleClass="if-button button-secondary" key="asset-series-delete-dialog"></p-confirmDialog>

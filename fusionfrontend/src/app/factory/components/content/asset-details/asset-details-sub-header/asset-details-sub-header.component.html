@@ -1,0 +1,33 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<app-asset-details-info [assetWithFields]="asset"></app-asset-details-info>
+
+<div class="subheader-flex">
+  <div class="flexbox"></div>
+  <div class="wrapper if-subheader asset-details-subheader">
+    <ul>
+      <li (click)="onRouteClick('performance', 'realtime')" [ngClass]="{'active': isPerformance()}">Performance</li>
+      <li (click)="onRouteClick('notifications', 'open')" [ngClass]="{'active': isNotifications()}">Notifications</li>
+      <li (click)="onRouteClick('applets', 'active')" [ngClass]="{'active': isApplets()}">Applets</li>
+      <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}">
+        Digital Nameplate
+      </li>
+      <li (click)="onRouteClick('subsystems')" *ngIf="hasSubsystems"
+          [ngClass]="{'active': isRouteActive('subsystems')}">Subsystems</li>
+    </ul>
+  </div>
+  <div class="flexbox"></div>
+</div>

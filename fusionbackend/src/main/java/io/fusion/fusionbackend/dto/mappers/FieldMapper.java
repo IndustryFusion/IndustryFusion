@@ -39,12 +39,16 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         }
         return FieldDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
                 .accuracy(entity.getAccuracy())
                 .value(entity.getValue())
                 .unitId(EntityDtoMapper.getEntityId(entity.getUnit()))
+                .thresholdType(entity.getThresholdType())
+                .widgetType(entity.getWidgetType())
+                .creationDate(entity.getCreationDate())
                 .build();
     }
 
@@ -52,15 +56,11 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         if (entity == null) {
             return null;
         }
-        return FieldDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .label(entity.getLabel())
-                .accuracy(entity.getAccuracy())
-                .value(entity.getValue())
-                .unit(unitMapper.toDto(entity.getUnit(), false))
-                .build();
+
+        FieldDto fieldDto = toDtoShallow(entity);
+        fieldDto.setUnit(unitMapper.toDto(entity.getUnit(), false));
+
+        return fieldDto;
     }
 
     @Override
@@ -83,11 +83,16 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .label(dto.getLabel())
                 .accuracy(dto.getAccuracy())
                 .value(dto.getValue())
+                .thresholdType(dto.getThresholdType())
+                .widgetType(dto.getWidgetType())
                 .build();
     }
 
     @Override
-    public Set<FieldDto> toDtoSet(Set<Field> entitySet) {
+    public Set<FieldDto> toDtoSet(Set<Field> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

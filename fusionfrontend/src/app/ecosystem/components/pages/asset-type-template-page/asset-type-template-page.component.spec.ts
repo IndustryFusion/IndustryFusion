@@ -13,20 +13,20 @@
  * under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AssetTypeTemplatePageComponent } from './asset-type-template-page.component';
 
-describe('AssetTypeTemplatePageComponent', () => {
+describe('AssetTypeTemplateComponent', () => {
   let component: AssetTypeTemplatePageComponent;
   let fixture: ComponentFixture<AssetTypeTemplatePageComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ AssetTypeTemplatePageComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AssetTypeTemplatePageComponent);

@@ -17,14 +17,17 @@ package io.fusion.fusionbackend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class BaseAssetDto {
+public abstract class BaseAssetDto extends BaseEntityDto {
     protected String name;
     protected String description;
     protected String imageKey;

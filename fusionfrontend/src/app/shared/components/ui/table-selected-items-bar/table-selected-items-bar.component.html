@@ -1,0 +1,35 @@
+<div class="table-selected-items-bar p-grid p-jc-between" *ngIf="selectedItems.length > 0">
+  <div class="table-selected-item p-col-4">
+    <fa-icon [icon]="faCheckCircle" class="check-box-icon fa-fw"></fa-icon>
+    <span class="table-selected-item">{{ selectedItems.length | i18nPlural: editBarMapping }}</span>
+  </div>
+
+  <div class="p-col-4 table-selected-item" style="text-align: center">
+    <div class="table-bar-button-div">
+      <p-button *ngIf="tableSelectedItemsBarTypes.includes(TableSelectedItemsBarType.SHOW_ASSET_CARDS)"
+                class="table-bar-button" (click)="onCardsViewClick()">
+        <fa-icon [icon]="faThLarge" class="check-box-icon fa-fw"></fa-icon>
+      </p-button>
+      <p-button *ngIf="tableSelectedItemsBarTypes.includes(TableSelectedItemsBarType.EDIT) && selectedItems.length === 1"
+                class="table-bar-button" (click)="onEditClick();">
+        <fa-icon [icon]="faWrench" class="check-box-icon fa-fw"></fa-icon>
+      </p-button>
+      <p-button *ngIf=" tableSelectedItemsBarTypes.includes(TableSelectedItemsBarType.DELETE) && selectedItems.length === 1"
+                class="table-bar-button" (click)="onDeleteClick();">
+        <fa-icon [icon]="faTrashAlt" class="check-box-icon fa-fw"></fa-icon>
+      </p-button>
+      <p-button *ngIf=" tableSelectedItemsBarTypes.includes(TableSelectedItemsBarType.CLOSE_NOTIFICATION)"
+                class="table-bar-button" (click)="onCloseNotification();">
+        <fa-icon [icon]="faTrashAlt" class="check-box-icon fa-fw"></fa-icon>
+
+      </p-button>
+    </div>
+  </div>
+
+  <div class="p-col-4 table-selected-item" style="text-align: end">
+    <p-button class="table-bar-button" (click)="onDeselectClick()">
+      <fa-icon [icon]="faTimes" class="fa-fw"></fa-icon>
+      <span>deselect</span>
+    </p-button>
+  </div>
+</div>

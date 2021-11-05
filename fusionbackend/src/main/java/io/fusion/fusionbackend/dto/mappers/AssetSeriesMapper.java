@@ -16,7 +16,9 @@
 package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetSeriesDto;
+import io.fusion.fusionbackend.dto.FieldSourceDto;
 import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.FieldSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,11 +29,18 @@ import java.util.stream.Collectors;
 @Component
 public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeriesDto> {
     private final BaseAssetMapper baseAssetMapper;
+    private final FieldSourceMapper fieldSourceMapper;
+    private final ConnectivitySettingsMapper connectivitySettingsMapper;
 
     @Autowired
-    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper) {
+    public AssetSeriesMapper(BaseAssetMapper baseAssetMapper,
+                             FieldSourceMapper fieldSourceMapper,
+                             ConnectivitySettingsMapper connectivitySettingsMapper) {
         this.baseAssetMapper = baseAssetMapper;
+        this.fieldSourceMapper = fieldSourceMapper;
+        this.connectivitySettingsMapper = connectivitySettingsMapper;
     }
+
 
     private AssetSeriesDto toDtoShallow(final AssetSeries entity) {
         if (entity == null) {
@@ -39,13 +48,16 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
         }
         final AssetSeriesDto dto = AssetSeriesDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetTypeTemplateId(EntityDtoMapper.getEntityId(entity.getAssetTypeTemplate()))
                 .ceCertified(entity.getCeCertified())
                 .protectionClass(entity.getProtectionClass())
-                .handbookKey(entity.getHandbookKey())
-                .videoKey(entity.getVideoKey())
+                .handbookUrl(entity.getHandbookUrl())
+                .videoUrl(entity.getVideoUrl())
                 .fieldSourceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldSources()))
+                .connectivitySettingsId(entity.getConnectivitySettings().getId())
+                .customScript(entity.getCustomScript())
                 .build();
 
         baseAssetMapper.copyToDto(entity, dto);
@@ -53,9 +65,29 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
         return dto;
     }
 
+
+    private AssetSeriesDto toDtoDeep(final AssetSeries entity) {
+        AssetSeriesDto assetSeriesDto = toDtoShallow(entity);
+        if (assetSeriesDto.getFieldSources() != null) {
+            Set<FieldSourceDto> fieldSourceDtos = fieldSourceMapper.toDtoSet(entity.getFieldSources(), true);
+            assetSeriesDto.setFieldSources(fieldSourceDtos);
+        }
+
+        if (entity.getConnectivitySettings() != null) {
+            assetSeriesDto.setConnectivitySettings(
+                    connectivitySettingsMapper.toDto(entity.getConnectivitySettings(), false));
+        }
+
+        return assetSeriesDto;
+    }
+
     @Override
     public AssetSeriesDto toDto(AssetSeries entity, boolean embedChildren) {
-        return toDtoShallow(entity);
+        if (embedChildren) {
+            return toDtoDeep(entity);
+        } else {
+            return toDtoShallow(entity);
+        }
     }
 
     @Override
@@ -65,19 +97,33 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
         }
         final AssetSeries entity = AssetSeries.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .ceCertified(dto.getCeCertified())
                 .protectionClass(dto.getProtectionClass())
-                .handbookKey(dto.getHandbookKey())
-                .videoKey(dto.getVideoKey())
+                .handbookUrl(dto.getHandbookUrl())
+                .videoUrl(dto.getVideoUrl())
+                .customScript(dto.getCustomScript())
                 .build();
 
         baseAssetMapper.copyToEntity(dto, entity);
+
+        if (dto.getFieldSources() != null) {
+            Set<FieldSource> fieldSources = fieldSourceMapper.toEntitySet(dto.getFieldSources());
+            entity.setFieldSources(fieldSources);
+        }
+
+        if (dto.getConnectivitySettings() != null) {
+            entity.setConnectivitySettings(connectivitySettingsMapper.toEntity(dto.getConnectivitySettings()));
+        }
 
         return entity;
     }
 
     @Override
-    public Set<AssetSeriesDto> toDtoSet(Set<AssetSeries> entitySet) {
+    public Set<AssetSeriesDto> toDtoSet(Set<AssetSeries> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

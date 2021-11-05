@@ -13,17 +13,12 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [numUsers]="6" [location]="(location$ | async)" [rooms]="(rooms$ | async)" [assets]="(assets$ | async)" *ngIf="(location$ | async) != null"></app-company-info>
-
 <app-assets-list [company]="(company$ | async)"
-                 [locations]="(locations$ | async)"
-                 [location]="(location$ | async)"
+                 [factorySites]="(factorySites$ | async)"
                  [rooms]="(rooms$ | async)"
                  [room]="(room$ | async)"
-                 [assetSeries]="(assetSeries$ | async)"
-                 [assetsWithDetailsAndFields]="(assetsWithDetailsAndFields$ | async)"
+                 [factoryAssetsDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
-                 (assetSeriesSelected)="createAssetFromAssetSeries($event)"
-                 (assetDetailsSelected)="updateAssetData($event)">
+                 (updateAssetEvent)="updateAssetData($event)">
 </app-assets-list>

@@ -14,13 +14,12 @@
  */
 
 import { Location } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 
-import { CompanyQuery } from '../../../../store/company/company.query';
-import { EcosystemManagerSubMenu } from '../ecosystem-manager-sub-menu/ecosystem-manager-sub-menu.enum';
-import { Subscription, Subject } from 'rxjs';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -33,7 +32,6 @@ export class EcosystemSubHeaderComponent implements OnInit, OnDestroy {
 
   route: string;
   companyId: ID;
-  EcosystemManagerSubMenu = EcosystemManagerSubMenu;
   sub: Subscription;
 
   constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) { }

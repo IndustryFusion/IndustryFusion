@@ -13,6 +13,8 @@
  * under the License.
  */
 
+@import "abstract/variables";
+
 .list-header {
   margin-right: 48px;
   margin-left: 68px;
@@ -32,13 +34,12 @@
     text-align: left;
     font-size: 14px;
     letter-spacing: 0;
-    color: #666666;
+    color: $regular-grey;
     opacity: 1;
 
     background: #FFFFFF 0% 0% no-repeat padding-box;
-    border: 1px solid #95989A;
+    border: 1px solid $basic-grey;
     border-radius: 10px;
-    opacity: 1;
 
     padding-top: 15px;
     padding-bottom: 15px;

@@ -16,12 +16,14 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -30,9 +32,13 @@ import java.util.Set;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetTypeTemplateDto extends BaseAssetDto {
-    private Long id;
     private Long assetTypeId;
     private AssetTypeDto assetType;
+    private PublicationState publicationState;
+    private OffsetDateTime publishedDate;
+    private Long publishedVersion;
+    private OffsetDateTime creationDate;
+
     @Builder.Default
     protected Set<Long> fieldTargetIds = new LinkedHashSet<>();
     @Builder.Default

@@ -20,16 +20,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "field_instance")
-@SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldinstance")
+@SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_fieldinstance")
 @Getter
 @Setter
 @SuperBuilder
@@ -43,13 +45,28 @@ public class FieldInstance extends BaseEntity {
     @JoinColumn(name = "field_source_id", nullable = false)
     private FieldSource fieldSource;
 
-    private String sourceSensorLabel;
-    private String externalId;
+    // TODO: Validate with option of field->threshold_type
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "absolute_threshold_id")
+    private Threshold absoluteThreshold;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ideal_threshold_id")
+    private Threshold idealThreshold;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "critical_threshold_id")
+    private Threshold criticalThreshold;
+
+    private String externalName;
     private String name;
     private String description;
     private String value;
 
     public void copyFrom(final FieldInstance sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }
@@ -59,11 +76,17 @@ public class FieldInstance extends BaseEntity {
         if (sourceField.getValue() != null) {
             setValue(sourceField.getValue());
         }
-        if (sourceField.getExternalId() != null) {
-            setExternalId(sourceField.getExternalId());
+        if (sourceField.getExternalName() != null) {
+            setExternalName(sourceField.getExternalName());
         }
-        if (sourceField.getSourceSensorLabel() != null) {
-            setSourceSensorLabel(sourceField.getSourceSensorLabel());
+        if (sourceField.getAbsoluteThreshold() != null) {
+            setAbsoluteThreshold(sourceField.getAbsoluteThreshold());
+        }
+        if (sourceField.getIdealThreshold() != null) {
+            setIdealThreshold(sourceField.getIdealThreshold());
+        }
+        if (sourceField.getCriticalThreshold() != null) {
+            setCriticalThreshold(sourceField.getCriticalThreshold());
         }
     }
 }

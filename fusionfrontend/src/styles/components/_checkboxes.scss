@@ -1,0 +1,73 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.if-checkbox {
+  /* Hide the browser's default checkbox */
+  input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    height: $checkbox-height;
+    width: $checkbox-width;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    height: $checkbox-height;
+    width: $checkbox-width;
+    border: solid $basic-black 1px;
+    border-radius: 4px;
+    background-color: $basic-white;
+    .checkboxIcon {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .checkmark:after {
+    margin-left: 5px;
+    height: 10px;
+    width: 5px;
+    border: solid $basic-white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  /* Show the checkmark when checked */
+  input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* On mouse-over, add a grey background color */
+  &:hover input ~ .checkmark {
+    background-color: $light-grey;
+  }
+
+  /* On mouse-over, add a grey background color */
+  input:checked ~ .checkmark {
+    background-color: $basic-black;
+  }
+
+}

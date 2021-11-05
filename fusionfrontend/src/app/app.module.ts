@@ -13,8 +13,8 @@
  * under the License.
  */
 
-import { HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
@@ -23,17 +23,23 @@ import { DatePipe, Location } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LaunchpadPageComponent } from './components/pages/launchpad-page/launchpad-page.component';
-import { LaunchpadItemComponent } from './components/content/launchpad-item/launchpad-item.component';
-import { HeaderComponent } from './components/ui/header/header.component';
+import { LaunchpadPageComponent } from './shared/components/pages/launchpad-page/launchpad-page.component';
+import { LaunchpadItemComponent } from './shared/components/content/launchpad-item/launchpad-item.component';
+import { HeaderComponent } from './shared/components/ui/header/header.component';
 import { FactoryModule } from './factory/factory.module';
 import { FleetModule } from './fleet/fleet.module';
 import { EcosystemModule } from './ecosystem/ecosystem.module';
-import { SettingsModule } from './settings/settings.module';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './services/token.interceptor';
+import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { DashboardModule } from './dashboards/dashboard.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { SharedModule } from './shared/shared.module';
+import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { ToastModule } from 'primeng/toast';
+import { PageTitleComponent } from './shared/components/content/page-title/page-title.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -41,23 +47,33 @@ import { TokenInterceptor } from './services/token.interceptor';
     HeaderComponent,
     LaunchpadPageComponent,
     LaunchpadItemComponent,
+    PageTitleComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    SharedModule,
     FactoryModule,
     FleetModule,
     EcosystemModule,
-    SettingsModule,
+    DashboardModule,
+    FusionAppletsModule,
+    NotificationsModule,
     AkitaNgRouterStoreModule,
     ClarityModule,
     BrowserAnimationsModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    ToastModule,
+    OverlayPanelModule,
   ],
   bootstrap: [AppComponent],
   providers: [
     DatePipe,
+    {
+      provide: LOCALE_ID,
+      useValue: 'de-de'
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
@@ -68,10 +84,16 @@ import { TokenInterceptor } from './services/token.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
     }
   ]
 })
-export class AppModule { }
+export class AppModule {
+}
 
 function initializeKeycloak(keycloak: KeycloakService, location: Location) {
   return () =>

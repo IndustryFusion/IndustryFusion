@@ -13,4 +13,12 @@
  * under the License.
  */
 
-@import '../base/base-list/base-list.component.scss';
+:host ::ng-deep .column-visibility {
+  visibility: hidden;
+}
+
+#rowElement:hover {
+  .column-visibility {
+    visibility: visible;
+  }
+}

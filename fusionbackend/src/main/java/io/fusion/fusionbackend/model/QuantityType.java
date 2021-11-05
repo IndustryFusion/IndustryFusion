@@ -47,7 +47,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class QuantityType extends BaseEntity {
     @Builder.Default
-    @OneToMany(mappedBy = "quantityType")
+    @OneToMany(mappedBy = "quantityType", fetch = FetchType.EAGER)
     private Set<Unit> units = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -60,6 +60,9 @@ public class QuantityType extends BaseEntity {
     private QuantityDataType dataType;
 
     public void copyFrom(final QuantityType sourceField) {
+
+        super.copyFrom(sourceField);
+
         if (sourceField.getName() != null) {
             setName(sourceField.getName());
         }
@@ -71,6 +74,9 @@ public class QuantityType extends BaseEntity {
         }
         if (sourceField.getDataType() != null) {
             setDataType(sourceField.getDataType());
+        }
+        if (sourceField.getBaseUnit() != null) {
+            setBaseUnit(sourceField.getBaseUnit());
         }
     }
 }

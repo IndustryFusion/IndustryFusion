@@ -13,47 +13,25 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="modal" style="background-color: rgba(128,128,128,0.5);">
-  <div class="modal-dialog">
-    <div class="modal-content" style="background-color: hsl(198, 0%, 95%);">
-      <button type="button" (click)="closeModal(true)" class="close-modal-btn">
-        <clr-icon shape="times" size="20"></clr-icon>
-      </button>
-      <h3 class="modal-title">Assign asset to room</h3><br>
+<div>
+  <div class="room-text">Select room</div>
+  <span class="p-input-icon-right room-search-input">
+    <i class="pi pi-search"></i>
+    <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterRooms()">
+  </span>
 
-      <div class="modal-body">
-        <span>You can assign your assets to specific rooms to create a topology in your factory.</span> <br><br><br>
-        <span style="font-size: 22px">Your rooms</span> <br>
-        <span>Select the room where your asset is located</span> <br><br>
-        <div class="form-wrapper"  class="room-field">
-          <form class="clr-form-group" [formGroup]="assetDetailsForm">
-            <ng-container *ngFor="let room of rooms; let i = index">
-              <div class="if-radiobutton">
-                <input type="radio" id="room_{{i}}" value="{{room.name}}" formControlName="roomName" (change)='radioChecked(room)'>
-                <span class="checkmark"></span>
-                <span class="fieldLabel">{{room.name}}</span>
-              </div>
-            </ng-container>
-              <div class="if-radiobutton">
-                <input type="radio" value="{{noSpecificRoom}}" formControlName="roomName" (change)='radioChecked()'>
-                <span class="checkmark"></span>
-                <span class="fieldLabel">Asset doesn't belong to specific room</span>
-              </div>
-          </form>
-        </div>
-        <div>
-          <button type="button" class="add-button">
-            <clr-icon shape="plus-circle" size="20"></clr-icon>  Create new Room
-          </button>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="if-button button-secondary button-modal" (click)="clickedFinish(false)">Back</button>
-        <button type="button" class="if-button button-primary button-modal" (click)="clickedFinish(true)">Finish</button>
-      </div>
-
+  <div class="room-field">
+    <div *ngFor="let room of filteredRooms" class="p-field-checkbox p-grid">
+      <p-radioButton class="if-radiobutton p-col-2" [inputId]="room.id" [value]="room" [(ngModel)]="selectedRoom"></p-radioButton>
+      <label class="p-col-5" [for]="room.id">{{room.name}}</label>
+      <label class="room-info p-col-5" [for]="room.id">{{room.description}}</label>
     </div>
   </div>
-</div>
 
+  <div class="assign-room-dialog-footer">
+    <button type="button" class="if-button button-secondary" (click)="onCancel()">
+      {{ activeModalMode == assetModalModes.editRoomWithPreselecedFactorySiteMode ? 'Cancel' : 'Back' }}</button>
+    <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="!selectedRoom">
+      {{ activeModalMode != assetModalModes.onboardAssetMode ? 'Apply' : 'Onboard' }}</button>
+  </div>
+</div>

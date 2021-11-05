@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto> {
+
     private AssetTypeDto toDtoShallow(final AssetType entity) {
         if (entity == null) {
             return null;
@@ -32,10 +33,15 @@ public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto>
 
         return AssetTypeDto.builder()
                 .id(entity.getId())
+                .version(entity.getVersion())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
                 .build();
+    }
+
+    private AssetTypeDto toDtoDeep(final AssetType entity) {
+        return toDtoShallow(entity);
     }
 
     @Override
@@ -51,6 +57,7 @@ public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto>
 
         return AssetType.builder()
                 .id(dto.getId())
+                .version(dto.getVersion())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())
@@ -58,7 +65,10 @@ public class AssetTypeMapper implements EntityDtoMapper<AssetType, AssetTypeDto>
     }
 
     @Override
-    public Set<AssetTypeDto> toDtoSet(Set<AssetType> entitySet) {
+    public Set<AssetTypeDto> toDtoSet(Set<AssetType> entitySet, boolean embedChildren) {
+        if (embedChildren) {
+            return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
+        }
         return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

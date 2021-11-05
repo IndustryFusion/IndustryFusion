@@ -13,128 +13,128 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details-query.service';
+import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { tap } from 'rxjs/operators';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
-import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
-import { AssetSeriesStore } from '../../../../store/asset-series/asset-series.store';
-import { CompanyStore } from '../../../../store/company/company.store';
+import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-series-details.resolver';
+import { AssetSeriesService } from '../../../../core/store/asset-series/asset-series.service';
+import { DialogService } from 'primeng/dynamicdialog';
+import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-wizard.component';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { AssetTypeTemplatesResolver } from '../../../../core/resolvers/asset-type-templates.resolver';
+import { UnitsResolver } from '../../../../core/resolvers/units.resolver';
+import { AssetSeriesDetails } from '../../../../core/store/asset-series-details/asset-series-details.model';
+import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-options-menu/item-options-menu.type';
+import { ConfirmationService } from 'primeng/api';
+import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 
 @Component({
   selector: 'app-asset-series-list',
   templateUrl: './asset-series-list.component.html',
-  styleUrls: ['./asset-series-list.component.scss']
+  styleUrls: ['./asset-series-list.component.scss'],
+  providers: [ConfirmationService]
 })
-export class AssetSeriesListComponent implements OnInit, OnDestroy {
+export class AssetSeriesListComponent implements OnInit {
 
-  titleMapping:
-    { [k: string]: string } = { '=0': 'No asset series.', '=1': '# Asset series', other: '# Asset series' };
+  assetSeriesMapping:
+    { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
 
-  editBarMapping:
-    { [k: string]: string } = {
-    '=0': 'No asset series templates selected',
-    '=1': '# Asset series template selected',
-    other: '# Asset series templates selected'
-  };
-
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
 
   isLoading$: Observable<boolean>;
-  sortField: string;
-  items$: Observable<any[]>;
-  selected: Set<ID> = new Set();
-  error: any;
-  shouldShowCreateItem = false;
+  activeListItem: AssetSeriesDetails;
+
+  assetSeries$: Observable<AssetSeriesDetails[]>;
+  assetSeries: AssetSeriesDetails[];
+  displayedAssetSeries: AssetSeriesDetails[];
+  assetSeriesSearchedByName: AssetSeriesDetails[];
+
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public companyStore: CompanyStore,
-    public assetSeriesService: AssetSeriesService,
-    public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
-    public assetSeriesStore: AssetSeriesStore,
-    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver) {
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private companyQuery: CompanyQuery,
+    private assetSeriesService: AssetSeriesService,
+    private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
+    private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+    private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
+    private unitsResolver: UnitsResolver,
+    private dialogService: DialogService,
+    private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
+    private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
-    console.log('ngOnInit')
-    this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
-    this.items$ = this.assetSeriesDetailsQuery.selectAll();
-    this.assetSeriesDetailsQuery.selectError().pipe(tap((error) => {
-      if (error) {
-        this.error = error;
-      }
-    })).subscribe();
-  }
-
-  ngOnDestroy() {
-    this.assetSeriesDetailsQuery.resetError();
-  }
-
-  createItem() {
-    this.startAssetSeriesWizard('')
-  }
-
-  onSort(field: string) {
-    this.sortField = field;
-  }
-
-  onItemSelect(id: ID) {
-    this.selected.add(id);
-  }
-
-  onItemDeselect(id: ID) {
-    this.selected.delete(id);
-  }
-
-  deleteItems() {
-    this.selected.forEach(id => {
-          this.deleteItem(id);
+    this.resolveAssetSeriesDetails();
+    this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
+    this.assetTypeTemplatesResolver.resolve().subscribe();
+    this.unitsResolver.resolve().subscribe();
+    this.assetSeries$.subscribe(assetSeries => {
+      this.assetSeries = this.displayedAssetSeries = this.assetSeriesSearchedByName = assetSeries;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
-  deleteItem(id: number | string) {
-    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe(
-      () => this.selected.clear()
-    )
+  setActiveRow(assetSeries: AssetSeriesDetails) {
+    this.activeListItem = assetSeries;
   }
 
-  deselectAllItems() {
-    this.selected.clear();
+  createAssetSeries() {
+    this.openAssetSeriesWizard('');
   }
 
-  isSelected(id: ID) {
-    return this.selected.has(id);
+  searchAssetSeriesByName(event?: AssetSeriesDetails[]) {
+    this.assetSeriesSearchedByName = event;
+    this.updateDisplayedAssetSeries();
   }
 
-  getErrorMessage() {
-    if (this.error) {
-      return this.error.error.message;
-    }
-    return undefined;
+  createAssetFromAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
+      () => this.resolveAssetSeriesDetails());
   }
 
-  onCloseError() {
-    this.error = undefined;
+  editAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showEditWizard(assetSeriesId.toString(),
+      () => this.resolveAssetSeriesDetails());
   }
 
-  onDismissModal() { this.shouldShowCreateItem = false; }
-
-  modifyItems() {
-    if (this.selected.size === 1) {
-      const itemId: ID = Array.from(this.selected)[0];
-      this.modifyItem(itemId);
-    }
+  showDeleteDialog() {
+    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
+      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
   }
 
-  modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString(), 2)
+  private resolveAssetSeriesDetails() {
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
   }
 
-  public startAssetSeriesWizard(idString: string, startStep: number = 1) {
-    this.router.navigate(['edit'], { relativeTo: this.route, queryParams: { step: startStep, id: idString}});
+  private updateDisplayedAssetSeries() {
+    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
+
+  private openAssetSeriesWizard(idString: string) {
+    const dynamicDialogRef = this.dialogService.open(AssetSeriesWizardComponent, {
+      data: {
+        companyId: this.companyQuery.getActiveId(),
+        assetSeriesId: idString,
+      },
+      width: '90%',
+      header: 'AssetSeries Implementation',
+    });
+    dynamicDialogRef.onClose.subscribe(() => this.resolveAssetSeriesDetails());
+  }
+
+  private deleteItem(id: ID) {
+    this.assetSeriesService.deleteItem(this.activatedRoute.snapshot.params.companyId, id).subscribe();
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
+  }
+
 }

@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -46,9 +49,15 @@ public class AssetSeriesFieldSourceRestService {
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/fieldsources")
-    public Set<FieldSourceDto> getFieldSources(@PathVariable final Long companyId,
-                                               @PathVariable final Long assetSeriesId) {
-        return fieldSourceMapper.toDtoSet(assetSeriesService.getFieldSources(companyId, assetSeriesId));
+    public List<FieldSourceDto> getFieldSources(@PathVariable final Long companyId,
+                                               @PathVariable final Long assetSeriesId,
+                                               @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        Set<FieldSourceDto> unsortedFieldSources = fieldSourceMapper
+                .toDtoSet(assetSeriesService.getFieldSources(companyId, assetSeriesId), embedChildren);
+
+        List<FieldSourceDto> sortedFieldSources = new ArrayList<>(unsortedFieldSources);
+        sortedFieldSources.sort(Comparator.comparing(FieldSourceDto::getId));
+        return  sortedFieldSources;
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/fieldsources/{fieldSourceId}")

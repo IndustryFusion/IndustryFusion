@@ -14,11 +14,10 @@
  */
 
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Room } from 'src/app/store/room/room.model';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { Location } from 'src/app/store/location/location.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 import { Observable } from 'rxjs';
-import { WeatherService } from '../../../../services/weather.service';
+import { WeatherService } from '../../../../core/services/api/weather.service';
 
 @Component({
   selector: 'app-company-info',
@@ -27,13 +26,10 @@ import { WeatherService } from '../../../../services/weather.service';
 })
 export class CompanyInfoComponent implements OnChanges {
   @Input()
-  numUsers: number;
+  factorySite: FactorySite;
 
   @Input()
-  location: Location;
-
-  @Input()
-  rooms: Room[];
+  roomCount: number;
 
   @Input()
   assets: Asset[];
@@ -47,10 +43,10 @@ export class CompanyInfoComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.location && this.location) {
-      this.temperature$ = this.weatherService.getTemperatureForLocation(this.location.city);
-      if (this.location && this.location.imageKey) {
-        this.imgUrl = 'assets/img/' + this.location.imageKey;
+    if (changes.factorySite && this.factorySite) {
+      this.temperature$ = this.weatherService.getTemperatureForFactorySite(this.factorySite.city);
+      if (this.factorySite && this.factorySite.imageKey) {
+        this.imgUrl = 'assets/img/' + this.factorySite.imageKey;
       } else {
         this.imgUrl = 'assets/img/company.png';
       }

@@ -16,7 +16,9 @@
 package io.fusion.fusionbackend.repository;
 
 import io.fusion.fusionbackend.model.FieldInstance;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface FieldInstanceRepository extends PagingAndSortingRepository<FieldInstance, Long> {
+    Sort DEFAULT_SORT = Sort.by("id").ascending();
 }

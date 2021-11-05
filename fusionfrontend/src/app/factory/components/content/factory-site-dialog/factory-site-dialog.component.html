@@ -1,0 +1,77 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div *ngIf="factorySiteForm">
+  <div>
+    <div [formGroup]="factorySiteForm">
+      <div class="p-grid">
+        <div class="p-col-7 p-grid p-dir-col factory-div">
+          <label class="p-col if-label">Factory name&nbsp;*</label>
+          <input type="text" pInputText formControlName="name" placeholder="Name" class="factory-site-input p-col">
+        </div>
+        <div class="p-col-4 p-grid p-dir-col factory-div">
+          <label class="p-col if-label">Factory type&nbsp;*</label>
+          <p-dropdown [options]="factorySiteTypes" formControlName="type" placeholder="Factory type"
+                      class="p-col factory-dropdown"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="p-grid">
+
+        <div class="p-col-4 p-dir-col">
+          <h3 class="headings">Enter address details</h3>
+
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col if-label">Street</label>
+            <input type="text" pInputText formControlName="line1" placeholder="Street" class="address-input p-col">
+          </div>
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col if-label">Additional address</label>
+            <input type="text" pInputText formControlName="line2" placeholder="Additional address" class="address-input p-col">
+          </div>
+
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col if-label">ZIP</label>
+            <input type="text" pInputText formControlName="zip" placeholder="Zip code" class="address-input p-col">
+          </div>
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col if-label">City&nbsp;*</label>
+            <input type="text" pInputText formControlName="city" placeholder="City" class="address-input p-col">
+          </div>
+
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col if-label">Country&nbsp;*</label>
+            <p-dropdown class="" [options]="countries" formControlName="countryId"
+                        filter="true" resetFilterOnHide="true"
+                        placeholder="Select a country...">
+            </p-dropdown>
+          </div>
+        </div>
+
+        <app-factory-site-map class="p-col-8 p-dir-col map-style" [modalMode]=true [factorySite]="factorySite"></app-factory-site-map>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-btns">
+    <button type="button" class="if-button-cancel" (click)="onCancel()">Cancel</button>
+    <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="factorySiteForm.invalid">
+      <ng-container *ngIf="type === DialogType.EDIT then editFactoryButtonText else createFactoryButtonText"></ng-container>
+      <ng-template #createFactoryButtonText>Create</ng-template>
+      <ng-template #editFactoryButtonText>Update</ng-template>
+    </button>
+  </div>
+</div>
