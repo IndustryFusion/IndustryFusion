@@ -83,8 +83,6 @@ const routes: Routes = [
                 component: AssetSeriesAssetDigitalNameplateComponent,
                 resolve: {
                   asset: FactoryAssetDetailsResolver,
-                 /* room: RoomResolver,*/
-                  /*factorySite: FactorySiteResolver,*/
                   assetSeries: AssetSeriesResolver,
                   connectivityTypes: ConnectivityTypeResolver
                 },
