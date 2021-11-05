@@ -75,9 +75,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.factoryAssetDetailsWithFields !== null) {
-      this.factoryAssetDetailsWithFields = AssetMaintenanceUtils.getMaintenanceValues(this.factoryAssetDetailsWithFields);
-    }
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
     this.updateTree();
   }
@@ -196,11 +193,23 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   customSort(event: SortEvent) {
-    const data = 'data';
+    const daysTillMaintenace = 'daysTillMaintenance';
+    const operatingHoursTillMaintenance = 'operatingHoursTillMaintenance';
+    let type = (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) ? event.field ===
+      daysTillMaintenace ? AssetMaintenanceUtils.maintenanceDays : AssetMaintenanceUtils.maintenanceHours : null;
+
     event.data.sort((data1, data2) => {
-      const value1 = data1[data][event.field];
-      const value2 = data2[data][event.field];
+      let value1;
+      let value2;
       let result;
+
+      if (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) {
+        value1 = AssetMaintenanceUtils.getMaintenanceValue(data1.data, type);
+        value2 = AssetMaintenanceUtils.getMaintenanceValue(data2.data, type);
+      } else {
+        value1 = data1.data[event.field];
+        value2 = data2.data[event.field];
+      }
 
       if (value1 == null && value2 != null) {
         result = -1;

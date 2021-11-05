@@ -29,8 +29,6 @@ export class FactoryAssetDetails extends Asset {
   openAlertPriority: OispAlertPriority;
   statusHoursOneDay?: StatusHoursOneDay;
   protocol: string;
-  daysTillMaintenance: number;
-  operatingHoursTillMaintenance: number;
 }
 
 export enum AssetModalType  {
