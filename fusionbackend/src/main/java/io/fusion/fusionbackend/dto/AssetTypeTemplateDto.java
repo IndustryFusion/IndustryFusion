@@ -24,7 +24,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -38,7 +37,7 @@ public class AssetTypeTemplateDto extends BaseAssetDto {
     private PublicationState publicationState;
     private OffsetDateTime publishedDate;
     private Long publishedVersion;
-    private Date creationDate;
+    private OffsetDateTime creationDate;
 
     @Builder.Default
     protected Set<Long> fieldTargetIds = new LinkedHashSet<>();

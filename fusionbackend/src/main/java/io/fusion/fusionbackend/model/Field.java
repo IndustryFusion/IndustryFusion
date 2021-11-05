@@ -21,7 +21,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,7 +34,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Entity
 @NamedEntityGraph(name = "Field.allChildrenDeep",
@@ -56,7 +58,10 @@ public class Field extends BaseEntity {
     private String label;
     private Double accuracy;
     private String value;
-    private Date creationDate;
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    private OffsetDateTime creationDate;
 
     @Enumerated(EnumType.STRING)
     private FieldThresholdType thresholdType;

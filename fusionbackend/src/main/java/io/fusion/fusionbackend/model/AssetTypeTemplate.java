@@ -21,7 +21,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -35,7 +37,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -75,7 +76,10 @@ public class AssetTypeTemplate extends BaseAsset {
     private PublicationState publicationState;
     private OffsetDateTime publishedDate;
     private Long publishedVersion;
-    private Date creationDate;
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    private OffsetDateTime creationDate;
 
     public void copyFrom(final AssetTypeTemplate sourceAssetTypeTemplate) {
 
