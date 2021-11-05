@@ -20,12 +20,12 @@ import {
   ConditionType,
   ConditionValueOperator,
   Rule,
-} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
+} from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
+import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { SelectItem } from 'primeng/api';
-import { EnumHelpers } from '../../../../common/utils/enum-helpers';
-import { Device } from '../../../../store/oisp/oisp-device/oisp-device.model';
+import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
+import { Device } from '../../../../core/store/oisp/oisp-device/oisp-device.model';
 
 @Component({
   selector: 'app-applet-conditions',

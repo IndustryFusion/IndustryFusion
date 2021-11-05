@@ -21,10 +21,10 @@ import {
   RuleResetType,
   RuleStatus,
   SynchronizationStatus
-} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
-import { EnumHelpers } from '../../../common/utils/enum-helpers';
+} from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
+import { EnumHelpers } from '../../../core/helpers/enum-helpers';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { WizardHelper } from '../../../common/utils/wizard-helper';
+import { WizardHelper } from '../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-create-fusion-applet',

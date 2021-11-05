@@ -14,14 +14,14 @@
  */
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
-import { AssetType } from 'src/app/store/asset-type/asset-type.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { Company } from 'src/app/store/company/company.model';
-import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
+import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Company } from 'src/app/core/store/company/company.model';
+import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { TreeNode } from 'primeng/api';
-import { OispAlert, OispAlertPriority } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
+import { OispAlert, OispAlertPriority } from 'src/app/core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
 import {
@@ -29,7 +29,7 @@ import {
   AssetMaintenanceUtils as Utils,
   MaintenanceType
 } from '../../../../factory/util/asset-maintenance-utils';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 
 

@@ -14,14 +14,14 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
+import { QuantityTypeQuery } from '../../../../core/store/quantity-type/quantity-type.query';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { QuantityTypeDialogComponent } from '../quantity-type-dialog/quantity-type-dialog.component';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { Observable } from 'rxjs';
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
+import { QuantityType } from '../../../../core/store/quantity-type/quantity-type.model';
 import { ConfirmationService } from 'primeng/api';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

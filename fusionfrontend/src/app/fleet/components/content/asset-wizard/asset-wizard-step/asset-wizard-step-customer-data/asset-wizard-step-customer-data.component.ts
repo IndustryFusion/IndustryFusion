@@ -16,12 +16,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetWizardStep } from '../asset-wizard-step.model';
-import { CountryQuery } from '../../../../../../store/country/country.query';
+import { CountryQuery } from '../../../../../../core/store/country/country.query';
 import { SelectItem } from 'primeng/api';
-import { Asset } from '../../../../../../store/asset/asset.model';
-import { FactorySite, FactorySiteType } from '../../../../../../store/factory-site/factory-site.model';
-import { Coordinate, GeocoderService } from '../../../../../../services/api/geocoder.service';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
+import { FactorySite, FactorySiteType } from '../../../../../../core/store/factory-site/factory-site.model';
+import { Coordinate, GeocoderService } from '../../../../../../core/services/api/geocoder.service';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-step-customer-data',

@@ -14,16 +14,16 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AssetTypeDetailsQuery } from '../../../../store/asset-type-details/asset-type-details.query';
+import { AssetTypeDetailsQuery } from '../../../../core/store/asset-type-details/asset-type-details.query';
 import { AssetTypeDialogComponent } from '../asset-type-dialog/asset-type-dialog.component';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { DialogService } from 'primeng/dynamicdialog';
-import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
-import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { AssetTypeDetails } from '../../../../core/store/asset-type-details/asset-type-details.model';
+import { AssetType } from '../../../../core/store/asset-type/asset-type.model';
 import { ConfirmationService } from 'primeng/api';
-import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
+import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { Observable } from 'rxjs';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

@@ -14,11 +14,11 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { StatusHours } from '../../../../services/api/kairos-status-aggregation.model';
-import { EnumHelpers } from '../../../../common/utils/enum-helpers';
-import { EquipmentEfficiencyHelper } from '../../../../common/utils/equipment-efficiency-helper';
+import { StatusHours } from '../../../../core/models/kairos-status-aggregation.model';
+import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
+import { EquipmentEfficiencyHelper } from '../../../../core/helpers/equipment-efficiency-helper';
 
 @Component({
   selector: 'app-equipment-efficiency-overview',

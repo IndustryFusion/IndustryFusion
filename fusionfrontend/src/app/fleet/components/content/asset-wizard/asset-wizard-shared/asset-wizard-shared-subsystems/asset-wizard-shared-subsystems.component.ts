@@ -15,9 +15,9 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Asset } from '../../../../../../store/asset/asset.model';
-import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
-import { FleetAssetDetailsQuery } from '../../../../../../store/fleet-asset-details/fleet-asset-details.query';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
+import { FleetAssetDetails } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
+import { FleetAssetDetailsQuery } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
 import { ID } from '@datorama/akita';
 
 @Component({

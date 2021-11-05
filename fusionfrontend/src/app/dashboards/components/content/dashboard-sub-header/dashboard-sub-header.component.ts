@@ -19,7 +19,7 @@ import { Router, UrlTree } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { RouteHelpers } from '../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-dashboard-sub-header',

@@ -16,14 +16,14 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OispNotification } from '../../../../../store/oisp/oisp-notification/oisp-notification.model';
+import { OispNotification } from '../../../../../core/store/oisp/oisp-notification/oisp-notification.model';
 import { first, map, mergeMap } from 'rxjs/operators';
-import { OispNotificationService } from '../../../../../store/oisp/oisp-notification/oisp-notification.service';
-import { OispAlertStatus } from '../../../../../store/oisp/oisp-alert/oisp-alert.model';
+import { OispNotificationService } from '../../../../../core/store/oisp/oisp-notification/oisp-notification.service';
+import { OispAlertStatus } from '../../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
-import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-asset-notifications',

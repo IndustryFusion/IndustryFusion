@@ -14,17 +14,17 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { AssetType } from '../../../../core/store/asset-type/asset-type.model';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
+import { AssetTypeQuery } from '../../../../core/store/asset-type/asset-type.query';
 import { ActivatedRoute } from '@angular/router';
-import { AssetTypeTemplate } from '../../../../store/asset-type-template/asset-type-template.model';
-import { AssetTypesComposedQuery } from '../../../../store/composed/asset-types-composed.query';
-import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
+import { AssetTypeTemplate } from '../../../../core/store/asset-type-template/asset-type-template.model';
+import { AssetTypesComposedQuery } from '../../../../core/store/composed/asset-types-composed.query';
+import { AssetTypeService } from '../../../../core/store/asset-type/asset-type.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetTypeDialogComponent } from '../../content/asset-type-dialog/asset-type-dialog.component';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-details-page',

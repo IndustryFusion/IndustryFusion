@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConnectivityTypeQuery } from '../../../../../store/connectivity-type/connectivity-type.query';
-import { ConnectivityProtocol, ConnectivityType } from '../../../../../store/connectivity-type/connectivity-type.model';
+import { ConnectivityTypeQuery } from '../../../../../core/store/connectivity-type/connectivity-type.query';
+import { ConnectivityProtocol, ConnectivityType } from '../../../../../core/store/connectivity-type/connectivity-type.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } from './asset-series-wizard-nameplate-and-connectivity-settings-tooltip/asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component';
-import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
-import { DialogType } from '../../../../../common/models/dialog-type.model';
-import { WizardHelper } from '../../../../../common/utils/wizard-helper';
+import { AssetSeries } from '../../../../../core/store/asset-series/asset-series.model';
+import { DialogType } from '../../../../../shared/models/dialog-type.model';
+import { WizardHelper } from '../../../../../core/helpers/wizard-helper';
 import { SelectItem } from 'primeng/api';
-import { ProtectionClassService } from '../../../../../services/api/protection-class.service';
+import { ProtectionClassService } from '../../../../../core/services/api/protection-class.service';
 
 @Component({
   selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings',

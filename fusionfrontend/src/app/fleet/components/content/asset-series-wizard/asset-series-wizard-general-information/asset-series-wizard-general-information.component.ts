@@ -14,14 +14,14 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
+import { AssetTypeTemplateQuery } from '../../../../../core/store/asset-type-template/asset-type-template.query';
 import { ID } from '@datorama/akita';
-import { DialogType } from '../../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { FormGroup } from '@angular/forms';
-import { Company } from '../../../../../store/company/company.model';
-import { AssetType } from '../../../../../store/asset-type/asset-type.model';
+import { Company } from '../../../../../core/store/company/company.model';
+import { AssetType } from '../../../../../core/store/asset-type/asset-type.model';
 import { SelectItem } from 'primeng/api';
-import { NameWithVersionPipe } from 'src/app/pipes/namewithversion.pipe';
+import { NameWithVersionPipe } from 'src/app/shared/pipes/namewithversion.pipe';
 
 @Component({
   selector: 'app-asset-series-wizard-general-information',

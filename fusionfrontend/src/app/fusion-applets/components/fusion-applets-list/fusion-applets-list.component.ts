@@ -14,15 +14,15 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Rule, RuleActionType, RuleStatus } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
-import { ItemOptionsMenuType } from '../../../components/ui/item-options-menu/item-options-menu.type';
+import { Rule, RuleActionType, RuleStatus } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
+import { ItemOptionsMenuType } from '../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { CreateFusionAppletComponent } from '../create-fusion-applet/create-fusion-applet.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RuleStatusUtil } from '../../util/rule-status-util';
-import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service';
-import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
-import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
+import { OispRuleService } from '../../../core/store/oisp/oisp-rule/oisp-rule.service';
+import { OispRuleQuery } from '../../../core/store/oisp/oisp-rule/oisp-rule.query';
+import { Device } from '../../../core/store/oisp/oisp-device/oisp-device.model';
 
 @Component({
   selector: 'app-fusion-applets-list',

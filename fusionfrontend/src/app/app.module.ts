@@ -23,22 +23,22 @@ import { DatePipe, Location } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LaunchpadPageComponent } from './components/pages/launchpad-page/launchpad-page.component';
-import { LaunchpadItemComponent } from './components/content/launchpad-item/launchpad-item.component';
-import { HeaderComponent } from './components/ui/header/header.component';
+import { LaunchpadPageComponent } from './shared/components/pages/launchpad-page/launchpad-page.component';
+import { LaunchpadItemComponent } from './shared/components/content/launchpad-item/launchpad-item.component';
+import { HeaderComponent } from './shared/components/ui/header/header.component';
 import { FactoryModule } from './factory/factory.module';
 import { FleetModule } from './fleet/fleet.module';
 import { EcosystemModule } from './ecosystem/ecosystem.module';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
-import { TokenInterceptor } from './services/interceptors/token.interceptor';
+import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { DashboardModule } from './dashboards/dashboard.module';
 import { NotificationsModule } from './notifications/notifications.module';
-import { IFCommon } from './common/i-f-common.module';
+import { SharedModule } from './shared/shared.module';
 import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
-import { ErrorInterceptor } from './services/interceptors/error.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { ToastModule } from 'primeng/toast';
-import { PageTitleComponent } from './components/content/page-title/page-title.component';
+import { PageTitleComponent } from './shared/components/content/page-title/page-title.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
@@ -53,7 +53,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    IFCommon,
+    SharedModule,
     FactoryModule,
     FleetModule,
     EcosystemModule,

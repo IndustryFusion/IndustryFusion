@@ -14,10 +14,10 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FieldWidgetType } from '../../../../../store/field/field.model';
+import { FieldWidgetType } from '../../../../../core/store/field/field.model';
 import { AssetMaintenanceUtils } from '../../../../util/asset-maintenance-utils';
-import { FieldDetails, MetricDetail } from '../../../../../store/field-details/field-details.model';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FieldDetails, MetricDetail } from '../../../../../core/store/field-details/field-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

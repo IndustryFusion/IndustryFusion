@@ -19,11 +19,11 @@ import {
   ConditionValue, ConditionValueComponent,
   ConditionValueOperator,
   displayConditionType
-} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
+} from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { SelectItem } from 'primeng/api';
-import { EnumHelpers } from '../../../../../common/utils/enum-helpers';
+import { EnumHelpers } from '../../../../../core/helpers/enum-helpers';
 import { FormGroup } from '@angular/forms';
-import { Device, DeviceComponent } from '../../../../../store/oisp/oisp-device/oisp-device.model';
+import { Device, DeviceComponent } from '../../../../../core/store/oisp/oisp-device/oisp-device.model';
 
 @Component({
   selector: 'app-applet-conditions-value',

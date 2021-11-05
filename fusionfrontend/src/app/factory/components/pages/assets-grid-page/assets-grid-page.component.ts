@@ -17,11 +17,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { Room } from 'src/app/store/room/room.model';
-import { FieldDetails } from '../../../../store/field-details/field-details.model';
+import { Asset, AssetWithFields } from 'src/app/core/store/asset/asset.model';
+import { AssetQuery } from 'src/app/core/store/asset/asset.query';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Room } from 'src/app/core/store/room/room.model';
+import { FieldDetails } from '../../../../core/store/field-details/field-details.model';
 
 @Component({
   selector: 'app-assets-grid-page',

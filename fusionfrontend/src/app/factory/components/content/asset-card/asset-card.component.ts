@@ -17,11 +17,11 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Status } from 'src/app/factory/models/status.model';
-import { OispService } from 'src/app/services/api/oisp.service';
-import { StatusService } from 'src/app/services/logic/status.service';
-import { AssetWithFields } from 'src/app/store/asset/asset.model';
-import { CompanyQuery } from 'src/app/store/company/company.query';
-import { FieldDetails } from 'src/app/store/field-details/field-details.model';
+import { OispService } from 'src/app/core/services/api/oisp.service';
+import { StatusService } from 'src/app/core/services/logic/status.service';
+import { AssetWithFields } from 'src/app/core/store/asset/asset.model';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
+import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 
