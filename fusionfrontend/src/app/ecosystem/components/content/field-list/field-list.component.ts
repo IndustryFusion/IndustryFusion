@@ -29,22 +29,23 @@ import { FieldComposedQuery } from '../../../../store/composed/field-composed.qu
 export class FieldListComponent implements OnInit, OnDestroy {
 
   public titleMapping:
-  { [k: string]: string} = { '=0': 'No Metrics & Attributes', '=1': '# Metric & Attribute', other: '# Metrics & Attributes' };
-
-  private dialogRef: DynamicDialogRef;
-
+    { [k: string]: string } = {
+    '=0': 'No Metrics & Attributes',
+    '=1': '# Metric & Attribute',
+    other: '# Metrics & Attributes'
+  };
   fields$: Observable<Field[]>;
   fields: Field[];
   displayedFields: Field[];
   fieldsSearchedByName: Field[];
-
   activeListItem: Field;
-
+  private dialogRef: DynamicDialogRef;
 
   constructor(
     private fieldComposedQuery: FieldComposedQuery,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {  }
+    private confirmationService: ConfirmationService) {
+  }
 
   ngOnInit() {
     this.fields$ = this.fieldComposedQuery.selectAll();
@@ -66,10 +67,6 @@ export class FieldListComponent implements OnInit, OnDestroy {
   searchFieldByName(event: Field[]): void {
     this.fieldsSearchedByName = event;
     this.updateDisplayedFields();
-  }
-
-  private updateDisplayedFields(): void {
-    this.displayedFields = this.fieldsSearchedByName;
   }
 
   showCreateDialog() {
@@ -100,6 +97,10 @@ export class FieldListComponent implements OnInit, OnDestroy {
   }
 
   deleteField() {
+  }
+
+  private updateDisplayedFields(): void {
+    this.displayedFields = this.fieldsSearchedByName;
   }
 
 }

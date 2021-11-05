@@ -51,7 +51,7 @@ public class Unit extends BaseEntity {
     private String name;
     private String label;
     private String symbol;
-    private Date createdDate;
+    private Date creationDate;
 
     public void copyFrom(final Unit sourceUnit) {
         if (sourceUnit.getName() != null) {
@@ -63,8 +63,8 @@ public class Unit extends BaseEntity {
         if (sourceUnit.getLabel() != null) {
             setLabel(sourceUnit.getLabel());
         }
-        if (sourceUnit.getCreatedDate() != null) {
-            setCreatedDate(sourceUnit.getCreatedDate());
+        if (sourceUnit.getCreationDate() != null) {
+            setCreationDate(sourceUnit.getCreationDate());
         }
         if (sourceUnit.getQuantityType() != null) {
             setQuantityType(sourceUnit.getQuantityType());

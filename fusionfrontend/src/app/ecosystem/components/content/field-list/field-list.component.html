@@ -16,27 +16,27 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedFields?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <app-create-button class="single-create-btn" text="Create Metric or Attribute"
-                       (createItem)="showCreateDialog()"></app-create-button>
+    <app-create-button (createItem)="showCreateDialog()" class="single-create-btn"
+                       text="Create Metric or Attribute"></app-create-button>
   </div>
 </div>
 
-<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
-         [showCurrentPageReport]="true" [value]="displayedFields" [rowHover]="true"
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,50]"
+         [rows]="10" [showCurrentPageReport]="true" [value]="displayedFields"
          class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
-        <app-table-searchbar filterColumn="Field name" [itemsToBeFiltered]="(fields$ | async)"
-                             attributeToBeSearched="name" (searchByName)="searchFieldByName($event)">
+        <app-table-searchbar (searchByName)="searchFieldByName($event)" [itemsToBeFiltered]="(fields$ | async)"
+                             attributeToBeSearched="name" filterColumn="Field name">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="30" pSortableColumn="unit.symbol">Unit
         <p-sortIcon field="unit.symbol"></p-sortIcon>
       </th>
       <th [style.width.%]="30" pSortableColumn="createdDate">Date created
-        <p-sortIcon field="createdDate"></p-sortIcon>
+        <p-sortIcon field="creationDate"></p-sortIcon>
       </th>
       <th [style.width.%]="5"></th>
     </tr>
@@ -44,19 +44,19 @@ under the License.
 
   <ng-template let-field pTemplate="body">
     <tr id="rowElement" style="cursor: pointer;">
-      <td [style.width.%]="5"></td>
-      <td [style.width.%]="30" [routerLink]="field.id" class="table-bold-font">{{ field.name }}</td>
-      <td [style.width.%]="30" [routerLink]="field.id">{{ field.unit?.symbol }}</td>
-<!--      <td [style.width.%]="30" [routerLink]="field.id">{{ field.createdDate | date: 'dd.MM.yyyy'}}</td>-->
-      <td [style.width.%]="30" [routerLink]="field.id">18.12.2019</td>
-      <td [style.width.%]="5" (click)="setActiveRow(field)">
-        <app-item-options-menu class="column-visibility" (editItem)="showEditDialog()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+      <td></td>
+      <td [routerLink]="field.id" class="table-bold-font">{{ field.name }}</td>
+      <td [routerLink]="field.id">{{ field.unit?.symbol }}</td>
+      <td [routerLink]="field.id">{{ field.creationDate | date: 'dd.MM.yyyy'}}</td>
+      <td (click)="setActiveRow(field)">
+        <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="showEditDialog()"
+                               class="column-visibility"></app-item-options-menu>
       </td>
     </tr>
   </ng-template>
 </p-table>
 
 
-<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
-                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
 

@@ -68,7 +68,7 @@ public class UnitService {
         final QuantityType quantityType = quantityTypeService.getQuantityType(quantityTypeId);
 
         unit.setQuantityType(quantityType);
-        unit.setCreatedDate(new Date());
+        unit.setCreationDate(new Date());
         quantityType.getUnits().add(unit);
         return unitRepository.save(unit);
     }

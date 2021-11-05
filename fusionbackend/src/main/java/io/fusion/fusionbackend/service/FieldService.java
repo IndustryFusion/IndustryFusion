@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Set;
 
 @Service
@@ -53,6 +54,7 @@ public class FieldService {
     public Field createField(final Field field, final Long unitId) {
         final Unit unit = unitService.getUnit(unitId);
         field.setUnit(unit);
+        field.setCreationDate(new Date());
         return fieldRepository.save(field);
     }
 

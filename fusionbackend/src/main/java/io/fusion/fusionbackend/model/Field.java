@@ -32,6 +32,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
+import java.util.Date;
 
 @Entity
 @NamedEntityGraph(name = "Field.allChildrenDeep",
@@ -55,6 +56,7 @@ public class Field extends BaseEntity {
     private String label;
     private Double accuracy;
     private String value;
+    private Date creationDate;
 
     @Enumerated(EnumType.STRING)
     private FieldThresholdType thresholdType;
@@ -89,6 +91,9 @@ public class Field extends BaseEntity {
         }
         if (sourceField.getWidgetType() != null) {
             setWidgetType(sourceField.getWidgetType());
+        }
+        if (sourceField.getCreationDate() != null) {
+            setCreationDate(sourceField.getCreationDate());
         }
     }
 }

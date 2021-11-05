@@ -17,30 +17,30 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedUnits?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <app-create-button class="single-create-btn" text="Create Unit"
-                       (createItem)="showCreateDialog()"></app-create-button>
+    <app-create-button (createItem)="showCreateDialog()" class="single-create-btn"
+                       text="Create Unit"></app-create-button>
   </div>
 </div>
 
-<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
-         [showCurrentPageReport]="true" [value]="displayedUnits" [rowHover]="true"
+<p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="[5,10,50]"
+         [rows]="10" [showCurrentPageReport]="true" [value]="displayedUnits"
          class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Assets">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
-        <app-table-searchbar filterColumn="Unit name" [itemsToBeFiltered]="(units$ | async)"
-                             attributeToBeSearched="name" (searchByName)="searchUnitByName($event)">
+        <app-table-searchbar (searchByName)="searchUnitByName($event)" [itemsToBeFiltered]="(units$ | async)"
+                             attributeToBeSearched="name" filterColumn="Unit name">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="15">
-        <app-table-searchbar filterColumn="Symbol" [itemsToBeFiltered]="(units$ | async)"
-                             attributeToBeSearched="symbol" (searchByName)="searchUnitBySymbol($event)">
+        <app-table-searchbar (searchByName)="searchUnitBySymbol($event)" [itemsToBeFiltered]="(units$ | async)"
+                             attributeToBeSearched="symbol" filterColumn="Symbol">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="30">
-        <app-table-searchbar filterColumn="Quantity" [itemsToBeFiltered]="(units$ | async)"
-                             attributeToBeSearched="quantityType.name" (searchByName)="searchUnitByQuantity($event)">
+        <app-table-searchbar (searchByName)="searchUnitByQuantity($event)" [itemsToBeFiltered]="(units$ | async)"
+                             attributeToBeSearched="quantityType.name" filterColumn="Quantity">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="15" pSortableColumn="createdDate">Date created
@@ -52,19 +52,20 @@ under the License.
 
   <ng-template let-unit pTemplate="body">
     <tr id="rowElement" style="cursor: pointer;">
-      <td [style.width.%]="5"></td>
-      <td [style.width.%]="30" [routerLink]="unit.id" class="table-bold-font">{{ unit.name }}</td>
-      <td [style.width.%]="20" [routerLink]="unit.id">{{ unit.symbol }}</td>
-      <td [style.width.%]="20" [routerLink]="unit.id">{{ unit.quantityType?.name }}</td>
-      <td [style.width.%]="20" [routerLink]="unit.id">{{ unit.createdDate | date: 'dd.MM.yyyy'}}</td>
-      <td [style.width.%]="5" (click)="setActiveRow(unit)">
-        <app-item-options-menu class="column-visibility" (editItem)="showEditDialog()" (deleteItem)="showDeleteDialog()"></app-item-options-menu>
+      <td></td>
+      <td [routerLink]="unit.id" class="table-bold-font">{{ unit.name }}</td>
+      <td [routerLink]="unit.id">{{ unit.symbol }}</td>
+      <td [routerLink]="unit.id">{{ unit.quantityType?.name }}</td>
+      <td [routerLink]="unit.id">{{ unit.creationDate | date: 'dd.MM.yyyy'}}</td>
+      <td (click)="setActiveRow(unit)">
+        <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="showEditDialog()"
+                               class="column-visibility"></app-item-options-menu>
       </td>
     </tr>
   </ng-template>
 </p-table>
 
 
-<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
-                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
 

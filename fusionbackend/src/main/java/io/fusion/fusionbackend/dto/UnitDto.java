@@ -31,7 +31,7 @@ public class UnitDto extends BaseEntityDto {
     private String name;
     private String symbol;
     private String label;
-    private Date createdDate;
+    private Date creationDate;
     private Long quantityTypeId;
     private QuantityTypeDto quantityType;
 
