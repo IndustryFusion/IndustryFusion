@@ -20,7 +20,7 @@ import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 import { Company } from 'src/app/core/store/company/company.model';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
-import { TreeNode } from 'primeng/api';
+import { SortEvent, TreeNode } from 'primeng/api';
 import { OispAlert, OispAlertPriority } from 'src/app/core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
