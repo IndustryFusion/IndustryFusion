@@ -18,18 +18,18 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Status } from 'src/app/factory/models/status.model';
-import { PointWithId } from 'src/app/services/api/oisp.model';
-import { OispService } from 'src/app/services/api/oisp.service';
-import { StatusService } from 'src/app/services/logic/status.service';
-import { FieldDetails, FieldType } from 'src/app/store/field-details/field-details.model';
-import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
+import { PointWithId } from 'src/app/core/services/api/oisp.model';
+import { OispService } from 'src/app/core/services/api/oisp.service';
+import { StatusService } from 'src/app/core/services/logic/status.service';
+import { FieldDetails, FieldType } from 'src/app/core/store/field-details/field-details.model';
+import { OispDeviceQuery } from '../../../../../core/store/oisp/oisp-device/oisp-device.query';
 import { ID } from '@datorama/akita';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
-import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
+import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
 import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
-import { FactoryAssetDetailsResolver } from '../../../../../resolvers/factory-asset-details.resolver';
+import { FactoryAssetDetailsResolver } from '../../../../../core/resolvers/factory-asset-details.resolver';
 
 
 @Component({

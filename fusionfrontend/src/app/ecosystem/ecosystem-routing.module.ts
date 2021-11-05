@@ -22,28 +22,28 @@ import { AssetTypesPageComponent } from './components/pages/asset-types-page/ass
 import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
-import { AssetTypeTemplatesResolver } from '../resolvers/asset-type-templates.resolver';
-import { AssetTypesResolver } from '../resolvers/asset-types.resolver';
+import { AssetTypeTemplatesResolver } from '../core/resolvers/asset-type-templates.resolver';
+import { AssetTypesResolver } from '../core/resolvers/asset-types.resolver';
 import { AssetTypeListComponent } from './components/content/asset-type-list/asset-type-list.component';
 import { FieldListComponent } from './components/content/field-list/field-list.component';
-import { FieldsResolver } from '../resolvers/fields-resolver';
-import { QuantityTypesResolver } from '../resolvers/quantity-types.resolver';
+import { FieldsResolver } from '../core/resolvers/fields-resolver';
+import { QuantityTypesResolver } from '../core/resolvers/quantity-types.resolver';
 import { QuantityTypeListComponent } from './components/content/quantity-type-list/quantity-type-list.component';
-import { UnitsResolver } from '../resolvers/units.resolver';
+import { UnitsResolver } from '../core/resolvers/units.resolver';
 import { UnitListComponent } from './components/content/unit-list/unit-list.component';
-import { MainAuthGuard } from '../services/api/main-auth-guard.service';
-import { Role } from '../services/logic/roles.model';
+import { MainAuthGuard } from '../core/guards/main-auth.guard';
+import { Role } from '../core/models/roles.model';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
-import { AssetTypeDetailsResolver } from '../resolvers/asset-type-details.resolver';
+import { AssetTypeDetailsResolver } from '../core/resolvers/asset-type-details.resolver';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
-import { AssetTypeTemplateQuery } from '../store/asset-type-template/asset-type-template.query';
-import { AssetTypeQuery } from '../store/asset-type/asset-type.query';
-import { FieldQuery } from '../store/field/field.query';
-import { QuantityTypeQuery } from '../store/quantity-type/quantity-type.query';
-import { UnitQuery } from '../store/unit/unit.query';
+import { AssetTypeTemplateQuery } from '../core/store/asset-type-template/asset-type-template.query';
+import { AssetTypeQuery } from '../core/store/asset-type/asset-type.query';
+import { FieldQuery } from '../core/store/field/field.query';
+import { QuantityTypeQuery } from '../core/store/quantity-type/quantity-type.query';
+import { UnitQuery } from '../core/store/unit/unit.query';
 
 const routes: Routes = [
   {

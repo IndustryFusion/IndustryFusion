@@ -18,10 +18,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { FusionAppletDetailComponent } from './components/fusion-applet-detail/fusion-applet-detail.component';
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
-import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
 import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
-import { OispRuleFilteredByStatusResolver, OispSingleRuleResolver } from '../resolvers/oisp-rule-filtered-by-status.resolver';
-import { OispRuleQuery } from '../store/oisp/oisp-rule/oisp-rule.query';
+import { OispRuleFilteredByStatusResolver, OispSingleRuleResolver } from '../core/resolvers/oisp-rule-filtered-by-status.resolver';
+import { OispRuleQuery } from '../core/store/oisp/oisp-rule/oisp-rule.query';
 
 const routes: Routes = [
   {

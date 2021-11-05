@@ -16,12 +16,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Unit } from 'src/app/store/unit/unit.model';
+import { Unit } from 'src/app/core/store/unit/unit.model';
 import { Observable } from 'rxjs';
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
-import { DialogType } from '../../../../common/models/dialog-type.model';
-import { WizardHelper } from '../../../../common/utils/wizard-helper';
+import { QuantityType } from '../../../../core/store/quantity-type/quantity-type.model';
+import { QuantityTypeQuery } from '../../../../core/store/quantity-type/quantity-type.query';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-unit-dialog',

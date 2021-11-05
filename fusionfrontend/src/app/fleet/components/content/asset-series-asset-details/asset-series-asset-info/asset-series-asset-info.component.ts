@@ -14,8 +14,8 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { Observable } from 'rxjs';
 
 @Component({

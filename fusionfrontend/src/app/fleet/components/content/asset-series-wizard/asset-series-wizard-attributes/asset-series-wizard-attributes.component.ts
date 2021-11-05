@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FieldSource } from '../../../../../store/field-source/field-source.model';
-import { AssetSeries } from '../../../../../store/asset-series/asset-series.model';
+import { FieldSource } from '../../../../../core/store/field-source/field-source.model';
+import { AssetSeries } from '../../../../../core/store/asset-series/asset-series.model';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FieldType } from '../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../store/field/field.query';
-import { WizardHelper } from '../../../../../common/utils/wizard-helper';
+import { FieldType } from '../../../../../core/store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../core/store/field/field.query';
+import { WizardHelper } from '../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-series-wizard-attributes',

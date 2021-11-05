@@ -17,15 +17,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Unit } from '../../../../store/unit/unit.model';
-import { UnitQuery } from '../../../../store/unit/unit.query';
+import { Unit } from '../../../../core/store/unit/unit.model';
+import { UnitQuery } from '../../../../core/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Field, FieldThresholdType } from '../../../../store/field/field.model';
+import { Field, FieldThresholdType } from '../../../../core/store/field/field.model';
 import { SelectItem } from 'primeng/api';
-import { DialogType } from 'src/app/common/models/dialog-type.model';
-import { FieldService } from '../../../../store/field/field.service';
-import { WizardHelper } from '../../../../common/utils/wizard-helper';
+import { DialogType } from 'src/app/shared/models/dialog-type.model';
+import { FieldService } from '../../../../core/store/field/field.service';
+import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-field-dialog',

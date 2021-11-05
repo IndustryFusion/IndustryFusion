@@ -15,21 +15,21 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details.resolver';
-import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
+import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-series-details.resolver';
+import { AssetSeriesService } from '../../../../core/store/asset-series/asset-series.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-wizard.component';
-import { CompanyQuery } from '../../../../store/company/company.query';
-import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
-import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
-import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { AssetTypeTemplatesResolver } from '../../../../core/resolvers/asset-type-templates.resolver';
+import { UnitsResolver } from '../../../../core/resolvers/units.resolver';
+import { AssetSeriesDetails } from '../../../../core/store/asset-series-details/asset-series-details.model';
+import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { ConfirmationService } from 'primeng/api';
-import { AssetSeriesDetailMenuService } from '../../../../services/menu/asset-series-detail-menu.service';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 
 @Component({
   selector: 'app-asset-series-list',

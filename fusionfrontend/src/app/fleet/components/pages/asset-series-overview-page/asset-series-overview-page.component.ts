@@ -17,19 +17,19 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { combineLatest, Observable, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FactorySite, FactorySiteType } from '../../../../store/factory-site/factory-site.model';
-import { AssetQuery } from '../../../../store/asset/asset.query';
-import { Asset } from '../../../../store/asset/asset.model';
-import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
-import { RoomQuery } from '../../../../store/room/room.query';
+import { FactorySite, FactorySiteType } from '../../../../core/store/factory-site/factory-site.model';
+import { AssetQuery } from '../../../../core/store/asset/asset.query';
+import { Asset } from '../../../../core/store/asset/asset.model';
+import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
+import { RoomQuery } from '../../../../core/store/room/room.query';
 import { map } from 'rxjs/operators';
 import { AssetWizardComponent } from '../../content/asset-wizard/asset-wizard.component';
-import { CompanyQuery } from '../../../../store/company/company.query';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { DialogService } from 'primeng/dynamicdialog';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
-import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
-import { AssetSeriesDetailsService } from '../../../../store/asset-series-details/asset-series-details.service';
-import { Company } from '../../../../store/company/company.model';
+import { AssetSeriesDetails } from '../../../../core/store/asset-series-details/asset-series-details.model';
+import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDetailsService } from '../../../../core/store/asset-series-details/asset-series-details.service';
+import { Company } from '../../../../core/store/company/company.model';
 
 @Component({
   selector: 'app-asset-series-overview-page',

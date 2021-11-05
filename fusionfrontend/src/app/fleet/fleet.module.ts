@@ -26,7 +26,7 @@ import { TimelineComponent } from './components/content/timeline/timeline.compon
 import { AssetSeriesWizardGeneralInformationComponent } from './components/content/asset-series-wizard/asset-series-wizard-general-information/asset-series-wizard-general-information.component';
 import { AssetSeriesWizardNameplateAndConnectivitySettingsComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings.component';
 import { AssetSeriesWizardAttributesComponent } from './components/content/asset-series-wizard/asset-series-wizard-attributes/asset-series-wizard-attributes.component';
-import { IFCommon } from '../common/i-f-common.module';
+import { SharedModule } from '../shared/shared.module';
 import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { TableModule } from 'primeng/table';
 import { AssetWizardComponent } from './components/content/asset-wizard/asset-wizard.component';
@@ -54,9 +54,9 @@ import { AssetSeriesAssetDigitalNameplateComponent } from './components/pages/as
 import { CardModule } from 'primeng/card';
 import { AssetSeriesAssetInfoComponent } from './components/content/asset-series-asset-details/asset-series-asset-info/asset-series-asset-info.component';
 import { AssetSeriesStatusComponent } from './components/content/asset-series-status/asset-series-status.component';
-import { AssetSeriesStatusPipe } from '../pipes/asset-series-status-pipe';
+import { AssetSeriesStatusPipe } from '../shared/pipes/asset-series-status-pipe';
 import { AssetActivationStatusComponent } from './components/content/asset-activation-status/asset-activation-status.component';
-import { AssetActivationStatusPipe } from '../pipes/asset-activation-status-pipe';
+import { AssetActivationStatusPipe } from '../shared/pipes/asset-activation-status-pipe';
 import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings-tooltip/asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component';
 
 
@@ -97,7 +97,7 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     AssetActivationStatusPipe,
   ],
   imports: [
-    IFCommon,
+    SharedModule,
     FleetRoutingModule,
     ClarityModule,
     ReactiveFormsModule,

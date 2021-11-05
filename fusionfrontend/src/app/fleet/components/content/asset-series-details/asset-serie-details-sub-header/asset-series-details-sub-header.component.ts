@@ -17,11 +17,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Location } from '@angular/common';
-import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AssetSeriesDetailsQuery } from '../../../../../store/asset-series-details/asset-series-details.query';
-import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
+import { AssetSeriesDetailsQuery } from '../../../../../core/store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDetails } from '../../../../../core/store/asset-series-details/asset-series-details.model';
 
 @Component({
   selector: 'app-asset-series-details-sub-header',

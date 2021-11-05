@@ -15,26 +15,26 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
+import { FieldTarget, FieldType } from '../../../../../../core/store/field-target/field-target.model';
 import {
   AssetTypeTemplate,
   PublicationState
-} from '../../../../../../store/asset-type-template/asset-type-template.model';
-import { AssetTypeTemplateService } from '../../../../../../store/asset-type-template/asset-type-template.service';
-import { FieldTargetService } from '../../../../../../store/field-target/field-target.service';
-import { AssetTypesResolver } from '../../../../../../resolvers/asset-types.resolver';
-import { FieldsResolver } from '../../../../../../resolvers/fields-resolver';
-import { UnitsResolver } from '../../../../../../resolvers/units.resolver';
-import { QuantityTypesResolver } from '../../../../../../resolvers/quantity-types.resolver';
+} from '../../../../../../core/store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplateService } from '../../../../../../core/store/asset-type-template/asset-type-template.service';
+import { FieldTargetService } from '../../../../../../core/store/field-target/field-target.service';
+import { AssetTypesResolver } from '../../../../../../core/resolvers/asset-types.resolver';
+import { FieldsResolver } from '../../../../../../core/resolvers/fields-resolver';
+import { UnitsResolver } from '../../../../../../core/resolvers/units.resolver';
+import { QuantityTypesResolver } from '../../../../../../core/resolvers/quantity-types.resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssetTypeTemplateComposedQuery } from '../../../../../../store/composed/asset-type-template-composed.query';
+import { AssetTypeTemplateComposedQuery } from '../../../../../../core/store/composed/asset-type-template-composed.query';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 import { ID } from '@datorama/akita';
 
 import { take } from 'rxjs/operators';
-import { DialogType } from '../../../../../../common/models/dialog-type.model';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { DialogType } from '../../../../../../shared/models/dialog-type.model';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-type-template-wizard-main',

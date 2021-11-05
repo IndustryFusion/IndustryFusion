@@ -14,8 +14,8 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Room } from '../../../../../store/room/room.model';
-import { AssetModalMode } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { Room } from '../../../../../core/store/room/room.model';
+import { AssetModalMode } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 
 @Component({
   selector: 'app-asset-instantiation-room-assignment-modal',

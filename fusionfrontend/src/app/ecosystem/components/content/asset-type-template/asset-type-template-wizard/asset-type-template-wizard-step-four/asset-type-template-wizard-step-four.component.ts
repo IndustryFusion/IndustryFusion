@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
+import { FieldTarget, FieldType } from '../../../../../../core/store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
 

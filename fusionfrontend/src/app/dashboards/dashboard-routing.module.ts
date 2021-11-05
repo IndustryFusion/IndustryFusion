@@ -17,7 +17,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MaintenancePageComponent } from './components/pages/maintenance-page/maintenance-page.component';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
-import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
 
 const routes: Routes = [
   {

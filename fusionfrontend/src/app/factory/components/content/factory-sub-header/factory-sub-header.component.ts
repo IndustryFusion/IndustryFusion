@@ -17,10 +17,10 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { CompanyQuery } from 'src/app/store/company/company.query';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { RouteHelpers } from '../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-factory-sub-header',

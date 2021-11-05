@@ -18,7 +18,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 
-import { CompanyQuery } from '../../../../store/company/company.query';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

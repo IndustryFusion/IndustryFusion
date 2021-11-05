@@ -15,32 +15,32 @@
 
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Asset } from '../../../../store/asset/asset.model';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { Asset } from '../../../../core/store/asset/asset.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetWizardStep } from './asset-wizard-step/asset-wizard-step.model';
-import { AssetSeriesResolver } from '../../../../resolvers/asset-series.resolver';
-import { AssetResolver } from '../../../../resolvers/asset.resolver';
+import { AssetSeriesResolver } from '../../../../core/resolvers/asset-series.resolver';
+import { AssetResolver } from '../../../../core/resolvers/asset.resolver';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { AssetSeriesQuery } from '../../../../store/asset-series/asset-series.query';
-import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
-import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
-import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
-import { Company } from '../../../../store/company/company.model';
-import { AssetType } from '../../../../store/asset-type/asset-type.model';
-import { CompanyQuery } from '../../../../store/company/company.query';
-import { AssetTypeTemplateQuery } from '../../../../store/asset-type-template/asset-type-template.query';
-import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
+import { AssetSeriesQuery } from '../../../../core/store/asset-series/asset-series.query';
+import { AssetTypeTemplatesResolver } from '../../../../core/resolvers/asset-type-templates.resolver';
+import { AssetTypesResolver } from '../../../../core/resolvers/asset-types.resolver';
+import { AssetSeries } from '../../../../core/store/asset-series/asset-series.model';
+import { Company } from '../../../../core/store/company/company.model';
+import { AssetType } from '../../../../core/store/asset-type/asset-type.model';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { AssetTypeTemplateQuery } from '../../../../core/store/asset-type-template/asset-type-template.query';
+import { AssetTypeQuery } from '../../../../core/store/asset-type/asset-type.query';
 import { Observable } from 'rxjs';
-import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
-import { AssetService } from '../../../../store/asset/asset.service';
-import { FieldsResolver } from '../../../../resolvers/fields-resolver';
-import { QuantityTypesResolver } from '../../../../resolvers/quantity-types.resolver';
-import { CountryResolver } from '../../../../resolvers/country.resolver';
-import { FleetAssetDetailsResolver } from '../../../../resolvers/fleet-asset-details.resolver';
+import { AssetSeriesService } from '../../../../core/store/asset-series/asset-series.service';
+import { AssetService } from '../../../../core/store/asset/asset.service';
+import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
+import { QuantityTypesResolver } from '../../../../core/resolvers/quantity-types.resolver';
+import { CountryResolver } from '../../../../core/resolvers/country.resolver';
+import { FleetAssetDetailsResolver } from '../../../../core/resolvers/fleet-asset-details.resolver';
 import { MessageService } from 'primeng/api';
-import { WizardHelper } from '../../../../common/utils/wizard-helper';
+import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard',

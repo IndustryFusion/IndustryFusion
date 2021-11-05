@@ -14,18 +14,18 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
+import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
 import { combineQueries } from '@datorama/akita';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import {
   FactoryAssetDetailsWithFields
-} from '../../../../../store/factory-asset-details/factory-asset-details.model';
-import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
+} from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FactoryAssetDetailsService } from '../../../../../store/factory-asset-details/factory-asset-details.service';
-import { OispAlertPriority } from '../../../../../store/oisp/oisp-alert/oisp-alert.model';
-import { Asset } from '../../../../../store/asset/asset.model';
+import { FactoryAssetDetailsService } from '../../../../../core/store/factory-asset-details/factory-asset-details.service';
+import { OispAlertPriority } from '../../../../../core/store/oisp/oisp-alert/oisp-alert.model';
+import { Asset } from '../../../../../core/store/asset/asset.model';
 
 @Component({
   selector: 'app-asset-subsystems',

@@ -14,18 +14,18 @@
  */
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UnitQuery } from '../../../../store/unit/unit.query';
-import { UnitService } from '../../../../store/unit/unit.service';
-import { Unit } from '../../../../store/unit/unit.model';
+import { UnitQuery } from '../../../../core/store/unit/unit.query';
+import { UnitService } from '../../../../core/store/unit/unit.service';
+import { Unit } from '../../../../core/store/unit/unit.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { ID } from '@datorama/akita';
 import { ConfirmationService } from 'primeng/api';
-import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { QuantityTypeService } from '../../../../core/store/quantity-type/quantity-type.service';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
