@@ -37,8 +37,8 @@ under the License.
                                 (deselectAllItems)="deselectAllNotifications()" (closeNotification)="showCloseDialog(this.selectedNotifications)">
   </app-table-selected-items-bar>
 
-  <p-table [(selection)]="selectedNotifications" [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10"
-           [showCurrentPageReport]="true" [value]="displayedNotifications" [rowHover]="true"
+  <p-table [(selection)]="selectedNotifications" [rowHover]="true"  [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
+           [showCurrentPageReport]="true" [value]="displayedNotifications" (rowsChange)="updateRowCountInUrl($event)"
            class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Notifications">
     <ng-template pTemplate="header">
       <tr>

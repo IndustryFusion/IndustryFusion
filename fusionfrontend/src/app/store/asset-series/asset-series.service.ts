@@ -47,14 +47,6 @@ export class AssetSeriesService {
       })));
   }
 
-  getItem(companyId: ID, assetSeriesId: ID): Observable<AssetSeries> {
-    const path = `companies/${companyId}/assetseries/${assetSeriesId}?embedChildren=true`;
-    return this.http.get<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
-      .pipe(tap(entity => {
-        this.assetSeriesStore.upsert(assetSeriesId, entity);
-      }));
-  }
-
   getAssetSeries(companyId: ID, assetSeriesId: ID): Observable<AssetSeries> {
     const path = `companies/${companyId}/assetseries/${assetSeriesId}?embedChildren=true`;
     return this.http.get<AssetSeries>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);

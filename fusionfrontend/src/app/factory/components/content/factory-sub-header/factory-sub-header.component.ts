@@ -20,6 +20,7 @@ import { ID } from '@datorama/akita';
 import { CompanyQuery } from 'src/app/store/company/company.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { RouteHelpers } from '../../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-factory-sub-header',
@@ -54,27 +55,18 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  isFactoriesActive = () => {
-    return this.route && (
-      this.route.match(this.URL_PREFIX + 'factorysites$') ||
-      this.route.match(this.URL_PREFIX + 'factorysites/[0-9]+$') ||
-      this.route.match(this.URL_PREFIX + 'factorysites/[0-9]+/asset-cards/[0-9,]+$')
-    );
+  isFactoriesActive(): boolean {
+    return RouteHelpers.matchFullRoutes(this.route,
+      ['factorysites', 'factorysites/[0-9]+', 'factorysites/[0-9]+/asset-cards/[0-9,]+'],
+           this.URL_PREFIX);
   }
 
-  isRoomsActive() {
-    return this.route && (
-      this.route.match(this.URL_PREFIX + 'rooms$') ||
-      this.route.match(this.URL_PREFIX + 'rooms/[0-9]+$') ||
-      this.route.match(this.URL_PREFIX + 'rooms/[0-9]+/asset-cards/[0-9,]+$')
-    );
+  isRoomsActive(): boolean {
+    return RouteHelpers.matchFullRoutes(this.route, ['rooms', 'rooms/[0-9]+', 'rooms/[0-9]+/asset-cards/[0-9,]+'], this.URL_PREFIX);
   }
 
   isAssetsActive = () => {
-    return this.route && (
-      this.route.match(this.URL_PREFIX + 'assets$') ||
-      this.route.match(this.URL_PREFIX + 'assets/asset-cards/[0-9,]+$')
-    );
+    return RouteHelpers.matchFullRoutes(this.route, ['assets$', 'assets/asset-cards/[0-9,]+'], this.URL_PREFIX);
   }
 
   onFactoriesClick() {

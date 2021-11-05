@@ -27,13 +27,14 @@ import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
 import { ConfirmationService } from 'primeng/api';
 import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset-to-room.component';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
 import { RoomService } from '../../../../store/room/room.service';
 import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
 import { AssetService } from '../../../../store/asset/asset.service';
 import { RoomQuery } from '../../../../store/room/room.query';
 import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
+import { TableHelper } from '../../../../common/utils/table-helper';
 
 @Component({
   selector: 'app-rooms-list',
@@ -66,6 +67,9 @@ export class RoomsListComponent implements OnInit {
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   ItemOptionsMenuType = ItemOptionsMenuType;
 
   constructor(private companyQuery: CompanyQuery,
@@ -75,9 +79,10 @@ export class RoomsListComponent implements OnInit {
               private dialogService: DialogService,
               private factoryResolver: FactoryResolver,
               private factorySiteQuery: FactorySiteQuery,
-              private activatedRoute: ActivatedRoute,
               private assetService: AssetService,
               private roomQuery: RoomQuery,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
               private confirmationService: ConfirmationService) {
     this.factoryResolver.resolve(this.activatedRoute);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
@@ -89,6 +94,8 @@ export class RoomsListComponent implements OnInit {
 
     this.createRoomForm(this.formBuilder);
     this.initObservers();
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   private initObservers() {
@@ -297,5 +304,9 @@ export class RoomsListComponent implements OnInit {
   private deleteRoom(room: Room) {
     const factorySiteId = this.factorySiteQuery.getActiveId();
     this.roomService.deleteRoom(this.companyId, factorySiteId, room.id).subscribe();
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

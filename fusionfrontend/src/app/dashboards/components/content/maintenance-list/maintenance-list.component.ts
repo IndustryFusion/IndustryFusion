@@ -29,6 +29,8 @@ import {
   AssetMaintenanceUtils as Utils,
   MaintenanceType
 } from '../../../../factory/util/asset-maintenance-utils';
+import { TableHelper } from '../../../../common/utils/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -46,11 +48,15 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   companies: Company[];
   @Input()
   assetTypes: AssetType[];
+
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
-
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+
   faChevronCircleDown = faChevronCircleDown;
   faChevronCircleUp = faChevronCircleUp;
   faInfoCircle = faInfoCircle;
@@ -67,11 +73,12 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   utils = Utils;
 
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
   }
 
 
   ngOnInit(): void {
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnChanges(): void {
@@ -190,6 +197,10 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       treeNode.children = children;
     }
     return treeNode;
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 
   customSort(event: SortEvent) {

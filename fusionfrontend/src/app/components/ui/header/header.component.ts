@@ -23,6 +23,7 @@ import { OispAlertQuery } from '../../../store/oisp/oisp-alert/oisp-alert.query'
 import { UserManagementService } from '../../../services/api/user-management.service';
 import { KeycloakProfile } from 'keycloak-js';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { RouteHelpers } from '../../../common/utils/route-helpers';
 
 @Component({
   selector: 'app-header',
@@ -93,23 +94,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.router.navigate(['/notifications']);
   }
 
-  isNotifications() {
-    return this.route
-      && this.route.match(`\/notifications\/`)
-      && !this.route.match(`assets\/[0-9]*\/notifications\/`);
+  isNotifications(): boolean {
+    return this.route && RouteHelpers.matchRouteAllowPostfix(this.route, `\/notifications\/`) &&
+      !RouteHelpers.matchRouteAllowPostfix(this.route, 'assets\/[0-9]*\/notifications\/');
   }
 
-  isAssetDetails() {
-    return this.route && this.route.match(`\/assets\/[0-9]*`) &&
-      !this.route.match('\/assets\/asset-cards/*');
+  isAssetDetails(): boolean {
+    return this.route && RouteHelpers.matchRouteAllowPostfix(this.route, `\/assets\/[0-9]*`) &&
+      !RouteHelpers.matchRouteAllowPostfix(this.route, '\/assets\/asset-cards/*');
   }
 
   isAssetSerieDetails() {
-    return this.route && this.route.match(`\/assetseries\/[0-9]*`) && !this.isAssetSerieAssetDetails();
+    return RouteHelpers.matchRoutesAllowPostfix(this.route, [`\/assetseries\/[0-9]*`]) && !this.isAssetSerieAssetDetails();
   }
 
   isAssetSerieAssetDetails() {
-    return this.route && this.route.match(`\/assetseries\/[0-9]*\/assets\/[0-9]*`);
+    return RouteHelpers.matchRoutesAllowPostfix(this.route, [`\/assetseries\/[0-9]*\/assets\/[0-9]*`]);
   }
 
   getPageTitle() {

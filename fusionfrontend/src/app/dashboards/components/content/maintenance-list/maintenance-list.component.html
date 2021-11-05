@@ -11,9 +11,13 @@
   <p-treeTable [alwaysShowPaginator]="true"
                [pageLinks]="5"
                [paginator]="true"
-               [rowsPerPageOptions]="[5,10,50]"
-               [rows]="10"
-               [value]="treeData" class="list-container"
+               [rowsPerPageOptions]="rowsPerPageOptions"
+               [rows]="rowCount"
+               [showCurrentPageReport]="true"
+               [value]="treeData"
+               (onPage)="updateRowCountInUrl($event.rows)"
+               class="list-container"
+               currentPageReportTemplate="{first} to {last} of {totalRecords} Assets"
                (sortFunction)="customSort($event)"
                [customSort]="true">
     <ng-template pTemplate="header">

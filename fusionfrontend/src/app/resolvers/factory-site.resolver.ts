@@ -14,23 +14,28 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-
-import { CompanyService } from '../store/company/company.service';
+import { Resolve } from '@angular/router';
 import { FactorySiteService } from '../store/factory-site/factory-site.service';
+import { EMPTY, Observable } from 'rxjs';
+import { CompanyQuery } from '../store/company/company.query';
+import { FactorySite } from '../store/factory-site/factory-site.model';
 
 @Injectable({ providedIn: 'root' })
-export class FactorySiteResolver implements Resolve<any>{
-  constructor(private companyService: CompanyService,
+export class FactorySiteResolver implements Resolve<void>{
+  constructor(private companyQuery: CompanyQuery,
               private factorySiteService: FactorySiteService) { }
 
-  resolve(route: ActivatedRouteSnapshot): void {
+  resolve(): void { // using Observable will result in deadlock when called from routing module
+    this.resolveFromComponent().subscribe();
+  }
 
-    this.companyService.getCompanies().subscribe();
-    const companyId = route.parent.params.companyId;
-    this.companyService.setActive(companyId);
-    if (companyId != null) {
-      this.factorySiteService.getFactorySites(companyId).subscribe();
+  resolveFromComponent(): Observable<FactorySite[]> {
+    const companyId = this.companyQuery.getActiveId();
+    if (companyId) {
+      return  this.factorySiteService.getFactorySites(companyId);
+    } else {
+      console.error('[asset series details resolver]: company unknown');
+      return EMPTY;
     }
   }
 }

@@ -15,36 +15,30 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-
-import { CompanyService } from '../store/company/company.service';
 import { CompanyQuery } from '../store/company/company.query';
 import { FactoryAssetDetailsService } from '../store/factory-asset-details/factory-asset-details.service';
 import { FieldDetailsService } from '../store/field-details/field-details.service';
+import { RouteHelpers } from '../common/utils/route-helpers';
 
 @Injectable({ providedIn: 'root' })
-export class FactoryAssetDetailsResolver implements Resolve<any>{
-  constructor(private companyService: CompanyService,
-              private companyQuery: CompanyQuery,
+export class FactoryAssetDetailsResolver implements Resolve<void>{
+  constructor(private companyQuery: CompanyQuery,
               private factoryAssetDetailsService: FactoryAssetDetailsService,
               private fieldDetailsService: FieldDetailsService) { }
 
-  resolve(route: ActivatedRouteSnapshot): void {
-
-    let companyId = this.companyQuery.getActiveId();
-    if (route?.params?.companyId) {
-      this.companyService.getCompanies().subscribe();
-      companyId = route.params.companyId;
-      this.companyService.setActive(companyId);
-    }
-
-    if (companyId != null) {
-      this.factoryAssetDetailsService.getAssetDetailsOfCompany(companyId).subscribe(assets => {
-        assets.forEach(asset => this.fieldDetailsService.getFieldsOfAsset(companyId, asset.id).subscribe());
-      });
-      const assetId = route.params.assetId;
+  resolve(route: ActivatedRouteSnapshot): void { // using Observable will (probably) result in deadlock when called from routing module
+    const companyId = this.companyQuery.getActiveId();
+    if (companyId) {
+      const assetId = RouteHelpers.findParamInFullActivatedRoute(route, 'assetId');
       if (assetId) {
         this.factoryAssetDetailsService.setActive(assetId);
       }
+
+      this.factoryAssetDetailsService.getAssetDetailsOfCompany(companyId).subscribe(assets => {
+        assets.forEach(asset => this.fieldDetailsService.getFieldsOfAsset(companyId, asset.id).subscribe());
+      });
+    } else {
+      console.error('[asset details resolver]: company unknown');
     }
   }
 }

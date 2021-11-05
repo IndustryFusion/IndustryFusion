@@ -16,7 +16,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from '../../../resolvers/asset-series-details.resolver';
 import { Observable, Subscription } from 'rxjs';
 import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
 import { OispAlertService } from '../../../store/oisp/oisp-alert/oisp-alert.service';
@@ -31,6 +31,7 @@ import { TableSelectedItemsBarType } from '../../ui/table-selected-items-bar/tab
 import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
 import { OispDeviceResolver } from '../../../resolvers/oisp-device-resolver';
 import { ConfirmationService } from 'primeng/api';
+import { TableHelper } from '../../../common/utils/table-helper';
 
 export enum NotificationState { OPEN, CLEARED}
 
@@ -48,12 +49,11 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   @Input() isInline = false;
   state: NotificationState;
 
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };
+
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
 
   intervalId: number;
 
@@ -62,15 +62,17 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   displayedNotifications: OispNotification[];
   filteredNotifications: OispNotification[];
   searchedNotifications: OispNotification[];
-  OispPriority = OispAlertPriority;
   selectedNotifications: OispNotification[] = [];
-  alertStatusTypes = OispAlertStatus;
-  activeNotification: OispNotification;
-  shouldShowDeleteNotification = false;
-  notificationStates = NotificationState;
   notificationSubscription: Subscription;
 
+  OispPriority = OispAlertPriority;
+  alertStatusTypes = OispAlertStatus;
+  notificationStates = NotificationState;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
+
+  faInfoCircle = faInfoCircle;
+  faExclamationCircle = faExclamationCircle;
+  faExclamationTriangle = faExclamationTriangle;
 
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Priority', attributeToBeFiltered: 'priority' },
@@ -90,10 +92,12 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.state = this.getCurrentState();
-    this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
     this.periodicallyFetchNotifications();
     this.initNameMappings();
     this.resetNotificationVariablesToAllNotifications();
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   private resetNotificationVariablesToAllNotifications() {
@@ -128,7 +132,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   navigateToSubroute(subroute): Promise<boolean> {
     let newRoute = ['..', subroute];
-    if (this.routingLocation.path().match(`\/notifications$`)) {
+    if (RouteHelpers.matchFullRoute(this.routingLocation.path(), `\/notifications`)) {
       newRoute = [subroute];
     }
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
@@ -252,5 +256,9 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   isFloatingNumber(text: string) {
     const n = Number(text);
     return Number(n) === n && n % 1 !== 0;
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }
