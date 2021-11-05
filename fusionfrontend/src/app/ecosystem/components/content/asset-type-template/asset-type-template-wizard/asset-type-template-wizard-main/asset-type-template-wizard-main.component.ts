@@ -77,6 +77,7 @@ export class AssetTypeTemplateWizardMainComponent implements OnInit {
       assetTypeId: [prefilledAssetTypeIdOrNull, Validators.required],
       assetTypeTemplateId: [],
       fieldTarget: [],
+      imageKey: [],
     });
     assetTypeTemplateForm.patchValue(assetTypeTemplate);
 

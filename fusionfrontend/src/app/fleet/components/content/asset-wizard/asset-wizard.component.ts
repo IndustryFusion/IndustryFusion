@@ -148,6 +148,7 @@ export class AssetWizardComponent implements OnInit {
       asset.subsystemIds = this.asset.subsystemIds;
       asset.fieldInstances = this.asset.fieldInstances;
       asset.room = this.asset.room;
+      asset.imageKey = 'default-avatar-asset.png'; // workaround for no picture upload
 
       this.asset = asset;
 
@@ -174,6 +175,7 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookUrl')?.setValue(assetSeries.handbookUrl);
+      this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey);
       this.assetForm.get('videoUrl')?.setValue(assetSeries.videoUrl);
       this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
