@@ -36,7 +36,6 @@ export class AssetQuery extends BaseQueryEntity<AssetState, Asset> {
   }
 
   getSelectedAssetIds(): ID[] {
-    console.log('getSelectedAssetIds: ' + this.selectedAssetIds);
     return this.selectedAssetIds;
   }
 

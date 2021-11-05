@@ -84,7 +84,6 @@ export class CachedStore<S extends EntityState = any, EntityType = getEntityType
   }
 
   removeCached(id: IDType): void {
-    console.log(this.constructor.name + ': Removing entity from cache');
     this.cachedIds.delete(String(id));
     super.remove(id);
   }
