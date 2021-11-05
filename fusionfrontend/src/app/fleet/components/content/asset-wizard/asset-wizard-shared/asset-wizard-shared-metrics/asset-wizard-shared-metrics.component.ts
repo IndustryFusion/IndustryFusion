@@ -15,16 +15,16 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Threshold, ThresholdType } from '../../../../../../store/threshold/threshold.model';
-import { FieldInstance } from '../../../../../../store/field-instance/field-instance.model';
-import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
-import { QuantityDataType } from 'src/app/store/field-details/field-details.model';
-import { FieldThresholdType } from 'src/app/store/field/field.model';
-import { Asset } from '../../../../../../store/asset/asset.model';
-import { FieldType } from '../../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../../store/field/field.query';
-import { QuantityTypeQuery } from '../../../../../../store/quantity-type/quantity-type.query';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { Threshold, ThresholdType } from '../../../../../../core/store/threshold/threshold.model';
+import { FieldInstance } from '../../../../../../core/store/field-instance/field-instance.model';
+import { CustomFormValidators } from '../../../../../../core/validators/custom-form-validators';
+import { QuantityDataType } from 'src/app/core/store/field-details/field-details.model';
+import { FieldThresholdType } from 'src/app/core/store/field/field.model';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
+import { FieldType } from '../../../../../../core/store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../../core/store/field/field.query';
+import { QuantityTypeQuery } from '../../../../../../core/store/quantity-type/quantity-type.query';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-shared-metrics',

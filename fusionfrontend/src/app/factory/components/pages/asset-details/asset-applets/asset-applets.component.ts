@@ -15,9 +15,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { Device } from '../../../../../store/oisp/oisp-device/oisp-device.model';
-import { OispDeviceQuery } from '../../../../../store/oisp/oisp-device/oisp-device.query';
-import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
+import { Device } from '../../../../../core/store/oisp/oisp-device/oisp-device.model';
+import { OispDeviceQuery } from '../../../../../core/store/oisp/oisp-device/oisp-device.query';
+import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
 
 @Component({
   selector: 'app-asset-applets',

@@ -14,8 +14,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Room } from 'src/app/store/room/room.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
+import { Room } from 'src/app/core/store/room/room.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 

@@ -16,19 +16,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AssetSeriesPageComponent } from './components/pages/asset-series-page/asset-series-page.component';
-import { AssetSeriesDetailsResolver } from '../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from '../core/resolvers/asset-series-details.resolver';
 import { AssetSeriesListComponent } from './components/content/asset-series-list/asset-series-list.component';
-import { MainAuthGuard } from '../services/api/main-auth-guard.service';
+import { MainAuthGuard } from '../core/guards/main-auth.guard';
 import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
-import { AssetResolver } from '../resolvers/asset.resolver';
-import { RoomResolver } from '../resolvers/room.resolver';
-import { FactorySiteResolver } from '../resolvers/factory-site-resolver.service';
-import { AssetSeriesDetailsQuery } from '../store/asset-series-details/asset-series-details.query';
+import { AssetResolver } from '../core/resolvers/asset.resolver';
+import { RoomResolver } from '../core/resolvers/room.resolver';
+import { FactorySiteResolver } from '../core/resolvers/factory-site.resolver';
+import { AssetSeriesDetailsQuery } from '../core/store/asset-series-details/asset-series-details.query';
 import { AssetSeriesAssetDigitalNameplateComponent } from './components/pages/asset-series-asset/asset-series-asset-digital-nameplate/asset-series-asset-digital-nameplate.component';
-import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
-import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
-import { AssetSeriesResolver } from '../resolvers/asset-series.resolver';
-import { ConnectivityTypeResolver } from '../resolvers/connectivity-type.resolver';
+import { FactoryAssetDetailsResolver } from '../core/resolvers/factory-asset-details.resolver';
+import { FactoryAssetDetailsQuery } from '../core/store/factory-asset-details/factory-asset-details.query';
+import { AssetSeriesResolver } from '../core/resolvers/asset-series.resolver';
+import { ConnectivityTypeResolver } from '../core/resolvers/connectivity-type.resolver';
+import { CompanyResolver } from '../core/resolvers/company.resolver';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
       breadcrumb: 'Asset Series',
     },
     resolve: {
+      company: CompanyResolver,
       assetSeriesDetails: AssetSeriesDetailsResolver,
     },
     children: [
@@ -58,13 +60,15 @@ const routes: Routes = [
         resolve: {
           asset: AssetResolver,
           room: RoomResolver,
-          factorySite: FactorySiteResolver
         },
         children: [
           {
             path: 'assets',
             data: {
               breadcrumb: AssetSeriesDetailsQuery,
+            },
+            resolve: {
+              factorySite: FactorySiteResolver
             },
             children: [
               {
@@ -79,8 +83,6 @@ const routes: Routes = [
                 component: AssetSeriesAssetDigitalNameplateComponent,
                 resolve: {
                   asset: FactoryAssetDetailsResolver,
-                  room: RoomResolver,
-                  factorySite: FactorySiteResolver,
                   assetSeries: AssetSeriesResolver,
                   connectivityTypes: ConnectivityTypeResolver
                 },

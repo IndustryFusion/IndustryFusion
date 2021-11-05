@@ -18,7 +18,7 @@ import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { Router, UrlTree } from '@angular/router';
-import { CompanyQuery } from '../../../../store/company/company.query';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
 
 @Component({

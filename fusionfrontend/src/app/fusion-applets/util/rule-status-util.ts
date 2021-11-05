@@ -1,4 +1,4 @@
-import { RuleStatus } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
+import { RuleStatus } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 
 export class RuleStatusUtil {
 

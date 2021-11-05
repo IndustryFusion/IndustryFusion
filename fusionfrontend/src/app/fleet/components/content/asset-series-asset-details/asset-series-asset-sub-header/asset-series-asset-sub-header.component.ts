@@ -17,12 +17,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Location } from '@angular/common';
-import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
-import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
-import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
+import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
 
 @Component({
   selector: 'app-asset-series-asset-sub-header',
@@ -59,7 +59,7 @@ export class AssetSeriesAssetSubHeaderComponent implements OnInit, OnDestroy {
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
     let newRoute = subroute2 ? ['..', subroute, subroute2] : ['..', subroute];
-    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`)) {
+    if (RouteHelpers.matchFullRoute(this.routingLocation.path(), `\/assets\/[0-9]*`)) {
       newRoute = newRoute.slice(1, newRoute.length);
     }
 

@@ -16,13 +16,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { FieldQuery } from '../../../../store/field/field.query';
-import { FieldService } from '../../../../store/field/field.service';
-import { Field } from '../../../../store/field/field.model';
+import { FieldQuery } from '../../../../core/store/field/field.query';
+import { FieldService } from '../../../../core/store/field/field.service';
+import { Field } from '../../../../core/store/field/field.model';
 import { FieldDialogComponent } from '../../content/field-dialog/field-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Unit } from '../../../../store/unit/unit.model';
-import { UnitQuery } from '../../../../store/unit/unit.query';
+import { Unit } from '../../../../core/store/unit/unit.model';
+import { UnitQuery } from '../../../../core/store/unit/unit.query';
 
 @Component({
   selector: 'app-field-page',

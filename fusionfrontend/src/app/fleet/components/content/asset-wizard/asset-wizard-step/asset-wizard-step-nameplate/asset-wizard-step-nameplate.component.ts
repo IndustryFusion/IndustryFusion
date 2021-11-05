@@ -17,7 +17,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AssetWizardStep } from '../asset-wizard-step.model';
 import { SelectItem } from 'primeng/api';
-import { ProtectionClassService } from '../../../../../../services/api/protection-class.service';
+import { ProtectionClassService } from '../../../../../../core/services/api/protection-class.service';
 
 @Component({
   selector: 'app-asset-wizard-step-nameplate',

@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
+import { AssetSeriesDetails } from '../../../../core/store/asset-series-details/asset-series-details.model';
 
 @Component({
   selector: 'app-asset-series-status',

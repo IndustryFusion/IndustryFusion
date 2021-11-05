@@ -16,9 +16,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 
-import { UnitQuery } from '../../../../../store/unit/unit.query';
-import { QuantityTypeQuery } from '../../../../../store/quantity-type/quantity-type.query';
-import { FieldTarget, FieldType } from '../../../../../store/field-target/field-target.model';
+import { UnitQuery } from '../../../../../core/store/unit/unit.query';
+import { QuantityTypeQuery } from '../../../../../core/store/quantity-type/quantity-type.query';
+import { FieldTarget, FieldType } from '../../../../../core/store/field-target/field-target.model';
 
 @Component({
   selector: 'app-asset-type-template-field-row',

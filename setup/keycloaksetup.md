@@ -85,7 +85,7 @@ Do this to add an OISP realm with 2 clients and a concrete user that will be use
 1. Go to client with name "fusion-backend"
 1. Change to tab "Credentials"
    1. If the secret contains only `*********`: Click _Regenerate Secret_.
-   1. You will need this secret later for the configuration of the fusionbackend. 
+   1. This secret is needed for the configuration of fusionbackend (see README -> Configure Intellij). 
 
 ### Create Access User
 1. Within the OISP-Realm, create a new user 'if-admin' and click save

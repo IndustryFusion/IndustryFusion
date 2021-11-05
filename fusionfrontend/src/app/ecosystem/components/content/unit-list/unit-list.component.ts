@@ -14,17 +14,19 @@
  */
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UnitQuery } from '../../../../store/unit/unit.query';
-import { UnitService } from '../../../../store/unit/unit.service';
-import { Unit } from '../../../../store/unit/unit.model';
+import { UnitQuery } from '../../../../core/store/unit/unit.query';
+import { UnitService } from '../../../../core/store/unit/unit.service';
+import { Unit } from '../../../../core/store/unit/unit.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UnitDialogComponent } from '../unit-dialog/unit-dialog.component';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { ID } from '@datorama/akita';
 import { ConfirmationService } from 'primeng/api';
-import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
+import { QuantityTypeService } from '../../../../core/store/quantity-type/quantity-type.service';
+import { TableHelper } from '../../../../core/helpers/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-unit-list',
@@ -34,10 +36,14 @@ import { QuantityTypeService } from '../../../../store/quantity-type/quantity-ty
 })
 export class UnitListComponent implements OnInit, OnDestroy {
 
-
-
   @Input() units$: Observable<Unit[]>;
   @Input() parentQuantityTypeId: ID | null;
+
+  titleMapping:
+    { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
+
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
 
   units: Unit[];
   displayedUnits: Unit[];
@@ -47,13 +53,13 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   activeListItem: Unit;
 
-  titleMapping:
-    { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
 
   constructor(
     private unitQuery: UnitQuery,
     private unitService: UnitService,
     private quantityTypeService: QuantityTypeService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     public formBuilder: FormBuilder) {
@@ -67,6 +73,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
       this.displayedUnits = this.units = this.unitsSearchedByName = this.unitsSearchedBySymbol
         = this.unitsSearchedByQuantity = units;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnDestroy() {
@@ -151,5 +159,9 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   deleteUnit(unit: Unit) {
     this.unitService.deleteUnit(unit.quantityTypeId, unit.id).subscribe();
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

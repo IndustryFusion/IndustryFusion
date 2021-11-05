@@ -14,22 +14,24 @@
  */
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AssetTypeTemplateQuery } from '../../../../../store/asset-type-template/asset-type-template.query';
-import { AssetTypeTemplateService } from '../../../../../store/asset-type-template/asset-type-template.service';
+import { AssetTypeTemplateQuery } from '../../../../../core/store/asset-type-template/asset-type-template.query';
+import { AssetTypeTemplateService } from '../../../../../core/store/asset-type-template/asset-type-template.service';
 import {
   AssetTypeTemplate,
   PublicationState
-} from '../../../../../store/asset-type-template/asset-type-template.model';
+} from '../../../../../core/store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { ID } from '@datorama/akita';
-import { DialogType } from '../../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
-import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
+import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { ConfirmationService } from 'primeng/api';
-import { FilterOption, FilterType } from '../../../../../components/ui/table-filter/filter-options';
+import { FilterOption, FilterType } from '../../../../../shared/components/ui/table-filter/filter-options';
 import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TableHelper } from '../../../../../core/helpers/table-helper';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -42,11 +44,12 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   @Input() assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
   @Input() parentAssetTypeId: ID | null;
 
-  public titleMapping:
+  titleMapping:
     { [k: string]: string } = { '=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates' };
 
-  public createWizardRef: DynamicDialogRef;
-  public assetTypeTemplateForm: FormGroup;
+  menuType: ItemOptionsMenuType[];
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
 
   assetTypeTemplates: AssetTypeTemplate[];
   displayedAssetTypeTemplates: AssetTypeTemplate[];
@@ -55,20 +58,22 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   activeListItem: AssetTypeTemplate;
 
-  public menuType: ItemOptionsMenuType[];
-
-
-  private updateWizardRef: DynamicDialogRef;
-  private warningDialogRef: DynamicDialogRef;
-
   tableFilters: FilterOption[] = [
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion' },
     { filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState' }];
 
+
+  private createWizardRef: DynamicDialogRef;
+  private updateWizardRef: DynamicDialogRef;
+  private warningDialogRef: DynamicDialogRef;
+
+
   constructor(
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
     private assetTypeTemplateService: AssetTypeTemplateService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
      }
@@ -82,6 +87,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
       this.displayedAssetTypeTemplates = this.filteredAssetTypeTemplates = this.searchedAssetTypeTemplates =
         this.assetTypeTemplates = assetTypeTemplates;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   setActiveRow(assetTypeTemplate?: AssetTypeTemplate): void {
@@ -173,5 +180,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   deleteAssetTypeTemplate() {
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

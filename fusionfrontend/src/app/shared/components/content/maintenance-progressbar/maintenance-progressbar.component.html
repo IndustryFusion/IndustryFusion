@@ -1,0 +1,46 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="maintenance-value">
+  <div *ngIf="maintenanceValue" [style.width.%]="100" class="label-success">
+    <div *ngIf="state == maintenanceState.CRITICAL" class="container">
+      <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
+                     class="critical-bar"></p-progressBar>
+      <p [ngClass]="maintenancePercentage<=10 ? 'value-label-low' : 'value-label'"
+         class="progress-bar-label">{{ maintenanceValue | germanNumber }}</p>
+    </div>
+    <div *ngIf="state == maintenanceState.MEDIUMTERM" class="container">
+      <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
+                     class="midterm-bar"></p-progressBar>
+      <p [ngClass]="maintenancePercentage<=20 ? 'value-label-low' : 'value-label'"
+         class="progress-bar-label value-label">{{ maintenanceValue | germanNumber }}</p>
+    </div>
+    <div *ngIf="state == maintenanceState.LONGTERM" class="container">
+      <p-progressBar [showValue]="false" [value]="maintenancePercentage" class="progress-bar"
+                     class="longterm-bar"></p-progressBar>
+      <p class="progress-bar-label value-label">{{ maintenanceValue | germanNumber }}</p>
+      <p *ngIf="maintenancePercentage > 100" class="overshooting-indicator"></p>
+    </div>
+  </div>
+
+  <div *ngIf="isNaN(maintenanceValue)" class="container">
+    <p-progressBar [showValue]="false" [value]="0" class="unknown-bar" class="light-grey-bar"></p-progressBar>
+    <p class="progress-bar-label na-label">n.a.</p>
+  </div>
+  <div *ngIf="isZero(maintenanceValue)" class="container">
+    <p-progressBar [showValue]="false" [value]="0" class="unknown-bar" class="light-grey-bar"></p-progressBar>
+    <p class="progress-bar-label na-label">{{ maintenanceValue | germanNumber }}</p>
+  </div>
+</div>

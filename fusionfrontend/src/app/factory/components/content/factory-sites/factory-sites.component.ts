@@ -16,16 +16,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { CompanyQuery } from 'src/app/store/company/company.query';
-import { FactorySite, FactorySiteWithAssetCount } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
-import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
+import { FactorySite, FactorySiteWithAssetCount } from 'src/app/core/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/core/store/factory-site/factory-site.query';
+import { FactoryComposedQuery } from 'src/app/core/store/composed/factory-composed.query';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FactorySiteDialogComponent } from '../factory-site-dialog/factory-site-dialog.component';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 
 @Component({
   selector: 'app-factory-sites',
@@ -49,17 +50,21 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   factorySiteMapping:
     { [k: string]: string } = { '=0': 'No Factory sites', '=1': '# Factory site', other: '# Factory sites' };
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   private ref: DynamicDialogRef;
 
   constructor(
-    activatedRoute: ActivatedRoute,
     private factoryResolver: FactoryResolver,
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private factoryComposedQuery: FactoryComposedQuery,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     public dialogService: DialogService,
     private confirmationService: ConfirmationService) {
-    this.factoryResolver.resolve(activatedRoute);
+    this.factoryResolver.resolve(this.activatedRoute);
   }
 
   ngOnInit() {
@@ -70,6 +75,8 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
       this.factorySites = this.displayedFactorySites = this.factorySitesSearchedByName =
         this.factorySitesSearchedByStreet = factorySites;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   setActiveRow(factorySite?) {
@@ -133,12 +140,14 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.ref) {
-      this.ref.close();
-    }
+    this.ref?.close();
   }
 
   setSelectedFactorySite(factoryId: ID) {
     this.selectedFactorySite = factoryId;
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

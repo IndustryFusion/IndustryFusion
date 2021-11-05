@@ -16,9 +16,9 @@
 import { Component, DoCheck, IterableDiffer, IterableDiffers, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { Room } from '../../../../store/room/room.model';
-import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
+import { Room } from '../../../../core/store/room/room.model';
+import { FactoryAssetDetails } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 
 @Component({
   selector: 'app-assign-asset-to-room',

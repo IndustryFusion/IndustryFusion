@@ -18,10 +18,10 @@ import { Subject } from 'rxjs';
 import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
-import { OispAlertResolver } from './resolvers/oisp-alert-resolver';
+import { OispAlertResolver } from './core/resolvers/oisp-alert-resolver';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { UserManagementService } from './services/api/user-management.service';
+import { UserManagementService } from './core/services/api/user-management.service';
 import { KeycloakProfile } from 'keycloak-js';
 
 @Component({

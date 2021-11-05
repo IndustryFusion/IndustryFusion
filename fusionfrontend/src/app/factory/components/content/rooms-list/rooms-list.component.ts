@@ -16,24 +16,25 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { Room } from 'src/app/store/room/room.model';
-import { CompanyQuery } from 'src/app/store/company/company.query';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { FactoryAssetDetails } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
+import { Room } from 'src/app/core/store/room/room.model';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
 import { ConfirmationService } from 'primeng/api';
 import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset-to-room.component';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
-import { ActivatedRoute } from '@angular/router';
-import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
-import { RoomService } from '../../../../store/room/room.service';
-import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
-import { AssetService } from '../../../../store/asset/asset.service';
-import { RoomQuery } from '../../../../store/room/room.query';
-import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
+import { RoomService } from '../../../../core/store/room/room.service';
+import { FactoryAssetDetailsService } from '../../../../core/store/factory-asset-details/factory-asset-details.service';
+import { AssetService } from '../../../../core/store/asset/asset.service';
+import { RoomQuery } from '../../../../core/store/room/room.query';
+import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 
 @Component({
   selector: 'app-rooms-list',
@@ -66,6 +67,9 @@ export class RoomsListComponent implements OnInit {
   roomMapping:
     { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   ItemOptionsMenuType = ItemOptionsMenuType;
 
   constructor(private companyQuery: CompanyQuery,
@@ -75,9 +79,10 @@ export class RoomsListComponent implements OnInit {
               private dialogService: DialogService,
               private factoryResolver: FactoryResolver,
               private factorySiteQuery: FactorySiteQuery,
-              private activatedRoute: ActivatedRoute,
               private assetService: AssetService,
               private roomQuery: RoomQuery,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
               private confirmationService: ConfirmationService) {
     this.factoryResolver.resolve(this.activatedRoute);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
@@ -89,6 +94,8 @@ export class RoomsListComponent implements OnInit {
 
     this.createRoomForm(this.formBuilder);
     this.initObservers();
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   private initObservers() {
@@ -297,5 +304,9 @@ export class RoomsListComponent implements OnInit {
   private deleteRoom(room: Room) {
     const factorySiteId = this.factorySiteQuery.getActiveId();
     this.roomService.deleteRoom(this.companyId, factorySiteId, room.id).subscribe();
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

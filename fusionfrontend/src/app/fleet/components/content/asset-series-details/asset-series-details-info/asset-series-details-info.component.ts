@@ -14,17 +14,17 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
-import { ItemOptionsMenuType } from '../../../../../components/ui/item-options-menu/item-options-menu.type';
-import { CompanyQuery } from '../../../../../store/company/company.query';
+import { AssetSeriesDetails } from '../../../../../core/store/asset-series-details/asset-series-details.model';
+import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
+import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
 import { ConfirmationService } from 'primeng/api';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AssetSeriesService } from '../../../../../store/asset-series/asset-series.service';
+import { Router } from '@angular/router';
+import { AssetSeriesService } from '../../../../../core/store/asset-series/asset-series.service';
 import { Location } from '@angular/common';
-import { AssetSeriesDetailsResolver } from '../../../../../resolvers/asset-series-details-resolver.service';
-import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
-import { AssetSeriesDetailMenuService } from '../../../../../services/menu/asset-series-detail-menu.service';
+import { AssetSeriesDetailsResolver } from '../../../../../core/resolvers/asset-series-details.resolver';
+import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
+import { AssetSeriesDetailMenuService } from '../../../../../core/services/menu/asset-series-detail-menu.service';
 
 @Component({
   selector: 'app-asset-series-details-info',
@@ -39,7 +39,6 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE];
 
   constructor(private router: Router,
-              private route: ActivatedRoute,
               private routingLocation: Location,
               private confirmationService: ConfirmationService,
               private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
@@ -58,7 +57,7 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
 
   openEditWizard() {
     this.assetSeriesDetailMenuService.showEditWizard(this.assetSeries.id.toString(), () => {
-      this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
+      this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
       this.assetSeriesDetailsService.setActive(this.assetSeries.id);
     });
   }

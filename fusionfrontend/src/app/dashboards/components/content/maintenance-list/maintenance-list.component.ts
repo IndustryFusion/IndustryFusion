@@ -14,14 +14,14 @@
  */
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
-import { AssetType } from 'src/app/store/asset-type/asset-type.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { Company } from 'src/app/store/company/company.model';
-import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
-import { TreeNode } from 'primeng/api';
-import { OispAlert, OispAlertPriority } from 'src/app/store/oisp/oisp-alert/oisp-alert.model';
+import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Company } from 'src/app/core/store/company/company.model';
+import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
+import { SortEvent, TreeNode } from 'primeng/api';
+import { OispAlert, OispAlertPriority } from 'src/app/core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
 import {
@@ -29,6 +29,8 @@ import {
   AssetMaintenanceUtils as Utils,
   MaintenanceType
 } from '../../../../factory/util/asset-maintenance-utils';
+import { TableHelper } from '../../../../core/helpers/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -46,11 +48,15 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   companies: Company[];
   @Input()
   assetTypes: AssetType[];
+
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
-
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+
   faChevronCircleDown = faChevronCircleDown;
   faChevronCircleUp = faChevronCircleUp;
   faInfoCircle = faInfoCircle;
@@ -67,11 +73,12 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   utils = Utils;
 
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
   }
 
 
   ngOnInit(): void {
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnChanges(): void {
@@ -190,5 +197,54 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       treeNode.children = children;
     }
     return treeNode;
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
+  }
+
+  customSort(event: SortEvent) {
+    const daysTillMaintenace = 'daysTillMaintenance';
+    const operatingHoursTillMaintenance = 'operatingHoursTillMaintenance';
+    const type = (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) ? event.field ===
+      daysTillMaintenace ? AssetMaintenanceUtils.maintenanceDays : AssetMaintenanceUtils.maintenanceHours : null;
+
+    event.data.sort((data1, data2) => {
+      let value1;
+      let value2;
+      let result;
+
+      if (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) {
+        value1 = AssetMaintenanceUtils.getMaintenanceValue(data1.data, type);
+        value2 = AssetMaintenanceUtils.getMaintenanceValue(data2.data, type);
+      } else {
+        value1 = data1.data[event.field];
+        value2 = data2.data[event.field];
+      }
+
+      if (value1 == null && value2 != null) {
+        result = -1;
+      }
+      else if (value1 != null && value2 == null) {
+        result = 1;
+      }
+      else if (value1 == null && value2 == null) {
+        result = 0;
+      }
+      else if (typeof value1 === 'string' && typeof value2 === 'string') {
+        result = value1.localeCompare(value2);
+      }
+      else if (isNaN(value1) && !isNaN(value2)) {
+        result = event.order;
+      }
+      else if (!isNaN(value1) && isNaN(value2)) {
+        result = event.order * -1;
+      }
+      else {
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+      }
+
+      return (event.order * result);
+    });
   }
 }

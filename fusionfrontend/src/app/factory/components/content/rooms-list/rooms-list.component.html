@@ -18,7 +18,8 @@ under the License.
   <app-create-button (createItem)="showCreateDialog()" class="single-create-btn" text="Create Room"></app-create-button>
 </div>
 
-<p-table [paginator]="true" [rowsPerPageOptions]="[5,10,50]" [rows]="10" [showCurrentPageReport]="true" [value]="rooms"
+<p-table [paginator]="true" [rowHover]="false" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
+         [showCurrentPageReport]="true" [value]="rooms" (rowsChange)="updateRowCountInUrl($event)"
          class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
   <ng-template pTemplate="header">
     <tr>
