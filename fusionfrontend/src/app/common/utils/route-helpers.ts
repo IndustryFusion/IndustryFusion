@@ -50,4 +50,49 @@ export class RouteHelpers {
     return snapshot.url.map(segment => segment.path).includes(subroute);
   }
 
+  public static matchRoutesAllowPostfix(route: string, urls: string[], urlPrefix: string = ''): boolean {
+    return this.matchRoutes(route, urls, urlPrefix, true);
+  }
+
+  public static matchFullRoutes(route: string, urls: string[], urlPrefix: string = ''): boolean {
+    return this.matchRoutes(route, urls, urlPrefix, false);
+  }
+
+  private static matchRoutes(route: string, urls: string[], urlPrefix: string, allowPostfix: boolean): boolean {
+    let isMatching = false;
+    if (route && urls) {
+      for (const url of urls) {
+        isMatching = isMatching || this.matchRoute(route, url, urlPrefix, allowPostfix);
+      }
+    }
+    return isMatching;
+  }
+
+
+  public static matchRouteAllowPostfix(route: string, url: string, urlPrefix: string = ''): boolean {
+    return this.matchRoute(route, url, urlPrefix, true);
+  }
+
+  public static matchFullRoute(route: string, url: string, urlPrefix: string = ''): boolean {
+    return this.matchRoute(route, url, urlPrefix, false);
+  }
+
+  private static matchRoute(route: string, url: string, urlPrefix: string, allowPostfix: boolean): boolean {
+    if (!route || !url) {
+      console.warn('[route helpers]: invalid arguments for matching route');
+      return false;
+    }
+
+    const optionalQueryParams = '(\\?[\\w\\W]*)?';
+    const endSymbol = allowPostfix ? '' : '$';
+    url = this.removeTrailingEndSymbol(url);
+    return route.match(urlPrefix + url + optionalQueryParams + endSymbol) != null;
+  }
+
+  private static removeTrailingEndSymbol(url: string): string {
+    if (url.endsWith('$')) {
+      url = url.slice(0, url.length - 1);
+    }
+    return url;
+  }
 }

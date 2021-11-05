@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/store/asset/asset.service';
@@ -37,6 +37,8 @@ import { TableSelectedItemsBarType } from '../../../../components/ui/table-selec
 import { OispAlert, OispAlertPriority } from '../../../../store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { AssetDetailMenuService } from '../../../../services/menu/asset-detail-menu.service';
+import { TableHelper } from '../../../../common/utils/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-assets-list',
@@ -44,7 +46,7 @@ import { AssetDetailMenuService } from '../../../../services/menu/asset-detail-m
   styleUrls: ['./assets-list.component.scss'],
   providers: [DialogService, ConfirmationService]
 })
-export class AssetsListComponent implements OnInit, OnChanges {
+export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   company: Company;
   @Input()
@@ -66,9 +68,13 @@ export class AssetsListComponent implements OnInit, OnChanges {
   @Output()
   updateAssetEvent = new EventEmitter<[Room, FactoryAssetDetails]>();
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
   faExclamationTriangle = faExclamationTriangle;
+  OispPriority = OispAlertPriority;
 
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   selectedFactoryAssets: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
@@ -77,13 +83,12 @@ export class AssetsListComponent implements OnInit, OnChanges {
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
   activeListItem: FactoryAssetDetailsWithFields;
 
-  OispPriority = OispAlertPriority;
+  isLoading$: Observable<boolean>;
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
   companyId: ID;
-  ref: DynamicDialogRef;
 
-  isLoading$: Observable<boolean>;
+  private onboardingDialogRef: DynamicDialogRef;
 
   titleMapping:
     { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
@@ -98,6 +103,8 @@ export class AssetsListComponent implements OnInit, OnChanges {
 
   constructor(
     private assetService: AssetService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService) {
@@ -105,11 +112,18 @@ export class AssetsListComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnChanges(): void {
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetsDetailsWithFields;
     this.updateTree();
+  }
+
+  ngOnDestroy() {
+    if (this.onboardingDialogRef) {
+      this.onboardingDialogRef.close();
+    }
   }
 
   setActiveRow(asset?) {
@@ -155,7 +169,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
   }
 
   showOnboardDialog() {
-    const ref = this.dialogService.open(AssetInstantiationComponent, {
+    this.onboardingDialogRef = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
         assetsToBeOnboarded: this.factoryAssetsDetailsWithFields,
@@ -169,7 +183,7 @@ export class AssetsListComponent implements OnInit, OnChanges {
       contentStyle: { 'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%' },
     });
 
-    ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
+    this.onboardingDialogRef.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
       if (assetFormValues) {
         this.assetUpdated(assetFormValues);
       }
@@ -275,13 +289,18 @@ export class AssetsListComponent implements OnInit, OnChanges {
     if (value.subsystemIds?.length > 0) {
       const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       value.subsystemIds.forEach(id => {
-        const subsytem = this.factoryAssetsDetailsWithFields.find(asset => asset.id === id);
-        if (subsytem) {
-          children.push(this.addNode(treeNode, subsytem));
+        const subsystem = this.factoryAssetsDetailsWithFields.find(asset => asset.id === id);
+        if (subsystem) {
+          children.push(this.addNode(treeNode, subsystem));
         }
       });
       treeNode.children = children;
     }
     return treeNode;
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    this.rowCount = rowCount;
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

@@ -14,7 +14,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
@@ -29,6 +29,7 @@ import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset
 import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
 import { ConfirmationService } from 'primeng/api';
 import { AssetSeriesDetailMenuService } from '../../../../services/menu/asset-series-detail-menu.service';
+import { TableHelper } from '../../../../common/utils/table-helper';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -41,6 +42,10 @@ export class AssetSeriesListComponent implements OnInit {
   assetSeriesMapping:
     { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
+  isLoading$: Observable<boolean>;
   activeListItem: AssetSeriesDetails;
 
   assetSeries$: Observable<AssetSeriesDetails[]>;
@@ -50,10 +55,9 @@ export class AssetSeriesListComponent implements OnInit {
 
   ItemOptionsMenuType = ItemOptionsMenuType;
 
-  isLoading$: Observable<boolean>;
-
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private companyQuery: CompanyQuery,
     private assetSeriesService: AssetSeriesService,
     private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
@@ -73,6 +77,8 @@ export class AssetSeriesListComponent implements OnInit {
     this.assetSeries$.subscribe(assetSeries => {
       this.assetSeries = this.displayedAssetSeries = this.assetSeriesSearchedByName = assetSeries;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   setActiveRow(assetSeries: AssetSeriesDetails) {
@@ -124,7 +130,11 @@ export class AssetSeriesListComponent implements OnInit {
   }
 
   private deleteItem(id: ID) {
-    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
+    this.assetSeriesService.deleteItem(this.activatedRoute.snapshot.params.companyId, id).subscribe();
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 
 }

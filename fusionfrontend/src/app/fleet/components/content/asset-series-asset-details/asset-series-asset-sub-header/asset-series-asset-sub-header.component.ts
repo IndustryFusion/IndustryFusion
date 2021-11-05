@@ -59,7 +59,7 @@ export class AssetSeriesAssetSubHeaderComponent implements OnInit, OnDestroy {
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
     let newRoute = subroute2 ? ['..', subroute, subroute2] : ['..', subroute];
-    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`)) {
+    if (RouteHelpers.matchFullRoute(this.routingLocation.path(), `\/assets\/[0-9]*`)) {
       newRoute = newRoute.slice(1, newRoute.length);
     }
 

@@ -21,6 +21,8 @@ import { DialogType } from '../../../../common/models/dialog-type.model';
 import { Observable } from 'rxjs';
 import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
 import { ConfirmationService } from 'primeng/api';
+import { TableHelper } from '../../../../common/utils/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-quantity-type-list',
@@ -30,6 +32,13 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class QuantityTypeListComponent implements OnInit, OnDestroy {
 
+
+  titleMapping:
+    { [k: string]: string } = { '=0': 'No Quantity Types', '=1': '# Quantity Type', other: '# Quantity Types' };
+
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   quantityTypes$: Observable<QuantityType[]>;
   quantityTypes: QuantityType[];
   displayedQuantityTypes: QuantityType[];
@@ -38,13 +47,12 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
 
   activeListItem: QuantityType;
 
-  public titleMapping:
-    { [k: string]: string } = { '=0': 'No Quantity Types', '=1': '# Quantity Type', other: '# Quantity Types' };
-
-  public ref: DynamicDialogRef;
+  private ref: DynamicDialogRef;
 
   constructor(
     private quantityQuery: QuantityTypeQuery,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
   }
@@ -55,6 +63,8 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
       this.quantityTypes = this.displayedQuantityTypes = this.quantityTypesSearchedByName
         = this.quantityTypesSearchedByDescription = quantityTypes;
     });
+
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnDestroy() {
@@ -120,5 +130,9 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
   }
 
   deleteQuantityType() {
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }
