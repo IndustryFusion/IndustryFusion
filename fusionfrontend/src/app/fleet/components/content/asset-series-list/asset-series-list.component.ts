@@ -13,12 +13,12 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details.resolver';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-wizard.component';
@@ -36,7 +36,7 @@ import { AssetSeriesDetailMenuService } from '../../../../services/menu/asset-se
   styleUrls: ['./asset-series-list.component.scss'],
   providers: [ConfirmationService]
 })
-export class AssetSeriesListComponent implements OnInit, OnDestroy {
+export class AssetSeriesListComponent implements OnInit {
 
   assetSeriesMapping:
     { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
@@ -66,16 +66,13 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
+    this.resolveAssetSeriesDetails();
     this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.assetSeries$.subscribe(assetSeries => {
       this.assetSeries = this.displayedAssetSeries = this.assetSeriesSearchedByName = assetSeries;
     });
-  }
-
-  ngOnDestroy() {
   }
 
   setActiveRow(assetSeries: AssetSeriesDetails) {
@@ -91,18 +88,27 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
     this.updateDisplayedAssetSeries();
   }
 
-  updateDisplayedAssetSeries() {
-    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
-  }
-
   createAssetFromAssetSeries(assetSeriesId: ID) {
     this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
-      () => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
+      () => this.resolveAssetSeriesDetails());
   }
 
   editAssetSeries(assetSeriesId: ID) {
     this.assetSeriesDetailMenuService.showEditWizard(assetSeriesId.toString(),
-      () => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
+      () => this.resolveAssetSeriesDetails());
+  }
+
+  showDeleteDialog() {
+    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
+      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+  }
+
+  private resolveAssetSeriesDetails() {
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
+  }
+
+  private updateDisplayedAssetSeries() {
+    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
 
   private openAssetSeriesWizard(idString: string) {
@@ -114,12 +120,7 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
       width: '90%',
       header: 'AssetSeries Implementation',
     });
-    dynamicDialogRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
-  }
-
-  showDeleteDialog() {
-    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
-      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+    dynamicDialogRef.onClose.subscribe(() => this.resolveAssetSeriesDetails());
   }
 
   private deleteItem(id: ID) {

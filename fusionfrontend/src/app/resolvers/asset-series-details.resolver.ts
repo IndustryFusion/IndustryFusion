@@ -15,21 +15,28 @@
 
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { RoomService } from '../store/room/room.service';
-import { ID } from '@datorama/akita';
+
+import { AssetSeriesDetailsService } from '../store/asset-series-details/asset-series-details.service';
 import { CompanyQuery } from '../store/company/company.query';
+import { EMPTY, Observable } from 'rxjs';
+import { AssetSeriesDetails } from '../store/asset-series-details/asset-series-details.model';
 
 @Injectable({ providedIn: 'root' })
-export class RoomResolver implements Resolve<void>{
+export class AssetSeriesDetailsResolver implements Resolve<void>{
   constructor(private companyQuery: CompanyQuery,
-              private roomService: RoomService) { }
+              private assetSeriesDetailsService: AssetSeriesDetailsService) { }
 
   resolve(): void { // using Observable will result in deadlock when called from routing module
-    const companyId: ID = this.companyQuery.getActiveId();
+    this.resolveFromComponent().subscribe();
+  }
+
+  resolveFromComponent(): Observable<AssetSeriesDetails[]> {
+    const companyId = this.companyQuery.getActiveId();
     if (companyId) {
-      this.roomService.getRoomsOfCompany(companyId).subscribe();
+      return this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(companyId);
     } else {
-      console.error('[room resolver]: company unknown');
+      console.error('[asset series details resolver]: company unknown');
+      return EMPTY;
     }
   }
 }

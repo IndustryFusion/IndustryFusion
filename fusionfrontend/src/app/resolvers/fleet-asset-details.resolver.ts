@@ -14,29 +14,29 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-
-import { CompanyService } from '../store/company/company.service';
+import { Resolve } from '@angular/router';
 import { CompanyQuery } from '../store/company/company.query';
 import { FleetAssetDetailsService } from '../store/fleet-asset-details/fleet-asset-details.service';
+import { ID } from '@datorama/akita';
+import { EMPTY, Observable } from 'rxjs';
+import { FleetAssetDetails } from '../store/fleet-asset-details/fleet-asset-details.model';
 
 @Injectable({ providedIn: 'root' })
-export class FleetAssetDetailsResolver implements Resolve<any>{
-  constructor(private companyService: CompanyService,
-              private companyQuery: CompanyQuery,
+export class FleetAssetDetailsResolver implements Resolve<void>{
+  constructor(private companyQuery: CompanyQuery,
               private fleetAssetDetailsService: FleetAssetDetailsService) { }
 
-  resolve(route: ActivatedRouteSnapshot): void {
+  resolve(): void { // using Observable will (probably) result in deadlock when called from routing module
+    this.resolveFromComponent().subscribe();
+  }
 
-    let companyId = this.companyQuery.getActiveId();
-    if (route.parent) {
-      this.companyService.getCompanies().subscribe();
-      companyId = route.parent.params.companyId;
-      this.companyService.setActive(companyId);
-    }
-
-    if (companyId != null) {
-      this.fleetAssetDetailsService.getAssetDetailsOfCompany(companyId).subscribe();
+  resolveFromComponent(): Observable<FleetAssetDetails[]> {
+    const companyId: ID = this.companyQuery.getActiveId();
+    if (companyId) {
+      return this.fleetAssetDetailsService.getAssetDetailsOfCompany(companyId);
+    } else {
+      console.error('[fleet asset detail resolver]: company unknown');
+      return EMPTY;
     }
   }
 }

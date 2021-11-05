@@ -16,19 +16,17 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
-import { AssetQuery } from '../store/asset/asset.query';
-import { FieldDetailsService } from '../store/field-details/field-details.service';
+import { CompanyService } from '../store/company/company.service';
+import { RouteHelpers } from '../common/utils/route-helpers';
 
 @Injectable({ providedIn: 'root' })
-export class FieldInstanceResolver implements Resolve<any>{
-  constructor(private fieldDetailsService: FieldDetailsService,
-              private assetQuery: AssetQuery) { }
+export class CompanyResolver implements Resolve<any>{
+  constructor(private companyService: CompanyService) { }
 
-  // @ts-ignore
-  resolve(route: ActivatedRouteSnapshot): void {
+  resolve(route: ActivatedRouteSnapshot): void { // using Observable will result in deadlock when called from routing module
+    const companyId = RouteHelpers.findParamInFullActivatedRoute(route, 'companyId');
+    this.companyService.setActive(companyId);
 
-    this.assetQuery.waitForActive().subscribe( asset => {
-      this.fieldDetailsService.getFieldsOfAsset(asset.companyId, asset.id).subscribe();
-    });
+    this.companyService.getCompanies().subscribe();
   }
 }

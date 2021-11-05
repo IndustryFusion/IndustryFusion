@@ -20,7 +20,7 @@ import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-app
 import { FusionAppletEditorComponent } from './components/fusion-applet-editor/fusion-applet-editor.component';
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
-import { OispRuleFilteredByStatusResolver, OispSingleRuleResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
+import { OispRuleFilteredByStatusResolver, OispSingleRuleResolver } from '../resolvers/oisp-rule-filtered-by-status.resolver';
 import { OispRuleQuery } from '../store/oisp/oisp-rule/oisp-rule.query';
 
 const routes: Routes = [
