@@ -206,7 +206,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   customSort(event: SortEvent) {
     const daysTillMaintenace = 'daysTillMaintenance';
     const operatingHoursTillMaintenance = 'operatingHoursTillMaintenance';
-    let type = (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) ? event.field ===
+    const type = (event.field === daysTillMaintenace || event.field === operatingHoursTillMaintenance) ? event.field ===
       daysTillMaintenace ? AssetMaintenanceUtils.maintenanceDays : AssetMaintenanceUtils.maintenanceHours : null;
 
     event.data.sort((data1, data2) => {
