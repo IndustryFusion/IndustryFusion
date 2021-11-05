@@ -175,7 +175,7 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookUrl')?.setValue(assetSeries.handbookUrl);
-      this.assetForm.get('imageKey')?.setValue(assetSeries.handbookUrl);
+      this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey);
       this.assetForm.get('videoUrl')?.setValue(assetSeries.videoUrl);
       this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
