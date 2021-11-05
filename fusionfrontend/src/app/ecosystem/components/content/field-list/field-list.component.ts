@@ -51,7 +51,8 @@ export class FieldListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {  }
+    private confirmationService: ConfirmationService) {
+  }
 
   ngOnInit() {
     this.fields$ = this.fieldComposedQuery.selectAll();
@@ -75,10 +76,6 @@ export class FieldListComponent implements OnInit, OnDestroy {
   searchFieldByName(event: Field[]): void {
     this.fieldsSearchedByName = event;
     this.updateDisplayedFields();
-  }
-
-  private updateDisplayedFields(): void {
-    this.displayedFields = this.fieldsSearchedByName;
   }
 
   showCreateDialog() {
@@ -109,6 +106,10 @@ export class FieldListComponent implements OnInit, OnDestroy {
   }
 
   deleteField() {
+  }
+
+  private updateDisplayedFields(): void {
+    this.displayedFields = this.fieldsSearchedByName;
   }
 
   updateRowCountInUrl(rowCount: number): void {

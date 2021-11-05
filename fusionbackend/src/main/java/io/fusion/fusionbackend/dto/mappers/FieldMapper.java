@@ -48,6 +48,7 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .unitId(EntityDtoMapper.getEntityId(entity.getUnit()))
                 .thresholdType(entity.getThresholdType())
                 .widgetType(entity.getWidgetType())
+                .creationDate(entity.getCreationDate())
                 .build();
     }
 

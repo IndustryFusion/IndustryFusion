@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import java.time.OffsetDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -37,6 +38,7 @@ public class FieldDto extends BaseEntityDto {
     private UnitDto unit;
     private FieldThresholdType thresholdType;
     private FieldWidgetType widgetType;
+    private OffsetDateTime creationDate;
 
     @JsonCreator
     public FieldDto() {
