@@ -17,6 +17,11 @@
 @import 'src/assets/sass/components/labels';
 
 .asset-wizard-subsystems {
+  .edit-col {
+    display: flex;
+    justify-content: end;
+  }
+
   .manufacturer-icon {
     display: flex;
     align-items: center;

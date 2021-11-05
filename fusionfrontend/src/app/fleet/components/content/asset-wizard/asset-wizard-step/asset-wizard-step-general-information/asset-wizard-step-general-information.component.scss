@@ -31,12 +31,14 @@
         width: 5.2rem;
         height: 5.2rem;
         margin-top: 10px;
+        border-radius: 60px;
       }
 
       div {
         display: flex;
         flex-direction: column;
         margin-left: 16px;
+        margin-top: 10px;
       }
     }
   }
