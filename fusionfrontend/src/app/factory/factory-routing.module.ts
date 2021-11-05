@@ -29,14 +29,15 @@ import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.
 import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
-import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status-resolver.service';
+import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status.resolver';
 import { FactorySiteQuery } from '../store/factory-site/factory-site.query';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 import { RoomQuery } from '../store/room/room.query';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
-import { FieldInstanceResolver } from '../resolvers/field-instance.resolver';
+import { FieldInstanceDetailsResolver } from '../resolvers/field-instance-details.resolver';
+import { CompanyResolver } from '../resolvers/company.resolver';
 
 const routes: Routes = [
   {
@@ -54,6 +55,9 @@ const routes: Routes = [
         data: {
           roles: [Role.FACTORY_MANAGER],
           breadcrumb: 'Factory Sites'
+        },
+        resolve: {
+          company: CompanyResolver
         },
         children: [
           {
@@ -109,6 +113,9 @@ const routes: Routes = [
       roles: [Role.FACTORY_MANAGER],
       breadcrumb: 'Rooms'
     },
+    resolve: {
+      company: CompanyResolver
+    },
     children: [
       {
         path: '',
@@ -158,7 +165,8 @@ const routes: Routes = [
     path: 'factorymanager/companies/:companyId/assets',
     canActivate: [MainAuthGuard],
     resolve: {
-      devices: OispDeviceResolver
+      devices: OispDeviceResolver,
+      company: CompanyResolver,
     },
     data: {
       roles: [Role.FACTORY_MANAGER],
@@ -192,7 +200,7 @@ const routes: Routes = [
         canActivate: [MainAuthGuard],
         resolve: {
           assets: FactoryAssetDetailsResolver,
-          fieldDetails: FieldInstanceResolver
+          fieldInstanceDetails: FieldInstanceDetailsResolver
         },
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_DETAIL],
@@ -223,7 +231,7 @@ const routes: Routes = [
           {
             path: 'performance/performance',
             component: AssetPerformanceComponent,
-            resolve: { fieldDetails: FieldInstanceResolver},
+            resolve: { fieldInstanceDetails: FieldInstanceDetailsResolver},
             data: {
               breadcrumb: 'Performance',
             },

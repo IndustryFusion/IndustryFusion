@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details.resolver';
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-wizard.component';
@@ -70,7 +70,7 @@ export class AssetSeriesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.resolveAssetSeriesDetails();
     this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
@@ -94,18 +94,27 @@ export class AssetSeriesListComponent implements OnInit {
     this.updateDisplayedAssetSeries();
   }
 
-  updateDisplayedAssetSeries() {
-    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
-  }
-
   createAssetFromAssetSeries(assetSeriesId: ID) {
     this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
-      () => this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot));
+      () => this.resolveAssetSeriesDetails());
   }
 
   editAssetSeries(assetSeriesId: ID) {
     this.assetSeriesDetailMenuService.showEditWizard(assetSeriesId.toString(),
-      () => this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot));
+      () => this.resolveAssetSeriesDetails());
+  }
+
+  showDeleteDialog() {
+    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
+      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+  }
+
+  private resolveAssetSeriesDetails() {
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
+  }
+
+  private updateDisplayedAssetSeries() {
+    this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
 
   private openAssetSeriesWizard(idString: string) {
@@ -117,12 +126,7 @@ export class AssetSeriesListComponent implements OnInit {
       width: '90%',
       header: 'AssetSeries Implementation',
     });
-    dynamicDialogRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot));
-  }
-
-  showDeleteDialog() {
-    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
-      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+    dynamicDialogRef.onClose.subscribe(() => this.resolveAssetSeriesDetails());
   }
 
   private deleteItem(id: ID) {

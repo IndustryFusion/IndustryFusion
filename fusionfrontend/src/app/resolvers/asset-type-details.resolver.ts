@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { AssetTypeDetails } from '../store/asset-type-details/asset-type-details.model';
 
 @Injectable({ providedIn: 'root' })
-export class AssetTypeDetailsResolver implements Resolve<any> {
+export class AssetTypeDetailsResolver implements Resolve<AssetTypeDetails[]> {
   constructor(private assetTypeDetailsService: AssetTypeDetailsService) { }
 
   resolve(): Observable<AssetTypeDetails[]> {

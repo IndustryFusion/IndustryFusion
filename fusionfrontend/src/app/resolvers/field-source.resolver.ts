@@ -20,15 +20,17 @@ import { FieldSource } from '../store/field-source/field-source.model';
 import { Observable } from 'rxjs';
 import { RouteHelpers } from '../common/utils/route-helpers';
 import { ID } from '@datorama/akita';
+import { CompanyQuery } from '../store/company/company.query';
 
 @Injectable({ providedIn: 'root' })
 export class FieldSourceResolver implements Resolve<FieldSource[]>{
-  constructor(private fieldSourceService: FieldSourceService) { }
+  constructor(private companyQuery: CompanyQuery,
+              private fieldSourceService: FieldSourceService) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<FieldSource[]> {
-    const companyId: ID = RouteHelpers.findParamInFullActivatedRoute(route.pathFromRoot[1], 'companyId');
+    const companyId: ID = this.companyQuery.getActiveId();
     const assetSeriesId: ID = RouteHelpers.findParamInFullActivatedRoute(route, 'assetSeriesId');
-    if (companyId != null && assetSeriesId != null) {
+    if (companyId && assetSeriesId) {
       return this.fieldSourceService.getFieldSourcesOfAssetSeries(companyId, assetSeriesId);
     }
   }

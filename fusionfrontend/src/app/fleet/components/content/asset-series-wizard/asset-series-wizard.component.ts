@@ -15,7 +15,6 @@
 
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
-
 import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
 import { AssetSeries } from '../../../../store/asset-series/asset-series.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -30,7 +29,7 @@ import { AssetTypeQuery } from '../../../../store/asset-type/asset-type.query';
 import { AssetTypesResolver } from '../../../../resolvers/asset-types.resolver';
 import { FieldsResolver } from '../../../../resolvers/fields-resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
+import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details.resolver';
 import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../common/utils/wizard-helper';
 import { EnumHelpers } from '../../../../common/utils/enum-helpers';
@@ -75,27 +74,8 @@ export class AssetSeriesWizardComponent implements OnInit {
               private dialogConfig: DynamicDialogConfig,
               private dynamicDialogRef: DynamicDialogRef,
   ) {
-    this.resolve(dialogConfig.data.companyId);
+    this.resolve();
     this.initFromConfigData(dialogConfig);
-  }
-
-  private resolve(companyId: ID) {
-    this.fieldsResolver.resolve().subscribe();
-    this.connectivityTypeResolver.resolve().subscribe();
-    this.assetTypesResolver.resolve().subscribe();
-    this.assetSeriesDetailsResolver.resolveUsingCompanyId(companyId);
-  }
-
-  private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
-    this.companyId = dialogConfig.data.companyId;
-
-    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
-    this.mode = assetSeriesId ? DialogType.EDIT : DialogType.CREATE;
-
-    if (this.mode === DialogType.EDIT) {
-      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
-    }
   }
 
   ngOnInit() {
@@ -103,61 +83,10 @@ export class AssetSeriesWizardComponent implements OnInit {
     this.setIfFieldSourcesCanBeDeleted();
   }
 
-  private createAssetSeriesFormGroup(): void {
-    this.assetSeriesForm = this.formBuilder.group({
-      id: [],
-      version: [],
-      name: ['', WizardHelper.requiredTextValidator],
-      description: ['', WizardHelper.maxTextLengthValidator],
-      ceCertified: [null, Validators.required],
-      protectionClass: [null, WizardHelper.maxTextLengthValidator],
-      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
-      videoUrl: [null, WizardHelper.maxTextLengthValidator],
-      imageKey: [null, WizardHelper.maxTextLengthValidator],
-      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT}, Validators.required],
-      companyId: [null, Validators.required],
-    });
-
-    if (this.assetSeries) {
-      this.assetSeriesForm.patchValue(this.assetSeries);
-    }
-  }
-
-
-  private setIfFieldSourcesCanBeDeleted() {
-    this.fieldSourcesCanBeDeleted = true;
-    if (this.mode === DialogType.EDIT) {
-      this.assetSeriesDetailsQuery.selectAssetSeriesDetails(this.dialogConfig.data.assetSeriesId).subscribe(assetSeriesDetails => {
-        this.fieldSourcesCanBeDeleted = assetSeriesDetails.assetCount < 1;
-      });
-    }
-  }
-
-  private updateAssetSeries(assetSeries: AssetSeries) {
-    this.assetSeries = assetSeries;
-    this.createAssetSeriesFormGroup();
-    this.updateRelatedObjects(assetSeries);
-  }
-
-  private updateRelatedObjects(assetSeries: AssetSeries): void {
-    this.relatedManufacturer = this.companyQuery.getActive();
-    if (!this.relatedManufacturer) {
-      console.warn('[Asset wizard]: No active company found');
-    }
-
-    this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
-      if (!isLoading) {
-        const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
-        this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
-      }
-    });
-  }
-
   createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID): void {
     this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
       .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
   }
-
 
   nextStep(): void {
     if (this.step === this.totalSteps) {
@@ -195,6 +124,89 @@ export class AssetSeriesWizardComponent implements OnInit {
     return result;
   }
 
+  setConnectivitySettingsValid(isValid: boolean): void {
+    this.connectivitySettingsValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setAttributesValid(isValid: boolean): void {
+    this.attributesValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setMetricsValid(isValid: boolean): void {
+    this.metricsValid = isValid;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  private resolve() {
+    this.fieldsResolver.resolve().subscribe();
+    this.connectivityTypeResolver.resolve().subscribe();
+    this.assetTypesResolver.resolve().subscribe();
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
+  }
+
+  private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
+    this.companyId = dialogConfig.data.companyId;
+
+    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
+    this.mode = assetSeriesId ? DialogType.EDIT : DialogType.CREATE;
+
+    if (this.mode === DialogType.EDIT) {
+      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
+        .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
+    }
+  }
+
+  private createAssetSeriesFormGroup(): void {
+    this.assetSeriesForm = this.formBuilder.group({
+      id: [],
+      version: [],
+      name: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
+      ceCertified: [null, Validators.required],
+      protectionClass: [null, WizardHelper.maxTextLengthValidator],
+      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
+      videoUrl: [null, WizardHelper.maxTextLengthValidator],
+      imageKey: [null, WizardHelper.maxTextLengthValidator],
+      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
+      companyId: [null, Validators.required],
+    });
+
+    if (this.assetSeries) {
+      this.assetSeriesForm.patchValue(this.assetSeries);
+    }
+  }
+
+  private setIfFieldSourcesCanBeDeleted() {
+    this.fieldSourcesCanBeDeleted = true;
+    if (this.mode === DialogType.EDIT) {
+      this.assetSeriesDetailsQuery.selectAssetSeriesDetails(this.dialogConfig.data.assetSeriesId).subscribe(assetSeriesDetails => {
+        this.fieldSourcesCanBeDeleted = assetSeriesDetails.assetCount < 1;
+      });
+    }
+  }
+
+  private updateAssetSeries(assetSeries: AssetSeries) {
+    this.assetSeries = assetSeries;
+    this.createAssetSeriesFormGroup();
+    this.updateRelatedObjects(assetSeries);
+  }
+
+  private updateRelatedObjects(assetSeries: AssetSeries): void {
+    this.relatedManufacturer = this.companyQuery.getActive();
+    if (!this.relatedManufacturer) {
+      console.warn('[Asset wizard]: No active company found');
+    }
+
+    this.assetTypeTemplateQuery.selectLoading().subscribe(isLoading => {
+      if (!isLoading) {
+        const assetTypeTemplate = this.assetTypeTemplateQuery.getEntity(assetSeries.assetTypeTemplateId);
+        this.relatedAssetType = this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId);
+      }
+    });
+  }
+
   private updateAssetSeriesFromForm(): void {
     const updatedAssetSeries: AssetSeries = this.assetSeriesForm.getRawValue();
 
@@ -216,20 +228,5 @@ export class AssetSeriesWizardComponent implements OnInit {
       this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
         .subscribe(() => this.dynamicDialogRef.close());
     }
-  }
-
-  setConnectivitySettingsValid(isValid: boolean): void {
-    this.connectivitySettingsValid = isValid;
-    this.changeDetectorRef.detectChanges();
-  }
-
-  setAttributesValid(isValid: boolean): void {
-    this.attributesValid = isValid;
-    this.changeDetectorRef.detectChanges();
-  }
-
-  setMetricsValid(isValid: boolean): void {
-    this.metricsValid = isValid;
-    this.changeDetectorRef.detectChanges();
   }
 }
