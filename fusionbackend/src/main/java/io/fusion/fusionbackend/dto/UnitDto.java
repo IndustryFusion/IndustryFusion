@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -31,7 +31,7 @@ public class UnitDto extends BaseEntityDto {
     private String name;
     private String symbol;
     private String label;
-    private Date createdDate;
+    private OffsetDateTime creationDate;
     private Long quantityTypeId;
     private QuantityTypeDto quantityType;
 
