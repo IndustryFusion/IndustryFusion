@@ -17,10 +17,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -68,6 +68,8 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   loadedEvent = new EventEmitter<void>();
 
+  readonly STATUS_MAX_POINTS = 10000;
+
   name: string;
   initialized = false;
   currentNumberOfPoints = 0;
@@ -83,31 +85,117 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     { backgroundColor: '#e6cfce', borderColor: '#a14b47' },
   ];
 
-  public lineChartData: ChartDataSets[] = [ { data: [], label: '', fill: false, borderWidth: 2 } ];
+  public lineChartData: ChartDataSets[] = [{ data: [], label: '', fill: false, borderWidth: 2 }];
   public lineChartLabels: Label[] = [];
   public lineChartOptions: (ChartOptions & { annotation: any });
-  public lineChartColors: Color[] = [ { backgroundColor: 'rgba(148,159,177,0.2)', borderColor: '#53a7ca' } ];
+  public lineChartColors: Color[] = [{ backgroundColor: 'rgba(148,159,177,0.2)', borderColor: '#53a7ca' }];
   public lineChartLegend = true;
   public lineChartType = 'line';
   public lineChartPlugins = [pluginAnnotations];
 
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
-  constructor(
-    private oispService: OispService) { }
+  constructor(private oispService: OispService) {
+  }
 
   ngOnInit() {
     this.isStatus = this.fieldDetails.externalName === 'status';
     if (this.isStatus) {
-      this.maxPoints = 100000;
+      this.maxPoints = this.STATUS_MAX_POINTS;
     }
 
     this.lineChartData[0].label = this.fieldDetails.description;
     this.initLineChartOptions();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.initialized) {
+      if (changes.options || changes.maxPoints) {
+        switch (this.options) {
+          case 'current':
+            this.flushData();
+            this.loadNewData();
+            break;
+          case '1hour':
+            this.flushData();
+            this.loadHistoricData(this.maxPoints, false, 3600);
+            break;
+          case '1day':
+            this.flushData();
+            this.loadHistoricData(this.maxPoints, false, 86400);
+            break;
+          case 'customDate':
+            this.flushData();
+            if (changes.maxPoints && this.clickedOk) {
+              this.loadHistoricData(this.maxPoints, true);
+            }
+            break;
+          default:
+            break;
+        }
+      }
+      if (changes.startDate || changes.endDate) {
+        this.flushData();
+      }
+      if (changes.clickedOk) {
+        if (this.clickedOk) {
+          switch (this.options) {
+            case 'customDate':
+              this.loadHistoricData(this.maxPoints, true);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    } else {
+      this.initialized = true;
+      this.loadNewData();
+    }
+  }
+
+  public loadHistoricData(maxPoints: number, useDate: boolean, secondsInPast?: number): void {
+    if (useDate) {
+      const startDate = this.startDate.valueOf();
+      const endDate = moment(this.endDate).add(1, 'days').valueOf();
+      this.latestPoints$ = this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startDate, endDate, maxPoints);
+    } else {
+      this.latestPoints$ = this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
+    }
+    this.latestPoints$.pipe(takeUntil(this.destroy$))
+      .subscribe(
+        points => {
+          this.updateChart(points);
+        }
+      );
+  }
+
+  public updateChart(points: PointWithId[]): void {
+    points.forEach(point => {
+      this.currentNumberOfPoints += 1;
+      const data = this.lineChartData[0].data as ChartPoint[];
+      const dateOfPoint: moment.Moment = moment(point.ts);
+      data.push({ y: point.value, t: dateOfPoint });
+      this.lineChartLabels.push(dateOfPoint.toISOString());
+    });
+
+    if (this.isStatus) {
+      this.updateStatusPoints();
+    } else {
+      this.updateThresholds(points);
+      this.chart.update();
+    }
+
+    this.loadedEvent.emit();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
   private initLineChartOptions(): void {
-    const minMaxYAxis =  AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
+    const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
 
     const scales: ChartScales | LinearScale = {
       xAxes: [{
@@ -173,7 +261,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (this.fieldDetails.criticalThreshold) {
       annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL, minMax.min, this.fieldDetails.criticalThreshold.valueLower));
-      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL,  this.fieldDetails.criticalThreshold.valueUpper, minMax.max));
+      annotations.push(this.getAnnotation(ThresholdColorIndex.CRITICAL, this.fieldDetails.criticalThreshold.valueUpper, minMax.max));
     }
 
     return { annotations };
@@ -204,53 +292,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     return minMax;
-  }
-
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.initialized) {
-      if (changes.options || changes.maxPoints) {
-        switch ( this.options ){
-          case 'current':
-            this.flushData();
-            this.loadNewData();
-            break;
-          case '1hour':
-            this.flushData();
-            this.loadHistoricData(this.maxPoints, false, 3600);
-            break;
-          case '1day':
-            this.flushData();
-            this.loadHistoricData(this.maxPoints, false, 86400);
-            break;
-          case 'customDate':
-            this.flushData();
-            if (changes.maxPoints && this.clickedOk) {
-              this.loadHistoricData(this.maxPoints, true);
-            }
-            break;
-          default:
-            break;
-        }
-      }
-      if (changes.startDate || changes.endDate) {
-        this.flushData();
-      }
-      if (changes.clickedOk) {
-        if (this.clickedOk) {
-          switch ( this.options ) {
-            case 'customDate':
-              this.loadHistoricData(this.maxPoints, true);
-              break;
-            default:
-              break;
-          }
-        }
-      }
-    } else {
-      this.initialized = true;
-      this.loadNewData();
-    }
   }
 
   private flushData(): void {
@@ -288,41 +329,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       );
   }
 
-  public loadHistoricData(maxPoints: number, useDate: boolean, secondsInPast?: number): void {
-    if (useDate) {
-      const startDate = this.startDate.valueOf();
-      const endDate = moment(this.endDate).add(1, 'days').valueOf();
-      this.latestPoints$ =  this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startDate, endDate, maxPoints);
-    } else {
-      this.latestPoints$ =  this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
-    }
-    this.latestPoints$.pipe(takeUntil(this.destroy$))
-      .subscribe(
-        points => {
-          this.updateChart(points);
-        }
-      );
-  }
-
-  public updateChart(points: PointWithId[]): void {
-    points.forEach(point => {
-      this.currentNumberOfPoints += 1;
-      const data = this.lineChartData[0].data as ChartPoint[];
-      const dateOfPoint: moment.Moment = moment(point.ts);
-      data.push({ y: point.value, t: dateOfPoint });
-      this.lineChartLabels.push(dateOfPoint.toISOString());
-    });
-
-    if (this.isStatus) {
-      this.updateStatusPoints();
-    } else {
-      this.updateThresholds(points);
-      this.chart.update();
-    }
-
-    this.loadedEvent.emit();
-  }
-
   private updateThresholds(newPoints: PointWithId[]): void {
     const minMax = this.getUpdatedYMinMax(newPoints);
     this.chart.chart.options.scales.yAxes[0].ticks.min = minMax.min;
@@ -337,7 +343,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     this.statuses = [];
     this.lineChartData[0].data.forEach(chartPoint => {
       if (typeof chartPoint.y === 'number') {
-        this.statuses.push( { status: Math.round(chartPoint.y), time: chartPoint.t } );
+        this.statuses.push({ status: Math.round(chartPoint.y), time: chartPoint.t });
       }
     });
   }
@@ -352,11 +358,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       min: Math.min(minMaxOfNewPoints.min, minMaxOfChart.min),
       max: Math.max(minMaxOfNewPoints.max, minMaxOfChart.max)
     };
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }
 
