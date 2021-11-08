@@ -47,7 +47,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   startDate: Date;
   endDate: Date = new Date(Date.now());
   minDate: Date;
-  maxDate: Date;
+  maxDate: Date = new Date(Date.now());
 
   faExclamationCircle = faExclamationCircle;
   faTimes = faTimes;
@@ -112,7 +112,6 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   setStartDate(startDate: Date) {
     this.startDate = startDate;
     this.minDate = startDate;
-    this.maxDate = new Date(Date.now());
     this.choiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
   }
 

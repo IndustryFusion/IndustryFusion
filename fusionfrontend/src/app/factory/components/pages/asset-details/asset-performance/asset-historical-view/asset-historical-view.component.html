@@ -17,28 +17,28 @@ under the License.
 
   <div class="p-grid p-jc-between list-header list-header">
     <div class="caption">Historical View</div>
-    <p-selectButton (ngModelChange)="onChangeRoute()"
-                    [(ngModel)]="viewMode"
-                    [options]="viewModeOptions"
-                    class="performance-views space-right"
-                    optionLabel="name"
-                    optionValue="value">
+    <p-selectButton  class="performance-views space-right"
+                     optionLabel="name"
+                     optionValue="value"
+                     [options]="viewModeOptions"
+                     [(ngModel)]="viewMode"
+                     (ngModelChange)="onChangeRoute()">
     </p-selectButton>
   </div>
 
   <div class="time-interval-selectors">
     <div class="selector-with-points">
-      <p-selectButton (ngModelChange)="onTimeslotChanged()"
-                      [(ngModel)]="currentTimeslot"
-                      [options]="timeSlotOptions"
-                      class="radio-wrapper"
-                      optionLabel="name"
-                      optionValue="value">
+      <p-selectButton  class="radio-wrapper"
+                       optionLabel="name"
+                       optionValue="value"
+                       [options]="timeSlotOptions"
+                       [(ngModel)]="currentTimeslot"
+                       (ngModelChange)="onTimeslotChanged()">
       </p-selectButton>
       <div *ngIf="choiceConfiguration.chooseMaxPointsInline" class="maxpoints">
         <label class="points-label">Choose max. Datapoints:</label>
-        <p-dropdown (ngModelChange)="onOkClicked()" [(ngModel)]="maxPoints" [options]="maxItemsOptions"
-                    class="points-dropdown-inline">
+        <p-dropdown class="points-dropdown-inline" [options]="maxItemsOptions" [(ngModel)]="maxPoints"
+                    (ngModelChange)="onOkClicked()">
         </p-dropdown>
       </div>
     </div>
@@ -61,21 +61,21 @@ under the License.
         <div class="interval-options">
           <div class="maxpoints">
             <label class="points-label">Choose max. Datapoints</label>
-            <p-dropdown [(ngModel)]="maxPoints" [options]="maxItemsOptions" class="points-dropdown">
+            <p-dropdown class="points-dropdown" [options]="maxItemsOptions" [(ngModel)]="maxPoints">
             </p-dropdown>
           </div>
           <div class="dater">
             <ng-container *ngIf="choiceConfiguration.chooseStartDate">
               <label class="datelabel">Choose start date</label>
-              <p-calendar (ngModelChange)="setStartDate($event)" [maxDate]="maxDate" [ngModel]="startDate"
-                          class="calendar" WdateFormat="dd.mm.yy" showButtonBar="true" showIcon="true"></p-calendar>
+              <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
+                          [ngModel]="startDate" [maxDate]="maxDate" (ngModelChange)="setStartDate($event)"></p-calendar>
             </ng-container>
           </div>
           <div class="dater">
             <ng-container *ngIf="choiceConfiguration.chooseEndDate">
               <label class="datelabel">Choose end date</label>
-              <p-calendar [(ngModel)]="endDate" [maxDate]="maxDate" [minDate]="minDate" class="calendar"
-                          dateFormat="dd.mm.yy" showButtonBar="true" showIcon="true"></p-calendar>
+              <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
+                          [minDate]="minDate" [maxDate]="maxDate" [ngModel]="endDate"></p-calendar>
             </ng-container>
           </div>
         </div>
@@ -96,16 +96,15 @@ under the License.
             </div>
           </div>
         </div>
-        <button (click)="resetOptions()" aria-label="Close" class="gotIt" type="button">
-          <fa-icon [icon]="faTimes" aria-hidden="true" class="fa-fw"></fa-icon>
-          Got it!
+        <button type="button" class="gotIt" aria-label="Close" (click)="resetOptions()">
+          <fa-icon  aria-hidden="true" [icon]="faTimes" class="fa-fw"></fa-icon> Got it!
         </button>
       </div>
     </ng-container>
 
-    <div *ngIf="currentTimeslot === 'customDate'" class="ok-button">
+    <div class="ok-button" *ngIf="currentTimeslot === 'customDate'">
       <ng-container *ngIf="choiceConfiguration.chooseButton">
-        <button (click)="onOkClicked()" class="if-button button button-primary">OK</button>
+        <button class="if-button button button-primary" (click)="onOkClicked()">OK</button>
       </ng-container>
     </div>
   </div>
@@ -115,10 +114,9 @@ under the License.
       <ng-container *ngFor="let field of assetWithFields.fields">
         <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
           <!--suppress XmlDuplicatedId -->
-          <app-asset-charts (loadedEvent)="isChartOrTableLoaded(field)" [asset]="assetWithFields"
-                            [clickedOk]="choiceConfiguration.clickedOk" [endDate]="endDate" [fieldDetails]="field"
-                            [maxPoints]="maxPoints" [options]="currentTimeslot" [startDate]="startDate"
-                            id="metric-{{field.externalName}}"></app-asset-charts>
+          <app-asset-charts id="metric-{{field.externalName}}" [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
+                            [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
+                            [options]="currentTimeslot" [startDate]="startDate" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-charts>
         </ng-container>
       </ng-container>
     </div>
@@ -129,8 +127,8 @@ under the License.
           <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
             <div class="p-md-12 p-col-align-start">
               <!--suppress XmlDuplicatedId -->
-              <app-asset-tables (loadedEvent)="isChartOrTableLoaded(field)" [asset]="assetWithFields" [field]="field"
-                                [options]="currentTimeslot" id="metric-{{field.externalName}}"></app-asset-tables>
+              <app-asset-tables id="metric-{{field.externalName}}" [asset]="assetWithFields" [field]="field"
+                                [options]="currentTimeslot" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-tables>
             </div>
           </ng-container>
         </ng-container>
