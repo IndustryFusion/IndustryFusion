@@ -75,7 +75,7 @@ under the License.
             <ng-container *ngIf="choiceConfiguration.chooseEndDate">
               <label class="datelabel">Choose end date</label>
               <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
-                          [minDate]="minDate" [maxDate]="maxDate" [ngModel]="endDate"></p-calendar>
+                          [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="endDate"></p-calendar>
             </ng-container>
           </div>
         </div>
