@@ -126,6 +126,10 @@ export class MetricsGroupComponent implements OnInit, OnChanges {
     }
   }
 
+  hasValue(metric: MetricDetail): boolean {
+    return metric?.latestValue != null;
+  }
+
   hasAnyThreshold(fieldDetail: FieldDetails): boolean {
     return fieldDetail.absoluteThreshold != null || fieldDetail.criticalThreshold != null || fieldDetail.idealThreshold != null;
   }
