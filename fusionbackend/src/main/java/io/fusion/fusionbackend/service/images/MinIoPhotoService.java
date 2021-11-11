@@ -115,24 +115,30 @@ public class MinIoPhotoService {
         String imageContentWithoutContentType = imageContent64Based.replace("data:" + contentType + ";base64,", "");
         byte[] imageContent = Base64.getDecoder().decode(imageContentWithoutContentType);
 
-        File filename = createTempFile(imageContent, contentType.replace("image/", ""));
-        assert filename != null;
+        File tempFile = createTempFile(imageContent, contentType.replace("image/", ""));
+        uploadTempFile(tempFile, contentType, getImagePath(imageKey));
+    }
+
+    private void uploadTempFile(final File tempFile, final String contentType, final String destinationPath) {
+        assert tempFile != null;
 
         try {
             minioClient.uploadObject(
                     UploadObjectArgs.builder()
                             .bucket(bucketName)
-                            .object(getImagePath(imageKey))
-                            .filename(filename.getAbsolutePath())
+                            .object(destinationPath)
+                            .filename(tempFile.getAbsolutePath())
                             .contentType(contentType)
                             .build());
         } catch (MinioException e) {
             System.out.println("Error occurred: " + e);
             System.out.println("HTTP trace: " + e.httpTrace());
             throw new ExternalApiException();
-        }  catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ExternalApiException();
+        } finally {
+            deleteTempFile(tempFile);
         }
     }
 
@@ -156,5 +162,9 @@ public class MinIoPhotoService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void deleteTempFile(File file) {
+        file.deleteOnExit();
     }
 }
