@@ -24,6 +24,8 @@ import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Company } from '../../../../../../core/store/company/company.model';
 import { AssetType } from '../../../../../../core/store/asset-type/asset-type.model';
 import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
+import { ImageService } from '../../../../../../core/services/api/image.service';
+import { CompanyQuery } from '../../../../../../core/store/company/company.query';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',
@@ -31,6 +33,11 @@ import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
   styleUrls: ['./asset-wizard-step-general-information.component.scss']
 })
 export class AssetWizardStepGeneralInformationComponent implements OnInit {
+
+  constructor(private assetSeriesQuery: AssetSeriesQuery,
+              private companyQuery: CompanyQuery,
+              private imageService: ImageService,
+              private wizardRef: DynamicDialogRef) { }
 
   @Input() assetForm: FormGroup;
   @Input() relatedAssetSeries: AssetSeries;
@@ -44,9 +51,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   public assetSeries$: Observable<AssetSeries[]>;
 
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
-
-  constructor(private assetSeriesQuery: AssetSeriesQuery,
-              private wizardRef: DynamicDialogRef) { }
+  public assetImage: string;
 
   ngOnInit(): void {
     this.assetSeries$ = this.assetSeriesQuery.selectAll();
@@ -73,6 +78,22 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   onStart(): void {
     if (this.isReadyForNextStep()) {
       this.stepChange.emit(AssetWizardStep.GENERAL_INFORMATION + 1);
+    }
+  }
+
+  onImageUpload(event: any): void {
+    const uploadedImage: any = event.target.files[0];
+    if (uploadedImage) {
+      const companyId = this.companyQuery.getActiveId();
+
+      const reader = new FileReader();
+      reader.addEventListener('load', (readFileEvent: any) => {
+        this.imageService.uploadImage(companyId, uploadedImage.name, readFileEvent.target.result, uploadedImage.size);
+        this.assetForm.get('imageKey').setValue(uploadedImage.name);
+        this.imageService.getImage(companyId, uploadedImage.name).subscribe(imageBase64 => this.assetImage = imageBase64);
+      });
+
+      reader.readAsDataURL(uploadedImage);
     }
   }
 }

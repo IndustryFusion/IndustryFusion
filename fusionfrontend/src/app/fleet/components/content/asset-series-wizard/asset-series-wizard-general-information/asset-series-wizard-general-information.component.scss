@@ -30,13 +30,13 @@
      width: 100%;
     }
 
-    .upload-button {
+    .image-upload-container {
       margin-top: 1.2rem;
       display: flex;
       flex-direction: row;
       align-items: center;
 
-      .upload-pic {
+      .upload-button {
         background: transparent url("^assets/icons/upload-icon.svg") 0 0 no-repeat padding-box;
         opacity: 1;
         width: 100px;
