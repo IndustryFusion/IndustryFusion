@@ -14,10 +14,16 @@
  */
 
 import { OispDeviceStatus } from '../../services/api/kairos.model';
+import { ID } from '@datorama/akita';
 
 export class Status {
   gotData: boolean;
   statusValue: string;
+}
+
+export class StatusWithAssetId {
+  factoryAssetId: ID;
+  status: Status;
 }
 
 export class StatusPoint {
