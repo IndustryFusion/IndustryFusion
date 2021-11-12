@@ -59,4 +59,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
     });
   }
 
+  getAssetLinkByStatus(event) {
+    return ['/factorymanager/companies/2/assets/status/' + event];
+  }
 }

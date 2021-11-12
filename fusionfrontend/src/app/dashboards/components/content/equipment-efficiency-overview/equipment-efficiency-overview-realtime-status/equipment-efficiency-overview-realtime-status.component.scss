@@ -21,3 +21,13 @@
   padding-top: 1.0rem;
   padding-left: 5rem;
 }
+
+.mouse-over-cursor {
+  &:hover {
+    cursor: pointer !important;
+  }
+
+  :host ::ng-deep .if-label-bigger {
+    cursor: pointer !important;
+  }
+}
