@@ -68,7 +68,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   loadedEvent = new EventEmitter<void>();
 
-  readonly STATUS_MAX_POINTS = 10000;
+  readonly STATUS_MAX_POINTS = 100000;
 
   name: string;
   initialized = false;
