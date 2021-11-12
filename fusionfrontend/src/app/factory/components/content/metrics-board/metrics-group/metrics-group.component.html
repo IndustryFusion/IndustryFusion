@@ -42,21 +42,24 @@ under the License.
                 <ng-container *ngIf="hasAnyThreshold(metric.fieldDetails)">
                   <app-gauge-chart [asset]="asset" [fieldDetail]="metric.fieldDetails" [metricValue]="metric.latestValue"></app-gauge-chart>
                 </ng-container>
-                <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetails) && metric.latestValue != null">
+                <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetails) && hasValue(metric.latestValue)">
                   <label class="metric-value">{{metric.latestValue | germanNumber}}</label>
                   <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
+                </ng-container>
+                <ng-container *ngIf="!hasAnyThreshold(metric.fieldDetails) && !hasValue(metric.latestValue)">
+                  <label class="metric-value">n.a.</label>
                 </ng-container>
               </div>
 
               <div *ngSwitchDefault>
-                <ng-container *ngIf="metric.latestValue != null">
+                <ng-container *ngIf="hasValue(metric)">
                   <label class="metric-value">{{metric.latestValue | germanNumber}}</label>
                   <label class="metric-unit">{{metric.fieldDetails.unit}}</label>
                 </ng-container>
               </div>
             </div>
 
-            <div *ngIf="metric.latestValue == null && (metric.fieldDetails.widgetType === WidgetType.RAW)">
+            <div *ngIf="!hasValue(metric) && (metric.fieldDetails.widgetType === WidgetType.RAW)">
               <label class="metric-value">n.a.</label>
             </div>
 
