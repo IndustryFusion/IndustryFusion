@@ -39,6 +39,8 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@forta
 import { AssetDetailMenuService } from '../../../../services/menu/asset-detail-menu.service';
 import { TableHelper } from '../../../../common/utils/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RouteHelpers } from '../../../../common/utils/route-helpers';
+import { StatusWithAssetId } from '../../../models/status.model';
 
 @Component({
   selector: 'app-assets-list',
@@ -61,6 +63,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   allRoomsOfFactorySite: Room[];
   @Input()
   room: Room;
+  @Input()
+  factoryAssetStatuses: StatusWithAssetId[];
   @Output()
   selectedEvent = new EventEmitter<ID[]>();
   @Output()
@@ -88,6 +92,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   assetDetailsForm: FormGroup;
   companyId: ID;
 
+  statusType: ID;
+
   private onboardingDialogRef: DynamicDialogRef;
 
   titleMapping:
@@ -99,7 +105,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'}];
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'},
+    { filterType: FilterType.STATUSFILTER, columnName: 'Status', attributeToBeFiltered: 'status'}];
 
   constructor(
     private assetService: AssetService,
@@ -113,10 +120,19 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
+    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
   }
 
   ngOnChanges(): void {
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetsDetailsWithFields;
+
+    if (this.statusType !== null && this.factoryAssetStatuses !== null && this.factoryAssetStatuses !== []) {
+      this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => {
+        return this.factoryAssetStatuses.filter(factoryAssetStatus => factoryAssetStatus.status.statusValue === null ?
+          String(this.statusType) === '0' : String(factoryAssetStatus.status.statusValue) === String(this.statusType))
+          .map(factoryAssetStatusWithId => factoryAssetStatusWithId.factoryAssetId).includes(asset.id);
+      });
+    }
     this.updateTree();
   }
 

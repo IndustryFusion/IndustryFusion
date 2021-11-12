@@ -77,7 +77,7 @@ export class FactoryResolver {
     private assetQuery: AssetQuery,
     private assetDetailsService: FactoryAssetDetailsService,
     private assetDetailsQuery: FactoryAssetDetailsQuery,
-    private fieldService: FieldDetailsService,
+    private fieldDetailsService: FieldDetailsService,
     private fieldDetailsQuery: FieldDetailsQuery,
     private factoryComposedQuery: FactoryComposedQuery,
     private countryResolver: CountryResolver) {
@@ -95,6 +95,7 @@ export class FactoryResolver {
     const factorySiteId = this.resolveFactorySite(activatedRoute, companyId);
     this.resolveRoom(activatedRoute, factorySiteId);
     this.resolveAsset(activatedRoute, companyId);
+    this.resolveStatus(activatedRoute);
   }
 
   private resolveCompany(activatedRoute: ActivatedRoute): ID {
@@ -120,7 +121,7 @@ export class FactoryResolver {
       this.assetDetailsQuery.selectAssetDetailsOfCompany(companyId).pipe(
         switchMap(assetDetailsArray =>
           forkJoin(
-            assetDetailsArray.map(assetDetails => this.fieldService.getFieldsOfAsset(companyId, assetDetails.id))))
+            assetDetailsArray.map(assetDetails => this.fieldDetailsService.getFieldsOfAsset(companyId, assetDetails.id))))
       ).subscribe();
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinAssetsDetailsWithFieldInstancesWithAlerts();
       this.assetsWithDetailsAndFieldsAndValues$ = this.assetsWithDetailsAndFields$.pipe(
@@ -151,6 +152,13 @@ export class FactoryResolver {
     return factorySiteId;
   }
 
+  private resolveStatus(activatedRoute: ActivatedRoute) {
+    const statusType =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'statusType');
+    if (statusType != null) {
+      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectAssetsWithFieldInstanceDetails();
+    }
+  }
+
   private resolveRoom(activatedRoute: ActivatedRoute, factorySiteId: ID) {
     const roomId =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'roomId');
     this.roomService.setActive(roomId);
@@ -167,7 +175,7 @@ export class FactoryResolver {
     this.assetService.setActive(assetId);
     this.assetDetailsService.setActive(assetId);
     if (assetId != null) {
-      this.fieldService.getFieldsOfAsset(companyId, assetId).subscribe();
+      this.fieldDetailsService.getFieldsOfAsset(companyId, assetId).subscribe();
       this.assetQuery.setSelectedAssetIds([assetId]);
       this.fields$ = this.fieldDetailsQuery.selectFieldsOfAsset(assetId);
       this.assetWithFields$ = this.assetQuery.waitForActive().pipe(mergeMap((asset) => {
@@ -189,7 +197,7 @@ export class FactoryResolver {
       this.assetQuery.getSelectedAssets().pipe(
         switchMap(assets =>
           forkJoin(
-            assets.map(asset => this.fieldService.getFieldsOfAsset(companyId, asset.id))))
+            assets.map(asset => this.fieldDetailsService.getFieldsOfAsset(companyId, asset.id))))
       ).subscribe();
       this.assetsWithFields$ = this.factoryComposedQuery.selectFieldsOfSelectedAssets();
     }
