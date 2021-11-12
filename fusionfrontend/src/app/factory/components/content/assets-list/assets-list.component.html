@@ -39,7 +39,8 @@ under the License.
 <p-treeTable [(selection)]="selectedFactoryAssets" [alwaysShowPaginator]="true" [pageLinks]="5" [paginator]="true"
              [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount" [showCurrentPageReport]="true"
              [value]="treeData" (onPage)="updateRowCountInUrl($event.rows)" class="list-container"
-             currentPageReportTemplate="{first} to {last} of {totalRecords} Assets" sortMode="multiple">
+             currentPageReportTemplate="{first} to {last} of {totalRecords} Assets"
+             (sortFunction)="customSort($event)" [customSort]="true">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="1.5"></th>
@@ -61,7 +62,9 @@ under the License.
       <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
         <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="11">Status</th>
+      <th [style.width.%]="11" ttSortableColumn="status">Status
+        <p-treeTableSortIcon field="status"></p-treeTableSortIcon>
+      </th>
       <th [style.width.%]="5"></th>
     </tr>
   </ng-template>

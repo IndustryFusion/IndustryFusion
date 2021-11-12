@@ -30,7 +30,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { Asset, AssetWithFields } from '../../../../store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
-import { ConfirmationService, TreeNode } from 'primeng/api';
+import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
 import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
 import { TableSelectedItemsBarType } from '../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
@@ -319,4 +319,37 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.rowCount = rowCount;
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
+
+  customSort(event: SortEvent) {
+    const status = 'status';
+
+    event.data.sort((data1, data2) => {
+      let value1;
+      let value2;
+      let result;
+      if (event.field === status) {
+        value1 = this.factoryAssetStatuses.find(factoryAssetStatus =>
+          factoryAssetStatus.factoryAssetId === data1.data.id).status.statusValue;
+        value2 = this.factoryAssetStatuses.find(factoryAssetStatus =>
+          factoryAssetStatus.factoryAssetId === data2.data.id).status.statusValue;
+      } else {
+        value1 = data1.data[event.field];
+        value2 = data2.data[event.field];
+      }
+
+      if (value1 == null && value2 != null) {
+        result = -1;
+      } else if (value1 != null && value2 == null) {
+        result = 1;
+      } else if (value1 == null && value2 == null) {
+        result = 0;
+      } else if (typeof value1 === 'string' && typeof value2 === 'string') {
+        result = value1.localeCompare(value2);
+      } else {
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+      }
+      return (event.order * result);
+    });
+  }
+
 }
