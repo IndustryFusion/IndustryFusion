@@ -85,6 +85,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   displayedFactoryAssets: FactoryAssetDetailsWithFields[];
   filteredFactoryAssets: FactoryAssetDetailsWithFields[];
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
+  factoryAssetFilteredByStatus: FactoryAssetDetailsWithFields[];
   activeListItem: FactoryAssetDetailsWithFields;
 
   isLoading$: Observable<boolean>;
@@ -125,16 +126,20 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.factoryAssetsDetailsWithFields) {
-      this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetsDetailsWithFields;
+      this.displayedFactoryAssets = this.factoryAssetFilteredByStatus = this.searchedFactoryAssets = this.filteredFactoryAssets
+        = this.factoryAssetsDetailsWithFields;
     }
-    if (changes.factoryAssetStatuses && this.factoryAssetsDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
-      this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => {
+
+    if (this.statusType !== null && this.factoryAssetsDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
+      this.factoryAssetFilteredByStatus = this.factoryAssetsDetailsWithFields.filter(asset => {
         return this.factoryAssetStatuses.filter(factoryAssetStatus => factoryAssetStatus.status.statusValue === null ?
           String(this.statusType) === '0' : String(factoryAssetStatus.status.statusValue) === String(this.statusType))
           .map(factoryAssetStatusWithId => factoryAssetStatusWithId.factoryAssetId).includes(asset.id);
       });
     }
-    this.updateAssets();
+    if (this.filteredFactoryAssets !== null) {
+      this.updateAssets();
+    }
   }
 
   ngOnDestroy() {
@@ -263,11 +268,9 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields;
-    if (this.searchedFactoryAssets) {
-      this.displayedFactoryAssets = this.filteredFactoryAssets.filter(asset =>
-        this.searchedFactoryAssets.includes(asset));
-    }
+    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => this.searchedFactoryAssets
+      .filter(searchedAsset => this.filteredFactoryAssets.filter(filteredAsset => this.factoryAssetFilteredByStatus
+        .includes(filteredAsset)).includes(searchedAsset)).includes(asset));
     this.updateTree();
   }
 
