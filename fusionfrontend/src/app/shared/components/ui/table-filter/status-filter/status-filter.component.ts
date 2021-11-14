@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { StatusWithAssetId } from '../../../../factory/models/status.model';
+import { StatusWithAssetId } from '../../../../../factory/models/status.model';
 
 @Component({
   selector: 'app-status-filter',

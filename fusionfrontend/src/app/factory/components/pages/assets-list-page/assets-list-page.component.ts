@@ -33,7 +33,7 @@ import { AssetSeriesDetailsResolver } from 'src/app/core/resolvers/asset-series-
 import { RoomService } from '../../../../core/store/room/room.service';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
-import { StatusService } from '../../../../services/logic/status.service';
+import { StatusService } from '../../../../core/services/logic/status.service';
 
 
 @Component({

@@ -13,8 +13,8 @@
 * under the License.
 */
 
-@import 'abstract/variables';
-@import 'base/typography';
+@import 'src/styles/abstract/variables';
+@import 'src/styles/base/typography';
 
 .panel-class {
   ::ng-deep .p-overlaypanel:before {

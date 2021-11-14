@@ -39,7 +39,7 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@forta
 import { AssetDetailMenuService } from '../../../../core/services/menu/asset-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteHelpers } from '../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
 
 @Component({

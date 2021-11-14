@@ -17,7 +17,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FilterOption, FilterType } from 'src/app/shared/components/ui/table-filter/filter-options';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { StatusWithAssetId } from '../../../factory/models/status.model';
+import { StatusWithAssetId } from '../../../../factory/models/status.model';
 
 
 @Component({
