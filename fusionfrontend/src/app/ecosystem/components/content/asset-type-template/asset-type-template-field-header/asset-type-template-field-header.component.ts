@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { FieldType } from '../../../../../store/field-target/field-target.model';
+import { FieldType } from '../../../../../core/store/field-target/field-target.model';
 
 @Component({
   selector: 'app-asset-type-template-field-header',

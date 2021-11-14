@@ -37,6 +37,7 @@ public class AssetTypeTemplateDto extends BaseAssetDto {
     private PublicationState publicationState;
     private OffsetDateTime publishedDate;
     private Long publishedVersion;
+    private OffsetDateTime creationDate;
 
     @Builder.Default
     protected Set<Long> fieldTargetIds = new LinkedHashSet<>();

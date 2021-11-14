@@ -18,7 +18,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { RouteHelpers } from '../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-notifications-sub-header',

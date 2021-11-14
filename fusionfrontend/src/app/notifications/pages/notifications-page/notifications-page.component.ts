@@ -17,10 +17,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { OispNotification } from '../../../store/oisp/oisp-notification/oisp-notification.model';
-import { OispAlertStatus } from '../../../store/oisp/oisp-alert/oisp-alert.model';
-import { OispNotificationService } from '../../../store/oisp/oisp-notification/oisp-notification.service';
-import { RouteHelpers } from '../../../common/utils/route-helpers';
+import { OispNotification } from '../../../core/store/oisp/oisp-notification/oisp-notification.model';
+import { OispAlertStatus } from '../../../core/store/oisp/oisp-alert/oisp-alert.model';
+import { OispNotificationService } from '../../../core/store/oisp/oisp-notification/oisp-notification.service';
+import { RouteHelpers } from '../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-notifications-page',

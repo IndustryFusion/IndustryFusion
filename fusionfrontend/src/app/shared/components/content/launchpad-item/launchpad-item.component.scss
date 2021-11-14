@@ -1,0 +1,80 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import "src/styles/abstract/variables";
+@import "src/styles/base/typography";
+
+.item {
+    width: 9rem;
+    cursor: pointer;
+
+    .item-image {
+        width: 9rem;
+        height: 9rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 4px $dark-grey;
+        border-radius: 35px;
+    }
+
+    .item-name {
+        margin-top: 0.8rem;
+        text-align: center;
+        font: Regular $bigger-font-size/$big-line-height Muli;
+        letter-spacing: 0;
+        color: $regular-grey;
+        opacity: 1;
+    }
+
+    .fab-manager {
+        background: transparent linear-gradient(180deg, #32C5F0 0%, #2BA8CD 52%, #2590AF 100%) 0 0 no-repeat padding-box;
+    }
+
+    .fleet-manager {
+        background: transparent linear-gradient(135deg, #5256D0 0%, #39B4CB 100%) 0 0 no-repeat padding-box;
+    }
+
+    .ecosystem-manager {
+        background: transparent linear-gradient(136deg, #373B44 0%, #4286F4 100%) 0 0 no-repeat padding-box;
+    }
+
+    .dashboards {
+        background: transparent linear-gradient(180deg, #32C5F0 0%, #2BA8CD 60%, #2590AF 100%) 0 0 no-repeat padding-box;
+    }
+
+    .settings {
+        background: transparent linear-gradient(136deg, #E0E0E0 0%, #A4A4A4 51%, #999999 100%) 0 0 no-repeat padding-box;
+    }
+
+    .text {
+        max-width: 8rem;
+        text-align: center;
+        font-size: $big-font-size;
+        line-height: $even-bigger-line-height;
+        font-weight: bold;
+        letter-spacing: 0;
+        color: $basic-white;
+    }
+}
+
+.fusion-applet-icon {
+  background: url("^assets/icons/fusion_applets.svg");
+  display: inline-block;
+  width: 3.9rem;
+  height: 3.55rem;
+  background-size: contain;
+  align-items: center;
+}

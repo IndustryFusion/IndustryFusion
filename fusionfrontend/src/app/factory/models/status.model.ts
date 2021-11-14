@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../services/api/kairos.model';
+import { OispDeviceStatus } from '../../core/models/kairos.model';
 import { ID } from '@datorama/akita';
 
 export class Status {

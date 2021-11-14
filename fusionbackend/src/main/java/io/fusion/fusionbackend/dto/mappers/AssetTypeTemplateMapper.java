@@ -50,6 +50,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .publicationState(entity.getPublicationState())
                 .publishedDate(entity.getPublishedDate())
                 .publishedVersion(entity.getPublishedVersion())
+                .creationDate(entity.getCreationDate())
                 .build();
         dto.setFieldTargetIds(fieldTargetMapper.toEntityIdSet(entity.getFieldTargets()));
 

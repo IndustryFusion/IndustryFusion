@@ -16,28 +16,28 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { AssetService } from 'src/app/store/asset/asset.service';
-import { Company } from 'src/app/store/company/company.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { Room } from 'src/app/store/room/room.model';
+import { AssetService } from 'src/app/core/store/asset/asset.service';
+import { Company } from 'src/app/core/store/company/company.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Room } from 'src/app/core/store/room/room.model';
 import {
   AssetModalMode,
   AssetModalType,
   FactoryAssetDetails,
   FactoryAssetDetailsWithFields
-} from '../../../../store/factory-asset-details/factory-asset-details.model';
+} from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { Asset, AssetWithFields } from '../../../../store/asset/asset.model';
+import { Asset, AssetWithFields } from '../../../../core/store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
 import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
-import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
-import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
-import { TableSelectedItemsBarType } from '../../../../components/ui/table-selected-items-bar/table-selected-items-bar.type';
-import { OispAlert, OispAlertPriority } from '../../../../store/oisp/oisp-alert/oisp-alert.model';
+import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
+import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
+import { TableSelectedItemsBarType } from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
+import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { AssetDetailMenuService } from '../../../../services/menu/asset-detail-menu.service';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { AssetDetailMenuService } from '../../../../core/services/menu/asset-detail-menu.service';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../common/utils/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
@@ -92,7 +92,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
   companyId: ID;
-
   statusType: ID;
 
   private onboardingDialogRef: DynamicDialogRef;

@@ -24,7 +24,7 @@ import { FactorySitePageComponent } from './components/pages/factory-site-page/f
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { CompanyInfoComponent } from './components/content/company-info/company-info.component';
 import { AssetsListComponent } from './components/content/assets-list/assets-list.component';
-import { AssetStatusPipe } from '../pipes/asset-status-pipe';
+import { AssetStatusPipe } from '../shared/pipes/asset-status-pipe';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
 import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
@@ -34,10 +34,10 @@ import { AssetTablesComponent } from './components/content/asset-details/asset-t
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
 import { FactorySubHeaderComponent } from './components/content/factory-sub-header/factory-sub-header.component';
-import { PrecisionPipe } from '../pipes/precision.pipe';
+import { PrecisionPipe } from '../shared/pipes/precision.pipe';
 import { AssetStatusComponent } from './components/content/asset-status/asset-status.component';
-import { ArraysortextendedPipe } from '../pipes/arraysortextended.pipe';
-import { ArrayFilterPipe } from '../pipes/tablefilter.pipe';
+import { ArraysortextendedPipe } from '../shared/pipes/arraysortextended.pipe';
+import { ArrayFilterPipe } from '../shared/pipes/tablefilter.pipe';
 import { AssetInstantiationComponent } from './components/content/asset-instantiation/asset-instantiation.component';
 import { AssetInstantiationStartModalComponent } from './components/content/asset-instantiation/asset-instantiation-start-modal/asset-instantiation-start-modal.component';
 import { AssetInstantiationDescriptionModalComponent } from './components/content/asset-instantiation/asset-instantiation-description-modal/asset-instantiation-description-modal.component';
@@ -45,7 +45,7 @@ import { AssetInstantiationPairedModalComponent } from './components/content/ass
 import { AssetInstantiationFactorySiteAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-factory-site-assignment-modal/asset-instantiation-factory-site-assignment-modal.component';
 import { AssetInstantiationRoomAssignmentModalComponent } from './components/content/asset-instantiation/asset-instantiation-room-assignment-modal/asset-instantiation-room-assignment-modal.component';
 import { FactorySiteDialogComponent } from './components/content/factory-site-dialog/factory-site-dialog.component';
-import { IFCommon } from '../common/i-f-common.module';
+import { SharedModule } from '../shared/shared.module';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 // tslint:disable-next-line:max-line-length
 import { TableModule } from 'primeng/table';
@@ -68,7 +68,7 @@ import { AssetHistoricalViewComponent } from './components/pages/asset-details/a
 import { CalendarModule } from 'primeng/calendar';
 import { TreeTableModule } from 'primeng/treetable';
 import { TreeModule } from 'primeng/tree';
-import { HistoricalStatusBarChartComponent } from '../components/content/historical-status-bar-chart/historical-status-bar-chart.component';
+import { HistoricalStatusBarChartComponent } from '../shared/components/content/historical-status-bar-chart/historical-status-bar-chart.component';
 import { ChartModule } from 'primeng/chart';
 import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
 import { MetricsGroupComponent } from './components/content/metrics-board/metrics-group/metrics-group.component';
@@ -119,7 +119,7 @@ import { MetricsGroupComponent } from './components/content/metrics-board/metric
     MetricsGroupComponent,
   ],
   imports: [
-    IFCommon,
+    SharedModule,
     FactoryRoutingModule,
     ClarityModule,
     ChartsModule,

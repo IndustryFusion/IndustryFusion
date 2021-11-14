@@ -17,21 +17,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { Company } from 'src/app/store/company/company.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
-import { Room } from 'src/app/store/room/room.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { AssetQuery } from 'src/app/core/store/asset/asset.query';
+import { Company } from 'src/app/core/store/company/company.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/core/store/factory-site/factory-site.query';
+import { Room } from 'src/app/core/store/room/room.model';
 import {
   FactoryAssetDetails,
   FactoryAssetDetailsWithFields
-} from '../../../../store/factory-asset-details/factory-asset-details.model';
+} from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { ID } from '@datorama/akita';
-import { AssetService } from 'src/app/store/asset/asset.service';
-import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details.resolver';
-import { RoomService } from '../../../../store/room/room.service';
-import { RouteHelpers } from '../../../../common/utils/route-helpers';
+import { AssetService } from 'src/app/core/store/asset/asset.service';
+import { AssetSeriesDetailsResolver } from 'src/app/core/resolvers/asset-series-details.resolver';
+import { RoomService } from '../../../../core/store/room/room.service';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
 import { StatusService } from '../../../../services/logic/status.service';
 

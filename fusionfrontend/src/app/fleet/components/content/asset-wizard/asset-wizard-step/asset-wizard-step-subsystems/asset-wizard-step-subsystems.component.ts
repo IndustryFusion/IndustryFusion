@@ -15,11 +15,11 @@
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AssetWizardStep } from '../asset-wizard-step.model';
-import { Asset } from '../../../../../../store/asset/asset.model';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
 import { AssetWizardSharedSubsystemsComponent } from '../../asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
-import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
+import { FleetAssetDetails } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
 import { ID } from '@datorama/akita';
-import { FleetAssetDetailsService } from '../../../../../../store/fleet-asset-details/fleet-asset-details.service';
+import { FleetAssetDetailsService } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.service';
 
 @Component({
   selector: 'app-asset-wizard-step-subsystems',

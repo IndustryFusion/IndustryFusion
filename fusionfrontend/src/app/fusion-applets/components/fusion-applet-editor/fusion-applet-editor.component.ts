@@ -21,12 +21,12 @@ import {
   RuleResetType,
   RuleStatus,
   RuleType,
-} from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
+} from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Device } from '../../../store/oisp/oisp-device/oisp-device.model';
-import { OispDeviceQuery } from '../../../store/oisp/oisp-device/oisp-device.query';
-import { OispRuleService } from '../../../store/oisp/oisp-rule/oisp-rule.service';
-import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
+import { Device } from '../../../core/store/oisp/oisp-device/oisp-device.model';
+import { OispDeviceQuery } from '../../../core/store/oisp/oisp-device/oisp-device.query';
+import { OispRuleService } from '../../../core/store/oisp/oisp-rule/oisp-rule.service';
+import { OispRuleQuery } from '../../../core/store/oisp/oisp-rule/oisp-rule.query';
 
 @Component({
   selector: 'app-fusion-applet-editor',

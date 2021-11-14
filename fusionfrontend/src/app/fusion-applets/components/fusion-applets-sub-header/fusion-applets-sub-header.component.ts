@@ -16,7 +16,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { RouteHelpers } from '../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-fusion-applet-sub-header',

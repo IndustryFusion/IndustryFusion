@@ -16,20 +16,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AssetType } from '../../../../../../store/asset-type/asset-type.model';
-import { AssetTypeQuery } from '../../../../../../store/asset-type/asset-type.query';
+import { AssetType } from '../../../../../../core/store/asset-type/asset-type.model';
+import { AssetTypeQuery } from '../../../../../../core/store/asset-type/asset-type.query';
 import { FormGroup } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssetTypeTemplate } from '../../../../../../store/asset-type-template/asset-type-template.model';
-import { AssetTypeTemplateQuery } from '../../../../../../store/asset-type-template/asset-type-template.query';
+import { AssetTypeTemplate } from '../../../../../../core/store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplateQuery } from '../../../../../../core/store/asset-type-template/asset-type-template.query';
 import { map } from 'rxjs/operators';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
-import { AssetTypesComposedQuery } from '../../../../../../store/composed/asset-types-composed.query';
+import { AssetTypesComposedQuery } from '../../../../../../core/store/composed/asset-types-composed.query';
 import { AssetTypeTemplateWizardWarningDialogComponent } from '../asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { NameWithVersionPipe } from '../../../../../../pipes/namewithversion.pipe';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { NameWithVersionPipe } from '../../../../../../shared/pipes/namewithversion.pipe';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-one',

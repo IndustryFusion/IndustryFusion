@@ -16,11 +16,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { Location } from '@angular/common';
-import { FactoryAssetDetailsQuery } from '../../../../../store/factory-asset-details/factory-asset-details.query';
-import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
-import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
+import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
+import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

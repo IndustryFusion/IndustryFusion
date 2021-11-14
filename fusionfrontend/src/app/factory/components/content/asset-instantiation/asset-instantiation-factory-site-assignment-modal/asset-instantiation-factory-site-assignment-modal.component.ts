@@ -14,8 +14,8 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FactorySite } from '../../../../../store/factory-site/factory-site.model';
-import { AssetModalMode } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactorySite } from '../../../../../core/store/factory-site/factory-site.model';
+import { AssetModalMode } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 
 @Component({
   selector: 'app-asset-instantiation-factory-site-assignment-modal',

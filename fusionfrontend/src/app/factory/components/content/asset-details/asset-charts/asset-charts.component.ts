@@ -28,15 +28,15 @@ import { ChartDataSets, ChartOptions, ChartPoint, ChartScales, LinearScale } fro
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable, Subject, timer } from 'rxjs';
-import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { OispService } from 'src/app/services/api/oisp.service';
+import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { OispService } from 'src/app/core/services/api/oisp.service';
 import * as moment from 'moment';
-import { PointWithId } from '../../../../../services/api/oisp.model';
+import { PointWithId } from '../../../../../core/services/api/oisp.model';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { StatusPoint } from '../../../../models/status.model';
-import { AssetChartHelper } from '../../../../../common/utils/asset-chart-helper';
+import { AssetChartHelper } from '../../../../../core/helpers/asset-chart-helper';
 
 @Component({
   selector: 'app-asset-charts',

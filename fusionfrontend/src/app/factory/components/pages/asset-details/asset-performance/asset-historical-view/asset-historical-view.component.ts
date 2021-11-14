@@ -15,15 +15,15 @@
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { FieldDetails, FieldType, QuantityDataType } from 'src/app/store/field-details/field-details.model';
+import { FieldDetails, FieldType, QuantityDataType } from 'src/app/core/store/field-details/field-details.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
+import { AssetQuery } from 'src/app/core/store/asset/asset.query';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { ID } from '@datorama/akita';
-import { FactoryAssetDetailsResolver } from '../../../../../../resolvers/factory-asset-details.resolver';
-import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsResolver } from '../../../../../../core/resolvers/factory-asset-details.resolver';
+import { FactoryAssetDetailsWithFields } from '../../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
-import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../../../core/helpers/route-helpers';
 import { SelectItem } from 'primeng/api';
 import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';

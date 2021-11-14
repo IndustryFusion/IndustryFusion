@@ -21,23 +21,23 @@ import { AssetsGridPageComponent } from './components/pages/assets-grid-page/ass
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryManagerPageType } from './factory-routing.model';
-import { MainAuthGuard } from '../services/api/main-auth-guard.service';
-import { Role } from '../services/logic/roles.model';
+import { MainAuthGuard } from '../core/guards/main-auth.guard';
+import { Role } from '../core/models/roles.model';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
-import { FactoryAssetDetailsResolver } from '../resolvers/factory-asset-details.resolver';
-import { OispDeviceResolver } from '../resolvers/oisp-device-resolver';
+import { FactoryAssetDetailsResolver } from '../core/resolvers/factory-asset-details.resolver';
+import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
 import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
-import { OispRuleFilteredByStatusResolver } from '../resolvers/oisp-rule-filtered-by-status.resolver';
-import { FactorySiteQuery } from '../store/factory-site/factory-site.query';
+import { OispRuleFilteredByStatusResolver } from '../core/resolvers/oisp-rule-filtered-by-status.resolver';
+import { FactorySiteQuery } from '../core/store/factory-site/factory-site.query';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
-import { RoomQuery } from '../store/room/room.query';
+import { RoomQuery } from '../core/store/room/room.query';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
-import { FactoryAssetDetailsQuery } from '../store/factory-asset-details/factory-asset-details.query';
+import { FactoryAssetDetailsQuery } from '../core/store/factory-asset-details/factory-asset-details.query';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
-import { FieldInstanceDetailsResolver } from '../resolvers/field-instance-details.resolver';
-import { CompanyResolver } from '../resolvers/company.resolver';
+import { FieldInstanceDetailsResolver } from '../core/resolvers/field-instance-details.resolver';
+import { CompanyResolver } from '../core/resolvers/company.resolver';
 
 const routes: Routes = [
   {

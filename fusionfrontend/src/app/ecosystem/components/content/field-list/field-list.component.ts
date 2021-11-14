@@ -17,10 +17,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable } from 'rxjs';
-import { Field } from '../../../../store/field/field.model';
+import { Field } from '../../../../core/store/field/field.model';
 import { ConfirmationService } from 'primeng/api';
-import { FieldComposedQuery } from '../../../../store/composed/field-composed.query';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { FieldComposedQuery } from '../../../../core/store/composed/field-composed.query';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -51,7 +51,8 @@ export class FieldListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {  }
+    private confirmationService: ConfirmationService) {
+  }
 
   ngOnInit() {
     this.fields$ = this.fieldComposedQuery.selectAll();
@@ -75,10 +76,6 @@ export class FieldListComponent implements OnInit, OnDestroy {
   searchFieldByName(event: Field[]): void {
     this.fieldsSearchedByName = event;
     this.updateDisplayedFields();
-  }
-
-  private updateDisplayedFields(): void {
-    this.displayedFields = this.fieldsSearchedByName;
   }
 
   showCreateDialog() {
@@ -109,6 +106,10 @@ export class FieldListComponent implements OnInit, OnDestroy {
   }
 
   deleteField() {
+  }
+
+  private updateDisplayedFields(): void {
+    this.displayedFields = this.fieldsSearchedByName;
   }
 
   updateRowCountInUrl(rowCount: number): void {

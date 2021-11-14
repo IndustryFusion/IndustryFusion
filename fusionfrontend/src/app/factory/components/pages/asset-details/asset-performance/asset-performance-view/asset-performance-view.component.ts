@@ -15,16 +15,16 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
-import { RouteHelpers } from '../../../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../../../core/helpers/route-helpers';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FactoryResolver } from '../../../../../services/factory-resolver.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { StatusHours, StatusHoursOneDay } from '../../../../../../services/api/kairos-status-aggregation.model';
-import { EnumHelpers } from '../../../../../../common/utils/enum-helpers';
-import { KairosStatusAggregationService } from '../../../../../../services/api/kairos-status-aggregation.service';
-import { FactoryAssetDetailsWithFields } from '../../../../../../store/factory-asset-details/factory-asset-details.model';
+import { StatusHours, StatusHoursOneDay } from '../../../../../../core/models/kairos-status-aggregation.model';
+import { EnumHelpers } from '../../../../../../core/helpers/enum-helpers';
+import { KairosStatusAggregationService } from '../../../../../../core/services/api/kairos-status-aggregation.service';
+import { FactoryAssetDetailsWithFields } from '../../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import * as moment from 'moment';
-import { EquipmentEfficiencyHelper } from '../../../../../../common/utils/equipment-efficiency-helper';
+import { EquipmentEfficiencyHelper } from '../../../../../../core/helpers/equipment-efficiency-helper';
 
 
 @Component({

@@ -16,11 +16,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { FactoryAssetDetails } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { Room } from 'src/app/store/room/room.model';
-import { CompanyQuery } from 'src/app/store/company/company.query';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { FactoryAssetDetails } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
+import { Room } from 'src/app/core/store/room/room.model';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
@@ -28,13 +28,13 @@ import { ConfirmationService } from 'primeng/api';
 import { AssignAssetToRoomComponent } from '../assign-asset-to-room/assign-asset-to-room.component';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FactorySiteQuery } from '../../../../store/factory-site/factory-site.query';
-import { RoomService } from '../../../../store/room/room.service';
-import { FactoryAssetDetailsService } from '../../../../store/factory-asset-details/factory-asset-details.service';
-import { AssetService } from '../../../../store/asset/asset.service';
-import { RoomQuery } from '../../../../store/room/room.query';
-import { ItemOptionsMenuType } from 'src/app/components/ui/item-options-menu/item-options-menu.type';
-import { TableHelper } from '../../../../common/utils/table-helper';
+import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
+import { RoomService } from '../../../../core/store/room/room.service';
+import { FactoryAssetDetailsService } from '../../../../core/store/factory-asset-details/factory-asset-details.service';
+import { AssetService } from '../../../../core/store/asset/asset.service';
+import { RoomQuery } from '../../../../core/store/room/room.query';
+import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 
 @Component({
   selector: 'app-rooms-list',

@@ -15,15 +15,15 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AssetSeries } from '../../../../../../store/asset-series/asset-series.model';
-import { AssetSeriesQuery } from '../../../../../../store/asset-series/asset-series.query';
+import { AssetSeries } from '../../../../../../core/store/asset-series/asset-series.model';
+import { AssetSeriesQuery } from '../../../../../../core/store/asset-series/asset-series.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetWizardStep } from '../asset-wizard-step.model';
-import { Company } from '../../../../../../store/company/company.model';
-import { AssetType } from '../../../../../../store/asset-type/asset-type.model';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { Company } from '../../../../../../core/store/company/company.model';
+import { AssetType } from '../../../../../../core/store/asset-type/asset-type.model';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',

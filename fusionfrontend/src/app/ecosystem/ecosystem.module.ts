@@ -26,7 +26,7 @@ import { FieldsPageComponent } from './components/pages/fields-page/fields-page.
 import { QuantityTypesPageComponent } from './components/pages/quantity-types-page/quantity-types-page.component';
 import { UnitsPageComponent } from './components/pages/units-page/units-page.component';
 import { AssetTypesPageComponent } from './components/pages/asset-types-page/asset-types-page.component';
-import { ArraySortPipe } from '../pipes/arraysort.pipe';
+import { ArraySortPipe } from '../shared/pipes/arraysort.pipe';
 import { AssetTypeListComponent } from './components/content/asset-type-list/asset-type-list.component';
 import { BaseListComponent } from './components/content/base/base-list/base-list.component';
 import { BaseListHeaderComponent } from './components/content/base/base-list-header/base-list-header.component';
@@ -51,7 +51,7 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import { AssetTypePageComponent } from './components/pages/asset-type-page/asset-type-page.component';
 import { TableModule } from 'primeng/table';
 import { QuantityTypePageComponent } from './components/pages/quantity-type-page/quantity-type-page.component';
-import { IFCommon } from '../common/i-f-common.module';
+import { SharedModule } from '../shared/shared.module';
 import { AssetTypeTemplateWizardStepPublishComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step-publish/asset-type-template-wizard-step-publish.component';
 import { AssetTypeTemplateWizardWarningDialogComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-warning-dialog/asset-type-template-wizard-warning-dialog.component';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -63,7 +63,7 @@ import { AssetTypeTemplateDialogUpdateComponent } from './components/content/ass
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 import { AssetTypeTemplateFieldRowComponent } from './components/content/asset-type-template/asset-type-template-field-row/asset-type-template-field-row.component';
 import { AssetTypeTemplateFieldHeaderComponent } from './components/content/asset-type-template/asset-type-template-field-header/asset-type-template-field-header.component';
-import { NameWithVersionPipe } from '../pipes/namewithversion.pipe';
+import { NameWithVersionPipe } from '../shared/pipes/namewithversion.pipe';
 import { AssetTypeDialogComponent } from './components/content/asset-type-dialog/asset-type-dialog.component';
 
 @NgModule({
@@ -107,7 +107,7 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     NameWithVersionPipe,
   ],
   imports: [
-    IFCommon,
+    SharedModule,
     EcosystemRoutingModule,
     ClarityModule,
     Ng2CompleterModule,
