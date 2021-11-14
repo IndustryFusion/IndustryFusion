@@ -19,7 +19,7 @@ under the License.
   <div class="p-grid">
     <div class="filter-btn-div">
       <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
-                        [tableFilters]="tableFilters"
+                        [tableFilters]="tableFilters" [statusesWithAssetId]="factoryAssetStatuses"
                         class="filter-btn">
       </app-table-filter>
     </div>

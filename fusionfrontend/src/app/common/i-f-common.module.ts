@@ -45,6 +45,8 @@ import { TableSelectedItemsBarComponent } from '../components/ui/table-selected-
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { NameplateItemComponent } from '../components/ui/nameplate-item/nameplate-item.component';
 import { StatusComponent } from '../components/ui/status/status.component';
+import { StatusFilterComponent } from '../components/ui/table-filter/status-filter/status-filter.component';
+
 
 @NgModule({
   declarations: [
@@ -69,7 +71,8 @@ import { StatusComponent } from '../components/ui/status/status.component';
     GermanNumberPipe,
     TableSelectedItemsBarComponent,
     NameplateItemComponent,
-    StatusComponent
+    StatusComponent,
+    StatusFilterComponent,
   ],
   imports: [
     CommonModule,
@@ -137,6 +140,7 @@ import { StatusComponent } from '../components/ui/status/status.component';
     TableSelectedItemsBarComponent,
     NameplateItemComponent,
     StatusComponent,
+    StatusFilterComponent,
   ],
   providers: [
     MessageService,

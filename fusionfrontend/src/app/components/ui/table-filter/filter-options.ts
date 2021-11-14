@@ -22,5 +22,6 @@ export class FilterOption {
 export enum FilterType {
   DROPDOWNFILTER = 1,
   DATEFILTER = 2,
-  NUMBERBASEDFILTER = 3
+  NUMBERBASEDFILTER = 3,
+  STATUSFILTER = 4,
 }

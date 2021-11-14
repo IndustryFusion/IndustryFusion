@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/store/asset/asset.service';
@@ -64,7 +64,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   room: Room;
   @Input()
-  factoryAssetStatuses: StatusWithAssetId[];
+  factoryAssetStatuses: StatusWithAssetId[] = [];
   @Output()
   selectedEvent = new EventEmitter<ID[]>();
   @Output()
@@ -123,17 +123,18 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
   }
 
-  ngOnChanges(): void {
-    this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetsDetailsWithFields;
-
-    if (this.statusType !== null && this.factoryAssetStatuses !== null && this.factoryAssetStatuses !== []) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.factoryAssetsDetailsWithFields) {
+      this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetsDetailsWithFields;
+    }
+    if (changes.factoryAssetStatuses && this.factoryAssetsDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
       this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => {
         return this.factoryAssetStatuses.filter(factoryAssetStatus => factoryAssetStatus.status.statusValue === null ?
           String(this.statusType) === '0' : String(factoryAssetStatus.status.statusValue) === String(this.statusType))
           .map(factoryAssetStatusWithId => factoryAssetStatusWithId.factoryAssetId).includes(asset.id);
       });
     }
-    this.updateTree();
+    this.updateAssets();
   }
 
   ngOnDestroy() {
