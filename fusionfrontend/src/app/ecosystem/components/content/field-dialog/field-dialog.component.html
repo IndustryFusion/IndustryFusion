@@ -17,56 +17,85 @@ under the License.
   <form [formGroup]="fieldForm">
     <div class="input-div">
       <label class="if-label">Name&nbsp;*</label>
-      <input type="text" pInputText class="field-dialog-inputs" formControlName="name" />
+      <input class="field-dialog-inputs" formControlName="name" pInputText type="text"/>
     </div>
     <div class="input-div">
       <label class="if-label">Label&nbsp;*</label>
-      <input type="text" pInputText class="field-dialog-inputs" formControlName="label" />
+      <input class="field-dialog-inputs" formControlName="label" pInputText type="text"/>
     </div>
     <div class="input-div">
       <label class="if-label">Description</label>
-      <textarea pInputTextarea class="field-dialog-inputs" formControlName="description"></textarea>
-      <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
+      <textarea class="field-dialog-inputs" formControlName="description" pInputTextarea></textarea>
+      <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}
+        /{{ MAX_TEXT_LENGTH }}</label>
     </div>
 
-    <div class="field-dialog-inputs">
-      <label class="if-label">Unit&nbsp;*</label>
-      <p-dropdown [options]="(units$ | async)" formControlName="unitId" optionValue="id" optionLabel="name"
-                  class="field-dialog-inputs" placeholder="Select unit"></p-dropdown>
-    </div>
-
-    <label class="if-dialog-section-title">Define Accuracy</label>
-
+    <label class="if-dialog-section-title">Define Data Type</label>
     <div class="field-dialog-inputs input-div">
-      <label class="if-label">Accuracy</label>
-      <p-dropdown [options]="accuracyItems" formControlName="accuracy"
-                  class="field-dialog-inputs" placeholder="Select accuracy format"></p-dropdown>
+      <label class="if-label">Data type&nbsp;*</label>
+      <p-dropdown [options]="(dataTypes | stringEnumToOptionArray)" class="field-dialog-inputs"
+                  formControlName="dataType"
+                  optionLabel="label"
+                  optionValue="id" placeholder="Select data type"></p-dropdown>
     </div>
 
-    <label class="if-dialog-section-title">Define Thresholds & Limits</label>
+    <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.NUMERIC">
+      <div class="field-dialog-inputs input-div">
+        <label class="if-label">Unit&nbsp;*</label>
+        <p-dropdown [options]="(units$ | async)" class="field-dialog-inputs" formControlName="unitId" optionLabel="name"
+                    optionValue="id" placeholder="Select unit"></p-dropdown>
+      </div>
 
-    <div class="input-div">
-      <label class="if-label">Thresholds & limits&nbsp;*</label>
-      <div class="dialog-grid">
-        <div>
-          <p-radioButton [value]="FieldThresholdType.OPTIONAL" [label]="FieldThresholdType.OPTIONAL | titlecase" formControlName="thresholdType"
-                         inputId="threshold1"></p-radioButton>
+      <label class="if-dialog-section-title">Define Accuracy</label>
+      <div class="field-dialog-inputs input-div">
+        <label class="if-label">Accuracy</label>
+        <p-dropdown [options]="accuracyItems" class="field-dialog-inputs"
+                    formControlName="accuracy" placeholder="Select accuracy format"></p-dropdown>
+      </div>
+
+      <label class="if-dialog-section-title">Define Thresholds & Limits</label>
+      <div class="input-div">
+        <label class="if-label">Thresholds & limits&nbsp;*</label>
+        <div class="dialog-grid">
+          <div>
+            <p-radioButton [label]="FieldThresholdType.OPTIONAL | titlecase" [value]="FieldThresholdType.OPTIONAL"
+                           formControlName="thresholdType"
+                           inputId="threshold1"></p-radioButton>
+          </div>
+          <div class="dialog-grid-col">
+            <p-radioButton [label]="FieldThresholdType.MANDATORY | titlecase" [value]="FieldThresholdType.MANDATORY"
+                           formControlName="thresholdType"
+                           inputId="threshold2"></p-radioButton>
+          </div>
+          <div class="dialog-grid-col">
+            <p-radioButton [label]="FieldThresholdType.DISABLED | titlecase" [value]="FieldThresholdType.DISABLED"
+                           formControlName="thresholdType"
+                           inputId="threshold3"></p-radioButton>
+          </div>
         </div>
-        <div class="dialog-grid-col">
-          <p-radioButton [value]="FieldThresholdType.MANDATORY" [label]="FieldThresholdType.MANDATORY | titlecase" formControlName="thresholdType"
-                         inputId="threshold2"></p-radioButton>
-        </div>
-        <div class="dialog-grid-col">
-          <p-radioButton [value]="FieldThresholdType.DISABLED" [label]="FieldThresholdType.DISABLED | titlecase"  formControlName="thresholdType"
-                         inputId="threshold3"></p-radioButton>
+      </div>
+    </div>
+
+    <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.ENUM">
+      <div class="field-dialog-inputs input-div">
+        <label class="if-label">Describe values</label>
+        <div *ngFor="let enumValueItem of fieldForm.get('enumValues')['controls']; let i=index"
+             formArrayName="enumValues">
+          <div [formGroupName]="i">
+            <input class="field-row-inputs" formControlName="value" name="name" pInputText placeholder="New value"
+                   type="text"/>
+            <app-trash-button (deleteItem)="deleteEnumValue(i)" class="trash-button"></app-trash-button>
+            <app-create-button (createItem)="addEnumValue()"
+                               *ngIf="i == fieldForm.get('enumValues')['controls']?.length -1"></app-create-button>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="field-dialog-footer">
-      <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()"
-              [disabled]="fieldForm.invalid">{{type === DialogType.EDIT ? 'Save' : 'Create'}}</button>
+      <button (click)="onCancel()" class="if-button button-cancel" type="button">Cancel</button>
+      <button (click)="onSubmit()" [disabled]="fieldForm.invalid" class="if-button button-confirm button-primary"
+              type="button">{{type === DialogType.EDIT ? 'Save' : 'Create'}}</button>
     </div>
   </form>
 </div>

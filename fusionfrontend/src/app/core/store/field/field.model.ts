@@ -27,6 +27,7 @@ export class Field extends BaseEntity {
   thresholdType: FieldThresholdType;
   widgetType: FieldWidgetType;
   creationDate: Date;
+  dataType: FieldDataType;
 }
 
 export enum FieldThresholdType {
@@ -40,4 +41,9 @@ export enum FieldWidgetType {
   RAW = 'RAW',
   GAUGE = 'GAUGE',
   BARCHART = 'BARCHART'
+}
+
+export enum FieldDataType {
+  NUMERIC = 'NUMERIC',
+  ENUM = 'ENUM'
 }

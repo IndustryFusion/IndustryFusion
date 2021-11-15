@@ -20,8 +20,8 @@ import { Observable } from 'rxjs';
 import { Unit } from '../../../../core/store/unit/unit.model';
 import { UnitQuery } from '../../../../core/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Field, FieldThresholdType } from '../../../../core/store/field/field.model';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Field, FieldDataType, FieldThresholdType } from '../../../../core/store/field/field.model';
 import { SelectItem } from 'primeng/api';
 import { DialogType } from 'src/app/shared/models/dialog-type.model';
 import { FieldService } from '../../../../core/store/field/field.service';
@@ -43,11 +43,15 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
   public FieldThresholdType = FieldThresholdType;
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
+  public dataTypes = FieldDataType;
+  public enumValues: string[] = [''];
+
   constructor(private unitQuery: UnitQuery,
               private formBuilder: FormBuilder,
               private fieldService: FieldService,
               public dialogRef: DynamicDialogRef,
-              public config: DynamicDialogConfig) { }
+              public config: DynamicDialogConfig) {
+  }
 
   ngOnInit() {
     this.type = this.config.data.field === undefined ? DialogType.CREATE : DialogType.EDIT;
@@ -64,21 +68,8 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private createFieldFormGroup(field: Field) {
-    this.fieldForm = this.formBuilder.group({
-      id: [],
-      version: [],
-      name: ['', WizardHelper.requiredTextValidator],
-      label: ['', WizardHelper.requiredTextValidator],
-      description: ['', WizardHelper.maxTextLengthValidator],
-      accuracy: [0],
-      unitId: [null, Validators.required],
-      thresholdType: [FieldThresholdType.OPTIONAL, Validators.required]
-    });
-
-    if (this.type === DialogType.EDIT && field) {
-      this.fieldForm.patchValue(field);
-    }
+  ngOnDestroy() {
+    this.dialogRef.close();
   }
 
   onSubmit() {
@@ -101,7 +92,36 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  ngOnDestroy() {
-    this.dialogRef.close();
+  public deleteEnumValue(i: number): void {
+    (this.fieldForm.get('enumValues') as FormArray).removeAt(i);
+  }
+
+  public addEnumValue(): void {
+    (this.fieldForm.get('enumValues') as FormArray).push(this.createEnumValueItem());
+  }
+
+  private createFieldFormGroup(field: Field) {
+    this.fieldForm = this.formBuilder.group({
+      id: [],
+      version: [],
+      name: ['', WizardHelper.requiredTextValidator],
+      label: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
+      accuracy: [0],
+      dataType: [null, Validators.required],
+      unitId: [null, Validators.required],
+      thresholdType: [FieldThresholdType.OPTIONAL, Validators.required],
+      enumValues: this.formBuilder.array([this.createEnumValueItem()])
+    });
+
+    if (this.type === DialogType.EDIT && field) {
+      this.fieldForm.patchValue(field);
+    }
+  }
+
+  private createEnumValueItem(): FormGroup {
+    return this.formBuilder.group({
+      value: '',
+    });
   }
 }
