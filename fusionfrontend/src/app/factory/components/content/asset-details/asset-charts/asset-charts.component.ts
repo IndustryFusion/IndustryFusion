@@ -166,6 +166,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(
         points => {
           this.updateChart(points);
+          this.initLineChartOptions();
         }
       );
   }
@@ -196,26 +197,28 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   private initLineChartOptions(): void {
     const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
+    const minDate = AssetChartHelper.getMinDate(this.lineChartData[0].data as ChartPoint[]);
 
     const scales: ChartScales | LinearScale = {
       xAxes: [{
         type: 'time',
-        distribution: 'series',
+        distribution: 'linear',
         time: {
           parser: 'MM/DD/YYYY HH:mm',
           tooltipFormat: 'll HH:mm',
-          unit: 'day',
-          unitStepSize: 1,
+          unit: 'hour',
+          unitStepSize: 4,
           displayFormats: {
-            day: 'MM/DD/YYYY HH:mm'
-          }
+            hour: 'MM/DD/YYYY HH:mm'
+          },
         },
         ticks: {
           autoSkip: true,
           maxRotation: 0,
           minRotation: 0,
-          maxTicksLimit: 10
-        }
+          maxTicksLimit: 10,
+          min: minDate,
+        },
       }],
       yAxes: [
         {
@@ -243,7 +246,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
           borderWidth: 1
         },
         point: {
-          radius: 1
+          radius: 2
         }
       },
       annotation
