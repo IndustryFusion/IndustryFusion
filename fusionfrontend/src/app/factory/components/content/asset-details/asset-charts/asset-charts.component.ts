@@ -69,6 +69,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   loadedEvent = new EventEmitter<void>();
 
   readonly STATUS_MAX_POINTS = 100000;
+  readonly AXIS_STEP_SIZE_HOURS = 4;
 
   name: string;
   initialized = false;
@@ -197,7 +198,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   private initLineChartOptions(): void {
     const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
-    const minDate = AssetChartHelper.getMinDate(this.lineChartData[0].data as ChartPoint[]);
+    const minDate = AssetChartHelper.getMinDate(this.lineChartData[0].data as ChartPoint[], this.AXIS_STEP_SIZE_HOURS);
 
     const scales: ChartScales | LinearScale = {
       xAxes: [{
@@ -207,7 +208,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
           parser: 'MM/DD/YYYY HH:mm',
           tooltipFormat: 'll HH:mm',
           unit: 'hour',
-          unitStepSize: 4,
+          unitStepSize: this.AXIS_STEP_SIZE_HOURS,
           displayFormats: {
             hour: 'MM/DD/YYYY HH:mm'
           },

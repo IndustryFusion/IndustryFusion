@@ -28,11 +28,12 @@ export class AssetChartHelper {
     }
   }
 
-  public static getMinDate(data: ChartPoint[]): number {
+  public static getMinDate(data: ChartPoint[], stepSize: number): number {
     if (data.length === 0) {
       return Date.now().valueOf();
     }
     const dates = data.map(datum => datum.t as number);
-    return Math.min(...dates);
+    const minDate = new Date(Math.min(...dates));
+    return minDate.setHours(minDate.getHours() - stepSize);
   }
 }
