@@ -24,12 +24,14 @@ export class AssetChartHelper {
         max: fieldDetails.absoluteThreshold.valueUpper
       };
     } else {
-      return {};
+      return { };
     }
   }
 
   public static getMinDate(data: ChartPoint[]): number {
-    if (data.length == 0) return Date.now().valueOf();
+    if (data.length === 0) {
+      return Date.now().valueOf();
+    }
     const dates = data.map(datum => datum.t as number);
     return Math.min(...dates);
   }
