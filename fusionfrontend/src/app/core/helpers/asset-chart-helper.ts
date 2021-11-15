@@ -14,7 +14,7 @@
  */
 
 import { FieldDetails } from '../store/field-details/field-details.model';
-import { ChartPoint } from 'chart.js';
+import { ChartPoint, TimeUnit } from 'chart.js';
 
 export class AssetChartHelper {
   public static getYMinMaxByAbsoluteThreshold(fieldDetails: FieldDetails): { min?: number, max?: number } {
@@ -28,12 +28,26 @@ export class AssetChartHelper {
     }
   }
 
-  public static getMinDate(data: ChartPoint[], stepSize: number): number {
+  public static getMinDateForLineChart(data: ChartPoint[], axisUnit: TimeUnit): number {
+    let stepSize = 0;
+    if (axisUnit === 'day') {
+      stepSize = 12;
+    } else if (axisUnit === 'hour') {
+      stepSize = 3;
+    }
     if (data.length === 0) {
       return Date.now().valueOf();
     }
     const dates = data.map(datum => datum.t as number);
     const minDate = new Date(Math.min(...dates));
     return minDate.setHours(minDate.getHours() - stepSize);
+  }
+
+  public static getMaxDateForLineChart(data: ChartPoint[]): number {
+    if (data.length === 0) {
+      return Date.now().valueOf();
+    }
+    const dates = data.map(datum => datum.t as number);
+    return Math.max(...dates);
   }
 }

@@ -24,7 +24,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartPoint, ChartScales, LinearScale } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartPoint, ChartScales, LinearScale, TimeUnit } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable, Subject, timer } from 'rxjs';
@@ -69,7 +69,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   loadedEvent = new EventEmitter<void>();
 
   readonly STATUS_MAX_POINTS = 100000;
-  readonly AXIS_STEP_SIZE_HOURS = 4;
 
   name: string;
   initialized = false;
@@ -198,7 +197,18 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   private initLineChartOptions(): void {
     const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
-    const minDate = AssetChartHelper.getMinDate(this.lineChartData[0].data as ChartPoint[], this.AXIS_STEP_SIZE_HOURS);
+
+    let xAxisStepSize = 6;
+    let xAxisUnit: TimeUnit = 'hour';
+    let minDate = AssetChartHelper.getMinDateForLineChart(this.lineChartData[0].data as ChartPoint[], null);
+    const maxDate = AssetChartHelper.getMaxDateForLineChart(this.lineChartData[0].data as ChartPoint[]);
+
+    const dayInMillisecs = 24 * 60 * 60 * 1000;
+    if (maxDate - minDate > 5 * dayInMillisecs) {
+      xAxisUnit = 'day';
+      xAxisStepSize = 1;
+    }
+    minDate = AssetChartHelper.getMinDateForLineChart(this.lineChartData[0].data as ChartPoint[], xAxisUnit);
 
     const scales: ChartScales | LinearScale = {
       xAxes: [{
@@ -207,10 +217,11 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
         time: {
           parser: 'MM/DD/YYYY HH:mm',
           tooltipFormat: 'll HH:mm',
-          unit: 'hour',
-          unitStepSize: this.AXIS_STEP_SIZE_HOURS,
+          unit: xAxisUnit,
+          unitStepSize: xAxisStepSize,
           displayFormats: {
-            hour: 'MM/DD/YYYY HH:mm'
+            hour: 'MM/DD/YYYY HH:mm',
+            day: 'MM/DD/YYYY HH:mm'
           },
         },
         ticks: {
