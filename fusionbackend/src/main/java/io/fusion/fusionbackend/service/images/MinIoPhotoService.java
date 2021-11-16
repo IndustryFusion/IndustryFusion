@@ -17,13 +17,13 @@ package io.fusion.fusionbackend.service.images;
 
 import io.fusion.fusionbackend.dto.images.ImageDto;
 import io.fusion.fusionbackend.exception.ExternalApiException;
-import io.fusion.fusionbackend.exception.InvalidException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.UploadObjectArgs;
 import io.minio.errors.MinioException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,6 +35,7 @@ import java.util.Locale;
 public class MinIoPhotoService {
 
     private static final String ENDPOINT_URL = "http://localhost:9000/";
+    private static final Long MAX_FILE_SIZE_MB = 3L;
 
     private final MinioClient minioClient;
     private final String bucketName;
@@ -53,12 +54,10 @@ public class MinIoPhotoService {
     }
 
     private MinioClient createClient(final String accessKey, final String secretKey) {
-        // 1. Create client to S3 service 'play.min.io' at port 443 with TLS security
-        // for anonymous access.
         return MinioClient.builder()
-                        .endpoint(ENDPOINT_URL)
-                        .credentials(accessKey, secretKey)
-                        .build();
+                    .endpoint(ENDPOINT_URL)
+                    .credentials(accessKey, secretKey)
+                    .build();
     }
 
     public boolean existBucket(final String bucketName) {
@@ -69,7 +68,7 @@ public class MinIoPhotoService {
         }
     }
 
-    public ImageDto getImage(final String imageKey) throws ResourceNotFoundException {
+    public ImageDto getImage(@NotNull final String imageKey) throws ResourceNotFoundException {
 
         try {
             String imageContentBase64;
@@ -92,6 +91,7 @@ public class MinIoPhotoService {
                     .contentType("image/" + getFileExtension(imageKey))
                     .build();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResourceNotFoundException();
         }
     }
@@ -101,22 +101,34 @@ public class MinIoPhotoService {
         return parts.length > 1 ? parts[parts.length - 1] : "jpeg";
     }
 
-    public void uploadImage(final String imageKey, String contentType,
-                            final String imageContent64Based) throws ExternalApiException  {
+    public Long uploadImage(@NotNull final String imageKey, @NotNull String contentType,
+                            @NotNull final String imageContent64Based) throws ExternalApiException  {
 
-        assert imageKey != null;
-        assert contentType != null;
-        assert imageContent64Based != null;
-        contentType = contentType.toLowerCase(Locale.ROOT);
+        contentType = contentType.toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
         if (!isContentTypeValid(contentType)) {
-            throw new InvalidException();
+            throw new IllegalArgumentException("Content type is invalid");
+        }
+        if (!isFileSizeValid(imageContent64Based)) {
+            throw new IllegalArgumentException("File size is larger than " + MAX_FILE_SIZE_MB + " MB");
         }
 
-        String imageContentWithoutContentType = imageContent64Based.replace("data:" + contentType + ";base64,", "");
+        String potentialStartStringToBeRemoved = "data:" + contentType + ";base64,";
+        String imageContentWithoutContentType = imageContent64Based.substring(potentialStartStringToBeRemoved.length());
         byte[] imageContent = Base64.getDecoder().decode(imageContentWithoutContentType);
 
         File tempFile = createTempFile(imageContent, contentType.replace("image/", ""));
         uploadTempFile(tempFile, contentType, getImagePath(imageKey));
+
+        return (long) imageContent.length;
+    }
+
+    private boolean isContentTypeValid(final String contentTypeLowerCase) {
+        return contentTypeLowerCase.equals("image/png") || contentTypeLowerCase.equals("image/jpeg");
+    }
+
+    private boolean isFileSizeValid(final String imageContent64Based) {
+        long fileSize = imageContent64Based.length() * 3L / 4L;
+        return fileSize <= MAX_FILE_SIZE_MB * 1024 * 1024;
     }
 
     private void uploadTempFile(final File tempFile, final String contentType, final String destinationPath) {
@@ -140,10 +152,6 @@ public class MinIoPhotoService {
         } finally {
             deleteTempFile(tempFile);
         }
-    }
-
-    private boolean isContentTypeValid(final String contentType) {
-        return contentType.equals("image/png") || contentType.equals("image/jpeg");
     }
 
     private File createTempFile(final byte[] imageContent, final String fileExtension) {

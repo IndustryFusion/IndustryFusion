@@ -51,8 +51,9 @@ public class MinIoPhotoRestService {
                             @RequestBody final ImageDto imageDto) {
         MinIoPhotoService minIoPhotoService = new MinIoPhotoService(companyId,
                 ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
-        minIoPhotoService.uploadImage(imageDto.getFilename(), imageDto.getContentType(),
+        Long fileSize = minIoPhotoService.uploadImage(imageDto.getFilename(), imageDto.getContentType(),
                 imageDto.getImageContentBase64());
+        imageDto.setFileSize(fileSize);
         return imageDto;
     }
 }

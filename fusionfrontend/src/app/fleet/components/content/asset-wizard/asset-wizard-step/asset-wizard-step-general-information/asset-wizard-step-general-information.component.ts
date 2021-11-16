@@ -82,18 +82,20 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   }
 
   onImageUpload(event: any): void {
-    const uploadedImage: any = event.target.files[0];
-    if (uploadedImage) {
+    const selectedImage: any = event.target.files[0];
+    if (selectedImage) {
       const companyId = this.companyQuery.getActiveId();
 
       const reader = new FileReader();
       reader.addEventListener('load', (readFileEvent: any) => {
-        this.imageService.uploadImage(companyId, uploadedImage.name, readFileEvent.target.result, uploadedImage.size);
-        this.assetForm.get('imageKey').setValue(uploadedImage.name);
-        this.imageService.getImage(companyId, uploadedImage.name).subscribe(imageBase64 => this.assetImage = imageBase64);
+        this.imageService.uploadImage(companyId, selectedImage.name, readFileEvent.target.result, selectedImage.size)
+          .subscribe(uploadedImage => {
+            this.assetImage = uploadedImage.imageContentBase64;
+            this.assetForm.get('imageKey').setValue(uploadedImage.filename);
+          });
       });
 
-      reader.readAsDataURL(uploadedImage);
+      reader.readAsDataURL(selectedImage);
     }
   }
 }
