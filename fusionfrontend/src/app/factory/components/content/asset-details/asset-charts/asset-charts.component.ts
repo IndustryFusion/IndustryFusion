@@ -197,13 +197,12 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   private initLineChartOptions(): void {
     const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
-
-    let xAxisStepSize = 6;
-    let xAxisUnit: TimeUnit = 'hour';
     let minDate = AssetChartHelper.getMinDateForLineChart(this.lineChartData[0].data as ChartPoint[], null);
     const maxDate = AssetChartHelper.getMaxDateForLineChart(this.lineChartData[0].data as ChartPoint[]);
 
     const dayInMillisecs = 24 * 60 * 60 * 1000;
+    let xAxisStepSize = 6;
+    let xAxisUnit: TimeUnit = 'hour';
     if (maxDate - minDate > 5 * dayInMillisecs) {
       xAxisUnit = 'day';
       xAxisStepSize = 1;

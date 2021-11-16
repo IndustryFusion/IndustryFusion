@@ -28,26 +28,26 @@ export class AssetChartHelper {
     }
   }
 
-  public static getMinDateForLineChart(data: ChartPoint[], axisUnit: TimeUnit): number {
+  public static getMinDateForLineChart(chartPoints: ChartPoint[], axisUnit: TimeUnit): number {
     let stepSize = 0;
     if (axisUnit === 'day') {
       stepSize = 12;
     } else if (axisUnit === 'hour') {
       stepSize = 3;
     }
-    if (data.length === 0) {
+    if (chartPoints.length === 0) {
       return Date.now().valueOf();
     }
-    const dates = data.map(datum => datum.t as number);
+    const dates = chartPoints.map(point => point.t as number);
     const minDate = new Date(Math.min(...dates));
     return minDate.setHours(minDate.getHours() - stepSize);
   }
 
-  public static getMaxDateForLineChart(data: ChartPoint[]): number {
-    if (data.length === 0) {
+  public static getMaxDateForLineChart(chartPoints: ChartPoint[]): number {
+    if (chartPoints.length === 0) {
       return Date.now().valueOf();
     }
-    const dates = data.map(datum => datum.t as number);
+    const dates = chartPoints.map(point => point.t as number);
     return Math.max(...dates);
   }
 }
