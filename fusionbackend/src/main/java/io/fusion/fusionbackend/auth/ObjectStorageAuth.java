@@ -43,8 +43,8 @@ public class ObjectStorageAuth {
             AccessToken accessToken = keycloakPrincipal.getKeycloakSecurityContext().getToken();
             if (accessToken != null && accessToken.getOtherClaims() != null) {
                 Map<String, Object> otherClaims = accessToken.getOtherClaims();
-                if ((otherClaims.containsKey(API_KEY) && otherClaims.get(API_KEY) instanceof String)
-                        && (otherClaims.containsKey(SECRET_KEY) && otherClaims.get(SECRET_KEY) instanceof String)) {
+                if (otherClaims.containsKey(API_KEY) && otherClaims.get(API_KEY) instanceof String
+                        && otherClaims.containsKey(SECRET_KEY) && otherClaims.get(SECRET_KEY) instanceof String) {
                     apiKey = otherClaims.get(API_KEY).toString();
                     secretKey = otherClaims.get(SECRET_KEY).toString();
                     return apiKey.length() > 1 && secretKey.length() > 1;
