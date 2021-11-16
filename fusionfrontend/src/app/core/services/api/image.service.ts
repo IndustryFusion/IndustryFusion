@@ -39,18 +39,17 @@ export class ImageService {
   }
 
   getImage(companyId: ID, imageKey: string): Observable<string> {
-    const path = `companies/${companyId}/images/2?imageKey=${imageKey}&accessKey=123456789&secretKey=123456789`;
+    const path = `companies/${companyId}/images/2?imageKey=${imageKey}`;
     return this.http.get<FusionImage>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).pipe(
       map((fusionImage: FusionImage) => `data:${fusionImage.contentType};base64,${fusionImage.imageContentBase64}`
     ));
   }
 
-  // see https://www.freakyjolly.com/angular-input-file-image-file-upload-to-base64-tutorial-by-example/
-  uploadImage(companyId: ID, imageKey: string, imageContentBase64: string, fileSize: number) {
-    const path = `companies/${companyId}/images?imageKey=${imageKey}&accessKey=123456789&secretKey=123456789`;
+  uploadImage(companyId: ID, imageKey: string, imageContentBase64: string, fileSize: number): Observable<FusionImage> {
+    const path = `companies/${companyId}/images?imageKey=${imageKey}`;
     const image: FusionImage = new FusionImage(companyId, imageKey, imageContentBase64,
       'image/' + ImageService.getFileExtension(imageKey), fileSize);
 
-    this.http.post<FusionImage>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions).subscribe();
+    return this.http.post<FusionImage>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);
   }
 }

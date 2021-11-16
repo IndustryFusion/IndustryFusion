@@ -15,8 +15,9 @@
 
 package io.fusion.fusionbackend.rest.images;
 
+import io.fusion.fusionbackend.auth.ObjectStorageAuth;
 import io.fusion.fusionbackend.dto.images.ImageDto;
-import io.fusion.fusionbackend.rest.annotations.IsAnyFusionUser;
+import io.fusion.fusionbackend.rest.annotations.IsObjectStorageUser;
 import io.fusion.fusionbackend.service.images.MinIoPhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
 @RestController
-@IsAnyFusionUser
+@IsObjectStorageUser
 public class MinIoPhotoRestService {
 
     @Autowired
@@ -38,21 +39,20 @@ public class MinIoPhotoRestService {
 
     @GetMapping(path = "/companies/{companyId}/images/{imageId}")
     public ImageDto getImage(@PathVariable final Long companyId,
-                             @PathVariable final Long imageId,
-                             @RequestParam final String imageKey,
-                             @RequestParam final String accessKey,
-                             @RequestParam final String secretKey) {
-        MinIoPhotoService minIoPhotoService = new MinIoPhotoService(companyId, accessKey, secretKey);
+                             @PathVariable final Long imageId, // TODO: Maybe add image/media entity
+                             @RequestParam final String imageKey) {
+        MinIoPhotoService minIoPhotoService = new MinIoPhotoService(companyId,
+                ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
         return minIoPhotoService.getImage(imageKey);
     }
 
     @PostMapping(path = "/companies/{companyId}/images")
-    public void uploadImage(@PathVariable final Long companyId,
-                             @RequestBody final ImageDto imageDto,
-                             @RequestParam final String accessKey,
-                             @RequestParam final String secretKey) {
-        MinIoPhotoService minIoPhotoService = new MinIoPhotoService(companyId, accessKey, secretKey);
+    public ImageDto uploadImage(@PathVariable final Long companyId,
+                            @RequestBody final ImageDto imageDto) {
+        MinIoPhotoService minIoPhotoService = new MinIoPhotoService(companyId,
+                ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
         minIoPhotoService.uploadImage(imageDto.getFilename(), imageDto.getContentType(),
                 imageDto.getImageContentBase64());
+        return imageDto;
     }
 }
