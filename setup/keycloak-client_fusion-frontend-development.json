@@ -59,6 +59,34 @@
                 "claim.name": "IF_COMPANY",
                 "jsonType.label": "long"
             }
+        },
+        {
+            "name": "S3_API_KEY",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "consentRequired": false,
+            "config": {
+                "userinfo.token.claim": "true",
+                "user.attribute": "S3_API_KEY",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "S3_API_KEY",
+                "jsonType.label": "String"
+            }
+        },
+        {
+            "name": "S3_SECRET_KEY",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "consentRequired": false,
+            "config": {
+                "userinfo.token.claim": "true",
+                "user.attribute": "S3_SECRET_KEY",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "S3_SECRET_KEY",
+                "jsonType.label": "String"
+            }
         }
     ],
     "defaultClientScopes": [

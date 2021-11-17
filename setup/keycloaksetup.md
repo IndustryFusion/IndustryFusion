@@ -21,10 +21,9 @@ Open the keycloak Admin GUI at http://localhost:8081/auth/
 
 
 ## Keycloak theme
-- ToDo (fkn): Ist das Theme im Private-Repo anders wie im Öffentlichen? Ggf. Link unten anpssen
 - ToDo (fkn): Das untenstehende Kopieren könnte vermutlich über einen Container-Mount und in Docker-Compose vereinfacht werden oder ein eigenes Dockerfile inkl. Realm-Import.
 
-The [fusion keycloak theme](https://github.com/mattmikulina/IndustryFusion-private-/tree/master/fusionkeycloaktheme) must be copied to the running keycloak instance under keycloak/themes.
+The [fusion keycloak theme](https://github.com/IndustryFusion/IndustryFusion/tree/develop/fusionkeycloaktheme) must be copied to the running keycloak instance under keycloak/themes.
 
 Instructions for copying the keycloak theme in docker:
 1. clone repo, switch to "fusionkeycloaktheme" folder (or use DownGit and switch to "Downloads")
@@ -90,13 +89,17 @@ Do this to add an OISP realm with 2 clients and a concrete user that will be use
 ### Create Access User
 1. Within the OISP-Realm, create a new user 'if-admin' and click save
     1. add an existing e-mail address, click save
-    1. Change to tab "Attributes" and add attribute IF_COMPANY = 2, click save
+    1. Change to tab "Attributes"
+        1. add attribute IF_COMPANY = 2
+        1. add attributes S3_API_KEY and S3_SECRET_KEY with values corresponding to your S3 compatible object storage server/user credentials
+        1. click save
     1. Change to tab "Credentials" and set a password
     1. Change to tab "Role Mappings" and assign under client roles one (or more) of the above roles of "fusion-backend"
     1. Optional: Assign the role "user" of "oisp-frontend"  (not necessary for quick setup)
 
 ### Adjust Admin User
-1. Within the Master-Realm, edit the _admin_ user.
+1. Switch to Master-Realm
+1. edit the _admin_ user.
 1. Add an existing e-mail address.
 
 ## Development-Cluster
