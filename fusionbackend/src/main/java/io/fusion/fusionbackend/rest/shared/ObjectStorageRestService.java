@@ -13,47 +13,42 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.rest.images;
+package io.fusion.fusionbackend.rest.shared;
 
 import io.fusion.fusionbackend.auth.ObjectStorageAuth;
 import io.fusion.fusionbackend.dto.images.ImageDto;
 import io.fusion.fusionbackend.rest.annotations.IsObjectStorageUser;
-import io.fusion.fusionbackend.service.images.MinIoPhotoService;
+import io.fusion.fusionbackend.service.images.AwsImageClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
 @RestController
 @IsObjectStorageUser
-public class MinIoPhotoRestService {
+public class ObjectStorageRestService {
 
     @Autowired
-    public MinIoPhotoRestService() {
+    public ObjectStorageRestService() {
     }
 
-    @GetMapping(path = "/companies/{companyId}/images/{imageId}")
+    @GetMapping(path = "/companies/{companyId}/images/{imageKey}")
     public ImageDto getImage(@PathVariable final Long companyId,
-                             @PathVariable final Long imageId, // TODO: Maybe add image/media entity
-                             @RequestParam final String imageKey) {
-        MinIoPhotoService minIoPhotoService = new MinIoPhotoService(companyId,
+                             @PathVariable final String imageKey) {
+        AwsImageClient awsImageClient = new AwsImageClient(companyId,
                 ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
-        return minIoPhotoService.getImage(imageKey);
+        return awsImageClient.getImage(imageKey);
     }
 
     @PostMapping(path = "/companies/{companyId}/images")
     public ImageDto uploadImage(@PathVariable final Long companyId,
                             @RequestBody final ImageDto imageDto) {
-        MinIoPhotoService minIoPhotoService = new MinIoPhotoService(companyId,
+        AwsImageClient awsImageClient = new AwsImageClient(companyId,
                 ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
-        Long fileSize = minIoPhotoService.uploadImage(imageDto.getFilename(), imageDto.getContentType(),
-                imageDto.getImageContentBase64());
-        imageDto.setFileSize(fileSize);
-        return imageDto;
+        return awsImageClient.uploadImage(imageDto);
     }
 }

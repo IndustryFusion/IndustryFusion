@@ -39,14 +39,14 @@ export class ImageService {
   }
 
   getImage(companyId: ID, imageKey: string): Observable<string> {
-    const path = `companies/${companyId}/images/2?imageKey=${imageKey}`;
+    const path = `companies/${companyId}/images/${imageKey}`;
     return this.http.get<FusionImage>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).pipe(
       map((fusionImage: FusionImage) => `data:${fusionImage.contentType};base64,${fusionImage.imageContentBase64}`
     ));
   }
 
   uploadImage(companyId: ID, imageKey: string, imageContentBase64: string, fileSize: number): Observable<FusionImage> {
-    const path = `companies/${companyId}/images?imageKey=${imageKey}`;
+    const path = `companies/${companyId}/images`;
     const image: FusionImage = new FusionImage(companyId, imageKey, imageContentBase64,
       'image/' + ImageService.getFileExtension(imageKey), fileSize);
 

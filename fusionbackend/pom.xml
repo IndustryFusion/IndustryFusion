@@ -85,26 +85,12 @@ under the License.
             <artifactId>guava</artifactId>
         </dependency>
 
+        <!--Object Storage-->
         <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>8.3.3</version>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.12.111</version>
         </dependency>
-
-       <!--   Needed to avoid conflict with OkHttp being used in auth0-java and okhttp3 being used by spring -->
-<!--        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>3.14.4</version>
-        </dependency>-->
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.9.2</version>
-        </dependency>
-
-
 
         <!-- Test deps -->
         <dependency>
@@ -172,6 +158,12 @@ under the License.
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
             <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>19.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
