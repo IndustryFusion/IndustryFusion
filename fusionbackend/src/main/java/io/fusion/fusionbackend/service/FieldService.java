@@ -18,23 +18,29 @@ package io.fusion.fusionbackend.service;
 import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Field;
+import io.fusion.fusionbackend.model.FieldOption;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.repository.FieldOptionRepository;
 import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Set;
 
 @Service
 @Transactional
 public class FieldService {
     private final FieldRepository fieldRepository;
+    private final FieldOptionRepository fieldOptionRepository;
     private final UnitService unitService;
 
     @Autowired
-    public FieldService(FieldRepository fieldRepository, UnitService unitService) {
+    public FieldService(FieldRepository fieldRepository, FieldOptionRepository fieldOptionRepository,
+                        UnitService unitService) {
         this.fieldRepository = fieldRepository;
+        this.fieldOptionRepository = fieldOptionRepository;
         this.unitService = unitService;
     }
 
@@ -53,6 +59,13 @@ public class FieldService {
         final Unit unit = unitService.getUnit(unitId);
         field.setUnit(unit);
         return fieldRepository.save(field);
+    }
+
+    public Field createField(final Field field, final Set<FieldOption> fieldOptions) {
+        Field createdField = fieldRepository.save(field);
+        fieldOptions.forEach(fieldOption -> fieldOption.setField(createdField));
+        fieldOptionRepository.saveAll(fieldOptions);
+        return createdField;
     }
 
     public Field linkFieldUnit(final Long fieldId, final Long unitId) {

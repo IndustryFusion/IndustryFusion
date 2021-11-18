@@ -21,13 +21,17 @@ export class Field extends BaseEntity {
   description: string;
   label: string;
   accuracy: number;
-  value: string;
   unitId: ID;
   unit: any;
   thresholdType: FieldThresholdType;
   widgetType: FieldWidgetType;
   creationDate: Date;
   dataType: FieldDataType;
+  enumValues: FieldOption[];
+}
+
+export class FieldOption extends BaseEntity {
+  optionLabel: string;
 }
 
 export enum FieldThresholdType {

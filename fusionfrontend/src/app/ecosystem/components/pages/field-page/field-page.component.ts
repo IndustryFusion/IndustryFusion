@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FieldQuery } from '../../../../core/store/field/field.query';
 import { FieldService } from '../../../../core/store/field/field.service';
-import { Field } from '../../../../core/store/field/field.model';
+import { Field, FieldDataType } from '../../../../core/store/field/field.model';
 import { FieldDialogComponent } from '../../content/field-dialog/field-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Unit } from '../../../../core/store/unit/unit.model';
@@ -34,6 +34,7 @@ export class FieldPageComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
   field$: Observable<Field>;
   unit$: Observable<Unit>;
+  public dataTypes = FieldDataType;
   private field: Field;
   private editDialogRef: DynamicDialogRef;
 
@@ -41,7 +42,8 @@ export class FieldPageComponent implements OnInit, OnDestroy {
               private unitQuery: UnitQuery,
               private fieldService: FieldService,
               private activatedRoute: ActivatedRoute,
-              private dialogService: DialogService) { }
+              private dialogService: DialogService) {
+  }
 
   ngOnInit(): void {
     this.isLoading$ = this.fieldQuery.selectLoading();
@@ -51,6 +53,13 @@ export class FieldPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.fieldQuery.resetError();
     this.editDialogRef?.close();
+  }
+
+  showEditDialog() {
+    this.editDialogRef = this.dialogService.open(FieldDialogComponent, {
+      data: { field: this.field },
+      header: 'Edit Metric or Attribute'
+    });
   }
 
   private resolve(activatedRoute: ActivatedRoute) {
@@ -63,12 +72,5 @@ export class FieldPageComponent implements OnInit, OnDestroy {
         this.field = field;
       });
     }
-  }
-
-  showEditDialog() {
-    this.editDialogRef = this.dialogService.open(FieldDialogComponent, {
-      data: { field: this.field },
-      header: 'Edit Metric or Attribute'
-    });
   }
 }

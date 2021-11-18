@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.rest.ecosystemmanager;
 
 import io.fusion.fusionbackend.dto.FieldDto;
 import io.fusion.fusionbackend.dto.mappers.FieldMapper;
+import io.fusion.fusionbackend.dto.mappers.FieldOptionMapper;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,13 @@ import java.util.Set;
 @IsEcosystemUser
 public class FieldRestService {
     private final FieldMapper fieldMapper;
+    private final FieldOptionMapper fieldOptionMapper;
     private final FieldService fieldService;
 
     @Autowired
-    public FieldRestService(FieldMapper fieldMapper, FieldService fieldService) {
+    public FieldRestService(FieldMapper fieldMapper, FieldOptionMapper fieldOptionMapper, FieldService fieldService) {
         this.fieldMapper = fieldMapper;
+        this.fieldOptionMapper = fieldOptionMapper;
         this.fieldService = fieldService;
     }
 
@@ -53,7 +56,7 @@ public class FieldRestService {
 
         List<FieldDto> sortedFields = new ArrayList<>(unsortedFields);
         sortedFields.sort(Comparator.comparing(FieldDto::getId));
-        return  sortedFields;
+        return sortedFields;
     }
 
     @GetMapping(path = "/fields/{fieldId}")
@@ -69,11 +72,18 @@ public class FieldRestService {
                 fieldService.createField(fieldMapper.toEntity(fieldDto), unitId), false);
     }
 
+    @PostMapping(path = "/fields_enum")
+    public FieldDto createField(@RequestBody final FieldDto fieldDto) {
+        return fieldMapper.toDto(
+                fieldService.createField(fieldMapper.toEntity(fieldDto),
+                        fieldOptionMapper.toEntitySet(fieldDto.getEnumValues())), false);
+    }
+
     @PatchMapping(path = "/fields/{fieldId}")
     public FieldDto updateField(@PathVariable final Long fieldId,
                                 @RequestBody final FieldDto fieldDto) {
         return fieldMapper.toDto(fieldService.updateField(fieldId, fieldMapper.toEntity(fieldDto),
-                        fieldDto.getUnitId()), false);
+                fieldDto.getUnitId()), false);
     }
 
     @DeleteMapping(path = "/fields/{fieldId}")

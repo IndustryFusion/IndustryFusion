@@ -14,20 +14,13 @@
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatNumber } from '@angular/common';
+import { FieldOption } from '../../core/store/field/field.model';
 
-@Pipe({ name: 'germanNumber' })
-export class GermanNumberPipe implements PipeTransform {
-
-  constructor() { }
-
-  private static isNumber(value: any): boolean {
-    return !Number.isNaN(Number(value));
-  }
-
-  transform(value: any, format?: string) {
-    if (value == null) { return ''; } // !value would also react to zeros.
-
-    return GermanNumberPipe.isNumber(value) ? formatNumber(value, 'de-de', format) : String(value);
+@Pipe({
+  name: 'enumValuesToString'
+})
+export class EnumValuesToStringPipe implements PipeTransform {
+  transform(enumValues: FieldOption[]): string {
+    return enumValues.map(val => val.optionLabel).join(', ');
   }
 }

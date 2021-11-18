@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.FieldOptionDto;
 import io.fusion.fusionbackend.model.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,10 +28,12 @@ import java.util.stream.Collectors;
 @Component
 public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
     private final UnitMapper unitMapper;
+    private final FieldOptionMapper fieldOptionMapper;
 
     @Autowired
-    public FieldMapper(UnitMapper unitMapper) {
+    public FieldMapper(UnitMapper unitMapper, FieldOptionMapper fieldOptionMapper) {
         this.unitMapper = unitMapper;
+        this.fieldOptionMapper = fieldOptionMapper;
     }
 
     private FieldDto toDtoShallow(Field entity) {
@@ -43,8 +46,8 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
+                .dataType(entity.getDataType())
                 .accuracy(entity.getAccuracy())
-                .value(entity.getValue())
                 .unitId(EntityDtoMapper.getEntityId(entity.getUnit()))
                 .thresholdType(entity.getThresholdType())
                 .widgetType(entity.getWidgetType())
@@ -59,6 +62,9 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
 
         FieldDto fieldDto = toDtoShallow(entity);
         fieldDto.setUnit(unitMapper.toDto(entity.getUnit(), false));
+
+        Set<FieldOptionDto> fieldOptions = fieldOptionMapper.toDtoSet(entity.getOptions(), true);
+        fieldDto.setEnumValues(fieldOptions);
 
         return fieldDto;
     }
@@ -81,8 +87,8 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())
+                .dataType(dto.getDataType())
                 .accuracy(dto.getAccuracy())
-                .value(dto.getValue())
                 .thresholdType(dto.getThresholdType())
                 .widgetType(dto.getWidgetType())
                 .build();

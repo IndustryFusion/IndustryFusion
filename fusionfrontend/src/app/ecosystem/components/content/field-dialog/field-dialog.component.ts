@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { Unit } from '../../../../core/store/unit/unit.model';
 import { UnitQuery } from '../../../../core/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Field, FieldDataType, FieldThresholdType } from '../../../../core/store/field/field.model';
 import { SelectItem } from 'primeng/api';
 import { DialogType } from 'src/app/shared/models/dialog-type.model';
@@ -100,6 +100,15 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
     (this.fieldForm.get('enumValues') as FormArray).push(this.createEnumValueItem());
   }
 
+  private unitValidator = (formGroup: AbstractControl): ValidationErrors | null => {
+    const chosenDataType = formGroup.get('dataType')?.value;
+    if (chosenDataType === FieldDataType.ENUM) {
+      return null;
+    } else {
+      return Validators.required(formGroup);
+    }
+  }
+
   private createFieldFormGroup(field: Field) {
     this.fieldForm = this.formBuilder.group({
       id: [],
@@ -109,19 +118,19 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
       description: ['', WizardHelper.maxTextLengthValidator],
       accuracy: [0],
       dataType: [null, Validators.required],
-      unitId: [null, Validators.required],
+      unitId: [null],
       thresholdType: [FieldThresholdType.OPTIONAL, Validators.required],
       enumValues: this.formBuilder.array([this.createEnumValueItem()])
-    });
+    }, { validator: this.unitValidator });
 
     if (this.type === DialogType.EDIT && field) {
       this.fieldForm.patchValue(field);
     }
   }
 
-  private createEnumValueItem(): FormGroup {
+  private createEnumValueItem(): AbstractControl {
     return this.formBuilder.group({
-      value: '',
+      optionLabel: ['', Validators.required],
     });
   }
 }

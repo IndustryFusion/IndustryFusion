@@ -12,6 +12,4 @@ export class StringEnumToOptionArrayPipe implements PipeTransform {
     }));
     return itemOptions;
   }
-
-
 }

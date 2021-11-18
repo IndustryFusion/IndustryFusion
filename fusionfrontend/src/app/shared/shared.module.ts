@@ -40,12 +40,14 @@ import { MaintenanceProgressbarComponent } from './components/content/maintenanc
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from './components/content/notifications-list/notifications-list.component';
-import { GermanNumberPipe } from './pipes/germannumber.pipe';
+import { GermanNumberPipe } from './pipes/german-number.pipe';
 import { TableSelectedItemsBarComponent } from './components/ui/table-selected-items-bar/table-selected-items-bar.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { NameplateItemComponent } from './components/ui/nameplate-item/nameplate-item.component';
 import { StatusComponent } from './components/ui/status/status.component';
-import { StringEnumToOptionArrayPipe } from './pipes/string-enum-to-array.pipe';
+import { StringEnumToOptionArrayPipe } from './pipes/string-enum-to-option-array.pipe';
+import { GermanStringPipe } from './pipes/german-string.pipe';
+import { EnumValuesToStringPipe } from './pipes/enum-values-to-string.pipe';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { StringEnumToOptionArrayPipe } from './pipes/string-enum-to-array.pipe';
     TableSelectedItemsBarComponent,
     NameplateItemComponent,
     StatusComponent,
-    StringEnumToOptionArrayPipe
+    StringEnumToOptionArrayPipe,
+    GermanStringPipe,
+    EnumValuesToStringPipe
   ],
   imports: [
     CommonModule,
@@ -140,6 +144,8 @@ import { StringEnumToOptionArrayPipe } from './pipes/string-enum-to-array.pipe';
     NameplateItemComponent,
     StatusComponent,
     StringEnumToOptionArrayPipe,
+    GermanStringPipe,
+    EnumValuesToStringPipe,
   ],
   providers: [
     MessageService,
