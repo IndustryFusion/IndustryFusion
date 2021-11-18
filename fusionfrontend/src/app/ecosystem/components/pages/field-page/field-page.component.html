@@ -38,7 +38,7 @@ under the License.
     <div *ngIf="(field$ | async)?.dataType === dataTypes.ENUM">
       <div class="row">
         <label class="label-column"> Options </label>
-        <label class="if-detail-page-label"> {{ (field$ | async)?.enumValues | enumValuesToString }} </label>
+        <label class="if-detail-page-label"> {{ (field$ | async)?.enumOptions | enumOptionsToString }} </label>
       </div>
     </div>
 

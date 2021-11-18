@@ -76,7 +76,7 @@ public class FieldRestService {
     public FieldDto createField(@RequestBody final FieldDto fieldDto) {
         return fieldMapper.toDto(
                 fieldService.createField(fieldMapper.toEntity(fieldDto),
-                        fieldOptionMapper.toEntitySet(fieldDto.getEnumValues())), false);
+                        fieldOptionMapper.toEntitySet(fieldDto.getEnumOptions())), false);
     }
 
     @PatchMapping(path = "/fields/{fieldId}")

@@ -27,10 +27,11 @@ export class Field extends BaseEntity {
   widgetType: FieldWidgetType;
   creationDate: Date;
   dataType: FieldDataType;
-  enumValues: FieldOption[];
+  enumOptions: FieldOption[];
 }
 
 export class FieldOption extends BaseEntity {
+  fieldId: ID;
   optionLabel: string;
 }
 

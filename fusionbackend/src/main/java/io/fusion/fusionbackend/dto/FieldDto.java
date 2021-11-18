@@ -43,7 +43,7 @@ public class FieldDto extends BaseEntityDto {
     private FieldWidgetType widgetType;
     private OffsetDateTime creationDate;
     private FieldDataType dataType;
-    private Set<FieldOptionDto> enumValues;
+    private Set<FieldOptionDto> enumOptions;
 
     @JsonCreator
     public FieldDto() {

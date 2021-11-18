@@ -17,10 +17,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { FieldOption } from '../../core/store/field/field.model';
 
 @Pipe({
-  name: 'enumValuesToString'
+  name: 'enumOptionsToString'
 })
-export class EnumValuesToStringPipe implements PipeTransform {
-  transform(enumValues: FieldOption[]): string {
-    return enumValues.map(val => val.optionLabel).join(', ');
+export class EnumOptionsToStringPipe implements PipeTransform {
+  transform(enumOptions: FieldOption[]): string {
+    return enumOptions.map(val => val.optionLabel).join(', ');
   }
 }

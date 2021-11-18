@@ -21,7 +21,7 @@ import { Unit } from '../../../../core/store/unit/unit.model';
 import { UnitQuery } from '../../../../core/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Field, FieldDataType, FieldThresholdType } from '../../../../core/store/field/field.model';
+import { Field, FieldDataType, FieldOption, FieldThresholdType } from '../../../../core/store/field/field.model';
 import { SelectItem } from 'primeng/api';
 import { DialogType } from 'src/app/shared/models/dialog-type.model';
 import { FieldService } from '../../../../core/store/field/field.service';
@@ -44,7 +44,6 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
   public dataTypes = FieldDataType;
-  public enumValues: string[] = [''];
 
   constructor(private unitQuery: UnitQuery,
               private formBuilder: FormBuilder,
@@ -92,12 +91,12 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  public deleteEnumValue(i: number): void {
-    (this.fieldForm.get('enumValues') as FormArray).removeAt(i);
+  public deleteEnumOption(i: number): void {
+    (this.fieldForm.get('enumOptions') as FormArray).removeAt(i);
   }
 
-  public addEnumValue(): void {
-    (this.fieldForm.get('enumValues') as FormArray).push(this.createEnumValueItem());
+  public addEnumOption(): void {
+    (this.fieldForm.get('enumOptions') as FormArray).push(this.createEnumOptionFormGroup(null));
   }
 
   private unitValidator = (formGroup: AbstractControl): ValidationErrors | null => {
@@ -120,7 +119,7 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
       dataType: [null, Validators.required],
       unitId: [null],
       thresholdType: [FieldThresholdType.OPTIONAL, Validators.required],
-      enumValues: this.formBuilder.array([this.createEnumValueItem()])
+      enumOptions: this.formBuilder.array(this.createEnumOptions(field))
     }, { validator: this.unitValidator });
 
     if (this.type === DialogType.EDIT && field) {
@@ -128,9 +127,21 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createEnumValueItem(): AbstractControl {
+  private createEnumOptions(field: Field): AbstractControl[] {
+    const controls = [];
+    if (this.type === DialogType.EDIT && field?.enumOptions?.length > 0) {
+      field?.enumOptions.forEach(enumValue => {
+        controls.push(this.createEnumOptionFormGroup(enumValue));
+      });
+      return controls;
+    }
+    return [this.createEnumOptionFormGroup(null)];
+  }
+
+  private createEnumOptionFormGroup(fieldOption: FieldOption): AbstractControl {
     return this.formBuilder.group({
-      optionLabel: ['', Validators.required],
+      id: [fieldOption?.id],
+      optionLabel: [fieldOption?.optionLabel, Validators.required],
     });
   }
 }

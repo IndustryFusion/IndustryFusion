@@ -47,7 +47,7 @@ import { NameplateItemComponent } from './components/ui/nameplate-item/nameplate
 import { StatusComponent } from './components/ui/status/status.component';
 import { StringEnumToOptionArrayPipe } from './pipes/string-enum-to-option-array.pipe';
 import { GermanStringPipe } from './pipes/german-string.pipe';
-import { EnumValuesToStringPipe } from './pipes/enum-values-to-string.pipe';
+import { EnumOptionsToStringPipe } from './pipes/enum-options-to-string.pipe';
 
 @NgModule({
   declarations: [
@@ -75,7 +75,7 @@ import { EnumValuesToStringPipe } from './pipes/enum-values-to-string.pipe';
     StatusComponent,
     StringEnumToOptionArrayPipe,
     GermanStringPipe,
-    EnumValuesToStringPipe
+    EnumOptionsToStringPipe
   ],
   imports: [
     CommonModule,
@@ -145,7 +145,7 @@ import { EnumValuesToStringPipe } from './pipes/enum-values-to-string.pipe';
     StatusComponent,
     StringEnumToOptionArrayPipe,
     GermanStringPipe,
-    EnumValuesToStringPipe,
+    EnumOptionsToStringPipe,
   ],
   providers: [
     MessageService,

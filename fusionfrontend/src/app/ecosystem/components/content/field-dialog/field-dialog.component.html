@@ -79,16 +79,16 @@ under the License.
     <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.ENUM">
       <div class="field-dialog-inputs input-div">
         <label class="if-label">Describe values&nbsp;*</label>
-        <div *ngFor="let enumValueItem of fieldForm.get('enumValues')['controls']; let i=index"
-             formArrayName="enumValues">
+        <div *ngFor="let enumValueItem of fieldForm.get('enumOptions')['controls']; let i=index"
+             formArrayName="enumOptions">
           <div [formGroupName]="i">
             <input class="field-row-inputs" formControlName="optionLabel" name="name" pInputText placeholder="New value"
                    type="text"/>
-            <app-trash-button (deleteItem)="deleteEnumValue(i)" class="trash-button"></app-trash-button>
-            <app-create-button (createItem)="addEnumValue()"
-                               *ngIf="i == (fieldForm.get('enumValues')['controls']?.length)-1 &&
-                               (fieldForm.get('enumValues')['controls'][i]?.value?.optionLabel) &&
-                               (fieldForm.get('enumValues')['controls'][i]?.value?.optionLabel) != ''"></app-create-button>
+            <app-trash-button (deleteItem)="deleteEnumOption(i)" class="trash-button"></app-trash-button>
+            <app-create-button (createItem)="addEnumOption()"
+                               *ngIf="i == (fieldForm.get('enumOptions')['controls']?.length)-1 &&
+                               (fieldForm.get('enumOptions')['controls'][i]?.value?.optionLabel) &&
+                               (fieldForm.get('enumOptions')['controls'][i]?.value?.optionLabel) != ''"></app-create-button>
           </div>
         </div>
       </div>

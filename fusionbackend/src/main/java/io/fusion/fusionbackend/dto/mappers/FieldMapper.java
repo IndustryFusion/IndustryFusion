@@ -64,7 +64,7 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         fieldDto.setUnit(unitMapper.toDto(entity.getUnit(), false));
 
         Set<FieldOptionDto> fieldOptions = fieldOptionMapper.toDtoSet(entity.getOptions(), true);
-        fieldDto.setEnumValues(fieldOptions);
+        fieldDto.setEnumOptions(fieldOptions);
 
         return fieldDto;
     }
