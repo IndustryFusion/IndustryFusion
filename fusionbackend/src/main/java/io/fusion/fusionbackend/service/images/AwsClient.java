@@ -22,6 +22,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -224,7 +225,12 @@ public abstract class AwsClient {
         }
     }
 
-    public void deleteFile() {
-
+    public void deleteFile(@NotNull final String fileKey) {
+        try {
+            s3Client.deleteObject(new DeleteObjectRequest(bucketName, getFilePath(fileKey)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ExternalApiException();
+        }
     }
 }

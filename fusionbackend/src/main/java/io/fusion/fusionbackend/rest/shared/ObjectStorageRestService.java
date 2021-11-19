@@ -20,14 +20,13 @@ import io.fusion.fusionbackend.dto.images.ImageDto;
 import io.fusion.fusionbackend.rest.annotations.IsObjectStorageUser;
 import io.fusion.fusionbackend.service.images.AwsImageClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
-@SuppressWarnings("checkstyle:AbbreviationAsWordInName")
 @RestController
 @IsObjectStorageUser
 public class ObjectStorageRestService {
@@ -36,19 +35,26 @@ public class ObjectStorageRestService {
     public ObjectStorageRestService() {
     }
 
+    private AwsImageClient createImageClient(final Long companyId) {
+        return new AwsImageClient(companyId,
+                ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
+    }
+
     @GetMapping(path = "/companies/{companyId}/images/{imageKey}")
     public ImageDto getImage(@PathVariable final Long companyId,
                              @PathVariable final String imageKey) {
-        AwsImageClient awsImageClient = new AwsImageClient(companyId,
-                ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
-        return awsImageClient.getImage(imageKey);
+        return createImageClient(companyId).getImage(imageKey);
     }
 
     @PostMapping(path = "/companies/{companyId}/images")
     public ImageDto uploadImage(@PathVariable final Long companyId,
-                            @RequestBody final ImageDto imageDto) {
-        AwsImageClient awsImageClient = new AwsImageClient(companyId,
-                ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
-        return awsImageClient.uploadImage(imageDto);
+                                @RequestBody final ImageDto imageDto) {
+        return createImageClient(companyId).uploadImage(imageDto);
+    }
+
+    @DeleteMapping(path = "/companies/{companyId}/images/{imageKey}")
+    public void deleteImage(@PathVariable final Long companyId,
+                            @PathVariable final String imageKey) {
+        createImageClient(companyId).deleteImage(imageKey);
     }
 }

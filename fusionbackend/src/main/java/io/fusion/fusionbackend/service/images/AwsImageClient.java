@@ -79,4 +79,8 @@ public class AwsImageClient extends AwsClient {
     public Long getMaxFileSizeMb() {
         return MAX_FILE_SIZE_MB;
     }
+
+    public void deleteImage(@NotNull final String imageKey) {
+        deleteFile(imageKey);
+    }
 }

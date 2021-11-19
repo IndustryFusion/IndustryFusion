@@ -52,4 +52,9 @@ export class ImageService {
 
     return this.http.post<FusionImage>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);
   }
+
+  deleteImage(companyId: ID, imageKey: string): Observable<void> {
+    const path = `companies/${companyId}/images/${imageKey}`;
+    return this.http.delete<void>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
 }
