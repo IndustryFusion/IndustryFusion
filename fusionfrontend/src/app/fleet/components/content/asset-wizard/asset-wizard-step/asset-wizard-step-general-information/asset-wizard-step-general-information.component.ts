@@ -51,7 +51,10 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   public assetSeries$: Observable<AssetSeries[]>;
 
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
+  public DEFAULT_ASSET_IMAGE_KEY = ImageService.DEFAULT_ASSET_IMAGE_KEY;
   public assetImage: string;
+
+  private companyId: ID;
 
   ngOnInit(): void {
     this.assetSeries$ = this.assetSeriesQuery.selectAll();
@@ -59,6 +62,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
       this.assetForm.get('assetSeriesId')?.disable();
       this.assetForm.get('assetSeriesId').setValue(this.relatedAssetSeriesId);
     }
+
+    this.companyId = this.companyQuery.getActiveId();
   }
 
   onChangeAssetSeries(assetSeriesId: ID): void {
@@ -82,20 +87,27 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   }
 
   onImageUpload(event: any): void {
+    this.deletePreviouslyUploadedImage();
+
     const selectedImage: any = event.target.files[0];
     if (selectedImage) {
-      const companyId = this.companyQuery.getActiveId();
-
       const reader = new FileReader();
       reader.addEventListener('load', (readFileEvent: any) => {
-        this.imageService.uploadImage(companyId, selectedImage.name, readFileEvent.target.result, selectedImage.size)
+        this.imageService.uploadImage(this.companyId, selectedImage.name, readFileEvent.target.result, selectedImage.size)
           .subscribe(uploadedImage => {
             this.assetImage = uploadedImage.imageContentBase64;
             this.assetForm.get('imageKey').setValue(uploadedImage.filename);
+            console.log('bild', this.assetForm.get('imageKey').value);
           });
       });
 
       reader.readAsDataURL(selectedImage);
+    }
+  }
+
+  private deletePreviouslyUploadedImage(): void {
+    if (this.assetImage) {
+      this.imageService.deleteImage(this.companyId, this.assetForm.get('imageKey').value).subscribe();
     }
   }
 }

@@ -26,6 +26,8 @@ import { ID } from '@datorama/akita';
 })
 export class ImageService {
 
+  public static DEFAULT_ASSET_IMAGE_KEY = 'default-avatar-asset.png';
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };

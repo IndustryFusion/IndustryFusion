@@ -53,7 +53,7 @@ under the License.
           <span class="if-hint" > How will my asset be displayed in a factory?</span>
           <div class="sample-asset-display">
             <img [src]="assetImage" *ngIf="assetImage != null">
-            <img src="assets/img/default-avatar-asset.png" alt="asset-symbol" *ngIf="assetImage == null">
+            <img src="assets/img/{{DEFAULT_ASSET_IMAGE_KEY}}" alt="asset-symbol" *ngIf="assetImage == null">
             <div>
               <span class="wizard-icon-title">{{ assetForm.get('name')?.value }}</span>
               <span class="if-detail-page-label">{{ relatedAssetSeries?.name }}</span>

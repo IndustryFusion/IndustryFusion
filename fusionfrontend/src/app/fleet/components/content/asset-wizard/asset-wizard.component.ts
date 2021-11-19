@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Asset } from '../../../../core/store/asset/asset.model';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
@@ -41,13 +41,14 @@ import { CountryResolver } from '../../../../core/resolvers/country.resolver';
 import { FleetAssetDetailsResolver } from '../../../../core/resolvers/fleet-asset-details.resolver';
 import { MessageService } from 'primeng/api';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
+import { ImageService } from '../../../../core/services/api/image.service';
 
 @Component({
   selector: 'app-asset-wizard',
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss']
 })
-export class AssetWizardComponent implements OnInit {
+export class AssetWizardComponent implements OnInit, OnDestroy {
 
   private isAssetSeriesLoading$: Observable<boolean>;
 
@@ -87,6 +88,7 @@ export class AssetWizardComponent implements OnInit {
               private formBuilder: FormBuilder,
               private config: DynamicDialogConfig,
               private ref: DynamicDialogRef,
+              private imageService: ImageService,
               private messageService: MessageService) {
     this.resolveWizard();
   }
@@ -107,6 +109,20 @@ export class AssetWizardComponent implements OnInit {
 
     if (this.config.data.step) {
       this.onStepChange(this.config.data.step);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.ref) {
+      this.deleteUploadedImage();
+      this.ref.close();
+    }
+  }
+
+  private deleteUploadedImage() {
+    if (this.assetForm.get('imageKey')?.value !== ImageService.DEFAULT_ASSET_IMAGE_KEY) {
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.deleteImage(companyId, this.assetForm.get('imageKey').value).subscribe();
     }
   }
 
@@ -133,6 +149,7 @@ export class AssetWizardComponent implements OnInit {
         this.asset = asset;
         this.asset.name = assetName;
         this.asset.description = assetDescription;
+        this.asset.imageKey = this.assetForm.get('imageKey').value;
         this.createAssetForm();
         this.step = step;
       }
@@ -148,7 +165,6 @@ export class AssetWizardComponent implements OnInit {
       asset.subsystemIds = this.asset.subsystemIds;
       asset.fieldInstances = this.asset.fieldInstances;
       asset.room = this.asset.room;
-      asset.imageKey = 'default-avatar-asset.png'; // workaround for no picture upload
 
       this.asset = asset;
 
@@ -159,6 +175,7 @@ export class AssetWizardComponent implements OnInit {
       }
 
       this.ref.close(this.asset);
+      this.ref = null;
 
     } else {
       this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
@@ -175,7 +192,7 @@ export class AssetWizardComponent implements OnInit {
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookUrl')?.setValue(assetSeries.handbookUrl);
-      this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey);
+      // this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey); // TODO: activate when image upload in asset series exists
       this.assetForm.get('videoUrl')?.setValue(assetSeries.videoUrl);
       this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
@@ -235,7 +252,7 @@ export class AssetWizardComponent implements OnInit {
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
       handbookUrl: [null, WizardHelper.maxTextLengthValidator],
       videoUrl: [null, WizardHelper.maxTextLengthValidator],
-      imageKey: [null, WizardHelper.maxTextLengthValidator],
+      imageKey: [ImageService.DEFAULT_ASSET_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });
 
