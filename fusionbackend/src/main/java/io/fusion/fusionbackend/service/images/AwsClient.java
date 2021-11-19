@@ -88,13 +88,20 @@ public abstract class AwsClient {
     }
 
     public byte[] getFile(@NotNull final String fileKey) throws ResourceNotFoundException {
+        if (isContentTypeInvalid(getContentType(fileKey))) {
+            throw new IllegalArgumentException("Content type is invalid");
+        }
 
         try {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 s3Client.getObject(new GetObjectRequest(bucketName, getFilePath(fileKey))).getObjectContent()
                         .transferTo(outputStream);
 
-                return outputStream.toByteArray();
+                byte[] fileContent = outputStream.toByteArray();
+                if (isFileSizeInvalid(fileContent)) {
+                    throw new IllegalArgumentException("File size is larger than " + getMaxFileSizeMb() + " MB");
+                }
+                return fileContent;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,18 +109,22 @@ public abstract class AwsClient {
         }
     }
 
-    protected abstract String getContentType(String key);
+    protected abstract String getContentType(String fileKey);
 
     protected abstract boolean isContentTypeInvalid(final String contentTypeLowerCase);
 
     public abstract Long getMaxFileSizeMb();
 
-    protected Long getFileSizeFrom64Based(final String imageContent64Based) {
-        return imageContent64Based.length() * 3L / 4L;
+    protected Long getFileSizeFrom64Based(final String content64Based) {
+        return content64Based.length() * 3L / 4L;
     }
 
-    protected boolean isFileSizeInvalid(final String imageContent64Based) {
-        return getFileSizeFrom64Based(imageContent64Based) > getMaxFileSizeMb() * 1024 * 1024;
+    protected boolean isFileSizeInvalidBase64(final String content64Based) {
+        return getFileSizeFrom64Based(content64Based) > getMaxFileSizeMb() * 1024 * 1024;
+    }
+
+    protected boolean isFileSizeInvalid(final byte[] content) {
+        return content.length > getMaxFileSizeMb() * 1024 * 1024;
     }
 
     public Long uploadFile(@NotNull final String content64BasedWithContentType,
@@ -123,14 +134,14 @@ public abstract class AwsClient {
         if (isContentTypeInvalid(contentType)) {
             throw new IllegalArgumentException("Content type is invalid");
         }
-        if (isFileSizeInvalid(content64BasedWithContentType)) {
+        if (isFileSizeInvalidBase64(content64BasedWithContentType)) {
             throw new IllegalArgumentException("File size is larger than " + getMaxFileSizeMb() + " MB");
         }
 
         String content64Based = getFileContent64BasedWithoutContentType(content64BasedWithContentType, contentType);
-        byte[] imageContent = Base64.getDecoder().decode(content64Based);
+        byte[] fileContent = Base64.getDecoder().decode(content64Based);
 
-        File tempFile = createTempFile(imageContent, getFileExtension(destinationPath));
+        File tempFile = createTempFile(fileContent, getFileExtension(destinationPath));
         assert tempFile != null;
 
         try {
@@ -144,7 +155,7 @@ public abstract class AwsClient {
             deleteTempFile(tempFile);
         }
 
-        return (long)imageContent.length;
+        return (long)fileContent.length;
     }
 
     private String getFileContent64BasedWithoutContentType(String content64Based, final String contentType) {

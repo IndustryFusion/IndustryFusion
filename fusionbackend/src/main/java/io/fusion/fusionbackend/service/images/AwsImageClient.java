@@ -54,8 +54,8 @@ public class AwsImageClient extends AwsClient {
     }
 
     @Override
-    protected String getContentType(String key) {
-        return "image/" + getFileExtension(key).toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
+    protected String getContentType(String fileKey) {
+        return "image/" + getFileExtension(fileKey).toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
     }
 
     public ImageDto uploadImage(@NotNull ImageDto imageDto) throws ExternalApiException  {
