@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 // see https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/examples-s3-objects.html#upload-object
 // and https://javatutorial.net/java-s3-example
@@ -101,43 +102,60 @@ public abstract class AwsClient {
         }
     }
 
-    protected Long getFileSizeFrom64Based(final String imageContent64Based) {
-        return imageContent64Based.length() * 3L / 4L;
-    }
-
     protected abstract String getContentType(String key);
 
     protected abstract boolean isContentTypeInvalid(final String contentTypeLowerCase);
 
     public abstract Long getMaxFileSizeMb();
 
+    protected Long getFileSizeFrom64Based(final String imageContent64Based) {
+        return imageContent64Based.length() * 3L / 4L;
+    }
+
     protected boolean isFileSizeInvalid(final String imageContent64Based) {
         return getFileSizeFrom64Based(imageContent64Based) > getMaxFileSizeMb() * 1024 * 1024;
     }
 
-    protected void uploadFile(final byte[] imageContent,
-                              final String fileExtension,
-                              final String destinationPath) {
+    public Long uploadFile(@NotNull final String content64BasedWithContentType,
+                           @NotNull final String contentType,
+                           @NotNull final String destinationPath) {
 
-        File tempFile = createTempFile(imageContent, fileExtension);
+        if (isContentTypeInvalid(contentType)) {
+            throw new IllegalArgumentException("Content type is invalid");
+        }
+        if (isFileSizeInvalid(content64BasedWithContentType)) {
+            throw new IllegalArgumentException("File size is larger than " + getMaxFileSizeMb() + " MB");
+        }
+
+        String content64Based = getFileContent64BasedWithoutContentType(content64BasedWithContentType, contentType);
+        byte[] imageContent = Base64.getDecoder().decode(content64Based);
+
+        File tempFile = createTempFile(imageContent, getFileExtension(destinationPath));
         assert tempFile != null;
 
         try {
-            if (!existFolder(basePath)) {
-                createEmptyFolder(basePath);
-            }
+            createFolderIfNotExists(basePath);
             s3Client.putObject(new PutObjectRequest(bucketName, destinationPath, tempFile));
 
         } catch (AmazonServiceException e) {
             e.printStackTrace();
             throw new ExternalApiException();
-
         } finally {
             deleteTempFile(tempFile);
         }
+
+        return (long)imageContent.length;
     }
 
-    protected File createTempFile(final byte[] content, final String fileExtension) {
+    private String getFileContent64BasedWithoutContentType(String content64Based, final String contentType) {
+        final String dataUriSchemeStartToBeRemoved = "data:" + contentType + ";base64,";
+        if (content64Based.startsWith(dataUriSchemeStartToBeRemoved)) {
+            content64Based = content64Based.substring(dataUriSchemeStartToBeRemoved.length());
+        }
+        return content64Based;
+    }
+
+    private File createTempFile(final byte[] content, final String fileExtension) {
         try {
             String tempDir = System.getProperty("java.io.tmpdir");
 
@@ -155,8 +173,27 @@ public abstract class AwsClient {
         }
     }
 
-    protected void deleteTempFile(File file) {
+    private void deleteTempFile(File file) {
         file.deleteOnExit();
+    }
+
+    private void createFolderIfNotExists(@NotNull String folderPath) {
+        if (!existFolder(folderPath)) {
+            createEmptyFolder(folderPath);
+        }
+    }
+
+    public boolean existFolder(@NotNull String folderPath) {
+        if (!folderPath.endsWith("/")) {
+            folderPath = folderPath + '/';
+        }
+
+        try {
+            s3Client.getObject(new GetObjectRequest(bucketName, folderPath));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void createEmptyFolder(@NotNull String folderPath) {
@@ -176,16 +213,7 @@ public abstract class AwsClient {
         }
     }
 
-    public boolean existFolder(@NotNull String folderPath) {
-        if (!folderPath.endsWith("/")) {
-            folderPath = folderPath + '/';
-        }
+    public void deleteFile() {
 
-        try {
-            s3Client.getObject(new GetObjectRequest(bucketName, folderPath));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

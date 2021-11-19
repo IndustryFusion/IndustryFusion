@@ -15,13 +15,11 @@
 
 package io.fusion.fusionbackend.service.images;
 
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import io.fusion.fusionbackend.dto.images.ImageDto;
 import io.fusion.fusionbackend.exception.ExternalApiException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Locale;
 
@@ -36,15 +34,10 @@ public class AwsImageClient extends AwsClient {
     }
 
     public ImageDto getImage(@NotNull final String imageKey) throws ResourceNotFoundException {
+        byte[] imageContent = getFile(imageKey);
 
         try {
-            String imageContentBase64;
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                s3Client.getObject(new GetObjectRequest(bucketName, getFilePath(imageKey))).getObjectContent()
-                        .transferTo(outputStream);
-
-                imageContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(outputStream.toByteArray());
-            }
+            String imageContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(imageContent);
 
             String contentType = getContentType(imageKey);
             return ImageDto.builder()
@@ -67,30 +60,18 @@ public class AwsImageClient extends AwsClient {
 
     public ImageDto uploadImage(@NotNull ImageDto imageDto) throws ExternalApiException  {
 
-        String imageContent64Based = imageDto.getImageContentBase64();
         final String contentType = imageDto.getContentType().toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
-        if (isContentTypeInvalid(contentType)) {
-            throw new IllegalArgumentException("Content type is invalid");
-        }
-        if (isFileSizeInvalid(imageContent64Based)) {
-            throw new IllegalArgumentException("File size is larger than " + MAX_FILE_SIZE_MB + " MB");
-        }
 
-        String dataUriSchemeStartToBeRemoved = "data:" + contentType + ";base64,";
-        if (imageContent64Based.startsWith(dataUriSchemeStartToBeRemoved)) {
-            imageContent64Based = imageContent64Based.substring(dataUriSchemeStartToBeRemoved.length());
-        }
+        Long fileSize = uploadFile(imageDto.getImageContentBase64(), contentType, getFilePath(imageDto.getFilename()));
 
-        byte[] imageContent = Base64.getDecoder().decode(imageContent64Based);
-        uploadFile(imageContent, contentType.replace("image/", ""), getFilePath(imageDto.getFilename()));
-
-        imageDto.setFileSize((long)imageContent.length);
+        imageDto.setFileSize(fileSize);
         imageDto.setContentType(contentType);
+
         return imageDto;
     }
 
     @Override
-    protected boolean isContentTypeInvalid(final String contentTypeLowerCase) {
+    protected boolean isContentTypeInvalid(@NotNull final String contentTypeLowerCase) {
         return !contentTypeLowerCase.equals("image/png") && !contentTypeLowerCase.equals("image/jpeg");
     }
 
