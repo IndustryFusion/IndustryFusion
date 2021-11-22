@@ -13,7 +13,7 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.service.images;
+package io.fusion.fusionbackend.service.storage;
 
 import io.fusion.fusionbackend.dto.images.ImageDto;
 import io.fusion.fusionbackend.exception.ExternalApiException;
@@ -23,28 +23,32 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Base64;
 import java.util.Locale;
 
-public class AwsImageClient extends AwsClient {
+public class ImageStorageClient {
     private static final Long MAX_FILE_SIZE_MB = 3L;
 
-    public AwsImageClient(@NotNull final Long companyId,
-                          @NotNull final String accessKey,
-                          @NotNull final String secretKey) {
-        super(companyId, accessKey, secretKey);
-        this.basePath = "company" + companyId + "/photos/";
+    private final ObjectStorageBaseClient client;
+
+    public ImageStorageClient(@NotNull ObjectStorageBaseClient client) {
+        this.client = client;
+        client.setMaxFileSize(MAX_FILE_SIZE_MB);
     }
 
     public ImageDto getImage(@NotNull final String imageKey) throws ResourceNotFoundException {
-        byte[] imageContent = getFile(imageKey);
+        if (isContentTypeInvalid(getContentType(imageKey))) {
+            throw new IllegalArgumentException("Content type is invalid");
+        }
+
+        byte[] imageContent = client.getFile(imageKey);
 
         try {
             String imageContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(imageContent);
 
             String contentType = getContentType(imageKey);
             return ImageDto.builder()
-                    .companyId(companyId)
+                    .companyId(client.getConfig().companyId)
                     .filename(imageKey)
                     .imageContentBase64("data:" + contentType + ";base64," + imageContentBase64)
-                    .fileSize(getFileSizeFrom64Based(imageContentBase64))
+                    .fileSize(BaseClient.getFileSizeFrom64Based(imageContentBase64))
                     .contentType(contentType)
                     .build();
         } catch (Exception e) {
@@ -53,16 +57,23 @@ public class AwsImageClient extends AwsClient {
         }
     }
 
-    @Override
-    protected String getContentType(String fileKey) {
-        return "image/" + getFileExtension(fileKey).toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
+    private boolean isContentTypeInvalid(@NotNull final String contentTypeLowerCase) {
+        return !contentTypeLowerCase.equals("image/png") && !contentTypeLowerCase.equals("image/jpeg");
+    }
+
+    private String getContentType(String fileKey) {
+        return "image/" + BaseClient.getFileExtension(fileKey).toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
     }
 
     public ImageDto uploadImage(@NotNull ImageDto imageDto) throws ExternalApiException  {
 
         final String contentType = imageDto.getContentType().toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
+        if (isContentTypeInvalid(contentType)) {
+            throw new IllegalArgumentException("Content type is invalid");
+        }
 
-        Long fileSize = uploadFile(imageDto.getImageContentBase64(), contentType, getFilePath(imageDto.getFilename()));
+        Long fileSize = client.uploadFile(imageDto.getImageContentBase64(), contentType,
+                client.getFilePath(imageDto.getFilename()));
 
         imageDto.setFileSize(fileSize);
         imageDto.setContentType(contentType);
@@ -70,17 +81,7 @@ public class AwsImageClient extends AwsClient {
         return imageDto;
     }
 
-    @Override
-    protected boolean isContentTypeInvalid(@NotNull final String contentTypeLowerCase) {
-        return !contentTypeLowerCase.equals("image/png") && !contentTypeLowerCase.equals("image/jpeg");
-    }
-
-    @Override
-    public Long getMaxFileSizeMb() {
-        return MAX_FILE_SIZE_MB;
-    }
-
     public void deleteImage(@NotNull final String imageKey) {
-        deleteFile(imageKey);
+        client.deleteFile(imageKey);
     }
 }

@@ -17,9 +17,13 @@ package io.fusion.fusionbackend.rest.shared;
 
 import io.fusion.fusionbackend.auth.ObjectStorageAuth;
 import io.fusion.fusionbackend.dto.images.ImageDto;
+import io.fusion.fusionbackend.model.enums.ObjectStorageType;
 import io.fusion.fusionbackend.rest.annotations.IsObjectStorageUser;
-import io.fusion.fusionbackend.service.images.AwsImageClient;
+import io.fusion.fusionbackend.service.storage.ImageStorageClient;
+import io.fusion.fusionbackend.service.storage.ObjectStorageClientFactory;
+import io.fusion.fusionbackend.service.storage.ObjectStorageConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +35,26 @@ import org.springframework.web.bind.annotation.RestController;
 @IsObjectStorageUser
 public class ObjectStorageRestService {
 
+    private final Environment environment;
+
     @Autowired
-    public ObjectStorageRestService() {
+    public ObjectStorageRestService(Environment environment) {
+        this.environment = environment;
     }
 
-    private AwsImageClient createImageClient(final Long companyId) {
-        return new AwsImageClient(companyId,
-                ObjectStorageAuth.getApiKey(), ObjectStorageAuth.getSecretKey());
+    private ImageStorageClient createImageClient(final Long companyId) {
+        final String serverType = environment.getProperty("object-storage.server-type");
+        ObjectStorageType type = ObjectStorageClientFactory.getType(serverType);
+        ObjectStorageConfiguration configuration = new ObjectStorageConfiguration(
+                environment.getProperty("object-storage.server-url"),
+                environment.getProperty("object-storage.bucket-name"),
+                "",
+                companyId,
+                ObjectStorageAuth.getApiKey(),
+                ObjectStorageAuth.getSecretKey()
+        );
+
+        return new ImageStorageClient(ObjectStorageClientFactory.create(type, configuration));
     }
 
     @GetMapping(path = "/companies/{companyId}/images/{imageKey}")
