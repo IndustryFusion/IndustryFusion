@@ -71,11 +71,11 @@ public class FieldRestService {
     public FieldDto createField(@RequestBody final FieldDto fieldDto) {
         if (fieldDto.getDataType() == FieldDataType.NUMERIC) {
             return fieldMapper.toDto(
-                    fieldService.createField(fieldMapper.toEntity(fieldDto), fieldDto.getUnitId()), false);
+                    fieldService.createField(fieldMapper.toEntity(fieldDto), fieldDto.getUnitId()), true);
         } else {
             return fieldMapper.toDto(
                     fieldService.createField(fieldMapper.toEntity(fieldDto),
-                            fieldOptionMapper.toEntitySet(fieldDto.getEnumOptions())), false);
+                            fieldOptionMapper.toEntitySet(fieldDto.getEnumOptions())), true);
         }
     }
 
@@ -83,7 +83,7 @@ public class FieldRestService {
     public FieldDto updateField(@PathVariable final Long fieldId,
                                 @RequestBody final FieldDto fieldDto) {
         return fieldMapper.toDto(fieldService.updateField(fieldId, fieldMapper.toEntity(fieldDto),
-                fieldDto.getUnitId()), false);
+                fieldDto.getUnitId()), true);
     }
 
     @DeleteMapping(path = "/fields/{fieldId}")

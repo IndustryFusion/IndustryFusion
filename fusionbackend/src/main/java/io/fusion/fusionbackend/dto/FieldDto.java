@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -43,7 +43,7 @@ public class FieldDto extends BaseEntityDto {
     private FieldWidgetType widgetType;
     private OffsetDateTime creationDate;
     private FieldDataType dataType;
-    private Set<FieldOptionDto> enumOptions;
+    private LinkedHashSet<FieldOptionDto> enumOptions;
 
     @JsonCreator
     public FieldDto() {

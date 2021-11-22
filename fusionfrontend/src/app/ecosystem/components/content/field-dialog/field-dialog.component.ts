@@ -93,6 +93,10 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
 
   public deleteEnumOption(i: number): void {
     (this.fieldForm.get('enumOptions') as FormArray).removeAt(i);
+    const newLength = (this.fieldForm.get('enumOptions') as FormArray).length;
+    if (newLength === 0) {
+      this.addEnumOption();
+    }
   }
 
   public addEnumOption(): void {

@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
+import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldOption;
 import io.fusion.fusionbackend.repository.FieldOptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,19 @@ public class FieldOptionService {
         return fieldOptionRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
-    public FieldOption updateFieldOption(final Long fieldOptionId, final FieldOption sourceFieldOption) {
-        final FieldOption targetFieldOption = getFieldOption(fieldOptionId);
-        targetFieldOption.copyFrom(sourceFieldOption);
-        return targetFieldOption;
+    public void deleteFieldOption(final Long id) {
+        fieldOptionRepository.deleteById(id);
+    }
+
+    public FieldOption updateFieldOption(final Long fieldOptionId, final Field field,
+                                         final FieldOption sourceFieldOption) {
+        if (fieldOptionId == null) {
+            sourceFieldOption.setField(field);
+            return fieldOptionRepository.save(sourceFieldOption);
+        } else {
+            final FieldOption targetFieldOption = getFieldOption(fieldOptionId);
+            targetFieldOption.copyFrom(sourceFieldOption);
+            return targetFieldOption;
+        }
     }
 }

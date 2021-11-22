@@ -66,7 +66,7 @@ public class FieldOptionMapper implements EntityDtoMapper<FieldOption, FieldOpti
     }
 
     @Override
-    public Set<FieldOptionDto> toDtoSet(Set<FieldOption> entitySet, boolean embedChildren) {
+    public LinkedHashSet<FieldOptionDto> toDtoSet(Set<FieldOption> entitySet, boolean embedChildren) {
         if (embedChildren) {
             return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
         }

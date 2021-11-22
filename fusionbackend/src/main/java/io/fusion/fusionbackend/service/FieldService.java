@@ -20,6 +20,7 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldOption;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
 import io.fusion.fusionbackend.repository.FieldOptionRepository;
 import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
@@ -79,16 +80,23 @@ public class FieldService {
 
     public Field updateField(final Long fieldId, final Field sourceField, final Long unitId) {
         final Field targetField = getField(fieldId, false);
+        Set<FieldOption> initialOptions = targetField.getOptions();
         targetField.copyFrom(sourceField);
 
         if (unitId != null) {
             final Unit unit = unitService.getUnit(unitId);
             targetField.setUnit(unit);
         }
-        if (sourceField.getOptions() != null) {
-            sourceField.getOptions().forEach(option -> fieldOptionService.updateFieldOption(option.getId(), option));
+        if (sourceField.getDataType() == FieldDataType.ENUM) {
+            for (FieldOption option : initialOptions) {
+                if (!sourceField.getOptions().contains(option)) {
+                    fieldOptionService.deleteFieldOption(option.getId());
+                }
+            }
+            sourceField.getOptions().forEach(option -> fieldOptionService.updateFieldOption(option.getId(), targetField,
+                    option));
+            targetField.setOptions(sourceField.getOptions());
         }
-
         return targetField;
     }
 
