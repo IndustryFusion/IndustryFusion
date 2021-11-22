@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.rest.ecosystemmanager;
 import io.fusion.fusionbackend.dto.FieldDto;
 import io.fusion.fusionbackend.dto.mappers.FieldMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldOptionMapper;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,16 +68,15 @@ public class FieldRestService {
     }
 
     @PostMapping(path = "/fields")
-    public FieldDto createField(@RequestParam final Long unitId, @RequestBody final FieldDto fieldDto) {
-        return fieldMapper.toDto(
-                fieldService.createField(fieldMapper.toEntity(fieldDto), unitId), false);
-    }
-
-    @PostMapping(path = "/fields_enum")
     public FieldDto createField(@RequestBody final FieldDto fieldDto) {
-        return fieldMapper.toDto(
-                fieldService.createField(fieldMapper.toEntity(fieldDto),
-                        fieldOptionMapper.toEntitySet(fieldDto.getEnumOptions())), false);
+        if (fieldDto.getDataType() == FieldDataType.NUMERIC) {
+            return fieldMapper.toDto(
+                    fieldService.createField(fieldMapper.toEntity(fieldDto), fieldDto.getUnitId()), false);
+        } else {
+            return fieldMapper.toDto(
+                    fieldService.createField(fieldMapper.toEntity(fieldDto),
+                            fieldOptionMapper.toEntitySet(fieldDto.getEnumOptions())), false);
+        }
     }
 
     @PatchMapping(path = "/fields/{fieldId}")

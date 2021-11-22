@@ -68,7 +68,9 @@ export class FieldPageComponent implements OnInit, OnDestroy {
       this.fieldService.setActive(fieldId);
       this.field$ = this.fieldQuery.selectActive();
       this.field$.subscribe(field => {
-        this.unit$ = this.unitQuery.selectEntity(field.unitId);
+        if (field?.unitId) {
+          this.unit$ = this.unitQuery.selectEntity(field.unitId);
+        }
         this.field = field;
       });
     }

@@ -52,9 +52,8 @@ export class FieldService implements RestService<Field> {
   }
 
   createItem(item: Field): Observable<Field> {
-    const path = `fields_enum`;
-    return this.http.post<Field>(`${environment.apiUrlPrefix}/${path}`, item,
-      { params: item.unitId ? { unitId: `${item.unitId}` } : undefined, ...this.httpOptions })
+    const path = `fields`;
+    return this.http.post<Field>(`${environment.apiUrlPrefix}/${path}`, item, {...this.httpOptions })
       .pipe(
         tap({
           next: (entity) => {

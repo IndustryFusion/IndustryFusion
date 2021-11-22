@@ -101,12 +101,18 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
 
   private unitValidator = (formGroup: AbstractControl): ValidationErrors | null => {
     const chosenDataType = formGroup.get('dataType')?.value;
-    if (chosenDataType === FieldDataType.ENUM) {
-      return null;
+    if (chosenDataType !== FieldDataType.NUMERIC) {
+      let error;
+      (formGroup.get('enumOptions') as FormArray).controls.forEach(enumOption => {
+        const enumOptionLabel = enumOption.get('optionLabel');
+        const result = Validators.required(enumOptionLabel);
+          error = result === null ? error : result;
+      });
+      return error;
     } else {
-      return Validators.required(formGroup);
+      return Validators.required(formGroup.get('unitId'));
     }
-  }
+  };
 
   private createFieldFormGroup(field: Field) {
     this.fieldForm = this.formBuilder.group({
@@ -141,7 +147,7 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
   private createEnumOptionFormGroup(fieldOption: FieldOption): AbstractControl {
     return this.formBuilder.group({
       id: [fieldOption?.id],
-      optionLabel: [fieldOption?.optionLabel, Validators.required],
+      optionLabel: [fieldOption?.optionLabel],
     });
   }
 }
