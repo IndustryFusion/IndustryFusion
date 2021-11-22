@@ -35,13 +35,15 @@ public class FieldService {
     private final FieldRepository fieldRepository;
     private final FieldOptionRepository fieldOptionRepository;
     private final UnitService unitService;
+    private final FieldOptionService fieldOptionService;
 
     @Autowired
     public FieldService(FieldRepository fieldRepository, FieldOptionRepository fieldOptionRepository,
-                        UnitService unitService) {
+                        UnitService unitService, FieldOptionService fieldOptionService) {
         this.fieldRepository = fieldRepository;
         this.fieldOptionRepository = fieldOptionRepository;
         this.unitService = unitService;
+        this.fieldOptionService = fieldOptionService;
     }
 
     public Set<Field> getAllFields() {
@@ -77,10 +79,15 @@ public class FieldService {
 
     public Field updateField(final Long fieldId, final Field sourceField, final Long unitId) {
         final Field targetField = getField(fieldId, false);
-        final Unit unit = unitService.getUnit(unitId);
-
         targetField.copyFrom(sourceField);
-        targetField.setUnit(unit);
+
+        if (unitId != null) {
+            final Unit unit = unitService.getUnit(unitId);
+            targetField.setUnit(unit);
+        }
+        if (sourceField.getOptions() != null) {
+            sourceField.getOptions().forEach(option -> fieldOptionService.updateFieldOption(option.getId(), option));
+        }
 
         return targetField;
     }

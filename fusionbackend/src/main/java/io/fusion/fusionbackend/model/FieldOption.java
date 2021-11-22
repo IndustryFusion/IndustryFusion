@@ -40,4 +40,15 @@ public class FieldOption extends BaseEntity {
 
     private String label;
 
+    public void copyFrom(final FieldOption sourceFieldOption) {
+        super.copyFrom(sourceFieldOption);
+
+        if (sourceFieldOption.getField() != null) {
+            setField(sourceFieldOption.getField());
+        }
+        if (sourceFieldOption.getLabel() != null) {
+            setLabel(sourceFieldOption.getLabel());
+        }
+    }
+
 }

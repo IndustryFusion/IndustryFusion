@@ -20,7 +20,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class GermanStringPipe implements PipeTransform {
   transform(value: string) {
-    if (!value) return '';
+    if (!value) {
+      return '';
+    }
     return `${value.charAt(0).toLocaleUpperCase()}${value.slice(1).toLocaleLowerCase()}`;
   }
 }

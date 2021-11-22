@@ -21,6 +21,9 @@ import { FieldOption } from '../../core/store/field/field.model';
 })
 export class EnumOptionsToStringPipe implements PipeTransform {
   transform(enumOptions: FieldOption[]): string {
+    if (enumOptions === null || enumOptions?.length === 0) {
+      return '';
+    }
     return enumOptions.map(val => val.optionLabel).join(', ');
   }
 }

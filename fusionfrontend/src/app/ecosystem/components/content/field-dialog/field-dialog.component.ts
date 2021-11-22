@@ -106,13 +106,13 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
       (formGroup.get('enumOptions') as FormArray).controls.forEach(enumOption => {
         const enumOptionLabel = enumOption.get('optionLabel');
         const result = Validators.required(enumOptionLabel);
-          error = result === null ? error : result;
+        error = result === null ? error : result;
       });
       return error;
     } else {
       return Validators.required(formGroup.get('unitId'));
     }
-  };
+  }
 
   private createFieldFormGroup(field: Field) {
     this.fieldForm = this.formBuilder.group({
