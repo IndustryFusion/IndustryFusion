@@ -26,6 +26,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import io.fusion.fusionbackend.dto.storage.MediaObjectDto;
 import io.fusion.fusionbackend.exception.ExternalApiException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +64,7 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
     }
 
     @Override
-    public String getFilePath(final String fileKey) {
+    public String getFilePathForUpload(final String fileKey) {
         return this.basePath + fileKey;
     }
 
@@ -87,12 +88,12 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
     }
 
     @Override
-    public byte[] getFile(@NotNull final String fileKey) throws ResourceNotFoundException {
-        checkFileKey(fileKey);
+    public byte[] getFile(@NotNull final String uniqueFileKey) throws ResourceNotFoundException {
+        checkUniqueFileKey(uniqueFileKey);
 
         try {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                s3Client.getObject(new GetObjectRequest(configuration.bucketName, getFilePath(fileKey)))
+                s3Client.getObject(new GetObjectRequest(configuration.bucketName, uniqueFileKey))
                         .getObjectContent()
                         .transferTo(outputStream);
 
@@ -110,16 +111,18 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
     }
 
     @Override
-    public Long uploadFile(@NotNull final String content64BasedWithContentType,
-                           @NotNull final String contentType,
-                           @NotNull final String destinationPath) {
+    public MediaObjectDto uploadFile(@NotNull final MediaObjectDto mediaObject) {
 
-        if (isFileSizeInvalidBase64(content64BasedWithContentType, configuration)) {
+        if (isFileSizeInvalidBase64(mediaObject.getContentBase64(), configuration)) {
             throw new IllegalArgumentException("File size is larger than " + configuration.maxFileSizeMb + " MB");
         }
-        checkFileKey(destinationPath);
 
-        String content64Based = getFileContent64BasedWithoutContentType(content64BasedWithContentType, contentType);
+        String destinationPath = getFilePathForUpload(mediaObject.getFileKey());
+        checkFileKey(destinationPath);
+        destinationPath = createUniqueFileKey(destinationPath);
+
+        String content64Based = getFileContent64BasedWithoutContentType(mediaObject.getContentBase64(),
+                mediaObject.getContentType());
         byte[] fileContent = Base64.getDecoder().decode(content64Based);
 
         File tempFile = createTempFile(fileContent, getFileExtension(destinationPath));
@@ -136,7 +139,11 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
             deleteTempFile(tempFile);
         }
 
-        return (long)fileContent.length;
+        mediaObject.setFileKey(destinationPath);
+        mediaObject.setFilename(BaseClient.getFileNameFromUniqueFileKey(mediaObject.getFileKey()));
+        mediaObject.setFileSize((long)fileContent.length);
+
+        return mediaObject;
     }
 
     @Override
@@ -174,7 +181,7 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
     @Override
     public void deleteFile(@NotNull final String fileKey) {
         try {
-            s3Client.deleteObject(new DeleteObjectRequest(configuration.bucketName, getFilePath(fileKey)));
+            s3Client.deleteObject(new DeleteObjectRequest(configuration.bucketName, getFilePathForUpload(fileKey)));
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExternalApiException();

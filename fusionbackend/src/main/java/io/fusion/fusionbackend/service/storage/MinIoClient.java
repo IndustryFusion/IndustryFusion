@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.service.storage;
 
+import io.fusion.fusionbackend.dto.storage.MediaObjectDto;
 import io.fusion.fusionbackend.exception.ExternalApiException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.minio.BucketExistsArgs;
@@ -56,7 +57,7 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
     }
 
     @Override
-    public String getFilePath(final String fileKey) {
+    public String getFilePathForUpload(final String fileKey) {
         return this.basePath + fileKey;
     }
 
@@ -80,14 +81,14 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
     }
 
     @Override
-    public byte[] getFile(@NotNull final String fileKey) throws ResourceNotFoundException {
-        checkFileKey(fileKey);
+    public byte[] getFile(@NotNull final String uniqueFileKey) throws ResourceNotFoundException {
+        checkUniqueFileKey(uniqueFileKey);
 
         try {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 minioClient.getObject(GetObjectArgs.builder()
                                         .bucket(configuration.bucketName)
-                                        .object(getFilePath(fileKey))
+                                        .object(uniqueFileKey)
                                         .build())
                         .transferTo(outputStream);
 
@@ -105,16 +106,18 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
     }
 
     @Override
-    public Long uploadFile(@NotNull final String content64BasedWithContentType,
-                           @NotNull final String contentType,
-                           @NotNull final String destinationPath) {
+    public MediaObjectDto uploadFile(@NotNull final MediaObjectDto mediaObject) {
 
-        if (isFileSizeInvalidBase64(content64BasedWithContentType, configuration)) {
+        if (isFileSizeInvalidBase64(mediaObject.getContentBase64(), configuration)) {
             throw new IllegalArgumentException("File size is larger than " + configuration.maxFileSizeMb + " MB");
         }
-        checkFileKey(destinationPath);
 
-        String content64Based = getFileContent64BasedWithoutContentType(content64BasedWithContentType, contentType);
+        String destinationPath = getFilePathForUpload(mediaObject.getFileKey());
+        checkFileKey(destinationPath);
+        destinationPath = createUniqueFileKey(destinationPath);
+
+        String content64Based = getFileContent64BasedWithoutContentType(mediaObject.getContentBase64(),
+                mediaObject.getContentType());
         byte[] fileContent = Base64.getDecoder().decode(content64Based);
 
         File tempFile = createTempFile(fileContent, getFileExtension(destinationPath));
@@ -127,7 +130,7 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
                             .bucket(configuration.bucketName)
                             .object(destinationPath)
                             .filename(tempFile.getAbsolutePath())
-                            .contentType(contentType)
+                            .contentType(mediaObject.getContentType())
                             .build());
 
         } catch (Exception e) {
@@ -137,7 +140,11 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
             deleteTempFile(tempFile);
         }
 
-        return (long)fileContent.length;
+        mediaObject.setFileKey(destinationPath);
+        mediaObject.setFilename(BaseClient.getFileNameFromUniqueFileKey(mediaObject.getFileKey()));
+        mediaObject.setFileSize((long)fileContent.length);
+
+        return mediaObject;
     }
 
     @Override
@@ -149,7 +156,7 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
         try {
             minioClient.getObject(GetObjectArgs.builder()
                     .bucket(configuration.bucketName)
-                    .object(getFilePath(folderPath))
+                    .object(getFilePathForUpload(folderPath))
                     .build());
             return true;
         } catch (Exception e) {
@@ -183,7 +190,7 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket(configuration.bucketName)
-                    .object(getFilePath(fileKey))
+                    .object(getFilePathForUpload(fileKey))
                     .build());
         } catch (Exception e) {
             e.printStackTrace();

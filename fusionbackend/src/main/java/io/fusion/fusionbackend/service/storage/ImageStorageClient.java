@@ -15,7 +15,7 @@
 
 package io.fusion.fusionbackend.service.storage;
 
-import io.fusion.fusionbackend.dto.images.ImageDto;
+import io.fusion.fusionbackend.dto.storage.MediaObjectDto;
 import io.fusion.fusionbackend.exception.ExternalApiException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import org.jetbrains.annotations.NotNull;
@@ -33,21 +33,22 @@ public class ImageStorageClient {
         client.setMaxFileSize(MAX_FILE_SIZE_MB);
     }
 
-    public ImageDto getImage(@NotNull final String imageKey) throws ResourceNotFoundException {
-        if (isContentTypeInvalid(getContentType(imageKey))) {
+    public MediaObjectDto getImage(@NotNull final String uniqueImageKey) throws ResourceNotFoundException {
+        if (isContentTypeInvalid(getContentType(uniqueImageKey))) {
             throw new IllegalArgumentException("Content type is invalid");
         }
 
-        byte[] imageContent = client.getFile(imageKey);
+        byte[] imageContent = client.getFile(uniqueImageKey);
 
         try {
             String imageContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(imageContent);
 
-            String contentType = getContentType(imageKey);
-            return ImageDto.builder()
+            String contentType = getContentType(uniqueImageKey);
+            return MediaObjectDto.builder()
                     .companyId(client.getConfig().companyId)
-                    .filename(imageKey)
-                    .imageContentBase64("data:" + contentType + ";base64," + imageContentBase64)
+                    .fileKey(uniqueImageKey)
+                    .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueImageKey))
+                    .contentBase64("data:" + contentType + ";base64," + imageContentBase64)
                     .fileSize(BaseClient.getFileSizeFrom64Based(imageContentBase64))
                     .contentType(contentType)
                     .build();
@@ -65,20 +66,15 @@ public class ImageStorageClient {
         return "image/" + BaseClient.getFileExtension(fileKey).toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
     }
 
-    public ImageDto uploadImage(@NotNull ImageDto imageDto) throws ExternalApiException  {
+    public MediaObjectDto uploadImage(@NotNull MediaObjectDto imageDto) throws ExternalApiException  {
 
         final String contentType = imageDto.getContentType().toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
         if (isContentTypeInvalid(contentType)) {
             throw new IllegalArgumentException("Content type is invalid");
         }
 
-        Long fileSize = client.uploadFile(imageDto.getImageContentBase64(), contentType,
-                client.getFilePath(imageDto.getFilename()));
-
-        imageDto.setFileSize(fileSize);
         imageDto.setContentType(contentType);
-
-        return imageDto;
+        return client.uploadFile(imageDto);
     }
 
     public void deleteImage(@NotNull final String imageKey) {

@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.service.storage;
 
+import io.fusion.fusionbackend.dto.storage.MediaObjectDto;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +23,7 @@ public interface ObjectStorageBaseClient {
 
     boolean existBucket(final String bucketName);
 
-    String getFilePath(final String fileKey);
+    String getFilePathForUpload(final String fileKey);
 
     void setMaxFileSize(final Long maxFileSizeMb);
 
@@ -30,9 +31,7 @@ public interface ObjectStorageBaseClient {
 
     byte[] getFile(@NotNull final String fileKey) throws ResourceNotFoundException;
 
-    Long uploadFile(@NotNull final String content64BasedWithContentType,
-                           @NotNull final String contentType,
-                           @NotNull final String destinationPath);
+    MediaObjectDto uploadFile(@NotNull final MediaObjectDto mediaObject);
 
     boolean existFolder(@NotNull String folderPath);
 

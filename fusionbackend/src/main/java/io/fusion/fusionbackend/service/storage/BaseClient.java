@@ -22,11 +22,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 public class BaseClient {
 
     protected static final int MAX_LENGTH_FILE_PATH = 96;
     protected static final int MAX_LENGTH_FILE_NAME = 96;
+    protected static final int UUID_EXTRA_SPACE = UUID.randomUUID().toString().length() + 1;
 
     protected String getFileContent64BasedWithoutContentType(String content64Based, final String contentType) {
         final String dataUriSchemeStartToBeRemoved = "data:" + contentType + ";base64,";
@@ -80,11 +82,21 @@ public class BaseClient {
     }
 
     protected void checkFileKey(@NotNull final String fileKey) {
+        checkFileKeyGeneral(fileKey, false);
+    }
+
+    protected void checkUniqueFileKey(@NotNull final String fileKey) {
+        checkFileKeyGeneral(fileKey, true);
+    }
+
+    private void checkFileKeyGeneral(@NotNull final String fileKey, boolean withUuid) {
+        int uuidLengthInFilename = withUuid ? UUID_EXTRA_SPACE : 0;
+
         if (isFileKeyContentInvalid(fileKey)) {
             String exceptionMessage = "File key contains illegal character(s)";
             throw new IllegalArgumentException(exceptionMessage);
         }
-        if (fileKey.length() > MAX_LENGTH_FILE_NAME + MAX_LENGTH_FILE_PATH) {
+        if (fileKey.length() > MAX_LENGTH_FILE_NAME + MAX_LENGTH_FILE_PATH + uuidLengthInFilename) {
             String exceptionMessage = "File key is too large";
             throw new IllegalArgumentException(exceptionMessage);
         }
@@ -93,7 +105,7 @@ public class BaseClient {
         String fileName = path.getFileName().toString();
         String filePath = path.getParent() != null ? path.getParent().toString() : "";
 
-        if (fileName.length() > MAX_LENGTH_FILE_NAME) {
+        if (fileName.length() > MAX_LENGTH_FILE_NAME + uuidLengthInFilename) {
             String exceptionMessage = "File name is larger than " + MAX_LENGTH_FILE_NAME;
             throw new IllegalArgumentException(exceptionMessage);
         }
@@ -108,5 +120,17 @@ public class BaseClient {
                 || fileKey.contains("<") || fileKey.contains(">") || fileKey.contains("*")
                 || fileKey.contains("|") || fileKey.contains(":") || fileKey.contains("\"")
                 || fileKey.contains("=") || fileKey.contains("@") || fileKey.contains("%");
+    }
+
+    public static String createUniqueFileKey(@NotNull final String fileKey) {
+        Path path = Paths.get(fileKey);
+        String fileName = path.getFileName().toString();
+        String filePath = path.getParent() != null ? path.getParent().toString() : "";
+        return filePath + "/" + UUID.randomUUID() + "_" + fileName;
+    }
+
+    public static String getFileNameFromUniqueFileKey(@NotNull final String fileKey) {
+        String fileName = Paths.get(fileKey).getFileName().toString();
+        return fileName.substring(UUID_EXTRA_SPACE);
     }
 }
