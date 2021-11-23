@@ -13,7 +13,7 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.dto.images;
+package io.fusion.fusionbackend.dto.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.fusion.fusionbackend.dto.BaseEntityDto;
@@ -23,17 +23,17 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
-public class ImageDto extends BaseEntityDto {
+public class MediaObjectDto {
     private Long companyId;
-    private String filename;
-    private String imageContentBase64;
+    private String fileKey;
+    private String contentBase64;
     private String contentType;
     private Long fileSize;
+    private String filename;
 
     @JsonCreator
-    public ImageDto() {
+    public MediaObjectDto() {
     }
 }

@@ -95,8 +95,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
       reader.addEventListener('load', (readFileEvent: any) => {
         this.imageService.uploadImage(this.companyId, selectedImage.name, readFileEvent.target.result, selectedImage.size)
           .subscribe(uploadedImage => {
-            this.assetImage = uploadedImage.imageContentBase64;
-            this.assetForm.get('imageKey').setValue(uploadedImage.filename);
+            this.assetImage = uploadedImage.contentBase64;
+            this.assetForm.get('imageKey').setValue(uploadedImage.fileKey);
             console.log('bild', this.assetForm.get('imageKey').value);
           });
       });

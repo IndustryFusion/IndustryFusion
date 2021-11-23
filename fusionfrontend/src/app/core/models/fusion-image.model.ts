@@ -15,17 +15,18 @@
 
 import { ID } from '@datorama/akita';
 
-export class FusionImage {
+export class MediaObject {
   companyId: ID;
-  filename: string;
-  imageContentBase64: string;
+  fileKey: string;
+  contentBase64: string;
   contentType: string;
   fileSize: number;
+  filename?: string;
 
-  constructor(companyId: ID, filename: string, imageContentBase64: string, contentType: string, fileSize: number) {
+  constructor(companyId: ID, fileKey: string, contentBase64: string, contentType: string, fileSize: number) {
     this.companyId = companyId;
-    this.filename = filename;
-    this.imageContentBase64 = imageContentBase64;
+    this.fileKey = fileKey;
+    this.contentBase64 = contentBase64;
     this.contentType = contentType;
     this.fileSize = fileSize;
   }

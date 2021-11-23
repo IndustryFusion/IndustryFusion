@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FusionImage } from '../../models/fusion-image.model';
+import { MediaObject } from '../../models/fusion-image.model';
 import { map } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 
@@ -40,19 +40,23 @@ export class ImageService {
     return parts.length > 0 ? parts[parts.length - 1] : 'jpeg';
   }
 
-  getImage(companyId: ID, imageKey: string): Observable<string> {
-    const path = `companies/${companyId}/images/${imageKey}`;
-    return this.http.get<FusionImage>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).pipe(
-      map((fusionImage: FusionImage) => `data:${fusionImage.contentType};base64,${fusionImage.imageContentBase64}`
-    ));
+  getImage(companyId: ID, imageKey: string): Observable<MediaObject> {
+    const path = `companies/${companyId}/images`;
+    return this.http.put<MediaObject>(`${environment.apiUrlPrefix}/${path}`, imageKey, this.httpOptions);
   }
 
-  uploadImage(companyId: ID, imageKey: string, imageContentBase64: string, fileSize: number): Observable<FusionImage> {
+  getImageAsUriSchemeString(companyId: ID, imageKey: string): Observable<string> {
+   return this.getImage(companyId, imageKey).pipe(
+      map((fusionImage: MediaObject) => `data:${fusionImage.contentType};base64,${fusionImage.contentBase64}`
+      ));
+  }
+
+  uploadImage(companyId: ID, imageKey: string, imageContentBase64: string, fileSize: number): Observable<MediaObject> {
     const path = `companies/${companyId}/images`;
-    const image: FusionImage = new FusionImage(companyId, imageKey, imageContentBase64,
+    const image: MediaObject = new MediaObject(companyId, imageKey, imageContentBase64,
       'image/' + ImageService.getFileExtension(imageKey), fileSize);
 
-    return this.http.post<FusionImage>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);
+    return this.http.post<MediaObject>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);
   }
 
   deleteImage(companyId: ID, imageKey: string): Observable<void> {
