@@ -81,6 +81,8 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
 
     @Override
     public byte[] getFile(@NotNull final String fileKey) throws ResourceNotFoundException {
+        checkFileKey(fileKey);
+
         try {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 minioClient.getObject(GetObjectArgs.builder()
@@ -110,6 +112,7 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
         if (isFileSizeInvalidBase64(content64BasedWithContentType, configuration)) {
             throw new IllegalArgumentException("File size is larger than " + configuration.maxFileSizeMb + " MB");
         }
+        checkFileKey(destinationPath);
 
         String content64Based = getFileContent64BasedWithoutContentType(content64BasedWithContentType, contentType);
         byte[] fileContent = Base64.getDecoder().decode(content64Based);

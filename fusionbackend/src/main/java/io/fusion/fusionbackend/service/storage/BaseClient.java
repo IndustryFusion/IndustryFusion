@@ -15,11 +15,18 @@
 
 package io.fusion.fusionbackend.service.storage;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class BaseClient {
+
+    protected static final int MAX_LENGTH_FILE_PATH = 96;
+    protected static final int MAX_LENGTH_FILE_NAME = 96;
 
     protected String getFileContent64BasedWithoutContentType(String content64Based, final String contentType) {
         final String dataUriSchemeStartToBeRemoved = "data:" + contentType + ";base64,";
@@ -70,5 +77,36 @@ public class BaseClient {
             throw new IllegalArgumentException();
         }
         return parts[parts.length - 1];
+    }
+
+    protected void checkFileKey(@NotNull final String fileKey) {
+        if (isFileKeyContentInvalid(fileKey)) {
+            String exceptionMessage = "File key contains illegal character(s)";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+        if (fileKey.length() > MAX_LENGTH_FILE_NAME + MAX_LENGTH_FILE_PATH) {
+            String exceptionMessage = "File key is too large";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+
+        Path path = Paths.get(fileKey);
+        String fileName = path.getFileName().toString();
+        String filePath = path.getParent() != null ? path.getParent().toString() : "";
+
+        if (fileName.length() > MAX_LENGTH_FILE_NAME) {
+            String exceptionMessage = "File name is larger than " + MAX_LENGTH_FILE_NAME;
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+        if (filePath.length() > MAX_LENGTH_FILE_PATH) {
+            String exceptionMessage = "File path is larger than " + MAX_LENGTH_FILE_PATH;
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+    }
+
+    private boolean isFileKeyContentInvalid(final String fileKey) {
+        return fileKey == null || fileKey.contains("?") || fileKey.contains("\\")
+                || fileKey.contains("<") || fileKey.contains(">") || fileKey.contains("*")
+                || fileKey.contains("|") || fileKey.contains(":") || fileKey.contains("\"")
+                || fileKey.contains("=") || fileKey.contains("@") || fileKey.contains("%");
     }
 }

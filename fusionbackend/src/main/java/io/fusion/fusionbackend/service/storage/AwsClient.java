@@ -37,7 +37,6 @@ import java.io.InputStream;
 import java.util.Base64;
 
 // see https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/examples-s3-objects.html#upload-object
-// and https://javatutorial.net/java-s3-example
 public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
 
     private final ObjectStorageConfiguration configuration;
@@ -89,6 +88,8 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
 
     @Override
     public byte[] getFile(@NotNull final String fileKey) throws ResourceNotFoundException {
+        checkFileKey(fileKey);
+
         try {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 s3Client.getObject(new GetObjectRequest(configuration.bucketName, getFilePath(fileKey)))
@@ -116,6 +117,7 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
         if (isFileSizeInvalidBase64(content64BasedWithContentType, configuration)) {
             throw new IllegalArgumentException("File size is larger than " + configuration.maxFileSizeMb + " MB");
         }
+        checkFileKey(destinationPath);
 
         String content64Based = getFileContent64BasedWithoutContentType(content64BasedWithContentType, contentType);
         byte[] fileContent = Base64.getDecoder().decode(content64Based);
