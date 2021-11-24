@@ -51,10 +51,10 @@ export class ImageService {
       ));
   }
 
-  uploadImage(companyId: ID, imageKey: string, imageContentBase64: string, fileSize: number): Observable<MediaObject> {
+  uploadImage(companyId: ID, filename: string, folder: string, imageContentBase64: string, fileSize: number): Observable<MediaObject> {
     const path = `companies/${companyId}/images`;
-    const image: MediaObject = new MediaObject(companyId, imageKey, imageContentBase64,
-      'image/' + ImageService.getFileExtension(imageKey), fileSize);
+    const image: MediaObject = new MediaObject(companyId, filename, folder, imageContentBase64,
+      'image/' + ImageService.getFileExtension(filename), fileSize);
 
     return this.http.post<MediaObject>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);
   }

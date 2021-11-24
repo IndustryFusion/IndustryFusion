@@ -37,13 +37,11 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
 
     private final ObjectStorageConfiguration configuration;
     private final MinioClient minioClient;
-    private final String basePath;
 
     public MinIoClient(@NotNull final ObjectStorageConfiguration configuration) {
         assert configuration.isValid();
 
         this.minioClient = createClient(configuration.accessKey, configuration.secretKey, configuration.endpointUrl);
-        this.basePath = "company" + configuration.companyId + "/";
         this.configuration = configuration;
 
         assert existBucket(configuration.bucketName);
@@ -54,11 +52,6 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
                 .endpoint(url)
                 .credentials(accessKey, secretKey)
                 .build();
-    }
-
-    @Override
-    public String getFilePathForUpload(final String fileKey) {
-        return this.basePath + fileKey;
     }
 
     @Override
@@ -112,7 +105,7 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
             throw new IllegalArgumentException("File size is larger than " + configuration.maxFileSizeMb + " MB");
         }
 
-        String destinationPath = getFilePathForUpload(mediaObject.getFileKey());
+        String destinationPath = mediaObject.getFileKey();
         checkFileKey(destinationPath);
         destinationPath = createUniqueFileKey(destinationPath);
 
@@ -190,7 +183,7 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket(configuration.bucketName)
-                    .object(getFilePathForUpload(fileKey))
+                    .object(fileKey)
                     .build());
         } catch (Exception e) {
             e.printStackTrace();

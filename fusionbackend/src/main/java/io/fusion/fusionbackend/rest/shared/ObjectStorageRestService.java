@@ -47,8 +47,7 @@ public class ObjectStorageRestService {
         ObjectStorageType type = ObjectStorageClientFactory.getType(serverType);
         ObjectStorageConfiguration configuration = new ObjectStorageConfiguration(
                 environment.getProperty("object-storage.server-url"),
-                environment.getProperty("object-storage.bucket-name"),
-                "",
+                environment.getProperty("object-storage.buckets-prefix"),
                 companyId,
                 ObjectStorageAuth.getApiKey(),
                 ObjectStorageAuth.getSecretKey()

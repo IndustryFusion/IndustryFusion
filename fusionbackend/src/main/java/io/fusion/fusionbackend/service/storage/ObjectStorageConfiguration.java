@@ -19,30 +19,35 @@ public class ObjectStorageConfiguration {
 
     public final String endpointUrl;
     public final String bucketName;
-    public final String path;
     public final Long companyId;
     public final String accessKey;
     public final String secretKey;
     public Long maxFileSizeMb;
 
     public ObjectStorageConfiguration(final String endpointUrl,
-                                      final String bucketName,
-                                      final String path,
+                                      final String bucketsPrefix,
                                       final Long companyId,
                                       final String accessKey,
                                       final String secretKey) {
         this.endpointUrl = endpointUrl;
-        this.bucketName = bucketName;
-        this.path = path;
+        this.bucketName = composeBucketName(bucketsPrefix, companyId);
         this.companyId = companyId;
         this.accessKey = accessKey;
         this.secretKey = secretKey;
         this.maxFileSizeMb = 3L;
     }
 
+    private String composeBucketName(final String bucketsPrefix, final Long companyId) {
+        if (isNotEmpty(bucketsPrefix)) {
+            return bucketsPrefix + (bucketsPrefix.endsWith("-") ? "" : "-") + "company" + companyId;
+        } else {
+            return "company" + companyId;
+        }
+    }
+
     public boolean isValid() {
         return isNotEmpty(endpointUrl) && isNotEmpty(bucketName)
-                && path != null && companyId >= 0
+                && companyId >= 0
                 && isNotEmpty(accessKey) && isNotEmpty(secretKey);
     }
 

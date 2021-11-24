@@ -23,11 +23,12 @@ export class MediaObject {
   fileSize: number;
   filename?: string;
 
-  constructor(companyId: ID, fileKey: string, contentBase64: string, contentType: string, fileSize: number) {
+  constructor(companyId: ID, filename: string, folder: string, contentBase64: string, contentType: string, fileSize: number) {
     this.companyId = companyId;
-    this.fileKey = fileKey;
+    this.fileKey = folder.toLowerCase() + '/' + filename;
     this.contentBase64 = contentBase64;
     this.contentType = contentType;
     this.fileSize = fileSize;
+    this.filename = filename;
   }
 }
