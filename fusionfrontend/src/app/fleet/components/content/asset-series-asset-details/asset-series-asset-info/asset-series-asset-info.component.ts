@@ -17,6 +17,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { Observable } from 'rxjs';
+import { ImageService } from '../../../../../core/services/api/image.service';
+import { CompanyQuery } from '../../../../../core/store/company/company.query';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -30,9 +33,23 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [];
 
-  constructor() {
+  assetId: ID;
+  assetImage: string;
+
+  constructor(private companyQuery: CompanyQuery,
+              private imageService: ImageService) {
   }
 
   ngOnInit() {
+    this.asset$.subscribe(asset => {
+      if (asset.id !== this.assetId) {
+        this.assetId = asset.id;
+
+        const companyId = this.companyQuery.getActiveId();
+        this.imageService.getImageAsUriSchemeString(companyId, asset.imageKey).subscribe(imageText => {
+          this.assetImage = imageText;
+        });
+      }
+    });
   }
 }
