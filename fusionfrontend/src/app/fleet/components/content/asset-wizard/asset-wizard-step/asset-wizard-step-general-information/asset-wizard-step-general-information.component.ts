@@ -34,27 +34,28 @@ import { CompanyQuery } from '../../../../../../core/store/company/company.query
 })
 export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
-  constructor(private assetSeriesQuery: AssetSeriesQuery,
-              private companyQuery: CompanyQuery,
-              private imageService: ImageService,
-              private wizardRef: DynamicDialogRef) { }
-
   @Input() assetForm: FormGroup;
   @Input() relatedAssetSeries: AssetSeries;
   @Input() relatedAssetSeriesId: ID;
   @Input() relatedCompany: Company;
   @Input() relatedAssetType: AssetType;
   @Input() isAssetSeriesLocked: boolean;
+  @Input() assetImage: string;
   @Output() changeAssetSeries = new EventEmitter<ID>();
   @Output() stepChange = new EventEmitter<AssetWizardStep>();
+  @Output() assetImageChanged = new EventEmitter<string>();
 
   public assetSeries$: Observable<AssetSeries[]>;
 
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
   public DEFAULT_ASSET_IMAGE_KEY = ImageService.DEFAULT_ASSET_IMAGE_KEY;
-  public assetImage: string;
 
   private companyId: ID;
+
+  constructor(private assetSeriesQuery: AssetSeriesQuery,
+              private companyQuery: CompanyQuery,
+              private imageService: ImageService,
+              private wizardRef: DynamicDialogRef) { }
 
   ngOnInit(): void {
     this.assetSeries$ = this.assetSeriesQuery.selectAll();
@@ -96,8 +97,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
         this.imageService.uploadImage(this.companyId, selectedImage.name, 'assets', readFileEvent.target.result, selectedImage.size)
           .subscribe(uploadedImage => {
             this.assetImage = uploadedImage.contentBase64;
+            this.assetImageChanged.emit(this.assetImage);
             this.assetForm.get('imageKey').setValue(uploadedImage.fileKey);
-            console.log('bild', this.assetForm.get('imageKey').value);
           });
       });
 

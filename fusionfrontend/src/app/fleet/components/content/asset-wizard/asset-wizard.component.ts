@@ -62,6 +62,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   public step = AssetWizardStep.GENERAL_INFORMATION;
   public isAssetSeriesLocked = false;
 
+  public assetImage: string = null;
+
   public metricsValid: boolean;
   public attributesValid: boolean;
   public subsystemsValid: boolean;

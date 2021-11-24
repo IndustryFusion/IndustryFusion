@@ -51,7 +51,12 @@ export class ImageService {
 
   getImageAsUriSchemeString(companyId: ID, imageKey: string): Observable<string> {
    return this.getImage(companyId, imageKey).pipe(
-      map((fusionImage: MediaObject) => `data:${fusionImage.contentType};base64,${fusionImage.contentBase64}`
+      map((fusionImage: MediaObject) => {
+          if (!fusionImage.contentBase64.startsWith('data')) {
+            return `data:${fusionImage.contentType};base64,${fusionImage.contentBase64}`;
+          }
+          return fusionImage.contentBase64;
+        }
       ));
   }
 
