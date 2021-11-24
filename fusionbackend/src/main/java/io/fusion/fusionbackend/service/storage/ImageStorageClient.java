@@ -59,11 +59,15 @@ public class ImageStorageClient {
     }
 
     private boolean isContentTypeInvalid(@NotNull final String contentTypeLowerCase) {
-        return !contentTypeLowerCase.equals("image/png") && !contentTypeLowerCase.equals("image/jpeg");
+        return !contentTypeLowerCase.equals("image/png") && !contentTypeLowerCase.equals("image/jpeg")
+                && !contentTypeLowerCase.equals("image/svg+xml") && !contentTypeLowerCase.equals("image/bmp")
+                && !contentTypeLowerCase.equals("image/tiff");
     }
 
-    private String getContentType(String fileKey) {
-        return "image/" + BaseClient.getFileExtension(fileKey).toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
+    private String getContentType(final String fileKey) {
+        String fileExtension = BaseClient.getFileExtension(fileKey).toLowerCase(Locale.ROOT);
+        fileExtension = fileExtension.replace("jpg", "jpeg").replace("svg", "svg+xml");
+        return "image/" + fileExtension;
     }
 
     public MediaObjectDto uploadImage(@NotNull MediaObjectDto imageDto) throws ExternalApiException  {
