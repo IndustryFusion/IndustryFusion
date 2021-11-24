@@ -23,8 +23,6 @@ public interface ObjectStorageBaseClient {
 
     boolean existBucket(final String bucketName);
 
-    String getFilePathForUpload(final String fileKey);
-
     void setMaxFileSize(final Long maxFileSizeMb);
 
     ObjectStorageConfiguration getConfig();
@@ -33,15 +31,7 @@ public interface ObjectStorageBaseClient {
 
     MediaObjectDto uploadFile(@NotNull final MediaObjectDto mediaObject);
 
-    boolean existFolder(@NotNull String folderPath);
+    boolean fileNotExisting(@NotNull String fileKey);
 
-    void createFolder(@NotNull String folderPath);
-
-    default void createFolderIfNotExists(@NotNull String folderPath) {
-        if (!existFolder(folderPath)) {
-            createFolder(folderPath);
-        }
-    }
-
-    void deleteFile(@NotNull final String fileKey);
+    void deleteFileErrorIfNotExist(@NotNull final String fileKey);
 }

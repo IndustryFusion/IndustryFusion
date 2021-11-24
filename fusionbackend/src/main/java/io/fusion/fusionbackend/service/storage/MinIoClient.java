@@ -21,15 +21,13 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import io.minio.StatObjectArgs;
 import io.minio.UploadObjectArgs;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.util.Base64;
 
 // see https://docs.min.io/docs/java-client-api-reference.html
@@ -141,45 +139,11 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
     }
 
     @Override
-    public boolean existFolder(@NotNull String folderPath) {
-        if (!folderPath.endsWith("/")) {
-            folderPath = folderPath + '/';
+    public void deleteFileErrorIfNotExist(@NotNull String fileKey) {
+        if (fileNotExisting(fileKey)) {
+            throw new IllegalArgumentException("File to delete does not exist");
         }
 
-        try {
-            minioClient.getObject(GetObjectArgs.builder()
-                    .bucket(configuration.bucketName)
-                    .object(getFilePathForUpload(folderPath))
-                    .build());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Override
-    public void createFolder(@NotNull String folderPath) {
-        if (!folderPath.endsWith("/")) {
-            folderPath = folderPath + '/';
-        }
-
-        try {
-            InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
-
-            minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(configuration.bucketName)
-                            .object(folderPath)
-                            .stream(emptyContent, 0, 0)
-                            .build());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ExternalApiException();
-        }
-    }
-
-    @Override
-    public void deleteFile(@NotNull String fileKey) {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket(configuration.bucketName)
@@ -188,6 +152,20 @@ public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExternalApiException();
+        }
+    }
+
+    @Override
+    public boolean fileNotExisting(@NotNull String fileKey) {
+        try {
+            minioClient.statObject(
+                    StatObjectArgs.builder()
+                            .bucket(configuration.bucketName)
+                            .object(fileKey)
+                            .build());
+            return false;
+        } catch (Exception e) {
+            return true;
         }
     }
 }

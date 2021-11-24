@@ -24,17 +24,14 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import io.fusion.fusionbackend.dto.storage.MediaObjectDto;
 import io.fusion.fusionbackend.exception.ExternalApiException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.util.Base64;
 
 // see https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/examples-s3-objects.html#upload-object
@@ -42,13 +39,11 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
 
     private final ObjectStorageConfiguration configuration;
     private final AmazonS3 s3Client;
-    private final String basePath;
 
     public AwsClient(@NotNull final ObjectStorageConfiguration configuration) {
         assert configuration.isValid();
 
         this.s3Client = createClient(configuration.accessKey, configuration.secretKey, configuration.endpointUrl);
-        this.basePath = "company" + configuration.companyId + "/";
         this.configuration = configuration;
 
         assert existBucket(configuration.bucketName);
@@ -61,11 +56,6 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(url, "eu-west-1"))
                 .build();
-    }
-
-    @Override
-    public String getFilePathForUpload(final String fileKey) {
-        return this.basePath + fileKey;
     }
 
     @Override
@@ -117,7 +107,7 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
             throw new IllegalArgumentException("File size is larger than " + configuration.maxFileSizeMb + " MB");
         }
 
-        String destinationPath = getFilePathForUpload(mediaObject.getFileKey());
+        String destinationPath = mediaObject.getFileKey();
         checkFileKey(destinationPath);
         destinationPath = createUniqueFileKey(destinationPath);
 
@@ -147,31 +137,13 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
     }
 
     @Override
-    public boolean existFolder(@NotNull String folderPath) {
-        if (!folderPath.endsWith("/")) {
-            folderPath = folderPath + '/';
+    public void deleteFileErrorIfNotExist(@NotNull final String fileKey) {
+        if (fileNotExisting(fileKey)) {
+            throw new IllegalArgumentException("File to delete does not exist");
         }
 
         try {
-            s3Client.getObject(new GetObjectRequest(configuration.bucketName, folderPath));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Override
-    public void createFolder(@NotNull String folderPath) {
-        if (!folderPath.endsWith("/")) {
-            folderPath = folderPath + '/';
-        }
-
-        try {
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(0);
-            InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
-
-            s3Client.putObject(new PutObjectRequest(configuration.bucketName, folderPath, emptyContent, metadata));
+            s3Client.deleteObject(new DeleteObjectRequest(configuration.bucketName, fileKey));
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExternalApiException();
@@ -179,12 +151,7 @@ public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
     }
 
     @Override
-    public void deleteFile(@NotNull final String fileKey) {
-        try {
-            s3Client.deleteObject(new DeleteObjectRequest(configuration.bucketName, getFilePathForUpload(fileKey)));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ExternalApiException();
-        }
+    public boolean fileNotExisting(@NotNull String fileKey) {
+        return !s3Client.doesObjectExist(configuration.bucketName, fileKey);
     }
 }

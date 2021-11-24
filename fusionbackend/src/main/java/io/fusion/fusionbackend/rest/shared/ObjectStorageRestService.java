@@ -22,12 +22,13 @@ import io.fusion.fusionbackend.rest.annotations.IsObjectStorageUser;
 import io.fusion.fusionbackend.service.storage.ImageStorageClient;
 import io.fusion.fusionbackend.service.storage.ObjectStorageClientFactory;
 import io.fusion.fusionbackend.service.storage.ObjectStorageConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,9 +57,14 @@ public class ObjectStorageRestService {
         return new ImageStorageClient(ObjectStorageClientFactory.create(type, configuration));
     }
 
-    @PutMapping(path = "/companies/{companyId}/images")
+    private String unescapeSlash(@NotNull String fileKey) {
+        return fileKey.replace('$', '/');
+    }
+
+    @GetMapping(path = "/companies/{companyId}/images/{imageKey}")
     public MediaObjectDto getImage(@PathVariable final Long companyId,
-                                   @RequestBody final String imageKey) {
+                                   @PathVariable String imageKey) {
+        imageKey = unescapeSlash(imageKey);
         return createImageClient(companyId).getImage(imageKey);
     }
 
@@ -70,7 +76,8 @@ public class ObjectStorageRestService {
 
     @DeleteMapping(path = "/companies/{companyId}/images/{imageKey}")
     public void deleteImage(@PathVariable final Long companyId,
-                            @PathVariable final String imageKey) {
-        createImageClient(companyId).deleteImage(imageKey);
+                            @PathVariable String imageKey) {
+        imageKey = unescapeSlash(imageKey);
+        createImageClient(companyId).deleteImageErrorIfNotExist(imageKey);
     }
 }

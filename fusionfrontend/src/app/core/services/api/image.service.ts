@@ -40,9 +40,13 @@ export class ImageService {
     return parts.length > 0 ? parts[parts.length - 1] : 'jpeg';
   }
 
+  private static escapeSlash(text: string): string {
+    return text.replace('/', '$');
+  }
+
   getImage(companyId: ID, imageKey: string): Observable<MediaObject> {
-    const path = `companies/${companyId}/images`;
-    return this.http.put<MediaObject>(`${environment.apiUrlPrefix}/${path}`, imageKey, this.httpOptions);
+    const path = `companies/${companyId}/images/${ImageService.escapeSlash(imageKey)}`;
+    return this.http.get<MediaObject>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
   getImageAsUriSchemeString(companyId: ID, imageKey: string): Observable<string> {
@@ -60,7 +64,7 @@ export class ImageService {
   }
 
   deleteImage(companyId: ID, imageKey: string): Observable<void> {
-    const path = `companies/${companyId}/images/${imageKey}`;
+    const path = `companies/${companyId}/images/${ImageService.escapeSlash(imageKey)}`;
     return this.http.delete<void>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 }

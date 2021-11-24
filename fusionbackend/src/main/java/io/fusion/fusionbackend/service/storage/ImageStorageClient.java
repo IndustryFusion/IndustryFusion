@@ -77,7 +77,7 @@ public class ImageStorageClient {
         return client.uploadFile(imageDto);
     }
 
-    public void deleteImage(@NotNull final String imageKey) {
-        client.deleteFile(imageKey);
+    public void deleteImageErrorIfNotExist(@NotNull final String imageKey) {
+        client.deleteFileErrorIfNotExist(imageKey);
     }
 }
