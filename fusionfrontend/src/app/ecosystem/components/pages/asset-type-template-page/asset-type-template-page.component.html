@@ -39,17 +39,15 @@ under the License.
     <div> {{ 'APP.ECOSYSTEM.PAGES.ASSET_TYPE_TEMPLATE.METRICS' | translate }} </div>
   </div>
   <div *ngIf="metrics && metrics.length > 0" class="fields-list fields-padding">
-    <app-asset-type-template-field-header [type]="FieldType.METRIC" [editable]="false"></app-asset-type-template-field-header>
-    <app-asset-type-template-field-row *ngFor="let metric of metrics" [fieldTarget]="metric"
-                                       [confirmed]="true" [editable]="false">
-    </app-asset-type-template-field-row>
+    <app-asset-type-template-wizard-shared-field *ngFor="let metric of metrics" [fieldTarget]="metric"
+                                                 [fieldType]="FieldType.METRIC" [confirmed]="true" [editable]="false">
+    </app-asset-type-template-wizard-shared-field>
   </div>
 
   <div class="subtitle">{{ 'APP.ECOSYSTEM.PAGES.ASSET_TYPE_TEMPLATE.ATTRIBUTES' | translate }}</div>
   <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
-    <app-asset-type-template-field-header [type]="FieldType.ATTRIBUTE" [editable]="false"></app-asset-type-template-field-header>
-    <app-asset-type-template-field-row *ngFor="let metric of attributes" [fieldTarget]="metric"
-                                       [confirmed]="true" [editable]="false">
-    </app-asset-type-template-field-row>
+    <app-asset-type-template-wizard-shared-field *ngFor="let metric of attributes" [fieldTarget]="metric"
+                                                 [fieldType]="FieldType.ATTRIBUTE" [confirmed]="true" [editable]="false">
+    </app-asset-type-template-wizard-shared-field>
   </div>
 </div>

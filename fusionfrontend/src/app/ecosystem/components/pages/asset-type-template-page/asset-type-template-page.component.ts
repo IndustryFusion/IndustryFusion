@@ -23,9 +23,9 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplateDialogPublishComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
 import { AssetTypeTemplateService } from '../../../../core/store/asset-type-template/asset-type-template.service';
 import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
-import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { FormGroup } from '@angular/forms';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { AssetTypeTemplateWizardComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard.component';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -107,7 +107,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   }
 
   private showUpdateWizard() {
-    this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
+    this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent,
       {
         data: { assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT },
         header: this.translate.instant('APP.ECOSYSTEM.PAGES.ASSET_TYPE_TEMPLATE.ASSET_TYPE_TEMPLATE_EDITOR'),
