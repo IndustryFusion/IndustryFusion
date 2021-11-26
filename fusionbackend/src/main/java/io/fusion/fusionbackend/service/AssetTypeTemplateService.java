@@ -207,4 +207,8 @@ public class AssetTypeTemplateService {
 
         return assetTypeTemplate;
     }
+
+    public Set<AssetTypeTemplate> findSubsystemCandidates() {
+        return assetTypeTemplateRepository.findSubsystemCandidates();
+    }
 }
