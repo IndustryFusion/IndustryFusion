@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
   AssetModalMode,
   AssetModalType,
@@ -32,13 +32,16 @@ import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfirmationService } from 'primeng/api';
+import { ImageService } from '../../../../../core/services/api/image.service';
+import { CompanyQuery } from '../../../../../core/store/company/company.query';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-details-info',
   templateUrl: './asset-details-info.component.html',
   styleUrls: ['./asset-details-info.component.scss']
 })
-export class AssetDetailsInfoComponent implements OnInit {
+export class AssetDetailsInfoComponent implements OnInit, OnChanges {
 
   @Input()
   assetWithFields: FactoryAssetDetailsWithFields;
@@ -46,6 +49,9 @@ export class AssetDetailsInfoComponent implements OnInit {
   factorySite: FactorySite;
   factorySites: FactorySite[];
   rooms: Room[];
+
+  assetIdOfImage: ID;
+  assetImage: string;
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE];
 
@@ -57,13 +63,32 @@ export class AssetDetailsInfoComponent implements OnInit {
               private roomQuery: RoomQuery,
               private router: Router,
               private routingLocation: Location,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private companyQuery: CompanyQuery,
+              private imageService: ImageService) {
   }
 
   ngOnInit() {
     this.factoryResolver.factorySite$.subscribe(site => this.factorySite = site);
     this.factoryQuery.selectAll().subscribe(sites => this.factorySites = sites);
     this.roomQuery.selectAll().subscribe(rooms => this.rooms = rooms);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.assetWithFields) {
+      this.loadImageForChangedAsset();
+    }
+  }
+
+  private loadImageForChangedAsset() {
+    if (this.assetWithFields && this.assetWithFields.id !== this.assetIdOfImage) {
+      this.assetIdOfImage = this.assetWithFields.id;
+
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.getImageAsUriSchemeString(companyId, this.assetWithFields.imageKey).subscribe(imageText => {
+        this.assetImage = imageText;
+      });
+    }
   }
 
   openEditDialog() {

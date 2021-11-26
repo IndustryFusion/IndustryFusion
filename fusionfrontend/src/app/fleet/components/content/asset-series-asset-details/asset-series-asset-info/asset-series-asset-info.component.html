@@ -15,7 +15,7 @@ under the License.
 
 <section class="asset">
   <img *ngIf="assetImage == null" class="asset-img" src="assets/img/{{(asset$ | async)?.imageKey}}"/>
-  <img *ngIf="assetImage != null" class="asset-img"  [src]="assetImage" >
+  <img *ngIf="assetImage != null" class="asset-img" [src]="assetImage" >
   <div class="asset-info">
     <h3>{{(asset$ | async)?.name}}</h3>
     <p>{{(asset$ | async)?.assetTypeName}}</p>

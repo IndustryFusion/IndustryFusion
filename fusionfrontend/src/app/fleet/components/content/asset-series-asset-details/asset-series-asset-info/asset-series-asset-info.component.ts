@@ -33,7 +33,7 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [];
 
-  assetId: ID;
+  assetIdOfImage: ID;
   assetImage: string;
 
   constructor(private companyQuery: CompanyQuery,
@@ -41,9 +41,13 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadImageForChangedAsset();
+  }
+
+  private loadImageForChangedAsset() {
     this.asset$.subscribe(asset => {
-      if (asset.id !== this.assetId) {
-        this.assetId = asset.id;
+      if (asset.id !== this.assetIdOfImage) {
+        this.assetIdOfImage = asset.id;
 
         const companyId = this.companyQuery.getActiveId();
         this.imageService.getImageAsUriSchemeString(companyId, asset.imageKey).subscribe(imageText => {
