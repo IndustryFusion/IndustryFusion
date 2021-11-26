@@ -32,11 +32,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -52,6 +54,10 @@ import java.util.Set;
         subgraphs = {
                 @NamedSubgraph(name = "assetSeriesChildren", attributeNodes = {
                         @NamedAttributeNode("fieldSources")})})
+@NamedNativeQuery(
+        name = "AssetTypeTemplate.findSubsystemCandidates",
+        query = "select * from asset_type_template where subsystem_parent_id is null",
+        resultClass = AssetTypeTemplate.class)
 @Table(name = "asset_type_template")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
 @Getter
@@ -66,6 +72,11 @@ public class AssetTypeTemplate extends BaseAsset {
     @OneToMany(mappedBy = "assetTypeTemplate")
     @Builder.Default
     private Set<FieldTarget> fieldTargets = new LinkedHashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "subsystem_parent_id")
+    @Builder.Default
+    private Set<AssetTypeTemplate> subsystems = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
@@ -96,6 +107,9 @@ public class AssetTypeTemplate extends BaseAsset {
         }
         if (sourceAssetTypeTemplate.getCreationDate() != null) {
             setCreationDate(sourceAssetTypeTemplate.getCreationDate());
+        }
+        if (sourceAssetTypeTemplate.getSubsystems() != null) {
+            setSubsystems(sourceAssetTypeTemplate.getSubsystems());
         }
     }
 }

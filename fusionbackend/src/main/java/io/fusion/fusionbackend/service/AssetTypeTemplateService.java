@@ -264,4 +264,8 @@ public class AssetTypeTemplateService {
 
         return objectMapper.writeValueAsBytes(publishedAssetTypeTemplatesDtos);
     }
+
+    public Set<AssetTypeTemplate> findSubsystemCandidates() {
+        return assetTypeTemplateRepository.findSubsystemCandidates();
+    }
 }
