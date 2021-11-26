@@ -56,7 +56,8 @@ import java.util.Set;
                         @NamedAttributeNode("fieldSources")})})
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findSubsystemCandidates",
-        query = "select * from asset_type_template where subsystem_parent_id is null",
+        query = "select * from asset_type_template where subsystem_parent_id is null"
+                + " and id != ?",
         resultClass = AssetTypeTemplate.class)
 @Table(name = "asset_type_template")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
