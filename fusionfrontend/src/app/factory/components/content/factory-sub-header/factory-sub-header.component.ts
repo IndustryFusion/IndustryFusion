@@ -66,7 +66,7 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isAssetsActive = () => {
-    return RouteHelpers.matchFullRoutes(this.route, ['assets$', 'assets/asset-cards/[0-9,]+'], this.URL_PREFIX);
+    return RouteHelpers.matchFullRoutes(this.route, ['assets$', 'assets/asset-cards/[0-9,]+', 'assets/status/[0-9]'], this.URL_PREFIX);
   }
 
   onFactoriesClick() {

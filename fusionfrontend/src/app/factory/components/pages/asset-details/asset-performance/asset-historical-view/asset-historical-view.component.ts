@@ -47,7 +47,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   startDate: Date;
   endDate: Date = new Date(Date.now());
   minDate: Date;
-  maxDate: Date;
+  maxDate: Date = new Date(Date.now());
 
   faExclamationCircle = faExclamationCircle;
   faTimes = faTimes;
@@ -67,7 +67,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   choiceConfiguration: ChoiceConfiguration = this.choiceConfigurationMapping.current;
 
   private unSubscribe$ = new Subject<void>();
-  private wasSrcolled = false;
+  private wasScrolled = false;
 
 
   constructor(private assetQuery: AssetQuery,
@@ -81,30 +81,6 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     this.resolve();
     this.initViewMode();
     this.initPointAndTimeSlotOptions();
-  }
-
-  private resolve() {
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.assetId = this.assetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
-  }
-
-  private initViewMode() {
-    this.viewMode = AssetPerformanceViewMode.HISTORICAL;
-  }
-
-  private initPointAndTimeSlotOptions() {
-    this.maxItemsOptions = [
-      { label: '50', value: 50 }, { label: '200', value: 200 }, { label: '500', value: 500 }, { label: '1000', value: 1000 },
-    ];
-    this.maxPoints = 50;
-
-    this.timeSlotOptions = [{ name: 'Current', value: 'current' },
-      { name: '1h', value: '1hour' },
-      { name: '24h', value: '1day' },
-      { name: 'Custom Date', value: 'customDate' }
-    ];
   }
 
   onTimeslotChanged(): void {
@@ -125,24 +101,6 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setOptions(key: string,
-                     validateOptions: boolean) {
-    if (validateOptions) {
-      if (!this.maxPoints) {
-        this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
-        return;
-      } else {
-        if (this.currentTimeslot === 'customDate') {
-          if (!this.startDate || !this.endDate) {
-            this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
-            return;
-          }
-        }
-      }
-    }
-    this.choiceConfiguration = this.choiceConfigurationMapping[key];
-  }
-
   resetOptions() {
     if (this.currentTimeslot === 'customDate') {
       this.choiceConfiguration = this.choiceConfigurationMapping.customDate;
@@ -151,10 +109,9 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  setMinAndMaxDate(startDate: Date) {
+  setStartDate(startDate: Date) {
     this.startDate = startDate;
     this.minDate = startDate;
-    this.maxDate = new Date(Date.now());
     this.choiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
   }
 
@@ -181,9 +138,54 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   }
 
   isChartOrTableLoaded(field: FieldDetails) {
-    if (!this.wasSrcolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
-      this.scrollToMetric().subscribe(success => this.wasSrcolled = success);
+    if (!this.wasScrolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
+      this.scrollToMetric().subscribe(success => this.wasScrolled = success);
     }
+  }
+
+  private resolve() {
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetId = this.assetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
+  }
+
+  private initViewMode() {
+    this.viewMode = AssetPerformanceViewMode.HISTORICAL;
+  }
+
+  private initPointAndTimeSlotOptions() {
+    this.maxItemsOptions = [
+      { label: '50', value: 50 }, { label: '200', value: 200 }, { label: '500', value: 500 }, {
+        label: '1000',
+        value: 1000
+      },
+    ];
+    this.maxPoints = 50;
+
+    this.timeSlotOptions = [{ name: 'Current', value: 'current' },
+      { name: '1h', value: '1hour' },
+      { name: '24h', value: '1day' },
+      { name: 'Custom Date', value: 'customDate' }
+    ];
+  }
+
+  private setOptions(key: string,
+                     validateOptions: boolean) {
+    if (validateOptions) {
+      if (!this.maxPoints) {
+        this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
+        return;
+      } else {
+        if (this.currentTimeslot === 'customDate') {
+          if (!this.startDate || !this.endDate) {
+            this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
+            return;
+          }
+        }
+      }
+    }
+    this.choiceConfiguration = this.choiceConfigurationMapping[key];
   }
 
   private scrollToMetric(): Observable<boolean> {

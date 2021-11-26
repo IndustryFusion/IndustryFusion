@@ -48,9 +48,14 @@ under the License.
           </app-dropdown-filter>
 
           <app-numeric-filter *ngSwitchCase="filterType.NUMBERBASEDFILTER"
-                               [numericFilterFormGroup]="this.filterFormMap.get(activeFilter.attributeToBeFiltered)"
-                               [itemsToBeFiltered]="itemsToBeFiltered"  (itemsFiltered)="filterItems()">
+                              [numericFilterFormGroup]="this.filterFormMap.get(activeFilter.attributeToBeFiltered)"
+                              [itemsToBeFiltered]="itemsToBeFiltered"  (itemsFiltered)="filterItems()">
           </app-numeric-filter>
+          <app-status-filter *ngSwitchCase="filterType.STATUSFILTER"
+                             [statusFilterFormGroup]="this.filterFormMap.get(activeFilter.attributeToBeFiltered)"
+                             [itemsToBeFiltered]="itemsToBeFiltered" [statusesWithAssetId]="statusesWithAssetId"
+                             (itemsFiltered)="filterItems()">
+          </app-status-filter>
         </ng-container>
 
 

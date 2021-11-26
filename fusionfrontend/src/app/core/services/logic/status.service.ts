@@ -15,14 +15,15 @@
 
 import { Injectable } from '@angular/core';
 import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
-import { Status } from '../../../factory/models/status.model';
+import { Status, StatusWithAssetId } from '../../../factory/models/status.model';
 import { AssetWithFields } from 'src/app/core/store/asset/asset.model';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { OispService } from '../api/oisp.service';
 import { OispDeviceStatus } from '../../models/kairos.model';
 import { AssetStatusPipe } from '../../../shared/pipes/asset-status-pipe';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,18 @@ export class StatusService {
     } else {
       return '';
     }
+  }
+
+  getStatusesByAssetsWithFields(factoryAssetsWithFields$: Observable<FactoryAssetDetailsWithFields[]>): Observable<StatusWithAssetId[]> {
+    return combineLatest([factoryAssetsWithFields$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
+      switchMap(([assetsWithFields, _]) =>
+        forkJoin(assetsWithFields.map(assetWithFields => this.getStatusByAssetWithFields(assetWithFields, null).pipe(
+          map((assetStatus) => {
+            return { factoryAssetId: assetWithFields.id, status: assetStatus };
+          })
+        )))
+      )
+    );
   }
 
   getStatusByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<Status> {
