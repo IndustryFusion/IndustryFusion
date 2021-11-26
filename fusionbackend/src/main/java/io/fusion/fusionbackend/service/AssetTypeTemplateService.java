@@ -208,7 +208,7 @@ public class AssetTypeTemplateService {
         return assetTypeTemplate;
     }
 
-    public Set<AssetTypeTemplate> findSubsystemCandidates() {
-        return assetTypeTemplateRepository.findSubsystemCandidates();
+    public Set<AssetTypeTemplate> findSubsystemCandidates(final Long assetTypeTemplateId) {
+        return assetTypeTemplateRepository.findSubsystemCandidates(assetTypeTemplateId);
     }
 }
