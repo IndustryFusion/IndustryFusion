@@ -1,116 +1,30 @@
-package io.fusion.fusionbackend.test.persistence;
+package io.fusion.fusionbackend.test.persistence.tests;
 
-import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivitySettings;
 import io.fusion.fusionbackend.model.ConnectivityType;
+import io.fusion.fusionbackend.test.persistence.PersistenceTestsBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
 
-import static io.fusion.fusionbackend.test.persistence.builder.AssetBuilder.anAsset;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetSeriesBuilder.anAssetSeries;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplateBuilder.anAssetTypeTemplate;
 import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
 import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityProtocolBuilder.aConnectivityProtocol;
 import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityTypeBuilder.aConnectivityType;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-public class PersistenceTests extends PersistenceTestsBase {
+public class PersistenceTestsAssetSeries extends PersistenceTestsBase {
 
     public static final String NEW_STRING_VALUE = "New String Value";
     @Autowired
     private TestEntityManager testEntityManager;
-
-    @Test
-    void persistCompany() {
-        Company company = aCompany().build();
-
-        Company foundCompany = testEntityManager.persistAndFlush(company);
-
-        assertNotNull(foundCompany);
-        assertEquals(company, foundCompany);
-    }
-
-    @Test
-    public void persistAsset() {
-        ConnectivityType connectivityType = persisted(aConnectivityType()).build();
-        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
-
-        Asset asset = anAsset()
-                .basedOnSeries(persisted(anAssetSeries()
-                        .forCompany(persisted(aCompany()))
-                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
-                        .basedOnTemplate(persisted(anAssetTypeTemplate()
-                                .forType(persisted(anAssetType()))))))
-                .forCompany(persisted(aCompany()))
-                .build();
-
-        Asset foundAsset = testEntityManager.persistFlushFind(asset);
-
-        assertNotNull(foundAsset);
-    }
-
-    @Test
-    void persistAssetWithSubsystem() {
-
-        ConnectivityType connectivityType = persisted(aConnectivityType()).build();
-        ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
-
-        Asset subsystem = persisted(anAsset()
-                .basedOnSeries(persisted(anAssetSeries()
-                        .forCompany(persisted(aCompany()))
-                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
-                        .basedOnTemplate(persisted(anAssetTypeTemplate()
-                                .forType(persisted(anAssetType()))))))
-                .forCompany(persisted(aCompany())))
-                .build();
-
-        Asset parent = persisted(anAsset()
-                .basedOnSeries(persisted(anAssetSeries()
-                        .forCompany(persisted(aCompany()))
-                        .withConnectivitySettingsFor(connectivityType, connectivityProtocol)
-                        .basedOnTemplate(persisted(anAssetTypeTemplate()
-                                .forType(persisted(anAssetType()))))))
-                .forCompany(persisted(aCompany())))
-                .build();
-
-
-        parent.getSubsystems().add(subsystem);
-
-        Asset foundParent = testEntityManager.persistFlushFind(parent);
-
-        assertEquals(1, foundParent.getSubsystems().size());
-    }
-
-    @Test
-    void persistConnectivityType() {
-        ConnectivityType connectivityType = aConnectivityType().build();
-
-        ConnectivityType foundType = testEntityManager.persistFlushFind(connectivityType);
-
-        assertNotNull(foundType);
-    }
-
-    @Test
-    void persistConnectivityTypeWithProtocol() {
-        ConnectivityType connectivityType = aConnectivityType()
-                .withProtocol(persisted(aConnectivityProtocol()))
-                .build();
-
-        ConnectivityType foundType = testEntityManager.persistFlushFind(connectivityType);
-
-        assertEquals(1, foundType.getAvailableProtocols().size());
-    }
 
     @Test
     void persistAssetsSeriesWithConnectivitySettings() {
@@ -251,5 +165,4 @@ public class PersistenceTests extends PersistenceTestsBase {
         assertNull(oldConnectivitySettings);
 
     }
-
 }

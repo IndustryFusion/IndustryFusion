@@ -1,7 +1,8 @@
-package io.fusion.fusionbackend.test.persistence;
+package io.fusion.fusionbackend.test.persistence.querytests;
 
 import io.fusion.fusionbackend.model.*;
 import io.fusion.fusionbackend.repository.AssetRepository;
+import io.fusion.fusionbackend.test.persistence.PersistenceTestsBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +18,7 @@ import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityTypeB
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class QueryTests extends PersistenceTestsBase {
+public class QueryTestsAsset extends PersistenceTestsBase {
 
     @Autowired
     AssetRepository assetRepository;
