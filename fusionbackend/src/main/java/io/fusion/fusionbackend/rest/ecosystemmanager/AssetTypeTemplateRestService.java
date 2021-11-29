@@ -59,9 +59,11 @@ public class AssetTypeTemplateRestService {
                 embedChildren);
     }
 
-    @GetMapping(path = "/assettypetemplates/subsystemcandidates/{assetTypeTemplateId}")
-    public Set<AssetTypeTemplateDto> getSubsystemCandidates(@PathVariable final Long assetTypeTemplateId) {
-        return assetTypeTemplateMapper.toDtoSet(assetTypeTemplateService.findSubsystemCandidates(assetTypeTemplateId),
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/assettypes/{assetTypeId}/subsystemcandidates")
+    public Set<AssetTypeTemplateDto> getSubsystemCandidates(@PathVariable final Long assetTypeTemplateId,
+                                                            @PathVariable final Long assetTypeId) {
+        return assetTypeTemplateMapper.toDtoSet(
+                assetTypeTemplateService.findSubsystemCandidates(assetTypeId, assetTypeTemplateId),
                 true);
     }
 

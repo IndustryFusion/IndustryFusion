@@ -57,7 +57,7 @@ import java.util.Set;
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findSubsystemCandidates",
         query = "select * from asset_type_template where subsystem_parent_id is null"
-                + " and id != ?",
+                + " and asset_type_id != ? and id != ?",
         resultClass = AssetTypeTemplate.class)
 @Table(name = "asset_type_template")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
@@ -71,7 +71,7 @@ public class AssetTypeTemplate extends BaseAsset {
     @Builder.Default
     private Set<AssetSeries> assetSeries = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "assetTypeTemplate")
+    @OneToMany(mappedBy = "assetTypeTemplate", fetch = FetchType.EAGER)
     @Builder.Default
     private Set<FieldTarget> fieldTargets = new LinkedHashSet<>();
 

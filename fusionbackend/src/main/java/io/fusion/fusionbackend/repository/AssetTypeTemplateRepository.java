@@ -43,5 +43,5 @@ public interface AssetTypeTemplateRepository extends PagingAndSortingRepository<
     @EntityGraph(value = "AssetTypeTemplate.allChildren")
     List<AssetTypeTemplate> findAllByAssetTypeId(Long assetTypeId);
 
-    Set<AssetTypeTemplate> findSubsystemCandidates(Long assetTypeTemplateId);
+    Set<AssetTypeTemplate> findSubsystemCandidates(Long parentAssetTypeId, Long assetTypeTemplateId);
 }

@@ -1,5 +1,6 @@
 package io.fusion.fusionbackend.test.persistence.querytests;
 
+import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.test.persistence.PersistenceTestsBase;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplateBuilder.anAssetTypeTemplate;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
@@ -29,7 +31,8 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
                 .forType(persisted(anAssetType())))
                 .build();
 
-        Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository.findSubsystemCandidates(parent.getId());
+        Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository
+                .findSubsystemCandidates(parent.getAssetType().getId(), parent.getId());
 
         assertTrue(subsystemCandidates.contains(subsystemCandidate));
     }
@@ -46,10 +49,35 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
                 .asSubsystemOf(parent))
                 .build();
 
-        Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository.findSubsystemCandidates(parent.getId());
+        Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository
+                .findSubsystemCandidates(parent.getAssetType().getId(), parent.getId());
 
         assertTrue(parent.getSubsystems().contains(subsystem));
         assertTrue(subsystemCandidates.isEmpty());
+    }
+
+    @Test
+    void findSubsystemCandidates_forDifferentAssetType() {
+
+        AssetType parentAssetType = persisted(anAssetType()).build();
+
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .forType(parentAssetType))
+                .build();
+
+        AssetTypeTemplate assetTypeTemplateOfSameAssetType = persisted(anAssetTypeTemplate()
+                .forType(parentAssetType))
+                .build();
+
+        AssetTypeTemplate assetTypeTemplateOfOtherAssetType = persisted(anAssetTypeTemplate()
+                .forType(persisted(anAssetType())))
+                .build();
+
+        Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository
+                .findSubsystemCandidates(parent.getAssetType().getId(), parent.getId());
+
+        assertTrue(subsystemCandidates.contains(assetTypeTemplateOfOtherAssetType));
+        assertFalse(subsystemCandidates.contains(assetTypeTemplateOfSameAssetType));
     }
 
 }
