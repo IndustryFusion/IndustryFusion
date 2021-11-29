@@ -77,7 +77,7 @@ public class AssetTypeTemplate extends BaseAsset {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "subsystem_parent_id")
     @Builder.Default
-    private Set<AssetTypeTemplate> subsystems = new HashSet<>();
+    private Set<AssetTypeTemplate> subsystems = new LinkedHashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
