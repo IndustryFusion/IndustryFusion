@@ -15,7 +15,7 @@ under the License.
 
 <div class="content">
   <div class="wizard-title">
-    <div> Review Metrics </div>
+    <div>Review&nbsp;Metrics</div>
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
   <div *ngIf="metrics && metrics.length > 0" class="fields-list fields-padding">
@@ -25,10 +25,10 @@ under the License.
     </app-asset-type-template-wizard-shared-field>
   </div>
   <button type="button" class="template-fields-button-add" (click)="onBackToMetrics()">
-    <clr-icon shape="plus"></clr-icon>Add Metric
+    <i class="pi pi-plus"></i>Add Metric
   </button>
 
-  <div class="subtitle">Review Attributes</div>
+  <div class="subtitle">Review&nbsp;Attributes</div>
   <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
     <app-asset-type-template-wizard-shared-field *ngFor="let attribute of attributes" [fieldTarget]="attribute"
                                                  [fieldType]="FieldType.ATTRIBUTE"
@@ -36,7 +36,17 @@ under the License.
     </app-asset-type-template-wizard-shared-field>
   </div>
   <button type="button" class="template-fields-button-add" (click)="onBackToAttributes()">
-    <clr-icon shape="plus"></clr-icon>Add Attribute
+    <i class="pi pi-plus"></i>Add Attribute
+  </button>
+
+  <div class="subtitle">Review&nbsp;Subsystems</div>
+  <div *ngIf="assetTypeTemplate.subsystemIds && assetTypeTemplate.subsystemIds.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-wizard-shared-subsystems [assetTypeTemplate]="assetTypeTemplate" [isReview]="true"
+                                        (backToEditPage)="onBackToSubsystems()">
+    </app-asset-type-template-wizard-shared-subsystems>
+  </div>
+  <button type="button" class="template-fields-button-add" (click)="onBackToSubsystems()">
+    <i class="pi pi-plus"></i>Add Subsystem
   </button>
 </div>
 

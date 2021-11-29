@@ -34,6 +34,12 @@ under the License.
         <div class="clr-timeline-step-body"></div>
       </li>
       <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === Steps.SUBSYSTEMS" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < Steps.SUBSYSTEMS" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > Steps.SUBSYSTEMS" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>
+      <li class="clr-timeline-step">
         <clr-icon *ngIf="step === Steps.REVIEW" shape="dot-circle" aria-label="Started"></clr-icon>
         <clr-icon *ngIf="step < Steps.REVIEW" shape="circle" aria-label="Not started"></clr-icon>
         <clr-icon *ngIf="step > Steps.REVIEW" shape="success-standard" aria-label="Finished"></clr-icon>
@@ -56,9 +62,14 @@ under the License.
                                                   [inputAttributes]="getAttributes()"
                                                   [assetTypeTemplateForm]="assetTypeTemplateForm">
   </app-asset-type-template-wizard-step-attributes>
-  <app-asset-type-template-wizard-step-review *ngIf="step === 4" (stepChange)="onStepChange($event)"
-                                              [metrics]="getMetrics()" [attributes]="getAttributes()" (saveTemplate)="onSaveTemplate()"
-                                              [assetTypeTemplateForm]="assetTypeTemplateForm">
+  <app-asset-type-template-wizard-step-subsystems *ngIf="step === Steps.SUBSYSTEMS"
+                                                  [assetTypeTemplateForm]="assetTypeTemplateForm" [assetTypeTemplate]="assetTypeTemplate"
+                                                  (stepChange)="onStepChange($event)"
+                                                  (valid)="setSubsystemValid($event)">
+  </app-asset-type-template-wizard-step-subsystems>
+  <app-asset-type-template-wizard-step-review *ngIf="step === Steps.REVIEW" (stepChange)="onStepChange($event)"
+                                              [assetTypeTemplate]="assetTypeTemplate" [assetTypeTemplateForm]="assetTypeTemplateForm"
+                                              [metrics]="getMetrics()" [attributes]="getAttributes()" (saveTemplate)="onSaveTemplate()">
   </app-asset-type-template-wizard-step-review>
   <app-asset-type-template-wizard-step-finished *ngIf="step === Steps.FINISHED"
                                                 [assetTypeTemplateForm]="assetTypeTemplateForm" [type]="type">
