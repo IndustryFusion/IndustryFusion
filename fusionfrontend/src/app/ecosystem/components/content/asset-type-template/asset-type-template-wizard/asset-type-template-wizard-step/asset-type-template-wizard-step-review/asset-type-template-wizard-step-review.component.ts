@@ -59,4 +59,7 @@ export class AssetTypeTemplateWizardStepReviewComponent implements OnInit {
     this.stepChange.emit(step);
   }
 
+  onBack() {
+    this.changeStep(AssetTypeTemplateWizardSteps.REVIEW - 1);
+  }
 }
