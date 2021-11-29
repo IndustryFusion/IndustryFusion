@@ -52,6 +52,10 @@ export class AssetTypeTemplateWizardStepReviewComponent implements OnInit {
     this.changeStep(AssetTypeTemplateWizardSteps.SUBSYSTEMS);
   }
 
+  onBackToPeers() {
+    this.changeStep(AssetTypeTemplateWizardSteps.PEERS);
+  }
+
   onSave() {
     this.saveTemplate.emit();
     this.changeStep(AssetTypeTemplateWizardSteps.FINISHED);

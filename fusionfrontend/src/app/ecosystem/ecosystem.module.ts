@@ -69,7 +69,8 @@ import { AssetTypeTemplateWizardSharedFieldComponent } from './components/conten
 import { NameWithVersionPipe } from '../shared/pipes/namewithversion.pipe';
 import { AssetTypeDialogComponent } from './components/content/asset-type-dialog/asset-type-dialog.component';
 import { AssetTypeTemplateWizardStepSubsystemsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step/asset-type-template-wizard-step-subsystems/asset-type-template-wizard-step-subsystems.component';
-import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-subsystems/asset-type-template-wizard-shared-subsystems.component';
+import { AssetTypeTemplateWizardSharedRelationshipsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-relationship/asset-type-template-wizard-shared-relationships.component';
+import { AssetTypeTemplateWizardStepPeersComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step/asset-type-template-wizard-step-peers/asset-type-template-wizard-step-peers.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,7 @@ import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './components/c
     AssetTypeTemplateWizardStepSubsystemsComponent,
     AssetTypeTemplateWizardStepReviewComponent,
     AssetTypeTemplateWizardSharedFieldComponent,
-    AssetTypeTemplateWizardSharedSubsystemsComponent,
+    AssetTypeTemplateWizardSharedRelationshipsComponent,
     AssetTypeTemplateWizardStepFinishedComponent,
     AssetTypeTemplateWizardWarningDialogComponent,
     AssetTypeTemplateWizardStepPublishComponent,
@@ -111,6 +112,7 @@ import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './components/c
     AssetTypeTemplateDialogPublishComponent,
     AssetTypeTemplateDialogUpdateComponent,
     NameWithVersionPipe,
+    AssetTypeTemplateWizardStepPeersComponent,
   ],
   imports: [
     SharedModule,

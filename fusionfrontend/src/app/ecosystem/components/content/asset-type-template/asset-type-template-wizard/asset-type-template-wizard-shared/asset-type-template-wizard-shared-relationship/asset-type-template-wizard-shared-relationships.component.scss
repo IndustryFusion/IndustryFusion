@@ -16,7 +16,7 @@
 @import 'src/app/fleet/components/content/asset-wizard/asset-wizard.component';
 @import 'src/styles/components/labels';
 
-.asset-type-template-wizard-subsystems {
+.asset-type-template-wizard-relationships {
   .edit-col {
     display: flex;
     justify-content: end;
@@ -34,7 +34,7 @@
     }
   }
 
-  .subsystem-row {
+  .relationship-row {
     display: flex;
     align-items: center;
   }

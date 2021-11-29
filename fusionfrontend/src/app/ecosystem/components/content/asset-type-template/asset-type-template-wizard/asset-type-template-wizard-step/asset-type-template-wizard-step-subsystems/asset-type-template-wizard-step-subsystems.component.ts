@@ -17,11 +17,11 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { ID } from '@datorama/akita';
 import { AssetTypeTemplate } from '../../../../../../../core/store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../../../../core/store/asset-type-template/asset-type-template.service';
-import { AssetTypeTemplateWizardSharedSubsystemsComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-subsystems/asset-type-template-wizard-shared-subsystems.component';
 import { AssetTypeTemplateWizardSteps } from '../../asset-type-template-wizard-steps.model';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { AssetTypeTemplateWizardStepStartComponent } from '../asset-type-template-wizard-step-start/asset-type-template-wizard-step-start.component';
+import { AssetTypeTemplateWizardSharedRelationshipsComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-relationship/asset-type-template-wizard-shared-relationships.component';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-subsystems',
@@ -30,7 +30,7 @@ import { AssetTypeTemplateWizardStepStartComponent } from '../asset-type-templat
 })
 export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
 
-  @ViewChild(AssetTypeTemplateWizardSharedSubsystemsComponent) subsystemsChild: AssetTypeTemplateWizardSharedSubsystemsComponent;
+  @ViewChild(AssetTypeTemplateWizardSharedRelationshipsComponent) subsystemsChild: AssetTypeTemplateWizardSharedRelationshipsComponent;
 
   @Input() assetTypeTemplate: AssetTypeTemplate;
   @Input() assetTypeTemplateForm: FormGroup;
@@ -68,8 +68,18 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
 
   public onNext(): void {
     if (this.isReadyForNextStep) {
-      this.subsystemsChild.saveValues();
+      this.saveValues();
       this.stepChange.emit(AssetTypeTemplateWizardSteps.SUBSYSTEMS + 1);
+    }
+  }
+
+  private saveValues(): void {
+    const subsystemFormArray: FormArray = this.subsystemsChild.getFormArray();
+    if (subsystemFormArray.valid) {
+      this.assetTypeTemplate.subsystemIds = new Array<ID>();
+      subsystemFormArray.controls.forEach((subsystemGroup: FormControl) => {
+        this.assetTypeTemplate.subsystemIds.push(subsystemGroup.get('id').value);
+      });
     }
   }
 
@@ -83,16 +93,20 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
   }
 
   public addSubsystem(assetTypeTemplate: AssetTypeTemplate): void {
-    this.subsystemsChild.addSubsystem(assetTypeTemplate);
+    this.subsystemsChild.addRelationship(assetTypeTemplate);
     this.removedCandidates.push(assetTypeTemplate);
     this.subsystemCandidates.splice(this.subsystemCandidates.indexOf(assetTypeTemplate), 1);
     this.isAddingMode = false;
   }
 
   public onSubsystemRemoved(subsystemId: ID): void {
-    const assetTypeTemplate = this.removedCandidates.find((item: AssetTypeTemplate) => item.id === subsystemId);
-    this.subsystemCandidates.push(assetTypeTemplate);
+    const removedAssetTypeTemplate = this.removedCandidates.find((item: AssetTypeTemplate) => item.id === subsystemId);
+    this.addRemovedSubsystemToCandidates(removedAssetTypeTemplate);
+    this.removedCandidates.splice(this.removedCandidates.indexOf(removedAssetTypeTemplate), 1);
+  }
+
+  private addRemovedSubsystemToCandidates(removedAssetTypeTemplate: AssetTypeTemplate) {
+    this.subsystemCandidates.push(removedAssetTypeTemplate);
     this.subsystemCandidates.sort((a, b) => (a.id as number) - (b.id as number));
-    this.removedCandidates.splice(this.removedCandidates.indexOf(assetTypeTemplate), 1);
   }
 }

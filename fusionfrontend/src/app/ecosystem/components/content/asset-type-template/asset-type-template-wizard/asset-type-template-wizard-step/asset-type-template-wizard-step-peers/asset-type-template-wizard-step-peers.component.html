@@ -15,27 +15,26 @@ under the License.
 
 <div class="content">
   <div class="wizard-title">
-    <div>Add&nbsp;Subsystems</div>
+    <div>Add&nbsp;Peers</div>
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
 
   <app-asset-type-template-wizard-shared-relationships [isReview]="false"
-                                                       [relationshipName]="'subsystem'" [relationshipIds]="assetTypeTemplate.subsystemIds"
-                                                       (changeIsValid)="onSetValid($event)"
-                                                       (relationshipsRemoved)="onSubsystemRemoved($event)">
+                                                       [relationshipName]="'peer'" [relationshipIds]="assetTypeTemplate.peerIds"
+                                                       (changeIsValid)="onSetValid($event)">
   </app-asset-type-template-wizard-shared-relationships>
 
   <div class="selection" *ngIf="isAddingMode === true">
     <div class="input-div">
-      <p-dropdown [options]="subsystemCandidates" optionLabel="name"
+      <p-dropdown [options]="peerCandidates" optionLabel="name"
                   class="select-asset-input" filter="true" resetFilterOnHide="true"
-                  placeholder="Search Subsystem (Asset Type Template)..." (onChange)="addSubsystem($event.value)">
+                  placeholder="Search Peer (Asset Type Template)..." (onChange)="addPeer($event.value)">
       </p-dropdown>
     </div>
   </div>
 
   <button type="button" class="template-fields-button-add" (click)="startAddingMode()">
-    <i class="pi pi-plus"></i>Add Subsystem
+    <i class="pi pi-plus"></i>Add Peer
   </button>
 </div>
 
