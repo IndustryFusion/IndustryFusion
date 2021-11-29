@@ -115,6 +115,9 @@ public class AssetTypeTemplateService {
             if (subsystem.getAssetType().getId().equals(assetType.getId())) {
                 throw new RuntimeException("A subsystem has to be of another asset type than the parent template.");
             }
+            if (subsystem.getPublicationState().equals(PublicationState.DRAFT)) {
+                throw new RuntimeException("A subsystem has to be a published asset type template.");
+            }
         }
     }
 

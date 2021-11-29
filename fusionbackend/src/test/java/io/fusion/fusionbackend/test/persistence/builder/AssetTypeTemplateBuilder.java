@@ -2,9 +2,11 @@ package io.fusion.fusionbackend.test.persistence.builder;
 
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 
 public class AssetTypeTemplateBuilder implements Builder<AssetTypeTemplate> {
 
+    private PublicationState publicationState;
     private AssetTypeTemplate parentAssetTypeTemplate;
     private AssetType assetType;
 
@@ -30,6 +32,11 @@ public class AssetTypeTemplateBuilder implements Builder<AssetTypeTemplate> {
         return this;
     }
 
+    public AssetTypeTemplateBuilder withPublicationState(PublicationState publicationState) {
+        this.publicationState = publicationState;
+        return this;
+    }
+
     @Override
     public AssetTypeTemplate build() {
         AssetTypeTemplate assetTypeTemplate = new AssetTypeTemplate();
@@ -42,6 +49,11 @@ public class AssetTypeTemplateBuilder implements Builder<AssetTypeTemplate> {
         if (parentAssetTypeTemplate != null) {
             parentAssetTypeTemplate.getSubsystems().add(assetTypeTemplate);
         }
+
+        if (publicationState == null) {
+            publicationState = PublicationState.DRAFT;
+        }
+        assetTypeTemplate.setPublicationState(publicationState);
 
         return assetTypeTemplate;
     }

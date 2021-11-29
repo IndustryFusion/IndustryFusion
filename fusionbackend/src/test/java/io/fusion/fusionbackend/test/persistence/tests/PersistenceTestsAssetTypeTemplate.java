@@ -1,6 +1,8 @@
 package io.fusion.fusionbackend.test.persistence.tests;
 
+import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.test.persistence.PersistenceTestsBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
