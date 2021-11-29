@@ -57,7 +57,7 @@ import java.util.Set;
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findSubsystemCandidates",
         query = "select * from asset_type_template where subsystem_parent_id is null"
-                + " and asset_type_id != ? and id != ?",
+                + " and publication_state = 'PUBLISHED' and asset_type_id != ? and id != ?",
         resultClass = AssetTypeTemplate.class)
 @Table(name = "asset_type_template")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")

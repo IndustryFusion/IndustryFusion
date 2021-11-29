@@ -55,6 +55,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -619,13 +620,17 @@ class FusionbackendApplicationTests {
 
     @Test
     @Order(501)
-    void createAssetTypeTemplateLaserCutter() {
+    void createAssetTypeTemplateLaserCutterWithSubsystem() {
+        Set<Long> subsystemIds = new HashSet<>();
+        subsystemIds.add(Long.valueOf(assetTypeTemplateGasSupplyId));
+
         AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
                 .name("Laser Cutter")
                 .description("ATT Laser Cutter")
                 .imageKey("genericcutterimagekey")
                 .publishedDate(OffsetDateTime.now())
                 .publicationState(PublicationState.PUBLISHED)
+                .subsystemIds(subsystemIds)
                 .build();
 
         assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
