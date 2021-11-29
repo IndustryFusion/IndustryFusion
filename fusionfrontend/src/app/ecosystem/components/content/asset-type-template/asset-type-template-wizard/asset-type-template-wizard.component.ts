@@ -35,6 +35,7 @@ import { ID } from '@datorama/akita';
 import { take } from 'rxjs/operators';
 import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { WizardHelper } from '../../../../../core/helpers/wizard-helper';
+import { AssetTypeTemplatesResolver } from '../../../../../core/resolvers/asset-type-templates.resolver';
 
 @Component({
   selector: 'app-asset-type-template-wizard',
@@ -50,10 +51,15 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   public isAssetTypeLocked = false;
   public type = DialogType.CREATE;
 
+  private subsystemsValid: boolean;
+
+  Steps = AssetTypeTemplateWizardSteps;
+
   constructor(private assetTypeTemplateService: AssetTypeTemplateService,
               private assetTypeTemplateComposedQuery: AssetTypeTemplateComposedQuery,
               private fieldTargetService: FieldTargetService,
               private assetTypesResolver: AssetTypesResolver,
+              private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
               private fieldsResolver: FieldsResolver,
               private unitsResolver: UnitsResolver,
               private quantityTypesResolver: QuantityTypesResolver,
@@ -89,6 +95,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     this.fieldsResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
+    this.assetTypeTemplatesResolver.resolve().subscribe();
 
     this.assetTypeTemplateForm = AssetTypeTemplateWizardComponent.createAssetTypeTemplateForm(this.formBuilder,
         this.config.data.assetTypeTemplate,
@@ -130,6 +137,10 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets = this.getMetrics().concat(this.replaceEmptyCustomNameWithName(attributes));
   }
 
+  setSubsystemValid(isValid: boolean) {
+    this.subsystemsValid = isValid;
+  }
+
   // noinspection JSMethodCanBeStatic
   private replaceEmptyCustomNameWithName(fieldTargets: FieldTarget[]): FieldTarget[] {
     return fieldTargets.map(fieldTarget => {
@@ -166,7 +177,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   onSaveTemplate() {
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
 
-    if (assetTypeId && this.assetTypeTemplate.fieldTargets) {
+    if (assetTypeId && this.assetTypeTemplate.fieldTargets && this.subsystemsValid) {
       this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.publicationState = this.assetTypeTemplateForm.get('publicationState')?.value;

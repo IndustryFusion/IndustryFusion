@@ -19,6 +19,7 @@ import { Asset } from '../../../../../../core/store/asset/asset.model';
 import { FleetAssetDetails } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
 import { FleetAssetDetailsQuery } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
 import { ID } from '@datorama/akita';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -85,16 +86,8 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
     }
 
     if (subsystemGroup != null) {
-      const subsystemId = subsystemGroup.get('id').value;
-      const indexToRemove = subsystemGroup.get('index').value;
-      this.subsystemFormArray.removeAt(indexToRemove);
-
-      for (let i = indexToRemove; i < this.subsystemFormArray.length; i++) {
-        const indexElement = this.subsystemFormArray.at(i).get('index');
-        indexElement.setValue(indexElement.value - 1);
-      }
-
-      this.subsystemRemoved.emit(subsystemId);
+        const removedSubsystemId = WizardHelper.removeSubsystemFromFormArray(subsystemGroup, this.subsystemFormArray);
+        this.subsystemRemoved.emit(removedSubsystemId);
     }
   }
 

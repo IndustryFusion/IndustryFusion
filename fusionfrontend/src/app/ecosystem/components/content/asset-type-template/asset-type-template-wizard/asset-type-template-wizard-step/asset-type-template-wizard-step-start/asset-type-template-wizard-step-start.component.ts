@@ -59,7 +59,7 @@ export class AssetTypeTemplateWizardStepStartComponent implements OnInit {
               private router: Router,
               public route: ActivatedRoute) { }
 
-  private static addPublishedVersionToAssetTypeTemplateName(assetTypeTemplate: AssetTypeTemplate): AssetTypeTemplate {
+  public static addPublishedVersionToAssetTypeTemplateName(assetTypeTemplate: AssetTypeTemplate): AssetTypeTemplate {
     const nameWithVersionPipe = new NameWithVersionPipe();
     const newAssetTypeTemplate = { ...assetTypeTemplate };
 

@@ -13,12 +13,3 @@
  * under the License.
  */
 
-export enum AssetTypeTemplateWizardSteps {
-  START = 1,
-  METRICS,
-  ATTRIBUTES,
-  SUBSYSTEMS,
-  REVIEW,
-  FINISHED,
-  PUBLISH_CONFIRM
-}

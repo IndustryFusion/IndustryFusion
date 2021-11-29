@@ -18,6 +18,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FieldTarget, FieldType } from '../../../../../../../core/store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../../asset-type-template-wizard-steps.model';
+import { AssetTypeTemplate } from '../../../../../../../core/store/asset-type-template/asset-type-template.model';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-review',
@@ -27,6 +28,7 @@ import { AssetTypeTemplateWizardSteps } from '../../asset-type-template-wizard-s
 export class AssetTypeTemplateWizardStepReviewComponent implements OnInit {
 
   @Input() assetTypeTemplateForm: FormGroup;
+  @Input() assetTypeTemplate: AssetTypeTemplate;
   @Input() metrics: Array<FieldTarget>;
   @Input() attributes: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
@@ -44,6 +46,10 @@ export class AssetTypeTemplateWizardStepReviewComponent implements OnInit {
 
   onBackToMetrics() {
     this.changeStep(AssetTypeTemplateWizardSteps.METRICS);
+  }
+
+  onBackToSubsystems() {
+    this.changeStep(AssetTypeTemplateWizardSteps.SUBSYSTEMS);
   }
 
   onSave() {

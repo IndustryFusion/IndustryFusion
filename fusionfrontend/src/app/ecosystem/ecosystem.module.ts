@@ -20,6 +20,7 @@ import { ClarityModule } from '@clr/angular';
 import { EcosystemRoutingModule } from './ecosystem-routing.module';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateListComponent } from './components/content/asset-type-template/asset-type-template-list/asset-type-template-list.component';
+// tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateWizardComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard.component';
 import { EcosystemSubHeaderComponent } from './components/content/ecosystem-sub-header/ecosystem-sub-header.component';
 import { FieldsPageComponent } from './components/pages/fields-page/fields-page.component';
@@ -58,13 +59,17 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { FieldPageComponent } from './components/pages/field-page/field-page.component';
 import { AssetTypeTemplatesPageComponent } from './components/pages/asset-type-templates-page/asset-type-templates-page.component';
 import { AssetTypeTemplatePageComponent } from './components/pages/asset-type-template-page/asset-type-template-page.component';
+// tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateDialogPublishComponent } from './components/content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
+// tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateDialogUpdateComponent } from './components/content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { UnitPageComponent } from './components/pages/unit-page/unit-page.component';
 // tslint:disable-next-line:max-line-length
 import { AssetTypeTemplateWizardSharedFieldComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-field/asset-type-template-wizard-shared-field.component';
 import { NameWithVersionPipe } from '../shared/pipes/namewithversion.pipe';
 import { AssetTypeDialogComponent } from './components/content/asset-type-dialog/asset-type-dialog.component';
+import { AssetTypeTemplateWizardStepSubsystemsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step/asset-type-template-wizard-step-subsystems/asset-type-template-wizard-step-subsystems.component';
+import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-subsystems/asset-type-template-wizard-shared-subsystems.component';
 
 @NgModule({
   declarations: [
@@ -92,8 +97,10 @@ import { AssetTypeDialogComponent } from './components/content/asset-type-dialog
     AssetTypeTemplateWizardStepStartComponent,
     AssetTypeTemplateWizardStepMetricsComponent,
     AssetTypeTemplateWizardStepAttributesComponent,
+    AssetTypeTemplateWizardStepSubsystemsComponent,
     AssetTypeTemplateWizardStepReviewComponent,
     AssetTypeTemplateWizardSharedFieldComponent,
+    AssetTypeTemplateWizardSharedSubsystemsComponent,
     AssetTypeTemplateWizardStepFinishedComponent,
     AssetTypeTemplateWizardWarningDialogComponent,
     AssetTypeTemplateWizardStepPublishComponent,

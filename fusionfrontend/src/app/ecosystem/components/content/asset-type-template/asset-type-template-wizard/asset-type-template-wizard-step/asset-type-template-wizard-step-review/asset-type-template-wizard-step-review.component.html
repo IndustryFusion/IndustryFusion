@@ -25,7 +25,7 @@ under the License.
     </app-asset-type-template-wizard-shared-field>
   </div>
   <button type="button" class="template-fields-button-add" (click)="onBackToMetrics()">
-    <clr-icon shape="plus"></clr-icon>{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.ADD_METRIC' | translate }}
+    <i class="pi pi-plus"></i>{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.ADD_METRIC' | translate }}
   </button>
 
   <div class="subtitle">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.REVIEW_ATTRIBUTES' | translate }}</div>
@@ -36,7 +36,17 @@ under the License.
     </app-asset-type-template-wizard-shared-field>
   </div>
   <button type="button" class="template-fields-button-add" (click)="onBackToAttributes()">
-    <clr-icon shape="plus"></clr-icon>{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.ADD_ATTRIBUTE' | translate }}
+    <i class="pi pi-plus"></i>{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.ADD_ATTRIBUTE' | translate }}
+  </button>
+
+  <div class="subtitle">Review&nbsp;Subsystems</div>
+  <div *ngIf="assetTypeTemplate.subsystemIds && assetTypeTemplate.subsystemIds.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-wizard-shared-subsystems [assetTypeTemplate]="assetTypeTemplate" [isReview]="true"
+                                        (backToEditPage)="onBackToSubsystems()">
+    </app-asset-type-template-wizard-shared-subsystems>
+  </div>
+  <button type="button" class="template-fields-button-add" (click)="onBackToSubsystems()">
+    <i class="pi pi-plus"></i>Add Subsystem
   </button>
 </div>
 

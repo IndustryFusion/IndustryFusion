@@ -102,6 +102,11 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
       }));
   }
 
+  getSubsystemCandidates(assetTypeTemplateId: ID, assetTypeId: ID): Observable<AssetTypeTemplate[]> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/assettypes/${assetTypeId}/subsystemcandidates`;
+    return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
   setActive(templateID: ID) {
     this.assettypeTemplateStore.setActive(templateID);
   }

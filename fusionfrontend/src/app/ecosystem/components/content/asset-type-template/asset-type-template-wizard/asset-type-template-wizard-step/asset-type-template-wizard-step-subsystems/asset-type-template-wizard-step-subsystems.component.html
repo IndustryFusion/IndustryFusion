@@ -1,0 +1,45 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="content">
+  <div class="wizard-title">
+    <div>Add&nbsp;Subsystems</div>
+    <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
+  </div>
+
+  <app-asset-type-template-wizard-shared-subsystems [assetTypeTemplate]="assetTypeTemplate" [isReview]="false" (changeIsValid)="onSetValid($event)"
+                                      (subsystemRemoved)="onSubsystemRemoved($event)">
+  </app-asset-type-template-wizard-shared-subsystems>
+
+  <div class="selection" *ngIf="isAddingMode === true">
+    <div class="input-div">
+      <p-dropdown [options]="subsystemCandidates" optionLabel="name"
+                  class="select-asset-input" filter="true" resetFilterOnHide="true"
+                  placeholder="Search Subsystem (Asset Type Template)..." (onChange)="addSubsystem($event.value)">
+      </p-dropdown>
+    </div>
+  </div>
+
+  <button type="button" class="template-fields-button-add" (click)="startAddingMode()">
+    <i class="pi pi-plus"></i>Add Subsystem
+  </button>
+</div>
+
+<div class="footer">
+  <button type="button" class="if-button button-cancel" [disabled]="!isReadyForNextStep"
+          (click)="onBack()">Back</button>
+  <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep"
+          (click)="onNext()">Next</button>
+</div>

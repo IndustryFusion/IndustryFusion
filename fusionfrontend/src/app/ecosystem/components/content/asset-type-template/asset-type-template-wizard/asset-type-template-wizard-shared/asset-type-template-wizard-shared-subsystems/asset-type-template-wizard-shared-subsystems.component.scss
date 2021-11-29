@@ -19,18 +19,24 @@
 .asset-type-template-wizard-subsystems {
   .edit-col {
     display: flex;
-    justify-content: flex-end;
+    justify-content: end;
   }
 
   .manufacturer-icon {
     display: flex;
     align-items: center;
+
+    img {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 60px;
+      margin-right: 0.5rem;
+    }
   }
 
   .subsystem-row {
     display: flex;
     align-items: center;
-    justify-content: center
   }
 }
 
