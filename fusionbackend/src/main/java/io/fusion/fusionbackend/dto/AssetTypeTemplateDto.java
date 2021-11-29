@@ -24,7 +24,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -45,7 +44,7 @@ public class AssetTypeTemplateDto extends BaseAssetDto {
     @Builder.Default
     protected Set<FieldTargetDto> fieldTargets = new LinkedHashSet<>();
     @Builder.Default
-    private Set<Long> subsystemIds = new HashSet<>();
+    private Set<Long> subsystemIds = new LinkedHashSet<>();
 
     @JsonCreator
     public AssetTypeTemplateDto() {
