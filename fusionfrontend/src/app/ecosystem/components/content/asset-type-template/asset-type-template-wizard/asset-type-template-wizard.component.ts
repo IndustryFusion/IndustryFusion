@@ -51,7 +51,8 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   public isAssetTypeLocked = false;
   public type = DialogType.CREATE;
 
-  private subsystemsValid: boolean;
+  private isSubsystemsValid: boolean;
+  private isPeersValid: boolean;
 
   Steps = AssetTypeTemplateWizardSteps;
 
@@ -151,8 +152,12 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets = this.getMetrics().concat(this.replaceEmptyCustomNameWithName(attributes));
   }
 
-  setSubsystemValid(isValid: boolean) {
-    this.subsystemsValid = isValid;
+  setSubsystemValidity(isValid: boolean) {
+    this.isSubsystemsValid = isValid;
+  }
+
+  setPeersValidity(isValid: boolean) {
+    this.isPeersValid = isValid;
   }
 
   // noinspection JSMethodCanBeStatic
@@ -197,7 +202,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   onSaveTemplate() {
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
 
-    if (assetTypeId && this.assetTypeTemplate.fieldTargets && this.subsystemsValid) {
+    if (assetTypeId && this.assetTypeTemplate.fieldTargets && this.isSubsystemsValid && this.isPeersValid) {
       this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.publicationState = this.assetTypeTemplateForm.get('publicationState')?.value;

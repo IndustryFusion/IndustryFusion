@@ -40,6 +40,12 @@ under the License.
         <div class="clr-timeline-step-body"></div>
       </li>
       <li class="clr-timeline-step">
+        <clr-icon *ngIf="step === Steps.PEERS" shape="dot-circle" aria-label="Started"></clr-icon>
+        <clr-icon *ngIf="step < Steps.PEERS" shape="circle" aria-label="Not started"></clr-icon>
+        <clr-icon *ngIf="step > Steps.PEERS" shape="success-standard" aria-label="Finished"></clr-icon>
+        <div class="clr-timeline-step-body"></div>
+      </li>
+      <li class="clr-timeline-step">
         <clr-icon *ngIf="step === Steps.REVIEW" shape="dot-circle" aria-label="Started"></clr-icon>
         <clr-icon *ngIf="step < Steps.REVIEW" shape="circle" aria-label="Not started"></clr-icon>
         <clr-icon *ngIf="step > Steps.REVIEW" shape="success-standard" aria-label="Finished"></clr-icon>
@@ -65,8 +71,13 @@ under the License.
   <app-asset-type-template-wizard-step-subsystems *ngIf="step === Steps.SUBSYSTEMS"
                                                   [assetTypeTemplateForm]="assetTypeTemplateForm" [assetTypeTemplate]="assetTypeTemplate"
                                                   (stepChange)="onStepChange($event)"
-                                                  (valid)="setSubsystemValid($event)">
+                                                  (valid)="setSubsystemValidity($event)">
   </app-asset-type-template-wizard-step-subsystems>
+  <app-asset-type-template-wizard-step-peers *ngIf="step === Steps.PEERS"
+                                                  [assetTypeTemplateForm]="assetTypeTemplateForm" [assetTypeTemplate]="assetTypeTemplate"
+                                                  (stepChange)="onStepChange($event)"
+                                                  (valid)="setPeersValidity($event)">
+  </app-asset-type-template-wizard-step-peers>
   <app-asset-type-template-wizard-step-review *ngIf="step === Steps.REVIEW" (stepChange)="onStepChange($event)"
                                               [assetTypeTemplate]="assetTypeTemplate" [assetTypeTemplateForm]="assetTypeTemplateForm"
                                               [metrics]="getMetrics()" [attributes]="getAttributes()" (saveTemplate)="onSaveTemplate()">

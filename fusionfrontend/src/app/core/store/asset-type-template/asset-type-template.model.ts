@@ -31,6 +31,7 @@ export class AssetTypeTemplate extends BaseEntity {
   fieldTargetIds: Array<ID>;
   fieldTargets: Array<FieldTarget>;
   subsystemIds: Array<ID>;
+  peerIds: Array<ID>;
   creationDate: Date;
 }
 

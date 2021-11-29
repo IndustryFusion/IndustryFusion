@@ -13,27 +13,27 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="asset-type-template-wizard-subsystems">
+<div class="asset-type-template-wizard-relationships">
 
-  <div *ngIf="!(subsystemFormArray?.controls?.length > 0) && isReview === true">no subsystems available</div>
-  <div *ngIf="subsystemFormArray?.controls?.length > 0" class="fields-list">
+  <div *ngIf="!(relationshipFormArray?.controls?.length > 0) && isReview === true">no {{relationshipName | lowercase}} available</div>
+  <div *ngIf="relationshipFormArray?.controls?.length > 0" class="fields-list">
     <div class="threshold-list-header p-grid">
-      <div class="if-label-small-header p-col-4"> Subsystem name </div>
+      <div class="if-label-small-header p-col-4"> {{relationshipName | titlecase}} name </div>
       <div class="if-label-small-header p-col-4"> Asset type </div>
-      <div class="if-label-small-header p-col-4"> </div>
+      <div class="if-label-small-header p-col-4"></div>
     </div>
 
-    <ng-container *ngFor="let subsystem of subsystemFormArray?.controls;">
-      <form [formGroup]="subsystem //noinspection InvalidExpressionResultType">
-        <div class="p-grid subsystem-row">
+    <ng-container *ngFor="let peer of relationshipFormArray?.controls;">
+      <form [formGroup]="peer //noinspection InvalidExpressionResultType">
+        <div class="p-grid relationship-row">
           <div class="p-col-4 manufacturer-icon">
-            <img src="assets/img/{{subsystem.get('imageKey').value}}">
+            <img src="assets/img/{{peer.get('imageKey').value}}">
             <label class="if-label" displayControlValue="name"></label>
           </div>
           <label class="if-label-normal-weight p-col-4" displayControlValue="assetTypeName"></label>
           <div class="p-col-4 edit-col">
             <app-edit-button *ngIf="isReview === true" (click)="onClickEdit()" ></app-edit-button>
-            <app-trash-button (click)="removeSubsystem(subsystem)"></app-trash-button>
+            <app-trash-button (click)="removeRelationship(peer)"></app-trash-button>
           </div>
         </div>
       </form>

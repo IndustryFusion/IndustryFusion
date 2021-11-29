@@ -108,6 +108,11 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
     return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
+  getPeerCandidates(assetTypeTemplateId: ID): Observable<AssetTypeTemplate[]> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/peercandidates`;
+    return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
   setActive(templateID: ID) {
     this.assettypeTemplateStore.setActive(templateID);
   }

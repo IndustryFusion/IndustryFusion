@@ -13,23 +13,23 @@
  * under the License.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './asset-type-template-wizard-shared-subsystems.component';
+import { AssetTypeTemplateWizardStepPeersComponent } from './asset-type-template-wizard-step-peers.component';
 
-describe('AssetWizardSharedSubsystemsComponent', () => {
-  let component: AssetTypeTemplateWizardSharedSubsystemsComponent;
-  let fixture: ComponentFixture<AssetTypeTemplateWizardSharedSubsystemsComponent>;
+describe('AssetTypeTemplateWizardStepPeersComponent', () => {
+  let component: AssetTypeTemplateWizardStepPeersComponent;
+  let fixture: ComponentFixture<AssetTypeTemplateWizardStepPeersComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AssetTypeTemplateWizardSharedSubsystemsComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AssetTypeTemplateWizardStepPeersComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeTemplateWizardSharedSubsystemsComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplateWizardStepPeersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
