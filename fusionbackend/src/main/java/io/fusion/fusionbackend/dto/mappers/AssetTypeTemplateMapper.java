@@ -60,6 +60,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .creationDate(entity.getCreationDate())
                 .fieldTargetIds(fieldTargetMapper.toEntityIdSet(entity.getFieldTargets()))
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .peerIds(EntityDtoMapper.getListOfEntityIds(entity.getPeers()))
                 .build();
 
         baseAssetMapper.copyToDto(entity, dto);
@@ -105,6 +106,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
         }
 
         addSubsystemsToEntity(dto, entity);
+        addPeersToEntity(dto, entity);
 
         return entity;
     }
@@ -114,6 +116,15 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
             dto.getSubsystemIds().forEach(id -> {
                 AssetTypeTemplate assetTypeTemplate = assetTypeTemplateService.getAssetTypeTemplate(id, false);
                 entity.getSubsystems().add(assetTypeTemplate);
+            });
+        }
+    }
+
+    private void addPeersToEntity(AssetTypeTemplateDto dto, AssetTypeTemplate entity) {
+        if (dto.getPeerIds() != null) {
+            dto.getPeerIds().forEach(id -> {
+                AssetTypeTemplate assetTypeTemplate = assetTypeTemplateService.getAssetTypeTemplate(id, false);
+                entity.getPeers().add(assetTypeTemplate);
             });
         }
     }

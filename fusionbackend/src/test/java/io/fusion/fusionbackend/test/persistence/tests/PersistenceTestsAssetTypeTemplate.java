@@ -48,4 +48,24 @@ public class PersistenceTestsAssetTypeTemplate extends PersistenceTestsBase {
 
         assertEquals(1, foundParent.getSubsystems().size());
     }
+
+    @Test
+    void persistAssetTypeTemplateWithPeers() {
+
+        AssetTypeTemplate peer = persisted(anAssetTypeTemplate()
+                .forType(persisted(anAssetType())))
+                .build();
+
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .forType(persisted(anAssetType())))
+                .build();
+
+
+        parent.getPeers().add(peer);
+        parent.getPeers().add(peer);
+
+        AssetTypeTemplate foundParent = testEntityManager.persistFlushFind(parent);
+
+        assertEquals(2, foundParent.getPeers().size());
+    }
 }
