@@ -105,9 +105,10 @@ public class AssetTypeTemplateService {
         }
 
         validateSubsystems(assetTypeTemplate, assetType);
+        validatePeers(assetTypeTemplate);
     }
 
-    private void validateSubsystems(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
+    private void validateSubsystems(final AssetTypeTemplate assetTypeTemplate, final AssetType assetType) {
         for (AssetTypeTemplate subsystem : assetTypeTemplate.getSubsystems()) {
             if (subsystem.getId().equals(assetTypeTemplate.getId())) {
                 throw new RuntimeException("An asset type template is not allowed to be a subsystem of itself.");
@@ -115,8 +116,25 @@ public class AssetTypeTemplateService {
             if (subsystem.getAssetType().getId().equals(assetType.getId())) {
                 throw new RuntimeException("A subsystem has to be of another asset type than the parent template.");
             }
+            if (assetTypeTemplateRepository.findAllPeerIds().contains(subsystem.getId())) {
+                throw new RuntimeException("An asset type template can not be a subsystem if already used as peer.");
+            }
             if (subsystem.getPublicationState().equals(PublicationState.DRAFT)) {
                 throw new RuntimeException("A subsystem has to be a published asset type template.");
+            }
+        }
+    }
+
+    private void validatePeers(final AssetTypeTemplate assetTypeTemplate) {
+        for (AssetTypeTemplate peer : assetTypeTemplate.getPeers()) {
+            if (peer.getId().equals(assetTypeTemplate.getId())) {
+                throw new RuntimeException("An asset type template is not allowed to be a peer to itself.");
+            }
+            if (assetTypeTemplateRepository.findAllSubsystemIds().contains(peer.getId())) {
+                throw new RuntimeException("An asset type template peer is not allowed to be a subsystem.");
+            }
+            if (peer.getPublicationState().equals(PublicationState.DRAFT)) {
+                throw new RuntimeException("A peer has to be a published asset type template.");
             }
         }
     }
@@ -226,5 +244,9 @@ public class AssetTypeTemplateService {
     public Set<AssetTypeTemplate> findSubsystemCandidates(final Long parentAssetTypeId,
                                                           final Long assetTypeTemplateId) {
         return assetTypeTemplateRepository.findSubsystemCandidates(parentAssetTypeId, assetTypeTemplateId);
+    }
+
+    public Set<AssetTypeTemplate> findPeerCandidates(final Long assetTypeTemplateId) {
+        return assetTypeTemplateRepository.findPeerCandidates(assetTypeTemplateId);
     }
 }

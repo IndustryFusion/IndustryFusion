@@ -67,6 +67,13 @@ public class AssetTypeTemplateRestService {
                 true);
     }
 
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/peercandidates")
+    public Set<AssetTypeTemplateDto> getPeerCandidates(@PathVariable final Long assetTypeTemplateId) {
+        return assetTypeTemplateMapper.toDtoSet(
+                assetTypeTemplateService.findPeerCandidates(assetTypeTemplateId),
+                true);
+    }
+
     @GetMapping(path = "/assettypetemplates/nextVersion/{assetTypeId}")
     public Long getNextAssetTypeTemplatePublishVersion(@PathVariable final Long assetTypeId) {
         return assetTypeTemplateService.getNextPublishVersion(assetTypeId);
