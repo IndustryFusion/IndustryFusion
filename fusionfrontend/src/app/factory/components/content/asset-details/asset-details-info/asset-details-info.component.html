@@ -14,7 +14,10 @@ under the License.
 -->
 
 <section class="asset">
-  <img class="asset-img" src="assets/img/{{(assetWithFields)?.imageKey}}"/>
+  <ng-container *ngIf="assetWithFields != null">
+    <img *ngIf="assetImage == null" class="asset-img" src="assets/img/{{(assetWithFields)?.imageKey}}"/>
+    <img *ngIf="assetImage != null" class="asset-img" [src]="assetImage" >
+  </ng-container>
   <div class="asset-info">
     <h3>{{(assetWithFields)?.name}}</h3>
     <p>{{(assetWithFields)?.assetTypeName}}</p>

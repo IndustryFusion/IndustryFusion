@@ -47,11 +47,47 @@ for the second time use:
  docker start postgres-104
 ```
 
-### Authentication: Keycloak 
+### Authentication: Keycloak
 - ToDo (IF-200): Auch über docker-compose abbilden.
 - ToDo (IF-200): Es gibt auch die Möglichkeit die Initialisierung gleich beim Container-Start zu machen. Siehe https://github.com/keycloak/keycloak-containers/blob/12.0.4/server/README.md
 
 Do the steps based on the [keycloak setup instructions](keycloaksetup.md)
+
+
+### Object Storage Database: MinIO (or other s3-compatible DBs)
+
+#### Run Docker Container
+
+Follow the instructions on [minio docker quickstart guide](https://docs.min.io/docs/minio-docker-quickstart-guide.html).
+
+#### Storage architecture
+
+All bucket names must end with `company<companyId according to DB>`, but can have any prefix (see next point).
+If you host more than one company ensure that each bucket has its own user / access credentials.
+
+#### Extend application.yaml of Backend
+
+Add the following to your application-local_dev-cluster.yaml of the backend and replace content within <...>:
+
+```
+object-storage:
+    server-type: <minio or s3>
+    server-url: <your url>
+    buckets-prefix: if
+```
+
+#### Add Secret and ApiKey to Keycloak User
+
+To access the bucket of a specific company, the backend gets the ApiKey and SecretKey from keycloak. Therefore, we have to add them to the keycloak user:
+
+1. Login into admin console of keycloak
+2. Users -> view all users -> click Edit on user
+3. Switch to tab attributes
+4. Add the following keys: `S3_API_KEY` and `S3_SECRET_KEY`. You get their values from the database user. 
+
+
+
+
 
 
 ## Checkout IndustryFusion application
