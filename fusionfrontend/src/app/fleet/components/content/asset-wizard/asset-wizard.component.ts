@@ -116,7 +116,9 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.ref) {
-      this.deleteUploadedImage();
+      if (this.type === DialogType.CREATE) {
+        this.deleteUploadedImage();
+      }
       this.ref.close();
     }
   }

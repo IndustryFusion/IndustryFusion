@@ -66,11 +66,15 @@ public class BaseClient {
 
     protected boolean isFileSizeInvalidBase64(final String content64Based,
                                             final ObjectStorageConfiguration configuration) {
-        return getFileSizeFrom64Based(content64Based) > configuration.maxFileSizeMb * 1024 * 1024;
+        return getFileSizeFrom64Based(content64Based) > convertMegabytesToBytes(configuration.maxFileSizeMb);
     }
 
     protected boolean isFileSizeInvalid(final byte[] content, final ObjectStorageConfiguration configuration) {
-        return content.length > configuration.maxFileSizeMb * 1024 * 1024;
+        return content.length > convertMegabytesToBytes(configuration.maxFileSizeMb);
+    }
+
+    private Long convertMegabytesToBytes(Long mb) {
+        return mb * 1024 * 1024;
     }
 
     public static String getFileExtension(final String filename) {
