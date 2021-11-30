@@ -91,20 +91,34 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.resolve();
+    this.initAssetTypeTemplateForm();
+    this.initAssetTypeTemplate();
+    this.initialHandlingOfEditMode();
+  }
+
+  private resolve(): void {
     this.assetTypesResolver.resolve().subscribe();
     this.fieldsResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.quantityTypesResolver.resolve().subscribe();
     this.assetTypeTemplatesResolver.resolve().subscribe();
+  }
 
+  private initAssetTypeTemplateForm(): void {
     this.assetTypeTemplateForm = AssetTypeTemplateWizardComponent.createAssetTypeTemplateForm(this.formBuilder,
-        this.config.data.assetTypeTemplate,
-        this.config.data.preselectedAssetTypeId);
+      this.config.data.assetTypeTemplate,
+      this.config.data.preselectedAssetTypeId);
     this.isAssetTypeLocked = this.config.data.preselectedAssetTypeId != null;
+  }
 
+  private initAssetTypeTemplate(): void {
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
+    this.assetTypeTemplate.subsystemIds = [];
+  }
 
+  private initialHandlingOfEditMode(): void {
     if (this.config.data.type === DialogType.EDIT) {
       if (this.assetTypeTemplateForm.get('publicationState')?.value === PublicationState.PUBLISHED) {
         this.ref.close();
@@ -151,27 +165,33 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     });
   }
 
-  onChangeUseOfTemplate(assetTypeTemplateId: number) {
+  onChangeUseOfTemplate(assetTypeTemplateId: ID) {
     if (assetTypeTemplateId) {
-      this.fieldTargetService.getItemsByAssetTypeTemplate(assetTypeTemplateId)
-        .pipe(take(1))
-        .subscribe(() =>
-        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
-          .pipe(take(1))
-          .subscribe(x =>
-          {
-            this.assetTypeTemplate.fieldTargets = x.fieldTargets;
-
-            if (this.type === DialogType.EDIT) {
-              this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
-            }
-          }
-        )
-      );
+      this.prefillAssetTypeTemplate(assetTypeTemplateId);
     } else {
       this.assetTypeTemplate.fieldTargets = [];
       this.assetTypeTemplate.fieldTargetIds = [];
+      this.assetTypeTemplate.subsystemIds = [];
     }
+  }
+
+  private prefillAssetTypeTemplate(assetTypeTemplateId: ID) {
+    this.fieldTargetService.getItemsByAssetTypeTemplate(assetTypeTemplateId)
+      .pipe(take(1))
+      .subscribe(() =>
+        this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
+          .pipe(take(1))
+          .subscribe(assetTypeTemplate =>
+            {
+              this.assetTypeTemplate.fieldTargets = assetTypeTemplate.fieldTargets;
+              this.assetTypeTemplate.subsystemIds = assetTypeTemplate.subsystemIds;
+
+              if (this.type === DialogType.EDIT) {
+                this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
+              }
+            }
+          )
+      );
   }
 
   onSaveTemplate() {
