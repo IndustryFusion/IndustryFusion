@@ -61,8 +61,22 @@ import java.util.Set;
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findSubsystemCandidates",
         query = "select * from asset_type_template where subsystem_parent_id is null"
-                + " and publication_state = 'PUBLISHED' and asset_type_id != ? and id != ?",
+                + " and publication_state = 'PUBLISHED' and asset_type_id != ? and id != ?"
+                + " and id not in (select distinct peer_id from asset_type_template_peers)",
         resultClass = AssetTypeTemplate.class)
+@NamedNativeQuery(
+        name = "AssetTypeTemplate.findAllSubsystemIds",
+        query = "select id from asset_type_template where subsystem_parent_id is not null")
+
+@NamedNativeQuery(
+        name = "AssetTypeTemplate.findPeerCandidates",
+        query = "select * from asset_type_template where subsystem_parent_id is null"
+                + " and publication_state = 'PUBLISHED' and id != ?",
+        resultClass = AssetTypeTemplate.class)
+@NamedNativeQuery(
+        name = "AssetTypeTemplate.findAllPeerIds",
+        query = "select distinct peer_id from asset_type_template_peers")
+
 @Table(name = "asset_type_template")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
 @Getter

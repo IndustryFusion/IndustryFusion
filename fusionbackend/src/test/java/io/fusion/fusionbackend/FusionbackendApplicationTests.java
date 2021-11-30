@@ -54,6 +54,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -95,6 +96,7 @@ class FusionbackendApplicationTests {
     private static Integer assetRoomEastStruumpFabId;
 
     private static Integer assetTypeTemplateGasSupplyId;
+    private static Integer assetTypeTemplateGasSupplyId2;
     private static Integer assetTypeTemplateLaserCutterId;
 
     private static Long assetSeriesAiristGasSupplyId;
@@ -605,7 +607,7 @@ class FusionbackendApplicationTests {
     }
 
     @Test
-    @Order(500)
+    @Order(499)
     void createAssetTypeTemplateGasSupply() {
         AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
                 .name("Gas Supply")
@@ -619,10 +621,28 @@ class FusionbackendApplicationTests {
     }
 
     @Test
+    @Order(500)
+    void createAssetTypeTemplateGasSupply2() {
+        AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
+                .name("Gas Supply")
+                .description("ATT Gas Supply")
+                .imageKey("genericgasimagekey")
+                .publishedDate(OffsetDateTime.now())
+                .publicationState(PublicationState.PUBLISHED)
+                .build();
+
+        assetTypeTemplateGasSupplyId2 = createAndTestAssetTypeTemplate(assetTypeGasSupplyId, assetTypeTemplate);
+    }
+
+    @Test
     @Order(501)
-    void createAssetTypeTemplateLaserCutterWithSubsystem() {
+    void createAssetTypeTemplateLaserCutterWithSubsystemAndPeers() {
         Set<Long> subsystemIds = new HashSet<>();
         subsystemIds.add(Long.valueOf(assetTypeTemplateGasSupplyId));
+
+        List<Long> peerIds = new LinkedList<>();
+        peerIds.add(Long.valueOf(assetTypeTemplateGasSupplyId2));
+        peerIds.add(Long.valueOf(assetTypeTemplateGasSupplyId2));
 
         AssetTypeTemplateDto assetTypeTemplate = AssetTypeTemplateDto.builder()
                 .name("Laser Cutter")
@@ -631,6 +651,7 @@ class FusionbackendApplicationTests {
                 .publishedDate(OffsetDateTime.now())
                 .publicationState(PublicationState.PUBLISHED)
                 .subsystemIds(subsystemIds)
+                .peerIds(peerIds)
                 .build();
 
         assetTypeTemplateLaserCutterId = createAndTestAssetTypeTemplate(assetTypeLaserCutterId, assetTypeTemplate);
@@ -710,8 +731,8 @@ class FusionbackendApplicationTests {
                 .extract().path("id");
 
         assertThat(assetIds)
-                .hasSize(12)
-                .contains(assetTypeTemplateGasSupplyId, assetTypeTemplateLaserCutterId);
+                .hasSize(13)
+                .contains(assetTypeTemplateGasSupplyId, assetTypeTemplateGasSupplyId2, assetTypeTemplateLaserCutterId);
     }
 
     @Test

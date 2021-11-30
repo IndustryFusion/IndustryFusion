@@ -54,9 +54,10 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
     const assetTypeTemplateId = this.assetTypeTemplateForm.get('id').value;
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId').value;
     this.assetTypeTemplateService.getSubsystemCandidates(assetTypeTemplateId ?? 0, assetTypeId)
-      .pipe(map( (templates: AssetTypeTemplate[]) =>
-          templates.map(template => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(template))),
-        map(templates => templates.filter(template => !this.assetTypeTemplate.subsystemIds.includes(template.id) )))
+      .pipe(map( (candidates: AssetTypeTemplate[]) =>
+          candidates.map(candidate => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(candidate))),
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.subsystemIds.includes(candidate.id) )),
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.peerIds.includes(candidate.id) )))
       .subscribe(templateCandidates => this.subsystemCandidates = templateCandidates);
   }
 

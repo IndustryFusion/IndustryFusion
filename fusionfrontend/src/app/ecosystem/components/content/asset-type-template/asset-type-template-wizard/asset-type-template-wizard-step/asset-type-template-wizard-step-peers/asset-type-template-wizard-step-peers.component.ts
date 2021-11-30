@@ -45,14 +45,15 @@ export class AssetTypeTemplateWizardStepPeersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initPeerCandidatesIncludingVersion();
+    this.initPeerCandidatesWithVersionExcludingSubsystems();
   }
 
-  private initPeerCandidatesIncludingVersion() {
+  private initPeerCandidatesWithVersionExcludingSubsystems() {
     const assetTypeTemplateId = this.assetTypeTemplateForm.get('id').value;
     this.assetTypeTemplateService.getPeerCandidates(assetTypeTemplateId ?? 0)
-      .pipe(map( (templates: AssetTypeTemplate[]) =>
-          templates.map(template => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(template))))
+      .pipe(map( (candidates: AssetTypeTemplate[]) =>
+          candidates.map(candidate => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(candidate))),
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.subsystemIds.includes(candidate.id) )))
       .subscribe(templateCandidates => this.peerCandidates = templateCandidates);
   }
 

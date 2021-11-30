@@ -72,6 +72,13 @@ public class AssetTypeTemplateRestService {
                 true);
     }
 
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/peercandidates")
+    public Set<AssetTypeTemplateDto> getPeerCandidates(@PathVariable final Long assetTypeTemplateId) {
+        return assetTypeTemplateMapper.toDtoSet(
+                assetTypeTemplateService.findPeerCandidates(assetTypeTemplateId),
+                true);
+    }
+
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/owlexport")
     public void getAsOwlExport(@PathVariable final Long assetTypeTemplateId,
                                HttpServletResponse response) throws IOException {

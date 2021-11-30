@@ -40,8 +40,35 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
     }
 
     @Test
-    void findSubsystemCandidates_builtInSubsystemsShouldNotBeFound() {
+    void findSubsystemCandidates_peersShouldNotBeFound() {
+        AssetType parentAssetType = persisted(anAssetType()).build();
 
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(parentAssetType))
+                .build();
+
+        AssetTypeTemplate subsystemCandidate = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        AssetTypeTemplate peer = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        parent.getPeers().add(peer);
+
+        Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository
+                .findSubsystemCandidates(parentAssetType.getId(), parent.getId());
+
+        assertTrue(subsystemCandidates.contains(subsystemCandidate));
+        assertFalse(subsystemCandidates.contains(peer));
+    }
+
+    @Test
+    void findSubsystemCandidates_builtInSubsystemsShouldNotBeFound() {
         AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
                 .withPublicationState(PublicationState.PUBLISHED)
                 .forType(persisted(anAssetType())))
@@ -61,8 +88,7 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
     }
 
     @Test
-    void findSubsystemCandidates_unpublishedSubsystemsShouldNotBeFound() {
-
+    void findSubsystemCandidates_unpublishedAssetTypeTemplatesShouldNotBeFound() {
         AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
                 .withPublicationState(PublicationState.PUBLISHED)
                 .forType(persisted(anAssetType())))
@@ -83,7 +109,6 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
 
     @Test
     void findSubsystemCandidates_forDifferentAssetType() {
-
         AssetType parentAssetType = persisted(anAssetType()).build();
 
         AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
@@ -106,5 +131,92 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
 
         assertTrue(subsystemCandidates.contains(assetTypeTemplateOfOtherAssetType));
         assertFalse(subsystemCandidates.contains(assetTypeTemplateOfSameAssetType));
+    }
+
+    @Test
+    void findSubsystemCandidates_sameAssetTypeTemplateShouldNotBeFound() {
+        AssetType parentAssetType = persisted(anAssetType()).build();
+
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(parentAssetType))
+                .build();
+
+        Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository
+                .findSubsystemCandidates(parentAssetType.getId(), parent.getId());
+
+        assertTrue(subsystemCandidates.isEmpty());
+    }
+
+
+    @Test
+    void findPeerCandidates() {
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        AssetTypeTemplate peerCandidate = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
+                .findPeerCandidates(parent.getId());
+
+        assertTrue(peerCandidates.contains(peerCandidate));
+    }
+
+    @Test
+    void findPeerCandidates_subsystemsShouldNotBeFound() {
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        AssetTypeTemplate subsystem = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType()))
+                .asSubsystemOf(parent))
+                .build();
+
+        Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
+                .findPeerCandidates(parent.getId());
+
+        assertTrue(parent.getSubsystems().contains(subsystem));
+        assertTrue(peerCandidates.isEmpty());
+    }
+
+    @Test
+    void findPeerCandidates_unpublishedAssetTypeTemplatesShouldNotBeFound() {
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        AssetTypeTemplate unpublishedPeer = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.DRAFT)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
+                .findPeerCandidates(parent.getId());
+
+        assertEquals(2, assetTypeTemplateRepository.findAll(AssetTypeTemplateRepository.DEFAULT_SORT).size());
+        assertTrue(peerCandidates.isEmpty());
+        assertEquals(PublicationState.DRAFT, unpublishedPeer.getPublicationState());
+    }
+
+    @Test
+    void findPeerCandidates_sameAssetTypeTemplateShouldNotBeFound() {
+        AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
+        Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
+                .findPeerCandidates(parent.getId());
+
+        assertTrue(peerCandidates.isEmpty());
     }
 }
