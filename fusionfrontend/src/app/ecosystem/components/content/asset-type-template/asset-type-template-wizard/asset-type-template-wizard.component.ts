@@ -117,6 +117,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
     this.assetTypeTemplate.subsystemIds = [];
+    this.assetTypeTemplate.peerIds = [];
   }
 
   private initialHandlingOfEditMode(): void {
@@ -177,6 +178,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
       this.assetTypeTemplate.fieldTargets = [];
       this.assetTypeTemplate.fieldTargetIds = [];
       this.assetTypeTemplate.subsystemIds = [];
+      this.assetTypeTemplate.peerIds = [];
     }
   }
 
@@ -190,6 +192,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
             {
               this.assetTypeTemplate.fieldTargets = assetTypeTemplate.fieldTargets;
               this.assetTypeTemplate.subsystemIds = assetTypeTemplate.subsystemIds;
+              this.assetTypeTemplate.peerIds = assetTypeTemplate.peerIds;
 
               if (this.type === DialogType.EDIT) {
                 this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
