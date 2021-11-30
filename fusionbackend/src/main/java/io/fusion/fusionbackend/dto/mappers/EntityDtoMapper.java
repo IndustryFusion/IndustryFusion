@@ -18,6 +18,8 @@ package io.fusion.fusionbackend.dto.mappers;
 import io.fusion.fusionbackend.model.BaseEntity;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,14 @@ public interface EntityDtoMapper<T, U> {
         }
         return entities.stream().map(BaseEntity::getId).collect(Collectors.toCollection(LinkedHashSet::new));
     }
+
+    static List<Long> getListOfEntityIds(final List<? extends BaseEntity> entities) {
+        if (entities == null) {
+            return new LinkedList<>();
+        }
+        return entities.stream().map(BaseEntity::getId).collect(Collectors.toCollection(LinkedList::new));
+    }
+
 
     static Long getEntityId(final BaseEntity entity) {
         if (entity == null) {

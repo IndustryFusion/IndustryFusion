@@ -28,7 +28,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
@@ -39,6 +42,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -79,6 +84,18 @@ public class AssetTypeTemplate extends BaseAsset {
     @Builder.Default
     private Set<AssetTypeTemplate> subsystems = new LinkedHashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "asset_type_template_peers",
+            joinColumns =
+            @JoinColumn(name = "asset_type_template_id"),
+            foreignKey = @ForeignKey(name = "asset_type_template_peers_asset_type_template_id_fkey"),
+            inverseJoinColumns =
+            @JoinColumn(name = "peer_id"),
+            inverseForeignKey = @ForeignKey(name = "asset_type_template_peers_peer_id_fkey")
+    )
+    @Builder.Default
+    private List<AssetTypeTemplate> peers = new LinkedList<>();
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
     private AssetType assetType;
@@ -110,6 +127,9 @@ public class AssetTypeTemplate extends BaseAsset {
         }
         if (sourceAssetTypeTemplate.getSubsystems() != null) {
             setSubsystems(sourceAssetTypeTemplate.getSubsystems());
+        }
+        if (sourceAssetTypeTemplate.getPeers() != null) {
+            setPeers(sourceAssetTypeTemplate.getPeers());
         }
     }
 }
