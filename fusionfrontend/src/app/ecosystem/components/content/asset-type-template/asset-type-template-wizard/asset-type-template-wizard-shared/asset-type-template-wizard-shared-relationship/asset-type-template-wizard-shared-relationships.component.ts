@@ -32,6 +32,7 @@ export class AssetTypeTemplateWizardSharedRelationshipsComponent implements OnIn
   @Input() relationshipName: string;
   @Input() relationshipIds: Array<ID>;
   @Input() isReview = false;
+  @Input() editable = true;
   @Output() changeIsValid = new EventEmitter<boolean>();
   @Output() backToEditPage = new EventEmitter<void>();
   @Output() relationshipsRemoved = new EventEmitter<ID>();

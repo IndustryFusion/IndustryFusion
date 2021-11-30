@@ -32,8 +32,10 @@ under the License.
           </div>
           <label class="if-label-normal-weight p-col-4" displayControlValue="assetTypeName"></label>
           <div class="p-col-4 edit-col">
-            <app-edit-button *ngIf="isReview === true" (click)="onClickEdit()" ></app-edit-button>
-            <app-trash-button (click)="removeRelationship(peer)"></app-trash-button>
+            <ng-container *ngIf="editable === true">
+              <app-edit-button *ngIf="isReview === true" (click)="onClickEdit()" ></app-edit-button>
+              <app-trash-button (click)="removeRelationship(peer)"></app-trash-button>
+            </ng-container>
           </div>
         </div>
       </form>
