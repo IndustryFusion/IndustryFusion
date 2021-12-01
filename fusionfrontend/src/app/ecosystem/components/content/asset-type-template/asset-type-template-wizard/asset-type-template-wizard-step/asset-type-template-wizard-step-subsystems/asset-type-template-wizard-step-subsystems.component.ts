@@ -78,6 +78,7 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
 
   public onBack(): void {
     if (this.isReadyForNextStep) {
+      this.saveValues();
       this.stepChange.emit(AssetTypeTemplateWizardSteps.SUBSYSTEMS - 1);
     }
   }
