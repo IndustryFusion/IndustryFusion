@@ -59,6 +59,7 @@ export class AssetTypeTemplateWizardStepPeersComponent implements OnInit {
 
   public onBack(): void {
     if (this.isReadyForNextStep) {
+      this.saveValues();
       this.stepChange.emit(AssetTypeTemplateWizardSteps.PEERS - 1);
     }
   }
