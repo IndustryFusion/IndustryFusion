@@ -9,7 +9,10 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+/* This Class converts JSON-LD export from Apache Jena.
+   The NGSI-LD Broker Scorpio can not parse blank nodes as they have local id's.
+   This Class remove the blank nodes und reconstruct the deep JSON without links to blank nodes.
+* */
 public class BlankNodeProcessor {
 
 
@@ -17,10 +20,17 @@ public static String linkBlankNodes(String jsonString) throws ParseException, IO
     JSONParser parser = new JSONParser();
     JSONObject root = (JSONObject) parser.parse(jsonString);
     JSONArray graph = (JSONArray) root.get("@graph");
+
     Map<String, JSONObject> blankNodes = new HashMap();
 
-    removeBlankNodes(graph, blankNodes);
-    insertBlankNodes(graph, blankNodes);
+    if (graph == null){
+        graph = new JSONArray();
+        graph.add(root);
+    }
+    System.out.println(blankNodes.keySet());
+    if (blankNodes.size() > 0) {
+        insertBlankNodes(graph, blankNodes);
+    }
     return JsonUtils.toPrettyString(root);
 }
 
@@ -50,7 +60,7 @@ public static String linkBlankNodes(String jsonString) throws ParseException, IO
         JSONObject result = node;
         if (id != null && id.startsWith("_:b") && node.size() == 1) {
             if (blankNodes.get(id) == null) {
-                throw new IllegalArgumentException("blank node missing");
+                throw new IllegalArgumentException("blank node missing: "+ id);
             }
             result = blankNodes.remove(id);
         } else {

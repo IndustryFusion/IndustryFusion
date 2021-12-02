@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.rest.factorymanager;
 
+import com.apicatalog.jsonld.http.media.MediaType;
 import io.fusion.fusionbackend.dto.AssetDetailsDto;
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.dto.mappers.AssetDetailsMapper;
@@ -23,15 +24,17 @@ import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.rest.annotations.IsFactoryUser;
 import io.fusion.fusionbackend.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Set;
 
 @RestController
@@ -147,6 +150,18 @@ public class FactoryAssetRestService {
                                     @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return assetMapper.toDto(assetService.getAssetByCompany(companyId, assetId), embedChildren);
     }
+
+    @GetMapping(path = "/companies/{companyId}/assets/{assetId}/ngsi-ld")
+    public void getAsRdfExport(@PathVariable final Long assetId,
+                               @PathVariable final Long companyId,
+                               HttpServletResponse response) throws IOException {
+        String json = assetService.getAssetByIdAsNGSI_LD(assetId);
+
+        response.setContentType(MediaType.JSON_LD.toString());
+        response.getWriter().write(json);
+
+    }
+
 
     @PutMapping(path = "/companies/{companyId}/assets/{assetId}")
     public AssetDto updateCompanyAsset(@PathVariable final Long companyId,

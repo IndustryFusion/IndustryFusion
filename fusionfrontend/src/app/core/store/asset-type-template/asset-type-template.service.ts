@@ -56,6 +56,11 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
     return this.http.get<bigint>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
+  getExportLink(assetTypeId: ID):string {
+    const path = `/assettypetemplates/${assetTypeId}/export`;
+    return `${environment.apiUrlPrefix}${path}`;
+  }
+
   createItem(template: AssetTypeTemplate): Observable<AssetTypeTemplate> {
     const path = `assettypetemplates`;
     return this.http.post<AssetTypeTemplate>(`${environment.apiUrlPrefix}/${path}`, template, this.httpOptions)

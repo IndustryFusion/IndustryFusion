@@ -15,10 +15,14 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
+import com.apicatalog.jsonld.http.media.MediaType;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Set;
 
 @RestController
@@ -57,6 +63,22 @@ public class AssetTypeTemplateRestService {
         return assetTypeTemplateMapper.toDto(
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, embedChildren),
                 embedChildren);
+    }
+
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/export")
+    public void getAsRdfExport(@PathVariable final Long assetTypeTemplateId,
+                               @RequestParam(defaultValue = "false")
+    final boolean extended,HttpServletResponse response) throws IOException {
+
+        if (extended){
+            response.setContentType(MediaType.JSON.toString());
+            assetTypeTemplateService.getAssetTypeTemplateExtendedJSON(assetTypeTemplateId, response.getWriter());
+        } else {
+            Model model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
+            response.setContentType(MediaType.JSON.toString());
+            RDFDataMgr.write(response.getOutputStream(), model, RDFFormat.RDFJSON);
+        }
+
     }
 
     @GetMapping(path = "/assettypetemplates/nextVersion/{assetTypeId}")
