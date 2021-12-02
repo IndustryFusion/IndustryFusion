@@ -84,6 +84,9 @@ public class Asset extends BaseAsset {
     @JoinColumn(name = "subsystem_parent_id")
     @Builder.Default
     private Set<Asset> subsystems = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "subsystem_parent_id", nullable = true)
+    private Asset subSystemParent;
     private String externalName;
     private String controlSystemType;
     private Boolean hasGateway;

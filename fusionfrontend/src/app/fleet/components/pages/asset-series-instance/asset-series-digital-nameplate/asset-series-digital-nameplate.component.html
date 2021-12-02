@@ -22,6 +22,10 @@ under the License.
         <img class="fusion-icon" src="/assets/img/IndustryFusion-hive.png">
         Generate Asset Onboarding File
       </button>
+      <a class="card-button" [href]="assetService.getExportLink((asset$ | async).id, (asset$ | async).companyId)" target="_self">
+        <img class="fusion-icon" src="/assets/img/IndustryFusion-hive.png">
+        NGSI-LD
+      </a>
     </div>
   </div>
   <p-card class="card">

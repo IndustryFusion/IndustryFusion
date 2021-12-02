@@ -222,4 +222,9 @@ export class AssetService {
       }
     );
   }
+
+  getExportLink(assetId: ID, companyId: ID):string {
+    const path = `companies/${companyId}/assets/${assetId}/ngsi-ld`;
+    return `${environment.apiUrlPrefix}${path}`;
+  }
 }

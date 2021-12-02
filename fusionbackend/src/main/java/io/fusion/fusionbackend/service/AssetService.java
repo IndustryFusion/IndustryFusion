@@ -15,20 +15,27 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.github.jsonldjava.utils.JsonUtils;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.Room;
+import io.fusion.fusionbackend.model.Threshold;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -377,4 +384,114 @@ public class AssetService {
     public Set<Asset> findSubsystemCandidates(Long companyId, Long parentAssetSeriesId) {
         return assetRepository.findSubsystemCandidates(parentAssetSeriesId, companyId);
     }
+
+    public String getAssetByIdAsNGSI_LD(Long assetId) throws IOException {
+        Asset asset = getAssetById(assetId);
+
+        JSONObject root = new JSONObject();
+
+        //Generate URN
+        String id = generateURN(asset);
+        root.put("id", id);
+
+        //Add AssetType
+        addType(root, asset.getAssetSeries().getName());
+
+        asset.getFieldInstances().stream().forEach(fieldInstance -> {
+            String fieldName = fieldInstance.getName();
+            fieldName = cleanName(fieldName);
+
+            String value = Optional.ofNullable(fieldInstance.getValue()).orElse("");
+            addProperty(root, fieldName, value, fieldInstance.getFieldSource().getSourceUnit().getSymbol());
+        });
+
+        //add Subsystems
+        if (asset.getSubSystemParent() != null) {
+            addRelationship(root, "subsystemParent", generateURN(asset.getSubSystemParent()));
+        }
+
+        //add Metainfo
+        JSONObject metainfo = new JSONObject();
+        asset.getFieldInstances().stream().forEach(fieldInstance -> {
+            JSONObject jsonObject = new JSONObject();
+            metainfo.put(cleanName(fieldInstance.getName()), jsonObject);
+            addThreshold(jsonObject, "AbsoluteThreshold", fieldInstance.getAbsoluteThreshold());
+            addThreshold(jsonObject, "CriticalThreshold", fieldInstance.getCriticalThreshold());
+            addThreshold(jsonObject, "IdealThreshold", fieldInstance.getIdealThreshold());
+            jsonObject.put("description", fieldInstance.getDescription());
+            if (fieldInstance.getFieldSource().getRegister()!=null) {
+                jsonObject.put("register", fieldInstance.getFieldSource().getRegister());
+            }
+            jsonObject.put("fieldType", fieldInstance.getFieldSource().getFieldTarget().getFieldType());
+        });
+        addProperty(root, "metainfo", metainfo);
+
+        //add @Context
+        JSONArray context = new JSONArray();
+        context.add("https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld");
+        root.put("@context", context);
+
+            return JsonUtils.toPrettyString(root);
+    }
+
+    private void addThreshold(JSONObject jsonObject, String name, Threshold threshold) {
+        if (threshold != null){
+            jsonObject.put("upper" + name, threshold.getValueUpper());
+            jsonObject.put("lower" + name, threshold.getValueLower());
+        }
+    }
+
+    private String cleanName(String fieldName) {
+        fieldName = fieldName.replaceAll("[\\<\\\"\\'\\=\\;\\(\\)\\>\\?\\*\\s]", "");
+        return fieldName;
+    }
+
+    private String generateURN(Asset asset) {
+        AssetSeries assetSeries = asset.getAssetSeries();
+        AssetTypeTemplate assetTypeTemplate = assetSeries.getAssetTypeTemplate();
+        String id = new StringBuilder()
+                .append("urn:ngsi-ld:Asset:")
+                .append(assetTypeTemplate.getId())
+                .append(":")
+                .append(assetSeries.getId())
+                .append(":")
+                .append(asset.getId()).toString();
+
+        return id;
+    }
+
+
+    private static void addRelationship(JSONObject json, String key, String url) {
+        JSONObject property = new JSONObject();
+        addType(property, "Relationship");
+        property.put("object", url);
+        json.put(key, property);
+    }
+
+    private static void addProperty(JSONObject json, String key, String value) {
+        addProperty(json, key, value, null);
+    }
+
+    private static void addProperty(JSONObject json, String key, String value, String unitCode) {
+        JSONObject property = new JSONObject();
+        addType(property, "Property");
+        property.put("value", value);
+        if (unitCode != null){
+            property.put("unitCode", unitCode);
+        }
+        json.put(key, property);
+    }
+
+    private static void addProperty(JSONObject json, String key, JSONObject jsonObject) {
+        JSONObject property = new JSONObject();
+        addType(property, "Property");
+        JSONArray jsonArray = new JSONArray();
+        property.put("value", jsonObject);
+        json.put(key, property);
+    }
+
+    private static Object addType(JSONObject json, String type) {
+        return json.put("type", type);
+    }
+
 }

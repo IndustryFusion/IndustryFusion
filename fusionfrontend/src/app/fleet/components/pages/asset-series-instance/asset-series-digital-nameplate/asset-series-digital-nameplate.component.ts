@@ -37,6 +37,7 @@ import { RouteHelpers } from '../../../../../common/utils/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../store/asset-series-details/asset-series-details.service';
 import { FactoryComposedQuery } from '../../../../../store/composed/factory-composed.query';
 import { AssetOnboardingService } from '../../../../../services/asset-onboarding.service';
+import {AssetService} from "../../../../../store/asset/asset.service";
 
 
 @Component({
@@ -71,6 +72,7 @@ export class AssetSeriesDigitalNameplateComponent implements OnInit {
     private assetSeriesDetailsService: AssetSeriesDetailsService,
     private factoryComposedQuery: FactoryComposedQuery,
     private assetOnboardingService: AssetOnboardingService,
+    public assetService: AssetService
   ) {
   }
 

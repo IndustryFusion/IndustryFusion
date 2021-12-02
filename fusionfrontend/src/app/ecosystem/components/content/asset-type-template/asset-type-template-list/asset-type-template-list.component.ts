@@ -39,6 +39,7 @@ import { Observable } from 'rxjs';
 })
 export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
+  PublicationState = PublicationState;
   @Input() assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
   @Input() parentAssetTypeId: ID | null;
 
@@ -68,7 +69,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-    private assetTypeTemplateService: AssetTypeTemplateService,
+    public assetTypeTemplateService: AssetTypeTemplateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService) {
      }
