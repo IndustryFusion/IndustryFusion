@@ -32,6 +32,8 @@ import { AssetService } from 'src/app/core/store/asset/asset.service';
 import { AssetSeriesDetailsResolver } from 'src/app/core/resolvers/asset-series-details.resolver';
 import { RoomService } from '../../../../core/store/room/room.service';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { StatusWithAssetId } from '../../../models/status.model';
+import { StatusService } from '../../../../core/services/logic/status.service';
 
 
 @Component({
@@ -50,7 +52,8 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   selectedIds: Array<ID>;
   companyId: ID;
   createdAssetDetailsId: ID;
-
+  factoryAssetStatuses$: Observable<StatusWithAssetId[]>;
+  statusType: ID = null;
 
   constructor(
     private factorySiteQuery: FactorySiteQuery,
@@ -61,6 +64,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
     private roomService: RoomService,
+    private statusService: StatusService,
   ) { }
 
   ngOnInit() {
@@ -73,7 +77,11 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'companyId');
+    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.factoryAssetDetailsWithFields$.subscribe(() => {
+      this.factoryAssetStatuses$ = this.statusService.getStatusesByAssetsWithFields(this.factoryAssetDetailsWithFields$);
+    });
   }
 
   ngOnDestroy() {

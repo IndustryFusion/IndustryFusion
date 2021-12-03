@@ -20,7 +20,7 @@
   .content {
 
     .input-div {
-      width: 100%;
+      width: 22rem;
     }
 
     .sample-asset-display {
@@ -39,6 +39,41 @@
         flex-direction: column;
         margin-left: 16px;
         margin-top: 10px;
+      }
+    }
+
+    .image-upload-container {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .upload-button {
+        background: transparent url('/assets/icons/upload-icon.svg') 0 0 no-repeat padding-box;
+        width: 5.2rem;
+        height: 5.2rem;
+
+        display: flex;
+        background-size: contain;
+        justify-content: center;
+        align-items: center;
+
+        color: $basic-black;
+        cursor: pointer;
+
+        input {
+          display: none;
+        }
+
+        .pi-upload {
+          font-size: 1.26rem;
+          font-weight: 600;
+        }
+      }
+
+      .wizard-title {
+        margin-bottom: unset;
+        margin-left: 0.5rem;
       }
     }
   }

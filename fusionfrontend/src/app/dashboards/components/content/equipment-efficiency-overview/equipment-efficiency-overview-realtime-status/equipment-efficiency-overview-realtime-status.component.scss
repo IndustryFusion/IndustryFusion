@@ -21,3 +21,8 @@
   padding-top: 1.0rem;
   padding-left: 5rem;
 }
+
+.mouse-over-cursor, :host ::ng-deep .if-label-bigger, :host ::ng-deep .if-label-small {
+    cursor: pointer !important;
+}
+

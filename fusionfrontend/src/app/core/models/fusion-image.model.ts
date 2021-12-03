@@ -13,20 +13,22 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../core/models/kairos.model';
 import { ID } from '@datorama/akita';
 
-export class Status {
-  gotData: boolean;
-  statusValue: string;
-}
+export class MediaObject {
+  companyId: ID;
+  fileKey: string;
+  contentBase64: string;
+  contentType: string;
+  fileSize: number;
+  filename?: string;
 
-export class StatusWithAssetId {
-  factoryAssetId: ID;
-  status: Status;
-}
-
-export class StatusPoint {
-  status: OispDeviceStatus;
-  time: moment.Moment;
+  constructor(companyId: ID, filename: string, folder: string, contentBase64: string, contentType: string, fileSize: number) {
+    this.companyId = companyId;
+    this.fileKey = folder.toLowerCase() + '/' + filename;
+    this.contentBase64 = contentBase64;
+    this.contentType = contentType;
+    this.fileSize = fileSize;
+    this.filename = filename;
+  }
 }

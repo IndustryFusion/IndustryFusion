@@ -13,20 +13,17 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../core/models/kairos.model';
-import { ID } from '@datorama/akita';
+package io.fusion.fusionbackend.rest.annotations;
 
-export class Status {
-  gotData: boolean;
-  statusValue: string;
-}
+import org.springframework.security.access.prepost.PreAuthorize;
 
-export class StatusWithAssetId {
-  factoryAssetId: ID;
-  status: Status;
-}
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-export class StatusPoint {
-  status: OispDeviceStatus;
-  time: moment.Moment;
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@PreAuthorize("@objectStorageAuth.authorize(#companyId, authentication)")
+public @interface IsObjectStorageUser {
 }

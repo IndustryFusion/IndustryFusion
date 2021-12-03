@@ -17,6 +17,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FilterOption, FilterType } from 'src/app/shared/components/ui/table-filter/filter-options';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { StatusWithAssetId } from '../../../../factory/models/status.model';
 
 
 @Component({
@@ -30,6 +31,8 @@ export class TableFilterComponent implements OnInit {
   tableFilters: FilterOption[];
   @Input()
   itemsToBeFiltered: any;
+  @Input()
+  statusesWithAssetId: StatusWithAssetId[];
   @Input()
   position: [string, string];
   @Output()
@@ -74,6 +77,8 @@ export class TableFilterComponent implements OnInit {
       this.createDropDownFilterForm(this.formBuilder, filter);
     } else if (filter.filterType === FilterType.NUMBERBASEDFILTER) {
       this.createNumericFilterForm(this.formBuilder, filter);
+    } else if (filter.filterType === FilterType.STATUSFILTER) {
+      this.createStatusFilterForm(this.formBuilder, filter);
     }
   }
 
@@ -99,6 +104,16 @@ export class TableFilterComponent implements OnInit {
   }
 
   private createNumericFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
+    this.filterFormMap.set(filter.attributeToBeFiltered, formBuilder.group({
+      filterType: filter.filterType,
+      attributeToBeFiltered: filter.attributeToBeFiltered,
+      columnName: filter.columnName,
+      filteredItems: [] as FilterOption[],
+      selectedCheckboxItems: [] as any[],
+    }));
+  }
+
+  private createStatusFilterForm(formBuilder: FormBuilder, filter: FilterOption) {
     this.filterFormMap.set(filter.attributeToBeFiltered, formBuilder.group({
       filterType: filter.filterType,
       attributeToBeFiltered: filter.attributeToBeFiltered,
@@ -151,7 +166,8 @@ export class TableFilterComponent implements OnInit {
       form.get('endTimeValue').patchValue(null);
     } else if (form.get('filterType').value === FilterType.DROPDOWNFILTER) {
       form.get('selectedCheckboxItems').patchValue(null);
-    } else if (form.get('filterType').value === FilterType.NUMBERBASEDFILTER) {
+    } else if (form.get('filterType').value === FilterType.STATUSFILTER) {
+      form.get('selectedCheckboxItems').patchValue(null);
     }
   }
 

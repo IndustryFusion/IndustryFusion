@@ -13,20 +13,25 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../core/models/kairos.model';
-import { ID } from '@datorama/akita';
+package io.fusion.fusionbackend.dto.storage;
 
-export class Status {
-  gotData: boolean;
-  statusValue: string;
-}
+import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-export class StatusWithAssetId {
-  factoryAssetId: ID;
-  status: Status;
-}
+@Data
+@SuperBuilder
+@AllArgsConstructor
+public class MediaObjectDto {
+    private Long companyId;
+    private String fileKey;
+    private String contentBase64;
+    private String contentType;
+    private Long fileSize;
+    private String filename;
 
-export class StatusPoint {
-  status: OispDeviceStatus;
-  time: moment.Moment;
+    @JsonCreator
+    public MediaObjectDto() {
+    }
 }

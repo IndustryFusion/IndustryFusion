@@ -101,7 +101,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isAssetDetails(): boolean {
     return this.route && RouteHelpers.matchRouteAllowPostfix(this.route, `\/assets\/[0-9]*`) &&
-      !RouteHelpers.matchRouteAllowPostfix(this.route, '\/assets\/asset-cards/*');
+      !RouteHelpers.matchRouteAllowPostfix(this.route, '\/assets\/asset-cards/*') &&
+      !RouteHelpers.matchRouteAllowPostfix(this.route, '\/assets\/status/');
   }
 
   isAssetSerieDetails() {

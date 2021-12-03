@@ -13,20 +13,11 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../core/models/kairos.model';
-import { ID } from '@datorama/akita';
+package io.fusion.fusionbackend.exception;
 
-export class Status {
-  gotData: boolean;
-  statusValue: string;
-}
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-export class StatusWithAssetId {
-  factoryAssetId: ID;
-  status: Status;
-}
-
-export class StatusPoint {
-  status: OispDeviceStatus;
-  time: moment.Moment;
+@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "EXTERNAL API")
+public class ExternalApiException extends RuntimeException {
 }

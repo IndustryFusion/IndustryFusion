@@ -13,20 +13,9 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../core/models/kairos.model';
-import { ID } from '@datorama/akita';
+package io.fusion.fusionbackend.model.enums;
 
-export class Status {
-  gotData: boolean;
-  statusValue: string;
-}
-
-export class StatusWithAssetId {
-  factoryAssetId: ID;
-  status: Status;
-}
-
-export class StatusPoint {
-  status: OispDeviceStatus;
-  time: moment.Moment;
+public enum ObjectStorageType {
+    MINIO,
+    S3
 }

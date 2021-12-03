@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/core/store/asset/asset.service';
@@ -30,7 +30,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { Asset, AssetWithFields } from '../../../../core/store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
-import { ConfirmationService, TreeNode } from 'primeng/api';
+import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
 import { TableSelectedItemsBarType } from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
@@ -39,6 +39,8 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@forta
 import { AssetDetailMenuService } from '../../../../core/services/menu/asset-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { StatusWithAssetId } from '../../../models/status.model';
 
 @Component({
   selector: 'app-assets-list',
@@ -61,6 +63,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   allRoomsOfFactorySite: Room[];
   @Input()
   room: Room;
+  @Input()
+  factoryAssetStatuses: StatusWithAssetId[] = [];
   @Output()
   selectedEvent = new EventEmitter<ID[]>();
   @Output()
@@ -81,12 +85,14 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   displayedFactoryAssets: FactoryAssetDetailsWithFields[];
   filteredFactoryAssets: FactoryAssetDetailsWithFields[];
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
+  factoryAssetFilteredByStatus: FactoryAssetDetailsWithFields[];
   activeListItem: FactoryAssetDetailsWithFields;
 
   isLoading$: Observable<boolean>;
   asset: AssetWithFields;
   assetDetailsForm: FormGroup;
   companyId: ID;
+  statusType: ID;
 
   private onboardingDialogRef: DynamicDialogRef;
 
@@ -99,7 +105,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'}];
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'},
+    { filterType: FilterType.STATUSFILTER, columnName: 'Status', attributeToBeFiltered: 'status'}];
 
   constructor(
     private assetService: AssetService,
@@ -113,11 +120,25 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
+    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
   }
 
-  ngOnChanges(): void {
-    this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetsDetailsWithFields;
-    this.updateTree();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.factoryAssetsDetailsWithFields) {
+      this.displayedFactoryAssets = this.factoryAssetFilteredByStatus = this.searchedFactoryAssets = this.filteredFactoryAssets
+        = this.factoryAssetsDetailsWithFields;
+    }
+
+    if (this.statusType !== null && this.factoryAssetsDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
+      this.factoryAssetFilteredByStatus = this.factoryAssetsDetailsWithFields.filter(asset => {
+        return this.factoryAssetStatuses.filter(factoryAssetStatus => factoryAssetStatus.status.statusValue === null ?
+          String(this.statusType) === '0' : String(factoryAssetStatus.status.statusValue) === String(this.statusType))
+          .map(factoryAssetStatusWithId => factoryAssetStatusWithId.factoryAssetId).includes(asset.id);
+      });
+    }
+    if (this.filteredFactoryAssets !== null) {
+      this.updateAssets();
+    }
   }
 
   ngOnDestroy() {
@@ -246,11 +267,9 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields;
-    if (this.searchedFactoryAssets) {
-      this.displayedFactoryAssets = this.filteredFactoryAssets.filter(asset =>
-        this.searchedFactoryAssets.includes(asset));
-    }
+    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => this.searchedFactoryAssets
+      .filter(searchedAsset => this.filteredFactoryAssets.filter(filteredAsset => this.factoryAssetFilteredByStatus
+        .includes(filteredAsset)).includes(searchedAsset)).includes(asset));
     this.updateTree();
   }
 
@@ -303,4 +322,37 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.rowCount = rowCount;
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
+
+  customSort(event: SortEvent) {
+    const status = 'status';
+
+    event.data.sort((data1, data2) => {
+      let value1;
+      let value2;
+      let result;
+      if (event.field === status) {
+        value1 = this.factoryAssetStatuses.find(factoryAssetStatus =>
+          factoryAssetStatus.factoryAssetId === data1.data.id).status.statusValue;
+        value2 = this.factoryAssetStatuses.find(factoryAssetStatus =>
+          factoryAssetStatus.factoryAssetId === data2.data.id).status.statusValue;
+      } else {
+        value1 = data1.data[event.field];
+        value2 = data2.data[event.field];
+      }
+
+      if (value1 == null && value2 != null) {
+        result = -1;
+      } else if (value1 != null && value2 == null) {
+        result = 1;
+      } else if (value1 == null && value2 == null) {
+        result = 0;
+      } else if (typeof value1 === 'string' && typeof value2 === 'string') {
+        result = value1.localeCompare(value2);
+      } else {
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+      }
+      return (event.order * result);
+    });
+  }
+
 }
