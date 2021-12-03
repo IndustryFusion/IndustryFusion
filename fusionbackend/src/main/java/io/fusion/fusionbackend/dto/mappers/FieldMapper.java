@@ -67,7 +67,8 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         fieldDto.setUnit(unitMapper.toDto(entity.getUnit(), false));
 
         LinkedHashSet<FieldOptionDto> fieldOptions = fieldOptionMapper.toDtoSet(entity.getOptions(), true);
-        fieldOptions = fieldOptions.stream().sorted(Comparator.comparing(BaseEntityDto::getId))
+        fieldOptions = fieldOptions.stream().sorted(Comparator.comparing(BaseEntityDto::getId,
+                        Comparator.nullsLast(Comparator.naturalOrder())))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
         fieldDto.setEnumOptions(fieldOptions);
         return fieldDto;
