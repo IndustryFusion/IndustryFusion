@@ -41,9 +41,9 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
   }
 
   saveValue(group: AbstractControl): void {
-    const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('indexInArray').value] as FieldSource;
+    const fieldSource: FieldSource = this.assetSeries.fieldSources[group.get('indexFieldSources').value] as FieldSource;
     fieldSource.value = group.get('value').value;
-    this.assetSeries.fieldSources[group.get('indexInArray').value] = fieldSource;
+    this.assetSeries.fieldSources[group.get('indexFieldSources').value] = fieldSource;
     group.get('saved').patchValue(true);
   }
 
@@ -71,6 +71,7 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
     this.fieldSourcesFormArray.valueChanges.subscribe(() => this.valid.emit(this.fieldSourcesFormArray.valid));
     for (let i = 0; i < fieldSources.length; i++) {
       if (fieldSources[i].fieldTarget.fieldType === FieldType.ATTRIBUTE) {
+        // uses wrong index
         const formGroup = this.createSingleFieldSourceFormGroup(i, this.fieldSourcesFormArray.length, fieldSources[i]);
         this.fieldSourcesFormArray.push(formGroup);
       }
