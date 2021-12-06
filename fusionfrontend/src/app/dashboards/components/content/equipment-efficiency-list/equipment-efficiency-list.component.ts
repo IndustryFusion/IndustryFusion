@@ -14,15 +14,17 @@
  */
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { AssetType } from 'src/app/store/asset-type/asset-type.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { Company } from 'src/app/store/company/company.model';
+import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
+import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { Company } from 'src/app/core/store/company/company.model';
 import {  TreeNode } from 'primeng/api';
 import { ID } from '@datorama/akita';
-import { FilterOption, FilterType } from '../../../../components/ui/table-filter/filter-options';
-import { OispAlert, OispAlertPriority } from '../../../../store/oisp/oisp-alert/oisp-alert.model';
+import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
+import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { TableHelper } from '../../../../core/helpers/table-helper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -40,6 +42,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   @Input()
   assetTypes: AssetType[];
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
@@ -54,10 +59,11 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'}];
 
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnChanges(): void {
@@ -149,5 +155,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     } else {
       return null;
     }
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }

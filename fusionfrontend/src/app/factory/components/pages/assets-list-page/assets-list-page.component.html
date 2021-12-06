@@ -17,7 +17,8 @@ under the License.
                  [factorySites]="(factorySites$ | async)"
                  [rooms]="(rooms$ | async)"
                  [room]="(room$ | async)"
-                 [factoryAssetDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
+                 [factoryAssetsDetailsWithFields]="(factoryAssetDetailsWithFields$ | async)"
+                 [factoryAssetStatuses]="(factoryAssetStatuses$ | async)"
                  (toolBarClickEvent)="toolbarClick($event)"
                  (selectedEvent)="selectTheAssets($event)"
                  (updateAssetEvent)="updateAssetData($event)">

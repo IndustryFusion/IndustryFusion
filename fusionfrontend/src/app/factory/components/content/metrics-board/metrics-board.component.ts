@@ -14,14 +14,14 @@
  */
 
 import { Component, OnDestroy } from '@angular/core';
-import { FactoryComposedQuery } from '../../../../store/composed/factory-composed.query';
-import { FieldDetailsQuery } from '../../../../store/field-details/field-details.query';
-import { FieldDetails, MetricDetail } from '../../../../store/field-details/field-details.model';
-import { OispDeviceQuery } from '../../../../store/oisp/oisp-device/oisp-device.query';
-import { OispService } from '../../../../services/oisp.service';
-import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
-import { PointWithId } from '../../../../services/oisp.model';
-import { ArrayHelper } from '../../../../common/utils/array-helper';
+import { FactoryComposedQuery } from '../../../../core/store/composed/factory-composed.query';
+import { FieldDetailsQuery } from '../../../../core/store/field-details/field-details.query';
+import { FieldDetails, MetricDetail } from '../../../../core/store/field-details/field-details.model';
+import { OispDeviceQuery } from '../../../../core/store/oisp/oisp-device/oisp-device.query';
+import { OispService } from '../../../../core/services/api/oisp.service';
+import { FactoryAssetDetailsWithFields } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { PointWithId } from '../../../../core/services/api/oisp.model';
+import { ArrayHelper } from '../../../../core/helpers/array-helper';
 import { Observable, Subject, Subscription, timer } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { takeUntil, tap } from 'rxjs/operators';

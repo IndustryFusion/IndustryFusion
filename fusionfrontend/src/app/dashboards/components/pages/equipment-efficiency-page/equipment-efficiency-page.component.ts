@@ -18,14 +18,14 @@ import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Observable, Subject } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { FactoryAssetDetailsWithFields } from 'src/app/store/factory-asset-details/factory-asset-details.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { AssetType } from 'src/app/store/asset-type/asset-type.model';
-import { Company, CompanyType } from 'src/app/store/company/company.model';
-import { AssetTypesResolver } from 'src/app/resolvers/asset-types.resolver';
-import { CompanyQuery } from 'src/app/store/company/company.query';
-import { KairosStatusAggregationService } from '../../../../services/kairos-status-aggregation.service';
-import { StatusHours, StatusHoursOneDay } from '../../../../services/kairos-status-aggregation.model';
+import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
+import { Company, CompanyType } from 'src/app/core/store/company/company.model';
+import { AssetTypesResolver } from 'src/app/core/resolvers/asset-types.resolver';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
+import { KairosStatusAggregationService } from '../../../../core/services/api/kairos-status-aggregation.service';
+import { StatusHours, StatusHoursOneDay } from '../../../../core/models/kairos-status-aggregation.model';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 

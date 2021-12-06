@@ -17,21 +17,23 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { Company } from 'src/app/store/company/company.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
-import { Room } from 'src/app/store/room/room.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { AssetQuery } from 'src/app/core/store/asset/asset.query';
+import { Company } from 'src/app/core/store/company/company.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/core/store/factory-site/factory-site.query';
+import { Room } from 'src/app/core/store/room/room.model';
 import {
   FactoryAssetDetails,
   FactoryAssetDetailsWithFields
-} from '../../../../store/factory-asset-details/factory-asset-details.model';
+} from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { ID } from '@datorama/akita';
-import { AssetService } from 'src/app/store/asset/asset.service';
-import { AssetSeriesDetailsResolver } from 'src/app/resolvers/asset-series-details-resolver.service';
-import { RoomService } from '../../../../store/room/room.service';
-import { RouteHelpers } from '../../../../common/utils/route-helpers';
+import { AssetService } from 'src/app/core/store/asset/asset.service';
+import { AssetSeriesDetailsResolver } from 'src/app/core/resolvers/asset-series-details.resolver';
+import { RoomService } from '../../../../core/store/room/room.service';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { StatusWithAssetId } from '../../../models/status.model';
+import { StatusService } from '../../../../core/services/logic/status.service';
 
 
 @Component({
@@ -50,7 +52,8 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   selectedIds: Array<ID>;
   companyId: ID;
   createdAssetDetailsId: ID;
-
+  factoryAssetStatuses$: Observable<StatusWithAssetId[]>;
+  statusType: ID = null;
 
   constructor(
     private factorySiteQuery: FactorySiteQuery,
@@ -61,19 +64,24 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
     private roomService: RoomService,
+    private statusService: StatusService,
   ) { }
 
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
     this.factoryResolver.resolve(this.activatedRoute);
-    this.assetSeriesDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
     this.company$ = this.factoryResolver.company$;
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'companyId');
+    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.factoryAssetDetailsWithFields$.subscribe(() => {
+      this.factoryAssetStatuses$ = this.statusService.getStatusesByAssetsWithFields(this.factoryAssetDetailsWithFields$);
+    });
   }
 
   ngOnDestroy() {
@@ -90,7 +98,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
           this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
         }
       },
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 

@@ -16,9 +16,9 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { StatusService } from 'src/app/services/status.service';
+import { StatusService } from 'src/app/core/services/logic/status.service';
 import { Status } from '../../../models/status.model';
-import { FactoryAssetDetailsWithFields } from '../../../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { environment } from 'src/environments/environment';
 
 @Component({

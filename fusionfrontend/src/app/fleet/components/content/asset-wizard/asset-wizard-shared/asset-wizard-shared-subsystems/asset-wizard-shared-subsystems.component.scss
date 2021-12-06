@@ -14,9 +14,14 @@
  */
 
 @import 'src/app/fleet/components/content/asset-wizard/asset-wizard.component';
-@import 'src/assets/sass/components/labels';
+@import 'src/styles/components/labels';
 
 .asset-wizard-subsystems {
+  .edit-col {
+    display: flex;
+    justify-content: end;
+  }
+
   .manufacturer-icon {
     display: flex;
     align-items: center;
@@ -24,8 +29,7 @@
     img {
       width: 2rem;
       height: 2rem;
-      background: grey;
-      border-radius: 45px;
+      border-radius: 60px;
       margin-right: 0.5rem;
     }
   }

@@ -15,14 +15,14 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { QuantityTypeQuery } from '../../../../store/quantity-type/quantity-type.query';
+import { QuantityTypeQuery } from '../../../../core/store/quantity-type/quantity-type.query';
 import { Observable } from 'rxjs';
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
-import { Unit } from '../../../../store/unit/unit.model';
-import { UnitQuery } from '../../../../store/unit/unit.query';
+import { QuantityType } from '../../../../core/store/quantity-type/quantity-type.model';
+import { QuantityTypeService } from '../../../../core/store/quantity-type/quantity-type.service';
+import { Unit } from '../../../../core/store/unit/unit.model';
+import { UnitQuery } from '../../../../core/store/unit/unit.query';
 import { QuantityTypeDialogComponent } from '../../content/quantity-type-dialog/quantity-type-dialog.component';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({

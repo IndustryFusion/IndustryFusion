@@ -17,12 +17,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Field } from '../../../../../../store/field/field.model';
-import { FieldQuery } from '../../../../../../store/field/field.query';
-import { FieldTarget, FieldType } from '../../../../../../store/field-target/field-target.model';
+import { Field } from '../../../../../../core/store/field/field.model';
+import { FieldQuery } from '../../../../../../core/store/field/field.query';
+import { FieldTarget, FieldType } from '../../../../../../core/store/field-target/field-target.model';
 import { FormGroup } from '@angular/forms';
 import { AssetTypeTemplateWizardSteps } from '../asset-type-template-wizard-steps.model';
-import { DialogType } from '../../../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../../../shared/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-two',
@@ -35,7 +35,7 @@ export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
   @Input() assetTypeTemplateForm: FormGroup;
   @Input() inputMetrics: Array<FieldTarget>;
   @Output() stepChange = new EventEmitter<number>();
-  @Output() metricSelect = new EventEmitter<FieldTarget[]>();
+  @Output() metricsChanged = new EventEmitter<FieldTarget[]>();
 
   public DialogType = DialogType;
 
@@ -72,7 +72,7 @@ export class AssetTypeTemplateWizardStepTwoComponent implements OnInit {
 
   private changeStep(step: number) {
     if (this.confirmedMetrics.length === this.selectedMetrics.length && this.assetTypeTemplateForm?.valid) {
-      this.metricSelect.emit(this.confirmedMetrics);
+      this.metricsChanged.emit(this.confirmedMetrics);
       this.stepChange.emit(step);
     }
   }

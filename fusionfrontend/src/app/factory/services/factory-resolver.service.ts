@@ -17,30 +17,30 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, Subject } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
-import { Asset, AssetWithFields } from 'src/app/store/asset/asset.model';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { AssetService } from 'src/app/store/asset/asset.service';
-import { Company } from 'src/app/store/company/company.model';
-import { CompanyQuery } from 'src/app/store/company/company.query';
-import { CompanyService } from 'src/app/store/company/company.service';
-import { FactoryComposedQuery } from 'src/app/store/composed/factory-composed.query';
-import { FieldDetails } from 'src/app/store/field-details/field-details.model';
-import { FieldDetailsQuery } from 'src/app/store/field-details/field-details.query';
-import { FieldDetailsService } from 'src/app/store/field-details/field-details.service';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
-import { FactorySiteService } from 'src/app/store/factory-site/factory-site.service';
-import { Room } from 'src/app/store/room/room.model';
-import { RoomQuery } from 'src/app/store/room/room.query';
-import { RoomService } from 'src/app/store/room/room.service';
-import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
-import { FactoryAssetDetailsQuery } from '../../store/factory-asset-details/factory-asset-details.query';
-import { FactoryAssetDetailsService } from '../../store/factory-asset-details/factory-asset-details.service';
-import { AssetSeriesDetails } from '../../store/asset-series-details/asset-series-details.model';
-import { AssetSeriesDetailsQuery } from '../../store/asset-series-details/asset-series-details.query';
-import { CountryResolver } from '../../resolvers/country.resolver';
+import { Asset, AssetWithFields } from 'src/app/core/store/asset/asset.model';
+import { AssetQuery } from 'src/app/core/store/asset/asset.query';
+import { AssetService } from 'src/app/core/store/asset/asset.service';
+import { Company } from 'src/app/core/store/company/company.model';
+import { CompanyQuery } from 'src/app/core/store/company/company.query';
+import { CompanyService } from 'src/app/core/store/company/company.service';
+import { FactoryComposedQuery } from 'src/app/core/store/composed/factory-composed.query';
+import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
+import { FieldDetailsQuery } from 'src/app/core/store/field-details/field-details.query';
+import { FieldDetailsService } from 'src/app/core/store/field-details/field-details.service';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/core/store/factory-site/factory-site.query';
+import { FactorySiteService } from 'src/app/core/store/factory-site/factory-site.service';
+import { Room } from 'src/app/core/store/room/room.model';
+import { RoomQuery } from 'src/app/core/store/room/room.query';
+import { RoomService } from 'src/app/core/store/room/room.service';
+import { FactoryAssetDetailsWithFields } from '../../core/store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsQuery } from '../../core/store/factory-asset-details/factory-asset-details.query';
+import { FactoryAssetDetailsService } from '../../core/store/factory-asset-details/factory-asset-details.service';
+import { AssetSeriesDetails } from '../../core/store/asset-series-details/asset-series-details.model';
+import { AssetSeriesDetailsQuery } from '../../core/store/asset-series-details/asset-series-details.query';
+import { CountryResolver } from '../../core/resolvers/country.resolver';
 import { ID } from '@datorama/akita';
-import { RouteHelpers } from '../../common/utils/route-helpers';
+import { RouteHelpers } from '../../core/helpers/route-helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -77,7 +77,7 @@ export class FactoryResolver {
     private assetQuery: AssetQuery,
     private assetDetailsService: FactoryAssetDetailsService,
     private assetDetailsQuery: FactoryAssetDetailsQuery,
-    private fieldService: FieldDetailsService,
+    private fieldDetailsService: FieldDetailsService,
     private fieldDetailsQuery: FieldDetailsQuery,
     private factoryComposedQuery: FactoryComposedQuery,
     private countryResolver: CountryResolver) {
@@ -95,6 +95,7 @@ export class FactoryResolver {
     const factorySiteId = this.resolveFactorySite(activatedRoute, companyId);
     this.resolveRoom(activatedRoute, factorySiteId);
     this.resolveAsset(activatedRoute, companyId);
+    this.resolveStatus(activatedRoute);
   }
 
   private resolveCompany(activatedRoute: ActivatedRoute): ID {
@@ -120,7 +121,7 @@ export class FactoryResolver {
       this.assetDetailsQuery.selectAssetDetailsOfCompany(companyId).pipe(
         switchMap(assetDetailsArray =>
           forkJoin(
-            assetDetailsArray.map(assetDetails => this.fieldService.getFieldsOfAsset(companyId, assetDetails.id))))
+            assetDetailsArray.map(assetDetails => this.fieldDetailsService.getFieldsOfAsset(companyId, assetDetails.id))))
       ).subscribe();
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.joinAssetsDetailsWithFieldInstancesWithAlerts();
       this.assetsWithDetailsAndFieldsAndValues$ = this.assetsWithDetailsAndFields$.pipe(
@@ -151,6 +152,13 @@ export class FactoryResolver {
     return factorySiteId;
   }
 
+  private resolveStatus(activatedRoute: ActivatedRoute) {
+    const statusType =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'statusType');
+    if (statusType != null) {
+      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectAssetsWithFieldInstanceDetails();
+    }
+  }
+
   private resolveRoom(activatedRoute: ActivatedRoute, factorySiteId: ID) {
     const roomId =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'roomId');
     this.roomService.setActive(roomId);
@@ -167,7 +175,7 @@ export class FactoryResolver {
     this.assetService.setActive(assetId);
     this.assetDetailsService.setActive(assetId);
     if (assetId != null) {
-      this.fieldService.getFieldsOfAsset(companyId, assetId).subscribe();
+      this.fieldDetailsService.getFieldsOfAsset(companyId, assetId).subscribe();
       this.assetQuery.setSelectedAssetIds([assetId]);
       this.fields$ = this.fieldDetailsQuery.selectFieldsOfAsset(assetId);
       this.assetWithFields$ = this.assetQuery.waitForActive().pipe(mergeMap((asset) => {
@@ -189,7 +197,7 @@ export class FactoryResolver {
       this.assetQuery.getSelectedAssets().pipe(
         switchMap(assets =>
           forkJoin(
-            assets.map(asset => this.fieldService.getFieldsOfAsset(companyId, asset.id))))
+            assets.map(asset => this.fieldDetailsService.getFieldsOfAsset(companyId, asset.id))))
       ).subscribe();
       this.assetsWithFields$ = this.factoryComposedQuery.selectFieldsOfSelectedAssets();
     }

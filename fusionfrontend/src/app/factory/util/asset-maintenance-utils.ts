@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../core/store/factory-asset-details/factory-asset-details.model';
 
 export enum MaintenanceState { CRITICAL, MEDIUMTERM, LONGTERM }
 

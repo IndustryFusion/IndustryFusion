@@ -1,0 +1,115 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'base/typography';
+@import "abstract/variables";
+
+.p-dialog .p-dialog-titlebar {
+    background: white !important;
+    color: $basic-black !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-color: $basic-white;
+  }
+
+  .p-dialog .p-dialog-titlebar .p-dialog-titlebar-icon {
+    color: $basic-black !important;
+  }
+
+.p-dialog .p-dialog-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: $light-grey !important;
+  opacity: 1;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 8.1%;
+  padding-right: 3.9%;
+  border-bottom: none;
+
+  .p-dialog-title {
+    padding-top: 5.9%;
+    font-family: $font-family-metropolis !important;
+    font-size: $big-font-size;
+    font-weight: bold !important;
+    line-height: $big-line-height;
+    letter-spacing: 0;
+    color: $highlighted;
+    text-align: left;
+    opacity: 1;
+  }
+}
+
+.p-dialog .p-dialog-content {
+  font-family: $font-family-mulish !important;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-top-color: $basic-white !important;
+  background: $light-grey !important;
+  opacity: 1;
+  padding-top: 4.3%;
+  padding-left: 8.1%;
+  padding-right: 8.1%;
+
+  .dialog-grid {
+    display: inline-flex;
+  }
+  .dialog-grid-col {
+    padding-left: 35px;
+  }
+}
+
+.p-dialog {
+    width: 51%;
+    position: relative;
+    box-shadow: $dark-box-shadow;
+    border-radius: 10px;
+}
+
+.p-dialog .p-dialog-footer {
+  background: $light-grey !important;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.if-tooltip-dialog {
+  margin-left: 1rem;
+  margin-top: -2rem !important;
+  padding-bottom: 2%;
+}
+
+.if-warning-toast {
+  display: flex;
+  padding-bottom: 1rem;
+  padding-top: -0.3rem;
+  margin-left: 0.3rem;
+  color: $warning;
+
+  .pi-exclamation-circle {
+    margin-top: 2px;
+    margin-right: 0.4rem;
+  }
+
+  .pi-times-circle {
+    font-size: 0.7rem;
+    margin-top: -0.3rem;
+    margin-left: 0.2rem;
+    color: $basic-grey;
+
+    &:hover {
+      color: $hover-grey;
+    }
+  }
+}

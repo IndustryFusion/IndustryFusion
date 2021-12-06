@@ -38,12 +38,22 @@ under the License.
             <textarea pInputTextarea formControlName="description"></textarea>
             <label class="textarea-character-count if-label">{{ assetForm.get('description')?.value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
           </div>
+
+          <div class="image-upload-container">
+            <label class="upload-button">
+              <i class="pi pi-upload"></i>
+              <input #imageInput type="file" accept="image/*" (change)="onImageUpload($event)">
+            </label>
+            <div class="wizard-title"> Upload picture</div>
+          </div>
         </div>
+
         <div id="column right">
           <i class="if-icon-help"></i>
           <span class="if-hint" > How will my asset be displayed in a factory?</span>
           <div class="sample-asset-display">
-            <img src="/assets/img/IndustryFusion-hive.png" alt="asset-symbol">
+            <img [src]="assetImage" *ngIf="assetImage != null">
+            <img src="assets/img/{{DEFAULT_ASSET_IMAGE_KEY}}" alt="asset-symbol" *ngIf="assetImage == null">
             <div>
               <span class="wizard-icon-title">{{ assetForm.get('name')?.value }}</span>
               <span class="if-detail-page-label">{{ relatedAssetSeries?.name }}</span>

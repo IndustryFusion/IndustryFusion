@@ -26,7 +26,7 @@ import { TimelineComponent } from './components/content/timeline/timeline.compon
 import { AssetSeriesWizardGeneralInformationComponent } from './components/content/asset-series-wizard/asset-series-wizard-general-information/asset-series-wizard-general-information.component';
 import { AssetSeriesWizardNameplateAndConnectivitySettingsComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings.component';
 import { AssetSeriesWizardAttributesComponent } from './components/content/asset-series-wizard/asset-series-wizard-attributes/asset-series-wizard-attributes.component';
-import { IFCommon } from '../common/i-f-common.module';
+import { SharedModule } from '../shared/shared.module';
 import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { TableModule } from 'primeng/table';
 import { AssetWizardComponent } from './components/content/asset-wizard/asset-wizard.component';
@@ -49,14 +49,14 @@ import { AssetWizardStepSubsystemsComponent } from './components/content/asset-w
 import { AssetWizardSharedSubsystemsComponent } from './components/content/asset-wizard/asset-wizard-shared/asset-wizard-shared-subsystems/asset-wizard-shared-subsystems.component';
 import { AssetSeriesDetailsSubHeaderComponent } from './components/content/asset-series-details/asset-serie-details-sub-header/asset-series-details-sub-header.component';
 import { AssetSeriesDetailsInfoComponent } from './components/content/asset-series-details/asset-series-details-info/asset-series-details-info.component';
-import { AssetSeriesInstanceSubHeaderComponent } from './components/content/asset-series-instance/asset-series-instance-sub-header/asset-series-instance-sub-header.component';
-import { AssetSeriesDigitalNameplateComponent } from './components/pages/asset-series-instance/asset-series-digital-nameplate/asset-series-digital-nameplate.component';
+import { AssetSeriesAssetSubHeaderComponent } from './components/content/asset-series-asset-details/asset-series-asset-sub-header/asset-series-asset-sub-header.component';
+import { AssetSeriesAssetDigitalNameplateComponent } from './components/pages/asset-series-asset/asset-series-asset-digital-nameplate/asset-series-asset-digital-nameplate.component';
 import { CardModule } from 'primeng/card';
-import { AssetSeriesInstanceInfoComponent } from './components/content/asset-series-instance/asset-series-instance-info/asset-series-instance-info.component';
+import { AssetSeriesAssetInfoComponent } from './components/content/asset-series-asset-details/asset-series-asset-info/asset-series-asset-info.component';
 import { AssetSeriesStatusComponent } from './components/content/asset-series-status/asset-series-status.component';
-import { AssetSeriesStatusPipe } from '../pipes/asset-series-status-pipe';
+import { AssetSeriesStatusPipe } from '../shared/pipes/asset-series-status-pipe';
 import { AssetActivationStatusComponent } from './components/content/asset-activation-status/asset-activation-status.component';
-import { AssetActivationStatusPipe } from '../pipes/asset-activation-status-pipe';
+import { AssetActivationStatusPipe } from '../shared/pipes/asset-activation-status-pipe';
 import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings-tooltip/asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component';
 
 
@@ -88,16 +88,16 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     AssetWizardSharedSubsystemsComponent,
     AssetSeriesDetailsSubHeaderComponent,
     AssetSeriesDetailsInfoComponent,
-    AssetSeriesInstanceSubHeaderComponent,
-    AssetSeriesDigitalNameplateComponent,
-    AssetSeriesInstanceInfoComponent,
+    AssetSeriesAssetSubHeaderComponent,
+    AssetSeriesAssetDigitalNameplateComponent,
+    AssetSeriesAssetInfoComponent,
     AssetSeriesStatusComponent,
     AssetSeriesStatusPipe,
     AssetActivationStatusComponent,
     AssetActivationStatusPipe,
   ],
   imports: [
-    IFCommon,
+    SharedModule,
     FleetRoutingModule,
     ClarityModule,
     ReactiveFormsModule,
@@ -110,7 +110,7 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
   exports: [
     FleetSubHeaderComponent,
     AssetSeriesDetailsSubHeaderComponent,
-    AssetSeriesInstanceSubHeaderComponent,
+    AssetSeriesAssetSubHeaderComponent,
   ]
 })
 export class FleetModule {

@@ -17,11 +17,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Location } from '@angular/common';
-import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AssetSeriesDetailsQuery } from '../../../../../store/asset-series-details/asset-series-details.query';
-import { AssetSeriesDetails } from '../../../../../store/asset-series-details/asset-series-details.model';
+import { AssetSeriesDetailsQuery } from '../../../../../core/store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDetails } from '../../../../../core/store/asset-series-details/asset-series-details.model';
 
 @Component({
   selector: 'app-asset-series-details-sub-header',
@@ -43,12 +43,12 @@ export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activatedRoute.fragment.subscribe(() => {
-      this.updateAsset();
+      this.updateAssetSeries();
     });
-    this.updateAsset();
+    this.updateAssetSeries();
   }
 
-  updateAsset() {
+  private updateAssetSeries() {
     this.assetSeriesID = this.assetSeriesDetailsQuery.getActiveId();
     this.assetSeriesDetailsQuery.selectActive()
       .pipe(takeUntil(this.unSubscribe$))
@@ -59,7 +59,7 @@ export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
     let newRoute = subroute2 ? ['..', subroute, subroute2] : ['..', subroute];
-    if (this.routingLocation.path().match(`\/assets\/[0-9]*$`)) {
+    if (RouteHelpers.matchFullRoute(this.routingLocation.path(), `\/assets\/[0-9]*`)) {
       newRoute = newRoute.slice(1, newRoute.length);
     }
 

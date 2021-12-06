@@ -15,7 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AssetWizardStep } from '../asset-wizard-step.model';
-import { Asset } from '../../../../../../store/asset/asset.model';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
 import { AssetWizardSharedMetricsComponent } from '../../asset-wizard-shared/asset-wizard-shared-metrics/asset-wizard-shared-metrics.component';
 
 @Component({

@@ -15,9 +15,9 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Asset } from '../../../../../../store/asset/asset.model';
-import { FleetAssetDetails } from '../../../../../../store/fleet-asset-details/fleet-asset-details.model';
-import { FleetAssetDetailsQuery } from '../../../../../../store/fleet-asset-details/fleet-asset-details.query';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
+import { FleetAssetDetails } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
+import { FleetAssetDetailsQuery } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
 import { ID } from '@datorama/akita';
 
 @Component({
@@ -60,14 +60,16 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
 
   public addSubsystem(assetDetails: FleetAssetDetails): void {
     const subsystemGroup = this.formBuilder.group({
-      id: [assetDetails.id, Validators.required],
-      version: [assetDetails.version],
+      id: [],
+      version: [],
       index: [this.subsystemFormArray.length],
-      name: [assetDetails.name, Validators.required],
-      assetTypeName: [assetDetails.assetTypeName, Validators.required],
-      manufacturer: [assetDetails.manufacturer, Validators.required]
+      name: [null, Validators.required],
+      assetTypeName: [null, Validators.required],
+      manufacturer: [null, Validators.required],
+      imageKey: []
     });
 
+    subsystemGroup.patchValue(assetDetails);
     this.subsystemFormArray.push(subsystemGroup);
   }
 

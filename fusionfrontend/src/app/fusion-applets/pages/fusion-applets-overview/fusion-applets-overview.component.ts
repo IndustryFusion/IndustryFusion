@@ -15,7 +15,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RouteHelpers } from '../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-fusion-applets-overview',

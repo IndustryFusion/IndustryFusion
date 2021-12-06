@@ -14,18 +14,18 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { FieldTarget, FieldType } from '../../../../store/field-target/field-target.model';
+import { FieldTarget, FieldType } from '../../../../core/store/field-target/field-target.model';
 import { ActivatedRoute } from '@angular/router';
-import { AssetTypeTemplate, PublicationState } from '../../../../store/asset-type-template/asset-type-template.model';
-import { AssetTypeTemplateComposedQuery } from '../../../../store/composed/asset-type-template-composed.query';
-import { FieldTargetService } from '../../../../store/field-target/field-target.service';
+import { AssetTypeTemplate, PublicationState } from '../../../../core/store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplateComposedQuery } from '../../../../core/store/composed/asset-type-template-composed.query';
+import { FieldTargetService } from '../../../../core/store/field-target/field-target.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetTypeTemplateDialogPublishComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
-import { AssetTypeTemplateService } from '../../../../store/asset-type-template/asset-type-template.service';
+import { AssetTypeTemplateService } from '../../../../core/store/asset-type-template/asset-type-template.service';
 import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { FormGroup } from '@angular/forms';
-import { DialogType } from '../../../../common/models/dialog-type.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-type-template-page',

@@ -13,22 +13,23 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AssetSeriesDetailsQuery } from '../../../../store/asset-series-details/asset-series-details.query';
+import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../../resolvers/asset-series-details-resolver.service';
-import { AssetSeriesService } from '../../../../store/asset-series/asset-series.service';
+import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-series-details.resolver';
+import { AssetSeriesService } from '../../../../core/store/asset-series/asset-series.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetSeriesWizardComponent } from '../asset-series-wizard/asset-series-wizard.component';
-import { CompanyQuery } from '../../../../store/company/company.query';
-import { AssetTypeTemplatesResolver } from '../../../../resolvers/asset-type-templates.resolver';
-import { UnitsResolver } from '../../../../resolvers/units.resolver';
-import { AssetWizardComponent } from '../asset-wizard/asset-wizard.component';
-import { AssetSeriesDetails } from '../../../../store/asset-series-details/asset-series-details.model';
-import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { AssetTypeTemplatesResolver } from '../../../../core/resolvers/asset-type-templates.resolver';
+import { UnitsResolver } from '../../../../core/resolvers/units.resolver';
+import { AssetSeriesDetails } from '../../../../core/store/asset-series-details/asset-series-details.model';
+import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { ConfirmationService } from 'primeng/api';
+import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
+import { TableHelper } from '../../../../core/helpers/table-helper';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -36,11 +37,15 @@ import { ConfirmationService } from 'primeng/api';
   styleUrls: ['./asset-series-list.component.scss'],
   providers: [ConfirmationService]
 })
-export class AssetSeriesListComponent implements OnInit, OnDestroy {
+export class AssetSeriesListComponent implements OnInit {
 
   assetSeriesMapping:
     { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
 
+  rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
+  rowCount = TableHelper.defaultRowCount;
+
+  isLoading$: Observable<boolean>;
   activeListItem: AssetSeriesDetails;
 
   assetSeries$: Observable<AssetSeriesDetails[]>;
@@ -50,32 +55,30 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
 
   ItemOptionsMenuType = ItemOptionsMenuType;
 
-  isLoading$: Observable<boolean>;
-
   constructor(
-    public route: ActivatedRoute,
-    public router: Router,
-    public companyQuery: CompanyQuery,
-    public assetSeriesService: AssetSeriesService,
-    public assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
-    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    public assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
-    public unitsResolver: UnitsResolver,
-    public dialogService: DialogService,
-    public confirmationService: ConfirmationService) {
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private companyQuery: CompanyQuery,
+    private assetSeriesService: AssetSeriesService,
+    private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
+    private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+    private assetTypeTemplatesResolver: AssetTypeTemplatesResolver,
+    private unitsResolver: UnitsResolver,
+    private dialogService: DialogService,
+    private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
+    private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
-    this.assetSeriesDetailsResolver.resolve(this.route.snapshot);
+    this.resolveAssetSeriesDetails();
     this.assetSeries$ = this.assetSeriesDetailsQuery.selectAll();
     this.assetTypeTemplatesResolver.resolve().subscribe();
     this.unitsResolver.resolve().subscribe();
     this.assetSeries$.subscribe(assetSeries => {
       this.assetSeries = this.displayedAssetSeries = this.assetSeriesSearchedByName = assetSeries;
     });
-  }
 
-  ngOnDestroy() {
+    this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   setActiveRow(assetSeries: AssetSeriesDetails) {
@@ -83,41 +86,38 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
   }
 
   createAssetSeries() {
-    this.startAssetSeriesWizard('');
+    this.openAssetSeriesWizard('');
   }
-
 
   searchAssetSeriesByName(event?: AssetSeriesDetails[]) {
     this.assetSeriesSearchedByName = event;
     this.updateDisplayedAssetSeries();
   }
 
-  updateDisplayedAssetSeries() {
+  createAssetFromAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
+      () => this.resolveAssetSeriesDetails());
+  }
+
+  editAssetSeries(assetSeriesId: ID) {
+    this.assetSeriesDetailMenuService.showEditWizard(assetSeriesId.toString(),
+      () => this.resolveAssetSeriesDetails());
+  }
+
+  showDeleteDialog() {
+    this.assetSeriesDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-delete-dialog',
+      this.activeListItem.name, () => this.deleteItem(this.activeListItem.id));
+  }
+
+  private resolveAssetSeriesDetails() {
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
+  }
+
+  private updateDisplayedAssetSeries() {
     this.displayedAssetSeries = this.assetSeries.filter(assetSerie => this.assetSeriesSearchedByName.includes(assetSerie));
   }
 
-  createAsset(assetSeriesId: ID) {
-    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
-      data: {
-        companyId: this.companyQuery.getActiveId(),
-        prefilledAssetSeriesId: assetSeriesId,
-      },
-      header: 'Digital Twin Creator for Assets',
-      width: '75%'
-    });
-
-    assetWizardRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
-  }
-
-  deleteItem(id: number | string) {
-    this.assetSeriesService.deleteItem(this.route.snapshot.params.companyId, id).subscribe();
-  }
-
-  modifyItem(itemId: number | string) {
-    this.startAssetSeriesWizard(itemId.toString());
-  }
-
-  public startAssetSeriesWizard(idString: string) {
+  private openAssetSeriesWizard(idString: string) {
     const dynamicDialogRef = this.dialogService.open(AssetSeriesWizardComponent, {
       data: {
         companyId: this.companyQuery.getActiveId(),
@@ -126,20 +126,15 @@ export class AssetSeriesListComponent implements OnInit, OnDestroy {
       width: '90%',
       header: 'AssetSeries Implementation',
     });
-    dynamicDialogRef.onClose.subscribe(() => this.assetSeriesDetailsResolver.resolve(this.route.snapshot));
+    dynamicDialogRef.onClose.subscribe(() => this.resolveAssetSeriesDetails());
   }
 
-  showDeleteDialog() {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Asset Serie ' + this.activeListItem.name + '?',
-      header: 'Delete Asset Serie Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.deleteItem(this.activeListItem.id);
-      },
-      reject: () => {
-      }
-    });
+  private deleteItem(id: ID) {
+    this.assetSeriesService.deleteItem(this.activatedRoute.snapshot.params.companyId, id).subscribe();
+  }
+
+  updateRowCountInUrl(rowCount: number): void {
+    TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 
 }

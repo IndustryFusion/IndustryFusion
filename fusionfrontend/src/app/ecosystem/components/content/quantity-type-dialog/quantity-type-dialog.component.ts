@@ -15,16 +15,16 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { QuantityType } from '../../../../store/quantity-type/quantity-type.model';
-import { Unit } from 'src/app/store/unit/unit.model';
+import { QuantityType } from '../../../../core/store/quantity-type/quantity-type.model';
+import { Unit } from 'src/app/core/store/unit/unit.model';
 import { Observable } from 'rxjs';
-import { UnitQuery } from 'src/app/store/unit/unit.query';
+import { UnitQuery } from 'src/app/core/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { QuantityDataType } from '../../../../store/field-details/field-details.model';
-import { DialogType } from '../../../../common/models/dialog-type.model';
-import { QuantityTypeService } from '../../../../store/quantity-type/quantity-type.service';
-import { WizardHelper } from '../../../../common/utils/wizard-helper';
+import { QuantityDataType } from '../../../../core/store/field-details/field-details.model';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { QuantityTypeService } from '../../../../core/store/quantity-type/quantity-type.service';
+import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-quantity-type-dialog',

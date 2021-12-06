@@ -14,9 +14,9 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { RuleAction, RuleActionType } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
+import { RuleAction, RuleActionType } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ItemOptionsMenuType } from '../../../../components/ui/item-options-menu/item-options-menu.type';
+import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-applet-action-list',

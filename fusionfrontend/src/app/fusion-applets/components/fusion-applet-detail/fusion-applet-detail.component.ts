@@ -14,9 +14,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Rule } from 'src/app/store/oisp/oisp-rule/oisp-rule.model';
+import { Rule } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OispRuleQuery } from '../../../store/oisp/oisp-rule/oisp-rule.query';
+import { OispRuleQuery } from '../../../core/store/oisp/oisp-rule/oisp-rule.query';
 
 @Component({
   selector: 'app-fusion-applet-detail',

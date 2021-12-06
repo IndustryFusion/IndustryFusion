@@ -14,18 +14,18 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { FactorySite, FactorySiteType } from 'src/app/store/factory-site/factory-site.model';
+import { FactorySite, FactorySiteType } from 'src/app/core/store/factory-site/factory-site.model';
 import { SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { debounceTime } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { DialogType } from '../../../../common/models/dialog-type.model';
-import { CountryQuery } from '../../../../store/country/country.query';
-import { CompanyQuery } from '../../../../store/company/company.query';
-import { RoomService } from '../../../../store/room/room.service';
-import { FactorySiteService } from '../../../../store/factory-site/factory-site.service';
-import { CountryResolver } from '../../../../resolvers/country.resolver';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { CountryQuery } from '../../../../core/store/country/country.query';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { RoomService } from '../../../../core/store/room/room.service';
+import { FactorySiteService } from '../../../../core/store/factory-site/factory-site.service';
+import { CountryResolver } from '../../../../core/resolvers/country.resolver';
 
 @Component({
   selector: 'app-factory-site-dialog',
@@ -145,13 +145,13 @@ export class FactorySiteDialogComponent implements OnInit {
     this.factorySiteService.createFactorySite(this.factorySite).subscribe(newFactorySite => {
         this.roomService.getRoomsOfFactorySite(this.factorySite.companyId, newFactorySite.id).subscribe();
       },
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 
   private edit() {
     this.factorySiteService.updateFactorySite(this.factorySite).subscribe(
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 

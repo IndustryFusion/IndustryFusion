@@ -19,10 +19,10 @@ import { FusionAppletsListComponent } from './components/fusion-applets-list/fus
 import { FusionAppletsRoutingModule } from './fusion-applets-routing.module';
 import { TableModule } from 'primeng/table';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { IFCommon } from '../common/i-f-common.module';
+import { SharedModule } from '../shared/shared.module';
 import { CreateFusionAppletComponent } from './components/create-fusion-applet/create-fusion-applet.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EnumHelpers } from '../common/utils/enum-helpers';
+import { EnumHelpers } from '../core/helpers/enum-helpers';
 import { FusionAppletDetailComponent } from './components/fusion-applet-detail/fusion-applet-detail.component';
 import { FusionAppletPageComponent } from './pages/fusion-applet-page/fusion-applet-page.component';
 import { FusionAppletsSubHeaderComponent } from './components/fusion-applets-sub-header/fusion-applets-sub-header.component';
@@ -71,7 +71,7 @@ import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/
     FusionAppletsRoutingModule,
     TableModule,
     InputSwitchModule,
-    IFCommon,
+    SharedModule,
     ReactiveFormsModule,
     CardModule,
     AccordionModule,

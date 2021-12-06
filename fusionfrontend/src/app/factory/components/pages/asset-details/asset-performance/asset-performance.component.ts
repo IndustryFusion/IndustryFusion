@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { RouteHelpers } from '../../../../../common/utils/route-helpers';
+import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetPerformanceViewMode } from './AssetPerformanceViewMode';
 
 @Component({

@@ -14,13 +14,13 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { AssetType } from '../../../../store/asset-type/asset-type.model';
+import { AssetType } from '../../../../core/store/asset-type/asset-type.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssetTypeDetails } from '../../../../store/asset-type-details/asset-type-details.model';
-import { AssetTypeService } from '../../../../store/asset-type/asset-type.service';
-import { DialogType } from '../../../../common/models/dialog-type.model';
-import { WizardHelper } from '../../../../common/utils/wizard-helper';
+import { AssetTypeDetails } from '../../../../core/store/asset-type-details/asset-type-details.model';
+import { AssetTypeService } from '../../../../core/store/asset-type/asset-type.service';
+import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-type-dialog',

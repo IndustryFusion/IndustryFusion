@@ -13,8 +13,8 @@
  * under the License.
  */
 
-@import 'src/assets/sass/base/typography';
-@import "src/assets/sass/abstract/variables";
+@import 'src/styles/base/typography';
+@import "src/styles/abstract/variables";
 @import "../asset-performance.component";
 
 .time-interval-selectors {
@@ -142,5 +142,5 @@
 }
 
 :host ::ng-deep .radio-wrapper > .p-selectbutton {
-  width: 18rem !important;
+  width: 17.85rem !important;
 }

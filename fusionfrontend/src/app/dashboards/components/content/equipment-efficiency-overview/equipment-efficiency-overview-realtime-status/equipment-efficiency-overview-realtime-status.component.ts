@@ -17,9 +17,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
 import { Status } from '../../../../../factory/models/status.model';
 import { switchMap } from 'rxjs/operators';
-import { StatusService } from '../../../../../services/status.service';
-import { OispDeviceStatus } from '../../../../../services/kairos.model';
-import { FactoryAssetDetailsWithFields } from '../../../../../store/factory-asset-details/factory-asset-details.model';
+import { StatusService } from '../../../../../core/services/logic/status.service';
+import { OispDeviceStatus } from '../../../../../core/models/kairos.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -59,4 +59,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
     });
   }
 
+  getAssetLinkByStatus(event) {
+    return ['/factorymanager/companies/2/assets/status/' + event];
+  }
 }

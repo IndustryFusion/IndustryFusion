@@ -18,20 +18,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { AssetQuery } from 'src/app/store/asset/asset.query';
-import { Company } from 'src/app/store/company/company.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
-import { FactorySiteQuery } from 'src/app/store/factory-site/factory-site.query';
-import { Room } from 'src/app/store/room/room.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { AssetQuery } from 'src/app/core/store/asset/asset.query';
+import { Company } from 'src/app/core/store/company/company.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from 'src/app/core/store/factory-site/factory-site.query';
+import { Room } from 'src/app/core/store/room/room.model';
 import {
   FactoryAssetDetails,
   FactoryAssetDetailsWithFields
-} from '../../../../store/factory-asset-details/factory-asset-details.model';
-import { CompanyQuery } from '../../../../store/company/company.query';
-import { AssetService } from '../../../../store/asset/asset.service';
-import { RoomService } from '../../../../store/room/room.service';
-import { FactorySiteService } from '../../../../store/factory-site/factory-site.service';
+} from '../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { AssetService } from '../../../../core/store/asset/asset.service';
+import { RoomService } from '../../../../core/store/room/room.service';
+import { FactorySiteService } from '../../../../core/store/factory-site/factory-site.service';
 
 @Component({
   selector: 'app-factory-site-page',
@@ -104,7 +104,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
           this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);
         }
       },
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 }

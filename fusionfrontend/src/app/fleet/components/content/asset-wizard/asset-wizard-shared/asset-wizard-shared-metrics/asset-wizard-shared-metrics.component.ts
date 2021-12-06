@@ -15,16 +15,16 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Threshold, ThresholdType } from '../../../../../../store/threshold/threshold.model';
-import { FieldInstance } from '../../../../../../store/field-instance/field-instance.model';
-import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
-import { QuantityDataType } from 'src/app/store/field-details/field-details.model';
-import { FieldThresholdType } from 'src/app/store/field/field.model';
-import { Asset } from '../../../../../../store/asset/asset.model';
-import { FieldType } from '../../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../../store/field/field.query';
-import { QuantityTypeQuery } from '../../../../../../store/quantity-type/quantity-type.query';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { Threshold, ThresholdType } from '../../../../../../core/store/threshold/threshold.model';
+import { FieldInstance } from '../../../../../../core/store/field-instance/field-instance.model';
+import { CustomFormValidators } from '../../../../../../core/validators/custom-form-validators';
+import { QuantityDataType } from 'src/app/core/store/field-details/field-details.model';
+import { FieldThresholdType } from 'src/app/core/store/field/field.model';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
+import { FieldType } from '../../../../../../core/store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../../core/store/field/field.query';
+import { QuantityTypeQuery } from '../../../../../../core/store/quantity-type/quantity-type.query';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-shared-metrics',
@@ -88,6 +88,8 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
 
   private createFieldInstanceGroup(indexFieldInstances: number, indexInArray: number,
                                    fieldInstance: FieldInstance): FormGroup {
+
+    const field = this.fieldQuery.getEntity(fieldInstance.fieldSource.fieldTarget.fieldId);
     const group = this.formBuilder.group({
       id: [],
       version: [],
@@ -101,11 +103,10 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
       mandatory: [],
       fieldThresholdType: [],
       quantityDataType: [],
-      thresholds: this.createThresholdGroup(fieldInstance),
+      thresholds: this.createThresholdGroup(fieldInstance, field.thresholdType),
       valid: [true, Validators.requiredTrue],
     });
 
-    const field = this.fieldQuery.getEntity(fieldInstance.fieldSource.fieldTarget.fieldId);
     const quantityType = this.quantityTypeQuery.getEntity(fieldInstance.fieldSource.sourceUnit.quantityTypeId);
     const quantityDataType = quantityType.dataType;
 
@@ -125,8 +126,10 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
     return group;
   }
 
-  private createThresholdGroup(fieldInstance: FieldInstance): FormGroup {
-    // Constraints: Pairwise (not) empty, absolute has to be filled if any other has values
+  private createThresholdGroup(fieldInstance: FieldInstance, fieldThresholdType: FieldThresholdType): FormGroup {
+    // Constraints: Pairwise (not) empty. Additional influence of threshold_type:
+    // * mandatory: Absolute thresholds must be set
+    // * optional: Absolute thresholds must be set, if any other threshold is given
     const optionalThresholdNames = ['idealLower', 'idealUpper', 'criticalLower', 'criticalUpper'];
     const thresholdForm = this.formBuilder.group({
       id: [fieldInstance.id],
@@ -134,11 +137,13 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
       absoluteLower: [fieldInstance.absoluteThreshold?.valueLower,
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('absoluteUpper'),
-          CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames)]],
+          CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames),
+          CustomFormValidators.requiredIfMandatoryField(fieldThresholdType)]],
       absoluteUpper: [fieldInstance.absoluteThreshold?.valueUpper,
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('absoluteLower'),
-          CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames)]],
+          CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames),
+          CustomFormValidators.requiredIfMandatoryField(fieldThresholdType)]],
       idealLower: [fieldInstance.idealThreshold?.valueLower,
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('idealUpper')]],
@@ -159,6 +164,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
     thresholdForm.get('idealLower')   .valueChanges.subscribe(() => this.validateForm(thresholdForm));
     thresholdForm.get('criticalUpper').valueChanges.subscribe(() => this.validateForm(thresholdForm));
     thresholdForm.get('criticalLower').valueChanges.subscribe(() => this.validateForm(thresholdForm));
+    this.validateForm(thresholdForm);
 
     return thresholdForm;
   }

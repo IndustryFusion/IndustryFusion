@@ -14,13 +14,13 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Room } from '../../../../store/room/room.model';
-import { FactorySite } from '../../../../store/factory-site/factory-site.model';
+import { Room } from '../../../../core/store/room/room.model';
+import { FactorySite } from '../../../../core/store/factory-site/factory-site.model';
 import {
   AssetModalMode,
   AssetModalType,
   FactoryAssetDetailsWithFields
-} from '../../../../store/factory-asset-details/factory-asset-details.model';
+} from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 

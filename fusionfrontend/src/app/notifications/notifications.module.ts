@@ -16,7 +16,7 @@
 import { NgModule } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-import { IFCommon } from '../common/i-f-common.module';
+import { SharedModule } from '../shared/shared.module';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { NotificationsSubHeaderComponent } from './content/notifications-sub-header/notifications-sub-header.component';
 import { NotificationsRoutingModule } from './notifications-routing.module';
@@ -29,7 +29,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     NotificationsPageComponent,
   ],
   imports: [
-    IFCommon,
+    SharedModule,
     NotificationsRoutingModule,
     TableModule,
     ClrIconModule,

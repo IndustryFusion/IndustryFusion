@@ -47,7 +47,7 @@ public class UnitMapper implements EntityDtoMapper<Unit, UnitDto> {
                 .name(entity.getName())
                 .label(entity.getLabel())
                 .symbol(entity.getSymbol())
-                .createdDate(entity.getCreatedDate())
+                .creationDate(entity.getCreationDate())
                 .quantityTypeId(EntityDtoMapper.getEntityId(entity.getQuantityType()))
                 .build();
     }

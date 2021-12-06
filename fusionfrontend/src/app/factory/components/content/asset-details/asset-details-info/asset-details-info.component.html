@@ -14,7 +14,10 @@ under the License.
 -->
 
 <section class="asset">
-  <img class="asset-img" src="assets/img/{{(assetWithFields)?.imageKey}}"/>
+  <ng-container *ngIf="assetWithFields != null">
+    <img *ngIf="assetImage == null" class="asset-img" src="assets/img/{{(assetWithFields)?.imageKey}}"/>
+    <img *ngIf="assetImage != null" class="asset-img" [src]="assetImage" >
+  </ng-container>
   <div class="asset-info">
     <h3>{{(assetWithFields)?.name}}</h3>
     <p>{{(assetWithFields)?.assetTypeName}}</p>
@@ -25,12 +28,19 @@ under the License.
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-asset-status *ngIf="assetWithFields" [assetWithFields]="assetWithFields" [showInline]="false"></app-asset-status>
+        <app-asset-status *ngIf="assetWithFields" [assetWithFields]="assetWithFields"
+                          [showInline]="false"></app-asset-status>
       </p>
     </div>
     <p>{{(assetWithFields)?.factorySiteName}} ({{(assetWithFields)?.roomName}})</p>
   </div>
   <div class="asset-info asset-menu">
-    <app-item-options-menu [showInline]="false" [actions]="dropdownMenuOptions"></app-item-options-menu>
+    <app-item-options-menu (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()"
+                           (editItem)="openEditDialog()" [actions]="dropdownMenuOptions"
+                           [assignItemText]="'Asset to room'"
+                           [showInline]="false"></app-item-options-menu>
   </div>
 </section>
+
+<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
+                 key="asset-delete-dialog-detail" rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>

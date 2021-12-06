@@ -15,12 +15,12 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FieldInstance } from '../../../../../../store/field-instance/field-instance.model';
-import { CustomFormValidators } from '../../../../../../common/utils/custom-form-validators';
-import { Asset } from '../../../../../../store/asset/asset.model';
-import { FieldType } from '../../../../../../store/field-target/field-target.model';
-import { FieldQuery } from '../../../../../../store/field/field.query';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { FieldInstance } from '../../../../../../core/store/field-instance/field-instance.model';
+import { CustomFormValidators } from '../../../../../../core/validators/custom-form-validators';
+import { Asset } from '../../../../../../core/store/asset/asset.model';
+import { FieldType } from '../../../../../../core/store/field-target/field-target.model';
+import { FieldQuery } from '../../../../../../core/store/field/field.query';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 
 @Component({
   selector: 'app-asset-wizard-shared-attributes',

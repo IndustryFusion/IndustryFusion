@@ -14,10 +14,10 @@
  */
 
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Asset } from 'src/app/store/asset/asset.model';
-import { FactorySite } from 'src/app/store/factory-site/factory-site.model';
+import { Asset } from 'src/app/core/store/asset/asset.model';
+import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 import { Observable } from 'rxjs';
-import { WeatherService } from '../../../../services/weather.service';
+import { WeatherService } from '../../../../core/services/api/weather.service';
 
 @Component({
   selector: 'app-company-info',

@@ -1,0 +1,83 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'base/typography';
+@import 'abstract/variables';
+
+.if-label {
+  text-align: left;
+  font-family: $font-family-mulish !important;
+  font-weight: bold;
+  font-variant: normal;
+  font-style: normal;
+  font-size: $medium-font-size;
+  line-height: $medium-line-height;
+  letter-spacing: 0;
+  color: $highlighted !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  opacity: 1;
+}
+
+.if-label-normal-weight {
+  @extend .if-label;
+  font-weight: normal;
+}
+
+.if-label-bigger {
+  @extend .if-label;
+  font-size: $bigger-font-size;
+  line-height: $bigger-line-height;
+}
+
+.if-label-small-header {
+  @extend .if-label;
+  font-weight: normal;
+  font-size: $regular-font-size;
+  line-height: $regular-line-height;
+  color: #C1C1C1 !important;
+}
+
+.if-label-small {
+  @extend .if-label-small-header;
+  color: $inactive !important;
+}
+
+.if-dialog-title {
+  @extend .if-label;
+
+  display: grid;
+  font-weight: bold;
+  font-size: $big-font-size;
+  line-height: $big-line-height;
+  color: $highlighted !important;
+  margin-top: 2.2rem;
+  padding-bottom: 1.1rem;
+}
+
+.if-dialog-section-title {
+  @extend .if-dialog-title;
+  margin-top: 1.2rem;
+}
+
+.if-title {
+  text-align: left;
+  font-size: $big-font-size;
+  line-height: $even-bigger-line-height;
+  font-weight: bold;
+  letter-spacing: 0;
+  color: $basic-black;
+  opacity: 1;
+}

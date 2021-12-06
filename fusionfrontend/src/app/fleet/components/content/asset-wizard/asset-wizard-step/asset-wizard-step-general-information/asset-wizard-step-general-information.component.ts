@@ -15,15 +15,17 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AssetSeries } from '../../../../../../store/asset-series/asset-series.model';
-import { AssetSeriesQuery } from '../../../../../../store/asset-series/asset-series.query';
+import { AssetSeries } from '../../../../../../core/store/asset-series/asset-series.model';
+import { AssetSeriesQuery } from '../../../../../../core/store/asset-series/asset-series.query';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AssetWizardStep } from '../asset-wizard-step.model';
-import { Company } from '../../../../../../store/company/company.model';
-import { AssetType } from '../../../../../../store/asset-type/asset-type.model';
-import { WizardHelper } from '../../../../../../common/utils/wizard-helper';
+import { Company } from '../../../../../../core/store/company/company.model';
+import { AssetType } from '../../../../../../core/store/asset-type/asset-type.model';
+import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
+import { ImageService } from '../../../../../../core/services/api/image.service';
+import { CompanyQuery } from '../../../../../../core/store/company/company.query';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',
@@ -38,14 +40,21 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   @Input() relatedCompany: Company;
   @Input() relatedAssetType: AssetType;
   @Input() isAssetSeriesLocked: boolean;
+  @Input() assetImage: string;
   @Output() changeAssetSeries = new EventEmitter<ID>();
   @Output() stepChange = new EventEmitter<AssetWizardStep>();
+  @Output() assetImageChanged = new EventEmitter<string>();
 
   public assetSeries$: Observable<AssetSeries[]>;
 
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
+  public DEFAULT_ASSET_IMAGE_KEY = ImageService.DEFAULT_ASSET_IMAGE_KEY;
+
+  private companyId: ID;
 
   constructor(private assetSeriesQuery: AssetSeriesQuery,
+              private companyQuery: CompanyQuery,
+              private imageService: ImageService,
               private wizardRef: DynamicDialogRef) { }
 
   ngOnInit(): void {
@@ -54,6 +63,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
       this.assetForm.get('assetSeriesId')?.disable();
       this.assetForm.get('assetSeriesId').setValue(this.relatedAssetSeriesId);
     }
+
+    this.companyId = this.companyQuery.getActiveId();
   }
 
   onChangeAssetSeries(assetSeriesId: ID): void {
@@ -73,6 +84,31 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   onStart(): void {
     if (this.isReadyForNextStep()) {
       this.stepChange.emit(AssetWizardStep.GENERAL_INFORMATION + 1);
+    }
+  }
+
+  onImageUpload(event: any): void {
+    this.deletePreviouslyUploadedImage();
+
+    const selectedImage: any = event.target.files[0];
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.addEventListener('load', (readFileEvent: any) => {
+        this.imageService.uploadImage(this.companyId, selectedImage.name, 'assets', readFileEvent.target.result, selectedImage.size)
+          .subscribe(uploadedImage => {
+            this.assetImage = uploadedImage.contentBase64;
+            this.assetImageChanged.emit(this.assetImage);
+            this.assetForm.get('imageKey').setValue(uploadedImage.fileKey);
+          });
+      });
+
+      reader.readAsDataURL(selectedImage);
+    }
+  }
+
+  private deletePreviouslyUploadedImage(): void {
+    if (this.assetImage) {
+      this.imageService.deleteImage(this.companyId, this.assetForm.get('imageKey').value).subscribe();
     }
   }
 }

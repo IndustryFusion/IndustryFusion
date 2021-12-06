@@ -27,19 +27,19 @@ import { MaintenancePageComponent } from 'src/app/dashboards/components/pages/ma
 import { MaintenanceListComponent } from './components/content/maintenance-list/maintenance-list.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
-import { IFCommon } from '../common/i-f-common.module';
-import { MaintenanceAssetSortPipe } from '../pipes/maintenance-asset-sort.pipe';
+import { SharedModule } from '../shared/shared.module';
+import { MaintenanceAssetSortPipe } from '../shared/pipes/maintenance-asset-sort.pipe';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
 import { EquipmentEfficiencyListComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-list.component';
-import { EquipmentEfficiencyBarChartComponent } from '../components/content/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
+import { EquipmentEfficiencyBarChartComponent } from '../shared/components/content/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { CalendarModule } from 'primeng/calendar';
 import { ChartModule } from 'primeng/chart';
 import { TreeTableModule } from 'primeng/treetable';
 import { TreeModule } from 'primeng/tree';
 import { EquipmentEfficiencyOverviewComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview.component';
 import { EquipmentEfficiencyOverviewRealtimeStatusComponent } from './components/content/equipment-efficiency-overview/equipment-efficiency-overview-realtime-status/equipment-efficiency-overview-realtime-status.component';
-import { EquipmentEfficiencyOverviewDonutChartComponent } from '../components/content/equipment-efficiency-overview-donut-chart/equipment-efficiency-overview-donut-chart.component';
-import { GaugeChartComponent } from '../components/content/gauge-chart/gauge-chart.component';
+import { EquipmentEfficiencyOverviewDonutChartComponent } from '../shared/components/content/equipment-efficiency-overview-donut-chart/equipment-efficiency-overview-donut-chart.component';
+import { GaugeChartComponent } from '../shared/components/content/gauge-chart/gauge-chart.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +57,7 @@ import { GaugeChartComponent } from '../components/content/gauge-chart/gauge-cha
     GaugeChartComponent,
   ],
   imports: [
-    IFCommon,
+    SharedModule,
     DashboardRoutingModule,
     ClarityModule,
     AgmCoreModule.forRoot({
