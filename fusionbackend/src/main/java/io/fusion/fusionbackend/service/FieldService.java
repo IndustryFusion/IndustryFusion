@@ -15,26 +15,39 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.AssetTypeDto;
+import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.mappers.FieldMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 import java.util.Set;
 
 @Service
 @Transactional
 public class FieldService {
     private final FieldRepository fieldRepository;
+    private final FieldMapper fieldMapper;
     private final UnitService unitService;
 
     @Autowired
-    public FieldService(FieldRepository fieldRepository, UnitService unitService) {
+    public FieldService(FieldRepository fieldRepository,
+                        FieldMapper fieldMapper,
+                        UnitService unitService) {
         this.fieldRepository = fieldRepository;
+        this.fieldMapper = fieldMapper;
         this.unitService = unitService;
     }
 
@@ -74,5 +87,25 @@ public class FieldService {
 
     public void deleteField(final Long id) {
         fieldRepository.delete(getField(id, false));
+    }
+
+    public byte[] getAllFieldDtosExtendedJson() throws IOException {
+        Set<Field> fields = Sets.newLinkedHashSet(fieldRepository
+                .findAll(FieldRepository.DEFAULT_SORT));
+
+        Set<FieldDto> fieldDtos = fieldMapper.toDtoSet(fields, true);
+
+        ObjectMapper objectMapper = new ObjectMapper()
+                .findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String serialized = objectMapper.writeValueAsString(fieldDtos);
+        Set<FieldDto> deserialized = objectMapper.readerFor(new TypeReference<Set<FieldDto>>(){})
+                .readValue(serialized);
+
+        if (fieldDtos.hashCode() == deserialized.hashCode()) {
+            System.out.println("Test passed");
+        }
+
+        return objectMapper.writeValueAsBytes(fieldDtos);
     }
 }
