@@ -15,7 +15,11 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
+import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
@@ -39,6 +43,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -47,6 +52,7 @@ public class AssetTypeTemplateService {
     private final AssetTypeService assetTypeService;
     private final FieldTargetRepository fieldTargetRepository;
     private final FieldService fieldService;
+    private final AssetTypeTemplateMapper assetTypeTemplateMapper;
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetTypeTemplateService.class);
 
@@ -54,11 +60,12 @@ public class AssetTypeTemplateService {
     public AssetTypeTemplateService(AssetTypeTemplateRepository assetTypeTemplateRepository,
                                     AssetTypeService assetTypeService,
                                     FieldTargetRepository fieldTargetRepository,
-                                    FieldService fieldService) {
+                                    FieldService fieldService, AssetTypeTemplateMapper assetTypeTemplateMapper) {
         this.assetTypeTemplateRepository = assetTypeTemplateRepository;
         this.assetTypeService = assetTypeService;
         this.fieldTargetRepository = fieldTargetRepository;
         this.fieldService = fieldService;
+        this.assetTypeTemplateMapper = assetTypeTemplateMapper;
     }
 
     public Set<AssetTypeTemplate> getAssetTypeTemplates() {
@@ -230,6 +237,29 @@ public class AssetTypeTemplateService {
         });
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(writer, assetTypeTemplate);
+    }
 
+    public byte[] getAllAssetTypeTemplateDtosExtendedJson() throws IOException {
+        Set<AssetTypeTemplate> assetTypeTemplates = assetTypeTemplateRepository
+                .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
+                .stream().filter(assetTypeTemplate -> assetTypeTemplate.getPublishedDate() != null)
+                .collect(Collectors.toSet());
+
+        Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos = assetTypeTemplateMapper
+                .toDtoSet(assetTypeTemplates, true);
+
+        ObjectMapper objectMapper = new ObjectMapper()
+                .findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String serialized = objectMapper.writeValueAsString(publishedAssetTypeTemplatesDtos);
+        Set<AssetTypeTemplateDto> deserialized = objectMapper
+                .readerFor(new TypeReference<Set<AssetTypeTemplateDto>>(){})
+                .readValue(serialized);
+
+        if (publishedAssetTypeTemplatesDtos.hashCode() == deserialized.hashCode()) {
+            System.out.println("Test passed");
+        }
+
+        return objectMapper.writeValueAsBytes(publishedAssetTypeTemplatesDtos);
     }
 }

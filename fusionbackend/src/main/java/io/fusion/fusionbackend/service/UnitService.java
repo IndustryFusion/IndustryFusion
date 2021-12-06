@@ -15,26 +15,40 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.UnitDto;
+import io.fusion.fusionbackend.dto.mappers.UnitMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
+import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.QuantityType;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 import java.util.Set;
 
 @Service
 @Transactional
 public class UnitService {
     private final UnitRepository unitRepository;
+    private final UnitMapper unitMapper;
     private final QuantityTypeService quantityTypeService;
 
     @Autowired
-    public UnitService(UnitRepository unitRepository, @Lazy QuantityTypeService quantityTypeService) {
+    public UnitService(UnitRepository unitRepository,
+                       UnitMapper unitMapper,
+                       @Lazy QuantityTypeService quantityTypeService) {
         this.unitRepository = unitRepository;
+        this.unitMapper = unitMapper;
         this.quantityTypeService = quantityTypeService;
     }
 
@@ -84,5 +98,24 @@ public class UnitService {
         unit.getQuantityType().getUnits().remove(unit);
 
         unitRepository.delete(unit);
+    }
+
+    public byte[] getAllUnitDtosExtendedJson() throws IOException {
+        Set<Unit> units = Sets.newLinkedHashSet(unitRepository.findAll(UnitRepository.DEFAULT_SORT));
+
+        Set<UnitDto> unitDtos = unitMapper.toDtoSet(units, true);
+
+        ObjectMapper objectMapper = new ObjectMapper()
+                .findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String serialized = objectMapper.writeValueAsString(unitDtos);
+        Set<UnitDto> deserialized = objectMapper.readerFor(new TypeReference<Set<UnitDto>>(){})
+                .readValue(serialized);
+
+        if (unitDtos.hashCode() == deserialized.hashCode()) {
+            System.out.println("Test passed");
+        }
+
+        return objectMapper.writeValueAsBytes(unitDtos);
     }
 }
