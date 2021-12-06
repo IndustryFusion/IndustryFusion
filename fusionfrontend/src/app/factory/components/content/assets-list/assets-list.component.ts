@@ -34,13 +34,12 @@ import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
 import { TableSelectedItemsBarType } from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { AssetDetailMenuService } from '../../../../core/services/menu/asset-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
+import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 
 @Component({
   selector: 'app-assets-list',
@@ -74,11 +73,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
-
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
 
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   selectedFactoryAssets: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
@@ -245,7 +239,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   openAssignRoomDialog() {
     if (this.factorySite) {
-      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselectedFactorySiteMode,
         `Room Assignment (${this.factorySite.name})`);
     } else {
       this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,

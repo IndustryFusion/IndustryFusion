@@ -50,23 +50,6 @@
   }
 }
 
-.notification-icons {
-  overflow: initial !important;
-  padding-top: -2px;
-
-  .notification-low {
-    color: $alert-low;
-  }
-
-  .notification-medium {
-    color: $alert-medium;
-  }
-
-  .notification-high {
-    color: $alert-high;
-  }
-}
-
 :host ::ng-deep .notifications > .p-selectbutton {
   width: 8.9rem !important;
 }

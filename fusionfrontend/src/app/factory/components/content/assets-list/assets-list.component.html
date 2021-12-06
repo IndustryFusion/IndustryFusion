@@ -74,13 +74,7 @@ under the License.
         <p-treeTableCheckbox [value]="rowNode" class="column-visibility table-checkbox"></p-treeTableCheckbox>
       </td>
       <td class="column-without-padding" [style.width.%]="1.5">
-        <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
-          <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle"
-                   class="fa-fw notification-medium"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle"
-                   class="fa-fw notification-high"></fa-icon>
-        </div>
+        <app-alert-icon [priority]="getMaxOpenAlertPriority(rowNode.node)"></app-alert-icon>
       </td>
       <td [routerLink]="getAssetLink(rowData)"
           class="asset-column p-flex-row table-bold-font right-column-padding">

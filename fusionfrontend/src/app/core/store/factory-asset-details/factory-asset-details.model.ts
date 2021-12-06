@@ -43,7 +43,7 @@ export enum AssetModalMode  {
   onboardAssetMode = 1,
   editAssetMode,
   editRoomForAssetMode = 3,
-  editRoomWithPreselecedFactorySiteMode = 4,
+  editRoomWithPreselectedFactorySiteMode = 4,
 }
 
 export class FactoryAssetDetailsWithFields extends FactoryAssetDetails {

@@ -46,6 +46,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { NameplateItemComponent } from './components/ui/nameplate-item/nameplate-item.component';
 import { StatusComponent } from './components/ui/status/status.component';
 import { StatusFilterComponent } from './components/ui/table-filter/status-filter/status-filter.component';
+import { AlertIconComponent } from './components/ui/alert-icon/alert-icon.component';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { StatusFilterComponent } from './components/ui/table-filter/status-filte
     NameplateItemComponent,
     StatusComponent,
     StatusFilterComponent,
+    AlertIconComponent,
   ],
   imports: [
     CommonModule,
@@ -141,6 +143,7 @@ import { StatusFilterComponent } from './components/ui/table-filter/status-filte
     NameplateItemComponent,
     StatusComponent,
     StatusFilterComponent,
+    AlertIconComponent,
   ],
   providers: [
     MessageService,

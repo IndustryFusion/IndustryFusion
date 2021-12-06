@@ -18,12 +18,12 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ManagerType } from '../../content/manager-type/manager-type.enum';
-import { OispAlertQuery } from '../../../../core/store/oisp/oisp-alert/oisp-alert.query';
+import { ManagerType } from '../../../../core/models/manager-type.model';
 import { UserManagementService } from '../../../../core/services/api/user-management.service';
 import { KeycloakProfile } from 'keycloak-js';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { OispAlertQuery } from '../../../../core/store/oisp/oisp-alert/oisp-alert.query';
 
 @Component({
   selector: 'app-header',

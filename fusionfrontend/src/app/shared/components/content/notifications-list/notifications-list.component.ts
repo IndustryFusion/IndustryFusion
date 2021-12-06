@@ -21,7 +21,6 @@ import { Observable, Subscription } from 'rxjs';
 import { OispNotification } from '../../../../core/store/oisp/oisp-notification/oisp-notification.model';
 import { OispAlertService } from '../../../../core/store/oisp/oisp-alert/oisp-alert.service';
 import { environment } from '../../../../../environments/environment';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FilterOption, FilterType } from 'src/app/shared/components/ui/table-filter/filter-options';
 
 import { OispAlertPriority, OispAlertStatus } from 'src/app/core/store/oisp/oisp-alert/oisp-alert.model';
@@ -70,13 +69,15 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   notificationStates = NotificationState;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
+  tableFilters: FilterOption[] = [
+    {
+      filterType: FilterType.DROPDOWNFILTER,
+      columnName: 'Asset',
+      attributeToBeFiltered: 'assetName'
+    },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Priority', attributeToBeFiltered: 'priority' },
-    { filterType: FilterType.DATEFILTER, columnName: 'Date & Time', attributeToBeFiltered: 'timestamp'}];
+    { filterType: FilterType.DATEFILTER, columnName: 'Date & Time', attributeToBeFiltered: 'timestamp' }
+  ];
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -191,7 +192,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => this.fetchNotifications(), this.FETCHING_INTERVAL_MILLISECONDS);
   }
 
-  private initialLoadOfNotificationsEnsureDevicesLoaded() {
+  private initialLoadOfNotificationsEnsureDevicesLoaded(): void {
     if (this.oispDeviceQuery.getCount() < 1) {
       this.oispDeviceResolver.resolve().subscribe(() => {
         this.fetchNotifications();
@@ -201,7 +202,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private fetchNotifications() {
+  private fetchNotifications(): void {
     this.notificationSubscription?.unsubscribe();
 
     this.notificationSubscription = this.notifications$.subscribe(notifications => {
@@ -213,7 +214,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private closeMultipleNotifications() {
+  private closeMultipleNotifications(): void {
     this.selectedNotifications.forEach(notification => {
       this.deleteNotification(notification.id);
     });
@@ -229,7 +230,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  showCloseDialog(notifications: OispNotification[]) {
+  showCloseDialog(notifications: OispNotification[]): void {
     this.confirmationService.confirm({
       message: notifications.length === 1 ? 'Are you sure you want to clear the notification "' + notifications[0].ruleName + '"?' :
         'Are you sure you want to clear ' + notifications.length + ' notifications ?',
@@ -253,7 +254,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  isFloatingNumber(text: string) {
+  isFloatingNumber(text: string): boolean {
     const n = Number(text);
     return Number(n) === n && n % 1 !== 0;
   }
