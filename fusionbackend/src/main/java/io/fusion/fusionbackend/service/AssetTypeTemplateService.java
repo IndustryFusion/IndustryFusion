@@ -16,20 +16,16 @@
 package io.fusion.fusionbackend.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fusion.fusionbackend.ATT;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.enums.PublicationState;
+import io.fusion.fusionbackend.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.repository.FieldTargetRepository;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.vocabulary.RDF;
-import org.apache.jena.vocabulary.RDFS;
+import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -217,36 +213,11 @@ public class AssetTypeTemplateService {
         return assetTypeTemplate;
     }
 
-    public Model getAssetTypeTemplateRdf(Long assetTypeTemplateId) {
+    public OntModel getAssetTypeTemplateRdf(Long assetTypeTemplateId) throws IOException {
         AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        Model attModel = ModelFactory.createDefaultModel();
-        //Resource fieldTargetResource = ftToRDF(attModel, (FieldTarget) assetTypeTemplate.getFieldTargets().toArray()[0]);
-
-
-
-        String uri ="https://industry-fusion.com/repository/";
-
-        Resource attResource = attModel.createResource(uri + "AssetTypeTemplate/" + assetTypeTemplate.getId())
-                // BaseEntity
-                .addProperty(ATT.ID, assetTypeTemplate.getId().toString())
-                .addProperty(ATT.VERSION, assetTypeTemplate.getVersion().toString())
-                // BaseAsset
-                .addProperty(ATT.NAME, assetTypeTemplate.getName())
-                .addProperty(ATT.DESCRIPTION, assetTypeTemplate.getDescription())
-                .addProperty(ATT.IMAGEKEY, assetTypeTemplate.getImageKey())
-                // AssetTypeTemplate;
-                .addProperty(ATT.ASSETTYPE, assetTypeTemplate.getAssetType().getName());
-
-        assetTypeTemplate.getFieldTargets().stream().forEach(fieldTarget -> {
-            Resource fieldTargetResource = attModel.createResource(fieldTarget.getName());
-            Resource resource = attResource.addProperty(ATT.FIELDTARGETS, fieldTargetResource);
-            resource.addLiteral(ATT.FIELDTYPE, fieldTarget.getFieldType().toString());
-            Resource datatype = resource.addProperty(RDF.type, RDFS.Datatype);
-
-                }
-        );
-
-        return attModel;
+        OntologyBuilder ontologyBuilder = new OntologyBuilder();
+        OntModel model = ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
+        return model;
     }
 
     public void getAssetTypeTemplateExtendedJSON(Long assetTypeTemplateId, PrintWriter writer) throws IOException {

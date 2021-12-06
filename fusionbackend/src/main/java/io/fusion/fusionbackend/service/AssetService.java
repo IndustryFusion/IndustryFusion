@@ -24,10 +24,13 @@ import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.model.Threshold;
+import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +44,8 @@ import java.util.Set;
 @Service
 @Transactional
 public class AssetService {
+    private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
+
     private final AssetRepository assetRepository;
     private final FieldInstanceRepository fieldInstanceRepository;
     private final RoomService roomService;
@@ -398,11 +403,20 @@ public class AssetService {
         addType(root, asset.getAssetSeries().getName());
 
         asset.getFieldInstances().stream().forEach(fieldInstance -> {
-            String fieldName = fieldInstance.getName();
-            fieldName = cleanName(fieldName);
 
             String value = Optional.ofNullable(fieldInstance.getValue()).orElse("");
-            addProperty(root, fieldName, value, fieldInstance.getFieldSource().getSourceUnit().getSymbol());
+            QuantityDataType quantityDataType = fieldInstance.getFieldSource().getSourceUnit().getQuantityType().getDataType();
+            switch (quantityDataType){
+                case NUMERIC:
+                    addProperty(root, cleanName(fieldInstance), value);
+                    break;
+                case CATEGORICAL:
+                    addProperty(root, cleanName(fieldInstance), value, fieldInstance.getFieldSource().getSourceUnit().getSymbol());
+                    break;
+                default:
+                    LOG.error("unknown quantityType \"{}\" was used", quantityDataType);
+                    throw new IllegalArgumentException();
+            }
         });
 
         //add Subsystems
@@ -414,12 +428,12 @@ public class AssetService {
         JSONObject metainfo = new JSONObject();
         asset.getFieldInstances().stream().forEach(fieldInstance -> {
             JSONObject jsonObject = new JSONObject();
-            metainfo.put(cleanName(fieldInstance.getName()), jsonObject);
+            metainfo.put(cleanName(fieldInstance), jsonObject);
             addThreshold(jsonObject, "AbsoluteThreshold", fieldInstance.getAbsoluteThreshold());
             addThreshold(jsonObject, "CriticalThreshold", fieldInstance.getCriticalThreshold());
             addThreshold(jsonObject, "IdealThreshold", fieldInstance.getIdealThreshold());
             jsonObject.put("description", fieldInstance.getDescription());
-            if (fieldInstance.getFieldSource().getRegister()!=null) {
+            if (fieldInstance.getFieldSource().getRegister() != null) {
                 jsonObject.put("register", fieldInstance.getFieldSource().getRegister());
             }
             jsonObject.put("fieldType", fieldInstance.getFieldSource().getFieldTarget().getFieldType());
@@ -431,17 +445,21 @@ public class AssetService {
         context.add("https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld");
         root.put("@context", context);
 
-            return JsonUtils.toPrettyString(root);
+        return JsonUtils.toPrettyString(root);
     }
 
     private void addThreshold(JSONObject jsonObject, String name, Threshold threshold) {
-        if (threshold != null){
+        if (threshold != null) {
             jsonObject.put("upper" + name, threshold.getValueUpper());
             jsonObject.put("lower" + name, threshold.getValueLower());
         }
     }
 
-    private String cleanName(String fieldName) {
+    private String cleanName(FieldInstance fieldInstance) {
+        String fieldName = fieldInstance.getExternalName();
+        if (fieldName == null) {
+            fieldName = fieldInstance.getFieldSource().getFieldTarget().getLabel();
+        }
         fieldName = fieldName.replaceAll("[\\<\\\"\\'\\=\\;\\(\\)\\>\\?\\*\\s]", "");
         return fieldName;
     }
@@ -476,7 +494,7 @@ public class AssetService {
         JSONObject property = new JSONObject();
         addType(property, "Property");
         property.put("value", value);
-        if (unitCode != null){
+        if (unitCode != null) {
             property.put("unitCode", unitCode);
         }
         json.put(key, property);

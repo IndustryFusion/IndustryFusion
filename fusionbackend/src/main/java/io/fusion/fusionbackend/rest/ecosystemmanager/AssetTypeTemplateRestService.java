@@ -18,11 +18,10 @@ package io.fusion.fusionbackend.rest.ecosystemmanager;
 import com.apicatalog.jsonld.http.media.MediaType;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
+import io.fusion.fusionbackend.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,9 +73,8 @@ public class AssetTypeTemplateRestService {
             response.setContentType(MediaType.JSON.toString());
             assetTypeTemplateService.getAssetTypeTemplateExtendedJSON(assetTypeTemplateId, response.getWriter());
         } else {
-            Model model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
-            response.setContentType(MediaType.JSON.toString());
-            RDFDataMgr.write(response.getOutputStream(), model, RDFFormat.RDFJSON);
+            OntModel model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
+            OntologyBuilder.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
         }
 
     }
