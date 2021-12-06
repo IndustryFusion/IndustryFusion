@@ -69,10 +69,8 @@ under the License.
         <td class="checkbox-td" [style.width.%]="4">
           <p-tableCheckbox class="checkbox-column table-checkbox" [value]="notification"></p-tableCheckbox>
         </td>
-        <td [style.width.%]="4" class="notification-icons" [ngSwitch]="notification.priority">
-          <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
+        <td [style.width.%]="4">
+          <app-alert-icon [priority]="notification.priority"></app-alert-icon>
         </td>
         <td [style.width.%]="30" class="table-bold-font">{{ notification.ruleName }}</td>
         <td [style.width.%]="17">{{ notification.assetName }}</td>

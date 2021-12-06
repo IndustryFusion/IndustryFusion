@@ -85,6 +85,11 @@
   display: flex;
 }
 
+app-alert-icon  {
+  overflow: initial !important;
+  padding-top: -2px;
+}
+
 .if-icon-shifts {
   @extend .if-icon-small;
   background: url("^assets/icons/shifts.svg");

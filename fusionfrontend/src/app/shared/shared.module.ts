@@ -63,6 +63,7 @@ import {
   EquipmentEfficiencyBarChartComponent
 } from './components/content/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { ChartModule } from 'primeng/chart';
+import { AlertIconComponent } from './components/ui/alert-icon/alert-icon.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -103,6 +104,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ImageComponent,
     StatusPerformanceBarChartComponent,
     EquipmentEfficiencyBarChartComponent,
+    AlertIconComponent,
   ],
   imports: [
     CommonModule,
@@ -190,6 +192,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ImageComponent,
     StatusPerformanceBarChartComponent,
     EquipmentEfficiencyBarChartComponent,
+    AlertIconComponent,
   ],
   providers: [
     MessageService,

@@ -162,7 +162,7 @@ export class AssetInstantiationComponent implements OnInit {
       this.assignFactorySite();
       this.finishedAssetOnboarding();
     } else {
-      if (this.activeModalMode !== this.assetModalModes.editRoomWithPreselecedFactorySiteMode) {
+      if (this.activeModalMode !== this.assetModalModes.editRoomWithPreselectedFactorySiteMode) {
         this.config.header =  this.translate.instant('APP.FACTORY.ASSET_INSTANTIATION.MODAL_HEADER.FACTORY_ASSIGNMENT_MODAL');
         this.activeModalType = this.assetModalTypes.factorySiteAssignment;
       } else {

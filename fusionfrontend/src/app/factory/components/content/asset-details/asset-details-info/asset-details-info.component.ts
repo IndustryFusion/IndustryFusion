@@ -80,7 +80,7 @@ export class AssetDetailsInfoComponent implements OnInit {
 
   openAssignRoomDialog() {
     if (this.factorySite) {
-      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselectedFactorySiteMode,
         this.translate.instant('APP.FACTORY.ASSET_DETAILS.INFO.ROOM_ASSIGNMENT', { factorySiteName: this.factorySite.name}));
     } else {
       this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,

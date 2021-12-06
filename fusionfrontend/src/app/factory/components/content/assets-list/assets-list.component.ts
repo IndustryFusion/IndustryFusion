@@ -35,7 +35,6 @@ import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-m
 import {
   TableSelectedItemsBarType
 } from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FactoryAssetDetailMenuService } from '../../../../core/services/menu/factory-asset-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
@@ -45,6 +44,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { OispDeviceStatus } from '../../../../core/models/kairos.model';
 
 @Component({
@@ -277,7 +277,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   openAssignRoomDialog(): void {
     if (this.factorySite) {
-      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselectedFactorySiteMode,
         this.translate.instant('APP.FACTORY.ASSETS_LIST.DIALOG_HEADING.ROOM_ASSIGNMENT')` (${this.factorySite.name})`);
     } else {
       this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,

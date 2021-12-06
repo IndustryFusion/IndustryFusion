@@ -21,8 +21,6 @@ import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model'
 import { Company } from 'src/app/core/store/company/company.model';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { SortEvent, TreeNode } from 'primeng/api';
-import { OispAlert, OispAlertPriority } from 'src/app/core/store/oisp/oisp-alert/oisp-alert.model';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
 import {
   AssetMaintenanceUtils,
@@ -34,6 +32,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
+import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 
 
 @Component({
@@ -70,10 +69,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   faChevronCircleDown = faChevronCircleDown;
   faChevronCircleUp = faChevronCircleUp;
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
 
   tableFilters: FilterOption[] =
     [{ filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ASSET_TYPE'), attributeToBeFiltered: 'category' },
@@ -87,6 +82,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               public translate: TranslateService) {
+  }
+
+  private static isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
+    const maintenanceValue = Utils.getMaintenanceValue(asset, type);
+    return maintenanceValue && maintenanceValue < type.lowerThreshold;
   }
 
   ngOnInit(): void {
@@ -170,8 +170,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   public isMaintenanceNeededSoon(node: TreeNode): boolean {
     const asset = node.data;
-    return this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
-      || this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
+    return MaintenanceListComponent.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
+      || MaintenanceListComponent.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
   }
 
   public isChildrenMaintenanceNeededSoon(node: TreeNode): boolean {
@@ -183,11 +183,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       }
     }
     return result;
-  }
-
-  private isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
-    const maintenanceValue = Utils.getMaintenanceValue(asset, type);
-    return (!isNaN(maintenanceValue) && maintenanceValue < type.lowerThreshold);
   }
 
   private updateTree() {

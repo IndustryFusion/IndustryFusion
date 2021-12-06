@@ -24,7 +24,6 @@ import {
 import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FactoryAssetDetailsService } from '../../../../../core/store/factory-asset-details/factory-asset-details.service';
-import { OispAlertPriority } from '../../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { Asset } from '../../../../../core/store/asset/asset.model';
 
 @Component({
@@ -33,7 +32,6 @@ import { Asset } from '../../../../../core/store/asset/asset.model';
   styleUrls: ['./asset-subsystems.component.scss']
 })
 export class AssetSubsystemsComponent implements OnInit {
-  OispPriority = OispAlertPriority;
 
   subsystems$: Observable<FactoryAssetDetailsWithFields[]>;
   selected: FactoryAssetDetailsWithFields;

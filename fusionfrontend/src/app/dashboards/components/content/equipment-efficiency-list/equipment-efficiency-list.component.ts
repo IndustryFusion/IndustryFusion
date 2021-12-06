@@ -18,16 +18,15 @@ import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-
 import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 import { Company } from 'src/app/core/store/company/company.model';
-import {  TreeNode } from 'primeng/api';
+import { TreeNode } from 'primeng/api';
 import { ID } from '@datorama/akita';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
+import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -59,12 +58,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   selectedEnum: FieldOption;
   selectedEnumOptions: FieldOption[];
   rowGroupMetaDataMap: Map<ID, RowGroupCount>;
-  GroupByHelper = GroupByHelper;
 
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
 
   tableFilters: FilterOption[] = [
     { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ASSET_TYPE'),

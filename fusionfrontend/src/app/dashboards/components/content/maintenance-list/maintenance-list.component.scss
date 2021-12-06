@@ -16,23 +16,6 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-.notification-icons {
-  overflow: visible !important;
-  margin-top: -2px;
-
-  .notification-low {
-    color: $alert-low;
-  }
-
-  .notification-medium {
-    color: $alert-medium;
-  }
-
-  .notification-high {
-    color: $alert-high;
-  }
-}
-
 .first-header-item {
   padding-left: 2.2rem !important;
 }
