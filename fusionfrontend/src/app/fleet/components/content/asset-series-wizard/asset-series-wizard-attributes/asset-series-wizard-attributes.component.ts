@@ -5,7 +5,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '
 import { FieldType } from '../../../../../core/store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../core/store/field/field.query';
 import { WizardHelper } from '../../../../../core/helpers/wizard-helper';
-import { FieldDataType, FieldOption } from '../../../../../core/store/field/field.model';
+import { FieldDataType } from '../../../../../core/store/field/field.model';
 
 @Component({
   selector: 'app-asset-series-wizard-attributes',
@@ -57,13 +57,6 @@ export class AssetSeriesWizardAttributesComponent implements OnInit {
 
   hideNotDeletableWarning(): void {
     this.showNotDeletableWarning = false;
-  }
-
-  getEnumValueLabel(enumOptions: FieldOption[], id: number): string {
-    if (!enumOptions || !id) {
-      return '';
-    }
-    return enumOptions.find((option) => option.id === id).optionLabel;
   }
 
   private createFormArray(fieldSources: FieldSource[]): void {

@@ -22,7 +22,7 @@ import { ID } from '@datorama/akita';
 })
 export class EnumOptionToStringPipe implements PipeTransform {
   transform(enumOptions: FieldOption[], id: ID): string {
-    if (enumOptions === null || enumOptions?.length === 0 || !id) {
+    if (enumOptions === null || enumOptions?.length === 0 || id === null) {
       return '';
     }
     const fieldOption = enumOptions.find(option => option.id === +id);

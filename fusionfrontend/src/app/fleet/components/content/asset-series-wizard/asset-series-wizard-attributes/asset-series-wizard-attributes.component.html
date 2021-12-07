@@ -45,7 +45,7 @@ under the License.
             </div>
             <div *ngIf="fieldSource.get('fieldDataType').value == attributeDataTypes.ENUM" class="p-col">
               <label *ngIf="!isUnsaved(fieldSource) && fieldSource.valid">
-                {{getEnumValueLabel(fieldSource.get('fieldEnumOptions')?.value, fieldSource.get('value')?.value)}}
+                {{(fieldSource.get('fieldEnumOptions')?.value | enumOptionToString:fieldSource.get('value')?.value)}}
               </label>
               <p-dropdown *ngIf="isUnsaved(fieldSource)" [options]="fieldSource.get('fieldEnumOptions').value"
                           class="field-dialog-inputs"
