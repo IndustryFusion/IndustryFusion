@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.dto.mappers;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
+import io.fusion.fusionbackend.model.FieldTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -97,6 +98,11 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .build();
 
         baseAssetMapper.copyToEntity(dto, entity);
+
+        if (dto.getFieldTargets() != null) {
+            Set<FieldTarget> fieldTargets = fieldTargetMapper.toEntitySet(dto.getFieldTargets());
+            entity.setFieldTargets(fieldTargets);
+        }
 
         addSubsystemsToEntity(dto, entity);
 

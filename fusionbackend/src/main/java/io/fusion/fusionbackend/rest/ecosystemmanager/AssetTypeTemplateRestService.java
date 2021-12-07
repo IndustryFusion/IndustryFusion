@@ -75,9 +75,10 @@ public class AssetTypeTemplateRestService {
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/export")
     public void getAsRdfExport(@PathVariable final Long assetTypeTemplateId,
                                @RequestParam(defaultValue = "false")
-    final boolean extended,HttpServletResponse response) throws IOException {
+                               final boolean extended,
+                               HttpServletResponse response) throws IOException {
 
-        if (extended){
+        if (extended) {
             response.setContentType(MediaType.JSON.toString());
             assetTypeTemplateService.getAssetTypeTemplateExtendedJSON(assetTypeTemplateId, response.getWriter());
         } else {

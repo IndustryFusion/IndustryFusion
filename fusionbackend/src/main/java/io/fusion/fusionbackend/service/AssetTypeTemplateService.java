@@ -17,27 +17,28 @@ package io.fusion.fusionbackend.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
+import io.fusion.fusionbackend.dto.FieldTargetDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
-import io.fusion.fusionbackend.model.Field;
-import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
-import io.fusion.fusionbackend.repository.FieldTargetRepository;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,9 +51,8 @@ import java.util.stream.Collectors;
 public class AssetTypeTemplateService {
     private final AssetTypeTemplateRepository assetTypeTemplateRepository;
     private final AssetTypeService assetTypeService;
-    private final FieldTargetRepository fieldTargetRepository;
-    private final FieldService fieldService;
     private final AssetTypeTemplateMapper assetTypeTemplateMapper;
+    private final FieldTargetService fieldTargetService;
     private final OntologyBuilder ontologyBuilder;
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetTypeTemplateService.class);
@@ -60,14 +60,14 @@ public class AssetTypeTemplateService {
     @Autowired
     public AssetTypeTemplateService(AssetTypeTemplateRepository assetTypeTemplateRepository,
                                     AssetTypeService assetTypeService,
-                                    FieldTargetRepository fieldTargetRepository,
+                                    AssetTypeTemplateMapper assetTypeTemplateMapper,
+                                    @Lazy FieldTargetService fieldTargetService,
                                     FieldService fieldService, AssetTypeTemplateMapper assetTypeTemplateMapper,
                                     OntologyBuilder ontologyBuilder) {
         this.assetTypeTemplateRepository = assetTypeTemplateRepository;
         this.assetTypeService = assetTypeService;
-        this.fieldTargetRepository = fieldTargetRepository;
-        this.fieldService = fieldService;
         this.assetTypeTemplateMapper = assetTypeTemplateMapper;
+        this.fieldTargetService = fieldTargetService;
         this.ontologyBuilder = ontologyBuilder;
     }
 
@@ -178,56 +178,6 @@ public class AssetTypeTemplateService {
         assetTypeTemplateRepository.delete(assetTypeTemplate);
     }
 
-    public Set<FieldTarget> getFieldTargets(final Long assetTypeTemplateId) {
-        final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        return assetTypeTemplate.getFieldTargets();
-    }
-
-    public FieldTarget getFieldTarget(final Long assetTypeTemplateId, final Long fieldTargetId) {
-        final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        return assetTypeTemplate.getFieldTargets().stream()
-                .filter(field -> field.getId().equals(fieldTargetId))
-                .findAny()
-                .orElseThrow(ResourceNotFoundException::new);
-    }
-
-    public FieldTarget getFieldTarget(final AssetTypeTemplate assetTypeTemplate, final Long fieldTargetId) {
-        return assetTypeTemplate.getFieldTargets().stream()
-                .filter(field -> field.getId().equals(fieldTargetId))
-                .findAny()
-                .orElseThrow(ResourceNotFoundException::new);
-    }
-
-    public FieldTarget createFieldTarget(final Long assetTypeTemplateId, final Long fieldId,
-                                         final FieldTarget fieldTarget) {
-        final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        final Field field = fieldService.getField(fieldId, false);
-
-        fieldTarget.setAssetTypeTemplate(assetTypeTemplate);
-        assetTypeTemplate.getFieldTargets().add(fieldTarget);
-        fieldTarget.setField(field);
-
-        return fieldTargetRepository.save(fieldTarget);
-    }
-
-    public FieldTarget updateFieldTarget(final Long assetTypeTemplateId, final Long fieldTargetId,
-                                         final FieldTarget fieldTarget) {
-        final FieldTarget targetFieldTarget = getFieldTarget(assetTypeTemplateId, fieldTargetId);
-
-        targetFieldTarget.copyFrom(fieldTarget);
-
-        return targetFieldTarget;
-    }
-
-    public void deleteFieldTarget(final Long assetTypeTemplateId, final Long fieldTargetId) {
-        final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        final FieldTarget fieldTarget = getFieldTarget(assetTypeTemplate, fieldTargetId);
-
-        assetTypeTemplate.getFieldTargets().remove(fieldTarget);
-
-        fieldTargetRepository.delete(fieldTarget);
-    }
-
     public AssetTypeTemplate setAssetType(final Long assetTypeTemplateId, final Long assetTypeId) {
         final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,
                 false);
@@ -252,7 +202,7 @@ public class AssetTypeTemplateService {
     public void getAssetTypeTemplateExtendedJSON(Long assetTypeTemplateId, PrintWriter writer) throws IOException {
         AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, true);
         assetTypeTemplate.setAssetSeries(null);
-        assetTypeTemplate.getFieldTargets().stream().forEach(fieldTarget -> {
+        assetTypeTemplate.getFieldTargets().forEach(fieldTarget -> {
             fieldTarget.setAssetTypeTemplate(null);
             fieldTarget.getField().getUnit().getQuantityType().setUnits(null);
             fieldTarget.getField().getUnit().getQuantityType().setBaseUnit(null);
@@ -261,7 +211,7 @@ public class AssetTypeTemplateService {
         objectMapper.writeValue(writer, assetTypeTemplate);
     }
 
-    public byte[] getAllAssetTypeTemplateDtosExtendedJson() throws IOException {
+    public byte[] exportAllToJson() throws IOException {
         Set<AssetTypeTemplate> assetTypeTemplates = assetTypeTemplateRepository
                 .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
                 .stream().filter(assetTypeTemplate -> assetTypeTemplate.getPublishedDate() != null)
@@ -269,19 +219,43 @@ public class AssetTypeTemplateService {
 
         Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos = assetTypeTemplateMapper
                 .toDtoSet(assetTypeTemplates, true);
+        sortFieldTargets(publishedAssetTypeTemplatesDtos);
 
-        ObjectMapper objectMapper = new ObjectMapper()
-                .findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(publishedAssetTypeTemplatesDtos));
+    }
 
-        String serialized = objectMapper.writeValueAsString(publishedAssetTypeTemplatesDtos);
-        Set<AssetTypeTemplateDto> deserialized = objectMapper
-                .readerFor(new TypeReference<Set<AssetTypeTemplateDto>>(){})
-                .readValue(serialized);
+    private void sortFieldTargets(Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos) {
+        for (AssetTypeTemplateDto publishedAssetTypeTemplatesDto : publishedAssetTypeTemplatesDtos) {
+            publishedAssetTypeTemplatesDto.setFieldTargetIds(null);
+            Set<FieldTargetDto> sortedFieldTargets = new LinkedHashSet<>(BaseZipImportExport
+                    .toSortedList(publishedAssetTypeTemplatesDto.getFieldTargets()));
+            publishedAssetTypeTemplatesDto.setFieldTargets(sortedFieldTargets);
+        }
+    }
 
-        if (publishedAssetTypeTemplatesDtos.hashCode() == deserialized.hashCode()) {
-            System.out.println("Test passed");
+    public int importMultipleFromJson(byte[] fileContent) throws IOException {
+        Set<AssetTypeTemplateDto> assetTypeTemplateDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
+                new TypeReference<>() {});
+        Set<Long> existingAssetTypeTemplateIds = assetTypeTemplateRepository
+                .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
+                .stream().map(BaseEntity::getId).collect(Collectors.toSet());
+
+        int entitySkippedCount = 0;
+        for (AssetTypeTemplateDto assetTypeTemplateDto : BaseZipImportExport.toSortedList(assetTypeTemplateDtos)) {
+            if (!existingAssetTypeTemplateIds.contains(assetTypeTemplateDto.getId())) {
+                AssetTypeTemplate assetTypeTemplate = assetTypeTemplateMapper.toEntity(assetTypeTemplateDto);
+                assetTypeTemplate.setFieldTargets(new LinkedHashSet<>());
+                createAssetTypeTemplate(assetTypeTemplateDto.getAssetTypeId(), assetTypeTemplate);
+            } else {
+                LOG.warn("Asset type template  with the id " + assetTypeTemplateDto.getId()
+                        + " already exists. Entry is ignored.");
+                entitySkippedCount += 1;
+            }
         }
 
-        return objectMapper.writeValueAsBytes(publishedAssetTypeTemplatesDtos);
+        fieldTargetService.createFieldTargetsFromAssetTypeTemplateDtos(assetTypeTemplateDtos);
+
+        return entitySkippedCount;
     }
 }

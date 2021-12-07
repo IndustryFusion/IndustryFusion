@@ -16,5 +16,16 @@
 <div class="wrapper if-subheader">
   <ul>
     <li [ngClass]="{'active': isRouteActive('assetseries')}" (click)="onRouteClick('assetseries')">Asset Series</li>
+    <li>
+      <a [href]="ifApiService.getExportLinkFleetManager(companyId)" target="_self" [pTooltip]="'Export data of Fleet Manager'">
+        <i class="pi pi-download"></i>
+      </a>
+    </li>
+    <li>
+      <label class="if-upload-button-light" [pTooltip]="'Import data of Ecosystem Manager'">
+        <i class="pi pi-upload"></i>
+        <input type="file" accept="application/zip" (change)="onZipFileUpload($event)">
+      </label>
+    </li>
   </ul>
 </div>
