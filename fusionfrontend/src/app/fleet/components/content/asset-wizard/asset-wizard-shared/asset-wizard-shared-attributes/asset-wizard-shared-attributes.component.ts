@@ -21,7 +21,7 @@ import { Asset } from '../../../../../../core/store/asset/asset.model';
 import { FieldType } from '../../../../../../core/store/field-target/field-target.model';
 import { FieldQuery } from '../../../../../../core/store/field/field.query';
 import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
-import { FieldDataType, FieldOption } from '../../../../../../core/store/field/field.model';
+import { FieldDataType } from '../../../../../../core/store/field/field.model';
 
 @Component({
   selector: 'app-asset-wizard-shared-attributes',
@@ -73,13 +73,6 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
 
   public isMandatory(group: AbstractControl): boolean {
     return group == null || group.get('mandatory').value;
-  }
-
-  getEnumValueLabel(enumOptions: FieldOption[], id: number): string {
-    if (!enumOptions || !id) {
-      return '';
-    }
-    return enumOptions.find((option) => option.id === id).optionLabel;
   }
 
   private fillTable(fieldInstances: FieldInstance[]) {

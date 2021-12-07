@@ -20,7 +20,7 @@ under the License.
       <div class="if-label-small-header p-col-3"> Custom Attribute name</div>
       <div class="if-label-small-header p-col-4"> Attribute name</div>
       <div [ngClass]="isReview ? 'p-col-1' : 'p-col-2'" class="if-label-small-header"> Value</div>
-      <div [ngClass]="isReview ? 'p-col-2' : 'p-col-1'" class="if-label-small-header"> Unit </div>
+      <div [ngClass]="isReview ? 'p-col-2' : 'p-col-1'" class="if-label-small-header"> Unit</div>
       <div class="if-label-small-header p-col-2"></div>
     </div>
 
@@ -30,15 +30,15 @@ under the License.
           <label class="if-label p-col-3" displayControlValue="name"></label>
           <label class="if-label p-col-4" displayControlValue="fieldName"></label>
 
-          <div *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.NUMERIC" class="p-col-2">
-            <input *ngIf="isReview === false" class="value-input" formControlName="value" pInputText
-                   type="number">
-            <label *ngIf="isReview === true" [ngClass]="isReview ? 'p-col-1' : 'p-col-2'"
-                   displayControlValue="value"></label>
-          </div>
-          <div *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.ENUM" class="p-col">
+          <span *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.NUMERIC"
+                [ngClass]="isReview ? 'p-col-1' : 'p-col-2'">
+            <input *ngIf="isReview === false" class="value-input" formControlName="value" pInputText type="number">
+            <label *ngIf="isReview === true" displayControlValue="value"></label>
+          </span>
+
+          <div *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.ENUM" class="p-col-3">
             <label *ngIf="isReview === true">
-              {{getEnumValueLabel(fieldInstance.get('fieldEnumOptions')?.value, fieldInstance.get('value')?.value)}}
+              {{fieldInstance.get('fieldEnumOptions')?.value | enumOptionToString:fieldInstance.get('value')?.value}}
             </label>
             <p-dropdown *ngIf="isReview === false" [options]="fieldInstance.get('fieldEnumOptions').value"
                         class="field-dialog-inputs"
@@ -47,7 +47,8 @@ under the License.
                         optionValue="id" placeholder="Select value"></p-dropdown>
           </div>
 
-          <label [ngClass]="isReview ? 'p-col-2' : 'p-col-1'" class="if-label-normal-weight"
+          <label *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.NUMERIC"
+                 [ngClass]="isReview ? 'p-col-2' : 'p-col-1'" class="if-label-normal-weight"
                  displayControlValue="sourceUnitName"></label>
 
           <div class="p-col-2 edit-col">
