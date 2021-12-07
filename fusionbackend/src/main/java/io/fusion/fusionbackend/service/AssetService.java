@@ -338,7 +338,9 @@ public class AssetService {
     private Asset updateRoom(Room oldAssetRoom, Room newAssetRoom, Asset targetAsset) {
 
         targetAsset.setRoom(newAssetRoom);
-        oldAssetRoom.getAssets().remove(targetAsset);
+        if (oldAssetRoom != null) {
+            oldAssetRoom.getAssets().remove(targetAsset);
+        }
         newAssetRoom.getAssets().add(targetAsset);
 
         return targetAsset;
