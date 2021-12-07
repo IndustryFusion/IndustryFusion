@@ -49,6 +49,7 @@ import { StringEnumToOptionArrayPipe } from './pipes/string-enum-to-option-array
 import { GermanStringPipe } from './pipes/german-string.pipe';
 import { EnumOptionsToStringPipe } from './pipes/enum-options-to-string.pipe';
 import { StatusFilterComponent } from './components/ui/table-filter/status-filter/status-filter.component';
+import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import { StatusFilterComponent } from './components/ui/table-filter/status-filte
     StringEnumToOptionArrayPipe,
     GermanStringPipe,
     EnumOptionsToStringPipe,
+    EnumOptionToStringPipe,
     StatusFilterComponent,
   ],
   imports: [
@@ -149,6 +151,7 @@ import { StatusFilterComponent } from './components/ui/table-filter/status-filte
     StringEnumToOptionArrayPipe,
     GermanStringPipe,
     EnumOptionsToStringPipe,
+    EnumOptionToStringPipe,
     StatusFilterComponent,
   ],
   providers: [

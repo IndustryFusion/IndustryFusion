@@ -18,7 +18,7 @@ under the License.
     <div class="caption">Digital Nameplate</div>
     <div class="flexbox"></div>
     <div class="card-button-box">
-      <button class="card-button" (click)="generateAssetOnboardingFile()">
+      <button (click)="generateAssetOnboardingFile()" class="card-button">
         <img class="fusion-icon" src="assets/img/IndustryFusion-hive.png">
         Generate Asset Onboarding File
       </button>
@@ -51,8 +51,12 @@ under the License.
   <p-card class="card">
     <div class="grid">
       <ng-container *ngFor="let attribute of getAttributes((asset$ | async)?.fields)">
-        <app-nameplate-item
-          label="{{ attribute.name }}">{{ attribute.value | germanNumber }} {{ attribute.unit }}</app-nameplate-item>
+        <app-nameplate-item label="{{ attribute.name }}">
+          <span
+            *ngIf="attribute.fieldDataType === fieldDataTypes.NUMERIC"> {{ attribute.value | germanNumber }} {{ attribute.unit }} </span>
+          <span
+            *ngIf="attribute.fieldDataType === fieldDataTypes.ENUM"> {{ attribute.enumOptions | enumOptionToString:attribute.value  }} </span>
+        </app-nameplate-item>
       </ng-container>
     </div>
   </p-card>

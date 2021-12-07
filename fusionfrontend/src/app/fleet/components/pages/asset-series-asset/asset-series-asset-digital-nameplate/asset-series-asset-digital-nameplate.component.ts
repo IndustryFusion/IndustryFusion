@@ -37,6 +37,7 @@ import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
 import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
 import { AssetOnboardingService } from '../../../../../core/services/logic/asset-onboarding.service';
+import { FieldDataType } from '../../../../../core/store/field/field.model';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
   company$: Observable<Company>;
 
   factorySiteTypes = FactorySiteType;
+  fieldDataTypes = FieldDataType;
 
   constructor(
     private oispService: OispService,
@@ -99,7 +101,7 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
       switchMap(([asset, rooms]) => {
         const assetRoom = rooms.find((room) => room.id === asset.roomId);
         return this.factorySiteQuery.selectAll().pipe(
-          map(sites => sites.find(site => site.id === assetRoom.factorySiteId))
+          map(sites => sites.find(site => site.id === assetRoom?.factorySiteId))
         );
       })
     );
@@ -134,18 +136,6 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     );
   }
 
-  private resolve() {
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.assetId = this.factoryAssetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
-
-    const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
-    if (assetSeriesId != null) {
-      this.assetSeriesDetailsService.setActive(assetSeriesId);
-    }
-  }
-
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
   }
@@ -157,5 +147,17 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
             .subscribe(fileContent => AssetSeriesAssetDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
       }
     );
+  }
+
+  private resolve() {
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetId = this.factoryAssetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+
+    const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
+    if (assetSeriesId != null) {
+      this.assetSeriesDetailsService.setActive(assetSeriesId);
+    }
   }
 }
