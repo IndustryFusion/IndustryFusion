@@ -53,6 +53,7 @@ public class AssetTypeTemplateService {
     private final FieldTargetRepository fieldTargetRepository;
     private final FieldService fieldService;
     private final AssetTypeTemplateMapper assetTypeTemplateMapper;
+    private final OntologyBuilder ontologyBuilder;
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetTypeTemplateService.class);
 
@@ -60,12 +61,14 @@ public class AssetTypeTemplateService {
     public AssetTypeTemplateService(AssetTypeTemplateRepository assetTypeTemplateRepository,
                                     AssetTypeService assetTypeService,
                                     FieldTargetRepository fieldTargetRepository,
-                                    FieldService fieldService, AssetTypeTemplateMapper assetTypeTemplateMapper) {
+                                    FieldService fieldService, AssetTypeTemplateMapper assetTypeTemplateMapper,
+                                    OntologyBuilder ontologyBuilder) {
         this.assetTypeTemplateRepository = assetTypeTemplateRepository;
         this.assetTypeService = assetTypeService;
         this.fieldTargetRepository = fieldTargetRepository;
         this.fieldService = fieldService;
         this.assetTypeTemplateMapper = assetTypeTemplateMapper;
+        this.ontologyBuilder = ontologyBuilder;
     }
 
     public Set<AssetTypeTemplate> getAssetTypeTemplates() {
@@ -222,7 +225,6 @@ public class AssetTypeTemplateService {
 
     public OntModel getAssetTypeTemplateRdf(Long assetTypeTemplateId) throws IOException {
         AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        OntologyBuilder ontologyBuilder = new OntologyBuilder();
         OntModel model = ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
         return model;
     }
