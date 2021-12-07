@@ -28,10 +28,12 @@ import io.fusion.fusionbackend.model.ConnectivityType;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetSeriesRepository;
 import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
 import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;
 import io.fusion.fusionbackend.repository.FieldSourceRepository;
+import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,7 @@ public class AssetSeriesService {
     private final FieldSourceService fieldSourceService;
     private final ConnectivityTypeRepository connectivityTypeRepository;
     private final ConnectivityProtocolRepository connectivityProtocolRepository;
+    private final OntologyBuilder ontologyBuilder;
 
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
@@ -64,7 +67,8 @@ public class AssetSeriesService {
                               UnitService unitService,
                               FieldSourceService fieldSourceService,
                               ConnectivityTypeRepository connectivityTypeRepository,
-                              ConnectivityProtocolRepository connectivityProtocolRepository) {
+                              ConnectivityProtocolRepository connectivityProtocolRepository,
+                              OntologyBuilder ontologyBuilder) {
         this.assetSeriesRepository = assetSeriesRepository;
         this.assetTypeTemplateService = assetTypeTemplateService;
         this.fieldSourceRepository = fieldSourceRepository;
@@ -73,6 +77,7 @@ public class AssetSeriesService {
         this.fieldSourceService = fieldSourceService;
         this.connectivityTypeRepository = connectivityTypeRepository;
         this.connectivityProtocolRepository = connectivityProtocolRepository;
+        this.ontologyBuilder = ontologyBuilder;
     }
 
     public Set<AssetSeries> getAssetSeriesSetByCompany(final Long companyId) {
@@ -233,5 +238,10 @@ public class AssetSeriesService {
         final Unit unit = unitService.getUnit(unitId);
 
         fieldSource.setSourceUnit(unit);
+    }
+
+    public OntModel getAssetSeriesRdf(Long assetSeriesId, Long companyId) {
+        AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
+        return ontologyBuilder.buildAssetSeriesOntology(assetSeries);
     }
 }
