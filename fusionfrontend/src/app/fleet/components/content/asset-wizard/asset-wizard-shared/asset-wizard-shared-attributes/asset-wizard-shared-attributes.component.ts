@@ -126,7 +126,7 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
     group.get('fieldEnumOptions').patchValue(field.enumOptions);
 
     if (fieldInstance.value) {
-      group.get('value').patchValue(fieldInstance.value);
+      group.get('value').patchValue(+fieldInstance.value);
     } else {
       group.get('value').patchValue(fieldInstance.fieldSource.value);
     }
