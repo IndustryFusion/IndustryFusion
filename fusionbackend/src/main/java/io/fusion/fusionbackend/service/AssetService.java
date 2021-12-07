@@ -15,24 +15,34 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jsonldjava.utils.JsonUtils;
+import io.fusion.fusionbackend.dto.AssetDto;
+import io.fusion.fusionbackend.dto.FieldInstanceDto;
+import io.fusion.fusionbackend.dto.mappers.AssetMapper;
+import io.fusion.fusionbackend.dto.mappers.FieldSourceMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.FieldInstance;
+import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.model.Threshold;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +53,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -50,28 +61,35 @@ public class AssetService {
     private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
 
     private final AssetRepository assetRepository;
+    private final AssetMapper assetMapper;
     private final FieldInstanceRepository fieldInstanceRepository;
     private final RoomService roomService;
     private final AssetSeriesService assetSeriesService;
     private final CompanyService companyService;
     private final FactorySiteService factorySiteService;
     private final FieldInstanceService fieldInstanceService;
+    private final FieldSourceMapper fieldSourceMapper;
+
 
     @Autowired
     public AssetService(AssetRepository assetRepository,
+                        @Lazy AssetMapper assetMapper,
                         FieldInstanceRepository fieldInstanceRepository,
                         RoomService roomService,
                         AssetSeriesService assetSeriesService,
                         CompanyService companyService,
                         FactorySiteService factorySiteService,
-                        FieldInstanceService fieldInstanceService) {
+                        FieldInstanceService fieldInstanceService,
+                        FieldSourceMapper fieldSourceMapper) {
         this.assetRepository = assetRepository;
+        this.assetMapper = assetMapper;
         this.fieldInstanceRepository = fieldInstanceRepository;
         this.roomService = roomService;
         this.assetSeriesService = assetSeriesService;
         this.companyService = companyService;
         this.factorySiteService = factorySiteService;
         this.fieldInstanceService = fieldInstanceService;
+        this.fieldSourceMapper = fieldSourceMapper;
     }
 
     public Asset getAssetById(final Long assetId) {
@@ -459,13 +477,15 @@ public class AssetService {
         asset.getFieldInstances().stream().forEach(fieldInstance -> {
 
             String value = Optional.ofNullable(fieldInstance.getValue()).orElse("");
-            QuantityDataType quantityDataType = fieldInstance.getFieldSource().getSourceUnit().getQuantityType().getDataType();
-            switch (quantityDataType){
+            QuantityDataType quantityDataType = fieldInstance.getFieldSource()
+                    .getSourceUnit().getQuantityType().getDataType();
+            switch (quantityDataType) {
                 case NUMERIC:
                     addProperty(root, cleanName(fieldInstance), value);
                     break;
                 case CATEGORICAL:
-                    addProperty(root, cleanName(fieldInstance), value, fieldInstance.getFieldSource().getSourceUnit().getSymbol());
+                    addProperty(root, cleanName(fieldInstance), value,
+                            fieldInstance.getFieldSource().getSourceUnit().getSymbol());
                     break;
                 default:
                     LOG.error("unknown quantityType \"{}\" was used", quantityDataType);
@@ -566,4 +586,20 @@ public class AssetService {
         return json.put("type", type);
     }
 
+    public byte[] exportAllToJson(final Long companyId) throws IOException {
+        Set<Asset> asset = assetRepository
+                .findAllByCompanyId(AssetRepository.DEFAULT_SORT, companyId);
+
+        Set<AssetDto> assetDtos = assetMapper.toDtoSet(asset, true)
+                .stream().peek(assetDto -> {
+                    assetDto.setCompanyId(null);
+                    assetDto.setRoom(null);
+                    assetDto.setRoomId(null);
+                    assetDto.getFieldInstances().forEach(fieldInstanceDto -> fieldInstanceDto.setFieldSource(null));
+                })
+                .collect(Collectors.toSet());
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetDtos));
+    }
 }

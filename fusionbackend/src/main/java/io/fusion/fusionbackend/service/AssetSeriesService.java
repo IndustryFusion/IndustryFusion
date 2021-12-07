@@ -15,12 +15,20 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fusion.fusionbackend.dto.AssetSeriesDto;
+import io.fusion.fusionbackend.dto.FieldSourceDto;
+import io.fusion.fusionbackend.dto.mappers.AssetSeriesMapper;
+import io.fusion.fusionbackend.dto.mappers.FieldTargetMapper;
+import io.fusion.fusionbackend.dto.mappers.UnitMapper;
 import io.fusion.fusionbackend.exception.AlreadyExistsException;
 import io.fusion.fusionbackend.exception.ConflictException;
 import io.fusion.fusionbackend.exception.MandatoryFieldException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivitySettings;
@@ -33,6 +41,7 @@ import io.fusion.fusionbackend.repository.AssetSeriesRepository;
 import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
 import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;
 import io.fusion.fusionbackend.repository.FieldSourceRepository;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,39 +49,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class AssetSeriesService {
     private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
     private final AssetSeriesRepository assetSeriesRepository;
+    private final AssetSeriesMapper assetSeriesMapper;
     private final AssetTypeTemplateService assetTypeTemplateService;
+    private final UnitMapper unitMapper;
     private final FieldSourceRepository fieldSourceRepository;
     private final CompanyService companyService;
     private final UnitService unitService;
     private final FieldSourceService fieldSourceService;
+    private final FieldTargetService fieldTargetService;
+    private final FieldTargetMapper fieldTargetMapper;
     private final ConnectivityTypeRepository connectivityTypeRepository;
     private final ConnectivityProtocolRepository connectivityProtocolRepository;
     private final OntologyBuilder ontologyBuilder;
 
     @Autowired
     public AssetSeriesService(AssetSeriesRepository assetSeriesRepository,
+                              AssetSeriesMapper assetSeriesMapper,
                               AssetTypeTemplateService assetTypeTemplateService,
+                              UnitMapper unitMapper,
                               FieldSourceRepository fieldSourceRepository,
                               CompanyService companyService,
                               UnitService unitService,
                               FieldSourceService fieldSourceService,
+                              FieldTargetService fieldTargetService,
+                              FieldTargetMapper fieldTargetMapper,
                               ConnectivityTypeRepository connectivityTypeRepository,
                               ConnectivityProtocolRepository connectivityProtocolRepository,
                               OntologyBuilder ontologyBuilder) {
         this.assetSeriesRepository = assetSeriesRepository;
+        this.assetSeriesMapper = assetSeriesMapper;
         this.assetTypeTemplateService = assetTypeTemplateService;
+        this.unitMapper = unitMapper;
         this.fieldSourceRepository = fieldSourceRepository;
         this.companyService = companyService;
         this.unitService = unitService;
         this.fieldSourceService = fieldSourceService;
+        this.fieldTargetService = fieldTargetService;
+        this.fieldTargetMapper = fieldTargetMapper;
         this.connectivityTypeRepository = connectivityTypeRepository;
         this.connectivityProtocolRepository = connectivityProtocolRepository;
         this.ontologyBuilder = ontologyBuilder;
@@ -181,7 +204,7 @@ public class AssetSeriesService {
     public FieldSource getFieldSource(final Long companyId, final Long assetSeriesId, final Long fieldSourceId) {
         final AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
         return assetSeries.getFieldSources().stream()
-                .filter(field -> field.getId().equals(fieldSourceId))
+                .filter(fieldSource -> fieldSource.getId().equals(fieldSourceId))
                 .findAny()
                 .orElseThrow(ResourceNotFoundException::new);
     }
@@ -242,5 +265,23 @@ public class AssetSeriesService {
     public OntModel getAssetSeriesRdf(Long assetSeriesId, Long companyId) {
         AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
         return ontologyBuilder.buildAssetSeriesOntology(assetSeries);
+    }
+
+    public byte[] exportAllToJson(final Long companyId) throws IOException {
+        Set<AssetSeries> assetSeries = assetSeriesRepository
+                .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId);
+
+        Set<AssetSeriesDto> assetSeriesDtos = assetSeriesMapper.toDtoSet(assetSeries, true)
+                .stream().peek(assetSeriesDto -> {
+                    assetSeriesDto.setCompanyId(null);
+                    assetSeriesDto.getFieldSources().forEach(fieldSourceDto -> {
+                        fieldSourceDto.setFieldTarget(null);
+                        fieldSourceDto.setSourceUnit(null);
+                    });
+                })
+                .collect(Collectors.toSet());
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetSeriesDtos));
     }
 }

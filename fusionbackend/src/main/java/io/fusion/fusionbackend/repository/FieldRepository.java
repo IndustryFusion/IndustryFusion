@@ -21,10 +21,13 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface FieldRepository extends PagingAndSortingRepository<Field, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
     @EntityGraph(value = "Field.allChildrenDeep", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Field> findDeepById(Long id);
+
+    Set<Field> findAll(Sort sort);
 }

@@ -21,7 +21,7 @@ under the License.
     <li routerLinkActive="active" routerLink="/ecosystemmanager/quantitytypes">{{ 'APP.ECOSYSTEM.SUB_HEADER.QUANTITY_TYPES' | translate }}</li>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/units">{{ 'APP.ECOSYSTEM.SUB_HEADER.UNITS' | translate }}</li>
     <li>
-      <a [href]="ifApiService.getExportLinkEcosystemManager()" target="_self">
+      <a [href]="ifApiService.getExportLinkEcosystemManager()" target="_self" [pTooltip]="'Export data of Ecosystem Manager'">
         <i class="pi pi-download"></i>
       </a>
     </li>
