@@ -61,11 +61,11 @@ under the License.
     <div class="grid">
       <ng-container *ngFor="let attribute of getAttributes((asset$ | async)?.fields)">
         <app-nameplate-item label="{{ attribute.name }}">
-          <span
-            *ngIf="attribute.fieldDataType === fieldDataTypes.NUMERIC"> {{ attribute.value | germanNumber }} {{ attribute.unit }}
+          <span *ngIf="attribute.fieldDataType === fieldDataTypes.NUMERIC">
+            {{ attribute.value | germanNumber }} {{ attribute.unit }}
           </span>
-          <span
-            *ngIf="attribute.fieldDataType === fieldDataTypes.ENUM"> {{ attribute.enumOptions | enumOptionToString:attribute.value  }}
+          <span *ngIf="attribute.fieldDataType === fieldDataTypes.ENUM">
+            {{ attribute.enumOptions | enumOptionToString:attribute.value  }}
           </span>
         </app-nameplate-item>
       </ng-container>

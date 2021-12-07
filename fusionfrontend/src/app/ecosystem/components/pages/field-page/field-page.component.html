@@ -43,7 +43,6 @@ under the License.
     </div>
 
     <div *ngIf="(field$ | async)?.dataType === dataTypes.NUMERIC">
-
       <div class="row">
         <label class="label-column"> Unit </label>
         <label class="if-detail-page-label"> {{ (unit$ | async)?.name }} </label>
