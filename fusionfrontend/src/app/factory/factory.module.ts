@@ -72,6 +72,7 @@ import { HistoricalStatusBarChartComponent } from '../shared/components/content/
 import { ChartModule } from 'primeng/chart';
 import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
 import { MetricsGroupComponent } from './components/content/metrics-board/metrics-group/metrics-group.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -118,23 +119,24 @@ import { MetricsGroupComponent } from './components/content/metrics-board/metric
     MetricsBoardComponent,
     MetricsGroupComponent,
   ],
-  imports: [
-    SharedModule,
-    FactoryRoutingModule,
-    ClarityModule,
-    ChartsModule,
-    ReactiveFormsModule,
-    TableModule,
-    CardModule,
-    FusionAppletsModule,
-    AccordionModule,
-    SelectButtonModule,
-    DashboardModule,
-    CalendarModule,
-    ChartModule,
-    TreeTableModule,
-    TreeModule,
-  ],
+    imports: [
+        SharedModule,
+        FactoryRoutingModule,
+        ClarityModule,
+        ChartsModule,
+        ReactiveFormsModule,
+        TableModule,
+        CardModule,
+        FusionAppletsModule,
+        AccordionModule,
+        SelectButtonModule,
+        DashboardModule,
+        CalendarModule,
+        ChartModule,
+        TreeTableModule,
+        TreeModule,
+        TooltipModule,
+    ],
   exports: [
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,

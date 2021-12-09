@@ -41,6 +41,7 @@ import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
+import { IfApiService } from '../../../../core/services/api/if-api.service';
 
 @Component({
   selector: 'app-assets-list',
@@ -114,7 +115,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
-    private assetDetailMenuService: AssetDetailMenuService) {
+    private assetDetailMenuService: AssetDetailMenuService,
+    public ifApiService: IfApiService) {
   }
 
   ngOnInit() {
@@ -355,4 +357,16 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  onZipFileUpload(event: any): void {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const selectedZipFile: File = fileList[0];
+      this.ifApiService.uploadZipFileForFactoryManagerImport(this.company.id, this.factorySite.id, selectedZipFile)
+        .subscribe(() => this.refreshPage());
+    }
+  }
+
+  private refreshPage(): void {
+    window.location.reload();
+  }
 }
