@@ -38,8 +38,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -240,9 +242,13 @@ public class AssetTypeTemplateService {
                 .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
+        Map<Long, Set<Long>> assetTypeTemplateSubsystemMap = new HashMap<>();
+
         int entitySkippedCount = 0;
         for (AssetTypeTemplateDto assetTypeTemplateDto : BaseZipImportExport.toSortedList(assetTypeTemplateDtos)) {
             if (!existingAssetTypeTemplateIds.contains(assetTypeTemplateDto.getId())) {
+                removeAndCacheSubsystems(assetTypeTemplateSubsystemMap, assetTypeTemplateDto);
+
                 AssetTypeTemplate assetTypeTemplate = assetTypeTemplateMapper.toEntity(assetTypeTemplateDto);
                 assetTypeTemplate.setFieldTargets(new LinkedHashSet<>());
                 createAssetTypeTemplate(assetTypeTemplateDto.getAssetTypeId(), assetTypeTemplate);
@@ -254,7 +260,27 @@ public class AssetTypeTemplateService {
         }
 
         fieldTargetService.createFieldTargetsFromAssetTypeTemplateDtos(assetTypeTemplateDtos);
+        addCachedSubsystemsToAssetTypeTemplates(assetTypeTemplateSubsystemMap);
 
         return entitySkippedCount;
+    }
+
+    private void removeAndCacheSubsystems(final Map<Long, Set<Long>> assetTypeTemplateSubsystemMap,
+                                          final AssetTypeTemplateDto assetTypeTemplateDto) {
+        assetTypeTemplateSubsystemMap.put(assetTypeTemplateDto.getId(), assetTypeTemplateDto.getSubsystemIds());
+        assetTypeTemplateDto.setSubsystemIds(null);
+    }
+
+    private void addCachedSubsystemsToAssetTypeTemplates(final Map<Long, Set<Long>> assetTypeTemplateSubsystemMap) {
+
+        assetTypeTemplateSubsystemMap.forEach((assetTypeTemplateId, subsystemIds) -> {
+            AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
+            Set<AssetTypeTemplate> subsystems = subsystemIds.stream()
+                    .map(id -> getAssetTypeTemplate(id, false))
+                    .collect(Collectors.toSet());
+
+            assetTypeTemplate.setSubsystems(subsystems);
+            updateAssetTypeTemplate(assetTypeTemplate.getId(), assetTypeTemplate);
+        });
     }
 }

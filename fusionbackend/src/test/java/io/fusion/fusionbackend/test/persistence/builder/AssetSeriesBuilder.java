@@ -7,6 +7,8 @@ import io.fusion.fusionbackend.model.ConnectivityProtocol;
 import io.fusion.fusionbackend.model.ConnectivitySettings;
 import io.fusion.fusionbackend.model.ConnectivityType;
 
+import java.util.UUID;
+
 public class AssetSeriesBuilder implements Builder<AssetSeries> {
 
     private Builder<AssetTypeTemplate> assetTypeTemplateBuilder = AssetTypeTemplateBuilder.anAssetTypeTemplate();
@@ -65,6 +67,10 @@ public class AssetSeriesBuilder implements Builder<AssetSeries> {
             connectivitySettings.setConnectivityType(this.connectivityType);
             connectivitySettings.setConnectivityProtocol(this.connectivityProtocol);
             assetSeries.setConnectivitySettings(connectivitySettings);
+        }
+
+        if (assetSeries.getGlobalId() == null) {
+            assetSeries.setGlobalId(UUID.randomUUID().toString());
         }
 
         return assetSeries;
