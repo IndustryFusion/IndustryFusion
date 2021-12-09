@@ -104,6 +104,21 @@ public class AssetTypeTemplateService {
             throw new RuntimeException(exception);
         }
 
+        validateSubsystems(assetTypeTemplate, assetType);
+    }
+
+    private void validateSubsystems(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
+        for (AssetTypeTemplate subsystem : assetTypeTemplate.getSubsystems()) {
+            if (subsystem.getId().equals(assetTypeTemplate.getId())) {
+                throw new RuntimeException("An asset type template is not allowed to be a subsystem of itself.");
+            }
+            if (subsystem.getAssetType().getId().equals(assetType.getId())) {
+                throw new RuntimeException("A subsystem has to be of another asset type than the parent template.");
+            }
+            if (subsystem.getPublicationState().equals(PublicationState.DRAFT)) {
+                throw new RuntimeException("A subsystem has to be a published asset type template.");
+            }
+        }
     }
 
     private boolean existsDraftToAssetType(AssetType assetType) {
@@ -206,5 +221,10 @@ public class AssetTypeTemplateService {
         assetTypeTemplate.setAssetType(assetType);
 
         return assetTypeTemplate;
+    }
+
+    public Set<AssetTypeTemplate> findSubsystemCandidates(final Long parentAssetTypeId,
+                                                          final Long assetTypeTemplateId) {
+        return assetTypeTemplateRepository.findSubsystemCandidates(parentAssetTypeId, assetTypeTemplateId);
     }
 }

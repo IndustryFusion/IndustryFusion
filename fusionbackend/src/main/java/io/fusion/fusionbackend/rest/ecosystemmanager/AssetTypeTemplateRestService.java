@@ -52,11 +52,19 @@ public class AssetTypeTemplateRestService {
     }
 
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}")
-    public AssetTypeTemplateDto getAssetTypeTempl(@PathVariable final Long assetTypeTemplateId,
+    public AssetTypeTemplateDto getAssetTypeTemplate(@PathVariable final Long assetTypeTemplateId,
                                                   @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return assetTypeTemplateMapper.toDto(
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, embedChildren),
                 embedChildren);
+    }
+
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/assettypes/{assetTypeId}/subsystemcandidates")
+    public Set<AssetTypeTemplateDto> getSubsystemCandidates(@PathVariable final Long assetTypeTemplateId,
+                                                            @PathVariable final Long assetTypeId) {
+        return assetTypeTemplateMapper.toDtoSet(
+                assetTypeTemplateService.findSubsystemCandidates(assetTypeId, assetTypeTemplateId),
+                true);
     }
 
     @GetMapping(path = "/assettypetemplates/nextVersion/{assetTypeId}")
@@ -84,7 +92,7 @@ public class AssetTypeTemplateRestService {
         assetTypeTemplateService.deleteAssetTypeTemplate(assetTypeTemplateId);
     }
 
-    @PutMapping(path = "/assettypetemplates/fields/{fieldId}") // TODO: unused parameter
+    @PutMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fields/{fieldId}")
     public AssetTypeTemplateDto setFieldUnit(@PathVariable final Long assetTypeTemplateId,
                                              @RequestParam final Long assetTypeId) {
         return assetTypeTemplateMapper.toDto(assetTypeTemplateService.setAssetType(assetTypeTemplateId,
