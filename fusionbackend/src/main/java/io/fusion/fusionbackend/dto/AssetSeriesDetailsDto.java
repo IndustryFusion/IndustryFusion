@@ -27,6 +27,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetSeriesDetailsDto extends BaseEntityDto {
+    private String globalId;
     private String name;
     private String assetType;
     private String templateVersion;
