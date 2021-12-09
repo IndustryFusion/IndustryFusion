@@ -65,7 +65,7 @@ public class BlankNodeProcessor {
                 } else if (nodevalue instanceof JSONObject) {
                     node.put(key, insertBlankNodes((JSONObject) nodevalue, blankNodes));
                 } else if (nodevalue instanceof String && ((String) nodevalue).startsWith("_:b")) {
-                        node.put(key, blankNodes.remove(nodevalue));
+                    node.put(key, blankNodes.remove(nodevalue));
                 }
             }
         }

@@ -137,8 +137,7 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
     public void generateAssetOnboardingZipPackage(final Long companyId,
                                                   final Long assetSeriesId,
                                                   final Long assetId,
-                                                  final OutputStream responseOutputStream,
-                                                  final InputStream yamlInputStream) throws IOException {
+                                                  final OutputStream responseOutputStream) throws IOException {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
@@ -153,8 +152,8 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
             addFileToZipOutputStream(zipOutputStream, FILENAME_ONT,
                     OntologyUtil.exportOwlOntologyModelToJsonUsingJena(assetOntModel));
 
-            /*       addFileToZipOutputStream(zipOutputStream, FILENAME_APPLICATION_YAML,
-                    yamlInputStream.readAllBytes());*/
+            // TODO: tse
+            //addFileToZipOutputStream(zipOutputStream, FILENAME_APPLICATION_YAML, );
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
