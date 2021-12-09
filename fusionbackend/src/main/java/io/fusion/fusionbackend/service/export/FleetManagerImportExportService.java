@@ -15,9 +15,9 @@
 
 package io.fusion.fusionbackend.service.export;
 
-import io.fusion.fusionbackend.ontology.OntologyUtil;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import io.fusion.fusionbackend.service.AssetService;
+import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,22 +39,25 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
     private final AssetService assetService;
 
     private final EcosystemManagerImportExportService ecosystemManagerImportExportService;
+    private final AssetYamlExportService assetYamlExportService;
 
     public static final String FILENAME_ASSET_SERIES = "AssetSeries.json";
     public static final String FILENAME_ASSETS = "Assets.json";
     public static final String FILENAME_ASSET = "Asset.json";
     public static final String FILENAME_NGSI_LD = "NGSI-LD.json";
-    public static final String FILENAME_ONT = "Owl.ttl";
+    public static final String FILENAME_OWL = "Owl.ttl";
     public static final String FILENAME_APPLICATION_YAML = "application.yaml";
 
 
     @Autowired
     public FleetManagerImportExportService(AssetSeriesService assetSeriesService,
                                            AssetService assetService,
-                                           EcosystemManagerImportExportService ecosystemManagerImportExportService) {
+                                           EcosystemManagerImportExportService ecosystemManagerImportExportService,
+                                           AssetYamlExportService assetYamlExportService) {
         this.assetSeriesService = assetSeriesService;
         this.assetService = assetService;
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
+        this.assetYamlExportService = assetYamlExportService;
     }
 
     public void exportEntitiesToStreamAsZip(final Long companyId,
@@ -149,11 +152,10 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
             addFileToZipOutputStream(zipOutputStream, FILENAME_NGSI_LD, assetNgsiLd.getBytes(StandardCharsets.UTF_8));
 
             OntModel assetOntModel = assetSeriesService.getAssetSeriesRdf(assetSeriesId, companyId);
-            addFileToZipOutputStream(zipOutputStream, FILENAME_ONT,
+            addFileToZipOutputStream(zipOutputStream, FILENAME_OWL,
                     OntologyUtil.exportOwlOntologyModelToJsonUsingJena(assetOntModel));
-
-            // TODO: tse
-            //addFileToZipOutputStream(zipOutputStream, FILENAME_APPLICATION_YAML, );
+            addFileToZipOutputStream(zipOutputStream, FILENAME_APPLICATION_YAML,
+                     assetYamlExportService.createYamlFile(assetService.getAssetById(assetId)));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
