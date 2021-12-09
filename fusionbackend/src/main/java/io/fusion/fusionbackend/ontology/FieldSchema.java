@@ -41,6 +41,7 @@ public class FieldSchema {
     public static final ObjectProperty hasThresholdProperty = model.createObjectProperty(uri+"hasThreshold");;
     public static final ObjectProperty accuracy = model.createObjectProperty(uri+"accuracy");
     public static final ObjectProperty name = model.createObjectProperty(uri+"name");
+    public static final Property hasField = model.createProperty(uri, "hasField");
     public static final ObjectProperty description = model.createObjectProperty(uri+"description");
 
     private HashMap<FieldThresholdType, Property> fieldThresholdTypeMap;

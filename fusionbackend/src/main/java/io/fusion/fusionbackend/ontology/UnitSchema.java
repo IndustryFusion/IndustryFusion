@@ -20,20 +20,18 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
-public class AssetSeriesSchema {
+public class UnitSchema {
 
     /**
      * The basic Ontology of an AssetSeries
      */
-    public static final String uri = "https://industry-fusion.com/as-schema/1.0#";
+    public static final String uri = "https://industry-fusion.com/unit-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
     public static final Property id = m.createProperty(uri, "id");
-    public static final Property version = m.createProperty(uri, "version");
     public static final Property name = m.createProperty(uri, "name");
-    public static final Property description = m.createProperty(uri, "description");
-    public static final Property imageKey = m.createProperty(uri, "imageKey");
-    public static final Property assetTypeTemplate = m.createProperty(uri, "assetTypeTemplate");
-    public static final Property hasValue = m.createProperty(uri, "hasValue");
+    public static final Property label = m.createProperty(uri, "label");
+    public static final Property symbol = m.createProperty(uri, "symbol");
+    public static final Property hasUnit = m.createProperty(uri, "hasUnit");
 
     /**
      * returns the URI for this schema
