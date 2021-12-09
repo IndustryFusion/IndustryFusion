@@ -15,8 +15,10 @@
 
 package io.fusion.fusionbackend.service.export;
 
+import io.fusion.fusionbackend.ontology.OntologyUtil;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import io.fusion.fusionbackend.service.AssetService;
+import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -39,6 +42,10 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
 
     public static final String FILENAME_ASSET_SERIES = "AssetSeries.json";
     public static final String FILENAME_ASSETS = "Assets.json";
+    public static final String FILENAME_ASSET = "Asset.json";
+    public static final String FILENAME_NGSI_LD = "NGSI-LD.json";
+    public static final String FILENAME_ONT = "Owl.ttl";
+    public static final String FILENAME_APPLICATION_YAML = "application.yaml";
 
 
     @Autowired
@@ -112,6 +119,7 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                             .importMultipleFromJson(readZipEntry(entry, zipInputStream), companyId);
                     break;
                 case FILENAME_ASSETS:
+                case FILENAME_ASSET:
                     totalEntitySkippedCount += assetService.importMultipleFromJsonToFactoryManager(
                             readZipEntry(entry, zipInputStream),
                             companyId, factorySiteId
@@ -124,5 +132,36 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
         }
 
         return new ImportResult(isEntryImported, totalEntitySkippedCount);
+    }
+
+    public void generateAssetOnboardingZipPackage(final Long companyId,
+                                                  final Long assetSeriesId,
+                                                  final Long assetId,
+                                                  final OutputStream responseOutputStream,
+                                                  final InputStream yamlInputStream) throws IOException {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
+
+            addFileToZipOutputStream(zipOutputStream, FILENAME_ASSET,
+                    assetService.exportFleetAssetsToJson(companyId, assetId));
+
+            String assetNgsiLd = assetService.getAssetByIdAsNgsiLD(assetId);
+            addFileToZipOutputStream(zipOutputStream, FILENAME_NGSI_LD, assetNgsiLd.getBytes(StandardCharsets.UTF_8));
+
+            OntModel assetOntModel = assetSeriesService.getAssetSeriesRdf(assetSeriesId, companyId);
+            addFileToZipOutputStream(zipOutputStream, FILENAME_ONT,
+                    OntologyUtil.exportOwlOntologyModelToJsonUsingJena(assetOntModel));
+
+            /*       addFileToZipOutputStream(zipOutputStream, FILENAME_APPLICATION_YAML,
+                    yamlInputStream.readAllBytes());*/
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            throw new IOException(ioe.getMessage());
+        }
+
+        responseOutputStream.write(byteArrayOutputStream.toByteArray());
+        responseOutputStream.close();
     }
 }

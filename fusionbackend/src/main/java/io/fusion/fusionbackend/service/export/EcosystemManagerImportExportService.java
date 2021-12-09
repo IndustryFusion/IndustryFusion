@@ -89,8 +89,10 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
                                           final Long factorySiteIdIgnored) throws IOException {
 
         ImportResult importResult = tryImportOfZipEntry(entry, zipInputStream, ImportResult.empty());
-        if (!importResult.isEntryImported && !entry.getName().equals(FleetManagerImportExportService.FILENAME_ASSET_SERIES)
-                && !entry.getName().equals(FleetManagerImportExportService.FILENAME_ASSETS)) {
+        if (!importResult.isEntryImported
+                && !entry.getName().equals(FleetManagerImportExportService.FILENAME_ASSET_SERIES)
+                && !entry.getName().equals(FleetManagerImportExportService.FILENAME_ASSETS)
+                && !entry.getName().equals(FleetManagerImportExportService.FILENAME_ASSET)) {
             throw new UnsupportedOperationException("File can not be imported, filename unknown.");
         }
 
