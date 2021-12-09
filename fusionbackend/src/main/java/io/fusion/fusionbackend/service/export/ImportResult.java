@@ -13,16 +13,18 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.repository;
+package io.fusion.fusionbackend.service.export;
 
-import io.fusion.fusionbackend.model.AssetType;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.PagingAndSortingRepository;
+public class ImportResult {
+    public final boolean isEntryImported;
+    public final int totalEntitySkippedCount;
 
-import java.util.Set;
+    public ImportResult(boolean isEntryImported, int totalEntitySkippedCount) {
+        this.isEntryImported = isEntryImported;
+        this.totalEntitySkippedCount = totalEntitySkippedCount;
+    }
 
-public interface AssetTypeRepository extends PagingAndSortingRepository<AssetType, Long> {
-    Sort DEFAULT_SORT = Sort.by("id").ascending();
-
-    Set<AssetType> findAll(Sort sort);
+    public static ImportResult empty() {
+        return new ImportResult(false, 0);
+    }
 }

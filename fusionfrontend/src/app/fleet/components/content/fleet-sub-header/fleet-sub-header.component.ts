@@ -20,6 +20,7 @@ import { Location } from '@angular/common';
 import { Router, UrlTree } from '@angular/router';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
+import { IfApiService } from '../../../../core/services/api/if-api.service';
 
 @Component({
   selector: 'app-fleet-sub-header',
@@ -33,7 +34,10 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
   companyId: ID;
   sub: Subscription;
 
-  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
+  constructor(private location: Location,
+              private router: Router,
+              private companyQuery: CompanyQuery,
+              public ifApiService: IfApiService) {
   }
 
   ngOnInit() {
@@ -74,5 +78,13 @@ export class FleetSubHeaderComponent implements OnInit, OnDestroy {
 
   private getUrlTree(subroute: string): UrlTree {
     return this.router.createUrlTree(['/fleetmanager/companies', this.companyId, subroute]);
+  }
+
+  onZipFileUpload(event: any): void {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const selectedZipFile: File = fileList[0];
+      this.ifApiService.uploadZipFileForFleetManagerImport(this.companyId, selectedZipFile).subscribe();
+    }
   }
 }

@@ -73,7 +73,7 @@ public class BaseClient {
         return content.length > convertMegabytesToBytes(configuration.maxFileSizeMb);
     }
 
-    private Long convertMegabytesToBytes(Long mb) {
+    public static Long convertMegabytesToBytes(Long mb) {
         return mb * 1024 * 1024;
     }
 

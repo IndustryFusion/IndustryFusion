@@ -15,10 +15,8 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
-import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
-import io.fusion.fusionbackend.service.AssetTypeTemplateService;
-import io.fusion.fusionbackend.service.export.EcosystemManagerExportService;
+import io.fusion.fusionbackend.service.export.EcosystemManagerImportExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,19 +27,18 @@ import java.io.IOException;
 @RestController
 @IsEcosystemUser
 public class EcosystemManagerRestService {
-    private final EcosystemManagerExportService ecosystemManagerExportService;
+    private final EcosystemManagerImportExportService ecosystemManagerImportExportService;
 
     @Autowired
-    public EcosystemManagerRestService(EcosystemManagerExportService ecosystemManagerExportService) {
-        this.ecosystemManagerExportService = ecosystemManagerExportService;
+    public EcosystemManagerRestService(EcosystemManagerImportExportService ecosystemManagerImportExportService) {
+        this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
     }
 
     @GetMapping(path = "/export")
-    public void getAsRdfExport(HttpServletResponse response) throws IOException {
-
+    public void getAsZipExport(HttpServletResponse response) throws IOException {
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition","attachment;filename=\"ecosystem_manager_exported.zip\"");
-        ecosystemManagerExportService.getEntitiesDtoExtendedZip(response.getOutputStream());
+        ecosystemManagerImportExportService.exportEntitiesToStreamAsZip(response.getOutputStream());
     }
 
 }

@@ -15,21 +15,37 @@
 
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ID } from '@datorama/akita';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IfApiService {
 
-  public static DEFAULT_ASSET_IMAGE_KEY = 'default-avatar-asset.png';
-
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ /*enctype: 'multipart/form-data',*/ Accept: 'application/zip' })
   };
+
+  constructor(private http: HttpClient) {
+  }
 
   getExportLinkEcosystemManager(): string {
     const path = `/export`;
     return `${environment.apiUrlPrefix}${path}`;
+  }
+
+  getExportLinkFleetManager(companyId: ID): string {
+    const path = `companies/${companyId}/fleetmanager/export`;
+    return `${environment.apiUrlPrefix}/${path}`;
+  }
+
+  uploadZipFileForFleetManagerImport(companyId: ID, file: File): Observable<void> {
+    const path = `companies/${companyId}/fleetmanager/import`;
+    const formDataZipFile: FormData = new FormData();
+    formDataZipFile.append('zipFile', file, file.name);
+
+    return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
   }
 }

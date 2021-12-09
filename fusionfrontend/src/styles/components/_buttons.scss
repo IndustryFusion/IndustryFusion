@@ -158,3 +158,17 @@ button:focus:not(:focus-visible) {
     cursor: default;
   }
 }
+
+.if-upload-button-light {
+  display: flex;
+  background-size: contain;
+  justify-content: center;
+  align-items: center;
+
+  color: $basic-black;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+}
