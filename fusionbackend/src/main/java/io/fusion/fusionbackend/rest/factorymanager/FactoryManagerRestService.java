@@ -16,21 +16,17 @@
 package io.fusion.fusionbackend.rest.factorymanager;
 
 import io.fusion.fusionbackend.rest.annotations.IsFactoryUser;
-import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import io.fusion.fusionbackend.service.export.EcosystemManagerImportExportService;
-import io.fusion.fusionbackend.service.export.FleetManagerImportExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController

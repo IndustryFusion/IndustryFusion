@@ -33,19 +33,19 @@ import java.util.HashMap;
 public class FieldSchema {
 
     /**
+     * .
      * The basic Ontology of an Field
      */
     public static final String uri = "https://industry-fusion.com/field-schema/1.0#";
     private static final OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
     public static final OntClass fieldClass = model.createClass(uri + "Field");
-    public static final ObjectProperty hasThresholdProperty = model.createObjectProperty(uri+"hasThreshold");;
-    public static final ObjectProperty accuracy = model.createObjectProperty(uri+"accuracy");
-    public static final ObjectProperty name = model.createObjectProperty(uri+"name");
+    public static final ObjectProperty hasThresholdProperty = model.createObjectProperty(uri + "hasThreshold");
+    public static final ObjectProperty accuracy = model.createObjectProperty(uri + "accuracy");
+    public static final ObjectProperty name = model.createObjectProperty(uri + "name");
     public static final Property hasField = model.createProperty(uri, "hasField");
-    public static final ObjectProperty description = model.createObjectProperty(uri+"description");
+    public static final ObjectProperty description = model.createObjectProperty(uri + "description");
 
     private HashMap<FieldThresholdType, Property> fieldThresholdTypeMap;
-
 
 
     public FieldSchema() {
@@ -68,24 +68,26 @@ public class FieldSchema {
         return model;
     }
 
-    private EnumeratedClass generateThresholdType(OntModel ontModel){
+    private EnumeratedClass generateThresholdType(OntModel ontModel) {
         fieldThresholdTypeMap = new HashMap<>();
         Arrays.stream(FieldThresholdType.values()).forEach(fieldThresholdType ->
-                fieldThresholdTypeMap.put(fieldThresholdType,ontModel.createProperty(uri, fieldThresholdType.toString())));
+                fieldThresholdTypeMap.put(
+                        fieldThresholdType,
+                        ontModel.createProperty(uri, fieldThresholdType.toString())));
         RDFList thresholdTypeList = ontModel.createList(fieldThresholdTypeMap.values().iterator());
-        return ontModel.createEnumeratedClass(uri+"ThresholdType", thresholdTypeList);
+        return ontModel.createEnumeratedClass(uri + "ThresholdType", thresholdTypeList);
     }
 
-    /**
+    /**.
      * returns the URI for this schema
      *
      * @return the URI for this schema
      */
-    public static String getURI() {
+    public static String getUri() {
         return uri;
     }
 
-    public RDFNode getThresholdTypeProperty(FieldThresholdType fieldThresholdType){
+    public RDFNode getThresholdTypeProperty(FieldThresholdType fieldThresholdType) {
         return fieldThresholdTypeMap.get(fieldThresholdType);
     }
 }

@@ -155,7 +155,7 @@ public class FactoryAssetRestService {
     public void getAsRdfExport(@PathVariable final Long assetId,
                                @PathVariable final Long companyId,
                                HttpServletResponse response) throws IOException {
-        String json = assetService.getAssetByIdAsNGSI_LD(assetId);
+        String json = assetService.getAssetByIdAsNgsiLD(assetId);
 
         response.setContentType(MediaType.JSON_LD.toString());
         response.getWriter().write(json);

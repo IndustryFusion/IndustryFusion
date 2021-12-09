@@ -80,8 +80,8 @@ public class AssetSeriesRestService {
                                @PathVariable final Long assetSeriesId,
                                 HttpServletResponse response) throws IOException {
 
-            OntModel model = assetSeriesService.getAssetSeriesRdf(assetSeriesId, companyId);
-            OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
+        OntModel model = assetSeriesService.getAssetSeriesRdf(assetSeriesId, companyId);
+        OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
     }
 
     @PostMapping(path = "/companies/{companyId}/assetseries")

@@ -519,13 +519,13 @@ public class AssetService {
         return assetRepository.findSubsystemCandidates(parentAssetSeriesId, companyId);
     }
 
-    public String getAssetByIdAsNGSI_LD(Long assetId) throws IOException {
+    public String getAssetByIdAsNgsiLD(Long assetId) throws IOException {
         Asset asset = getAssetById(assetId);
 
         JSONObject root = new JSONObject();
 
         //Generate URN
-        String id = generateURN(asset);
+        String id = generateUrn(asset);
         root.put("id", id);
 
         //Add AssetType
@@ -552,7 +552,7 @@ public class AssetService {
 
         //add Subsystems
         List<String> urls = asset.getSubsystems().stream()
-                .map(subsystem -> generateURN(subsystem))
+                .map(subsystem -> generateUrn(subsystem))
                 .collect(Collectors.toList());
         addRelationship(root, "subsystems", urls);
 
@@ -597,7 +597,7 @@ public class AssetService {
         return fieldName;
     }
 
-    private String generateURN(Asset asset) {
+    private String generateUrn(Asset asset) {
         AssetSeries assetSeries = asset.getAssetSeries();
         AssetTypeTemplate assetTypeTemplate = assetSeries.getAssetTypeTemplate();
         String id = new StringBuilder()
@@ -609,14 +609,6 @@ public class AssetService {
                 .append(asset.getId()).toString();
 
         return id;
-    }
-
-
-    private static void addRelationship(JSONObject json, String key, String url) {
-        JSONObject property = new JSONObject();
-        addType(property, "Relationship");
-        property.put("object", url);
-        json.put(key, property);
     }
 
     private static void addRelationship(JSONObject json, String key, List<String> urls) {
@@ -648,7 +640,6 @@ public class AssetService {
     private static void addProperty(JSONObject json, String key, JSONObject jsonObject) {
         JSONObject property = new JSONObject();
         addType(property, "Property");
-        JSONArray jsonArray = new JSONArray();
         property.put("value", jsonObject);
         json.put(key, property);
     }

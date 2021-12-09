@@ -22,7 +22,7 @@ import org.apache.jena.rdf.model.Property;
 
 public class AssetSeriesSchema {
 
-    /**
+    /**.
      * The basic Ontology of an AssetSeries
      */
     public static final String uri = "https://industry-fusion.com/as-schema/1.0#";
@@ -33,14 +33,13 @@ public class AssetSeriesSchema {
     public static final Property description = m.createProperty(uri, "description");
     public static final Property imageKey = m.createProperty(uri, "imageKey");
     public static final Property assetTypeTemplate = m.createProperty(uri, "assetTypeTemplate");
-    public static final Property hasValue = m.createProperty(uri, "hasValue");
 
-    /**
+    /**.
      * returns the URI for this schema
      *
      * @return the URI for this schema
      */
-    public static String getURI() {
+    public static String getUri() {
         return uri;
     }
 }

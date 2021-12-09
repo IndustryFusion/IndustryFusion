@@ -22,7 +22,7 @@ import org.apache.jena.rdf.model.Property;
 
 public class AssetTypeTemplateSchema {
 
-    /**
+    /**.
      * The basic Ontology of an AssetTypeTemplate
      */
     public static final String uri = "https://industry-fusion.com/att-schema/1.0#";
@@ -32,14 +32,14 @@ public class AssetTypeTemplateSchema {
     public static final Property description = m.createProperty(uri, "description");
     public static final Property imageKey = m.createProperty(uri, "imageKey");
     public static final Property subsystems = m.createProperty(uri, "subsystems");
-    public static final Property quantityType = m.createProperty(uri, "subsystems");;
+    public static final Property quantityType = m.createProperty(uri, "subsystems");
 
-    /**
+    /**.
      * returns the URI for this schema
      *
      * @return the URI for this schema
      */
-    public static String getURI() {
+    public static String getUri() {
         return uri;
     }
 }

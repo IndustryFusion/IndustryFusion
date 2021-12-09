@@ -22,8 +22,8 @@ import org.apache.jena.rdf.model.Property;
 
 public class UnitSchema {
 
-    /**
-     * The basic Ontology of an AssetSeries
+    /**.
+     * The basic Ontology of an Unit
      */
     public static final String uri = "https://industry-fusion.com/unit-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
@@ -33,12 +33,12 @@ public class UnitSchema {
     public static final Property symbol = m.createProperty(uri, "symbol");
     public static final Property hasUnit = m.createProperty(uri, "hasUnit");
 
-    /**
+    /**.
      * returns the URI for this schema
      *
      * @return the URI for this schema
      */
-    public static String getURI() {
+    public static String getUri() {
         return uri;
     }
 }
