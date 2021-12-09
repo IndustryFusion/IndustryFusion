@@ -32,6 +32,7 @@ public class AssetTypeTemplateSchema {
     public static final Property description = m.createProperty(uri, "description");
     public static final Property imageKey = m.createProperty(uri, "imageKey");
     public static final Property subsystems = m.createProperty(uri, "subsystems");
+    public static final Property quantityType = m.createProperty(uri, "subsystems");;
 
     /**
      * returns the URI for this schema
