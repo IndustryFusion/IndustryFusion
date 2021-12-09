@@ -30,7 +30,8 @@ import java.util.HashMap;
 public class QuantityTypeSchema {
 
     /**
-     * The basic Ontology of an AssetSeries
+     * .
+     * The basic Ontology of an QuantityType
      */
     public static final String uri = "https://industry-fusion.com/quantityType-schema/1.0#";
     public static final OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
@@ -45,24 +46,24 @@ public class QuantityTypeSchema {
         generateDataType();
     }
 
-    private EnumeratedClass generateDataType(){
+    private EnumeratedClass generateDataType() {
         dataTypeMap = new HashMap<>();
         Arrays.stream(QuantityDataType.values()).forEach(quantityDataType ->
-                dataTypeMap.put(quantityDataType,m.createProperty(uri, quantityDataType.toString())));
+                dataTypeMap.put(quantityDataType, m.createProperty(uri, quantityDataType.toString())));
         RDFList dataTypeList = m.createList(dataTypeMap.values().iterator());
-        return m.createEnumeratedClass(uri+"QuantityDataType", dataTypeList);
+        return m.createEnumeratedClass(uri + "QuantityDataType", dataTypeList);
     }
 
-    public RDFNode getQuantityDataType(QuantityDataType quantityDataType){
+    public RDFNode getQuantityDataType(QuantityDataType quantityDataType) {
         return dataTypeMap.get(quantityDataType);
     }
 
-    /**
+    /**.
      * returns the URI for this schema
      *
      * @return the URI for this schema
      */
-    public static String getURI() {
+    public static String getUri() {
         return uri;
     }
 }

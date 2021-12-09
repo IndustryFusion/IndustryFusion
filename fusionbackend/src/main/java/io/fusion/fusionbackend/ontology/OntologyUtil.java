@@ -21,7 +21,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class OntologyUtil {
-    public static void writeOwlOntologyModelToStreamUsingJena(OntModel ontModel, OutputStream outputStream) throws IOException {
+    public static void writeOwlOntologyModelToStreamUsingJena(
+            OntModel ontModel, OutputStream outputStream) throws IOException {
 
         org.apache.jena.rdf.model.RDFWriterI w = ontModel.getWriter("turtle");
 

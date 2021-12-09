@@ -80,7 +80,7 @@ public class AssetTypeTemplateRestService {
 
         if (extended) {
             response.setContentType(MediaType.JSON.toString());
-            assetTypeTemplateService.getAssetTypeTemplateExtendedJSON(assetTypeTemplateId, response.getWriter());
+            assetTypeTemplateService.getAssetTypeTemplateExtendedJson(assetTypeTemplateId, response.getWriter());
         } else {
             OntModel model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
             OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());

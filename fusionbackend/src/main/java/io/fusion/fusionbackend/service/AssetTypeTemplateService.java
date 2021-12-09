@@ -198,7 +198,7 @@ public class AssetTypeTemplateService {
         return model;
     }
 
-    public void getAssetTypeTemplateExtendedJSON(Long assetTypeTemplateId, PrintWriter writer) throws IOException {
+    public void getAssetTypeTemplateExtendedJson(Long assetTypeTemplateId, PrintWriter writer) throws IOException {
         AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, true);
         assetTypeTemplate.setAssetSeries(null);
         assetTypeTemplate.getFieldTargets().forEach(fieldTarget -> {

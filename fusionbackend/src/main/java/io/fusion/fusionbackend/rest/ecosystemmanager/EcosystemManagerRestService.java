@@ -34,7 +34,10 @@ public class EcosystemManagerRestService {
     private final OntologyBuilder ontologyBuilder;
 
     @Autowired
-    public EcosystemManagerRestService(EcosystemManagerImportExportService ecosystemManagerImportExportService, OntologyBuilder ontologyBuilder) {
+    public EcosystemManagerRestService(
+            EcosystemManagerImportExportService ecosystemManagerImportExportService,
+            OntologyBuilder ontologyBuilder
+    ) {
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
         this.ontologyBuilder = ontologyBuilder;
     }
@@ -47,7 +50,7 @@ public class EcosystemManagerRestService {
     }
 
     @GetMapping(path = "/owlexport")
-    public void getAsOWLExport(HttpServletResponse response) throws IOException {
+    public void getAsOwlExport(HttpServletResponse response) throws IOException {
         response.addHeader("Content-Disposition","attachment;filename=\"ecosystem_manager.owl\"");
         OntModel model = ontologyBuilder.buildEcosystemOntology();
         OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
