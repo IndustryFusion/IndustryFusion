@@ -31,8 +31,11 @@ export class IfApiService {
   constructor(private http: HttpClient) {
   }
 
-  getExportLinkEcosystemManager(): string {
-    const path = `/export`;
+  getExportLinkEcosystemManager(asOWL: boolean): string {
+    let path = `/export`;
+    if (asOWL){
+      path='/owlexport'
+    }
     return `${environment.apiUrlPrefix}${path}`;
   }
 

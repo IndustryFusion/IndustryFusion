@@ -13,25 +13,27 @@
  * under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AssetTypeTemplateQuery } from '../../../../../core/store/asset-type-template/asset-type-template.query';
-import { AssetTypeTemplateService } from '../../../../../core/store/asset-type-template/asset-type-template.service';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AssetTypeTemplateQuery} from '../../../../../core/store/asset-type-template/asset-type-template.query';
+import {AssetTypeTemplateService} from '../../../../../core/store/asset-type-template/asset-type-template.service';
 import {
   AssetTypeTemplate,
   PublicationState
 } from '../../../../../core/store/asset-type-template/asset-type-template.model';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormGroup } from '@angular/forms';
-import { ID } from '@datorama/akita';
-import { DialogType } from '../../../../../shared/models/dialog-type.model';
-import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
-import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
-import { ConfirmationService } from 'primeng/api';
-import { FilterOption, FilterType } from '../../../../../shared/components/ui/table-filter/filter-options';
-import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TableHelper } from '../../../../../core/helpers/table-helper';
-import { AssetTypeTemplateWizardComponent } from '../asset-type-template-wizard/asset-type-template-wizard.component';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {FormGroup} from '@angular/forms';
+import {ID} from '@datorama/akita';
+import {DialogType} from '../../../../../shared/models/dialog-type.model';
+import {
+  AssetTypeTemplateDialogUpdateComponent
+} from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
+import {ItemOptionsMenuType} from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
+import {ConfirmationService} from 'primeng/api';
+import {FilterOption, FilterType} from '../../../../../shared/components/ui/table-filter/filter-options';
+import {Observable} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TableHelper} from '../../../../../core/helpers/table-helper';
+import {AssetTypeTemplateWizardComponent} from '../asset-type-template-wizard/asset-type-template-wizard.component';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -96,7 +98,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     if (assetTypeTemplate) {
       this.activeListItem = assetTypeTemplate;
       this.menuType = assetTypeTemplate.publicationState === PublicationState.PUBLISHED ?
-        [ItemOptionsMenuType.DELETE] : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
+        [ItemOptionsMenuType.DELETE, ItemOptionsMenuType.DOWNLOAD] : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
     }
   }
 
@@ -185,5 +187,10 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   updateRowCountInUrl(rowCount: number): void {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
+  }
+
+  onDownload() {
+    const exportLink = this.assetTypeTemplateService.getExportLink(this.activeListItem.id);
+    window.open(exportLink, '_blank');
   }
 }

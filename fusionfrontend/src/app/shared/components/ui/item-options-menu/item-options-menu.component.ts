@@ -38,6 +38,7 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
   @Output() assignItem = new EventEmitter<void>();
+  @Output() downloadItem = new EventEmitter<void>();
 
   public menuActions: MenuItem[];
   public ItemOptionsMenuType = ItemOptionsMenuType;
@@ -77,6 +78,10 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
 
   onAssignClick() {
     this.assignItem.emit();
+  }
+
+  onDownloadClick() {
+    this.downloadItem.emit();
   }
 
   private generateMenuItems(): MenuItem[] {
@@ -120,6 +125,13 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
       }
     };
 
+    const downloadItem = {
+      label: 'Download', icon: 'pi pi-fw pi-cloud-download',
+      command: (_) => {
+        this.onDownloadClick();
+      }
+    };
+
     let menuActions = [];
 
     if (!this.actions || this.actions.length === 0) {
@@ -147,6 +159,10 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
             break;
           case ItemOptionsMenuType.ASSIGN:
             menuActions.push(assignItem);
+            break;
+          case ItemOptionsMenuType.DOWNLOAD:
+            menuActions.push(downloadItem);
+            break;
         }
       }
     }

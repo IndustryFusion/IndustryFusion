@@ -24,6 +24,7 @@ import io.fusion.fusionbackend.model.QuantityType;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.service.AssetTypeService;
+import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import io.fusion.fusionbackend.service.FieldService;
 import io.fusion.fusionbackend.service.QuantityTypeService;
 import io.fusion.fusionbackend.service.UnitService;
@@ -34,6 +35,7 @@ import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.vocabulary.XSD;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -46,6 +48,7 @@ public class OntologyBuilder {
     private final UnitService unitService;
     private final AssetTypeService assetTypeService;
     private final QuantityTypeService quantityTypeService;
+    private final AssetTypeTemplateService assetTypeTemplateService;
     private final OntModel fieldModel;
     private final OntModel unitModel;
     private final OntModel assetTypeModel;
@@ -61,11 +64,17 @@ public class OntologyBuilder {
     private static String uriAsset = uri + "assets#";
 
 
-    public OntologyBuilder(FieldService fieldService, UnitService unitService, AssetTypeService assetTypeService, QuantityTypeService quantityTypeService) {
+    public OntologyBuilder(FieldService fieldService,
+                           UnitService unitService,
+                           AssetTypeService assetTypeService,
+                           QuantityTypeService quantityTypeService,
+                           @Lazy
+                           AssetTypeTemplateService assetTypeTemplateService) {
         this.fieldService = fieldService;
         this.unitService = unitService;
         this.assetTypeService = assetTypeService;
         this.quantityTypeService = quantityTypeService;
+        this.assetTypeTemplateService = assetTypeTemplateService;
 
         fieldModel = loadFieldModel();
         unitModel = loadUnitModel();
@@ -309,5 +318,15 @@ public class OntologyBuilder {
         final OntModel quantityTypeModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
         this.quantityTypeService.getAllQuantityTypes().forEach(quantityType -> generateQuantityTypeOntology(quantityType, quantityTypeModel));
         return quantityTypeModel;
+    }
+
+    public OntModel buildEcosystemOntology() {
+        OntModel ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+        ontModel.addSubModel(fieldModel);
+        ontModel.addSubModel(assetTypeModel);
+        ontModel.addSubModel(quantityTypeModel);
+        ontModel.addSubModel(unitModel);
+        createPrefixMap(ontModel);
+        return ontModel;
     }
 }

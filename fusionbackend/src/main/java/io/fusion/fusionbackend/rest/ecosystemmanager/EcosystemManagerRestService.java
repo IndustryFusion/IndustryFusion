@@ -15,8 +15,11 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
+import io.fusion.fusionbackend.ontology.OntologyBuilder;
+import io.fusion.fusionbackend.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.export.EcosystemManagerImportExportService;
+import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,10 +31,12 @@ import java.io.IOException;
 @IsEcosystemUser
 public class EcosystemManagerRestService {
     private final EcosystemManagerImportExportService ecosystemManagerImportExportService;
+    private final OntologyBuilder ontologyBuilder;
 
     @Autowired
-    public EcosystemManagerRestService(EcosystemManagerImportExportService ecosystemManagerImportExportService) {
+    public EcosystemManagerRestService(EcosystemManagerImportExportService ecosystemManagerImportExportService, OntologyBuilder ontologyBuilder) {
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
+        this.ontologyBuilder = ontologyBuilder;
     }
 
     @GetMapping(path = "/export")
@@ -39,6 +44,13 @@ public class EcosystemManagerRestService {
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition","attachment;filename=\"ecosystem_manager_exported.zip\"");
         ecosystemManagerImportExportService.exportEntitiesToStreamAsZip(response.getOutputStream());
+    }
+
+    @GetMapping(path = "/owlexport")
+    public void getAsOWLExport(HttpServletResponse response) throws IOException {
+        response.addHeader("Content-Disposition","attachment;filename=\"ecosystem_manager.owl\"");
+        OntModel model = ontologyBuilder.buildEcosystemOntology();
+        OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
     }
 
 }
