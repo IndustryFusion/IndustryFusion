@@ -499,9 +499,11 @@ public class AssetService {
         });
 
         //add Subsystems
-        if (asset.getSubSystemParent() != null) {
-            addRelationship(root, "subsystemParent", generateURN(asset.getSubSystemParent()));
-        }
+        List<String> urls = asset.getSubsystems().stream()
+                .map(subsystem -> generateURN(subsystem))
+                .collect(Collectors.toList());
+        addRelationship(root, "subsystems", urls);
+
 
         //add Metainfo
         JSONObject metainfo = new JSONObject();
@@ -563,6 +565,18 @@ public class AssetService {
         addType(property, "Relationship");
         property.put("object", url);
         json.put(key, property);
+    }
+
+    private static void addRelationship(JSONObject json, String key, List<String> urls) {
+        JSONArray jsonArray = new JSONArray();
+        urls.forEach(url -> {
+            JSONObject property = new JSONObject();
+            addType(property, "Relationship");
+            property.put("object", url);
+            jsonArray.add(property);
+        });
+
+        json.put(key, jsonArray);
     }
 
     private static void addProperty(JSONObject json, String key, String value) {
