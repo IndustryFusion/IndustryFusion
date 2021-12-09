@@ -17,11 +17,13 @@ package io.fusion.fusionbackend.ontology;
 
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.QuantityType;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.enums.FieldType;
+import io.fusion.fusionbackend.service.AssetTypeService;
 import io.fusion.fusionbackend.service.FieldService;
 import io.fusion.fusionbackend.service.UnitService;
 import org.apache.jena.ontology.DatatypeProperty;
@@ -41,32 +43,38 @@ public class OntologyBuilder {
 
     private final FieldService fieldService;
     private final UnitService unitService;
+    private final AssetTypeService assetTypeService;
     private final OntModel fieldModel;
     private final OntModel unitModel;
+    private final OntModel assetTypeModel;
 
     private static String uri ="https://industry-fusion.com/repository/";
     private static String uriUnits = uri + "units#";
     private static String uriFields = uri + "fields#";
+    private static String uriAT = uri + "assetType#";
     private static String uriATT = uri + "assetTypeTemplate#";
     private static String uriAS = uri + "assetSeries#";
     private static String uriAsset = uri + "assets#";
 
 
-    public OntologyBuilder(FieldService fieldService, UnitService unitService) {
+    public OntologyBuilder(FieldService fieldService, UnitService unitService, AssetTypeService assetTypeService) {
         this.fieldService = fieldService;
         this.unitService = unitService;
+        this.assetTypeService = assetTypeService;
 
         fieldModel = loadFieldModel();
         unitModel = loadUnitModel();
+        assetTypeModel = loadAssetTypeModel();
     }
-
 
     public OntModel buildAssetTypeTemplateOntology(AssetTypeTemplate assetTypeTemplate) {
 
         OntModel ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
         ontModel.addSubModel(fieldModel);
+        ontModel.addSubModel(assetTypeModel);
 
         OntClass attClass = ontModel.createClass(uriATT+assetTypeTemplate.getId());
+        attClass.addSuperClass(assetTypeModel.getOntClass(uriAT + assetTypeTemplate.getAssetType().getId()));
         Optional.ofNullable(assetTypeTemplate.getVersion())
                 .ifPresent(literal -> attClass.addLiteral(AssetTypeTemplateSchema.version, literal));
         Optional.ofNullable(assetTypeTemplate.getName())
@@ -208,12 +216,14 @@ public class OntologyBuilder {
         nsPrefix.put("", uri);
         nsPrefix.put("field", uriFields);
         nsPrefix.put("unit", uriUnits);
+        nsPrefix.put("assetType", uriAT);
         nsPrefix.put("assetTypeTemplate", uriATT);
         nsPrefix.put("assetSeries", uriAS);
         nsPrefix.put("asset", uriAsset);
         nsPrefix.put("assetschema", AssetSchema.getURI());
         nsPrefix.put("asschema", AssetSeriesSchema.getURI());
         nsPrefix.put("attschema", AssetTypeTemplateSchema.getURI());
+        nsPrefix.put("atschema", AssetTypeSchema.getURI());
         nsPrefix.put("fieldschema", FieldSchema.getURI());
         nsPrefix.put("unitschema", UnitSchema.getURI());
         ontModel.setNsPrefixes(nsPrefix);
@@ -252,6 +262,22 @@ public class OntologyBuilder {
         final OntModel unitModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
         this.unitService.getAllUnits().forEach(unit -> generateUnitOntology(unit, unitModel));
         return unitModel;
+    }
+
+    private OntClass generateAssetTypeOntology(AssetType assetType, OntModel ontModel){
+        OntClass fieldClass = ontModel.createClass(uriAT + assetType.getId());
+        fieldClass.addProperty(AssetTypeSchema.name, assetType.getName());
+        fieldClass.addProperty(AssetTypeSchema.label, assetType.getLabel());
+        fieldClass.addProperty(AssetTypeSchema.description, assetType.getDescription());
+
+        return fieldClass;
+    }
+
+    @NotNull
+    private OntModel loadAssetTypeModel() {
+        final OntModel assetTypeModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+        this.assetTypeService.getAllAssetTypes().forEach(assetType -> generateAssetTypeOntology(assetType, assetTypeModel));
+        return assetTypeModel;
     }
 
 }
