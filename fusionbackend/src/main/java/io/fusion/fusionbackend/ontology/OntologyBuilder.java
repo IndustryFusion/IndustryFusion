@@ -25,6 +25,7 @@ import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.service.AssetTypeService;
 import io.fusion.fusionbackend.service.FieldService;
+import io.fusion.fusionbackend.service.QuantityTypeService;
 import io.fusion.fusionbackend.service.UnitService;
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.OntClass;
@@ -44,11 +45,14 @@ public class OntologyBuilder {
     private final FieldService fieldService;
     private final UnitService unitService;
     private final AssetTypeService assetTypeService;
+    private final QuantityTypeService quantityTypeService;
     private final OntModel fieldModel;
     private final OntModel unitModel;
     private final OntModel assetTypeModel;
+    private final OntModel quantityTypeModel;
 
     private static String uri ="https://industry-fusion.com/repository/";
+    private static String uriQuantityType = uri + "quantityType#";
     private static String uriUnits = uri + "units#";
     private static String uriFields = uri + "fields#";
     private static String uriAT = uri + "assetType#";
@@ -57,14 +61,16 @@ public class OntologyBuilder {
     private static String uriAsset = uri + "assets#";
 
 
-    public OntologyBuilder(FieldService fieldService, UnitService unitService, AssetTypeService assetTypeService) {
+    public OntologyBuilder(FieldService fieldService, UnitService unitService, AssetTypeService assetTypeService, QuantityTypeService quantityTypeService) {
         this.fieldService = fieldService;
         this.unitService = unitService;
         this.assetTypeService = assetTypeService;
+        this.quantityTypeService = quantityTypeService;
 
         fieldModel = loadFieldModel();
         unitModel = loadUnitModel();
         assetTypeModel = loadAssetTypeModel();
+        quantityTypeModel = loadQuantityTypeModel();
     }
 
     public OntModel buildAssetTypeTemplateOntology(AssetTypeTemplate assetTypeTemplate) {
@@ -72,6 +78,7 @@ public class OntologyBuilder {
         OntModel ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
         ontModel.addSubModel(fieldModel);
         ontModel.addSubModel(assetTypeModel);
+        ontModel.addSubModel(quantityTypeModel);
 
         OntClass attClass = ontModel.createClass(uriATT+assetTypeTemplate.getId());
         attClass.addSuperClass(assetTypeModel.getOntClass(uriAT + assetTypeTemplate.getAssetType().getId()));
@@ -92,7 +99,9 @@ public class OntologyBuilder {
             addRange(fieldTarget.getField().getUnit().getQuantityType(), fieldProperty);
 
             addField(ontModel, fieldTarget.getField(), fieldProperty);
-            addUnit(ontModel, fieldTarget.getField().getUnit(), fieldProperty);
+            OntClass quantityTypeModelOntClass = quantityTypeModel.getOntClass(uriQuantityType
+                    + fieldTarget.getField().getUnit().getQuantityType().getId());
+            fieldProperty.addProperty(AssetTypeTemplateSchema.quantityType, quantityTypeModelOntClass);
             attClass.addLiteral(fieldProperty, "");
         });
 
@@ -216,6 +225,7 @@ public class OntologyBuilder {
         nsPrefix.put("", uri);
         nsPrefix.put("field", uriFields);
         nsPrefix.put("unit", uriUnits);
+        nsPrefix.put("quantityType", uriQuantityType);
         nsPrefix.put("assetType", uriAT);
         nsPrefix.put("assetTypeTemplate", uriATT);
         nsPrefix.put("assetSeries", uriAS);
@@ -226,6 +236,7 @@ public class OntologyBuilder {
         nsPrefix.put("atschema", AssetTypeSchema.getURI());
         nsPrefix.put("fieldschema", FieldSchema.getURI());
         nsPrefix.put("unitschema", UnitSchema.getURI());
+        nsPrefix.put("quantitytypeschema", QuantityTypeSchema.getURI());
         ontModel.setNsPrefixes(nsPrefix);
     }
 
@@ -280,4 +291,23 @@ public class OntologyBuilder {
         return assetTypeModel;
     }
 
+    private OntClass generateQuantityTypeOntology(QuantityType quantityType, OntModel ontModel){
+        QuantityTypeSchema quantityTypeSchema = new QuantityTypeSchema();
+        OntClass fieldClass = ontModel.createClass(uriQuantityType + quantityType.getId());
+        fieldClass.addProperty(QuantityTypeSchema.name, quantityType.getName());
+        fieldClass.addProperty(QuantityTypeSchema.label, quantityType.getLabel());
+        fieldClass.addProperty(QuantityTypeSchema.description, quantityType.getDescription());
+        fieldClass.addProperty(QuantityTypeSchema.dataType, quantityTypeSchema.getQuantityDataType(quantityType.getDataType()));
+        quantityType.getUnits().stream()
+                .map(unit -> unitModel.getOntClass(uriUnits+unit.getId()))
+                .forEach(unit -> fieldClass.addProperty(QuantityTypeSchema.units, unit));
+        return fieldClass;
+    }
+
+    @NotNull
+    private OntModel loadQuantityTypeModel() {
+        final OntModel quantityTypeModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+        this.quantityTypeService.getAllQuantityTypes().forEach(quantityType -> generateQuantityTypeOntology(quantityType, quantityTypeModel));
+        return quantityTypeModel;
+    }
 }
