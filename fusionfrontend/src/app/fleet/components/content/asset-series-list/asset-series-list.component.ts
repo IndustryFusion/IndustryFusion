@@ -30,7 +30,7 @@ import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-optio
 import { ConfirmationService } from 'primeng/api';
 import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
-import {AssetSeries} from "../../../../core/store/asset-series/asset-series.model";
+import { AssetSeries } from '../../../../core/store/asset-series/asset-series.model';
 
 @Component({
   selector: 'app-asset-series-list',

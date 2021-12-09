@@ -15,8 +15,6 @@
 
 package io.fusion.fusionbackend.ontology;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import org.apache.jena.ontology.OntModel;
 
 import java.io.ByteArrayOutputStream;

@@ -18,17 +18,9 @@ under the License.
     <div class="caption">Digital Nameplate</div>
     <div class="flexbox"></div>
     <div class="card-button-box">
-    <!--  <button class="card-button" (click)="generateAssetOnboardingFile()">
-        <img class="fusion-icon" src="assets/img/IndustryFusion-hive.png">
-        Generate Asset Onboarding Package
-      </button>-->
-<!--      <a class="card-button" [href]="assetService.getExportLink((asset$ | async).id, (asset$ | async).companyId)" target="_self">
-        <img class="fusion-icon" src="/assets/img/IndustryFusion-hive.png">
-        NGSI-LD
-      </a>-->
       <a class="card-button" [href]="assetService.getExportLinkForOnboardingZip((asset$ | async).id, (asset$ | async).assetSeriesId, (asset$ | async).companyId)" target="_self">
         <img class="fusion-icon" src="/assets/img/IndustryFusion-hive.png">
-        Generate Onboarding Package
+        Generate Asset Onboarding Package
       </a>
     </div>
   </div>

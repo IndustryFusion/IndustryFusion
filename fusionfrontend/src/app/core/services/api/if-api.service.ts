@@ -25,7 +25,7 @@ import { Observable } from 'rxjs';
 export class IfApiService {
 
   httpOptions = {
-    headers: new HttpHeaders({ /*enctype: 'multipart/form-data',*/ Accept: 'application/zip' })
+    headers: new HttpHeaders({ Accept: 'application/zip' })
   };
 
   constructor(private http: HttpClient) {
@@ -64,14 +64,6 @@ export class IfApiService {
     const path = `companies/${companyId}/fleetmanager/import`;
     const formDataZipFile: FormData = new FormData();
     formDataZipFile.append('zipFile', file, file.name);
-
-    return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
-  }
-
-  exportOnboardingPackage(companyId: ID, assetId: ID, assetSeriesId: ID, yamlContent: string): Observable<void> {
-    const path = `companies/${companyId}/assetseries/${assetSeriesId}/assets/${assetId}/onboardingexport`;
-    const formDataZipFile: FormData = new FormData();
-    formDataZipFile.append('applicationYaml', yamlContent, 'application.yaml');
 
     return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
   }

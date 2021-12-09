@@ -47,8 +47,8 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.unSubscribe$)
       ).subscribe(() => {
       this.checkUrl();
-      this.companyId = this.companyQuery.getActiveId();
     });
+    this.companyQuery.waitForActive().subscribe(company => this.companyId = company.id);
   }
 
   checkUrl(): void {
