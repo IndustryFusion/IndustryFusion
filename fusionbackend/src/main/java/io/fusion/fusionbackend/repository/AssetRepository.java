@@ -40,6 +40,9 @@ public interface AssetRepository extends PagingAndSortingRepository<Asset, Long>
     Optional<Asset> findByCompanyIdAndId(Long companyId, Long assetId);
 
     @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
+    Optional<Asset> findByCompanyIdAndGlobalId(Long companyId, String assetGlobalId);
+
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Asset> findByRoomIdAndId(Long roomId, Long assetId);
 
     @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)

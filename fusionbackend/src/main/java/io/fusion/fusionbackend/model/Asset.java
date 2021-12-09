@@ -54,6 +54,9 @@ import java.util.stream.Collectors;
         query = "select a from Asset a where subsystem_parent_id is null "
                 + "and not (asset_series_id = :parentAssetSeriesId) and company_id = :companyId")
 public class Asset extends BaseAsset {
+    @Column(nullable = false, unique = true)
+    protected String globalId;
+
     protected UUID guid;
     protected Boolean ceCertified;
     protected String serialNumber;

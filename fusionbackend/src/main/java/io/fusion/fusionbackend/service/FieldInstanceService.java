@@ -118,6 +118,9 @@ public class FieldInstanceService {
     }
 
     public void validate(FieldInstance fieldInstance) {
+        if (fieldInstance.getGlobalId() == null) {
+            throw new RuntimeException("Global id has to exist in a field instance");
+        }
         if (fieldInstance.getFieldSource() == null) {
             throw new RuntimeException("Field instance must have a FieldSource");
         }
@@ -131,15 +134,19 @@ public class FieldInstanceService {
             final Unit unit = unitService.getUnit(fieldInstance.getFieldSource().getSourceUnit().getId());
             final QuantityDataType quantityDataType = unit.getQuantityType().getDataType();
 
-            if (!isThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
-                LOG.warn("Thresholds of field instance with id {} are not valid.\r\n"
-                                + "Absolute Threshold: {}, ideal Threshold: {}, critical threshold: {}",
-                        fieldInstance.getId(), fieldInstance.getAbsoluteThreshold(),
-                        fieldInstance.getIdealThreshold(), fieldInstance.getCriticalThreshold());
-                throw new RuntimeException("Thresholds are not valid in every field instance");
-            }
+        if (!isThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
+            LOG.warn("Thresholds of field instance with id {} are not valid.\r\n"
+                            + "Absolute Threshold: {}, ideal Threshold: {}, critical threshold: {}",
+                    fieldInstance.getId(), fieldInstance.getAbsoluteThreshold(),
+                    fieldInstance.getIdealThreshold(), fieldInstance.getCriticalThreshold());
+            throw new RuntimeException("Thresholds are not valid in every field instance");
         }
     }
+
+    public String generateGlobalId(final FieldInstance fieldInstance) {
+        return fieldInstance.getId() + "/" + (fieldInstance.getName() != null ? fieldInstance.getName() : "");
+    }
+}
 
     public void delete(FieldInstance fieldInstance) {
         fieldInstance.getAsset().getFieldInstances().remove(fieldInstance);

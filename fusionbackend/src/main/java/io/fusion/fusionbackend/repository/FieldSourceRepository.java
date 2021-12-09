@@ -19,10 +19,13 @@ import io.fusion.fusionbackend.model.FieldSource;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface FieldSourceRepository extends PagingAndSortingRepository<FieldSource, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
     Set<FieldSource> findAll(Sort sort);
+
+    Optional<FieldSource> findByGlobalId(String fieldSourceGlobalId);
 }

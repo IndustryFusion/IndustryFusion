@@ -33,8 +33,10 @@ import java.util.UUID;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetDto extends BaseAssetDto {
+    private String globalId;
     private Long companyId;
     private Long assetSeriesId;
+    private String assetSeriesGlobalId;
     private Long roomId;
     private RoomDto room;
 
@@ -46,6 +48,9 @@ public class AssetDto extends BaseAssetDto {
 
     @Builder.Default
     private Set<Long> subsystemIds = new HashSet<>();
+
+    @Builder.Default
+    private Set<String> subsystemGlobalIds = new HashSet<>();
 
     private String externalName;
     private String controlSystemType;

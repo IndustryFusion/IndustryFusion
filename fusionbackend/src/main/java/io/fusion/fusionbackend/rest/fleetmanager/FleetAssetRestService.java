@@ -136,7 +136,7 @@ public class FleetAssetRestService {
                                 @PathVariable final Long assetSeriesId,
                                 @RequestBody final AssetDto assetDto) {
         return assetMapper.toDto(
-                assetService.createAssetAggregate(companyId, assetSeriesId, assetMapper.toEntity(assetDto)),
+                assetService.createFleetAssetAggregate(companyId, assetSeriesId, assetMapper.toEntity(assetDto)),
                 true);
     }
 

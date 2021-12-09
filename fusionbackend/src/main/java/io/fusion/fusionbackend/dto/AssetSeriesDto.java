@@ -30,6 +30,7 @@ import java.util.Set;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetSeriesDto extends BaseAssetDto {
+    private String globalId;
     private Long companyId;
     private Long assetTypeTemplateId;
     @Builder.Default

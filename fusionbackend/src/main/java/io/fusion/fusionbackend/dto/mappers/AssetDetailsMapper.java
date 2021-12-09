@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetailsDto> {
@@ -49,9 +50,14 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
     }
 
     private AssetDetailsDto buildFromAsset(Asset entity) {
+        Set<String> subsystemGlobalIds = entity.getSubsystems().stream()
+                .map(Asset::getGlobalId).collect(Collectors.toSet());
+
         AssetDetailsDto dto = AssetDetailsDto.builder()
                 .id(entity.getId())
                 .version(entity.getVersion())
+                .globalId(entity.getGlobalId())
+                .assetSeriesGlobalId(entity.getAssetSeries().getGlobalId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
@@ -69,6 +75,7 @@ public class AssetDetailsMapper extends EntityDetailsDtoMapper<Asset, AssetDetai
                 .videoKey(entity.getVideoKey())
                 .installationDate(entity.getInstallationDate())
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .subsystemGlobalIds(subsystemGlobalIds)
                 .connectionString(entity.getConnectionString())
                 .protocol(entity.getAssetSeries().getConnectivitySettings().getConnectivityProtocol().getName())
                 .build();

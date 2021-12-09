@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -51,6 +52,9 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @NoArgsConstructor
 public class AssetSeries extends BaseAsset {
+    @Column(nullable = false, unique = true)
+    private String globalId;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
