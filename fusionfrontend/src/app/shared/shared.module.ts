@@ -46,7 +46,15 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { NameplateItemComponent } from './components/ui/nameplate-item/nameplate-item.component';
 import { StatusComponent } from './components/ui/status/status.component';
 import { StatusFilterComponent } from './components/ui/table-filter/status-filter/status-filter.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   declarations: [
@@ -100,6 +108,14 @@ import { StatusFilterComponent } from './components/ui/table-filter/status-filte
     }),
     SelectButtonModule,
     ConfirmDialogModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [
     CommonModule,
@@ -141,6 +157,7 @@ import { StatusFilterComponent } from './components/ui/table-filter/status-filte
     NameplateItemComponent,
     StatusComponent,
     StatusFilterComponent,
+    TranslateModule
   ],
   providers: [
     MessageService,

@@ -23,6 +23,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { UserManagementService } from './core/services/api/user-management.service';
 import { KeycloakProfile } from 'keycloak-js';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +35,16 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private oispAlertResolver: OispAlertResolver,
               private factoryResolver: FactoryResolver,
               private userManagementService: UserManagementService,
-              private ngZone: NgZone) { }
+              private ngZone: NgZone,
+              private translateService: TranslateService) {
+    this.translateService.addLangs(['en', 'ger']);
+    // this language will be used as a fallback when a translation isn't found in the current language
+    this.translateService.setDefaultLang('en');
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    // const browserLang = translate.getBrowserLang();
+    // translateService.use(browserLang.match(/en|ger/) ? browserLang : 'en');
+    this.translateService.use(localStorage.getItem('lang' || 'en'));
+  }
   factorySubTitle$: Subject<string>;
   keycloakUser$: Promise<KeycloakProfile>;
 
