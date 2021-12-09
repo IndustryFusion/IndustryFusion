@@ -30,6 +30,7 @@ import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-optio
 import { ConfirmationService } from 'primeng/api';
 import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import {AssetSeries} from "../../../../core/store/asset-series/asset-series.model";
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -142,4 +143,8 @@ export class AssetSeriesListComponent implements OnInit {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 
+  downloadAssetSeries(assetSeries: AssetSeries) {
+    const exportLink = this.assetSeriesService.getExportLink(assetSeries.id, assetSeries.companyId);
+    window.open(exportLink, '_blank');
+  }
 }

@@ -21,5 +21,6 @@ export enum ItemOptionsMenuType {
   RENAME,
   CLONE,
   ASSIGN,
+  DOWNLOAD,
   ARCHIVE,
 }

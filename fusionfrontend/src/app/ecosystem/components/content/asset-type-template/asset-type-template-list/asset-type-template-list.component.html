@@ -66,10 +66,7 @@ under the License.
       <td [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</td>
       <td [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publicationState | titlecase }}</td>
       <td (click)="setActiveRow(assetTypeTemplate)">
-        <a [href]="assetTypeTemplateService.getExportLink(assetTypeTemplate.id)" target="_self">
-          <i class="pi pi-download" *ngIf="assetTypeTemplate.publicationState === PublicationState.PUBLISHED"></i>
-        </a>
-        <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="onUpdate()" [actions]="menuType"
+        <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="onUpdate()" (downloadItem)="onDownload()" [actions]="menuType"
                                class="column-visibility"></app-item-options-menu>
       </td>
     </tr>

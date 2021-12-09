@@ -59,8 +59,10 @@ under the License.
         <app-item-options-menu (createItem)="createAssetFromAssetSeries(assetSeries.id)"
                                (deleteItem)="showDeleteDialog()"
                                (editItem)="editAssetSeries(assetSeries.id)"
-                               [actions]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
-                               createItemName="{{ 'APP.COMMON.TERMS.ASSET' | translate }}" class="column-visibility">
+                               (downloadItem)="downloadAssetSeries(assetSeries)"
+                               [actions]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE, ItemOptionsMenuType.DOWNLOAD]"
+                               [createItemName]="{{ 'APP.COMMON.TERMS.ASSET' | translate }}"
+                               class="column-visibility">
         </app-item-options-menu>
       </td>
     </tr>
