@@ -13,7 +13,7 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.ontology;
+package io.fusion.fusionbackend.service.ontology;
 
 import com.github.jsonldjava.utils.JsonUtils;
 import org.json.simple.JSONArray;

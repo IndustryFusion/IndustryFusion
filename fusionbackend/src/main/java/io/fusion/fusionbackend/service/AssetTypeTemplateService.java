@@ -25,7 +25,7 @@ import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.enums.PublicationState;
-import io.fusion.fusionbackend.ontology.OntologyBuilder;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import org.apache.jena.ontology.OntModel;

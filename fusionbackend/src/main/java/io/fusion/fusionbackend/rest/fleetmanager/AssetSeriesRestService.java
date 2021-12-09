@@ -19,7 +19,7 @@ import io.fusion.fusionbackend.dto.AssetSeriesDetailsDto;
 import io.fusion.fusionbackend.dto.AssetSeriesDto;
 import io.fusion.fusionbackend.dto.mappers.AssetSeriesDetailsMapper;
 import io.fusion.fusionbackend.dto.mappers.AssetSeriesMapper;
-import io.fusion.fusionbackend.ontology.OntologyUtil;
+import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import org.apache.jena.ontology.OntModel;

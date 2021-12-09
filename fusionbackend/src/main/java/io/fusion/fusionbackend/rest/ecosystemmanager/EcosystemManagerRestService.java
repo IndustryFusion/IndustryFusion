@@ -15,8 +15,8 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
-import io.fusion.fusionbackend.ontology.OntologyBuilder;
-import io.fusion.fusionbackend.ontology.OntologyUtil;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
+import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.export.EcosystemManagerImportExportService;
 import org.apache.jena.ontology.OntModel;

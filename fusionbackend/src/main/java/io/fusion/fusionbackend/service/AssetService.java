@@ -33,7 +33,7 @@ import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.model.Threshold;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
-import io.fusion.fusionbackend.ontology.OntologyBuilder;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;

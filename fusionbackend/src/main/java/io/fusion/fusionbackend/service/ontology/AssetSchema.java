@@ -13,26 +13,29 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.ontology;
+package io.fusion.fusionbackend.service.ontology;
 
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
-public class AssetTypeTemplateSchema {
+public class AssetSchema {
 
     /**.
-     * The basic Ontology of an AssetTypeTemplate
+     * The basic Ontology of an Asset
      */
-    public static final String uri = "https://industry-fusion.com/att-schema/1.0#";
+    public static final String uri = "https://industry-fusion.com/asset-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-    public static final Property version = m.createProperty(uri, "version");
-    public static final Property name = m.createProperty(uri, "name");
-    public static final Property description = m.createProperty(uri, "description");
-    public static final Property imageKey = m.createProperty(uri, "imageKey");
+    public static final Property id = m.createProperty(uri, "id");
+    public static final Property guid = m.createProperty(uri, "guid");
+    public static final Property ceCertified = m.createProperty(uri, "ceCertified");
+    public static final Property serialNumber = m.createProperty(uri, "serialNumber");
+    public static final Property constructionDate = m.createProperty(uri, "constructionDate");
+    public static final Property protectionClass = m.createProperty(uri, "protectionClass");
+    public static final Property handbookUrl = m.createProperty(uri, "handbookUrl");
+    public static final Property videoUrl = m.createProperty(uri, "videoUrl");
     public static final Property subsystems = m.createProperty(uri, "subsystems");
-    public static final Property quantityType = m.createProperty(uri, "subsystems");
 
     /**.
      * returns the URI for this schema
