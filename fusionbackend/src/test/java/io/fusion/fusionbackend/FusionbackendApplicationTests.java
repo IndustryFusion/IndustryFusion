@@ -810,6 +810,7 @@ class FusionbackendApplicationTests {
 
         existingAssetSeriesDto.getConnectivitySettings().setConnectivityTypeId(newConnectivityTypeDto.getId());
         existingAssetSeriesDto.getConnectivitySettings().setConnectivityProtocolId(newConnectivityProtocolDto.getId());
+        existingAssetSeriesDto.setGlobalId("Global-ID-Test");
 
         AssetSeriesDto patchedAssetSeries = given()
                 .contentType(ContentType.JSON)
@@ -1401,6 +1402,7 @@ class FusionbackendApplicationTests {
         AssetSeriesDto persistedAssetSeriesDto = createAssetSeries(companyId, assetTypeTemplateId, accessToken);
 
         Long newAssetSeriesId = persistedAssetSeriesDto.getId();
+        assetSeries.setGlobalId("Test global id 1");
 
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
