@@ -62,7 +62,6 @@ public class AssetTypeTemplateService {
                                     AssetTypeService assetTypeService,
                                     AssetTypeTemplateMapper assetTypeTemplateMapper,
                                     @Lazy FieldTargetService fieldTargetService,
-                                    FieldService fieldService, AssetTypeTemplateMapper assetTypeTemplateMapper,
                                     OntologyBuilder ontologyBuilder) {
         this.assetTypeTemplateRepository = assetTypeTemplateRepository;
         this.assetTypeService = assetTypeService;
