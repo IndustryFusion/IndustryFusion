@@ -13,7 +13,7 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.ontology;
+package io.fusion.fusionbackend.service.ontology;
 
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;

@@ -22,7 +22,7 @@ import io.fusion.fusionbackend.dto.mappers.AssetDetailsMapper;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldInstanceMapper;
 import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.ontology.OntologyUtil;
+import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.AssetService;
 import io.fusion.fusionbackend.service.export.FleetManagerImportExportService;

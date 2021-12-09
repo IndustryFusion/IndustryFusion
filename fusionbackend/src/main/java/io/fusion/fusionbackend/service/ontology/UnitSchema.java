@@ -13,23 +13,25 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.ontology;
+package io.fusion.fusionbackend.service.ontology;
 
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
-public class AssetTypeSchema {
+public class UnitSchema {
 
     /**.
-     * The basic Ontology of an AssetType
+     * The basic Ontology of an Unit
      */
-    public static final String uri = "https://industry-fusion.com/at-schema/1.0#";
+    public static final String uri = "https://industry-fusion.com/unit-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+    public static final Property id = m.createProperty(uri, "id");
     public static final Property name = m.createProperty(uri, "name");
-    public static final Property description = m.createProperty(uri, "description");
     public static final Property label = m.createProperty(uri, "label");
+    public static final Property symbol = m.createProperty(uri, "symbol");
+    public static final Property hasUnit = m.createProperty(uri, "hasUnit");
 
     /**.
      * returns the URI for this schema

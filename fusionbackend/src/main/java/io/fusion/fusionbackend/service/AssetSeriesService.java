@@ -35,7 +35,7 @@ import io.fusion.fusionbackend.model.ConnectivityType;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
-import io.fusion.fusionbackend.ontology.OntologyBuilder;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetSeriesRepository;
 import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
 import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;

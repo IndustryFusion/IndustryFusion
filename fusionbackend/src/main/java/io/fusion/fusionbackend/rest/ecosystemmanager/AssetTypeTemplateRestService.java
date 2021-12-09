@@ -18,7 +18,7 @@ package io.fusion.fusionbackend.rest.ecosystemmanager;
 import com.apicatalog.jsonld.http.media.MediaType;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
-import io.fusion.fusionbackend.ontology.OntologyUtil;
+import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import org.apache.jena.ontology.OntModel;
