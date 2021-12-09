@@ -22,8 +22,10 @@ import io.fusion.fusionbackend.dto.mappers.AssetDetailsMapper;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldInstanceMapper;
 import io.fusion.fusionbackend.model.Asset;
+import io.fusion.fusionbackend.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.AssetService;
+import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -72,6 +76,16 @@ public class FleetAssetRestService {
                              @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return assetMapper.toDto(assetService.getAssetOverAssetSeries(companyId, assetSeriesId, assetId),
                 embedChildren);
+    }
+
+    @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}/export")
+    public void getAsRdfExport(@PathVariable final Long companyId,
+                               @PathVariable final Long assetSeriesId,
+                               @PathVariable final Long assetId,
+                               HttpServletResponse response) throws IOException {
+
+        OntModel model = assetService.getAssetSeriesRdf(companyId, assetSeriesId, assetId);
+        OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/subsystemcandidates")
