@@ -31,4 +31,7 @@ public interface AssetSeriesRepository extends PagingAndSortingRepository<AssetS
 
     @EntityGraph(value = "AssetSeries.allChildren")
     Optional<AssetSeries> findByCompanyIdAndId(Long companyId, Long assetSeriesId);
+
+    @EntityGraph(value = "AssetSeries.allChildren")
+    Optional<AssetSeries> findByCompanyIdAndGlobalId(Long companyId, String assetSeriesGlobalId);
 }

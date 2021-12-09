@@ -26,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 public class AssetDetailsDto extends AssetDto {
+    private String globalId;
     private String manufacturer;
     private String assetSeriesName;
     private String assetTypeName;

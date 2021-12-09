@@ -37,8 +37,8 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
 
     private final EcosystemManagerImportExportService ecosystemManagerImportExportService;
 
-    private static final String FILENAME_ASSET_SERIES = "AssetSeries.json";
-    private static final String FILENAME_ASSETS = "Assets.json";
+    public static final String FILENAME_ASSET_SERIES = "AssetSeries.json";
+    public static final String FILENAME_ASSETS = "Assets.json";
 
 
     @Autowired
@@ -63,7 +63,7 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                     assetSeriesService.exportAllToJson(companyId));
 
             addFileToZipOutputStream(zipOutputStream, FILENAME_ASSETS,
-                    assetService.exportAllToJson(companyId));
+                    assetService.exportAllFleetAssetsToJson(companyId));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -75,21 +75,54 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
     }
 
     public void importEntitiesFromZip(final Long companyId,
+                                      final Long factorySiteId,
                                       final InputStream inputStream) throws IOException {
-        super.importEntitiesFromZip(companyId, inputStream);
+        super.importEntitiesFromZip(companyId, factorySiteId, inputStream);
     }
 
     @Override
     protected ImportResult importZipEntry(final ZipEntry entry,
                                           final ZipInputStream zipInputStream,
-                                          final Long companyId) throws IOException {
+                                          final Long companyId,
+                                          final Long factorySiteId) throws IOException {
         ImportResult importResult = ecosystemManagerImportExportService.tryImportOfZipEntry(entry, zipInputStream,
                 ImportResult.empty());
 
         if (!importResult.isEntryImported) {
-            throw new UnsupportedOperationException("File can not be imported, filename unknown.");
+            importResult = tryImportOfZipEntry(entry, zipInputStream, companyId, factorySiteId, importResult);
+            if (!importResult.isEntryImported) {
+                throw new UnsupportedOperationException("File can not be imported, filename unknown.");
+            }
         }
 
         return importResult;
+    }
+
+    public ImportResult tryImportOfZipEntry(final ZipEntry entry,
+                                            final ZipInputStream zipInputStream,
+                                            final Long companyId,
+                                            final Long factorySiteId,
+                                            final ImportResult prevImportResult) throws IOException {
+        boolean isEntryImported = entry != null && zipInputStream != null;
+        int totalEntitySkippedCount = prevImportResult.totalEntitySkippedCount;
+        if (isEntryImported) {
+            switch (entry.getName()) {
+                case FILENAME_ASSET_SERIES:
+                    totalEntitySkippedCount += assetSeriesService
+                            .importMultipleFromJson(readZipEntry(entry, zipInputStream), companyId);
+                    break;
+                case FILENAME_ASSETS:
+                    totalEntitySkippedCount += assetService.importMultipleFromJsonToFactoryManager(
+                            readZipEntry(entry, zipInputStream),
+                            companyId, factorySiteId
+                    );
+                    break;
+
+                default:
+                    isEntryImported = false;
+            }
+        }
+
+        return new ImportResult(isEntryImported, totalEntitySkippedCount);
     }
 }

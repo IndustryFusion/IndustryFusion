@@ -15,9 +15,11 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jsonldjava.utils.JsonUtils;
 import io.fusion.fusionbackend.dto.AssetDto;
+import io.fusion.fusionbackend.dto.FieldInstanceDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldSourceMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
@@ -26,6 +28,7 @@ import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FieldInstance;
+import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.model.Threshold;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
@@ -44,11 +47,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,6 +123,12 @@ public class AssetService {
         return assetRepository.findAllByCompanyId(AssetRepository.DEFAULT_SORT, companyId);
     }
 
+    public Asset getAssetByCompanyAndGlobalId(final Long companyId, final String assetGlobalId) {
+        return assetRepository.findByCompanyIdAndGlobalId(companyId, assetGlobalId)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+
     public Set<Asset> getAssetsByFactorySite(final Long companyId, final Long factorySiteId) {
         // Make sure factory site belongs to company
         factorySiteService.getFactorySiteByCompany(companyId, factorySiteId, false);
@@ -173,11 +187,26 @@ public class AssetService {
         return asset;
     }
 
-    @Transactional
-    public Asset createAssetAggregate(final Long companyId, final Long assetSeriesId, final Asset asset) {
-        final AssetSeries assetSeries = assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId);
-        final Company targetCompany = assetSeries.getCompany();
+    public void createFactoryAssetAggregateWithGlobalId(final Long companyId,
+                                                        final String assetSeriesGlobalId,
+                                                        final Asset asset) {
+        final AssetSeries assetSeries = assetSeriesService.getAssetSeriesByCompanyAndGlobalId(companyId,
+                assetSeriesGlobalId);
+        final Company companyDifferentToAssetSeries = companyService.getCompany(companyId, false);
+        createAssetAggregate(companyId, companyDifferentToAssetSeries, assetSeries, asset);
+    }
 
+    public Asset createFleetAssetAggregate(final Long companyId, final Long assetSeriesId, final Asset asset) {
+        final AssetSeries assetSeries = assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId);
+        final Company companyEqualToAssetSeries = assetSeries.getCompany();
+        return createAssetAggregate(companyId, companyEqualToAssetSeries, assetSeries, asset);
+    }
+
+    @Transactional
+    protected Asset createAssetAggregate(final Long companyId,
+                                         Company targetCompany,
+                                         final AssetSeries assetSeries,
+                                         final Asset asset) {
         targetCompany.getAssets().add(asset);
         asset.setCompany(targetCompany);
         assetSeries.getAssets().add(asset);
@@ -199,12 +228,35 @@ public class AssetService {
             newRoom.getAssets().add(asset);
         }
 
+        boolean wasGlobalIdUnset = false;
+        if (asset.getGlobalId() == null) {
+            asset.setGlobalId(UUID.randomUUID().toString());
+            for (FieldInstance fieldInstance : asset.getFieldInstances()) {
+                fieldInstance.setGlobalId(UUID.randomUUID().toString());
+            }
+            wasGlobalIdUnset = true;
+        }
+
         validate(asset);
 
-        return assetRepository.save(asset);
+        Asset persistedAsset = assetRepository.save(asset);
+        if (wasGlobalIdUnset) {
+            persistedAsset.setGlobalId(generateGlobalId(companyId, persistedAsset.getId()));
+            for (FieldInstance fieldInstance : asset.getFieldInstances()) {
+                fieldInstance.setGlobalId(fieldInstanceService.generateGlobalId(fieldInstance));
+            }
+        }
+        return persistedAsset;
+    }
+
+    private String generateGlobalId(final Long companyId, final Long assetId) {
+        return companyId + "/" + assetId;
     }
 
     public void validate(final Asset asset) {
+        if (asset.getGlobalId() == null) {
+            throw new RuntimeException("Global id has to exist in an Asset");
+        }
         if (asset.getCompany() == null) {
             throw new RuntimeException("Company has to exist in an Asset");
         }
@@ -548,21 +600,116 @@ public class AssetService {
         return json.put("type", type);
     }
 
-    public byte[] exportAllToJson(final Long companyId) throws IOException {
-        Set<Asset> asset = assetRepository
+    public byte[] exportAllFleetAssetsToJson(final Long companyId) throws IOException {
+        Set<Asset> assets = assetRepository
                 .findAllByCompanyId(AssetRepository.DEFAULT_SORT, companyId);
 
-        Set<AssetDto> assetDtos = assetMapper.toDtoSet(asset, true)
-                .stream().peek(assetDto -> {
-                    assetDto.setCompanyId(null);
-                    assetDto.setRoom(null);
-                    assetDto.setRoomId(null);
-                    assetDto.getFieldInstances().forEach(fieldInstanceDto -> fieldInstanceDto.setFieldSource(null));
-                })
+        Set<Asset> assetsOfFleetManager = assets.stream()
+                .filter(asset -> asset.getAssetSeries().getCompany() == asset.getCompany())
                 .collect(Collectors.toSet());
+
+        Set<AssetDto> assetDtos = assetMapper.toDtoSet(assetsOfFleetManager, true);
+        assetDtos = removeUnnecessaryItems(assetDtos);
+        sortFieldInstances(assetDtos);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
         return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetDtos));
+    }
+
+    private Set<AssetDto> removeUnnecessaryItems(Set<AssetDto> assetDtos) {
+        Set<AssetDto> resultAssetDtos = new LinkedHashSet<>();
+        for (AssetDto assetDto : assetDtos) {
+            assetDto.setCompanyId(null);
+            assetDto.setRoom(null);
+            assetDto.setRoomId(null);
+            assetDto.setSubsystemIds(null);
+            assetDto.getFieldInstances().forEach(fieldInstanceDto -> fieldInstanceDto.setFieldSource(null));
+            resultAssetDtos.add(assetDto);
+        }
+        return resultAssetDtos;
+    }
+
+    private void sortFieldInstances(Set<AssetDto> assetDtos) {
+        for (AssetDto assetDto : assetDtos) {
+            assetDto.setFieldInstanceIds(null);
+            Set<FieldInstanceDto> sortedFieldInstanceDtos = new LinkedHashSet<>(BaseZipImportExport
+                    .toSortedList(assetDto.getFieldInstances()));
+            assetDto.setFieldInstances(sortedFieldInstanceDtos);
+        }
+    }
+
+    public int importMultipleFromJsonToFactoryManager(byte[] fileContent,
+                                                      final Long companyId,
+                                                      final Long factorySiteId) throws IOException {
+        Set<AssetDto> assetDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {});
+        Set<String> existingGlobalAssetIds = assetRepository
+                .findAllByCompanyId(AssetRepository.DEFAULT_SORT, companyId)
+                .stream().map(Asset::getGlobalId).collect(Collectors.toSet());
+
+        Map<String, Set<String>> assetSubsystemMap = new HashMap<>();
+
+        int entitySkippedCount = 0;
+        for (AssetDto assetDto : BaseZipImportExport.toSortedList(assetDtos)) {
+            if (!existingGlobalAssetIds.contains(assetDto.getGlobalId())) {
+
+                addFieldSourceToFieldInstanceDtos(assetDto, companyId);
+                removeAndCacheSubsystems(assetSubsystemMap, assetDto);
+                sortFieldInstancesInAssetDto(assetDto);
+                assetDto.setInstallationDate(OffsetDateTime.now());
+
+                // Info: field instances are created automatically with cascade-all
+                Asset asset = assetMapper.toEntity(assetDto);
+                createFactoryAssetAggregateWithGlobalId(companyId, assetDto.getAssetSeriesGlobalId(), asset);
+            } else {
+                LOG.warn("Asset with the id " + assetDto.getId() + " already exists. Entry is ignored.");
+                entitySkippedCount += 1;
+            }
+        }
+
+        addCachedSubsystemsAndRoomsToAssets(assetSubsystemMap, companyId, factorySiteId);
+
+        return entitySkippedCount;
+    }
+
+    private void addFieldSourceToFieldInstanceDtos(AssetDto assetDto, final Long companyId) {
+        for (FieldInstanceDto fieldInstanceDto : BaseZipImportExport.toSortedList(assetDto.getFieldInstances())) {
+            FieldSource fieldSource = assetSeriesService.getFieldSourceByGlobalId(
+                    companyId,
+                    assetDto.getAssetSeriesGlobalId(),
+                    fieldInstanceDto.getFieldSourceGlobalId()
+            );
+            fieldInstanceDto.setFieldSource(fieldSourceMapper.toDto(fieldSource, false));
+        }
+    }
+
+    private void removeAndCacheSubsystems(Map<String, Set<String>> assetSubsystemMap, AssetDto assetDto) {
+        assetSubsystemMap.put(assetDto.getGlobalId(), assetDto.getSubsystemGlobalIds());
+        assetDto.setSubsystemIds(null);
+        assetDto.setSubsystemGlobalIds(null);
+    }
+
+    private void sortFieldInstancesInAssetDto(AssetDto assetDto) {
+        Set<FieldInstanceDto> sortedFieldInstanceDtos =
+                new LinkedHashSet<>(BaseZipImportExport.toSortedList(assetDto.getFieldInstances()));
+        assetDto.setFieldInstances(sortedFieldInstanceDtos);
+    }
+
+    private void addCachedSubsystemsAndRoomsToAssets(Map<String, Set<String>> assetSubsystemMap,
+                                                     final Long companyId, final Long factorySiteId) {
+
+        Room noSpecificRoomOfFactorySite = getOrCreateNoSpecificRoom(companyId, factorySiteId,
+                roomService.getRoomsByFactorySite(factorySiteId));
+
+        assetSubsystemMap.forEach((assetGlobalId, subsystemGlobalIds) -> {
+            Asset asset = getAssetByCompanyAndGlobalId(companyId, assetGlobalId);
+            Set<Asset> subsystems = subsystemGlobalIds.stream()
+                    .map(globalId -> getAssetByCompanyAndGlobalId(companyId, globalId))
+                    .collect(Collectors.toSet());
+
+            asset.setRoom(noSpecificRoomOfFactorySite);
+            asset.setSubsystems(subsystems);
+            updateAsset(asset);
+        });
     }
 
 }

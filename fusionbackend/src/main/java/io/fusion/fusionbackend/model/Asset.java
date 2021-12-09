@@ -53,6 +53,9 @@ import java.util.UUID;
                 + " and asset_series_id != ? and company_id = ? ",
         resultClass = Asset.class)
 public class Asset extends BaseAsset {
+    @Column(nullable = false, unique = true)
+    protected String globalId;
+
     protected UUID guid;
     protected Boolean ceCertified;
     protected String serialNumber;

@@ -227,9 +227,9 @@ public class AssetTypeTemplateService {
     private void sortFieldTargets(Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos) {
         for (AssetTypeTemplateDto publishedAssetTypeTemplatesDto : publishedAssetTypeTemplatesDtos) {
             publishedAssetTypeTemplatesDto.setFieldTargetIds(null);
-            Set<FieldTargetDto> sortedFieldTargets = new LinkedHashSet<>(BaseZipImportExport
+            Set<FieldTargetDto> sortedFieldTargetDtos = new LinkedHashSet<>(BaseZipImportExport
                     .toSortedList(publishedAssetTypeTemplatesDto.getFieldTargets()));
-            publishedAssetTypeTemplatesDto.setFieldTargets(sortedFieldTargets);
+            publishedAssetTypeTemplatesDto.setFieldTargets(sortedFieldTargetDtos);
         }
     }
 

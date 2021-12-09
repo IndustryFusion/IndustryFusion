@@ -36,4 +36,7 @@ public class FieldSourceService {
         fieldSourceRepository.delete(fieldSource);
     }
 
+    public String generateGlobalId(final FieldSource fieldSource) {
+        return fieldSource.getId() + "/" + (fieldSource.getName() != null ? fieldSource.getName() : "");
+    }
 }

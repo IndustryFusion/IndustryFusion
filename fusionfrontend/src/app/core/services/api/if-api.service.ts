@@ -36,6 +36,22 @@ export class IfApiService {
     return `${environment.apiUrlPrefix}${path}`;
   }
 
+  uploadZipFileForFactoryManagerImport(companyId: ID, factorySiteId, file: File): Observable<void> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}/import`;
+    const formDataZipFile: FormData = new FormData();
+    formDataZipFile.append('zipFile', file, file.name);
+
+    return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
+  }
+
+  importEcosystemManagerDataToFactoryManager(companyId: ID, file: File): Observable<void> {
+    const path = `companies/${companyId}/factorymanager/import`;
+    const formDataZipFile: FormData = new FormData();
+    formDataZipFile.append('zipFile', file, file.name);
+
+    return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
+  }
+
   getExportLinkFleetManager(companyId: ID): string {
     const path = `companies/${companyId}/fleetmanager/export`;
     return `${environment.apiUrlPrefix}/${path}`;

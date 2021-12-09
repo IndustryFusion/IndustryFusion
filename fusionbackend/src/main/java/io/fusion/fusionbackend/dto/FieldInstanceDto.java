@@ -26,8 +26,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 public class FieldInstanceDto extends BaseEntityDto {
+    private String globalId;
     private Long assetId;
     private Long fieldSourceId;
+    private String fieldSourceGlobalId;
     private FieldSourceDto fieldSource;
     private String name;
     private String description;
