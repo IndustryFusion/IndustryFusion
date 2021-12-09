@@ -27,13 +27,11 @@ public class AssetTypeTemplateSchema {
      */
     public static final String uri = "https://industry-fusion.com/att-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-    public static final Property ID = m.createProperty(uri, "id");
-    public static final Property VERSION = m.createProperty(uri, "version");
-    public static final Property NAME = m.createProperty(uri, "name");
-    public static final Property DESCRIPTION = m.createProperty(uri, "description");
-    public static final Property IMAGEKEY = m.createProperty(uri, "imageKey");
-    public static final Property ASSETTYPE = m.createProperty(uri, "assetType");
-    public static final Property FIELDTYPE = m.createProperty(uri, "fieldType");
+    public static final Property version = m.createProperty(uri, "version");
+    public static final Property name = m.createProperty(uri, "name");
+    public static final Property description = m.createProperty(uri, "description");
+    public static final Property imageKey = m.createProperty(uri, "imageKey");
+    public static final Property subsystems = m.createProperty(uri, "subsystems");
 
     /**
      * returns the URI for this schema

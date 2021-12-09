@@ -67,10 +67,14 @@ public class OntologyBuilder {
         ontModel.addSubModel(fieldModel);
 
         OntClass attClass = ontModel.createClass(uriATT+assetTypeTemplate.getId());
-        attClass.addProperty(AssetTypeTemplateSchema.VERSION, assetTypeTemplate.getVersion().toString())
-                .addProperty(AssetTypeTemplateSchema.NAME, assetTypeTemplate.getName())
-                .addProperty(AssetTypeTemplateSchema.DESCRIPTION, assetTypeTemplate.getDescription())
-                .addProperty(AssetTypeTemplateSchema.IMAGEKEY, assetTypeTemplate.getImageKey());
+        Optional.ofNullable(assetTypeTemplate.getVersion())
+                .ifPresent(literal -> attClass.addLiteral(AssetTypeTemplateSchema.version, literal));
+        Optional.ofNullable(assetTypeTemplate.getName())
+                .ifPresent(literal -> attClass.addLiteral(AssetTypeTemplateSchema.name, literal));
+        Optional.ofNullable(assetTypeTemplate.getDescription())
+                .ifPresent(literal -> attClass.addLiteral(AssetTypeTemplateSchema.description, literal));
+        Optional.ofNullable(assetTypeTemplate.getImageKey())
+                .ifPresent(literal -> attClass.addLiteral(AssetTypeTemplateSchema.imageKey, literal));
 
         assetTypeTemplate.getFieldTargets().stream().forEach(fieldTarget -> {
 
@@ -81,7 +85,14 @@ public class OntologyBuilder {
 
             addField(ontModel, fieldTarget.getField(), fieldProperty);
             addUnit(ontModel, fieldTarget.getField().getUnit(), fieldProperty);
-            attClass.addProperty(fieldProperty, fieldTarget.getLabel());
+            attClass.addLiteral(fieldProperty, "");
+        });
+
+        assetTypeTemplate.getSubsystems().forEach(subsystem -> {
+            OntModel subsystemModel = buildAssetTypeTemplateOntology(subsystem);
+            ontModel.addSubModel(subsystemModel);
+            OntClass subSystemClass = subsystemModel.getOntClass(uriATT + subsystem.getId());
+            attClass.addProperty(AssetTypeTemplateSchema.subsystems, subSystemClass);
         });
 
         createPrefixMap(ontModel);
@@ -99,21 +110,27 @@ public class OntologyBuilder {
         ontModel.addSubModel(unitModel);
 
         asClass.addSuperClass(attModel.getOntClass(uriATT + assetSeries.getAssetTypeTemplate().getId()));
-        asClass.addProperty(AssetSeriesSchema.version, assetSeries.getVersion().toString())
-                .addProperty(AssetSeriesSchema.name, assetSeries.getName())
-                .addProperty(AssetSeriesSchema.description, assetSeries.getDescription())
-                .addProperty(AssetSeriesSchema.imageKey, assetSeries.getImageKey());
+        Optional.ofNullable(assetSeries.getVersion())
+                .ifPresent(literal -> asClass.addLiteral(AssetSeriesSchema.version, literal));
+        Optional.ofNullable(assetSeries.getName())
+                .ifPresent(literal -> asClass.addLiteral(AssetSeriesSchema.name, literal));
+        Optional.ofNullable(assetSeries.getDescription())
+                .ifPresent(literal -> asClass.addLiteral(AssetSeriesSchema.description, literal));
+        Optional.ofNullable(assetSeries.getImageKey())
+                .ifPresent(literal -> asClass.addLiteral(AssetSeriesSchema.imageKey, literal));
 
 
         assetSeries.getFieldSources().forEach(fieldSource -> {
             DatatypeProperty fieldProperty = ontModel.createDatatypeProperty(
                     uriAS + assetSeries.getId()+"_"+fieldSource.getFieldTarget().getLabel());
             fieldProperty.addDomain(asClass);
-            if (fieldSource.getFieldTarget().getFieldType().equals(FieldType.ATTRIBUTE) && fieldSource.getValue() != null){
-                fieldProperty.addLiteral(AssetSeriesSchema.hasValue, fieldSource.getValue());
-            }
+
             addUnit(ontModel, fieldSource.getSourceUnit(), fieldProperty);
-            asClass.addProperty(fieldProperty, fieldSource.getFieldTarget().getLabel());
+            if (fieldSource.getFieldTarget().getFieldType().equals(FieldType.ATTRIBUTE) && fieldSource.getValue() != null){
+                asClass.addLiteral(fieldProperty, fieldSource.getValue());
+            } else {
+                asClass.addLiteral(fieldProperty, "");
+            }
         });
 
         createPrefixMap(ontModel);
@@ -154,7 +171,11 @@ public class OntologyBuilder {
             DatatypeProperty fieldProperty = ontModel.createDatatypeProperty(
                     uriAsset + asset.getId()+"_"+fieldInstance.getFieldSource().getFieldTarget().getLabel());
             fieldProperty.addDomain(assetClass);
-            assetClass.addProperty(fieldProperty, fieldInstance.getFieldSource().getFieldTarget().getLabel());
+            if (fieldInstance.getFieldSource().getFieldTarget().getFieldType().equals(FieldType.ATTRIBUTE) && fieldInstance.getValue() != null){
+                assetClass.addLiteral(fieldProperty, fieldInstance.getValue());
+            } else {
+                assetClass.addLiteral(fieldProperty, "");
+            }
         });
 
         createPrefixMap(ontModel);
