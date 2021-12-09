@@ -15,8 +15,11 @@
 
 package io.fusion.fusionbackend.ontology;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import org.apache.jena.ontology.OntModel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -35,6 +38,12 @@ public class OntologyUtil {
         w.write(ontModel, outputStream, base);
 
         outputStream.flush();
+    }
 
+    public static byte[] exportOwlOntologyModelToJsonUsingJena(final OntModel ontModel) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        writeOwlOntologyModelToStreamUsingJena(ontModel, outputStream);
+
+        return outputStream.toByteArray();
     }
 }

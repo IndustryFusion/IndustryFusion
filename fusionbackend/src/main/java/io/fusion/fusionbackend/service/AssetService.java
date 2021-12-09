@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jsonldjava.utils.JsonUtils;
@@ -657,6 +658,25 @@ public class AssetService {
                 .collect(Collectors.toSet());
 
         Set<AssetDto> assetDtos = assetMapper.toDtoSet(assetsOfFleetManager, true);
+        return exportFleetAssetDtosToJson(assetDtos);
+    }
+
+    public byte[] exportFleetAssetsToJson(final Long companyId, final Long assetId) throws IOException {
+        if (companyId == null || assetId == null) {
+            throw new NullPointerException();
+        }
+
+        Asset asset = assetRepository.findByCompanyIdAndId(companyId, assetId).orElseThrow();
+        if (asset.getAssetSeries().getCompany() != asset.getCompany()) {
+            throw new RuntimeException("Only asset of fleet manager can be exported");
+        }
+
+        Set<AssetDto> assetDtos = new LinkedHashSet<>();
+        assetDtos.add(assetMapper.toDto(asset, true));
+        return exportFleetAssetDtosToJson(assetDtos);
+    }
+
+    private byte[] exportFleetAssetDtosToJson(Set<AssetDto> assetDtos) throws JsonProcessingException {
         assetDtos = removeUnnecessaryItems(assetDtos);
         sortFieldInstances(assetDtos);
 

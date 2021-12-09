@@ -33,8 +33,8 @@ export class IfApiService {
 
   getExportLinkEcosystemManager(asOWL: boolean): string {
     let path = `/export`;
-    if (asOWL){
-      path='/owlexport'
+    if (asOWL) {
+      path = '/owlexport';
     }
     return `${environment.apiUrlPrefix}${path}`;
   }
@@ -64,6 +64,14 @@ export class IfApiService {
     const path = `companies/${companyId}/fleetmanager/import`;
     const formDataZipFile: FormData = new FormData();
     formDataZipFile.append('zipFile', file, file.name);
+
+    return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
+  }
+
+  exportOnboardingPackage(companyId: ID, assetId: ID, assetSeriesId: ID, yamlContent: string): Observable<void> {
+    const path = `companies/${companyId}/assetseries/${assetSeriesId}/assets/${assetId}/onboardingexport`;
+    const formDataZipFile: FormData = new FormData();
+    formDataZipFile.append('applicationYaml', yamlContent, 'application.yaml');
 
     return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
   }

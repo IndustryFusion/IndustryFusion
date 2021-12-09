@@ -233,4 +233,9 @@ export class AssetService {
     const path = `/companies/${companyId}/assets/${assetId}/ngsi-ld`;
     return `${environment.apiUrlPrefix}${path}`;
   }
+
+  getExportLinkForOnboardingZip(assetId: ID, assetSeriesId: ID, companyId: ID): string {
+    const path = `/companies/${companyId}/assetseries/${assetSeriesId}/assets/${assetId}/onboardingexport`;
+    return `${environment.apiUrlPrefix}${path}`;
+  }
 }

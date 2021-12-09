@@ -40,6 +40,7 @@ import { Room } from '../../../../../core/store/room/room.model';
 import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { FieldInstanceDetailsResolver } from '../../../../../core/resolvers/field-instance-details.resolver';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
+import { IfApiService } from '../../../../../core/services/api/if-api.service';
 import { MediaObjectService } from '../../../../../core/services/api/storage/media-object.service';
 
 
@@ -60,6 +61,9 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
   factorySite$: Observable<FactorySite>;
   company$: Observable<Company>;
 
+  private companyId: ID;
+  private assetSeriesId: ID;
+
   factorySiteTypes = FactorySiteType;
   fieldDataTypes = FieldDataType;
 
@@ -79,6 +83,7 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     private assetSeriesDetailsService: AssetSeriesDetailsService,
     private fleetComposedQuery: FleetComposedQuery,
     private assetOnboardingService: AssetOnboardingService,
+    private ifApiService: IfApiService
   ) {
   }
 
@@ -102,6 +107,8 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
 
     this.fieldInstanceDetailsResolver.resolve();
     this.assetWithFields$ = this.fleetComposedQuery.selectFieldsOfAssetsDetailsOfActivesAsset();
+    this.assetWithFields$.subscribe(asset => this.assetSeriesId = asset.assetSeriesId);
+
 
     const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
     if (assetSeriesId != null) {
@@ -121,6 +128,9 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
       })
     );
   }
+
+    this.company$ = this.factorySite$.pipe(switchMap(site => this.companyQuery.selectEntity(site?.companyId)));
+    this.company$.subscribe(company => this.companyId = company.id);
 
   private initLatestPoints() {
     // TODO: refactor using status.service.getStatusByAssetWithFields
@@ -146,18 +156,46 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
             return fieldCopy;
           });
         }));
+
+
+    this.status$ = this.mergedFields$.pipe(
+      map(fields => this.statusService.determineStatus(fields))
+    );
+  }
+
+  private resolve() {
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetId = this.factoryAssetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
+    this.asset$.subscribe(asset => this.assetSeriesId = asset.assetSeriesId);
+
+    const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
+    if (assetSeriesId != null) {
+      this.assetSeriesDetailsService.setActive(assetSeriesId);
+    }
   }
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
   }
 
+  // generateAssetOnboardingFile() {
+  //   this.assetWithFields$.subscribe(asset => {
+  //       this.fleetComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
+  //         this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
+  //           .subscribe(fileContent => MediaObjectService
+  //             .downloadFileContent(fileContent, 'application.yaml', 'text/yaml')));
+  //     }
+  //   );
+  // }
+
   generateAssetOnboardingFile() {
-    this.assetWithFields$.subscribe(asset => {
-        this.fleetComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
+    this.asset$.subscribe(asset => {
+        this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
           this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
-            .subscribe(fileContent => MediaObjectService
-              .downloadFileContent(fileContent, 'application.yaml', 'text/yaml')));
+            .subscribe(fileContent => this.ifApiService.exportOnboardingPackage(this.companyId, this.assetId,
+              this.assetSeriesId, fileContent)));
       }
     );
   }
