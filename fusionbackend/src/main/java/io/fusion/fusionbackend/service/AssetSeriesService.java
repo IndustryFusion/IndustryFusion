@@ -310,17 +310,86 @@ public class AssetSeriesService {
         Set<AssetSeries> assetSeries = assetSeriesRepository
                 .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId);
 
-        Set<AssetSeriesDto> assetSeriesDtos = assetSeriesMapper.toDtoSet(assetSeries, true)
-                .stream().peek(assetSeriesDto -> {
-                    assetSeriesDto.setCompanyId(null);
-                    assetSeriesDto.getFieldSources().forEach(fieldSourceDto -> {
-                        fieldSourceDto.setFieldTarget(null);
-                        fieldSourceDto.setSourceUnit(null);
-                    });
-                })
-                .collect(Collectors.toSet());
+        Set<AssetSeriesDto> assetSeriesDtos = assetSeriesMapper.toDtoSet(assetSeries, true);
+        assetSeriesDtos = removeUnnecessaryItems(assetSeriesDtos);
+        sortFieldSources(assetSeriesDtos);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
         return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetSeriesDtos));
+    }
+
+    private Set<AssetSeriesDto> removeUnnecessaryItems(Set<AssetSeriesDto> assetSeriesDtos) {
+        Set<AssetSeriesDto> resultAssetSeriesDtos = new LinkedHashSet<>();
+        for (AssetSeriesDto assetSeriesDto : assetSeriesDtos) {
+            assetSeriesDto.setCompanyId(null);
+            assetSeriesDto.getFieldSources().forEach(fieldSourceDto -> {
+                fieldSourceDto.setFieldTarget(null);
+                fieldSourceDto.setSourceUnit(null);
+            });
+            resultAssetSeriesDtos.add(assetSeriesDto);
+        }
+        return resultAssetSeriesDtos;
+    }
+
+    private void sortFieldSources(Set<AssetSeriesDto> assetSeriesDtos) {
+        for (AssetSeriesDto assetSeriesDto : assetSeriesDtos) {
+            assetSeriesDto.setFieldSourceIds(null);
+            Set<FieldSourceDto> sortedFieldSourceDtos = new LinkedHashSet<>(BaseZipImportExport
+                    .toSortedList(assetSeriesDto.getFieldSources()));
+            assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
+        }
+    }
+
+    public int importMultipleFromJson(byte[] fileContent, final Long companyId) throws IOException {
+        Set<AssetSeriesDto> assetSeriesDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
+                new TypeReference<>() {});
+        Set<String> existingGlobalAssetSeriesIds = assetSeriesRepository
+                .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId)
+                .stream().map(AssetSeries::getGlobalId).collect(Collectors.toSet());
+
+        int entitySkippedCount = 0;
+        for (AssetSeriesDto assetSeriesDto : BaseZipImportExport.toSortedList(assetSeriesDtos)) {
+            if (!existingGlobalAssetSeriesIds.contains(assetSeriesDto.getGlobalId())) {
+
+                addBaseUnitToFieldSourceDtos(assetSeriesDto);
+                addFieldTargetToFieldSourceDtos(assetSeriesDto);
+                sortFieldSourcesInAssetSeriesDto(assetSeriesDto);
+
+                AssetSeries assetSeries = assetSeriesMapper.toEntity(assetSeriesDto);
+
+                // Info: Field sources are created automatically with cascade-all
+                createAssetSeries(companyId,
+                        assetSeriesDto.getAssetTypeTemplateId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityTypeId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
+                        assetSeries);
+            } else {
+                LOG.warn("Asset series with the id " + assetSeriesDto.getId() + " already exists. Entry is ignored.");
+                entitySkippedCount += 1;
+            }
+        }
+
+        return entitySkippedCount;
+    }
+
+    private void addBaseUnitToFieldSourceDtos(AssetSeriesDto assetSeriesDto) {
+        for (FieldSourceDto fieldSourceDto : assetSeriesDto.getFieldSources()) {
+            fieldSourceDto.setSourceUnit(unitMapper.toDto(unitService.getUnit(fieldSourceDto.getSourceUnitId()),
+                    false));
+        }
+    }
+
+    private void addFieldTargetToFieldSourceDtos(AssetSeriesDto assetSeriesDto) {
+        for (FieldSourceDto fieldSourceDto : assetSeriesDto.getFieldSources()) {
+            FieldTarget fieldTarget = fieldTargetService.getFieldTarget(assetSeriesDto.getAssetTypeTemplateId(),
+                    fieldSourceDto.getFieldTargetId());
+            fieldSourceDto.setFieldTarget(fieldTargetMapper.toDto(fieldTarget, false));
+        }
+    }
+
+    private void sortFieldSourcesInAssetSeriesDto(AssetSeriesDto assetSeriesDto) {
+        Set<FieldSourceDto> sortedFieldSourceDtos =
+                new LinkedHashSet<>(BaseZipImportExport.toSortedList(assetSeriesDto.getFieldSources()));
+        assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
     }
 }

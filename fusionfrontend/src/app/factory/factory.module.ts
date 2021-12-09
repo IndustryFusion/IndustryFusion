@@ -77,6 +77,7 @@ import {
   ShiftDialogComponent
 } from './components/content/factory-site-shifts-settings-dialog/shift-dialog/shift-dialog.component';
 import { SliderModule } from 'primeng/slider';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -142,6 +143,7 @@ import { SliderModule } from 'primeng/slider';
     TreeTableModule,
     TreeModule,
     SliderModule,
+    TooltipModule,
   ],
   exports: [
     FactorySubHeaderComponent,

@@ -19,7 +19,11 @@ import io.fusion.fusionbackend.dto.FactorySiteDto;
 import io.fusion.fusionbackend.dto.mappers.FactorySiteMapper;
 import io.fusion.fusionbackend.rest.annotations.IsFactoryUser;
 import io.fusion.fusionbackend.service.FactorySiteService;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import io.fusion.fusionbackend.service.export.FleetManagerImportExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,7 +32,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Set;
 
 @RestController
@@ -36,11 +42,15 @@ import java.util.Set;
 public class FactorySiteRestService {
     private final FactorySiteService factorySiteService;
     private final FactorySiteMapper factorySiteMapper;
+    private final FleetManagerImportExportService fleetManagerImportExportService;
 
     @Autowired
-    public FactorySiteRestService(FactorySiteService factorySiteService, FactorySiteMapper factorySiteMapper) {
+    public FactorySiteRestService(FactorySiteService factorySiteService,
+                                  FactorySiteMapper factorySiteMapper,
+                                  FleetManagerImportExportService fleetManagerImportExportService) {
         this.factorySiteService = factorySiteService;
         this.factorySiteMapper = factorySiteMapper;
+        this.fleetManagerImportExportService = fleetManagerImportExportService;
     }
 
     @GetMapping(path = "/companies/{companyId}/factorysites")
@@ -82,5 +92,15 @@ public class FactorySiteRestService {
     public void deleteFactorySite(@PathVariable final Long companyId,
                                @PathVariable final Long factorySiteId) {
         factorySiteService.deleteFactorySite(companyId, factorySiteId);
+    }
+
+    @PostMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/import",
+            consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<Object> importZip(@PathVariable final Long companyId,
+                                            @PathVariable final Long factorySiteId,
+                                            @RequestParam("zipFile") MultipartFile zipFile) throws IOException {
+        BaseZipImportExport.checkFileSize(zipFile);
+        fleetManagerImportExportService.importEntitiesFromZip(companyId, factorySiteId, zipFile.getInputStream());
+        return ResponseEntity.ok().build();
     }
 }

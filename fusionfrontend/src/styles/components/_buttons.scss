@@ -210,7 +210,7 @@ button:focus:not(:focus-visible) {
   justify-content: center;
   align-items: center;
 
-  color: $basic-black;
+  color: var(--clr-link-color, #0072a3);
   cursor: pointer;
 
   input {

@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
@@ -92,6 +91,7 @@ public abstract class BaseZipImportExport {
     }
 
     protected void importEntitiesFromZip(final Long companyId,
+                                         final Long factorySiteId,
                                          final InputStream inputStream) throws IOException {
 
         int totalEntitySkippedCount = 0;
@@ -99,17 +99,18 @@ public abstract class BaseZipImportExport {
 
             ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {
-                totalEntitySkippedCount += importZipEntry(entry, zipInputStream, companyId).totalEntitySkippedCount;
+                totalEntitySkippedCount += importZipEntry(entry, zipInputStream, companyId, factorySiteId)
+                        .totalEntitySkippedCount;
             }
         }
         inputStream.close();
 
-        if (totalEntitySkippedCount > 0) {
-            throw new ZipException("Import succeeded partially. " + totalEntitySkippedCount
+        /*if (totalEntitySkippedCount > 0) {
+            throw new RuntimeException("Import succeeded partially. " + totalEntitySkippedCount
                     + " entities were ignored as their id already existed");
-        }
+        }*/
     }
 
     protected abstract ImportResult importZipEntry(final ZipEntry entry, final ZipInputStream zipInputStream,
-                                                   final Long companyId) throws IOException;
+                                                   final Long companyId, final Long factorySiteId) throws IOException;
 }
