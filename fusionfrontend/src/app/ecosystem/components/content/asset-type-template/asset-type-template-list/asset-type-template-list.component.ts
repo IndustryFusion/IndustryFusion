@@ -22,7 +22,6 @@ import {
 } from '../../../../../core/store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
@@ -32,6 +31,7 @@ import { FilterOption, FilterType } from '../../../../../shared/components/ui/ta
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableHelper } from '../../../../../core/helpers/table-helper';
+import { AssetTypeTemplateWizardComponent } from '../asset-type-template-wizard/asset-type-template-wizard.component';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -119,7 +119,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   onCreate() {
-    this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
+    this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent, {
       data: {
         type: DialogType.CREATE,
         preselectedAssetTypeId: this.parentAssetTypeId
@@ -146,7 +146,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   private showUpdateWizard() {
-    this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
+    this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent,
       {
         data: { assetTypeTemplate: this.activeListItem, type: DialogType.EDIT },
         header: 'Asset Type Template Editor',

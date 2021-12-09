@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { FormArray, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 
 export class WizardHelper {
   public static readonly MAX_TEXT_LENGTH = 255;
@@ -57,5 +57,22 @@ export class WizardHelper {
       indexInArrayElement.setValue(indexInArrayElement.value - 1);
       indexInFieldInstancesElement.setValue(indexInFieldInstancesElement.value - 1);
     }
+  }
+
+  public static removeSubsystemFromFormArray(subsystemGroup: AbstractControl, subsystemFormArray: FormArray): number {
+    if (subsystemGroup) {
+      const subsystemId = subsystemGroup.get('id').value;
+      const indexToRemove = subsystemGroup.get('index').value;
+      subsystemFormArray.removeAt(indexToRemove);
+
+      for (let i = indexToRemove; i < subsystemFormArray.length; i++) {
+        const indexElement = subsystemFormArray.at(i).get('index');
+        indexElement.setValue(indexElement.value - 1);
+      }
+
+      return subsystemId;
+    }
+
+    return null;
   }
 }

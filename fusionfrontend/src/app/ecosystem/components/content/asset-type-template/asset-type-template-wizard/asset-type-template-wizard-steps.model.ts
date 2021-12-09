@@ -17,7 +17,8 @@ export enum AssetTypeTemplateWizardSteps {
   START = 1,
   METRICS,
   ATTRIBUTES,
-  OVERVIEW,
+  SUBSYSTEMS,
+  REVIEW,
   FINISHED,
   PUBLISH_CONFIRM
 }
