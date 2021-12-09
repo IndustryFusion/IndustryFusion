@@ -19,6 +19,7 @@ import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -36,6 +37,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     public AssetTypeTemplateMapper(BaseAssetMapper baseAssetMapper,
                                    FieldTargetMapper fieldTargetMapper,
                                    AssetTypeMapper assetTypeMapper,
+                                   @Lazy
                                    AssetTypeTemplateService assetTypeTemplateService) {
         this.baseAssetMapper = baseAssetMapper;
         this.fieldTargetMapper = fieldTargetMapper;
