@@ -15,28 +15,26 @@
 
 package io.fusion.fusionbackend.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jsonldjava.utils.JsonUtils;
 import io.fusion.fusionbackend.dto.AssetDto;
-import io.fusion.fusionbackend.dto.FieldInstanceDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldSourceMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
-import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.FieldInstance;
-import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.model.Threshold;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
+import io.fusion.fusionbackend.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import org.apache.jena.ontology.OntModel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -69,6 +67,7 @@ public class AssetService {
     private final FactorySiteService factorySiteService;
     private final FieldInstanceService fieldInstanceService;
     private final FieldSourceMapper fieldSourceMapper;
+    private final OntologyBuilder ontologyBuilder;
 
 
     @Autowired
@@ -80,7 +79,7 @@ public class AssetService {
                         CompanyService companyService,
                         FactorySiteService factorySiteService,
                         FieldInstanceService fieldInstanceService,
-                        FieldSourceMapper fieldSourceMapper) {
+                        FieldSourceMapper fieldSourceMapper, OntologyBuilder ontologyBuilder) {
         this.assetRepository = assetRepository;
         this.assetMapper = assetMapper;
         this.fieldInstanceRepository = fieldInstanceRepository;
@@ -90,6 +89,7 @@ public class AssetService {
         this.factorySiteService = factorySiteService;
         this.fieldInstanceService = fieldInstanceService;
         this.fieldSourceMapper = fieldSourceMapper;
+        this.ontologyBuilder = ontologyBuilder;
     }
 
     public Asset getAssetById(final Long assetId) {
@@ -151,6 +151,11 @@ public class AssetService {
     public Asset getAssetOverAssetSeries(final Long companyId, final Long assetSeriesId, final Long assetId) {
         assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId); // Make asset series belongs to company
         return getAssetByAssetSeries(assetSeriesId, assetId);
+    }
+
+    public OntModel getAssetSeriesRdf(Long companyId, Long assetSeriesId, Long assetId) {
+        Asset asset = getAssetOverAssetSeries(companyId, assetSeriesId, assetId);
+        return ontologyBuilder.buildAssetOntology(asset);
     }
 
     public Asset moveAssetCompany(final Long companyId, final Long assetId, final Long targetCompanyId) {
@@ -602,4 +607,5 @@ public class AssetService {
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
         return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetDtos));
     }
+
 }
