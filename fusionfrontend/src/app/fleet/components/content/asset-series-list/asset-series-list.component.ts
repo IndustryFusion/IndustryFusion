@@ -58,6 +58,7 @@ export class AssetSeriesListComponent implements OnInit {
   assetSeries: AssetSeriesDetails[];
   displayedAssetSeries: AssetSeriesDetails[];
   assetSeriesSearchedByName: AssetSeriesDetails[];
+  menuType: ItemOptionsMenuType[];
 
   ItemOptionsMenuType = ItemOptionsMenuType;
 
@@ -86,6 +87,8 @@ export class AssetSeriesListComponent implements OnInit {
     });
 
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
+    this.menuType = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE,
+      ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2];
   }
 
   setActiveRow(assetSeries: AssetSeriesDetails) {
@@ -143,8 +146,16 @@ export class AssetSeriesListComponent implements OnInit {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 
-  downloadAssetSeries(assetSeries: AssetSeries) {
-    const exportLink = this.assetSeriesService.getExportLink(assetSeries.id, assetSeries.companyId);
+  downloadAssetSeriesAsOwl(assetSeries: AssetSeries) {
+    this.downloadAssetSeries(assetSeries, true);
+  }
+
+  downloadAssetSeriesAsJson(assetSeries: AssetSeries) {
+    this.downloadAssetSeries(assetSeries, false);
+  }
+
+  private downloadAssetSeries(assetSeries: AssetSeries, asOwl: boolean) {
+    const exportLink = this.assetSeriesService.getExportLink(assetSeries.id, assetSeries.companyId, asOwl);
     window.open(exportLink, '_blank');
   }
 }

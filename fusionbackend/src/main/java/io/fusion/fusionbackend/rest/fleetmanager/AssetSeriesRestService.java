@@ -75,13 +75,21 @@ public class AssetSeriesRestService {
                 assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId), embedChildren);
     }
 
-    @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/export")
+    @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/rdfexport")
     public void getAsRdfExport(@PathVariable final Long companyId,
                                @PathVariable final Long assetSeriesId,
                                 HttpServletResponse response) throws IOException {
 
         OntModel model = assetSeriesService.getAssetSeriesRdf(assetSeriesId, companyId);
         OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
+    }
+
+    @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/jsonexport")
+    public void getAsJsonExport(@PathVariable final Long companyId,
+                               @PathVariable final Long assetSeriesId,
+                               HttpServletResponse response) throws IOException {
+
+        response.getOutputStream().write(assetSeriesService.exportAssetSeriesToJson(companyId, assetSeriesId));
     }
 
     @PostMapping(path = "/companies/{companyId}/assetseries")

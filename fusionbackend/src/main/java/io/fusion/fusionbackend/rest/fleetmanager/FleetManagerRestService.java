@@ -45,7 +45,7 @@ public class FleetManagerRestService {
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
     }
 
-    @GetMapping(path = "/companies/{companyId}/fleetmanager/export")
+    @GetMapping(path = "/companies/{companyId}/fleetmanager/zipexport")
     public void getAsZipExport(@PathVariable final Long companyId,
                                HttpServletResponse response) throws IOException {
         response.setContentType("application/zip");

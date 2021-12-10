@@ -42,7 +42,7 @@ public class EcosystemManagerRestService {
         this.ontologyBuilder = ontologyBuilder;
     }
 
-    @GetMapping(path = "/export")
+    @GetMapping(path = "/zipexport")
     public void getAsZipExport(HttpServletResponse response) throws IOException {
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition","attachment;filename=\"ecosystem_manager_exported.zip\"");

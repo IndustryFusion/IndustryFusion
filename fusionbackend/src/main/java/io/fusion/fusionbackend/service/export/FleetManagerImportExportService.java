@@ -154,6 +154,7 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
             OntModel assetOntModel = assetSeriesService.getAssetSeriesRdf(assetSeriesId, companyId);
             addFileToZipOutputStream(zipOutputStream, FILENAME_OWL,
                     OntologyUtil.exportOwlOntologyModelToJsonUsingJena(assetOntModel));
+
             addFileToZipOutputStream(zipOutputStream, FILENAME_APPLICATION_YAML,
                      assetYamlExportService.createYamlFile(assetService.getAssetById(assetId)));
 

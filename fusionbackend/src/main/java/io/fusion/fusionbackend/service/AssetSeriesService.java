@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fusion.fusionbackend.dto.AssetSeriesDto;
@@ -311,6 +312,18 @@ public class AssetSeriesService {
                 .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId);
 
         Set<AssetSeriesDto> assetSeriesDtos = assetSeriesMapper.toDtoSet(assetSeries, true);
+        return exportAssetSeriesDtosToJson(assetSeriesDtos);
+    }
+
+    public byte[] exportAssetSeriesToJson(final Long companyId, final Long assetSeriesId) throws IOException {
+        AssetSeries assetSeries = assetSeriesRepository.findByCompanyIdAndId(companyId, assetSeriesId).orElseThrow();
+
+        Set<AssetSeriesDto> assetSeriesDtos = new LinkedHashSet<>();
+        assetSeriesDtos.add(assetSeriesMapper.toDto(assetSeries, true));
+        return exportAssetSeriesDtosToJson(assetSeriesDtos);
+    }
+
+    private byte[] exportAssetSeriesDtosToJson(Set<AssetSeriesDto> assetSeriesDtos) throws JsonProcessingException {
         assetSeriesDtos = removeUnnecessaryItems(assetSeriesDtos);
         sortFieldSources(assetSeriesDtos);
 

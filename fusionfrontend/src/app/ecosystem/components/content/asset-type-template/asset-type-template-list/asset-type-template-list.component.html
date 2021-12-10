@@ -66,7 +66,9 @@ under the License.
       <td [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</td>
       <td [routerLink]="assetTypeTemplate.id">{{ assetTypeTemplate?.publicationState | titlecase }}</td>
       <td (click)="setActiveRow(assetTypeTemplate)">
-        <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="onUpdate()" (downloadItem)="onDownload()" [actions]="menuType"
+        <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="onUpdate()"
+                               (downloadItem1)="onDownload(true)" (downloadItem2)="onDownload(false)"
+                               [actions]="menuType" [download1ItemText]="'OWL'" [download2ItemText]="'JSON'"
                                class="column-visibility"></app-item-options-menu>
       </td>
     </tr>
