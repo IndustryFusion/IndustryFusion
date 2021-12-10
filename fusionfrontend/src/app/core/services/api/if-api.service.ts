@@ -31,9 +31,9 @@ export class IfApiService {
   constructor(private http: HttpClient) {
   }
 
-  getExportLinkEcosystemManager(asOWL: boolean): string {
-    let path = `/export`;
-    if (asOWL) {
+  getExportLinkEcosystemManager(asOwl: boolean): string {
+    let path = `/zipexport`;
+    if (asOwl) {
       path = '/owlexport';
     }
     return `${environment.apiUrlPrefix}${path}`;
@@ -56,7 +56,7 @@ export class IfApiService {
   }
 
   getExportLinkFleetManager(companyId: ID): string {
-    const path = `companies/${companyId}/fleetmanager/export`;
+    const path = `companies/${companyId}/fleetmanager/zipexport`;
     return `${environment.apiUrlPrefix}/${path}`;
   }
 

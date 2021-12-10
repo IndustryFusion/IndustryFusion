@@ -58,8 +58,8 @@ under the License.
         <app-item-options-menu (createItem)="createAssetFromAssetSeries(assetSeries.id)"
                                (deleteItem)="showDeleteDialog()"
                                (editItem)="editAssetSeries(assetSeries.id)"
-                               (downloadItem)="downloadAssetSeries(assetSeries)"
-                               [actions]="[ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE, ItemOptionsMenuType.DOWNLOAD]"
+                               (downloadItem1)="downloadAssetSeriesAsOwl(assetSeries)" (downloadItem2)="downloadAssetSeriesAsJson(assetSeries)"
+                               [actions]="menuType" [download1ItemText]="'OWL'" [download2ItemText]="'JSON'"
                                [createItemName]="'Asset'"
                                class="column-visibility">
         </app-item-options-menu>

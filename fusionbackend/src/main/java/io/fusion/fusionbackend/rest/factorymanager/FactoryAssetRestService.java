@@ -162,7 +162,6 @@ public class FactoryAssetRestService {
 
     }
 
-
     @PutMapping(path = "/companies/{companyId}/assets/{assetId}")
     public AssetDto updateCompanyAsset(@PathVariable final Long companyId,
                                        @PathVariable final Long assetId,

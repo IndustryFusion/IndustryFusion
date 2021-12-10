@@ -72,20 +72,18 @@ public class AssetTypeTemplateRestService {
                 true);
     }
 
-    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/export")
-    public void getAsRdfExport(@PathVariable final Long assetTypeTemplateId,
-                               @RequestParam(defaultValue = "false")
-                               final boolean extended,
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/owlexport")
+    public void getAsOwlExport(@PathVariable final Long assetTypeTemplateId,
                                HttpServletResponse response) throws IOException {
+        OntModel model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
+        OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
+    }
 
-        if (extended) {
-            response.setContentType(MediaType.JSON.toString());
-            assetTypeTemplateService.getAssetTypeTemplateExtendedJson(assetTypeTemplateId, response.getWriter());
-        } else {
-            OntModel model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
-            OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
-        }
-
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/jsonexport")
+    public void getAsJsonfExport(@PathVariable final Long assetTypeTemplateId,
+                               HttpServletResponse response) throws IOException {
+        response.setContentType(MediaType.JSON.toString());
+        assetTypeTemplateService.getAssetTypeTemplateExtendedJson(assetTypeTemplateId, response.getWriter());
     }
 
     @GetMapping(path = "/assettypetemplates/nextVersion/{assetTypeId}")
