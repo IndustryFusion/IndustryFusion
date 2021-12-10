@@ -7,9 +7,13 @@ ALTER TABLE asset_series
 ALTER TABLE field_source
     ADD global_id varchar(255) unique;
 
+-- noinspection SqlWithoutWhere
 UPDATE asset SET global_id = company_id||'/'||id;
+-- noinspection SqlWithoutWhere
 UPDATE field_instance SET global_id = id||'/'||COALESCE(name, '');
+-- noinspection SqlWithoutWhere
 UPDATE asset_series SET global_id = company_id||'/'||id;
+-- noinspection SqlWithoutWhere
 UPDATE field_source SET global_id = id||'/'||COALESCE(name, '');
 
 alter table asset
