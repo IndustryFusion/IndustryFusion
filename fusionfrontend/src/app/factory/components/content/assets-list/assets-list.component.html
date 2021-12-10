@@ -25,7 +25,7 @@ under the License.
     </div>
     <app-create-button (createItem)="showOnboardDialog()" class="create-btn"
                        text="Onboard new Asset"></app-create-button>
-    <label class="if-upload-button-light" [pTooltip]="'Import data from Fleet Manager'">
+    <label *ngIf="factorySite != null" class="if-upload-button-light" [pTooltip]="'Import data from Fleet Manager'">
       <i class="pi pi-upload"></i>
       <input type="file" accept="application/zip" (change)="onZipFileUpload($event)">
     </label>
