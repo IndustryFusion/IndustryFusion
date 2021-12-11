@@ -22,7 +22,7 @@ under the License.
                         class="filter-btn">
       </app-table-filter>
     </div>
-    <app-create-button (createItem)="onCreate()" [text]="'Create Asset Type Template'"
+    <app-create-button (createItem)="onCreate()" text="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.CREATE_ASSET_TYPE_TEMPLATE' | translate }}"
                        class="create-btn"></app-create-button>
   </div>
 </div>
@@ -38,16 +38,16 @@ under the License.
                              attributeToBeSearched="name" filterColumn="Template">
         </app-table-searchbar>
       </th>
-      <th [style.width.%]="10" pSortableColumn="publishedVersion">Version
+      <th [style.width.%]="10" pSortableColumn="publishedVersion">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.VERSION' | translate }}
         <p-sortIcon field="publishedVersion"></p-sortIcon>
       </th>
-      <th [style.width.%]="20" pSortableColumn="publishedDate">Creation date
+      <th [style.width.%]="20" pSortableColumn="publishedDate">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.CREATION_DATE' | translate }}
         <p-sortIcon field="publishedDate"></p-sortIcon>
       </th>
-      <th [style.width.%]="20" pSortableColumn="publishedDate">Publish date
+      <th [style.width.%]="20" pSortableColumn="publishedDate">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.PUBLISH_DATE' | translate }}
         <p-sortIcon field="publishedDate"></p-sortIcon>
       </th>
-      <th [style.width.%]="10" pSortableColumn="publicationState">Status
+      <th [style.width.%]="10" pSortableColumn="publicationState">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.STATUS' | translate }}
         <p-sortIcon field="publicationState"></p-sortIcon>
       </th>
       <th [style.width.%]="5"></th>

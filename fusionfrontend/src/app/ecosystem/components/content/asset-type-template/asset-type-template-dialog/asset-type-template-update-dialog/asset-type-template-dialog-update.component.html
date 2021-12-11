@@ -15,10 +15,9 @@ under the License.
 
 <div class="content">
   <div class="icon"><clr-icon shape="exclamation-circle" class="is-solid"></clr-icon></div>
-  <div class="description">Updating an Asset Type Template will create<br/>
-    and save a completely new version of it</div>
+  <div class="description">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.UPDATE.DIALOG_DESCRIPTION' | translate }}</div>
 </div>
 <div class="footer">
-  <button type="submit" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-  <button type="button" class="if-button button-confirm button-primary" (click)="onUpdate()">Update</button>
+  <button type="submit" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onUpdate()">{{ 'APP.COMMON.DIALOG_BUTTONS.UPDATE' | translate }}</button>
 </div>

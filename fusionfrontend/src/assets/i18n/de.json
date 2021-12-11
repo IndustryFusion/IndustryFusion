@@ -73,6 +73,164 @@
 				"EQUIPMENT_EFFICIENCY": "Effizienz der Ausrüstung",
 				"MAINTENANCE": "Wartung"
 			}
+		},
+		"ECOSYSTEM": {
+			"ASSET_TYPE_LIST": {
+				"ASSET_TYPES": "Asset-Typen",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Asset-Typ-Bestätigung löschen",
+					"MESSAGE": "Sind Sie sicher, dass Sie den Asset-Typ {{ itemToDelete }}löschen möchten?"
+				},
+				"CREATE_ASSET_TYPE": "Asset-Typ erstellen",
+				"HEADER": {
+					"CREATE": "Neuen Asset-Typ erstellen",
+					"EDIT": "Asset-Typ bearbeiten ({{assetTypeToBeEdited}})"
+				},
+				"NO_ASSET_TYPES": "Keine Asset-Typen"
+			},
+			"ASSET_TYPE_TEMPLATE": {
+				"DIALOG.UPDATE": {
+					"DIALOG_DESCRIPTION": "Das Aktualisieren einer Asset-Typ-Vorlage erstellt\n   und speichert eine völlig neue Version der Vorlage"
+				},
+				"FIELD_HEADER_AND_ROW": {
+					"ATTRIBUTE_NAME": "Attributname",
+					"CUSTOM": "Benutzerdefiniert",
+					"MANDATORY": "obligatorisch",
+					"METRIC_NAME": "Metrikname"
+				},
+				"LIST": {
+					"ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
+					"ASSET_TYPE_TEMPLATES": "Asset-Typ-Vorlagen",
+					"CONFIRMATION_DIALOG": {
+						"HEADER": "Asset-Typ-Vorlagenbestätigung löschen",
+						"MESSAGE": "Sind Sie sicher, dass Sie die Asset-Typ-Vorlage {{ itemToDelete }}löschen möchten?"
+					},
+					"CREATE_ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage erstellen",
+					"CREATION_DATE": "Erstellungsdatum",
+					"DIALOG_HEADER": "Asset-Typ-Vorlagen-Editor",
+					"NO_ASSET_TYPE_TEMPLATES": "Keine Asset-Typ-Vorlagen",
+					"PUBLISH_DATE": "Datum der Veröffentlichung",
+					"STATUS": "Stand",
+					"VERSION": "Version"
+				},
+				"WIZARD": {
+					"DIALOG_WARNING": {
+						"GO_TO_ASSET_TYPE_TEMPLATE_BUTTON": "Zur Asset-Typ-Vorlage gehen",
+						"TEXT": "Es gibt bereits einen Entwurf einer Asset-Typ-Vorlage für diesen Asset-Typ!\nSie müssen diese erst veröffentlichen oder löschen, bevor Sie eine neue Vorlage erstellen können."
+					},
+					"STEP_FINISHED": {
+						"ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
+						"CREATE_TEXT": "Ihre Asset-Typ-Vorlage wurde\n    erfolgreich erstellt",
+						"UPDATE_TEXT": "Ihre Asset-Typ-Vorlage wurde\n   erfolgreich aktualisiert"
+					},
+					"STEP_FOUR": {
+						"ADD_ATTRIBUTE": "Attribut hinzufügen",
+						"ADD_METRIC": "Metrisch hinzufügen",
+						"REVIEW_ATTRIBUTES": "Überprüfung der Attribute",
+						"REVIEW_METRICS": "Überprüfung der Metriken",
+						"SAVE_AND_CLOSE_BUTTON": "Vorlage speichern und schließen"
+					},
+					"STEP_ONE": {
+						"ASSET_TYPE_TEMPLATE_NAME": "Asset-Typ Vorlagenname",
+						"CREATE_NEW": "Neu erstellen",
+						"CREATE_OR_UPDATE_TEMPLATE": "Eine neue Vorlage erstellen oder eine bestehende aktualisieren?",
+						"SELECT_ASSET_TYPE": "Asset-Typ auswählen",
+						"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage auswählen",
+						"TITLE": "Asset-Typ-Vorlage erstellen oder aktualisieren",
+						"USE_EXISTING_TEMPLATE": "Vorhandene Vorlage verwenden"
+					},
+					"STEP_PUBLISHED": {
+						"ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
+						"TEXT": "Das Veröffentlichen dieses Asset TypeTemplate\nsperrt es für die weitere Bearbeitung"
+					},
+					"STEP_THREE": {
+						"ADD_ATTRIBUTE": "Attribut hinzufügen",
+						"ADD_ATTRIBUTES": "Attribute hinzufügen",
+						"SELECT_ATTRIBUTE": "Attribut auswählen",
+						"SELECT_ATTRIBUTE_PLACEHOLDER": "Attribut auswählen..."
+					},
+					"STEP_TWO": {
+						"ADD_METRIC": "Metrisch hinzufügen",
+						"ADD_METRICS": "Metriken hinzufügen",
+						"SELECT_METRIC": "Metrisch wählen",
+						"SELECT_METRIC_PLACEHOLDER": "Metrisches Maß auswählen..."
+					}
+				}
+			},
+			"FIELD_DIALOG": {
+				"ACCURACY_PLACEHOLDER": "Format für die Genauigkeit auswählen",
+				"DEFINE_ACCURACY": "Definieren Sie Genauigkeit",
+				"DEFINE_THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte definieren",
+				"THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte",
+				"UNIT_PLACEHOLDER": "Einheit auswählen"
+			},
+			"FIELD_LIST": {
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Löschen der Metrik- oder Attribut-Bestätigung",
+					"MESSAGE": "Sind Sie sicher, dass Sie die Metrik oder das Attribut {{ itemToDelete }}löschen wollen?"
+				},
+				"CREATE_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut erstellen",
+				"DATE_CREATED": "Datum erstellt",
+				"FIELD_NAME": "Feldname",
+				"HEADER": {
+					"CREATE": "Neue Metrik oder neues Attribut erstellen",
+					"EDIT": "Metrik oder Attribut bearbeiten"
+				},
+				"METRICS_AND_ATTRIBUTES": "Metriken und Attribute",
+				"METRIC_AND_ATTRIBUTE": "Metrik & Attribut",
+				"NO_METRICS_AND_ATTRIBUTES": "Keine Metriken und Attribute"
+			},
+			"QUANTITY_TYPE": {
+				"QUANTITY_TYPE_DIALOG": {
+					"BASE_UNIT": "Basiseinheit",
+					"DATA_TYPE": "Datenart",
+					"NO_BASE_UNIT_WARNING": "Keine Basiseinheit ausgewählt"
+				},
+				"QUANTITY_TYPE_LIST": {
+					"BASE_UNIT": "Basiseinheit",
+					"CONFIRMATION_DIALOG": {
+						"HEADER": "Mengenartbestätigung löschen",
+						"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }}löschen wollen?"
+					},
+					"CREATE_QUANTITY_TYPE": "Mengenart anlegen",
+					"DATA_TYPE": "Datenart",
+					"DESCRIPTION": "Beschreibung",
+					"HEADER": {
+						"CREATE": "Neue Mengenart anlegen",
+						"EDIT": "Menge bearbeiten Typ"
+					},
+					"NO_QUANTITY_TYPES": "Keine Menge Typen",
+					"QUANTITY_NAME": "Bezeichnung der Menge",
+					"QUANTITY_TYPES": "Menge Typen"
+				}
+			},
+			"SUBHEADER": {
+				"ASSET_TYPES": "Asset-Typen",
+				"ASSET_TYPE_TEMPLATES": "Asset-Typ-Vorlagen",
+				"METRICS_AND_ATTRIBUTES": "Metriken und Attribute",
+				"QUANTITY_TYPES": "Menge Typen",
+				"UNITS": "Einheiten"
+			},
+			"UNIT_DIALOG": {
+				"UNIT_NAME": "Name der Einheit"
+			},
+			"UNIT_LIST": {
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Einheit löschen Bestätigen",
+					"MESSAGE": "Sind Sie sicher, dass Sie die Einheit {{ itemToDelete }}löschen wollen?"
+				},
+				"CREATE_UNIT": "Einheit erstellen",
+				"DATE_CREATED": "Datum erstellt",
+				"HEADER": {
+					"CREATE": "Neue Einheit erstellen",
+					"EDIT": "Einheit bearbeiten"
+				},
+				"NO_UNITS": "Keine Einheiten",
+				"QUANTITY": "Menge",
+				"UNIT": "Gerät",
+				"UNITS": "Einheiten",
+				"UNIT_NAME": "Name der Einheit"
+			}
 		}
 	}
 }

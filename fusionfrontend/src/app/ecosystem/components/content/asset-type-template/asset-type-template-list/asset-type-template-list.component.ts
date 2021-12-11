@@ -32,6 +32,7 @@ import { FilterOption, FilterType } from '../../../../../shared/components/ui/ta
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableHelper } from '../../../../../core/helpers/table-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -44,8 +45,11 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   @Input() assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
   @Input() parentAssetTypeId: ID | null;
 
-  titleMapping:
-    { [k: string]: string } = { '=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates' };
+  titleMapping: { [k: string]: string } = {
+    '=0': this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.NO_ASSET_TYPE_TEMPLATES'),
+    '=1': '# ' + this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.ASSET_TYPE_TEMPLATE'),
+    other: '# ' + this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.ASSET_TYPE_TEMPLATES')
+  };
 
   menuType: ItemOptionsMenuType[];
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
@@ -59,9 +63,13 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   activeListItem: AssetTypeTemplate;
 
   tableFilters: FilterOption[] = [
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion' },
-    { filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState' }];
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.VERSION'),
+      attributeToBeFiltered: 'publishedVersion' },
+    { filterType: FilterType.DATEFILTER, columnName: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.PUBLISH_DATE'),
+      attributeToBeFiltered: 'publishedDate' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.STATUS'),
+      attributeToBeFiltered: 'publicationState' }
+  ];
 
 
   private createWizardRef: DynamicDialogRef;
@@ -75,7 +83,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService) {
      }
 
   ngOnInit() {
@@ -123,7 +132,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
         type: DialogType.CREATE,
         preselectedAssetTypeId: this.parentAssetTypeId
       },
-      header: `Asset Type Template Editor`,
+      header: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.DIALOG_HEADER'),
       width: '90%'
     });
   }
@@ -148,7 +157,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
       {
         data: { assetTypeTemplate: this.activeListItem, type: DialogType.EDIT },
-        header: 'Asset Type Template Editor',
+        header: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.DIALOG_HEADER'),
         width: '70%',
       }
     );
@@ -168,8 +177,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Asset Type Template ' + this.activeListItem.name + '?',
-      header: 'Delete Asset Type Template Confirmation',
+      message: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.CONFIRMATION_DIALOG.MESSAGE',
+        { itemToDelete: this.activeListItem.name }),
+      header: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteAssetTypeTemplate();

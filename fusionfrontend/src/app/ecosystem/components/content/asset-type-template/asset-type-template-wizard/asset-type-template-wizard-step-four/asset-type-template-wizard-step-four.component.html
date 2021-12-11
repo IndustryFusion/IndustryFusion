@@ -15,7 +15,7 @@ under the License.
 
 <div class="content">
   <div class="wizard-title">
-    <div> Review Metrics </div>
+    <div> {{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.REVIEW_METRICS' | translate }} </div>
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
   <div *ngIf="metrics && metrics.length > 0" class="fields-list fields-padding">
@@ -25,10 +25,10 @@ under the License.
     </app-asset-type-template-field-row>
   </div>
   <button type="button" class="template-fields-button-add" (click)="onBackToMetrics()">
-    <clr-icon shape="plus"></clr-icon>Add Metric
+    <clr-icon shape="plus"></clr-icon>{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.ADD_METRIC' | translate }}
   </button>
 
-  <div class="subtitle">Review Attributes</div>
+  <div class="subtitle">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.REVIEW_ATTRIBUTES' | translate }}</div>
   <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
     <app-asset-type-template-field-header [type]="FieldType.ATTRIBUTE"></app-asset-type-template-field-header>
     <app-asset-type-template-field-row *ngFor="let metric of attributes" [fieldTarget]="metric"
@@ -36,12 +36,14 @@ under the License.
     </app-asset-type-template-field-row>
   </div>
   <button type="button" class="template-fields-button-add" (click)="onBackToAttributes()">
-    <clr-icon shape="plus"></clr-icon>Add Attribute
+    <clr-icon shape="plus"></clr-icon>{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.ADD_ATTRIBUTE' | translate }}
   </button>
 </div>
 
 <div class="footer">
-  <button type="button" class="if-button button-cancel" (click)="onBackToAttributes()">Back</button>
-  <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">Save & Close Template</button>
-  <button type="button" class="if-button button-confirm button-primary" (click)="onGoToConfirmPublish()">Publish</button>
+  <button type="button" class="if-button button-cancel" (click)="onBackToAttributes()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onSave()">
+    {{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FOUR.SAVE_AND_CLOSE_BUTTON' | translate }}</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onGoToConfirmPublish()">
+    {{ 'APP.COMMON.DIALOG_BUTTONS.PUBLISH' | translate }}</button>
 </div>

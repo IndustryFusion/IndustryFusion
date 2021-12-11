@@ -73,6 +73,164 @@
 				"EQUIPMENT_EFFICIENCY": "Efficacité de l'équipement",
 				"MAINTENANCE": "Maintenance"
 			}
+		},
+		"ECOSYSTEM": {
+			"ASSET_TYPE_LIST": {
+				"ASSET_TYPES": "Types d'actifs",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Confirmation de la suppression du type d'actif",
+					"MESSAGE": "Etes-vous sûr de vouloir supprimer le type d'actif {{ itemToDelete }}?"
+				},
+				"CREATE_ASSET_TYPE": "Créer un type d'actif",
+				"HEADER": {
+					"CREATE": "Créer un nouveau type d'actif",
+					"EDIT": "Modifier le type d'actif ({{assetTypeToBeEdited}})"
+				},
+				"NO_ASSET_TYPES": "Non Types d'actifs"
+			},
+			"ASSET_TYPE_TEMPLATE": {
+				"DIALOG.UPDATE": {
+					"DIALOG_DESCRIPTION": "La mise à jour d'un modèle de type d'actif créera\n   et sauvegarder une toute nouvelle version de celui-ci"
+				},
+				"FIELD_HEADER_AND_ROW": {
+					"ATTRIBUTE_NAME": "Nom de l'attributaire",
+					"CUSTOM": "Personnalisation",
+					"MANDATORY": "Obligatoire",
+					"METRIC_NAME": "Nom de la métrique"
+				},
+				"LIST": {
+					"ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
+					"ASSET_TYPE_TEMPLATES": "Modèles de types d'actifs",
+					"CONFIRMATION_DIALOG": {
+						"HEADER": "Confirmation de la suppression du modèle de type d'actif",
+						"MESSAGE": "Etes-vous sûr de vouloir supprimer le modèle de type d'actif {{ itemToDelete }}?"
+					},
+					"CREATE_ASSET_TYPE_TEMPLATE": "Créer un modèle de type d'actif",
+					"CREATION_DATE": "Date de création",
+					"DIALOG_HEADER": "Éditeur de modèles de types d'actifs",
+					"NO_ASSET_TYPE_TEMPLATES": "Aucun modèle de type d'actif",
+					"PUBLISH_DATE": "Date de publication",
+					"STATUS": "Statut",
+					"VERSION": "Version"
+				},
+				"WIZARD": {
+					"DIALOG_WARNING": {
+						"GO_TO_ASSET_TYPE_TEMPLATE_BUTTON": "Aller au modèle de type d'actif",
+						"TEXT": "Il existe déjà une ébauche de modèle de type d'actif pour ce type d'actif !\nVous devez d'abord le publier ou le supprimer avant d'en créer un nouveau."
+					},
+					"STEP_FINISHED": {
+						"ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
+						"CREATE_TEXT": "Votre modèle de type d'actif a été\n    créé avec succès",
+						"UPDATE_TEXT": "Votre modèle de type d'actif a été\n   mis à jour avec succès"
+					},
+					"STEP_FOUR": {
+						"ADD_ATTRIBUTE": "Ajouter un attribut",
+						"ADD_METRIC": "Ajouter le système métrique",
+						"REVIEW_ATTRIBUTES": "Attributs de l'examen",
+						"REVIEW_METRICS": "Examen des paramètres",
+						"SAVE_AND_CLOSE_BUTTON": "Sauvegarder et fermer le modèle"
+					},
+					"STEP_ONE": {
+						"ASSET_TYPE_TEMPLATE_NAME": "Type d'actif Nom du modèle",
+						"CREATE_NEW": "Créer un nouveau",
+						"CREATE_OR_UPDATE_TEMPLATE": "Créer un nouveau modèle ou mettre à jour un modèle existant ?",
+						"SELECT_ASSET_TYPE": "Sélectionnez le type d'actif",
+						"SELECT_ASSET_TYPE_TEMPLATE": "Sélectionnez le modèle de type d'actif",
+						"TITLE": "Créer ou mettre à jour le modèle de type d'actif",
+						"USE_EXISTING_TEMPLATE": "Utiliser un modèle existant"
+					},
+					"STEP_PUBLISHED": {
+						"ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
+						"TEXT": "La publication de ce modèle de type d'actif\nle verrouillera pour toute modification ultérieure"
+					},
+					"STEP_THREE": {
+						"ADD_ATTRIBUTE": "Ajouter un attribut",
+						"ADD_ATTRIBUTES": "Ajouter des attributs",
+						"SELECT_ATTRIBUTE": "Sélectionnez un attribut",
+						"SELECT_ATTRIBUTE_PLACEHOLDER": "Sélectionnez l'attribut..."
+					},
+					"STEP_TWO": {
+						"ADD_METRIC": "Ajouter le système métrique",
+						"ADD_METRICS": "Ajouter des métriques",
+						"SELECT_METRIC": "Sélectionnez le système métrique",
+						"SELECT_METRIC_PLACEHOLDER": "Sélectionnez le système métrique..."
+					}
+				}
+			},
+			"FIELD_DIALOG": {
+				"ACCURACY_PLACEHOLDER": "Sélectionner le format de précision",
+				"DEFINE_ACCURACY": "Définir la précision",
+				"DEFINE_THRESHOLDS_AND_LIMITS": "Définir les seuils et les limites",
+				"THRESHOLDS_AND_LIMITS": "Seuils et limites",
+				"UNIT_PLACEHOLDER": "Sélectionnez l'unité"
+			},
+			"FIELD_LIST": {
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Supprimer la confirmation de la métrique ou de l'attribut",
+					"MESSAGE": "Etes-vous sûr de vouloir supprimer la métrique ou l'attribut {{ itemToDelete }}?"
+				},
+				"CREATE_METRIC_OR_ATTRIBUTE": "Créer une métrique ou un attribut",
+				"DATE_CREATED": "Date de création",
+				"FIELD_NAME": "Nom du champ",
+				"HEADER": {
+					"CREATE": "Créer une nouvelle métrique ou un nouvel attribut",
+					"EDIT": "Modifier la métrique ou l'attribut"
+				},
+				"METRICS_AND_ATTRIBUTES": "Métriques et attributs",
+				"METRIC_AND_ATTRIBUTE": "Métrique et attribut",
+				"NO_METRICS_AND_ATTRIBUTES": "Pas de métriques et d'attributs"
+			},
+			"QUANTITY_TYPE": {
+				"QUANTITY_TYPE_DIALOG": {
+					"BASE_UNIT": "Unité de base",
+					"DATA_TYPE": "Type de données",
+					"NO_BASE_UNIT_WARNING": "Aucune unité de base sélectionnée"
+				},
+				"QUANTITY_TYPE_LIST": {
+					"BASE_UNIT": "Unité de base",
+					"CONFIRMATION_DIALOG": {
+						"HEADER": "Supprimer la confirmation du type de quantité",
+						"MESSAGE": "Êtes-vous sûr de vouloir supprimer le type de quantité {{ itemToDelete }}?"
+					},
+					"CREATE_QUANTITY_TYPE": "Créer le type de quantité",
+					"DATA_TYPE": "Type de données",
+					"DESCRIPTION": "Description",
+					"HEADER": {
+						"CREATE": "Créer un nouveau type de quantité",
+						"EDIT": "Modifier la quantité Type"
+					},
+					"NO_QUANTITY_TYPES": "Non Types de quantité",
+					"QUANTITY_NAME": "nom de la quantité",
+					"QUANTITY_TYPES": "Types de quantités"
+				}
+			},
+			"SUBHEADER": {
+				"ASSET_TYPES": "Types d'actifs",
+				"ASSET_TYPE_TEMPLATES": "Modèles de types d'actifs",
+				"METRICS_AND_ATTRIBUTES": "Métriques et attributs",
+				"QUANTITY_TYPES": "Types de quantités",
+				"UNITS": "Unités"
+			},
+			"UNIT_DIALOG": {
+				"UNIT_NAME": "Nom de l'unité"
+			},
+			"UNIT_LIST": {
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Confirmation de la suppression de l'unité",
+					"MESSAGE": "Etes-vous sûr de vouloir supprimer l'unité {{ itemToDelete }}?"
+				},
+				"CREATE_UNIT": "Créer une unité",
+				"DATE_CREATED": "Date de création",
+				"HEADER": {
+					"CREATE": "Créer une nouvelle unité",
+					"EDIT": "Unité d'édition"
+				},
+				"NO_UNITS": "Aucune unité",
+				"QUANTITY": "Quantité",
+				"UNIT": "Unité",
+				"UNITS": "Unités",
+				"UNIT_NAME": "Nom de l'unité"
+			}
 		}
 	}
 }

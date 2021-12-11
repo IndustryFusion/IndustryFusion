@@ -17,6 +17,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogType } from '../../../../../../shared/models/dialog-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-finished',
@@ -30,7 +31,10 @@ export class AssetTypeTemplateWizardStepFinishedComponent implements OnInit {
 
   public DialogType = DialogType;
 
-  constructor(public ref: DynamicDialogRef) { }
+  constructor(
+    public ref: DynamicDialogRef,
+    public translate: TranslateService) {
+  }
 
   ngOnInit() {
   }

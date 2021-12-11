@@ -21,6 +21,7 @@ import { AssetTypeDetails } from '../../../../core/store/asset-type-details/asse
 import { AssetTypeService } from '../../../../core/store/asset-type/asset-type.service';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-dialog',
@@ -38,7 +39,8 @@ export class AssetTypeDialogComponent implements OnInit {
   constructor(private assetTypeService: AssetTypeService,
               private formBuilder: FormBuilder,
               public ref: DynamicDialogRef,
-              public config: DynamicDialogConfig) {
+              public config: DynamicDialogConfig,
+              public translate: TranslateService) {
   }
 
   ngOnInit() {

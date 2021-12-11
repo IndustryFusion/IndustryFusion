@@ -19,6 +19,7 @@ import { AssetMaintenanceUtils } from '../../../../util/asset-maintenance-utils'
 import { FieldDetails, MetricDetail } from '../../../../../core/store/field-details/field-details.model';
 import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-metrics-group',
@@ -26,6 +27,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./metrics-group.component.scss']
 })
 export class MetricsGroupComponent implements OnInit, OnChanges {
+  jsonLangPath = 'APP.FACTORY.METRICS_BOARD.METRICS_GROUP.';
 
   @Input()
   asset: FactoryAssetDetailsWithFields;
@@ -50,7 +52,8 @@ export class MetricsGroupComponent implements OnInit, OnChanges {
   maintenanceUtils = AssetMaintenanceUtils;
 
   constructor(private readonly router: Router,
-              private readonly activatedRoute: ActivatedRoute) { }
+              private readonly activatedRoute: ActivatedRoute,
+              public translate: TranslateService) { }
 
   ngOnInit(): void {
     this.showTitle = this.metricGroupName != null || this.groupsCount > 1;

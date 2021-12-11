@@ -15,13 +15,14 @@ under the License.
 
 <div class="content">
   <div class="wizard-title">
-    <div> Asset Type Template </div>
+    <div> {{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FINISHED.ASSET_TYPE_TEMPLATE' | translate }} </div>
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
   <div class="icon"><clr-icon shape="success-standard" class="is-solid"></clr-icon></div>
   <div class="description">Your Asset Type Template was<br/>
-    successfully {{ type === DialogType.EDIT? 'updated': 'created' }}</div>
+    successfully {{ type === DialogType.EDIT? translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FINISHED.UPDATE_TEXT') :
+      translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_FINISHED.CREATE_TEXT') }}</div>
 </div>
 <div class="footer">
-  <button type="button" class="if-button button-confirm button-primary" (click)="onFinish()">Finish</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onFinish()">{{ 'APP.COMMON.DIALOG_BUTTONS.FINISH' | translate }}</button>
 </div>

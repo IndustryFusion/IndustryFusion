@@ -16,23 +16,24 @@ under the License.
 <div class="asset-type-dialog">
   <form [formGroup]="assetTypeForm">
     <div class="input-div">
-      <label class="if-label">Name</label>
-      <input type="text" pInputText formControlName="name" placeholder="Name" class="asset-type-dialog-inputs" />
+      <label class="if-label">{{ 'APP.COMMON.TERMS.NAME' | translate }}</label>
+      <input type="text" pInputText formControlName="name" placeholder="{{ 'APP.COMMON.TERMS.NAME' | translate }}" class="asset-type-dialog-inputs" />
     </div>
     <div class="input-div">
-      <label class="if-label">Label</label>
-      <input type="text" pInputText formControlName="label" placeholder="Label" class="asset-type-dialog-inputs" />
+      <label class="if-label">{{ 'APP.COMMON.TERMS.LABEL' | translate }}</label>
+      <input type="text" pInputText formControlName="label" placeholder="{{ 'APP.COMMON.TERMS.LABEL' | translate }}" class="asset-type-dialog-inputs" />
     </div>
     <div class="input-div">
-      <label class="if-label">Description</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</label>
       <textarea pInputTextarea class="asset-type-dialog-inputs" name="description" formControlName="description"></textarea>
       <label class="textarea-character-count if-label">{{ assetTypeForm.get('description').value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
     </div>
 
     <div class="edit-asset-type-footer">
-      <button type="button" class="if-button if-button-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="if-button if-button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button type="button" class="if-button button-confirm button-primary" (click)="onSave()"
-              [disabled]="assetTypeForm.invalid">{{ type === DialogType.EDIT ? 'Save' : 'Create' }}</button>
+              [disabled]="assetTypeForm.invalid">{{ type === DialogType.EDIT ? translate.instant('APP.COMMON.DIALOG_BUTTONS.SAVE')
+        : translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE') }}</button>
     </div>
   </form>
 </div>

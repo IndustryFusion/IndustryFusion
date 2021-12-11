@@ -15,30 +15,32 @@ under the License.
 <div class="create-unit">
   <form [formGroup]="unitForm">
     <div class="p-grid p-dir-col input-div">
-      <label class="if-label p-col">Unit&nbsp;name&nbsp;*</label>
-      <input class="p-col" formControlName="name" pInputText placeholder="Unit name" type="text"/>
+      <label class="if-label p-col">{{ 'APP.ECOSYSTEM.UNIT_DIALOG.UNIT_NAME' | translate }} *</label>
+      <input class="p-col" formControlName="name" pInputText placeholder="{{ 'APP.ECOSYSTEM.UNIT_DIALOG.UNIT_NAME' | translate }}" type="text">
     </div>
     <div class="p-grid input-div">
       <div class="p-col-6 p-grid">
-        <label class="if-label p-col">Symbol</label>
-        <input class="p-col symbol-input" formControlName="symbol" pInputText placeholder="Symbol"
-               type="text"/>
+        <label class="if-label p-col">{{ 'APP.COMMON.TERMS.SYMBOL' | translate }}</label>
+        <input class="p-col symbol-input" formControlName="symbol" pInputText placeholder="{{ 'APP.COMMON.TERMS.SYMBOL' | translate }}"
+               type="text">
       </div>
       <div class="stretch-box"></div>
       <div class="p-col-6 p-grid">
-        <label class="if-label p-col">Quantity&nbsp;Type&nbsp;*</label>
+        <label class="if-label p-col">{{ 'APP.COMMON.TERMS.QUANTITY_TYPE' | translate }}&nbsp;*</label>
         <p-dropdown [options]="quantityTypes$ | async" class="p-col quantity-dropdown" formControlName="quantityTypeId"
-                    optionLabel="name" optionValue="id" placeholder="Quantity type" [disabled]="isQuantityTypeLocked"></p-dropdown>
+                    optionLabel="name" optionValue="id" placeholder="{{ 'APP.COMMON.TERMS.QUANTITY_TYPE' | translate }}"
+                    [disabled]="isQuantityTypeLocked"></p-dropdown>
       </div>
     </div>
     <div class="p-grid p-dir-col input-div">
-      <label class="if-label p-col">Label</label>
-      <input class="p-col" formControlName="label" pInputText placeholder="Label" type="text"/>
+      <label class="if-label p-col">{{ 'APP.COMMON.TERMS.LABEL' | translate }}</label>
+      <input class="p-col" formControlName="label" pInputText placeholder="{{ 'APP.COMMON.TERMS.LABEL' | translate }}" type="text">
     </div>
     <div class="footer-buttons">
-      <button (click)="dismissModal()" class="if-button-cancel" type="button">Cancel</button>
+      <button (click)="dismissModal()" class="if-button-cancel" type="button">{{ 'APP.SHARED.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button (click)="confirmModal()" [disabled]="unitForm.invalid" class="if-button button-primary" type="button">
-        {{ type === DialogType.EDIT ? 'Save' : 'Create'}}
+        {{ type === DialogType.EDIT ? translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.SAVE') :
+        translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.CREATE')}}
       </button>
     </div>
   </form>

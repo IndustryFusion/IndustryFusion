@@ -18,7 +18,7 @@ under the License.
   <h3 class="table-header">{{ displayedUnits?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
     <app-create-button (createItem)="showCreateDialog()" class="single-create-btn"
-                       text="Create Unit"></app-create-button>
+                       text="{{ 'APP.ECOSYSTEM.UNIT_LIST.CREATE_UNIT' | translate }}"></app-create-button>
   </div>
 </div>
 
@@ -30,20 +30,20 @@ under the License.
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
         <app-table-searchbar (searchByName)="searchUnitByName($event)" [itemsToBeFiltered]="(units$ | async)"
-                             attributeToBeSearched="name" filterColumn="Unit name">
+                             attributeToBeSearched="name" filterColumn="{{ 'APP.ECOSYSTEM.UNIT_LIST.UNIT_NAME' | translate }}">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="15">
         <app-table-searchbar (searchByName)="searchUnitBySymbol($event)" [itemsToBeFiltered]="(units$ | async)"
-                             attributeToBeSearched="symbol" filterColumn="Symbol">
+                             attributeToBeSearched="symbol" filterColumn="{{ 'APP.COMMON.TERMS.SYMBOL' | translate }}">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="30">
         <app-table-searchbar (searchByName)="searchUnitByQuantity($event)" [itemsToBeFiltered]="(units$ | async)"
-                             attributeToBeSearched="quantityType.name" filterColumn="Quantity">
+                             attributeToBeSearched="quantityType.name" filterColumn="{{ 'APP.ECOSYSTEM.UNIT_LIST.QUANTITY' | translate }}">
         </app-table-searchbar>
       </th>
-      <th [style.width.%]="15" pSortableColumn="createdDate">Date created
+      <th [style.width.%]="15" pSortableColumn="createdDate">{{ 'APP.ECOSYSTEM.UNIT_LIST.DATE_CREATED' | translate }}
         <p-sortIcon field="createdDate"></p-sortIcon>
       </th>
       <th [style.width.%]="5"></th>

@@ -15,13 +15,13 @@ under the License.
 
 <div class="content">
   <div class="wizard-title" *ngIf="assetTypeTemplateForm !== null">
-    <div> Asset Type Template </div>
+    <div> {{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_PUBLISHED.ASSET_TYPE_TEMPLATE' | translate }} </div>
     <div> {{ assetTypeTemplateForm?.get('name')?.value }} </div>
   </div>
   <div class="icon"><clr-icon shape="exclamation-circle" class="is-solid"></clr-icon></div>
-  <div class="description">Publishing this Asset TypeTemplate<br/>will lock it for further editing</div>
+  <div class="description">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_PUBLISHED.TEXT' | translate }}</div>
 </div>
 <div class="footer">
-  <button type="submit" class="if-button button-cancel" (click)="onBack()">Back</button>
-  <button type="button" class="if-button button-confirm button-primary" (click)="onPublish()">Publish</button>
+  <button type="submit" class="if-button button-cancel" (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onPublish()">{{ 'APP.COMMON.DIALOG_BUTTONS.PUBLISH' | translate }}</button>
 </div>

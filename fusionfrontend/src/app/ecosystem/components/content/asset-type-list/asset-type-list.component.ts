@@ -25,6 +25,7 @@ import { FilterOption, FilterType } from '../../../../shared/components/ui/table
 import { Observable } from 'rxjs';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-list',
@@ -36,8 +37,11 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
 
 
 
-  titleMapping:
-    { [k: string]: string } = { '=0': 'No Asset types', '=1': '# Asset type', other: '# Asset types' };
+  titleMapping: { [k: string]: string } = {
+    '=0': this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_LIST.NO_ASSET_TYPES'),
+    '=1': '# ' + this.translate.instant('APP.COMMON.TERMS.ASSET_TYPE'),
+    other: '# ' +  this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_LIST.ASSET_TYPES')
+  };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -51,16 +55,19 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
   searchedAssetTypes: AssetType[];
 
 
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset type templates', attributeToBeFiltered: 'templateCount' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset series', attributeToBeFiltered: 'assetSeriesCount' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Assets', attributeToBeFiltered: 'assetCount' }];
+  tableFilters: FilterOption[] =
+    [{ filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_LIST.ASSET_TYPE_TEMPLATES')
+      , attributeToBeFiltered: 'templateCount' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ASSET_SERIES'), attributeToBeFiltered: 'assetSeriesCount' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ASSETS'), attributeToBeFiltered: 'assetCount' }];
 
   constructor(
     private assetTypeDetailsQuery: AssetTypeDetailsQuery,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService) {
   }
 
   private static assetTypeFromDetails(assetTypeDetails: AssetTypeDetails): AssetType {
@@ -115,7 +122,7 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
       data: {
         dialogType: DialogType.CREATE
       },
-      header: `Create new Asset Type`,
+      header: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_LIST.HEADER.CREATE'),
     });
   }
 
@@ -126,14 +133,15 @@ export class AssetTypeListComponent implements OnInit, OnDestroy {
       data: {
         assetType, dialogType: DialogType.EDIT
       },
-      header: `Edit Asset type (${assetType?.name})`,
+      header: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_LIST.HEADER.EDIT', { assetTypeToBeEdited: assetType?.name })
     });
   }
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Asset Type ' + this.activeListItem.name + '?',
-      header: 'Delete Asset Type Confirmation',
+      message:  this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_LIST.CONFIRMATION_DIALOG.MESSAGE',
+        { itemToDelete: this.activeListItem.name }),
+      header: this.translate.instant('APP.ECOSYSTEM.ASSET_TYPE_LIST.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteAssetType();

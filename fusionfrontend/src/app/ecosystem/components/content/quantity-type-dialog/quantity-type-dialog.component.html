@@ -16,21 +16,21 @@ under the License.
 <div class="quantity-type-dialog">
   <form [formGroup]="quantityTypeForm">
     <div class="input-div">
-      <label class="if-label">Name&nbsp;*</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.NAME' | translate }}&nbsp;*</label>
       <input type="text" pInputText class="quantity-type-dialog-inputs" formControlName="name" />
     </div>
     <div class="input-div">
-      <label class="if-label">Label</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.LABEL' | translate }}</label>
       <input type="text" pInputText class="quantity-type-dialog-inputs" formControlName="label" />
     </div>
     <div class="input-div">
-      <label class="if-label">Description</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</label>
       <textarea pInputTextarea class="quantity-type-dialog-inputs" formControlName="description"></textarea>
       <label class="textarea-character-count if-label">{{ quantityTypeForm.get('description').value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
     </div>
 
     <div class="input-div">
-      <label class="if-label">Data&nbsp;Type&nbsp;*</label>
+      <label class="if-label">{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_DIALOG.DATA_TYPE' | translate }}&nbsp;*</label>
       <div class="dialog-grid">
         <div>
           <p-radioButton name="dataType" value="{{ valueCategorical }}" label="Categorical" formControlName="dataType"
@@ -44,7 +44,7 @@ under the License.
     </div>
 
     <div class="input-div">
-      <label class="if-label">Base Unit</label>
+      <label class="if-label">{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_DIALOG.BASE_UNIT' | translate }}</label>
       <div *ngIf="showBaseUnitWarning === true" class="if-warning-toast">
         <i class="pi pi-exclamation-circle"></i>
         <label>{{ noBaseUnitWarning }}</label>
@@ -56,9 +56,10 @@ under the License.
     </div>
 
     <div class="quantity-type-dialog-footer">
-      <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.SHARED.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()"
-              [disabled]="quantityTypeForm.invalid">{{type === DialogType.EDIT ? 'Save' : 'Create'}}</button>
+              [disabled]="quantityTypeForm.invalid">{{type === DialogType.EDIT ? translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.SAVE') :
+        translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.CREATE')}}</button>
     </div>
   </form>
 </div>

@@ -16,11 +16,12 @@ under the License.
 <div>
   <div class="content">
     <div class="icon"><clr-icon shape="exclamation-circle" class="is-solid"></clr-icon></div>
-    <div class="description">There is already an Asset type template draft for this Asset type!<br/>
-      You have to publish or delete it first before creating a new one.</div>
+    <div class="description">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.DIALOG_WARNING.TEXT' | translate }}</div>
   </div>
   <div class="footer">
-    <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
-    <button type="button" class="if-button button-confirm button-primary" (click)="onGoToTemplate()">Go to asset type template</button>
+    <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+    <button type="button" class="if-button button-confirm button-primary" (click)="onGoToTemplate()">
+      {{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.DIALOG_WARNING.GO_TO_ASSET_TYPE_TEMPLATE_BUTTON' | translate }}
+    </button>
   </div>
 </div>

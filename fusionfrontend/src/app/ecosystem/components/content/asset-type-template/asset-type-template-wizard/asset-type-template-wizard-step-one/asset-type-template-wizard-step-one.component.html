@@ -15,28 +15,28 @@ under the License.
 
 <div>
   <div class="content">
-    <div class="wizard-title">Create or update Asset Type Template</div>
+    <div class="wizard-title">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.TITLE' | translate }}</div>
     <form [formGroup]="assetTypeTemplateForm">
       <div class="selection">
         <div class="input-div">
-          <label class="if-label">Select Asset type</label>
+          <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE' | translate }}</label>
           <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
                       class="select-asset-input" filter="true" resetFilterOnHide="true"
-                      placeholder="Select Asset type..." (onChange)="onChangeAssetType($event.value)"
+                      placeholder="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE' | translate }}..." (onChange)="onChangeAssetType($event.value)"
                       [disabled]="isAssetTypeLocked">
           </p-dropdown>
         </div>
       </div>
 
       <div class="input-div">
-        <label class="if-label">Create new template or update an existing one?</label>
+        <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.CREATE_OR_UPDATE_TEMPLATE' | translate }}</label>
         <div class="dialog-grid">
           <div>
-            <p-radioButton [value]="false" label="Create new" formControlName="useExistingTemplate"
+            <p-radioButton [value]="false" label="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.CREATE_NEW' | translate }}" formControlName="useExistingTemplate"
                            inputId="group1" (onClick)="onResetUseOfTemplate()"></p-radioButton>
           </div>
           <div class="dialog-grid-col">
-            <p-radioButton [value]="true" label="Use existing template" formControlName="useExistingTemplate"
+            <p-radioButton [value]="true" label="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.USE_EXISTING_TEMPLATE' | translate }}" formControlName="useExistingTemplate"
                            inputId="group2" (onClick)="onUseOfTemplate()"></p-radioButton>
           </div>
         </div>
@@ -44,7 +44,7 @@ under the License.
 
       <div *ngIf="assetTypeTemplateForm.get('useExistingTemplate')?.value === true">
         <div class="input-div">
-          <label class="if-label">Select Asset Type Template</label>
+          <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE_TEMPLATE' | translate }}</label>
           <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name"
                       optionValue="id" placeholder="Select Asset type template..."
                       class="select-asset-input" (onChange)="onChangeTemplate($event.value)">
@@ -53,12 +53,12 @@ under the License.
       </div>
 
       <div class="input-div">
-        <label class="if-label">Asset Type Template name</label>
+        <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.ASSET_TYPE_TEMPLATE_NAME' | translate }}</label>
         <input type="text" pInputText class="select-asset-input" formControlName="name" />
       </div>
 
       <div class="input-div">
-        <label class="if-label">Description</label>
+        <label class="if-label">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</label>
         <textarea pInputTextarea class="select-asset-input" formControlName="description"></textarea>
         <label class="textarea-character-count if-label">{{ assetTypeTemplateForm.get('description')?.value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
       </div>
@@ -66,8 +66,8 @@ under the License.
     </form>
   </div>
   <div class="footer">
-    <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+    <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
     <button type="button" class="if-button button-confirm button-primary" [disabled]="assetTypeTemplateForm.invalid"
-            (click)="onStart()">Start</button>
+            (click)="onStart()">{{ 'APP.COMMON.DIALOG_BUTTONS.START' | translate }}</button>
   </div>
 </div>

@@ -25,6 +25,7 @@ import { QuantityDataType } from '../../../../core/store/field-details/field-det
 import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { QuantityTypeService } from '../../../../core/store/quantity-type/quantity-type.service';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-quantity-type-dialog',
@@ -44,14 +45,15 @@ export class QuantityTypeDialogComponent implements OnInit {
   public DialogType = DialogType;
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
-  public noBaseUnitWarning = 'No base unit selected';
+  public noBaseUnitWarning = this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_DIALOG.NO_BASE_UNIT_WARNING');
   public showBaseUnitWarning: boolean;
 
   constructor(private unitQuery: UnitQuery,
               private formBuilder: FormBuilder,
               public ref: DynamicDialogRef,
               public config: DynamicDialogConfig,
-              public quantityTypeService: QuantityTypeService) { }
+              public quantityTypeService: QuantityTypeService,
+              public translate: TranslateService) { }
 
   ngOnInit() {
     this.type = this.config.data.type;

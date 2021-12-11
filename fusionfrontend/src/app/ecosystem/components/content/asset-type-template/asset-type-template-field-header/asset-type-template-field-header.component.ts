@@ -15,6 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FieldType } from '../../../../../core/store/field-target/field-target.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-template-field-header',
@@ -28,7 +29,7 @@ export class AssetTypeTemplateFieldHeaderComponent implements OnInit {
 
   public FieldType = FieldType;
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit(): void {
   }

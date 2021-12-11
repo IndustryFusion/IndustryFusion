@@ -27,6 +27,7 @@ import { ConfirmationService } from 'primeng/api';
 import { QuantityTypeService } from '../../../../core/store/quantity-type/quantity-type.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-unit-list',
@@ -40,7 +41,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
   @Input() parentQuantityTypeId: ID | null;
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No Units', '=1': '# Unit', other: '# Units' };
+    { [k: string]: string } = { '=0': this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.NO_UNITS'), '=1': '# ' +
+      this.translate.instant('APP.COMMON.TERMS.UNIT'), other: '# ' + this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.UNITS') };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -62,7 +64,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
-    public formBuilder: FormBuilder) {
+    public formBuilder: FormBuilder,
+    public translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -110,7 +113,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   showCreateDialog() {
     const ref = this.dialogService.open(UnitDialogComponent, {
-      header: 'Create new Unit', width: '50%',
+      header: this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.HEADER.CREATE'), width: '50%',
       data: { unit: null, type: DialogType.CREATE, prefilledQuantityTypeId: this.parentQuantityTypeId }
     });
     ref.onClose.subscribe((unit) => {
@@ -120,7 +123,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   showEditDialog(): void {
     const dialogRef = this.dialogService.open(UnitDialogComponent, {
-      header: 'Edit Unit', width: '50%',
+      header: this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.HEADER.EDIT'), width: '50%',
       data: { unit: this.activeListItem, type: DialogType.EDIT }
     });
     dialogRef.onClose.subscribe((unit) => {
@@ -146,8 +149,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the assetType ' + this.activeListItem.name + '?',
-      header: 'Delete Asset Confirmation',
+      message: this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.CONFIRMATION_DIALOG.MESSAGE', { itemToBeDeleted: this.activeListItem.name }),
+      header: this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteUnit(this.activeListItem);

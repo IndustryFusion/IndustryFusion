@@ -16,7 +16,7 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedQuantityTypes?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <app-create-button class="single-create-btn" [text]="'Create Quantity Type'"
+    <app-create-button class="single-create-btn" text="{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_LIST.CREATE_QUANTITY_TYPE' | translate }}"
                        (createItem)="showCreateDialog()"></app-create-button>
   </div>
 </div>
@@ -28,19 +28,19 @@ under the License.
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="25">
-        <app-table-searchbar filterColumn="Quantity name" [itemsToBeFiltered]="(quantityTypes$ | async)"
+        <app-table-searchbar filterColumn="{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_LIST.QUANTITY_NAME' | translate }}" [itemsToBeFiltered]="(quantityTypes$ | async)"
                              attributeToBeSearched="name" (searchByName)="searchQuantityTypesByName($event)">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="30">
-        <app-table-searchbar filterColumn="Description" [itemsToBeFiltered]="(quantityTypes$ | async)"
+        <app-table-searchbar filterColumn="{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}" [itemsToBeFiltered]="(quantityTypes$ | async)"
                              attributeToBeSearched="description" (searchByName)="searchQuantityTypesByDescription($event)">
         </app-table-searchbar>
       </th>
-      <th [style.width.%]="15" pSortableColumn="dataType">Data Type
+      <th [style.width.%]="15" pSortableColumn="dataType">{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_LIST.DATA_TYPE' | translate }}
         <p-sortIcon field="dataType"></p-sortIcon>
       </th>
-      <th [style.width.%]="20" pSortableColumn="baseUnit.name">Base Unit
+      <th [style.width.%]="20" pSortableColumn="baseUnit.name">{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_LIST.BASE_UNIT' | translate }}
         <p-sortIcon field="baseUnit.name"></p-sortIcon>
       </th>
       <th [style.width.%]="5"></th>

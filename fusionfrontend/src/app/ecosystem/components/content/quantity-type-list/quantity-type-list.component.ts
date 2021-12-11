@@ -23,6 +23,7 @@ import { QuantityType } from '../../../../core/store/quantity-type/quantity-type
 import { ConfirmationService } from 'primeng/api';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-quantity-type-list',
@@ -31,10 +32,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   providers: [DialogService, ConfirmationService]
 })
 export class QuantityTypeListComponent implements OnInit, OnDestroy {
+  jsonLangPath = 'APP.ECOSYSTEM.QUANTITY_TYPE_LIST.';
 
-
-  titleMapping:
-    { [k: string]: string } = { '=0': 'No Quantity Types', '=1': '# Quantity Type', other: '# Quantity Types' };
+  titleMapping: { [k: string]: string } = {
+    '=0': this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_LIST.NO_QUANTITY_TYPES'),
+    '=1': '# ' + this.translate.instant('APP.COMMON.TERMS.QUANTITY_TYPE'),
+    other: '# ' + this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_LIST.QUANTITY_TYPES')
+  };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -54,7 +58,8 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    public translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -102,7 +107,7 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
         quantityType: null,
         type: DialogType.CREATE
       },
-      header: `Create new Quantity Type`,
+      header: this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_LIST.HEADER.CREATE'),
     });
   }
 
@@ -112,14 +117,15 @@ export class QuantityTypeListComponent implements OnInit, OnDestroy {
         quantityType: this.activeListItem,
         type: DialogType.EDIT
       },
-      header: `Edit Quantity Type`,
+      header: this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_LIST.HEADER.EDIT'),
     });
   }
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Quantity Type ' + this.activeListItem.name + '?',
-      header: 'Delete Quantity Type Confirmation',
+      message: this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_LIST.CONFIRMATION_DIALOG.MESSAGE',
+        { itemToDelete: this.activeListItem.name}),
+      header: this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_LIST.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteQuantityType();

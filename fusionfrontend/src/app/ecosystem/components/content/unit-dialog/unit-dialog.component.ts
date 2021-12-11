@@ -22,6 +22,7 @@ import { QuantityType } from '../../../../core/store/quantity-type/quantity-type
 import { QuantityTypeQuery } from '../../../../core/store/quantity-type/quantity-type.query';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-unit-dialog',
@@ -41,7 +42,8 @@ export class UnitDialogComponent implements OnInit {
   constructor(private quantityQuery: QuantityTypeQuery,
               public dialogRef: DynamicDialogRef,
               public config: DynamicDialogConfig,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              public translate: TranslateService) {
   }
 
   ngOnInit() {
