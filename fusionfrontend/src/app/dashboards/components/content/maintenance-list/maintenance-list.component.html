@@ -1,6 +1,6 @@
 <div>
   <div class="p-grid p-jc-between header-line">
-    <h3 class="table-header">Maintenance Dashboard</h3>
+    <h3 class="table-header">{{ 'APP.DASHBOARD.MAINTENANCE_LIST.TABLE_HEADER' | translate }}</h3>
     <div class="single-filter-btn-div">
       <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                         (filteredItems)="filterAssets($event)">
@@ -29,19 +29,19 @@
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>
-        <th [style.width.%]="20" ttSortableColumn="category">Asset Type
+        <th [style.width.%]="20" ttSortableColumn="category">{{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate }}
           <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="15" ttSortableColumn="manufacturer">Manufacturer
+        <th [style.width.%]="15" ttSortableColumn="manufacturer">{{ 'APP.COMMON.TERMS.MANUFACTURER' | translate }}
           <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
+        <th [style.width.%]="12" ttSortableColumn="factorySiteName">{{  'APP.COMMON.TERMS.FACTORY_SITE' | translate }}
           <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="15" ttSortableColumn="daysTillMaintenance">Days till Maintenance
+        <th [style.width.%]="15" ttSortableColumn="daysTillMaintenance">{{  'APP.DASHBOARD.MAINTENANCE_LIST.DAYS_TILL_MAINTENANCE' | translate }}
           <p-treeTableSortIcon field="daysTillMaintenance"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="15" ttSortableColumn="operatingHoursTillMaintenance">Operating Hours till Maintenance
+        <th [style.width.%]="15" ttSortableColumn="operatingHoursTillMaintenance">{{ 'APP.DASHBOARD.MAINTENANCE_LIST.OPERATING_HOURS_TILL_MAINTENANCE' | translate }}
           <p-treeTableSortIcon field="operatingHoursTillMaintenance"></p-treeTableSortIcon>
         </th>
         <th [style.width.%]="3"></th>

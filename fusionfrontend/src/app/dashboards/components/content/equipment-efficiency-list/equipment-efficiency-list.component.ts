@@ -25,6 +25,7 @@ import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-a
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -55,11 +56,19 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   faExclamationTriangle = faExclamationTriangle;
   OispPriority = OispAlertPriority;
 
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'}];
+  tableFilters: FilterOption[] = [
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.ASSET_TYPE'),
+      attributeToBeFiltered: 'category' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.MANUFACTURER'),
+      attributeToBeFiltered: 'manufacturer' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.FACTORY'),
+      attributeToBeFiltered: 'factorySiteName'}
+  ];
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private translate: TranslateService) {
   }
 
   ngOnInit(): void {

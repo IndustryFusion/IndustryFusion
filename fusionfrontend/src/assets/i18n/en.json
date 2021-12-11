@@ -1,3 +1,78 @@
 {
-
+	"APP": {
+		"COMMON": {
+			"DIALOG_BUTTONS": {
+				"APPLY": "Apply",
+				"BACK": "Back",
+				"CANCEL": "Cancel",
+				"CREATE": "Create",
+				"EDIT": "Edit",
+				"FINISH": "Finish",
+				"NEXT": "Next",
+				"PUBLISH": "Publish",
+				"START": "Start",
+				"UPDATE": "Update"
+			},
+			"TABLE": {
+				"PAGINATION": {
+					"OF": "of",
+					"TO": "to"
+				}
+			},
+			"TERMS": {
+				"ACCURACY": "Accuracy",
+				"ASSET": "ASSET",
+				"ASSETS": "Assets",
+				"ASSET_SERIES": "Asset series",
+				"ASSET_TYPE": "Asset Type",
+				"DESCRIPTION": "Description",
+				"FACTORY": "Factory",
+				"LABEL": "Label",
+				"MAINTENANCE_DUE": "Maintenance Due",
+				"MANUFACTURER": "Manufacturer",
+				"NAME": "Name",
+				"QUANTITY_TYPE": "Quantity Type",
+				"ROOM": "ROOM",
+				"ROOMS": "ROOMS",
+				"SYMBOL": "Symbol",
+				"UNIT": "Unit"
+			}
+		},
+		"DASHBOARDS": {
+			"EQUIPMENT_EFFICIENCY_LIST": {
+				"ASSET": "Asset",
+				"ERROR": "Error",
+				"FACTORY_SITE": "Factory Site",
+				"IDLE": "Idle",
+				"MANUFACTURER": "Manufacturer",
+				"OFFLINE": "Offline",
+				"RUNNING": "Running",
+				"TABLE_HEADER": "Status Overview by Asset"
+			},
+			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
+				"CALENDER_LABEL": "Pick Date",
+				"DONUT_CHART_TITLE": "Status Overview (Average of all Assets)",
+				"STATUS": {
+					"ASSETS": "Assets",
+					"DASHBOARD_OVERVIEW_LABEL": "Realtime Status",
+					"ERROR": "Error",
+					"IDLE": "Idle",
+					"OFFLINE": "Offline",
+					"RUNNING": "Running"
+				},
+				"TITLE": "Equipment Efficiency Dashboard"
+			},
+			"MAINTENANCE_LIST": {
+				"DAYS_TILL_MAINTENANCE:": "Days till Maintenance",
+				"FACTORY_SITE": "Factory Site",
+				"MANUFACTURER": "Manufacturer",
+				"OPERATING_HOURS_TILL_MAINTENANCE": "Operating Hours till Maintenance",
+				"TABLE_HEADER": "Maintenance Dashboard"
+			},
+			"SUB_HEADER": {
+				"EQUIPMENT_EFFICIENCY": "Equipment Efficiency",
+				"MAINTENANCE": "Maintenance"
+			}
+		}
+	}
 }

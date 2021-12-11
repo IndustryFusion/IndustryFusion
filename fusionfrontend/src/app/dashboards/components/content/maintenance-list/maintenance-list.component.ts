@@ -31,6 +31,7 @@ import {
 } from '../../../../factory/util/asset-maintenance-utils';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -66,14 +67,18 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   searchText = '';
 
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'},
-    { filterType: FilterType.NUMBERBASEDFILTER, columnName: 'Maintenance Due', attributeToBeFiltered: 'maintenanceDue'}];
+  tableFilters: FilterOption[] =
+    [{ filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ASSET_TYPE'), attributeToBeFiltered: 'category' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.MANUFACTURER'), attributeToBeFiltered: 'manufacturer' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.FACTORY'), attributeToBeFiltered: 'factorySiteName'},
+    { filterType: FilterType.NUMBERBASEDFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.MAINTENANCE_DUE'),
+      attributeToBeFiltered: 'maintenanceDue'}];
 
   utils = Utils;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
+              public translate: TranslateService) {
   }
 
 

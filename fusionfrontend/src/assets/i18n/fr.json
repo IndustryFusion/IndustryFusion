@@ -1,3 +1,78 @@
 {
-
+	"APP": {
+		"COMMON": {
+			"DIALOG_BUTTONS": {
+				"APPLY": "Postulez",
+				"BACK": "Retour",
+				"CANCEL": "annuler",
+				"CREATE": "Créer",
+				"EDIT": "edit",
+				"FINISH": "Finition",
+				"NEXT": "Suivant",
+				"PUBLISH": "Publier",
+				"START": "Démarrer",
+				"UPDATE": "Mise à jour"
+			},
+			"TABLE": {
+				"PAGINATION": {
+					"OF": "De",
+					"TO": "À l'adresse suivante :"
+				}
+			},
+			"TERMS": {
+				"ACCURACY": "Précision",
+				"ASSET": "actif",
+				"ASSETS": "Actifs",
+				"ASSET_SERIES": "Série d'actifs",
+				"ASSET_TYPE": "Type d'actif",
+				"DESCRIPTION": "Description",
+				"FACTORY": "Usine",
+				"LABEL": "Label",
+				"MAINTENANCE_DUE": "Maintenance due",
+				"MANUFACTURER": "fabricant",
+				"NAME": "Nom",
+				"QUANTITY_TYPE": "Quantité Type",
+				"ROOM": "salle",
+				"ROOMS": "Chambres",
+				"SYMBOL": "symbole",
+				"UNIT": "Unité"
+			}
+		},
+		"DASHBOARDS": {
+			"EQUIPMENT_EFFICIENCY_LIST": {
+				"ASSET": "actif",
+				"ERROR": "erreur",
+				"FACTORY_SITE": "Site de l'usine",
+				"IDLE": "Au repos",
+				"MANUFACTURER": "fabricant",
+				"OFFLINE": "Hors ligne",
+				"RUNNING": "En cours d'exécution",
+				"TABLE_HEADER": "Aperçu de la situation par actif"
+			},
+			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
+				"CALENDER_LABEL": "Date de sélection",
+				"DONUT_CHART_TITLE": "Aperçu du statut (moyenne de tous les actifs)",
+				"STATUS": {
+					"ASSETS": "Actifs",
+					"DASHBOARD_OVERVIEW_LABEL": "Statut en temps réel",
+					"ERROR": "erreur",
+					"IDLE": "Au repos",
+					"OFFLINE": "Hors ligne",
+					"RUNNING": "En cours d'exécution"
+				},
+				"TITLE": "Tableau de bord de l'efficacité des équipements"
+			},
+			"MAINTENANCE_LIST": {
+				"DAYS_TILL_MAINTENANCE:": "Jours jusqu'à la maintenance",
+				"FACTORY_SITE": "Site de l'usine",
+				"MANUFACTURER": "fabricant",
+				"OPERATING_HOURS_TILL_MAINTENANCE": "Heures de fonctionnement jusqu'à la maintenance",
+				"TABLE_HEADER": "Tableau de bord de la maintenance"
+			},
+			"SUB_HEADER": {
+				"EQUIPMENT_EFFICIENCY": "Efficacité de l'équipement",
+				"MAINTENANCE": "Maintenance"
+			}
+		}
+	}
 }

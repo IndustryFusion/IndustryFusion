@@ -1,3 +1,78 @@
 {
-
+	"APP": {
+		"COMMON": {
+			"DIALOG_BUTTONS": {
+				"APPLY": "Anwenden",
+				"BACK": "Zurück",
+				"CANCEL": "Abbrechen",
+				"CREATE": "erstellen.",
+				"EDIT": "Bearbeiten",
+				"FINISH": "Oberfläche",
+				"NEXT": "nächste",
+				"PUBLISH": "Veröffentlichen",
+				"START": "Start",
+				"UPDATE": "Aktualisierung"
+			},
+			"TABLE": {
+				"PAGINATION": {
+					"OF": "Von",
+					"TO": "An"
+				}
+			},
+			"TERMS": {
+				"ACCURACY": "Genauigkeit",
+				"ASSET": "Vermögenswert",
+				"ASSETS": "Vermögenswerte",
+				"ASSET_SERIES": "Asset-Reihe",
+				"ASSET_TYPE": "Asset-Typ",
+				"DESCRIPTION": "Beschreibung",
+				"FACTORY": "Fabrik",
+				"LABEL": "Etikett",
+				"MAINTENANCE_DUE": "Wartung fällig",
+				"MANUFACTURER": "Hersteller",
+				"NAME": "Name",
+				"QUANTITY_TYPE": "Menge Typ",
+				"ROOM": "Zimmer",
+				"ROOMS": "Räume",
+				"SYMBOL": "Symbol",
+				"UNIT": "Gerät"
+			}
+		},
+		"DASHBOARDS": {
+			"EQUIPMENT_EFFICIENCY_LIST": {
+				"ASSET": "Vermögenswert",
+				"ERROR": "Fehler",
+				"FACTORY_SITE": "Fabrikgelände",
+				"IDLE": "Leerlauf",
+				"MANUFACTURER": "Hersteller",
+				"OFFLINE": "Offline",
+				"RUNNING": "Läuft",
+				"TABLE_HEADER": "Statusübersicht nach Vermögenswerten"
+			},
+			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
+				"CALENDER_LABEL": "Datum auswählen",
+				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Vermögenswerte)",
+				"STATUS": {
+					"ASSETS": "Vermögenswerte",
+					"DASHBOARD_OVERVIEW_LABEL": "Status in Echtzeit",
+					"ERROR": "Fehler",
+					"IDLE": "Leerlauf",
+					"OFFLINE": "Offline",
+					"RUNNING": "Läuft"
+				},
+				"TITLE": "Dashboard zur Effizienz der Ausrüstung"
+			},
+			"MAINTENANCE_LIST": {
+				"DAYS_TILL_MAINTENANCE:": "Tage bis zur Wartung",
+				"FACTORY_SITE": "Fabrikgelände",
+				"MANUFACTURER": "Hersteller",
+				"OPERATING_HOURS_TILL_MAINTENANCE": "Betriebsstunden bis zur Wartung",
+				"TABLE_HEADER": "Wartung Dashboard"
+			},
+			"SUB_HEADER": {
+				"EQUIPMENT_EFFICIENCY": "Effizienz der Ausrüstung",
+				"MAINTENANCE": "Wartung"
+			}
+		}
+	}
 }

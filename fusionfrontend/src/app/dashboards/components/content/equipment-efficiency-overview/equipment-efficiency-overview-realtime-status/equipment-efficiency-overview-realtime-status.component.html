@@ -14,7 +14,7 @@ under the License.
 -->
 
 
-<label class="equipment-efficiency-dashboard-overview-title">Realtime Status</label>
+<label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_OVERVIEW.STATUS.DASHBOARD_OVERVIEW_LABEL' | translate }}</label>
 
 <div class="aggregated-realtime-statuses">
   <table>
@@ -26,20 +26,20 @@ under the License.
     </thead>
     <tbody>
       <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.RUNNING)">
-        <td><span class="status-circle running margin-right"></span> <label class="if-label-bigger">Running</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.RUNNING]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><span class="status-circle running margin-right"></span> <label class="if-label-bigger">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_OVERVIEW.STATUS.RUNNING' | translate }}</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.RUNNING]}}</label> <label class="if-label-small">{{ 'APP.COMMON.TERMS.ASSETS' | translate }}</label></td>
       </tr>
       <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.IDLE)">
-        <td><span class="status-circle idle margin-right"></span> <label class="if-label-bigger">Idle</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.IDLE]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><span class="status-circle idle margin-right"></span> <label class="if-label-bigger">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_OVERVIEW.STATUS.IDLE' | translate }}</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.IDLE]}}</label> <label class="if-label-small">{{ 'APP.COMMON.TERMS.ASSETS' | translate }}</label></td>
       </tr>
       <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.ERROR)">
-        <td><span class="status-circle error margin-right"></span> <label class="if-label-bigger">Error</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.ERROR]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><span class="status-circle error margin-right"></span> <label class="if-label-bigger">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_OVERVIEW.STATUS.ERROR' | translate }}</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.ERROR]}}</label> <label class="if-label-small">{{ 'APP.COMMON.TERMS.ASSETS' | translate }}</label></td>
       </tr>
       <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.OFFLINE)">
-        <td><span class="status-circle offline margin-right"></span> <label class="if-label-bigger">Offline</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.OFFLINE]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><span class="status-circle offline margin-right"></span> <label class="if-label-bigger">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_OVERVIEW.STATUS.OFFLINE' | translate }}</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.OFFLINE]}}</label> <label class="if-label-small">{{ 'APP.COMMON.TERMS.ASSETS' | translate }}</label></td>
       </tr>
     </tbody>
   </table>
