@@ -94,17 +94,23 @@ public class OntologyBuilder {
         Optional.ofNullable(assetTypeTemplate.getImageKey())
                 .ifPresent(literal -> attClass.addLiteral(AssetTypeTemplateSchema.imageKey, literal));
 
-        assetTypeTemplate.getFieldTargets().stream().forEach(fieldTarget -> {
+        assetTypeTemplate.getFieldTargets().forEach(fieldTarget -> {
 
             DatatypeProperty fieldProperty = ontModel.createDatatypeProperty(
                     uriATT + assetTypeTemplate.getId() + "_" + fieldTarget.getLabel());
             fieldProperty.addDomain(attClass);
-            addRange(fieldTarget.getField().getUnit().getQuantityType(), fieldProperty);
+            Optional.ofNullable(fieldTarget.getField().getUnit())
+                    .ifPresent(unit -> addRange(unit.getQuantityType(), fieldProperty));
 
             addField(ontModel, fieldTarget.getField(), fieldProperty);
-            OntClass quantityTypeModelOntClass = quantityTypeModel.getOntClass(uriQuantityType
-                    + fieldTarget.getField().getUnit().getQuantityType().getId());
-            fieldProperty.addProperty(AssetTypeTemplateSchema.quantityType, quantityTypeModelOntClass);
+
+            Optional.ofNullable(fieldTarget.getField().getUnit())
+                    .ifPresent(unit -> {
+                        OntClass quantityTypeModelOntClass = quantityTypeModel
+                                .getOntClass(uriQuantityType + unit.getQuantityType().getId());
+                        fieldProperty.addProperty(AssetTypeTemplateSchema.quantityType, quantityTypeModelOntClass);
+                    });
+
             attClass.addLiteral(fieldProperty, "");
         });
 
@@ -250,11 +256,13 @@ public class OntologyBuilder {
     private OntClass generateFieldOntology(Field field, OntModel ontModel) {
         FieldSchema fieldSchema = new FieldSchema();
         OntClass fieldClass = ontModel.createClass(uriFields + field.getId());
-        fieldClass.addProperty(fieldSchema.hasThresholdProperty,
-                fieldSchema.getThresholdTypeProperty(field.getThresholdType()));
-        fieldClass.addProperty(fieldSchema.accuracy, field.getAccuracy().toString());
-        fieldClass.addProperty(fieldSchema.name, field.getName());
-        fieldClass.addProperty(fieldSchema.description, field.getDescription());
+        Optional.ofNullable(field.getThresholdType())
+                .ifPresent(thresholdType ->
+                        fieldClass.addProperty(FieldSchema.hasThresholdProperty,
+                                fieldSchema.getThresholdTypeProperty(thresholdType)));
+        fieldClass.addProperty(FieldSchema.accuracy, field.getAccuracy().toString());
+        fieldClass.addProperty(FieldSchema.name, field.getName());
+        fieldClass.addProperty(FieldSchema.description, field.getDescription());
 
         return fieldClass;
     }
