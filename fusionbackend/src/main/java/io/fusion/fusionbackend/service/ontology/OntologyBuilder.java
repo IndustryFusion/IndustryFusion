@@ -261,8 +261,7 @@ public class OntologyBuilder {
 
     @NotNull
     private OntModel loadFieldModel() {
-        final OntModel fieldModel;
-        fieldModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+        final OntModel fieldModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
         this.fieldService.getAllFields().forEach(field -> generateFieldOntology(field, fieldModel));
         return fieldModel;
     }
