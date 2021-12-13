@@ -31,6 +31,8 @@ import java.util.Map;
 * */
 public class BlankNodeProcessor {
 
+    public static final String BLANKNODE_PREFIX = "_:b";
+
     public static String linkBlankNodes(String jsonString) throws ParseException, IOException {
         JSONParser parser = new JSONParser();
         JSONObject root = (JSONObject) parser.parse(jsonString);
@@ -52,7 +54,7 @@ public class BlankNodeProcessor {
     private static JSONObject insertBlankNodes(JSONObject node, Map<String, JSONObject> blankNodes) {
         String id = (String) node.get("id");
         JSONObject result = node;
-        if (id != null && id.startsWith("_:b") && node.size() == 1) {
+        if (id != null && id.startsWith(BLANKNODE_PREFIX) && node.size() == 1) {
             if (blankNodes.get(id) == null) {
                 throw new IllegalArgumentException("blank node missing: " + id);
             }
@@ -64,7 +66,7 @@ public class BlankNodeProcessor {
                     node.put(key, insertBlankNodes((JSONArray) nodevalue, blankNodes));
                 } else if (nodevalue instanceof JSONObject) {
                     node.put(key, insertBlankNodes((JSONObject) nodevalue, blankNodes));
-                } else if (nodevalue instanceof String && ((String) nodevalue).startsWith("_:b")) {
+                } else if (nodevalue instanceof String && ((String) nodevalue).startsWith(BLANKNODE_PREFIX)) {
                     node.put(key, blankNodes.remove(nodevalue));
                 }
             }
