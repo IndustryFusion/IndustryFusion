@@ -21,6 +21,7 @@ import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { IfApiService } from '../../../../core/services/api/if-api.service';
 
 @Component({
   selector: 'app-factory-sub-header',
@@ -33,7 +34,10 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   private unSubscribe$ = new Subject<void>();
   private readonly URL_PREFIX = '^/factorymanager/companies/[0-9]+/';
 
-  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) {
+  constructor(private location: Location,
+              private router: Router,
+              private companyQuery: CompanyQuery,
+              public ifApiService: IfApiService) {
   }
 
   ngOnInit() {
@@ -44,7 +48,7 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
       ).subscribe(() => {
       this.checkUrl();
     });
-    this.companyId = this.companyQuery.getActiveId();
+    this.companyQuery.waitForActive().subscribe(company => this.companyId = company.id);
   }
 
   checkUrl(): void {
@@ -93,5 +97,13 @@ export class FactorySubHeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
+  }
+
+  onZipFileUpload(event: any): void {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const selectedZipFile: File = fileList[0];
+      this.ifApiService.importEcosystemManagerDataToFactoryManager(this.companyId, selectedZipFile).subscribe();
+    }
   }
 }

@@ -35,8 +35,7 @@ import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { FactorySiteQuery } from '../../../../../core/store/factory-site/factory-site.query';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
-import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
-import { AssetOnboardingService } from '../../../../../core/services/logic/asset-onboarding.service';
+import { AssetService } from '../../../../../core/store/asset/asset.service';
 
 
 @Component({
@@ -69,27 +68,8 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private assetSeriesDetailsService: AssetSeriesDetailsService,
-    private factoryComposedQuery: FactoryComposedQuery,
-    private assetOnboardingService: AssetOnboardingService,
+    public assetService: AssetService
   ) {
-  }
-
-  private static downloadFile(fileContent: string, fileName: string) {
-    const blob = new Blob([fileContent], { type: 'text/yaml' });
-
-    if (window.navigator.msSaveOrOpenBlob) {
-      // modern way
-      window.navigator.msSaveBlob(blob, fileName);
-    } else {
-      // workaround
-      const anchor = window.document.createElement('a');
-      anchor.href = window.URL.createObjectURL(blob);
-      anchor.download = fileName;
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      window.URL.revokeObjectURL(anchor.href);
-    }
   }
 
   ngOnInit() {
@@ -148,14 +128,5 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
-  }
-
-  generateAssetOnboardingFile() {
-    this.asset$.subscribe(asset => {
-        this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
-          this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
-            .subscribe(fileContent => AssetSeriesAssetDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
-      }
-    );
   }
 }

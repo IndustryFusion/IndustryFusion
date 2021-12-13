@@ -15,6 +15,14 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fusion.fusionbackend.dto.AssetSeriesDto;
+import io.fusion.fusionbackend.dto.FieldSourceDto;
+import io.fusion.fusionbackend.dto.mappers.AssetSeriesMapper;
+import io.fusion.fusionbackend.dto.mappers.FieldTargetMapper;
+import io.fusion.fusionbackend.dto.mappers.UnitMapper;
 import io.fusion.fusionbackend.exception.AlreadyExistsException;
 import io.fusion.fusionbackend.exception.ConflictException;
 import io.fusion.fusionbackend.exception.MandatoryFieldException;
@@ -28,51 +36,73 @@ import io.fusion.fusionbackend.model.ConnectivityType;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetSeriesRepository;
 import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
 import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;
 import io.fusion.fusionbackend.repository.FieldSourceRepository;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class AssetSeriesService {
     private final AssetSeriesRepository assetSeriesRepository;
+    private final AssetSeriesMapper assetSeriesMapper;
     private final AssetTypeTemplateService assetTypeTemplateService;
+    private final UnitMapper unitMapper;
     private final FieldSourceRepository fieldSourceRepository;
     private final CompanyService companyService;
     private final UnitService unitService;
     private final FieldSourceService fieldSourceService;
+    private final FieldTargetService fieldTargetService;
+    private final FieldTargetMapper fieldTargetMapper;
     private final ConnectivityTypeRepository connectivityTypeRepository;
     private final ConnectivityProtocolRepository connectivityProtocolRepository;
+    private final OntologyBuilder ontologyBuilder;
 
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
 
     @Autowired
     public AssetSeriesService(AssetSeriesRepository assetSeriesRepository,
+                              AssetSeriesMapper assetSeriesMapper,
                               AssetTypeTemplateService assetTypeTemplateService,
+                              UnitMapper unitMapper,
                               FieldSourceRepository fieldSourceRepository,
                               CompanyService companyService,
                               UnitService unitService,
                               FieldSourceService fieldSourceService,
+                              FieldTargetService fieldTargetService,
+                              FieldTargetMapper fieldTargetMapper,
                               ConnectivityTypeRepository connectivityTypeRepository,
-                              ConnectivityProtocolRepository connectivityProtocolRepository) {
+                              ConnectivityProtocolRepository connectivityProtocolRepository,
+                              OntologyBuilder ontologyBuilder) {
         this.assetSeriesRepository = assetSeriesRepository;
+        this.assetSeriesMapper = assetSeriesMapper;
         this.assetTypeTemplateService = assetTypeTemplateService;
+        this.unitMapper = unitMapper;
         this.fieldSourceRepository = fieldSourceRepository;
         this.companyService = companyService;
         this.unitService = unitService;
         this.fieldSourceService = fieldSourceService;
+        this.fieldTargetService = fieldTargetService;
+        this.fieldTargetMapper = fieldTargetMapper;
         this.connectivityTypeRepository = connectivityTypeRepository;
         this.connectivityProtocolRepository = connectivityProtocolRepository;
+        this.ontologyBuilder = ontologyBuilder;
     }
 
     public Set<AssetSeries> getAssetSeriesSetByCompany(final Long companyId) {
@@ -84,12 +114,26 @@ public class AssetSeriesService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
+    public AssetSeries getAssetSeriesByCompanyAndGlobalId(final Long companyId, final String assetSeriesGlobalId) {
+        return assetSeriesRepository.findByCompanyIdAndGlobalId(companyId, assetSeriesGlobalId)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
     @Transactional
     public AssetSeries createAssetSeries(final Long targetCompanyId,
                                          final Long assetTypeTemplateId,
                                          final Long connectivityTypeId,
                                          final Long connectivityProtocolId,
                                          final AssetSeries assetSeries) {
+
+        boolean wasGlobalIdsUnset = false;
+        if (assetSeries.getGlobalId() == null) {
+            assetSeries.setGlobalId(UUID.randomUUID().toString());
+            for (FieldSource fieldSource : assetSeries.getFieldSources()) {
+                fieldSource.setGlobalId(UUID.randomUUID().toString());
+            }
+            wasGlobalIdsUnset = true;
+        }
 
         validate(assetSeries);
 
@@ -116,7 +160,18 @@ public class AssetSeriesService {
         connectivitySettings.setConnectivityType(connectivityType);
         connectivitySettings.setConnectivityProtocol(connectivityProtocol);
 
-        return assetSeriesRepository.save(assetSeries);
+        AssetSeries persistedAssetSeries = assetSeriesRepository.save(assetSeries);
+        if (wasGlobalIdsUnset) {
+            persistedAssetSeries.setGlobalId(generateGlobalId(targetCompanyId, persistedAssetSeries.getId()));
+            for (FieldSource fieldSource : persistedAssetSeries.getFieldSources()) {
+                fieldSource.setGlobalId(fieldSourceService.generateGlobalId(fieldSource));
+            }
+        }
+        return persistedAssetSeries;
+    }
+
+    private String generateGlobalId(final Long companyId, final Long assetId) {
+        return companyId + "/" + assetId;
     }
 
     public AssetSeries updateAssetSeries(final Long companyId, final Long assetSeriesId,
@@ -143,6 +198,9 @@ public class AssetSeriesService {
     }
 
     private void validate(AssetSeries sourceAssetSeries) {
+        if (sourceAssetSeries.getGlobalId() == null) {
+            throw new RuntimeException("Global id has to exist in an asset series");
+        }
         if (sourceAssetSeries.getConnectivitySettings() == null) {
             throw new RuntimeException("There must be connectivity settings for every asset series");
         }
@@ -177,7 +235,17 @@ public class AssetSeriesService {
     public FieldSource getFieldSource(final Long companyId, final Long assetSeriesId, final Long fieldSourceId) {
         final AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
         return assetSeries.getFieldSources().stream()
-                .filter(field -> field.getId().equals(fieldSourceId))
+                .filter(fieldSource -> fieldSource.getId().equals(fieldSourceId))
+                .findAny()
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public FieldSource getFieldSourceByGlobalId(final Long companyId,
+                                                final String assetSeriesGlobalId,
+                                                final String fieldSourceGlobalId) {
+        final AssetSeries assetSeries = getAssetSeriesByCompanyAndGlobalId(companyId, assetSeriesGlobalId);
+        return assetSeries.getFieldSources().stream()
+                .filter(fieldSource -> fieldSource.getGlobalId().equals(fieldSourceGlobalId))
                 .findAny()
                 .orElseThrow(ResourceNotFoundException::new);
     }
@@ -233,5 +301,109 @@ public class AssetSeriesService {
         final Unit unit = unitService.getUnit(unitId);
 
         fieldSource.setSourceUnit(unit);
+    }
+
+    public OntModel getAssetSeriesRdf(Long assetSeriesId, Long companyId) {
+        AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
+        return ontologyBuilder.buildAssetSeriesOntology(assetSeries);
+    }
+
+    public byte[] exportAllToJson(final Long companyId) throws IOException {
+        Set<AssetSeries> assetSeries = assetSeriesRepository
+                .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId);
+
+        Set<AssetSeriesDto> assetSeriesDtos = assetSeriesMapper.toDtoSet(assetSeries, true);
+        return exportAssetSeriesDtosToJson(assetSeriesDtos);
+    }
+
+    public byte[] exportAssetSeriesToJson(final Long companyId, final Long assetSeriesId) throws IOException {
+        AssetSeries assetSeries = assetSeriesRepository.findByCompanyIdAndId(companyId, assetSeriesId).orElseThrow();
+
+        Set<AssetSeriesDto> assetSeriesDtos = new LinkedHashSet<>();
+        assetSeriesDtos.add(assetSeriesMapper.toDto(assetSeries, true));
+        return exportAssetSeriesDtosToJson(assetSeriesDtos);
+    }
+
+    private byte[] exportAssetSeriesDtosToJson(Set<AssetSeriesDto> assetSeriesDtos) throws JsonProcessingException {
+        assetSeriesDtos = removeUnnecessaryItems(assetSeriesDtos);
+        sortFieldSources(assetSeriesDtos);
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetSeriesDtos));
+    }
+
+    private Set<AssetSeriesDto> removeUnnecessaryItems(Set<AssetSeriesDto> assetSeriesDtos) {
+        Set<AssetSeriesDto> resultAssetSeriesDtos = new LinkedHashSet<>();
+        for (AssetSeriesDto assetSeriesDto : assetSeriesDtos) {
+            assetSeriesDto.setCompanyId(null);
+            assetSeriesDto.getFieldSources().forEach(fieldSourceDto -> {
+                fieldSourceDto.setFieldTarget(null);
+                fieldSourceDto.setSourceUnit(null);
+            });
+            resultAssetSeriesDtos.add(assetSeriesDto);
+        }
+        return resultAssetSeriesDtos;
+    }
+
+    private void sortFieldSources(Set<AssetSeriesDto> assetSeriesDtos) {
+        for (AssetSeriesDto assetSeriesDto : assetSeriesDtos) {
+            assetSeriesDto.setFieldSourceIds(null);
+            Set<FieldSourceDto> sortedFieldSourceDtos = new LinkedHashSet<>(BaseZipImportExport
+                    .toSortedList(assetSeriesDto.getFieldSources()));
+            assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
+        }
+    }
+
+    public int importMultipleFromJson(byte[] fileContent, final Long companyId) throws IOException {
+        Set<AssetSeriesDto> assetSeriesDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
+                new TypeReference<>() {});
+        Set<String> existingGlobalAssetSeriesIds = assetSeriesRepository
+                .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId)
+                .stream().map(AssetSeries::getGlobalId).collect(Collectors.toSet());
+
+        int entitySkippedCount = 0;
+        for (AssetSeriesDto assetSeriesDto : BaseZipImportExport.toSortedList(assetSeriesDtos)) {
+            if (!existingGlobalAssetSeriesIds.contains(assetSeriesDto.getGlobalId())) {
+
+                addBaseUnitToFieldSourceDtos(assetSeriesDto);
+                addFieldTargetToFieldSourceDtos(assetSeriesDto);
+                sortFieldSourcesInAssetSeriesDto(assetSeriesDto);
+
+                AssetSeries assetSeries = assetSeriesMapper.toEntity(assetSeriesDto);
+
+                // Info: Field sources are created automatically with cascade-all
+                createAssetSeries(companyId,
+                        assetSeriesDto.getAssetTypeTemplateId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityTypeId(),
+                        assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
+                        assetSeries);
+            } else {
+                LOG.warn("Asset series with the id " + assetSeriesDto.getId() + " already exists. Entry is ignored.");
+                entitySkippedCount += 1;
+            }
+        }
+
+        return entitySkippedCount;
+    }
+
+    private void addBaseUnitToFieldSourceDtos(AssetSeriesDto assetSeriesDto) {
+        for (FieldSourceDto fieldSourceDto : assetSeriesDto.getFieldSources()) {
+            fieldSourceDto.setSourceUnit(unitMapper.toDto(unitService.getUnit(fieldSourceDto.getSourceUnitId()),
+                    false));
+        }
+    }
+
+    private void addFieldTargetToFieldSourceDtos(AssetSeriesDto assetSeriesDto) {
+        for (FieldSourceDto fieldSourceDto : assetSeriesDto.getFieldSources()) {
+            FieldTarget fieldTarget = fieldTargetService.getFieldTarget(assetSeriesDto.getAssetTypeTemplateId(),
+                    fieldSourceDto.getFieldTargetId());
+            fieldSourceDto.setFieldTarget(fieldTargetMapper.toDto(fieldTarget, false));
+        }
+    }
+
+    private void sortFieldSourcesInAssetSeriesDto(AssetSeriesDto assetSeriesDto) {
+        Set<FieldSourceDto> sortedFieldSourceDtos =
+                new LinkedHashSet<>(BaseZipImportExport.toSortedList(assetSeriesDto.getFieldSources()));
+        assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
     }
 }

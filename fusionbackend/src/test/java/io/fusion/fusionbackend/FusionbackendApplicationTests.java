@@ -804,6 +804,7 @@ class FusionbackendApplicationTests {
 
         existingAssetSeriesDto.getConnectivitySettings().setConnectivityTypeId(newConnectivityTypeDto.getId());
         existingAssetSeriesDto.getConnectivitySettings().setConnectivityProtocolId(newConnectivityProtocolDto.getId());
+        existingAssetSeriesDto.setGlobalId("Global-ID-Test");
 
         AssetSeriesDto patchedAssetSeries = given()
                 .contentType(ContentType.JSON)
@@ -1381,6 +1382,7 @@ class FusionbackendApplicationTests {
         AssetSeriesDto persistedAssetSeriesDto = createAssetSeries(companyId, assetTypeTemplateId, accessToken);
 
         Long newAssetSeriesId = persistedAssetSeriesDto.getId();
+        assetSeries.setGlobalId("Test global id 1");
 
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
@@ -1551,7 +1553,7 @@ class FusionbackendApplicationTests {
 
         Integer newSubsystemId = persistNewAsset(newSubsystem, subsystemAccessToken);
 
-        addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
+        addSubsystemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
         validateSubsystemExists(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
@@ -1570,7 +1572,7 @@ class FusionbackendApplicationTests {
                 .body("subsystemIds", equalTo(Collections.singletonList(newSubsystemId)));
     }
 
-    private void addSubstemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+    private void addSubsystemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
         AssetDto parent = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)

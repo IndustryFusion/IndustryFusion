@@ -15,26 +15,43 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.mappers.FieldMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
+import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class FieldService {
     private final FieldRepository fieldRepository;
+    private final FieldMapper fieldMapper;
     private final UnitService unitService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(FieldService.class);
+
     @Autowired
-    public FieldService(FieldRepository fieldRepository, UnitService unitService) {
+    public FieldService(FieldRepository fieldRepository,
+                        FieldMapper fieldMapper,
+                        UnitService unitService) {
         this.fieldRepository = fieldRepository;
+        this.fieldMapper = fieldMapper;
         this.unitService = unitService;
     }
 
@@ -74,5 +91,35 @@ public class FieldService {
 
     public void deleteField(final Long id) {
         fieldRepository.delete(getField(id, false));
+    }
+
+    public byte[] exportAllToJson() throws IOException {
+        Set<Field> fields = Sets.newLinkedHashSet(fieldRepository
+                .findAll(FieldRepository.DEFAULT_SORT));
+
+        Set<FieldDto> fieldDtos = fieldMapper.toDtoSet(fields, true);
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(fieldDtos));
+    }
+
+    public int importMultipleFromJson(byte[] fileContent) throws IOException {
+        Set<FieldDto> fieldDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {});
+        Set<Long> existingFieldIds = fieldRepository
+                .findAll(FieldRepository.DEFAULT_SORT)
+                .stream().map(BaseEntity::getId).collect(Collectors.toSet());
+
+        int entitySkippedCount = 0;
+        for (FieldDto fieldDto : BaseZipImportExport.toSortedList(fieldDtos)) {
+            if (!existingFieldIds.contains(fieldDto.getId())) {
+                Field field = fieldMapper.toEntity(fieldDto);
+                createField(field, fieldDto.getUnitId());
+            } else {
+                LOG.warn("Field with the id " + fieldDto.getId() + " already exists. Entry is ignored.");
+                entitySkippedCount += 1;
+            }
+        }
+
+        return entitySkippedCount;
     }
 }

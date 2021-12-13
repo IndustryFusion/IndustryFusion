@@ -114,6 +114,9 @@ public class FieldInstanceService {
     }
 
     public void validate(FieldInstance fieldInstance) {
+        if (fieldInstance.getGlobalId() == null) {
+            throw new RuntimeException("Global id has to exist in a field instance");
+        }
         if (fieldInstance.getFieldSource() == null) {
             throw new RuntimeException("Field instance must have a FieldSource");
         }
@@ -133,5 +136,9 @@ public class FieldInstanceService {
                     fieldInstance.getIdealThreshold(), fieldInstance.getCriticalThreshold());
             throw new RuntimeException("Thresholds are not valid in every field instance");
         }
+    }
+
+    public String generateGlobalId(final FieldInstance fieldInstance) {
+        return fieldInstance.getId() + "/" + (fieldInstance.getName() != null ? fieldInstance.getName() : "");
     }
 }

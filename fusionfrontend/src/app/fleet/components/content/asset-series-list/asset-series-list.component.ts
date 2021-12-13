@@ -30,6 +30,7 @@ import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-optio
 import { ConfirmationService } from 'primeng/api';
 import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import { AssetSeries } from '../../../../core/store/asset-series/asset-series.model';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -52,6 +53,7 @@ export class AssetSeriesListComponent implements OnInit {
   assetSeries: AssetSeriesDetails[];
   displayedAssetSeries: AssetSeriesDetails[];
   assetSeriesSearchedByName: AssetSeriesDetails[];
+  menuType: ItemOptionsMenuType[];
 
   ItemOptionsMenuType = ItemOptionsMenuType;
 
@@ -79,6 +81,8 @@ export class AssetSeriesListComponent implements OnInit {
     });
 
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
+    this.menuType = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE,
+      ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2];
   }
 
   setActiveRow(assetSeries: AssetSeriesDetails) {
@@ -137,4 +141,16 @@ export class AssetSeriesListComponent implements OnInit {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 
+  downloadAssetSeriesAsOwl(assetSeries: AssetSeries) {
+    this.downloadAssetSeries(assetSeries, true);
+  }
+
+  downloadAssetSeriesAsJson(assetSeries: AssetSeries) {
+    this.downloadAssetSeries(assetSeries, false);
+  }
+
+  private downloadAssetSeries(assetSeries: AssetSeries, asOwl: boolean) {
+    const exportLink = this.assetSeriesService.getExportLink(assetSeries.id, assetSeries.companyId, asOwl);
+    window.open(exportLink, '_blank');
+  }
 }

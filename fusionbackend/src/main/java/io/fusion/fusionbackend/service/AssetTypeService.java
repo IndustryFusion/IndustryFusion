@@ -15,25 +15,39 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.AssetTypeDto;
+import io.fusion.fusionbackend.dto.mappers.AssetTypeMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
+import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.repository.AssetTypeRepository;
 import io.fusion.fusionbackend.repository.CompanyRepository;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class AssetTypeService {
     private final AssetTypeRepository assetTypeRepository;
+    private final AssetTypeMapper assetTypeMapper;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AssetTypeService.class);
 
     @Autowired
-    public AssetTypeService(AssetTypeRepository assetTypeRepository) {
+    public AssetTypeService(AssetTypeRepository assetTypeRepository, AssetTypeMapper assetTypeMapper) {
         this.assetTypeRepository = assetTypeRepository;
+        this.assetTypeMapper = assetTypeMapper;
     }
 
     public Set<AssetType> getAllAssetTypes() {
@@ -63,5 +77,36 @@ public class AssetTypeService {
         targetAssetType.copyFrom(sourceAssetType);
 
         return targetAssetType;
+    }
+
+    public byte[] exportAllToJson() throws IOException {
+        Set<AssetType> assetTypes = Sets.newLinkedHashSet(assetTypeRepository
+                .findAll(AssetTypeRepository.DEFAULT_SORT));
+
+        Set<AssetTypeDto> assetTypeDtos = assetTypeMapper.toDtoSet(assetTypes, true);
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetTypeDtos));
+    }
+
+    public int importMultipleFromJson(byte[] fileContent) throws IOException {
+        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>(){});
+        Set<Long> existingAssetTypeIds = assetTypeRepository
+                .findAll(AssetTypeRepository.DEFAULT_SORT)
+                .stream().map(BaseEntity::getId).collect(Collectors.toSet());
+
+        int entitySkippedCount = 0;
+        for (AssetTypeDto assetTypeDto : BaseZipImportExport.toSortedList(assetTypeDtos)) {
+            if (!existingAssetTypeIds.contains(assetTypeDto.getId())) {
+                AssetType assetType = assetTypeMapper.toEntity(assetTypeDto);
+                createAssetType(assetType);
+            } else {
+                LOG.warn("Asset type with the id " + assetTypeDto.getId()
+                        + " already exists. Entry is ignored.");
+                entitySkippedCount += 1;
+            }
+        }
+
+        return entitySkippedCount;
     }
 }

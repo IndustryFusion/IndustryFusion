@@ -16,7 +16,13 @@
 package io.fusion.fusionbackend.repository;
 
 import io.fusion.fusionbackend.model.AssetType;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Set;
+
 public interface AssetTypeRepository extends PagingAndSortingRepository<AssetType, Long> {
+    Sort DEFAULT_SORT = Sort.by("id").ascending();
+
+    Set<AssetType> findAll(Sort sort);
 }

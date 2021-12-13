@@ -53,10 +53,16 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         if (entity == null) {
             return null;
         }
+
+        Set<String> subsystemGlobalIds = entity.getSubsystems().stream()
+                .map(Asset::getGlobalId).collect(Collectors.toSet());
+
         // Please mind editing AssetDetailsMapper on changes here too
         AssetDto dto = AssetDto.builder()
                 .id(entity.getId())
                 .version(entity.getVersion())
+                .globalId(entity.getGlobalId())
+                .assetSeriesGlobalId(entity.getAssetSeries().getGlobalId())
                 .companyId(EntityDtoMapper.getEntityId(entity.getCompany()))
                 .assetSeriesId(EntityDtoMapper.getEntityId(entity.getAssetSeries()))
                 .fieldInstanceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldInstances()))
@@ -74,6 +80,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .videoUrl(entity.getVideoUrl())
                 .installationDate(entity.getInstallationDate())
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
+                .subsystemGlobalIds(subsystemGlobalIds)
                 .connectionString(entity.getConnectionString())
                 .build();
 
@@ -116,6 +123,7 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         Asset entity = Asset.builder()
                 .id(dto.getId())
                 .version(dto.getVersion())
+                .globalId(dto.getGlobalId())
                 .externalName(dto.getExternalName())
                 .controlSystemType(dto.getControlSystemType())
                 .hasGateway(dto.getHasGateway())
@@ -131,14 +139,14 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
                 .connectionString(dto.getConnectionString())
                 .build();
 
+        baseAssetMapper.copyToEntity(dto, entity);
+
         addRoomToEntity(dto, entity);
         if (dto.getFieldInstances() != null) {
             entity.setFieldInstances(fieldInstanceMapper.toEntitySet(dto.getFieldInstances()));
         }
 
         addSubsystemsToEntity(dto, entity);
-
-        baseAssetMapper.copyToEntity(dto, entity);
 
         return entity;
     }
@@ -147,6 +155,11 @@ public class AssetMapper implements EntityDtoMapper<Asset, AssetDto> {
         if (dto.getSubsystemIds() != null) {
             dto.getSubsystemIds().forEach(id -> {
                 Asset asset = assetService.getAssetById(id);
+                entity.getSubsystems().add(asset);
+            });
+        } else if (dto.getSubsystemGlobalIds() != null) {
+            dto.getSubsystemGlobalIds().forEach(id -> {
+                Asset asset = assetService.getAssetByCompanyAndGlobalId(dto.getCompanyId(), id);
                 entity.getSubsystems().add(asset);
             });
         }
