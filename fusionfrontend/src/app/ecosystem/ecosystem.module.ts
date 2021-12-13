@@ -69,6 +69,7 @@ import { AssetTypeTemplateWizardSharedFieldComponent } from './components/conten
 import { NameWithVersionPipe } from '../shared/pipes/namewithversion.pipe';
 import { AssetTypeDialogComponent } from './components/content/asset-type-dialog/asset-type-dialog.component';
 import { AssetTypeTemplateWizardStepSubsystemsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step/asset-type-template-wizard-step-subsystems/asset-type-template-wizard-step-subsystems.component';
+import { TooltipModule } from 'primeng/tooltip';
 import { AssetTypeTemplateWizardSharedRelationshipsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-relationship/asset-type-template-wizard-shared-relationships.component';
 import { AssetTypeTemplateWizardStepPeersComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step/asset-type-template-wizard-step-peers/asset-type-template-wizard-step-peers.component';
 
@@ -114,14 +115,15 @@ import { AssetTypeTemplateWizardStepPeersComponent } from './components/content/
     NameWithVersionPipe,
     AssetTypeTemplateWizardStepPeersComponent,
   ],
-  imports: [
-    SharedModule,
-    EcosystemRoutingModule,
-    ClarityModule,
-    Ng2CompleterModule,
-    ReactiveFormsModule,
-    TableModule,
-  ],
+    imports: [
+        SharedModule,
+        EcosystemRoutingModule,
+        ClarityModule,
+        Ng2CompleterModule,
+        ReactiveFormsModule,
+        TableModule,
+        TooltipModule,
+    ],
   exports: [
     EcosystemSubHeaderComponent,
   ],

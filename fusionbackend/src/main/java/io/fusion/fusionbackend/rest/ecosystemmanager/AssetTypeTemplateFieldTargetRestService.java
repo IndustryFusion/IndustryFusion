@@ -18,7 +18,7 @@ package io.fusion.fusionbackend.rest.ecosystemmanager;
 import io.fusion.fusionbackend.dto.FieldTargetDto;
 import io.fusion.fusionbackend.dto.mappers.FieldTargetMapper;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
-import io.fusion.fusionbackend.service.AssetTypeTemplateService;
+import io.fusion.fusionbackend.service.FieldTargetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,20 +34,20 @@ import java.util.Set;
 @RestController
 @IsEcosystemUser
 public class AssetTypeTemplateFieldTargetRestService {
-    private final AssetTypeTemplateService assetTypeTemplateService;
+    private final FieldTargetService fieldTargetService;
     private final FieldTargetMapper fieldTargetMapper;
 
     @Autowired
-    public AssetTypeTemplateFieldTargetRestService(AssetTypeTemplateService assetTypeTemplateService,
+    public AssetTypeTemplateFieldTargetRestService(FieldTargetService fieldTargetService,
                                                    FieldTargetMapper fieldTargetMapper) {
-        this.assetTypeTemplateService = assetTypeTemplateService;
+        this.fieldTargetService = fieldTargetService;
         this.fieldTargetMapper = fieldTargetMapper;
     }
 
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fieldtargets")
     public Set<FieldTargetDto> getFieldTargets(@PathVariable final Long assetTypeTemplateId,
                                                @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return fieldTargetMapper.toDtoSet(assetTypeTemplateService.getFieldTargets(assetTypeTemplateId), embedChildren);
+        return fieldTargetMapper.toDtoSet(fieldTargetService.getFieldTargets(assetTypeTemplateId), embedChildren);
     }
 
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fieldtargets/{fieldTargetId}")
@@ -55,7 +55,7 @@ public class AssetTypeTemplateFieldTargetRestService {
                                          @PathVariable final Long fieldTargetId,
                                          @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return fieldTargetMapper.toDto(
-                assetTypeTemplateService.getFieldTarget(assetTypeTemplateId, fieldTargetId), embedChildren);
+                fieldTargetService.getFieldTarget(assetTypeTemplateId, fieldTargetId), embedChildren);
     }
 
     @PostMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fieldtargets")
@@ -63,7 +63,7 @@ public class AssetTypeTemplateFieldTargetRestService {
                                             @RequestParam final Long fieldId,
                                             @RequestBody final FieldTargetDto fieldTargetDto) {
         return fieldTargetMapper.toDto(
-                assetTypeTemplateService.createFieldTarget(assetTypeTemplateId, fieldId,
+                fieldTargetService.createFieldTarget(assetTypeTemplateId, fieldId,
                         fieldTargetMapper.toEntity(fieldTargetDto)), false);
     }
 
@@ -71,13 +71,13 @@ public class AssetTypeTemplateFieldTargetRestService {
     public FieldTargetDto updateFieldTarget(@PathVariable final Long assetTypeTemplateId,
                                             @PathVariable final Long fieldTargetId,
                                             @RequestBody final FieldTargetDto fieldTargetDto) {
-        return fieldTargetMapper.toDto(assetTypeTemplateService.updateFieldTarget(assetTypeTemplateId,
+        return fieldTargetMapper.toDto(fieldTargetService.updateFieldTarget(assetTypeTemplateId,
                 fieldTargetId, fieldTargetMapper.toEntity(fieldTargetDto)), false);
     }
 
     @DeleteMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fieldtargets/{fieldTargetId}")
     public void deleteFieldTarget(@PathVariable final Long assetTypeTemplateId,
                                   @PathVariable final Long fieldTargetId) {
-        assetTypeTemplateService.deleteFieldTarget(assetTypeTemplateId, fieldTargetId);
+        fieldTargetService.deleteFieldTarget(assetTypeTemplateId, fieldTargetId);
     }
 }

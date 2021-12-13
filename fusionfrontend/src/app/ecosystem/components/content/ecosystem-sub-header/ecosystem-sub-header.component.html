@@ -20,5 +20,15 @@ under the License.
     <li routerLinkActive="active" routerLink="/ecosystemmanager/fields">Metrics & Attributes</li>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/quantitytypes">Quantity Types</li>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/units">Units</li>
+    <li>
+      <a [href]="ifApiService.getExportLinkEcosystemManager(false)" target="_self" [pTooltip]="'Export data of Ecosystem Manager'">
+        <i class="pi pi-download"></i>
+      </a>
+    </li>
+    <li>
+      <a [href]="ifApiService.getExportLinkEcosystemManager(true)" target="_self" [pTooltip]="'Export OWL-data of Ecosystem Manager'">
+        <i class="pi pi-download"></i>
+      </a>
+    </li>
   </ul>
 </div>

@@ -21,7 +21,7 @@ under the License.
         <div *ngIf="showNotDeletableWarning === true" class="if-warning-toast">
           <i class="pi pi-exclamation-circle"></i>
           <label>Attributes can not be deleted as assets of this asset series already exist.</label>
-          <i class="pi pi-times-circle" (click)="hideNotDeletableWarning()"></i>
+          <i (click)="hideNotDeletableWarning()" class="pi pi-times-circle"></i>
         </div>
         <div class="p-grid">
           <span class="if-label-small-header p-col-3">Custom Attribute name</span>
@@ -32,21 +32,34 @@ under the License.
         </div>
         <div *ngFor="let fieldSource of fieldSourcesFormArray.controls;" class="p-grid attribute-row">
           <ng-container [formGroup]="fieldSource //noinspection InvalidExpressionResultType">
-          <span class="p-col-3 "><label displayControlValue="name"></label></span>
-          <span class="p-col-3 "><label displayControlValue="fieldName"></label></span>
-          <div class="p-col">
-              <input *ngIf="isUnsaved(fieldSource)" pInputText class="value-input" placeholder="Value" formControlName="value">
+            <span class="p-col-3 "><label displayControlValue="name"></label></span>
+            <span class="p-col-3 "><label displayControlValue="fieldName"></label></span>
+            <div *ngIf="!fieldSource.get('fieldDataType')" class="p-col">DataType unknown!</div>
+            <div *ngIf="fieldSource.get('fieldDataType').value == attributeDataTypes.NUMERIC" class="p-col">
+              <input *ngIf="isUnsaved(fieldSource)" class="value-input" formControlName="value" pInputText
+                     placeholder="Value">
               <label *ngIf="!isUnsaved(fieldSource) && fieldSource.valid" displayControlValue="value"></label>
-              <input *ngIf="!isUnsaved(fieldSource) && fieldSource.invalid" pInputText class="value-input if-invalid-border"
-                     [disabled]="true">
-          </div>
-          <span class="p-col-1"><label displayControlValue="sourceUnitName"></label></span>
-          <span class="p-col edit-col">
-            <app-confirm-button *ngIf="isUnsaved(fieldSource)"
-                                (confirmItem)="saveValue(fieldSource)">
+              <input *ngIf="!isUnsaved(fieldSource) && fieldSource.invalid" [disabled]="true"
+                     class="value-input if-invalid-border"
+                     pInputText>
+            </div>
+            <div *ngIf="fieldSource.get('fieldDataType').value == attributeDataTypes.ENUM" class="p-col">
+              <label *ngIf="!isUnsaved(fieldSource) && fieldSource.valid">
+                {{(fieldSource.get('fieldEnumOptions')?.value | enumOptionToString:fieldSource.get('value')?.value)}}
+              </label>
+              <p-dropdown *ngIf="isUnsaved(fieldSource)" [options]="fieldSource.get('fieldEnumOptions').value"
+                          class="field-dialog-inputs"
+                          formControlName="value"
+                          optionLabel="optionLabel"
+                          optionValue="id" placeholder="Select value"></p-dropdown>
+            </div>
+            <span class="p-col-1"><label displayControlValue="sourceUnitName"></label></span>
+            <span class="p-col edit-col">
+            <app-confirm-button (confirmItem)="saveValue(fieldSource)"
+                                *ngIf="isUnsaved(fieldSource)">
             </app-confirm-button>
-            <app-edit-button *ngIf="!isUnsaved(fieldSource)" class="edit-button"
-                             (editItem)="fieldSource.get('saved').patchValue(false)">
+            <app-edit-button (editItem)="fieldSource.get('saved').patchValue(false)" *ngIf="!isUnsaved(fieldSource)"
+                             class="edit-button">
             </app-edit-button>
             <app-trash-button (deleteItem)="removeAttribute(fieldSource)"
                               [disabled]="!isDeletable(fieldSource)"></app-trash-button>

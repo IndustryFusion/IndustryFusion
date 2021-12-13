@@ -65,7 +65,10 @@ export class AssetTypeTemplateWizardSharedFieldComponent implements OnInit {
   getQuantityTypeName(id: ID) {
     const unit = this.unitQuery.getEntity(id);
     const quantityType = unit?.quantityType ? unit.quantityType : this.quantityQuery.getEntity(unit?.quantityTypeId);
-    return quantityType?.name;
+    if (quantityType) {
+      return quantityType?.name;
+    }
+    return '–';
   }
 
   getUnitSymbol(id: ID) {

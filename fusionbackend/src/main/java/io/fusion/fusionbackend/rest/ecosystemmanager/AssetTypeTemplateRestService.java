@@ -15,10 +15,13 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
+import com.apicatalog.jsonld.http.media.MediaType;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
+import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
+import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Set;
 
 @RestController
@@ -72,6 +77,20 @@ public class AssetTypeTemplateRestService {
         return assetTypeTemplateMapper.toDtoSet(
                 assetTypeTemplateService.findPeerCandidates(assetTypeTemplateId),
                 true);
+    }
+
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/owlexport")
+    public void getAsOwlExport(@PathVariable final Long assetTypeTemplateId,
+                               HttpServletResponse response) throws IOException {
+        OntModel model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
+        OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
+    }
+
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/jsonexport")
+    public void getAsJsonfExport(@PathVariable final Long assetTypeTemplateId,
+                               HttpServletResponse response) throws IOException {
+        response.setContentType(MediaType.JSON.toString());
+        assetTypeTemplateService.getAssetTypeTemplateExtendedJson(assetTypeTemplateId, response.getWriter());
     }
 
     @GetMapping(path = "/assettypetemplates/nextVersion/{assetTypeId}")

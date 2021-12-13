@@ -21,6 +21,7 @@ import { ID } from '@datorama/akita';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { IfApiService } from '../../../../core/services/api/if-api.service';
 
 @Component({
   selector: 'app-ecosystem-sub-header',
@@ -34,7 +35,10 @@ export class EcosystemSubHeaderComponent implements OnInit, OnDestroy {
   companyId: ID;
   sub: Subscription;
 
-  constructor(private location: Location, private router: Router, private companyQuery: CompanyQuery) { }
+  constructor(private location: Location,
+              private router: Router,
+              public ifApiService: IfApiService,
+              private companyQuery: CompanyQuery) { }
 
   ngOnInit() {
     this.sub = this.router.events

@@ -58,6 +58,7 @@ import { AssetSeriesStatusPipe } from '../shared/pipes/asset-series-status-pipe'
 import { AssetActivationStatusComponent } from './components/content/asset-activation-status/asset-activation-status.component';
 import { AssetActivationStatusPipe } from '../shared/pipes/asset-activation-status-pipe';
 import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } from './components/content/asset-series-wizard/asset-series-wizard-nameplate-and-connectivity-settings/asset-series-wizard-nameplate-and-connectivity-settings-tooltip/asset-series-wizard-nameplate-and-connectivity-settings-tooltip.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -96,17 +97,18 @@ import { AssetSeriesWizardNameplateAndConnectivitySettingsTooltipComponent } fro
     AssetActivationStatusComponent,
     AssetActivationStatusPipe,
   ],
-  imports: [
-    SharedModule,
-    FleetRoutingModule,
-    ClarityModule,
-    ReactiveFormsModule,
-    TableModule,
-    CalendarModule,
-    AccordionModule,
-    AgmCoreModule,
-    CardModule,
-  ],
+    imports: [
+        SharedModule,
+        FleetRoutingModule,
+        ClarityModule,
+        ReactiveFormsModule,
+        TableModule,
+        CalendarModule,
+        AccordionModule,
+        AgmCoreModule,
+        CardModule,
+        TooltipModule,
+    ],
   exports: [
     FleetSubHeaderComponent,
     AssetSeriesDetailsSubHeaderComponent,

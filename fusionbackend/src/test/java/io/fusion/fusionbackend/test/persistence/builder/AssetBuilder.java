@@ -4,6 +4,8 @@ import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
 
+import java.util.UUID;
+
 public class AssetBuilder implements Builder<Asset> {
 
     private Asset parentAsset;
@@ -60,6 +62,10 @@ public class AssetBuilder implements Builder<Asset> {
 
         if (parentAsset != null) {
             parentAsset.getSubsystems().add(asset);
+        }
+
+        if (asset.getGlobalId() == null) {
+            asset.setGlobalId(UUID.randomUUID().toString());
         }
 
         asset.setConnectionString(TEST_STRING);

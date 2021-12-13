@@ -33,6 +33,7 @@ import io.fusion.fusionbackend.dto.RoomDto;
 import io.fusion.fusionbackend.dto.UnitDto;
 import io.fusion.fusionbackend.model.enums.CompanyType;
 import io.fusion.fusionbackend.model.enums.FactorySiteType;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.PublicationState;
@@ -473,27 +474,33 @@ class FusionbackendApplicationTests {
                 .name("Differenzdruck")
                 .description("Differenz Druck...")
                 .thresholdType(FieldThresholdType.OPTIONAL)
+                .dataType(FieldDataType.NUMERIC)
+                .unitId(Long.valueOf(unitIdPa))
                 .build();
 
-        fieldIdDifferenzDruck = createAndTestField(fieldDto, unitIdPa);
+        fieldIdDifferenzDruck = createAndTestField(fieldDto);
 
         fieldDto = FieldDto.builder()
                 .accuracy(2.2)
                 .name("Head temperature")
                 .description("Head temperature...")
                 .thresholdType(FieldThresholdType.OPTIONAL)
+                .dataType(FieldDataType.NUMERIC)
+                .unitId(Long.valueOf(unitIdCelcius))
                 .build();
 
-        fieldIdHeadTemperature = createAndTestField(fieldDto, unitIdCelcius);
+        fieldIdHeadTemperature = createAndTestField(fieldDto);
 
         fieldDto = FieldDto.builder()
                 .accuracy(2.2)
                 .name("Number of heads")
                 .description("Number of heads...")
                 .thresholdType(FieldThresholdType.OPTIONAL)
+                .dataType(FieldDataType.NUMERIC)
+                .unitId(Long.valueOf(unitIdCount))
                 .build();
 
-        fieldIdHeadCount = createAndTestField(fieldDto, unitIdCount);
+        fieldIdHeadCount = createAndTestField(fieldDto);
     }
 
     @Test
@@ -825,6 +832,7 @@ class FusionbackendApplicationTests {
 
         existingAssetSeriesDto.getConnectivitySettings().setConnectivityTypeId(newConnectivityTypeDto.getId());
         existingAssetSeriesDto.getConnectivitySettings().setConnectivityProtocolId(newConnectivityProtocolDto.getId());
+        existingAssetSeriesDto.setGlobalId("Global-ID-Test");
 
         AssetSeriesDto patchedAssetSeries = given()
                 .contentType(ContentType.JSON)
@@ -1179,7 +1187,7 @@ class FusionbackendApplicationTests {
         return newQuantityTypeId;
     }
 
-    private Integer createAndTestField(final FieldDto fieldDto, final Integer unitId) {
+    private Integer createAndTestField(final FieldDto fieldDto) {
         // TODO: validateFieldDto below
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
@@ -1187,7 +1195,6 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessTokenEcoMan)
 
                 .when()
-                .queryParam("unitId", unitId)
                 .post(baseUrl + "/fields")
 
                 .then()
@@ -1402,6 +1409,7 @@ class FusionbackendApplicationTests {
         AssetSeriesDto persistedAssetSeriesDto = createAssetSeries(companyId, assetTypeTemplateId, accessToken);
 
         Long newAssetSeriesId = persistedAssetSeriesDto.getId();
+        assetSeries.setGlobalId("Test global id 1");
 
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
@@ -1572,7 +1580,7 @@ class FusionbackendApplicationTests {
 
         Integer newSubsystemId = persistNewAsset(newSubsystem, subsystemAccessToken);
 
-        addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
+        addSubsystemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
         validateSubsystemExists(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
 
@@ -1591,7 +1599,7 @@ class FusionbackendApplicationTests {
                 .body("subsystemIds", equalTo(Collections.singletonList(newSubsystemId)));
     }
 
-    private void addSubstemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+    private void addSubsystemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
         AssetDto parent = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)

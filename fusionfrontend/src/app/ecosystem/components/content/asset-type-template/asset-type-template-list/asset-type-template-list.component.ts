@@ -41,6 +41,7 @@ import { AssetTypeTemplateWizardComponent } from '../asset-type-template-wizard/
 })
 export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
+  PublicationState = PublicationState;
   @Input() assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
   @Input() parentAssetTypeId: ID | null;
 
@@ -71,7 +72,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-    private assetTypeTemplateService: AssetTypeTemplateService,
+    public assetTypeTemplateService: AssetTypeTemplateService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
@@ -95,7 +96,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     if (assetTypeTemplate) {
       this.activeListItem = assetTypeTemplate;
       this.menuType = assetTypeTemplate.publicationState === PublicationState.PUBLISHED ?
-        [ItemOptionsMenuType.DELETE] : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
+        [ItemOptionsMenuType.DELETE, ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2]
+        : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
     }
   }
 
@@ -184,5 +186,10 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   updateRowCountInUrl(rowCount: number): void {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
+  }
+
+  onDownload(asOwl: boolean) {
+    const exportLink = this.assetTypeTemplateService.getExportLink(this.activeListItem.id, asOwl);
+    window.open(exportLink, '_blank');
   }
 }
