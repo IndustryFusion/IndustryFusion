@@ -36,7 +36,24 @@
   .dialog-grid {
     display: inline-flex;
   }
+
   .dialog-grid-col {
     padding-left: 35px;
+  }
+
+  .trash-button {
+    padding-left: 15px;
+    padding-right: 5px;
+  }
+
+  ::ng-deep .if-trash-button {
+    max-height: 45px !important;
+    max-width: 45px !important;
+  }
+
+  ::ng-deep .button-create {
+    height: 45px !important;
+    width: 45px !important;
+    padding: 8px 16px !important;
   }
 }

@@ -18,24 +18,33 @@ package io.fusion.fusionbackend.service;
 import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Field;
+import io.fusion.fusionbackend.model.FieldOption;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
+import io.fusion.fusionbackend.repository.FieldOptionRepository;
 import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Set;
 
 @Service
 @Transactional
 public class FieldService {
     private final FieldRepository fieldRepository;
+    private final FieldOptionRepository fieldOptionRepository;
     private final UnitService unitService;
+    private final FieldOptionService fieldOptionService;
 
     @Autowired
-    public FieldService(FieldRepository fieldRepository, UnitService unitService) {
+    public FieldService(FieldRepository fieldRepository, FieldOptionRepository fieldOptionRepository,
+                        UnitService unitService, FieldOptionService fieldOptionService) {
         this.fieldRepository = fieldRepository;
+        this.fieldOptionRepository = fieldOptionRepository;
         this.unitService = unitService;
+        this.fieldOptionService = fieldOptionService;
     }
 
     public Set<Field> getAllFields() {
@@ -55,6 +64,13 @@ public class FieldService {
         return fieldRepository.save(field);
     }
 
+    public Field createField(final Field field, final Set<FieldOption> fieldOptions) {
+        Field createdField = fieldRepository.save(field);
+        fieldOptions.forEach(fieldOption -> fieldOption.setField(createdField));
+        fieldOptionRepository.saveAll(fieldOptions);
+        return createdField;
+    }
+
     public Field linkFieldUnit(final Long fieldId, final Long unitId) {
         final Field field = getField(fieldId, false);
         final Unit unit = unitService.getUnit(unitId);
@@ -64,11 +80,23 @@ public class FieldService {
 
     public Field updateField(final Long fieldId, final Field sourceField, final Long unitId) {
         final Field targetField = getField(fieldId, false);
-        final Unit unit = unitService.getUnit(unitId);
-
+        Set<FieldOption> initialOptions = targetField.getOptions();
         targetField.copyFrom(sourceField);
-        targetField.setUnit(unit);
 
+        if (unitId != null) {
+            final Unit unit = unitService.getUnit(unitId);
+            targetField.setUnit(unit);
+        }
+        if (sourceField.getDataType() == FieldDataType.ENUM) {
+            for (FieldOption option : initialOptions) {
+                if (!sourceField.getOptions().contains(option)) {
+                    fieldOptionService.deleteFieldOption(option.getId());
+                }
+            }
+            sourceField.getOptions().forEach(option -> fieldOptionService.updateFieldOption(option.getId(), targetField,
+                    option));
+            targetField.setOptions(sourceField.getOptions());
+        }
         return targetField;
     }
 

@@ -15,11 +15,15 @@
 
 package io.fusion.fusionbackend.dto.mappers;
 
+import io.fusion.fusionbackend.dto.BaseEntityDto;
 import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.FieldOptionDto;
 import io.fusion.fusionbackend.model.Field;
+import io.fusion.fusionbackend.model.FieldOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,10 +31,12 @@ import java.util.stream.Collectors;
 @Component
 public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
     private final UnitMapper unitMapper;
+    private final FieldOptionMapper fieldOptionMapper;
 
     @Autowired
-    public FieldMapper(UnitMapper unitMapper) {
+    public FieldMapper(UnitMapper unitMapper, FieldOptionMapper fieldOptionMapper) {
         this.unitMapper = unitMapper;
+        this.fieldOptionMapper = fieldOptionMapper;
     }
 
     private FieldDto toDtoShallow(Field entity) {
@@ -43,8 +49,8 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .label(entity.getLabel())
+                .dataType(entity.getDataType())
                 .accuracy(entity.getAccuracy())
-                .value(entity.getValue())
                 .unitId(EntityDtoMapper.getEntityId(entity.getUnit()))
                 .thresholdType(entity.getThresholdType())
                 .widgetType(entity.getWidgetType())
@@ -60,6 +66,11 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         FieldDto fieldDto = toDtoShallow(entity);
         fieldDto.setUnit(unitMapper.toDto(entity.getUnit(), false));
 
+        LinkedHashSet<FieldOptionDto> fieldOptions = fieldOptionMapper.toDtoSet(entity.getOptions(), true);
+        fieldOptions = fieldOptions.stream().sorted(Comparator.comparing(BaseEntityDto::getId,
+                        Comparator.nullsLast(Comparator.naturalOrder())))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        fieldDto.setEnumOptions(fieldOptions);
         return fieldDto;
     }
 
@@ -76,15 +87,21 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         if (dto == null) {
             return null;
         }
+        Set<FieldOption> fieldOptions = new LinkedHashSet<>();
+        if (dto.getEnumOptions() != null) {
+            fieldOptions = dto.getEnumOptions().stream().map(fieldOptionMapper::toEntity).collect(Collectors.toSet());
+        }
+
         return Field.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .label(dto.getLabel())
+                .dataType(dto.getDataType())
                 .accuracy(dto.getAccuracy())
-                .value(dto.getValue())
                 .thresholdType(dto.getThresholdType())
                 .widgetType(dto.getWidgetType())
+                .options(fieldOptions)
                 .build();
     }
 
@@ -93,7 +110,8 @@ public class FieldMapper implements EntityDtoMapper<Field, FieldDto> {
         if (embedChildren) {
             return entitySet.stream().map(this::toDtoDeep).collect(Collectors.toCollection(LinkedHashSet::new));
         }
-        return entitySet.stream().map(this::toDtoShallow).collect(Collectors.toCollection(LinkedHashSet::new));
+        return entitySet.stream().map(this::toDtoShallow).sorted(Comparator.comparing(BaseEntityDto::getId))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override

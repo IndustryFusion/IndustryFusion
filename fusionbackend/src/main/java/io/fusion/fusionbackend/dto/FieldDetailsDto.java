@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.fusion.fusionbackend.model.Threshold;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
@@ -24,6 +25,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -48,6 +51,8 @@ public class FieldDetailsDto extends BaseEntityDto {
     private Threshold absoluteThreshold;
     private Threshold idealThreshold;
     private Threshold criticalThreshold;
+    private FieldDataType fieldDataType;
+    private Set<FieldOptionDto> enumOptions;
 
     @JsonCreator
     public FieldDetailsDto() {
