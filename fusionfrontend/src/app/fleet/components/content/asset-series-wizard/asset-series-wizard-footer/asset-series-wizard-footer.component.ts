@@ -15,7 +15,7 @@ export class AssetSeriesWizardFooterComponent implements OnInit {
 
   @Output() nextStep = new EventEmitter<void>();
 
-  @Input() toalSteps: number;
+  @Input() totalSteps: number;
 
   constructor() {
   }

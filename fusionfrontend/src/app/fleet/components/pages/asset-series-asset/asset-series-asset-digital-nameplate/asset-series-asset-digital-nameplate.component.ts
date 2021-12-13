@@ -35,6 +35,7 @@ import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { FactorySiteQuery } from '../../../../../core/store/factory-site/factory-site.query';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
+import { FieldDataType } from '../../../../../core/store/field/field.model';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
 
 
@@ -56,6 +57,7 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
   company$: Observable<Company>;
 
   factorySiteTypes = FactorySiteType;
+  fieldDataTypes = FieldDataType;
 
   constructor(
     private oispService: OispService,
@@ -79,7 +81,7 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
       switchMap(([asset, rooms]) => {
         const assetRoom = rooms.find((room) => room.id === asset.roomId);
         return this.factorySiteQuery.selectAll().pipe(
-          map(sites => sites.find(site => site.id === assetRoom.factorySiteId))
+          map(sites => sites.find(site => site.id === assetRoom?.factorySiteId))
         );
       })
     );

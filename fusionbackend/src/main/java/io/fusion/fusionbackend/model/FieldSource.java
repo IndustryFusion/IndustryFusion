@@ -50,8 +50,8 @@ public class FieldSource extends BaseEntity {
     @JoinColumn(name = "field_target_id", nullable = false)
     private FieldTarget fieldTarget;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "source_unit_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "source_unit_id")
     private Unit sourceUnit;
 
     private String name;

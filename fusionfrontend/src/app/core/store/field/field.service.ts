@@ -37,7 +37,7 @@ export class FieldService implements RestService<Field> {
 
   getItems(): Observable<Field[]> {
     const path = `fields`;
-    return this.http.get<Field[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+    return this.http.get<Field[]>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
       .pipe(tap(entities => {
         this.fieldStore.upsertMany(entities);
       }));
@@ -53,8 +53,7 @@ export class FieldService implements RestService<Field> {
 
   createItem(item: Field): Observable<Field> {
     const path = `fields`;
-    return this.http.post<Field>(`${environment.apiUrlPrefix}/${path}`, item,
-      { params: item.unitId ? { unitId: `${item.unitId}` } : undefined, ...this.httpOptions })
+    return this.http.post<Field>(`${environment.apiUrlPrefix}/${path}`, item, { ...this.httpOptions })
       .pipe(
         tap({
           next: (entity) => {

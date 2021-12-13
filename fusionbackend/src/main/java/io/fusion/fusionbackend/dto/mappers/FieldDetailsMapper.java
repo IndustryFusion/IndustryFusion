@@ -18,17 +18,27 @@ package io.fusion.fusionbackend.dto.mappers;
 import io.fusion.fusionbackend.dto.FieldDetailsDto;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldInstance;
+import io.fusion.fusionbackend.model.FieldOption;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
 import io.fusion.fusionbackend.model.enums.FieldType;
 import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
 public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, FieldDetailsDto> {
+
+    private final FieldOptionMapper fieldOptionMapper;
+
+    @Autowired
+    public FieldDetailsMapper(FieldOptionMapper fieldOptionMapper) {
+        this.fieldOptionMapper = fieldOptionMapper;
+    }
 
     @Override
     protected FieldDetailsDto toDtoDeep(FieldInstance entity) {
@@ -43,6 +53,8 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
         String dashboardGroup = null;
         FieldWidgetType widgetType = null;
         QuantityDataType dataType = null;
+        FieldDataType fieldDataType = null;
+        Set<FieldOption> fieldOptions = null;
 
         FieldSource fieldSource = entity.getFieldSource();
         if (fieldSource != null) {
@@ -57,8 +69,12 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                     accuracy = field.getAccuracy();
                     fieldLabel = field.getLabel();
                     widgetType = field.getWidgetType();
-                    unitSymbol = field.getUnit().getSymbol();
-                    dataType = field.getUnit().getQuantityType().getDataType();
+                    fieldDataType = field.getDataType();
+                    fieldOptions = field.getOptions();
+                    if (field.getUnit() != null) {
+                        unitSymbol = field.getUnit().getSymbol();
+                        dataType = field.getUnit().getQuantityType().getDataType();
+                    }
                 }
             }
         }
@@ -84,6 +100,8 @@ public class FieldDetailsMapper extends EntityDetailsDtoMapper<FieldInstance, Fi
                 .absoluteThreshold(entity.getAbsoluteThreshold())
                 .idealThreshold(entity.getIdealThreshold())
                 .criticalThreshold(entity.getCriticalThreshold())
+                .fieldDataType(fieldDataType)
+                .enumOptions(fieldOptionMapper.toDtoSet(fieldOptions, false))
                 .build();
     }
 

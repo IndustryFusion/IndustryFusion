@@ -59,6 +59,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class AssetSeriesService {
+    private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
     private final AssetSeriesRepository assetSeriesRepository;
     private final AssetSeriesMapper assetSeriesMapper;
     private final AssetTypeTemplateService assetTypeTemplateService;
@@ -72,9 +73,6 @@ public class AssetSeriesService {
     private final ConnectivityTypeRepository connectivityTypeRepository;
     private final ConnectivityProtocolRepository connectivityProtocolRepository;
     private final OntologyBuilder ontologyBuilder;
-
-
-    private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
 
     @Autowired
     public AssetSeriesService(AssetSeriesRepository assetSeriesRepository,
@@ -147,8 +145,10 @@ public class AssetSeriesService {
 
         assetSeries.getFieldSources().forEach(fieldSource -> {
             fieldSource.setAssetSeries(assetSeries);
-            Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
-            fieldSource.setSourceUnit(unit);
+            if (fieldSource.getSourceUnit() != null) {
+                Unit unit = unitService.getUnit(fieldSource.getSourceUnit().getId());
+                fieldSource.setSourceUnit(unit);
+            }
         });
 
         ConnectivityType connectivityType =
