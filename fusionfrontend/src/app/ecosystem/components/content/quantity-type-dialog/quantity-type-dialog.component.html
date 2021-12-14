@@ -56,10 +56,10 @@ under the License.
     </div>
 
     <div class="quantity-type-dialog-footer">
-      <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.SHARED.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+      <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()"
-              [disabled]="quantityTypeForm.invalid">{{type === DialogType.EDIT ? translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.SAVE') :
-        translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.CREATE')}}</button>
+              [disabled]="quantityTypeForm.invalid">{{type === DialogType.EDIT ? translate.instant('APP.COMMON.DIALOG_BUTTONS.SAVE') :
+        translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE')}}</button>
     </div>
   </form>
 </div>

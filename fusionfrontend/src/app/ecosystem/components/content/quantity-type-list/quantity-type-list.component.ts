@@ -32,7 +32,6 @@ import { TranslateService } from '@ngx-translate/core';
   providers: [DialogService, ConfirmationService]
 })
 export class QuantityTypeListComponent implements OnInit, OnDestroy {
-  jsonLangPath = 'APP.ECOSYSTEM.QUANTITY_TYPE_LIST.';
 
   titleMapping: { [k: string]: string } = {
     '=0': this.translate.instant('APP.ECOSYSTEM.QUANTITY_TYPE_LIST.NO_QUANTITY_TYPES'),
