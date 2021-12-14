@@ -16,8 +16,9 @@ under the License.
 <div class="field-row" [ngStyle]="{'margin-bottom': editable === true ? '' :  '2.5rem'}">
   <div class="col-margin" [ngClass]="editable === true ? 'col-20' : 'col-30'">
     <input type="text" pInputText class="field-row-inputs" *ngIf="!confirmed" name="name"
-           [placeholder]="translate.instant('APP.ECOSYSTEM.FIELD_HEADER_AND_ROW.CUSTOM') + (fieldType === FieldType.METRIC ?
-           translate.instant('APP.ECOSYSTEM.FIELD_HEADER_AND_ROW.METRIC_NAME') : translate.instant('APP.ECOSYSTEM.FIELD_HEADER_AND_ROW.ATTRIBUTE_NAME'))"
+           [placeholder]="translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.CUSTOM') + (fieldType === FieldType.METRIC ?
+           translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.METRIC_NAME')
+           : translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.ATTRIBUTE_NAME'))"
            [(ngModel)]="fieldTarget.name" />
     <div *ngIf="confirmed" class="confirmed-name" [ngClass]="editable === true ? 'confirmed-padding' : ''">{{ fieldTarget.name }}</div>
   </div>

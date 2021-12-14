@@ -33,11 +33,11 @@ under the License.
       <label class="if-label">{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_DIALOG.DATA_TYPE' | translate }}&nbsp;*</label>
       <div class="dialog-grid">
         <div>
-          <p-radioButton name="dataType" value="{{ valueCategorical }}" label="Categorical" formControlName="dataType"
+          <p-radioButton name="dataType" value="{{ valueCategorical }}" label="{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_DIALOG.CATEGORICAL' | translate }}" formControlName="dataType"
                          inputId="dataType0" [disabled]="type === DialogType.EDIT && existsDataType"></p-radioButton>
         </div>
         <div class="dialog-grid-col">
-          <p-radioButton name="dataType" value="{{ valueNumeric }}" label="Numeric" formControlName="dataType"
+          <p-radioButton name="dataType" value="{{ valueNumeric }}" label="{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_DIALOG.NUMERIC' | translate }}" formControlName="dataType"
                          inputId="dataType1" [disabled]="type === DialogType.EDIT && existsDataType"></p-radioButton>
         </div>
       </div>
@@ -51,7 +51,7 @@ under the License.
         <i class="pi pi-times-circle" (click)="hideBaseUnitWarning()"></i>
       </div>
       <p-dropdown [options]="(units$ | async)" formControlName="baseUnitId" optionLabel="name" optionValue="id" class="quantity-type-dialog-inputs" #baseUnitDropdown
-                  placeholder="Select a base unit" filter="true" resetFilterOnHide="true" (onChange)="hideBaseUnitWarning()">
+                  placeholder="{{ 'APP.ECOSYSTEM.QUANTITY_TYPE_DIALOG.BASE_UNIT_PLACEHOLDER' | translate }}" filter="true" resetFilterOnHide="true" (onChange)="hideBaseUnitWarning()">
       </p-dropdown>
     </div>
 

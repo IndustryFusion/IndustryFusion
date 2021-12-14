@@ -79,7 +79,9 @@
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
-				"ASSET_TYPES": "Asset Types",
+        "ASSET_TYPE_NAME": "Asset type name",
+        "ASSET_TYPE_TEMPLATES": "Asset type templates",
+        "ASSET_TYPES": "Asset Types",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Delete Asset Type Confirmation",
 					"MESSAGE": "Are you sure you want to delete the Asset Type {{ itemToDelete }}?"
@@ -183,30 +185,31 @@
 				"METRIC_AND_ATTRIBUTE": "Metric & Attribute",
 				"NO_METRICS_AND_ATTRIBUTES": "No Metrics & Attributes"
 			},
-			"QUANTITY_TYPE": {
-				"QUANTITY_TYPE_DIALOG": {
-					"BASE_UNIT": "Base Unit",
-					"DATA_TYPE": "Data Type",
-					"NO_BASE_UNIT_WARNING": "No base unit selected"
-				},
-				"QUANTITY_TYPE_LIST": {
-					"BASE_UNIT": "Base Unit",
-					"CONFIRMATION_DIALOG": {
-						"HEADER": "Delete Quantity Type Confirmation",
-						"MESSAGE": "Are you sure you want to delete the Quantity Type {{ itemToDelete }}?"
-					},
-					"CREATE_QUANTITY_TYPE": "Create Quantity Type",
-					"DATA_TYPE": "Data Type",
-					"DESCRIPTION": "Description",
-					"HEADER": {
-						"CREATE": "Create new Quantity Type",
-						"EDIT": "Edit Quantity Type"
-					},
-					"NO_QUANTITY_TYPES": "No Quantity Types",
-					"QUANTITY_NAME": "Quantity name",
-					"QUANTITY_TYPES": "Quantity Types"
-				}
-			},
+      "QUANTITY_TYPE_DIALOG": {
+        "BASE_UNIT": "Base Unit",
+        "CATEGORICAL": "Categorical",
+        "DATA_TYPE": "Data Type",
+        "NO_BASE_UNIT_WARNING": "No base unit selected",
+        "NUMERIC": "Numeric",
+        "BASE_UNIT_PLACEHOLDER": "Select a base unit"
+      },
+      "QUANTITY_TYPE_LIST": {
+        "BASE_UNIT": "Base Unit",
+        "CONFIRMATION_DIALOG": {
+          "HEADER": "Delete Quantity Type Confirmation",
+          "MESSAGE": "Are you sure you want to delete the Quantity Type {{ itemToDelete }}?"
+        },
+        "CREATE_QUANTITY_TYPE": "Create Quantity Type",
+        "DATA_TYPE": "Data Type",
+        "DESCRIPTION": "Description",
+        "HEADER": {
+          "CREATE": "Create new Quantity Type",
+          "EDIT": "Edit Quantity Type"
+        },
+        "NO_QUANTITY_TYPES": "No Quantity Types",
+        "QUANTITY_NAME": "Quantity name",
+        "QUANTITY_TYPES": "Quantity Types"
+      },
 			"SUBHEADER": {
 				"ASSET_TYPES": "Asset Types",
 				"ASSET_TYPE_TEMPLATES": "Asset Type Templates",

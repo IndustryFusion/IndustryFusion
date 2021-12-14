@@ -79,7 +79,9 @@
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
-				"ASSET_TYPES": "Asset-Typen",
+        "ASSET_TYPE_NAME": "Asset type name",
+        "ASSET_TYPE_TEMPLATES": "Asset type templates",
+        "ASSET_TYPES": "Asset-Typen",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Asset-Typ-Bestätigung löschen",
 					"MESSAGE": "Sind Sie sicher, dass Sie den Asset-Typ {{ itemToDelete }}löschen möchten?"
@@ -183,29 +185,30 @@
 				"METRIC_AND_ATTRIBUTE": "Metrik & Attribut",
 				"NO_METRICS_AND_ATTRIBUTES": "Keine Metriken und Attribute"
 			},
-			"QUANTITY_TYPE": {
-				"QUANTITY_TYPE_DIALOG": {
-					"BASE_UNIT": "Basiseinheit",
-					"DATA_TYPE": "Datenart",
-					"NO_BASE_UNIT_WARNING": "Keine Basiseinheit ausgewählt"
-				},
-				"QUANTITY_TYPE_LIST": {
-					"BASE_UNIT": "Basiseinheit",
-					"CONFIRMATION_DIALOG": {
-						"HEADER": "Mengenartbestätigung löschen",
-						"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }}löschen wollen?"
-					},
-					"CREATE_QUANTITY_TYPE": "Mengenart anlegen",
-					"DATA_TYPE": "Datenart",
-					"DESCRIPTION": "Beschreibung",
-					"HEADER": {
-						"CREATE": "Neue Mengenart anlegen",
-						"EDIT": "Menge bearbeiten Typ"
-					},
-					"NO_QUANTITY_TYPES": "Keine Menge Typen",
-					"QUANTITY_NAME": "Bezeichnung der Menge",
-					"QUANTITY_TYPES": "Menge Typen"
-				}
+      "QUANTITY_TYPE_DIALOG": {
+        "BASE_UNIT": "Basiseinheit",
+        "CATEGORICAL": "Kategorisch",
+        "DATA_TYPE": "Datenart",
+        "NUMERIC": "Numerisch",
+        "NO_BASE_UNIT_WARNING": "Keine Basiseinheit ausgewählt",
+        "BASE_UNIT_PLACEHOLDER": "Wählen Sie eine Basiseinheit"
+      },
+      "QUANTITY_TYPE_LIST": {
+        "BASE_UNIT": "Basiseinheit",
+        "CONFIRMATION_DIALOG": {
+          "HEADER": "Mengenartbestätigung löschen",
+          "MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }}löschen wollen?"
+        },
+        "CREATE_QUANTITY_TYPE": "Mengenart anlegen",
+        "DATA_TYPE": "Datenart",
+        "DESCRIPTION": "Beschreibung",
+        "HEADER": {
+          "CREATE": "Neue Mengenart anlegen",
+          "EDIT": "Menge bearbeiten Typ"
+        },
+        "NO_QUANTITY_TYPES": "Keine Menge Typen",
+        "QUANTITY_NAME": "Bezeichnung der Menge",
+        "QUANTITY_TYPES": "Menge Typen"
 			},
 			"SUBHEADER": {
 				"ASSET_TYPES": "Asset-Typen",

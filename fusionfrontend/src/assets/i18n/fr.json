@@ -79,7 +79,9 @@
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
-				"ASSET_TYPES": "Types d'actifs",
+        "ASSET_TYPE_NAME": "Asset type name",
+        "ASSET_TYPE_TEMPLATES": "Asset type templates",
+        "ASSET_TYPES": "Types d'actifs",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Confirmation de la suppression du type d'actif",
 					"MESSAGE": "Etes-vous sûr de vouloir supprimer le type d'actif {{ itemToDelete }}?"
@@ -183,29 +185,30 @@
 				"METRIC_AND_ATTRIBUTE": "Métrique et attribut",
 				"NO_METRICS_AND_ATTRIBUTES": "Pas de métriques et d'attributs"
 			},
-			"QUANTITY_TYPE": {
-				"QUANTITY_TYPE_DIALOG": {
-					"BASE_UNIT": "Unité de base",
-					"DATA_TYPE": "Type de données",
-					"NO_BASE_UNIT_WARNING": "Aucune unité de base sélectionnée"
-				},
-				"QUANTITY_TYPE_LIST": {
-					"BASE_UNIT": "Unité de base",
-					"CONFIRMATION_DIALOG": {
-						"HEADER": "Supprimer la confirmation du type de quantité",
-						"MESSAGE": "Êtes-vous sûr de vouloir supprimer le type de quantité {{ itemToDelete }}?"
-					},
-					"CREATE_QUANTITY_TYPE": "Créer le type de quantité",
-					"DATA_TYPE": "Type de données",
-					"DESCRIPTION": "Description",
-					"HEADER": {
-						"CREATE": "Créer un nouveau type de quantité",
-						"EDIT": "Modifier la quantité Type"
-					},
-					"NO_QUANTITY_TYPES": "Non Types de quantité",
-					"QUANTITY_NAME": "nom de la quantité",
-					"QUANTITY_TYPES": "Types de quantités"
-				}
+      "QUANTITY_TYPE_DIALOG": {
+        "BASE_UNIT": "Unité de base",
+        "CATEGORICAL": "Catégorique",
+        "DATA_TYPE": "Type de données",
+        "NUMERIC": "Numérique",
+        "NO_BASE_UNIT_WARNING": "Aucune unité de base sélectionnée",
+        "BASE_UNIT_PLACEHOLDER": "Sélectionnez une unité de base"
+      },
+      "QUANTITY_TYPE_LIST": {
+        "BASE_UNIT": "Unité de base",
+        "CONFIRMATION_DIALOG": {
+          "HEADER": "Supprimer la confirmation du type de quantité",
+          "MESSAGE": "Êtes-vous sûr de vouloir supprimer le type de quantité {{ itemToDelete }}?"
+        },
+        "CREATE_QUANTITY_TYPE": "Créer le type de quantité",
+        "DATA_TYPE": "Type de données",
+        "DESCRIPTION": "Description",
+        "HEADER": {
+          "CREATE": "Créer un nouveau type de quantité",
+          "EDIT": "Modifier la quantité Type"
+        },
+        "NO_QUANTITY_TYPES": "Non Types de quantité",
+        "QUANTITY_NAME": "nom de la quantité",
+        "QUANTITY_TYPES": "Types de quantités"
 			},
 			"SUBHEADER": {
 				"ASSET_TYPES": "Types d'actifs",
