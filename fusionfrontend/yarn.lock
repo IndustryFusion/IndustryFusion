@@ -1198,10 +1198,10 @@
     css-vars-ponyfill "^2.3.2"
     normalize.css "^8.0.1"
 
-"@clr/icons@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.npmjs.org/@clr/icons/-/icons-5.1.1.tgz"
-  integrity sha512-PCsRBTyPF5GV/jjcSsq5hXQYYtThDChxGmS5HRpqEUsWuKlhlTy8GTwCk5uf/nx6RoyossMi6kCV8bh8kcUjww==
+"@clr/icons@5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@clr/icons/-/icons-5.5.2.tgz#d52bbf6c2ca19802f50631520af584d809aa38c5"
+  integrity sha512-ujrs67Z6tgilZLXKO7KTMoXfp0p1S9nGH/EimFhGWH3mwLCeNGYDvTw6gq7dteP877Cn2p3uDW6lsUbY9+/lwA==
 
 "@clr/ui@5.1.1":
   version "5.1.1"
