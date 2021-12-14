@@ -1203,10 +1203,10 @@
   resolved "https://registry.npmjs.org/@clr/icons/-/icons-5.1.1.tgz"
   integrity sha512-PCsRBTyPF5GV/jjcSsq5hXQYYtThDChxGmS5HRpqEUsWuKlhlTy8GTwCk5uf/nx6RoyossMi6kCV8bh8kcUjww==
 
-"@clr/ui@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.npmjs.org/@clr/ui/-/ui-5.1.1.tgz"
-  integrity sha512-mGOWBAMGm1M3fgCzH8QiA8dgCtsg3v9q+otAJ00BlZWJpBLP7o/tZA3O07abp5xeuyAYAPBWcZ1gKL/3nXJV9A==
+"@clr/ui@5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@clr/ui/-/ui-5.5.2.tgz#e253e2065a343297e6d410872b9fcf16996990e0"
+  integrity sha512-t6HBEqt1AankHfL1bn5JmAgueamKWdjsKY6JhbEXabBYsAr3eiSq+/b4wLqppq7W7fm4TxBNA1F8gyMa0uecdg==
 
 "@datorama/akita-ng-router-store@6.0.0":
   version "6.0.0"
