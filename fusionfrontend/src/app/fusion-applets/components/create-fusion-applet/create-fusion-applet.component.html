@@ -15,22 +15,23 @@ under the License.
 <div class="create-applet">
   <form [formGroup]="ruleForm">
     <div class="p-grid p-dir-col input-div">
-      <label class="if-label p-col">Applet name *</label>
-      <input class="p-col" formControlName="name" pInputText placeholder="Applet name" type="text"/>
+      <label class="if-label p-col">{{ 'APP.FUSION_APPLETS.CREATE.APPLET_NAME' | translate }} *</label>
+      <input class="p-col" formControlName="name" pInputText placeholder="{{ 'APP.FUSION_APPLETS.CREATE.APPLET_NAME' | translate }}" type="text"/>
     </div>
     <div class="p-grid p-dir-col input-div">
-        <label class="if-label p-col">Priority *</label>
-        <p-dropdown [options]="priorityOptions" class="p-col padding-unset" formControlName="priority" placeholder="Choose one">
+        <label class="if-label p-col">{{ 'APP.COMMON.TERMS.PRIORITY' | translate }} *</label>
+        <p-dropdown [options]="priorityOptions" class="p-col padding-unset" formControlName="priority"
+                    placeholder="{{ 'APP.FUSION_APPLETS.CREATE.PRIORITY_PLACEHOLDER' | translate }}">
         </p-dropdown>
     </div>
     <div class="p-grid p-dir-col input-div">
-      <label class="if-label p-col">Description</label>
+      <label class="if-label p-col">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</label>
       <textarea class="p-col select-asset-input" pInputTextarea formControlName="description"></textarea>
     </div>
     <div class="footer-buttons">
-      <button (click)="dismissModal()" class="if-button-cancel" type="button">Cancel</button>
+      <button (click)="dismissModal()" class="if-button-cancel" type="button">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button (click)="confirmModal()" [disabled]="ruleForm.invalid" class="if-button button-primary" type="button">
-        Create
+        {{ 'APP.COMMON.DIALOG_BUTTONS.CREATE' | translate }}
       </button>
     </div>
   </form>

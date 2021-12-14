@@ -17,18 +17,18 @@
   <ul>
     <li *ngIf="isRouteActive('detail') || isRouteActive('editor')"
         [ngClass]="{'active': isRouteActive('detail')}"
-        (click)="onRouteClick('detail')">Detail</li>
+        (click)="onRouteClick('detail')">{{ 'APP.FUSION_APPLETS.SUB_HEADER.DETAIL' | translate }}</li>
 
     <li *ngIf="isRouteActive('detail') || isRouteActive('editor')"
         [ngClass]="{'active': isRouteActive('editor')}"
-        (click)="onRouteClick('editor')">Editor</li>
+        (click)="onRouteClick('editor')">{{ 'APP.FUSION_APPLETS.SUB_HEADER.EDITOR' | translate }}</li>
 
     <li *ngIf="isRouteActive('overview') || isRouteActive('archiv')"
         [ngClass]="{'active': isRouteActive('overview')}"
-        (click)="onRouteClick('overview')">Overview</li>
+        (click)="onRouteClick('overview')">{{ 'APP.FUSION_APPLETS.SUB_HEADER.OVERVIEW' | translate }}</li>
 
     <li *ngIf="isRouteActive('overview') || isRouteActive('archiv')"
         [ngClass]="{'active': isRouteActive('archiv')}"
-        (click)="onRouteClick('archiv')">Archive</li>
+        (click)="onRouteClick('archiv')">{{ 'APP.FUSION_APPLETS.SUB_HEADER.ARCHIVE' | translate }}</li>
   </ul>
 </div>

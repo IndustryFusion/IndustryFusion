@@ -13,12 +13,12 @@ specific language governing permissions and limitations
 under the License.
 -->
 <p-accordion class="action-panel" [(activeIndex)]="accordionIndex">
-  <p-accordionTab header="Set up Email Notification">
-    <label class="if-label" *ngIf="getAvailableRecipients()?.length > 0">Choose Email Recipients *</label>
+  <p-accordionTab header="{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_MAIL.HEADER' | translate }}">
+    <label class="if-label" *ngIf="getAvailableRecipients()?.length > 0">{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_MAIL.CHOOSE_RECIPIENTS_LABEL' | translate }} *</label>
     <p-dropdown *ngIf="getAvailableRecipients()?.length > 0" [options]="getAvailableRecipients()"
-                [(ngModel)]="emailSelection" placeholder="Select Email"
+                [(ngModel)]="emailSelection" placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_MAIL.RECIPIENTS_PLACEHOLDER' | translate }}"
                 (onChange)="addEmail($event.value)"></p-dropdown>
-    <label class="if-label" *ngIf="emailAction?.get('target')?.value?.length > 0">Selected Email Recipients</label>
+    <label class="if-label" *ngIf="emailAction?.get('target')?.value?.length > 0">{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_MAIL.SELECTED_RECIPIENTS_LABEL' | translate }}</label>
     <div class="email-list" *ngFor="let email of getTarget(); let i = index">
       <div class="list-item">
         {{email.value}}
@@ -27,6 +27,6 @@ under the License.
     </div>
     <button class="if-button button-primary full-width"
             [disabled]="emailAction.invalid" (click)="close()"
-    >Continue</button>
+    >{{ 'APP.COMMON.DIALOG_BUTTONS.CONTINUE'  | translate }}</button>
   </p-accordionTab>
 </p-accordion>

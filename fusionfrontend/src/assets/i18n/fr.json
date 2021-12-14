@@ -380,6 +380,78 @@
 				"SELECT_FACTORY_PLACEHOLDER": "Site de l'usine",
 				"SELECT_FACTORY_SITE": "Sélectionnez le site de l'usine"
 			}
+		},
+		"FUSION_APPLETS": {
+			"CREATE": {
+				"APPLET_NAME": "",
+				"PRIORITY_PLACEHOLDER": ""
+			},
+			"EDITOR": {
+				"ACTION_LIST": {
+					"ACTION": "",
+					"APPLET_ACTION": {
+						"ACTION_MAIL": {
+							"CHOOSE_RECIPIENTS_LABEL": "",
+							"HEADER": "",
+							"RECIPIENTS_PLACEHOLDER": "",
+							"SELECTED_RECIPIENTS_LABEL": ""
+						},
+						"ACTION_WEBHOOK": {
+							"INPUT_PLACEHOLDER": "",
+							"MESSAGE_HEADER_LABEL": "",
+							"SELECTED_WEBHOOK_LABEL": "",
+							"WEBHOOK_URL": ""
+						},
+						"EMAIL": "",
+						"EMAIL_TEXT": "",
+						"WEBHOOK": "",
+						"WEBHOOK_TEXT": ""
+					},
+					"CREATE_ACTION_BUTTON": ""
+				},
+				"AUTOMATIC_RESET_CHECKBOX": "",
+				"CONDITIONS": {
+					"CONDITIONS_VALUE": {
+						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "",
+						"CHOOSE_TRIGGER_ASSET": "",
+						"CONDITION_LABEL": "",
+						"CONDITION_TYPE_LABEL": "",
+						"DEFINE_DURATION": "",
+						"LIMIT_SELECTOR": {
+							"CALCULATE_CONTROL_LIMIT": "",
+							"STANDARD_DEVIATION": ""
+						},
+						"METRIC_LABEL": "",
+						"MINIMAL_INSTANCES_FOR_CALCULATION": "",
+						"SETUP_CONDITION": "",
+						"VALUE_LABEL": ""
+					},
+					"CREATE_TRIGGER_BUTTON": "",
+					"TRIGGER": ""
+				},
+				"HEADER": ""
+			},
+			"LIST": {
+				"APPLET": "",
+				"APPLETS": "",
+				"APPLET_NAME": "",
+				"CONDITION_SUMMARY": "",
+				"CREATE_APPLET_BUTTON": "",
+				"CREATE_DIALOG_HEADER": "",
+				"NO_APPLET": ""
+			},
+			"SUBHEADER": {
+				"ARCHIVE": "",
+				"DETAIL": "",
+				"EDITOR": "",
+				"OVERVIEW": ""
+			}
+		},
+		"NOTIFICATIONS": {
+			"SUB_HEADER": {
+				"CLEARED": "",
+				"OPEN": ""
+			}
 		}
 	}
 }

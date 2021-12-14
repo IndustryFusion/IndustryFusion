@@ -14,9 +14,9 @@ under the License.
 -->
 
 <div [formGroup]="timeGroup" class="p-grid p-flex-column">
-  <label class="p-col if-label">Value *</label>
+  <label class="p-col if-label">{{ 'APP.COMMON.TERMS.VALUE' | translate }} *</label>
   <input [formControlName]="'value'" pInputText class="full-width p-col" />
-  <label class="p-col if-label">Time *</label>
+  <label class="p-col if-label">{{ 'APP.COMMON.TERMS.TIME' | translate }} *</label>
   <p-dropdown class="p-col"
               [formControlName]="'timeOperator'"
               [options]="conditionTimeDropdownValue"

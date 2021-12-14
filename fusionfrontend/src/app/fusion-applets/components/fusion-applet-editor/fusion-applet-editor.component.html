@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<p-confirmDialog header="Attention" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-confirmDialog header="{{ 'APP.FUSION_APPLETS.EDITOR.HEADER' | translate }}" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <div class="if-fusion-applet-editor" *ngIf="rule">
   <div class="p-grid p-jc-between full-width p-align-center p-justify-center">
     <p-inplace class="p-col-" [formGroup]="ruleGroup" [closable]="true" [closeIcon]="'pi pi-check'">
@@ -30,7 +30,7 @@ under the License.
                   [ngModel]="ruleGroup.get('resetType').value === RuleResetType.Automatic"
                   (onChange)="setResetTypeAutomatic($event.checked)"
       ></p-checkbox>
-      Enable automatic Reset
+      {{ 'APP.FUSION_APPLETS.AUTOMATIC_RESET_CHECKBOX' | translate }}
     </div>
   </div>
   <app-applet-conditions *ngIf="devices" class="full-width"
@@ -44,6 +44,6 @@ under the License.
                           [actions]="rule.actions"
   ></app-applet-action-list>
   <div class="full-width p-grid p-justify-end">
-    <button class="if-button button-primary" [disabled]="ruleGroup.invalid" (click)="save()">Save</button>
+    <button class="if-button button-primary" [disabled]="ruleGroup.invalid" (click)="save()">{{ 'APP.COMMON.DIALOG_BUTTONS.SAVE' | translate }}</button>
   </div>
 </div>

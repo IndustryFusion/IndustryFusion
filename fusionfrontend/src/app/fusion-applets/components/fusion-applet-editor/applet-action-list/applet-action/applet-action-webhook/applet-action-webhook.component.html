@@ -16,25 +16,29 @@ under the License.
 <p-accordion class="action-panel" [(activeIndex)]="activeAccordionIndex" >
   <p-accordionTab header="Set up Webhook" [formGroup]="webhookGroup" [disabled]="activeAccordionIndex == 0">
     <div *ngFor="let target of getTargets()">
-      <label class="if-label">Webhook URL *</label>
+      <label class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_WEBHOOK.WEBHOOK_URL' | translate }} *</label>
       <input [formControl]="target" pInputText class="full-width"/>
     </div>
-    <label class="if-label">Message Headers</label>
+    <label class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_WEBHOOK.MESSAGE_HEADER_LABEL' | translate }}</label>
     <div class="p-grid" [formGroup]="activeHeaderGroup">
       <div class="p-col-4">
-        <label class="if-label full-width">Name</label>
-        <input class="full-width" formControlName="name" pInputText placeholder="Enter Value"/>
+        <label class="if-label full-width">{{ 'APP.COMMON.TERMS.NAME'  | translate }}</label>
+        <input class="full-width" formControlName="name" pInputText
+               placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_WEBHOOK.INPUT_PLACEHOLDER' | translate }}"/>
       </div>
       <div class="p-col-7">
-        <label class="if-label full-width">Value</label>
-        <input class="full-width" formControlName="value" pInputText placeholder="Enter Value"/>
+        <label class="if-label full-width">{{ 'APP.COMMON.TERMS.VALUE'  | translate }}</label>
+        <input class="full-width" formControlName="value" pInputText
+               placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_WEBHOOK.INPUT_PLACEHOLDER' | translate }}"/>
       </div>
       <div class="p-col-1">
         <button [disabled]="activeHeaderGroup.invalid" (click)="addHeader()" class="add-button">
           <i class="pi pi-plus"></i></button>
       </div>
     </div>
-    <label *ngIf="(getHeaders() | keyvalue).length > 0" class="if-label">Selected Mesage Headers</label>
+    <label *ngIf="(getHeaders() | keyvalue).length > 0" class="if-label">
+      {{ 'APP.FUSION_APPLETS.EDITOR.ACTION_LIST.APPLET_ACTION.ACTION_WEBHOOK.SELECTED_WEBHOOK_LABEL' | translate }}
+    </label>
     <div class="p-grid">
       <div class="p-grid email-list full-width" *ngFor="let header of getHeaders() | keyvalue">
         <div class="list-item p-col-4">{{header.key}}</div>
@@ -44,6 +48,6 @@ under the License.
     </div>
     <button class="if-button button-primary full-width"
             [disabled]="webhookGroup.invalid" (click)="saveWebhookAction()"
-    >Continue</button>
+    >{{ 'APP.COMMON.DIALOG_BUTTONS.CONTINUE'  | translate }}</button>
   </p-accordionTab>
 </p-accordion>

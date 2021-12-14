@@ -15,7 +15,7 @@ under the License.
 
 <div class="wrapper if-subheader">
     <ul>
-      <li [ngClass]="{'active': isOpenActive()}" (click)="onOpenClick()">Open</li>
-      <li [ngClass]="{'active': isClearedActive()}" (click)="onClearedClick()">Cleared</li>
+      <li [ngClass]="{'active': isOpenActive()}" (click)="onOpenClick()">{{ 'APP.NOTIFICATIONS.SUB_HEADER.OPEN' | translate }}</li>
+      <li [ngClass]="{'active': isClearedActive()}" (click)="onClearedClick()">{{ 'APP.NOTIFICATIONS.SUB_HEADER.CLEARED' | translate }}</li>
     </ul>
   </div>

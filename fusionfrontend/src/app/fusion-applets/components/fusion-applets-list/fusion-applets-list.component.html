@@ -27,7 +27,7 @@ under the License.
       ></p-selectButton>
       <app-create-button (createItem)="createItem()"
                          *ngIf="showActive || !showActions"
-                         [text]="'Create Applet'"
+                         text="{{ 'APP.FUSION_APPLETS.LIST.CREATE_APPLET_BUTTON' | translate }}"
                          class="single-create-btn"
       ></app-create-button>
     </div>
@@ -40,16 +40,16 @@ under the License.
       <th></th>
       <th [style.width.%]="25">
         <app-table-searchbar (searchByName)="searchRulesByName($event)" [itemsToBeFiltered]="filteredRules"
-                             attributeToBeSearched="name" filterColumn="AppletName">
+                             attributeToBeSearched="name" filterColumn="{{ 'APP.FUSION_APPLETS.LIST.APPLET_NAME' | translate }}">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="40">
         <app-table-searchbar (searchByName)="searchRulesByCondition($event)" [itemsToBeFiltered]="filteredRules"
-                             attributeToBeSearched="naturalLanguage" filterColumn="Condition Summary">
+                             attributeToBeSearched="naturalLanguage" filterColumn="{{ 'APP.FUSION_APPLETS.LIST.CONDITION_SUMMARY' | translate }}">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="10"></th>
-      <th [style.width.%]="10" pSortableColumn="status">Status
+      <th [style.width.%]="10" pSortableColumn="status">{{ 'APP.COMMON.TERMS.STATUS' | translate }}
         <p-sortIcon field="status"></p-sortIcon>
       </th>
       <th *ngIf="showActions"></th>

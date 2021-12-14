@@ -382,6 +382,78 @@
         "SELECT_FACTORY_PLACEHOLDER": "Factory site",
         "SELECT_FACTORY_SITE": "Select Factory site"
       }
+    },
+    "FUSION_APPLETS": {
+      "CREATE": {
+        "APPLET_NAME": "Applet name",
+        "PRIORITY_PLACEHOLDER": "Choose one"
+      },
+      "EDITOR": {
+        "HEADER": "Attention",
+        "AUTOMATIC_RESET_CHECKBOX": "Enable automatic Reset",
+        "ACTION_LIST": {
+          "ACTION": "Action",
+          "CREATE_ACTION_BUTTON": "Create new Action",
+          "APPLET_ACTION": {
+            "EMAIL": "Email",
+            "EMAIL_TEXT": "Sends an email notification to one or more specified recipients.",
+            "WEBHOOK": "Webhook",
+            "WEBHOOK_TEXT": "Fires a defined message format to a specified webhook.",
+            "ACTION_MAIL": {
+              "HEADER": "Set up Email Notification",
+              "CHOOSE_RECIPIENTS_LABEL":"Choose Email Recipients",
+              "RECIPIENTS_PLACEHOLDER":"Select Email",
+              "SELECTED_RECIPIENTS_LABEL":"Selected Email Recipients"
+            },
+            "ACTION_WEBHOOK": {
+              "WEBHOOK_URL": "Webhook URL",
+              "MESSAGE_HEADER_LABEL": "Message Headers",
+              "SELECTED_WEBHOOK_LABEL":"Selected Message Headers",
+              "INPUT_PLACEHOLDER": "Enter Value"
+            }
+          }
+        },
+        "CONDITIONS": {
+          "TRIGGER": "Trigger",
+          "CREATE_TRIGGER_BUTTON": "Create new Trigger",
+          "CONDITIONS_VALUE": {
+            "CHOOSE_TRIGGER_ASSET": "Choose Trigger Asset",
+            "SETUP_CONDITION": "Setup Condition",
+            "METRIC_LABEL": "Choose Metric",
+            "CONDITION_TYPE_LABEL": "Choose Condition Type",
+            "CONDITION_LABEL": "Choose Condition",
+            "VALUE_LABEL": "Enter Value",
+            "DEFINE_DURATION": "Define Duration",
+            "AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "Average & Standard Deviation Baseline",
+            "MINIMAL_INSTANCES_FOR_CALCULATION": "Minimal Instances for Calculation",
+            "LIMIT_SELECTOR": {
+              "CALCULATE_CONTROL_LIMIT": "Calculate the control limit using",
+              "STANDARD_DEVIATION": "{{number}} Standard deviation"
+            }
+          }
+        }
+      },
+      "LIST": {
+        "NO_APPLET": "No Applet",
+        "APPLET": "Applet",
+        "APPLETS": "Applets",
+        "CREATE_DIALOG_HEADER":  "Create Applet",
+        "CREATE_APPLET_BUTTON": "Create Applet",
+        "APPLET_NAME": "AppletName",
+        "CONDITION_SUMMARY": "Condition Summary"
+      },
+      "SUBHEADER": {
+        "DETAIL": "Detail",
+        "EDITOR": "Editor",
+        "OVERVIEW": "Overview",
+        "ARCHIVE": "Archive"
+      }
+    },
+    "NOTIFICATIONS": {
+      "SUB_HEADER": {
+        "OPEN": "Open",
+        "CLEARED": "Cleared"
+      }
     }
   }
 }

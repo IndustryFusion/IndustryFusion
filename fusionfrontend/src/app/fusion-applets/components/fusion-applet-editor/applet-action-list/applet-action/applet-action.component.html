@@ -18,14 +18,14 @@ under the License.
     <div (click)="setActionType(RuleActionType.mail)"
          *ngIf="showActionTypePanel(RuleActionType.mail)" class="action-panel p-grid">
       <i class="if-icon-mail"></i>
-      <h3>Email</h3>
-      <p>Sends an email notification to one or more specified recipients.</p>
+      <h3>{{ 'APP.FUSION_APPLETS.ACTION_LIST.APPLET_ACTION.EMAIL' | translate }}</h3>
+      <p>{{ 'APP.FUSION_APPLETS.ACTION_LIST.APPLET_ACTION.EMAIL_TEXT' | translate }}</p>
     </div>
     <div (click)="setActionType(RuleActionType.http)"
          *ngIf="showActionTypePanel(RuleActionType.http)" class="action-panel p-grid">
       <i class="if-icon-webhook"></i>
-      <h3>Webhook</h3>
-      <p>Fires a defined message format to a specified webhook.</p>
+      <h3>{{ 'APP.FUSION_APPLETS.ACTION_LIST.APPLET_ACTION.WEBHOOK' | translate }}</h3>
+      <p>{{ 'APP.FUSION_APPLETS.ACTION_LIST.APPLET_ACTION.WEBHOOK_TEXT' | translate }}</p>
     </div>
   </div>
   <div class="p-grid action-setup-panel full-width">

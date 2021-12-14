@@ -23,6 +23,7 @@ import { RuleStatusUtil } from '../../util/rule-status-util';
 import { OispRuleService } from '../../../core/store/oisp/oisp-rule/oisp-rule.service';
 import { OispRuleQuery } from '../../../core/store/oisp/oisp-rule/oisp-rule.query';
 import { Device } from '../../../core/store/oisp/oisp-device/oisp-device.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-fusion-applets-list',
@@ -53,8 +54,10 @@ export class FusionAppletsListComponent implements OnInit {
   rulesSearchedByName: Rule[] = [];
   rulesSearchedCondition: Rule[] = [];
 
-  public titleMapping:
-    { [k: string]: string } = { '=0': 'No Applet', '=1': '# Applet', other: '# Applets' };
+  public titleMapping: { [k: string]: string } = {
+    '=0': this.translate.instant('APP.FUSION_APPLET_LIST.NO_APPLET'),
+    '=1': '# ' + this.translate.instant('APP.FUSION_APPLET_LIST.APPLET'),
+    other: '# ' + this.translate.instant('APP.FUSION_APPLET_LIST.APPLETS') };
 
   constructor(
     private oispRuleQuery: OispRuleQuery,
@@ -62,7 +65,8 @@ export class FusionAppletsListComponent implements OnInit {
     private dialogService: DialogService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    public ruleStatusUtil: RuleStatusUtil
+    public ruleStatusUtil: RuleStatusUtil,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
