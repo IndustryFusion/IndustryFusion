@@ -155,6 +155,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     this.assetForm = this.formBuilder.group({
       id: [],
       version: [],
+      globalId: [],
       name: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator],
       companyId: [this.companyId, Validators.required],

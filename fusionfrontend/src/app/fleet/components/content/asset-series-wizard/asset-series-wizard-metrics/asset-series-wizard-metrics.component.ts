@@ -51,6 +51,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
     return this.formBuilder.group({
       id: [fieldSource.id],
       version: [fieldSource.version],
+      globalId: [fieldSource.globalId],
       indexFieldSources: [indexFieldSources],
       indexInArray: [indexInArray],
       sourceUnitName: [fieldSource.sourceUnit?.name],

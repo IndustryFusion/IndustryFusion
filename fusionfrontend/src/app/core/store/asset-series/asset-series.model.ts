@@ -18,6 +18,7 @@ import { ID } from '@datorama/akita';
 import { FieldSource } from '../field-source/field-source.model';
 
 export class AssetSeries extends BaseEntity {
+   globalId: string;
    companyId: ID;
    assetTypeTemplateId: ID;
    fieldSourceIds: Array<ID>;

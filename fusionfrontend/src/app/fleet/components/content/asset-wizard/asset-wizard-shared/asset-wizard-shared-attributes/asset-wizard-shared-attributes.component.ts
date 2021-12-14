@@ -95,6 +95,7 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
     const group = this.formBuilder.group({
       id: [],
       version: [],
+      globalId: [],
       indexFieldInstances: [],
       indexInArray: [],
       name: [],
@@ -109,6 +110,7 @@ export class AssetWizardSharedAttributesComponent implements OnInit {
 
     group.get('id').patchValue(fieldInstance.id);
     group.get('version').patchValue(fieldInstance.version);
+    group.get('globalId').patchValue(fieldInstance.globalId);
     group.get('indexFieldInstances').patchValue(indexFieldInstances);
     group.get('indexInArray').patchValue(indexInArray);
     group.get('name').patchValue(fieldInstance.name);

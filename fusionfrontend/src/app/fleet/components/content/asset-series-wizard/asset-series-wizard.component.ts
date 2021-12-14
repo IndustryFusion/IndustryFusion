@@ -130,6 +130,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     this.assetSeriesForm = this.formBuilder.group({
       id: [],
       version: [],
+      globalId: [],
       name: ['', WizardHelper.requiredTextValidator],
       description: ['', WizardHelper.maxTextLengthValidator],
       ceCertified: [null, Validators.required],
