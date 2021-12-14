@@ -17,7 +17,7 @@ under the License.
 
   <div>
     <div class="input-div">
-      <label class="if-label">Select Assets</label>
+      <label class="if-label">{{ 'APP.FACTORY.ASSIGN_ASSETS_TO_ROOM.SELECT_ASSET' | translate }}</label>
       <div class="selected-items-div p-grid">
         <div class="p-col-fixed p-dir-col selected-assets" *ngFor="let selectedAsset of selectedAssets">
           <div class="selected-items">
@@ -32,7 +32,7 @@ under the License.
       <p-checkbox class="p-col-fixed select-all-checkbox" [(ngModel)]="allAssetsSelected" binary="false" (click)="selectAllAssets()"></p-checkbox>
       <div class="p-col asset-search-input p-input-icon-left">
         <i class="pi pi-search"></i>
-        <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterAssets()">
+        <input type="text" pInputText [(ngModel)]="searchText" placeholder="{{ 'APP.COMMON.TERMS.NAME' | translate }}" class="search-input" (keyup)="filterAssets()">
       </div>
       <p-table class="list-container" [value]="filteredAssets" [(selection)]="selectedAssets">
         <ng-template pTemplate="body" let-asset>
@@ -50,8 +50,8 @@ under the License.
 
 
     <div class="assign-asset-dialog-footer">
-      <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
-      <button type="button" class="if-button button-primary" (click)="onApply()" >Apply</button>
+      <button type="button" class="if-button button-secondary" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+      <button type="button" class="if-button button-primary" (click)="onApply()" >{{ 'APP.COMMON.DIALOG_BUTTONS.APPLY' | translate }}</button>
     </div>
   </div>
 </div>

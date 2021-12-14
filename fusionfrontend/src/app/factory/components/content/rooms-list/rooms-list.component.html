@@ -15,7 +15,7 @@ under the License.
 
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ (rooms == null ? 0 : rooms.length) | i18nPlural: roomMapping }}</h3>
-  <app-create-button (createItem)="showCreateDialog()" class="single-create-btn" text="Create Room"></app-create-button>
+  <app-create-button (createItem)="showCreateDialog()" class="single-create-btn" text="{{ 'APP.FACTORY.ROOMS_LIST.CREATE_ROOM_BUTTON' | translate }}"></app-create-button>
 </div>
 
 <p-table [paginator]="true" [rowHover]="false" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
@@ -24,10 +24,10 @@ under the License.
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
-      <th [style.width.%]="25">Name</th>
-      <th [style.width.%]="17.5">Assets</th>
-      <th [style.width.%]="25">Description</th>
-      <th [style.width.%]="22.5">Factory Site</th>
+      <th [style.width.%]="25">{{ 'APP.COMMON.TERMS.NAME' | translate }}</th>
+      <th [style.width.%]="17.5">{{ 'APP.COMMON.TERMS.ASSETS' | translate }}</th>
+      <th [style.width.%]="25">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</th>
+      <th [style.width.%]="22.5">{{ 'APP.COMMON.TERMS.FACTORY_SITE' | translate }}</th>
       <th [style.width.%]="5"></th>
     </tr>
   </ng-template>
@@ -41,7 +41,7 @@ under the License.
       <td [routerLink]="getRoomAssetLink(room.id)" [style.width.%]="22.5">{{room.factorySite.name}}</td>
       <td [style.width.%]="2.5" class="table-dropdown-menu-wide" (click)="setActiveRow(room)">
         <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
-                               [assignItemText]="'Asset to room'" (editItem)="showEditDialog()"
+                               assignItemText="{{ 'APP.FACTORY.ROOMS_LIST.ASSET_TO_ROOM' | translate }}" (editItem)="showEditDialog()"
                                (assignItem)="showAssignAssetToRoomModal()" (deleteItem)="showDeleteDialog()">
         </app-item-options-menu>
       </td>

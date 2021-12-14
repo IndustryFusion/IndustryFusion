@@ -25,18 +25,19 @@ under the License.
         </div>
       </div>
       <div class="input-div">
-        <label class="if-label">Custom name</label>
-        <input type="text" pInputText class="asset-description-dialog-inputs" formControlName="name" placeholder="Enter a custom name here">
+        <label class="if-label">{{ 'APP.FACTORY.ASSET_INSTANTIATION.DESCRIPTION_MODAL.CUSTOM_NAME' | translate }}</label>
+        <input type="text" pInputText class="asset-description-dialog-inputs" formControlName="name"
+               placeholder="{{ 'APP.FACTORY.ASSET_INSTANTIATION.DESCRIPTION_MODAL.CUSTOM_NAME_PLACEHOLDER' | translate }}">
       </div>
       <div class="input-div">
-        <label class="if-label">Description</label>
+        <label class="if-label">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</label>
         <textarea pInputTextarea class="asset-description-dialog-textarea" formControlName="description"></textarea>
         <label class="textarea-character-count if-label">{{ assetDetailsForm.get('description').value?.length }}/300</label>
       </div>
       <div class="description-dialog-footer">
-        <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
+        <button type="button" class="if-button button-secondary" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
         <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="assetDetailsForm.get('name').invalid
-              || assetDetailsForm.get('description').invalid">Next</button>
+              || assetDetailsForm.get('description').invalid">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
       </div>
     </form>
   </div>

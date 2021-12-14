@@ -18,6 +18,7 @@ import { Asset } from 'src/app/core/store/asset/asset.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 import { Observable } from 'rxjs';
 import { WeatherService } from '../../../../core/services/api/weather.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-company-info',
@@ -39,7 +40,8 @@ export class CompanyInfoComponent implements OnChanges {
   date: number = Date.now();
   imgUrl: string;
 
-  constructor(private weatherService: WeatherService) {
+  constructor(private weatherService: WeatherService,
+              public translate: TranslateService) {
   }
 
   ngOnChanges(changes: SimpleChanges) {

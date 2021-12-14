@@ -41,6 +41,7 @@ import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-assets-list',
@@ -48,6 +49,7 @@ import { StatusWithAssetId } from '../../../models/status.model';
   styleUrls: ['./assets-list.component.scss'],
   providers: [DialogService, ConfirmationService]
 })
+
 export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   company: Company;
@@ -97,16 +99,24 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   private onboardingDialogRef: DynamicDialogRef;
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+    { [k: string]: string } = { '=0': this.translate.instant('APP.FACTORY.ASSETS_LIST.NO_ASSETS'),
+    '=1': '# ' + this.translate.instant('APP.COMMON.TERMS.ASSET'), other: '# ' + this.translate.instant('APP.COMMON.TERMS.ASSETS') };
 
   ItemOptionsMenuType = ItemOptionsMenuType;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'},
-    { filterType: FilterType.STATUSFILTER, columnName: 'Status', attributeToBeFiltered: 'status'}];
+  tableFilters: FilterOption[] = [
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.FACTORY.ASSETS_LIST.CATEGORY'),
+      attributeToBeFiltered: 'category' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.MANUFACTURER'),
+      attributeToBeFiltered: 'manufacturer' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ROOM'),
+      attributeToBeFiltered: 'roomName' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.FACTORY_SITE'),
+      attributeToBeFiltered: 'factorySiteName'},
+    { filterType: FilterType.STATUSFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.STATUS'),
+      attributeToBeFiltered: 'status'}
+  ];
 
   constructor(
     private assetService: AssetService,
@@ -114,7 +124,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
-    private assetDetailMenuService: AssetDetailMenuService) {
+    private assetDetailMenuService: AssetDetailMenuService,
+    public translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -199,7 +210,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
         activeModalType: AssetModalType.startInitialization,
         activeModalMode: AssetModalMode.onboardAssetMode
       },
-      header: 'Select Asset for Onboarding',
+      header: this.translate.instant('APP.FACTORY.ASSETS_LIST.DIALOG_HEADING.ON_BOARDING'),
       width: '70%',
       contentStyle: { 'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%' },
     });
@@ -246,10 +257,10 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   openAssignRoomDialog() {
     if (this.factorySite) {
       this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
-        `Room Assignment (${this.factorySite.name})`);
+        this.translate.instant('APP.FACTORY.ASSETS_LIST.DIALOG_HEADING.ROOM_ASSIGNMENT')` (${this.factorySite.name})`);
     } else {
       this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,
-        'Factory Site Assignment');
+        this.translate.instant('APP.FACTORY.ASSETS_LIST.DIALOG_HEADING.FACTORY_SITE_ASSIGNMENT'));
     }
   }
 

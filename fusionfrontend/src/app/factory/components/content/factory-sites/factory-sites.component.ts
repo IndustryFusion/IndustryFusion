@@ -27,6 +27,7 @@ import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-factory-sites',
@@ -48,7 +49,8 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
   factorySitesSearchedByStreet: FactorySite[];
 
   factorySiteMapping:
-    { [k: string]: string } = { '=0': 'No Factory sites', '=1': '# Factory site', other: '# Factory sites' };
+    { [k: string]: string } = { '=0': this.translate.instant('APP.FACTORY.FACTORY_SITES.NO_FACTORY_SITES'),
+    '=1': '# ' + this.translate.instant('APP.COMMON.TERMS.FACTORY_SITE'), other: '# ' +  this.translate.instant('APP.FACTORY.FACTORY_SITES.FACTORY_SITES') };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -63,7 +65,8 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService) {
     this.factoryResolver.resolve(this.activatedRoute);
   }
 
@@ -105,7 +108,7 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
       data: {
         type: DialogType.CREATE
       },
-      header: `Create new Factory Site`,
+      header: this.translate.instant('APP.FACTORY.FACTORY_SITES.DIALOG_HEADING.CREATE'),
       width: '70%',
       contentStyle: { 'padding-left': '6%', 'padding-right': '6%' },
     });
@@ -117,7 +120,7 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
         factorySite: this.activeListItem,
         type: DialogType.EDIT
       },
-      header: `Update Factory Site ${this.activeListItem.name}`,
+      header: this.translate.instant('APP.FACTORY.FACTORY_SITES.DIALOG_HEADING.UPDATE') + ` ${this.activeListItem.name}`,
       width: '70%',
       contentStyle: { 'padding-left': '4%', 'padding-right': '4%' },
     });
@@ -125,8 +128,8 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Factory ' + this.activeListItem.name + '?',
-      header: 'Delete Factory Confirmation',
+      message: this.translate.instant('APP.FACTORY.FACTORY_SITES.CONFIRMATION_DIALOG.MESSAGE', { itemToDelete: this.activeListItem.name}),
+      header: this.translate.instant('APP.FACTORY.FACTORY_SITES.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteFactorySite();

@@ -24,13 +24,13 @@ under the License.
       </app-table-filter>
     </div>
     <app-create-button (createItem)="showOnboardDialog()" class="create-btn"
-                       text="Onboard new Asset"></app-create-button>
+                       text="{{ 'APP.FACTORY.ASSETS_LIST.ONBOARD_NEW_ASSET' | translate }}"></app-create-button>
   </div>
 </div>
 
 <app-table-selected-items-bar (deleteItem)="setActiveRow(); openDeleteDialog()"
                               (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); openEditDialog()"
-                              (showAssetCards)="onCardsViewClick()" [itemName]="'Asset'"
+                              (showAssetCards)="onCardsViewClick()" itemName="{{ 'APP.COMMON.TERMS.ASSET' | translate }}"
                               [selectedItems]="selectedFactoryAssets"
                               [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT,
                               TableSelectedItemsBarType.DELETE, TableSelectedItemsBarType.SHOW_ASSET_CARDS]">
@@ -47,22 +47,22 @@ under the License.
       <th [style.width.%]="1.5"></th>
       <th [style.width.%]="20" class="first-header-item">
         <app-table-searchbar (searchByName)="searchAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
-                             attributeToBeSearched="name" filterColumn="Asset">
+                             attributeToBeSearched="name" filterColumn="{{ 'APP.COMMON.TERMS.ASSET' | translate }}">
         </app-table-searchbar>
       </th>
-      <th [style.width.%]="20" ttSortableColumn="category">Asset Type
+      <th [style.width.%]="20" ttSortableColumn="category">{{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate }}
         <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="12.5" ttSortableColumn="manufacturer">Manufacturer
+      <th [style.width.%]="12.5" ttSortableColumn="manufacturer">{{ 'APP.COMMON.TERMS.MANUFACTURER' | translate }}
         <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="12" ttSortableColumn="roomName">Room
+      <th [style.width.%]="12" ttSortableColumn="roomName">{{ 'APP.COMMON.TERMS.ROOM' | translate }}
         <p-treeTableSortIcon field="roomName"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="12" ttSortableColumn="factorySiteName">Factory Site
+      <th [style.width.%]="12" ttSortableColumn="factorySiteName">{{ 'APP.COMMON.TERMS.FACTORY_SITE' | translate }}
         <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
       </th>
-      <th [style.width.%]="11" ttSortableColumn="status">Status
+      <th [style.width.%]="11" ttSortableColumn="status">{{ 'APP.COMMON.TERMS.STATUS' | translate }}
         <p-treeTableSortIcon field="status"></p-treeTableSortIcon>
       </th>
       <th [style.width.%]="5"></th>
@@ -100,7 +100,7 @@ under the License.
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
         <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
-                               [assignItemText]="'Asset to room'" (editItem)="openEditDialog()"
+                               [assignItemText]="translate.instant('APP.FACTORY.ASSETS_LIST.ASSIGN_ITEM_TEXT')" (editItem)="openEditDialog()"
                                (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()">
         </app-item-options-menu>
       </td>

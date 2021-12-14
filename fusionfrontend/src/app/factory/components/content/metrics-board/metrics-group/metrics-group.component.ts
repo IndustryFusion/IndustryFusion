@@ -27,7 +27,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./metrics-group.component.scss']
 })
 export class MetricsGroupComponent implements OnInit, OnChanges {
-  jsonLangPath = 'APP.FACTORY.METRICS_BOARD.METRICS_GROUP.';
 
   @Input()
   asset: FactoryAssetDetailsWithFields;

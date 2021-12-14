@@ -26,6 +26,7 @@ import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { RoomService } from '../../../../core/store/room/room.service';
 import { FactorySiteService } from '../../../../core/store/factory-site/factory-site.service';
 import { CountryResolver } from '../../../../core/resolvers/country.resolver';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-factory-site-dialog',
@@ -51,11 +52,12 @@ export class FactorySiteDialogComponent implements OnInit {
     private roomService: RoomService,
     private countryResolver: CountryResolver,
     private companyQuery: CompanyQuery,
-    private countryQuery: CountryQuery) {
+    private countryQuery: CountryQuery,
+    private translate: TranslateService) {
 
     this.factorySiteTypes = [
-      { label: 'Headquarter', value: FactorySiteType.HEADQUARTER },
-      { label: 'Fabrication', value: FactorySiteType.FABRICATION },
+      { label: this.translate.instant('APP.FACTORY.FACTORY_SITE_DIALOG.FACTORY_TYPES.HEADQUARTER'), value: FactorySiteType.HEADQUARTER },
+      { label: this.translate.instant('APP.FACTORY.FACTORY_SITE_DIALOG.FACTORY_TYPES.FABRICATION'), value: FactorySiteType.FABRICATION },
     ];
   }
 

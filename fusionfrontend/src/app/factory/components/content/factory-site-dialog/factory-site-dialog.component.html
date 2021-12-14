@@ -18,12 +18,12 @@ under the License.
     <div [formGroup]="factorySiteForm">
       <div class="p-grid">
         <div class="p-col-7 p-grid p-dir-col factory-div">
-          <label class="p-col if-label">Factory name&nbsp;*</label>
-          <input type="text" pInputText formControlName="name" placeholder="Name" class="factory-site-input p-col">
+          <label class="p-col if-label">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.FACTORY_NAME' | translate }}&nbsp;*</label>
+          <input type="text" pInputText formControlName="name" placeholder="{{ 'APP.COMMON.TERMS.NAME' | translate }}" class="factory-site-input p-col">
         </div>
         <div class="p-col-4 p-grid p-dir-col factory-div">
-          <label class="p-col if-label">Factory type&nbsp;*</label>
-          <p-dropdown [options]="factorySiteTypes" formControlName="type" placeholder="Factory type"
+          <label class="p-col if-label">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.FACTORY_TYPE' | translate }}&nbsp;*</label>
+          <p-dropdown [options]="factorySiteTypes" formControlName="type" placeholder="{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.FACTORY_TYPE' | translate }}"
                       class="p-col factory-dropdown"></p-dropdown>
         </div>
       </div>
@@ -31,31 +31,31 @@ under the License.
       <div class="p-grid">
 
         <div class="p-col-4 p-dir-col">
-          <h3 class="headings">Enter address details</h3>
+          <h3 class="headings">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.ADDRESS_DETAILS' | translate }}</h3>
 
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label">Street</label>
-            <input type="text" pInputText formControlName="line1" placeholder="Street" class="address-input p-col">
+            <label class="p-col if-label">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.STREET' | translate }}</label>
+            <input type="text" pInputText formControlName="line1" placeholder="{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.STREET' | translate }}" class="address-input p-col">
           </div>
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label">Additional address</label>
-            <input type="text" pInputText formControlName="line2" placeholder="Additional address" class="address-input p-col">
-          </div>
-
-          <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label">ZIP</label>
-            <input type="text" pInputText formControlName="zip" placeholder="Zip code" class="address-input p-col">
-          </div>
-          <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label">City&nbsp;*</label>
-            <input type="text" pInputText formControlName="city" placeholder="City" class="address-input p-col">
+            <label class="p-col if-label">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.ADDITIONAL_ADDRESS' | translate }}</label>
+            <input type="text" pInputText formControlName="line2" placeholder="{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.ADDITIONAL_ADDRESS' | translate }}" class="address-input p-col">
           </div>
 
           <div class="input-div p-grid p-dir-col">
-            <label class="p-col if-label">Country&nbsp;*</label>
+            <label class="p-col if-label">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.ZIP_LABEL' | translate }}</label>
+            <input type="text" pInputText formControlName="zip" placeholder="{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.ZIP_PLACEHOLDER' | translate }}" class="address-input p-col">
+          </div>
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col if-label">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.CITY' | translate }}&nbsp;*</label>
+            <input type="text" pInputText formControlName="city" placeholder="{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.CITY' | translate }}" class="address-input p-col">
+          </div>
+
+          <div class="input-div p-grid p-dir-col">
+            <label class="p-col if-label">{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.COUNTRY' | translate }}&nbsp;*</label>
             <p-dropdown class="" [options]="countries" formControlName="countryId"
                         filter="true" resetFilterOnHide="true"
-                        placeholder="Select a country...">
+                        placeholder="{{ 'APP.FACTORY.FACTORY_SITE_DIALOG.INPUTS.COUNTRY_PLACEHOLDER' | translate }}">
             </p-dropdown>
           </div>
         </div>
@@ -67,11 +67,11 @@ under the License.
   </div>
 
   <div class="footer-btns">
-    <button type="button" class="if-button-cancel" (click)="onCancel()">Cancel</button>
+    <button type="button" class="if-button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.EDIT' | translate }}</button>
     <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="factorySiteForm.invalid">
       <ng-container *ngIf="type === DialogType.EDIT then editFactoryButtonText else createFactoryButtonText"></ng-container>
-      <ng-template #createFactoryButtonText>Create</ng-template>
-      <ng-template #editFactoryButtonText>Update</ng-template>
+      <ng-template #createFactoryButtonText>{{ 'APP.COMMON.DIALOG_BUTTONS.CREATE' | translate }}</ng-template>
+      <ng-template #editFactoryButtonText>{{ 'APP.COMMON.DIALOG_BUTTONS.UPDATE' | translate }}</ng-template>
     </button>
   </div>
 </div>

@@ -5,11 +5,13 @@
 				"APPLY": "Anwenden",
 				"BACK": "Zurück",
 				"CANCEL": "Abbrechen",
+				"CONTINUE": "",
 				"CREATE": "erstellen.",
 				"EDIT": "Bearbeiten",
 				"FINISH": "Oberfläche",
 				"NEXT": "nächste",
-				"PUBLISH": "Veröffentlichen",
+        "ONBOARD": "An Bord",
+        "PUBLISH": "Veröffentlichen",
 				"START": "Start",
 				"UPDATE": "Aktualisierung"
 			},
@@ -27,15 +29,21 @@
 				"ASSET_TYPE": "Asset-Typ",
 				"DESCRIPTION": "Beschreibung",
 				"FACTORY": "Fabrik",
+				"FACTORY_SITE": "Fabrikseite",
+				"FACTORY_SITES": "Fabrikseiten",
 				"LABEL": "Etikett",
 				"MAINTENANCE_DUE": "Wartung fällig",
 				"MANUFACTURER": "Hersteller",
 				"NAME": "Name",
+				"PRIORITY": "Priorität",
 				"QUANTITY_TYPE": "Menge Typ",
 				"ROOM": "Zimmer",
 				"ROOMS": "Räume",
+				"STATUS": "Status",
 				"SYMBOL": "Symbol",
-				"UNIT": "Gerät"
+				"TIME": "Zeit",
+				"UNIT": "Gerät",
+				"VALUE": "Wert"
 			}
 		},
 		"DASHBOARDS": {
@@ -230,6 +238,149 @@
 				"UNIT": "Gerät",
 				"UNITS": "Einheiten",
 				"UNIT_NAME": "Name der Einheit"
+			}
+		},
+		"FACTORY": {
+			"ASSETS_LIST": {
+        "ONBOARD_NEW_ASSET": "Neue Anlage an Bord",
+				"ASSIGN_ITEM_TEXT": "Anlage zu Zimmer",
+				"CATEGORY": "Kategorie",
+				"DIALOG_HEADING": {
+					"FACTORY_SITE_ASSIGNMENT": "Zuweisung des Werksgeländes",
+					"ON_BOARDING": "Asset für Onboarding auswählen",
+					"ROOM_ASSIGNMENT": "Zimmerzuweisung"
+				},
+				"NO_ASSETS": "Keine Vermögenswerte"
+			},
+			"ASSET_CARD": {
+				"CONTROL_SYSTEM_TYPE": "Kontrollsystem Typ",
+				"GATEWAY_CONNECTIVITY": "Gateway-Konnektivität"
+			},
+			"ASSET_DETAILS": {
+				"ASSET_CHARTS": {
+					"POINTS": "Punkte"
+				},
+				"ASSET_TABLES": {
+					"DATE": "Datum",
+					"OF": "Von",
+					"VALUE": "Wert",
+					"VALUES": "Werte",
+					"VALUES_PER_PAGE": "Werte pro Seite",
+					"VALUE_SINCE": "Wert seit"
+				},
+				"INFO": {
+					"FACTORY_SITE_ASSIGNMENT": "Zuweisung des Werksgeländes",
+					"ROOM_ASSIGNMENT": "Raumzuweisung ({{factorySiteName}})"
+				},
+				"SUB_HEADER": {
+					"APPLETS": "Apfel",
+					"DIGITAL_NAMEPLATE": "Digitales Typenschild",
+					"NOTIFICATIONS": "Benachrichtigungen",
+					"PERFORMANCE": "Leistung",
+					"SUBSYSTEMS": "Teilsysteme"
+				}
+			},
+			"ASSET_INSTANTIATION": {
+				"DESCRIPTION_MODAL": {
+					"CUSTOM_NAME": "Benutzerdefinierter Name",
+					"CUSTOM_NAME_PLACEHOLDER": "Geben Sie hier einen eigenen Namen ein"
+				},
+				"FACTORY_SITE_ASSIGNMENT_MODAL": {
+					"SEARCH_TEXT_PLACEHOLDER": "Name",
+					"SELECT_FACTORY_SITE": "Werksgelände auswählen"
+				},
+				"MODAL_HEADER": {
+					"FACTORY_ASSIGNMENT_MODAL": "Zuweisung des Werksgeländes",
+					"GENERAL_INFORMATION": "Allgemeine Informationen",
+					"PAIRING_ASSET": "Pairing Asset",
+					"ROOM_ASSIGNMENT": "Zimmerzuweisung"
+				},
+				"PAIRED_MODAL": {
+					"CUSTOMIZE_ASSET": "Asset anpassen",
+					"PAIRING_PROCESS": "Ihr Vermögen wird gepaart!",
+					"SUCCESSFULLY_PAIRED": "Erfolgreich gekoppelt!"
+				},
+				"ROOM_ASSIGNMENT_MODAL": {
+					"SELECT_FACTORY_SITE": "Raum auswählen"
+				},
+				"START_MODAL": {
+					"NO_ASSETS_TO_ONBOARD": "Keine Vermögenswerte, die an Bord gebracht werden müssen!",
+					"READY_FOR_ONBOARDING": "Bereit für Onboarding!"
+				}
+			},
+			"ASSIGN_ASSETS_TO_ROOM": {
+				"SELECT_ASSET": "Assets auswählen"
+			},
+			"FACTORY_PAGE_TITLE": {
+				"SMART_FACTORY": "Intelligente Fabrik"
+			},
+			"FACTORY_SITES": {
+				"ASSETS": "Vermögenswerte",
+				"CITY": "Stadt",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Werksbestätigung löschen",
+					"MESSAGE": "Sind Sie sicher, dass Sie die Fabrik {{ itemToDelete }}löschen wollen?"
+				},
+				"COUNTRY": "Land",
+				"CREATE_FACTORY_SITE_BUTTON": "Fabrikgelände erstellen",
+				"DIALOG_HEADING": {
+					"CREATE": "Neue Fabrikseite erstellen",
+					"UPDATE": "Werksgelände aktualisieren"
+				},
+				"FACTORY_NAME": "Name der Fabrik",
+				"FACTORY_SITE": "Fabrikgelände",
+				"FACTORY_SITES": "Fabrikgelände",
+				"NO_FACTORY_SITES": "Keine Fabrikgelände",
+				"STREET": "Straße",
+				"ZIP": "Reißverschluss"
+			},
+			"FACTORY_SITE_DIALOG": {
+				"ADDITIONAL_ADDRESS": "Zusätzliche Adresse",
+				"ADDRESS_DETAILS": "Adressdaten eingeben",
+				"CITY": "Stadt",
+				"COUNTRY": "Land",
+				"COUNTRY_PLACEHOLDER": "Wählen Sie ein Land...",
+				"FACTORY_NAME": "Name der Fabrik",
+				"FACTORY_TYPE": "Typ Fabrik",
+				"FACTORY_TYPES": {
+					"FABRICATION": "Fabrikation",
+					"HEADQUARTER": "Hauptquartier"
+				},
+				"STREET": "Straße",
+				"ZIP_LABEL": "Reißverschluss",
+				"ZIP_PLACEHOLDER": "Postleitzahl"
+			},
+			"FACTORY_SUB_HEADER": {
+				"ASSETS": "Vermögenswerte",
+				"FACTORY_SITES": "Fabrikgelände",
+				"ROOMS": "Räume"
+			},
+			"METRICS_BOARD": {
+				"METRICS_GROUP": {
+					"DEFAULT_LABEL": "Allgemein"
+				}
+			},
+			"ROOMS_LIST": {
+				"ASSET_TO_ROOM": "Anlage zu Zimmer",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Zimmerbestätigung löschen",
+					"MESSAGE": "Sind Sie sicher, dass Sie den Raum {{ itemToDelete }}löschen wollen?"
+				},
+				"CREATE_ROOM_BUTTON": "Raum erstellen",
+				"DIALOG_HEADER": {
+					"ADD_NEW_ROOM": "Neuen Raum zur Fabrik hinzufügen",
+					"ASSIGN_ASSET": "Asset einem Raum zuordnen",
+					"EDIT_ROOM": "Bearbeitungsraum"
+				},
+				"NO_ROOM": "Kein Zimmer"
+			},
+			"ROOM_DIALOG": {
+				"ROOM_DESCRIPTION_LABEL": "Beschreibung des Zimmers",
+				"ROOM_DESCRIPTION_PLACEHOLDER": "Geben Sie hier eine Beschreibung ein",
+				"ROOM_NAME_LABEL": "Raum Name",
+				"ROOM_NAME_PLACEHOLDER": "Geben Sie hier einen eigenen Namen ein",
+				"SELECT_FACTORY_PLACEHOLDER": "Fabrikgelände",
+				"SELECT_FACTORY_SITE": "Werksgelände auswählen"
 			}
 		}
 	}

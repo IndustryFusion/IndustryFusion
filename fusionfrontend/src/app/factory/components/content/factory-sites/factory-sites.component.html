@@ -17,7 +17,7 @@ under the License.
 
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ (factorySites$ | async)?.length | i18nPlural: factorySiteMapping }}</h3>
-  <app-create-button class="single-create-btn" (createItem)="showCreateDialog()" [text]="'Create factory site'"></app-create-button>
+  <app-create-button class="single-create-btn" (createItem)="showCreateDialog()" text="{{ 'APP.FACTORY.FACTORY_SITES.CREATE_FACTORY_SITE_BUTTON' | translate }}"></app-create-button>
 </div>
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
@@ -27,25 +27,25 @@ under the License.
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="16">
-        <app-table-searchbar filterColumn="Factory name" [itemsToBeFiltered]="(factorySites$ | async)"
+        <app-table-searchbar filterColumn="{{ 'APP.FACTORY.FACTORY_SITES.FACTORY_NAME' | translate }}" [itemsToBeFiltered]="(factorySites$ | async)"
                              attributeToBeSearched="name" (searchByName)="searchFactorySitesByName($event)">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="20">
-        <app-table-searchbar filterColumn="Street" [itemsToBeFiltered]="(factorySites$ | async)"
+        <app-table-searchbar filterColumn="{{ 'APP.FACTORY.FACTORY_SITES.STREET' | translate }}" [itemsToBeFiltered]="(factorySites$ | async)"
                              attributeToBeSearched="line1" (searchByName)="searchFactorySitesByStreet($event)">
         </app-table-searchbar>
       </th>
-      <th [style.width.%]="10" pSortableColumn="zip">ZIP
+      <th [style.width.%]="10" pSortableColumn="zip">{{ 'APP.FACTORY.FACTORY_SITES.ZIP' | translate }}
         <p-sortIcon field="zip"></p-sortIcon>
       </th>
-      <th [style.width.%]="20" pSortableColumn="city">City
+      <th [style.width.%]="20" pSortableColumn="city">{{ 'APP.FACTORY.FACTORY_SITES.CITY' | translate }}
         <p-sortIcon field="city"></p-sortIcon>
       </th>
-      <th [style.width.%]="15" pSortableColumn="countryId">Country
+      <th [style.width.%]="15" pSortableColumn="countryId">{{ 'APP.FACTORY.FACTORY_SITES.COUNTRY' | translate }}
         <p-sortIcon field="countryId"></p-sortIcon>
       </th>
-      <th [style.width.%]="14" pSortableColumn="assetCount">Assets
+      <th [style.width.%]="14" pSortableColumn="assetCount">{{ 'APP.COMMON.TERMS.ASSETS' | translate }}
         <p-sortIcon field="assetCount"></p-sortIcon>
       </th>
       <th [style.width.%]="10"></th>

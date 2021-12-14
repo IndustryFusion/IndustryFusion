@@ -15,8 +15,8 @@ under the License.
 
 <div class="wrapper if-subheader">
   <ul>
-    <li [ngClass]="{'active': isFactoriesActive()}" (click)="onFactoriesClick()">Factory Sites</li>
-    <li [ngClass]="{'active': isRoomsActive()}" (click)="onRoomsClick()">Rooms</li>
-    <li [ngClass]="{'active': isAssetsActive()}" (click)="onAssetsClick()">Assets</li>
+    <li [ngClass]="{'active': isFactoriesActive()}" (click)="onFactoriesClick()">{{ 'APP.COMMON.TERMS.FACTORY_SITES' | translate }}</li>
+    <li [ngClass]="{'active': isRoomsActive()}" (click)="onRoomsClick()">{{ 'APP.COMMON.TERMS.ROOMS' | translate }}</li>
+    <li [ngClass]="{'active': isAssetsActive()}" (click)="onAssetsClick()">{{ 'APP.COMMON.TERMS.ASSETS' | translate }}</li>
   </ul>
 </div>

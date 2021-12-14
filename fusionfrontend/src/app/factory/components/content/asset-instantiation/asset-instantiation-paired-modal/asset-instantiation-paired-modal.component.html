@@ -26,16 +26,17 @@ under the License.
       <div class="p-col-6 p-dir-col column-class">
         <div *ngIf="pairingProcess" class="pairing-column">
           <div><i class="pi pi-spin pi-spinner"></i></div>
-          <span class="text-styling">Your asset is beeing paired!</span>
+          <span class="text-styling">{{ 'APP.FACTORY.ASSET_INSTANTIATION.PAIRED_MODAL.PAIRING_PROCESS' | translate }}</span>
         </div>
         <div *ngIf="!pairingProcess" class="pairing-column">
           <div><i class="pi pi-check-circle"></i></div>
-          <span class="text-styling">Successfully paired!</span>
+          <span class="text-styling">{{ 'APP.FACTORY.ASSET_INSTANTIATION.PAIRED_MODAL.SUCCESSFULLY_PAIRED' | translate }}</span>
         </div>
 
       </div>
     </div>
     <div *ngIf="!pairingProcess" class="button-div">
-      <button type="button" class="if-button button-primary customize-button" (click)="onSubmit(true)">Customize Asset</button>
+      <button type="button" class="if-button button-primary customize-button" (click)="onSubmit(true)">
+        {{ 'APP.FACTORY.ASSET_INSTANTIATION.PAIRED_MODAL.CUSTOMIZE_ASSET' | translate }}</button>
     </div>
 </div>

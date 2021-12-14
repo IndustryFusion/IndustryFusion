@@ -35,6 +35,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-details-info',
@@ -65,7 +66,8 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
               private routingLocation: Location,
               private confirmationService: ConfirmationService,
               private companyQuery: CompanyQuery,
-              private imageService: ImageService) {
+              private imageService: ImageService,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -104,10 +106,10 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   openAssignRoomDialog() {
     if (this.factorySite) {
       this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
-        `Room Assignment (${this.factorySite.name})`);
+        this.translate.instant('APP.FACTORY.ASSET_DETAILS.ASSET_DETAILS_INFO.ROOM_ASSIGNMENT', { factorySiteName: this.factorySite.name}));
     } else {
       this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,
-        'Factory Site Assignment');
+        this.translate.instant('APP.FACTORY.ASSET_DETAILS.ASSET_DETAILS_INFO.FACTORY_SITE_ASSIGNMENT'));
     }
   }
 

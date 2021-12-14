@@ -5,11 +5,13 @@
 				"APPLY": "Postulez",
 				"BACK": "Retour",
 				"CANCEL": "annuler",
+				"CONTINUE": "",
 				"CREATE": "Créer",
 				"EDIT": "edit",
 				"FINISH": "Finition",
 				"NEXT": "Suivant",
-				"PUBLISH": "Publier",
+        "ONBOARD": "A bord",
+        "PUBLISH": "Publier",
 				"START": "Démarrer",
 				"UPDATE": "Mise à jour"
 			},
@@ -27,15 +29,21 @@
 				"ASSET_TYPE": "Type d'actif",
 				"DESCRIPTION": "Description",
 				"FACTORY": "Usine",
+				"FACTORY_SITE": "Site de l'usine",
+				"FACTORY_SITES": "Sites de production",
 				"LABEL": "Label",
 				"MAINTENANCE_DUE": "Maintenance due",
 				"MANUFACTURER": "fabricant",
 				"NAME": "Nom",
+				"PRIORITY": "Priorité",
 				"QUANTITY_TYPE": "Quantité Type",
 				"ROOM": "salle",
 				"ROOMS": "Chambres",
+				"STATUS": "Statut",
 				"SYMBOL": "symbole",
-				"UNIT": "Unité"
+				"TIME": "Temps",
+				"UNIT": "Unité",
+				"VALUE": "Valeur"
 			}
 		},
 		"DASHBOARDS": {
@@ -230,6 +238,149 @@
 				"UNIT": "Unité",
 				"UNITS": "Unités",
 				"UNIT_NAME": "Nom de l'unité"
+			}
+		},
+		"FACTORY": {
+			"ASSETS_LIST": {
+        "ONBOARD_NEW_ASSET": "Embarquer un nouvel actif",
+        "ASSIGN_ITEM_TEXT": "Atout pour la chambre",
+				"CATEGORY": "Catégorie",
+				"DIALOG_HEADING": {
+					"FACTORY_SITE_ASSIGNMENT": "Affectation du site de l'usine",
+					"ON_BOARDING": "Sélectionnez l'actif à intégrer",
+					"ROOM_ASSIGNMENT": "Attribution des salles"
+				},
+				"NO_ASSETS": "Aucun actif"
+			},
+			"ASSET_CARD": {
+				"CONTROL_SYSTEM_TYPE": "Type de système de contrôle",
+				"GATEWAY_CONNECTIVITY": "Connectivité de la passerelle"
+			},
+			"ASSET_DETAILS": {
+				"ASSET_CHARTS": {
+					"POINTS": "Points"
+				},
+				"ASSET_TABLES": {
+					"DATE": "Date",
+					"OF": "De",
+					"VALUE": "Valeur",
+					"VALUES": "Valeurs",
+					"VALUES_PER_PAGE": "Valeurs par page",
+					"VALUE_SINCE": "Depuis"
+				},
+				"INFO": {
+					"FACTORY_SITE_ASSIGNMENT": "Affectation du site de l'usine",
+					"ROOM_ASSIGNMENT": "Attribution des chambres ({{factorySiteName}})"
+				},
+				"SUB_HEADER": {
+					"APPLETS": "Applets",
+					"DIGITAL_NAMEPLATE": "Plaque d'identification numérique",
+					"NOTIFICATIONS": "notifications",
+					"PERFORMANCE": "Performance",
+					"SUBSYSTEMS": "Sous-systèmes"
+				}
+			},
+			"ASSET_INSTANTIATION": {
+				"DESCRIPTION_MODAL": {
+					"CUSTOM_NAME": "Nom personnalisé",
+					"CUSTOM_NAME_PLACEHOLDER": "Entrez un nom personnalisé ici"
+				},
+				"FACTORY_SITE_ASSIGNMENT_MODAL": {
+					"SEARCH_TEXT_PLACEHOLDER": "Nom",
+					"SELECT_FACTORY_SITE": "Sélectionnez le site de l'usine"
+				},
+				"MODAL_HEADER": {
+					"FACTORY_ASSIGNMENT_MODAL": "Affectation du site de l'usine",
+					"GENERAL_INFORMATION": "Informations générales",
+					"PAIRING_ASSET": "Atout pour le jumelage",
+					"ROOM_ASSIGNMENT": "Attribution des salles"
+				},
+				"PAIRED_MODAL": {
+					"CUSTOMIZE_ASSET": "Personnaliser l'actif",
+					"PAIRING_PROCESS": "Votre atout est en train d'être apparié !",
+					"SUCCESSFULLY_PAIRED": "Appairage réussi !"
+				},
+				"ROOM_ASSIGNMENT_MODAL": {
+					"SELECT_FACTORY_SITE": "Sélectionnez une chambre"
+				},
+				"START_MODAL": {
+					"NO_ASSETS_TO_ONBOARD": "Aucun actif à embarquer !",
+					"READY_FOR_ONBOARDING": "Prêt pour l'embarquement !"
+				}
+			},
+			"ASSIGN_ASSETS_TO_ROOM": {
+				"SELECT_ASSET": "Sélectionner les actifs"
+			},
+			"FACTORY_PAGE_TITLE": {
+				"SMART_FACTORY": "Usine intelligente"
+			},
+			"FACTORY_SITES": {
+				"ASSETS": "Actifs",
+				"CITY": "Ville",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Supprimer la confirmation d'usine",
+					"MESSAGE": "Etes-vous sûr de vouloir supprimer l'usine {{ itemToDelete }}?"
+				},
+				"COUNTRY": "Pays",
+				"CREATE_FACTORY_SITE_BUTTON": "Créer un site d'usine",
+				"DIALOG_HEADING": {
+					"CREATE": "Créer un nouveau site d'usine",
+					"UPDATE": "Mise à jour du site de l'usine"
+				},
+				"FACTORY_NAME": "Nom de l'usine",
+				"FACTORY_SITE": "Site de l'usine",
+				"FACTORY_SITES": "Sites d'usines",
+				"NO_FACTORY_SITES": "Aucun site d'usine",
+				"STREET": "rue",
+				"ZIP": "Zip"
+			},
+			"FACTORY_SITE_DIALOG": {
+				"ADDITIONAL_ADDRESS": "adresse supplémentaire",
+				"ADDRESS_DETAILS": "Entrez les détails de l'adresse",
+				"CITY": "Ville",
+				"COUNTRY": "Pays",
+				"COUNTRY_PLACEHOLDER": "Sélectionnez un pays...",
+				"FACTORY_NAME": "Nom de l'usine",
+				"FACTORY_TYPE": "Type d'usine",
+				"FACTORY_TYPES": {
+					"FABRICATION": "Fabrication",
+					"HEADQUARTER": "Siège social"
+				},
+				"STREET": "rue",
+				"ZIP_LABEL": "Zip",
+				"ZIP_PLACEHOLDER": "Code postal"
+			},
+			"FACTORY_SUB_HEADER": {
+				"ASSETS": "Actifs",
+				"FACTORY_SITES": "Sites d'usines",
+				"ROOMS": "Chambres"
+			},
+			"METRICS_BOARD": {
+				"METRICS_GROUP": {
+					"DEFAULT_LABEL": "Généralités"
+				}
+			},
+			"ROOMS_LIST": {
+				"ASSET_TO_ROOM": "Atout pour la chambre",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Supprimer la confirmation de la chambre",
+					"MESSAGE": "Etes-vous sûr de vouloir supprimer la pièce {{ itemToDelete }}?"
+				},
+				"CREATE_ROOM_BUTTON": "Créer une pièce",
+				"DIALOG_HEADER": {
+					"ADD_NEW_ROOM": "Ajouter une nouvelle pièce à l'usine",
+					"ASSIGN_ASSET": "Affecter un actif à une pièce",
+					"EDIT_ROOM": "Salle d'édition"
+				},
+				"NO_ROOM": "Pas de chambre"
+			},
+			"ROOM_DIALOG": {
+				"ROOM_DESCRIPTION_LABEL": "Description de la chambre",
+				"ROOM_DESCRIPTION_PLACEHOLDER": "Entrez une description ici",
+				"ROOM_NAME_LABEL": "Nom de la salle",
+				"ROOM_NAME_PLACEHOLDER": "Entrez un nom personnalisé ici",
+				"SELECT_FACTORY_PLACEHOLDER": "Site de l'usine",
+				"SELECT_FACTORY_SITE": "Sélectionnez le site de l'usine"
 			}
 		}
 	}

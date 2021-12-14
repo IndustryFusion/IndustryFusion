@@ -18,25 +18,27 @@ under the License.
   <div>
     <form [formGroup]="roomForm">
       <div class="input-div">
-        <label class="if-label">Room name</label>
-        <input type="text" pInputText class="room-dialog-inputs" formControlName="name" placeholder="Enter a custom name here">
+        <label class="if-label">{{  'APP.FACTORY.ROOM_DIALOG.ROOM_NAME_LABEL' | translate }}</label>
+        <input type="text" pInputText class="room-dialog-inputs" formControlName="name"
+               placeholder="{{  'APP.FACTORY.ROOM_DIALOG.ROOM_NAME_PLACEHOLDER' | translate }}">
       </div>
       <div class="input-div">
-        <label class="if-label">Room description</label>
-        <textarea pInputTextarea class="room-dialog-textarea" formControlName="description" placeholder="Enter a description here"></textarea>
+        <label class="if-label">{{  'APP.FACTORY.ROOM_DIALOG.ROOM_DESCRIPTION_LABEL' | translate }}</label>
+        <textarea pInputTextarea class="room-dialog-textarea" formControlName="description"
+                  placeholder="{{  'APP.FACTORY.ROOM_DIALOG.ROOM_DESCRIPTION_PLACEHOLDER' | translate }}"></textarea>
         <label class="textarea-character-count if-label">{{ roomForm.get('description').value?.length }}/300</label>
       </div>
       <div *ngIf="!factorySiteSelected" class="input-div">
-        <label class="if-label">Select Factory site</label>
-        <p-dropdown [options]="factorySites" formControlName="factorySiteId" optionLabel="name" optionValue="id" placeholder="Factory Site"
-                    class="factory-sites-dropdown"></p-dropdown>
+        <label class="if-label">{{  'APP.FACTORY.ROOM_DIALOG.SELECT_FACTORY_SITE' | translate }}</label>
+        <p-dropdown [options]="factorySites" formControlName="factorySiteId" optionLabel="name" optionValue="id"
+                    placeholder="{{  'APP.COMMON.TERMS.FACTORY_SITE' | translate }}" class="factory-sites-dropdown"></p-dropdown>
         </div>
       <div class="room-dialog-footer">
-        <button type="button" class="if-button button-secondary" (click)="onCancel()">Cancel</button>
+        <button type="button" class="if-button button-secondary" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
         <button *ngIf="editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
-              || roomForm.controls['description'].invalid || roomForm.controls['factorySiteId'].invalid">Edit</button>
+              || roomForm.controls['description'].invalid || roomForm.controls['factorySiteId'].invalid">{{ 'APP.COMMON.DIALOG_BUTTONS.EDIT' | translate }}</button>
         <button *ngIf="!editMode" type="button" class="if-button button-secondary" (click)="onSubmit()" [disabled]="roomForm.controls['name'].invalid
-              || roomForm.controls['description'].invalid">Create</button>
+              || roomForm.controls['description'].invalid">{{ 'APP.COMMON.DIALOG_BUTTONS.CREATE' | translate }}</button>
       </div>
     </form>
   </div>

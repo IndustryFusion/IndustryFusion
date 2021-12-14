@@ -35,6 +35,7 @@ import { AssetService } from '../../../../core/store/asset/asset.service';
 import { RoomQuery } from '../../../../core/store/room/room.query';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rooms-list',
@@ -65,7 +66,8 @@ export class RoomsListComponent implements OnInit {
   oldRoomIds: ID[] = [];
 
   roomMapping:
-    { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
+    { [k: string]: string } = { '=0': this.translate.instant('APP.FACTORY.ROOMS_LIST.NO_ROOM'), '=1': '# ' +
+      this.translate.instant('APP.COMMON.TERMS.ROOM'), other: '# ' + this.translate.instant('APP.COMMON.TERMS.ROOMS') };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -83,7 +85,8 @@ export class RoomsListComponent implements OnInit {
               private roomQuery: RoomQuery,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              public translate: TranslateService) {
     this.factoryResolver.resolve(this.activatedRoute);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     this.factorySite$ = this.factoryResolver.factorySite$;
@@ -168,7 +171,7 @@ export class RoomsListComponent implements OnInit {
         factorySiteSelected: this.factorySiteSelected,
         editMode: false,
       },
-      header: 'Add new room to factory',
+      header: this.translate.instant('APP.FACTORY.ROOMS_LIST.DIALOG_HEADER.ADD_NEW_ROOM'),
       contentStyle: { 'padding-top': '1.5%' }
     });
 
@@ -192,7 +195,7 @@ export class RoomsListComponent implements OnInit {
         factorySiteSelected: this.factorySiteSelected,
         editMode: true,
       },
-      header: 'Edit room',
+      header: this.translate.instant('APP.FACTORY.ROOMS_LIST.DIALOG_HEADER.EDIT_ROOM'),
       contentStyle: { 'padding-top': '1.5%' }
     });
 
@@ -232,7 +235,7 @@ export class RoomsListComponent implements OnInit {
         room: this.activeListItem,
         rooms: this.rooms,
       },
-      header: 'Assign Asset to Room',
+      header: this.translate.instant('APP.FACTORY.ROOMS_LIST.DIALOG_HEADER.ASSIGN_ASSET')
     });
 
     ref.onClose.subscribe((assets: Asset[]) => {
@@ -290,8 +293,8 @@ export class RoomsListComponent implements OnInit {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the room ' + this.activeListItem.name + '?',
-      header: 'Delete Room Confirmation',
+      message: this.translate.instant('APP.FACTORY.ROOMS_LIST.CONFORMATION_DIALOG.HEADER', { itemToDelete: this.activeListItem.name}),
+      header: this.translate.instant('APP.FACTORY.ROOMS_LIST.CONFORMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteRoom(this.activeListItem);

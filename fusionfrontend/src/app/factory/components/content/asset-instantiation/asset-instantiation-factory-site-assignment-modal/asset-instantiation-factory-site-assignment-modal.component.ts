@@ -16,6 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FactorySite } from '../../../../../core/store/factory-site/factory-site.model';
 import { AssetModalMode } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-instantiation-factory-site-assignment-modal',
@@ -41,7 +42,7 @@ export class AssetInstantiationFactorySiteAssignmentModalComponent implements On
 
   private initialFactorySite;
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit(): void {
     this.initialFactorySite = this.selectedFactorySite;

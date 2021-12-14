@@ -26,16 +26,16 @@ under the License.
           <span class="p-col asset-information">{{assetToBeOnboarded.manufacturer}}</span>
         </div>
         <div class="p-col-3 p-dir-col column-class">
-          <div class="onboarding-text">Ready for onboarding!</div>
+          <div class="onboarding-text">{{ 'APP.FACTORY.ASSET_INSTANTIATION.START_MODAL.READY_FOR_ONBOARDING' | translate }}</div>
         </div>
         <div class="p-col-3 p-dir-col column-class">
-          <button type="button" class="if-button button-primary" (click)="onSubmit(assetToBeOnboarded)">Start</button>
+          <button type="button" class="if-button button-primary" (click)="onSubmit(assetToBeOnboarded)">{{ 'APP.COMMON.DIALOG_BUTTONS.START' | translate }}</button>
         </div>
       </div>
     </div>
     <div *ngIf="!assetsToBeOnboarded" class="no-asset-to-pair-div">
       <div><i class="pi exclamation-triangle no-assets-icon"></i></div>
-      <span class="text-styling">No Assets to be onboarded!</span>
+      <span class="text-styling">{{ 'APP.FACTORY.ASSET_INSTANTIATION.START_MODAL.NO_ASSETS_TO_ONBOARD' | translate }}</span>
     </div>
   </ng-container>
 </div>

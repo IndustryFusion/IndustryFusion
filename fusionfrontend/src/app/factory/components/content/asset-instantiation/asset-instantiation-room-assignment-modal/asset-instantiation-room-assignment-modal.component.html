@@ -14,10 +14,11 @@ under the License.
 -->
 
 <div>
-  <div class="room-text">Select room</div>
+  <div class="room-text">{{ 'APP.FACTORY.ASSET_INSTANTIATION.ROOM_ASSIGNMENT_MODAL.SELECT_FACTORY_SITE' | translate }}</div>
   <span class="p-input-icon-right room-search-input">
     <i class="pi pi-search"></i>
-    <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterRooms()">
+    <input type="text" pInputText [(ngModel)]="searchText" placeholder="{{ 'APP.COMMON.TERMS.NAME' | translate }}"
+           class="search-input" (keyup)="filterRooms()">
   </span>
 
   <div class="room-field">
@@ -30,8 +31,10 @@ under the License.
 
   <div class="assign-room-dialog-footer">
     <button type="button" class="if-button button-secondary" (click)="onCancel()">
-      {{ activeModalMode == assetModalModes.editRoomWithPreselecedFactorySiteMode ? 'Cancel' : 'Back' }}</button>
+      {{ activeModalMode == assetModalModes.editRoomWithPreselecedFactorySiteMode ? translate.instant('APP.COMMON.DIALOG_BUTTONS.CANCEL')
+      : translate.instant('APP.COMMON.DIALOG_BUTTONS.BACK') }}</button>
     <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="!selectedRoom">
-      {{ activeModalMode != assetModalModes.onboardAssetMode ? 'Apply' : 'Onboard' }}</button>
+          {{ activeModalMode != assetModalModes.onboardAssetMode ? translate.instant('APP.COMMON.DIALOG_BUTTONS.APPLY') :
+      translate.instant('APP.COMMON.DIALOG_BUTTONS.ONBOARD') }}</button>
   </div>
 </div>

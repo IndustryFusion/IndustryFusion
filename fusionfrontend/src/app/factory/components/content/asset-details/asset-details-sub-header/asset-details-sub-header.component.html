@@ -19,14 +19,21 @@ under the License.
   <div class="flexbox"></div>
   <div class="wrapper if-subheader asset-details-subheader">
     <ul>
-      <li (click)="onRouteClick('performance', 'realtime')" [ngClass]="{'active': isPerformance()}">Performance</li>
-      <li (click)="onRouteClick('notifications', 'open')" [ngClass]="{'active': isNotifications()}">Notifications</li>
-      <li (click)="onRouteClick('applets', 'active')" [ngClass]="{'active': isApplets()}">Applets</li>
-      <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}">
-        Digital Nameplate
+      <li (click)="onRouteClick('performance', 'realtime')" [ngClass]="{'active': isPerformance()}">
+        {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_DETAILS_SUB_HEADER.PERFORMANCE' | translate }}
       </li>
-      <li (click)="onRouteClick('subsystems')" *ngIf="hasSubsystems"
-          [ngClass]="{'active': isRouteActive('subsystems')}">Subsystems</li>
+      <li (click)="onRouteClick('notifications', 'open')" [ngClass]="{'active': isNotifications()}">
+        {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_DETAILS_SUB_HEADER.NOTIFICATIONS' | translate }}
+      </li>
+      <li (click)="onRouteClick('applets', 'active')" [ngClass]="{'active': isApplets()}">
+        {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_DETAILS_SUB_HEADER.APPLETS' | translate }}
+      </li>
+      <li (click)="onRouteClick('digital-nameplate')" [ngClass]="{'active': isRouteActive('digital-nameplate')}">
+        {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_DETAILS_SUB_HEADER.DIGITAL_NAMEPLATE' | translate }}
+      </li>
+      <li (click)="onRouteClick('subsystems')" *ngIf="hasSubsystems" [ngClass]="{'active': isRouteActive('subsystems')}">
+        {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_DETAILS_SUB_HEADER.SUBSYSTEMS' | translate }}
+      </li>
     </ul>
   </div>
   <div class="flexbox"></div>

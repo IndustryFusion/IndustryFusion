@@ -14,10 +14,11 @@ under the License.
 -->
 
 <div>
-  <div class="factory-site-text">Select Factory Site</div>
+  <div class="factory-site-text">{{ 'APP.FACTORY.ASSET_INSTANTIATION.FACTORY_SITE_ASSIGNMENT_MODAL.SELECT_FACTORY_SITE' | translate }}</div>
   <span class="p-input-icon-right factory-site-search-input">
     <i class="pi pi-search"></i>
-    <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input" (keyup)="filterFactorySites()">
+    <input type="text" pInputText [(ngModel)]="searchText" class="search-input" (keyup)="filterFactorySites()"
+           placeholder="{{ 'APP.FACTORY.ASSET_INSTANTIATION.FACTORY_SITE_ASSIGNMENT_MODAL.SEARCH_TEXT_PLACEHOLDER' | translate }}" >
   </span>
 
   <div class="factory-site-field">
@@ -30,8 +31,10 @@ under the License.
 
   <div class="assign-factory-site-dialog-footer">
     <button type="button" class="if-button button-secondary" (click)="onBackButtonPressed()">
-      {{ activeModalMode != assetModalModes.editRoomForAssetMode ? 'Back' : 'Cancel'}}</button>
+      {{ activeModalMode != assetModalModes.editRoomForAssetMode ? translate.instant('APP.COMMON.DIALOG_BUTTONS.NEXT')
+      : translate.instant('APP.COMMON.DIALOG_BUTTONS.CANCEL')}}</button>
+
     <button type="button" class="if-button button-primary" (click)="onSubmit()"
-            [disabled]="!selectedFactorySite">Next</button>
+            [disabled]="!selectedFactorySite">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
   </div>
 </div>

@@ -28,15 +28,15 @@ under the License.
         <table class="table-wrapper table-noborder">
           <tbody>
               <tr>
-                  <td class="card-label">Description</td>
+                  <td class="card-label">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</td>
                   <td class="card-value">{{asset.description}}</td>
               </tr>
               <tr>
-                  <td class="card-label">Control System Type</td>
+                  <td class="card-label">{{ 'APP.FACTORY.ASSET_CARD.CONTROL_SYSTEM_TYPE' | translate }}</td>
                   <td class="card-value">{{asset.controlSystemType}}</td>
               </tr>
               <tr>
-                  <td class="card-label">Gateway Connectivity</td>
+                  <td class="card-label">{{ 'APP.FACTORY.ASSET_CARD.GATEWAY_CONNECTIVITY' | translate }}</td>
                   <td class="card-value">{{asset.gatewayConnectivity}}</td>
               </tr>
               <tr *ngFor="let field of (currentMergedFields$ | async)">

@@ -18,22 +18,22 @@ under the License.
   <div class="data-table">
   <clr-datagrid>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{hidden: false}">date</ng-container>
+      <ng-container *clrDgHideableColumn="{hidden: false}">{{ 'APP.FACTORY.ASSET_DETAILS.ASSET_TABLES.DATE' | translate }}</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{hidden: false}">value</ng-container>
+      <ng-container *clrDgHideableColumn="{hidden: false}">{{ 'APP.FACTORY.ASSET_DETAILS.ASSET_TABLES.VALUE' | translate }}</ng-container>
     </clr-dg-column>
 
     <clr-dg-row *clrDgItems="let point of allPoints">
-      <clr-dg-cell> value since {{point[1] | date:'dd.MM.yyyy hh:mm:ss'}}</clr-dg-cell>
+      <clr-dg-cell> {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_TABLES.VALUE_SINCE' | translate }} {{point[1] | date:'dd.MM.yyyy hh:mm:ss'}}</clr-dg-cell>
       <clr-dg-cell>{{point[0]}}</clr-dg-cell>
     </clr-dg-row>
 
     <clr-dg-footer>
       <clr-dg-pagination #pagination [clrDgPageSize]="10">
-          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Values per page</clr-dg-page-size>
+          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">{{ 'APP.FACTORY.ASSET_DETAILS.ASSET_TABLES.VALUES_PER_PAGE' | translate }}</clr-dg-page-size>
           {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-          of {{pagination.totalItems}} values
+        {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_TABLES.OF' | translate }} {{pagination.totalItems}} {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_TABLES.VALUES' | translate }}
       </clr-dg-pagination>
     </clr-dg-footer>
   </clr-datagrid>

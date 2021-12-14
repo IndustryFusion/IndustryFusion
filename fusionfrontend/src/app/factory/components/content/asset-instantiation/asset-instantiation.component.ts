@@ -23,6 +23,7 @@ import {
 } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TranslateService } from '@ngx-translate/core';
 
 enum FormAttributes {
   assetSeriesName = 'assetSeriesName',
@@ -57,6 +58,7 @@ export class AssetInstantiationComponent implements OnInit {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class AssetInstantiationComponent implements OnInit {
   onboardingStarted(event: FactoryAssetDetailsWithFields) {
     if (event) {
       this.assetDetails = event;
-      this.config.header = 'Pairing Asset';
+      this.config.header = this.translate.instant('APP.FACTORY.ASSET_INSTANTIATION.MODAL_HEADER.PAIRING_ASSET');
       this.config.width = '51%';
       this.config.contentStyle = { 'padding-top': '3%' };
       this.activeModalType = this.assetModalTypes.pairAsset;
@@ -105,7 +107,7 @@ export class AssetInstantiationComponent implements OnInit {
 
   finishedPairing(event: boolean) {
     if (event) {
-      this.config.header = 'General Information';
+      this.config.header = this.translate.instant('APP.FACTORY.ASSET_INSTANTIATION.MODAL_HEADER.GENERAL_INFORMATION');
       this.config.contentStyle = { 'padding-top': '1.5%' };
       this.activeModalType = this.assetModalTypes.customizeAsset;
     }
@@ -113,7 +115,7 @@ export class AssetInstantiationComponent implements OnInit {
 
   finishedAddDescription(event: boolean) {
     if (event) {
-      this.config.header = 'Factory Site Assignment';
+      this.config.header =  this.translate.instant('APP.FACTORY.ASSET_INSTANTIATION.MODAL_HEADER.FACTORY_ASSIGNMENT_MODAL');
       this.activeModalType = this.assetModalTypes.factorySiteAssignment;
     } else {
       this.ref.close();
@@ -122,12 +124,12 @@ export class AssetInstantiationComponent implements OnInit {
 
   finishedFactorySitesAssignment(event: FactorySite) {
     if (event) {
-      this.config.header = 'Room Assignment ('  + event.name + ')';
+      this.config.header =  this.translate.instant('APP.FACTORY.ASSET_INSTANTIATION.MODAL_HEADER.ROOM_ASSIGNMENT');
       this.activeModalType = this.assetModalTypes.roomAssignment;
       this.assignFactorySite(event);
     } else {
       if (this.activeModalMode !== this.assetModalModes.editRoomForAssetMode) {
-        this.config.header = 'General Information';
+        this.config.header =  this.translate.instant('APP.FACTORY.ASSET_INSTANTIATION.MODAL_HEADER.GENERAL_INFORMATION');
         this.activeModalType = this.assetModalTypes.customizeAsset;
       } else {
         this.ref.close();
@@ -154,7 +156,7 @@ export class AssetInstantiationComponent implements OnInit {
       this.finishedAssetOnboarding();
     } else {
       if (this.activeModalMode !== this.assetModalModes.editRoomWithPreselecedFactorySiteMode) {
-        this.config.header = 'Factory Site Assignment';
+        this.config.header =  this.translate.instant('APP.FACTORY.ASSET_INSTANTIATION.MODAL_HEADER.FACTORY_ASSIGNMENT_MODAL');
         this.activeModalType = this.assetModalTypes.factorySiteAssignment;
       } else {
         this.ref.close();

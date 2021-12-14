@@ -16,6 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Room } from '../../../../../core/store/room/room.model';
 import { AssetModalMode } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-instantiation-room-assignment-modal',
@@ -37,7 +38,7 @@ export class AssetInstantiationRoomAssignmentModalComponent implements OnInit {
   filteredRooms: Room[];
   assetModalModes = AssetModalMode;
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit(): void {
     this.filteredRooms = this.rooms;
