@@ -17,7 +17,7 @@ under the License.
   <h3 class="table-header">{{ displayedFields?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
     <app-create-button (createItem)="showCreateDialog()" class="single-create-btn"
-                       text="Create Metric or Attribute"></app-create-button>
+                       text="{{ 'APP.ECOSYSTEM.FIELD_LIST.CREATE_METRIC_OR_ATTRIBUTE' | translate }}"></app-create-button>
   </div>
 </div>
 
@@ -29,13 +29,13 @@ under the License.
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
         <app-table-searchbar (searchByName)="searchFieldByName($event)" [itemsToBeFiltered]="(fields$ | async)"
-                             attributeToBeSearched="name" filterColumn="Field name">
+                             attributeToBeSearched="name" filterColumn="{{ 'APP.ECOSYSTEM.FIELD_LIST.FIELD_NAME' | translate }}">
         </app-table-searchbar>
       </th>
-      <th [style.width.%]="30" pSortableColumn="unit.symbol">Unit
+      <th [style.width.%]="30" pSortableColumn="unit.symbol">{{ 'APP.COMMON.TERMS.UNIT' | translate }}
         <p-sortIcon field="unit.symbol"></p-sortIcon>
       </th>
-      <th [style.width.%]="30" pSortableColumn="createdDate">Date created
+      <th [style.width.%]="30" pSortableColumn="createdDate">{{ 'APP.ECOSYSTEM.FIELD_LIST.DATE_CREATED' | translate }}
         <p-sortIcon field="creationDate"></p-sortIcon>
       </th>
       <th [style.width.%]="5"></th>

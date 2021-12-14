@@ -22,6 +22,7 @@ import { ConfirmationService } from 'primeng/api';
 import { FieldComposedQuery } from '../../../../core/store/composed/field-composed.query';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-field-list',
@@ -31,7 +32,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class FieldListComponent implements OnInit, OnDestroy {
 
   titleMapping:
-  { [k: string]: string} = { '=0': 'No Metrics & Attributes', '=1': '# Metric & Attribute', other: '# Metrics & Attributes' };
+  { [k: string]: string} = { '=0': this.translate.instant('APP.ECOSYSTEM.FIELD_LIST.NO_METRICS_AND_ATTRIBUTES'),
+    '=1': '# ' + this.translate.instant('APP.ECOSYSTEM.FIELD_LIST.METRIC_AND_ATTRIBUTE'),
+    other: '# ' + this.translate.instant('APP.ECOSYSTEM.FIELD_LIST.METRICS_AND_ATTRIBUTES') };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -51,7 +54,8 @@ export class FieldListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -81,21 +85,21 @@ export class FieldListComponent implements OnInit, OnDestroy {
   showCreateDialog() {
     this.dialogRef = this.dialogService.open(FieldDialogComponent, {
       data: { },
-      header: 'Create new Metric or Attribute',
+      header: this.translate.instant('APP.ECOSYSTEM.FIELD_LIST.HEADER.CREATE'),
     });
   }
 
   showEditDialog() {
     this.dialogRef = this.dialogService.open(FieldDialogComponent, {
       data: { field: this.activeListItem },
-      header: 'Edit Metric or Attribute'
+      header: this.translate.instant('APP.ECOSYSTEM.FIELD_LIST.HEADER.EDIT')
     });
   }
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the Metric or Attribute ' + this.activeListItem.name + '?',
-      header: 'Delete Metric or Attribute Confirmation',
+      message: this.translate.instant('APP.ECOSYSTEM.FIELD_LIST.CONFIRMATION_DIALOG.MESSAGE', { itemToDelete: this.activeListItem.name}),
+      header: this.translate.instant('APP.ECOSYSTEM.FIELD_LIST.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteField();

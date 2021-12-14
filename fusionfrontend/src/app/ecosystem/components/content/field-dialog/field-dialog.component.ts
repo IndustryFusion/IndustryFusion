@@ -26,6 +26,7 @@ import { SelectItem } from 'primeng/api';
 import { DialogType } from 'src/app/shared/models/dialog-type.model';
 import { FieldService } from '../../../../core/store/field/field.service';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-field-dialog',
@@ -47,7 +48,8 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private fieldService: FieldService,
               public dialogRef: DynamicDialogRef,
-              public config: DynamicDialogConfig) { }
+              public config: DynamicDialogConfig,
+              public translate: TranslateService) { }
 
   ngOnInit() {
     this.type = this.config.data.field === undefined ? DialogType.CREATE : DialogType.EDIT;

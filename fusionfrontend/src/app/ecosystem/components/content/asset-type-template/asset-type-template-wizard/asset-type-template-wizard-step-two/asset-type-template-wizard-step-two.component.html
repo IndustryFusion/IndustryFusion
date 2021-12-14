@@ -15,7 +15,7 @@ under the License.
 
 <div class="content">
   <div class="wizard-title">
-    <div> Add Metrics </div>
+    <div> {{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_TWO.ADD_METRICS' | translate }} </div>
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
 
@@ -29,25 +29,23 @@ under the License.
   <form [formGroup]="assetTypeTemplateForm">
     <div class="selection" *ngIf="shouldAddMetric">
       <div class="input-div">
-        <label class="if-label">Select Metric</label>
+        <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_TWO.SELECT_METRIC' | translate }}</label>
         <p-dropdown [options]="(fields | async)" formControlName="fieldTarget" optionLabel="name"
                     class="select-asset-input" filter="true" resetFilterOnHide="true"
-                    placeholder="Select metric..." (onChange)="onChangeMetric($event.value)">
+                    placeholder="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_TWO.SELECT_METRIC_PLACEHOLDER' | translate }}" (onChange)="onChangeMetric($event.value)">
         </p-dropdown>
       </div>
     </div>
   </form>
 
   <button type="button" class="template-fields-button-add" (click)="addMetric()">
-    <clr-icon shape="plus"></clr-icon>Add Metric
+    <clr-icon shape="plus"></clr-icon>{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_TWO.ADD_METRIC' | translate }}
   </button>
 </div>
 
 <div class="footer">
-  <button type="button" class="if-button button-cancel" (click)="prevStep()"
-          [disabled]="assetTypeTemplateForm.invalid || this.confirmedMetrics.length !== this.selectedMetrics.length ||
-              type === DialogType.EDIT">Back</button>
-  <button type="button" class="if-button button-confirm button-primary" (click)="nextStep()"
-          [disabled]="assetTypeTemplateForm.invalid || this.confirmedMetrics.length !== this.selectedMetrics.length">
-    Next</button>
+  <button type="button" class="if-button button-cancel" (click)="prevStep()" [disabled]="assetTypeTemplateForm.invalid || this.confirmedMetrics.length
+  !== this.selectedMetrics.length || type === DialogType.EDIT">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="nextStep()" [disabled]="assetTypeTemplateForm.invalid
+  || this.confirmedMetrics.length !== this.selectedMetrics.length">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
 </div>

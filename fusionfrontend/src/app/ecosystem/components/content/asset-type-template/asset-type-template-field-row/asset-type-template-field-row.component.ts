@@ -19,6 +19,7 @@ import { ID } from '@datorama/akita';
 import { UnitQuery } from '../../../../../core/store/unit/unit.query';
 import { QuantityTypeQuery } from '../../../../../core/store/quantity-type/quantity-type.query';
 import { FieldTarget, FieldType } from '../../../../../core/store/field-target/field-target.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-template-field-row',
@@ -38,7 +39,9 @@ export class AssetTypeTemplateFieldRowComponent implements OnInit {
 
   public FieldType = FieldType;
 
-  constructor(private unitQuery: UnitQuery, private quantityQuery: QuantityTypeQuery) { }
+  constructor(private unitQuery: UnitQuery,
+              private quantityQuery: QuantityTypeQuery,
+              public translate: TranslateService) { }
 
   ngOnInit() {
     if (!this.fieldTarget.label) {

@@ -16,37 +16,37 @@ under the License.
 <div class="field-dialog">
   <form [formGroup]="fieldForm">
     <div class="input-div">
-      <label class="if-label">Name&nbsp;*</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.NAME' | translate }} *</label>
       <input type="text" pInputText class="field-dialog-inputs" formControlName="name" />
     </div>
     <div class="input-div">
-      <label class="if-label">Label&nbsp;*</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.LABEL' | translate }}&nbsp;*</label>
       <input type="text" pInputText class="field-dialog-inputs" formControlName="label" />
     </div>
     <div class="input-div">
-      <label class="if-label">Description</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</label>
       <textarea pInputTextarea class="field-dialog-inputs" formControlName="description"></textarea>
       <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
     </div>
 
     <div class="field-dialog-inputs">
-      <label class="if-label">Unit&nbsp;*</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.UNIT' | translate }}&nbsp;*</label>
       <p-dropdown [options]="(units$ | async)" formControlName="unitId" optionValue="id" optionLabel="name"
-                  class="field-dialog-inputs" placeholder="Select unit"></p-dropdown>
+                  class="field-dialog-inputs" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.UNIT_PLACEHOLDER' | translate }}"></p-dropdown>
     </div>
 
-    <label class="if-dialog-section-title">Define Accuracy</label>
+    <label class="if-dialog-section-title">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DEFINE_ACCURACY' | translate }}</label>
 
     <div class="field-dialog-inputs input-div">
-      <label class="if-label">Accuracy</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.ACCURACY' | translate }}</label>
       <p-dropdown [options]="accuracyItems" formControlName="accuracy"
-                  class="field-dialog-inputs" placeholder="Select accuracy format"></p-dropdown>
+                  class="field-dialog-inputs" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.ACCURACY_PLACEHOLDER' | translate }}"></p-dropdown>
     </div>
 
-    <label class="if-dialog-section-title">Define Thresholds & Limits</label>
+    <label class="if-dialog-section-title">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DEFINE_THRESHOLDS_AND_LIMITS' | translate }}</label>
 
     <div class="input-div">
-      <label class="if-label">Thresholds & limits&nbsp;*</label>
+      <label class="if-label">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.THRESHOLDS_AND_LIMITS' | translate }}&nbsp;*</label>
       <div class="dialog-grid">
         <div>
           <p-radioButton [value]="FieldThresholdType.OPTIONAL" [label]="FieldThresholdType.OPTIONAL | titlecase" formControlName="thresholdType"
@@ -64,9 +64,10 @@ under the License.
     </div>
 
     <div class="field-dialog-footer">
-      <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.SHARED.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()"
-              [disabled]="fieldForm.invalid">{{type === DialogType.EDIT ? 'Save' : 'Create'}}</button>
+              [disabled]="fieldForm.invalid">{{type === DialogType.EDIT ? translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.SAVE') :
+        translate.instant('APP.SHARED.COMMON.DIALOG_BUTTONS.CREATE')}}</button>
     </div>
   </form>
 </div>
