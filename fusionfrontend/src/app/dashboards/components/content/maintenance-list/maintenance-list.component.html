@@ -1,6 +1,6 @@
 <div>
   <div class="p-grid p-jc-between header-line">
-    <h3 class="table-header">{{ 'APP.DASHBOARD.MAINTENANCE_LIST.TABLE_HEADER' | translate }}</h3>
+    <h3 class="table-header">{{ 'APP.DASHBOARDS.MAINTENANCE_LIST.TABLE_HEADER' | translate }}</h3>
     <div class="single-filter-btn-div">
       <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                         (filteredItems)="filterAssets($event)">
@@ -38,10 +38,10 @@
         <th [style.width.%]="12" ttSortableColumn="factorySiteName">{{  'APP.COMMON.TERMS.FACTORY_SITE' | translate }}
           <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="15" ttSortableColumn="daysTillMaintenance">{{  'APP.DASHBOARD.MAINTENANCE_LIST.DAYS_TILL_MAINTENANCE' | translate }}
+        <th [style.width.%]="15" ttSortableColumn="daysTillMaintenance">{{ 'APP.DASHBOARDS.MAINTENANCE_LIST.DAYS_TILL_MAINTENANCE' | translate }}
           <p-treeTableSortIcon field="daysTillMaintenance"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="15" ttSortableColumn="operatingHoursTillMaintenance">{{ 'APP.DASHBOARD.MAINTENANCE_LIST.OPERATING_HOURS_TILL_MAINTENANCE' | translate }}
+        <th [style.width.%]="15" ttSortableColumn="operatingHoursTillMaintenance">{{ 'APP.DASHBOARDS.MAINTENANCE_LIST.OPERATING_HOURS_TILL_MAINTENANCE' | translate }}
           <p-treeTableSortIcon field="operatingHoursTillMaintenance"></p-treeTableSortIcon>
         </th>
         <th [style.width.%]="3"></th>

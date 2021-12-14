@@ -16,12 +16,12 @@ under the License.
 <div class="efficiency-dashboard">
   <div class="p-grid p-jc-between header-line">
     <div class="table-header-with-status-info">
-      <h3 class="table-header">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.TABLE_HEADER' | translate }}</h3>
+      <h3 class="table-header">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.TABLE_HEADER' | translate }}</h3>
       <div class="status-key">
-        <span class="status-square running"></span> <label class="badge-padding">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.RUNNING' | translate }}</label>
-        <span class="status-square idle"></span> <label class="badge-padding">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.IDLE' | translate }}</label>
-        <span class="status-square error"></span> <label class="badge-padding">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.ERROR' | translate }}</label>
-        <span class="status-square offline"></span> <label class="badge-padding">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.OFFLINE' | translate }}</label>
+        <span class="status-square running"></span> <label class="badge-padding">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.RUNNING' | translate }}</label>
+        <span class="status-square idle"></span> <label class="badge-padding">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.IDLE' | translate }}</label>
+        <span class="status-square error"></span> <label class="badge-padding">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.ERROR' | translate }}</label>
+        <span class="status-square offline"></span> <label class="badge-padding">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.OFFLINE' | translate }}</label>
       </div>
     </div>
     <div class="single-filter-btn-div">
@@ -46,20 +46,20 @@ under the License.
         <th [style.width.%]="2"></th>
         <th [style.width.%]="3"></th>
         <th [style.width.%]="20" class="first-header-item">
-          <app-table-searchbar filterColumn="{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.ASSET' | translate }}" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+          <app-table-searchbar filterColumn="{{ 'APP.COMMON.TERMS.ASSET' | translate }}" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                                attributeToBeSearched="name" (searchByName)="searchAssets($event)">
           </app-table-searchbar>
         </th>
-        <th [style.width.%]="20" ttSortableColumn="category">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.ASSET_TYPE' | translate }}
+        <th [style.width.%]="20" ttSortableColumn="category">{{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate }}
           <p-treeTableSortIcon field="category"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="15" ttSortableColumn="manufacturer">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.MANUFACTURER' | translate }}
+        <th [style.width.%]="15" ttSortableColumn="manufacturer">{{ 'APP.COMMON.TERMS.MANUFACTURER' | translate }}
           <p-treeTableSortIcon field="manufacturer"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="12.5" ttSortableColumn="factorySiteName">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.FACTORY_SITE' | translate }}
+        <th [style.width.%]="12.5" ttSortableColumn="factorySiteName">{{ 'APP.COMMON.TERMS.FACTORY_SITE' | translate }}
           <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
         </th>
-        <th [style.width.%]="22.5">{{ 'APP.DASHBOARD.EQUIPMENT_EFFICIENCY_LIST.MAINTENANCE' | translate }}</th>
+        <th [style.width.%]="22.5">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.STATUS_OVERVIEW' | translate }}</th>
         <th [style.width.%]="3"></th>
       </tr>
     </ng-template>

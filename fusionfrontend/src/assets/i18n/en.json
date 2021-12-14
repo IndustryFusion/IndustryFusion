@@ -1,245 +1,240 @@
 {
 	"APP": {
-    "COMMON": {
-      "DIALOG_BUTTONS": {
-        "APPLY": "Apply",
-        "BACK": "Back",
-        "CANCEL": "Cancel",
+		"COMMON": {
+			"DIALOG_BUTTONS": {
+				"APPLY": "Apply",
+				"BACK": "Back",
+				"CANCEL": "Cancel",
         "CONTINUE": "Continue",
-        "CREATE": "Create",
-        "EDIT": "Edit",
-        "FINISH": "Finish",
-        "NEXT": "Next",
+				"CREATE": "Create",
+				"EDIT": "Edit",
+				"FINISH": "Finish",
+				"NEXT": "Next",
         "ONBOARD": "Onboard",
-        "PUBLISH": "Publish",
-        "START": "Start",
-        "UPDATE": "Update"
-      },
-      "TABLE": {
-        "PAGINATION": {
-          "OF": "of",
-          "TO": "to"
-        }
-      },
-      "TERMS": {
-        "ACCURACY": "Accuracy",
-        "ASSET": "ASSET",
-        "ASSETS": "Assets",
-        "ASSET_SERIES": "Asset series",
-        "ASSET_TYPE": "Asset Type",
-        "DESCRIPTION": "Description",
-        "FACTORY": "Factory",
+				"PUBLISH": "Publish",
+				"START": "Start",
+				"UPDATE": "Update"
+			},
+			"TABLE": {
+				"PAGINATION": {
+					"OF": "of",
+					"TO": "to"
+				}
+			},
+			"TERMS": {
+				"ACCURACY": "Accuracy",
+				"ASSET": "Asset",
+				"ASSETS": "Assets",
+				"ASSET_SERIES": "Asset series",
+				"ASSET_TYPE": "Asset Type",
+				"DESCRIPTION": "Description",
+				"FACTORY": "Factory",
         "FACTORY_SITE": "Factory Site",
         "FACTORY_SITES": "Factory Sites",
         "LABEL": "Label",
-        "MAINTENANCE_DUE": "Maintenance Due",
-        "MANUFACTURER": "Manufacturer",
-        "NAME": "Name",
+				"MAINTENANCE_DUE": "Maintenance Due",
+				"MANUFACTURER": "Manufacturer",
+				"NAME": "Name",
         "PRIORITY": "Priority",
-        "QUANTITY_TYPE": "Quantity Type",
-        "ROOM": "ROOM",
-        "ROOMS": "ROOMS",
+				"QUANTITY_TYPE": "Quantity Type",
+				"ROOM": "ROOM",
+				"ROOMS": "ROOMS",
         "STATUS": "Status",
-        "SYMBOL": "Symbol",
+				"SYMBOL": "Symbol",
         "TIME": "Time",
-        "UNIT": "Unit",
+				"UNIT": "Unit",
         "VALUE": "Value"
-      }
-    },
-    "DASHBOARDS": {
-      "EQUIPMENT_EFFICIENCY_LIST": {
-        "ASSET": "Asset",
-        "ERROR": "Error",
-        "FACTORY_SITE": "Factory Site",
-        "IDLE": "Idle",
-        "MANUFACTURER": "Manufacturer",
-        "OFFLINE": "Offline",
-        "RUNNING": "Running",
-        "TABLE_HEADER": "Status Overview by Asset"
-      },
-      "EQUIPMENT_EFFICIENCY_OVERVIEW": {
-        "CALENDER_LABEL": "Pick Date",
-        "DONUT_CHART_TITLE": "Status Overview (Average of all Assets)",
-        "STATUS": {
-          "ASSETS": "Assets",
-          "DASHBOARD_OVERVIEW_LABEL": "Realtime Status",
-          "ERROR": "Error",
-          "IDLE": "Idle",
-          "OFFLINE": "Offline",
-          "RUNNING": "Running"
-        },
-        "TITLE": "Equipment Efficiency Dashboard"
-      },
-      "MAINTENANCE_LIST": {
-        "DAYS_TILL_MAINTENANCE:": "Days till Maintenance",
-        "FACTORY_SITE": "Factory Site",
-        "MANUFACTURER": "Manufacturer",
-        "OPERATING_HOURS_TILL_MAINTENANCE": "Operating Hours till Maintenance",
-        "TABLE_HEADER": "Maintenance Dashboard"
-      },
-      "SUB_HEADER": {
-        "EQUIPMENT_EFFICIENCY": "Equipment Efficiency",
-        "MAINTENANCE": "Maintenance"
-      }
-    },
-    "ECOSYSTEM": {
-      "ASSET_TYPE_LIST": {
-        "ASSET_TYPES": "Asset Types",
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Delete Asset Type Confirmation",
-          "MESSAGE": "Are you sure you want to delete the Asset Type {{ itemToDelete }}?"
-        },
-        "CREATE_ASSET_TYPE": "Create Asset Type",
-        "HEADER": {
-          "CREATE": "Create new Asset Type",
-          "EDIT": "Edit Asset type ({{assetTypeToBeEdited}})"
-        },
-        "NO_ASSET_TYPES": "No Asset types"
-      },
-      "ASSET_TYPE_TEMPLATE": {
-        "DIALOG.UPDATE": {
-          "DIALOG_DESCRIPTION": "Updating an Asset Type Template will create\n   and save a completely new version of it"
-        },
-        "FIELD_HEADER_AND_ROW": {
-          "ATTRIBUTE_NAME": "Attributename",
-          "CUSTOM": "Custom",
-          "MANDATORY": "Mandatory",
-          "METRIC_NAME": "Metricname"
-        },
-        "LIST": {
-          "ASSET_TYPE_TEMPLATE": "Asset type template",
-          "ASSET_TYPE_TEMPLATES": "Asset type templates",
-          "CONFIRMATION_DIALOG": {
-            "HEADER": "Delete Asset Type Template Confirmation",
-            "MESSAGE": "Are you sure you want to delete the Asset Type Template {{ itemToDelete }}?"
-          },
-          "CREATE_ASSET_TYPE_TEMPLATE": "Create Asset Type Template",
-          "CREATION_DATE": "Creation date",
-          "DIALOG_HEADER": "Asset Type Template Editor",
-          "NO_ASSET_TYPE_TEMPLATES": "No Asset type templates",
-          "PUBLISH_DATE": "Publish date",
-          "STATUS": "Status",
-          "VERSION": "Version"
-        },
-        "WIZARD": {
-          "DIALOG_WARNING": {
-            "GO_TO_ASSET_TYPE_TEMPLATE_BUTTON": "Go to asset type template",
-            "TEXT": "There is already an Asset type template draft for this Asset type!\nYou have to publish or delete it first before creating a new one."
-          },
-          "STEP_FINISHED": {
-            "ASSET_TYPE_TEMPLATE": "Asset Type Template",
-            "CREATE_TEXT": "Your Asset Type Template was\n    successfully created",
-            "UPDATE_TEXT": "Your Asset Type Template was\n   successfully updated"
-          },
-          "STEP_FOUR": {
-            "ADD_ATTRIBUTE": "Add Attribute",
-            "ADD_METRIC": "Add Metric",
-            "REVIEW_ATTRIBUTES": "Review Attributes",
-            "REVIEW_METRICS": "Review Metrics",
-            "SAVE_AND_CLOSE_BUTTON": "Save & Close Template"
-          },
-          "STEP_ONE": {
-            "ASSET_TYPE_TEMPLATE_NAME": "Asset Type Template name",
-            "CREATE_NEW": "Create new",
-            "CREATE_OR_UPDATE_TEMPLATE": "Create new template or update an existing one?",
-            "SELECT_ASSET_TYPE": "Select Asset type",
-            "SELECT_ASSET_TYPE_TEMPLATE": "Select Asset Type Template",
-            "TITLE": "Create or update Asset Type Template",
-            "USE_EXISTING_TEMPLATE": "Use existing template"
-          },
-          "STEP_PUBLISHED": {
-            "ASSET_TYPE_TEMPLATE": "Asset Type Template",
-            "TEXT": "Publishing this Asset TypeTemplate\nwill lock it for further editing"
-          },
-          "STEP_THREE": {
-            "ADD_ATTRIBUTE": "Add Attribute",
-            "ADD_ATTRIBUTES": "Add Attributes",
-            "SELECT_ATTRIBUTE": "Select Attribute",
-            "SELECT_ATTRIBUTE_PLACEHOLDER": "Select attribute..."
-          },
-          "STEP_TWO": {
-            "ADD_METRIC": "Add Metric",
-            "ADD_METRICS": "Add Metrics",
-            "SELECT_METRIC": "Select Metric",
-            "SELECT_METRIC_PLACEHOLDER": "Select metric..."
-          }
-        }
-      },
-      "FIELD_DIALOG": {
-        "ACCURACY_PLACEHOLDER": "Select accuracy format",
-        "DEFINE_ACCURACY": "Define Accuracy",
-        "DEFINE_THRESHOLDS_AND_LIMITS": "Define Thresholds & Limits",
-        "THRESHOLDS_AND_LIMITS": "Thresholds & limits",
-        "UNIT_PLACEHOLDER": "Select unit"
-      },
-      "FIELD_LIST": {
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Delete the Metric or Attribute Confirmation",
-          "MESSAGE": "Are you sure you want to delete the Metric or Attribute {{ itemToDelete }}?"
-        },
-        "CREATE_METRIC_OR_ATTRIBUTE": "Create Metric or Attribute",
-        "DATE_CREATED": "Date created",
-        "FIELD_NAME": "Field name",
-        "HEADER": {
-          "CREATE": "Create new Metric or Attribute",
-          "EDIT": "Edit Metric or Attribute"
-        },
-        "METRICS_AND_ATTRIBUTES": "Metrics & Attributes",
-        "METRIC_AND_ATTRIBUTE": "Metric & Attribute",
-        "NO_METRICS_AND_ATTRIBUTES": "No Metrics & Attributes"
-      },
-      "QUANTITY_TYPE": {
-        "QUANTITY_TYPE_DIALOG": {
-          "BASE_UNIT": "Base Unit",
-          "DATA_TYPE": "Data Type",
-          "NO_BASE_UNIT_WARNING": "No base unit selected"
-        },
-        "QUANTITY_TYPE_LIST": {
-          "BASE_UNIT": "Base Unit",
-          "CONFIRMATION_DIALOG": {
-            "HEADER": "Delete Quantity Type Confirmation",
-            "MESSAGE": "Are you sure you want to delete the Quantity Type {{ itemToDelete }}?"
-          },
-          "CREATE_QUANTITY_TYPE": "Create Quantity Type",
-          "DATA_TYPE": "Data Type",
-          "DESCRIPTION": "Description",
-          "HEADER": {
-            "CREATE": "Create new Quantity Type",
-            "EDIT": "Edit Quantity Type"
-          },
-          "NO_QUANTITY_TYPES": "No Quantity Types",
-          "QUANTITY_NAME": "Quantity name",
-          "QUANTITY_TYPES": "Quantity Types"
-        }
-      },
-      "SUBHEADER": {
-        "ASSET_TYPES": "Asset Types",
-        "ASSET_TYPE_TEMPLATES": "Asset Type Templates",
-        "METRICS_AND_ATTRIBUTES": "Metrics & Attributes",
-        "QUANTITY_TYPES": "Quantity Types",
-        "UNITS": "Units"
-      },
-      "UNIT_DIALOG": {
-        "UNIT_NAME": "Unit name"
-      },
-      "UNIT_LIST": {
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Delete Unit Confirmation",
-          "MESSAGE": "Are you sure you want to delete the Unit {{ itemToDelete }}?"
-        },
-        "CREATE_UNIT": "Create Unit",
-        "DATE_CREATED": "Date created",
-        "HEADER": {
-          "CREATE": "Create new Unit",
-          "EDIT": "Edit Unit"
-        },
-        "NO_UNITS": "No Units",
-        "QUANTITY": "Quantity",
-        "UNIT": "Unit",
-        "UNITS": "Units",
-        "UNIT_NAME": "Unit name"
-      }
-    },
+			}
+		},
+		"DASHBOARDS": {
+			"EQUIPMENT_EFFICIENCY_LIST": {
+				"ERROR": "Error",
+				"IDLE": "Idle",
+				"OFFLINE": "Offline",
+				"RUNNING": "Running",
+				"TABLE_HEADER": "Status Overview by Asset",
+        "STATUS_OVERVIEW": "Status Overview"
+			},
+			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
+				"CALENDER_LABEL": "Pick Date",
+				"DONUT_CHART_TITLE": "Status Overview (Average of all Assets)",
+				"STATUS": {
+					"DASHBOARD_OVERVIEW_LABEL": "Realtime Status",
+					"ERROR": "Error",
+					"IDLE": "Idle",
+					"OFFLINE": "Offline",
+					"RUNNING": "Running"
+				},
+				"TITLE": "Equipment Efficiency Dashboard"
+			},
+			"MAINTENANCE_LIST": {
+				"DAYS_TILL_MAINTENANCE": "Days till Maintenance",
+				"OPERATING_HOURS_TILL_MAINTENANCE": "Operating Hours till Maintenance",
+				"TABLE_HEADER": "Maintenance Dashboard"
+			},
+			"SUB_HEADER": {
+				"EQUIPMENT_EFFICIENCY": "Equipment Efficiency",
+				"MAINTENANCE": "Maintenance"
+			}
+		},
+		"ECOSYSTEM": {
+			"ASSET_TYPE_LIST": {
+				"ASSET_TYPES": "Asset Types",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Delete Asset Type Confirmation",
+					"MESSAGE": "Are you sure you want to delete the Asset Type {{ itemToDelete }}?"
+				},
+				"CREATE_ASSET_TYPE": "Create Asset Type",
+				"HEADER": {
+					"CREATE": "Create new Asset Type",
+					"EDIT": "Edit Asset type ({{assetTypeToBeEdited}})"
+				},
+				"NO_ASSET_TYPES": "No Asset types"
+			},
+			"ASSET_TYPE_TEMPLATE": {
+				"DIALOG.UPDATE": {
+					"DIALOG_DESCRIPTION": "Updating an Asset Type Template will create\n   and save a completely new version of it"
+				},
+				"FIELD_HEADER_AND_ROW": {
+					"ATTRIBUTE_NAME": "Attributename",
+					"CUSTOM": "Custom",
+					"MANDATORY": "Mandatory",
+					"METRIC_NAME": "Metricname"
+				},
+				"LIST": {
+					"ASSET_TYPE_TEMPLATE": "Asset type template",
+					"ASSET_TYPE_TEMPLATES": "Asset type templates",
+					"CONFIRMATION_DIALOG": {
+						"HEADER": "Delete Asset Type Template Confirmation",
+						"MESSAGE": "Are you sure you want to delete the Asset Type Template {{ itemToDelete }}?"
+					},
+					"CREATE_ASSET_TYPE_TEMPLATE": "Create Asset Type Template",
+					"CREATION_DATE": "Creation date",
+					"DIALOG_HEADER": "Asset Type Template Editor",
+					"NO_ASSET_TYPE_TEMPLATES": "No Asset type templates",
+					"PUBLISH_DATE": "Publish date",
+					"STATUS": "Status",
+					"VERSION": "Version"
+				},
+				"WIZARD": {
+					"DIALOG_WARNING": {
+						"GO_TO_ASSET_TYPE_TEMPLATE_BUTTON": "Go to asset type template",
+						"TEXT": "There is already an Asset type template draft for this Asset type!\nYou have to publish or delete it first before creating a new one."
+					},
+					"STEP_FINISHED": {
+						"ASSET_TYPE_TEMPLATE": "Asset Type Template",
+						"CREATE_TEXT": "Your Asset Type Template was\n    successfully created",
+						"UPDATE_TEXT": "Your Asset Type Template was\n   successfully updated"
+					},
+					"STEP_FOUR": {
+						"ADD_ATTRIBUTE": "Add Attribute",
+						"ADD_METRIC": "Add Metric",
+						"REVIEW_ATTRIBUTES": "Review Attributes",
+						"REVIEW_METRICS": "Review Metrics",
+						"SAVE_AND_CLOSE_BUTTON": "Save & Close Template"
+					},
+					"STEP_ONE": {
+						"ASSET_TYPE_TEMPLATE_NAME": "Asset Type Template name",
+						"CREATE_NEW": "Create new",
+						"CREATE_OR_UPDATE_TEMPLATE": "Create new template or update an existing one?",
+						"SELECT_ASSET_TYPE": "Select Asset type",
+						"SELECT_ASSET_TYPE_TEMPLATE": "Select Asset Type Template",
+						"TITLE": "Create or update Asset Type Template",
+						"USE_EXISTING_TEMPLATE": "Use existing template"
+					},
+					"STEP_PUBLISHED": {
+						"ASSET_TYPE_TEMPLATE": "Asset Type Template",
+						"TEXT": "Publishing this Asset TypeTemplate\nwill lock it for further editing"
+					},
+					"STEP_THREE": {
+						"ADD_ATTRIBUTE": "Add Attribute",
+						"ADD_ATTRIBUTES": "Add Attributes",
+						"SELECT_ATTRIBUTE": "Select Attribute",
+						"SELECT_ATTRIBUTE_PLACEHOLDER": "Select attribute..."
+					},
+					"STEP_TWO": {
+						"ADD_METRIC": "Add Metric",
+						"ADD_METRICS": "Add Metrics",
+						"SELECT_METRIC": "Select Metric",
+						"SELECT_METRIC_PLACEHOLDER": "Select metric..."
+					}
+				}
+			},
+			"FIELD_DIALOG": {
+				"ACCURACY_PLACEHOLDER": "Select accuracy format",
+				"DEFINE_ACCURACY": "Define Accuracy",
+				"DEFINE_THRESHOLDS_AND_LIMITS": "Define Thresholds & Limits",
+				"THRESHOLDS_AND_LIMITS": "Thresholds & limits",
+				"UNIT_PLACEHOLDER": "Select unit"
+			},
+			"FIELD_LIST": {
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Delete the Metric or Attribute Confirmation",
+					"MESSAGE": "Are you sure you want to delete the Metric or Attribute {{ itemToDelete }}?"
+				},
+				"CREATE_METRIC_OR_ATTRIBUTE": "Create Metric or Attribute",
+				"DATE_CREATED": "Date created",
+				"FIELD_NAME": "Field name",
+				"HEADER": {
+					"CREATE": "Create new Metric or Attribute",
+					"EDIT": "Edit Metric or Attribute"
+				},
+				"METRICS_AND_ATTRIBUTES": "Metrics & Attributes",
+				"METRIC_AND_ATTRIBUTE": "Metric & Attribute",
+				"NO_METRICS_AND_ATTRIBUTES": "No Metrics & Attributes"
+			},
+			"QUANTITY_TYPE": {
+				"QUANTITY_TYPE_DIALOG": {
+					"BASE_UNIT": "Base Unit",
+					"DATA_TYPE": "Data Type",
+					"NO_BASE_UNIT_WARNING": "No base unit selected"
+				},
+				"QUANTITY_TYPE_LIST": {
+					"BASE_UNIT": "Base Unit",
+					"CONFIRMATION_DIALOG": {
+						"HEADER": "Delete Quantity Type Confirmation",
+						"MESSAGE": "Are you sure you want to delete the Quantity Type {{ itemToDelete }}?"
+					},
+					"CREATE_QUANTITY_TYPE": "Create Quantity Type",
+					"DATA_TYPE": "Data Type",
+					"DESCRIPTION": "Description",
+					"HEADER": {
+						"CREATE": "Create new Quantity Type",
+						"EDIT": "Edit Quantity Type"
+					},
+					"NO_QUANTITY_TYPES": "No Quantity Types",
+					"QUANTITY_NAME": "Quantity name",
+					"QUANTITY_TYPES": "Quantity Types"
+				}
+			},
+			"SUBHEADER": {
+				"ASSET_TYPES": "Asset Types",
+				"ASSET_TYPE_TEMPLATES": "Asset Type Templates",
+				"METRICS_AND_ATTRIBUTES": "Metrics & Attributes",
+				"QUANTITY_TYPES": "Quantity Types",
+				"UNITS": "Units"
+			},
+			"UNIT_DIALOG": {
+				"UNIT_NAME": "Unit name"
+			},
+			"UNIT_LIST": {
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Delete Unit Confirmation",
+					"MESSAGE": "Are you sure you want to delete the Unit {{ itemToDelete }}?"
+				},
+				"CREATE_UNIT": "Create Unit",
+				"DATE_CREATED": "Date created",
+				"HEADER": {
+					"CREATE": "Create new Unit",
+					"EDIT": "Edit Unit"
+				},
+				"NO_UNITS": "No Units",
+				"QUANTITY": "Quantity",
+				"UNIT": "Unit",
+				"UNITS": "Units",
+				"UNIT_NAME": "Unit name"
+			}
+		},
     "FACTORY": {
       "ASSET_CARD": {
         "CONTROL_SYSTEM_TYPE": "Control System Type",
@@ -268,6 +263,7 @@
           "OF": "of",
           "VALUES": "values"
         }
+
       },
       "ASSET_INSTANTIATION": {
         "MODAL_HEADER": {
@@ -349,6 +345,7 @@
         "STREET": "Street",
         "ZIP_LABEL": "ZIP",
         "ZIP_PLACEHOLDER": "Zip code"
+
       },
       "FACTORY_SUB_HEADER": {
         "ASSETS": "Assets",

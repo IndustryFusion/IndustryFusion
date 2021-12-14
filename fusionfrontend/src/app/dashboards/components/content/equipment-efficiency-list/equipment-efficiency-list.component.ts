@@ -57,11 +57,11 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   OispPriority = OispAlertPriority;
 
   tableFilters: FilterOption[] = [
-    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.ASSET_TYPE'),
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ASSET_TYPE'),
       attributeToBeFiltered: 'category' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.MANUFACTURER'),
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.MANUFACTURER'),
       attributeToBeFiltered: 'manufacturer' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.FACTORY'),
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.FACTORY'),
       attributeToBeFiltered: 'factorySiteName'}
   ];
 

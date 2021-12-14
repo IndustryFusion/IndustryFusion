@@ -48,20 +48,17 @@
 		},
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
-				"ASSET": "Vermögenswert",
 				"ERROR": "Fehler",
-				"FACTORY_SITE": "Fabrikgelände",
 				"IDLE": "Leerlauf",
-				"MANUFACTURER": "Hersteller",
 				"OFFLINE": "Offline",
 				"RUNNING": "Läuft",
-				"TABLE_HEADER": "Statusübersicht nach Vermögenswerten"
-			},
+				"TABLE_HEADER": "Statusübersicht nach Vermögenswerten",
+        "STATUS_OVERVIEW": "Status-Übersicht"
+      },
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Datum auswählen",
 				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Vermögenswerte)",
 				"STATUS": {
-					"ASSETS": "Vermögenswerte",
 					"DASHBOARD_OVERVIEW_LABEL": "Status in Echtzeit",
 					"ERROR": "Fehler",
 					"IDLE": "Leerlauf",
@@ -71,9 +68,7 @@
 				"TITLE": "Dashboard zur Effizienz der Ausrüstung"
 			},
 			"MAINTENANCE_LIST": {
-				"DAYS_TILL_MAINTENANCE:": "Tage bis zur Wartung",
-				"FACTORY_SITE": "Fabrikgelände",
-				"MANUFACTURER": "Hersteller",
+				"DAYS_TILL_MAINTENANCE": "Tage bis zur Wartung",
 				"OPERATING_HOURS_TILL_MAINTENANCE": "Betriebsstunden bis zur Wartung",
 				"TABLE_HEADER": "Wartung Dashboard"
 			},

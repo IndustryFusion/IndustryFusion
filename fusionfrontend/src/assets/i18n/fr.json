@@ -48,20 +48,17 @@
 		},
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
-				"ASSET": "actif",
 				"ERROR": "erreur",
-				"FACTORY_SITE": "Site de l'usine",
 				"IDLE": "Au repos",
-				"MANUFACTURER": "fabricant",
 				"OFFLINE": "Hors ligne",
 				"RUNNING": "En cours d'exécution",
-				"TABLE_HEADER": "Aperçu de la situation par actif"
-			},
+				"TABLE_HEADER": "Aperçu de la situation par actif",
+        "STATUS_OVERVIEW": "Aperçu du statut"
+      },
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Date de sélection",
 				"DONUT_CHART_TITLE": "Aperçu du statut (moyenne de tous les actifs)",
 				"STATUS": {
-					"ASSETS": "Actifs",
 					"DASHBOARD_OVERVIEW_LABEL": "Statut en temps réel",
 					"ERROR": "erreur",
 					"IDLE": "Au repos",
@@ -71,9 +68,7 @@
 				"TITLE": "Tableau de bord de l'efficacité des équipements"
 			},
 			"MAINTENANCE_LIST": {
-				"DAYS_TILL_MAINTENANCE:": "Jours jusqu'à la maintenance",
-				"FACTORY_SITE": "Site de l'usine",
-				"MANUFACTURER": "fabricant",
+				"DAYS_TILL_MAINTENANCE": "Jours jusqu'à la maintenance",
 				"OPERATING_HOURS_TILL_MAINTENANCE": "Heures de fonctionnement jusqu'à la maintenance",
 				"TABLE_HEADER": "Tableau de bord de la maintenance"
 			},
