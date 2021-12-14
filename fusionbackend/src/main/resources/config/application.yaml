@@ -47,3 +47,8 @@ keycloak:
 logging:
   level:
     root: INFO
+
+fusionbackend:
+  modelreposyncactive: true
+  modelrepourl: git@github.com:IndustryFusion/fusionmodels.git
+  modelRepoPrivateKeyPath: ${MODEL_REPO_SSH_KEY}
