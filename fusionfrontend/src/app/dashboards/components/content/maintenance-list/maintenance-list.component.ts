@@ -32,7 +32,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 
 
 @Component({
@@ -81,6 +82,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
+              private alertaAlertQuery: AlertaAlertQuery,
               public translate: TranslateService) {
   }
 
@@ -134,18 +136,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     }
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMaxOpenAlertSeverity(node);
   }
 
   isLastChildElement(rowNode: any): boolean {

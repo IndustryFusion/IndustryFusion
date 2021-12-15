@@ -25,7 +25,7 @@ import { faUserCircle, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { TranslateService } from '@ngx-translate/core';
 import { SelectItem } from 'primeng/api';
-import { OispAlertQuery } from '../../../../core/store/oisp/oisp-alert/oisp-alert.query';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 
 @Component({
   selector: 'app-header',
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   selectedLanguage: string;
 
   constructor(private routingLocation: Location,
-              private oispAlertQuery: OispAlertQuery,
+              private alertaAlertQuery: AlertaAlertQuery,
               private userManagementService: UserManagementService,
               private router: Router,
               private translate: TranslateService) {
@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.oispAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
+    this.alertaAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
     });
     this.selectedLanguage = localStorage.getItem('lang') || 'en';

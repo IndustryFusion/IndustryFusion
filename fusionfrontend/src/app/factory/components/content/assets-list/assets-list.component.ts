@@ -45,9 +45,9 @@ import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
-import { OispDeviceStatus } from '../../../../core/models/kairos.model';
 
 @Component({
   selector: 'app-assets-list',
@@ -95,7 +95,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   selectedEnumOptions: FieldOption[];
   tableFilters: FilterOption[];
   rowGroupMetaDataMap: Map<ID, RowGroupCount>;
-  defaultStatusForTableFilter: OispDeviceStatus;
 
   titleMapping:
     { [k: string]: string } = { '=0': this.translate.instant('APP.FACTORY.ASSETS_LIST.NO_ASSETS'),
@@ -105,7 +104,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
   faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
   ItemOptionsMenuType = ItemOptionsMenuType;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
@@ -120,6 +118,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private assetService: AssetService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private alertaAlertQuery: AlertaAlertQuery,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService,
@@ -128,11 +127,14 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     public translate: TranslateService) {
   }
 
+  private static refreshPage(): void {
+    window.location.reload();
+  }
+
   ngOnInit() {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
     this.initTableFilters();
-    this.setStatusFilterIfParam();
   }
 
   private initTableFilters(): void {
@@ -147,11 +149,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       { filterType: FilterType.STATUSFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.STATUS'),
         attributeToBeFiltered: 'status'}
     ];
-  }
-
-  private setStatusFilterIfParam() {
-    const statusText = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'status');
-    this.defaultStatusForTableFilter = OispDeviceStatus[statusText];
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -202,18 +199,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     return GroupByHelper.getFieldIndexOfSelectedEnum(asset, this.selectedEnum);
   }
 
-  getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMaxOpenAlertSeverity(node);
   }
 
   isLastChildElement(rowNode: any): boolean {
@@ -414,11 +401,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (fileList.length > 0) {
       const selectedZipFile: File = fileList[0];
       this.ifApiService.uploadZipFileForFactoryManagerImport(this.company.id, this.factorySite.id, selectedZipFile)
-        .subscribe(() => this.refreshPage());
+        .subscribe(() => AssetsListComponent.refreshPage());
     }
-  }
-
-  private refreshPage(): void {
-    window.location.reload();
   }
 }

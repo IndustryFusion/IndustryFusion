@@ -14,15 +14,15 @@
  */
 
 import { ID } from '@datorama/akita';
-import { OispAlertStatus, OispAlertPriority } from '../oisp-alert/oisp-alert.model';
+import { IFAlertSeverity, IFAlertStatus } from '../alerta-alert/alerta-alert.model';
 
 export class OispNotification {
   id: ID;
-  priority: OispAlertPriority;
-  ruleName: string;
+  severity: IFAlertSeverity;
+  eventName: string;
   assetName: string;
   condition: string;
   measuredValue: string;
   timestamp: Date;
-  status: OispAlertStatus;
+  status: IFAlertStatus;
 }

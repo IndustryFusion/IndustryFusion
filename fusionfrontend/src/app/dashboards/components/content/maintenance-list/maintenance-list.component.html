@@ -61,7 +61,7 @@
       <tr [ttRow]="rowNode">
         <td [style.width.%]="2"></td>
         <td [style.width.%]="3">
-          <app-alert-icon [priority]="getMaxOpenAlertPriority(rowNode.node)"></app-alert-icon>
+          <app-alert-icon [severity]="getMaxOpenAlertSeverity(rowNode.node)"></app-alert-icon>
         </td>
         <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(rowNode.node)}"
             class="asset-column p-flex-row table-bold-font">

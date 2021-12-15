@@ -37,8 +37,8 @@ under the License.
   <ng-template let-asset pTemplate="body">
     <tr (click)="selectSubsystem(asset)">
       <td>
-        {{asset.openAlertPriority}}
-        <app-alert-icon [style.width.%]="3" [priority]="asset.openAlertPriority" class="list-item-cell"></app-alert-icon>
+        {{asset.openAlertSeverity}}
+        <app-alert-icon [style.width.%]="3" [severity]="asset.openAlertSeverity" class="list-item-cell"></app-alert-icon>
       </td>
       <td>
         <div>

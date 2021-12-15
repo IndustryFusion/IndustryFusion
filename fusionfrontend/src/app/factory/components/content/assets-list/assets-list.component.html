@@ -87,7 +87,7 @@ under the License.
         <p-treeTableCheckbox [value]="rowNode" class="column-visibility table-checkbox"></p-treeTableCheckbox>
       </td>
       <td class="column-without-padding" [style.width.%]="2.5">
-        <app-alert-icon [priority]="getMaxOpenAlertPriority(rowNode.node)"></app-alert-icon>
+        <app-alert-icon [severity]="getMaxOpenAlertSeverity(rowNode.node)"></app-alert-icon>
       </td>
       <td [routerLink]="getAssetLink(rowData)" [style.width.%]="20"
           class="asset-column p-flex-row table-bold-font right-column-padding">

@@ -19,10 +19,10 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { OispNotificationStore } from './oisp-notification.store';
 import { Observable } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
-import { OispAlert } from '../oisp-alert/oisp-alert.model';
-import { OispAlertQuery } from '../oisp-alert/oisp-alert.query';
 import { Device } from '../oisp-device/oisp-device.model';
 import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
+import { AlertaAlertQuery } from '../alerta-alert/alerta-alert.query';
+import { AlertaAlert } from '../alerta-alert/alerta-alert.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,25 +35,22 @@ export class OispNotificationService {
   };
 
   constructor(private oispNotificationStore: OispNotificationStore,
-              private oispAlertQuery: OispAlertQuery,
+              private alertaAlertQuery: AlertaAlertQuery,
               private oispDeviceQuery: OispDeviceQuery) {
   }
 
-  private static mapAlertToNotification(alert: OispAlert, assetName: string): OispNotification {
+  private static mapAlertToNotification(alert: AlertaAlert, assetNameFromOispDevice: string): OispNotification {
     const notification = new OispNotification();
 
     if (alert) {
-      const hasMeasuredValue = alert.conditions.length > 0 && alert.conditions[0].components.length > 0
-        && alert.conditions[0].components[0].valuePoints.length > 0;
-
-      notification.id = alert.alertId;
-      notification.priority = alert.priority;
-      notification.ruleName = alert.ruleName;
-      notification.condition = alert.naturalLangAlert;
-      notification.measuredValue = hasMeasuredValue ? alert.conditions[0].components[0].valuePoints[0].value : '';
-      notification.assetName = assetName;
-      notification.timestamp = alert.triggered;
-      notification.status = alert.status;
+      notification.id = alert.id;
+      notification.severity = AlertaAlert.mapSeverityToIFAlertSeverity(alert.severity);
+      notification.eventName = alert.attributes.eventFriendlyName ?? alert.event;
+      notification.condition = this.getAlertTextWithoutStatusPrefix(alert);
+      notification.measuredValue = alert.value;
+      notification.assetName = assetNameFromOispDevice ?? (alert.attributes.resourceFriendlyName ?? alert.resource);
+      notification.timestamp = alert.createTime;
+      notification.status = AlertaAlert.mapStatusToIfAlertStatus(alert.status);
     } else {
       console.error('[oisp alert service] no alert was given to be mapped');
     }
@@ -61,14 +58,18 @@ export class OispNotificationService {
     return notification;
   }
 
+  private static getAlertTextWithoutStatusPrefix(alert: AlertaAlert): string {
+    return alert.text.replace(alert.severity.toUpperCase() + ': ', '');
+  }
+
   getNotificationsUsingAlertStore(limitToDeviceId: string = null): Observable<OispNotification[]> {
     return this.oispDeviceQuery.selectAll().pipe(
-      map(devices => this.filterDevicesByUid(devices, limitToDeviceId)),
+      map(devices => this.filterDevicesByDeviceId(devices, limitToDeviceId)),
       mergeMap((devices: Device[]) => {
-        return this.oispAlertQuery.selectAll().pipe(
+        return this.alertaAlertQuery.selectAll().pipe(
           map(alerts => this.filterAlertsByDevices(alerts, limitToDeviceId ? devices : null)),
-          map((alerts: OispAlert[]) => {
-            return alerts.map<OispNotification>((alert: OispAlert) => this.getNotificationOfAlertWithDevices(alert, devices));
+          map((alerts: AlertaAlert[]) => {
+            return alerts.map<OispNotification>((alert: AlertaAlert) => this.getNotificationOfAlertWithDevices(alert, devices));
           }),
           tap(notifications => {
             this.oispNotificationStore.upsertMany(notifications);
@@ -78,7 +79,7 @@ export class OispNotificationService {
     );
   }
 
-  filterDevicesByUid(devices: Device[], deviceId: string = null) {
+  private filterDevicesByDeviceId(devices: Device[], deviceId: string = null) {
     return devices.filter(device => {
       if (deviceId) {
         return device.deviceId === deviceId;
@@ -87,19 +88,19 @@ export class OispNotificationService {
     });
   }
 
-  filterAlertsByDevices(alerts: OispAlert[], devices: Device[]) {
+  private filterAlertsByDevices(alerts: AlertaAlert[], devices: Device[]) {
     return alerts.filter(alert => {
       if (devices) {
-        return devices.find(device => device.uid === alert.deviceUID) != null;
+        return devices.find(device => device.deviceId === alert.resource) != null;
       }
       return true;
     });
   }
 
-  private getNotificationOfAlertWithDevices(alert: OispAlert, devices: Device[]): OispNotification {
+  private getNotificationOfAlertWithDevices(alert: AlertaAlert, devices: Device[]): OispNotification {
     let assetName = null;
     if (devices && alert) {
-      const deviceOfAlert = devices.find(device => String(device.uid) === String(alert.deviceUID));
+      const deviceOfAlert = devices.find(device => String(device.deviceId) === String(alert.resource));
       assetName = deviceOfAlert?.name;
     }
     return OispNotificationService.mapAlertToNotification(alert, assetName);

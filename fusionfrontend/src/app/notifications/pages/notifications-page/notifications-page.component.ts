@@ -18,9 +18,9 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { OispNotification } from '../../../core/store/oisp/oisp-notification/oisp-notification.model';
-import { OispAlertStatus } from '../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { OispNotificationService } from '../../../core/store/oisp/oisp-notification/oisp-notification.service';
 import { RouteHelpers } from '../../../core/helpers/route-helpers';
+import { IFAlertStatus } from '../../../core/store/oisp/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-notifications-page',
@@ -42,10 +42,7 @@ export class NotificationsPageComponent implements OnInit {
   }
 
   private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
-    if (RouteHelpers.isRouteActive('open', this.activatedRoute)) {
-      return notifications.filter(rule => rule.status !== OispAlertStatus.CLOSED);
-    } else {
-      return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
-    }
+    const status = RouteHelpers.isRouteActive('open', this.activatedRoute) ? IFAlertStatus.OPEN : IFAlertStatus.CLEARED;
+    return notifications.filter(notification => notification.status === status);
   }
 }

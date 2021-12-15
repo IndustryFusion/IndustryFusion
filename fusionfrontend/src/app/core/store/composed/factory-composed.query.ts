@@ -30,7 +30,7 @@ import { FactorySiteWithAssetCount } from '../factory-site/factory-site.model';
 import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
 import { RoomQuery } from '../room/room.query';
-import { OispAlertQuery } from '../oisp/oisp-alert/oisp-alert.query';
+import { AlertaAlertQuery } from '../oisp/alerta-alert/alerta-alert.query';
 
 @Injectable({ providedIn: 'root' })
 export class FactoryComposedQuery {
@@ -40,7 +40,7 @@ export class FactoryComposedQuery {
     protected assetQuery: AssetQuery,
     protected factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
     protected fieldDetailsQuery: FieldDetailsQuery,
-    protected oispAlertQuery: OispAlertQuery,
+    protected alertaAlertQuery: AlertaAlertQuery,
     protected oispService: OispService) { }
 
   selectAssetsOfFactorySite(factorySiteId: ID): Observable<Asset[]> {
@@ -194,7 +194,7 @@ export class FactoryComposedQuery {
   joinAssetsDetailsWithFieldInstancesWithAlerts(): Observable<FactoryAssetDetailsWithFields[]> {
     return this.selectAssetsWithFieldInstanceDetails().pipe(
       map((assetsDetails: FactoryAssetDetailsWithFields[]) => {
-        return assetsDetails.map(asset => this.oispAlertQuery.joinAssetDetailsWithOpenAlertPriority(asset));
+        return assetsDetails.map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
       })
     );
   }

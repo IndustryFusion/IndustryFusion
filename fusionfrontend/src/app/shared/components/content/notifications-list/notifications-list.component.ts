@@ -19,11 +19,9 @@ import { ID } from '@datorama/akita';
 import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-series-details.resolver';
 import { Observable, Subscription } from 'rxjs';
 import { OispNotification } from '../../../../core/store/oisp/oisp-notification/oisp-notification.model';
-import { OispAlertService } from '../../../../core/store/oisp/oisp-alert/oisp-alert.service';
 import { environment } from '../../../../../environments/environment';
 import { FilterOption, FilterType } from 'src/app/shared/components/ui/table-filter/filter-options';
 
-import { OispAlertPriority, OispAlertStatus } from 'src/app/core/store/oisp/oisp-alert/oisp-alert.model';
 import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { TableSelectedItemsBarType } from '../../ui/table-selected-items-bar/table-selected-items-bar.type';
@@ -31,9 +29,9 @@ import { OispDeviceQuery } from '../../../../core/store/oisp/oisp-device/oisp-de
 import { OispDeviceResolver } from '../../../../core/resolvers/oisp-device-resolver';
 import { ConfirmationService } from 'primeng/api';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import { IFAlertStatus } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertService } from '../../../../core/store/oisp/alerta-alert/alerta-alert.service';
 import { TranslateService } from '@ngx-translate/core';
-
-export enum NotificationState { OPEN, CLEARED}
 
 @Component({
   selector: 'app-notifications-list',
@@ -47,7 +45,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   @Input() notifications$: Observable<OispNotification[]>;
   @Input() isInline = false;
-  state: NotificationState;
+  selectedAlertStatus: IFAlertStatus;
 
   titleMapping: { [k: string]: string };
   editBarMapping: { [k: string]: string };
@@ -65,9 +63,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   selectedNotifications: OispNotification[] = [];
   notificationSubscription: Subscription;
 
-  OispPriority = OispAlertPriority;
-  alertStatusTypes = OispAlertStatus;
-  notificationStates = NotificationState;
+  IFAlertStatus = IFAlertStatus;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
   tableFilters: FilterOption[] = [
@@ -80,7 +76,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-    private oispAlertService: OispAlertService,
+    private alertaAlertService: AlertaAlertService,
     private oispDeviceQuery: OispDeviceQuery,
     private oispDeviceResolver: OispDeviceResolver,
     private routingLocation: Location,
@@ -90,7 +86,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.state = this.getCurrentState();
+    this.selectedAlertStatus = this.getSelectedStatus();
     this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
     this.periodicallyFetchNotifications();
     this.initNameMappings();
@@ -103,7 +99,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.displayedNotifications = this.filteredNotifications = this.searchedNotifications = this.allNotifications;
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.notificationSubscription?.unsubscribe();
     clearInterval(this.intervalId);
   }
@@ -112,16 +108,16 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.selectedNotifications = [];
   }
 
-  public getCurrentState(): NotificationState {
+  public getSelectedStatus(): IFAlertStatus {
     if (RouteHelpers.isRouteActive('cleared', this.activatedRoute)) {
-      return NotificationState.CLEARED;
+      return IFAlertStatus.CLEARED;
     } else {
-      return NotificationState.OPEN;
+      return IFAlertStatus.OPEN;
     }
   }
 
-  onChangeTab() {
-    if (this.state === NotificationState.CLEARED) {
+  onChangeTab(): void {
+    if (this.selectedAlertStatus === IFAlertStatus.CLEARED) {
       this.navigateToSubroute('cleared');
     } else {
       this.navigateToSubroute('open');
@@ -137,7 +133,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
   }
 
-  private getActiveRouteLastChild() {
+  private getActiveRouteLastChild(): ActivatedRoute {
     let route = this.activatedRoute;
     while (route.firstChild !== null) {
       route = route.firstChild;
@@ -162,10 +158,10 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private getStatusName(): string {
-    switch (this.state) {
-      case NotificationState.CLEARED:
+    switch (this.selectedAlertStatus) {
+      case IFAlertStatus.CLEARED:
         return this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLEARED_PLURAL');
-      case NotificationState.OPEN:
+      case IFAlertStatus.OPEN:
         return this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.OPEN_PLURAL');
     }
   }
@@ -175,7 +171,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.updateNotifications();
   }
 
-  filterNotifications(event?) {
+  filterNotifications(event?): void {
     this.filteredNotifications = event;
     this.updateNotifications();
   }
@@ -222,8 +218,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.selectedNotifications = [];
   }
 
-  private closeNotification(notification: OispNotification) {
-    if (notification.status === this.alertStatusTypes.NEW || notification.status === this.alertStatusTypes.OPEN) {
+  private closeNotification(notification: OispNotification): void {
+    if (notification.status === IFAlertStatus.OPEN) {
       this.deleteNotification(notification.id);
       if (this.selectedNotifications.includes(notification)) {
         this.selectedNotifications.splice(this.selectedNotifications.indexOf(notification), 1);
@@ -234,7 +230,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   showCloseDialog(notifications: OispNotification[]): void {
     this.confirmationService.confirm({
       message: notifications.length === 1 ? this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLOSE_DIALOG.MESSAGE_SINGULAR',
-          { notificationToClose: notifications[0].ruleName }) :
+          { notificationToClose: notifications[0].eventName }) :
         this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLOSE_DIALOG.MESSAGE_PLURAL',
           { notificationToClose: notifications.length }),
       header: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLOSE_DIALOG.HEADER'),
@@ -253,7 +249,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   deleteNotification(id: ID): void {
     const filteredNotification = this.displayedNotifications.find(value => value.id === id);
-    this.oispAlertService.closeAlert(filteredNotification.id).subscribe(() => {
+    this.alertaAlertService.closeAlert(filteredNotification.id).subscribe(() => {
     });
   }
 
