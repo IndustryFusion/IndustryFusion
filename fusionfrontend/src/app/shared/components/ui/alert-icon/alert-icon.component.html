@@ -13,8 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<ng-container [ngSwitch]="priority">
-  <fa-icon *ngSwitchCase="OispAlertPriority.LOW" [icon]="faInfoCircle" class="fa-fw alert-severity-low"></fa-icon>
-  <fa-icon *ngSwitchCase="OispAlertPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw alert-severity-medium"></fa-icon>
-  <fa-icon *ngSwitchCase="OispAlertPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw alert-severity-high"></fa-icon>
+<ng-container [ngSwitch]="severity">
+  <fa-icon *ngSwitchCase="IFAlertSeverity.LOW" [icon]="faInfoCircle" class="fa-fw alert-severity-low"></fa-icon>
+  <fa-icon *ngSwitchCase="IFAlertSeverity.MEDIUM" [icon]="faExclamationCircle" class="fa-fw alert-severity-medium"></fa-icon>
+  <fa-icon *ngSwitchCase="IFAlertSeverity.HIGH" [icon]="faExclamationTriangle" class="fa-fw alert-severity-high"></fa-icon>
 </ng-container>

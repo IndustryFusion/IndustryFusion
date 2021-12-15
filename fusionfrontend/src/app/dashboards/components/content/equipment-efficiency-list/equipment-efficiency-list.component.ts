@@ -23,7 +23,8 @@ import { ID } from '@datorama/akita';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -53,7 +54,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'}];
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private alertaAlertQuery: AlertaAlertQuery) {
   }
 
   ngOnInit(): void {
@@ -81,18 +84,8 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     this.updateTree();
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMaxOpenAlertSeverity(node);
   }
 
   private updateTree() {

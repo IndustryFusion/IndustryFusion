@@ -29,7 +29,8 @@ import {
 } from '../../../../factory/util/asset-maintenance-utils';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 
 
 @Component({
@@ -68,7 +69,9 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   utils = Utils;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private alertaAlertQuery: AlertaAlertQuery) {
   }
 
   private static isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
@@ -101,18 +104,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.updateTree();
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMaxOpenAlertSeverity(node);
   }
 
   isLastChildElement(rowNode: any): boolean {

@@ -15,7 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
+import { IFAlertSeverity } from 'src/app/core/store/oisp/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-alert-icon',
@@ -25,9 +25,9 @@ import { OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-a
 export class AlertIconComponent implements OnInit {
 
   @Input()
-  priority: OispAlertPriority;
+  severity: IFAlertSeverity;
 
-  OispAlertPriority = OispAlertPriority;
+  IFAlertSeverity = IFAlertSeverity;
 
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;

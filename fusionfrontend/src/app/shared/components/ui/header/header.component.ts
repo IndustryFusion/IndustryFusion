@@ -23,7 +23,7 @@ import { UserManagementService } from '../../../../core/services/api/user-manage
 import { KeycloakProfile } from 'keycloak-js';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
-import { OispAlertQuery } from '../../../../core/store/oisp/oisp-alert/oisp-alert.query';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 
 @Component({
   selector: 'app-header',
@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   faUserCircle = faUserCircle;
 
   constructor(private routingLocation: Location,
-              private oispAlertQuery: OispAlertQuery,
+              private alertaAlertQuery: AlertaAlertQuery,
               private userManagementService: UserManagementService,
               private router: Router) {
   }
@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.oispAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
+    this.alertaAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
     });
   }

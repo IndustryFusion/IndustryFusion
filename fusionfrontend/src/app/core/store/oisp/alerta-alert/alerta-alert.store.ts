@@ -15,18 +15,18 @@
 
 import { Injectable } from '@angular/core';
 import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
-import { OispAlert } from './oisp-alert.model';
+import { AlertaAlert } from './alerta-alert.model';
 import { CachedStore } from '../../cachedstore';
 
-export interface OispAlertState extends EntityState<OispAlert, ID>, ActiveState { }
+export interface AlertaAlertState extends EntityState<AlertaAlert, ID>, ActiveState { }
 
 const initialState = {
   active: null
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'oisp-alerts', resettable: true, idKey: 'alertId' })
-export class OispAlertStore extends CachedStore<OispAlertState, OispAlert> {
+@StoreConfig({ name: 'alerta-alerts', resettable: true, idKey: 'resource' })
+export class AlertaAlertStore extends CachedStore<AlertaAlertState, AlertaAlert> {
 
   constructor() {
     super(initialState);

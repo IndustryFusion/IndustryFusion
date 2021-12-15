@@ -39,7 +39,8 @@ import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
 
 @Component({
@@ -107,10 +108,15 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private assetService: AssetService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private alertaAlertQuery: AlertaAlertQuery,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService,
     public ifApiService: IfApiService) {
+  }
+
+  private static refreshPage(): void {
+    window.location.reload();
   }
 
   ngOnInit() {
@@ -161,18 +167,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.updateAssets();
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMaxOpenAlertSeverity(node);
   }
 
   isLastChildElement(rowNode: any): boolean {
@@ -356,11 +352,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (fileList.length > 0) {
       const selectedZipFile: File = fileList[0];
       this.ifApiService.uploadZipFileForFactoryManagerImport(this.company.id, this.factorySite.id, selectedZipFile)
-        .subscribe(() => this.refreshPage());
+        .subscribe(() => AssetsListComponent.refreshPage());
     }
-  }
-
-  private refreshPage(): void {
-    window.location.reload();
   }
 }

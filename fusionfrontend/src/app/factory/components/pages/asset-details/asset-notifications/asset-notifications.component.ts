@@ -19,11 +19,11 @@ import { Observable } from 'rxjs';
 import { OispNotification } from '../../../../../core/store/oisp/oisp-notification/oisp-notification.model';
 import { first, map, mergeMap } from 'rxjs/operators';
 import { OispNotificationService } from '../../../../../core/store/oisp/oisp-notification/oisp-notification.service';
-import { OispAlertStatus } from '../../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
+import { IFAlertStatus } from '../../../../../core/store/oisp/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-asset-notifications',
@@ -56,10 +56,7 @@ export class AssetNotificationsComponent implements OnInit {
   }
 
   private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
-    if (RouteHelpers.isRouteActive('cleared', this.activatedRoute)) {
-      return notifications.filter(rule => rule.status === OispAlertStatus.CLOSED);
-    } else {
-      return notifications.filter(rule => rule.status !== OispAlertStatus.CLOSED);
-    }
+    const status = RouteHelpers.isRouteActive('cleared', this.activatedRoute) ? IFAlertStatus.CLEARED : IFAlertStatus.OPEN;
+    return notifications.filter(notification => notification.status === status);
   }
 }
