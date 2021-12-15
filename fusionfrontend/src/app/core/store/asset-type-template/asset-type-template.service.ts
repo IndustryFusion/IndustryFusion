@@ -36,7 +36,7 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
   constructor(private assettypeTemplateStore: AssetTypeTemplateStore, private http: HttpClient) { }
 
   getItems(): Observable<AssetTypeTemplate[]> {
-    const path = `assettypetemplates`;
+    const path = `assettypetemplates?embedChildren=true`;
     return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.assettypeTemplateStore.upsertMany(entities);

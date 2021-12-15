@@ -28,10 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
@@ -42,9 +39,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedEntityGraph(name = "AssetTypeTemplate.allChildren",
@@ -62,7 +59,7 @@ import java.util.Set;
         name = "AssetTypeTemplate.findSubsystemCandidates",
         query = "select * from asset_type_template where subsystem_parent_id is null"
                 + " and publication_state = 'PUBLISHED' and asset_type_id != ? and id != ?"
-                + " and id not in (select distinct peer_id from asset_type_template_peers)",
+                + " and id not in (select distinct peer_id from asset_type_template_peer)",
         resultClass = AssetTypeTemplate.class)
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findAllSubsystemIds",
@@ -71,11 +68,12 @@ import java.util.Set;
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findPeerCandidates",
         query = "select * from asset_type_template where subsystem_parent_id is null"
-                + " and publication_state = 'PUBLISHED' and id != ?",
+                + " and publication_state = 'PUBLISHED' and id != ?"
+                + " and ? not in (select distinct peer_id from asset_type_template_peer)",
         resultClass = AssetTypeTemplate.class)
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findAllPeerIds",
-        query = "select distinct peer_id from asset_type_template_peers")
+        query = "select distinct peer_id from asset_type_template_peer")
 
 @Table(name = "asset_type_template")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
@@ -98,17 +96,10 @@ public class AssetTypeTemplate extends BaseAsset {
     @Builder.Default
     private Set<AssetTypeTemplate> subsystems = new LinkedHashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "asset_type_template_peers",
-            joinColumns =
-            @JoinColumn(name = "asset_type_template_id"),
-            foreignKey = @ForeignKey(name = "asset_type_template_peers_asset_type_template_id_fkey"),
-            inverseJoinColumns =
-            @JoinColumn(name = "peer_id"),
-            inverseForeignKey = @ForeignKey(name = "asset_type_template_peers_peer_id_fkey")
-    )
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "asset_type_template_id")
     @Builder.Default
-    private List<AssetTypeTemplate> peers = new LinkedList<>();
+    private Set<AssetTypeTemplatePeer> peers = new LinkedHashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
@@ -142,8 +133,13 @@ public class AssetTypeTemplate extends BaseAsset {
         if (sourceAssetTypeTemplate.getSubsystems() != null) {
             setSubsystems(sourceAssetTypeTemplate.getSubsystems());
         }
-        if (sourceAssetTypeTemplate.getPeers() != null) {
-            setPeers(sourceAssetTypeTemplate.getPeers());
+        if (!sourceAssetTypeTemplate.getPeers().isEmpty()) {
+            Map<Long, AssetTypeTemplatePeer> sourcePeersIdBasedMap = sourceAssetTypeTemplate.getPeers().stream()
+                    .collect(Collectors.toMap(BaseEntity::getId, peer -> peer));
+            for (AssetTypeTemplatePeer targetPeer : getPeers()) {
+                AssetTypeTemplatePeer sourcePeer = sourcePeersIdBasedMap.get(targetPeer.getId());
+                targetPeer.copyFrom(sourcePeer);
+            }
         }
     }
 }

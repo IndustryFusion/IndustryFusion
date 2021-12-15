@@ -23,21 +23,20 @@ import { AssetTypeQuery } from '../../../../../../../core/store/asset-type/asset
 import { AssetTypeTemplateWizardStepStartComponent } from '../../asset-type-template-wizard-step/asset-type-template-wizard-step-start/asset-type-template-wizard-step-start.component';
 
 @Component({
-  selector: 'app-asset-type-template-wizard-shared-relationships',
-  templateUrl: './asset-type-template-wizard-shared-relationships.component.html',
-  styleUrls: ['./asset-type-template-wizard-shared-relationships.component.scss']
+  selector: 'app-asset-type-template-wizard-shared-subsystems',
+  templateUrl: './asset-type-template-wizard-shared-subsystems.component.html',
+  styleUrls: ['./asset-type-template-wizard-shared-subsystems.component.scss']
 })
-export class AssetTypeTemplateWizardSharedRelationshipsComponent implements OnInit {
+export class AssetTypeTemplateWizardSharedSubsystemsComponent implements OnInit {
 
-  @Input() relationshipName: string;
-  @Input() relationshipIds: Array<ID>;
+  @Input() subsystemIds: Array<ID>;
   @Input() isReview = false;
   @Input() editable = true;
   @Output() changeIsValid = new EventEmitter<boolean>();
   @Output() backToEditPage = new EventEmitter<void>();
-  @Output() relationshipsRemoved = new EventEmitter<ID>();
+  @Output() subsystemsRemoved = new EventEmitter<ID>();
 
-  relationshipFormArray: FormArray;
+  subsystemFormArray: FormArray;
 
   constructor(private formBuilder: FormBuilder,
               private assetTypeQuery: AssetTypeQuery,
@@ -45,55 +44,55 @@ export class AssetTypeTemplateWizardSharedRelationshipsComponent implements OnIn
   }
 
   ngOnInit(): void {
-    if (!this.relationshipIds) {
-      this.relationshipIds = new Array<ID>();
+    if (!this.subsystemIds) {
+      this.subsystemIds = new Array<ID>();
     }
-    this.fillTable(this.relationshipIds);
+    this.fillTable(this.subsystemIds);
   }
 
-  private fillTable(relationshipIds: ID[]): void {
-    this.relationshipFormArray = new FormArray([]);
-    this.relationshipFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.relationshipFormArray.valid));
-    this.changeIsValid.emit(this.relationshipFormArray.valid);
+  private fillTable(subsystemIds: ID[]): void {
+    this.subsystemFormArray = new FormArray([]);
+    this.subsystemFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.subsystemFormArray.valid));
+    this.changeIsValid.emit(this.subsystemFormArray.valid);
 
-    for (const relationshipId of relationshipIds) {
+    for (const subsystemId of subsystemIds) {
       const assetTypeTemplate: AssetTypeTemplate = AssetTypeTemplateWizardStepStartComponent
-        .addPublishedVersionToAssetTypeTemplateName(this.assetTypeTemplateQuery.getEntity(relationshipId));
-      this.addRelationship(assetTypeTemplate);
+        .addPublishedVersionToAssetTypeTemplateName(this.assetTypeTemplateQuery.getEntity(subsystemId));
+      this.addSubsystem(assetTypeTemplate);
     }
-    this.changeIsValid.emit(this.relationshipFormArray.valid);
+    this.changeIsValid.emit(this.subsystemFormArray.valid);
   }
 
-  public addRelationship(assetTypeTemplate: AssetTypeTemplate): void {
-    const relationshipGroup = this.formBuilder.group({
+  public addSubsystem(assetTypeTemplate: AssetTypeTemplate): void {
+    const subsystemGroup = this.formBuilder.group({
       id: [],
-      index: [this.relationshipFormArray.length],
+      index: [this.subsystemFormArray.length],
       name: [],
       assetTypeName: [],
       imageKey: []
     });
 
-    relationshipGroup.patchValue(assetTypeTemplate);
+    subsystemGroup.patchValue(assetTypeTemplate);
     const assetTypeName = assetTypeTemplate.assetType?.name ?? this.assetTypeQuery.getEntity(assetTypeTemplate.assetTypeId).name;
-    relationshipGroup.get('assetTypeName').patchValue(assetTypeName);
+    subsystemGroup.get('assetTypeName').patchValue(assetTypeName);
 
-    this.relationshipFormArray.push(relationshipGroup);
+    this.subsystemFormArray.push(subsystemGroup);
   }
 
-  public removeRelationship(relationshipGroup: AbstractControl): void {
+  public removeSubsystem(subsystemGroup: AbstractControl): void {
     if (this.isReview) {
       this.backToEditPage.emit();
       return;
     }
 
-    if (relationshipGroup != null) {
-      const removedRelationshipId = WizardHelper.removeSubsystemFromFormArray(relationshipGroup, this.relationshipFormArray);
-      this.relationshipsRemoved.emit(removedRelationshipId);
+    if (subsystemGroup != null) {
+      const removedSubsystemId = WizardHelper.removeSubsystemFromFormArray(subsystemGroup, this.subsystemFormArray);
+      this.subsystemsRemoved.emit(removedSubsystemId);
     }
   }
 
   public getFormArray(): FormArray {
-    return this.relationshipFormArray;
+    return this.subsystemFormArray;
   }
 
   public onClickEdit(): void {

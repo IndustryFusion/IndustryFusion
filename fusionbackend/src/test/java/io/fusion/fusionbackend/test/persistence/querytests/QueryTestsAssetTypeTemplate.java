@@ -2,6 +2,7 @@ package io.fusion.fusionbackend.test.persistence.querytests;
 
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.AssetTypeTemplatePeer;
 import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.test.persistence.PersistenceTestsBase;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeBuilder.anAssetType;
 import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplateBuilder.anAssetTypeTemplate;
+import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplatePeerBuilder.anAssetTypeTemplatePeer;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
@@ -43,9 +45,19 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
     void findSubsystemCandidates_peersShouldNotBeFound() {
         AssetType parentAssetType = persisted(anAssetType()).build();
 
+        AssetTypeTemplate peer = persisted(anAssetTypeTemplate()
+                .withPublicationState(PublicationState.PUBLISHED)
+                .forType(persisted(anAssetType())))
+                .build();
+
         AssetTypeTemplate parent = persisted(anAssetTypeTemplate()
                 .withPublicationState(PublicationState.PUBLISHED)
                 .forType(parentAssetType))
+                .build();
+
+        AssetTypeTemplatePeer peerRelationship = persisted(anAssetTypeTemplatePeer()
+                .forAssetTypeTemplate(parent)
+                .asPeerTo(peer))
                 .build();
 
         AssetTypeTemplate subsystemCandidate = persisted(anAssetTypeTemplate()
@@ -53,16 +65,10 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
                 .forType(persisted(anAssetType())))
                 .build();
 
-        AssetTypeTemplate peer = persisted(anAssetTypeTemplate()
-                .withPublicationState(PublicationState.PUBLISHED)
-                .forType(persisted(anAssetType())))
-                .build();
-
-        parent.getPeers().add(peer);
-
         Set<AssetTypeTemplate> subsystemCandidates = assetTypeTemplateRepository
                 .findSubsystemCandidates(parentAssetType.getId(), parent.getId());
 
+        assertNotNull(peerRelationship);
         assertTrue(subsystemCandidates.contains(subsystemCandidate));
         assertFalse(subsystemCandidates.contains(peer));
     }
@@ -162,7 +168,7 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
                 .build();
 
         Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
-                .findPeerCandidates(parent.getId());
+                .findPeerCandidates(parent.getId(), parent.getId());
 
         assertTrue(peerCandidates.contains(peerCandidate));
     }
@@ -181,7 +187,7 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
                 .build();
 
         Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
-                .findPeerCandidates(parent.getId());
+                .findPeerCandidates(parent.getId(), parent.getId());
 
         assertTrue(parent.getSubsystems().contains(subsystem));
         assertTrue(peerCandidates.isEmpty());
@@ -200,7 +206,7 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
                 .build();
 
         Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
-                .findPeerCandidates(parent.getId());
+                .findPeerCandidates(parent.getId(), parent.getId());
 
         assertEquals(2, assetTypeTemplateRepository.findAll(AssetTypeTemplateRepository.DEFAULT_SORT).size());
         assertTrue(peerCandidates.isEmpty());
@@ -215,7 +221,7 @@ public class QueryTestsAssetTypeTemplate extends PersistenceTestsBase {
                 .build();
 
         Set<AssetTypeTemplate> peerCandidates = assetTypeTemplateRepository
-                .findPeerCandidates(parent.getId());
+                .findPeerCandidates(parent.getId(), parent.getId());
 
         assertTrue(peerCandidates.isEmpty());
     }

@@ -53,15 +53,15 @@ under the License.
 
   <div class="subtitle">Subsystems</div>
   <div *ngIf="assetTypeTemplate?.subsystemIds != null && assetTypeTemplate.subsystemIds.length > 0" class="fields-list fields-padding">
-    <app-asset-type-template-wizard-shared-relationships [relationshipIds]="assetTypeTemplate.subsystemIds"
-                                                         [relationshipName]="'subsystem'" [editable]="false">
-    </app-asset-type-template-wizard-shared-relationships>
+    <app-asset-type-template-wizard-shared-subsystems [subsystemIds]="assetTypeTemplate.subsystemIds"
+                                                      [editable]="false">
+    </app-asset-type-template-wizard-shared-subsystems>
   </div>
 
   <div class="subtitle">Peers</div>
-  <div *ngIf="assetTypeTemplate?.peerIds != null && assetTypeTemplate.peerIds.length > 0" class="fields-list fields-padding">
-    <app-asset-type-template-wizard-shared-relationships [relationshipIds]="assetTypeTemplate.peerIds"
-                                                         [relationshipName]="'peer'" [editable]="false">
-    </app-asset-type-template-wizard-shared-relationships>
+  <div *ngIf="assetTypeTemplate?.peers != null && assetTypeTemplate.peers.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-wizard-shared-peers [assetTypeTemplatePeers]="assetTypeTemplate.peers"
+                                                 [editable]="false">
+    </app-asset-type-template-wizard-shared-peers>
   </div>
 </div>

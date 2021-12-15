@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.AssetTypeTemplatePeer;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import io.fusion.fusionbackend.model.FieldTarget;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +33,19 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     private final BaseAssetMapper baseAssetMapper;
     private final FieldTargetMapper fieldTargetMapper;
     private final AssetTypeMapper assetTypeMapper;
+    private final AssetTypeTemplatePeerMapper assetTypeTemplatePeerMapper;
     private final AssetTypeTemplateService assetTypeTemplateService;
 
     @Autowired
     public AssetTypeTemplateMapper(BaseAssetMapper baseAssetMapper,
                                    FieldTargetMapper fieldTargetMapper,
                                    AssetTypeMapper assetTypeMapper,
-                                   @Lazy
-                                   AssetTypeTemplateService assetTypeTemplateService) {
+                                   AssetTypeTemplatePeerMapper assetTypeTemplatePeerMapper,
+                                   @Lazy AssetTypeTemplateService assetTypeTemplateService) {
         this.baseAssetMapper = baseAssetMapper;
         this.fieldTargetMapper = fieldTargetMapper;
         this.assetTypeMapper = assetTypeMapper;
+        this.assetTypeTemplatePeerMapper = assetTypeTemplatePeerMapper;
         this.assetTypeTemplateService = assetTypeTemplateService;
     }
 
@@ -60,7 +63,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .creationDate(entity.getCreationDate())
                 .fieldTargetIds(fieldTargetMapper.toEntityIdSet(entity.getFieldTargets()))
                 .subsystemIds(toEntityIdSet(entity.getSubsystems()))
-                .peerIds(EntityDtoMapper.getListOfEntityIds(entity.getPeers()))
+                .peerIds(EntityDtoMapper.getSetOfEntityIds(entity.getPeers()))
                 .build();
 
         baseAssetMapper.copyToDto(entity, dto);
@@ -73,6 +76,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
 
         dto.setFieldTargets(fieldTargetMapper.toDtoSet(entity.getFieldTargets(), false));
         dto.setAssetType(assetTypeMapper.toDto(entity.getAssetType(), false));
+        dto.setPeers(assetTypeTemplatePeerMapper.toDtoSet(entity.getPeers(), true));
 
         return dto;
     }
@@ -90,6 +94,7 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
         if (dto == null) {
             return null;
         }
+
         AssetTypeTemplate entity = AssetTypeTemplate.builder()
                 .id(dto.getId())
                 .version(dto.getVersion())
@@ -100,15 +105,18 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
 
         baseAssetMapper.copyToEntity(dto, entity);
 
-        if (dto.getFieldTargets() != null) {
-            Set<FieldTarget> fieldTargets = fieldTargetMapper.toEntitySet(dto.getFieldTargets());
-            entity.setFieldTargets(fieldTargets);
-        }
-
+        addFieldTargetsToEntity(dto, entity);
         addSubsystemsToEntity(dto, entity);
         addPeersToEntity(dto, entity);
 
         return entity;
+    }
+
+    private void addFieldTargetsToEntity(AssetTypeTemplateDto dto, AssetTypeTemplate entity) {
+        if (dto.getFieldTargets() != null) {
+            Set<FieldTarget> fieldTargets = fieldTargetMapper.toEntitySet(dto.getFieldTargets());
+            entity.setFieldTargets(fieldTargets);
+        }
     }
 
     private void addSubsystemsToEntity(AssetTypeTemplateDto dto, AssetTypeTemplate entity) {
@@ -121,14 +129,11 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     }
 
     private void addPeersToEntity(AssetTypeTemplateDto dto, AssetTypeTemplate entity) {
-        if (dto.getPeerIds() != null) {
-            dto.getPeerIds().forEach(id -> {
-                AssetTypeTemplate assetTypeTemplate = assetTypeTemplateService.getAssetTypeTemplate(id, false);
-                entity.getPeers().add(assetTypeTemplate);
-            });
+        if (dto.getPeers() != null) {
+            Set<AssetTypeTemplatePeer> assetTypeTemplatePeers = assetTypeTemplatePeerMapper.toEntitySet(dto.getPeers());
+            entity.setPeers(assetTypeTemplatePeers);
         }
     }
-
 
     @Override
     public Set<AssetTypeTemplateDto> toDtoSet(Set<AssetTypeTemplate> entitySet, boolean embedChildren) {

@@ -70,8 +70,9 @@ import { NameWithVersionPipe } from '../shared/pipes/namewithversion.pipe';
 import { AssetTypeDialogComponent } from './components/content/asset-type-dialog/asset-type-dialog.component';
 import { AssetTypeTemplateWizardStepSubsystemsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step/asset-type-template-wizard-step-subsystems/asset-type-template-wizard-step-subsystems.component';
 import { TooltipModule } from 'primeng/tooltip';
-import { AssetTypeTemplateWizardSharedRelationshipsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-relationship/asset-type-template-wizard-shared-relationships.component';
+import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-subsystems/asset-type-template-wizard-shared-subsystems.component';
 import { AssetTypeTemplateWizardStepPeersComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-step/asset-type-template-wizard-step-peers/asset-type-template-wizard-step-peers.component';
+import { AssetTypeTemplateWizardSharedPeersComponent } from './components/content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-shared/asset-type-template-wizard-shared-peers/asset-type-template-wizard-shared-peers.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import { AssetTypeTemplateWizardStepPeersComponent } from './components/content/
     AssetTypeTemplateWizardStepSubsystemsComponent,
     AssetTypeTemplateWizardStepReviewComponent,
     AssetTypeTemplateWizardSharedFieldComponent,
-    AssetTypeTemplateWizardSharedRelationshipsComponent,
+    AssetTypeTemplateWizardSharedSubsystemsComponent,
+    AssetTypeTemplateWizardSharedPeersComponent,
     AssetTypeTemplateWizardStepFinishedComponent,
     AssetTypeTemplateWizardWarningDialogComponent,
     AssetTypeTemplateWizardStepPublishComponent,

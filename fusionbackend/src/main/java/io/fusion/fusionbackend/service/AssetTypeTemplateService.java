@@ -23,6 +23,7 @@ import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.AssetTypeTemplatePeer;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
@@ -40,6 +41,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -52,6 +54,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class AssetTypeTemplateService {
     private final AssetTypeTemplateRepository assetTypeTemplateRepository;
+    private final AssetTypeTemplatePeerService assetTypeTemplatePeerService;
     private final AssetTypeService assetTypeService;
     private final AssetTypeTemplateMapper assetTypeTemplateMapper;
     private final FieldTargetService fieldTargetService;
@@ -61,11 +64,13 @@ public class AssetTypeTemplateService {
 
     @Autowired
     public AssetTypeTemplateService(AssetTypeTemplateRepository assetTypeTemplateRepository,
+                                    AssetTypeTemplatePeerService assetTypeTemplatePeerService,
                                     AssetTypeService assetTypeService,
                                     AssetTypeTemplateMapper assetTypeTemplateMapper,
                                     @Lazy FieldTargetService fieldTargetService,
                                     OntologyBuilder ontologyBuilder) {
         this.assetTypeTemplateRepository = assetTypeTemplateRepository;
+        this.assetTypeTemplatePeerService = assetTypeTemplatePeerService;
         this.assetTypeService = assetTypeService;
         this.assetTypeTemplateMapper = assetTypeTemplateMapper;
         this.fieldTargetService = fieldTargetService;
@@ -90,15 +95,35 @@ public class AssetTypeTemplateService {
         return ResourceNotFoundException::new;
     }
 
-    public AssetTypeTemplate createAssetTypeTemplate(final Long assetTypeId,
-                                                     final AssetTypeTemplate assetTypeTemplate) {
+    public AssetTypeTemplate createAssetTypeTemplateAggregate(final Long assetTypeId,
+                                                              AssetTypeTemplate assetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> assetTypeTemplatePeers = assetTypeTemplate.getPeers();
+
+        assetTypeTemplate = createAssetTypeTemplateWithoutPeers(assetTypeId, assetTypeTemplate);
+        createPeersOfAssetTypeTemplate(assetTypeTemplate, assetTypeTemplatePeers);
+
+        return assetTypeTemplate;
+    }
+
+    private AssetTypeTemplate createAssetTypeTemplateWithoutPeers(final Long assetTypeId,
+                                                                  final AssetTypeTemplate assetTypeTemplate) {
         final AssetType assetType = assetTypeService.getAssetType(assetTypeId);
 
         validate(assetTypeTemplate, assetType);
 
         assetTypeTemplate.setAssetType(assetType);
+        assetTypeTemplate.setPeers(new LinkedHashSet<>());
 
         return assetTypeTemplateRepository.save(assetTypeTemplate);
+    }
+
+    private void createPeersOfAssetTypeTemplate(AssetTypeTemplate assetTypeTemplate,
+                                                Set<AssetTypeTemplatePeer> assetTypeTemplatePeers) {
+
+        for (AssetTypeTemplatePeer assetTypeTemplatePeer : assetTypeTemplatePeers) {
+            assetTypeTemplatePeerService.createAssetTypeTemplatePeer(assetTypeTemplate, assetTypeTemplatePeer);
+        }
     }
 
     private void validate(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
@@ -142,17 +167,14 @@ public class AssetTypeTemplateService {
     }
 
     private void validatePeers(final AssetTypeTemplate assetTypeTemplate) {
-        for (AssetTypeTemplate peer : assetTypeTemplate.getPeers()) {
-            if (peer.getId().equals(assetTypeTemplate.getId())) {
-                throw new RuntimeException("An asset type template is not allowed to be a peer to itself.");
-            }
-            if (assetTypeTemplateRepository.findAllSubsystemIds().contains(peer.getId())) {
-                throw new RuntimeException("An asset type template peer is not allowed to be a subsystem.");
-            }
-            if (peer.getPublicationState().equals(PublicationState.DRAFT)) {
-                throw new RuntimeException("A peer has to be a published asset type template.");
-            }
+        List<Long> peerIds = assetTypeTemplate.getPeers().stream()
+                .map(assetTypeTemplatePeer -> assetTypeTemplatePeer.getPeer().getId()).collect(Collectors.toList());
+
+        if (peerIds.size() != new HashSet<>(peerIds).size()) {
+            throw new RuntimeException("An asset type template must not have more than one peer to the same template.");
         }
+
+        // Info: Single peers are validated in its service itself
     }
 
     private boolean existsDraftToAssetType(AssetType assetType) {
@@ -269,7 +291,7 @@ public class AssetTypeTemplateService {
 
                 AssetTypeTemplate assetTypeTemplate = assetTypeTemplateMapper.toEntity(assetTypeTemplateDto);
                 assetTypeTemplate.setFieldTargets(new LinkedHashSet<>());
-                createAssetTypeTemplate(assetTypeTemplateDto.getAssetTypeId(), assetTypeTemplate);
+                createAssetTypeTemplateAggregate(assetTypeTemplateDto.getAssetTypeId(), assetTypeTemplate);
             } else {
                 LOG.warn("Asset type template  with the id " + assetTypeTemplateDto.getId()
                         + " already exists. Entry is ignored.");
@@ -303,6 +325,6 @@ public class AssetTypeTemplateService {
     }
 
     public Set<AssetTypeTemplate> findPeerCandidates(final Long assetTypeTemplateId) {
-        return assetTypeTemplateRepository.findPeerCandidates(assetTypeTemplateId);
+        return assetTypeTemplateRepository.findPeerCandidates(assetTypeTemplateId, assetTypeTemplateId);
     }
 }

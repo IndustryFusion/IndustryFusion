@@ -47,7 +47,7 @@ public interface AssetTypeTemplateRepository extends PagingAndSortingRepository<
 
     Set<Long> findAllSubsystemIds();
 
-    Set<AssetTypeTemplate> findPeerCandidates(Long assetTypeTemplateId);
+    Set<AssetTypeTemplate> findPeerCandidates(Long assetTypeTemplateId, Long assetTypeTemplateId2);
 
     Set<Long> findAllPeerIds();
 }
