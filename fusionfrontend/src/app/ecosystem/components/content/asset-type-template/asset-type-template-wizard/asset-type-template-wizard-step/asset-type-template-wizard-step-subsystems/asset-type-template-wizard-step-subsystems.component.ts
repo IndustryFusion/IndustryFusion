@@ -21,7 +21,7 @@ import { AssetTypeTemplateWizardSteps } from '../../asset-type-template-wizard-s
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { AssetTypeTemplateWizardStepStartComponent } from '../asset-type-template-wizard-step-start/asset-type-template-wizard-step-start.component';
-import { AssetTypeTemplateWizardSharedRelationshipsComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-relationship/asset-type-template-wizard-shared-relationships.component';
+import { AssetTypeTemplateWizardSharedSubsystemsComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-subsystems/asset-type-template-wizard-shared-subsystems.component';
 import { AssetTypeTemplateQuery } from '../../../../../../../core/store/asset-type-template/asset-type-template.query';
 
 @Component({
@@ -31,7 +31,7 @@ import { AssetTypeTemplateQuery } from '../../../../../../../core/store/asset-ty
 })
 export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
 
-  @ViewChild(AssetTypeTemplateWizardSharedRelationshipsComponent) subsystemsChild: AssetTypeTemplateWizardSharedRelationshipsComponent;
+  @ViewChild(AssetTypeTemplateWizardSharedSubsystemsComponent) subsystemsChild: AssetTypeTemplateWizardSharedSubsystemsComponent;
 
   @Input() assetTypeTemplate: AssetTypeTemplate;
   @Input() assetTypeTemplateForm: FormGroup;
@@ -57,11 +57,11 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
     const assetTypeTemplateId = this.assetTypeTemplateForm.get('id').value;
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId').value;
 
-    this.assetTypeTemplateService.getSubsystemCandidates(assetTypeTemplateId ?? 0, assetTypeId)
+    this.assetTypeTemplateService.getSubsystemCandidates(assetTypeTemplateId ?? -1, assetTypeId)
       .pipe(map( (candidates: AssetTypeTemplate[]) =>
           candidates.map(candidate => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(candidate))),
         map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.subsystemIds.includes(candidate.id) )),
-        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.peerIds.includes(candidate.id) )))
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.peers.map(peer => peer.peerId).includes(candidate.id) )))
       .subscribe(templateCandidates => this.subsystemCandidates = templateCandidates);
   }
 
@@ -110,7 +110,7 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
   }
 
   public addSubsystem(assetTypeTemplate: AssetTypeTemplate): void {
-    this.subsystemsChild.addRelationship(assetTypeTemplate);
+    this.subsystemsChild.addSubsystem(assetTypeTemplate);
     this.removedCandidates.push(assetTypeTemplate);
     this.subsystemCandidates.splice(this.subsystemCandidates.indexOf(assetTypeTemplate), 1);
     this.isAddingMode = false;

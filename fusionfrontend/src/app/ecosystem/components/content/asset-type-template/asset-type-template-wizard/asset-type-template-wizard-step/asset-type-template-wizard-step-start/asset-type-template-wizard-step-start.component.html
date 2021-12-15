@@ -19,6 +19,7 @@ under the License.
     <form [formGroup]="assetTypeTemplateForm">
       <div class="selection">
         <div class="input-div">
+          <!--        TODO-288: Add Times-->
           <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE' | translate }}</label>
           <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
                       class="select-asset-input" filter="true" resetFilterOnHide="true"
@@ -44,6 +45,7 @@ under the License.
 
       <div *ngIf="assetTypeTemplateForm.get('useExistingTemplate')?.value === true">
         <div class="input-div">
+          <!--        TODO-288: Add Times-->
           <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE_TEMPLATE' | translate }}</label>
           <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name"
                       optionValue="id" placeholder="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER' | translate }}"
@@ -53,6 +55,7 @@ under the License.
       </div>
 
       <div class="input-div">
+<!--        TODO-288: Add Times-->
         <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.ASSET_TYPE_TEMPLATE_NAME' | translate }}</label>
         <input type="text" pInputText class="select-asset-input" formControlName="name" />
       </div>

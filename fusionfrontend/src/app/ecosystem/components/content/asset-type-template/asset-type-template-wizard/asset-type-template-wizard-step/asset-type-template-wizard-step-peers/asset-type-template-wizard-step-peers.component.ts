@@ -14,14 +14,17 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ID } from '@datorama/akita';
-import { AssetTypeTemplate } from '../../../../../../../core/store/asset-type-template/asset-type-template.model';
+import {
+  AssetTypeTemplate,
+  AssetTypeTemplatePeer
+} from '../../../../../../../core/store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../../../../core/store/asset-type-template/asset-type-template.service';
 import { AssetTypeTemplateWizardSteps } from '../../asset-type-template-wizard-steps.model';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { AssetTypeTemplateWizardStepStartComponent } from '../asset-type-template-wizard-step-start/asset-type-template-wizard-step-start.component';
-import { AssetTypeTemplateWizardSharedRelationshipsComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-relationship/asset-type-template-wizard-shared-relationships.component';
+import { AssetTypeTemplateWizardSharedPeersComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-peers/asset-type-template-wizard-shared-peers.component';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-peers',
@@ -30,68 +33,108 @@ import { AssetTypeTemplateWizardSharedRelationshipsComponent } from '../../asset
 })
 export class AssetTypeTemplateWizardStepPeersComponent implements OnInit {
 
-  @ViewChild(AssetTypeTemplateWizardSharedRelationshipsComponent) peersChild: AssetTypeTemplateWizardSharedRelationshipsComponent;
+  @ViewChild(AssetTypeTemplateWizardSharedPeersComponent) peersChild: AssetTypeTemplateWizardSharedPeersComponent;
 
   @Input() assetTypeTemplate: AssetTypeTemplate;
   @Input() assetTypeTemplateForm: FormGroup;
   @Output() valid = new EventEmitter<boolean>();
   @Output() stepChange = new EventEmitter<number>();
 
-  public peerCandidates: AssetTypeTemplate[];
-  public isReadyForNextStep = false;
-  public isAddingMode = false;
+  peerCandidates: AssetTypeTemplate[];
+  removedCandidates: AssetTypeTemplate[];
+
+  isReadyForNextStep = false;
+  isAddingMode = false;
 
   constructor(private assetTypeTemplateService: AssetTypeTemplateService) {
+    this.removedCandidates = [];
   }
 
   ngOnInit(): void {
     this.initPeerCandidatesWithVersionExcludingSubsystems();
+    this.addAddedPeersToRemovedCandidates();
   }
 
   private initPeerCandidatesWithVersionExcludingSubsystems() {
     const assetTypeTemplateId = this.assetTypeTemplateForm.get('id').value;
-    this.assetTypeTemplateService.getPeerCandidates(assetTypeTemplateId ?? 0)
+    const peerCandidates$ = this.assetTypeTemplateService.getPeerCandidates(assetTypeTemplateId ?? -1)
       .pipe(map( (candidates: AssetTypeTemplate[]) =>
           candidates.map(candidate => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(candidate))),
-        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.subsystemIds.includes(candidate.id) )))
-      .subscribe(templateCandidates => this.peerCandidates = templateCandidates);
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.subsystemIds.includes(candidate.id) )),
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.peers.map(peer => peer.peerId).includes(candidate.id) )));
+
+    peerCandidates$.subscribe(templateCandidates => this.peerCandidates = templateCandidates);
   }
 
-  public onBack(): void {
-    if (this.isReadyForNextStep) {
-      this.saveValues();
-      this.stepChange.emit(AssetTypeTemplateWizardSteps.PEERS - 1);
-    }
+  private addAddedPeersToRemovedCandidates() {
+    this.assetTypeTemplate.peers?.forEach(assetTypeTemplatePeer => {
+      const addedPeer = assetTypeTemplatePeer.peer;
+      if (addedPeer) {
+        this.removedCandidates.push(AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(addedPeer));
+      } else {
+        console.warn('[ATT wizard]: Peer could not be found in candidates');
+      }
+    });
   }
 
-  public onNext(): void {
+  onBack(): void {
+    this.changeStep(AssetTypeTemplateWizardSteps.PEERS - 1);
+  }
+
+  onNext(): void {
+    this.changeStep(AssetTypeTemplateWizardSteps.PEERS + 1);
+  }
+
+  private changeStep(step: number) {
     if (this.isReadyForNextStep) {
       this.saveValues();
-      this.stepChange.emit(AssetTypeTemplateWizardSteps.PEERS + 1);
+      this.stepChange.emit(step);
     }
   }
 
   private saveValues(): void {
     const peersFormArray: FormArray = this.peersChild.getFormArray();
     if (peersFormArray.valid) {
-      this.assetTypeTemplate.peerIds = new Array<ID>();
-      peersFormArray.controls.forEach((peerGroup: FormControl) => {
-        this.assetTypeTemplate.peerIds.push(peerGroup.get('id').value);
+      this.assetTypeTemplate.peers = new Array<AssetTypeTemplatePeer>();
+
+      peersFormArray.controls.forEach((uncleanedPeerGroup: FormGroup) => {
+        const assetTypeTemplatePeer = this.peersChild.cleanFormGroupAndGetAssetTypeTemplatePeer(uncleanedPeerGroup);
+        this.assetTypeTemplate.peers.push(assetTypeTemplatePeer);
       });
     }
   }
 
-  public onSetValid(isValid: boolean): void {
+  onSetValid(isValid: boolean): void {
     this.isReadyForNextStep = isValid;
     this.valid.emit(isValid);
   }
 
-  public startAddingMode(): void {
+  startAddingMode(): void {
     this.isAddingMode = true;
   }
 
-  public addPeer(assetTypeTemplate: AssetTypeTemplate): void {
-    this.peersChild.addRelationship(assetTypeTemplate);
+  addPeer(peer: AssetTypeTemplate): void {
+    this.peersChild.addPeer(peer);
+    this.removedCandidates.push(peer);
+    this.peerCandidates.splice(this.peerCandidates.indexOf(peer), 1);
     this.isAddingMode = false;
+  }
+
+  public onPeerRemoved(peerId: ID): void {
+    const removedPeer: AssetTypeTemplate = this.removedCandidates.find((peer: AssetTypeTemplate) => peer.id === peerId);
+    if (!removedPeer) {
+      console.warn('[ATT wizard]: Removed peer could not be found');
+      return;
+    }
+
+    this.addRemovedPeerToCandidates(removedPeer);
+    this.removedCandidates.splice(this.removedCandidates.indexOf(removedPeer), 1);
+  }
+
+  private addRemovedPeerToCandidates(removedPeer: AssetTypeTemplate) {
+    if (removedPeer) {
+      this.peerCandidates.push(removedPeer);
+      this.peerCandidates.sort((a, b) => (a.id as number) - (b.id as number));
+    }
   }
 }

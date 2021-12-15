@@ -15,21 +15,21 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AssetTypeTemplateWizardSharedRelationshipsComponent } from './asset-type-template-wizard-shared-relationships.component';
+import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './asset-type-template-wizard-shared-subsystems.component';
 
-describe('AssetTypeTemplateWizardSharedRelationshipsComponent', () => {
-  let component: AssetTypeTemplateWizardSharedRelationshipsComponent;
-  let fixture: ComponentFixture<AssetTypeTemplateWizardSharedRelationshipsComponent>;
+describe('AssetTypeTemplateWizardSharedSubsystemsComponent', () => {
+  let component: AssetTypeTemplateWizardSharedSubsystemsComponent;
+  let fixture: ComponentFixture<AssetTypeTemplateWizardSharedSubsystemsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetTypeTemplateWizardSharedRelationshipsComponent ]
+      declarations: [ AssetTypeTemplateWizardSharedSubsystemsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetTypeTemplateWizardSharedRelationshipsComponent);
+    fixture = TestBed.createComponent(AssetTypeTemplateWizardSharedSubsystemsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

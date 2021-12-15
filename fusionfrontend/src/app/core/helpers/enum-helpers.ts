@@ -20,6 +20,10 @@ export class EnumHelpers {
       .filter(key => typeof key === 'string');
   }
 
+  public getDropdownOptions(enumeration): Array<{ name, value }> {
+    return Object.entries(enumeration).map(([key, value]) => ({ name : key, value }));
+  }
+
   public getLength(enumeration): number {
     return this.getIterableArray(enumeration).length;
   }

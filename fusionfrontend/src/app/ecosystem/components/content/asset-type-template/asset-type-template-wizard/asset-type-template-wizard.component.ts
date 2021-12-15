@@ -51,8 +51,8 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   public isAssetTypeLocked = false;
   public type = DialogType.CREATE;
 
-  private isSubsystemsValid: boolean;
-  private isPeersValid: boolean;
+  private isSubsystemsValid = true;
+  private isPeersValid = true;
 
   Steps = AssetTypeTemplateWizardSteps;
 
@@ -117,7 +117,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
     this.assetTypeTemplate.subsystemIds = [];
-    this.assetTypeTemplate.peerIds = [];
+    this.assetTypeTemplate.peers = [];
   }
 
   private initialHandlingOfEditMode(): void {
@@ -178,7 +178,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
       this.assetTypeTemplate.fieldTargets = [];
       this.assetTypeTemplate.fieldTargetIds = [];
       this.assetTypeTemplate.subsystemIds = [];
-      this.assetTypeTemplate.peerIds = [];
+      this.assetTypeTemplate.peers = [];
     }
   }
 
@@ -192,7 +192,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
             {
               this.assetTypeTemplate.fieldTargets = assetTypeTemplate.fieldTargets;
               this.assetTypeTemplate.subsystemIds = assetTypeTemplate.subsystemIds;
-              this.assetTypeTemplate.peerIds = assetTypeTemplate.peerIds;
+              this.assetTypeTemplate.peers = assetTypeTemplate.peers;
 
               if (this.type === DialogType.EDIT) {
                 this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
@@ -221,6 +221,8 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
       } else if (this.type === DialogType.CREATE)  {
         this.createTemplate(assetTypeId);
       }
+    } else {
+      console.warn('[ATT wizard]: data are invalid. Therefore, no saving...');
     }
   }
 

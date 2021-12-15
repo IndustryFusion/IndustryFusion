@@ -102,15 +102,15 @@ public class AssetTypeTemplateRestService {
     public AssetTypeTemplateDto createAssetTypeTemplate(@RequestParam final Long assetTypeId,
                                                         @RequestBody final AssetTypeTemplateDto assetTypeTemplateDto) {
         return assetTypeTemplateMapper.toDto(
-                assetTypeTemplateService.createAssetTypeTemplate(assetTypeId,
-                        assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), false);
+                assetTypeTemplateService.createAssetTypeTemplateAggregate(assetTypeId,
+                        assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), true);
     }
 
     @PatchMapping(path = "/assettypetemplates/{assetTypeTemplateId}")
     public AssetTypeTemplateDto updateAssetTypeTemplate(@PathVariable final Long assetTypeTemplateId,
                                                         @RequestBody final AssetTypeTemplateDto assetTypeTemplateDto) {
         return assetTypeTemplateMapper.toDto(assetTypeTemplateService.updateAssetTypeTemplate(assetTypeTemplateId,
-                assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), false);
+                assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), true);
     }
 
     @DeleteMapping(path = "/assettypetemplates/{assetTypeTemplateId}")

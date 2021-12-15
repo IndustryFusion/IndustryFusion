@@ -16,10 +16,11 @@
 @import 'src/app/fleet/components/content/asset-wizard/asset-wizard.component';
 @import 'src/styles/components/labels';
 
-.asset-type-template-wizard-relationships {
+.asset-type-template-wizard-peers {
   .edit-col {
     display: flex;
     justify-content: end;
+    padding-right: 0 !important;
   }
 
   .manufacturer-icon {
@@ -34,9 +35,46 @@
     }
   }
 
-  .relationship-row {
+  .peer-row {
     display: flex;
     align-items: center;
+  }
+
+  .peer-inputs {
+    width: 100%;
+  }
+
+  .col-0-5 {
+    width: 4.1665%;
+  }
+
+  .col-1-5 {
+    width: 12.4995%;
+  }
+
+  .col-0-5, .col-1-5 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding: 0.5rem;
+  }
+
+  .info-text {
+    color: $inactive;
+    text-align: left;
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+    letter-spacing: 0;
+  }
+
+  .confirmed-name {
+    color: $highlighted;
+    text-align: left;
+    font-size: $regular-font-size;
+    line-height: $regular-line-height;
+    font-weight: bold;
+    letter-spacing: 0;
+    opacity: 1;
   }
 }
 

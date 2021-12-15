@@ -19,10 +19,10 @@ under the License.
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
 
-  <app-asset-type-template-wizard-shared-relationships [isReview]="false"
-                                                       [relationshipName]="'peer'" [relationshipIds]="assetTypeTemplate.peerIds"
-                                                       (changeIsValid)="onSetValid($event)">
-  </app-asset-type-template-wizard-shared-relationships>
+  <app-asset-type-template-wizard-shared-peers [isReview]="false" [assetTypeTemplatePeers]="assetTypeTemplate.peers"
+                                               (changeIsValid)="onSetValid($event)"
+                                               (peerRemoved)="onPeerRemoved($event)">
+  </app-asset-type-template-wizard-shared-peers>
 
   <div class="selection" *ngIf="isAddingMode === true">
     <div class="input-div">

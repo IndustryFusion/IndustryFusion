@@ -54,7 +54,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -637,10 +637,10 @@ class FusionbackendApplicationTests {
     @Test
     @Order(501)
     void createAssetTypeTemplateLaserCutterWithSubsystemAndPeers() {
-        Set<Long> subsystemIds = new HashSet<>();
+        Set<Long> subsystemIds = new LinkedHashSet<>();
         subsystemIds.add(Long.valueOf(assetTypeTemplateGasSupplyId));
 
-        List<Long> peerIds = new LinkedList<>();
+        Set<Long> peerIds = new LinkedHashSet<>();
         peerIds.add(Long.valueOf(assetTypeTemplateGasSupplyId2));
         peerIds.add(Long.valueOf(assetTypeTemplateGasSupplyId2));
 
