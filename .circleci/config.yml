@@ -26,19 +26,7 @@ parameters:
   fusionbackend:
     type: boolean
     default: false
-  fusiondbdataservice:
-    type: boolean
-    default: false
   fusionfrontend:
-    type: boolean
-    default: false
-  fusiongatewayapp:
-    type: boolean
-    default: false
-  fusionmqttdataservice:
-    type: boolean
-    default: false
-  fusionplcdataservice:
     type: boolean
     default: false
   fusionparent:
@@ -210,40 +198,12 @@ workflows:
           name: fusionbackend-build
           package_name: fusionbackend
 
-  fusiondbdataservice:
-    when: << pipeline.parameters.fusiondbdataservice >>
-    jobs:
-      - build-java:
-          name: fusiondbdataservice-build
-          package_name: fusiondbdataservice
-
   fusionfrontend:
     when: << pipeline.parameters.fusionfrontend >>
     jobs:
       - build-js:
           name: fusionfrontend-build
           package_name: fusionfrontend
-
-  fusiongatewayapp:
-    when: << pipeline.parameters.fusiongatewayapp >>
-    jobs:
-      - build-java:
-          name: fusiongatewayapp-build
-          package_name: fusiongatewayapp
-
-  fusionmqttdataservice:
-    when: << pipeline.parameters.fusionmqttdataservice >>
-    jobs:
-      - build-java:
-          name: fusionmqttdataservice-build
-          package_name: fusionmqttdataservice
-
-  fusionplcdataservice:
-    when: << pipeline.parameters.fusionplcdataservice >>
-    jobs:
-      - build-java:
-          name: fusionplcdataservice-build
-          package_name: fusionplcdataservice
 
   setup:
     when: << pipeline.parameters.setup >>
