@@ -24,5 +24,12 @@ module.exports = {
     "pathRewrite": {
       "^/kairosapi": ""
     }
-  }
+  },
+  "/alertaapi": {
+    "target": "http://localhost:8082/api",
+    "secure": false,
+    "pathRewrite": {
+      "^/alertaapi": ""
+    }
+  },
 };

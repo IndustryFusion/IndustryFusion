@@ -1,0 +1,28 @@
+version: '2.1'
+services:
+  web:
+    image: alerta/alerta-web
+    ports:
+      - "8082:8080"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=0
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - AUTH_REQUIRED=True
+      - ADMIN_USERS=admin@alerta.io,devops@alerta.io #default password: alerta
+      - ADMIN_KEY=demo-key
+      - SECRET_KEY=my-secret
+      - PLUGINS=reject,blackout,normalise
+    restart: always
+  db:
+    image: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: always
