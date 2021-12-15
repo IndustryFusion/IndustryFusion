@@ -17,7 +17,10 @@ package io.fusion.fusionbackend.dto.mappers;
 
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.service.AssetTypeTemplateService;
+import io.fusion.fusionbackend.model.FieldTarget;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -29,14 +32,18 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
     private final BaseAssetMapper baseAssetMapper;
     private final FieldTargetMapper fieldTargetMapper;
     private final AssetTypeMapper assetTypeMapper;
+    private final AssetTypeTemplateService assetTypeTemplateService;
 
     @Autowired
     public AssetTypeTemplateMapper(BaseAssetMapper baseAssetMapper,
                                    FieldTargetMapper fieldTargetMapper,
-                                   AssetTypeMapper assetTypeMapper) {
+                                   AssetTypeMapper assetTypeMapper,
+                                   @Lazy
+                                   AssetTypeTemplateService assetTypeTemplateService) {
         this.baseAssetMapper = baseAssetMapper;
         this.fieldTargetMapper = fieldTargetMapper;
         this.assetTypeMapper = assetTypeMapper;
+        this.assetTypeTemplateService = assetTypeTemplateService;
     }
 
     private AssetTypeTemplateDto toDtoShallow(final AssetTypeTemplate entity) {
@@ -51,8 +58,9 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
                 .publishedDate(entity.getPublishedDate())
                 .publishedVersion(entity.getPublishedVersion())
                 .creationDate(entity.getCreationDate())
+                .fieldTargetIds(fieldTargetMapper.toEntityIdSet(entity.getFieldTargets()))
+                .subsystemIds(toEntityIdSet(entity.getSubsystems()))
                 .build();
-        dto.setFieldTargetIds(fieldTargetMapper.toEntityIdSet(entity.getFieldTargets()));
 
         baseAssetMapper.copyToDto(entity, dto);
 
@@ -91,8 +99,25 @@ public class AssetTypeTemplateMapper implements EntityDtoMapper<AssetTypeTemplat
 
         baseAssetMapper.copyToEntity(dto, entity);
 
+        if (dto.getFieldTargets() != null) {
+            Set<FieldTarget> fieldTargets = fieldTargetMapper.toEntitySet(dto.getFieldTargets());
+            entity.setFieldTargets(fieldTargets);
+        }
+
+        addSubsystemsToEntity(dto, entity);
+
         return entity;
     }
+
+    private void addSubsystemsToEntity(AssetTypeTemplateDto dto, AssetTypeTemplate entity) {
+        if (dto.getSubsystemIds() != null) {
+            dto.getSubsystemIds().forEach(id -> {
+                AssetTypeTemplate assetTypeTemplate = assetTypeTemplateService.getAssetTypeTemplate(id, false);
+                entity.getSubsystems().add(assetTypeTemplate);
+            });
+        }
+    }
+
 
     @Override
     public Set<AssetTypeTemplateDto> toDtoSet(Set<AssetTypeTemplate> entitySet, boolean embedChildren) {

@@ -30,6 +30,8 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
   @Input() createItemName: string;
   @Input() assignItemText: string;
   @Input() updateItemText: string;
+  @Input() download1ItemText: string;
+  @Input() download2ItemText: string;
   @Input() showInline = true;
   @Input() disabled = false;
   @Output() createItem = new EventEmitter<void>();
@@ -38,6 +40,8 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
   @Output() assignItem = new EventEmitter<void>();
+  @Output() downloadItem1 = new EventEmitter<void>();
+  @Output() downloadItem2 = new EventEmitter<void>();
 
   public menuActions: MenuItem[];
   public ItemOptionsMenuType = ItemOptionsMenuType;
@@ -77,6 +81,14 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
 
   onAssignClick() {
     this.assignItem.emit();
+  }
+
+  onDownload1Click() {
+    this.downloadItem1.emit();
+  }
+
+  onDownload2Click() {
+    this.downloadItem2.emit();
   }
 
   private generateMenuItems(): MenuItem[] {
@@ -120,6 +132,20 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
       }
     };
 
+    const downloadItem1 = {
+      label: this.download1ItemText ? 'Download ' + this.download1ItemText : 'Download', icon: 'pi pi-fw pi-cloud-download',
+      command: (_) => {
+        this.onDownload1Click();
+      }
+    };
+
+    const downloadItem2 = {
+      label: this.download2ItemText ? 'Download ' + this.download2ItemText : 'Download', icon: 'pi pi-fw pi-cloud-download',
+      command: (_) => {
+        this.onDownload2Click();
+      }
+    };
+
     let menuActions = [];
 
     if (!this.actions || this.actions.length === 0) {
@@ -147,6 +173,13 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
             break;
           case ItemOptionsMenuType.ASSIGN:
             menuActions.push(assignItem);
+            break;
+          case ItemOptionsMenuType.DOWNLOAD1:
+            menuActions.push(downloadItem1);
+            break;
+          case ItemOptionsMenuType.DOWNLOAD2:
+            menuActions.push(downloadItem2);
+            break;
         }
       }
     }

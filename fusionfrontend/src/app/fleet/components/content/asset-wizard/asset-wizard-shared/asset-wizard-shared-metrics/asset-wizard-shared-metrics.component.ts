@@ -93,6 +93,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
     const group = this.formBuilder.group({
       id: [],
       version: [],
+      globalId: [],
       indexFieldInstances: [],
       indexInArray: [],
       name: [],
@@ -107,11 +108,12 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
       valid: [true, Validators.requiredTrue],
     });
 
-    const quantityType = this.quantityTypeQuery.getEntity(fieldInstance.fieldSource.sourceUnit.quantityTypeId);
+    const quantityType = this.quantityTypeQuery.getEntity(fieldInstance.fieldSource.sourceUnit?.quantityTypeId);
     const quantityDataType = quantityType.dataType;
 
     group.get('id').patchValue(fieldInstance.id);
     group.get('version').patchValue(fieldInstance.version);
+    group.get('globalId').patchValue(fieldInstance.globalId);
     group.get('indexFieldInstances').patchValue(indexFieldInstances);
     group.get('indexInArray').patchValue(indexInArray);
     group.get('name').patchValue(fieldInstance.name);

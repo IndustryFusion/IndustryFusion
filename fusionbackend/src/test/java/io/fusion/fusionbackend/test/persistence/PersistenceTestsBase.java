@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-abstract class PersistenceTestsBase {
+public abstract class PersistenceTestsBase {
 
     @Autowired
     private TestEntityManager testEntityManager;

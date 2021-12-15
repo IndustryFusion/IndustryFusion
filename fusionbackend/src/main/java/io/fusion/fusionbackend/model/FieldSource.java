@@ -21,6 +21,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -38,6 +39,9 @@ import javax.persistence.Table;
 @SuperBuilder
 @NoArgsConstructor
 public class FieldSource extends BaseEntity {
+    @Column(nullable = false, unique = true)
+    private String globalId;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_series_id", nullable = false)
     private AssetSeries assetSeries;
@@ -46,8 +50,8 @@ public class FieldSource extends BaseEntity {
     @JoinColumn(name = "field_target_id", nullable = false)
     private FieldTarget fieldTarget;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "source_unit_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "source_unit_id")
     private Unit sourceUnit;
 
     private String name;

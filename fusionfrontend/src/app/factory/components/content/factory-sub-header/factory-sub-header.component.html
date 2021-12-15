@@ -18,5 +18,11 @@ under the License.
     <li [ngClass]="{'active': isFactoriesActive()}" (click)="onFactoriesClick()">Factory Sites</li>
     <li [ngClass]="{'active': isRoomsActive()}" (click)="onRoomsClick()">Rooms</li>
     <li [ngClass]="{'active': isAssetsActive()}" (click)="onAssetsClick()">Assets</li>
+    <li>
+      <label class="if-upload-button-light" [pTooltip]="'Import data from Ecosystem Manager'">
+        <i class="pi pi-upload"></i>
+        <input type="file" accept="application/zip" (change)="onZipFileUpload($event)">
+      </label>
+    </li>
   </ul>
 </div>

@@ -22,7 +22,6 @@ import {
 } from '../../../../../core/store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { AssetTypeTemplateWizardMainComponent } from '../asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
@@ -32,6 +31,7 @@ import { FilterOption, FilterType } from '../../../../../shared/components/ui/ta
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableHelper } from '../../../../../core/helpers/table-helper';
+import { AssetTypeTemplateWizardComponent } from '../asset-type-template-wizard/asset-type-template-wizard.component';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -41,6 +41,7 @@ import { TableHelper } from '../../../../../core/helpers/table-helper';
 })
 export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
+  PublicationState = PublicationState;
   @Input() assetTypeTemplates$: Observable<AssetTypeTemplate[]>;
   @Input() parentAssetTypeId: ID | null;
 
@@ -71,7 +72,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetTypeTemplateQuery: AssetTypeTemplateQuery,
-    private assetTypeTemplateService: AssetTypeTemplateService,
+    public assetTypeTemplateService: AssetTypeTemplateService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
@@ -95,7 +96,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     if (assetTypeTemplate) {
       this.activeListItem = assetTypeTemplate;
       this.menuType = assetTypeTemplate.publicationState === PublicationState.PUBLISHED ?
-        [ItemOptionsMenuType.DELETE] : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
+        [ItemOptionsMenuType.DELETE, ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2]
+        : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
     }
   }
 
@@ -118,7 +120,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   onCreate() {
-    this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent, {
+    this.createWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent, {
       data: {
         type: DialogType.CREATE,
         preselectedAssetTypeId: this.parentAssetTypeId
@@ -145,7 +147,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   private showUpdateWizard() {
-    this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
+    this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent,
       {
         data: { assetTypeTemplate: this.activeListItem, type: DialogType.EDIT },
         header: 'Asset Type Template Editor',
@@ -184,5 +186,10 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   updateRowCountInUrl(rowCount: number): void {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
+  }
+
+  onDownload(asOwl: boolean) {
+    const exportLink = this.assetTypeTemplateService.getExportLink(this.activeListItem.id, asOwl);
+    window.open(exportLink, '_blank');
   }
 }

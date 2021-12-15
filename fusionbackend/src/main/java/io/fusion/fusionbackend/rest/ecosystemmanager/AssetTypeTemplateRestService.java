@@ -15,10 +15,13 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
+import com.apicatalog.jsonld.http.media.MediaType;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
+import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
+import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Set;
 
 @RestController
@@ -52,11 +57,33 @@ public class AssetTypeTemplateRestService {
     }
 
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}")
-    public AssetTypeTemplateDto getAssetTypeTempl(@PathVariable final Long assetTypeTemplateId,
+    public AssetTypeTemplateDto getAssetTypeTemplate(@PathVariable final Long assetTypeTemplateId,
                                                   @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return assetTypeTemplateMapper.toDto(
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, embedChildren),
                 embedChildren);
+    }
+
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/assettypes/{assetTypeId}/subsystemcandidates")
+    public Set<AssetTypeTemplateDto> getSubsystemCandidates(@PathVariable final Long assetTypeTemplateId,
+                                                            @PathVariable final Long assetTypeId) {
+        return assetTypeTemplateMapper.toDtoSet(
+                assetTypeTemplateService.findSubsystemCandidates(assetTypeId, assetTypeTemplateId),
+                true);
+    }
+
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/owlexport")
+    public void getAsOwlExport(@PathVariable final Long assetTypeTemplateId,
+                               HttpServletResponse response) throws IOException {
+        OntModel model = assetTypeTemplateService.getAssetTypeTemplateRdf(assetTypeTemplateId);
+        OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
+    }
+
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/jsonexport")
+    public void getAsJsonfExport(@PathVariable final Long assetTypeTemplateId,
+                               HttpServletResponse response) throws IOException {
+        response.setContentType(MediaType.JSON.toString());
+        assetTypeTemplateService.getAssetTypeTemplateExtendedJson(assetTypeTemplateId, response.getWriter());
     }
 
     @GetMapping(path = "/assettypetemplates/nextVersion/{assetTypeId}")
@@ -84,7 +111,7 @@ public class AssetTypeTemplateRestService {
         assetTypeTemplateService.deleteAssetTypeTemplate(assetTypeTemplateId);
     }
 
-    @PutMapping(path = "/assettypetemplates/fields/{fieldId}") // TODO: unused parameter
+    @PutMapping(path = "/assettypetemplates/{assetTypeTemplateId}/fields/{fieldId}")
     public AssetTypeTemplateDto setFieldUnit(@PathVariable final Long assetTypeTemplateId,
                                              @RequestParam final Long assetTypeId) {
         return assetTypeTemplateMapper.toDto(assetTypeTemplateService.setAssetType(assetTypeTemplateId,

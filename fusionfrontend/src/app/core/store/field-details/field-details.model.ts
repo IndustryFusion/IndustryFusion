@@ -15,7 +15,7 @@
 
 import { BaseEntity } from '../baseentity.model';
 import { ID } from '@datorama/akita';
-import { FieldWidgetType } from '../field/field.model';
+import { FieldDataType, FieldOption, FieldWidgetType } from '../field/field.model';
 import { Threshold } from '../threshold/threshold.model';
 import { DeviceComponent } from '../oisp/oisp-device/oisp-device.model';
 
@@ -39,6 +39,8 @@ export class FieldDetails extends BaseEntity {
   absoluteThreshold: Threshold;
   idealThreshold: Threshold;
   criticalThreshold: Threshold;
+  fieldDataType: FieldDataType;
+  enumOptions: FieldOption[];
 }
 
 export enum FieldType {

@@ -53,6 +53,9 @@ import java.util.UUID;
                 + " and asset_series_id != ? and company_id = ? ",
         resultClass = Asset.class)
 public class Asset extends BaseAsset {
+    @Column(nullable = false, unique = true)
+    protected String globalId;
+
     protected UUID guid;
     protected Boolean ceCertified;
     protected String serialNumber;
@@ -84,6 +87,9 @@ public class Asset extends BaseAsset {
     @JoinColumn(name = "subsystem_parent_id")
     @Builder.Default
     private Set<Asset> subsystems = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "subsystem_parent_id", nullable = true)
+    private Asset subSystemParent;
     private String externalName;
     private String controlSystemType;
     private Boolean hasGateway;

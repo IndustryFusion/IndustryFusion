@@ -43,6 +43,8 @@ public class AssetTypeTemplateDto extends BaseAssetDto {
     protected Set<Long> fieldTargetIds = new LinkedHashSet<>();
     @Builder.Default
     protected Set<FieldTargetDto> fieldTargets = new LinkedHashSet<>();
+    @Builder.Default
+    private Set<Long> subsystemIds = new LinkedHashSet<>();
 
     @JsonCreator
     public AssetTypeTemplateDto() {

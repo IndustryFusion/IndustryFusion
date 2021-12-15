@@ -15,27 +15,53 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.mappers.FieldMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
+import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.Field;
+import io.fusion.fusionbackend.model.FieldOption;
 import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
+import io.fusion.fusionbackend.repository.FieldOptionRepository;
 import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
+import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class FieldService {
     private final FieldRepository fieldRepository;
+    private final FieldOptionRepository fieldOptionRepository;
+    private final FieldMapper fieldMapper;
     private final UnitService unitService;
+    private final FieldOptionService fieldOptionService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(FieldService.class);
 
     @Autowired
-    public FieldService(FieldRepository fieldRepository, UnitService unitService) {
+    public FieldService(FieldRepository fieldRepository,
+                        FieldOptionRepository fieldOptionRepository,
+                        FieldMapper fieldMapper,
+                        UnitService unitService,
+                        FieldOptionService fieldOptionService) {
         this.fieldRepository = fieldRepository;
+        this.fieldOptionRepository = fieldOptionRepository;
+        this.fieldMapper = fieldMapper;
         this.unitService = unitService;
+        this.fieldOptionService = fieldOptionService;
     }
 
     public Set<Field> getAllFields() {
@@ -55,6 +81,13 @@ public class FieldService {
         return fieldRepository.save(field);
     }
 
+    public Field createField(final Field field, final Set<FieldOption> fieldOptions) {
+        Field createdField = fieldRepository.save(field);
+        fieldOptions.forEach(fieldOption -> fieldOption.setField(createdField));
+        fieldOptionRepository.saveAll(fieldOptions);
+        return createdField;
+    }
+
     public Field linkFieldUnit(final Long fieldId, final Long unitId) {
         final Field field = getField(fieldId, false);
         final Unit unit = unitService.getUnit(unitId);
@@ -64,15 +97,57 @@ public class FieldService {
 
     public Field updateField(final Long fieldId, final Field sourceField, final Long unitId) {
         final Field targetField = getField(fieldId, false);
-        final Unit unit = unitService.getUnit(unitId);
-
+        Set<FieldOption> initialOptions = targetField.getOptions();
         targetField.copyFrom(sourceField);
-        targetField.setUnit(unit);
 
+        if (unitId != null) {
+            final Unit unit = unitService.getUnit(unitId);
+            targetField.setUnit(unit);
+        }
+        if (sourceField.getDataType() == FieldDataType.ENUM) {
+            for (FieldOption option : initialOptions) {
+                if (!sourceField.getOptions().contains(option)) {
+                    fieldOptionService.deleteFieldOption(option.getId());
+                }
+            }
+            sourceField.getOptions().forEach(option -> fieldOptionService.updateFieldOption(option.getId(), targetField,
+                    option));
+            targetField.setOptions(sourceField.getOptions());
+        }
         return targetField;
     }
 
     public void deleteField(final Long id) {
         fieldRepository.delete(getField(id, false));
+    }
+
+    public byte[] exportAllToJson() throws IOException {
+        Set<Field> fields = Sets.newLinkedHashSet(fieldRepository
+                .findAll(FieldRepository.DEFAULT_SORT));
+
+        Set<FieldDto> fieldDtos = fieldMapper.toDtoSet(fields, true);
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(fieldDtos));
+    }
+
+    public int importMultipleFromJson(byte[] fileContent) throws IOException {
+        Set<FieldDto> fieldDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {});
+        Set<Long> existingFieldIds = fieldRepository
+                .findAll(FieldRepository.DEFAULT_SORT)
+                .stream().map(BaseEntity::getId).collect(Collectors.toSet());
+
+        int entitySkippedCount = 0;
+        for (FieldDto fieldDto : BaseZipImportExport.toSortedList(fieldDtos)) {
+            if (!existingFieldIds.contains(fieldDto.getId())) {
+                Field field = fieldMapper.toEntity(fieldDto);
+                createField(field, fieldDto.getUnitId());
+            } else {
+                LOG.warn("Field with the id " + fieldDto.getId() + " already exists. Entry is ignored.");
+                entitySkippedCount += 1;
+            }
+        }
+
+        return entitySkippedCount;
     }
 }

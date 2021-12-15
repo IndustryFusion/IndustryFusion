@@ -56,6 +56,12 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
     return this.http.get<bigint>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
+  getExportLink(assetTypeId: ID, asOwl: boolean): string {
+    const exportSubpath = asOwl ? `owlexport` : 'jsonexport';
+    const path = `/assettypetemplates/${assetTypeId}/${exportSubpath}`;
+    return `${environment.apiUrlPrefix}${path}`;
+  }
+
   createItem(template: AssetTypeTemplate): Observable<AssetTypeTemplate> {
     const path = `assettypetemplates`;
     return this.http.post<AssetTypeTemplate>(`${environment.apiUrlPrefix}/${path}`, template, this.httpOptions)
@@ -95,6 +101,11 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
           this.assettypeTemplateStore.setError(error);
         }
       }));
+  }
+
+  getSubsystemCandidates(assetTypeTemplateId: ID, assetTypeId: ID): Observable<AssetTypeTemplate[]> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/assettypes/${assetTypeId}/subsystemcandidates`;
+    return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
   setActive(templateID: ID) {

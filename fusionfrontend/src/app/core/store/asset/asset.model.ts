@@ -20,6 +20,7 @@ import { FieldInstance } from '../field-instance/field-instance.model';
 import { Room } from '../room/room.model';
 
 export class Asset extends BaseEntity {
+  globalId: string;
   companyId: ID;
   assetSeriesId: ID;
   fieldInstanceIds: Array<ID>;

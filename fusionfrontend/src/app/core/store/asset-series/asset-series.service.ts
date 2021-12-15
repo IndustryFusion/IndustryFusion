@@ -96,4 +96,9 @@ export class AssetSeriesService {
         }));
   }
 
+  getExportLink(assetSeriesId: ID, companyId: ID, asOwl: boolean): string {
+    const exportSubPath = asOwl ? 'rdfexport' : 'jsonexport';
+    const path = `/companies/${companyId}/assetseries/${assetSeriesId}/${exportSubPath}`;
+    return `${environment.apiUrlPrefix}${path}`;
+  }
 }

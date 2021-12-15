@@ -24,6 +24,7 @@ import io.fusion.fusionbackend.dto.mappers.FieldInstanceMapper;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.AssetService;
+import io.fusion.fusionbackend.service.export.FleetManagerImportExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -45,17 +48,20 @@ public class FleetAssetRestService {
     private final AssetMapper assetMapper;
     private final FieldInstanceMapper fieldInstanceMapper;
     private final AssetDetailsMapper assetDetailsMapper;
+    private final FleetManagerImportExportService fleetManagerImportExportService;
 
 
     @Autowired
     public FleetAssetRestService(AssetService assetService,
                                  AssetMapper assetMapper,
                                  FieldInstanceMapper fieldInstanceMapper,
-                                 AssetDetailsMapper assetDetailsMapper) {
+                                 AssetDetailsMapper assetDetailsMapper,
+                                 FleetManagerImportExportService fleetManagerImportExportService) {
         this.assetService = assetService;
         this.assetMapper = assetMapper;
         this.fieldInstanceMapper = fieldInstanceMapper;
         this.assetDetailsMapper = assetDetailsMapper;
+        this.fleetManagerImportExportService = fleetManagerImportExportService;
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/")
@@ -113,7 +119,7 @@ public class FleetAssetRestService {
                                 @PathVariable final Long assetSeriesId,
                                 @RequestBody final AssetDto assetDto) {
         return assetMapper.toDto(
-                assetService.createAssetAggregate(companyId, assetSeriesId, assetMapper.toEntity(assetDto)),
+                assetService.createFleetAssetAggregate(companyId, assetSeriesId, assetMapper.toEntity(assetDto)),
                 true);
     }
 
@@ -148,5 +154,16 @@ public class FleetAssetRestService {
                                              @RequestParam(defaultValue = "false") final boolean embedChildren) {
         return fieldInstanceMapper.toDto(
                 assetService.getFieldInstance(companyId, assetId, fieldInstanceId), embedChildren);
+    }
+
+    @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}/onboardingexport")
+    public void getAssetOnboardingFilesAsZip(@PathVariable final Long companyId,
+                                             @PathVariable final Long assetSeriesId,
+                                             @PathVariable final Long assetId,
+                                             HttpServletResponse response) throws IOException {
+        response.setContentType("application/zip");
+        response.addHeader("Content-Disposition","attachment;filename=\"asset_onboarding_package.zip\"");
+        fleetManagerImportExportService.generateAssetOnboardingZipPackage(companyId, assetSeriesId, assetId,
+                response.getOutputStream());
     }
 }
