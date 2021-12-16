@@ -55,9 +55,9 @@ export class FusionAppletsListComponent implements OnInit {
   rulesSearchedCondition: Rule[] = [];
 
   public titleMapping: { [k: string]: string } = {
-    '=0': this.translate.instant('APP.FUSION_APPLET_LIST.NO_APPLET'),
-    '=1': '# ' + this.translate.instant('APP.FUSION_APPLET_LIST.APPLET'),
-    other: '# ' + this.translate.instant('APP.FUSION_APPLET_LIST.APPLETS') };
+    '=0': this.translate.instant('APP.FUSION_APPLETS.LIST.NO_APPLET'),
+    '=1': '# ' + this.translate.instant('APP.FUSION_APPLETS.LIST.APPLET'),
+    other: '# ' + this.translate.instant('APP.FUSION_APPLETS.LIST.APPLETS') };
 
   constructor(
     private oispRuleQuery: OispRuleQuery,
@@ -66,7 +66,7 @@ export class FusionAppletsListComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public ruleStatusUtil: RuleStatusUtil,
-    private translate: TranslateService
+    public translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -123,7 +123,7 @@ export class FusionAppletsListComponent implements OnInit {
 
   createItem() {
     const dialogConfig: DynamicDialogConfig = {
-      header: 'Create Applet'
+      header: this.translate.instant('APP.FUSION_APPLETS.LIST.CREATE_DIALOG_HEADER')
     };
     const dynamicDialogRef = this.dialogService.open(CreateFusionAppletComponent, dialogConfig);
     dynamicDialogRef.onClose.subscribe(result => {

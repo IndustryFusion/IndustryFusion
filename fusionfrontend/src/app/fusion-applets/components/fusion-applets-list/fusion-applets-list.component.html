@@ -20,7 +20,8 @@ under the License.
       <p-selectButton (ngModelChange)="onToggleRoute()"
                       *ngIf="!showActions"
                       [(ngModel)]="showActive"
-                      [options]="[{name:'Active', value:true},{name:'Archived', value:false}]"
+                      [options]="[{name: translate.instant('APP.FUSION_APPLETS.LIST.ACTIVE'), value:true},
+                      {name: translate.instant('APP.FUSION_APPLETS.LIST.ARCHIVED'), value:false}]"
                       class="fusion-applet on-white-background space-right"
                       optionLabel="name"
                       optionValue="value"

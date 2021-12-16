@@ -439,6 +439,8 @@
 				"HEADER": "Attention"
 			},
 			"LIST": {
+        "ACTIVE": "Actif",
+        "ARCHIVED": "Archivé",
 				"APPLET": "Applet",
 				"APPLETS": "Applets",
 				"APPLET_NAME": "Nom de l'applet",

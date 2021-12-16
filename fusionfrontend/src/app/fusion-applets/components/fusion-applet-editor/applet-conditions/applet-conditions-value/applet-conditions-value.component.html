@@ -14,7 +14,7 @@ under the License.
 -->
 
 <p-accordion [multiple]="false" [(activeIndex)]="activeAccordionIndex">
-  <p-accordionTab header="{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.CHOOSE_TRIGGER_ASSET' | translate }}">
+  <p-accordionTab header="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.CHOOSE_TRIGGER_ASSET' | translate }}">
     <label class="if-label">{{ 'APP.COMMON.TERMS.ASSET' | translate }} *</label>
     <p-multiSelect class="full-width" [required]="true" [options]="devices" [optionLabel]="'name'"
                    [(ngModel)]="selectedDevices" display="chip"></p-multiSelect>
@@ -24,22 +24,22 @@ under the License.
     </button>
   </p-accordionTab>
   <p-accordionTab [formGroup]="conditionValueGroup" [disabled]="activeAccordionIndex !== 1" *ngIf="selectedDevices"
-                  header="{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.SETUP_CONDITION' | translate }}">
+                  header="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.SETUP_CONDITION' | translate }}">
     <div class="p-grid p-flex-column">
-      <label class="if-label full-width">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL' | translate }} *</label>
+      <label class="if-label full-width">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL' | translate }} *</label>
       <p-dropdown [formControlName]="'component'"
                   [options]="mapDevicesToComponents(selectedDevices)"
                   [optionLabel]="'label'"
                   [optionValue]="'value'"
-                  (onChange)="updateComponent($event.value)" placeholder="{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL' | translate }}'"
+                  (onChange)="updateComponent($event.value)" placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL' | translate }}'"
       ></p-dropdown>
-      <label class="if-label">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.CONDITION_TYPE_LABEL' | translate }} *</label>
+      <label class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.CONDITION_TYPE_LABEL' | translate }} *</label>
       <p-dropdown [formControlName]="'type'"
                   [options]="conditionTypeDropdownValue"
                   [optionLabel]="'label'"
                   [optionValue]="'value'"
       ></p-dropdown>
-      <label class="if-label">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.CONDITION_LABEL' | translate }} *</label>
+      <label class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.CONDITION_LABEL' | translate }} *</label>
       <p-dropdown [formControlName]="'operator'"
                   [options]="conditionOperatorDropdownValue"
                   [optionLabel]="'label'"
@@ -47,22 +47,22 @@ under the License.
       ></p-dropdown>
     </div>
     <div class="p-grid p-flex-column" *ngIf="isAnyConditionType([ConditionType.basic, ConditionType.time])">
-      <label class="if-label">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.VALUE_LABEL' | translate }} *</label>
+      <label class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.VALUE_LABEL' | translate }} *</label>
       <div [formGroupName]="'values'">
         <input [formControlName]="'0'" pInputText class="full-width"/>
       </div>
     </div>
     <div class="p-grid p-flex-column" *ngIf="isAnyConditionType([ConditionType.time])">
-      <span class="if-label full-width">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.DEFINE_DURATION' | translate }}</span>
+      <span class="if-label full-width">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.DEFINE_DURATION' | translate }}</span>
       <app-condition-time-selector [timeLimit]="conditionValueGroup.get('timeLimit')"
       ></app-condition-time-selector>
     </div>
     <div class="p-grid p-flex-column" *ngIf="isAnyConditionType([ConditionType.statistics])">
       <app-control-limit-selector [valuesGroup]="conditionValueGroup.get('values')"></app-control-limit-selector>
-      <span class="if-label">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.AVERAGE_AND_STANDARD_DEVIATION_BASELINE' | translate }}</span>
+      <span class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.AVERAGE_AND_STANDARD_DEVIATION_BASELINE' | translate }}</span>
       <app-condition-time-selector [timeLimit]="conditionValueGroup.get('baselineSecondsBack')"
       ></app-condition-time-selector>
-      <span class="if-label">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.MINIMAL_INSTANCES_FOR_CALCULATION' | translate }}</span>
+      <span class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.MINIMAL_INSTANCES_FOR_CALCULATION' | translate }}</span>
       <label class="if-label">{{ 'APP.COMMON.TERMS.VALUE' | translate }} *</label>
       <p-inputNumber [formControl]="conditionValueGroup.get('baselineMinimalInstances')" class="full-width"
       ></p-inputNumber>

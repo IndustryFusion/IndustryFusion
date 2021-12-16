@@ -30,7 +30,7 @@ under the License.
                   [ngModel]="ruleGroup.get('resetType').value === RuleResetType.Automatic"
                   (onChange)="setResetTypeAutomatic($event.checked)"
       ></p-checkbox>
-      {{ 'APP.FUSION_APPLETS.AUTOMATIC_RESET_CHECKBOX' | translate }}
+      {{ 'APP.FUSION_APPLETS.EDITOR.AUTOMATIC_RESET_CHECKBOX' | translate }}
     </div>
   </div>
   <app-applet-conditions *ngIf="devices" class="full-width"

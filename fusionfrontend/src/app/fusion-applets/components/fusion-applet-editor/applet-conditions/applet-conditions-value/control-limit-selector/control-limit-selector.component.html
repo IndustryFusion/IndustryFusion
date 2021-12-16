@@ -14,17 +14,17 @@ under the License.
 -->
 
 <div class="input-div p-grid p-flex-column">
-  <label class="if-label p-col">{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.LIMIT_SELECTOR.CALCULATE_CONTROL_LIMIT' | translate }}</label>
+  <label class="if-label p-col">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.LIMIT_SELECTOR.CALCULATE_CONTROL_LIMIT' | translate }}</label>
   <div [formGroup]="limitGroup" class="p-col p-grid full-width">
     <p-radioButton class="p-col"
                    [value]="['-2','2']"
-                   label="{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.LIMIT_SELECTOR.CALCULATE_CONTROL_LIMIT' | translate: { number: 2 } }}"
+                   label="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.LIMIT_SELECTOR.CALCULATE_CONTROL_LIMIT' | translate: { number: 2 } }}"
                    formControlName="limit"
                    [inputId]="'limit1'"
     ></p-radioButton>
     <p-radioButton class="p-col"
                    [value]="['-3','3']"
-                   label="{{ 'APP.FUSION_APPLETS.CONDITIONS.CONDITIONS_VALUE.LIMIT_SELECTOR.CALCULATE_CONTROL_LIMIT' | translate: { number: 3 } }}"
+                   label="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.LIMIT_SELECTOR.CALCULATE_CONTROL_LIMIT' | translate: { number: 3 } }}"
                    formControlName="limit"
                    [inputId]="'limit2'"
     ></p-radioButton>
