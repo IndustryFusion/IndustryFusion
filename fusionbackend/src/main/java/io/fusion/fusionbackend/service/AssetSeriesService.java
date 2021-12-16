@@ -182,9 +182,8 @@ public class AssetSeriesService {
 
         validateForUpdates(sourceAssetSeries, targetAssetSeries);
 
-        List<FieldSource> deletedFieldSources = targetAssetSeries.calculateDeletedFieldSources(sourceAssetSeries);
-
-        deletedFieldSources.forEach(fieldSourceService::delete);
+        List<FieldSource> fieldSourcesToDelete = targetAssetSeries.getFieldSourcesToDelete(sourceAssetSeries);
+        fieldSourcesToDelete.forEach(fieldSourceService::delete);
 
         targetAssetSeries.copyFrom(sourceAssetSeries);
 

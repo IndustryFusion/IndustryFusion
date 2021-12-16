@@ -36,6 +36,7 @@ import { take } from 'rxjs/operators';
 import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { WizardHelper } from '../../../../../core/helpers/wizard-helper';
 import { AssetTypeTemplatesResolver } from '../../../../../core/resolvers/asset-type-templates.resolver';
+import { CustomFormValidators } from '../../../../../core/validators/custom-form-validators';
 
 @Component({
   selector: 'app-asset-type-template-wizard',
@@ -82,13 +83,27 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
       wasPublished: [false],
       useExistingTemplate: [false, Validators.required],
       assetTypeId: [prefilledAssetTypeIdOrNull, Validators.required],
-      assetTypeTemplateId: [],
+      assetTypeTemplateId: [null, CustomFormValidators.requiredIfOtherIsTrue('useExistingTemplate')],
       fieldTarget: [],
       imageKey: [],
     });
     assetTypeTemplateForm.patchValue(assetTypeTemplate);
 
+    assetTypeTemplateForm.get('useExistingTemplate').valueChanges
+      .subscribe(() => AssetTypeTemplateWizardComponent.validateForm(assetTypeTemplateForm));
+    AssetTypeTemplateWizardComponent.validateForm(assetTypeTemplateForm);
+
     return assetTypeTemplateForm;
+  }
+
+  private static validateForm(formGroup: FormGroup): void {
+    if (formGroup != null) {
+      const formKeysToValidate = ['useExistingTemplate', 'assetTypeTemplateId'];
+      formKeysToValidate.forEach(controlsKey => {
+        formGroup.get(controlsKey).updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        formGroup.get(controlsKey).markAsDirty();
+      });
+    }
   }
 
   ngOnInit() {
