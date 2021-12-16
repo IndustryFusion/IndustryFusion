@@ -63,10 +63,6 @@
 		},
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
-				"ERROR": "Fehler",
-				"IDLE": "Leerlauf",
-				"OFFLINE": "Offline",
-				"RUNNING": "Läuft",
 				"STATUS_OVERVIEW": "Status-Übersicht",
 				"TABLE_HEADER": "Statusübersicht nach Vermögenswerten"
 			},
@@ -74,11 +70,7 @@
 				"CALENDER_LABEL": "Datum auswählen",
 				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Vermögenswerte)",
 				"STATUS": {
-					"DASHBOARD_OVERVIEW_LABEL": "Status in Echtzeit",
-					"ERROR": "Fehler",
-					"IDLE": "Leerlauf",
-					"OFFLINE": "Offline",
-					"RUNNING": "Läuft"
+					"DASHBOARD_OVERVIEW_LABEL": "Status in Echtzeit"
 				},
 				"TITLE": "Dashboard zur Effizienz der Ausrüstung"
 			},

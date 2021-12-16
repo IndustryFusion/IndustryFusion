@@ -63,10 +63,6 @@
 		},
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
-				"ERROR": "Error",
-				"IDLE": "Idle",
-				"OFFLINE": "Offline",
-				"RUNNING": "Running",
 				"STATUS_OVERVIEW": "Status Overview",
 				"TABLE_HEADER": "Status Overview by Asset"
 			},
@@ -74,11 +70,7 @@
 				"CALENDER_LABEL": "Pick Date",
 				"DONUT_CHART_TITLE": "Status Overview (Average of all Assets)",
 				"STATUS": {
-					"DASHBOARD_OVERVIEW_LABEL": "Realtime Status",
-					"ERROR": "Error",
-					"IDLE": "Idle",
-					"OFFLINE": "Offline",
-					"RUNNING": "Running"
+					"DASHBOARD_OVERVIEW_LABEL": "Realtime Status"
 				},
 				"TITLE": "Equipment Efficiency Dashboard"
 			},
