@@ -681,7 +681,6 @@ public class AssetService {
             assetDto.setCompanyId(null);
             assetDto.setRoom(null);
             assetDto.setRoomId(null);
-            assetDto.setSubsystemIds(null);
             assetDto.getFieldInstances().forEach(fieldInstanceDto -> fieldInstanceDto.setFieldSource(null));
             resultAssetDtos.add(assetDto);
         }
