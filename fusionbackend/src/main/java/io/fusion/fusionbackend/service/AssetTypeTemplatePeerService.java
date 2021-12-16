@@ -25,6 +25,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service
 @Transactional
 public class AssetTypeTemplatePeerService {
@@ -47,7 +49,7 @@ public class AssetTypeTemplatePeerService {
         final AssetTypeTemplate peer = assetTypeTemplateService
                 .getAssetTypeTemplate(assetTypeTemplatePeer.getPeer().getId(), false);
 
-        assetTypeTemplatePeer.setAssetTypeTemplateId(assetTypeTemplate.getId());
+        assetTypeTemplatePeer.setAssetTypeTemplate(assetTypeTemplate);
         assetTypeTemplatePeer.setPeer(peer);
 
         validate(assetTypeTemplate, assetTypeTemplatePeer);
@@ -68,4 +70,17 @@ public class AssetTypeTemplatePeerService {
             throw new RuntimeException("An asset type template peer can only refer to a published template.");
         }
     }
+
+    public AssetTypeTemplatePeer getAssetTypeTemplatePeer(final Long assetTypeTemplatePeerId) {
+        return assetTypeTemplatePeerRepository.findById(assetTypeTemplatePeerId).orElseThrow();
+    }
+
+    /**
+     * The asset type template has to remove the link to the peer itself.
+     */
+    public void delete(Long assetTypeTemplatePeerId) {
+        final AssetTypeTemplatePeer assetTypeTemplatePeer = getAssetTypeTemplatePeer(assetTypeTemplatePeerId);
+        assetTypeTemplatePeerRepository.delete(assetTypeTemplatePeer);
+    }
+
 }

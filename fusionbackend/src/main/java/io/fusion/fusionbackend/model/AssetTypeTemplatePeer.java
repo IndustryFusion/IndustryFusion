@@ -43,11 +43,12 @@ import javax.persistence.Table;
 @SuperBuilder
 @NoArgsConstructor
 public class AssetTypeTemplatePeer extends BaseEntity {
-    @Column(name = "asset_type_template_id")
-    private Long assetTypeTemplateId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "asset_type_template_id", nullable = false)
+    private AssetTypeTemplate assetTypeTemplate;
 
-    @ManyToOne
-    @JoinColumn(name = "peer_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "peer_id", nullable = false)
     private AssetTypeTemplate peer;
 
     private String customName;
@@ -61,8 +62,8 @@ public class AssetTypeTemplatePeer extends BaseEntity {
 
         super.copyFrom(sourceAssetTypeTemplatePeer);
 
-        if (sourceAssetTypeTemplatePeer.getAssetTypeTemplateId() != null) {
-            setAssetTypeTemplateId(sourceAssetTypeTemplatePeer.getAssetTypeTemplateId());
+        if (sourceAssetTypeTemplatePeer.getAssetTypeTemplate() != null) {
+            setAssetTypeTemplate(sourceAssetTypeTemplatePeer.getAssetTypeTemplate());
         }
         if (sourceAssetTypeTemplatePeer.getPeer() != null) {
             setPeer(sourceAssetTypeTemplatePeer.getPeer());

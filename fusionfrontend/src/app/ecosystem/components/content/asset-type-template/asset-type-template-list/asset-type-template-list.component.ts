@@ -192,6 +192,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   deleteAssetTypeTemplate() {
+    this.assetTypeTemplateService.deleteItem(this.activeListItem.id).subscribe();
   }
 
   updateRowCountInUrl(rowCount: number): void {

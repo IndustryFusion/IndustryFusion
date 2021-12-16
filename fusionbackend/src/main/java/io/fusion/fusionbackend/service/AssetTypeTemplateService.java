@@ -26,9 +26,10 @@ import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.AssetTypeTemplatePeer;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.enums.PublicationState;
-import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
+import io.fusion.fusionbackend.repository.AssetTypeTemplatePeerRepository;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +41,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -59,6 +60,7 @@ public class AssetTypeTemplateService {
     private final AssetTypeTemplateMapper assetTypeTemplateMapper;
     private final FieldTargetService fieldTargetService;
     private final OntologyBuilder ontologyBuilder;
+    private final AssetTypeTemplatePeerRepository assetTypeTemplatePeerRepository;
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetTypeTemplateService.class);
 
@@ -68,13 +70,15 @@ public class AssetTypeTemplateService {
                                     AssetTypeService assetTypeService,
                                     AssetTypeTemplateMapper assetTypeTemplateMapper,
                                     @Lazy FieldTargetService fieldTargetService,
-                                    OntologyBuilder ontologyBuilder) {
+                                    OntologyBuilder ontologyBuilder,
+                                    AssetTypeTemplatePeerRepository assetTypeTemplatePeerRepository) {
         this.assetTypeTemplateRepository = assetTypeTemplateRepository;
         this.assetTypeTemplatePeerService = assetTypeTemplatePeerService;
         this.assetTypeService = assetTypeService;
         this.assetTypeTemplateMapper = assetTypeTemplateMapper;
         this.fieldTargetService = fieldTargetService;
         this.ontologyBuilder = ontologyBuilder;
+        this.assetTypeTemplatePeerRepository = assetTypeTemplatePeerRepository;
     }
 
     public Set<AssetTypeTemplate> getAssetTypeTemplates() {
@@ -199,6 +203,14 @@ public class AssetTypeTemplateService {
         return targetAssetTypeTemplate;
     }
 
+    public void deleteAssetTypeTemplate(final Long assetTypeTemplateId) {
+        final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
+
+        assetTypeTemplatePeerRepository.deleteAll(assetTypeTemplate.getPeers());
+        assetTypeTemplateRepository.delete(assetTypeTemplate);
+    }
+
+
     public Long getNextPublishVersion(final Long assetTypeId) {
         final List<AssetTypeTemplate> assetTypeTemplates = this.assetTypeTemplateRepository
                 .findAllByAssetTypeId(assetTypeId);
@@ -211,14 +223,6 @@ public class AssetTypeTemplateService {
         return maxPublishedVersion.isEmpty() ? 1 : maxPublishedVersion.get() + 1;
     }
 
-    public void deleteAssetTypeTemplate(final Long assetTypeTemplateId) {
-
-        final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,
-                false);
-
-        assetTypeTemplateRepository.delete(assetTypeTemplate);
-    }
-
     public AssetTypeTemplate setAssetType(final Long assetTypeTemplateId, final Long assetTypeId) {
         final AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId,
                 false);
@@ -229,10 +233,14 @@ public class AssetTypeTemplateService {
         return assetTypeTemplate;
     }
 
-    public OntModel getAssetTypeTemplateRdf(Long assetTypeTemplateId) throws IOException {
+    public Set<AssetTypeTemplate> findSubsystemCandidates(final Long parentAssetTypeId,
+                                                          final Long assetTypeTemplateId) {
+        return assetTypeTemplateRepository.findSubsystemCandidates(parentAssetTypeId, assetTypeTemplateId);
+    }
+
+    public OntModel getAssetTypeTemplateRdf(Long assetTypeTemplateId) {
         AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        OntModel model = ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
-        return model;
+        return ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
     }
 
     public void getAssetTypeTemplateExtendedJson(Long assetTypeTemplateId, PrintWriter writer) throws IOException {
