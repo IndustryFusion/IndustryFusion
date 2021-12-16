@@ -141,4 +141,34 @@ public class AssetTypeTemplate extends BaseAsset {
             }
         }
     }
+
+    public Set<AssetTypeTemplatePeer> getPeersToCreate(AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> sourcePeers = sourceAssetTypeTemplate.getPeers();
+        Set<AssetTypeTemplatePeer> targetPeers = this.getPeers();
+
+        return sourcePeers.stream()
+                .filter(sourcePeer -> !targetPeers.contains(sourcePeer))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AssetTypeTemplatePeer> getPeersToUpdate(AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> sourcePeers = sourceAssetTypeTemplate.getPeers();
+        Set<AssetTypeTemplatePeer> targetPeers = this.getPeers();
+
+        return sourcePeers.stream()
+                .filter(targetPeers::contains)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AssetTypeTemplatePeer> getPeersToDelete(AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> sourcePeers = sourceAssetTypeTemplate.getPeers();
+
+        return this.getPeers().stream()
+                .filter(targetPeer -> !sourcePeers.contains(targetPeer))
+                .collect(Collectors.toSet());
+    }
+
 }

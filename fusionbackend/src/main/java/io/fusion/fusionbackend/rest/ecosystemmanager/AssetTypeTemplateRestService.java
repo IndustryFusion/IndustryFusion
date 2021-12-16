@@ -109,8 +109,10 @@ public class AssetTypeTemplateRestService {
     @PatchMapping(path = "/assettypetemplates/{assetTypeTemplateId}")
     public AssetTypeTemplateDto updateAssetTypeTemplate(@PathVariable final Long assetTypeTemplateId,
                                                         @RequestBody final AssetTypeTemplateDto assetTypeTemplateDto) {
-        return assetTypeTemplateMapper.toDto(assetTypeTemplateService.updateAssetTypeTemplate(assetTypeTemplateId,
-                assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), true);
+        return assetTypeTemplateMapper.toDto(
+                assetTypeTemplateService.updateAssetTypeTemplate(assetTypeTemplateDto.getAssetTypeId(),
+                        assetTypeTemplateId, assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)),
+                true);
     }
 
     @DeleteMapping(path = "/assettypetemplates/{assetTypeTemplateId}")

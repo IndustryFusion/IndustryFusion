@@ -59,11 +59,13 @@ public class AssetTypeTemplatePeerService {
     }
 
     public void validate(final AssetTypeTemplate assetTypeTemplate, final AssetTypeTemplatePeer assetTypeTemplatePeer) {
-        if (assetTypeTemplatePeer.getId() != null
-                && assetTypeTemplatePeer.getId().equals(assetTypeTemplate.getId())) {
+        if (assetTypeTemplatePeer.getPeer() == null || assetTypeTemplatePeer.getPeer().getId() == null) {
+            throw new RuntimeException("The asset type template peer is missing its peer.");
+        }
+        if (assetTypeTemplatePeer.getPeer().getId().equals(assetTypeTemplate.getId())) {
             throw new RuntimeException("An asset type template is not allowed to be a peer to itself.");
         }
-        if (assetTypeTemplateRepository.findAllSubsystemIds().contains(assetTypeTemplatePeer.getId())) {
+        if (assetTypeTemplateRepository.findAllSubsystemIds().contains(assetTypeTemplatePeer.getPeer().getId())) {
             throw new RuntimeException("An asset type template peer is not allowed to be a subsystem.");
         }
         if (assetTypeTemplatePeer.getPeer().getPublicationState().equals(PublicationState.DRAFT)) {
@@ -75,6 +77,33 @@ public class AssetTypeTemplatePeerService {
         return assetTypeTemplatePeerRepository.findById(assetTypeTemplatePeerId).orElseThrow();
     }
 
+    public void updatePeersOfAssetTypeTemplate(final AssetTypeTemplate targetAssetTypeTemplate,
+                                               final AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> peersToCreate = targetAssetTypeTemplate.getPeersToCreate(sourceAssetTypeTemplate);
+        peersToCreate.forEach(peer -> createAssetTypeTemplatePeer(targetAssetTypeTemplate, peer));
+
+        Set<AssetTypeTemplatePeer> peersToUpdate = targetAssetTypeTemplate.getPeersToUpdate(sourceAssetTypeTemplate);
+        peersToUpdate.forEach(peer -> updateAssetTypeTemplatePeer(targetAssetTypeTemplate, peer.getId(), peer));
+
+        Set<AssetTypeTemplatePeer> peersToDelete = targetAssetTypeTemplate.getPeersToDelete(sourceAssetTypeTemplate);
+        peersToDelete.forEach(peer -> delete(peer.getId()));
+        peersToDelete.forEach(targetAssetTypeTemplate.getPeers()::remove);
+    }
+
+    private void updateAssetTypeTemplatePeer(final AssetTypeTemplate assetTypeTemplate,
+                                             final Long assetTypeTemplatePeerId,
+                                             final AssetTypeTemplatePeer sourceAssetTypeTemplatePeer) {
+        final AssetTypeTemplatePeer targetAssetTypeTemplatePeer = getAssetTypeTemplatePeer(assetTypeTemplatePeerId);
+
+        targetAssetTypeTemplatePeer.copyFrom(sourceAssetTypeTemplatePeer);
+        targetAssetTypeTemplatePeer.setAssetTypeTemplate(assetTypeTemplate);
+
+        validate(assetTypeTemplate, targetAssetTypeTemplatePeer);
+
+        assetTypeTemplatePeerRepository.save(targetAssetTypeTemplatePeer);
+    }
+
     /**
      * The asset type template has to remove the link to the peer itself.
      */
@@ -82,5 +111,4 @@ public class AssetTypeTemplatePeerService {
         final AssetTypeTemplatePeer assetTypeTemplatePeer = getAssetTypeTemplatePeer(assetTypeTemplatePeerId);
         assetTypeTemplatePeerRepository.delete(assetTypeTemplatePeer);
     }
-
 }
