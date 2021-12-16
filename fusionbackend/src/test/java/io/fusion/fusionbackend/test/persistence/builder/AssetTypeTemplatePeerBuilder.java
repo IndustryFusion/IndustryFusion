@@ -39,7 +39,7 @@ public class AssetTypeTemplatePeerBuilder implements Builder<AssetTypeTemplatePe
         } else {
             assetTypeTemplate.getPeers().add(assetTypeTemplatePeer);
         }
-        assetTypeTemplatePeer.setAssetTypeTemplateId(assetTypeTemplate.getId());
+        assetTypeTemplatePeer.setAssetTypeTemplate(assetTypeTemplate);
 
         return assetTypeTemplatePeer;
     }

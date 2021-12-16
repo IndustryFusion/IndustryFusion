@@ -96,8 +96,7 @@ public class AssetTypeTemplate extends BaseAsset {
     @Builder.Default
     private Set<AssetTypeTemplate> subsystems = new LinkedHashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "asset_type_template_id")
+    @OneToMany(mappedBy = "assetTypeTemplate", fetch = FetchType.EAGER)
     @Builder.Default
     private Set<AssetTypeTemplatePeer> peers = new LinkedHashSet<>();
 
