@@ -18,8 +18,10 @@ package io.fusion.fusionbackend.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
+import io.fusion.fusionbackend.dto.AssetTypeTemplatePeerDto;
 import io.fusion.fusionbackend.dto.FieldTargetDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
+import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplatePeerMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
@@ -58,6 +60,7 @@ public class AssetTypeTemplateService {
     private final AssetTypeTemplatePeerService assetTypeTemplatePeerService;
     private final AssetTypeService assetTypeService;
     private final AssetTypeTemplateMapper assetTypeTemplateMapper;
+    private final AssetTypeTemplatePeerMapper assetTypeTemplatePeerMapper;
     private final FieldTargetService fieldTargetService;
     private final OntologyBuilder ontologyBuilder;
     private final AssetTypeTemplatePeerRepository assetTypeTemplatePeerRepository;
@@ -69,6 +72,7 @@ public class AssetTypeTemplateService {
                                     AssetTypeTemplatePeerService assetTypeTemplatePeerService,
                                     AssetTypeService assetTypeService,
                                     AssetTypeTemplateMapper assetTypeTemplateMapper,
+                                    AssetTypeTemplatePeerMapper assetTypeTemplatePeerMapper,
                                     @Lazy FieldTargetService fieldTargetService,
                                     OntologyBuilder ontologyBuilder,
                                     AssetTypeTemplatePeerRepository assetTypeTemplatePeerRepository) {
@@ -76,6 +80,7 @@ public class AssetTypeTemplateService {
         this.assetTypeTemplatePeerService = assetTypeTemplatePeerService;
         this.assetTypeService = assetTypeService;
         this.assetTypeTemplateMapper = assetTypeTemplateMapper;
+        this.assetTypeTemplatePeerMapper = assetTypeTemplatePeerMapper;
         this.fieldTargetService = fieldTargetService;
         this.ontologyBuilder = ontologyBuilder;
         this.assetTypeTemplatePeerRepository = assetTypeTemplatePeerRepository;
@@ -273,10 +278,23 @@ public class AssetTypeTemplateService {
 
         Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos = assetTypeTemplateMapper
                 .toDtoSet(assetTypeTemplates, true);
+
+        publishedAssetTypeTemplatesDtos = removeUnnecessaryItems(publishedAssetTypeTemplatesDtos);
         sortFieldTargets(publishedAssetTypeTemplatesDtos);
+        sortPeers(publishedAssetTypeTemplatesDtos);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
         return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(publishedAssetTypeTemplatesDtos));
+    }
+
+    private Set<AssetTypeTemplateDto> removeUnnecessaryItems(Set<AssetTypeTemplateDto> assetTypeTemplateDtos) {
+        Set<AssetTypeTemplateDto> resultAssetDtos = new LinkedHashSet<>();
+        for (AssetTypeTemplateDto assetTypeTemplateDto : assetTypeTemplateDtos) {
+            assetTypeTemplateDto.setPeerIds(null);
+            assetTypeTemplateDto.getPeers().forEach(assetTypeTemplatePeerDto -> assetTypeTemplatePeerDto.setPeer(null));
+            resultAssetDtos.add(assetTypeTemplateDto);
+        }
+        return resultAssetDtos;
     }
 
     private void sortFieldTargets(Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos) {
@@ -288,6 +306,15 @@ public class AssetTypeTemplateService {
         }
     }
 
+    private void sortPeers(Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos) {
+        for (AssetTypeTemplateDto publishedAssetTypeTemplatesDto : publishedAssetTypeTemplatesDtos) {
+            publishedAssetTypeTemplatesDto.setFieldTargetIds(null);
+            Set<AssetTypeTemplatePeerDto> sortedAssetTypeTemplatePeerDtos = new LinkedHashSet<>(BaseZipImportExport
+                    .toSortedList(publishedAssetTypeTemplatesDto.getPeers()));
+            publishedAssetTypeTemplatesDto.setPeers(sortedAssetTypeTemplatePeerDtos);
+        }
+    }
+
     public int importMultipleFromJson(byte[] fileContent) throws IOException {
         Set<AssetTypeTemplateDto> assetTypeTemplateDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
                 new TypeReference<>() {});
@@ -295,12 +322,14 @@ public class AssetTypeTemplateService {
                 .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-        Map<Long, Set<Long>> assetTypeTemplateSubsystemMap = new HashMap<>();
+        Map<Long, Set<Long>> assetTypeTemplateSubsystemDtoMap = new HashMap<>();
+        Map<Long, Set<AssetTypeTemplatePeerDto>> assetTypeTemplatePeerDtoMap = new HashMap<>();
 
         int entitySkippedCount = 0;
         for (AssetTypeTemplateDto assetTypeTemplateDto : BaseZipImportExport.toSortedList(assetTypeTemplateDtos)) {
             if (!existingAssetTypeTemplateIds.contains(assetTypeTemplateDto.getId())) {
-                removeAndCacheSubsystems(assetTypeTemplateSubsystemMap, assetTypeTemplateDto);
+                removeAndCacheSubsystems(assetTypeTemplateSubsystemDtoMap, assetTypeTemplateDto);
+                removeAndCachePeers(assetTypeTemplatePeerDtoMap, assetTypeTemplateDto);
 
                 AssetTypeTemplate assetTypeTemplate = assetTypeTemplateMapper.toEntity(assetTypeTemplateDto);
                 assetTypeTemplate.setFieldTargets(new LinkedHashSet<>());
@@ -313,20 +342,28 @@ public class AssetTypeTemplateService {
         }
 
         fieldTargetService.createFieldTargetsFromAssetTypeTemplateDtos(assetTypeTemplateDtos);
-        addCachedSubsystemsToAssetTypeTemplates(assetTypeTemplateSubsystemMap);
+        addCachedSubsystemsToAssetTypeTemplates(assetTypeTemplateSubsystemDtoMap);
+        addCachedPeersToAssetTypeTemplates(assetTypeTemplatePeerDtoMap);
 
         return entitySkippedCount;
     }
 
-    private void removeAndCacheSubsystems(final Map<Long, Set<Long>> assetTypeTemplateSubsystemMap,
+    private void removeAndCacheSubsystems(final Map<Long, Set<Long>> assetTypeTemplateSubsystemDtoMap,
                                           final AssetTypeTemplateDto assetTypeTemplateDto) {
-        assetTypeTemplateSubsystemMap.put(assetTypeTemplateDto.getId(), assetTypeTemplateDto.getSubsystemIds());
+        assetTypeTemplateSubsystemDtoMap.put(assetTypeTemplateDto.getId(), assetTypeTemplateDto.getSubsystemIds());
         assetTypeTemplateDto.setSubsystemIds(null);
     }
 
-    private void addCachedSubsystemsToAssetTypeTemplates(final Map<Long, Set<Long>> assetTypeTemplateSubsystemMap) {
+    private void removeAndCachePeers(final Map<Long, Set<AssetTypeTemplatePeerDto>> assetTypeTemplatePeerDtoMap,
+                                          final AssetTypeTemplateDto assetTypeTemplateDto) {
+        assetTypeTemplatePeerDtoMap.put(assetTypeTemplateDto.getId(), assetTypeTemplateDto.getPeers());
+        assetTypeTemplateDto.setPeers(new LinkedHashSet<>());
+        assetTypeTemplateDto.setPeerIds(null);
+    }
 
-        assetTypeTemplateSubsystemMap.forEach((assetTypeTemplateId, subsystemIds) -> {
+    private void addCachedSubsystemsToAssetTypeTemplates(final Map<Long, Set<Long>> assetTypeTemplateSubsystemDtoMap) {
+
+        assetTypeTemplateSubsystemDtoMap.forEach((assetTypeTemplateId, subsystemIds) -> {
             AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
             Set<AssetTypeTemplate> subsystems = subsystemIds.stream()
                     .map(id -> getAssetTypeTemplate(id, false))
@@ -335,6 +372,27 @@ public class AssetTypeTemplateService {
             assetTypeTemplate.setSubsystems(subsystems);
             updateAssetTypeTemplate(assetTypeTemplate.getAssetType().getId(),
                     assetTypeTemplate.getId(), assetTypeTemplate);
+        });
+    }
+
+    private void addCachedPeersToAssetTypeTemplates(
+            final Map<Long, Set<AssetTypeTemplatePeerDto>> assetTypeTemplatePeerDtoMap
+    ) {
+
+        assetTypeTemplatePeerDtoMap.forEach((assetTypeTemplateId, peerDtos) -> {
+            AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
+
+            for (AssetTypeTemplatePeerDto peerDto : BaseZipImportExport.toSortedList(peerDtos)) {
+                AssetTypeTemplatePeer assetTypeTemplatePeer = assetTypeTemplatePeerMapper.toEntity(peerDto);
+                assetTypeTemplatePeer.setPeer(getAssetTypeTemplate(peerDto.getPeerId(), false));
+
+                assetTypeTemplatePeerService.createAssetTypeTemplatePeer(assetTypeTemplate, assetTypeTemplatePeer);
+            }
+
+            if (!assetTypeTemplate.getPeers().isEmpty()) {
+                updateAssetTypeTemplate(assetTypeTemplate.getAssetType().getId(),
+                        assetTypeTemplate.getId(), assetTypeTemplate);
+            }
         });
     }
 

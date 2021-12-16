@@ -22,7 +22,6 @@ import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.dto.FieldDto;
 import io.fusion.fusionbackend.dto.mappers.FieldMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldOptionMapper;
-import io.fusion.fusionbackend.exception.InvalidException;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.Field;
@@ -40,7 +39,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.io.InvalidClassException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

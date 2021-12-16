@@ -44,8 +44,8 @@ public class AssetTypeTemplatePeerService {
         this.assetTypeTemplateService = assetTypeTemplateService;
     }
 
-    public void createAssetTypeTemplatePeer(final AssetTypeTemplate assetTypeTemplate,
-                                            AssetTypeTemplatePeer assetTypeTemplatePeer) {
+    public AssetTypeTemplatePeer createAssetTypeTemplatePeer(final AssetTypeTemplate assetTypeTemplate,
+                                                             AssetTypeTemplatePeer assetTypeTemplatePeer) {
         final AssetTypeTemplate peer = assetTypeTemplateService
                 .getAssetTypeTemplate(assetTypeTemplatePeer.getPeer().getId(), false);
 
@@ -56,6 +56,8 @@ public class AssetTypeTemplatePeerService {
 
         AssetTypeTemplatePeer persistedPeer = assetTypeTemplatePeerRepository.save(assetTypeTemplatePeer);
         assetTypeTemplate.getPeers().add(persistedPeer);
+
+        return assetTypeTemplatePeer;
     }
 
     public void validate(final AssetTypeTemplate assetTypeTemplate, final AssetTypeTemplatePeer assetTypeTemplatePeer) {
