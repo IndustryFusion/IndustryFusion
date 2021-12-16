@@ -58,6 +58,30 @@ export class CustomFormValidators {
 
   /**
    * The FormControl using this validator is required
+   * if the FormControl specified trough otherControlName is true.
+   * Hereby, the values null, undefined, the number 0 and the string '' are considered as empty.
+   *
+   * @param otherControlName: Name of the other control.
+   */
+  public static requiredIfOtherIsTrue(otherControlName: string): ValidatorFn {
+    return (control: FormControl): { [key: string]: any } => {
+      if (control.parent instanceof FormGroup) {
+        const otherControl = control.parent.get(otherControlName);
+        if ( otherControl != null && otherControl.value === true &&
+          ( control.value === null || control.value === '' )) {
+          return {
+            required: true
+          };
+        }
+      }
+
+      return null;
+    };
+  }
+
+
+  /**
+   * The FormControl using this validator is required
    * if any FormControl specified in the Array of otherControlNames is not "empty".
    * Hereby, the values null, undefined, the number 0 and the string '' are considered as empty.
    *
