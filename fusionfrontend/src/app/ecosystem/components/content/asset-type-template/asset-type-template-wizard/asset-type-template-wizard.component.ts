@@ -237,13 +237,11 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   }
 
   private updateTemplate() {
-    if (this.assetTypeTemplateForm.get('wasPublished')?.value) {
-      this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
-    }
-
     this.addNewFieldTargets();
     this.updateFieldTargets();
     this.deleteRemovedFieldTargets();
+
+    this.updateTemplateWithPeers();
   }
 
   private addNewFieldTargets() {
@@ -270,5 +268,9 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
         this.fieldTargetService.deleteItem(this.assetTypeTemplate.id, fieldTarget.id).subscribe();
       }
     });
+  }
+
+  private updateTemplateWithPeers() {
+    this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
   }
 }

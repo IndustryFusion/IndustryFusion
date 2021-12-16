@@ -130,7 +130,7 @@ public class AssetTypeTemplateService {
         }
     }
 
-    private void validate(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
+    private void validate(final AssetTypeTemplate assetTypeTemplate, final AssetType assetType) {
         Objects.requireNonNull(assetTypeTemplate.getPublicationState(), "Publication state must be set but is null.");
 
         if (assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)) {
@@ -144,7 +144,7 @@ public class AssetTypeTemplateService {
             throw new RuntimeException("Unknown publication state: " + assetTypeTemplate.getPublicationState());
         }
 
-        if (assetType != null && existsDraftToAssetType(assetType)) {
+        if (assetTypeTemplate.getId() == null && assetType != null && existsDraftToAssetType(assetType)) {
             String exception = "It is forbidden to create a new asset type template draft if another one exists.";
             throw new RuntimeException(exception);
         }
@@ -194,11 +194,21 @@ public class AssetTypeTemplateService {
         return false;
     }
 
-    public AssetTypeTemplate updateAssetTypeTemplate(final Long assetTypeTemplateId,
+    public AssetTypeTemplate updateAssetTypeTemplate(final Long assetTypeId,
+                                                     final Long assetTypeTemplateId,
                                                      final AssetTypeTemplate sourceAssetTypeTemplate) {
         final AssetTypeTemplate targetAssetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
+        final AssetType assetType = assetTypeService.getAssetType(assetTypeId);
 
+        validate(sourceAssetTypeTemplate, assetType);
+
+        Set<AssetTypeTemplatePeer> savedPeersToBypassCopyingToTarget = sourceAssetTypeTemplate.getPeers();
+        sourceAssetTypeTemplate.setPeers(new LinkedHashSet<>());
         targetAssetTypeTemplate.copyFrom(sourceAssetTypeTemplate);
+
+        sourceAssetTypeTemplate.setPeers(savedPeersToBypassCopyingToTarget);
+        assetTypeTemplatePeerService
+                 .updatePeersOfAssetTypeTemplate(targetAssetTypeTemplate, sourceAssetTypeTemplate);
 
         return targetAssetTypeTemplate;
     }
@@ -323,7 +333,8 @@ public class AssetTypeTemplateService {
                     .collect(Collectors.toSet());
 
             assetTypeTemplate.setSubsystems(subsystems);
-            updateAssetTypeTemplate(assetTypeTemplate.getId(), assetTypeTemplate);
+            updateAssetTypeTemplate(assetTypeTemplate.getAssetType().getId(),
+                    assetTypeTemplate.getId(), assetTypeTemplate);
         });
     }
 

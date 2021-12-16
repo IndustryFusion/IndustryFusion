@@ -26,6 +26,7 @@ import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type
 import { FormGroup } from '@angular/forms';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { AssetTypeTemplateWizardComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard.component';
+import { ID } from '@datorama/akita';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -35,9 +36,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AssetTypeTemplatePageComponent implements OnInit {
 
+  private assetTypeTemplateId: ID;
   public assetTypeTemplate: AssetTypeTemplate;
   public metrics: FieldTarget[];
   public attributes: FieldTarget[];
+
   private publishDialogRef: DynamicDialogRef;
   private updateWizardRef: DynamicDialogRef;
   private warningDialogRef: DynamicDialogRef;
@@ -56,14 +59,18 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.metrics = [];
     this.attributes = [];
 
-    const assetTypeTemplateId =  Number.parseInt(this.route.snapshot.paramMap.get('assetTypeTemplateId'), 10);
+    this.assetTypeTemplateId =  Number.parseInt(this.route.snapshot.paramMap.get('assetTypeTemplateId'), 10);
+    this.initAssetTypeTemplate(this.assetTypeTemplateId);
+
+    this.assetTypeTemplateService.setActive(this.assetTypeTemplateId);
+  }
+
+  private initAssetTypeTemplate(assetTypeTemplateId: ID) {
     if (assetTypeTemplateId) {
       this.fieldTargetService.getItemsByAssetTypeTemplate(assetTypeTemplateId).subscribe(() =>
         this.assetTypeTemplateComposedQuery.selectAssetTypeTemplate(assetTypeTemplateId)
           .subscribe(assetTypeTemplate => this.updateAssetTypeTemplate(assetTypeTemplate)));
     }
-
-    this.assetTypeTemplateService.setActive(assetTypeTemplateId);
   }
 
   private updateAssetTypeTemplate(assetTypeTemplate: AssetTypeTemplate) {
@@ -114,12 +121,13 @@ export class AssetTypeTemplatePageComponent implements OnInit {
         width: '70%',
       }
     );
-    this.updateWizardRef.onClose.subscribe((assetTypeTemplateForm: FormGroup) =>
-      this.onCloseUpdateWizard(assetTypeTemplateForm));
-  }
-
-  private onCloseUpdateWizard(assetTypeTemplateForm: FormGroup) {
-    this.publishAssetTypeTemplate(assetTypeTemplateForm);
+    this.updateWizardRef.onClose.subscribe((assetTypeTemplateFormIfPublished: FormGroup) => {
+        if (assetTypeTemplateFormIfPublished) {
+          this.publishAssetTypeTemplate(assetTypeTemplateFormIfPublished);
+        } else {
+          this.initAssetTypeTemplate(this.assetTypeTemplateId);
+        }
+    });
   }
 
   private publishAssetTypeTemplate(assetTypeTemplateForm: FormGroup) {
