@@ -5,15 +5,30 @@
 				"APPLY": "Postulez",
 				"BACK": "Retour",
 				"CANCEL": "annuler",
-				"CONTINUE": "",
+				"CONFIRM": "Confirmer",
+				"CONTINUE": "Continuer",
 				"CREATE": "Créer",
 				"EDIT": "edit",
 				"FINISH": "Finition",
 				"NEXT": "Suivant",
-        "ONBOARD": "A bord",
-        "PUBLISH": "Publier",
+				"ONBOARD": "A bord",
+				"PUBLISH": "Publier",
+				"SAVE": "Enregistrer",
 				"START": "Démarrer",
 				"UPDATE": "Mise à jour"
+			},
+			"HEADERS": {
+				"DASHBOARDS": "Tableaux de bord",
+				"ECO_SYSTEM_MANAGER": "Gestionnaire d'écosystème",
+				"FAB_MANAGER": "Directeur d'usine",
+				"FLEET_MANAGER": "Directeur de la flotte",
+				"FUSION_APPLETS": "Applets Fusion"
+			},
+			"STATUSES": {
+				"ERROR": "erreur",
+				"IDLE": "Au repos",
+				"OFFLINE": "Hors ligne",
+				"RUNNING": "En cours d'exécution"
 			},
 			"TABLE": {
 				"PAGINATION": {
@@ -52,9 +67,9 @@
 				"IDLE": "Au repos",
 				"OFFLINE": "Hors ligne",
 				"RUNNING": "En cours d'exécution",
-				"TABLE_HEADER": "Aperçu de la situation par actif",
-        "STATUS_OVERVIEW": "Aperçu du statut"
-      },
+				"STATUS_OVERVIEW": "Aperçu du statut",
+				"TABLE_HEADER": "Aperçu de la situation par actif"
+			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Date de sélection",
 				"DONUT_CHART_TITLE": "Aperçu du statut (moyenne de tous les actifs)",
@@ -79,9 +94,9 @@
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
-        "ASSET_TYPE_NAME": "Asset type name",
-        "ASSET_TYPE_TEMPLATES": "Asset type templates",
-        "ASSET_TYPES": "Types d'actifs",
+				"ASSET_TYPES": "Types d'actifs",
+				"ASSET_TYPE_NAME": "Asset type name",
+				"ASSET_TYPE_TEMPLATES": "Asset type templates",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Confirmation de la suppression du type d'actif",
 					"MESSAGE": "Etes-vous sûr de vouloir supprimer le type d'actif {{ itemToDelete }}?"
@@ -185,32 +200,32 @@
 				"METRIC_AND_ATTRIBUTE": "Métrique et attribut",
 				"NO_METRICS_AND_ATTRIBUTES": "Pas de métriques et d'attributs"
 			},
-      "QUANTITY_TYPE_DIALOG": {
-        "BASE_UNIT": "Unité de base",
-        "CATEGORICAL": "Catégorique",
-        "DATA_TYPE": "Type de données",
-        "NUMERIC": "Numérique",
-        "NO_BASE_UNIT_WARNING": "Aucune unité de base sélectionnée",
-        "BASE_UNIT_PLACEHOLDER": "Sélectionnez une unité de base"
-      },
-      "QUANTITY_TYPE_LIST": {
-        "BASE_UNIT": "Unité de base",
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Supprimer la confirmation du type de quantité",
-          "MESSAGE": "Êtes-vous sûr de vouloir supprimer le type de quantité {{ itemToDelete }}?"
-        },
-        "CREATE_QUANTITY_TYPE": "Créer le type de quantité",
-        "DATA_TYPE": "Type de données",
-        "DESCRIPTION": "Description",
-        "HEADER": {
-          "CREATE": "Créer un nouveau type de quantité",
-          "EDIT": "Modifier la quantité Type"
-        },
-        "NO_QUANTITY_TYPES": "Non Types de quantité",
-        "QUANTITY_NAME": "nom de la quantité",
-        "QUANTITY_TYPES": "Types de quantités"
+			"QUANTITY_TYPE_DIALOG": {
+				"BASE_UNIT": "Unité de base",
+				"BASE_UNIT_PLACEHOLDER": "Sélectionnez une unité de base",
+				"CATEGORICAL": "Catégorique",
+				"DATA_TYPE": "Type de données",
+				"NO_BASE_UNIT_WARNING": "Aucune unité de base sélectionnée",
+				"NUMERIC": "Numérique"
 			},
-			"SUBHEADER": {
+			"QUANTITY_TYPE_LIST": {
+				"BASE_UNIT": "Unité de base",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Supprimer la confirmation du type de quantité",
+					"MESSAGE": "Êtes-vous sûr de vouloir supprimer le type de quantité {{ itemToDelete }}?"
+				},
+				"CREATE_QUANTITY_TYPE": "Créer le type de quantité",
+				"DATA_TYPE": "Type de données",
+				"DESCRIPTION": "Description",
+				"HEADER": {
+					"CREATE": "Créer un nouveau type de quantité",
+					"EDIT": "Modifier la quantité Type"
+				},
+				"NO_QUANTITY_TYPES": "Non Types de quantité",
+				"QUANTITY_NAME": "nom de la quantité",
+				"QUANTITY_TYPES": "Types de quantités"
+			},
+			"SUB_HEADER": {
 				"ASSET_TYPES": "Types d'actifs",
 				"ASSET_TYPE_TEMPLATES": "Modèles de types d'actifs",
 				"METRICS_AND_ATTRIBUTES": "Métriques et attributs",
@@ -240,15 +255,15 @@
 		},
 		"FACTORY": {
 			"ASSETS_LIST": {
-        "ONBOARD_NEW_ASSET": "Embarquer un nouvel actif",
-        "ASSIGN_ITEM_TEXT": "Atout pour la chambre",
+				"ASSIGN_ITEM_TEXT": "Atout pour la chambre",
 				"CATEGORY": "Catégorie",
 				"DIALOG_HEADING": {
 					"FACTORY_SITE_ASSIGNMENT": "Affectation du site de l'usine",
 					"ON_BOARDING": "Sélectionnez l'actif à intégrer",
 					"ROOM_ASSIGNMENT": "Attribution des salles"
 				},
-				"NO_ASSETS": "Aucun actif"
+				"NO_ASSETS": "Aucun actif",
+				"ONBOARD_NEW_ASSET": "Embarquer un nouvel actif"
 			},
 			"ASSET_CARD": {
 				"CONTROL_SYSTEM_TYPE": "Type de système de contrôle",
@@ -383,74 +398,152 @@
 		},
 		"FUSION_APPLETS": {
 			"CREATE": {
-				"APPLET_NAME": "",
-				"PRIORITY_PLACEHOLDER": ""
+				"APPLET_NAME": "Nom de l'applet",
+				"PRIORITY_PLACEHOLDER": "Choisissez-en un"
 			},
 			"EDITOR": {
 				"ACTION_LIST": {
-					"ACTION": "",
+					"ACTION": "action",
 					"APPLET_ACTION": {
 						"ACTION_MAIL": {
-							"CHOOSE_RECIPIENTS_LABEL": "",
-							"HEADER": "",
-							"RECIPIENTS_PLACEHOLDER": "",
-							"SELECTED_RECIPIENTS_LABEL": ""
+							"CHOOSE_RECIPIENTS_LABEL": "Choisir les destinataires du courriel",
+							"HEADER": "Configurer la notification par courriel",
+							"RECIPIENTS_PLACEHOLDER": "Sélectionnez l'adresse électronique",
+							"SELECTED_RECIPIENTS_LABEL": "Destinataires des e-mails sélectionnés"
 						},
 						"ACTION_WEBHOOK": {
-							"INPUT_PLACEHOLDER": "",
-							"MESSAGE_HEADER_LABEL": "",
-							"SELECTED_WEBHOOK_LABEL": "",
-							"WEBHOOK_URL": ""
+							"INPUT_PLACEHOLDER": "Entrez la valeur",
+							"MESSAGE_HEADER_LABEL": "En-têtes de message",
+							"SELECTED_WEBHOOK_LABEL": "En-têtes de message sélectionnés",
+							"WEBHOOK_URL": "URL de la page web"
 						},
-						"EMAIL": "",
-						"EMAIL_TEXT": "",
-						"WEBHOOK": "",
-						"WEBHOOK_TEXT": ""
+						"EMAIL": "Courriel",
+						"EMAIL_TEXT": "Envoie une notification par courriel à un ou plusieurs destinataires spécifiés.",
+						"WEBHOOK": "webhook",
+						"WEBHOOK_TEXT": "Déclenche un format de message défini vers un webhook spécifié."
 					},
-					"CREATE_ACTION_BUTTON": ""
+					"CREATE_ACTION_BUTTON": "Créer une nouvelle action"
 				},
-				"AUTOMATIC_RESET_CHECKBOX": "",
+				"AUTOMATIC_RESET_CHECKBOX": "Activer la réinitialisation automatique",
 				"CONDITIONS": {
 					"CONDITIONS_VALUE": {
-						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "",
-						"CHOOSE_TRIGGER_ASSET": "",
-						"CONDITION_LABEL": "",
-						"CONDITION_TYPE_LABEL": "",
-						"DEFINE_DURATION": "",
+						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "Moyenne et écart-type Base de référence",
+						"CHOOSE_TRIGGER_ASSET": "Choisissez l'actif de déclenchement",
+						"CONDITION_LABEL": "Choisir la condition",
+						"CONDITION_TYPE_LABEL": "Choisissez le type de condition",
+						"DEFINE_DURATION": "Définir la durée",
 						"LIMIT_SELECTOR": {
-							"CALCULATE_CONTROL_LIMIT": "",
-							"STANDARD_DEVIATION": ""
+							"CALCULATE_CONTROL_LIMIT": "Calculez la limite de contrôle en utilisant",
+							"STANDARD_DEVIATION": "{{number}} Ecart-type"
 						},
-						"METRIC_LABEL": "",
-						"MINIMAL_INSTANCES_FOR_CALCULATION": "",
-						"SETUP_CONDITION": "",
-						"VALUE_LABEL": ""
+						"METRIC_LABEL": "Choisir le système métrique",
+						"MINIMAL_INSTANCES_FOR_CALCULATION": "Instances minimales de calcul",
+						"SETUP_CONDITION": "Condition de mise en place",
+						"VALUE_LABEL": "Entrez la valeur"
 					},
-					"CREATE_TRIGGER_BUTTON": "",
-					"TRIGGER": ""
+					"CREATE_TRIGGER_BUTTON": "Créer un nouveau déclencheur",
+					"TRIGGER": "Déclencheur"
 				},
-				"HEADER": ""
+				"HEADER": "Attention"
 			},
 			"LIST": {
-				"APPLET": "",
-				"APPLETS": "",
-				"APPLET_NAME": "",
-				"CONDITION_SUMMARY": "",
-				"CREATE_APPLET_BUTTON": "",
-				"CREATE_DIALOG_HEADER": "",
-				"NO_APPLET": ""
+				"APPLET": "Applet",
+				"APPLETS": "Applets",
+				"APPLET_NAME": "Nom de l'applet",
+				"CONDITION_SUMMARY": "Résumé de la situation",
+				"CREATE_APPLET_BUTTON": "Créer une applet",
+				"CREATE_DIALOG_HEADER": "Créer une applet",
+				"NO_APPLET": "Pas d'applet"
 			},
-			"SUBHEADER": {
-				"ARCHIVE": "",
-				"DETAIL": "",
-				"EDITOR": "",
-				"OVERVIEW": ""
+			"SUB_HEADER": {
+				"ARCHIVE": "archives",
+				"DETAIL": "Détail",
+				"EDITOR": "Rédacteur en chef",
+				"OVERVIEW": "Vue d'ensemble"
 			}
 		},
 		"NOTIFICATIONS": {
 			"SUB_HEADER": {
-				"CLEARED": "",
-				"OPEN": ""
+				"CLEARED": "Nettoyé",
+				"OPEN": "Ouvrez"
+			}
+		},
+		"SHARED": {
+			"CONTENT": {
+				"NOTIFICATIONS_LIST": {
+					"CLEARED_PLURAL": "Nettoyé",
+					"CLEARED_SINGULAR": "Nettoyé",
+					"CLOSE_DIALOG": {
+						"HEADER": "Confirmation de la notification de fermeture",
+						"MESSAGE_PLURAL": "Êtes-vous sûr de vouloir effacer les notifications {{ notificationCount }} ?",
+						"MESSAGE_SINGULAR": "Etes-vous sûr de vouloir effacer la notification{{ notificationToClose }}?"
+					},
+					"CONDITION": "Condition",
+					"DATE_AND_TIME": "Date et heure",
+					"MEASURED_VALUE": "Valeur mesurée",
+					"NOTIFICATION": "{{ statusName }} notification",
+					"NOTIFICATIONS": "{{ statusName }} notifications",
+					"NOTIFICATIONS_SELECTED": "{{ statusName }} Notifications sélectionnées",
+					"NOTIFICATIONS_WITH_STATUS": "{{ statusName }} notifications",
+					"NOTIFICATION_SELECTED": "{{ statusName }} Notification sélectionnée",
+					"NOTIFICATION_WITH_STATUS": "{{ statusName }} notification",
+					"NO_NOTIFICATION": "Non {{ statusName }} Notifications",
+					"NO_NOTIFICATION_SELECTED": "Non {{ statusName }} Notification sélectionnée",
+					"OPEN_PLURAL": "Ouvrez",
+					"OPEN_SINGULAR": "Ouvrez",
+					"RULE_NAME": "Nom de la règle"
+				}
+			},
+			"UI": {
+				"HEADER": {
+					"LOGOUT": "Déconnexion",
+					"MY_ACCOUNT_LABEL": "Mon compte (Ouvrir dans Keycloak)",
+					"PAGE_TITLE": {
+						"APPLETS": "Applets",
+						"DASHBOARDS": "Tableaux de bord",
+						"ECOSYSTEM_MANAGER": "Gestionnaire d'écosystème",
+						"FACTORY_MANAGER": "Directeur d'usine",
+						"FLEET_MANAGER": "Directeur de la flotte",
+						"NOTIFICATIONS": "notifications",
+						"SMART_FACTORY": "Usine intelligente"
+					}
+				},
+				"ICONS_OPTIONS_MENU": {
+					"ASSIGN": "Assignez {{ assignItemText }}",
+					"CLONE": "Clone",
+					"CREATE": "Créer un nouveau {{ createItemText }}",
+					"DELETE": "Supprimer",
+					"RENAME": "Renommer",
+					"UPDATE": "Mise à jour {{ updateItemText }}"
+				},
+				"TABLE_FILTER": {
+					"ADD_FILTER": "Ajouter un filtre",
+					"CLEAR_ALL": "Effacer tout",
+					"DATE_FILTER": {
+						"DATE_AND_TIME_FILTER": "Filtre date et heure",
+						"END_DATE": "Date de fin",
+						"START_DATE": "Date de début"
+					},
+					"FILTER": "Filtrez",
+					"FILTER_BUTTON": "Filtrez",
+					"NOT_SET": "Non défini",
+					"NUMERIC_FILTER": {
+						"LONG_TERM_PRIORITY": "Long terme (bleu)",
+						"MEDIUM_TERM_PRIORITY": "Moyen terme (gris)",
+						"SHORT_TERM_PRIORITY": "Critique (rouge)"
+					},
+					"SELECT": "Sélectionnez",
+					"VALUE": "Valeur",
+					"VALUES": "Valeurs"
+				},
+				"TABLE_SEARCHBAR": {
+					"SEARCH": "Recherchez"
+				},
+				"TABLE_SELECTED_ITEMS_BAR": {
+					"DESELECT": "Désélectionner",
+					"ITEMS_SELECTED": " {{ itemType }} sélectionné",
+					"NO_ITEM_SELECTED": "Non {{ itemType }} sélectionné"
+				}
 			}
 		}
 	}

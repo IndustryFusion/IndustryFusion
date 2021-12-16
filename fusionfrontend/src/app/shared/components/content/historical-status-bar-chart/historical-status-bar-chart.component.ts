@@ -20,6 +20,7 @@ import * as moment from 'moment';
 import { StatusPoint } from '../../../../factory/models/status.model';
 import { environment } from '../../../../../environments/environment';
 import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -41,34 +42,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   private readonly MAX_DATASETS = 80;
   private readonly START_GROUPING_DATASET_COUNT = 80;
 
-  constructor() {
-  }
-
-  private static createDatasetByStatus(firstStatusPointOfGroup: StatusPoint, timeOfStartOfNextGroup: moment.Moment) {
-    const durationSec = (timeOfStartOfNextGroup.toDate().valueOf() - firstStatusPointOfGroup.time.toDate().valueOf()) / 1000.0;
-    const dataset = { type: 'horizontalBar', data:  [ { x: durationSec, t: firstStatusPointOfGroup.time } ],
-      label: '', backgroundColor: '' };
-
-    switch (firstStatusPointOfGroup.status) {
-      case OispDeviceStatus.OFFLINE:
-        dataset.label = 'Offline';
-        dataset.backgroundColor = '#EAEAEA';
-        break;
-      case OispDeviceStatus.IDLE:
-        dataset.label = 'Idle';
-        dataset.backgroundColor = '#454F63';
-        break;
-      case OispDeviceStatus.RUNNING:
-        dataset.label = 'Running';
-        dataset.backgroundColor = '#2CA9CE';
-        break;
-      case OispDeviceStatus.ERROR:
-        dataset.label = 'Error';
-        dataset.backgroundColor = '#A73737';
-        break;
-    }
-
-    return dataset;
+  constructor(private translate: TranslateService) {
   }
 
   private static fillOfflineGaps(statuses: StatusPoint[]): StatusPoint[] {
@@ -112,6 +86,32 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     if (changes.statuses && this.isInitialized) {
       this.updateChart(changes.statuses.currentValue);
     }
+  }
+  private createDatasetByStatus(firstStatusPointOfGroup: StatusPoint, timeOfStartOfNextGroup: moment.Moment) {
+    const durationSec = (timeOfStartOfNextGroup.toDate().valueOf() - firstStatusPointOfGroup.time.toDate().valueOf()) / 1000.0;
+    const dataset = { type: 'horizontalBar', data:  [ { x: durationSec, t: firstStatusPointOfGroup.time } ],
+      label: '', backgroundColor: '' };
+
+    switch (firstStatusPointOfGroup.status) {
+      case OispDeviceStatus.OFFLINE:
+        dataset.label = this.translate.instant('APP.COMMON.STATUSES.OFFLINE');
+        dataset.backgroundColor = '#EAEAEA';
+        break;
+      case OispDeviceStatus.IDLE:
+        dataset.label = this.translate.instant('APP.COMMON.STATUSES.IDLE');
+        dataset.backgroundColor = '#454F63';
+        break;
+      case OispDeviceStatus.RUNNING:
+        dataset.label = this.translate.instant('APP.COMMON.STATUSES.RUNNING');
+        dataset.backgroundColor = '#2CA9CE';
+        break;
+      case OispDeviceStatus.ERROR:
+        dataset.label = this.translate.instant('APP.COMMON.STATUSES.ERROR');
+        dataset.backgroundColor = '#A73737';
+        break;
+    }
+
+    return dataset;
   }
 
   private initChartOptions() {
@@ -223,7 +223,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   }
 
   private addStatusToDataset(firstStatusPointOfGroup: StatusPoint, timeOfFirstStatusPointOfNextGroup: moment.Moment) {
-    const newDataset = HistoricalStatusBarChartComponent.createDatasetByStatus(firstStatusPointOfGroup, timeOfFirstStatusPointOfNextGroup);
+    const newDataset = this.createDatasetByStatus(firstStatusPointOfGroup, timeOfFirstStatusPointOfNextGroup);
     this.stackedData.datasets.push(newDataset);
   }
 

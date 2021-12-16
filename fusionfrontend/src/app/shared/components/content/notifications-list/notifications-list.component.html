@@ -20,7 +20,8 @@ under the License.
       <p-selectButton *ngIf="isInline"  class="notifications on-white-background space-right"
                        optionLabel="name"
                        optionValue="value"
-                       [options]="[{name:'Open', value: notificationStates.OPEN},{name:'Cleared', value: notificationStates.CLEARED}]"
+                       [options]="[{name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.OPEN'), value: notificationStates.OPEN},
+                       {name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLEARED'), value: notificationStates.CLEARED}]"
                        [(ngModel)]="state"
                        (ngModelChange)="onChangeTab()">
       </p-selectButton>
@@ -33,7 +34,9 @@ under the License.
   </div>
 
   <app-table-selected-items-bar [selectedItems]="selectedNotifications"
-                                [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.CLOSE_NOTIFICATION]" [itemName]="'Notification'"
+                                [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.CLOSE_NOTIFICATION]"
+                                itemTypeSingular="{{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATION' | translate }}"
+                                itemTypePlural="{{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATIONS' | translate }}"
                                 (deselectAllItems)="deselectAllNotifications()" (closeNotification)="showCloseDialog(this.selectedNotifications)">
   </app-table-selected-items-bar>
 
@@ -45,16 +48,16 @@ under the License.
         <th [style.width.%]="4"></th>
         <th [style.width.%]="4"></th>
         <th [style.width.%]="30">
-          <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="allNotifications"
+          <app-table-searchbar filterColumn="{{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.RULE_NAME' | translate }}" [itemsToBeFiltered]="allNotifications"
                                attributeToBeSearched="ruleName" (searchByName)="searchNotifications($event)">
           </app-table-searchbar>
         </th>
-        <th [style.width.%]="17" pSortableColumn="assetName">Asset
+        <th [style.width.%]="17" pSortableColumn="assetName">{{ 'APP.COMMON.TERMS.ASSET' | translate }}
           <p-sortIcon field="assetName"></p-sortIcon>
         </th>
-        <th [style.width.%]="37.5">Condition</th>
-        <th [style.width.%]="10">Measured Value</th>
-        <th [style.width.%]="15" pSortableColumn="timestamp">Date & Time
+        <th [style.width.%]="37.5">{{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CONDITION' | translate }}</th>
+        <th [style.width.%]="10">{{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.MEASURED_VALUE' | translate }}</th>
+        <th [style.width.%]="15" pSortableColumn="timestamp">{{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.DATE_AND_TIME' | translate }}
           <p-sortIcon field="timestamp"></p-sortIcon>
         </th>
         <th [style.width.%]="7.5"></th>

@@ -18,6 +18,7 @@ import { OispDeviceStatus } from '../../../../core/models/kairos.model';
 import { UIChart } from 'primeng/chart';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { StatusHoursOneDay } from '../../../../core/models/kairos-status-aggregation.model';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -47,7 +48,9 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   private numDisplayedDays: number;
   private isInitialized = false;
 
-  constructor(private enumHelpers: EnumHelpers) {
+  constructor(
+    private enumHelpers: EnumHelpers,
+    private translate: TranslateService) {
   }
 
   private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
@@ -174,20 +177,20 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
       labels: this.yLabels ?? emptyLabels,
       datasets: [{
         type: 'horizontalBar',
-        label: 'Offline',
+        label: this.translate.instant('APP.COMMON.STATUSES.OFFLINE'),
         backgroundColor: '#EAEAEA',
       }, {
         type: 'horizontalBar',
-        label: 'Error',
+        label: this.translate.instant('APP.COMMON.STATUSES.ERROR'),
         backgroundColor: '#A73737',
       }, {
         type: 'horizontalBar',
-        label: 'Idle',
+        label: this.translate.instant('APP.COMMON.STATUSES.IDLE'),
         backgroundColor: '#454F63',
       },
         {
           type: 'horizontalBar',
-          label: 'Running',
+          label: this.translate.instant('APP.COMMON.STATUSES.RUNNING'),
           backgroundColor: '#2CA9CE',
         }]
     };

@@ -24,6 +24,7 @@ import { UserManagementService } from '../../../../core/services/api/user-manage
 import { KeycloakProfile } from 'keycloak-js';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -46,7 +47,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private routingLocation: Location,
               private oispAlertQuery: OispAlertQuery,
               private userManagementService: UserManagementService,
-              private router: Router) {
+              private router: Router,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -116,19 +118,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getPageTitle() {
     let title = '';
     if (this.isManager(ManagerType.FACTORY_MANAGER)) {
-      title = 'Factory Manager';
+      title = this.translate.instant('APP.SHARED.UI.HEADER.PAGE_TITLE.FACTORY_MANAGER');
     } else if (this.isManager(ManagerType.FLEET_MANAGER)) {
-      title = 'Fleet Manager';
+      title = this.translate.instant('APP.SHARED.UI.HEADER.PAGE_TITLE.FLEET_MANAGER');
     } else if (this.isManager(ManagerType.ECOSYSTEM_MANAGER)) {
-      title = 'Ecosystem Manager';
+      title = this.translate.instant('APP.SHARED.UI.HEADER.PAGE_TITLE.ECOSYSTEM_MANAGER');
     } else if (this.isFusionApplet()) {
-      title = 'Applets';
+      title = this.translate.instant('APP.SHARED.UI.HEADER.PAGE_TITLE.APPLETS');
     } else if (this.isDashboards()) {
-      title = 'Dashboards';
+      title = this.translate.instant('APP.SHARED.UI.HEADER.PAGE_TITLE.DASHBOARDS');
     } else if (this.isNotifications()) {
-      title = 'Notifications';
+      title = this.translate.instant('APP.SHARED.UI.HEADER.PAGE_TITLE.NOTIFICATIONS');
     } else if (this.isHome()) {
-      title = 'Smart Factory';
+      title = this.translate.instant('APP.SHARED.UI.HEADER.PAGE_TITLE.SMART_FACTORY');
     }
     return title;
   }

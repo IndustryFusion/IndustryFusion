@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faTimes, faWrench, faThLarge } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { TableSelectedItemsBarType } from './table-selected-items-bar.type';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-table-selected-items-bar',
@@ -12,7 +13,8 @@ export class TableSelectedItemsBarComponent implements OnInit {
 
   @Input() selectedItems: any[] = [];
   @Input() tableSelectedItemsBarTypes: TableSelectedItemsBarType[];
-  @Input() itemName: string;
+  @Input() itemTypeSingular: string;
+  @Input() itemTypePlural: string;
   @Output() deselectAllItems = new EventEmitter<void>();
   @Output() showAssetCards = new EventEmitter<void>();
   @Output() closeNotification = new EventEmitter<void>();
@@ -29,13 +31,13 @@ export class TableSelectedItemsBarComponent implements OnInit {
 
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.editBarMapping = {
-      '=0': 'No ' + this.itemName + 's selected',
-      '=1': '# ' + this.itemName + ' selected',
-      other: '# ' + this.itemName + 's selected'
+      '=0': this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.NO_ITEM_SELECTED', { itemType: this.itemTypePlural}),
+      '=1': '# ' + this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.ITEM_SELECTED', { itemType: this.itemTypeSingular}),
+      other: '# ' + this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.ITEM_SELECTED', { itemType: this.itemTypePlural}),
     };
   }
 

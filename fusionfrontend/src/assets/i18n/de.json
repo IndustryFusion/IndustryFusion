@@ -5,15 +5,30 @@
 				"APPLY": "Anwenden",
 				"BACK": "Zurück",
 				"CANCEL": "Abbrechen",
-				"CONTINUE": "",
+				"CONFIRM": "Bestätigen Sie",
+				"CONTINUE": "Weiter",
 				"CREATE": "erstellen.",
 				"EDIT": "Bearbeiten",
 				"FINISH": "Oberfläche",
 				"NEXT": "nächste",
-        "ONBOARD": "An Bord",
-        "PUBLISH": "Veröffentlichen",
+				"ONBOARD": "An Bord",
+				"PUBLISH": "Veröffentlichen",
+				"SAVE": "Speichern",
 				"START": "Start",
 				"UPDATE": "Aktualisierung"
+			},
+			"HEADERS": {
+				"DASHBOARDS": "Dashboards",
+				"ECO_SYSTEM_MANAGER": "Ökosystem-Manager",
+				"FAB_MANAGER": "Betriebsleiter",
+				"FLEET_MANAGER": "Fuhrparkleiter",
+				"FUSION_APPLETS": "Fusion-Applikationen"
+			},
+			"STATUSES": {
+				"ERROR": "Fehler",
+				"IDLE": "Leerlauf",
+				"OFFLINE": "Offline",
+				"RUNNING": "Läuft"
 			},
 			"TABLE": {
 				"PAGINATION": {
@@ -52,9 +67,9 @@
 				"IDLE": "Leerlauf",
 				"OFFLINE": "Offline",
 				"RUNNING": "Läuft",
-				"TABLE_HEADER": "Statusübersicht nach Vermögenswerten",
-        "STATUS_OVERVIEW": "Status-Übersicht"
-      },
+				"STATUS_OVERVIEW": "Status-Übersicht",
+				"TABLE_HEADER": "Statusübersicht nach Vermögenswerten"
+			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Datum auswählen",
 				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Vermögenswerte)",
@@ -79,9 +94,9 @@
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
-        "ASSET_TYPE_NAME": "Asset type name",
-        "ASSET_TYPE_TEMPLATES": "Asset type templates",
-        "ASSET_TYPES": "Asset-Typen",
+				"ASSET_TYPES": "Asset-Typen",
+				"ASSET_TYPE_NAME": "Asset type name",
+				"ASSET_TYPE_TEMPLATES": "Asset type templates",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Asset-Typ-Bestätigung löschen",
 					"MESSAGE": "Sind Sie sicher, dass Sie den Asset-Typ {{ itemToDelete }}löschen möchten?"
@@ -185,32 +200,32 @@
 				"METRIC_AND_ATTRIBUTE": "Metrik & Attribut",
 				"NO_METRICS_AND_ATTRIBUTES": "Keine Metriken und Attribute"
 			},
-      "QUANTITY_TYPE_DIALOG": {
-        "BASE_UNIT": "Basiseinheit",
-        "CATEGORICAL": "Kategorisch",
-        "DATA_TYPE": "Datenart",
-        "NUMERIC": "Numerisch",
-        "NO_BASE_UNIT_WARNING": "Keine Basiseinheit ausgewählt",
-        "BASE_UNIT_PLACEHOLDER": "Wählen Sie eine Basiseinheit"
-      },
-      "QUANTITY_TYPE_LIST": {
-        "BASE_UNIT": "Basiseinheit",
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Mengenartbestätigung löschen",
-          "MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }}löschen wollen?"
-        },
-        "CREATE_QUANTITY_TYPE": "Mengenart anlegen",
-        "DATA_TYPE": "Datenart",
-        "DESCRIPTION": "Beschreibung",
-        "HEADER": {
-          "CREATE": "Neue Mengenart anlegen",
-          "EDIT": "Menge bearbeiten Typ"
-        },
-        "NO_QUANTITY_TYPES": "Keine Menge Typen",
-        "QUANTITY_NAME": "Bezeichnung der Menge",
-        "QUANTITY_TYPES": "Menge Typen"
+			"QUANTITY_TYPE_DIALOG": {
+				"BASE_UNIT": "Basiseinheit",
+				"BASE_UNIT_PLACEHOLDER": "Wählen Sie eine Basiseinheit",
+				"CATEGORICAL": "Kategorisch",
+				"DATA_TYPE": "Datenart",
+				"NO_BASE_UNIT_WARNING": "Keine Basiseinheit ausgewählt",
+				"NUMERIC": "Numerisch"
 			},
-			"SUBHEADER": {
+			"QUANTITY_TYPE_LIST": {
+				"BASE_UNIT": "Basiseinheit",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Mengenartbestätigung löschen",
+					"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }}löschen wollen?"
+				},
+				"CREATE_QUANTITY_TYPE": "Mengenart anlegen",
+				"DATA_TYPE": "Datenart",
+				"DESCRIPTION": "Beschreibung",
+				"HEADER": {
+					"CREATE": "Neue Mengenart anlegen",
+					"EDIT": "Menge bearbeiten Typ"
+				},
+				"NO_QUANTITY_TYPES": "Keine Menge Typen",
+				"QUANTITY_NAME": "Bezeichnung der Menge",
+				"QUANTITY_TYPES": "Menge Typen"
+			},
+			"SUB_HEADER": {
 				"ASSET_TYPES": "Asset-Typen",
 				"ASSET_TYPE_TEMPLATES": "Asset-Typ-Vorlagen",
 				"METRICS_AND_ATTRIBUTES": "Metriken und Attribute",
@@ -240,7 +255,6 @@
 		},
 		"FACTORY": {
 			"ASSETS_LIST": {
-        "ONBOARD_NEW_ASSET": "Neue Anlage an Bord",
 				"ASSIGN_ITEM_TEXT": "Anlage zu Zimmer",
 				"CATEGORY": "Kategorie",
 				"DIALOG_HEADING": {
@@ -248,7 +262,8 @@
 					"ON_BOARDING": "Asset für Onboarding auswählen",
 					"ROOM_ASSIGNMENT": "Zimmerzuweisung"
 				},
-				"NO_ASSETS": "Keine Vermögenswerte"
+				"NO_ASSETS": "Keine Vermögenswerte",
+				"ONBOARD_NEW_ASSET": "Neue Anlage an Bord"
 			},
 			"ASSET_CARD": {
 				"CONTROL_SYSTEM_TYPE": "Kontrollsystem Typ",
@@ -271,7 +286,7 @@
 					"ROOM_ASSIGNMENT": "Raumzuweisung ({{factorySiteName}})"
 				},
 				"SUB_HEADER": {
-					"APPLETS": "Apfel",
+					"APPLETS": "Applet",
 					"DIGITAL_NAMEPLATE": "Digitales Typenschild",
 					"NOTIFICATIONS": "Benachrichtigungen",
 					"PERFORMANCE": "Leistung",
@@ -383,74 +398,152 @@
 		},
 		"FUSION_APPLETS": {
 			"CREATE": {
-				"APPLET_NAME": "",
-				"PRIORITY_PLACEHOLDER": ""
+				"APPLET_NAME": "Name des Applets",
+				"PRIORITY_PLACEHOLDER": "Wählen Sie eine"
 			},
 			"EDITOR": {
 				"ACTION_LIST": {
-					"ACTION": "",
+					"ACTION": "Aktion",
 					"APPLET_ACTION": {
 						"ACTION_MAIL": {
-							"CHOOSE_RECIPIENTS_LABEL": "",
-							"HEADER": "",
-							"RECIPIENTS_PLACEHOLDER": "",
-							"SELECTED_RECIPIENTS_LABEL": ""
+							"CHOOSE_RECIPIENTS_LABEL": "E-Mail-Empfänger auswählen",
+							"HEADER": "E-Mail-Benachrichtigung einrichten",
+							"RECIPIENTS_PLACEHOLDER": "E-Mail auswählen",
+							"SELECTED_RECIPIENTS_LABEL": "Ausgewählte E-Mail-Empfänger"
 						},
 						"ACTION_WEBHOOK": {
-							"INPUT_PLACEHOLDER": "",
-							"MESSAGE_HEADER_LABEL": "",
-							"SELECTED_WEBHOOK_LABEL": "",
-							"WEBHOOK_URL": ""
+							"INPUT_PLACEHOLDER": "Wert eingeben",
+							"MESSAGE_HEADER_LABEL": "Nachrichtenkopfzeilen",
+							"SELECTED_WEBHOOK_LABEL": "Ausgewählte Nachrichtenköpfe",
+							"WEBHOOK_URL": "Webhook-URL"
 						},
-						"EMAIL": "",
-						"EMAIL_TEXT": "",
-						"WEBHOOK": "",
-						"WEBHOOK_TEXT": ""
+						"EMAIL": "E-Mail",
+						"EMAIL_TEXT": "Sendet eine E-Mail-Benachrichtigung an einen oder mehrere angegebene Empfänger.",
+						"WEBHOOK": "Webhook",
+						"WEBHOOK_TEXT": "Sendet ein definiertes Nachrichtenformat an einen bestimmten Webhook."
 					},
-					"CREATE_ACTION_BUTTON": ""
+					"CREATE_ACTION_BUTTON": "Neue Aktion erstellen"
 				},
-				"AUTOMATIC_RESET_CHECKBOX": "",
+				"AUTOMATIC_RESET_CHECKBOX": "Automatischen Reset einschalten",
 				"CONDITIONS": {
 					"CONDITIONS_VALUE": {
-						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "",
-						"CHOOSE_TRIGGER_ASSET": "",
-						"CONDITION_LABEL": "",
-						"CONDITION_TYPE_LABEL": "",
-						"DEFINE_DURATION": "",
+						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "Durchschnitt & Standardabweichung Baseline",
+						"CHOOSE_TRIGGER_ASSET": "Trigger Asset auswählen",
+						"CONDITION_LABEL": "Bedingung wählen",
+						"CONDITION_TYPE_LABEL": "Konditionsart wählen",
+						"DEFINE_DURATION": "Dauer definieren",
 						"LIMIT_SELECTOR": {
-							"CALCULATE_CONTROL_LIMIT": "",
-							"STANDARD_DEVIATION": ""
+							"CALCULATE_CONTROL_LIMIT": "Berechnen Sie die Kontrollgrenze mit",
+							"STANDARD_DEVIATION": "{{number}} Standardabweichung"
 						},
-						"METRIC_LABEL": "",
-						"MINIMAL_INSTANCES_FOR_CALCULATION": "",
-						"SETUP_CONDITION": "",
-						"VALUE_LABEL": ""
+						"METRIC_LABEL": "Metrisch wählen",
+						"MINIMAL_INSTANCES_FOR_CALCULATION": "Minimale Instanzen für die Berechnung",
+						"SETUP_CONDITION": "Setup Bedingung",
+						"VALUE_LABEL": "Wert eingeben"
 					},
-					"CREATE_TRIGGER_BUTTON": "",
-					"TRIGGER": ""
+					"CREATE_TRIGGER_BUTTON": "Neuen Auslöser erstellen",
+					"TRIGGER": "Auslöser"
 				},
-				"HEADER": ""
+				"HEADER": "Achtung"
 			},
 			"LIST": {
-				"APPLET": "",
-				"APPLETS": "",
-				"APPLET_NAME": "",
-				"CONDITION_SUMMARY": "",
-				"CREATE_APPLET_BUTTON": "",
-				"CREATE_DIALOG_HEADER": "",
-				"NO_APPLET": ""
+				"APPLET": "Applet",
+				"APPLETS": "Applets",
+				"APPLET_NAME": "AppletName",
+				"CONDITION_SUMMARY": "Zustand Zusammenfassung",
+				"CREATE_APPLET_BUTTON": "Applet erstellen",
+				"CREATE_DIALOG_HEADER": "Applet erstellen",
+				"NO_APPLET": "Kein Applet"
 			},
-			"SUBHEADER": {
-				"ARCHIVE": "",
-				"DETAIL": "",
-				"EDITOR": "",
-				"OVERVIEW": ""
+			"SUB_HEADER": {
+				"ARCHIVE": "Archiv",
+				"DETAIL": "Detail",
+				"EDITOR": "Editor",
+				"OVERVIEW": "Übersicht"
 			}
 		},
 		"NOTIFICATIONS": {
 			"SUB_HEADER": {
-				"CLEARED": "",
-				"OPEN": ""
+				"CLEARED": "Gelöscht",
+				"OPEN": "Öffnen Sie"
+			}
+		},
+		"SHARED": {
+			"CONTENT": {
+				"NOTIFICATIONS_LIST": {
+					"CLEARED_PLURAL": "Gelöscht",
+					"CLEARED_SINGULAR": "Gelöscht",
+					"CLOSE_DIALOG": {
+						"HEADER": "Benachrichtigungsbestätigung schließen",
+						"MESSAGE_PLURAL": "Sind Sie sicher, dass Sie {{ notificationCount }} Benachrichtigungen löschen wollen?",
+						"MESSAGE_SINGULAR": "Sind Sie sicher, dass Sie die Meldung{{ notificationToClose }}löschen wollen?"
+					},
+					"CONDITION": "Zustand",
+					"DATE_AND_TIME": "Datum und Uhrzeit",
+					"MEASURED_VALUE": "Gemessener Wert",
+					"NOTIFICATION": "{{ statusName }} Benachrichtigung",
+					"NOTIFICATIONS": "{{ statusName }} Benachrichtigungen",
+					"NOTIFICATIONS_SELECTED": "{{ statusName }} Benachrichtigungen ausgewählt",
+					"NOTIFICATIONS_WITH_STATUS": "{{ statusName }} Benachrichtigungen",
+					"NOTIFICATION_SELECTED": "{{ statusName }} Benachrichtigung ausgewählt",
+					"NOTIFICATION_WITH_STATUS": "{{ statusName }} Benachrichtigung",
+					"NO_NOTIFICATION": "Keine {{ statusName }} Benachrichtigungen",
+					"NO_NOTIFICATION_SELECTED": "Keine {{ statusName }} Benachrichtigung ausgewählt",
+					"OPEN_PLURAL": "Öffnen Sie",
+					"OPEN_SINGULAR": "Öffnen Sie",
+					"RULE_NAME": "Name der Regel"
+				}
+			},
+			"UI": {
+				"HEADER": {
+					"LOGOUT": "Abmelden",
+					"MY_ACCOUNT_LABEL": "Mein Konto (in Keycloak öffnen)",
+					"PAGE_TITLE": {
+						"APPLETS": "Applet",
+						"DASHBOARDS": "Dashboards",
+						"ECOSYSTEM_MANAGER": "Ökosystem-Manager",
+						"FACTORY_MANAGER": "Betriebsleiter",
+						"FLEET_MANAGER": "Fuhrparkleiter",
+						"NOTIFICATIONS": "Benachrichtigungen",
+						"SMART_FACTORY": "Intelligente Fabrik"
+					}
+				},
+				"ICONS_OPTIONS_MENU": {
+					"ASSIGN": "Zuweisen {{ assignItemText }}",
+					"CLONE": "Klonen",
+					"CREATE": "Neu erstellen {{ createItemText }}",
+					"DELETE": "Löschen",
+					"RENAME": "Umbenennen",
+					"UPDATE": "Aktualisierung {{ updateItemText }}"
+				},
+				"TABLE_FILTER": {
+					"ADD_FILTER": "Filter hinzufügen",
+					"CLEAR_ALL": "Alle löschen",
+					"DATE_FILTER": {
+						"DATE_AND_TIME_FILTER": "Datum & Zeit Filter",
+						"END_DATE": "Enddatum",
+						"START_DATE": "Start Datum"
+					},
+					"FILTER": "Filter",
+					"FILTER_BUTTON": "Filter",
+					"NOT_SET": "Nicht festgelegt",
+					"NUMERIC_FILTER": {
+						"LONG_TERM_PRIORITY": "Langfristig (blau)",
+						"MEDIUM_TERM_PRIORITY": "Mittelfristig (grau)",
+						"SHORT_TERM_PRIORITY": "Kritisch (rot)"
+					},
+					"SELECT": "Wählen Sie",
+					"VALUE": "Wert",
+					"VALUES": "Werte"
+				},
+				"TABLE_SEARCHBAR": {
+					"SEARCH": "Suche"
+				},
+				"TABLE_SELECTED_ITEMS_BAR": {
+					"DESELECT": "abwählen.",
+					"ITEMS_SELECTED": " {{ itemType }} ausgewählt",
+					"NO_ITEM_SELECTED": "Keine {{ itemType }} ausgewählt"
+				}
 			}
 		}
 	}

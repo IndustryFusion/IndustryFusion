@@ -18,21 +18,21 @@ under the License.
     <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value !== null" class="filter-panel-btn-grid-text">
       Date set</span>
     <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value === null" class="filter-panel-btn-grid-text">
-      not set</span>
+      {{ 'APP.SHARED.UI.TABLE_FILTER.NOT_SET' | translate }}</span>
       <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
   </span>
 </button>
 
 <p-overlayPanel #dateFilterPanel [showCloseIcon]="true" class="filterPanel panel-class">
   <form [formGroup]="dateFilterFormGroup">
-    <div class="if-panel-heading">Date & Time Filter</div>
+    <div class="if-panel-heading">{{ 'APP.SHARED.UI.TABLE_FILTER.DATE_FILTER.DATE_AND_TIME_FILTER' | translate }}</div>
     <div class="input-div calendar-class">
-      <label class="if-label">Start Date: </label>
+      <label class="if-label">{{ 'APP.SHARED.UI.TABLE_FILTER.DATE_FILTER.START_DATE' | translate }}: </label>
       <p-calendar formControlName="startTimeValue" showIcon="true" showTime="true" showButtonBar="true"
                   yearNavigator="true" dateFormat="dd.mm.yy"></p-calendar>
     </div>
     <div class="input-div calendar-class dialog-grid-col">
-      <label class="if-label">End Date: </label>
+      <label class="if-label">{{ 'APP.SHARED.UI.TABLE_FILTER.DATE_FILTER.END_DATE' | translate }}: </label>
       <p-calendar formControlName="endTimeValue" showIcon="true" showTime="true" showButtonBar="true"
                   yearNavigator="true" dateFormat="dd.mm.yy"></p-calendar>
     </div>
@@ -41,12 +41,12 @@ under the License.
   <div class="filter-buttons-box">
     <button (click)="clearSelectFilterValues();"
             class="if-button button-secondary button-modal clear-filter-btn">
-      Clear all
+      {{ 'APP.SHARED.UI.TABLE_FILTER.CLEAR_ALL' | translate }}
       <i class="pi pi-times btn-icon"></i>
     </button>
     <button (click)="filterItemsByTimestemp(); dateFilterPanel.hide()"
             class="if-button button-primary button-modal select-filter-btn">
-      Filter
+      {{ 'APP.SHARED.UI.TABLE_FILTER.FILTER_BUTTON' | translate }}
     </button>
   </div>
 </p-overlayPanel>

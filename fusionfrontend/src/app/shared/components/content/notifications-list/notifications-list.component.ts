@@ -32,6 +32,7 @@ import { OispDeviceQuery } from '../../../../core/store/oisp/oisp-device/oisp-de
 import { OispDeviceResolver } from '../../../../core/resolvers/oisp-device-resolver';
 import { ConfirmationService } from 'primeng/api';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 export enum NotificationState { OPEN, CLEARED}
 
@@ -74,9 +75,11 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   faExclamationCircle = faExclamationCircle;
   faExclamationTriangle = faExclamationTriangle;
 
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset', attributeToBeFiltered: 'assetName' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Priority', attributeToBeFiltered: 'priority' },
-    { filterType: FilterType.DATEFILTER, columnName: 'Date & Time', attributeToBeFiltered: 'timestamp'}];
+  tableFilters: FilterOption[] = [
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.transalte.instant('APP.COMMON.TERMS.ASSET'), attributeToBeFiltered: 'assetName' },
+    { filterType: FilterType.DROPDOWNFILTER, columnName: this.transalte.instant('APP.COMMON.TERMS.PRIORITY'), attributeToBeFiltered: 'priority' },
+    { filterType: FilterType.DATEFILTER, columnName: this.transalte.instant('APP.SHARED.CONTENT.DATE_AND_TIME'), attributeToBeFiltered: 'timestamp'}
+  ];
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -86,7 +89,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     private oispDeviceQuery: OispDeviceQuery,
     private oispDeviceResolver: OispDeviceResolver,
     private routingLocation: Location,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    public transalte: TranslateService
   ) {
   }
 
@@ -148,23 +152,29 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   private initNameMappings(): void {
     this.titleMapping = {
-      '=0': `No ${this.getStatusName()} Notification`,
-      '=1': `# ${this.getStatusName()} Notification`,
-      other: `# ${this.getStatusName()} Notifications`
+      '=0': this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NO_NOTIFICATION',
+        { statusName: this.getStatusName()}),
+      '=1': `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATION',
+        { statusName: this.getStatusName()}),
+      other: `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NO_NOTIFICATION_SELECTED',
+        { statusName: this.getStatusName()}),
     };
     this.editBarMapping = {
-      '=0': `No ${this.getStatusName()} Notification selected`,
-      '=1': `# ${this.getStatusName()} Notification selected`,
-      other: `# ${this.getStatusName()} Notifications selected`
+      '=0': this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NO_NOTIFICATION_SELECTED',
+        { statusName: this.getStatusName()}),
+      '=1': `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATION_SELECTED',
+        { statusName: this.getStatusName()}),
+      other: `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATIONS_SELECTED',
+        { statusName: this.getStatusName()}),
     };
   }
 
   private getStatusName(): string {
     switch (this.state) {
       case NotificationState.CLEARED:
-        return 'Cleared';
+        return this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLEARED_PLURAL');
       case NotificationState.OPEN:
-        return 'Open';
+        return this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.OPEN_PLURAL');
     }
   }
 
@@ -231,9 +241,11 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   showCloseDialog(notifications: OispNotification[]) {
     this.confirmationService.confirm({
-      message: notifications.length === 1 ? 'Are you sure you want to clear the notification "' + notifications[0].ruleName + '"?' :
-        'Are you sure you want to clear ' + notifications.length + ' notifications ?',
-      header: 'Close Notification Confirmation',
+      message: notifications.length === 1 ? this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLOSE_DIALOG.MESSAGE_SINGULAR',
+          { notificationToClose: notifications[0].ruleName }) :
+        this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLOSE_DIALOG.MESSAGE_PLURAL',
+          { notificationToClose: notifications.length }),
+      header: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLOSE_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         if (notifications.length === 1) {

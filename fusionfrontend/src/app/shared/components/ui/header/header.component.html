@@ -67,7 +67,7 @@ under the License.
       <div class="panel-content">
         <span class="account" (click)="navigateToKeycloakAdmin()">
           <fa-icon [icon]="faUserCircle" class="fa-fw account-icon"></fa-icon>
-          <label class="if-label account-label">My Account (Open in Keycloak)</label>
+          <label class="if-label account-label">{{ 'APP.SHARED.UI.HEADER.MY_ACCOUNT_LABEL' | translate}}</label>
           <i class="if-icon-popout"></i>
         </span>
       </div>
@@ -75,7 +75,7 @@ under the License.
       <div class="footer">
         <span class="logout-button" (click)="logoutUser(); userpanel.hide()">
           <i class="pi pi-sign-out"></i>
-          <label class="logout-label">Logout</label>
+          <label class="logout-label">{{ 'APP.SHARED.UI.HEADER.LOGOUT' | translate}}</label>
         </span>
       </div>
     </ng-template>

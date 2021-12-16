@@ -28,7 +28,8 @@ under the License.
 <p-overlayPanel #filterpanel [ngClass]="{'panel-position': hasPositionSet==true}" [dismissable]="true"
                 [showCloseIcon]="true" class="filterPanel panel-class">
   <ng-template pTemplate>
-    <div class="if-panel-heading">Filter</div>
+    <div class="if-panel-heading">{{ 'APP.SHARED.UI.TABLE_FILTER.FILTER' | translate }}</div>
+
 
     <div>
       <div *ngFor="let activeFilter of activeFilterSet; let i = index">
@@ -65,7 +66,7 @@ under the License.
       </div>
       <button (click)="addFilter()" *ngIf="activeFilterSet.size < tableFilters.length" class="add-btn">
         <i class="pi pi-plus add-btn-icon"></i>
-        Add filter
+        {{ 'APP.SHARED.UI.TABLE_FILTER.ADD_FILTER' | translate }}
       </button>
     </div>
   </ng-template>

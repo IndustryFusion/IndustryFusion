@@ -23,10 +23,10 @@ under the License.
 <p-overlayPanel #searchpanel [showCloseIcon]="true" class="searchPanel panel-class" (click)="$event.stopPropagation()"
                 (keydown)="$event.stopPropagation()" >
   <ng-template pTemplate>
-    <div class="if-panel-heading">Search</div>
+    <div class="if-panel-heading">{{ 'APP.SHARED.UI.TABLE_SEARCHBAR.SEARCH' | translate}}</div>
       <span class="p-input-icon-left">
         <i class="pi pi-search"></i>
-        <input type="text" pInputText [(ngModel)]="searchText" placeholder="Name" class="search-input">
+        <input type="text" pInputText [(ngModel)]="searchText" placeholder="{{ 'APP.COMMON.TERMS.NAME' | translate }}" class="search-input">
         <button (click)="clearSearchText();" class="remove-searchtext-btn">
           <i class="pi pi-trash searchtext-btn-icon"></i>
         </button>
@@ -34,7 +34,7 @@ under the License.
     <br>
     <div class="footer">
       <button type="button" class="if-button button-primary button-modal" style="font-size: 13px; height: 30px; margin: 5px 0 0 0;"
-              (click)="filterItems(); searchpanel.hide()">Apply</button>
+              (click)="filterItems(); searchpanel.hide()">{{ 'APP.COMMON.DIALOG_BUTTONS.APPLY' | translate }}</button>
     </div>
   </ng-template>
 </p-overlayPanel>

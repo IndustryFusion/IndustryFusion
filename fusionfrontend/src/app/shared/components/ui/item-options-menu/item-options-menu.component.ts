@@ -16,6 +16,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ItemOptionsMenuType } from './item-options-menu.type';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-item-options-menu',
@@ -42,7 +43,7 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
   public menuActions: MenuItem[];
   public ItemOptionsMenuType = ItemOptionsMenuType;
 
-  constructor() {
+  constructor(private translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -81,40 +82,45 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
 
   private generateMenuItems(): MenuItem[] {
     const editItem = {
-      label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => {
+      label: this.translate.instant('APP.COMMON.DIALOG_BUTTONS.EDIT'), icon: 'pi pi-fw pi-pencil', command: (_) => {
         this.onEditClick();
       }
     };
     const cloneItem = {
-      label: 'Clone', icon: 'pi pi-fw pi-clone', command: (_) => {
+      label: this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.CLONE'), icon: 'pi pi-fw pi-clone', command: (_) => {
         this.onCloneClick();
       }
     };
     const renameItem = {
-      label: 'Rename', icon: 'pi pi-fw pi-sign-in', command: (_) => {
+      label: this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.RENAME'), icon: 'pi pi-fw pi-sign-in', command: (_) => {
         this.onRenameClick();
       }
     };
     const deleteItem = {
-      label: 'Delete', icon: 'pi pw-fw pi-trash', command: (_) => {
+      label: this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.DELETE'), icon: 'pi pw-fw pi-trash', command: (_) => {
         this.onDeleteClick();
       }
     };
     const updateItem = {
-      label: this.updateItemText ? `Update ${this.createItemName}` : 'Update',
+      label: this.updateItemText ? this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.UPDATE',
+          { updateItemText: this.createItemName }) : this.translate.instant('APP.COMMON.DIALOG_BUTTONS.UPDATE'),
       icon: 'pi pi-fw pi-refresh',
       command: (_) => {
         this.onEditClick();
       }
     };
     const createItem = {
-      label: this.createItemName ? `Create new ${this.createItemName}` : 'Create', icon: 'pi pi-fw pi-plus',
+      label: this.createItemName ? this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.CREATE',
+        { updateItemText: this.createItemName }) : this.translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE'),
+      icon: 'pi pi-fw pi-plus',
       command: (_) => {
         this.onCreateClick();
       }
     };
     const assignItem = {
-      label: this.assignItemText ? 'Assign ' + this.assignItemText : 'Assign', icon: 'pi pi-fw pi-sign-in',
+      label: this.assignItemText ? this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.ASSIGN',
+          { assignItemText: this.assignItemText }) : this.translate.instant('APP.COMMON.DIALOG_BUTTONS.ASSIGN'),
+      icon: 'pi pi-fw pi-sign-in',
       command: (_) => {
         this.onAssignClick();
       }

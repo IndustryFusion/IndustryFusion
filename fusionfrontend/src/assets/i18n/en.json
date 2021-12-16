@@ -5,15 +5,30 @@
 				"APPLY": "Apply",
 				"BACK": "Back",
 				"CANCEL": "Cancel",
-        "CONTINUE": "Continue",
+				"CONFIRM": "Confirm",
+				"CONTINUE": "Continue",
 				"CREATE": "Create",
 				"EDIT": "Edit",
 				"FINISH": "Finish",
 				"NEXT": "Next",
-        "ONBOARD": "Onboard",
+				"ONBOARD": "Onboard",
 				"PUBLISH": "Publish",
+				"SAVE": "Save",
 				"START": "Start",
 				"UPDATE": "Update"
+			},
+			"HEADERS": {
+				"DASHBOARDS": "Dashboards",
+				"ECO_SYSTEM_MANAGER": "Ecosystem Manager",
+				"FAB_MANAGER": "Factory Manager",
+				"FLEET_MANAGER": "Fleet Manager",
+				"FUSION_APPLETS": "Fusion Applets"
+			},
+			"STATUSES": {
+				"ERROR": "Error",
+				"IDLE": "Idle",
+				"OFFLINE": "Offline",
+				"RUNNING": "Running"
 			},
 			"TABLE": {
 				"PAGINATION": {
@@ -29,21 +44,21 @@
 				"ASSET_TYPE": "Asset Type",
 				"DESCRIPTION": "Description",
 				"FACTORY": "Factory",
-        "FACTORY_SITE": "Factory Site",
-        "FACTORY_SITES": "Factory Sites",
-        "LABEL": "Label",
+				"FACTORY_SITE": "Factory Site",
+				"FACTORY_SITES": "Factory Sites",
+				"LABEL": "Label",
 				"MAINTENANCE_DUE": "Maintenance Due",
 				"MANUFACTURER": "Manufacturer",
 				"NAME": "Name",
-        "PRIORITY": "Priority",
+				"PRIORITY": "Priority",
 				"QUANTITY_TYPE": "Quantity Type",
-				"ROOM": "ROOM",
-				"ROOMS": "ROOMS",
-        "STATUS": "Status",
+				"ROOM": "Room",
+				"ROOMS": "Rooms",
+				"STATUS": "Status",
 				"SYMBOL": "Symbol",
-        "TIME": "Time",
+				"TIME": "Time",
 				"UNIT": "Unit",
-        "VALUE": "Value"
+				"VALUE": "Value"
 			}
 		},
 		"DASHBOARDS": {
@@ -52,8 +67,8 @@
 				"IDLE": "Idle",
 				"OFFLINE": "Offline",
 				"RUNNING": "Running",
-				"TABLE_HEADER": "Status Overview by Asset",
-        "STATUS_OVERVIEW": "Status Overview"
+				"STATUS_OVERVIEW": "Status Overview",
+				"TABLE_HEADER": "Status Overview by Asset"
 			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Pick Date",
@@ -79,9 +94,9 @@
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
-        "ASSET_TYPE_NAME": "Asset type name",
-        "ASSET_TYPE_TEMPLATES": "Asset type templates",
-        "ASSET_TYPES": "Asset Types",
+				"ASSET_TYPES": "Asset Types",
+				"ASSET_TYPE_NAME": "Asset type name",
+				"ASSET_TYPE_TEMPLATES": "Asset type templates",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Delete Asset Type Confirmation",
 					"MESSAGE": "Are you sure you want to delete the Asset Type {{ itemToDelete }}?"
@@ -185,32 +200,32 @@
 				"METRIC_AND_ATTRIBUTE": "Metric & Attribute",
 				"NO_METRICS_AND_ATTRIBUTES": "No Metrics & Attributes"
 			},
-      "QUANTITY_TYPE_DIALOG": {
-        "BASE_UNIT": "Base Unit",
-        "CATEGORICAL": "Categorical",
-        "DATA_TYPE": "Data Type",
-        "NO_BASE_UNIT_WARNING": "No base unit selected",
-        "NUMERIC": "Numeric",
-        "BASE_UNIT_PLACEHOLDER": "Select a base unit"
-      },
-      "QUANTITY_TYPE_LIST": {
-        "BASE_UNIT": "Base Unit",
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Delete Quantity Type Confirmation",
-          "MESSAGE": "Are you sure you want to delete the Quantity Type {{ itemToDelete }}?"
-        },
-        "CREATE_QUANTITY_TYPE": "Create Quantity Type",
-        "DATA_TYPE": "Data Type",
-        "DESCRIPTION": "Description",
-        "HEADER": {
-          "CREATE": "Create new Quantity Type",
-          "EDIT": "Edit Quantity Type"
-        },
-        "NO_QUANTITY_TYPES": "No Quantity Types",
-        "QUANTITY_NAME": "Quantity name",
-        "QUANTITY_TYPES": "Quantity Types"
-      },
-			"SUBHEADER": {
+			"QUANTITY_TYPE_DIALOG": {
+				"BASE_UNIT": "Base Unit",
+				"BASE_UNIT_PLACEHOLDER": "Select a base unit",
+				"CATEGORICAL": "Categorical",
+				"DATA_TYPE": "Data Type",
+				"NO_BASE_UNIT_WARNING": "No base unit selected",
+				"NUMERIC": "Numeric"
+			},
+			"QUANTITY_TYPE_LIST": {
+				"BASE_UNIT": "Base Unit",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Delete Quantity Type Confirmation",
+					"MESSAGE": "Are you sure you want to delete the Quantity Type {{ itemToDelete }}?"
+				},
+				"CREATE_QUANTITY_TYPE": "Create Quantity Type",
+				"DATA_TYPE": "Data Type",
+				"DESCRIPTION": "Description",
+				"HEADER": {
+					"CREATE": "Create new Quantity Type",
+					"EDIT": "Edit Quantity Type"
+				},
+				"NO_QUANTITY_TYPES": "No Quantity Types",
+				"QUANTITY_NAME": "Quantity name",
+				"QUANTITY_TYPES": "Quantity Types"
+			},
+			"SUB_HEADER": {
 				"ASSET_TYPES": "Asset Types",
 				"ASSET_TYPE_TEMPLATES": "Asset Type Templates",
 				"METRICS_AND_ATTRIBUTES": "Metrics & Attributes",
@@ -238,222 +253,298 @@
 				"UNIT_NAME": "Unit name"
 			}
 		},
-    "FACTORY": {
-      "ASSET_CARD": {
-        "CONTROL_SYSTEM_TYPE": "Control System Type",
-        "GATEWAY_CONNECTIVITY": "Gateway Connectivity"
-      },
-      "ASSET_DETAILS": {
-        "ASSET_CHARTS": {
-          "POINTS": "points"
-        },
-        "INFO": {
-          "ROOM_ASSIGNMENT": "Room Assignment ({{factorySiteName}})",
-          "FACTORY_SITE_ASSIGNMENT": "Factory Site Assignment"
-        },
-        "SUB_HEADER": {
-          "PERFORMANCE": "Performance",
-          "NOTIFICATIONS": "Notifications",
-          "APPLETS": "Applets",
-          "DIGITAL_NAMEPLATE": "Digital Nameplate",
-          "SUBSYSTEMS": "Subsystems"
-        },
-        "ASSET_TABLES": {
-          "DATE": "date",
-          "VALUE": "value",
-          "VALUE_SINCE": "value since",
-          "VALUES_PER_PAGE": "Values per page",
-          "OF": "of",
-          "VALUES": "values"
-        }
-
-      },
-      "ASSET_INSTANTIATION": {
-        "MODAL_HEADER": {
-          "PAIRING_ASSET": "Pairing Asset",
-          "GENERAL_INFORMATION": "General Information",
-          "ROOM_ASSIGNMENT": "Room Assignment",
-          "FACTORY_ASSIGNMENT_MODAL": "Factory Site Assignment"
-        },
-        "DESCRIPTION_MODAL": {
-          "CUSTOM_NAME": "Custom name",
-          "CUSTOM_NAME_PLACEHOLDER": "Enter a custom name here"
-        },
-        "FACTORY_SITE_ASSIGNMENT_MODAL": {
-          "SELECT_FACTORY_SITE": "Select Factory Site",
-          "SEARCH_TEXT_PLACEHOLDER": "Name"
-        },
-        "PAIRED_MODAL": {
-          "PAIRING_PROCESS": "Your asset is beeing paired!",
-          "SUCCESSFULLY_PAIRED": "Successfully paired!",
-          "CUSTOMIZE_ASSET": "Customize Asset"
-        },
-        "ROOM_ASSIGNMENT_MODAL": {
-          "SELECT_FACTORY_SITE": "Select room"
-        },
-        "START_MODAL": {
-          "READY_FOR_ONBOARDING": "Ready for onboarding!",
-          "NO_ASSETS_TO_ONBOARD": "No Assets to be onboarded!"
-        }
-      },
-      "ASSETS_LIST": {
-        "ONBOARD_NEW_ASSET": "Onboard new Asset",
-        "NO_ASSETS": "No assets",
-        "CATEGORY": "Category",
-        "ASSIGN_ITEM_TEXT": "Asset to room",
-        "DIALOG_HEADING": {
-          "ON_BOARDING": "Select Asset for Onboarding",
-          "ROOM_ASSIGNMENT": "Room Assignment",
-          "FACTORY_SITE_ASSIGNMENT": "Factory Site Assignment"
-        }
-      },
-      "ASSIGN_ASSETS_TO_ROOM": {
-        "SELECT_ASSET": "Select Assets"
-      },
-      "FACTORY_PAGE_TITLE": {
-        "SMART_FACTORY": "Smart Factory"
-      },
-      "FACTORY_SITES": {
-        "NO_FACTORY_SITES": "No Factory sites",
-        "FACTORY_SITE": "Factory site",
-        "FACTORY_SITES": "Factory sites",
-        "ASSETS": "Assets",
-        "CITY": "City",
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Delete Factory Confirmation",
-          "MESSAGE": "Are you sure you want to delete the Factory {{ itemToDelete }}?"
-        },
-        "COUNTRY": "Country",
-        "CREATE_FACTORY_SITE_BUTTON": "Create factory site",
-        "DIALOG_HEADING": {
-          "CREATE": "Create new Factory Site",
-          "UPDATE": "Update Factory Site"
-        },
-        "FACTORY_NAME": "Factory name",
-        "STREET": "Street",
-        "ZIP": "Zip"
-      },
-      "FACTORY_SITE_DIALOG": {
-        "ADDRESS_DETAILS": "Enter address details",
-        "ADDITIONAL_ADDRESS": "Additional address",
-        "CITY": "City",
-        "COUNTRY": "Country",
-        "COUNTRY_PLACEHOLDER": "Select a country...",
-        "FACTORY_NAME": "Factory name",
-        "FACTORY_TYPES": {
-          "FABRICATION": "Fabrication",
-          "HEADQUARTER": "Headquarter"
-        },
-        "FACTORY_TYPE": "Factory type",
-        "STREET": "Street",
-        "ZIP_LABEL": "ZIP",
-        "ZIP_PLACEHOLDER": "Zip code"
-
-      },
-      "FACTORY_SUB_HEADER": {
-        "ASSETS": "Assets",
-        "FACTORY_SITES": "Factory Sites",
-        "ROOMS": "Rooms"
-      },
-      "METRICS_BOARD": {
-        "METRICS_GROUP": {
-          "DEFAULT_LABEL": "General"
-        }
-      },
-      "ROOMS_LIST": {
-        "NO_ROOM": "No room",
-        "CREATE_ROOM_BUTTON": "Create room",
-        "ASSET_TO_ROOM": "Asset to room",
-        "CONFIRMATION_DIALOG": {
-          "HEADER": "Delete Room Confirmation",
-          "MESSAGE": "Are you sure you want to delete the room {{ itemToDelete }}?"
-        },
-        "DIALOG_HEADER": {
-          "EDIT_ROOM": "Edit room",
-          "ADD_NEW_ROOM": "Add new room to factory",
-          "ASSIGN_ASSET": "Assign Asset to Room"
-        }
-      },
-      "ROOM_DIALOG": {
-        "ROOM_DESCRIPTION_LABEL": "Room description",
-        "ROOM_DESCRIPTION_PLACEHOLDER": "Enter a description here",
-        "ROOM_NAME_LABEL": "Room name",
-        "ROOM_NAME_PLACEHOLDER": "Enter a custom name here",
-        "SELECT_FACTORY_PLACEHOLDER": "Factory site",
-        "SELECT_FACTORY_SITE": "Select Factory site"
-      }
-    },
-    "FUSION_APPLETS": {
-      "CREATE": {
-        "APPLET_NAME": "Applet name",
-        "PRIORITY_PLACEHOLDER": "Choose one"
-      },
-      "EDITOR": {
-        "HEADER": "Attention",
-        "AUTOMATIC_RESET_CHECKBOX": "Enable automatic Reset",
-        "ACTION_LIST": {
-          "ACTION": "Action",
-          "CREATE_ACTION_BUTTON": "Create new Action",
-          "APPLET_ACTION": {
-            "EMAIL": "Email",
-            "EMAIL_TEXT": "Sends an email notification to one or more specified recipients.",
-            "WEBHOOK": "Webhook",
-            "WEBHOOK_TEXT": "Fires a defined message format to a specified webhook.",
-            "ACTION_MAIL": {
-              "HEADER": "Set up Email Notification",
-              "CHOOSE_RECIPIENTS_LABEL":"Choose Email Recipients",
-              "RECIPIENTS_PLACEHOLDER":"Select Email",
-              "SELECTED_RECIPIENTS_LABEL":"Selected Email Recipients"
-            },
-            "ACTION_WEBHOOK": {
-              "WEBHOOK_URL": "Webhook URL",
-              "MESSAGE_HEADER_LABEL": "Message Headers",
-              "SELECTED_WEBHOOK_LABEL":"Selected Message Headers",
-              "INPUT_PLACEHOLDER": "Enter Value"
-            }
-          }
-        },
-        "CONDITIONS": {
-          "TRIGGER": "Trigger",
-          "CREATE_TRIGGER_BUTTON": "Create new Trigger",
-          "CONDITIONS_VALUE": {
-            "CHOOSE_TRIGGER_ASSET": "Choose Trigger Asset",
-            "SETUP_CONDITION": "Setup Condition",
-            "METRIC_LABEL": "Choose Metric",
-            "CONDITION_TYPE_LABEL": "Choose Condition Type",
-            "CONDITION_LABEL": "Choose Condition",
-            "VALUE_LABEL": "Enter Value",
-            "DEFINE_DURATION": "Define Duration",
-            "AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "Average & Standard Deviation Baseline",
-            "MINIMAL_INSTANCES_FOR_CALCULATION": "Minimal Instances for Calculation",
-            "LIMIT_SELECTOR": {
-              "CALCULATE_CONTROL_LIMIT": "Calculate the control limit using",
-              "STANDARD_DEVIATION": "{{number}} Standard deviation"
-            }
-          }
-        }
-      },
-      "LIST": {
-        "NO_APPLET": "No Applet",
-        "APPLET": "Applet",
-        "APPLETS": "Applets",
-        "CREATE_DIALOG_HEADER":  "Create Applet",
-        "CREATE_APPLET_BUTTON": "Create Applet",
-        "APPLET_NAME": "AppletName",
-        "CONDITION_SUMMARY": "Condition Summary"
-      },
-      "SUBHEADER": {
-        "DETAIL": "Detail",
-        "EDITOR": "Editor",
-        "OVERVIEW": "Overview",
-        "ARCHIVE": "Archive"
-      }
-    },
-    "NOTIFICATIONS": {
-      "SUB_HEADER": {
-        "OPEN": "Open",
-        "CLEARED": "Cleared"
-      }
-    }
-  }
+		"FACTORY": {
+			"ASSETS_LIST": {
+				"ASSIGN_ITEM_TEXT": "Asset to room",
+				"CATEGORY": "Category",
+				"DIALOG_HEADING": {
+					"FACTORY_SITE_ASSIGNMENT": "Factory Site Assignment",
+					"ON_BOARDING": "Select Asset for Onboarding",
+					"ROOM_ASSIGNMENT": "Room Assignment"
+				},
+				"NO_ASSETS": "No assets",
+				"ONBOARD_NEW_ASSET": "Onboard new Asset"
+			},
+			"ASSET_CARD": {
+				"CONTROL_SYSTEM_TYPE": "Control System Type",
+				"GATEWAY_CONNECTIVITY": "Gateway Connectivity"
+			},
+			"ASSET_DETAILS": {
+				"ASSET_CHARTS": {
+					"POINTS": "points"
+				},
+				"ASSET_TABLES": {
+					"DATE": "date",
+					"OF": "of",
+					"VALUE": "value",
+					"VALUES": "values",
+					"VALUES_PER_PAGE": "Values per page",
+					"VALUE_SINCE": "value since"
+				},
+				"INFO": {
+					"FACTORY_SITE_ASSIGNMENT": "Factory Site Assignment",
+					"ROOM_ASSIGNMENT": "Room Assignment ({{factorySiteName}})"
+				},
+				"SUB_HEADER": {
+					"APPLETS": "Applets",
+					"DIGITAL_NAMEPLATE": "Digital Nameplate",
+					"NOTIFICATIONS": "Notifications",
+					"PERFORMANCE": "Performance",
+					"SUBSYSTEMS": "Subsystems"
+				}
+			},
+			"ASSET_INSTANTIATION": {
+				"DESCRIPTION_MODAL": {
+					"CUSTOM_NAME": "Custom name",
+					"CUSTOM_NAME_PLACEHOLDER": "Enter a custom name here"
+				},
+				"FACTORY_SITE_ASSIGNMENT_MODAL": {
+					"SEARCH_TEXT_PLACEHOLDER": "Name",
+					"SELECT_FACTORY_SITE": "Select Factory Site"
+				},
+				"MODAL_HEADER": {
+					"FACTORY_ASSIGNMENT_MODAL": "Factory Site Assignment",
+					"GENERAL_INFORMATION": "General Information",
+					"PAIRING_ASSET": "Pairing Asset",
+					"ROOM_ASSIGNMENT": "Room Assignment"
+				},
+				"PAIRED_MODAL": {
+					"CUSTOMIZE_ASSET": "Customize Asset",
+					"PAIRING_PROCESS": "Your asset is beeing paired!",
+					"SUCCESSFULLY_PAIRED": "Successfully paired!"
+				},
+				"ROOM_ASSIGNMENT_MODAL": {
+					"SELECT_FACTORY_SITE": "Select room"
+				},
+				"START_MODAL": {
+					"NO_ASSETS_TO_ONBOARD": "No Assets to be onboarded!",
+					"READY_FOR_ONBOARDING": "Ready for onboarding!"
+				}
+			},
+			"ASSIGN_ASSETS_TO_ROOM": {
+				"SELECT_ASSET": "Select Assets"
+			},
+			"FACTORY_PAGE_TITLE": {
+				"SMART_FACTORY": "Smart Factory"
+			},
+			"FACTORY_SITES": {
+				"ASSETS": "Assets",
+				"CITY": "City",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Delete Factory Confirmation",
+					"MESSAGE": "Are you sure you want to delete the Factory {{ itemToDelete }}?"
+				},
+				"COUNTRY": "Country",
+				"CREATE_FACTORY_SITE_BUTTON": "Create factory site",
+				"DIALOG_HEADING": {
+					"CREATE": "Create new Factory Site",
+					"UPDATE": "Update Factory Site"
+				},
+				"FACTORY_NAME": "Factory name",
+				"FACTORY_SITE": "Factory site",
+				"FACTORY_SITES": "Factory sites",
+				"NO_FACTORY_SITES": "No Factory sites",
+				"STREET": "Street",
+				"ZIP": "Zip"
+			},
+			"FACTORY_SITE_DIALOG": {
+				"ADDITIONAL_ADDRESS": "Additional address",
+				"ADDRESS_DETAILS": "Enter address details",
+				"CITY": "City",
+				"COUNTRY": "Country",
+				"COUNTRY_PLACEHOLDER": "Select a country...",
+				"FACTORY_NAME": "Factory name",
+				"FACTORY_TYPE": "Factory type",
+				"FACTORY_TYPES": {
+					"FABRICATION": "Fabrication",
+					"HEADQUARTER": "Headquarter"
+				},
+				"STREET": "Street",
+				"ZIP_LABEL": "ZIP",
+				"ZIP_PLACEHOLDER": "Zip code"
+			},
+			"FACTORY_SUB_HEADER": {
+				"ASSETS": "Assets",
+				"FACTORY_SITES": "Factory Sites",
+				"ROOMS": "Rooms"
+			},
+			"METRICS_BOARD": {
+				"METRICS_GROUP": {
+					"DEFAULT_LABEL": "General"
+				}
+			},
+			"ROOMS_LIST": {
+				"ASSET_TO_ROOM": "Asset to room",
+				"CONFIRMATION_DIALOG": {
+					"HEADER": "Delete Room Confirmation",
+					"MESSAGE": "Are you sure you want to delete the room {{ itemToDelete }}?"
+				},
+				"CREATE_ROOM_BUTTON": "Create room",
+				"DIALOG_HEADER": {
+					"ADD_NEW_ROOM": "Add new room to factory",
+					"ASSIGN_ASSET": "Assign Asset to Room",
+					"EDIT_ROOM": "Edit room"
+				},
+				"NO_ROOM": "No room"
+			},
+			"ROOM_DIALOG": {
+				"ROOM_DESCRIPTION_LABEL": "Room description",
+				"ROOM_DESCRIPTION_PLACEHOLDER": "Enter a description here",
+				"ROOM_NAME_LABEL": "Room name",
+				"ROOM_NAME_PLACEHOLDER": "Enter a custom name here",
+				"SELECT_FACTORY_PLACEHOLDER": "Factory site",
+				"SELECT_FACTORY_SITE": "Select Factory site"
+			}
+		},
+		"FUSION_APPLETS": {
+			"CREATE": {
+				"APPLET_NAME": "Applet name",
+				"PRIORITY_PLACEHOLDER": "Choose one"
+			},
+			"EDITOR": {
+				"ACTION_LIST": {
+					"ACTION": "Action",
+					"APPLET_ACTION": {
+						"ACTION_MAIL": {
+							"CHOOSE_RECIPIENTS_LABEL": "Choose Email Recipients",
+							"HEADER": "Set up Email Notification",
+							"RECIPIENTS_PLACEHOLDER": "Select Email",
+							"SELECTED_RECIPIENTS_LABEL": "Selected Email Recipients"
+						},
+						"ACTION_WEBHOOK": {
+							"INPUT_PLACEHOLDER": "Enter Value",
+							"MESSAGE_HEADER_LABEL": "Message Headers",
+							"SELECTED_WEBHOOK_LABEL": "Selected Message Headers",
+							"WEBHOOK_URL": "Webhook URL"
+						},
+						"EMAIL": "Email",
+						"EMAIL_TEXT": "Sends an email notification to one or more specified recipients.",
+						"WEBHOOK": "Webhook",
+						"WEBHOOK_TEXT": "Fires a defined message format to a specified webhook."
+					},
+					"CREATE_ACTION_BUTTON": "Create new Action"
+				},
+				"AUTOMATIC_RESET_CHECKBOX": "Enable automatic Reset",
+				"CONDITIONS": {
+					"CONDITIONS_VALUE": {
+						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "Average & Standard Deviation Baseline",
+						"CHOOSE_TRIGGER_ASSET": "Choose Trigger Asset",
+						"CONDITION_LABEL": "Choose Condition",
+						"CONDITION_TYPE_LABEL": "Choose Condition Type",
+						"DEFINE_DURATION": "Define Duration",
+						"LIMIT_SELECTOR": {
+							"CALCULATE_CONTROL_LIMIT": "Calculate the control limit using",
+							"STANDARD_DEVIATION": "{{number}} Standard deviation"
+						},
+						"METRIC_LABEL": "Choose Metric",
+						"MINIMAL_INSTANCES_FOR_CALCULATION": "Minimal Instances for Calculation",
+						"SETUP_CONDITION": "Setup Condition",
+						"VALUE_LABEL": "Enter Value"
+					},
+					"CREATE_TRIGGER_BUTTON": "Create new Trigger",
+					"TRIGGER": "Trigger"
+				},
+				"HEADER": "Attention"
+			},
+			"LIST": {
+				"APPLET": "Applet",
+				"APPLETS": "Applets",
+				"APPLET_NAME": "AppletName",
+				"CONDITION_SUMMARY": "Condition Summary",
+				"CREATE_APPLET_BUTTON": "Create Applet",
+				"CREATE_DIALOG_HEADER": "Create Applet",
+				"NO_APPLET": "No Applet"
+			},
+			"SUB_HEADER": {
+				"ARCHIVE": "Archive",
+				"DETAIL": "Detail",
+				"EDITOR": "Editor",
+				"OVERVIEW": "Overview"
+			}
+		},
+		"NOTIFICATIONS": {
+			"SUB_HEADER": {
+				"CLEARED": "Cleared",
+				"OPEN": "Open"
+			}
+		},
+		"SHARED": {
+			"CONTENT": {
+				"NOTIFICATIONS_LIST": {
+					"CLEARED_PLURAL": "Cleared",
+					"CLEARED_SINGULAR": "Cleared",
+					"CLOSE_DIALOG": {
+						"HEADER": "Close Notification Confirmation",
+						"MESSAGE_PLURAL": "Are you sure you want to clear {{ notificationCount }}  notifications?",
+						"MESSAGE_SINGULAR": "Are you sure you want to clear the notification{{ notificationToClose }}?"
+					},
+					"CONDITION": "Condition",
+					"DATE_AND_TIME": "Date & Time",
+					"MEASURED_VALUE": "Measured Value",
+					"NOTIFICATION": "Notification",
+					"NOTIFICATIONS": "Notifications",
+					"NOTIFICATIONS_SELECTED": "{{ statusName }} Notifications selected",
+					"NOTIFICATIONS_WITH_STATUS": "{{ statusName }} Notifications",
+					"NOTIFICATION_SELECTED": "{{ statusName }} Notification selected",
+					"NOTIFICATION_WITH_STATUS": "{{ statusName }} Notification",
+					"NO_NOTIFICATION": "No {{ statusName }} Notifications",
+					"NO_NOTIFICATION_SELECTED": "No {{ statusName }} Notification selected",
+					"OPEN_PLURAL": "Open",
+					"OPEN_SINGULAR": "Open",
+					"RULE_NAME": "Rule name"
+				}
+			},
+			"UI": {
+				"HEADER": {
+					"LOGOUT": "Logout",
+					"MY_ACCOUNT_LABEL": "My Account (Open in Keycloak)",
+					"PAGE_TITLE": {
+						"APPLETS": "Applets",
+						"DASHBOARDS": "Dashboards",
+						"ECOSYSTEM_MANAGER": "Ecosystem Manager",
+						"FACTORY_MANAGER": "Factory Manager",
+						"FLEET_MANAGER": "Fleet Manager",
+						"NOTIFICATIONS": "Notifications",
+						"SMART_FACTORY": "Smart Factory"
+					}
+				},
+				"ICONS_OPTIONS_MENU": {
+					"ASSIGN": "Assign {{ assignItemText }}",
+					"CLONE": "Clone",
+					"CREATE": "Create new {{ createItemText }}",
+					"DELETE": "Delete",
+					"RENAME": "Rename",
+					"UPDATE": "Update {{ updateItemText }}"
+				},
+				"TABLE_FILTER": {
+					"ADD_FILTER": "Add Filter",
+					"CLEAR_ALL": "Clear all",
+					"DATE_FILTER": {
+						"DATE_AND_TIME_FILTER": "Date & Time Filter",
+						"END_DATE": "End Date",
+						"START_DATE": "Start Date"
+					},
+					"FILTER": "Filter",
+					"FILTER_BUTTON": "Filter",
+					"NOT_SET": "not set",
+					"NUMERIC_FILTER": {
+						"LONG_TERM_PRIORITY": "Longterm (blue)",
+						"MEDIUM_TERM_PRIORITY": "Mediumterm (grey)",
+						"SHORT_TERM_PRIORITY": "Critical (red)"
+					},
+					"SELECT": "Select",
+					"VALUE": "Value",
+					"VALUES": "Values"
+				},
+				"TABLE_SEARCHBAR": {
+					"SEARCH": "Search"
+				},
+				"TABLE_SELECTED_ITEMS_BAR": {
+					"DESELECT": "deselect",
+					"ITEMS_SELECTED": "{{ itemType }} selected",
+					"NO_ITEM_SELECTED": "No {{ itemType }} selected"
+				}
+			}
+		}
+	}
 }

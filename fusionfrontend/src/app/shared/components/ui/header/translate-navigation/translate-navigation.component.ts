@@ -14,23 +14,26 @@ export class TranslateNavigationComponent implements OnInit {
 
   constructor() {
     this.languageTypes = [
-      { label: "English", value: "en" },
-      { label: "German", value: "de" },
-      { label: "French", value: "fr" },
+      { label: 'English', value: 'en' },
+      { label: 'German', value: 'de' },
+      { label: 'French', value: 'fr' },
     ];
     // this.languageTypes = [
-    //   { label: this.translate.instant('APP.SHARED.UI.HEADER.TRANSLATE_NAVIGATION.ENGLISH'), value: "en" },
-    //   { label: this.translate.instant('APP.SHARED.UI.HEADER.TRANSLATE_NAVIGATION.GERMAN'), value: "de" },
-    //   { label: this.translate.instant('APP.SHARED.UI.HEADER.TRANSLATE_NAVIGATION.FRENCH'), value: "fr" },
+    //   { label: this.translate.instant('APP.SHARED.UI.HEADER.TRANSLATE_NAV.ENGLISH'), value: 'en' },
+    //   { label: this.translate.instant('APP.SHARED.UI.HEADER.TRANSLATE_NAV.GERMAN'), value: 'de' },
+    //   { label: this.translate.instant('APP.SHARED.UI.HEADER.TRANSLATE_NAV.FRENCH'), value: 'fr' },
     // ];
   }
 
   ngOnInit(): void {
-    this.lang = localStorage.getItem('lang') || 'en';
+    // this.lang = localStorage.getItem('lang') || 'en';
+    this.selectedLanguage = localStorage.getItem('lang') || 'en';
   }
 
-  changeLang() {
+  changeLang(lang?) {
+    console.log(lang);
     localStorage.setItem('lang', this.selectedLanguage);
+    // localStorage.setItem('lang', lang);
     window.location.reload();
   }
 

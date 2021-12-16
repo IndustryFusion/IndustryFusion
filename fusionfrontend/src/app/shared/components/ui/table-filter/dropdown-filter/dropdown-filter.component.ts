@@ -15,6 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dropdown-filter',
@@ -37,9 +38,13 @@ export class DropdownFilterComponent implements OnInit {
 
 
   selectedValueMapping:
-    { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
+    { [k: string]: string } = {
+    '=0': '# ' +  this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES'),
+    '=1': '# ' + this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUE'),
+    other: '# ' + this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES')
+  };
 
-  constructor() {
+  constructor(private translate: TranslateService) {
   }
 
   ngOnInit(): void {

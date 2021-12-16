@@ -47,6 +47,7 @@ export class GaugeChartComponent implements OnInit {
 
   private indicatorWidth: number;
   private gaugeLabels = [
+    // !!!
     { color: '#A73737', label: 'critical' },
     { color: '#FCA82B', label: 'warning' },
     { color: '#2CA9CE', label: 'ideal' },

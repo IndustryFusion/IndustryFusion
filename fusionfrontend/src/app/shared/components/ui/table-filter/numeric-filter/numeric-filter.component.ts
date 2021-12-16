@@ -15,6 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -33,9 +34,9 @@ export class NumericFilterComponent implements OnInit {
   readonly MAINTENANCE_HOURS_LOWER_THRESHOLD = 150;
   readonly MAINTENANCE_HOURS_UPPER_THRESHOLD = 750;
 
-  readonly SHORTTERM_PRIORITY = 'Critical (red)';
-  readonly MEDIUMTERM_PRIORITY = 'Mediumterm (grey)';
-  readonly LONGTERM_PRIORITY = 'Longterm (blue)';
+  readonly SHORTTERM_PRIORITY = this.translate.instant('APP.SHARED.UI.TABLE_FILTER.NUMERIC_FILTER.SHORT_TERM_PRIORITY');
+  readonly MEDIUMTERM_PRIORITY = this.translate.instant('APP.SHARED.UI.TABLE_FILTER.NUMERIC_FILTER.MEDIUM_TERM_PRIORITY');
+  readonly LONGTERM_PRIORITY = this.translate.instant('APP.SHARED.UI.TABLE_FILTER.NUMERIC_FILTER.LONG_TERM_PRIORITY');
 
   @Input()
   itemsToBeFiltered: any[];
@@ -53,9 +54,13 @@ export class NumericFilterComponent implements OnInit {
   index: number;
 
   selectedValueMapping:
-    { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
+    { [k: string]: string } = {
+    '=0': '# ' +  this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES'),
+    '=1': '# ' + this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUE'),
+    other: '# ' + this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES')
+  };
 
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.checkBoxItems.forEach((item, index) => {

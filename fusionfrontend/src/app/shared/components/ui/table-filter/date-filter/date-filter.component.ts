@@ -30,9 +30,6 @@ export class DateFilterComponent implements OnInit {
   @Output()
   itemsFiltered = new EventEmitter<any>();
 
-  selectedValueMapping:
-    { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
-
   constructor() { }
 
   ngOnInit(): void {  }

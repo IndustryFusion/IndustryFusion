@@ -16,6 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { StatusWithAssetId } from '../../../../../factory/models/status.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-status-filter',
@@ -34,15 +35,24 @@ export class StatusFilterComponent implements OnInit {
   itemsFiltered = new EventEmitter<any>();
 
   checkBoxItemsSet: Set<any> = new Set();
-  checkBoxItems: string[] = ['Offline', 'Idle', 'Running', 'Error'];
+  checkBoxItems: string[] = [
+    this.translate.instant('APP.COMMON.STATUSES.OFFLINE'),
+    this.translate.instant('APP.COMMON.STATUSES.IDLE'),
+    this.translate.instant('APP.COMMON.STATUSES.RUNNING'),
+    this.translate.instant('APP.COMMON.STATUSES.ERROR'),
+  ];
 
   selectedCheckBoxItems: any[] = [];
 
 
   selectedValueMapping:
-    { [k: string]: string } = { '=0': '# Values', '=1': '# Value', other: '# Values' };
+    { [k: string]: string } = {
+    '=0': '# ' +  this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES'),
+    '=1': '# ' + this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUE'),
+    other: '# ' + this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES')
+  };
 
-  constructor() {
+  constructor(private translate: TranslateService) {
   }
 
   ngOnInit(): void {

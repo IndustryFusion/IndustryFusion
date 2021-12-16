@@ -20,6 +20,7 @@ import { StatusHours } from '../../../../core/models/kairos-status-aggregation.m
 import { OispDeviceStatus } from '../../../../core/models/kairos.model';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { BehaviorSubject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-equipment-efficiency-overview-donut-chart',
@@ -42,7 +43,8 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
   data: any;
   chartOptions: any;
 
-  constructor(private enumHelpers: EnumHelpers) {
+  constructor(private enumHelpers: EnumHelpers,
+              private translate: TranslateService) {
     this.initChartOptions();
     this.initChartData();
   }
@@ -103,7 +105,8 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
 
   private initChartData() {
     this.data = {
-      labels: ['Running', 'Offline', 'Error', 'Idle'],
+      labels: [this.translate.instant('APP.COMMON.STATUSES.RUNNING'), this.translate.instant('APP.COMMON.STATUSES.OFFLINE'),
+        this.translate.instant('APP.COMMON.STATUSES.ERROR'), this.translate.instant('APP.COMMON.STATUSES.IDLE')],
       datasets: [{
         data: [0, 0, 0, 0],
         backgroundColor: [
