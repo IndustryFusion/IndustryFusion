@@ -1,0 +1,71 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="asset-type-template-wizard-peers">
+
+  <div *ngIf="!(peerFormArray?.controls?.length > 0) && isReview === true">no peer selected</div>
+  <div *ngIf="peerFormArray?.controls?.length > 0" class="fields-list">
+    <div class="threshold-list-header p-grid">
+      <div class="if-label-small-header col-0-5"></div>
+      <div class="if-label-small-header p-col-3">Custom peer&nbsp;name</div>
+      <div class="if-label-small-header p-col-3">Peer name</div>
+      <div class="if-label-small-header col-1-5">Cardinality</div>
+      <div class="if-label-small-header p-col-2">Mandatory?</div>
+      <div class="if-label-small-header p-col-2"></div>
+    </div>
+
+    <ng-container *ngFor="let peer of peerFormArray?.controls;">
+      <form [formGroup]="toFormGroup(peer)">
+        <div class="p-grid peer-row">
+          <div class="col-0-5 manufacturer-icon">
+            <img src="assets/img/{{peer.get('imageKey').value}}">
+          </div>
+
+          <div class="p-col-3">
+            <input type="text" pInputText class="peer-inputs" *ngIf="!isConfirmed(peer)" formControlName="customName"
+                   [placeholder]="'Custom peer name'"/>
+            <label *ngIf="isConfirmed(peer)" class="info-text confirmed-name" [ngClass]="editable === true ? 'confirmed-padding' : ''" displayControlValue="customName"></label>
+          </div>
+          <div class="p-col-3">
+            <label class="info-text confirmed-name" displayControlValue="name"></label>
+          </div>
+
+          <div class="col-1-5">
+            <p-dropdown *ngIf="!isConfirmed(peer)" [options]="cardinalityOptions" optionValue="value"
+                        optionLabel="name" formControlName="cardinality" class="peer-inputs">
+            </p-dropdown>
+            <label *ngIf="isConfirmed(peer)" class="info-text" displayControlValue="cardinality"></label>
+          </div>
+
+          <div class="info-text p-col-2" *ngIf="editable === true">
+            <p-checkbox [value]="peer.get('mandatory').value" binary="true" label="Mandatory" formControlName="mandatory"
+                        [disabled]="isConfirmed(peer)"></p-checkbox>
+          </div>
+          <div class="info-text p-col-2" *ngIf="editable === false">
+            <label class="info-text">{{peer.get('mandatory').value ? 'yes' : 'no'}}</label>
+          </div>
+
+          <div class="p-col-2 edit-col">
+            <ng-container *ngIf="editable === true">
+              <app-confirm-button (confirmItem)="onConfirm(peer)" *ngIf="!isConfirmed(peer)"></app-confirm-button>
+              <app-edit-button class="edit-button" (editItem)="onEdit(peer)" *ngIf="isConfirmed(peer)"></app-edit-button>
+              <app-trash-button (click)="onDelete(peer)"></app-trash-button>
+            </ng-container>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>

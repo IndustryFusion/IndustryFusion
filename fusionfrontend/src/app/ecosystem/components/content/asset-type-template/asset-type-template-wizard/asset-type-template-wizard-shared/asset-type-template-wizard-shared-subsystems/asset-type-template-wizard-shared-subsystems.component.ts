@@ -14,7 +14,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 import { ID } from '@datorama/akita';
 import { AssetTypeTemplate } from '../../../../../../../core/store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateQuery } from '../../../../../../../core/store/asset-type-template/asset-type-template.query';
@@ -29,11 +29,12 @@ import { AssetTypeTemplateWizardStepStartComponent } from '../../asset-type-temp
 })
 export class AssetTypeTemplateWizardSharedSubsystemsComponent implements OnInit {
 
-  @Input() assetTypeTemplate: AssetTypeTemplate;
+  @Input() subsystemIds: Array<ID>;
   @Input() isReview = false;
+  @Input() editable = true;
   @Output() changeIsValid = new EventEmitter<boolean>();
   @Output() backToEditPage = new EventEmitter<void>();
-  @Output() subsystemRemoved = new EventEmitter<ID>();
+  @Output() subsystemsRemoved = new EventEmitter<ID>();
 
   subsystemFormArray: FormArray;
 
@@ -43,10 +44,10 @@ export class AssetTypeTemplateWizardSharedSubsystemsComponent implements OnInit 
   }
 
   ngOnInit(): void {
-    if (!this.assetTypeTemplate.subsystemIds) {
-      this.assetTypeTemplate.subsystemIds = new Array<ID>();
+    if (!this.subsystemIds) {
+      this.subsystemIds = new Array<ID>();
     }
-    this.fillTable(this.assetTypeTemplate.subsystemIds);
+    this.fillTable(this.subsystemIds);
   }
 
   private fillTable(subsystemIds: ID[]): void {
@@ -86,17 +87,12 @@ export class AssetTypeTemplateWizardSharedSubsystemsComponent implements OnInit 
 
     if (subsystemGroup != null) {
       const removedSubsystemId = WizardHelper.removeSubsystemFromFormArray(subsystemGroup, this.subsystemFormArray);
-      this.subsystemRemoved.emit(removedSubsystemId);
+      this.subsystemsRemoved.emit(removedSubsystemId);
     }
   }
 
-  public saveValues(): void {
-    if (this.subsystemFormArray.valid) {
-       this.assetTypeTemplate.subsystemIds = new Array<ID>();
-       this.subsystemFormArray.controls.forEach((subsystemGroup: FormControl) => {
-         this.assetTypeTemplate.subsystemIds.push(subsystemGroup.get('id').value);
-       });
-    }
+  public getFormArray(): FormArray {
+    return this.subsystemFormArray;
   }
 
   public onClickEdit(): void {
