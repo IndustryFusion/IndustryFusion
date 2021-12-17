@@ -18,7 +18,6 @@ package io.fusion.fusionbackend.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jsonldjava.utils.JsonUtils;
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.dto.FieldInstanceDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
@@ -26,20 +25,15 @@ import io.fusion.fusionbackend.dto.mappers.FieldSourceMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.Room;
-import io.fusion.fusionbackend.model.Threshold;
-import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +50,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -75,6 +68,8 @@ public class AssetService {
     private final FactorySiteService factorySiteService;
     private final FieldInstanceService fieldInstanceService;
     private final FieldSourceMapper fieldSourceMapper;
+    private final NgsiLdSerializer ngsiLdSerializer;
+    private final NgsiLdBrokerService ngsiLdBrokerService;
 
     @Autowired
     public AssetService(AssetRepository assetRepository,
@@ -85,7 +80,8 @@ public class AssetService {
                         CompanyService companyService,
                         FactorySiteService factorySiteService,
                         FieldInstanceService fieldInstanceService,
-                        FieldSourceMapper fieldSourceMapper) {
+                        FieldSourceMapper fieldSourceMapper,
+                        NgsiLdSerializer ngsiLdSerializer, NgsiLdBrokerService ngsiLdBrokerService) {
         this.assetRepository = assetRepository;
         this.assetMapper = assetMapper;
         this.fieldInstanceRepository = fieldInstanceRepository;
@@ -95,6 +91,8 @@ public class AssetService {
         this.factorySiteService = factorySiteService;
         this.fieldInstanceService = fieldInstanceService;
         this.fieldSourceMapper = fieldSourceMapper;
+        this.ngsiLdSerializer = ngsiLdSerializer;
+        this.ngsiLdBrokerService = ngsiLdBrokerService;
     }
 
     public Asset getAssetById(final Long assetId) {
@@ -456,6 +454,7 @@ public class AssetService {
         targetAsset.copyFrom(sourceAsset);
 
         validate(targetAsset);
+        ngsiLdBrokerService.installAssetOnBroker(targetAsset);
 
         return targetAsset;
     }
@@ -466,6 +465,7 @@ public class AssetService {
         Room newAssetRoom = this.roomService.getRoomById(sourceAsset.getRoom().getId());
 
         targetAsset.copyFrom(sourceAsset);
+        ngsiLdBrokerService.installAssetOnBroker(targetAsset);
 
         return updateRoom(oldAssetRoom, newAssetRoom, targetAsset);
     }
@@ -514,130 +514,7 @@ public class AssetService {
     public String getAssetByIdAsNgsiLD(Long assetId) throws IOException {
         Asset asset = getAssetById(assetId);
 
-        JSONObject root = new JSONObject();
-
-        //Generate URN
-        String id = generateUrn(asset);
-        root.put("id", id);
-
-        //Add AssetType
-        addType(root, asset.getAssetSeries().getName());
-
-        asset.getFieldInstances().stream().forEach(fieldInstance -> {
-
-            String value = Optional.ofNullable(fieldInstance.getValue()).orElse("");
-            QuantityDataType quantityDataType = fieldInstance.getFieldSource()
-                    .getSourceUnit().getQuantityType().getDataType();
-            switch (quantityDataType) {
-                case NUMERIC:
-                    addProperty(root, cleanName(fieldInstance), value);
-                    break;
-                case CATEGORICAL:
-                    addProperty(root, cleanName(fieldInstance), value,
-                            fieldInstance.getFieldSource().getSourceUnit().getSymbol());
-                    break;
-                default:
-                    LOG.error("unknown quantityType \"{}\" was used", quantityDataType);
-                    throw new IllegalArgumentException();
-            }
-        });
-
-        //add Subsystems
-        List<String> urls = asset.getSubsystems().stream()
-                .map(subsystem -> generateUrn(subsystem))
-                .collect(Collectors.toList());
-        addRelationship(root, "subsystems", urls);
-
-
-        //add Metainfo
-        JSONObject metainfo = new JSONObject();
-        asset.getFieldInstances().stream().forEach(fieldInstance -> {
-            JSONObject jsonObject = new JSONObject();
-            metainfo.put(cleanName(fieldInstance), jsonObject);
-            addThreshold(jsonObject, "AbsoluteThreshold", fieldInstance.getAbsoluteThreshold());
-            addThreshold(jsonObject, "CriticalThreshold", fieldInstance.getCriticalThreshold());
-            addThreshold(jsonObject, "IdealThreshold", fieldInstance.getIdealThreshold());
-            jsonObject.put("description", fieldInstance.getDescription());
-            if (fieldInstance.getFieldSource().getRegister() != null) {
-                jsonObject.put("register", fieldInstance.getFieldSource().getRegister());
-            }
-            jsonObject.put("fieldType", fieldInstance.getFieldSource().getFieldTarget().getFieldType());
-        });
-        addProperty(root, "metainfo", metainfo);
-
-        //add @Context
-        JSONArray context = new JSONArray();
-        context.add("https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld");
-        root.put("@context", context);
-
-        return JsonUtils.toPrettyString(root);
-    }
-
-    private void addThreshold(JSONObject jsonObject, String name, Threshold threshold) {
-        if (threshold != null) {
-            jsonObject.put("upper" + name, threshold.getValueUpper());
-            jsonObject.put("lower" + name, threshold.getValueLower());
-        }
-    }
-
-    private String cleanName(FieldInstance fieldInstance) {
-        String fieldName = fieldInstance.getExternalName();
-        if (fieldName == null) {
-            fieldName = fieldInstance.getFieldSource().getFieldTarget().getLabel();
-        }
-        fieldName = fieldName.replaceAll("[\\<\\\"\\'\\=\\;\\(\\)\\>\\?\\*\\s]", "");
-        return fieldName;
-    }
-
-    private String generateUrn(Asset asset) {
-        AssetSeries assetSeries = asset.getAssetSeries();
-        AssetTypeTemplate assetTypeTemplate = assetSeries.getAssetTypeTemplate();
-        String id = new StringBuilder()
-                .append("urn:ngsi-ld:Asset:")
-                .append(assetTypeTemplate.getId())
-                .append(":")
-                .append(assetSeries.getId())
-                .append(":")
-                .append(asset.getId()).toString();
-
-        return id;
-    }
-
-    private static void addRelationship(JSONObject json, String key, List<String> urls) {
-        JSONArray jsonArray = new JSONArray();
-        urls.forEach(url -> {
-            JSONObject property = new JSONObject();
-            addType(property, "Relationship");
-            property.put("object", url);
-            jsonArray.add(property);
-        });
-
-        json.put(key, jsonArray);
-    }
-
-    private static void addProperty(JSONObject json, String key, String value) {
-        addProperty(json, key, value, null);
-    }
-
-    private static void addProperty(JSONObject json, String key, String value, String unitCode) {
-        JSONObject property = new JSONObject();
-        addType(property, "Property");
-        property.put("value", value);
-        if (unitCode != null) {
-            property.put("unitCode", unitCode);
-        }
-        json.put(key, property);
-    }
-
-    private static void addProperty(JSONObject json, String key, JSONObject jsonObject) {
-        JSONObject property = new JSONObject();
-        addType(property, "Property");
-        property.put("value", jsonObject);
-        json.put(key, property);
-    }
-
-    private static Object addType(JSONObject json, String type) {
-        return json.put("type", type);
+        return ngsiLdSerializer.getAssetByIdAsNgsiLD(asset);
     }
 
     public byte[] exportAllFleetAssetsToJson(final Long companyId) throws IOException {

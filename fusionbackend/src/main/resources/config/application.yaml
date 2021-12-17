@@ -49,3 +49,6 @@ keycloak:
 logging:
   level:
     root: INFO
+
+ngsi-broker:
+  server-url: "http://localhost:9090"
