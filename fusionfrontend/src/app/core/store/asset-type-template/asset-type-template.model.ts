@@ -31,7 +31,22 @@ export class AssetTypeTemplate extends BaseEntity {
   fieldTargetIds: Array<ID>;
   fieldTargets: Array<FieldTarget>;
   subsystemIds: Array<ID>;
+  peerIds: Array<ID>;
+  peers: Array<AssetTypeTemplatePeer>;
   creationDate: Date;
+}
+
+export class AssetTypeTemplatePeer extends BaseEntity {
+  peerId: ID;
+  peer: AssetTypeTemplate;
+  customName: string;
+  cardinality: PeerCardinality;
+  mandatory: boolean;
+}
+
+export enum PeerCardinality {
+  ONE = 'ONE',
+  MANY = 'MANY',
 }
 
 export enum PublicationState {

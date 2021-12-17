@@ -15,11 +15,13 @@
 
 package io.fusion.fusionbackend.service;
 
+import com.amazonaws.services.pi.model.InvalidArgumentException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.dto.FieldDto;
 import io.fusion.fusionbackend.dto.mappers.FieldMapper;
+import io.fusion.fusionbackend.dto.mappers.FieldOptionMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.Field;
@@ -46,6 +48,7 @@ public class FieldService {
     private final FieldRepository fieldRepository;
     private final FieldOptionRepository fieldOptionRepository;
     private final FieldMapper fieldMapper;
+    private final FieldOptionMapper fieldOptionMapper;
     private final UnitService unitService;
     private final FieldOptionService fieldOptionService;
 
@@ -55,11 +58,13 @@ public class FieldService {
     public FieldService(FieldRepository fieldRepository,
                         FieldOptionRepository fieldOptionRepository,
                         FieldMapper fieldMapper,
+                        FieldOptionMapper fieldOptionMapper,
                         UnitService unitService,
                         FieldOptionService fieldOptionService) {
         this.fieldRepository = fieldRepository;
         this.fieldOptionRepository = fieldOptionRepository;
         this.fieldMapper = fieldMapper;
+        this.fieldOptionMapper = fieldOptionMapper;
         this.unitService = unitService;
         this.fieldOptionService = fieldOptionService;
     }
@@ -81,7 +86,7 @@ public class FieldService {
         return fieldRepository.save(field);
     }
 
-    public Field createField(final Field field, final Set<FieldOption> fieldOptions) {
+    public Field createFieldWithOptions(final Field field, final Set<FieldOption> fieldOptions) {
         Field createdField = fieldRepository.save(field);
         fieldOptions.forEach(fieldOption -> fieldOption.setField(createdField));
         fieldOptionRepository.saveAll(fieldOptions);
@@ -141,7 +146,14 @@ public class FieldService {
         for (FieldDto fieldDto : BaseZipImportExport.toSortedList(fieldDtos)) {
             if (!existingFieldIds.contains(fieldDto.getId())) {
                 Field field = fieldMapper.toEntity(fieldDto);
-                createField(field, fieldDto.getUnitId());
+
+                if (fieldDto.getEnumOptions() != null && fieldDto.getDataType() == FieldDataType.ENUM) {
+                    createFieldWithOptions(field, fieldOptionMapper.toEntitySet(fieldDto.getEnumOptions()));
+                } else if (fieldDto.getUnitId() != null) {
+                    createField(field, fieldDto.getUnitId());
+                } else {
+                    throw new InvalidArgumentException("Field with the id " + fieldDto.getId() + " misses a unit.");
+                }
             } else {
                 LOG.warn("Field with the id " + fieldDto.getId() + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;

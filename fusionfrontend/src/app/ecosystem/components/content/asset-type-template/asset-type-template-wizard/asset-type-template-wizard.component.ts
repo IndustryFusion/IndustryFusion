@@ -36,6 +36,7 @@ import { take } from 'rxjs/operators';
 import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { WizardHelper } from '../../../../../core/helpers/wizard-helper';
 import { AssetTypeTemplatesResolver } from '../../../../../core/resolvers/asset-type-templates.resolver';
+import { CustomFormValidators } from '../../../../../core/validators/custom-form-validators';
 
 @Component({
   selector: 'app-asset-type-template-wizard',
@@ -51,7 +52,8 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   public isAssetTypeLocked = false;
   public type = DialogType.CREATE;
 
-  private subsystemsValid: boolean;
+  private isSubsystemsValid = true;
+  private isPeersValid = true;
 
   Steps = AssetTypeTemplateWizardSteps;
 
@@ -81,13 +83,27 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
       wasPublished: [false],
       useExistingTemplate: [false, Validators.required],
       assetTypeId: [prefilledAssetTypeIdOrNull, Validators.required],
-      assetTypeTemplateId: [],
+      assetTypeTemplateId: [null, CustomFormValidators.requiredIfOtherIsTrue('useExistingTemplate')],
       fieldTarget: [],
       imageKey: [],
     });
     assetTypeTemplateForm.patchValue(assetTypeTemplate);
 
+    assetTypeTemplateForm.get('useExistingTemplate').valueChanges
+      .subscribe(() => AssetTypeTemplateWizardComponent.validateForm(assetTypeTemplateForm));
+    AssetTypeTemplateWizardComponent.validateForm(assetTypeTemplateForm);
+
     return assetTypeTemplateForm;
+  }
+
+  private static validateForm(formGroup: FormGroup): void {
+    if (formGroup != null) {
+      const formKeysToValidate = ['useExistingTemplate', 'assetTypeTemplateId'];
+      formKeysToValidate.forEach(controlsKey => {
+        formGroup.get(controlsKey).updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        formGroup.get(controlsKey).markAsDirty();
+      });
+    }
   }
 
   ngOnInit() {
@@ -116,6 +132,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     this.assetTypeTemplate = new AssetTypeTemplate();
     this.assetTypeTemplate.fieldTargets = [];
     this.assetTypeTemplate.subsystemIds = [];
+    this.assetTypeTemplate.peers = [];
   }
 
   private initialHandlingOfEditMode(): void {
@@ -151,8 +168,12 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
     this.assetTypeTemplate.fieldTargets = this.getMetrics().concat(this.replaceEmptyCustomNameWithName(attributes));
   }
 
-  setSubsystemValid(isValid: boolean) {
-    this.subsystemsValid = isValid;
+  setSubsystemValidity(isValid: boolean) {
+    this.isSubsystemsValid = isValid;
+  }
+
+  setPeersValidity(isValid: boolean) {
+    this.isPeersValid = isValid;
   }
 
   // noinspection JSMethodCanBeStatic
@@ -172,6 +193,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
       this.assetTypeTemplate.fieldTargets = [];
       this.assetTypeTemplate.fieldTargetIds = [];
       this.assetTypeTemplate.subsystemIds = [];
+      this.assetTypeTemplate.peers = [];
     }
   }
 
@@ -185,6 +207,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
             {
               this.assetTypeTemplate.fieldTargets = assetTypeTemplate.fieldTargets;
               this.assetTypeTemplate.subsystemIds = assetTypeTemplate.subsystemIds;
+              this.assetTypeTemplate.peers = assetTypeTemplate.peers;
 
               if (this.type === DialogType.EDIT) {
                 this.fieldTargetsUnedited = [...this.assetTypeTemplate.fieldTargets];
@@ -197,7 +220,7 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   onSaveTemplate() {
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId')?.value;
 
-    if (assetTypeId && this.assetTypeTemplate.fieldTargets && this.subsystemsValid) {
+    if (assetTypeId && this.assetTypeTemplate.fieldTargets && this.isSubsystemsValid && this.isPeersValid) {
       this.assetTypeTemplate.name = this.assetTypeTemplateForm.get('name')?.value;
       this.assetTypeTemplate.description = this.assetTypeTemplateForm.get('description')?.value;
       this.assetTypeTemplate.publicationState = this.assetTypeTemplateForm.get('publicationState')?.value;
@@ -213,6 +236,8 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
       } else if (this.type === DialogType.CREATE)  {
         this.createTemplate(assetTypeId);
       }
+    } else {
+      console.warn('[ATT wizard]: data are invalid. Therefore, no saving...');
     }
   }
 
@@ -227,13 +252,11 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
   }
 
   private updateTemplate() {
-    if (this.assetTypeTemplateForm.get('wasPublished')?.value) {
-      this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
-    }
-
     this.addNewFieldTargets();
     this.updateFieldTargets();
     this.deleteRemovedFieldTargets();
+
+    this.updateTemplateWithPeers();
   }
 
   private addNewFieldTargets() {
@@ -260,5 +283,9 @@ export class AssetTypeTemplateWizardComponent implements OnInit {
         this.fieldTargetService.deleteItem(this.assetTypeTemplate.id, fieldTarget.id).subscribe();
       }
     });
+  }
+
+  private updateTemplateWithPeers() {
+    this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
   }
 }

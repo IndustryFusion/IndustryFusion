@@ -46,8 +46,22 @@ under the License.
 
   <div class="subtitle">Attributes</div>
   <div *ngIf="attributes && attributes.length > 0" class="fields-list fields-padding">
-    <app-asset-type-template-wizard-shared-field *ngFor="let metric of attributes" [fieldTarget]="metric"
+    <app-asset-type-template-wizard-shared-field *ngFor="let attribute of attributes" [fieldTarget]="attribute"
                                                  [fieldType]="FieldType.ATTRIBUTE" [confirmed]="true" [editable]="false">
     </app-asset-type-template-wizard-shared-field>
+  </div>
+
+  <div class="subtitle">Subsystems</div>
+  <div *ngIf="assetTypeTemplate?.subsystemIds != null && assetTypeTemplate.subsystemIds.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-wizard-shared-subsystems [subsystemIds]="assetTypeTemplate.subsystemIds"
+                                                      [editable]="false">
+    </app-asset-type-template-wizard-shared-subsystems>
+  </div>
+
+  <div class="subtitle">Peers</div>
+  <div *ngIf="assetTypeTemplate?.peers != null && assetTypeTemplate.peers.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-wizard-shared-peers [assetTypeTemplatePeers]="assetTypeTemplate.peers"
+                                                 [editable]="false">
+    </app-asset-type-template-wizard-shared-peers>
   </div>
 </div>

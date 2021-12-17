@@ -13,13 +13,9 @@
  * under the License.
  */
 
-export enum AssetTypeTemplateWizardSteps {
-  START = 1,
-  METRICS,
-  ATTRIBUTES,
-  SUBSYSTEMS,
-  PEERS,
-  REVIEW,
-  FINISHED,
-  PUBLISH_CONFIRM
+package io.fusion.fusionbackend.model.enums;
+
+public enum CardinalityType {
+    ONE,
+    MANY
 }

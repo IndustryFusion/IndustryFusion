@@ -50,6 +50,7 @@ export class AssetWizardStepSubsystemsComponent implements OnInit {
 
   public onBack(): void {
     if (this.isReadyForNextStep) {
+      this.subsystemsChild.saveValues();
       this.stepChange.emit(AssetWizardStep.SUBSYSTEMS - 1);
     }
   }

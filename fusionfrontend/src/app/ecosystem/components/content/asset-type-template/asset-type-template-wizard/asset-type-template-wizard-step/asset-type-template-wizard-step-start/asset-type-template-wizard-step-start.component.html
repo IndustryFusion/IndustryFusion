@@ -19,7 +19,7 @@ under the License.
     <form [formGroup]="assetTypeTemplateForm">
       <div class="selection">
         <div class="input-div">
-          <label class="if-label">Select Asset type</label>
+          <label class="if-label">Select Asset type *</label>
           <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
                       class="select-asset-input" filter="true" resetFilterOnHide="true"
                       placeholder="Select Asset type..." (onChange)="onChangeAssetType($event.value)"
@@ -44,7 +44,7 @@ under the License.
 
       <div *ngIf="assetTypeTemplateForm.get('useExistingTemplate')?.value === true">
         <div class="input-div">
-          <label class="if-label">Select Asset Type Template</label>
+          <label class="if-label">Select Asset Type Template *</label>
           <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name"
                       optionValue="id" placeholder="Select Asset type template..."
                       class="select-asset-input" (onChange)="onChangeTemplate($event.value)">
@@ -53,7 +53,7 @@ under the License.
       </div>
 
       <div class="input-div">
-        <label class="if-label">Asset Type Template name</label>
+        <label class="if-label">Asset Type Template name *</label>
         <input type="text" pInputText class="select-asset-input" formControlName="name" />
       </div>
 
