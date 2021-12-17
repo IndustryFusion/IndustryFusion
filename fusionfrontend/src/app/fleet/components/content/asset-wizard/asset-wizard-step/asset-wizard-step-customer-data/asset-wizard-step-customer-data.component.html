@@ -15,26 +15,26 @@ under the License.
 
 <form [formGroup]="factorySiteForm">
   <div class="content">
-    <label class="wizard-title">Enter&nbsp;Customer&nbsp;Data</label>
+    <label class="wizard-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.CUSTOMER_DATA.ENTER_CUSTOMER_DATA' | translate }}</label>
 
     <div class="input-div">
-      <label class="if-label">Enterprise name</label>
+      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.CUSTOMER_DATA.ENTERPRISE_NAME' | translate }}</label>
       <input type="text" pInputText formControlName="name" />
     </div>
 
     <div class="input-div">
-      <label class="if-label">Street</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.STREET' | translate }}</label>
       <input type="text" pInputText formControlName="line1" />
     </div>
 
     <div class="input-div">
       <div class="dialog-grid">
         <div class="input-div">
-          <label class="if-label">ZIP</label>
+          <label class="if-label">{{ 'APP.COMMON.TERMS.ZIP' | translate }}</label>
           <input type="text" pInputText inputmode="numeric" formControlName="zip" />
         </div>
         <div class="input-div dialog-grid-col">
-          <label class="if-label">City</label>
+          <label class="if-label">{{ 'APP.COMMON.TERMS.CITY' | translate }}</label>
           <input type="text" pInputText formControlName="city" />
         </div>
       </div>
@@ -42,18 +42,18 @@ under the License.
 
     <div class="selection">
       <div class="input-div dropdown-filter">
-        <label class="if-label">Country</label>
+        <label class="if-label">{{ 'APP.COMMON.TERMS.COUNTRY' | translate }}</label>
         <p-dropdown [options]="countries" formControlName="countryId"
                     filter="true" resetFilterOnHide="true"
-                    placeholder="Select a country...">
+                    placeholder="{{ 'APP.COMMON.TERMS.COUNTRY_PLACEHOLDER' | translate }}">
         </p-dropdown>
       </div>
     </div>
   </div>
   <div class="footer">
-    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
+    <button type="button" class="if-button button-cancel" (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
     <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
-            (click)="onSave()">Create Digital Twin</button>
+            (click)="onSave()">{{ 'APP.FLEET.ASSET_WIZARD.STEP.CUSTOMER_DATA.CREATE_DIGITAL_TWIN_BUTTON' | translate }}</button>
   </div>
 </form>
 

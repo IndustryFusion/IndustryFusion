@@ -15,20 +15,20 @@ under the License.
 <div class="asset-series-create-metrics">
   <div class="content">
     <div id="column left">
-      <div class="wizard-title">Metrics</div>
-      <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no metrics available</div>
+      <div class="wizard-title">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.METRICS' | translate }}</div>
+      <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.NO_METRICS_AVAILABLE' | translate }}</div>
         <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
           <div *ngIf="showNotDeletableWarning === true" class="if-warning-toast">
           <i class="pi pi-exclamation-circle"></i>
-          <label>Metrics can not be deleted as assets of this asset series already exist.</label>
+          <label>{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.WARNING_LABEL' | translate }}</label>
           <i class="pi pi-times-circle" (click)="hideNotDeletableWarning()"></i>
         </div>
         <div class="p-grid">
-          <span class="if-label-small-header p-col-2">Custom Metric name</span>
-          <span class="if-label-small-header p-col-2">Metric name</span>
-          <span class="if-label-small-header p-col">Data source</span>
-          <span class="if-label-small-header p-col-1">Unit</span>
-          <span class="if-label-small-header p-col-1">Accuracy</span>
+          <span class="if-label-small-header p-col-2">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.CUSTOM_METRIC_NAME' | translate }}</span>
+          <span class="if-label-small-header p-col-2">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.METRIC_NAME' | translate }}</span>
+          <span class="if-label-small-header p-col">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.DATA_SOURCE' | translate }}</span>
+          <span class="if-label-small-header p-col-1">{{ 'APP.COMMON.TERMS.UNIT' | translate }}</span>
+          <span class="if-label-small-header p-col-1">{{ 'APP.COMMON.TERMS.ACCURACY' | translate }}</span>
           <span class="if-label-small-header p-col"></span>
         </div>
         <div *ngFor="let fieldSource of fieldSourcesFormArray?.controls;" class="p-grid attribute-row">
@@ -36,7 +36,8 @@ under the License.
             <span class="p-col-2 "><label displayControlValue="name"></label></span>
             <span class="p-col-2 "><label displayControlValue="fieldName"></label></span>
             <span class="p-col">
-              <input pInputText *ngIf="isUnsaved(fieldSource)" class="value-input" placeholder="Provide source" formControlName="register">
+              <input pInputText *ngIf="isUnsaved(fieldSource)" class="value-input" formControlName="register"
+                     placeholder="{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.PROVIDE_SOURCE' | translate }}">
               <label *ngIf="!isUnsaved(fieldSource)  && fieldSource.valid" displayControlValue="register"></label>
               <input *ngIf="!isUnsaved(fieldSource) && fieldSource.invalid" pInputText class="value-input if-invalid-border"
                      [disabled]="true">
@@ -60,7 +61,7 @@ under the License.
       </div>
 
       <div class="custom-script">
-        <div class="wizard-title">Custom script</div>
+        <div class="wizard-title">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.METRICS.CUSTOM_SCRIPT' | translate }}</div>
         <textarea pInputTextarea [(ngModel)]="assetSeries.customScript"></textarea>
       </div>
     </div>

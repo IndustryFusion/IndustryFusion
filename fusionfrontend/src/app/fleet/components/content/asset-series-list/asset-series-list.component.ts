@@ -30,6 +30,7 @@ import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-optio
 import { ConfirmationService } from 'primeng/api';
 import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -40,7 +41,11 @@ import { TableHelper } from '../../../../core/helpers/table-helper';
 export class AssetSeriesListComponent implements OnInit {
 
   assetSeriesMapping:
-    { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
+    { [k: string]: string } = {
+    '=0': this.translate.instant('APP.FLEET.ASSET_SERIES_LIST.No_ASSET_SERIES'),
+    '=1': '# ' + this.translate.instant('APP.COMMON.TERMS.ASSET_SERIES'),
+    other: '# ' + this.translate.instant('APP.COMMON.TERMS.ASSET_SERIES')
+  };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -66,7 +71,8 @@ export class AssetSeriesListComponent implements OnInit {
     private unitsResolver: UnitsResolver,
     private dialogService: DialogService,
     private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -124,7 +130,7 @@ export class AssetSeriesListComponent implements OnInit {
         assetSeriesId: idString,
       },
       width: '90%',
-      header: 'AssetSeries Implementation',
+      header: this.translate.instant('APP.FLEET.ASSET_SERIES_LIST.DIALOG_HEADER'),
     });
     dynamicDialogRef.onClose.subscribe(() => this.resolveAssetSeriesDetails());
   }

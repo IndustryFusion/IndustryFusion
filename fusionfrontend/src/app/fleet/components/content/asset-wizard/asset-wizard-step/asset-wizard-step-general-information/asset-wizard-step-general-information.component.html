@@ -17,11 +17,11 @@ under the License.
   <form [formGroup]="assetForm">
     <div class="content with-rows">
         <div id="column left">
-          <div class="wizard-title">General Information</div>
+          <div class="wizard-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.GENERAL_INFORMATION' | translate }}</div>
 
           <div class="selection">
             <div class="input-div">
-              <label class="if-label">Select Asset Series Version</label>
+              <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.SELECT_ASSET_SERIES_VERSION' | translate }}</label>
               <p-dropdown [options]="(assetSeries$ | async)" formControlName="assetSeriesId" optionLabel="name"
                           optionValue="id" filter="true" resetFilterOnHide="true" (onChange)="onChangeAssetSeries($event.value)">
               </p-dropdown>
@@ -29,12 +29,12 @@ under the License.
           </div>
 
           <div class="input-div">
-            <label class="if-label">Asset name</label>
+            <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.ASSET_NAME' | translate }}</label>
             <input type="text" pInputText formControlName="name" />
           </div>
 
           <div class="input-div">
-            <label class="if-label">Description</label>
+            <label class="if-label">{{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }}</label>
             <textarea pInputTextarea formControlName="description"></textarea>
             <label class="textarea-character-count if-label">{{ assetForm.get('description')?.value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
           </div>
@@ -44,13 +44,13 @@ under the License.
               <i class="pi pi-upload"></i>
               <input #imageInput type="file" accept="image/*" (change)="onImageUpload($event)">
             </label>
-            <div class="wizard-title"> Upload picture</div>
+            <div class="wizard-title"> {{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.UPLOAD_PICTURE' | translate }}</div>
           </div>
         </div>
 
         <div id="column right">
           <i class="if-icon-help"></i>
-          <span class="if-hint" > How will my asset be displayed in a factory?</span>
+          <span class="if-hint" > {{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.HELP_TEXT' | translate }}</span>
           <div class="sample-asset-display">
             <img [src]="assetImage" *ngIf="assetImage != null">
             <img src="assets/img/{{DEFAULT_ASSET_IMAGE_KEY}}" alt="asset-symbol" *ngIf="assetImage == null">
@@ -64,9 +64,9 @@ under the License.
         </div>
     </div>
     <div class="footer">
-      <button type="button" class="if-button button-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
-              (click)="onStart()">Start</button>
+              (click)="onStart()">{{ 'APP.COMMON.DIALOG_BUTTONS.START' | translate }}</button>
     </div>
   </form>
 </div>

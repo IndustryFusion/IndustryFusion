@@ -20,7 +20,7 @@ under the License.
 
 <div class="footer">
   <button type="button" class="if-button button-cancel" [disabled]="!isReadyForNextStep"
-          (click)="onBack()">Back</button>
+          (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
   <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep"
-          (click)="onNext()">Next</button>
+          (click)="onNext()">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
 </div>

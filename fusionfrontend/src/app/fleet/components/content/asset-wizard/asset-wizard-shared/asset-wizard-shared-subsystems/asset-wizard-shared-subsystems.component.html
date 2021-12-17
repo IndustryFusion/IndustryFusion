@@ -15,12 +15,12 @@ under the License.
 
 <div class="asset-wizard-subsystems">
 
-  <div *ngIf="!(subsystemFormArray?.controls?.length > 0) && isReview === true">no subsystems available</div>
+  <div *ngIf="!(subsystemFormArray?.controls?.length > 0) && isReview === true">{{ 'APP.FLEET.ASSET_WIZARD.SHARED.SUBSYSTEM.NO_SUBSYSTEMS_AVAILABLE' | translate }}no subsystems available</div>
   <div *ngIf="subsystemFormArray?.controls?.length > 0" class="fields-list">
     <div class="threshold-list-header p-grid">
-      <div class="if-label-small-header p-col-4"> Subsystem name </div>
-      <div class="if-label-small-header p-col-3"> Asset type </div>
-      <div class="if-label-small-header p-col-3"> Manufacturer </div>
+      <div class="if-label-small-header p-col-4"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.SUBSYSTEM.SUBSYSTEM_NAME' | translate }}Subsystem name </div>
+      <div class="if-label-small-header p-col-3"> {{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate }} </div>
+      <div class="if-label-small-header p-col-3"> {{ 'APP.COMMON.TERMS.MANUFACTURER' | translate }} </div>
       <div class="if-label-small-header p-col-2"> </div>
     </div>
 

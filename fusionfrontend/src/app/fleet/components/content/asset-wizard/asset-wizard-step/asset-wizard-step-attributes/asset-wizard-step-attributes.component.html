@@ -13,14 +13,14 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<label class="if-dialog-title">Customize&nbsp;Attributes</label>
+<label class="if-dialog-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.ATTRIBUTES.CUSTOMIZE_ATTRIBUTES' | translate }}</label>
 
 <app-asset-wizard-shared-attributes [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)">
 </app-asset-wizard-shared-attributes>
 
 <div class="footer">
   <button type="button" class="if-button button-cancel" [disabled]="!isReadyForNextStep"
-          (click)="onBack()">Back</button>
+          (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
   <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep"
-          (click)="onNext()">Next</button>
+          (click)="onNext()">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
 </div>

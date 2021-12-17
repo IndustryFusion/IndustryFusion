@@ -42,6 +42,9 @@
 				"ASSETS": "Assets",
 				"ASSET_SERIES": "Asset series",
 				"ASSET_TYPE": "Asset Type",
+				"CITY": "City",
+				"COUNTRY": "Country",
+				"COUNTRY_PLACEHOLDER": "Select a country...",
 				"DESCRIPTION": "Description",
 				"FACTORY": "Factory",
 				"FACTORY_SITE": "Factory Site",
@@ -55,10 +58,12 @@
 				"ROOM": "Room",
 				"ROOMS": "Rooms",
 				"STATUS": "Status",
+				"STREET": "Street",
 				"SYMBOL": "Symbol",
 				"TIME": "Time",
 				"UNIT": "Unit",
-				"VALUE": "Value"
+				"VALUE": "Value",
+				"ZIP": "ZIP"
 			}
 		},
 		"DASHBOARDS": {
@@ -388,6 +393,140 @@
 				"SELECT_FACTORY_SITE": "Select Factory site"
 			}
 		},
+		"FLEET": {
+			"ASSET_SERIES_ASSET_DETAILS": {
+				"SUB_HEADER": {
+					"DIGITAL_NAMEPLATE": "Digital Nameplate"
+				}
+			},
+			"ASSET_SERIES_DETAILS": {
+				"INFO": {
+					"ASSET_SERIES_VERSION": "Asset Series Version"
+				},
+				"SUB_HEADER": {
+					"ASSETS": "Assets"
+				}
+			},
+			"ASSET_SERIES_LIST": {
+				"ASSET_SERIES_NAME": "Asset series name",
+				"CREATE_ASSET_SERIES_BUTTON": "Create Asset Series",
+				"DIALOG_HEADER": "AssetSeries Implementation",
+				"No_ASSET_SERIES": "No asset series",
+				"TEMPLATE_VERSION": "Template Version"
+			},
+			"ASSET_SERIES_WIZARD": {
+				"ATTRIBUTES": {
+					"ATTRIBUTES": "Attributes",
+					"ATTRIBUTE_NAME": "Attribute name",
+					"CUSTOM_ATTRIBUTE_NAME": "Custom Attribute name",
+					"NO_ATTRIBUTES_AVAILABLE": "no attributes available",
+					"WARNING_LABEL": "Attributes can not be deleted as assets of this asset series already exist."
+				},
+				"GENERAL_INFORMATION": {
+					"ASSET_OR_ASSET_SERIES_NAME": "Asset or Asset Series name",
+					"ASSET_SERIES_DESCRIPTION": "Asset series description",
+					"ASSET_SERIES_NAME": "Asset series name",
+					"GENERAL_INFORMATION": "General Information",
+					"HELP_TEXT": "How will my asset be displayed in a factory?",
+					"SELECT_ASSET_TYPE_TEMPLATE": "Select Asset Type Template"
+				},
+				"METRICS": {
+					"CUSTOM_METRIC_NAME": "Custom Metric name",
+					"CUSTOM_SCRIPT": "Custom script",
+					"DATA_SOURCE": "Data source",
+					"METRICS": "Metrics",
+					"METRIC_NAME": "Metric name",
+					"NO_METRICS_AVAILABLE": "no metrics available",
+					"PROVIDE_SOURCE": "Provide source",
+					"WARNING_LABEL": "Metrics can not be deleted as assets of this asset series already exist."
+				},
+				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
+					"ASSET_HANDBOOK": "Asset Handbook",
+					"ASSET_VIDEO": "Asset Video",
+					"CE_CERTIFICATION": "CE Certification",
+					"CONNECTION_STRING": "Connection string",
+					"CONNECTIVITY_SETTINGS": "Connectivity Settings",
+					"CREATE_DIGITAL_NAMEPLATE": "Create Digital Nameplate",
+					"NO": "No",
+					"PROTECTION_CLASS": "Protection Class",
+					"PROTECTION_CLASS_PLACEHOLDER": "Select a protection class",
+					"SELECT_CONNECTIVITY_TYPE": "Select connectivity type",
+					"SELECT_PROTOCOL": "Select protocol",
+					"TOOLTIP": {
+						"LABEL": "Enter the correct connection string depending on \n the connectivity type you are using for your asset.",
+						"PLC4X_CUMMUNICATION": "PLC4X-based Communication (fusionplcdataservice)"
+					},
+					"YES": "Yes"
+				}
+			},
+			"ASSET_WIZARD": {
+				"SHARED": {
+					"ATTRIBUTES": {
+						"ATTRIBUTE_NAME": "Attribute name",
+						"CUSTOM_METRIC_NAME": "Custom Metric name",
+						"NO_ATTRIBUTES_AVAILABLE": "no attributes available"
+					},
+					"METRICS": {
+						"CUSTOM_METRIC_NAME": "Custom Metric name",
+						"DATA_SOURCE": "Data source",
+						"METRIC_NAME": "Metric name",
+						"NO_METRICS_AVAILABLE": "no metrics available"
+					},
+					"SUBSYSTEM": {
+						"NO_SUBSYSTEMS_AVAILABLE": "no subsystems available",
+						"SUBSYSTEM_NAME": "Subsystem name"
+					}
+				},
+				"STEP": {
+					"ATTRIBUTES": {
+						"CUSTOMIZE_ATTRIBUTES": "Customize Attributes"
+					},
+					"CUSTOMER_DATA": {
+						"CREATE_DIGITAL_TWIN_BUTTON": "Create Digital Twin",
+						"ENTERPRISE_NAME": "Enterprise name",
+						"ENTER_CUSTOMER_DATA": "Enter Customer Data"
+					},
+					"GENERAL_INFORMATION": {
+						"ASSET_NAME": "Asset name",
+						"GENERAL_INFORMATION": "General Information",
+						"HELP_TEXT": "How will my asset be displayed in a factory?",
+						"SELECT_ASSET_SERIES_VERSION": "Select Asset Series Version",
+						"UPLOAD_PICTURE": "Upload picture"
+					},
+					"METRICS_THRESHOLD": {
+						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Customize Metrics & Thresholds"
+					},
+					"NAMEPLATE": {
+						"ASSET_HANDBOOK": "Asset Handbook",
+						"ASSET_VIDEO": "Asset Video",
+						"CE_CERTIFICATION": "CE Certification",
+						"CONNECTION_STRING": "Connection String",
+						"CONSTRUCTION_DATE": "Construction Date",
+						"CREATE_DIGITAL_NAMEPLATE": "Create Digital Nameplate",
+						"CUSTOMIZE_CONNECTION": "Customize Connection",
+						"INSTALLATION_DATE": "Installation Date",
+						"NO": "No",
+						"PROTECTION_CLASS": "Protection Class",
+						"PROTECTION_CLASS_PLACEHOLDER": "Select a protection class...",
+						"SERIAL_NUMBER": "Serial Number",
+						"YES": "Yes"
+					},
+					"REVIEW": {
+						"REVIEW_ATTRIBUTES": "Review Attributes",
+						"REVIEW_METRICS": "Review Metrics",
+						"REVIEW_SUBSYSTEMS": "Review Subsystems"
+					},
+					"SUBSYSTEMS": {
+						"ADD_SUBSYSTEM": "Add Subsystem",
+						"ADD_SUBSYSTEMS": "Add Subsystems",
+						"SUBSYSTEMS_PLACEHOLDER": "Search Subsystems (Assets)..."
+					}
+				}
+			},
+			"SUB_HEADER": {
+				"ASSET_SERIES": "Asset Series"
+			}
+		},
 		"FUSION_APPLETS": {
 			"CREATE": {
 				"APPLET_NAME": "Applet name",
@@ -439,11 +578,11 @@
 				"HEADER": "Attention"
 			},
 			"LIST": {
-        "ACTIVE": "Active",
-        "ARCHIVED": "Archived",
+				"ACTIVE": "Active",
 				"APPLET": "Applet",
 				"APPLETS": "Applets",
 				"APPLET_NAME": "AppletName",
+				"ARCHIVED": "Archived",
 				"CONDITION_SUMMARY": "Condition Summary",
 				"CREATE_APPLET_BUTTON": "Create Applet",
 				"CREATE_DIALOG_HEADER": "Create Applet",

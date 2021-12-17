@@ -15,19 +15,19 @@ under the License.
 <div class="asset-series-create-attributes">
   <div class="content">
     <div id="column left">
-      <div class="wizard-title">Attributes</div>
-      <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">no attributes available</div>
+      <div class="wizard-title">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.ATTRIBUTES.ATTRIBUTES' | translate }}</div>
+      <div *ngIf="!(fieldSourcesFormArray?.controls?.length > 0)">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.ATTRIBUTES.NO_ATTRIBUTES_AVAILABLE' | translate }}</div>
       <div *ngIf="fieldSourcesFormArray?.controls?.length > 0" id="data">
         <div *ngIf="showNotDeletableWarning === true" class="if-warning-toast">
           <i class="pi pi-exclamation-circle"></i>
-          <label>Attributes can not be deleted as assets of this asset series already exist.</label>
+          <label>{{ 'APP.FLEET.ASSET_SERIES_WIZARD.ATTRIBUTES.WARNING_LABEL' | translate }}</label>
           <i class="pi pi-times-circle" (click)="hideNotDeletableWarning()"></i>
         </div>
         <div class="p-grid">
-          <span class="if-label-small-header p-col-3">Custom Attribute name</span>
-          <span class="if-label-small-header p-col-3">Attribute name</span>
-          <span class="if-label-small-header p-col">Value</span>
-          <span class="if-label-small-header p-col-1">Unit</span>
+          <span class="if-label-small-header p-col-3">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.ATTRIBUTES.CUSTOM_ATTRIBUTE_NAME' | translate }}</span>
+          <span class="if-label-small-header p-col-3">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.ATTRIBUTES.ATTRIBUTE_NAME' | translate }}</span>
+          <span class="if-label-small-header p-col">{{ 'APP.COMMON.TERMS.VALUE' | translate }}</span>
+          <span class="if-label-small-header p-col-1">{{ 'APP.COMMON.TERMS.UNIT' | translate }}</span>
           <span class="if-label-small-header p-col"></span>
         </div>
         <div *ngFor="let fieldSource of fieldSourcesFormArray.controls;" class="p-grid attribute-row">
@@ -35,7 +35,7 @@ under the License.
           <span class="p-col-3 "><label displayControlValue="name"></label></span>
           <span class="p-col-3 "><label displayControlValue="fieldName"></label></span>
           <div class="p-col">
-              <input *ngIf="isUnsaved(fieldSource)" pInputText class="value-input" placeholder="Value" formControlName="value">
+              <input *ngIf="isUnsaved(fieldSource)" pInputText class="value-input" placeholder="{{ 'APP.COMMON.TERMS.VALUE' | translate }}" formControlName="value">
               <label *ngIf="!isUnsaved(fieldSource) && fieldSource.valid" displayControlValue="value"></label>
               <input *ngIf="!isUnsaved(fieldSource) && fieldSource.invalid" pInputText class="value-input if-invalid-border"
                      [disabled]="true">

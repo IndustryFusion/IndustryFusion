@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<label class="if-dialog-title">Add&nbsp;Subsystems</label>
+<label class="if-dialog-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.SUBSYSTEMS.ADD_SUBSYSTEMS' | translate }}</label>
 
 <app-asset-wizard-shared-subsystems [asset]="asset" [isReview]="false" (changeIsValid)="onSetValid($event)"
      (subsystemRemoved)="onSubsystemRemoved($event)">
@@ -23,18 +23,18 @@ under the License.
   <div class="input-div">
     <p-dropdown [options]="fleetAssetDetails" optionLabel="name"
                 class="select-asset-input" filter="true" resetFilterOnHide="true"
-                placeholder="Search Subsystems (Assets)..." (onChange)="addSubsystem($event.value)">
+                placeholder="{{ 'APP.FLEET.ASSET_WIZARD.STEP.SUBSYSTEMS.SUBSYSTEMS_PLACEHOLDER' | translate }}" (onChange)="addSubsystem($event.value)">
     </p-dropdown>
   </div>
 </div>
 
 <button type="button" class="template-fields-button-add" (click)="startAddingMode()">
-  <clr-icon shape="plus"></clr-icon>Add Subsystem
+  <clr-icon shape="plus"></clr-icon>{{ 'APP.FLEET.ASSET_WIZARD.STEP.SUBSYSTEMS.ADD_SUBSYSTEM' | translate }}
 </button>
 
 <div class="footer">
   <button type="button" class="if-button button-cancel" [disabled]="!isReadyForNextStep"
-          (click)="onBack()">Back</button>
+          (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
   <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep"
-          (click)="onNext()">Next</button>
+          (click)="onNext()">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
 </div>

@@ -15,6 +15,8 @@
 
 <div class="wrapper if-subheader">
   <ul>
-    <li [ngClass]="{'active': isRouteActive('assetseries')}" (click)="onRouteClick('assetseries')">Asset Series</li>
+    <li [ngClass]="{'active': isRouteActive('assetseries')}" (click)="onRouteClick('assetseries')">
+      {{ 'APP.FLEET.SUB_HEADER.ASSET_SERIES' | translate }}
+    </li>
   </ul>
 </div>

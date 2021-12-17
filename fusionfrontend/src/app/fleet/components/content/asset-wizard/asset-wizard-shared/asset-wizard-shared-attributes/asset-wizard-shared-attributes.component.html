@@ -14,13 +14,13 @@ under the License.
 -->
 
 <div class="asset-wizard-field-instance-attributes">
-  <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">no attributes available</div>
+  <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">{{ 'APP.FLEET.ASSET_WIZARD.SHARED.ATTRIBUTES.NO_ATTRIBUTES_AVAILABLE' | translate }}</div>
   <div *ngIf="fieldInstancesFormArray?.controls?.length > 0">
     <div class="attributes-list-header p-grid">
-      <div class="if-label-small-header p-col-3"> Custom Attribute name </div>
-      <div class="if-label-small-header p-col-4"> Attribute name </div>
-      <div class="if-label-small-header" [ngClass]="isReview ? 'p-col-1' : 'p-col-2'"> Value </div>
-      <div class="if-label-small-header" [ngClass]="isReview ? 'p-col-2' : 'p-col-1'"> Unit </div>
+      <div class="if-label-small-header p-col-3"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.ATTRIBUTES.CUSTOM_METRIC_NAME' | translate }} </div>
+      <div class="if-label-small-header p-col-4"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.ATTRIBUTES.ATTRIBUTE_NAME' | translate }} </div>
+      <div class="if-label-small-header" [ngClass]="isReview ? 'p-col-1' : 'p-col-2'"> {{ 'APP.COMMON.TERMS.VALUE' | translate }} </div>
+      <div class="if-label-small-header" [ngClass]="isReview ? 'p-col-2' : 'p-col-1'"> {{ 'APP.COMMON.TERMS.UNIT' | translate }} </div>
       <div class="if-label-small-header p-col-2"> </div>
     </div>
 

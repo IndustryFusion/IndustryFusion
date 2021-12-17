@@ -42,6 +42,9 @@
 				"ASSETS": "Actifs",
 				"ASSET_SERIES": "Série d'actifs",
 				"ASSET_TYPE": "Type d'actif",
+				"CITY": "Ville",
+				"COUNTRY": "Pays",
+				"COUNTRY_PLACEHOLDER": "Sélectionnez un pays...",
 				"DESCRIPTION": "Description",
 				"FACTORY": "Usine",
 				"FACTORY_SITE": "Site de l'usine",
@@ -55,10 +58,12 @@
 				"ROOM": "salle",
 				"ROOMS": "Chambres",
 				"STATUS": "Statut",
+				"STREET": "rue",
 				"SYMBOL": "symbole",
 				"TIME": "Temps",
 				"UNIT": "Unité",
-				"VALUE": "Valeur"
+				"VALUE": "Valeur",
+				"ZIP": "Zip"
 			}
 		},
 		"DASHBOARDS": {
@@ -388,6 +393,140 @@
 				"SELECT_FACTORY_SITE": "Sélectionnez le site de l'usine"
 			}
 		},
+		"FLEET": {
+			"ASSET_SERIES_ASSET_DETAILS": {
+				"SUB_HEADER": {
+					"DIGITAL_NAMEPLATE": "Plaque d'identification numérique"
+				}
+			},
+			"ASSET_SERIES_DETAILS": {
+				"INFO": {
+					"ASSET_SERIES_VERSION": "Version de la série d'actifs"
+				},
+				"SUB_HEADER": {
+					"ASSETS": "Actifs"
+				}
+			},
+			"ASSET_SERIES_LIST": {
+				"ASSET_SERIES_NAME": "Nom de la série d'actifs",
+				"CREATE_ASSET_SERIES_BUTTON": "Créer des séries d'actifs",
+				"DIALOG_HEADER": "Mise en œuvre d'AssetSeries",
+				"No_ASSET_SERIES": "Aucune série d'actifs",
+				"TEMPLATE_VERSION": "Version du modèle"
+			},
+			"ASSET_SERIES_WIZARD": {
+				"ATTRIBUTES": {
+					"ATTRIBUTES": "Attributs",
+					"ATTRIBUTE_NAME": "Nom de l'attribut",
+					"CUSTOM_ATTRIBUTE_NAME": "Nom de l'attribut personnalisé",
+					"NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible",
+					"WARNING_LABEL": "Les attributs ne peuvent pas être supprimés car les biens de cette série de biens existent déjà."
+				},
+				"GENERAL_INFORMATION": {
+					"ASSET_OR_ASSET_SERIES_NAME": "Nom de l'actif ou de la série d'actifs",
+					"ASSET_SERIES_DESCRIPTION": "Description de la série d'actifs",
+					"ASSET_SERIES_NAME": "Nom de la série d'actifs",
+					"GENERAL_INFORMATION": "Informations générales",
+					"HELP_TEXT": "Comment mon bien sera-t-il présenté dans une usine ?",
+					"SELECT_ASSET_TYPE_TEMPLATE": "Sélectionnez le modèle de type d'actif"
+				},
+				"METRICS": {
+					"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
+					"CUSTOM_SCRIPT": "Script personnalisé",
+					"DATA_SOURCE": "Source des données",
+					"METRICS": "Métriques",
+					"METRIC_NAME": "Nom de la métrique",
+					"NO_METRICS_AVAILABLE": "aucune métrique disponible",
+					"PROVIDE_SOURCE": "Fournir la source",
+					"WARNING_LABEL": "Les métriques ne peuvent pas être supprimées car les actifs de cette série d'actifs existent déjà."
+				},
+				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
+					"ASSET_HANDBOOK": "Manuel des actifs",
+					"ASSET_VIDEO": "Vidéo de l'actif",
+					"CE_CERTIFICATION": "Certification CE",
+					"CONNECTION_STRING": "Chaîne de connexion",
+					"CONNECTIVITY_SETTINGS": "Paramètres de connectivité",
+					"CREATE_DIGITAL_NAMEPLATE": "Créer une plaque d'identification numérique",
+					"NO": "Non",
+					"PROTECTION_CLASS": "Classe de protection",
+					"PROTECTION_CLASS_PLACEHOLDER": "Sélectionnez une classe de protection",
+					"SELECT_CONNECTIVITY_TYPE": "Sélectionnez le type de connectivité",
+					"SELECT_PROTOCOL": "Sélectionnez le protocole",
+					"TOOLTIP": {
+						"LABEL": "Saisissez la chaîne de connexion correcte en fonction du\n le type de connectivité que vous utilisez pour votre poste.",
+						"PLC4X_CUMMUNICATION": "Communication basée sur PLC4X (fusionplcdataservice)"
+					},
+					"YES": "Oui"
+				}
+			},
+			"ASSET_WIZARD": {
+				"SHARED": {
+					"ATTRIBUTES": {
+						"ATTRIBUTE_NAME": "Nom de l'attribut",
+						"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
+						"NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible"
+					},
+					"METRICS": {
+						"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
+						"DATA_SOURCE": "Source des données",
+						"METRIC_NAME": "Nom de la métrique",
+						"NO_METRICS_AVAILABLE": "aucune métrique disponible"
+					},
+					"SUBSYSTEM": {
+						"NO_SUBSYSTEMS_AVAILABLE": "aucun sous-système disponible",
+						"SUBSYSTEM_NAME": "Nom du sous-système"
+					}
+				},
+				"STEP": {
+					"ATTRIBUTES": {
+						"CUSTOMIZE_ATTRIBUTES": "Personnaliser les attributs"
+					},
+					"CUSTOMER_DATA": {
+						"CREATE_DIGITAL_TWIN_BUTTON": "Créer un jumeau numérique",
+						"ENTERPRISE_NAME": "Nom de l'entreprise",
+						"ENTER_CUSTOMER_DATA": "Entrez Client Données"
+					},
+					"GENERAL_INFORMATION": {
+						"ASSET_NAME": "Nom de l'actif",
+						"GENERAL_INFORMATION": "Informations générales",
+						"HELP_TEXT": "Comment mon bien sera-t-il présenté dans une usine ?",
+						"SELECT_ASSET_SERIES_VERSION": "Sélectionnez la version de la série d'actifs",
+						"UPLOAD_PICTURE": "Télécharger l'image"
+					},
+					"METRICS_THRESHOLD": {
+						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Personnaliser les paramètres et les seuils"
+					},
+					"NAMEPLATE": {
+						"ASSET_HANDBOOK": "Manuel des actifs",
+						"ASSET_VIDEO": "Vidéo de l'actif",
+						"CE_CERTIFICATION": "Certification CE",
+						"CONNECTION_STRING": "Chaîne de connexion",
+						"CONSTRUCTION_DATE": "Date de construction",
+						"CREATE_DIGITAL_NAMEPLATE": "Créer une plaque d'identification numérique",
+						"CUSTOMIZE_CONNECTION": "Personnaliser la connexion",
+						"INSTALLATION_DATE": "Date d'installation",
+						"NO": "Non",
+						"PROTECTION_CLASS": "Classe de protection",
+						"PROTECTION_CLASS_PLACEHOLDER": "Sélectionnez une classe de protection...",
+						"SERIAL_NUMBER": "Numéro de série",
+						"YES": "Oui"
+					},
+					"REVIEW": {
+						"REVIEW_ATTRIBUTES": "Attributs de l'examen",
+						"REVIEW_METRICS": "Examen des paramètres",
+						"REVIEW_SUBSYSTEMS": "Examen des sous-systèmes"
+					},
+					"SUBSYSTEMS": {
+						"ADD_SUBSYSTEM": "Ajouter un sous-système",
+						"ADD_SUBSYSTEMS": "Ajouter des sous-systèmes",
+						"SUBSYSTEMS_PLACEHOLDER": "Recherche de sous-systèmes (actifs)..."
+					}
+				}
+			},
+			"SUB_HEADER": {
+				"ASSET_SERIES": "Série d'actifs"
+			}
+		},
 		"FUSION_APPLETS": {
 			"CREATE": {
 				"APPLET_NAME": "Nom de l'applet",
@@ -439,11 +578,11 @@
 				"HEADER": "Attention"
 			},
 			"LIST": {
-        "ACTIVE": "Actif",
-        "ARCHIVED": "Archivé",
+				"ACTIVE": "Actif",
 				"APPLET": "Applet",
 				"APPLETS": "Applets",
 				"APPLET_NAME": "Nom de l'applet",
+				"ARCHIVED": "Archivé",
 				"CONDITION_SUMMARY": "Résumé de la situation",
 				"CREATE_APPLET_BUTTON": "Créer une applet",
 				"CREATE_DIALOG_HEADER": "Créer une applet",

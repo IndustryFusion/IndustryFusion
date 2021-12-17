@@ -42,6 +42,9 @@
 				"ASSETS": "Vermögenswerte",
 				"ASSET_SERIES": "Asset-Reihe",
 				"ASSET_TYPE": "Asset-Typ",
+				"CITY": "Stadt",
+				"COUNTRY": "Land",
+				"COUNTRY_PLACEHOLDER": "Wählen Sie ein Land...",
 				"DESCRIPTION": "Beschreibung",
 				"FACTORY": "Fabrik",
 				"FACTORY_SITE": "Fabrikseite",
@@ -55,10 +58,12 @@
 				"ROOM": "Zimmer",
 				"ROOMS": "Räume",
 				"STATUS": "Status",
+				"STREET": "Straße",
 				"SYMBOL": "Symbol",
 				"TIME": "Zeit",
 				"UNIT": "Gerät",
-				"VALUE": "Wert"
+				"VALUE": "Wert",
+				"ZIP": "Reißverschluss"
 			}
 		},
 		"DASHBOARDS": {
@@ -388,6 +393,140 @@
 				"SELECT_FACTORY_SITE": "Werksgelände auswählen"
 			}
 		},
+		"FLEET": {
+			"ASSET_SERIES_ASSET_DETAILS": {
+				"SUB_HEADER": {
+					"DIGITAL_NAMEPLATE": "Digitales Typenschild"
+				}
+			},
+			"ASSET_SERIES_DETAILS": {
+				"INFO": {
+					"ASSET_SERIES_VERSION": "Asset-Serie Version"
+				},
+				"SUB_HEADER": {
+					"ASSETS": "Vermögenswerte"
+				}
+			},
+			"ASSET_SERIES_LIST": {
+				"ASSET_SERIES_NAME": "Name der Anlagenserie",
+				"CREATE_ASSET_SERIES_BUTTON": "Asset-Serien erstellen",
+				"DIALOG_HEADER": "AssetSeries-Implementierung",
+				"No_ASSET_SERIES": "Keine Anlagenserie",
+				"TEMPLATE_VERSION": "Vorlage Version"
+			},
+			"ASSET_SERIES_WIZARD": {
+				"ATTRIBUTES": {
+					"ATTRIBUTES": "Attribute",
+					"ATTRIBUTE_NAME": "Attribut Name",
+					"CUSTOM_ATTRIBUTE_NAME": "Name des benutzerdefinierten Attributs",
+					"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
+					"WARNING_LABEL": "Attribute können nicht gelöscht werden, da es bereits Assets dieser Asset-Serie gibt."
+				},
+				"GENERAL_INFORMATION": {
+					"ASSET_OR_ASSET_SERIES_NAME": "Name der Anlage oder Anlagenserie",
+					"ASSET_SERIES_DESCRIPTION": "Beschreibung der Anlagenserie",
+					"ASSET_SERIES_NAME": "Name der Anlagenserie",
+					"GENERAL_INFORMATION": "Allgemeine Informationen",
+					"HELP_TEXT": "Wie wird meine Anlage in einer Fabrik angezeigt?",
+					"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage auswählen"
+				},
+				"METRICS": {
+					"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
+					"CUSTOM_SCRIPT": "Benutzerdefiniertes Skript",
+					"DATA_SOURCE": "Datenquelle",
+					"METRICS": "Metriken",
+					"METRIC_NAME": "Metrische Bezeichnung",
+					"NO_METRICS_AVAILABLE": "keine Metriken verfügbar",
+					"PROVIDE_SOURCE": "Quelle bereitstellen",
+					"WARNING_LABEL": "Metriken können nicht gelöscht werden, da es bereits Assets dieser Asset-Serie gibt."
+				},
+				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
+					"ASSET_HANDBOOK": "Vermögenshandbuch",
+					"ASSET_VIDEO": "Asset-Video",
+					"CE_CERTIFICATION": "CE-Zertifizierung",
+					"CONNECTION_STRING": "Verbindungsstring",
+					"CONNECTIVITY_SETTINGS": "Konnektivitätseinstellungen",
+					"CREATE_DIGITAL_NAMEPLATE": "Digitales Typenschild erstellen",
+					"NO": "Nein",
+					"PROTECTION_CLASS": "Schutzklasse",
+					"PROTECTION_CLASS_PLACEHOLDER": "Wählen Sie eine Schutzklasse",
+					"SELECT_CONNECTIVITY_TYPE": "Verbindungsart auswählen",
+					"SELECT_PROTOCOL": "Protokoll auswählen",
+					"TOOLTIP": {
+						"LABEL": "Geben Sie die richtige Verbindungszeichenfolge ein, je nachdem\n der Verbindungsart, die Sie für Ihr Asset verwenden.",
+						"PLC4X_CUMMUNICATION": "PLC4X-basierte Kommunikation (fusionplcdataservice)"
+					},
+					"YES": "Ja"
+				}
+			},
+			"ASSET_WIZARD": {
+				"SHARED": {
+					"ATTRIBUTES": {
+						"ATTRIBUTE_NAME": "Attribut Name",
+						"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
+						"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar"
+					},
+					"METRICS": {
+						"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
+						"DATA_SOURCE": "Datenquelle",
+						"METRIC_NAME": "Metrische Bezeichnung",
+						"NO_METRICS_AVAILABLE": "keine Metriken verfügbar"
+					},
+					"SUBSYSTEM": {
+						"NO_SUBSYSTEMS_AVAILABLE": "keine Subsysteme verfügbar",
+						"SUBSYSTEM_NAME": "Name des Teilsystems"
+					}
+				},
+				"STEP": {
+					"ATTRIBUTES": {
+						"CUSTOMIZE_ATTRIBUTES": "Anpassen von Attributen"
+					},
+					"CUSTOMER_DATA": {
+						"CREATE_DIGITAL_TWIN_BUTTON": "Digitalen Zwilling erstellen",
+						"ENTERPRISE_NAME": "Name des Unternehmens",
+						"ENTER_CUSTOMER_DATA": "Eingabe Kunde Daten"
+					},
+					"GENERAL_INFORMATION": {
+						"ASSET_NAME": "Asset-Name",
+						"GENERAL_INFORMATION": "Allgemeine Informationen",
+						"HELP_TEXT": "Wie wird meine Anlage in einer Fabrik angezeigt?",
+						"SELECT_ASSET_SERIES_VERSION": "Version der Asset-Serie auswählen",
+						"UPLOAD_PICTURE": "Bild hochladen"
+					},
+					"METRICS_THRESHOLD": {
+						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Anpassen von Metriken und Schwellenwerten"
+					},
+					"NAMEPLATE": {
+						"ASSET_HANDBOOK": "Vermögenshandbuch",
+						"ASSET_VIDEO": "Asset-Video",
+						"CE_CERTIFICATION": "CE-Zertifizierung",
+						"CONNECTION_STRING": "Verbindungsstring",
+						"CONSTRUCTION_DATE": "Baudatum",
+						"CREATE_DIGITAL_NAMEPLATE": "Digitales Typenschild erstellen",
+						"CUSTOMIZE_CONNECTION": "Verbindung anpassen",
+						"INSTALLATION_DATE": "Datum der Installation",
+						"NO": "Nein",
+						"PROTECTION_CLASS": "Schutzklasse",
+						"PROTECTION_CLASS_PLACEHOLDER": "Wählen Sie eine Schutzklasse...",
+						"SERIAL_NUMBER": "Seriennummer",
+						"YES": "Ja"
+					},
+					"REVIEW": {
+						"REVIEW_ATTRIBUTES": "Überprüfung der Attribute",
+						"REVIEW_METRICS": "Überprüfung der Metriken",
+						"REVIEW_SUBSYSTEMS": "Überprüfung der Teilsysteme"
+					},
+					"SUBSYSTEMS": {
+						"ADD_SUBSYSTEM": "Subsystem hinzufügen",
+						"ADD_SUBSYSTEMS": "Subsysteme hinzufügen",
+						"SUBSYSTEMS_PLACEHOLDER": "Suche nach Subsystemen (Assets)..."
+					}
+				}
+			},
+			"SUB_HEADER": {
+				"ASSET_SERIES": "Asset-Reihe"
+			}
+		},
 		"FUSION_APPLETS": {
 			"CREATE": {
 				"APPLET_NAME": "Name des Applets",
@@ -439,11 +578,11 @@
 				"HEADER": "Achtung"
 			},
 			"LIST": {
-        "ACTIVE": "Aktiv",
-        "ARCHIVED": "Archiviert",
+				"ACTIVE": "Aktiv",
 				"APPLET": "Applet",
 				"APPLETS": "Applets",
 				"APPLET_NAME": "AppletName",
+				"ARCHIVED": "Archiviert",
 				"CONDITION_SUMMARY": "Zustand Zusammenfassung",
 				"CREATE_APPLET_BUTTON": "Applet erstellen",
 				"CREATE_DIALOG_HEADER": "Applet erstellen",

@@ -13,20 +13,20 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<label class="if-dialog-title">Review&nbsp;Metrics</label>
+<label class="if-dialog-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.REVIEW.REVIEW_METRICS' | translate }}</label>
 
 <app-asset-wizard-shared-metrics [asset]="asset" [isReview]="true"
                                  (backToEditPage)="onBackToMetrics()"></app-asset-wizard-shared-metrics>
 
-<label class="if-dialog-title">Review&nbsp;Attributes</label>
+<label class="if-dialog-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.REVIEW.REVIEW_ATTRIBUTES' | translate }}</label>
 <app-asset-wizard-shared-attributes [asset]="asset" [isReview]="true"
                                     (backToEditPage)="onBackToAttributes()"></app-asset-wizard-shared-attributes>
 
-<label class="if-dialog-title">Review&nbsp;Subsystems</label>
+<label class="if-dialog-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.REVIEW.REVIEW_SUBSYSTEMS' | translate }}</label>
 <app-asset-wizard-shared-subsystems [asset]="asset" [isReview]="true"
                                     (backToEditPage)="onBackToSubsystems()">
 </app-asset-wizard-shared-subsystems>
 <div class="footer">
-  <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
-  <button type="button" class="if-button button-confirm button-primary" (click)="onNext()">Next</button>
+  <button type="button" class="if-button button-cancel" (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
+  <button type="button" class="if-button button-confirm button-primary" (click)="onNext()">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
 </div>

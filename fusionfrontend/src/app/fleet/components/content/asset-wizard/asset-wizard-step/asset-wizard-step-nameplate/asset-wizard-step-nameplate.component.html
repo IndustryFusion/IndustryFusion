@@ -15,22 +15,22 @@ under the License.
 
 <form [formGroup]="assetForm">
   <div class="content">
-    <div class="wizard-title">Create Digital Namepalate</div>
+    <div class="wizard-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.CREATE_DIGITAL_NAMEPLATE' | translate }}</div>
 
     <div class="input-div">
-      <label class="if-label">Serial Number</label>
+      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.SERIAL_NUMBER' | translate }}</label>
       <input type="text" pInputText formControlName="serialNumber" />
     </div>
 
     <div class="input-div">
       <div class="dialog-grid">
         <div class="input-div">
-          <label class="if-label">Construction Date&nbsp;*</label>
+          <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.CONSTRUCTION_DATE' | translate }}&nbsp;*</label>
           <p-calendar formControlName="constructionDate" showIcon="true" showButtonBar="true"
           yearNavigator="true" [yearRange]="yearRange" dateFormat="dd.mm.yy"></p-calendar>
         </div>
         <div class="input-div dialog-grid-col">
-          <label class="if-label">Installation Date</label>
+          <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.INSTALLATION_DATE' | translate }}</label>
           <p-calendar formControlName="installationDate" showIcon="true" showButtonBar="true"
                       yearNavigator="true" [yearRange]="yearRange" dateFormat="dd.mm.yy"></p-calendar>
         </div>
@@ -38,14 +38,14 @@ under the License.
     </div>
 
     <div class="input-div">
-      <label class="if-label">CE Certification&nbsp;*</label>
+      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.CE_CERTIFICATION' | translate }}&nbsp;*</label>
       <div class="dialog-grid">
         <div>
-          <p-radioButton [value]="true" label="Yes" formControlName="ceCertified"
+          <p-radioButton [value]="true" label="{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.YES' | translate }}" formControlName="ceCertified"
                          inputId="certified1"></p-radioButton>
         </div>
         <div class="dialog-grid-col">
-          <p-radioButton [value]="false" label="No" formControlName="ceCertified"
+          <p-radioButton [value]="false" label="{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.NO' | translate }}" formControlName="ceCertified"
                          inputId="certified2"></p-radioButton>
         </div>
       </div>
@@ -53,34 +53,34 @@ under the License.
 
     <div class="selection">
       <div class="input-div">
-        <label class="if-label">Protection Class&nbsp;*</label>
+        <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.PROTECTION_CLASS' | translate }}&nbsp;*</label>
         <p-dropdown [options]="protectionClasses" formControlName="protectionClass"
                     filter="true" resetFilterOnHide="true"
-                    placeholder="Select a protection class...">
+                    placeholder="{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.PROTECTION_CLASS_PLACEHOLDER' | translate }}">
         </p-dropdown>
       </div>
     </div>
 
     <div class="input-div">
-      <label class="if-label">Asset Handbook</label>
+      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.ASSET_HANDBOOK' | translate }}</label>
       <input type="text" pInputText formControlName="handbookUrl" />
     </div>
 
     <div class="input-div">
-      <label class="if-label">Asset Video</label>
+      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.ASSET_VIDEO' | translate }}</label>
       <input type="text" pInputText formControlName="videoUrl" />
     </div>
 
-    <label class="if-dialog-section-title">Customize Connection</label>
+    <label class="if-dialog-section-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.CUSTOMIZE_CONNECTION' | translate }}</label>
 
     <div class="input-div">
-      <label class="if-label">Connection String *</label>
+      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.CONNECTION_STRING' | translate }}&nbsp;*</label>
       <input type="text" pInputText formControlName="connectionString" />
     </div>
   </div>
   <div class="footer">
-    <button type="button" class="if-button button-cancel" (click)="onBack()">Back</button>
+    <button type="button" class="if-button button-cancel" (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
     <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
-            (click)="onNext()">Next</button>
+            (click)="onNext()">{{ 'APP.COMMON.DIALOG_BUTTONS.NEXT' | translate }}</button>
   </div>
 </form>

@@ -14,14 +14,14 @@ under the License.
 -->
 
 <div class="asset-wizard-field-instance-metrics">
-  <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">no metrics available</div>
+  <div *ngIf="!(fieldInstancesFormArray?.controls?.length > 0)">{{ 'APP.FLEET.ASSET_WIZARD.SHARED.METRICS.NO_METRICS_AVAILABLE' | translate }}</div>
   <div *ngIf="fieldInstancesFormArray?.controls?.length > 0">
     <div class="threshold-list-header p-grid">
-      <div class="if-label-small-header p-col-3"> Custom Metric name </div>
-      <div class="if-label-small-header p-col-2"> Metric name </div>
-      <div class="if-label-small-header p-col-2"> Data Source </div>
-      <div class="if-label-small-header p-col-1"> Unit </div>
-      <div class="if-label-small-header p-col-3"> Accuracy </div>
+      <div class="if-label-small-header p-col-3"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.METRICS.CUSTOM_METRIC_NAME' | translate }} </div>
+      <div class="if-label-small-header p-col-2"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.METRICS.METRIC_NAME' | translate }} </div>
+      <div class="if-label-small-header p-col-2"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.METRICS.DATA_SOURCE' | translate }} </div>
+      <div class="if-label-small-header p-col-1"> {{ 'APP.COMMON.TERMS.UNIT' | translate }} </div>
+      <div class="if-label-small-header p-col-3"> {{ 'APP.COMMON.TERMS.ACCURACY' | translate }} </div>
       <div class="if-label-small-header p-col-1"> </div>
     </div>
 

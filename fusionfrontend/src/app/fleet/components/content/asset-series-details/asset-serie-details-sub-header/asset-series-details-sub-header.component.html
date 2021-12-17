@@ -19,7 +19,9 @@ under the License.
   <div class="flexbox"></div>
   <div class="wrapper if-subheader asset-details-subheader">
     <ul>
-      <li (click)="onRouteClick('assets', '')" [ngClass]="{'active': isAssets()}">Assets</li>
+      <li (click)="onRouteClick('assets', '')" [ngClass]="{'active': isAssets()}">
+        {{ 'APP.FLEET.ASSET_SERIES_DETAILS.SUB_HEADER.ASSETS' | translate }}
+      </li>
       <!-- <li (click)="onRouteClick('versions', '')" [ngClass]="{'active': isVersions()}">Versions</li> -->
     </ul>
   </div>

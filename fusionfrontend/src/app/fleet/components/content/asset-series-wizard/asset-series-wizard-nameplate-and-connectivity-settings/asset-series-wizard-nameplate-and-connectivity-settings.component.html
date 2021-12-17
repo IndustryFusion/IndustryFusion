@@ -16,17 +16,17 @@ under the License.
     <div class="content">
       <form [formGroup]="assetSeriesForm">
 
-        <div class="wizard-title">Create Digital Nameplate</div>
+        <div class="wizard-title">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.CREATE_DIGITAL_NAMEPLATE' | translate }}</div>
 
         <div class="input-div">
-          <label class="if-label">CE Certification&nbsp;*</label>
+          <label class="if-label">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.CE_CERTIFICATION' | translate }}&nbsp;*</label>
           <div class="dialog-grid">
             <div>
-              <p-radioButton [value]="true" label="Yes" formControlName="ceCertified"
+              <p-radioButton [value]="true" label="{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.YES' | translate }}" formControlName="ceCertified"
                              inputId="certified1"></p-radioButton>
             </div>
             <div class="dialog-grid-col">
-              <p-radioButton [value]="false" label="No" formControlName="ceCertified"
+              <p-radioButton [value]="false" label="{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.NO' | translate }}" formControlName="ceCertified"
                              inputId="certified2"></p-radioButton>
             </div>
           </div>
@@ -34,30 +34,30 @@ under the License.
 
         <div class="selection">
           <div class="input-div">
-            <label class="if-label">Protection Class</label>
+            <label class="if-label">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.PROTECTION_CLASS' | translate }}</label>
             <p-dropdown [options]="protectionClassOptions" formControlName="protectionClass"
                         filter="true" resetFilterOnHide="true"
-                        placeholder="Select a protection class...">
+                        placeholder="{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.PROTECTION_CLASS_PLACEHOLDER' | translate }}...">
             </p-dropdown>
           </div>
         </div>
 
         <div class="input-div">
-          <label class="if-label">Asset Handbook</label>
+          <label class="if-label">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.ASSET_HANDBOOK' | translate }}</label>
           <input type="text" pInputText formControlName="handbookUrl" />
         </div>
 
         <div class="input-div">
-          <label class="if-label">Asset Video</label>
+          <label class="if-label">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.ASSET_VIDEO' | translate }}</label>
           <input type="text" pInputText formControlName="videoUrl" />
         </div>
       </form>
 
-      <div class="wizard-title">Connectivity Settings</div>
+      <div class="wizard-title">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.CONNECTIVITY_SETTINGS' | translate }}</div>
 
       <form [formGroup]="connectivitySettingsForm">
         <div class="input-div">
-          <label class="if-label">Select&nbsp;connectivity&nbsp;type&nbsp;*</label>
+          <label class="if-label">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.SELECT_CONNECTIVITY_TYPE' | translate }}&nbsp;*</label>
           <div>
             <p-dropdown [options]="connectivityTypeOptions" formControlName="connectivityTypeId" optionLabel="name"
                         optionValue="id" (onChange)="onChangeConnectivityType()">
@@ -70,7 +70,7 @@ under the License.
         </div>
 
         <div class="input-div">
-          <label class="if-label">Select&nbsp;protocol&nbsp;*</label>
+          <label class="if-label">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.SELECT_PROTOCOL' | translate }}&nbsp;*</label>
           <p-dropdown [options]="connectivityProtocolOptions" formControlName="connectivityProtocolId" optionLabel="name"
                       optionValue="id" (onChange)="onChangeProtocolType()">
           </p-dropdown>
@@ -78,7 +78,7 @@ under the License.
 
         <div class="input-div">
           <div style="display: flex">
-            <label class="if-label">Connection&nbsp;string&nbsp;*</label>
+            <label class="if-label">{{ 'APP.FLEET.ASSET_SERIES_WIZARD.NAMEPLATE_AND_CONNECTIVITY_SETTINGS.CONNECTION_STRING' | translate }}&nbsp;*</label>
             <app-tooltip [component]="AssetSeriesCreateConnectivitySettingsTooltipComponent"></app-tooltip>
           </div>
           <input type="text" pInputText formControlName="connectionString" />

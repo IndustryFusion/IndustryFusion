@@ -2,14 +2,14 @@
     <div *ngIf="step != 1">
         <button type="button" class="if-button button-secondary" (click)="back.emit()">Back</button>
         <button [disabled]="!isReadyForNextStep" type="button" class="if-button button-primary" (click)="nextStep.emit()">
-            <span *ngIf="step === toalSteps; else normalNext">Finish</span>
+            <span *ngIf="step === toalSteps; else normalNext">{{ 'APP.COMMON.DIALOG_BUTTONS.FINISH' | translate }}</span>
             <ng-template #normalNext>Next</ng-template>
         </button>
     </div>
     <div *ngIf="step==1">
-        <button type="button" class="if-button button-secondary" (click)="back.emit()">Cancel</button>
+        <button type="button" class="if-button button-secondary" (click)="back.emit()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
         <button [disabled]="!isReadyForNextStep" type="button"
-                class="if-button button-primary" (click)="nextStep.emit()">Start
+                class="if-button button-primary" (click)="nextStep.emit()">{{ 'APP.COMMON.DIALOG_BUTTONS.START' | translate }}
         </button>
     </div>
 </div>
