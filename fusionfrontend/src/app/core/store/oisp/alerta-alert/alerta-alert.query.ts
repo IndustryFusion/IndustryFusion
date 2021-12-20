@@ -20,7 +20,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AlertaAlert, AlertSeverity, IFAlertSeverity, IFAlertStatus } from './alerta-alert.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
-import { FieldDetails } from '../../field-details/field-details.model';
 import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
 import { TreeNode } from 'primeng/api';
 

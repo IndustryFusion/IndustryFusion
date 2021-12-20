@@ -48,10 +48,12 @@ export class AlertaAlertService {
 
   getItem(alertId: ID): Observable<AlertaAlert> {
     const url = `${environment.alertaApiUrlPrefix}/alert/${alertId}`;
-    return this.http.get<AlertaAlert>(url, this.httpOptions)
-      .pipe(map(alert => {
-        this.alertaAlertStore.upsert(alertId, alert);
-        return alert;
+    return this.http.get<AlertaResponse>(url, this.httpOptions)
+      .pipe(map(response => {
+        if (response.status === 'ok') {
+          this.alertaAlertStore.upsert(alertId, response.alert);
+        }
+        return response.alert;
       }));
   }
 
