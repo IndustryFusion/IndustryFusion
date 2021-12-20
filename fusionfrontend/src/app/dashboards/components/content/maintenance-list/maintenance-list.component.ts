@@ -137,7 +137,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
-    return this.alertaAlertQuery.getMaxOpenAlertSeverity(node);
+    return this.alertaAlertQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
   }
 
   isLastChildElement(rowNode: any): boolean {

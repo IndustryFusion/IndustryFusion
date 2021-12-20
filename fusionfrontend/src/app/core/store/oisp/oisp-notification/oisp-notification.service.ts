@@ -45,10 +45,10 @@ export class OispNotificationService {
     if (alert) {
       notification.id = alert.id;
       notification.severity = AlertaAlert.mapSeverityToIFAlertSeverity(alert.severity);
-      notification.eventName = alert.attributes.eventFriendlyName ?? alert.event;
+      notification.eventName = alert.attributes?.eventFriendlyName ?? alert.event;
       notification.condition = this.getAlertTextWithoutStatusPrefix(alert);
       notification.measuredValue = alert.value;
-      notification.assetName = assetNameFromOispDevice ?? (alert.attributes.resourceFriendlyName ?? alert.resource);
+      notification.assetName = assetNameFromOispDevice ?? (alert.attributes?.resourceFriendlyName ?? alert.resource);
       notification.timestamp = alert.createTime;
       notification.status = AlertaAlert.mapStatusToIfAlertStatus(alert.status);
     } else {
