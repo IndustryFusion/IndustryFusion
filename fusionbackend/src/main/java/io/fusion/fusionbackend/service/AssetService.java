@@ -454,6 +454,7 @@ public class AssetService {
         targetAsset.copyFrom(sourceAsset);
 
         validate(targetAsset);
+
         ngsiLdBrokerService.installAssetOnBroker(targetAsset);
 
         return targetAsset;
@@ -464,8 +465,8 @@ public class AssetService {
         Room oldAssetRoom = targetAsset.getRoom();
         Room newAssetRoom = this.roomService.getRoomById(sourceAsset.getRoom().getId());
 
-        targetAsset.copyFrom(sourceAsset);
         ngsiLdBrokerService.installAssetOnBroker(targetAsset);
+        targetAsset.copyFrom(sourceAsset);
 
         return updateRoom(oldAssetRoom, newAssetRoom, targetAsset);
     }

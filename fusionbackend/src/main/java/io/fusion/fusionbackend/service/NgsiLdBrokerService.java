@@ -35,11 +35,18 @@ public class NgsiLdBrokerService {
     private static final Logger LOG = LoggerFactory.getLogger(NgsiLdBrokerService.class);
     private final NgsiLdSerializer ngsiLdSerializer;
 
-    @Value("${ngsi-broker.server-url}/ngsi-ld/v1/entities/")
-    private String url;
+    @Value("${ngsi-broker.server-url}")
+    private String brokerUrl;
+
+    private final String apiName = "ngsi-ld";
+    private final String apiVersion = "v1";
 
     public NgsiLdBrokerService(NgsiLdSerializer ngsiLdSerializer) {
         this.ngsiLdSerializer = ngsiLdSerializer;
+    }
+
+    private String getUrl() {
+        return String.format("%s/%s/%s/entities", brokerUrl, apiName, apiVersion);
     }
 
     public boolean installAssetOnBroker(Asset asset) {
@@ -51,9 +58,9 @@ public class NgsiLdBrokerService {
         HttpEntity httpEntity = new HttpEntity(assetAsNgsiLd, headers);
 
         ResponseEntity<Object> objectResponseEntity = null;
-        LOG.debug("Try to post asset {} to broker", asset.getId());
+        LOG.debug("Try to post asset {} to broker: \n{}", asset.getId(), assetAsNgsiLd);
         try {
-            objectResponseEntity = restTemplate.postForEntity(url, httpEntity, null);
+            objectResponseEntity = restTemplate.postForEntity(getUrl(), httpEntity, null);
         } catch (HttpClientErrorException e) {
             if (!e.getStatusCode().equals(HttpStatus.CONFLICT)) {
                 e.printStackTrace();

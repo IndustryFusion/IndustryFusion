@@ -63,7 +63,7 @@ public class NgsiLdSerializer {
         root.put(NgsiLdVocabulary.ID, id);
 
         //Add AssetType
-        addType(root, asset.getAssetSeries().getName());
+        addType(root, cleanName(asset.getAssetSeries().getName()));
 
         asset.getFieldInstances().stream().forEach(fieldInstance -> {
 
@@ -72,10 +72,10 @@ public class NgsiLdSerializer {
                     .getSourceUnit().getQuantityType().getDataType();
             switch (quantityDataType) {
                 case NUMERIC:
-                    addProperty(root, cleanName(fieldInstance), value);
+                    addProperty(root, getFieldInstanceCleanName(fieldInstance), value);
                     break;
                 case CATEGORICAL:
-                    addProperty(root, cleanName(fieldInstance), value,
+                    addProperty(root, getFieldInstanceCleanName(fieldInstance), value,
                             fieldInstance.getFieldSource().getSourceUnit().getSymbol());
                     break;
                 default:
@@ -95,7 +95,7 @@ public class NgsiLdSerializer {
         JSONObject metainfo = new JSONObject();
         asset.getFieldInstances().forEach(fieldInstance -> {
             JSONObject jsonObject = new JSONObject();
-            metainfo.put(cleanName(fieldInstance), jsonObject);
+            metainfo.put(getFieldInstanceCleanName(fieldInstance), jsonObject);
             addThreshold(jsonObject, "AbsoluteThreshold", fieldInstance.getAbsoluteThreshold());
             addThreshold(jsonObject, "CriticalThreshold", fieldInstance.getCriticalThreshold());
             addThreshold(jsonObject, "IdealThreshold", fieldInstance.getIdealThreshold());
@@ -130,12 +130,17 @@ public class NgsiLdSerializer {
         }
     }
 
-    private String cleanName(FieldInstance fieldInstance) {
+    private String cleanName(String name) {
+        name = name.replaceAll("[\\<\\\"\\'\\=\\;\\(\\)\\>\\?\\*\\s]", "");
+        return name;
+    }
+
+    private String getFieldInstanceCleanName(FieldInstance fieldInstance) {
         String fieldName = fieldInstance.getExternalName();
         if (fieldName == null) {
             fieldName = fieldInstance.getFieldSource().getFieldTarget().getLabel();
         }
-        fieldName = fieldName.replaceAll("[\\<\\\"\\'\\=\\;\\(\\)\\>\\?\\*\\s]", "");
+        fieldName = cleanName(fieldName);
         return fieldName;
     }
 
