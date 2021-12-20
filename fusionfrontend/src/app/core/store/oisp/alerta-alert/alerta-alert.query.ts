@@ -54,26 +54,17 @@ export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
     FactoryAssetDetailsWithFields {
     const openAlerts = this.getOpenAlerts();
     const assetDetailsCopy = Object.assign({ }, assetDetails);
-    const alertSeverities: AlertSeverity[] = [];
+    const alertSeverity: AlertSeverity = this.findAlertSeverityByExternalName(assetDetailsCopy.externalName, openAlerts);
 
-    const externalIdOfAsset = this.oispDeviceQuery.mapExternalNameOfAssetToDeviceUid(assetDetailsCopy.externalName);
-    alertSeverities.push(this.findAlertSeverityByExternalId(externalIdOfAsset, openAlerts));
-
-    assetDetailsCopy.fields?.forEach((fieldInstanceDetails: FieldDetails) => {
-      const externalIdOFieldInstanceDetails = this.oispDeviceQuery.
-        mapExternalNameOFieldInstanceToComponentId(assetDetailsCopy.externalName, fieldInstanceDetails.externalName);
-      alertSeverities.push(this.findAlertSeverityByExternalId(externalIdOFieldInstanceDetails, openAlerts));
-    });
-
-    assetDetailsCopy.openAlertSeverity = AlertaAlert.mapSeverityToIFAlertSeverity(this.getMostCriticalSeverity(alertSeverities));
+    assetDetailsCopy.openAlertSeverity = AlertaAlert.mapSeverityToIFAlertSeverity(alertSeverity);
     return assetDetailsCopy;
   }
 
-  private findAlertSeverityByExternalId(externalId: string, openAlerts: AlertaAlert[]): AlertSeverity {
+  private findAlertSeverityByExternalName(externalName: string, openAlerts: AlertaAlert[]): AlertSeverity {
     let mostCriticalSeverity = null;
 
-    if (externalId) {
-      const openAlertsOfExternalId = openAlerts.filter(alert => String(alert.resource) === externalId);
+    if (externalName) {
+      const openAlertsOfExternalId = openAlerts.filter(alert => String(alert.resource) === externalName);
       if (openAlertsOfExternalId.length > 0) {
         const sortedAlerts = openAlertsOfExternalId.sort((openAlert1, openAlert2) =>
           AlertaAlert.mapSeverityToSecurityCode(openAlert1.severity) - AlertaAlert.mapSeverityToSecurityCode(openAlert2.severity));
@@ -86,31 +77,19 @@ export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
     return mostCriticalSeverity;
   }
 
-  private getMostCriticalSeverity(severities: AlertSeverity[]): AlertSeverity {
-    let mostCriticalSeverity = null;
+  public getMostCriticalOpenAlertSeverityOfAssetNode(assetNode: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    let mostCriticalOpenAlertSeverity: IFAlertSeverity = assetNode.data?.openAlertSeverity;
 
-    severities = severities.filter(severity => severity != null);
-    if (severities && severities.length > 0) {
-      const sortedSeverities = severities.sort((severity1, severity2) =>
-        AlertaAlert.mapSeverityToSecurityCode(severity1) - AlertaAlert.mapSeverityToSecurityCode(severity2));
-      mostCriticalSeverity = sortedSeverities[0];
-    }
-
-    return mostCriticalSeverity;
-  }
-
-  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity { // TODO
-    let openAlertSeverity: IFAlertSeverity = node.data?.openAlertSeverity;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertSeverity: IFAlertSeverity = this.getMaxOpenAlertSeverity(child);
-        if (!openAlertSeverity ||
-          Number(openAlertSeverity) > Number(childMaxOpenAlertSeverity)) {
-          openAlertSeverity = childMaxOpenAlertSeverity;
-        }
+    const hasSubsystems = assetNode.children?.length > 0;
+    if (hasSubsystems && !assetNode.expanded) {
+      for (const childAsset of assetNode.children) {
+        const mostCriticalOpenAlertSeverityChild: IFAlertSeverity = this.getMostCriticalOpenAlertSeverityOfAssetNode(childAsset);
+        mostCriticalOpenAlertSeverity = AlertaAlert
+          .getMoreCriticalIFAlertSeverity(mostCriticalOpenAlertSeverity, mostCriticalOpenAlertSeverityChild);
       }
     }
-    return openAlertSeverity;
+
+    return mostCriticalOpenAlertSeverity;
   }
 
   resetStore() {
