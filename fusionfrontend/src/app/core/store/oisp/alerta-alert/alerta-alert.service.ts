@@ -14,7 +14,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AlertaAlert, AlertaResponse } from './alerta-alert.model';
+import { AlertaAlert, AlertaResponse, AlertStatus } from './alerta-alert.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AlertaAlertStore } from './alerta-alert.store';
 import { Observable } from 'rxjs';
@@ -60,8 +60,8 @@ export class AlertaAlertService {
   closeAlert(alertId: ID): Observable<void> {
     const url = `${environment.alertaApiUrlPrefix}/alert/${alertId}/status`;
     const body = {
-      status: 'closed',
-      text: 'closed by user'
+      status: AlertStatus.ACK,
+      text: 'acknowledged by user'
     };
     return this.http.put<void>(url, body, this.httpOptions).pipe(
       tap(() => {
