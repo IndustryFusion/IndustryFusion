@@ -55,6 +55,8 @@ export class AlertaAlert {
   origin?: string;
   type?: string;
   createTime?: Date;
+
+  /** Seconds before alert is set to expired */
   timeout?: number;
   rawData?: string;
 
@@ -179,7 +181,11 @@ export enum AlertStatus {
   OPEN = 'open',
   ASSIGN = 'assign',
   ACK = 'ack',
+
+  /** Setting an alert to closed lets Alerta delete the alert after a few seconds */
   CLOSED = 'closed',
+
+  /** State when timeout was reached (with some seconds delay) */
   EXPIRED = 'expired',
   BLACKOUT = 'blackout',
   SHELVED = 'shelved',

@@ -17,6 +17,7 @@
 
 :host ::ng-deep .checkbox-column {
   visibility: hidden;
+  display: flex;
 }
 
 #rowElement:hover {

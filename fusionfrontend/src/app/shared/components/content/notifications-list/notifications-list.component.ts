@@ -16,7 +16,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
-import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-series-details.resolver';
 import { Observable, Subscription } from 'rxjs';
 import { OispNotification } from '../../../../core/store/oisp/oisp-notification/oisp-notification.model';
 import { environment } from '../../../../../environments/environment';
@@ -78,7 +77,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   constructor(
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    public assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
     private alertaAlertService: AlertaAlertService,
     private oispDeviceQuery: OispDeviceQuery,
     private oispDeviceResolver: OispDeviceResolver,
@@ -89,7 +87,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.selectedAlertStatus = this.getSelectedStatus();
-    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
     this.periodicallyFetchNotifications();
     this.initNameMappings();
     this.resetNotificationVariablesToAllNotifications();
