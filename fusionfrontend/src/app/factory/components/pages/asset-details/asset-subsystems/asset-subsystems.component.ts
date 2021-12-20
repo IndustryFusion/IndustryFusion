@@ -18,13 +18,9 @@ import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asse
 import { combineQueries } from '@datorama/akita';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import {
-  FactoryAssetDetailsWithFields
-} from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FactoryAssetDetailsService } from '../../../../../core/store/factory-asset-details/factory-asset-details.service';
-import { Asset } from '../../../../../core/store/asset/asset.model';
+import { AssetListType } from '../../../../../shared/models/asset-list-type.model';
 
 @Component({
   selector: 'app-asset-subsystems',
@@ -32,6 +28,8 @@ import { Asset } from '../../../../../core/store/asset/asset.model';
   styleUrls: ['./asset-subsystems.component.scss']
 })
 export class AssetSubsystemsComponent implements OnInit {
+
+  AssetListType = AssetListType;
 
   subsystems$: Observable<FactoryAssetDetailsWithFields[]>;
   selected: FactoryAssetDetailsWithFields;
@@ -41,9 +39,6 @@ export class AssetSubsystemsComponent implements OnInit {
 
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private factoryAssetDetailsService: FactoryAssetDetailsService,
     private factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
     private factoryComposedQuery: FactoryComposedQuery,
   ) { }
@@ -57,10 +52,6 @@ export class AssetSubsystemsComponent implements OnInit {
         return allAssets.filter(asset => activeAsset.subsystemIds.includes(asset.id));
       })
     );
-  }
-
-  selectSubsystem(asset: Asset) {
-    this.factoryAssetDetailsService.setActive(asset.id);
-    this.router.navigate(['../..', asset.id], { relativeTo: this.activatedRoute});
+    this.subsystems$ = this.factoryComposedQuery.joinAssetsDetailsWithFieldInstancesWithAlerts(this.subsystems$);
   }
 }

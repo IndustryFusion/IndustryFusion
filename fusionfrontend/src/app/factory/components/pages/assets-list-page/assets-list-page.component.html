@@ -13,7 +13,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-assets-list [company]="(company$ | async)"
+<app-assets-list [type]="type"
+                 [company]="(company$ | async)"
                  [factorySites]="(factorySites$ | async)"
                  [rooms]="(rooms$ | async)"
                  [room]="(room$ | async)"

@@ -191,8 +191,12 @@ export class FactoryComposedQuery {
     );
   }
 
-  joinAssetsDetailsWithFieldInstancesWithAlerts(): Observable<FactoryAssetDetailsWithFields[]> {
-    return this.selectAssetsWithFieldInstanceDetails().pipe(
+  joinAssetsDetailsWithFieldInstancesWithAlerts(assets$?: Observable<FactoryAssetDetailsWithFields[]>):
+    Observable<FactoryAssetDetailsWithFields[]> {
+    if (!assets$) {
+      assets$ = this.selectAssetsWithFieldInstanceDetails();
+    }
+    return assets$.pipe(
       map((assetsDetails: FactoryAssetDetailsWithFields[]) => {
         return assetsDetails.map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
       })
