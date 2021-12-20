@@ -132,6 +132,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.type === AssetListType.SUBSYSTEMS) {
       this.titleMapping = { '=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems' };
     }
+
+    this.updateAlertSeverityOnNewAlerts();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -150,6 +152,19 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.filteredFactoryAssets !== null) {
       this.updateAssets();
     }
+  }
+
+  private updateAlertSeverityOnNewAlerts() {
+    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+      if (this.displayedFactoryAssets) {
+        this.displayedFactoryAssets = this.displayedFactoryAssets
+          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+        this.factoryAssetsDetailsWithFields = this.factoryAssetsDetailsWithFields
+          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+
+        this.updateTree();
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -268,9 +283,16 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => this.searchedFactoryAssets
-      .filter(searchedAsset => this.filteredFactoryAssets.filter(filteredAsset => this.factoryAssetFilteredByStatus
-        .includes(filteredAsset)).includes(searchedAsset)).includes(asset));
+    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields
+      .filter(asset =>
+        this.searchedFactoryAssets.map(a => a.globalId).filter(searchedAssetGlobalId =>
+          this.filteredFactoryAssets.map(a => a.globalId).filter(filteredAssetGlobalId =>
+            this.factoryAssetFilteredByStatus.map(a => a.globalId)
+              .includes(filteredAssetGlobalId))
+          .includes(searchedAssetGlobalId))
+        .includes(asset.globalId)
+      );
+
     this.updateTree();
   }
 

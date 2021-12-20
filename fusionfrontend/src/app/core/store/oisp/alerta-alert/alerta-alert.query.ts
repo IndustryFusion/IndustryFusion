@@ -51,6 +51,7 @@ export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
 
   joinAssetDetailsWithOpenAlertSeverity(assetDetails: FactoryAssetDetailsWithFields):
     FactoryAssetDetailsWithFields {
+
     const openAlerts = this.getOpenAlerts();
     const assetDetailsCopy = Object.assign({ }, assetDetails);
     const alertSeverity: AlertSeverity = this.findAlertSeverityByExternalName(assetDetailsCopy.externalName, openAlerts);

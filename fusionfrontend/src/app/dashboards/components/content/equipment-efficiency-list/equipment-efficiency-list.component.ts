@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
 import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
@@ -61,11 +61,24 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
+    this.updateAlertSeverityOnNewAlerts();
   }
 
-  ngOnChanges(): void {
-    this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
-    this.updateTree();
+  private updateAlertSeverityOnNewAlerts() {
+    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+      if (this.displayedFactoryAssets) {
+        this.displayedFactoryAssets = this.displayedFactoryAssets
+          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+        this.updateTree();
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.factoryAssetDetailsWithFields) {
+      this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
+      this.updateTree();
+    }
   }
 
   searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
