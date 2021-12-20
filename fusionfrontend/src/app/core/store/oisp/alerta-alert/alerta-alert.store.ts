@@ -25,7 +25,7 @@ const initialState = {
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'alerta-alerts', resettable: true, idKey: 'resource' })
+@StoreConfig({ name: 'alerta-alerts', resettable: true })
 export class AlertaAlertStore extends CachedStore<AlertaAlertState, AlertaAlert> {
 
   constructor() {

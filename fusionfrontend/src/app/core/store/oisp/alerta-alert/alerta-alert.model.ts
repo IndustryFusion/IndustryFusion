@@ -15,6 +15,7 @@
 
 export class AlertaResponse {
   alerts: AlertaAlert[];
+  alert: AlertaAlert;
   autoRefresh: boolean;
   lastTime: Date;
   more: boolean;
