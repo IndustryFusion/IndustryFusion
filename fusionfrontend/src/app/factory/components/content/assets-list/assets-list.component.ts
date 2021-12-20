@@ -48,6 +48,7 @@ import { StatusWithAssetId } from '../../../models/status.model';
 import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
 import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
+import { AssetListType } from '../../../../shared/models/asset-list-type.model';
 
 @Component({
   selector: 'app-assets-list',
@@ -57,6 +58,10 @@ import { IfApiService } from '../../../../core/services/api/if-api.service';
 })
 
 export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
+  @Input()
+  type: AssetListType = AssetListType.ASSETS;
+  AssetListType = AssetListType;
+
   @Input()
   company: Company;
   @Input()
@@ -132,9 +137,14 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    this.initTableFilters();
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
-    this.initTableFilters();
+    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
+
+    if (this.type === AssetListType.SUBSYSTEMS) {
+      this.titleMapping = { '=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems' };
+    }
   }
 
   private initTableFilters(): void {

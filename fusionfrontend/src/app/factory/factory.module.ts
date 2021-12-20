@@ -118,7 +118,6 @@ import { TooltipModule } from 'primeng/tooltip';
     AssetCardComponent,
     AssetSubsystemsComponent,
     AssetAppletsComponent,
-    AssetSubsystemsComponent,
     AssetNotificationsComponent,
     HistoricalStatusBarChartComponent,
     MetricsBoardComponent,

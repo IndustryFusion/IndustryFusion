@@ -13,11 +13,10 @@
  * under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Asset } from 'src/app/core/store/asset/asset.model';
 import { AssetQuery } from 'src/app/core/store/asset/asset.query';
 import { Company } from 'src/app/core/store/company/company.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
@@ -32,6 +31,7 @@ import { AssetSeriesDetailsResolver } from 'src/app/core/resolvers/asset-series-
 import { RoomService } from '../../../../core/store/room/room.service';
 import { StatusWithAssetId } from '../../../models/status.model';
 import { StatusService } from '../../../../core/services/logic/status.service';
+import { AssetListType } from '../../../../shared/models/asset-list-type.model';
 import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
 import { Field } from '../../../../core/store/field/field.model';
 import { FieldQuery } from '../../../../core/store/field/field.query';
@@ -43,9 +43,12 @@ import { FieldQuery } from '../../../../core/store/field/field.query';
   styleUrls: ['./assets-list-page.component.scss']
 })
 export class AssetsListPageComponent implements OnInit {
-  company$: Observable<Company>;
-  assets$: Observable<Asset[]>;
+
+  @Input()
+  type: AssetListType = AssetListType.ASSETS;
+  @Input()
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
+  company$: Observable<Company>;
   factorySites$: Observable<FactorySite[]>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
@@ -76,7 +79,11 @@ export class AssetsListPageComponent implements OnInit {
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
     this.assets$ = this.factoryResolver.assets$;
-    this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.companyId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'companyId');
+
+    if (!this.factoryAssetDetailsWithFields$) {
+      this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    }
     this.factoryAssetDetailsWithFields$.subscribe(() => {
       this.factoryAssetStatuses$ = this.statusService.getStatusesByAssetsWithFields(this.factoryAssetDetailsWithFields$);
     });
@@ -106,7 +113,11 @@ export class AssetsListPageComponent implements OnInit {
   toolbarClick(button: string): void {
     if (button === 'GRID') {
       this.assetQuery.setSelectedAssetIds(this.selectedIds);
-      this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
+
+      const commands: string[] = this.type === AssetListType.SUBSYSTEMS ? ['../..'] : [];
+      commands.push('asset-cards', this.selectedIds.join(','));
+
+      this.router.navigate(commands, { relativeTo: this.activatedRoute });
     }
   }
 }

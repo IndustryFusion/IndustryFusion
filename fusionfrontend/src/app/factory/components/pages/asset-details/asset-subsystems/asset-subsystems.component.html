@@ -13,45 +13,6 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="list-header">
-  <div class="if-title">{{ (subsystems$|async)?.length | i18nPlural: titleMapping }}</div>
-</div>
-{{selected?.id}}
-<p-table
-  (onRowSelect)="selectSubsystem($event)"
-  [(selection)]="selected"
-  [selectionMode]="'single'"
-  [value]="subsystems$ | async"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th [style.width.%]="5"></th>
-      <th>{{ 'APP.COMMON.TERMS.ASSET' | translate}}</th>
-      <th>{{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate}}</th>
-      <th>{{ 'APP.COMMON.TERMS.MANUFACTURER' | translate}}</th>
-      <th>{{ 'APP.COMMON.TERMS.ROOM' | translate}}</th>
-      <th>{{ 'APP.COMMON.TERMS.STATUS' | translate}}</th>
-      <th [style.width.%]="5"></th>
-    </tr>
-  </ng-template>
-  <ng-template let-asset pTemplate="body">
-    <tr (click)="selectSubsystem(asset)">
-      <td>
-        {{asset.openAlertSeverity}}
-        <app-alert-icon [style.width.%]="3" [severity]="asset.openAlertSeverity" class="list-item-cell"></app-alert-icon>
-      </td>
-      <td>
-        <div>
-          <label class="if-label">{{asset.name}}</label><br>
-          <label class="if-label-small">{{asset.assetSeriesName}}</label>
-        </div>
-      </td>
-      <td>{{asset.assetTypeName}}</td>
-      <td>{{asset.manufacturer}}</td>
-      <td>{{asset.roomName}}</td>
-      <td>
-        <app-asset-status [assetWithFields]="asset" [showInline]="true"></app-asset-status>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+<app-assets-list-page [type]="AssetListType.SUBSYSTEMS"
+                      [factoryAssetDetailsWithFields$]="subsystems$">
+</app-assets-list-page>
