@@ -35,7 +35,7 @@ public class NgsiLdBrokerService {
     private static final Logger LOG = LoggerFactory.getLogger(NgsiLdBrokerService.class);
     private final NgsiLdSerializer ngsiLdSerializer;
 
-    @Value("${ngsi-broker.server-url}")
+    @Value("${ngsi-broker.server-url:}")
     private String brokerUrl;
 
     private final String apiName = "ngsi-ld";
