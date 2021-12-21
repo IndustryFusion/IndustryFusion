@@ -17,14 +17,12 @@ import { Component, OnDestroy } from '@angular/core';
 import { FactoryComposedQuery } from '../../../../core/store/composed/factory-composed.query';
 import { FieldDetailsQuery } from '../../../../core/store/field-details/field-details.query';
 import { FieldDetails, MetricDetail } from '../../../../core/store/field-details/field-details.model';
-import { OispDeviceQuery } from '../../../../core/store/oisp/oisp-device/oisp-device.query';
-import { OispService } from '../../../../core/services/api/oisp.service';
 import { FactoryAssetDetailsWithFields } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
-import { PointWithId } from '../../../../core/services/api/oisp.model';
 import { ArrayHelper } from '../../../../core/helpers/array-helper';
 import { Observable, Subject, Subscription, timer } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { takeUntil, tap } from 'rxjs/operators';
+import {NgsiLdService} from "../../../../core/services/api/ngsi-ld.service";
 
 @Component({
   selector: 'app-metrics-board',
@@ -42,14 +40,12 @@ export class MetricsBoardComponent implements OnDestroy {
   private loadDataTimer$: Subscription;
   private unSubscribe$ = new Subject<void>();
 
-  private fieldDetails: FieldDetails[];
   private metricsDetailMap: Map<string, MetricDetail> = new Map();
   private metricsDetails: MetricDetail[] = [];
 
   constructor(factoryComposedQuery: FactoryComposedQuery,
               fieldDetailsQuery: FieldDetailsQuery,
-              private oispDeviceQuery: OispDeviceQuery,
-              public oispService: OispService) {
+              private ngsiLdService: NgsiLdService) {
 
     this.assetWithFields$ = factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
       .pipe(takeUntil(this.unSubscribe$));
@@ -58,8 +54,7 @@ export class MetricsBoardComponent implements OnDestroy {
       this.asset = asset;
       fieldDetailsQuery.selectMetricFieldsOfAsset(asset.id).subscribe(fieldDetails => {
           if (fieldDetails?.length > 0) {
-            this.fieldDetails = fieldDetails;
-            this.updateMetricDetails(fieldDetails, asset);
+            this.updateMetricDetails(fieldDetails);
             this.loadMetricsData();
 
             this.unsubscribeFromTimerIfExisting();
@@ -84,36 +79,32 @@ export class MetricsBoardComponent implements OnDestroy {
     }
   }
 
-  private updateMetricDetails(fieldDetails: FieldDetails[], asset: FactoryAssetDetailsWithFields): void {
+  private updateMetricDetails(fieldDetails: FieldDetails[]): void {
     fieldDetails.forEach(fieldDetail => {
-      const deviceComponent = this.oispDeviceQuery.getComponentOfFieldInstance(asset.externalName, fieldDetail.externalName);
-      if (deviceComponent) {
-        this.metricsDetailMap.set(deviceComponent.cid, {
+        this.metricsDetailMap.set(fieldDetail.externalName, {
           externalName: fieldDetail.externalName,
-          deviceComponent,
           fieldDetails: fieldDetail,
           latestValue: null
         });
-      }
     });
 
     this.metricsDetails = [...this.metricsDetailMap.values()];
   }
 
   private loadMetricsData(): void {
-    this.oispService.getLastValueOfAllFields(this.asset, this.fieldDetails, 600)
-      .subscribe((metricPoints: PointWithId[]) => {
-       this.addPointValuesToMetricsMap(metricPoints);
+    this.ngsiLdService.getLastValueOfAllFields(this.asset)
+      .subscribe((keyValues: any) => {
+       this.addPointValuesToMetricsMap(keyValues);
        this.isLoaded = true;
     });
   }
 
-  private addPointValuesToMetricsMap(metricPoints: PointWithId[]): void {
-    metricPoints.forEach(pointWithId => {
-      if (this.metricsDetailMap.has(pointWithId.id)) {
-        const metric = this.metricsDetailMap.get(pointWithId.id);
-        metric.latestValue = pointWithId.value;
-        this.metricsDetailMap.set(pointWithId.id, metric);
+  private addPointValuesToMetricsMap(keyValues: any): void {
+    Object.keys(keyValues).forEach(key => {
+      if (this.metricsDetailMap.has(key)) {
+        const metric = this.metricsDetailMap.get(key);
+        metric.latestValue = keyValues[key];
+        this.metricsDetailMap.set(key, metric);
 
         this.metricsDetailMap = new Map(this.metricsDetailMap);
       }

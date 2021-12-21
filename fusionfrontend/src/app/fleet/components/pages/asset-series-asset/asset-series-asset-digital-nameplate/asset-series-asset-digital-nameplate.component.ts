@@ -19,10 +19,8 @@ import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Status } from 'src/app/factory/models/status.model';
 import { PointWithId } from 'src/app/core/services/api/oisp.model';
-import { OispService } from 'src/app/core/services/api/oisp.service';
 import { StatusService } from 'src/app/core/services/logic/status.service';
 import { FieldDetails, FieldType } from 'src/app/core/store/field-details/field-details.model';
-import { OispDeviceQuery } from '../../../../../core/store/oisp/oisp-device/oisp-device.query';
 import { ID } from '@datorama/akita';
 import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
@@ -37,6 +35,7 @@ import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
 import { FieldDataType } from '../../../../../core/store/field/field.model';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
+import {NgsiLdService} from "../../../../../core/services/api/ngsi-ld.service";
 
 
 @Component({
@@ -60,8 +59,7 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
   fieldDataTypes = FieldDataType;
 
   constructor(
-    private oispService: OispService,
-    private oispDeviceQuery: OispDeviceQuery,
+    private ngsiLdService: NgsiLdService,
     private statusService: StatusService,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
@@ -91,7 +89,7 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     // TODO: refactor using status.service.getStatusByAssetWithFields
     this.latestPoints$ = combineLatest([this.asset$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
       switchMap(([asset, _]) => {
-        return this.oispService.getLastValueOfAllFields(asset, asset?.fields, 5);
+        return this.ngsiLdService.getLastValueOfAllFields(asset);
       })
     );
 
@@ -100,11 +98,10 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
         map(([asset, latestPoints]) => {
           return asset.fields.map(field => {
             const fieldCopy = Object.assign({ }, field);
-            const point = latestPoints.find(latestPoint => latestPoint.id ===
-              this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName));
+            const point = latestPoints[field.externalName];
 
             if (point) {
-              fieldCopy.value = point.value;
+              fieldCopy.value = point;
             }
             return fieldCopy;
           });

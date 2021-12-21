@@ -27,6 +27,7 @@ export const environment = {
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',
+  ngsiLdBrokerUrl: 'http://PUT-YOUT-NGSI-LD-URL-HERE/ngsi-ld/v1/entities',
   keycloakConfig: {
     url: 'https://PUT-YOUR-OISP-URL-HERE.com/keycloak',
     realm: 'OISP',

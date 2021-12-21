@@ -148,10 +148,8 @@ public class NgsiLdSerializer {
         AssetSeries assetSeries = asset.getAssetSeries();
         AssetTypeTemplate assetTypeTemplate = assetSeries.getAssetTypeTemplate();
         String id = new StringBuilder()
-                .append("urn:ngsi-ld:Asset:")
-                .append(assetTypeTemplate.getId())
-                .append(":")
-                .append(assetSeries.getId())
+                .append("urn:ngsi-ld:asset:")
+                .append(asset.getCompany().getId())
                 .append(":")
                 .append(asset.getId()).toString();
 

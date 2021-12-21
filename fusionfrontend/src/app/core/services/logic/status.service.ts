@@ -20,17 +20,17 @@ import { AssetWithFields } from 'src/app/core/store/asset/asset.model';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { OispService } from '../api/oisp.service';
 import { OispDeviceStatus } from '../../models/kairos.model';
 import { AssetStatusPipe } from '../../../shared/pipes/asset-status-pipe';
 import { environment } from '../../../../environments/environment';
+import {NgsiLdService} from "../api/ngsi-ld.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatusService {
 
-  constructor(private oispService: OispService) {
+  constructor(private ngsiLdService: NgsiLdService) {
   }
 
   determineStatus(fields: FieldDetails[]): Status {
@@ -73,7 +73,7 @@ export class StatusService {
   }
 
   getStatusByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<Status> {
-    const mergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(assetWithFields, period);
+    const mergedFields$ = this.ngsiLdService.getMergedFieldsByAssetWithFields(assetWithFields, period);
     return this.getStatusFromMergedFields(mergedFields$);
   }
 
