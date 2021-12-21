@@ -29,7 +29,7 @@ import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
 import { FactoryAssetDetailsResolver } from '../../../../../core/resolvers/factory-asset-details.resolver';
 import { FieldDataType } from '../../../../../core/store/field/field.model';
-import {NgsiLdService} from "../../../../../core/services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../../../../core/services/api/ngsi-ld.service';
 
 
 @Component({

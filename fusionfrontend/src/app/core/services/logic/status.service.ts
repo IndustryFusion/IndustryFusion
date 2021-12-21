@@ -23,7 +23,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { OispDeviceStatus } from '../../models/kairos.model';
 import { AssetStatusPipe } from '../../../shared/pipes/asset-status-pipe';
 import { environment } from '../../../../environments/environment';
-import {NgsiLdService} from "../api/ngsi-ld.service";
+import { NgsiLdService } from '../api/ngsi-ld.service';
 
 @Injectable({
   providedIn: 'root'

@@ -17,8 +17,6 @@ package io.fusion.fusionbackend.service;
 
 import com.github.jsonldjava.utils.JsonUtils;
 import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.Threshold;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
@@ -145,8 +143,6 @@ public class NgsiLdSerializer {
     }
 
     private String generateUrn(Asset asset) {
-        AssetSeries assetSeries = asset.getAssetSeries();
-        AssetTypeTemplate assetTypeTemplate = assetSeries.getAssetTypeTemplate();
         String id = new StringBuilder()
                 .append("urn:ngsi-ld:asset:")
                 .append(asset.getCompany().getId())

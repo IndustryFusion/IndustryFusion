@@ -23,7 +23,7 @@ import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
-import {NgsiLdService} from "../../../../core/services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../../../core/services/api/ngsi-ld.service';
 
 @Component({
   selector: 'app-asset-card',

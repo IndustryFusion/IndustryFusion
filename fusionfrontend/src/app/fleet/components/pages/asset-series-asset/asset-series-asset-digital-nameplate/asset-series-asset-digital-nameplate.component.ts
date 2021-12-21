@@ -35,7 +35,7 @@ import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
 import { FieldDataType } from '../../../../../core/store/field/field.model';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
-import {NgsiLdService} from "../../../../../core/services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../../../../core/services/api/ngsi-ld.service';
 
 
 @Component({

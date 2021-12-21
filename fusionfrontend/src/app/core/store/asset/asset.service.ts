@@ -31,7 +31,7 @@ import {
 import { FactorySiteService } from '../factory-site/factory-site.service';
 import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
 import { FieldDetails } from '../field-details/field-details.model';
-import {NgsiLdService} from "../../services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../services/api/ngsi-ld.service';
 
 @Injectable({
   providedIn: 'root'
