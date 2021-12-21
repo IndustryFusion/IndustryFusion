@@ -68,11 +68,7 @@ under the License.
       <tr [ttRow]="rowNode">
         <td [style.width.%]="2"></td>
         <td [style.width.%]="3">
-          <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
-            <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
-            <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
-            <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
-          </div>
+          <app-alert-icon [severity]="getMaxOpenAlertSeverity(rowNode.node)"></app-alert-icon>
         </td>
         <td [style.width.%]="20" class="table-bold-font">
           <div class="p-flex-row" style="display: flex">

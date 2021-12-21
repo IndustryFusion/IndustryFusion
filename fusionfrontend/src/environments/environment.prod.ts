@@ -20,6 +20,8 @@ export const environment = {
   apiUrlPrefix: '/fusionapi',
   oispApiUrlPrefix: 'https://PUT-YOUR-OISP-URL-HERE.com/v1/api',
   kairosApiUrlPrefix: 'https://PUT-YOUR-KAIROS-URL-HERE.com/api/v1',
+  alertaApiUrlPrefix: 'https://PUT-YOUR-ALERTA-URL-HERE.com/api',
+  alertaApiKey: 'PUT-YOUR-ALERTA-APIKEY-HERE',
   alertsUpdateIntervalMs: 10000,
   dataUpdateIntervalMs: 10000,
   assetStatusSampleRateMs: 5000,

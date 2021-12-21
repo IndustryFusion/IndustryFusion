@@ -30,7 +30,7 @@ under the License.
 
   <div class="assign-room-dialog-footer">
     <button type="button" class="if-button button-secondary" (click)="onCancel()">
-      {{ activeModalMode == assetModalModes.editRoomWithPreselecedFactorySiteMode ? 'Cancel' : 'Back' }}</button>
+      {{ activeModalMode == assetModalModes.editRoomWithPreselectedFactorySiteMode ? 'Cancel' : 'Back' }}</button>
     <button type="button" class="if-button button-primary" (click)="onSubmit()" [disabled]="!selectedRoom">
       {{ activeModalMode != assetModalModes.onboardAssetMode ? 'Apply' : 'Onboard' }}</button>
   </div>

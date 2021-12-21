@@ -50,6 +50,7 @@ import { GermanStringPipe } from './pipes/german-string.pipe';
 import { EnumOptionsToStringPipe } from './pipes/enum-options-to-string.pipe';
 import { StatusFilterComponent } from './components/ui/table-filter/status-filter/status-filter.component';
 import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
+import { AlertIconComponent } from './components/ui/alert-icon/alert-icon.component';
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
     EnumOptionsToStringPipe,
     EnumOptionToStringPipe,
     StatusFilterComponent,
+    AlertIconComponent,
   ],
   imports: [
     CommonModule,
@@ -153,6 +155,7 @@ import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
     EnumOptionsToStringPipe,
     EnumOptionToStringPipe,
     StatusFilterComponent,
+    AlertIconComponent,
   ],
   providers: [
     MessageService,

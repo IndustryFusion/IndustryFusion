@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "0a9aa854-2a4d-44a1-9d8a-94a4bba502d2",
+		"name": "Alerta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Alerta, get all alerts",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "alerta",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin@alerta.io",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Key",
+						"value": "demo-key",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/api/alerts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"alerts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alerta, get alert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "alerta",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin@alerta.io",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Key",
+						"value": "demo-key",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/api/alert/a4da9da5-90b6-4b90-b3f4-3f4eb267316d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"alert",
+						"a4da9da5-90b6-4b90-b3f4-3f4eb267316d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alerta, add new alert (minimal required attributes)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "alerta",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin@alerta.io",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Key",
+						"value": "demo-key",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"resource\": \"mcc-microstep\",\n    \"event\": \"HttpServerError\",\n    \"severity\": \"major\",\n    \"environment\": \"Development\",\n    \"service\": [\n        \"DigitalTwin\"\n    ],\n    \"text\": \"status > 5\",\n    \"value\": \"7\",\n    \"attributes\": {\n        \"resourceFriendlyName\": \"Asset Name\",\n        \"eventFriendlyName\": \"Invalid Status Value\"\n    },\n    \"status\": \"open\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/alert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"alert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alerta, add new alert (some more data)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "alerta",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin@alerta.io",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Key",
+						"value": "demo-key",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"attributes\": {\n        \"region\": \"EU\"\n      },\n      \"correlate\": [\n        \"HttpServerError\",\n        \"HttpServerOK\"\n      ],\n      \"environment\": \"Development\",\n      \"event\": \"HttpServerError\",\n      \"group\": \"Web\",\n      \"origin\": \"curl\",\n      \"resource\": \"web01\",\n      \"service\": [\n        \"example.com\"\n      ],\n      \"severity\": \"security\",\n      \"text\": \"Site is down.\",\n      \"type\": \"exceptionAlert\",\n      \"value\": \"Bad Gateway (501)\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/alert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"alert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alerta, change alert status",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "alerta",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin@alerta.io",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Key",
+						"value": "demo-key",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"status\": \"ack\",\n      \"text\": \"disk needs replacing.\",\n      \"timeout\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/alert/44e14da1-cba7-4975-a76c-5c7432d7c554/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"alert",
+						"44e14da1-cba7-4975-a76c-5c7432d7c554",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

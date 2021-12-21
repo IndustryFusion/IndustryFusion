@@ -41,10 +41,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private intervalHandle: number;
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
-  private static fetchOpenNotificationCount(oispAlertResolver: OispAlertResolver) {
-    oispAlertResolver.resolve().subscribe();
-  }
-
   ngOnInit() {
     registerLocaleData(localeDe);
     this.factorySubTitle$ = this.factoryResolver.factorySubTitle$;
@@ -55,13 +51,13 @@ export class AppComponent implements OnInit, OnDestroy {
       akitaDevtools(this.ngZone);
     }
 
-    this.periodicallyFetchOpenAlertCount();
+    this.periodicallyFetchAlerts();
   }
 
-  private periodicallyFetchOpenAlertCount() {
+  private periodicallyFetchAlerts() {
     if (this.FETCHING_INTERVAL_MILLISECONDS > 0) {
-      AppComponent.fetchOpenNotificationCount(this.oispAlertResolver);
-      this.intervalHandle = setInterval(() => AppComponent.fetchOpenNotificationCount(this.oispAlertResolver),
+      this.oispAlertResolver.resolve().subscribe();
+      this.intervalHandle = setInterval(() => this.oispAlertResolver.resolve().subscribe(),
         this.FETCHING_INTERVAL_MILLISECONDS);
     }
   }

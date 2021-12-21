@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
@@ -21,8 +21,6 @@ import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model'
 import { Company } from 'src/app/core/store/company/company.model';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { SortEvent, TreeNode } from 'primeng/api';
-import { OispAlert, OispAlertPriority } from 'src/app/core/store/oisp/oisp-alert/oisp-alert.model';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ID } from '@datorama/akita';
 import {
   AssetMaintenanceUtils,
@@ -31,6 +29,8 @@ import {
 } from '../../../../factory/util/asset-maintenance-utils';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 
 
 @Component({
@@ -59,10 +59,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   faChevronCircleDown = faChevronCircleDown;
   faChevronCircleUp = faChevronCircleUp;
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
 
   searchText = '';
 
@@ -73,17 +69,36 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   utils = Utils;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private alertaAlertQuery: AlertaAlertQuery) {
   }
 
+  private static isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
+    const maintenanceValue = Utils.getMaintenanceValue(asset, type);
+    return maintenanceValue && maintenanceValue < type.lowerThreshold;
+  }
 
   ngOnInit(): void {
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
+    this.updateAlertSeverityOnNewAlerts();
   }
 
-  ngOnChanges(): void {
-    this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
-    this.updateTree();
+  private updateAlertSeverityOnNewAlerts() {
+    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+      if (this.displayedFactoryAssets) {
+        this.displayedFactoryAssets = this.displayedFactoryAssets
+          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+        this.updateTree();
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.factoryAssetDetailsWithFields) {
+      this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
+      this.updateTree();
+    }
   }
 
   searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
@@ -102,18 +117,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.updateTree();
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
   }
 
   isLastChildElement(rowNode: any): boolean {
@@ -133,8 +138,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   public isMaintenanceNeededSoon(node: TreeNode): boolean {
     const asset = node.data;
-    return this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
-      || this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
+    return MaintenanceListComponent.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
+      || MaintenanceListComponent.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
   }
 
   public isChildrenMaintenanceNeededSoon(node: TreeNode): boolean {
@@ -146,11 +151,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
       }
     }
     return result;
-  }
-
-  private isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
-    const maintenanceValue = Utils.getMaintenanceValue(asset, type);
-    return maintenanceValue && maintenanceValue < type.lowerThreshold;
   }
 
   private updateTree() {
