@@ -39,7 +39,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedEntityGraph(name = "AssetTypeTemplate.allChildren",
@@ -56,8 +58,23 @@ import java.util.Set;
 @NamedNativeQuery(
         name = "AssetTypeTemplate.findSubsystemCandidates",
         query = "select * from asset_type_template where subsystem_parent_id is null"
-                + " and publication_state = 'PUBLISHED' and asset_type_id != ? and id != ?",
+                + " and publication_state = 'PUBLISHED' and asset_type_id != ? and id != ?"
+                + " and id not in (select distinct peer_id from asset_type_template_peer)",
         resultClass = AssetTypeTemplate.class)
+@NamedNativeQuery(
+        name = "AssetTypeTemplate.findAllSubsystemIds",
+        query = "select id from asset_type_template where subsystem_parent_id is not null")
+
+@NamedNativeQuery(
+        name = "AssetTypeTemplate.findPeerCandidates",
+        query = "select * from asset_type_template where subsystem_parent_id is null"
+                + " and publication_state = 'PUBLISHED' and id != ?"
+                + " and ? not in (select distinct peer_id from asset_type_template_peer)",
+        resultClass = AssetTypeTemplate.class)
+@NamedNativeQuery(
+        name = "AssetTypeTemplate.findAllPeerIds",
+        query = "select distinct peer_id from asset_type_template_peer")
+
 @Table(name = "asset_type_template")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_assettypetemplate")
 @Getter
@@ -78,6 +95,10 @@ public class AssetTypeTemplate extends BaseAsset {
     @JoinColumn(name = "subsystem_parent_id")
     @Builder.Default
     private Set<AssetTypeTemplate> subsystems = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "assetTypeTemplate", fetch = FetchType.EAGER)
+    @Builder.Default
+    private Set<AssetTypeTemplatePeer> peers = new LinkedHashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_type_id", nullable = false)
@@ -111,5 +132,43 @@ public class AssetTypeTemplate extends BaseAsset {
         if (sourceAssetTypeTemplate.getSubsystems() != null) {
             setSubsystems(sourceAssetTypeTemplate.getSubsystems());
         }
+        if (!sourceAssetTypeTemplate.getPeers().isEmpty()) {
+            Map<Long, AssetTypeTemplatePeer> sourcePeersIdBasedMap = sourceAssetTypeTemplate.getPeers().stream()
+                    .collect(Collectors.toMap(BaseEntity::getId, peer -> peer));
+            for (AssetTypeTemplatePeer targetPeer : getPeers()) {
+                AssetTypeTemplatePeer sourcePeer = sourcePeersIdBasedMap.get(targetPeer.getId());
+                targetPeer.copyFrom(sourcePeer);
+            }
+        }
     }
+
+    public Set<AssetTypeTemplatePeer> getPeersToCreate(AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> sourcePeers = sourceAssetTypeTemplate.getPeers();
+        Set<AssetTypeTemplatePeer> targetPeers = this.getPeers();
+
+        return sourcePeers.stream()
+                .filter(sourcePeer -> !targetPeers.contains(sourcePeer))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AssetTypeTemplatePeer> getPeersToUpdate(AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> sourcePeers = sourceAssetTypeTemplate.getPeers();
+        Set<AssetTypeTemplatePeer> targetPeers = this.getPeers();
+
+        return sourcePeers.stream()
+                .filter(targetPeers::contains)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AssetTypeTemplatePeer> getPeersToDelete(AssetTypeTemplate sourceAssetTypeTemplate) {
+
+        Set<AssetTypeTemplatePeer> sourcePeers = sourceAssetTypeTemplate.getPeers();
+
+        return this.getPeers().stream()
+                .filter(targetPeer -> !sourcePeers.contains(targetPeer))
+                .collect(Collectors.toSet());
+    }
+
 }

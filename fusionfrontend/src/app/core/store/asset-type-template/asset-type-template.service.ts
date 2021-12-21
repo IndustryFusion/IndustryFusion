@@ -36,7 +36,7 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
   constructor(private assettypeTemplateStore: AssetTypeTemplateStore, private http: HttpClient) { }
 
   getItems(): Observable<AssetTypeTemplate[]> {
-    const path = `assettypetemplates`;
+    const path = `assettypetemplates?embedChildren=true`;
     return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.assettypeTemplateStore.upsertMany(entities);
@@ -105,6 +105,11 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
 
   getSubsystemCandidates(assetTypeTemplateId: ID, assetTypeId: ID): Observable<AssetTypeTemplate[]> {
     const path = `assettypetemplates/${assetTypeTemplateId}/assettypes/${assetTypeId}/subsystemcandidates`;
+    return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
+  getPeerCandidates(assetTypeTemplateId: ID): Observable<AssetTypeTemplate[]> {
+    const path = `assettypetemplates/${assetTypeTemplateId}/peercandidates`;
     return this.http.get<AssetTypeTemplate[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 

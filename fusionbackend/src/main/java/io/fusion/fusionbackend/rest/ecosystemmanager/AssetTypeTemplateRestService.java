@@ -72,6 +72,13 @@ public class AssetTypeTemplateRestService {
                 true);
     }
 
+    @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/peercandidates")
+    public Set<AssetTypeTemplateDto> getPeerCandidates(@PathVariable final Long assetTypeTemplateId) {
+        return assetTypeTemplateMapper.toDtoSet(
+                assetTypeTemplateService.findPeerCandidates(assetTypeTemplateId),
+                true);
+    }
+
     @GetMapping(path = "/assettypetemplates/{assetTypeTemplateId}/owlexport")
     public void getAsOwlExport(@PathVariable final Long assetTypeTemplateId,
                                HttpServletResponse response) throws IOException {
@@ -95,15 +102,17 @@ public class AssetTypeTemplateRestService {
     public AssetTypeTemplateDto createAssetTypeTemplate(@RequestParam final Long assetTypeId,
                                                         @RequestBody final AssetTypeTemplateDto assetTypeTemplateDto) {
         return assetTypeTemplateMapper.toDto(
-                assetTypeTemplateService.createAssetTypeTemplate(assetTypeId,
-                        assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), false);
+                assetTypeTemplateService.createAssetTypeTemplateAggregate(assetTypeId,
+                        assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), true);
     }
 
     @PatchMapping(path = "/assettypetemplates/{assetTypeTemplateId}")
     public AssetTypeTemplateDto updateAssetTypeTemplate(@PathVariable final Long assetTypeTemplateId,
                                                         @RequestBody final AssetTypeTemplateDto assetTypeTemplateDto) {
-        return assetTypeTemplateMapper.toDto(assetTypeTemplateService.updateAssetTypeTemplate(assetTypeTemplateId,
-                assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)), false);
+        return assetTypeTemplateMapper.toDto(
+                assetTypeTemplateService.updateAssetTypeTemplate(assetTypeTemplateDto.getAssetTypeId(),
+                        assetTypeTemplateId, assetTypeTemplateMapper.toEntity(assetTypeTemplateDto)),
+                true);
     }
 
     @DeleteMapping(path = "/assettypetemplates/{assetTypeTemplateId}")

@@ -154,10 +154,9 @@ public class AssetSeries extends BaseAsset {
 
 
         return isChanged;
-
     }
 
-    public List<FieldSource> calculateDeletedFieldSources(AssetSeries sourceAssetSeries) {
+    public List<FieldSource> getFieldSourcesToDelete(AssetSeries sourceAssetSeries) {
 
         Set<FieldSource> sourceFieldSources = sourceAssetSeries.getFieldSources();
 

@@ -17,11 +17,12 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { ID } from '@datorama/akita';
 import { AssetTypeTemplate } from '../../../../../../../core/store/asset-type-template/asset-type-template.model';
 import { AssetTypeTemplateService } from '../../../../../../../core/store/asset-type-template/asset-type-template.service';
-import { AssetTypeTemplateWizardSharedSubsystemsComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-subsystems/asset-type-template-wizard-shared-subsystems.component';
 import { AssetTypeTemplateWizardSteps } from '../../asset-type-template-wizard-steps.model';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { AssetTypeTemplateWizardStepStartComponent } from '../asset-type-template-wizard-step-start/asset-type-template-wizard-step-start.component';
+import { AssetTypeTemplateWizardSharedSubsystemsComponent } from '../../asset-type-template-wizard-shared/asset-type-template-wizard-shared-subsystems/asset-type-template-wizard-shared-subsystems.component';
+import { AssetTypeTemplateQuery } from '../../../../../../../core/store/asset-type-template/asset-type-template.query';
 
 @Component({
   selector: 'app-asset-type-template-wizard-step-subsystems',
@@ -42,34 +43,60 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
   public isReadyForNextStep = false;
   public isAddingMode = false;
 
-  constructor(private assetTypeTemplateService: AssetTypeTemplateService) {
+  constructor(private assetTypeTemplateService: AssetTypeTemplateService,
+              private assetTypeTemplateQuery: AssetTypeTemplateQuery) {
     this.removedCandidates = [];
   }
 
   ngOnInit(): void {
     this.initFilteredSubsystemCandidatesIncludingVersion();
+    this.addAddedSubsystemsToRemovedCandidates();
   }
 
   private initFilteredSubsystemCandidatesIncludingVersion() {
     const assetTypeTemplateId = this.assetTypeTemplateForm.get('id').value;
     const assetTypeId = this.assetTypeTemplateForm.get('assetTypeId').value;
-    this.assetTypeTemplateService.getSubsystemCandidates(assetTypeTemplateId ?? 0, assetTypeId)
-      .pipe(map( (templates: AssetTypeTemplate[]) =>
-          templates.map(template => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(template))),
-        map(templates => templates.filter(template => !this.assetTypeTemplate.subsystemIds.includes(template.id) )))
+
+    this.assetTypeTemplateService.getSubsystemCandidates(assetTypeTemplateId ?? -1, assetTypeId)
+      .pipe(map( (candidates: AssetTypeTemplate[]) =>
+          candidates.map(candidate => AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(candidate))),
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.subsystemIds.includes(candidate.id) )),
+        map(candidates => candidates.filter(candidate => !this.assetTypeTemplate.peers.map(peer => peer.peerId).includes(candidate.id) )))
       .subscribe(templateCandidates => this.subsystemCandidates = templateCandidates);
+  }
+
+  private addAddedSubsystemsToRemovedCandidates() {
+    this.assetTypeTemplate.subsystemIds?.forEach(subsystemId => {
+      const addedSubsystem = this.assetTypeTemplateQuery.getEntity(subsystemId);
+      if (addedSubsystem) {
+        this.removedCandidates.push(AssetTypeTemplateWizardStepStartComponent.addPublishedVersionToAssetTypeTemplateName(addedSubsystem));
+      } else {
+        console.warn('[ATT wizard]: Subsystem could not be found in candidates');
+      }
+    });
   }
 
   public onBack(): void {
     if (this.isReadyForNextStep) {
+      this.saveValues();
       this.stepChange.emit(AssetTypeTemplateWizardSteps.SUBSYSTEMS - 1);
     }
   }
 
   public onNext(): void {
     if (this.isReadyForNextStep) {
-      this.subsystemsChild.saveValues();
+      this.saveValues();
       this.stepChange.emit(AssetTypeTemplateWizardSteps.SUBSYSTEMS + 1);
+    }
+  }
+
+  private saveValues(): void {
+    const subsystemFormArray: FormArray = this.subsystemsChild.getFormArray();
+    if (subsystemFormArray.valid) {
+      this.assetTypeTemplate.subsystemIds = new Array<ID>();
+      subsystemFormArray.controls.forEach((subsystemGroup: FormControl) => {
+        this.assetTypeTemplate.subsystemIds.push(subsystemGroup.get('id').value);
+      });
     }
   }
 
@@ -90,9 +117,20 @@ export class AssetTypeTemplateWizardStepSubsystemsComponent implements OnInit {
   }
 
   public onSubsystemRemoved(subsystemId: ID): void {
-    const assetTypeTemplate = this.removedCandidates.find((item: AssetTypeTemplate) => item.id === subsystemId);
-    this.subsystemCandidates.push(assetTypeTemplate);
-    this.subsystemCandidates.sort((a, b) => (a.id as number) - (b.id as number));
-    this.removedCandidates.splice(this.removedCandidates.indexOf(assetTypeTemplate), 1);
+    const removedAssetTypeTemplate = this.removedCandidates.find((item: AssetTypeTemplate) => item.id === subsystemId);
+    if (!removedAssetTypeTemplate) {
+      console.warn('[ATT wizard]: Removed subsystem could not be found');
+      return;
+    }
+
+    this.addRemovedSubsystemToCandidates(removedAssetTypeTemplate);
+    this.removedCandidates.splice(this.removedCandidates.indexOf(removedAssetTypeTemplate), 1);
+  }
+
+  private addRemovedSubsystemToCandidates(removedAssetTypeTemplate: AssetTypeTemplate) {
+    if (removedAssetTypeTemplate) {
+      this.subsystemCandidates.push(removedAssetTypeTemplate);
+      this.subsystemCandidates.sort((a, b) => (a.id as number) - (b.id as number));
+    }
   }
 }
