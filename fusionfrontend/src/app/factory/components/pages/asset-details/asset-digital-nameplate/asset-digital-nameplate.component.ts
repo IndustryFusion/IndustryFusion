@@ -31,7 +31,7 @@ import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
 import { FactoryAssetDetailsResolver } from '../../../../../core/resolvers/factory-asset-details.resolver';
 import { FieldDataType } from '../../../../../core/store/field/field.model';
-import {NgsiLdService} from "../../../../../core/services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../../../../core/services/api/ngsi-ld.service';
 import { MediaObjectType } from '../../../../../core/models/media-object.model';
 import { ManualService } from '../../../../../core/services/api/storage/manual.service';
 import { VideoService } from '../../../../../core/services/api/storage/video.service';

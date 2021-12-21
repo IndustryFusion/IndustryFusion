@@ -22,7 +22,7 @@ import { ArrayHelper } from '../../../../core/helpers/array-helper';
 import { Observable, Subject, Subscription, timer } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { takeUntil, tap } from 'rxjs/operators';
-import {NgsiLdService} from "../../../../core/services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../../../core/services/api/ngsi-ld.service';
 
 @Component({
   selector: 'app-metrics-board',

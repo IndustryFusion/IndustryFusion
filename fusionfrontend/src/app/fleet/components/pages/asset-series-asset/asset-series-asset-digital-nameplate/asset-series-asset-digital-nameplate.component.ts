@@ -37,7 +37,7 @@ import { Room } from '../../../../../core/store/room/room.model';
 import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { FieldInstanceDetailsResolver } from '../../../../../core/resolvers/field-instance-details.resolver';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
-import {NgsiLdService} from "../../../../../core/services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../../../../core/services/api/ngsi-ld.service';
 
 
 @Component({

@@ -25,7 +25,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { ImageStyleType } from '../../../../shared/models/image-style-type.model';
 import { TranslateService } from '@ngx-translate/core';
-import {NgsiLdService} from "../../../../core/services/api/ngsi-ld.service";
+import { NgsiLdService } from '../../../../core/services/api/ngsi-ld.service';
 
 @Component({
   selector: 'app-asset-card',
