@@ -29,10 +29,9 @@ import {
 } from '../factory-asset-details/factory-asset-details.model';
 import { FactorySiteService } from '../factory-site/factory-site.service';
 import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
-import { PointWithId } from '../../services/api/oisp.model';
 import { FieldDetails } from '../field-details/field-details.model';
-import { OispService } from '../../services/api/oisp.service';
 import { FleetAssetDetailsService } from '../fleet-asset-details/fleet-asset-details.service';
+import {NgsiLdService} from "../../services/api/ngsi-ld.service";
 
 @Injectable({
   providedIn: 'root'
@@ -42,15 +41,13 @@ export class AssetService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  DEFAULT_OISP_LOOKBACK_TIME = 600;
-
   constructor(private assetStore: AssetStore,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
               private factoryAssetDetailsService: FactoryAssetDetailsService,
               private fleetAssetDetailsService: FleetAssetDetailsService,
               private factorySiteService: FactorySiteService,
               private roomService: RoomService,
-              private oispService: OispService,
+              private ngsiLdService: NgsiLdService,
               private http: HttpClient) {
   }
 
@@ -205,9 +202,9 @@ export class AssetService {
   }
 
   // tslint:disable-next-line: max-line-length
-  updateAssetWithFieldValues(asset: FactoryAssetDetailsWithFields, secondsInPast: number = this.DEFAULT_OISP_LOOKBACK_TIME): Observable<FactoryAssetDetailsWithFields> {
+  updateAssetWithFieldValues(asset: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
     return new Observable<any>((observer) => {
-      this.oispService.getLastValueOfAllFields(asset, asset.fields, secondsInPast, true).subscribe((lastValues) => {
+      this.ngsiLdService.getLastValueOfAllFields(asset).subscribe((lastValues) => {
           asset.fields = this.getAssetFieldValues(asset, lastValues);
           observer.next(asset);
         }, _ => {
@@ -217,12 +214,12 @@ export class AssetService {
     });
   }
 
-  getAssetFieldValues(asset: FactoryAssetDetailsWithFields, lastValues: PointWithId[]): FieldDetails[] {
+  getAssetFieldValues(asset: FactoryAssetDetailsWithFields, lastValues: any): FieldDetails[] {
     return asset.fields.map((field) => {
         const fieldCopy = Object.assign({ }, field);
-        const point = lastValues?.find(latestPoint => latestPoint.id === field.externalName);
+        const point = lastValues[field.externalName];
         if (point) {
-          fieldCopy.value = point.value;
+          fieldCopy.value = point;
         }
         return fieldCopy;
       }

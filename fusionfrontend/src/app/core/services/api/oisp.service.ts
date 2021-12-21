@@ -15,11 +15,11 @@
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, of, timer } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { Asset, AssetWithFields } from '../../store/asset/asset.model';
-import { FieldDetails, FieldType } from '../../store/field-details/field-details.model';
+import { Asset } from '../../store/asset/asset.model';
+import { FieldDetails } from '../../store/field-details/field-details.model';
 import {
   Aggregator,
   Metrics,
@@ -99,23 +99,7 @@ export class OispService {
         }));
   }
 
-  // tslint:disable:max-line-length
-  getLastValueOfAllFields(asset: Asset, fields: FieldDetails[], secondsInPast: number, useFieldNameAsId = false): Observable<PointWithId[]> {
-    const path = `accounts/${this.getOispAccountId()}/data/search`;
-    const request: OispRequest = {
-      from: -secondsInPast,
-      targetFilter: { deviceList: [asset.externalName] },
-      metrics: fields
-        .filter(field => field.fieldType === FieldType.METRIC)
-        .map(field => ({
-          id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
-          op: 'none'
-        }))
-    };
-    return this.getOispPoints(path, request, true, useFieldNameAsId);
-  }
-
-  getValuesOfSingleFieldWithoutAggregation(asset: Asset, field: FieldDetails, secondsInPast: number): Observable<PointWithId[]> {
+  getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: number): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
 
     const metrics: Metrics = ({
@@ -194,11 +178,6 @@ export class OispService {
     }
   }
 
-  getComponentTypesCatalog(): Observable<ComponentType[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/cmpcatalog`;
-    return this.http.get<ComponentType[]>(url, this.httpOptions);
-  }
-
   private getOispAccountId(): string {
     const token = (this.keycloakService.getKeycloakInstance().tokenParsed as any);
     let oispAccountId = '';
@@ -210,33 +189,5 @@ export class OispService {
     }
 
     return oispAccountId;
-  }
-
-  getMergedFieldsByAssetWithFields(assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<FieldDetails[]> {
-    let latestPoints$: Observable<PointWithId[]>;
-    if (period) {
-      latestPoints$ = timer(0, period).pipe(
-        switchMap(() => {
-          return this.getLastValueOfAllFields(assetWithFields, assetWithFields.fields, 5);
-        })
-      );
-    } else {
-      latestPoints$ = this.getLastValueOfAllFields(assetWithFields, assetWithFields.fields, 5);
-    }
-
-    return latestPoints$.pipe(
-      map(latestPoints => {
-        return assetWithFields.fields.map(field => {
-          const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints.find(latestPoint => latestPoint.id ===
-            this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(assetWithFields.externalName, field.externalName));
-
-          if (point) {
-            fieldCopy.value = point.value;
-          }
-          return fieldCopy;
-        });
-      })
-    );
   }
 }

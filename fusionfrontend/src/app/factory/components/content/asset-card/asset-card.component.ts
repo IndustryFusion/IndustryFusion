@@ -17,7 +17,6 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Status } from 'src/app/factory/models/status.model';
-import { OispService } from 'src/app/core/services/api/oisp.service';
 import { StatusService } from 'src/app/core/services/logic/status.service';
 import { AssetWithFields } from 'src/app/core/store/asset/asset.model';
 import { CompanyQuery } from 'src/app/core/store/company/company.query';
@@ -26,6 +25,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { ImageStyleType } from '../../../../shared/models/image-style-type.model';
 import { TranslateService } from '@ngx-translate/core';
+import {NgsiLdService} from "../../../../core/services/api/ngsi-ld.service";
 
 @Component({
   selector: 'app-asset-card',
@@ -53,14 +53,14 @@ export class AssetCardComponent implements OnInit, OnChanges {
 
   constructor(
     private companyQuery: CompanyQuery,
-    private oispService: OispService,
+    private ngsiLdService: NgsiLdService,
     private statusService: StatusService,
     private router: Router,
     public translate: TranslateService) {
   }
 
   ngOnInit() {
-    this.allMergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
+    this.allMergedFields$ = this.ngsiLdService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
     this.updateMergedFields();
     this.status$ = this.statusService.getStatusFromMergedFields(this.currentMergedFields$);
   }

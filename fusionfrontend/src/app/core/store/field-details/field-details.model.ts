@@ -17,7 +17,6 @@ import { BaseEntity } from '../baseentity.model';
 import { ID } from '@datorama/akita';
 import { FieldDataType, FieldOption, FieldWidgetType } from '../field/field.model';
 import { Threshold } from '../threshold/threshold.model';
-import { DeviceComponent } from '../oisp/oisp-device/oisp-device.model';
 
 // Data come from entities field_instance, field_target and field
 export class FieldDetails extends BaseEntity {
@@ -56,6 +55,5 @@ export enum QuantityDataType {
 export class MetricDetail {
   externalName: string;
   fieldDetails: FieldDetails;
-  deviceComponent: DeviceComponent;
   latestValue: number | string;
 }
