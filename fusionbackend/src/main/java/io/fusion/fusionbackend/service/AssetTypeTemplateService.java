@@ -25,17 +25,17 @@ import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.model.enums.PublicationState;
-import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -50,14 +50,13 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AssetTypeTemplateService {
     private final AssetTypeTemplateRepository assetTypeTemplateRepository;
     private final AssetTypeService assetTypeService;
     private final AssetTypeTemplateMapper assetTypeTemplateMapper;
     private final FieldTargetService fieldTargetService;
     private final OntologyBuilder ontologyBuilder;
-
-    private static final Logger LOG = LoggerFactory.getLogger(AssetTypeTemplateService.class);
 
     @Autowired
     public AssetTypeTemplateService(AssetTypeTemplateRepository assetTypeTemplateRepository,
@@ -76,6 +75,13 @@ public class AssetTypeTemplateService {
         return assetTypeTemplateRepository.findAll(AssetTypeTemplateRepository.DEFAULT_SORT);
     }
 
+    public Set<AssetTypeTemplate> getPublishedAssetTypeTemplates() {
+        return assetTypeTemplateRepository
+                .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
+                .stream().filter(assetTypeTemplate -> assetTypeTemplate.getPublishedDate() != null)
+                .collect(Collectors.toSet());
+    }
+
     public AssetTypeTemplate getAssetTypeTemplate(final Long assetTypeTemplateId, final boolean deep) {
         if (deep) {
             return assetTypeTemplateRepository.findDeepById(assetTypeTemplateId)
@@ -86,7 +92,7 @@ public class AssetTypeTemplateService {
     }
 
     private Supplier<ResourceNotFoundException> getAssetTypeTemplateNotFoundException(Long assetTypeTemplateId) {
-        LOG.debug("AssetTypeTemplate with ID {} not found", assetTypeTemplateId);
+        log.debug("AssetTypeTemplate with ID {} not found", assetTypeTemplateId);
         return ResourceNotFoundException::new;
     }
 
@@ -109,15 +115,15 @@ public class AssetTypeTemplateService {
                     "Published date must be set for publication state PUBLISHED");
         } else if (assetTypeTemplate.getPublicationState().equals(PublicationState.DRAFT)) {
             if (Objects.nonNull(assetTypeTemplate.getPublishedDate())) {
-                throw new RuntimeException("Published date not allowed for publication state DRAFT");
+                throw new IllegalStateException("Published date not allowed for publication state DRAFT");
             }
         } else {
-            throw new RuntimeException("Unknown publication state: " + assetTypeTemplate.getPublicationState());
+            throw new IllegalStateException("Unknown publication state: " + assetTypeTemplate.getPublicationState());
         }
 
         if (assetType != null && existsDraftToAssetType(assetType)) {
             String exception = "It is forbidden to create a new asset type template draft if another one exists.";
-            throw new RuntimeException(exception);
+            throw new IllegalStateException(exception);
         }
 
         validateSubsystems(assetTypeTemplate, assetType);
@@ -126,13 +132,14 @@ public class AssetTypeTemplateService {
     private void validateSubsystems(AssetTypeTemplate assetTypeTemplate, AssetType assetType) {
         for (AssetTypeTemplate subsystem : assetTypeTemplate.getSubsystems()) {
             if (subsystem.getId().equals(assetTypeTemplate.getId())) {
-                throw new RuntimeException("An asset type template is not allowed to be a subsystem of itself.");
+                throw new IllegalStateException("An asset type template is not allowed to be a subsystem of itself.");
             }
             if (subsystem.getAssetType().getId().equals(assetType.getId())) {
-                throw new RuntimeException("A subsystem has to be of another asset type than the parent template.");
+                throw new
+                        IllegalStateException("A subsystem has to be of another asset type than the parent template.");
             }
             if (subsystem.getPublicationState().equals(PublicationState.DRAFT)) {
-                throw new RuntimeException("A subsystem has to be a published asset type template.");
+                throw new IllegalStateException("A subsystem has to be a published asset type template.");
             }
         }
     }
@@ -194,10 +201,9 @@ public class AssetTypeTemplateService {
         return assetTypeTemplateRepository.findSubsystemCandidates(parentAssetTypeId, assetTypeTemplateId);
     }
 
-    public OntModel getAssetTypeTemplateRdf(Long assetTypeTemplateId) throws IOException {
+    public OntModel getAssetTypeTemplateRdf(Long assetTypeTemplateId) {
         AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
-        OntModel model = ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
-        return model;
+        return ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
     }
 
     public void getAssetTypeTemplateExtendedJson(Long assetTypeTemplateId, PrintWriter writer) throws IOException {
@@ -213,13 +219,10 @@ public class AssetTypeTemplateService {
     }
 
     public byte[] exportAllToJson() throws IOException {
-        Set<AssetTypeTemplate> assetTypeTemplates = assetTypeTemplateRepository
-                .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
-                .stream().filter(assetTypeTemplate -> assetTypeTemplate.getPublishedDate() != null)
-                .collect(Collectors.toSet());
+        Set<AssetTypeTemplate> publishedAssetTypeTemplates = getPublishedAssetTypeTemplates();
 
         Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos = assetTypeTemplateMapper
-                .toDtoSet(assetTypeTemplates, true);
+                .toDtoSet(publishedAssetTypeTemplates, true);
         sortFieldTargets(publishedAssetTypeTemplatesDtos);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
@@ -228,16 +231,21 @@ public class AssetTypeTemplateService {
 
     private void sortFieldTargets(Set<AssetTypeTemplateDto> publishedAssetTypeTemplatesDtos) {
         for (AssetTypeTemplateDto publishedAssetTypeTemplatesDto : publishedAssetTypeTemplatesDtos) {
-            publishedAssetTypeTemplatesDto.setFieldTargetIds(null);
-            Set<FieldTargetDto> sortedFieldTargetDtos = new LinkedHashSet<>(BaseZipImportExport
-                    .toSortedList(publishedAssetTypeTemplatesDto.getFieldTargets()));
-            publishedAssetTypeTemplatesDto.setFieldTargets(sortedFieldTargetDtos);
+            sortFieldTargets(publishedAssetTypeTemplatesDto);
         }
+    }
+
+    private void sortFieldTargets(AssetTypeTemplateDto assetTypeTemplateDto) {
+        assetTypeTemplateDto.setFieldTargetIds(null);
+        Set<FieldTargetDto> sortedFieldTargetDtos = new LinkedHashSet<>(BaseZipImportExport
+                .toSortedList(assetTypeTemplateDto.getFieldTargets()));
+        assetTypeTemplateDto.setFieldTargets(sortedFieldTargetDtos);
     }
 
     public int importMultipleFromJson(byte[] fileContent) throws IOException {
         Set<AssetTypeTemplateDto> assetTypeTemplateDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
-                new TypeReference<>() {});
+                new TypeReference<>() {
+                });
         Set<Long> existingAssetTypeTemplateIds = assetTypeTemplateRepository
                 .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
@@ -253,7 +261,7 @@ public class AssetTypeTemplateService {
                 assetTypeTemplate.setFieldTargets(new LinkedHashSet<>());
                 createAssetTypeTemplate(assetTypeTemplateDto.getAssetTypeId(), assetTypeTemplate);
             } else {
-                LOG.warn("Asset type template  with the id " + assetTypeTemplateDto.getId()
+                log.warn("Asset type template  with the id " + assetTypeTemplateDto.getId()
                         + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }
@@ -263,6 +271,25 @@ public class AssetTypeTemplateService {
         addCachedSubsystemsToAssetTypeTemplates(assetTypeTemplateSubsystemMap);
 
         return entitySkippedCount;
+    }
+
+    public Boolean exportAssetTypeTemplateToJsonFile(AssetTypeTemplate assetTypeTemplate, final File file,
+                                                     boolean overwrite) throws IOException {
+        return exportAssetTypeTemplateToJsonFile(assetTypeTemplateMapper.toDto(assetTypeTemplate,
+                true), file, overwrite);
+    }
+
+    private Boolean exportAssetTypeTemplateToJsonFile(AssetTypeTemplateDto assetTypeTemplateDto, final File file,
+                                                      boolean overwrite)
+            throws IOException {
+        if (file.exists() && !overwrite) {
+            return false;
+        }
+        sortFieldTargets(assetTypeTemplateDto);
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        objectMapper.writeValue(file, assetTypeTemplateDto);
+        return true;
     }
 
     private void removeAndCacheSubsystems(final Map<Long, Set<Long>> assetTypeTemplateSubsystemMap,

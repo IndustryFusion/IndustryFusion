@@ -21,8 +21,7 @@ import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@Slf4j
 public class FieldInstanceService {
-    private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
     private final ThresholdService thresholdService;
     private final UnitService unitService;
 
@@ -130,7 +129,7 @@ public class FieldInstanceService {
             final QuantityDataType quantityDataType = unit.getQuantityType().getDataType();
 
             if (!isThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
-                LOG.warn("Thresholds of field instance with id {} are not valid.\r\n"
+                log.warn("Thresholds of field instance with id {} are not valid.\r\n"
                                 + "Absolute Threshold: {}, ideal Threshold: {}, critical threshold: {}",
                         fieldInstance.getId(), fieldInstance.getAbsoluteThreshold(),
                         fieldInstance.getIdealThreshold(), fieldInstance.getCriticalThreshold());

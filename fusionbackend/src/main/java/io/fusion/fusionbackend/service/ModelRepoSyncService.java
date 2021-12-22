@@ -18,8 +18,11 @@ package io.fusion.fusionbackend.service;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import io.fusion.fusionbackend.config.FusionBackendConfig;
+import io.fusion.fusionbackend.dto.SyncResultDto;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
@@ -32,6 +35,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,6 +45,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @Service
+@Transactional
 @Slf4j
 public class ModelRepoSyncService {
     private final FusionBackendConfig fusionBackendConfig;
@@ -65,14 +70,23 @@ public class ModelRepoSyncService {
 
     private boolean createAndValidateModelRepoLocal() {
         Path localGitPath = getLocalGitPath();
-        if (!Files.exists(localGitPath)) {
-            try {
-                Files.createDirectories(localGitPath);
-            } catch (IOException e) {
-                log.warn("Could not create local model repo path {}: {}", localGitPath, e);
-                return false;
-            }
+        try {
+            FileUtils.deleteDirectory(localGitPath.toFile());
+            log.info("{} deleted", localGitPath);
+        } catch (IOException e) {
+            log.warn("Could not delete old model repo path {}: {}", localGitPath, e);
+            return false;
         }
+        try {
+            Files.createDirectories(localGitPath);
+        } catch (IOException e) {
+            log.warn("Could not create local model repo path {}: {}", localGitPath, e);
+            return false;
+        }
+        return checkoutRepo(localGitPath);
+    }
+
+    private boolean checkoutRepo(Path localGitPath) {
         if (!isGitRepo(localGitPath)) {
             try {
                 final boolean isDirectoryEmpty = isDirectoryEmpty(localGitPath);
@@ -108,21 +122,51 @@ public class ModelRepoSyncService {
             log.warn("Error opening repo path {}: {}", localGitPath, e);
             return false;
         }
+        return pullRepo();
+    }
+
+    public boolean pullRepo() {
+        if (git == null) {
+            return false;
+        }
         try {
             git.pull().call();
         } catch (GitAPIException e) {
-            log.warn("Error pulling repo path {}: {}", localGitPath, e);
+            log.warn("Error pulling repo", e);
             return false;
         }
         return true;
     }
 
-    private String getLocalGitPathString() {
-        return ensureTrailingSlash(tmpdir) + extractRepoName();
+    public SyncResultDto checkChangesAndSync() {
+        int modifiedCount = 0;
+        int untrackedCount = 0;
+        if (git == null) {
+            return SyncResultDto.builder().modifiedFileCount(modifiedCount).newFileCount(untrackedCount).build();
+        }
+        try {
+            Status status = git.status().call();
+            modifiedCount = status.getModified().size();
+            untrackedCount = status.getUntracked().size();
+            log.info("{} modified, {} untracked", modifiedCount, untrackedCount);
+
+            git.add().addFilepattern(".").call();
+            log.info("added all");
+
+            git.commit().setAll(true).setMessage("Automated Commit").call();
+            log.info("commited");
+
+            git.push().call();
+            log.info("pushed");
+        } catch (GitAPIException e) {
+            log.warn("Error pulling repo", e);
+            return SyncResultDto.builder().modifiedFileCount(modifiedCount).newFileCount(untrackedCount).build();
+        }
+        return SyncResultDto.builder().modifiedFileCount(modifiedCount).newFileCount(untrackedCount).build();
     }
 
-    private Path getLocalGitPath() {
-        return Paths.get(getLocalGitPathString());
+    public Path getLocalGitPath() {
+        return Paths.get(tmpdir, extractRepoName());
     }
 
     private String extractRepoName() {
@@ -139,13 +183,6 @@ public class ModelRepoSyncService {
                 .map(m -> m.group(1))
                 .findFirst()
                 .orElse(null);
-    }
-
-    private String ensureTrailingSlash(final String value) {
-        if (!value.endsWith("/")) {
-            return value + "/";
-        }
-        return value;
     }
 
     private Repository getRepository(final Path path) throws IOException {

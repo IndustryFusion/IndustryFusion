@@ -101,6 +101,10 @@ under the License.
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
 
         <!-- Needed to avoid conflict with OkHttp in MinIOClient being used in auth0-java and okhttp3 being used by spring -->
         <dependency>

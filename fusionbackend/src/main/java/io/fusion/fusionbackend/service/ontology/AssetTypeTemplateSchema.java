@@ -15,24 +15,25 @@
 
 package io.fusion.fusionbackend.service.ontology;
 
+import lombok.experimental.UtilityClass;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
+/**.
+ * The basic Ontology of an AssetTypeTemplate
+ */
+@UtilityClass
 public class AssetTypeTemplateSchema {
-
-    /**.
-     * The basic Ontology of an AssetTypeTemplate
-     */
-    public static final String uri = "https://industry-fusion.com/att-schema/1.0#";
+    public static final String URI = "https://industry-fusion.com/att-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-    public static final Property version = m.createProperty(uri, "version");
-    public static final Property name = m.createProperty(uri, "name");
-    public static final Property description = m.createProperty(uri, "description");
-    public static final Property imageKey = m.createProperty(uri, "imageKey");
-    public static final Property subsystems = m.createProperty(uri, "subsystems");
-    public static final Property quantityType = m.createProperty(uri, "quantityType");
+    public static final Property version = m.createProperty(URI, "version");
+    public static final Property name = m.createProperty(URI, "name");
+    public static final Property description = m.createProperty(URI, "description");
+    public static final Property imageKey = m.createProperty(URI, "imageKey");
+    public static final Property subsystems = m.createProperty(URI, "subsystems");
+    public static final Property quantityType = m.createProperty(URI, "quantityType");
 
     /**.
      * returns the URI for this schema
@@ -40,6 +41,6 @@ public class AssetTypeTemplateSchema {
      * @return the URI for this schema
      */
     public static String getUri() {
-        return uri;
+        return URI;
     }
 }

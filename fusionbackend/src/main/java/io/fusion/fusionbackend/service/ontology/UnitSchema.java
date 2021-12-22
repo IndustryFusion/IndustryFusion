@@ -15,23 +15,24 @@
 
 package io.fusion.fusionbackend.service.ontology;
 
+import lombok.experimental.UtilityClass;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
+/**.
+ * The basic Ontology of an Unit
+ */
+@UtilityClass
 public class UnitSchema {
-
-    /**.
-     * The basic Ontology of an Unit
-     */
-    public static final String uri = "https://industry-fusion.com/unit-schema/1.0#";
+    public static final String URI = "https://industry-fusion.com/unit-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-    public static final Property id = m.createProperty(uri, "id");
-    public static final Property name = m.createProperty(uri, "name");
-    public static final Property label = m.createProperty(uri, "label");
-    public static final Property symbol = m.createProperty(uri, "symbol");
-    public static final Property hasUnit = m.createProperty(uri, "hasUnit");
+    public static final Property id = m.createProperty(URI, "id");
+    public static final Property name = m.createProperty(URI, "name");
+    public static final Property label = m.createProperty(URI, "label");
+    public static final Property symbol = m.createProperty(URI, "symbol");
+    public static final Property hasUnit = m.createProperty(URI, "hasUnit");
 
     /**.
      * returns the URI for this schema
@@ -39,6 +40,6 @@ public class UnitSchema {
      * @return the URI for this schema
      */
     public static String getUri() {
-        return uri;
+        return URI;
     }
 }

@@ -26,13 +26,13 @@ import io.fusion.fusionbackend.model.QuantityType;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.repository.UnitRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
@@ -40,12 +40,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class UnitService {
     private final UnitRepository unitRepository;
     private final UnitMapper unitMapper;
     private final QuantityTypeService quantityTypeService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(UnitService.class);
 
     @Autowired
     public UnitService(UnitRepository unitRepository,
@@ -105,16 +104,28 @@ public class UnitService {
     }
 
     public byte[] exportAllToJson() throws IOException {
-        Set<Unit> units = Sets.newLinkedHashSet(unitRepository.findAll(UnitRepository.DEFAULT_SORT));
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
+    }
 
-        Set<UnitDto> unitDtos = unitMapper.toDtoSet(units, true);
+    public Boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
+        if (file.exists() && !overwrite) {
+            return false;
+        }
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(unitDtos));
+        objectMapper.writeValue(file, getAllAsDto());
+        return true;
+    }
+
+    private Set<UnitDto> getAllAsDto() {
+        Set<Unit> units = Sets.newLinkedHashSet(unitRepository.findAll(UnitRepository.DEFAULT_SORT));
+        return unitMapper.toDtoSet(units, true);
     }
 
     public int importMultipleFromJson(byte[] fileContent) throws IOException {
-        Set<UnitDto> unitDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {});
+        Set<UnitDto> unitDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
+        });
 
         Set<Long> existingUnitIds = unitRepository
                 .findAll(UnitRepository.DEFAULT_SORT)
@@ -136,11 +147,11 @@ public class UnitService {
                     quantityTypeService.setQuantityTypeBaseUnit(quantityType.getId(), unit.getId());
                 }
             } else {
-                LOG.warn("Unit with the id " + unitDto.getId() + " already exists. Entry is ignored.");
+                log.warn("Unit with the id " + unitDto.getId() + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }
         }
-        
+
         return entitySkippedCount;
     }
 }

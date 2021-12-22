@@ -30,26 +30,25 @@ import io.fusion.fusionbackend.repository.FieldOptionRepository;
 import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.repository.UnitRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class FieldService {
     private final FieldRepository fieldRepository;
     private final FieldOptionRepository fieldOptionRepository;
     private final FieldMapper fieldMapper;
     private final UnitService unitService;
     private final FieldOptionService fieldOptionService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(FieldService.class);
 
     @Autowired
     public FieldService(FieldRepository fieldRepository,
@@ -122,17 +121,28 @@ public class FieldService {
     }
 
     public byte[] exportAllToJson() throws IOException {
-        Set<Field> fields = Sets.newLinkedHashSet(fieldRepository
-                .findAll(FieldRepository.DEFAULT_SORT));
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
+    }
 
-        Set<FieldDto> fieldDtos = fieldMapper.toDtoSet(fields, true);
+    public Boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
+        if (file.exists() && !overwrite) {
+            return false;
+        }
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(fieldDtos));
+        objectMapper.writeValue(file, getAllAsDto());
+        return true;
+    }
+
+    private Set<FieldDto> getAllAsDto() {
+        Set<Field> fields = Sets.newLinkedHashSet(fieldRepository.findAll(FieldRepository.DEFAULT_SORT));
+        return fieldMapper.toDtoSet(fields, true);
     }
 
     public int importMultipleFromJson(byte[] fileContent) throws IOException {
-        Set<FieldDto> fieldDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {});
+        Set<FieldDto> fieldDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
+        });
         Set<Long> existingFieldIds = fieldRepository
                 .findAll(FieldRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
@@ -143,7 +153,7 @@ public class FieldService {
                 Field field = fieldMapper.toEntity(fieldDto);
                 createField(field, fieldDto.getUnitId());
             } else {
-                LOG.warn("Field with the id " + fieldDto.getId() + " already exists. Entry is ignored.");
+                log.warn("Field with the id " + fieldDto.getId() + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }
         }
