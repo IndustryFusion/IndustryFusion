@@ -16,6 +16,8 @@
 package io.fusion.fusionbackend.service.ontology;
 
 import com.github.jsonldjava.utils.JsonUtils;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,8 +31,9 @@ import java.util.Map;
    The NGSI-LD Broker Scorpio can not parse blank nodes as they have local id's.
    This Class remove the blank nodes und reconstruct the deep JSON without links to blank nodes.
 * */
+@Slf4j
+@UtilityClass
 public class BlankNodeProcessor {
-
     public static final String BLANKNODE_PREFIX = "_:b";
 
     public static String linkBlankNodes(String jsonString) throws ParseException, IOException {
@@ -38,13 +41,13 @@ public class BlankNodeProcessor {
         JSONObject root = (JSONObject) parser.parse(jsonString);
         JSONArray graph = (JSONArray) root.get("@graph");
 
-        Map<String, JSONObject> blankNodes = new HashMap();
+        Map<String, JSONObject> blankNodes = new HashMap<>();
 
         if (graph == null) {
             graph = new JSONArray();
             graph.add(root);
         }
-        System.out.println(blankNodes.keySet());
+        log.info("{}", blankNodes.keySet());
         if (blankNodes.size() > 0) {
             insertBlankNodes(graph, blankNodes);
         }

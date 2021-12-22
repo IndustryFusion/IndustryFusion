@@ -25,24 +25,24 @@ import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.repository.AssetTypeRepository;
 import io.fusion.fusionbackend.repository.CompanyRepository;
+import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AssetTypeService {
     private final AssetTypeRepository assetTypeRepository;
     private final AssetTypeMapper assetTypeMapper;
-
-    private static final Logger LOG = LoggerFactory.getLogger(AssetTypeService.class);
 
     @Autowired
     public AssetTypeService(AssetTypeRepository assetTypeRepository, AssetTypeMapper assetTypeMapper) {
@@ -80,17 +80,29 @@ public class AssetTypeService {
     }
 
     public byte[] exportAllToJson() throws IOException {
-        Set<AssetType> assetTypes = Sets.newLinkedHashSet(assetTypeRepository
-                .findAll(AssetTypeRepository.DEFAULT_SORT));
-
-        Set<AssetTypeDto> assetTypeDtos = assetTypeMapper.toDtoSet(assetTypes, true);
-
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetTypeDtos));
+        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
     }
 
+    public Boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
+        if (file.exists() && !overwrite) {
+            return false;
+        }
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        objectMapper.writeValue(file, getAllAsDto());
+        return true;
+    }
+
+    private Set<AssetTypeDto> getAllAsDto() {
+        Set<AssetType> assetTypes = Sets.newLinkedHashSet(assetTypeRepository.findAll(FieldRepository.DEFAULT_SORT));
+        return assetTypeMapper.toDtoSet(assetTypes, true);
+    }
+
+
     public int importMultipleFromJson(byte[] fileContent) throws IOException {
-        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>(){});
+        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
+        });
         Set<Long> existingAssetTypeIds = assetTypeRepository
                 .findAll(AssetTypeRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
@@ -101,7 +113,7 @@ public class AssetTypeService {
                 AssetType assetType = assetTypeMapper.toEntity(assetTypeDto);
                 createAssetType(assetType);
             } else {
-                LOG.warn("Asset type with the id " + assetTypeDto.getId()
+                log.warn("Asset type with the id " + assetTypeDto.getId()
                         + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }

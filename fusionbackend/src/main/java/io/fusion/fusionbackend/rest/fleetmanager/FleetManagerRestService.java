@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.rest.fleetmanager;
 
+import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import io.fusion.fusionbackend.service.export.EcosystemManagerImportExportService;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,6 +53,11 @@ public class FleetManagerRestService {
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition","attachment;filename=\"fleet_manager_exported.zip\"");
         fleetManagerImportExportService.exportEntitiesToStreamAsZip(companyId, response.getOutputStream());
+    }
+
+    @PutMapping(path = "/companies/{companyId}/fleetmanager/synctomodelrepo")
+    public SyncResultDto syncToModelRepo(@PathVariable final Long companyId) {
+        return fleetManagerImportExportService.syncWithModelRepo(companyId);
     }
 
     @PostMapping(path = "/companies/{companyId}/fleetmanager/import",

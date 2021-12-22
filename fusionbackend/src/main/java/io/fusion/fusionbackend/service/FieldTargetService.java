@@ -25,8 +25,7 @@ import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.repository.FieldTargetRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,13 +36,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class FieldTargetService {
     private final AssetTypeTemplateService assetTypeTemplateService;
     private final FieldTargetRepository fieldTargetRepository;
     private final FieldTargetMapper fieldTargetMapper;
     private final FieldService fieldService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(FieldTargetService.class);
 
     @Autowired
     public FieldTargetService(AssetTypeTemplateService assetTypeTemplateService,
@@ -122,7 +120,7 @@ public class FieldTargetService {
                 FieldTarget fieldTarget = fieldTargetMapper.toEntity(fieldTargetDto);
                 createFieldTarget(fieldTargetDto.getAssetTypeTemplateId(), fieldTargetDto.getFieldId(), fieldTarget);
             } else {
-                LOG.warn("Field Target with the id " + fieldTargetDto.getId() + " already exists. Entry is ignored.");
+                log.warn("Field Target with the id " + fieldTargetDto.getId() + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }
         }

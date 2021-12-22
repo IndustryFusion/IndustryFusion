@@ -36,19 +36,19 @@ import io.fusion.fusionbackend.model.ConnectivityType;
 import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
-import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.repository.AssetSeriesRepository;
 import io.fusion.fusionbackend.repository.ConnectivityProtocolRepository;
 import io.fusion.fusionbackend.repository.ConnectivityTypeRepository;
 import io.fusion.fusionbackend.repository.FieldSourceRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -58,8 +58,8 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AssetSeriesService {
-    private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesService.class);
     private final AssetSeriesRepository assetSeriesRepository;
     private final AssetSeriesMapper assetSeriesMapper;
     private final AssetTypeTemplateService assetTypeTemplateService;
@@ -209,7 +209,7 @@ public class AssetSeriesService {
         final AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
         if (!assetSeries.getAssets().isEmpty()) {
-            LOG.warn("User try to delete assetSeries({}) with {} assets associated with",
+            log.warn("User try to delete assetSeries({}) with {} assets associated with",
                     assetSeries.getId(), assetSeries.getAssets().size());
 
             throw new ConflictException();
@@ -331,31 +331,59 @@ public class AssetSeriesService {
         return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetSeriesDtos));
     }
 
+    public Boolean exportAssetSeriesToJsonFile(AssetSeries assetSeries, final File file,
+                                               boolean overwrite) throws IOException {
+        return exportAssetSeriesDtoToJsonFile(assetSeriesMapper.toDto(assetSeries, true), file, overwrite);
+    }
+
+    private Boolean exportAssetSeriesDtoToJsonFile(AssetSeriesDto assetSeriesDto, final File file,
+                                                   boolean overwrite) throws IOException {
+        if (file.exists() && !overwrite) {
+            return false;
+        }
+
+        prepareForExport(assetSeriesDto);
+        sortFieldSources(assetSeriesDto);
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        objectMapper.writeValue(file, assetSeriesDto);
+        return true;
+    }
+
     private Set<AssetSeriesDto> removeUnnecessaryItems(Set<AssetSeriesDto> assetSeriesDtos) {
         Set<AssetSeriesDto> resultAssetSeriesDtos = new LinkedHashSet<>();
         for (AssetSeriesDto assetSeriesDto : assetSeriesDtos) {
-            assetSeriesDto.setCompanyId(null);
-            assetSeriesDto.getFieldSources().forEach(fieldSourceDto -> {
-                fieldSourceDto.setFieldTarget(null);
-                fieldSourceDto.setSourceUnit(null);
-            });
+            prepareForExport(assetSeriesDto);
             resultAssetSeriesDtos.add(assetSeriesDto);
         }
         return resultAssetSeriesDtos;
     }
 
+    private void prepareForExport(AssetSeriesDto assetSeriesDto) {
+        assetSeriesDto.setCompanyId(null);
+        assetSeriesDto.getFieldSources().forEach(fieldSourceDto -> {
+            fieldSourceDto.setFieldTarget(null);
+            fieldSourceDto.setSourceUnit(null);
+        });
+    }
+
     private void sortFieldSources(Set<AssetSeriesDto> assetSeriesDtos) {
         for (AssetSeriesDto assetSeriesDto : assetSeriesDtos) {
-            assetSeriesDto.setFieldSourceIds(null);
-            Set<FieldSourceDto> sortedFieldSourceDtos = new LinkedHashSet<>(BaseZipImportExport
-                    .toSortedList(assetSeriesDto.getFieldSources()));
-            assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
+            sortFieldSources(assetSeriesDto);
         }
+    }
+
+    private void sortFieldSources(AssetSeriesDto assetSeriesDto) {
+        assetSeriesDto.setFieldSourceIds(null);
+        Set<FieldSourceDto> sortedFieldSourceDtos = new LinkedHashSet<>(BaseZipImportExport
+                .toSortedList(assetSeriesDto.getFieldSources()));
+        assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
     }
 
     public int importMultipleFromJson(byte[] fileContent, final Long companyId) throws IOException {
         Set<AssetSeriesDto> assetSeriesDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
-                new TypeReference<>() {});
+                new TypeReference<>() {
+                });
         Set<String> existingGlobalAssetSeriesIds = assetSeriesRepository
                 .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId)
                 .stream().map(AssetSeries::getGlobalId).collect(Collectors.toSet());
@@ -377,7 +405,7 @@ public class AssetSeriesService {
                         assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
                         assetSeries);
             } else {
-                LOG.warn("Asset series with the id " + assetSeriesDto.getId() + " already exists. Entry is ignored.");
+                log.warn("Asset series with the id " + assetSeriesDto.getId() + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }
         }

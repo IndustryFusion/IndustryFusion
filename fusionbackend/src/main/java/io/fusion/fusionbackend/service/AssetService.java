@@ -33,9 +33,7 @@ import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -56,9 +54,8 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AssetService {
-    private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
-
     private final AssetRepository assetRepository;
     private final AssetMapper assetMapper;
     private final FieldInstanceRepository fieldInstanceRepository;
@@ -95,6 +92,43 @@ public class AssetService {
         this.ngsiLdBrokerService = ngsiLdBrokerService;
     }
 
+    private static void addRelationship(JSONObject json, String key, List<String> urls) {
+        JSONArray jsonArray = new JSONArray();
+        urls.forEach(url -> {
+            JSONObject property = new JSONObject();
+            addType(property, "Relationship");
+            property.put("object", url);
+            jsonArray.add(property);
+        });
+
+        json.put(key, jsonArray);
+    }
+
+    private static void addProperty(JSONObject json, String key, String value) {
+        addProperty(json, key, value, null);
+    }
+
+    private static void addProperty(JSONObject json, String key, String value, String unitCode) {
+        JSONObject property = new JSONObject();
+        addType(property, "Property");
+        property.put("value", value);
+        if (unitCode != null) {
+            property.put("unitCode", unitCode);
+        }
+        json.put(key, property);
+    }
+
+    private static void addProperty(JSONObject json, String key, JSONObject jsonObject) {
+        JSONObject property = new JSONObject();
+        addType(property, "Property");
+        property.put("value", jsonObject);
+        json.put(key, property);
+    }
+
+    private static Object addType(JSONObject json, String type) {
+        return json.put("type", type);
+    }
+
     public Asset getAssetById(final Long assetId) {
         return assetRepository.findById(assetId).orElseThrow(ResourceNotFoundException::new);
     }
@@ -124,7 +158,6 @@ public class AssetService {
         return assetRepository.findByCompanyIdAndGlobalId(companyId, assetGlobalId)
                 .orElseThrow(ResourceNotFoundException::new);
     }
-
 
     public Set<Asset> getAssetsByFactorySite(final Long companyId, final Long factorySiteId) {
         // Make sure factory site belongs to company
@@ -577,7 +610,8 @@ public class AssetService {
     public int importMultipleFromJsonToFactoryManager(byte[] fileContent,
                                                       final Long companyId,
                                                       final Long factorySiteId) throws IOException {
-        Set<AssetDto> assetDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {});
+        Set<AssetDto> assetDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
+        });
         Set<String> existingGlobalAssetIds = assetRepository
                 .findAllByCompanyId(AssetRepository.DEFAULT_SORT, companyId)
                 .stream().map(Asset::getGlobalId).collect(Collectors.toSet());
@@ -597,7 +631,7 @@ public class AssetService {
                 Asset asset = assetMapper.toEntity(assetDto);
                 createFactoryAssetAggregateWithGlobalId(companyId, assetDto.getAssetSeriesGlobalId(), asset);
             } else {
-                LOG.warn("Asset with the id " + assetDto.getId() + " already exists. Entry is ignored.");
+                log.warn("Asset with the id " + assetDto.getId() + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }
         }

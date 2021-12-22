@@ -25,8 +25,7 @@ import io.fusion.fusionbackend.model.QuantityType;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.repository.QuantityTypeRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -37,12 +36,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class QuantityTypeService {
     private final QuantityTypeRepository quantityTypeRepository;
     private final QuantityTypeMapper quantityTypeMapper;
     private final UnitService unitService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(QuantityTypeService.class);
 
     @Autowired
     public QuantityTypeService(QuantityTypeRepository quantityTypeRepository,
@@ -104,7 +102,7 @@ public class QuantityTypeService {
 
                 createQuantityType(quantityType, noBaseUnitYetDueToCyclicDependency);
             } else {
-                LOG.warn("Quantity Type with the id " + quantityTypeDto.getId() + " already exists. Entry is ignored.");
+                log.warn("Quantity Type with the id " + quantityTypeDto.getId() + " already exists. Entry is ignored.");
                 entitySkippedCount += 1;
             }
         }

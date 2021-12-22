@@ -15,21 +15,29 @@
 
 package io.fusion.fusionbackend.service.ontology;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.RDFWriterI;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 
+@UtilityClass
+@Slf4j
 public class OntologyUtil {
     public static void writeOwlOntologyModelToStreamUsingJena(
             OntModel ontModel, OutputStream outputStream) throws IOException {
 
-        org.apache.jena.rdf.model.RDFWriterI w = ontModel.getWriter("turtle");
+        RDFWriterI w = ontModel.getWriter("turtle");
 
-        w.setProperty("attributeQuoteChar","\"");
-        w.setProperty("showXMLDeclaration","true");
-        w.setProperty("tab","1");
+        w.setProperty("attributeQuoteChar", "\"");
+        w.setProperty("showXMLDeclaration", "true");
+        w.setProperty("tab", "1");
 
         String base = ontModel.getNsPrefixURI("").substring(0, ontModel.getNsPrefixURI("").length() - 1);
         w.setProperty("xmlbase", base);
@@ -43,5 +51,18 @@ public class OntologyUtil {
         writeOwlOntologyModelToStreamUsingJena(ontModel, outputStream);
 
         return outputStream.toByteArray();
+    }
+
+    public Boolean writeOntologyModelToFile(final OntModel ontModel, final File file, final boolean overwrite)
+            throws IOException {
+        if (file.exists() && !overwrite) {
+            log.info("{} already exists", file);
+            return false;
+        }
+        Files.createDirectories(file.getParentFile().toPath());
+        try (OutputStream outStream = new FileOutputStream(file)) {
+            writeOwlOntologyModelToStreamUsingJena(ontModel, outStream);
+        }
+        return true;
     }
 }

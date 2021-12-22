@@ -15,9 +15,14 @@
 
 package io.fusion.fusionbackend.service.export;
 
+import io.fusion.fusionbackend.dto.SyncResultDto;
+import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import io.fusion.fusionbackend.service.AssetService;
+import io.fusion.fusionbackend.service.ModelRepoSyncService;
+import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,36 +33,45 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
+@Slf4j
 public class FleetManagerImportExportService extends BaseZipImportExport {
     private final AssetSeriesService assetSeriesService;
     private final AssetService assetService;
 
     private final EcosystemManagerImportExportService ecosystemManagerImportExportService;
     private final AssetYamlExportService assetYamlExportService;
+    private final ModelRepoSyncService modelRepoSyncService;
+    private final OntologyBuilder ontologyBuilder;
 
-    public static final String FILENAME_ASSET_SERIES = "AssetSeries.json";
-    public static final String FILENAME_ASSETS = "Assets.json";
-    public static final String FILENAME_ASSET = "Asset.json";
-    public static final String FILENAME_NGSI_LD = "NGSI-LD.json";
-    public static final String FILENAME_OWL = "Owl.ttl";
-    public static final String FILENAME_APPLICATION_YAML = "application.yaml";
-
+    public static final String FILENAME_ASSET_SERIES = "AssetSeries";
+    public static final String FILENAME_ASSETS = "Assets";
+    public static final String FILENAME_ASSET = "Asset";
+    public static final String FILENAME_NGSI_LD = "NGSI-LD";
+    public static final String FILENAME_OWL = "Owl";
+    public static final String FILENAME_APPLICATION_YAML = "application";
+    private static final String FLEETMAN_SUBDIR = "machinemanufacturer";
 
     @Autowired
     public FleetManagerImportExportService(AssetSeriesService assetSeriesService,
                                            AssetService assetService,
                                            EcosystemManagerImportExportService ecosystemManagerImportExportService,
-                                           AssetYamlExportService assetYamlExportService) {
+                                           AssetYamlExportService assetYamlExportService,
+                                           ModelRepoSyncService modelRepoSyncService,
+                                           OntologyBuilder ontologyBuilder) {
         this.assetSeriesService = assetSeriesService;
         this.assetService = assetService;
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
         this.assetYamlExportService = assetYamlExportService;
+        this.modelRepoSyncService = modelRepoSyncService;
+        this.ontologyBuilder = ontologyBuilder;
     }
 
     public void exportEntitiesToStreamAsZip(final Long companyId,
@@ -69,10 +83,10 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
             // Order is crucial
             ecosystemManagerImportExportService.writeEntitiesToZipOutputStream(zipOutputStream);
 
-            addFileToZipOutputStream(zipOutputStream, FILENAME_ASSET_SERIES,
+            addFileToZipOutputStream(zipOutputStream, getContentFileName(FILENAME_ASSET_SERIES),
                     assetSeriesService.exportAllToJson(companyId));
 
-            addFileToZipOutputStream(zipOutputStream, FILENAME_ASSETS,
+            addFileToZipOutputStream(zipOutputStream, getContentFileName(FILENAME_ASSETS),
                     assetService.exportAllFleetAssetsToJson(companyId));
 
         } catch (IOException ioe) {
@@ -84,6 +98,15 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
         responseOutputStream.close();
     }
 
+    public SyncResultDto syncWithModelRepo(final Long companyId) {
+        if (modelRepoSyncService.pullRepo()) {
+            exportAssetSeries(companyId);
+            return modelRepoSyncService.checkChangesAndSync();
+        }
+        return SyncResultDto.builder().build();
+    }
+
+    @Override
     public void importEntitiesFromZip(final Long companyId,
                                       final Long factorySiteId,
                                       final InputStream inputStream) throws IOException {
@@ -117,12 +140,12 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
         int totalEntitySkippedCount = prevImportResult.totalEntitySkippedCount;
         if (isEntryImported) {
             switch (entry.getName()) {
-                case FILENAME_ASSET_SERIES:
+                case FILENAME_ASSET_SERIES + CONTENT_FILE_EXTENSION:
                     totalEntitySkippedCount += assetSeriesService
                             .importMultipleFromJson(readZipEntry(entry, zipInputStream), companyId);
                     break;
-                case FILENAME_ASSETS:
-                case FILENAME_ASSET:
+                case FILENAME_ASSETS + CONTENT_FILE_EXTENSION:
+                case FILENAME_ASSET + CONTENT_FILE_EXTENSION:
                     totalEntitySkippedCount += assetService.importMultipleFromJsonToFactoryManager(
                             readZipEntry(entry, zipInputStream),
                             companyId, factorySiteId
@@ -145,17 +168,18 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
 
-            addFileToZipOutputStream(zipOutputStream, FILENAME_ASSET,
+            addFileToZipOutputStream(zipOutputStream, getContentFileName(FILENAME_ASSET),
                     assetService.exportFleetAssetsToJson(companyId, assetId));
 
             String assetNgsiLd = assetService.getAssetByIdAsNgsiLD(assetId);
-            addFileToZipOutputStream(zipOutputStream, FILENAME_NGSI_LD, assetNgsiLd.getBytes(StandardCharsets.UTF_8));
+            addFileToZipOutputStream(zipOutputStream, getContentFileName(FILENAME_NGSI_LD),
+                    assetNgsiLd.getBytes(StandardCharsets.UTF_8));
 
             OntModel assetOntModel = assetSeriesService.getAssetSeriesRdf(assetSeriesId, companyId);
-            addFileToZipOutputStream(zipOutputStream, FILENAME_OWL,
+            addFileToZipOutputStream(zipOutputStream, getModelFileName(FILENAME_OWL),
                     OntologyUtil.exportOwlOntologyModelToJsonUsingJena(assetOntModel));
 
-            addFileToZipOutputStream(zipOutputStream, FILENAME_APPLICATION_YAML,
+            addFileToZipOutputStream(zipOutputStream, getConfigFileName(FILENAME_APPLICATION_YAML),
                      assetYamlExportService.createYamlFile(assetService.getAssetById(assetId)));
 
         } catch (IOException ioe) {
@@ -165,5 +189,42 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
 
         responseOutputStream.write(byteArrayOutputStream.toByteArray());
         responseOutputStream.close();
+    }
+
+    private void exportAssetSeries(final Long companyId) {
+        Set<AssetSeries> assetSeriesSet = assetSeriesService.getAssetSeriesSetByCompany(companyId);
+        long modelExportCount = assetSeriesSet.stream().filter(this::writeAsModelToGitDir).count();
+        log.info("Wrote {} from {} AS models", modelExportCount, assetSeriesSet.size());
+        long contentExportCount = assetSeriesSet.stream().filter(this::writeAsContentToGitDir).count();
+        log.info("Wrote {} from {} AS jsons", contentExportCount, assetSeriesSet.size());
+    }
+
+    private Boolean writeAsModelToGitDir(final AssetSeries assetSeries) {
+        OntModel ontModel = ontologyBuilder.buildAssetSeriesOntology(assetSeries);
+        Path filepath = getAsFilePath(assetSeries, MODEL_FILE_EXTENSION);
+        try {
+            return OntologyUtil.writeOntologyModelToFile(ontModel, filepath.toFile(), false);
+        } catch (IOException e) {
+            log.warn(ERROR_WRITING_FILE, filepath.toFile(), e);
+            return false;
+        }
+    }
+
+    private Boolean writeAsContentToGitDir(final AssetSeries assetSeries) {
+        Path filepath = getAsFilePath(assetSeries, CONTENT_FILE_EXTENSION);
+        try {
+            return assetSeriesService.exportAssetSeriesToJsonFile(assetSeries, filepath.toFile(), false);
+        } catch (IOException e) {
+            log.warn(ERROR_WRITING_FILE, filepath.toFile(), e);
+            return false;
+        }
+    }
+
+    private Path getAsFilePath(final AssetSeries assetSeries, final String extension) {
+        Path filepath = modelRepoSyncService.getLocalGitPath()
+                .resolve(FLEETMAN_SUBDIR)
+                .resolve(Long.toString(assetSeries.getCompany().getId()));
+        final String filename = assetSeries.getGlobalId() + extension;
+        return filepath.resolve(FLEETMAN_SUBDIR).resolve(filename);
     }
 }

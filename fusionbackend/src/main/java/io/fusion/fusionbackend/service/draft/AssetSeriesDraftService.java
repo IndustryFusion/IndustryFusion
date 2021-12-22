@@ -23,20 +23,17 @@ import io.fusion.fusionbackend.model.FieldSource;
 import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import io.fusion.fusionbackend.service.CompanyService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AssetSeriesDraftService {
-
     private final AssetTypeTemplateService assetTypeTemplateService;
     private final CompanyService companyService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(AssetSeriesDraftService.class);
 
     public AssetSeriesDraftService(AssetTypeTemplateService assetTypeTemplateService, CompanyService companyService) {
         this.assetTypeTemplateService = assetTypeTemplateService;
@@ -49,9 +46,9 @@ public class AssetSeriesDraftService {
                 assetTypeTemplateService.getAssetTypeTemplate(assetTypeTemplateId, true);
 
         if (!assetTypeTemplate.getPublicationState().equals(PublicationState.PUBLISHED)) {
-            LOG.debug("Can't create assetseries while assettyptemplate {} with id {} is in state {} not published",
+            log.debug("Can't create assetseries while assettyptemplate {} with id {} is in state {} not published",
                     assetTypeTemplate.getName(), assetTypeTemplateId, assetTypeTemplate.getPublicationState());
-            throw new RuntimeException("Can't create assetseries while assettyptemplate not published");
+            throw new IllegalStateException("Can't create assetseries while assettyptemplate not published");
         }
 
         final Company targetCompany = companyService.getCompany(targetCompanyId, false);
