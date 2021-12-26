@@ -14,6 +14,13 @@
 -->
 
 <div class="wrapper if-subheader">
+  <p-dialog header="Fleet manager files synced with repo" [(visible)]="ifApiService.showResult">
+    <div>Modified: {{ ifApiService.syncResult.modifiedFileCount }}</div>
+    <div>New: {{ ifApiService.syncResult.newFileCount }}</div>
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" (click)="ifApiService.showResult=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+  </p-dialog>
   <ul>
     <li [ngClass]="{'active': isRouteActive('assetseries')}" (click)="onRouteClick('assetseries')">Asset Series</li>
     <li>
@@ -26,6 +33,9 @@
         <i class="pi pi-upload"></i>
         <input type="file" accept="application/zip" (change)="onZipFileUpload($event)">
       </label>
+    </li>
+    <li (click)="ifApiService.syncModelRepoFleetManager(companyId)" [pTooltip]="'Sync data of Fleet Manager with model git repository'">
+      <i class="pi pi-refresh"></i>
     </li>
   </ul>
 </div>

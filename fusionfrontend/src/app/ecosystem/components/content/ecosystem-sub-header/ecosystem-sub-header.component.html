@@ -14,6 +14,13 @@ under the License.
 -->
 
 <div class="wrapper if-subheader">
+  <p-dialog header="Ecosystem files synced with repo" [(visible)]="ifApiService.showResult">
+    <div>Modified: {{ ifApiService.syncResult.modifiedFileCount }}</div>
+    <div>New: {{ ifApiService.syncResult.newFileCount }}</div>
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" (click)="ifApiService.showResult=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+  </p-dialog>
   <ul>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/assettypes">Asset Types</li>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/assettypetemplate">Asset Type Templates</li>

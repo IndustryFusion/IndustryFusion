@@ -45,7 +45,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @Service
-@Transactional
 @Slf4j
 public class ModelRepoSyncService {
     private final FusionBackendConfig fusionBackendConfig;
@@ -150,14 +149,16 @@ public class ModelRepoSyncService {
             untrackedCount = status.getUntracked().size();
             log.info("{} modified, {} untracked", modifiedCount, untrackedCount);
 
-            git.add().addFilepattern(".").call();
-            log.info("added all");
+            if (modifiedCount + untrackedCount > 0) {
+                git.add().addFilepattern(".").call();
+                log.info("added all");
 
-            git.commit().setAll(true).setMessage("Automated Commit").call();
-            log.info("commited");
+                git.commit().setAll(true).setMessage("Automated Commit").call();
+                log.info("commited");
 
-            git.push().call();
-            log.info("pushed");
+                git.push().call();
+                log.info("pushed");
+            }
         } catch (GitAPIException e) {
             log.warn("Error pulling repo", e);
             return SyncResultDto.builder().modifiedFileCount(modifiedCount).newFileCount(untrackedCount).build();
