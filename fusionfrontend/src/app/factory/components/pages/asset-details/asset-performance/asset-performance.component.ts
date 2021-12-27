@@ -18,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetPerformanceViewMode } from './AssetPerformanceViewMode';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-performance',
@@ -29,12 +30,18 @@ export class AssetPerformanceComponent implements OnInit {
   viewMode: AssetPerformanceViewMode;
   AssetPerformanceViewMode = AssetPerformanceViewMode;
 
-  viewModeOptions = [{ name: 'Realtime View', value: AssetPerformanceViewMode.REALTIME },
-    { name: 'Historical View', value: AssetPerformanceViewMode.HISTORICAL },
-    { name: 'Performance View', value: AssetPerformanceViewMode.PERFORMANCE }];
+  viewModeOptions = [
+    { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.REALTIME_VIEW'),
+      value: AssetPerformanceViewMode.REALTIME },
+    { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.HISTORICAL_VIEW'),
+      value: AssetPerformanceViewMode.HISTORICAL },
+    { name:this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.PERFORMANCE_VIEW'),
+      value: AssetPerformanceViewMode.PERFORMANCE }
+  ];
 
   constructor(private activatedRoute: ActivatedRoute,
-              private factoryResolver: FactoryResolver) {
+              private factoryResolver: FactoryResolver,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {

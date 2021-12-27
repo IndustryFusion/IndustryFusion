@@ -30,7 +30,8 @@ under the License.
 
 <app-table-selected-items-bar (deleteItem)="setActiveRow(); openDeleteDialog()"
                               (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); openEditDialog()"
-                              (showAssetCards)="onCardsViewClick()" itemName="{{ 'APP.COMMON.TERMS.ASSET' | translate }}"
+                              (showAssetCards)="onCardsViewClick()" itemTypeSingular="{{ 'APP.COMMON.TERMS.ASSET' | translate }}"
+                              itemTypePlural="{{ 'APP.COMMON.TERMS.ASSETS' | translate }}"
                               [selectedItems]="selectedFactoryAssets"
                               [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT,
                               TableSelectedItemsBarType.DELETE, TableSelectedItemsBarType.SHOW_ASSET_CARDS]">

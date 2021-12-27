@@ -103,7 +103,7 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
     };
     const updateItem = {
       label: this.updateItemText ? this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.UPDATE',
-          { updateItemText: this.createItemName }) : this.translate.instant('APP.COMMON.DIALOG_BUTTONS.UPDATE'),
+          { updateItemText: this.updateItemText }) : this.translate.instant('APP.COMMON.DIALOG_BUTTONS.UPDATE'),
       icon: 'pi pi-fw pi-refresh',
       command: (_) => {
         this.onEditClick();
@@ -111,7 +111,7 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
     };
     const createItem = {
       label: this.createItemName ? this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.CREATE',
-        { updateItemText: this.createItemName }) : this.translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE'),
+        { createItemText: this.createItemName }) : this.translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE'),
       icon: 'pi pi-fw pi-plus',
       command: (_) => {
         this.onCreateClick();

@@ -20,8 +20,8 @@ under the License.
       <p-selectButton *ngIf="isInline"  class="notifications on-white-background space-right"
                        optionLabel="name"
                        optionValue="value"
-                       [options]="[{name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.OPEN'), value: notificationStates.OPEN},
-                       {name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLEARED'), value: notificationStates.CLEARED}]"
+                       [options]="[{name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.OPEN_SINGULAR'), value: notificationStates.OPEN},
+                       {name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLEARED_SINGULAR'), value: notificationStates.CLEARED}]"
                        [(ngModel)]="state"
                        (ngModelChange)="onChangeTab()">
       </p-selectButton>

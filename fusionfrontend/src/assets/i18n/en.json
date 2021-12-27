@@ -423,7 +423,45 @@
 				"ROOM_NAME_PLACEHOLDER": "Enter a custom name here",
 				"SELECT_FACTORY_PLACEHOLDER": "Factory site",
 				"SELECT_FACTORY_SITE": "Select Factory site"
-			}
+			},
+      "PAGES": {
+        "ASSET_DETAILS": {
+          "DIGITAL_NAMEPLATE": {
+            "DIGITAL_NAMEPLATE": "Digital Nameplate",
+            "MANUAL": "Manual",
+            "VIDEO": "Video",
+            "ASSET_TYPE": "Asset type",
+            "ASSET_NAME": "Asset name",
+            "ASSET_SERIES": "Asset series",
+            "SERIAL_NUMBERS": "Serial Number",
+            "CONSTRUCTION_DATE": "Construction Date",
+            "INSTALLATION_DATE": "Installation Date",
+            "CE_CERTIFICATION": "CE Certification",
+            "PROTECTION_CLASS": "Protection Class",
+            "CONNECTIVITY_SETTINGS": "Connectivity Settings",
+            "CONNECTIVITY_TYPE": "Connectivity type",
+            "PROTOCOL": "Protocol",
+            "CONNECTION_STRING": "Connection string",
+            "ASSET_ATTRIBUTES": "Asset Attributes"
+
+          },
+          "PERFORMANCE": {
+            "HISTORICAL_VIEW": "Historical View",
+            "CHOOSE_MAX_DATA_POINTS": "Choose max. Datapoints:",
+            "ALERT_TEXT": "To efficiently display data for this time period, it has to be aggregated. Max points is the\n maximal number of points which will be retrieved at a time.",
+            "CHOOSE_START_DATE": "Choose start date",
+            "CHOOSE_END_DATE": "Choose end date",
+            "OPTIONS_MISSING": "options missing, please enter again",
+            "GOT_IT": "Got it!",
+            "PERFORMANCE_VIEW": "Performance View",
+            "REALTIME_VIEW": "Realtime View"
+          }
+        },
+        "ASSET_GRID_PAGE": {
+          "ASSET_CARD_VIEW": "Asset Card View",
+          "DISPLAY_ONLY_MATCHING_METRICS": "Display only matching Metrics"
+        }
+      }
 		},
 		"FLEET": {
 			"ASSET_SERIES_ASSET_DETAILS": {
@@ -674,7 +712,7 @@
 						"SMART_FACTORY": "Smart Factory"
 					}
 				},
-				"ICONS_OPTIONS_MENU": {
+				"ITEMS_OPTIONS_MENU": {
 					"ASSIGN": "Assign {{ assignItemText }}",
 					"CLONE": "Clone",
 					"CREATE": "Create new {{ createItemText }}",

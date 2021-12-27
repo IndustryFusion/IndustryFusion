@@ -293,8 +293,8 @@ export class RoomsListComponent implements OnInit {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: this.translate.instant('APP.FACTORY.ROOMS_LIST.CONFORMATION_DIALOG.HEADER', { itemToDelete: this.activeListItem.name}),
-      header: this.translate.instant('APP.FACTORY.ROOMS_LIST.CONFORMATION_DIALOG.HEADER'),
+      message: this.translate.instant('APP.FACTORY.ROOMS_LIST.CONFIRMATION_DIALOG.MESSAGE', { itemToDelete: this.activeListItem.name}),
+      header: this.translate.instant('APP.FACTORY.ROOMS_LIST.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteRoom(this.activeListItem);

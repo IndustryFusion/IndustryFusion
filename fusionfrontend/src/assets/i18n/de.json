@@ -128,7 +128,7 @@
 				"ASSET_TYPE_TEMPLATES": "Asset type templates",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Asset-Typ-Bestätigung löschen",
-					"MESSAGE": "Sind Sie sicher, dass Sie den Asset-Typ {{ itemToDelete }}löschen möchten?"
+					"MESSAGE": "Sind Sie sicher, dass Sie den Asset-Typ {{ itemToDelete }} löschen möchten?"
 				},
 				"CREATE_ASSET_TYPE": "Asset-Typ erstellen",
 				"HEADER": {
@@ -216,7 +216,7 @@
 			"FIELD_LIST": {
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Löschen der Metrik- oder Attribut-Bestätigung",
-					"MESSAGE": "Sind Sie sicher, dass Sie die Metrik oder das Attribut {{ itemToDelete }}löschen wollen?"
+					"MESSAGE": "Sind Sie sicher, dass Sie die Metrik oder das Attribut {{ itemToDelete }} löschen wollen?"
 				},
 				"CREATE_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut erstellen",
 				"DATE_CREATED": "Datum erstellt",
@@ -241,7 +241,7 @@
 				"BASE_UNIT": "Basiseinheit",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Mengenartbestätigung löschen",
-					"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }}löschen wollen?"
+					"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }} löschen wollen?"
 				},
 				"CREATE_QUANTITY_TYPE": "Mengenart anlegen",
 				"DATA_TYPE": "Datenart",
@@ -267,7 +267,7 @@
 			"UNIT_LIST": {
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Einheit löschen Bestätigen",
-					"MESSAGE": "Sind Sie sicher, dass Sie die Einheit {{ itemToDelete }}löschen wollen?"
+					"MESSAGE": "Sind Sie sicher, dass Sie die Einheit {{ itemToDelete }} löschen wollen?"
 				},
 				"CREATE_UNIT": "Einheit erstellen",
 				"DATE_CREATED": "Datum erstellt",
@@ -361,7 +361,7 @@
 				"CITY": "Stadt",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Werksbestätigung löschen",
-					"MESSAGE": "Sind Sie sicher, dass Sie die Fabrik {{ itemToDelete }}löschen wollen?"
+					"MESSAGE": "Sind Sie sicher, dass Sie die Fabrik {{ itemToDelete }} löschen wollen?"
 				},
 				"COUNTRY": "Land",
 				"CREATE_FACTORY_SITE_BUTTON": "Fabrikgelände erstellen",
@@ -406,7 +406,7 @@
 				"ASSET_TO_ROOM": "Anlage zu Zimmer",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Zimmerbestätigung löschen",
-					"MESSAGE": "Sind Sie sicher, dass Sie den Raum {{ itemToDelete }}löschen wollen?"
+					"MESSAGE": "Sind Sie sicher, dass Sie den Raum {{ itemToDelete }} löschen wollen?"
 				},
 				"CREATE_ROOM_BUTTON": "Raum erstellen",
 				"DIALOG_HEADER": {
@@ -423,7 +423,45 @@
 				"ROOM_NAME_PLACEHOLDER": "Geben Sie hier einen eigenen Namen ein",
 				"SELECT_FACTORY_PLACEHOLDER": "Fabrikgelände",
 				"SELECT_FACTORY_SITE": "Werksgelände auswählen"
-			}
+			},
+      "PAGES": {
+        "ASSET_DETAILS": {
+          "DIGITAL_NAMEPLATE": {
+            "DIGITAL_NAMEPLATE": "Digitales Typenschild",
+            "MANUAL": "Handbuch",
+            "VIDEO": "Video",
+            "ASSET_TYPE": "Asset-Typ",
+            "ASSET_NAME": "Name der Anlage",
+            "ASSET_SERIES": "Asset-Reihe",
+            "SERIAL_NUMBERS": "Seriennummer",
+            "CONSTRUCTION_DATE": "Construction Date",
+            "INSTALLATION_DATE": "Baudatum",
+            "CE_CERTIFICATION": "CE-Zertifizierung",
+            "PROTECTION_CLASS": "Schutzklasse",
+            "CONNECTIVITY_SETTINGS": "Konnektivitätseinstellungen",
+            "CONNECTIVITY_TYPE": "Art der Konnektivität",
+            "PROTOCOL": "Protokoll",
+            "CONNECTION_STRING": "Verbindungszeichenfolge",
+            "ASSET_ATTRIBUTES": "Asset-Attribute"
+
+          },
+          "PERFORMANCE": {
+            "HISTORICAL_VIEW": "Historische Betrachtung",
+            "CHOOSE_MAX_DATA_POINTS": "Wählen Sie max. Datenpunkte:",
+            "ALERT_TEXT": "Um die Daten für diesen Zeitraum effizient anzuzeigen, müssen sie aggregiert werden. Max Punkte\n ist die maximale Anzahl von Punkten, die zu einem Zeitpunkt abgerufen werden.",
+            "CHOOSE_START_DATE": "Startdatum wählen",
+            "CHOOSE_END_DATE": "Enddatum wählen",
+            "OPTIONS_MISSING": "Optionen fehlen, bitte erneut eingeben",
+            "GOT_IT": "Ich hab's!",
+            "PERFORMANCE_VIEW": "Performance-Ansicht",
+            "REALTIME_VIEW": "Ansicht in Echtzeit"
+          }
+        },
+        "ASSET_GRID_PAGE": {
+          "ASSET_CARD_VIEW": "Asset-Kartenansicht",
+          "DISPLAY_ONLY_MATCHING_METRICS": "Nur passende Metriken anzeigen"
+        }
+      }
 		},
 		"FLEET": {
 			"ASSET_SERIES_ASSET_DETAILS": {
@@ -641,7 +679,7 @@
 					"CLOSE_DIALOG": {
 						"HEADER": "Benachrichtigungsbestätigung schließen",
 						"MESSAGE_PLURAL": "Sind Sie sicher, dass Sie {{ notificationCount }} Benachrichtigungen löschen wollen?",
-						"MESSAGE_SINGULAR": "Sind Sie sicher, dass Sie die Meldung{{ notificationToClose }}löschen wollen?"
+						"MESSAGE_SINGULAR": "Sind Sie sicher, dass Sie die Meldung {{ notificationToClose }} löschen wollen?"
 					},
 					"CONDITION": "Zustand",
 					"DATE_AND_TIME": "Datum und Uhrzeit",
@@ -654,8 +692,8 @@
 					"NOTIFICATION_WITH_STATUS": "{{ statusName }} Benachrichtigung",
 					"NO_NOTIFICATION": "Keine {{ statusName }} Benachrichtigungen",
 					"NO_NOTIFICATION_SELECTED": "Keine {{ statusName }} Benachrichtigung ausgewählt",
-					"OPEN_PLURAL": "Öffnen Sie",
-					"OPEN_SINGULAR": "Öffnen Sie",
+					"OPEN_PLURAL": "Offene",
+					"OPEN_SINGULAR": "Offen",
 					"RULE_NAME": "Name der Regel"
 				}
 			},
@@ -674,7 +712,7 @@
 						"SMART_FACTORY": "Intelligente Fabrik"
 					}
 				},
-				"ICONS_OPTIONS_MENU": {
+				"ITEMS_OPTIONS_MENU": {
 					"ASSIGN": "Zuweisen {{ assignItemText }}",
 					"CLONE": "Klonen",
 					"CREATE": "Neu erstellen {{ createItemText }}",
@@ -706,7 +744,7 @@
 					"SEARCH": "Suche"
 				},
 				"TABLE_SELECTED_ITEMS_BAR": {
-					"DESELECT": "abwählen.",
+					"DESELECT": "abwählen",
 					"ITEMS_SELECTED": " {{ itemType }} ausgewählt",
 					"NO_ITEM_SELECTED": "Keine {{ itemType }} ausgewählt"
 				}

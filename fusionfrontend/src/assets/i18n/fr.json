@@ -80,7 +80,7 @@
           "ASSET_SERIES_IMPLEMENTATION": "Mise en œuvre d'AssetSeries",
           "CONFIRMATION_DIALOG": {
             "HEADER": "Confirmation de la série d'actifs à supprimer",
-            "MESSAGE": "Etes-vous sûr de vouloir supprimer la série d'actifs  {{ itemToDelete }}?"
+            "MESSAGE": "Etes-vous sûr de vouloir supprimer la série d'actifs {{ itemToDelete }}?"
           }
         }
       },
@@ -423,7 +423,45 @@
 				"ROOM_NAME_PLACEHOLDER": "Entrez un nom personnalisé ici",
 				"SELECT_FACTORY_PLACEHOLDER": "Site de l'usine",
 				"SELECT_FACTORY_SITE": "Sélectionnez le site de l'usine"
-			}
+			},
+      "PAGES": {
+        "ASSET_DETAILS": {
+          "DIGITAL_NAMEPLATE": {
+            "DIGITAL_NAMEPLATE": "Plaque d'identification numérique",
+            "MANUAL": "Manuel",
+            "VIDEO": "Vidéo",
+            "ASSET_TYPE": "Type d'actif",
+            "ASSET_NAME": "Nom de l'actif",
+            "ASSET_SERIES": "Série d'actifs",
+            "SERIAL_NUMBERS": "Numéro de série",
+            "CONSTRUCTION_DATE": "Date de construction",
+            "INSTALLATION_DATE": "Date d'installation",
+            "CE_CERTIFICATION": "Certification CE",
+            "PROTECTION_CLASS": "Classe de protection",
+            "CONNECTIVITY_SETTINGS": "Paramètres de connectivité",
+            "CONNECTIVITY_TYPE": "Type de connectivité",
+            "PROTOCOL": "Protocole",
+            "CONNECTION_STRING": "Chaîne de connexion",
+            "ASSET_ATTRIBUTES": "Attributs des actifs"
+
+          },
+          "PERFORMANCE": {
+            "HISTORICAL_VIEW": "Vue historique",
+            "CHOOSE_MAX_DATA_POINTS": "Choisissez le maximum. points de données :",
+            "ALERT_TEXT": "Choisissez le maximum. Points de données : Pour afficher efficacement les données de cette période,\n il faut les agréger. Max points est le nombre maximal de points qui seront récupérés à un moment donné.",
+            "CHOOSE_START_DATE": "Choisissez la date de début",
+            "CHOOSE_END_DATE": "Choisissez la date de fin",
+            "OPTIONS_MISSING": "options manquantes, veuillez entrer à nouveau",
+            "GOT_IT": "Je l'ai eu !",
+            "PERFORMANCE_VIEW": "Vue des performances",
+            "REALTIME_VIEW": "Vue en temps réel"
+          }
+        },
+        "ASSET_GRID_PAGE": {
+          "ASSET_CARD_VIEW": "Vue de la fiche d'inventaire",
+          "DISPLAY_ONLY_MATCHING_METRICS": "Afficher uniquement les métriques correspondantes"
+        }
+      }
 		},
 		"FLEET": {
 			"ASSET_SERIES_ASSET_DETAILS": {
@@ -674,7 +712,7 @@
 						"SMART_FACTORY": "Usine intelligente"
 					}
 				},
-				"ICONS_OPTIONS_MENU": {
+				"ITEMS_OPTIONS_MENU": {
 					"ASSIGN": "Assignez {{ assignItemText }}",
 					"CLONE": "Clone",
 					"CREATE": "Créer un nouveau {{ createItemText }}",

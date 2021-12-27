@@ -16,7 +16,7 @@ under the License.
 <div class='asset-details-wrapper'>
 
   <div class="p-grid p-jc-between list-header list-header">
-    <div class="caption">Historical View</div>
+    <div class="caption">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.HISTORICAL_VIEW' | translate }}</div>
     <p-selectButton  class="performance-views space-right"
                      optionLabel="name"
                      optionValue="value"
@@ -36,7 +36,7 @@ under the License.
                        (ngModelChange)="onTimeslotChanged()">
       </p-selectButton>
       <div *ngIf="choiceConfiguration.chooseMaxPointsInline" class="maxpoints">
-        <label class="points-label">Choose max. Datapoints:</label>
+        <label class="points-label">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CHOOSE_MAX_DATA_POINTS' | translate }}</label>
         <p-dropdown class="points-dropdown-inline" [options]="maxItemsOptions" [(ngModel)]="maxPoints"
                     (ngModelChange)="onOkClicked()">
         </p-dropdown>
@@ -52,28 +52,27 @@ under the License.
                 <fa-icon [icon]="faExclamationCircle" class="fa-fw alert-icon"></fa-icon>
               </div>
               <span class="alert-text">
-              To efficiently display data for this time period, it has to be aggregated. Max points is the
-              maximal number of points which will be retrieved at a time.
-            </span>
+                {{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.ALERT_TEXT' | translate }}
+              </span>
             </div>
           </div>
         </div>
         <div class="interval-options">
           <div class="maxpoints">
-            <label class="points-label">Choose max. Datapoints</label>
+            <label class="points-label">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CHOOSE_MAX_DATA_POINTS' | translate }}</label>
             <p-dropdown class="points-dropdown" [options]="maxItemsOptions" [(ngModel)]="maxPoints">
             </p-dropdown>
           </div>
           <div class="dater">
             <ng-container *ngIf="choiceConfiguration.chooseStartDate">
-              <label class="datelabel">Choose start date</label>
+              <label class="datelabel">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CHOOSE_START_DATE' | translate }}</label>
               <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
                           [ngModel]="startDate" [maxDate]="maxDate" (ngModelChange)="setStartDate($event)"></p-calendar>
             </ng-container>
           </div>
           <div class="dater">
             <ng-container *ngIf="choiceConfiguration.chooseEndDate">
-              <label class="datelabel">Choose end date</label>
+              <label class="datelabel">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CHOOSE_END_DATE' | translate }}</label>
               <p-calendar class="calendar" showIcon="true" showButtonBar="true" dateFormat="dd.mm.yy"
                           [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="endDate"></p-calendar>
             </ng-container>
@@ -89,7 +88,7 @@ under the License.
             <div class="alert-icon-wrapper">
               <fa-icon [icon]="faExclamationCircle" class="fa-fw"></fa-icon>
             </div>
-            <span class="alert-text">options missing, please enter again</span>
+            <span class="alert-text">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.OPTIONS_MISSING' | translate }}</span>
             <div class="alert-actions">
               <div class="alert-action dropdown bottom-right open">
               </div>
@@ -97,7 +96,7 @@ under the License.
           </div>
         </div>
         <button type="button" class="gotIt" aria-label="Close" (click)="resetOptions()">
-          <fa-icon  aria-hidden="true" [icon]="faTimes" class="fa-fw"></fa-icon> Got it!
+          <fa-icon  aria-hidden="true" [icon]="faTimes" class="fa-fw"></fa-icon>{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.GOT_IT' | translate }}
         </button>
       </div>
     </ng-container>

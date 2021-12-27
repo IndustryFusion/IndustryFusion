@@ -17,10 +17,10 @@ under the License.
                    [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
 
 <div class="p-grid p-jc-between header-line">
-  <h3 class="table-header">Asset Card View</h3>
+  <h3 class="table-header">{{ 'APP.FACTORY.PAGES.ASSET_GRID_PAGE.ASSET_CARD_VIEW' | translate }}</h3>
   <div class="checkbox">
     <p-checkbox class="checkbox-class" [ngModel]="isCommonFieldsUsed" binary="true" (onChange)="isCommonFieldsUsed = $event.checked"></p-checkbox>
-    <label class="if-label"> Display only matching Metrics </label>
+    <label class="if-label"> {{ 'APP.FACTORY.PAGES.ASSET_GRID_PAGE.DISPLAY_ONLY_MATCHING_METRICS' | translate }}</label>
   </div>
 </div>
 

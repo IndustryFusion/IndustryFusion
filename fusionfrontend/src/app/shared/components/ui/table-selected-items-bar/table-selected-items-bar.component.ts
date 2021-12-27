@@ -36,8 +36,8 @@ export class TableSelectedItemsBarComponent implements OnInit {
   ngOnInit(): void {
     this.editBarMapping = {
       '=0': this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.NO_ITEM_SELECTED', { itemType: this.itemTypePlural}),
-      '=1': '# ' + this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.ITEM_SELECTED', { itemType: this.itemTypeSingular}),
-      other: '# ' + this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.ITEM_SELECTED', { itemType: this.itemTypePlural}),
+      '=1': '# ' + this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.ITEMS_SELECTED', { itemType: this.itemTypeSingular}),
+      other: '# ' + this.translate.instant('APP.SHARED.UI.TABLE_SELECTED_ITEMS_BAR.ITEMS_SELECTED', { itemType: this.itemTypePlural}),
     };
   }
 
