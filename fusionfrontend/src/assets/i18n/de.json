@@ -66,6 +66,38 @@
 				"ZIP": "Reißverschluss"
 			}
 		},
+    "CORE": {
+      "SERVICES": {
+        "ASSET_DETAILS_MENU": {
+          "GENERAL_INFORMATION": "Allgemeine Informationen",
+          "CONFIRMATION_DIALOG": {
+            "HEADER": "Asset-Bestätigung löschen",
+            "MESSAGE": "Sind Sie sicher, dass Sie das Asset {{ itemToDelete }} löschen möchten ?"
+          }
+        },
+        "ASSET_SERIES_DETAILS_MENU": {
+          "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Digital Twin Creator für Assets",
+          "ASSET_SERIES_IMPLEMENTATION": "AssetSeries-Implementierung",
+          "CONFIRMATION_DIALOG": {
+            "HEADER": "Asset Serie löschen Bestätigung",
+            "MESSAGE": "Sind Sie sicher, dass Sie die Asset-Serie {{ itemToDelete }} löschen möchten?"
+          }
+        }
+      },
+      "STORE": {
+        "THRESHOLD": {
+          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute Unter- und Obergrenze *",
+          "IDEAL_RANGE": "Ideale Reichweite",
+          "CRITICAL_ALERT_RANGE": "Kritischer Alarmbereich",
+          "ABSOLUTE_LOWER_LIMIT": "Absolute Untergrenze",
+          "LOWER_IDEAL_THRESHOLD": "Untere ideale Schwelle",
+          "LOWER_CRITICAL_ALERT_THRESHOLD": "Niedrigere Schwelle für kritische Alarme",
+          "ABSOLUTE_UPPER_LIMIT": "Absolute Obergrenze",
+          "UPPER_IDEAL_THRESHOLD": "Obere ideale Schwelle",
+          "UPPER_CRITICAL_ALERT_THRESHOLD": "Obere kritische Alarmschwelle"
+        }
+      }
+    },
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
 				"STATUS_OVERVIEW": "Status-Übersicht",
@@ -631,6 +663,7 @@
 				"HEADER": {
 					"LOGOUT": "Abmelden",
 					"MY_ACCOUNT_LABEL": "Mein Konto (in Keycloak öffnen)",
+          "LANGUAGE": "Sprache",
 					"PAGE_TITLE": {
 						"APPLETS": "Applet",
 						"DASHBOARDS": "Dashboards",

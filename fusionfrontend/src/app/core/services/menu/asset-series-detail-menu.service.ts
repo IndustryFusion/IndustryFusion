@@ -20,6 +20,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { AssetWizardComponent } from '../../../fleet/components/content/asset-wizard/asset-wizard.component';
 import { AssetSeriesWizardComponent } from '../../../fleet/components/content/asset-series-wizard/asset-series-wizard.component';
 import { CompanyQuery } from '../../store/company/company.query';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ import { CompanyQuery } from '../../store/company/company.query';
 export class AssetSeriesDetailMenuService {
 
   constructor(private dialogService: DialogService,
-              private companyQuery: CompanyQuery) {
+              private companyQuery: CompanyQuery,
+              private translate: TranslateService) {
   }
 
   public showCreateAssetFromAssetSeries(assetSeriesId: string, createCallback: (FactoryAssetDetails) => any) {
@@ -36,7 +38,7 @@ export class AssetSeriesDetailMenuService {
         companyId: this.companyQuery.getActiveId(),
         prefilledAssetSeriesId: assetSeriesId,
       },
-      header: 'Digital Twin Creator for Assets',
+      header: this.translate.instant('APP.CORE.SERVICES.ASSET_SERIES_DETAILS_MENU.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
       width: '80%'
     });
 
@@ -54,7 +56,7 @@ export class AssetSeriesDetailMenuService {
         assetSeriesId,
       },
       width: '90%',
-      header: 'AssetSeries Implementation',
+      header: this.translate.instant('APP.CORE.SERVICES.ASSET_SERIES_DETAILS_MENU.ASSET_SERIES_IMPLEMENTATION'),
     });
 
     dynamicDialogRef.onClose.subscribe(() => updateCallback());
@@ -63,8 +65,9 @@ export class AssetSeriesDetailMenuService {
   public showDeleteDialog(confirmationService: ConfirmationService, dialogKey: string, assetSeriesName: string, acceptCallback: () => any) {
     confirmationService.confirm({
       key: dialogKey,
-      message: 'Are you sure you want to delete the Asset Serie ' + assetSeriesName + '?',
-      header: 'Delete Asset Serie Confirmation',
+      message: this.translate.instant('APP.CORE.SERVICES.ASSET_SERIES_DETAILS_MENU.CONFIRMATION_DIALOG.MESSAGE',
+        { itemToDelete: assetSeriesName}),
+      header: this.translate.instant('APP.CORE.SERVICES.ASSET_SERIES_DETAILS_MENU.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: acceptCallback,
       reject: () => { }

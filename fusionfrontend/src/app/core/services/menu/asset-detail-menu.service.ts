@@ -27,13 +27,17 @@ import { WizardHelper } from '../../helpers/wizard-helper';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FactorySite } from '../../store/factory-site/factory-site.model';
 import { Room } from '../../store/room/room.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssetDetailMenuService {
 
-  constructor(private dialogService: DialogService, private formBuilder: FormBuilder) {
+  constructor(
+    private dialogService: DialogService,
+    private formBuilder: FormBuilder,
+    private translate: TranslateService) {
   }
 
   // TODO: Has to be extracted into Dialog/AssetInstantiationComponent (IF-429)
@@ -70,7 +74,7 @@ export class AssetDetailMenuService {
         activeModalType: AssetModalType.customizeAsset,
         activeModalMode: AssetModalMode.editAssetMode
       },
-      header: 'General Information',
+      header: this.translate.instant('APP.CORE.SERVICES.ASSET_DETAILS_MENU.GENERAL_INFORMATION'),
     });
 
     ref.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
@@ -108,8 +112,8 @@ export class AssetDetailMenuService {
   public showDeleteDialog(confirmationService: ConfirmationService, dialogKey: string, assetName: string, acceptCallback: () => any) {
     confirmationService.confirm({
       key: dialogKey,
-      message: `Are you sure you want to delete the asset ${assetName}?`,
-      header: 'Delete Asset Confirmation',
+      message: this.translate.instant('APP.CORE.SERVICES.ASSET_DETAILS_MENU.CONFIRMATION_DIALOG.MESSAGE', { itemToDelete: assetName}),
+      header: this.translate.instant('APP.CORE.SERVICES.ASSET_DETAILS_MENU.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: acceptCallback,
       reject: () => { }

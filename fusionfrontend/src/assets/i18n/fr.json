@@ -66,6 +66,38 @@
 				"ZIP": "Zip"
 			}
 		},
+    "CORE": {
+      "SERVICES": {
+        "ASSET_DETAILS_MENU": {
+          "GENERAL_INFORMATION": "Informations générales",
+          "CONFIRMATION_DIALOG": {
+            "HEADER": "Confirmation de la suppression de l'actif",
+            "MESSAGE": "Êtes-vous sûr de vouloir supprimer l'actif {{ itemToDelete }}?"
+          }
+        },
+        "ASSET_SERIES_DETAILS_MENU": {
+          "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Créateur de jumeaux numériques pour les actifs",
+          "ASSET_SERIES_IMPLEMENTATION": "Mise en œuvre d'AssetSeries",
+          "CONFIRMATION_DIALOG": {
+            "HEADER": "Confirmation de la série d'actifs à supprimer",
+            "MESSAGE": "Etes-vous sûr de vouloir supprimer la série d'actifs  {{ itemToDelete }}?"
+          }
+        }
+      },
+      "STORE": {
+        "THRESHOLD": {
+          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Limites inférieures et supérieures absolues *",
+          "IDEAL_RANGE": "Gamme idéale",
+          "CRITICAL_ALERT_RANGE": "Plage d'alerte critique",
+          "ABSOLUTE_LOWER_LIMIT": "Limite inférieure absolue",
+          "LOWER_IDEAL_THRESHOLD": "Seuil idéal inférieur",
+          "LOWER_CRITICAL_ALERT_THRESHOLD": "Abaissement du seuil d'alerte critique",
+          "ABSOLUTE_UPPER_LIMIT": "Limite supérieure absolue",
+          "UPPER_IDEAL_THRESHOLD": "Seuil idéal supérieur",
+          "UPPER_CRITICAL_ALERT_THRESHOLD": "Seuil d'alerte critique supérieur"
+        }
+      }
+    },
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
 				"STATUS_OVERVIEW": "Aperçu du statut",
@@ -631,6 +663,7 @@
 				"HEADER": {
 					"LOGOUT": "Déconnexion",
 					"MY_ACCOUNT_LABEL": "Mon compte (Ouvrir dans Keycloak)",
+          "LANGUAGE": "Langue",
 					"PAGE_TITLE": {
 						"APPLETS": "Applets",
 						"DASHBOARDS": "Tableaux de bord",

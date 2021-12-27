@@ -66,6 +66,38 @@
 				"ZIP": "ZIP"
 			}
 		},
+    "CORE": {
+      "SERVICES": {
+        "ASSET_DETAILS_MENU": {
+          "GENERAL_INFORMATION": "General Information",
+          "CONFIRMATION_DIALOG": {
+            "HEADER": "Delete Asset Confirmation",
+            "MESSAGE": "Are you sure you want to delete the asset {{ itemToDelete }}?"
+          }
+        },
+        "ASSET_SERIES_DETAILS_MENU": {
+          "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Digital Twin Creator for Assets",
+          "ASSET_SERIES_IMPLEMENTATION": "AssetSeries Implementation",
+          "CONFIRMATION_DIALOG": {
+            "HEADER": "Delete Asset Serie Confirmation",
+            "MESSAGE": "Are you sure you want to delete the Asset Serie {{ itemToDelete }}?"
+          }
+        }
+      },
+      "STORE": {
+        "THRESHOLD": {
+          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute lower & upper limit *",
+          "IDEAL_RANGE": "Ideal range",
+          "CRITICAL_ALERT_RANGE": "Critical alert range",
+          "ABSOLUTE_LOWER_LIMIT": "Absolute lower limit",
+          "LOWER_IDEAL_THRESHOLD": "Lower ideal threshold",
+          "LOWER_CRITICAL_ALERT_THRESHOLD": "Lower critical alert threshold",
+          "ABSOLUTE_UPPER_LIMIT": "Absolute upper limit",
+          "UPPER_IDEAL_THRESHOLD": "Upper ideal threshold",
+          "UPPER_CRITICAL_ALERT_THRESHOLD": "Upper critical alert threshold"
+        }
+      }
+    },
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
 				"STATUS_OVERVIEW": "Status Overview",
@@ -631,7 +663,8 @@
 				"HEADER": {
 					"LOGOUT": "Logout",
 					"MY_ACCOUNT_LABEL": "My Account (Open in Keycloak)",
-					"PAGE_TITLE": {
+          "LANGUAGE": "Language",
+          "PAGE_TITLE": {
 						"APPLETS": "Applets",
 						"DASHBOARDS": "Dashboards",
 						"ECOSYSTEM_MANAGER": "Ecosystem Manager",
