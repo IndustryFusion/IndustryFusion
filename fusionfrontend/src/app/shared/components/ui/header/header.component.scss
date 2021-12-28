@@ -268,6 +268,22 @@ header {
         font-size: $medium-font-size;
       }
     }
+
+    .language {
+      display: flex;
+
+      .language-icon {
+        align-self: center;
+        cursor: pointer;
+      }
+
+      .language-label {
+        align-self: center;
+        padding-left: 8px;
+        cursor: pointer;
+        font-size: $medium-font-size;
+      }
+    }
   }
 
   .logout-button {
@@ -397,3 +413,33 @@ header {
     margin-top: 20px;
   }
 }
+
+.british-flag-icon {
+  background: url("^assets/icons/gb.svg");
+  display: inline-block;
+  width: 1.9rem;
+  height: 1rem;
+  background-size: contain;
+  align-items: center;
+}
+
+
+.german-flag-icon {
+  background: url("^assets/icons/de.svg");
+  display: inline-block;
+  width: 1.65rem;
+  height: 1rem;
+  background-size: contain;
+  align-items: center;
+}
+
+
+.french-flag-icon {
+  background: url("^assets/icons/fr.svg");
+  display: inline-block;
+  width: 1.5rem;
+  height: 1rem;
+  background-size: contain;
+  align-items: center;
+}
+

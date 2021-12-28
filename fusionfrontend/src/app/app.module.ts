@@ -40,7 +40,6 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { ToastModule } from 'primeng/toast';
 import { PageTitleComponent } from './shared/components/content/page-title/page-title.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { TranslateNavigationComponent } from './shared/components/ui/header/translate-navigation/translate-navigation.component';
 
 
 
@@ -51,7 +50,6 @@ import { TranslateNavigationComponent } from './shared/components/ui/header/tran
     LaunchpadPageComponent,
     LaunchpadItemComponent,
     PageTitleComponent,
-    TranslateNavigationComponent,
   ],
   imports: [
     BrowserModule,

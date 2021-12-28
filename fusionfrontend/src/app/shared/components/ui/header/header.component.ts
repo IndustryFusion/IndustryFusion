@@ -22,9 +22,10 @@ import { ManagerType } from '../../content/manager-type/manager-type.enum';
 import { OispAlertQuery } from '../../../../core/store/oisp/oisp-alert/oisp-alert.query';
 import { UserManagementService } from '../../../../core/services/api/user-management.service';
 import { KeycloakProfile } from 'keycloak-js';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { TranslateService } from '@ngx-translate/core';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -43,12 +44,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ManagerType = ManagerType;
   private unSubscribe$ = new Subject<void>();
   faUserCircle = faUserCircle;
+  faGlobeEurope = faGlobeEurope;
+  languageTypes: SelectItem[];
+  selectedLanguage: string;
 
   constructor(private routingLocation: Location,
               private oispAlertQuery: OispAlertQuery,
               private userManagementService: UserManagementService,
               private router: Router,
               private translate: TranslateService) {
+    this.languageTypes = [
+      { label: 'british-flag-icon', value: 'en' },
+      { label: 'german-flag-icon', value: 'de' },
+      { label: 'french-flag-icon', value: 'fr' },
+    ];
   }
 
   ngOnInit() {
@@ -66,6 +75,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.oispAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
     });
+    this.selectedLanguage = localStorage.getItem('lang') || 'en';
+  }
+
+  changeLang() {
+    localStorage.setItem('lang', this.selectedLanguage);
+    window.location.reload();
   }
 
   isManager(manager: ManagerType) {
