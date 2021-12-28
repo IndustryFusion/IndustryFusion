@@ -42,7 +42,8 @@
 				"ASSETS": "Actifs",
 				"ASSET_SERIES": "Série d'actifs",
 				"ASSET_TYPE": "Type d'actif",
-				"CITY": "Ville",
+        "BASE_UNIT": "Unité de base",
+        "CITY": "Ville",
 				"COUNTRY": "Pays",
 				"COUNTRY_PLACEHOLDER": "Sélectionnez un pays...",
 				"DESCRIPTION": "Description",
@@ -230,7 +231,6 @@
 				"NO_METRICS_AND_ATTRIBUTES": "Pas de métriques et d'attributs"
 			},
 			"QUANTITY_TYPE_DIALOG": {
-				"BASE_UNIT": "Unité de base",
 				"BASE_UNIT_PLACEHOLDER": "Sélectionnez une unité de base",
 				"CATEGORICAL": "Catégorique",
 				"DATA_TYPE": "Type de données",
@@ -238,7 +238,6 @@
 				"NUMERIC": "Numérique"
 			},
 			"QUANTITY_TYPE_LIST": {
-				"BASE_UNIT": "Unité de base",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Supprimer la confirmation du type de quantité",
 					"MESSAGE": "Êtes-vous sûr de vouloir supprimer le type de quantité {{ itemToDelete }}?"
@@ -280,7 +279,32 @@
 				"UNIT": "Unité",
 				"UNITS": "Unités",
 				"UNIT_NAME": "Nom de l'unité"
-			}
+			},
+      "PAGES": {
+        "ASSET_TYPE": {
+          "EDIT_ASSET_TYPE": "Modifier le type d'actif {{ assetTypeName }}"
+        },
+        "ASSET_TYPE_TEMPLATE": {
+          "ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
+          "PUBLISHED_ON": "publié le",
+          "METRICS": "Métriques",
+          "ATTRIBUTES": "Attributs",
+          "PUBLISH_TEMPLATE": "Publier {{ assetTypeTemplateName }}?",
+          "ASSET_TYPE_TEMPLATE_EDITOR": "Éditeur de modèles de types d'actifs"
+        },
+        "FIELD": {
+          "NUMBER_OF_DECIMALS": "Nombre de décimales",
+          "THRESHOLDS_AND_LIMITS": "Seuils et limites",
+          "EDIT_METRIC_OR_ATTRIBUTE": "Modifier une métrique ou un attribut"
+        },
+        "QUANTITY_TYPE": {
+          "EDIT_QUANTITY_TYPE": "Modifier la quantité Type"
+        },
+        "UNIT": {
+          "CREATED": "Créé",
+          "EDIT_UNIT": "Unité d'édition"
+        }
+      }
 		},
 		"FACTORY": {
 			"ASSETS_LIST": {

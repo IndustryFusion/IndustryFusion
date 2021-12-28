@@ -42,7 +42,8 @@
 				"ASSETS": "Vermögenswerte",
 				"ASSET_SERIES": "Asset-Reihe",
 				"ASSET_TYPE": "Asset-Typ",
-				"CITY": "Stadt",
+        "BASE_UNIT": "Basiseinheit",
+        "CITY": "Stadt",
 				"COUNTRY": "Land",
 				"COUNTRY_PLACEHOLDER": "Wählen Sie ein Land...",
 				"DESCRIPTION": "Beschreibung",
@@ -230,7 +231,6 @@
 				"NO_METRICS_AND_ATTRIBUTES": "Keine Metriken und Attribute"
 			},
 			"QUANTITY_TYPE_DIALOG": {
-				"BASE_UNIT": "Basiseinheit",
 				"BASE_UNIT_PLACEHOLDER": "Wählen Sie eine Basiseinheit",
 				"CATEGORICAL": "Kategorisch",
 				"DATA_TYPE": "Datenart",
@@ -238,7 +238,6 @@
 				"NUMERIC": "Numerisch"
 			},
 			"QUANTITY_TYPE_LIST": {
-				"BASE_UNIT": "Basiseinheit",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Mengenartbestätigung löschen",
 					"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }} löschen wollen?"
@@ -280,7 +279,32 @@
 				"UNIT": "Gerät",
 				"UNITS": "Einheiten",
 				"UNIT_NAME": "Name der Einheit"
-			}
+			},
+      "PAGES": {
+        "ASSET_TYPE": {
+          "EDIT_ASSET_TYPE": "Asset-Typ {{ assetTypeName }} bearbeiten"
+        },
+        "ASSET_TYPE_TEMPLATE": {
+          "ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
+          "PUBLISHED_ON": "veröffentlicht am",
+          "METRICS": "Metriken",
+          "ATTRIBUTES": "Attribute",
+          "PUBLISH_TEMPLATE": "{{ assetTypeTemplateName }} veröffentlichen?",
+          "ASSET_TYPE_TEMPLATE_EDITOR": "Asset-Typ-Vorlagen-Editor"
+        },
+        "FIELD": {
+          "NUMBER_OF_DECIMALS": "Anzahl der Dezimalen",
+          "THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte",
+          "EDIT_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut bearbeiten"
+        },
+        "QUANTITY_TYPE": {
+          "EDIT_QUANTITY_TYPE": "Menge bearbeiten Typ"
+        },
+        "UNIT": {
+          "CREATED": "Erstellt",
+          "EDIT_UNIT": "Einheit bearbeiten"
+        }
+      }
 		},
 		"FACTORY": {
 			"ASSETS_LIST": {

@@ -21,19 +21,19 @@ under the License.
     </div>
 
     <div *ngIf="(unit$ | async)?.symbol" class="row">
-      <label class="label-column"> Symbol </label>
+      <label class="label-column"> {{ 'APP.COMMON.TERMS.SYMBOL' | translate }} </label>
       <label class="if-detail-page-label"> {{ (unit$ | async)?.symbol }} </label>
     </div>
     <div *ngIf="(unit$ | async)?.label" class="row">
-      <label class="label-column"> Label </label>
+      <label class="label-column"> {{ 'APP.COMMON.TERMS.LABEL' | translate }} </label>
       <label class="if-detail-page-label"> {{ (unit$ | async)?.label }} </label>
     </div>
     <div class="row" *ngIf="(unit$ | async)?.quantityType?.name">
-      <label class="label-column"> Quantity Type </label>
+      <label class="label-column"> {{ 'APP.COMMON.TERMS.QUANTITY_TYPE' | translate }} </label>
       <label class="if-detail-page-label"> {{ (unit$ | async)?.quantityType?.name }} </label>
     </div>
     <div *ngIf="(unit$ | async)?.createdDate" class="row">
-      <label class="label-column"> Created </label>
+      <label class="label-column"> {{ 'APP.ECOSYSTEM.PAGES.UNIT.CREATED' | translate }} </label>
       <label class="if-detail-page-label"> {{ (unit$ | async)?.createdDate | date:'dd.MM.yyyy'  }} </label>
     </div>
 

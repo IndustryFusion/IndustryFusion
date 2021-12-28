@@ -25,6 +25,7 @@ import { AssetTypeService } from '../../../../core/store/asset-type/asset-type.s
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetTypeDialogComponent } from '../../content/asset-type-dialog/asset-type-dialog.component';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-details-page',
@@ -43,7 +44,8 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
               private assetTypeService: AssetTypeService,
               private activatedRoute: ActivatedRoute,
               private assetTypesComposedQuery: AssetTypesComposedQuery,
-              public dialogService: DialogService) { }
+              public dialogService: DialogService,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.assetTypeQuery.selectLoading();
@@ -73,7 +75,7 @@ export class AssetTypePageComponent implements OnInit, OnDestroy {
       data: {
         assetType, dialogType: DialogType.EDIT
       },
-      header: `Edit Asset type (${assetType?.name})`,
+      header: this.translate.instant('APP.ECOSYSTEM.PAGES.ASSET_TYPE.EDIT_ASSET_TYPE', { assetTypeName:  assetType?.name  }),
     });
   }
 }

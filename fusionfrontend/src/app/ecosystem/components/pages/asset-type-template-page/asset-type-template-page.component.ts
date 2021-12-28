@@ -26,6 +26,7 @@ import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type
 import { AssetTypeTemplateWizardMainComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard-main/asset-type-template-wizard-main.component';
 import { FormGroup } from '@angular/forms';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-type-template-page',
@@ -48,7 +49,8 @@ export class AssetTypeTemplatePageComponent implements OnInit {
               private assetTypeTemplateService: AssetTypeTemplateService,
               private fieldTargetService: FieldTargetService,
               private dialogService: DialogService,
-              public route: ActivatedRoute) { }
+              public route: ActivatedRoute,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.metrics = [];
@@ -90,7 +92,8 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   onPublish() {
     this.publishDialogRef = this.dialogService.open(AssetTypeTemplateDialogPublishComponent,
       {
-        header: `Publish ${this.assetTypeTemplate.name}?`,
+        header: this.translate.instant('APP.ECOSYSTEM.PAGES.ASSET_TYPE_TEMPLATE.ASSET_TYPE_TEMPLATE_EDITOR',
+          { assetTypeTemplateName: this.assetTypeTemplate.name}),
         data: { assetTypeTemplate: this.assetTypeTemplate },
         width: '70%',
       }
@@ -107,7 +110,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardMainComponent,
       {
         data: { assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT },
-        header: 'Asset Type Template Editor',
+        header: this.translate.instant('APP.ECOSYSTEM.PAGES.ASSET_TYPE_TEMPLATE.ASSET_TYPE_TEMPLATE_EDITOR'),
         width: '70%',
       }
     );

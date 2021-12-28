@@ -22,12 +22,12 @@ under the License.
 
     <div class="if-detail-page-div">
       <div class="row">
-        <label class="label-column"> Label </label>
+        <label class="label-column"> {{ 'APP.COMMON.TERMS.LABEL' | translate }} </label>
         <label class="if-detail-page-label">  {{ (assetType$ | async)?.label }} </label>
       </div>
 
       <div class="row">
-        <div class="label-column"> Description </div>
+        <div class="label-column"> {{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }} </div>
         <div class="if-detail-page-description">
           <textarea [disabled]="true"> {{ (assetType$ | async)?.description  }} </textarea>
         </div>

@@ -23,6 +23,7 @@ import { FieldDialogComponent } from '../../content/field-dialog/field-dialog.co
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Unit } from '../../../../core/store/unit/unit.model';
 import { UnitQuery } from '../../../../core/store/unit/unit.query';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-field-page',
@@ -41,7 +42,8 @@ export class FieldPageComponent implements OnInit, OnDestroy {
               private unitQuery: UnitQuery,
               private fieldService: FieldService,
               private activatedRoute: ActivatedRoute,
-              private dialogService: DialogService) { }
+              private dialogService: DialogService,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.fieldQuery.selectLoading();
@@ -68,7 +70,7 @@ export class FieldPageComponent implements OnInit, OnDestroy {
   showEditDialog() {
     this.editDialogRef = this.dialogService.open(FieldDialogComponent, {
       data: { field: this.field },
-      header: 'Edit Metric or Attribute'
+      header: this.translate.instant('APP.ECOSYSTEM.PAGES.FIELD.EDIT_METRIC_OR_ATTRIBUTE')
     });
   }
 }

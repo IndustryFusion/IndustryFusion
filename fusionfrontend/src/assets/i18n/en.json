@@ -42,7 +42,8 @@
 				"ASSETS": "Assets",
 				"ASSET_SERIES": "Asset series",
 				"ASSET_TYPE": "Asset Type",
-				"CITY": "City",
+        "BASE_UNIT": "Base Unit",
+        "CITY": "City",
 				"COUNTRY": "Country",
 				"COUNTRY_PLACEHOLDER": "Select a country...",
 				"DESCRIPTION": "Description",
@@ -230,7 +231,6 @@
 				"NO_METRICS_AND_ATTRIBUTES": "No Metrics & Attributes"
 			},
 			"QUANTITY_TYPE_DIALOG": {
-				"BASE_UNIT": "Base Unit",
 				"BASE_UNIT_PLACEHOLDER": "Select a base unit",
 				"CATEGORICAL": "Categorical",
 				"DATA_TYPE": "Data Type",
@@ -238,7 +238,6 @@
 				"NUMERIC": "Numeric"
 			},
 			"QUANTITY_TYPE_LIST": {
-				"BASE_UNIT": "Base Unit",
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Delete Quantity Type Confirmation",
 					"MESSAGE": "Are you sure you want to delete the Quantity Type {{ itemToDelete }}?"
@@ -280,7 +279,32 @@
 				"UNIT": "Unit",
 				"UNITS": "Units",
 				"UNIT_NAME": "Unit name"
-			}
+			},
+      "PAGES": {
+        "ASSET_TYPE": {
+          "EDIT_ASSET_TYPE": "Edit Asset type {{ assetTypeName }}"
+        },
+        "ASSET_TYPE_TEMPLATE": {
+          "ASSET_TYPE_TEMPLATE": "Asset type template",
+          "PUBLISHED_ON": "published on",
+          "METRICS": "Metrics",
+          "ATTRIBUTES": "Attributes",
+          "PUBLISH_TEMPLATE": "Publish {{ assetTypeTemplateName }}?",
+          "ASSET_TYPE_TEMPLATE_EDITOR": "Asset Type Template Editor"
+        },
+        "FIELD": {
+          "NUMBER_OF_DECIMALS": "Number of decimals",
+          "THRESHOLDS_AND_LIMITS": "Thresholds & limits",
+          "EDIT_METRIC_OR_ATTRIBUTE": "Edit Metric or Attribute"
+        },
+        "QUANTITY_TYPE": {
+          "EDIT_QUANTITY_TYPE": "Edit Quantity Type"
+        },
+        "UNIT": {
+          "CREATED": "Created",
+          "EDIT_UNIT": "Edit Unit"
+        }
+      }
 		},
 		"FACTORY": {
 			"ASSETS_LIST": {

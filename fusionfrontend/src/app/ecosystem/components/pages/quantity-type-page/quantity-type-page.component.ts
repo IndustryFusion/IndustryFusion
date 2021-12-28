@@ -24,6 +24,7 @@ import { UnitQuery } from '../../../../core/store/unit/unit.query';
 import { QuantityTypeDialogComponent } from '../../content/quantity-type-dialog/quantity-type-dialog.component';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-quantity-type-page',
@@ -42,7 +43,8 @@ export class QuantityTypePageComponent implements OnInit, OnDestroy {
               private quantityTypeQuery: QuantityTypeQuery,
               private quantityTypeService: QuantityTypeService,
               private unitQuery: UnitQuery,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.quantityTypeQuery.selectLoading();
@@ -64,7 +66,7 @@ export class QuantityTypePageComponent implements OnInit, OnDestroy {
         quantityType: this.quantityTypeQuery.getActive(),
         type: DialogType.EDIT
       },
-      header: `Edit Quantity Type`,
+      header: this.translate.instant('APP.ECOSYSTEM.PAGES.QUANTITY_TYPE.EDIT_QUANTITY_TYPE'),
     });
   }
 

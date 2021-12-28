@@ -24,6 +24,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { first } from 'rxjs/operators';
 import { UnitDialogComponent } from '../../content/unit-dialog/unit-dialog.component';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-unit-page',
@@ -39,7 +40,8 @@ export class UnitPageComponent implements OnInit {
               private unitService: UnitService,
               private unitQuery: UnitQuery,
               private dialogService: DialogService,
-              private quantityTypeService: QuantityTypeService) {
+              private quantityTypeService: QuantityTypeService,
+              private translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class UnitPageComponent implements OnInit {
   showDialog() {
     this.unit$.pipe(first()).subscribe((unit) => {
       const dialogRef = this.dialogService.open(UnitDialogComponent, {
-        header: 'Edit Unit', width: '50%',
+        header: this.translate.instant('APP.ECOSYSTEM.PAGES.UNIT.EDIT_UNIT'), width: '50%',
         data: { unit, type: DialogType.EDIT }
       });
 
