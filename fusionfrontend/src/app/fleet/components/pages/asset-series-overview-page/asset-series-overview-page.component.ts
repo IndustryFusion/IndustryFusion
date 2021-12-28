@@ -30,6 +30,7 @@ import { AssetSeriesDetails } from '../../../../core/store/asset-series-details/
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { AssetSeriesDetailsService } from '../../../../core/store/asset-series-details/asset-series-details.service';
 import { Company } from '../../../../core/store/company/company.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-series-overview-page',
@@ -45,8 +46,11 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   factorySites$: Observable<FactorySite[]>;
   assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite, company: Company }[]>;
 
-  assetsMapping:
-    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+  assetsMapping: { [k: string]: string } = {
+    '=0': this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.NO_ASSETS'),
+    '=1': '# ' + this.translate.instant('APP.COMMON.TERMS.ASSET'),
+    other: '# ' + this.translate.instant('APP.COMMON.TERMS.ASSETS')
+  };
   of = of;
   public factorySiteTypes = FactorySiteType;
 
@@ -58,7 +62,8 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
               private companyQuery: CompanyQuery,
               private dialogService: DialogService,
               private factorySiteQuery: FactorySiteQuery,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private translate: TranslateService) {
     this.resolve(this.activatedRoute);
   }
 
@@ -111,7 +116,7 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
         companyId: this.companyQuery.getActiveId(),
         prefilledAssetSeriesId: this.assetSerieId,
       },
-      header: 'Digital Twin Creator for Assets',
+      header: this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
       width: '80%'
     });
 

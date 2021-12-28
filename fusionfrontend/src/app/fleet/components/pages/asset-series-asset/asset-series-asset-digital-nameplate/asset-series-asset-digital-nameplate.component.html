@@ -15,39 +15,37 @@ under the License.
 
 <div class="nameplate">
   <div class="caption-with-buttons">
-    <div class="caption">Digital Nameplate</div>
+    <div class="caption">{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.DIGITAL_NAMEPLATE' | translate }}</div>
     <div class="flexbox"></div>
     <div class="card-button-box">
       <button class="card-button" (click)="generateAssetOnboardingFile()">
         <img class="fusion-icon" src="assets/img/IndustryFusion-hive.png">
-        Generate Asset Onboarding File
+        {{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.DIGITAL_NAMEPLATE' | translate }}
       </button>
     </div>
   </div>
   <p-card class="card">
     <div class="grid">
-      <app-nameplate-item label="Asset type">{{(asset$ | async)?.assetTypeName}}</app-nameplate-item>
-      <app-nameplate-item label="Asset name">{{(asset$ | async)?.name}}</app-nameplate-item>
-      <app-nameplate-item label="Asset series">{{(asset$ | async)?.assetSeriesName}}</app-nameplate-item>
-      <app-nameplate-item label="Manufacturer">{{(asset$ | async)?.manufacturer}}</app-nameplate-item>
-      <app-nameplate-item label="Serial Number">{{(asset$ | async)?.serialNumber}}</app-nameplate-item>
-      <app-nameplate-item
-        label="Construction Date">{{(asset$ | async)?.constructionDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
-      <app-nameplate-item
-        label="Installation Date">{{(asset$ | async)?.installationDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
-      <app-nameplate-item label="CE Certification">{{(asset$ | async)?.ceCertified | boolean}}</app-nameplate-item>
-      <app-nameplate-item label="Protection Class">{{(asset$ | async)?.protectionClass}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate }}">{{(asset$ | async)?.assetTypeName}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.COMMON.TERMS.ASSET_NAME' | translate }}">{{(asset$ | async)?.name}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.COMMON.TERMS.ASSET_SERIES' | translate }}">{{(asset$ | async)?.assetSeriesName}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.COMMON.TERMS.MANUFACTURER' | translate }}">{{(asset$ | async)?.manufacturer}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.SERIAL_NUMBERS' | translate }}">{{(asset$ | async)?.serialNumber}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.CONSTRUCTION_DATE' | translate }}">{{(asset$ | async)?.constructionDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.INSTALLATION_DATE' | translate }}">{{(asset$ | async)?.installationDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.CE_CERTIFICATION' | translate }}">{{(asset$ | async)?.ceCertified | boolean}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.PROTECTION_CLASS' | translate }}">{{(asset$ | async)?.protectionClass}}</app-nameplate-item>
     </div>
   </p-card>
-  <div class="caption">Connectivity Settings</div>
+  <div class="caption">{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.CONNECTIVITY_SETTINGS' | translate }}</div>
   <p-card class="card">
     <div class="grid">
-      <app-nameplate-item label="Connectivity type">{{(asset$ | async)?.gatewayConnectivity}}</app-nameplate-item>
-      <app-nameplate-item label="Protocol">{{(asset$ | async)?.protocol}}</app-nameplate-item>
-      <app-nameplate-item label="Connection string">{{(asset$ | async)?.connectionString}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.CONNECTIVITY_TYPE' | translate }}">{{(asset$ | async)?.gatewayConnectivity}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.PROTOCOL' | translate }}">{{(asset$ | async)?.protocol}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.CONNECTION_STRING' | translate }}">{{(asset$ | async)?.connectionString}}</app-nameplate-item>
     </div>
   </p-card>
-  <div class="caption">Asset Attributes</div>
+  <div class="caption">{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.ASSET_ATTRIBUTES' | translate }}</div>
   <p-card class="card">
     <div class="grid">
       <ng-container *ngFor="let attribute of getAttributes((asset$ | async)?.fields)">
@@ -56,9 +54,9 @@ under the License.
       </ng-container>
     </div>
   </p-card>
-  <div class="caption">Customer Data</div>
+  <div class="caption">{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.CUSTOMER_DATA' | translate }}</div>
   <p-card class="card">
-    <app-nameplate-item label="Customer">
+    <app-nameplate-item label="{{ 'APP.FLEET.PAGES.ASSET_SERIES_ASSET.DIGITAL_NAMEPLATE.CUSTOMER' | translate }}">
       <span *ngIf="(factorySite$ | async)?.type === factorySiteTypes.FLEETMANAGER">
         {{(factorySite$ | async)?.name}}
       </span>
@@ -67,9 +65,9 @@ under the License.
       </span>
     </app-nameplate-item>
     <app-nameplate-item
-      label="Street">{{(factorySite$ | async)?.line1}} {{(factorySite$ | async)?.line2}}</app-nameplate-item>
-    <app-nameplate-item label="ZIP">{{(factorySite$ | async)?.zip}}</app-nameplate-item>
-    <app-nameplate-item label="City">{{(factorySite$ | async)?.city}}</app-nameplate-item>
-    <app-nameplate-item label="Country">{{(factorySite$ | async)?.country?.name}}</app-nameplate-item>
+      label="{{ 'APP.COMMON.TERMS.Street' | translate }}">{{(factorySite$ | async)?.line1}} {{(factorySite$ | async)?.line2}}</app-nameplate-item>
+    <app-nameplate-item label="{{ 'APP.COMMON.TERMS.ZIP' | translate }}">{{(factorySite$ | async)?.zip}}</app-nameplate-item>
+    <app-nameplate-item label="{{ 'APP.COMMON.TERMS.CITY' | translate }}">{{(factorySite$ | async)?.city}}</app-nameplate-item>
+    <app-nameplate-item label="{{ 'APP.COMMON.TERMS.COUNTRY' | translate }}">{{(factorySite$ | async)?.country?.name}}</app-nameplate-item>
   </p-card>
 </div>

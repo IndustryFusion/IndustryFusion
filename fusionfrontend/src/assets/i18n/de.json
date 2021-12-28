@@ -40,7 +40,8 @@
 				"ACCURACY": "Genauigkeit",
 				"ASSET": "Vermögenswert",
 				"ASSETS": "Vermögenswerte",
-				"ASSET_SERIES": "Asset-Reihe",
+        "ASSET_NAME": "Name der Anlage",
+        "ASSET_SERIES": "Asset-Reihe",
 				"ASSET_TYPE": "Asset-Typ",
         "BASE_UNIT": "Basiseinheit",
         "CITY": "Stadt",
@@ -64,7 +65,7 @@
 				"TIME": "Zeit",
 				"UNIT": "Gerät",
 				"VALUE": "Wert",
-				"ZIP": "Reißverschluss"
+				"ZIP": "PLZ"
 			}
 		},
     "CORE": {
@@ -454,9 +455,6 @@
             "DIGITAL_NAMEPLATE": "Digitales Typenschild",
             "MANUAL": "Handbuch",
             "VIDEO": "Video",
-            "ASSET_TYPE": "Asset-Typ",
-            "ASSET_NAME": "Name der Anlage",
-            "ASSET_SERIES": "Asset-Reihe",
             "SERIAL_NUMBERS": "Seriennummer",
             "CONSTRUCTION_DATE": "Construction Date",
             "INSTALLATION_DATE": "Baudatum",
@@ -619,7 +617,34 @@
 			},
 			"SUB_HEADER": {
 				"ASSET_SERIES": "Asset-Reihe"
-			}
+			},
+      "PAGES": {
+        "ASSET_SERIES_ASSET": {
+          "DIGITAL_NAMEPLATE": {
+            "DIGITAL_NAMEPLATE": "Digitales Typenschild",
+            "GENERATE_ASSET_ONBOARDING_FILE": "Asset-Onboarding-Datei generieren",
+            "SERIAL_NUMBERS": "Seriennummer",
+            "CONSTRUCTION_DATE": "Construction Date",
+            "INSTALLATION_DATE": "Baudatum",
+            "CE_CERTIFICATION": "CE-Zertifizierung",
+            "PROTECTION_CLASS": "Schutzklasse",
+            "CONNECTIVITY_SETTINGS": "Konnektivitätseinstellungen",
+            "CONNECTIVITY_TYPE": "Art der Konnektivität",
+            "PROTOCOL": "Protokoll",
+            "CONNECTION_STRING": "Verbindungszeichenfolge",
+            "ASSET_ATTRIBUTES": "Asset-Attribute",
+            "CUSTOMER_DATA": "Kundendaten",
+            "CUSTOMER": "Kunde"
+          }
+        },
+        "ASSET_SERIES_OVERVIEW": {
+          "CREATE_ASSET_BUTTON": "Asset erstellen",
+          "CUSTOMER": "Kunde",
+          "ACTIVATION_DATE": "Aktivierungsdatum",
+          "NO_ASSETS": "Keine Vermögenswerte",
+          "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Digital Twin Creator für Assets"
+        }
+      }
 		},
 		"FUSION_APPLETS": {
 			"CREATE": {

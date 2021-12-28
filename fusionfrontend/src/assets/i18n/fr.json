@@ -40,7 +40,8 @@
 				"ACCURACY": "Précision",
 				"ASSET": "actif",
 				"ASSETS": "Actifs",
-				"ASSET_SERIES": "Série d'actifs",
+        "ASSET_NAME": "Nom de l'actif",
+        "ASSET_SERIES": "Série d'actifs",
 				"ASSET_TYPE": "Type d'actif",
         "BASE_UNIT": "Unité de base",
         "CITY": "Ville",
@@ -304,6 +305,33 @@
           "CREATED": "Créé",
           "EDIT_UNIT": "Unité d'édition"
         }
+      },
+      "PAGES": {
+        "ASSET_SERIES_ASSET": {
+          "DIGITAL_NAMEPLATE": {
+            "DIGITAL_NAMEPLATE": "Plaque d'identification numérique",
+            "GENERATE_ASSET_ONBOARDING_FILE": "Générer le fichier d'accueil des actifs",
+            "SERIAL_NUMBERS": "Numéro de série",
+            "CONSTRUCTION_DATE": "Date de construction",
+            "INSTALLATION_DATE": "Date d'installation",
+            "CE_CERTIFICATION": "Certification CE",
+            "PROTECTION_CLASS": "Classe de protection",
+            "CONNECTIVITY_SETTINGS": "Paramètres de connectivité",
+            "CONNECTIVITY_TYPE": "Type de connectivité",
+            "PROTOCOL": "Protocole",
+            "CONNECTION_STRING": "Chaîne de connexion",
+            "ASSET_ATTRIBUTES": "Attributs des actifs",
+            "CUSTOMER_DATA": "Données clients",
+            "CUSTOMER": "Client"
+          }
+        },
+        "ASSET_SERIES_OVERVIEW": {
+          "CREATE_ASSET_BUTTON": "Créer un actif",
+          "CUSTOMER": "Client",
+          "ACTIVATION_DATE": "Date d'activation",
+          "NO_ASSETS": "Aucun actif",
+          "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Créateur de jumeaux numériques pour les actifs"
+        }
       }
 		},
 		"FACTORY": {
@@ -454,9 +482,6 @@
             "DIGITAL_NAMEPLATE": "Plaque d'identification numérique",
             "MANUAL": "Manuel",
             "VIDEO": "Vidéo",
-            "ASSET_TYPE": "Type d'actif",
-            "ASSET_NAME": "Nom de l'actif",
-            "ASSET_SERIES": "Série d'actifs",
             "SERIAL_NUMBERS": "Numéro de série",
             "CONSTRUCTION_DATE": "Date de construction",
             "INSTALLATION_DATE": "Date d'installation",

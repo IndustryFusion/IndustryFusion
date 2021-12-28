@@ -35,9 +35,9 @@ under the License.
 
   <p-card class="card">
     <div class="grid">
-      <app-nameplate-item label="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.ASSET_TYPE' | translate }}">{{(asset$ | async)?.assetTypeName}}</app-nameplate-item>
-      <app-nameplate-item label="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.ASSET_NAME' | translate }}">{{(asset$ | async)?.name}}</app-nameplate-item>
-      <app-nameplate-item label="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.ASSET_SERIES' | translate }}">{{(asset$ | async)?.assetSeriesName}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate }}">{{(asset$ | async)?.assetTypeName}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.COMMON.TERMS.ASSET_NAME' | translate }}">{{(asset$ | async)?.name}}</app-nameplate-item>
+      <app-nameplate-item label="{{ 'APP.COMMON.TERMS.ASSET_SERIES' | translate }}">{{(asset$ | async)?.assetSeriesName}}</app-nameplate-item>
       <app-nameplate-item label="{{ 'APP.COMMON.TERMS.MANUFACTURER' | translate }}">{{(asset$ | async)?.manufacturer}}</app-nameplate-item>
       <app-nameplate-item label="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.SERIAL_NUMBERS' | translate }}">{{(asset$ | async)?.serialNumber}}</app-nameplate-item>
       <app-nameplate-item

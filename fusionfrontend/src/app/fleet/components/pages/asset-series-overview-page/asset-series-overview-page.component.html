@@ -17,7 +17,7 @@ under the License.
 <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
   {{ (assetsCombined$ | async)?.length | i18nPlural: assetsMapping }}
   <div>
-    <app-create-button (createItem)="createAssetFromAssetSeries()" [text]="'Create Asset'"></app-create-button>
+    <app-create-button (createItem)="createAssetFromAssetSeries()" text="{{ 'APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.CREATE_ASSET_BUTTON' | translate }}"></app-create-button>
   </div>
 </div>
 <p-table [paginator]="false"
@@ -26,14 +26,14 @@ under the License.
          class="list-container">
   <ng-template pTemplate="header">
     <tr>
-      <th>Asset&nbsp;name</th>
-      <th>Customer</th>
-      <th>Street</th>
-      <th>ZIP</th>
-      <th>City</th>
-      <th>Country</th>
-      <th>Activation&nbsp;date</th>
-      <th>Status</th>
+      <th>{{ 'APP.COMMON.TERMS.ASSET_NAME' | translate }}</th>
+      <th>{{ 'APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.CUSTOMER' | translate }}</th>
+      <th>{{ 'APP.COMMON.TERMS.STREET' | translate }}</th>
+      <th>{{ 'APP.COMMON.TERMS.ZIP' | translate }}</th>
+      <th>{{ 'APP.COMMON.TERMS.CITY' | translate }}</th>
+      <th>{{ 'APP.COMMON.TERMS.COUNTRY' | translate }}</th>
+      <th>{{ 'APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.ACTIVATION_DATE' | translate }}</th>
+      <th>{{ 'APP.COMMON.TERMS.STATUS' | translate }}</th>
     </tr>
   </ng-template>
 

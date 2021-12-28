@@ -35,7 +35,7 @@ export class AssetPerformanceComponent implements OnInit {
       value: AssetPerformanceViewMode.REALTIME },
     { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.HISTORICAL_VIEW'),
       value: AssetPerformanceViewMode.HISTORICAL },
-    { name:this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.PERFORMANCE_VIEW'),
+    { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.PERFORMANCE_VIEW'),
       value: AssetPerformanceViewMode.PERFORMANCE }
   ];
 
