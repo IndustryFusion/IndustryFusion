@@ -19,25 +19,44 @@ under the License.
     <div class="attributes-list-header p-grid">
       <div class="if-label-small-header p-col-3"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.ATTRIBUTES.CUSTOM_METRIC_NAME' | translate }} </div>
       <div class="if-label-small-header p-col-4"> {{ 'APP.FLEET.ASSET_WIZARD.SHARED.ATTRIBUTES.ATTRIBUTE_NAME' | translate }} </div>
-      <div class="if-label-small-header" [ngClass]="isReview ? 'p-col-1' : 'p-col-2'"> {{ 'APP.COMMON.TERMS.VALUE' | translate }} </div>
-      <div class="if-label-small-header" [ngClass]="isReview ? 'p-col-2' : 'p-col-1'"> {{ 'APP.COMMON.TERMS.UNIT' | translate }} </div>
-      <div class="if-label-small-header p-col-2"> </div>
+      <div [ngClass]="isReview ? 'p-col-1' : 'p-col-2'" class="if-label-small-header"> {{ 'APP.COMMON.TERMS.VALUE' | translate }} </div>
+      <div [ngClass]="isReview ? 'p-col-2' : 'p-col-1'" class="if-label-small-header"> {{ 'APP.COMMON.TERMS.UNIT' | translate }} </div>
+      <div class="if-label-small-header p-col-2"></div>
     </div>
 
-    <div class="attributes-list-content" *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
+    <div *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;" class="attributes-list-content">
       <ng-container [formGroup]="fieldInstance //noinspection InvalidExpressionResultType">
         <div class="p-grid">
           <label class="if-label p-col-3" displayControlValue="name"></label>
           <label class="if-label p-col-4" displayControlValue="fieldName"></label>
-          <input *ngIf="isReview === false" class="value-input p-col-2" type="number" pInputText formControlName="value">
-          <label *ngIf="isReview === true" [ngClass]="isReview ? 'p-col-1' : 'p-col-2'" displayControlValue="value"></label>
-          <label class="if-label-normal-weight" [ngClass]="isReview ? 'p-col-2' : 'p-col-1'" displayControlValue="sourceUnitName"></label>
+
+          <span *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.NUMERIC"
+                [ngClass]="isReview ? 'p-col-1' : 'p-col-2'">
+            <input *ngIf="isReview === false" class="value-input" formControlName="value" pInputText type="number">
+            <label *ngIf="isReview === true" displayControlValue="value"></label>
+          </span>
+
+          <div *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.ENUM" class="p-col-3">
+            <label *ngIf="isReview === true">
+              {{fieldInstance.get('fieldEnumOptions')?.value | enumOptionToString:fieldInstance.get('value')?.value}}
+            </label>
+            <p-dropdown *ngIf="isReview === false" [options]="fieldInstance.get('fieldEnumOptions').value"
+                        class="field-dialog-inputs"
+                        formControlName="value"
+                        optionLabel="optionLabel"
+                        optionValue="id" placeholder="Select value"></p-dropdown>
+          </div>
+
+          <label *ngIf="fieldInstance.get('fieldDataType').value == attributeDataTypes.NUMERIC"
+                 [ngClass]="isReview ? 'p-col-2' : 'p-col-1'" class="if-label-normal-weight"
+                 displayControlValue="sourceUnitName"></label>
 
           <div class="p-col-2 edit-col">
-            <app-edit-button *ngIf="isReview === true" (click)="onClickEdit()" ></app-edit-button>
-            <app-trash-button [disabled]="fieldInstance.get('mandatory')?.value"
-                              (click)="removeAttribute(fieldInstance)"></app-trash-button>
+            <app-edit-button (click)="onClickEdit()" *ngIf="isReview === true"></app-edit-button>
+            <app-trash-button (click)="removeAttribute(fieldInstance)"
+                              [disabled]="fieldInstance.get('mandatory')?.value"></app-trash-button>
           </div>
+
         </div>
       </ng-container>
     </div>

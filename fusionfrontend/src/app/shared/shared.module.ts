@@ -40,15 +40,19 @@ import { MaintenanceProgressbarComponent } from './components/content/maintenanc
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { NotificationsListComponent } from './components/content/notifications-list/notifications-list.component';
-import { GermanNumberPipe } from './pipes/germannumber.pipe';
+import { GermanNumberPipe } from './pipes/german-number.pipe';
 import { TableSelectedItemsBarComponent } from './components/ui/table-selected-items-bar/table-selected-items-bar.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { NameplateItemComponent } from './components/ui/nameplate-item/nameplate-item.component';
 import { StatusComponent } from './components/ui/status/status.component';
+import { StringEnumToOptionArrayPipe } from './pipes/string-enum-to-option-array.pipe';
+import { GermanStringPipe } from './pipes/german-string.pipe';
+import { EnumOptionsToStringPipe } from './pipes/enum-options-to-string.pipe';
 import { StatusFilterComponent } from './components/ui/table-filter/status-filter/status-filter.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
 
 
 // AoT requires an exported function for factories
@@ -80,6 +84,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     TableSelectedItemsBarComponent,
     NameplateItemComponent,
     StatusComponent,
+    StringEnumToOptionArrayPipe,
+    GermanStringPipe,
+    EnumOptionsToStringPipe,
+    EnumOptionToStringPipe,
     StatusFilterComponent,
   ],
   imports: [
@@ -156,6 +164,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     TableSelectedItemsBarComponent,
     NameplateItemComponent,
     StatusComponent,
+    StringEnumToOptionArrayPipe,
+    GermanStringPipe,
+    EnumOptionsToStringPipe,
+    EnumOptionToStringPipe,
     StatusFilterComponent,
     TranslateModule
   ],

@@ -24,15 +24,26 @@ under the License.
       <label class="label-column"> {{ 'APP.COMMON.TERMS.LABEL' | translate }} </label>
       <label class="if-detail-page-label"> {{ (field$ | async)?.label }} </label>
     </div>
-
     <div class="row">
       <div class="label-column"> {{ 'APP.COMMON.TERMS.DESCRIPTION' | translate }} </div>
       <div class="if-detail-page-description">
         <textarea [disabled]="true">{{ (field$ | async)?.description  }}</textarea>
       </div>
     </div>
-
     <div class="row">
+      <label class="label-column"> Data Type </label>
+      <label class="if-detail-page-label"> {{ (field$ | async)?.dataType | germanString }}</label>
+    </div>
+
+    <div *ngIf="(field$ | async)?.dataType === dataTypes.ENUM">
+      <div class="row">
+        <label class="label-column"> Options </label>
+        <label class="if-detail-page-label"> {{ (field$ | async)?.enumOptions | enumOptionsToString }} </label>
+      </div>
+    </div>
+
+    <div *ngIf="(field$ | async)?.dataType === dataTypes.NUMERIC">
+      <div class="row">
       <label class="label-column"> {{ 'APP.COMMON.TERMS.UNIT' | translate }} </label>
       <label class="if-detail-page-label"> {{ (unit$ | async)?.name }} </label>
     </div>
@@ -55,5 +66,6 @@ under the License.
       <div class="label-column"> {{ 'APP.ECOSYSTEM.PAGES.FIELD.THRESHOLDS_AND_LIMITS' | translate }} </div>
       <label class="if-detail-page-label">{{ (field$ | async)?.thresholdType | titlecase }}</label>
     </div>
+
   </div>
 </section>

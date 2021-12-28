@@ -80,7 +80,7 @@ export class AssetInstantiationComponent implements OnInit {
         this.selectedRoom = this.rooms.filter(room => room.id === this.assetDetailsForm.
           controls[FormAttributes.roomId].value).pop();
       }
-      this.allRoomsOfFactorySite = this.rooms.filter(room => room.factorySiteId === this.selectedRoom.factorySiteId);
+      this.allRoomsOfFactorySite = this.rooms.filter(room => room.factorySiteId === this.selectedRoom?.factorySiteId);
     }
   }
 

@@ -19,7 +19,7 @@ import { FieldDetails } from '../../../../core/store/field-details/field-details
 import { Asset } from '../../../../core/store/asset/asset.model';
 import { ChartData } from 'chart.js';
 import { Threshold } from '../../../../core/store/threshold/threshold.model';
-import { GermanNumberPipe } from '../../../pipes/germannumber.pipe';
+import { GermanNumberPipe } from '../../../pipes/german-number.pipe';
 
 @Component({
   selector: 'app-gauge-chart',

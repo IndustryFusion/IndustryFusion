@@ -31,10 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class FieldInstanceService {
+    private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
     private final ThresholdService thresholdService;
     private final UnitService unitService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
 
     @Autowired
     public FieldInstanceService(ThresholdService thresholdService, UnitService unitService) {
@@ -123,15 +122,17 @@ public class FieldInstanceService {
                 .getField()
                 .getThresholdType();
 
-        final Unit unit = unitService.getUnit(fieldInstance.getFieldSource().getSourceUnit().getId());
-        final QuantityDataType quantityDataType = unit.getQuantityType().getDataType();
+        if (fieldInstance.getFieldSource().getSourceUnit() != null) {
+            final Unit unit = unitService.getUnit(fieldInstance.getFieldSource().getSourceUnit().getId());
+            final QuantityDataType quantityDataType = unit.getQuantityType().getDataType();
 
-        if (!isThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
-            LOG.warn("Thresholds of field instance with id {} are not valid.\r\n"
-                            + "Absolute Threshold: {}, ideal Threshold: {}, critical threshold: {}",
-                    fieldInstance.getId(), fieldInstance.getAbsoluteThreshold(),
-                    fieldInstance.getIdealThreshold(), fieldInstance.getCriticalThreshold());
-            throw new RuntimeException("Thresholds are not valid in every field instance");
+            if (!isThresholdsValid(fieldInstance, fieldThresholdType, quantityDataType)) {
+                LOG.warn("Thresholds of field instance with id {} are not valid.\r\n"
+                                + "Absolute Threshold: {}, ideal Threshold: {}, critical threshold: {}",
+                        fieldInstance.getId(), fieldInstance.getAbsoluteThreshold(),
+                        fieldInstance.getIdealThreshold(), fieldInstance.getCriticalThreshold());
+                throw new RuntimeException("Thresholds are not valid in every field instance");
+            }
         }
     }
 }

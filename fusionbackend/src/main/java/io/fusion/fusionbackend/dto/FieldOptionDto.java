@@ -16,36 +16,22 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.fusion.fusionbackend.model.enums.FieldDataType;
-import io.fusion.fusionbackend.model.enums.FieldThresholdType;
-import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-import java.time.OffsetDateTime;
-import java.util.LinkedHashSet;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class FieldDto extends BaseEntityDto {
-    private String name;
-    private String description;
-    private String label;
-    private Double accuracy;
-    private String value;
-    private Long unitId;
-    private UnitDto unit;
-    private FieldThresholdType thresholdType;
-    private FieldWidgetType widgetType;
-    private OffsetDateTime creationDate;
-    private FieldDataType dataType;
-    private LinkedHashSet<FieldOptionDto> enumOptions;
+public class FieldOptionDto extends BaseEntityDto {
+
+    private int fieldId;
+    private String optionLabel;
 
     @JsonCreator
-    public FieldDto() {
+    public FieldOptionDto() {
     }
+
 }

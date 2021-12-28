@@ -20,8 +20,8 @@ import { Observable } from 'rxjs';
 import { Unit } from '../../../../core/store/unit/unit.model';
 import { UnitQuery } from '../../../../core/store/unit/unit.query';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Field, FieldThresholdType } from '../../../../core/store/field/field.model';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Field, FieldDataType, FieldOption, FieldThresholdType } from '../../../../core/store/field/field.model';
 import { SelectItem } from 'primeng/api';
 import { DialogType } from 'src/app/shared/models/dialog-type.model';
 import { FieldService } from '../../../../core/store/field/field.service';
@@ -44,12 +44,15 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
   public FieldThresholdType = FieldThresholdType;
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
 
+  public dataTypes = FieldDataType;
+
   constructor(private unitQuery: UnitQuery,
               private formBuilder: FormBuilder,
               private fieldService: FieldService,
               public dialogRef: DynamicDialogRef,
               public config: DynamicDialogConfig,
-              public translate: TranslateService) { }
+              public translate: TranslateService) {
+  }
 
   ngOnInit() {
     this.type = this.config.data.field === undefined ? DialogType.CREATE : DialogType.EDIT;
@@ -66,21 +69,8 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private createFieldFormGroup(field: Field) {
-    this.fieldForm = this.formBuilder.group({
-      id: [],
-      version: [],
-      name: ['', WizardHelper.requiredTextValidator],
-      label: ['', WizardHelper.requiredTextValidator],
-      description: ['', WizardHelper.maxTextLengthValidator],
-      accuracy: [0],
-      unitId: [null, Validators.required],
-      thresholdType: [FieldThresholdType.OPTIONAL, Validators.required]
-    });
-
-    if (this.type === DialogType.EDIT && field) {
-      this.fieldForm.patchValue(field);
-    }
+  ngOnDestroy() {
+    this.dialogRef.close();
   }
 
   onSubmit() {
@@ -103,7 +93,67 @@ export class FieldDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  ngOnDestroy() {
-    this.dialogRef.close();
+  public deleteEnumOption(i: number): void {
+    (this.fieldForm.get('enumOptions') as FormArray).removeAt(i);
+    const newLength = (this.fieldForm.get('enumOptions') as FormArray).length;
+    if (newLength === 0) {
+      this.addEnumOption();
+    }
+  }
+
+  public addEnumOption(): void {
+    (this.fieldForm.get('enumOptions') as FormArray).push(this.createEnumOptionFormGroup(null));
+  }
+
+  private unitValidator = (formGroup: AbstractControl): ValidationErrors | null => {
+    const chosenDataType = formGroup.get('dataType')?.value;
+    if (chosenDataType !== FieldDataType.NUMERIC) {
+      let error;
+      (formGroup.get('enumOptions') as FormArray).controls.forEach(enumOption => {
+        const enumOptionLabel = enumOption.get('optionLabel');
+        const result = Validators.required(enumOptionLabel);
+        error = result === null ? error : result;
+      });
+      return error;
+    } else {
+      return Validators.required(formGroup.get('unitId'));
+    }
+  }
+
+  private createFieldFormGroup(field: Field) {
+    this.fieldForm = this.formBuilder.group({
+      id: [],
+      version: [],
+      name: ['', WizardHelper.requiredTextValidator],
+      label: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
+      accuracy: [0],
+      dataType: [null, Validators.required],
+      unitId: [null],
+      thresholdType: [FieldThresholdType.OPTIONAL, Validators.required],
+      enumOptions: this.formBuilder.array(this.createEnumOptions(field))
+    }, { validator: this.unitValidator });
+
+    if (this.type === DialogType.EDIT && field) {
+      this.fieldForm.patchValue(field);
+    }
+  }
+
+  private createEnumOptions(field: Field): AbstractControl[] {
+    const controls = [];
+    if (this.type === DialogType.EDIT && field?.enumOptions?.length > 0) {
+      field?.enumOptions.forEach(enumValue => {
+        controls.push(this.createEnumOptionFormGroup(enumValue));
+      });
+      return controls;
+    }
+    return [this.createEnumOptionFormGroup(null)];
+  }
+
+  private createEnumOptionFormGroup(fieldOption: FieldOption): AbstractControl {
+    return this.formBuilder.group({
+      id: [fieldOption?.id],
+      optionLabel: [fieldOption?.optionLabel],
+    });
   }
 }

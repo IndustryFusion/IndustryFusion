@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.model;
 
+import io.fusion.fusionbackend.model.enums.FieldDataType;
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
 import io.fusion.fusionbackend.model.enums.FieldWidgetType;
 import lombok.Getter;
@@ -30,11 +31,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 @Entity
 @NamedEntityGraph(name = "Field.allChildrenDeep",
@@ -49,15 +52,14 @@ import java.time.OffsetDateTime;
 @SuperBuilder
 @NoArgsConstructor
 public class Field extends BaseEntity {
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "unit_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "unit_id")
     private Unit unit;
 
     private String name;
     private String description;
     private String label;
     private Double accuracy;
-    private String value;
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -68,6 +70,12 @@ public class Field extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private FieldWidgetType widgetType;
+
+    @Enumerated(EnumType.STRING)
+    private FieldDataType dataType;
+
+    @OneToMany(mappedBy = "field", fetch = FetchType.EAGER)
+    private Set<FieldOption> options;
 
     public void copyFrom(final Field sourceField) {
 
@@ -85,9 +93,6 @@ public class Field extends BaseEntity {
         if (sourceField.getAccuracy() != null) {
             setAccuracy(sourceField.getAccuracy());
         }
-        if (sourceField.getValue() != null) {
-            setValue(sourceField.getValue());
-        }
         if (sourceField.getLabel() != null) {
             setLabel(sourceField.getLabel());
         }
@@ -99,6 +104,12 @@ public class Field extends BaseEntity {
         }
         if (sourceField.getCreationDate() != null) {
             setCreationDate(sourceField.getCreationDate());
+        }
+        if (sourceField.getDataType() != null) {
+            setDataType(sourceField.getDataType());
+        }
+        if (sourceField.getOptions() != null) {
+            setOptions(sourceField.getOptions());
         }
     }
 }

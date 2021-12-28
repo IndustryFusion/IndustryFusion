@@ -29,13 +29,8 @@ under the License.
 
     <modules>
         <module>fusionparent</module>
-
         <module>fusionbackend</module>
-        <module>fusiondbdataservice</module>
         <module>fusionfrontend</module>
-        <module>fusiongatewayapp</module>
-        <module>fusionmqttdataservice</module>
-        <module>fusionplcdataservice</module>
     </modules>
 
     <build>

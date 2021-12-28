@@ -29,45 +29,75 @@ under the License.
       <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
     </div>
 
-    <div class="field-dialog-inputs">
-      <label class="if-label">{{ 'APP.COMMON.TERMS.UNIT' | translate }}&nbsp;*</label>
-      <p-dropdown [options]="(units$ | async)" formControlName="unitId" optionValue="id" optionLabel="name"
-                  class="field-dialog-inputs" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.UNIT_PLACEHOLDER' | translate }}"></p-dropdown>
+    <label class="if-dialog-section-title">Define Data Type</label>
+    <div class="field-dialog-inputs input-div">
+      <label class="if-label">Data type&nbsp;*</label>
+      <p-dropdown [options]="(dataTypes | stringEnumToOptionArray)" class="field-dialog-inputs"
+                  formControlName="dataType"
+                  optionLabel="label"
+                  optionValue="id" placeholder="Select data type"></p-dropdown>
     </div>
 
-    <label class="if-dialog-section-title">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DEFINE_ACCURACY' | translate }}</label>
+    <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.NUMERIC">
+      <div class="field-dialog-inputs" input-div>
+        <label class="if-label">{{ 'APP.COMMON.TERMS.UNIT' | translate }}&nbsp;*</label>
+        <p-dropdown [options]="(units$ | async)" formControlName="unitId" optionValue="id" optionLabel="name"
+                    class="field-dialog-inputs" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.UNIT_PLACEHOLDER' | translate }}"></p-dropdown>
+      </div>
 
+    <label class="if-dialog-section-title">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DEFINE_ACCURACY' | translate }}</label>
     <div class="field-dialog-inputs input-div">
       <label class="if-label">{{ 'APP.COMMON.TERMS.ACCURACY' | translate }}</label>
       <p-dropdown [options]="accuracyItems" formControlName="accuracy"
                   class="field-dialog-inputs" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.ACCURACY_PLACEHOLDER' | translate }}"></p-dropdown>
     </div>
 
-    <label class="if-dialog-section-title">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DEFINE_THRESHOLDS_AND_LIMITS' | translate }}</label>
+      <label class="if-dialog-section-title">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DEFINE_THRESHOLDS_AND_LIMITS' | translate }}</label>
+      <div class="input-div">
+        <label class="if-label">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.THRESHOLDS_AND_LIMITS' | translate }}&nbsp;*</label>
+        <div class="dialog-grid">
+          <div>
+            <p-radioButton [label]="FieldThresholdType.OPTIONAL | titlecase" [value]="FieldThresholdType.OPTIONAL"
+                           formControlName="thresholdType"
+                           inputId="threshold1"></p-radioButton>
+          </div>
+          <div class="dialog-grid-col">
+            <p-radioButton [label]="FieldThresholdType.MANDATORY | titlecase" [value]="FieldThresholdType.MANDATORY"
+                           formControlName="thresholdType"
+                           inputId="threshold2"></p-radioButton>
+          </div>
+          <div class="dialog-grid-col">
+            <p-radioButton [label]="FieldThresholdType.DISABLED | titlecase" [value]="FieldThresholdType.DISABLED"
+                           formControlName="thresholdType"
+                           inputId="threshold3"></p-radioButton>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div class="input-div">
-      <label class="if-label">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.THRESHOLDS_AND_LIMITS' | translate }}&nbsp;*</label>
-      <div class="dialog-grid">
-        <div>
-          <p-radioButton [value]="FieldThresholdType.OPTIONAL" [label]="FieldThresholdType.OPTIONAL | titlecase" formControlName="thresholdType"
-                         inputId="threshold1"></p-radioButton>
-        </div>
-        <div class="dialog-grid-col">
-          <p-radioButton [value]="FieldThresholdType.MANDATORY" [label]="FieldThresholdType.MANDATORY | titlecase" formControlName="thresholdType"
-                         inputId="threshold2"></p-radioButton>
-        </div>
-        <div class="dialog-grid-col">
-          <p-radioButton [value]="FieldThresholdType.DISABLED" [label]="FieldThresholdType.DISABLED | titlecase"  formControlName="thresholdType"
-                         inputId="threshold3"></p-radioButton>
+    <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.ENUM">
+      <div class="field-dialog-inputs input-div">
+        <label class="if-label">Describe values&nbsp;*</label>
+        <div *ngFor="let enumValueItem of fieldForm.get('enumOptions')['controls']; let i=index"
+             formArrayName="enumOptions">
+          <div [formGroupName]="i">
+            <input class="field-row-inputs" formControlName="optionLabel" name="name" pInputText placeholder="New value"
+                   type="text"/>
+            <app-trash-button (deleteItem)="deleteEnumOption(i)" class="trash-button"></app-trash-button>
+            <app-create-button (createItem)="addEnumOption()"
+                               *ngIf="i == (fieldForm.get('enumOptions')['controls']?.length)-1 &&
+                               (fieldForm.get('enumOptions')['controls'][i]?.value?.optionLabel) &&
+                               (fieldForm.get('enumOptions')['controls'][i]?.value?.optionLabel) != ''"></app-create-button>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="field-dialog-footer">
-      <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
-      <button type="button" class="if-button button-confirm button-primary" (click)="onSubmit()"
-              [disabled]="fieldForm.invalid">{{type === DialogType.EDIT ? translate.instant('APP.COMMON.DIALOG_BUTTONS.SAVE') :
-        translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE')}}</button>
+      <button (click)="onCancel()" class="if-button button-cancel" type="button">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+      <button (click)="onSubmit()" [disabled]="fieldForm.invalid" class="if-button button-confirm button-primary">
+        {{type === DialogType.EDIT ? translate.instant('APP.COMMON.DIALOG_BUTTONS.SAVE') : translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE')}}
+      </button>
     </div>
   </form>
 </div>

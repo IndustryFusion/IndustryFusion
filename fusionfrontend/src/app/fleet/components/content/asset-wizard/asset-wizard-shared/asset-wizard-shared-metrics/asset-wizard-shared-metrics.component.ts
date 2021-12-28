@@ -107,7 +107,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
       valid: [true, Validators.requiredTrue],
     });
 
-    const quantityType = this.quantityTypeQuery.getEntity(fieldInstance.fieldSource.sourceUnit.quantityTypeId);
+    const quantityType = this.quantityTypeQuery.getEntity(fieldInstance.fieldSource.sourceUnit?.quantityTypeId);
     const quantityDataType = quantityType.dataType;
 
     group.get('id').patchValue(fieldInstance.id);
