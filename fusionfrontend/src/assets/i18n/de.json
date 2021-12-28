@@ -47,7 +47,8 @@
         "CITY": "Stadt",
 				"COUNTRY": "Land",
 				"COUNTRY_PLACEHOLDER": "Wählen Sie ein Land...",
-				"DESCRIPTION": "Beschreibung",
+        "DATA_TYPE": "Datentyp",
+        "DESCRIPTION": "Beschreibung",
 				"FACTORY": "Fabrik",
 				"FACTORY_SITE": "Fabrikseite",
 				"FACTORY_SITES": "Fabrikseiten",
@@ -209,11 +210,15 @@
 				}
 			},
 			"FIELD_DIALOG": {
+        "DEFINE_DATA_TYPE": "Datentyp definieren",
+        "SELECT_DATA_TYPE": "Datentyp auswählen",
 				"ACCURACY_PLACEHOLDER": "Format für die Genauigkeit auswählen",
 				"DEFINE_ACCURACY": "Definieren Sie Genauigkeit",
 				"DEFINE_THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte definieren",
 				"THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte",
-				"UNIT_PLACEHOLDER": "Einheit auswählen"
+				"UNIT_PLACEHOLDER": "Einheit auswählen",
+        "DESCRIBE_VALUES": "Werte beschreiben",
+        "NEW_VALUE": "Neuer Wert"
 			},
 			"FIELD_LIST": {
 				"CONFIRMATION_DIALOG": {
@@ -234,7 +239,6 @@
 			"QUANTITY_TYPE_DIALOG": {
 				"BASE_UNIT_PLACEHOLDER": "Wählen Sie eine Basiseinheit",
 				"CATEGORICAL": "Kategorisch",
-				"DATA_TYPE": "Datenart",
 				"NO_BASE_UNIT_WARNING": "Keine Basiseinheit ausgewählt",
 				"NUMERIC": "Numerisch"
 			},
@@ -244,7 +248,6 @@
 					"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }} löschen wollen?"
 				},
 				"CREATE_QUANTITY_TYPE": "Mengenart anlegen",
-				"DATA_TYPE": "Datenart",
 				"DESCRIPTION": "Beschreibung",
 				"HEADER": {
 					"CREATE": "Neue Mengenart anlegen",
@@ -294,6 +297,7 @@
           "ASSET_TYPE_TEMPLATE_EDITOR": "Asset-Typ-Vorlagen-Editor"
         },
         "FIELD": {
+          "OPTIONS": "Optionen",
           "NUMBER_OF_DECIMALS": "Anzahl der Dezimalen",
           "THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte",
           "EDIT_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut bearbeiten"
@@ -512,8 +516,9 @@
 					"ATTRIBUTE_NAME": "Attribut Name",
 					"CUSTOM_ATTRIBUTE_NAME": "Name des benutzerdefinierten Attributs",
 					"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
-					"WARNING_LABEL": "Attribute können nicht gelöscht werden, da es bereits Assets dieser Asset-Serie gibt."
-				},
+					"WARNING_LABEL": "Attribute können nicht gelöscht werden, da es bereits Assets dieser Asset-Serie gibt.",
+          "SELECT_VALUE": "Wert auswählen"
+        },
 				"GENERAL_INFORMATION": {
 					"ASSET_OR_ASSET_SERIES_NAME": "Name der Anlage oder Anlagenserie",
 					"ASSET_SERIES_DESCRIPTION": "Beschreibung der Anlagenserie",
@@ -556,8 +561,9 @@
 					"ATTRIBUTES": {
 						"ATTRIBUTE_NAME": "Attribut Name",
 						"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
-						"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar"
-					},
+						"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
+            "SELECT_VALUE": "Wert auswählen"
+          },
 					"METRICS": {
 						"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
 						"DATA_SOURCE": "Datenquelle",

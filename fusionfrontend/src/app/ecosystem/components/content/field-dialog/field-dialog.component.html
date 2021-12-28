@@ -29,13 +29,13 @@ under the License.
       <label class="textarea-character-count if-label">{{ fieldForm.get('description').value?.length }}/{{ MAX_TEXT_LENGTH }}</label>
     </div>
 
-    <label class="if-dialog-section-title">Define Data Type</label>
+    <label class="if-dialog-section-title">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DEFINE_DATA_TYPE' | translate }}</label>
     <div class="field-dialog-inputs input-div">
-      <label class="if-label">Data type&nbsp;*</label>
+      <label class="if-label">{{ 'APP.COMMON.TERMS.DATA_TYPE' | translate }}&nbsp;*</label>
       <p-dropdown [options]="(dataTypes | stringEnumToOptionArray)" class="field-dialog-inputs"
                   formControlName="dataType"
                   optionLabel="label"
-                  optionValue="id" placeholder="Select data type"></p-dropdown>
+                  optionValue="id" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.SELECT_DATA_TYPE' | translate }}"></p-dropdown>
     </div>
 
     <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.NUMERIC">
@@ -77,11 +77,11 @@ under the License.
 
     <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.ENUM">
       <div class="field-dialog-inputs input-div">
-        <label class="if-label">Describe values&nbsp;*</label>
+        <label class="if-label">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DESCRIBE_VALUES' | translate }}&nbsp;*</label>
         <div *ngFor="let enumValueItem of fieldForm.get('enumOptions')['controls']; let i=index"
              formArrayName="enumOptions">
           <div [formGroupName]="i">
-            <input class="field-row-inputs" formControlName="optionLabel" name="name" pInputText placeholder="New value"
+            <input class="field-row-inputs" formControlName="optionLabel" name="name" pInputText placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.NEW_VALUE' | translate }}"
                    type="text"/>
             <app-trash-button (deleteItem)="deleteEnumOption(i)" class="trash-button"></app-trash-button>
             <app-create-button (createItem)="addEnumOption()"

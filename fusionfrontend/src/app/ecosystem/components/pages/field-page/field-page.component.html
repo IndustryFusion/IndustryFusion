@@ -31,40 +31,41 @@ under the License.
       </div>
     </div>
     <div class="row">
-      <label class="label-column"> Data Type </label>
+      <label class="label-column"> {{ 'APP.COMMON.TERMS.DATA_TYPE' | translate }} </label>
       <label class="if-detail-page-label"> {{ (field$ | async)?.dataType | germanString }}</label>
     </div>
 
     <div *ngIf="(field$ | async)?.dataType === dataTypes.ENUM">
       <div class="row">
-        <label class="label-column"> Options </label>
+        <label class="label-column"> {{ 'APP.ECOSYSTEM.PAGES.FIELD.OPTIONS' | translate }} </label>
         <label class="if-detail-page-label"> {{ (field$ | async)?.enumOptions | enumOptionsToString }} </label>
       </div>
     </div>
 
     <div *ngIf="(field$ | async)?.dataType === dataTypes.NUMERIC">
       <div class="row">
-      <label class="label-column"> {{ 'APP.COMMON.TERMS.UNIT' | translate }} </label>
-      <label class="if-detail-page-label"> {{ (unit$ | async)?.name }} </label>
-    </div>
+        <label class="label-column"> {{ 'APP.COMMON.TERMS.UNIT' | translate }} </label>
+        <label class="if-detail-page-label"> {{ (unit$ | async)?.name }} </label>
+      </div>
 
-    <div class="row">
-      <label class="label-column"> {{ 'APP.COMMON.TERMS.QUANTITY_TYPE' | translate }} </label>
-      <label class="if-detail-page-label"> {{ (unit$ | async)?.quantityType?.name }} </label>
-    </div>
+      <div class="row">
+        <label class="label-column"> {{ 'APP.COMMON.TERMS.QUANTITY_TYPE' | translate }} </label>
+        <label class="if-detail-page-label"> {{ (unit$ | async)?.quantityType?.name }} </label>
+      </div>
 
-    <h3> {{ 'APP.COMMON.TERMS.ACCURACY' | translate }} </h3>
+      <h3> {{ 'APP.COMMON.TERMS.ACCURACY' | translate }} </h3>
 
-    <div class="row">
-      <label class="label-column"> {{ 'APP.ECOSYSTEM.PAGES.FIELD.NUMBER_OF_DECIMALS' | translate }} </label>
-      <label class="if-detail-page-label "> {{ (field$ | async)?.accuracy }} </label>
-    </div>
+      <div class="row">
+        <label class="label-column"> {{ 'APP.ECOSYSTEM.PAGES.FIELD.NUMBER_OF_DECIMALS' | translate }} </label>
+        <label class="if-detail-page-label "> {{ (field$ | async)?.accuracy }} </label>
+      </div>
 
-    <h3> {{ 'APP.ECOSYSTEM.PAGES.FIELD.THRESHOLDS_AND_LIMITS' | translate }} </h3>
+      <h3> {{ 'APP.ECOSYSTEM.PAGES.FIELD.THRESHOLDS_AND_LIMITS' | translate }} </h3>
 
-    <div class="row">
-      <div class="label-column"> {{ 'APP.ECOSYSTEM.PAGES.FIELD.THRESHOLDS_AND_LIMITS' | translate }} </div>
-      <label class="if-detail-page-label">{{ (field$ | async)?.thresholdType | titlecase }}</label>
+      <div class="row">
+        <div class="label-column"> {{ 'APP.ECOSYSTEM.PAGES.FIELD.THRESHOLDS_AND_LIMITS' | translate }} </div>
+        <label class="if-detail-page-label">{{ (field$ | async)?.thresholdType | titlecase }}</label>
+      </div>
     </div>
 
   </div>

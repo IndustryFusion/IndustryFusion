@@ -47,7 +47,8 @@
         "CITY": "Ville",
 				"COUNTRY": "Pays",
 				"COUNTRY_PLACEHOLDER": "Sélectionnez un pays...",
-				"DESCRIPTION": "Description",
+        "DATA_TYPE": "Type de données",
+        "DESCRIPTION": "Description",
 				"FACTORY": "Usine",
 				"FACTORY_SITE": "Site de l'usine",
 				"FACTORY_SITES": "Sites de production",
@@ -209,11 +210,15 @@
 				}
 			},
 			"FIELD_DIALOG": {
+        "DEFINE_DATA_TYPE": "Définir le type de données",
+        "SELECT_DATA_TYPE": "Sélectionner le type de données",
 				"ACCURACY_PLACEHOLDER": "Sélectionner le format de précision",
 				"DEFINE_ACCURACY": "Définir la précision",
 				"DEFINE_THRESHOLDS_AND_LIMITS": "Définir les seuils et les limites",
 				"THRESHOLDS_AND_LIMITS": "Seuils et limites",
-				"UNIT_PLACEHOLDER": "Sélectionnez l'unité"
+				"UNIT_PLACEHOLDER": "Sélectionnez l'unité",
+        "DESCRIBE_VALUES": "Décrire les valeurs",
+        "NEW_VALUE": "Nouvelle valeur"
 			},
 			"FIELD_LIST": {
 				"CONFIRMATION_DIALOG": {
@@ -234,7 +239,6 @@
 			"QUANTITY_TYPE_DIALOG": {
 				"BASE_UNIT_PLACEHOLDER": "Sélectionnez une unité de base",
 				"CATEGORICAL": "Catégorique",
-				"DATA_TYPE": "Type de données",
 				"NO_BASE_UNIT_WARNING": "Aucune unité de base sélectionnée",
 				"NUMERIC": "Numérique"
 			},
@@ -244,7 +248,6 @@
 					"MESSAGE": "Êtes-vous sûr de vouloir supprimer le type de quantité {{ itemToDelete }}?"
 				},
 				"CREATE_QUANTITY_TYPE": "Créer le type de quantité",
-				"DATA_TYPE": "Type de données",
 				"DESCRIPTION": "Description",
 				"HEADER": {
 					"CREATE": "Créer un nouveau type de quantité",
@@ -294,6 +297,7 @@
           "ASSET_TYPE_TEMPLATE_EDITOR": "Éditeur de modèles de types d'actifs"
         },
         "FIELD": {
+          "OPTIONS": "Options",
           "NUMBER_OF_DECIMALS": "Nombre de décimales",
           "THRESHOLDS_AND_LIMITS": "Seuils et limites",
           "EDIT_METRIC_OR_ATTRIBUTE": "Modifier une métrique ou un attribut"
@@ -304,33 +308,6 @@
         "UNIT": {
           "CREATED": "Créé",
           "EDIT_UNIT": "Unité d'édition"
-        }
-      },
-      "PAGES": {
-        "ASSET_SERIES_ASSET": {
-          "DIGITAL_NAMEPLATE": {
-            "DIGITAL_NAMEPLATE": "Plaque d'identification numérique",
-            "GENERATE_ASSET_ONBOARDING_FILE": "Générer le fichier d'accueil des actifs",
-            "SERIAL_NUMBERS": "Numéro de série",
-            "CONSTRUCTION_DATE": "Date de construction",
-            "INSTALLATION_DATE": "Date d'installation",
-            "CE_CERTIFICATION": "Certification CE",
-            "PROTECTION_CLASS": "Classe de protection",
-            "CONNECTIVITY_SETTINGS": "Paramètres de connectivité",
-            "CONNECTIVITY_TYPE": "Type de connectivité",
-            "PROTOCOL": "Protocole",
-            "CONNECTION_STRING": "Chaîne de connexion",
-            "ASSET_ATTRIBUTES": "Attributs des actifs",
-            "CUSTOMER_DATA": "Données clients",
-            "CUSTOMER": "Client"
-          }
-        },
-        "ASSET_SERIES_OVERVIEW": {
-          "CREATE_ASSET_BUTTON": "Créer un actif",
-          "CUSTOMER": "Client",
-          "ACTIVATION_DATE": "Date d'activation",
-          "NO_ASSETS": "Aucun actif",
-          "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Créateur de jumeaux numériques pour les actifs"
         }
       }
 		},
@@ -539,8 +516,9 @@
 					"ATTRIBUTE_NAME": "Nom de l'attribut",
 					"CUSTOM_ATTRIBUTE_NAME": "Nom de l'attribut personnalisé",
 					"NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible",
-					"WARNING_LABEL": "Les attributs ne peuvent pas être supprimés car les biens de cette série de biens existent déjà."
-				},
+					"WARNING_LABEL": "Les attributs ne peuvent pas être supprimés car les biens de cette série de biens existent déjà.",
+          "SELECT_VALUE": "Sélectionner la valeur"
+        },
 				"GENERAL_INFORMATION": {
 					"ASSET_OR_ASSET_SERIES_NAME": "Nom de l'actif ou de la série d'actifs",
 					"ASSET_SERIES_DESCRIPTION": "Description de la série d'actifs",
@@ -583,8 +561,9 @@
 					"ATTRIBUTES": {
 						"ATTRIBUTE_NAME": "Nom de l'attribut",
 						"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
-						"NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible"
-					},
+						"NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible",
+            "SELECT_VALUE": "Sélectionner la valeur"
+          },
 					"METRICS": {
 						"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
 						"DATA_SOURCE": "Source des données",
@@ -644,7 +623,34 @@
 			},
 			"SUB_HEADER": {
 				"ASSET_SERIES": "Série d'actifs"
-			}
+			},
+      "PAGES": {
+        "ASSET_SERIES_ASSET": {
+          "DIGITAL_NAMEPLATE": {
+            "DIGITAL_NAMEPLATE": "Plaque d'identification numérique",
+            "GENERATE_ASSET_ONBOARDING_FILE": "Générer le fichier d'accueil des actifs",
+            "SERIAL_NUMBERS": "Numéro de série",
+            "CONSTRUCTION_DATE": "Date de construction",
+            "INSTALLATION_DATE": "Date d'installation",
+            "CE_CERTIFICATION": "Certification CE",
+            "PROTECTION_CLASS": "Classe de protection",
+            "CONNECTIVITY_SETTINGS": "Paramètres de connectivité",
+            "CONNECTIVITY_TYPE": "Type de connectivité",
+            "PROTOCOL": "Protocole",
+            "CONNECTION_STRING": "Chaîne de connexion",
+            "ASSET_ATTRIBUTES": "Attributs des actifs",
+            "CUSTOMER_DATA": "Données clients",
+            "CUSTOMER": "Client"
+          }
+        },
+        "ASSET_SERIES_OVERVIEW": {
+          "CREATE_ASSET_BUTTON": "Créer un actif",
+          "CUSTOMER": "Client",
+          "ACTIVATION_DATE": "Date d'activation",
+          "NO_ASSETS": "Aucun actif",
+          "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Créateur de jumeaux numériques pour les actifs"
+        }
+      }
 		},
 		"FUSION_APPLETS": {
 			"CREATE": {
