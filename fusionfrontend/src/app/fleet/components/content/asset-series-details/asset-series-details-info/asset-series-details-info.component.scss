@@ -16,20 +16,20 @@
 @import 'abstract/variables';
 @import 'base/typography';
 
-.asset {
+.asset-series-details {
   display: flex;
   height: 180px;
   padding: 0 5%;
 
-  .asset-img {
+  .asset-series-img {
     width: 120px;
     height: 120px;
     border-radius: 60px;
-    margin: 25px 50px 25px 0px;
+    margin: 25px 50px 25px 0;
     overflow: hidden;
   }
 
-  .asset-info {
+  .asset-series-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
