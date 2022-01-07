@@ -23,7 +23,7 @@ under the License.
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.2.RELEASE</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
     <groupId>io.fusion</groupId>
@@ -51,7 +51,7 @@ under the License.
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>28.1-jre</version>
+                <version>30.0-jre</version>
             </dependency>
             <dependency>
                 <scope>compile</scope>
