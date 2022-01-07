@@ -30,7 +30,6 @@ import { NameWithVersionPipe } from 'src/app/shared/pipes/namewithversion.pipe';
 })
 export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
 
-  @Input() mode: DialogType = DialogType.EDIT;
   @Input() assetSeriesForm: FormGroup;
   @Input() relatedManufacturer: Company;
   @Input() relatedAssetType: AssetType;

@@ -15,7 +15,7 @@ import { ProtectionClassService } from '../../../../../core/services/api/protect
   styleUrls: ['./asset-series-wizard-nameplate-and-connectivity-settings.component.scss']
 })
 export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implements OnInit {
-  @Input() mode: DialogType;
+  @Input() type: DialogType;
   @Input() assetSeries: AssetSeries;
   @Input() assetSeriesForm: FormGroup;
   @Output() stepChange = new EventEmitter<number>();
@@ -41,7 +41,7 @@ export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implemen
     this.initProtectionClassOptions();
 
     this.updateConnectivityProtocolOptionsAndInfoText();
-    if (this.mode === DialogType.CREATE) {
+    if (this.type === DialogType.CREATE) {
       this.updateConnectivityProtocolIdAndConnectionString();
     }
 
@@ -58,7 +58,7 @@ export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implemen
     this.assetSeriesForm.valueChanges.subscribe(() => this.valid.emit(this.isValid()));
 
     this.connectivitySettingsForm.patchValue(this.assetSeries.connectivitySettings);
-    if (this.mode === DialogType.CREATE) {
+    if (this.type === DialogType.CREATE) {
       this.selectFirstItemsInDropdowns();
     }
   }
@@ -69,7 +69,7 @@ export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implemen
   }
 
   private disableFormGroupOnEditMode() {
-    if (this.mode === DialogType.EDIT) {
+    if (this.type === DialogType.EDIT) {
       this.connectivitySettingsForm.get('connectivityTypeId').disable( { onlySelf: true });
       this.connectivitySettingsForm.get('connectivityProtocolId').disable( { onlySelf: true });
       this.connectivitySettingsForm.get('connectionString').disable( { onlySelf: true });

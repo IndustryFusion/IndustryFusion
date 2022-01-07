@@ -49,7 +49,7 @@ export class AssetSeriesWizardComponent implements OnInit {
   assetSeries: AssetSeries;
   assetSeriesForm: FormGroup;
 
-  mode: DialogType = DialogType.CREATE;
+  type: DialogType = DialogType.CREATE;
   connectivitySettingsValid: boolean;
   attributesValid: boolean;
   metricsValid: boolean;
@@ -78,9 +78,57 @@ export class AssetSeriesWizardComponent implements OnInit {
     this.initFromConfigData(dialogConfig);
   }
 
+  private resolve() {
+    this.fieldsResolver.resolve().subscribe();
+    this.connectivityTypeResolver.resolve().subscribe();
+    this.assetTypesResolver.resolve().subscribe();
+    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
+  }
+
+  private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
+    this.companyId = dialogConfig.data.companyId;
+
+    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
+    this.type = assetSeriesId ? DialogType.EDIT : DialogType.CREATE;
+
+    if (this.type === DialogType.EDIT) {
+      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
+        .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
+    }
+  }
+
   ngOnInit() {
     this.createAssetSeriesFormGroup();
     this.setIfFieldSourcesCanBeDeleted();
+  }
+
+  private setIfFieldSourcesCanBeDeleted() {
+    this.fieldSourcesCanBeDeleted = true;
+    if (this.type === DialogType.EDIT) {
+      this.assetSeriesDetailsQuery.selectAssetSeriesDetails(this.dialogConfig.data.assetSeriesId).subscribe(assetSeriesDetails => {
+        this.fieldSourcesCanBeDeleted = assetSeriesDetails.assetCount < 1;
+      });
+    }
+  }
+
+  private createAssetSeriesFormGroup(): void {
+    this.assetSeriesForm = this.formBuilder.group({
+      id: [],
+      version: [],
+      name: ['', WizardHelper.requiredTextValidator],
+      description: ['', WizardHelper.maxTextLengthValidator],
+      ceCertified: [null, Validators.required],
+      protectionClass: [null, WizardHelper.maxTextLengthValidator],
+      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
+      videoUrl: [null, WizardHelper.maxTextLengthValidator],
+      imageKey: [null, WizardHelper.maxTextLengthValidator],
+      assetTypeTemplateId: [{ value: null, disabled: this.type === DialogType.EDIT }, Validators.required],
+      companyId: [null, Validators.required],
+    });
+
+    if (this.assetSeries) {
+      this.assetSeriesForm.patchValue(this.assetSeries);
+    }
   }
 
   createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID): void {
@@ -137,54 +185,6 @@ export class AssetSeriesWizardComponent implements OnInit {
   setMetricsValid(isValid: boolean): void {
     this.metricsValid = isValid;
     this.changeDetectorRef.detectChanges();
-  }
-
-  private resolve() {
-    this.fieldsResolver.resolve().subscribe();
-    this.connectivityTypeResolver.resolve().subscribe();
-    this.assetTypesResolver.resolve().subscribe();
-    this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
-  }
-
-  private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
-    this.companyId = dialogConfig.data.companyId;
-
-    const assetSeriesId = this.dialogConfig.data.assetSeriesId;
-    this.mode = assetSeriesId ? DialogType.EDIT : DialogType.CREATE;
-
-    if (this.mode === DialogType.EDIT) {
-      this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
-    }
-  }
-
-  private createAssetSeriesFormGroup(): void {
-    this.assetSeriesForm = this.formBuilder.group({
-      id: [],
-      version: [],
-      name: ['', WizardHelper.requiredTextValidator],
-      description: ['', WizardHelper.maxTextLengthValidator],
-      ceCertified: [null, Validators.required],
-      protectionClass: [null, WizardHelper.maxTextLengthValidator],
-      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
-      videoUrl: [null, WizardHelper.maxTextLengthValidator],
-      imageKey: [null, WizardHelper.maxTextLengthValidator],
-      assetTypeTemplateId: [{ value: null, disabled: this.mode === DialogType.EDIT }, Validators.required],
-      companyId: [null, Validators.required],
-    });
-
-    if (this.assetSeries) {
-      this.assetSeriesForm.patchValue(this.assetSeries);
-    }
-  }
-
-  private setIfFieldSourcesCanBeDeleted() {
-    this.fieldSourcesCanBeDeleted = true;
-    if (this.mode === DialogType.EDIT) {
-      this.assetSeriesDetailsQuery.selectAssetSeriesDetails(this.dialogConfig.data.assetSeriesId).subscribe(assetSeriesDetails => {
-        this.fieldSourcesCanBeDeleted = assetSeriesDetails.assetCount < 1;
-      });
-    }
   }
 
   private updateAssetSeries(assetSeries: AssetSeries) {
