@@ -38,10 +38,8 @@ Instructions for copying the keycloak theme in docker:
 ## Keycloak configuration
 
 ### Create Realm
-Follow the instruction below but substitute local URLS for
-_https://platform.industry-fusion.com/fusionfrontend_ with _http://localhost:4200_.
 
-Do this to add an OISP realm with 2 clients and a concrete user that will be used to access the IF application.
+You will add an OISP realm with 2 clients and a concrete user that will be used to access the IF application and the object storage.
 
 #### Option 1: Create Realm for local Development and based on Import Realm File
 1. Click on the Master realm dropdown and click Add Realm.
@@ -50,6 +48,10 @@ Do this to add an OISP realm with 2 clients and a concrete user that will be use
 1. Click _Create_
 
 #### Option 2: Create Realm by Admin GUI
+
+Follow the instruction below but substitute local URLS for
+_https://platform.industry-fusion.com/fusionfrontend_ with _http://localhost:4200_.
+
 
 1. Click on the Master realm dropdown and click Add Realm
 1. Add Realm with name OISP and enable it
