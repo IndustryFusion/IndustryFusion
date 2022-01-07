@@ -95,6 +95,18 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     this.resolveWizard();
   }
 
+  private resolveWizard(): void {
+    this.assetSeriesResolver.resolve().subscribe();
+    this.assetResolver.resolve(this.activatedRoute.snapshot);
+    this.fleetAssetDetailsResolver.resolveFromComponent().subscribe();
+    this.assetTypesResolver.resolve().subscribe();
+    this.fieldsResolver.resolve().subscribe();
+    this.assetTypeTemplatesResolver.resolve().subscribe();
+    this.quantityTypesResolver.resolve().subscribe();
+    this.countryResolver.resolve().subscribe();
+    this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
+  }
+
   ngOnInit(): void {
     this.asset = { ...this.config.data.asset };
     this.createAssetForm();
@@ -104,7 +116,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     if (this.isAssetSeriesLocked) {
       this.isAssetSeriesLoading$.subscribe(isLoading => {
         if (!isLoading) {
-          this.prefillFormFromAssetSeries(this.relatedAssetSeriesId);
+          this.initFromAssetSeries(this.relatedAssetSeriesId);
         }
       });
     }
@@ -114,77 +126,9 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.ref) {
-      if (this.type === DialogType.CREATE) {
-        this.deleteUploadedImage();
-      }
-      this.ref.close();
-    }
-  }
-
-  private deleteUploadedImage() {
-    if (this.assetForm.get('imageKey')?.value !== ImageService.DEFAULT_ASSET_IMAGE_KEY) {
-      const companyId = this.companyQuery.getActiveId();
-      this.imageService.deleteImage(companyId, this.assetForm.get('imageKey').value).subscribe();
-    }
-  }
-
-  onStepChange(step: number) {
-    if (this.step === AssetWizardStep.GENERAL_INFORMATION) {
-     this.initAssetDraftAndUpdateForm(step);
-    } else {
-      this.step = step;
-    }
-  }
-
-  onChangeAssetSeries(assetSeriesId: ID): void {
-    if (!this.isAssetSeriesLocked) {
-      this.prefillFormFromAssetSeries(assetSeriesId);
-    }
-  }
-
-  private initAssetDraftAndUpdateForm(step: number) {
-    const assetName: string = this.assetForm.get('name').value;
-    const assetDescription: string = this.assetForm.get('description').value;
-
-    this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeriesId).subscribe(
-      asset => {
-        this.asset = asset;
-        this.asset.name = assetName;
-        this.asset.description = assetDescription;
-        this.asset.imageKey = this.assetForm.get('imageKey').value;
-        this.createAssetForm();
-        this.step = step;
-      }
-    );
-  }
-
-  onSaveAsset(): void {
-    if (this.asset && this.assetForm.valid && this.asset.fieldInstances
-        && this.metricsValid && this.attributesValid && this.subsystemsValid && this.customerDataValid) {
-
-      const asset = this.assetForm.getRawValue() as Asset;
-
-      asset.subsystemIds = this.asset.subsystemIds;
-      asset.fieldInstances = this.asset.fieldInstances;
-      asset.room = this.asset.room;
-
-      this.asset = asset;
-
-      if (this.type === DialogType.EDIT) {
-
-      } else if (this.type === DialogType.CREATE) {
-        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset).subscribe();
-      }
-
-      this.ref.close(this.asset);
-      this.ref = null;
-
-    } else {
-      this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
-      console.error('[Asset Wizard]: Error at saving asset');
-    }
+  private initFromAssetSeries(assetSeriesId: ID) {
+    this.prefillFormFromAssetSeries(assetSeriesId);
+    this.loadAssetImageFromAssetSeries();
   }
 
   private prefillFormFromAssetSeries(assetSeriesId: ID): void {
@@ -196,7 +140,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
       this.assetForm.get('handbookUrl')?.setValue(assetSeries.handbookUrl);
-      // this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey); // TODO: activate when image upload in asset series exists
+      this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey);
       this.assetForm.get('videoUrl')?.setValue(assetSeries.videoUrl);
       this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
@@ -220,16 +164,11 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resolveWizard(): void {
-    this.assetSeriesResolver.resolve().subscribe();
-    this.assetResolver.resolve(this.activatedRoute.snapshot);
-    this.fleetAssetDetailsResolver.resolveFromComponent().subscribe();
-    this.assetTypesResolver.resolve().subscribe();
-    this.fieldsResolver.resolve().subscribe();
-    this.assetTypeTemplatesResolver.resolve().subscribe();
-    this.quantityTypesResolver.resolve().subscribe();
-    this.countryResolver.resolve().subscribe();
-    this.isAssetSeriesLoading$ = this.assetSeriesQuery.selectLoading();
+  private loadAssetImageFromAssetSeries() {
+    const companyId = this.companyQuery.getActiveId();
+    this.imageService.getImageAsUriSchemeString(companyId, this.relatedAssetSeries.imageKey).subscribe(imageText => {
+      this.assetImage = imageText;
+    });
   }
 
   private createAssetForm() {
@@ -267,6 +206,63 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
+  onStepChange(step: number) {
+    if (this.step === AssetWizardStep.GENERAL_INFORMATION) {
+      this.initAssetDraftAndUpdateForm(step);
+    } else {
+      this.step = step;
+    }
+  }
+
+  private initAssetDraftAndUpdateForm(step: number) {
+    const assetName: string = this.assetForm.get('name').value;
+    const assetDescription: string = this.assetForm.get('description').value;
+
+    this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeriesId).subscribe(
+      asset => {
+        this.asset = asset;
+        this.asset.name = assetName;
+        this.asset.description = assetDescription;
+        this.asset.imageKey = this.assetForm.get('imageKey').value;
+        this.createAssetForm();
+        this.step = step;
+      }
+    );
+  }
+
+  onChangeAssetSeries(assetSeriesId: ID): void {
+    if (!this.isAssetSeriesLocked) {
+      this.initFromAssetSeries(assetSeriesId);
+    }
+  }
+
+  onSaveAsset(): void {
+    if (this.asset && this.assetForm.valid && this.asset.fieldInstances
+        && this.metricsValid && this.attributesValid && this.subsystemsValid && this.customerDataValid) {
+
+      const asset = this.assetForm.getRawValue() as Asset;
+
+      asset.subsystemIds = this.asset.subsystemIds;
+      asset.fieldInstances = this.asset.fieldInstances;
+      asset.room = this.asset.room;
+
+      this.asset = asset;
+
+      if (this.type === DialogType.EDIT) {
+
+      } else if (this.type === DialogType.CREATE) {
+        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset).subscribe();
+      }
+
+      this.ref.close(this.asset);
+      this.ref = null;
+
+    } else {
+      this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
+      console.error('[Asset Wizard]: Error at saving asset');
+    }
+  }
+
   setMetricsValid(isValid: boolean) {
     this.metricsValid = isValid;
     this.changeDetectorRef.detectChanges();
@@ -288,6 +284,23 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   updateAssetImage(assetImage: string) {
     if (assetImage) {
       this.assetImage = assetImage;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.ref) {
+      if (this.type === DialogType.CREATE) {
+        this.deleteUploadedImage();
+      }
+      this.ref.close();
+    }
+  }
+
+  private deleteUploadedImage() {
+    const isImageFromAssetSeries = this.assetForm.get('imageKey')?.value === this.relatedAssetSeries.imageKey;
+    if (this.assetForm.get('imageKey')?.value !== ImageService.DEFAULT_ASSET_IMAGE_KEY && !isImageFromAssetSeries) {
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.deleteImage(companyId, this.assetForm.get('imageKey').value).subscribe();
     }
   }
 }
