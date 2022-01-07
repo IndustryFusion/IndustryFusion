@@ -284,4 +284,10 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   setSubsystemValid(isValid: boolean) {
     this.subsystemsValid = isValid;
   }
+
+  updateAssetImage(assetImage: string) {
+    if (assetImage) {
+      this.assetImage = assetImage;
+    }
+  }
 }

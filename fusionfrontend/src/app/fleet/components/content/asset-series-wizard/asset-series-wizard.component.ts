@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { AssetSeriesService } from '../../../../core/store/asset-series/asset-series.service';
 import { AssetSeries } from '../../../../core/store/asset-series/asset-series.model';
@@ -33,13 +33,14 @@ import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-ser
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
+import { ImageService } from '../../../../core/services/api/image.service';
 
 @Component({
   selector: 'app-asset-series-wizard',
   templateUrl: './asset-series-wizard.component.html',
   styleUrls: ['./asset-series-wizard.component.scss']
 })
-export class AssetSeriesWizardComponent implements OnInit {
+export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
 
   assetType: ID;
   companyId: ID;
@@ -57,6 +58,8 @@ export class AssetSeriesWizardComponent implements OnInit {
   relatedManufacturer: Company;
   relatedAssetType: AssetType;
 
+  assetSeriesImage: string = null;
+
   AssetSeriesCreateSteps = AssetSeriesWizardStep;
 
   constructor(private assetSeriesService: AssetSeriesService,
@@ -72,6 +75,7 @@ export class AssetSeriesWizardComponent implements OnInit {
               private enumHelpers: EnumHelpers,
               private connectivityTypeResolver: ConnectivityTypeResolver,
               private dialogConfig: DynamicDialogConfig,
+              private imageService: ImageService,
               private dynamicDialogRef: DynamicDialogRef,
   ) {
     this.resolve();
@@ -128,6 +132,22 @@ export class AssetSeriesWizardComponent implements OnInit {
 
     if (this.assetSeries) {
       this.assetSeriesForm.patchValue(this.assetSeries);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.dynamicDialogRef) {
+      if (this.type === DialogType.CREATE) {
+        this.deleteUploadedImage();
+      }
+      this.dynamicDialogRef.close();
+    }
+  }
+
+  private deleteUploadedImage() {
+    if (this.assetSeriesForm.get('imageKey')?.value !== ImageService.DEFAULT_ASSET_IMAGE_KEY) {
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.deleteImage(companyId, this.assetSeriesForm.get('imageKey').value).subscribe();
     }
   }
 
@@ -222,11 +242,21 @@ export class AssetSeriesWizardComponent implements OnInit {
 
     if (this.assetSeries.id) {
       this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
-        () => this.dynamicDialogRef.close()
-      );
+        () => this.closeWizardAfterSave());
     } else {
       this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
-        .subscribe(() => this.dynamicDialogRef.close());
+        .subscribe(() => this.closeWizardAfterSave());
+    }
+  }
+
+  private closeWizardAfterSave() {
+    this.dynamicDialogRef.close();
+    this.dynamicDialogRef = null;
+  }
+
+  updateAssetSeriesImage(assetSeriesImage: string): void {
+    if (assetSeriesImage) {
+      this.assetSeriesImage = assetSeriesImage;
     }
   }
 }

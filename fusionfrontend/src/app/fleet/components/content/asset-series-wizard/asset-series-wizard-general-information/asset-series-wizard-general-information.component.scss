@@ -27,39 +27,7 @@
     }
 
     .input-div {
-     width: 100%;
-    }
-
-    .image-upload-container {
-      margin-top: 1.2rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .upload-button {
-        background: transparent url("^assets/icons/upload-icon.svg") 0 0 no-repeat padding-box;
-        opacity: 1;
-        width: 100px;
-        height: 100px;
-        background-size: contain;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-
-    .sample-asset-display {
-      display: flex;
-      margin-top: 0.5rem;
-
-      img {
-        height: min-content;
-      }
-
-      div {
-        display: flex;
-        flex-direction: column;
-      }
+      width: 100%;
     }
   }
 }
