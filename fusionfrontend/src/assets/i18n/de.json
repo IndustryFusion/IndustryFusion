@@ -5,43 +5,43 @@
 				"APPLY": "Anwenden",
 				"BACK": "Zurück",
 				"CANCEL": "Abbrechen",
-				"CONFIRM": "Bestätigen Sie",
+				"CONFIRM": "Bestätigen",
 				"CONTINUE": "Weiter",
-				"CREATE": "erstellen.",
+				"CREATE": "Erstellen.",
 				"EDIT": "Bearbeiten",
 				"FINISH": "Oberfläche",
-				"NEXT": "nächste",
-				"ONBOARD": "An Bord",
+				"NEXT": "Weiter",
+				"ONBOARD": "Onboarden",
 				"PUBLISH": "Veröffentlichen",
 				"SAVE": "Speichern",
-				"START": "Start",
-				"UPDATE": "Aktualisierung"
+				"START": "Starten",
+				"UPDATE": "Aktualisieren"
 			},
 			"HEADERS": {
 				"DASHBOARDS": "Dashboards",
-				"ECO_SYSTEM_MANAGER": "Ökosystem-Manager",
-				"FAB_MANAGER": "Betriebsleiter",
-				"FLEET_MANAGER": "Fuhrparkleiter",
-				"FUSION_APPLETS": "Fusion-Applikationen"
+				"ECO_SYSTEM_MANAGER": "EcosystemManager",
+				"FAB_MANAGER": "FactoryManager",
+				"FLEET_MANAGER": "FleetManager",
+				"FUSION_APPLETS": "Fusion Applets"
 			},
 			"STATUSES": {
 				"ERROR": "Fehler",
 				"IDLE": "Leerlauf",
 				"OFFLINE": "Offline",
-				"RUNNING": "Läuft"
+				"RUNNING": "In Betrieb"
 			},
 			"TABLE": {
 				"PAGINATION": {
 					"OF": "Von",
-					"TO": "An"
+					"TO": "Bis"
 				}
 			},
 			"TERMS": {
 				"ACCURACY": "Genauigkeit",
-				"ASSET": "Vermögenswert",
-				"ASSETS": "Vermögenswerte",
-        "ASSET_NAME": "Name der Anlage",
-        "ASSET_SERIES": "Asset-Reihe",
+				"ASSET": "Asset",
+				"ASSETS": "Assets",
+        "ASSET_NAME": "Asset-Name",
+        "ASSET_SERIES": "Asset-Baureihe",
 				"ASSET_TYPE": "Asset-Typ",
         "BASE_UNIT": "Basiseinheit",
         "CITY": "Stadt",
@@ -50,15 +50,15 @@
         "DATA_TYPE": "Datentyp",
         "DESCRIPTION": "Beschreibung",
 				"FACTORY": "Fabrik",
-				"FACTORY_SITE": "Fabrikseite",
-				"FACTORY_SITES": "Fabrikseiten",
-				"LABEL": "Etikett",
+				"FACTORY_SITE": "Standort",
+				"FACTORY_SITES": "Standorte",
+				"LABEL": "Label",
 				"MAINTENANCE_DUE": "Wartung fällig",
 				"MANUFACTURER": "Hersteller",
 				"NAME": "Name",
 				"PRIORITY": "Priorität",
-				"QUANTITY_TYPE": "Menge Typ",
-				"ROOM": "Zimmer",
+				"QUANTITY_TYPE": "Mengenart",
+				"ROOM": "Raum",
 				"ROOMS": "Räume",
 				"STATUS": "Status",
 				"STREET": "Straße",
@@ -74,63 +74,63 @@
         "ASSET_DETAILS_MENU": {
           "GENERAL_INFORMATION": "Allgemeine Informationen",
           "CONFIRMATION_DIALOG": {
-            "HEADER": "Asset-Bestätigung löschen",
-            "MESSAGE": "Sind Sie sicher, dass Sie das Asset {{ itemToDelete }} löschen möchten ?"
+            "HEADER": "Löschen bestätigen",
+            "MESSAGE": "Sind Sie sicher, dass Sie das Asset {{ itemToDelete }} löschen möchten?"
           }
         },
         "ASSET_SERIES_DETAILS_MENU": {
           "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Digital Twin Creator für Assets",
-          "ASSET_SERIES_IMPLEMENTATION": "AssetSeries-Implementierung",
+          "ASSET_SERIES_IMPLEMENTATION": "Asset-Baureihe implementieren",
           "CONFIRMATION_DIALOG": {
-            "HEADER": "Asset Serie löschen Bestätigung",
-            "MESSAGE": "Sind Sie sicher, dass Sie die Asset-Serie {{ itemToDelete }} löschen möchten?"
+            "HEADER": "Löschen bestätigen",
+            "MESSAGE": "Sind Sie sicher, dass Sie die Asset-Baureihe {{ itemToDelete }} löschen möchten?"
           }
         }
       },
       "STORE": {
         "THRESHOLD": {
           "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute Unter- und Obergrenze *",
-          "IDEAL_RANGE": "Ideale Reichweite",
+          "IDEAL_RANGE": "Optimaler Bereich",
           "CRITICAL_ALERT_RANGE": "Kritischer Alarmbereich",
           "ABSOLUTE_LOWER_LIMIT": "Absolute Untergrenze",
-          "LOWER_IDEAL_THRESHOLD": "Untere ideale Schwelle",
-          "LOWER_CRITICAL_ALERT_THRESHOLD": "Niedrigere Schwelle für kritische Alarme",
+          "LOWER_IDEAL_THRESHOLD": "Unterer optimaler Schwellenwert",
+          "LOWER_CRITICAL_ALERT_THRESHOLD": "Unterer Schwellenwert für kritische Alarme",
           "ABSOLUTE_UPPER_LIMIT": "Absolute Obergrenze",
-          "UPPER_IDEAL_THRESHOLD": "Obere ideale Schwelle",
-          "UPPER_CRITICAL_ALERT_THRESHOLD": "Obere kritische Alarmschwelle"
+          "UPPER_IDEAL_THRESHOLD": "Oberer optimaler Schwellenwert",
+          "UPPER_CRITICAL_ALERT_THRESHOLD": "Oberer Schwellenwert für kritische Alarme"
         }
       }
     },
 		"DASHBOARDS": {
 			"EQUIPMENT_EFFICIENCY_LIST": {
-				"STATUS_OVERVIEW": "Status-Übersicht",
-				"TABLE_HEADER": "Statusübersicht nach Vermögenswerten"
+				"STATUS_OVERVIEW": "Statusübersicht",
+				"TABLE_HEADER": "Statusübersicht nach Asset"
 			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Datum auswählen",
-				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Vermögenswerte)",
+				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Assets)",
 				"STATUS": {
-					"DASHBOARD_OVERVIEW_LABEL": "Status in Echtzeit"
+					"DASHBOARD_OVERVIEW_LABEL": "Echtzeit-Status"
 				},
-				"TITLE": "Dashboard zur Effizienz der Ausrüstung"
+				"TITLE": "Anlageneffizienz Dashboard"
 			},
 			"MAINTENANCE_LIST": {
-				"DAYS_TILL_MAINTENANCE": "Tage bis zur Wartung",
-				"OPERATING_HOURS_TILL_MAINTENANCE": "Betriebsstunden bis zur Wartung",
-				"TABLE_HEADER": "Wartung Dashboard"
+				"DAYS_TILL_MAINTENANCE": "Tage bis Wartung",
+				"OPERATING_HOURS_TILL_MAINTENANCE": "Betriebsstunden bis Wartung",
+				"TABLE_HEADER": "Wartungsdashboard"
 			},
 			"SUB_HEADER": {
-				"EQUIPMENT_EFFICIENCY": "Effizienz der Ausrüstung",
+				"EQUIPMENT_EFFICIENCY": "Anlageneffizienz",
 				"MAINTENANCE": "Wartung"
 			}
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
 				"ASSET_TYPES": "Asset-Typen",
-				"ASSET_TYPE_NAME": "Asset type name",
-				"ASSET_TYPE_TEMPLATES": "Asset type templates",
+				"ASSET_TYPE_NAME": "Asset-Typ Name",
+				"ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
 				"CONFIRMATION_DIALOG": {
-					"HEADER": "Asset-Typ-Bestätigung löschen",
+					"HEADER": "Löschen bestätigen",
 					"MESSAGE": "Sind Sie sicher, dass Sie den Asset-Typ {{ itemToDelete }} löschen möchten?"
 				},
 				"CREATE_ASSET_TYPE": "Asset-Typ erstellen",
@@ -142,58 +142,58 @@
 			},
 			"ASSET_TYPE_TEMPLATE": {
 				"DIALOG.UPDATE": {
-					"DIALOG_DESCRIPTION": "Das Aktualisieren einer Asset-Typ-Vorlage erstellt\n   und speichert eine völlig neue Version der Vorlage"
+					"DIALOG_DESCRIPTION": "Das Aktualisieren einer Asset-Typ Vorlage erstellt\n   und speichert eine völlig neue Version der Vorlage"
 				},
 				"FIELD_HEADER_AND_ROW": {
-					"ATTRIBUTE_NAME": "Attributname",
+					"ATTRIBUTE_NAME": "Attribut Name",
 					"CUSTOM": "Benutzerdefiniert",
-					"MANDATORY": "obligatorisch",
-					"METRIC_NAME": "Metrikname"
+					"MANDATORY": "erforderlich",
+					"METRIC_NAME": "Metrik Name"
 				},
 				"LIST": {
-					"ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
-					"ASSET_TYPE_TEMPLATES": "Asset-Typ-Vorlagen",
+					"ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage",
+					"ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
 					"CONFIRMATION_DIALOG": {
-						"HEADER": "Asset-Typ-Vorlagenbestätigung löschen",
-						"MESSAGE": "Sind Sie sicher, dass Sie die Asset-Typ-Vorlage {{ itemToDelete }}löschen möchten?"
+						"HEADER": "Löschen bestätigen",
+						"MESSAGE": "Sind Sie sicher, dass Sie die Asset-Typ Vorlage {{ itemToDelete }}löschen möchten?"
 					},
-					"CREATE_ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage erstellen",
+					"CREATE_ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage erstellen",
 					"CREATION_DATE": "Erstellungsdatum",
-					"DIALOG_HEADER": "Asset-Typ-Vorlagen-Editor",
-					"NO_ASSET_TYPE_TEMPLATES": "Keine Asset-Typ-Vorlagen",
-					"PUBLISH_DATE": "Datum der Veröffentlichung",
-					"STATUS": "Stand",
+					"DIALOG_HEADER": "Asset-Typ Vorlagen Editor",
+					"NO_ASSET_TYPE_TEMPLATES": "Keine Asset-Typ Vorlagen",
+					"PUBLISH_DATE": "Veröffentlichungsdatum",
+					"STATUS": "Status",
 					"VERSION": "Version"
 				},
 				"WIZARD": {
 					"DIALOG_WARNING": {
-						"GO_TO_ASSET_TYPE_TEMPLATE_BUTTON": "Zur Asset-Typ-Vorlage gehen",
-						"TEXT": "Es gibt bereits einen Entwurf einer Asset-Typ-Vorlage für diesen Asset-Typ!\nSie müssen diese erst veröffentlichen oder löschen, bevor Sie eine neue Vorlage erstellen können."
+						"GO_TO_ASSET_TYPE_TEMPLATE_BUTTON": "Zur Asset-Typ Vorlage gehen",
+						"TEXT": "Es gibt bereits einen Entwurf einer Asset-Typ Vorlage für diesen Asset-Typ!\nSie müssen diese erst veröffentlichen oder löschen, bevor Sie eine neue Vorlage erstellen können."
 					},
 					"STEP_FINISHED": {
-						"ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
-						"CREATE_TEXT": "Ihre Asset-Typ-Vorlage wurde\n    erfolgreich erstellt",
-						"UPDATE_TEXT": "Ihre Asset-Typ-Vorlage wurde\n   erfolgreich aktualisiert"
+						"ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage",
+						"CREATE_TEXT": "Ihre Asset-Typ Vorlage wurde\n    erfolgreich erstellt",
+						"UPDATE_TEXT": "Ihre Asset-Typ Vorlage wurde\n   erfolgreich aktualisiert"
 					},
 					"STEP_FOUR": {
 						"ADD_ATTRIBUTE": "Attribut hinzufügen",
-						"ADD_METRIC": "Metrisch hinzufügen",
-						"REVIEW_ATTRIBUTES": "Überprüfung der Attribute",
-						"REVIEW_METRICS": "Überprüfung der Metriken",
-						"SAVE_AND_CLOSE_BUTTON": "Vorlage speichern und schließen"
+						"ADD_METRIC": "Metrik hinzufügen",
+						"REVIEW_ATTRIBUTES": "Attribute überprüfen",
+						"REVIEW_METRICS": "Metriken überprüfen",
+						"SAVE_AND_CLOSE_BUTTON": "Speichern und schließen"
 					},
 					"STEP_ONE": {
-						"ASSET_TYPE_TEMPLATE_NAME": "Asset-Typ Vorlagenname",
+						"ASSET_TYPE_TEMPLATE_NAME": "Name der Asset-Typ Vorlage",
 						"CREATE_NEW": "Neu erstellen",
 						"CREATE_OR_UPDATE_TEMPLATE": "Eine neue Vorlage erstellen oder eine bestehende aktualisieren?",
 						"SELECT_ASSET_TYPE": "Asset-Typ auswählen",
-						"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage auswählen",
-						"TITLE": "Asset-Typ-Vorlage erstellen oder aktualisieren",
+						"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage auswählen",
+						"TITLE": "Asset-Typ Vorlage erstellen oder aktualisieren",
 						"USE_EXISTING_TEMPLATE": "Vorhandene Vorlage verwenden"
 					},
 					"STEP_PUBLISHED": {
-						"ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
-						"TEXT": "Das Veröffentlichen dieses Asset TypeTemplate\nsperrt es für die weitere Bearbeitung"
+						"ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage",
+						"TEXT": "Das Veröffentlichen dieser Asset-Typ Vorlage\n sperrt es für die weitere Bearbeitung"
 					},
 					"STEP_THREE": {
 						"ADD_ATTRIBUTE": "Attribut hinzufügen",
@@ -202,18 +202,18 @@
 						"SELECT_ATTRIBUTE_PLACEHOLDER": "Attribut auswählen..."
 					},
 					"STEP_TWO": {
-						"ADD_METRIC": "Metrisch hinzufügen",
+						"ADD_METRIC": "Metrik hinzufügen",
 						"ADD_METRICS": "Metriken hinzufügen",
-						"SELECT_METRIC": "Metrisch wählen",
-						"SELECT_METRIC_PLACEHOLDER": "Metrisches Maß auswählen..."
+						"SELECT_METRIC": "Metrik wählen",
+						"SELECT_METRIC_PLACEHOLDER": "Metrik Maß auswählen..."
 					}
 				}
 			},
 			"FIELD_DIALOG": {
         "DEFINE_DATA_TYPE": "Datentyp definieren",
         "SELECT_DATA_TYPE": "Datentyp auswählen",
-				"ACCURACY_PLACEHOLDER": "Format für die Genauigkeit auswählen",
-				"DEFINE_ACCURACY": "Definieren Sie Genauigkeit",
+				"ACCURACY_PLACEHOLDER": "Genauigkeit auswählen",
+				"DEFINE_ACCURACY": "Definieren Sie die Genauigkeit",
 				"DEFINE_THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte definieren",
 				"THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte",
 				"UNIT_PLACEHOLDER": "Einheit auswählen",
@@ -222,19 +222,19 @@
 			},
 			"FIELD_LIST": {
 				"CONFIRMATION_DIALOG": {
-					"HEADER": "Löschen der Metrik- oder Attribut-Bestätigung",
-					"MESSAGE": "Sind Sie sicher, dass Sie die Metrik oder das Attribut {{ itemToDelete }} löschen wollen?"
+					"HEADER": "Löschen bestätigen",
+					"MESSAGE": "Sind Sie sicher, dass Sie die Metrik oder das Attribut {{ itemToDelete }} löschen möchten?"
 				},
 				"CREATE_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut erstellen",
-				"DATE_CREATED": "Datum erstellt",
+				"DATE_CREATED": "Erstellungsdatum",
 				"FIELD_NAME": "Feldname",
 				"HEADER": {
 					"CREATE": "Neue Metrik oder neues Attribut erstellen",
 					"EDIT": "Metrik oder Attribut bearbeiten"
 				},
-				"METRICS_AND_ATTRIBUTES": "Metriken und Attribute",
+				"METRICS_AND_ATTRIBUTES": "Metriken & Attribute",
 				"METRIC_AND_ATTRIBUTE": "Metrik & Attribut",
-				"NO_METRICS_AND_ATTRIBUTES": "Keine Metriken und Attribute"
+				"NO_METRICS_AND_ATTRIBUTES": "Keine Metriken & Attribute"
 			},
 			"QUANTITY_TYPE_DIALOG": {
 				"BASE_UNIT_PLACEHOLDER": "Wählen Sie eine Basiseinheit",
@@ -244,57 +244,57 @@
 			},
 			"QUANTITY_TYPE_LIST": {
 				"CONFIRMATION_DIALOG": {
-					"HEADER": "Mengenartbestätigung löschen",
+					"HEADER": "Löschen bestätigen",
 					"MESSAGE": "Sind Sie sicher, dass Sie die Mengenart {{ itemToDelete }} löschen wollen?"
 				},
 				"CREATE_QUANTITY_TYPE": "Mengenart anlegen",
 				"DESCRIPTION": "Beschreibung",
 				"HEADER": {
 					"CREATE": "Neue Mengenart anlegen",
-					"EDIT": "Menge bearbeiten Typ"
+					"EDIT": "Mengenart bearbeiten"
 				},
-				"NO_QUANTITY_TYPES": "Keine Menge Typen",
-				"QUANTITY_NAME": "Bezeichnung der Menge",
-				"QUANTITY_TYPES": "Menge Typen"
+				"NO_QUANTITY_TYPES": "Keine Mengenart",
+				"QUANTITY_NAME": "Bezeichnung der Mengenart",
+				"QUANTITY_TYPES": "Mengenarten"
 			},
 			"SUB_HEADER": {
-				"ASSET_TYPES": "Asset-Typen",
-				"ASSET_TYPE_TEMPLATES": "Asset-Typ-Vorlagen",
-				"METRICS_AND_ATTRIBUTES": "Metriken und Attribute",
-				"QUANTITY_TYPES": "Menge Typen",
+				"ASSET_TYPES": "Asset-Baureihen",
+				"ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
+				"METRICS_AND_ATTRIBUTES": "Metriken & Attribute",
+				"QUANTITY_TYPES": "Mengenarten",
 				"UNITS": "Einheiten"
 			},
 			"UNIT_DIALOG": {
-				"UNIT_NAME": "Name der Einheit"
+				"UNIT_NAME": "Einheit"
 			},
 			"UNIT_LIST": {
 				"CONFIRMATION_DIALOG": {
-					"HEADER": "Einheit löschen Bestätigen",
-					"MESSAGE": "Sind Sie sicher, dass Sie die Einheit {{ itemToDelete }} löschen wollen?"
+					"HEADER": "Löschen bestätigen",
+					"MESSAGE": "Sind Sie sicher, dass Sie die Einheit {{ itemToDelete }} löschen möchten?"
 				},
 				"CREATE_UNIT": "Einheit erstellen",
-				"DATE_CREATED": "Datum erstellt",
+				"DATE_CREATED": "Erstellungsdatum",
 				"HEADER": {
 					"CREATE": "Neue Einheit erstellen",
 					"EDIT": "Einheit bearbeiten"
 				},
 				"NO_UNITS": "Keine Einheiten",
-				"QUANTITY": "Menge",
-				"UNIT": "Gerät",
+				"QUANTITY": "Mengenart",
+				"UNIT": "Einheit",
 				"UNITS": "Einheiten",
-				"UNIT_NAME": "Name der Einheit"
+				"UNIT_NAME": "Einheit"
 			},
       "PAGES": {
         "ASSET_TYPE": {
           "EDIT_ASSET_TYPE": "Asset-Typ {{ assetTypeName }} bearbeiten"
         },
         "ASSET_TYPE_TEMPLATE": {
-          "ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage",
-          "PUBLISHED_ON": "veröffentlicht am",
+          "ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage",
+          "PUBLISHED_ON": "Veröffentlichungsdatum",
           "METRICS": "Metriken",
           "ATTRIBUTES": "Attribute",
           "PUBLISH_TEMPLATE": "{{ assetTypeTemplateName }} veröffentlichen?",
-          "ASSET_TYPE_TEMPLATE_EDITOR": "Asset-Typ-Vorlagen-Editor"
+          "ASSET_TYPE_TEMPLATE_EDITOR": "Asset-Typ Vorlagen Editor"
         },
         "FIELD": {
           "OPTIONS": "Optionen",
@@ -303,7 +303,7 @@
           "EDIT_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut bearbeiten"
         },
         "QUANTITY_TYPE": {
-          "EDIT_QUANTITY_TYPE": "Menge bearbeiten Typ"
+          "EDIT_QUANTITY_TYPE": "Mengenart bearbeiten"
         },
         "UNIT": {
           "CREATED": "Erstellt",
@@ -316,15 +316,15 @@
 				"ASSIGN_ITEM_TEXT": "Anlage zu Zimmer",
 				"CATEGORY": "Kategorie",
 				"DIALOG_HEADING": {
-					"FACTORY_SITE_ASSIGNMENT": "Zuweisung des Werksgeländes",
+					"FACTORY_SITE_ASSIGNMENT": "Standort zuweisen",
 					"ON_BOARDING": "Asset für Onboarding auswählen",
-					"ROOM_ASSIGNMENT": "Zimmerzuweisung"
+					"ROOM_ASSIGNMENT": "Raum zuweisen"
 				},
-				"NO_ASSETS": "Keine Vermögenswerte",
-				"ONBOARD_NEW_ASSET": "Neue Anlage an Bord"
+				"NO_ASSETS": "Keine Assets",
+				"ONBOARD_NEW_ASSET": "Neues Asset onboarden"
 			},
 			"ASSET_CARD": {
-				"CONTROL_SYSTEM_TYPE": "Kontrollsystem Typ",
+				"CONTROL_SYSTEM_TYPE": "Steuerungs-Typ",
 				"GATEWAY_CONNECTIVITY": "Gateway-Konnektivität"
 			},
 			"ASSET_DETAILS": {
@@ -340,70 +340,70 @@
 					"VALUE_SINCE": "Wert seit"
 				},
 				"INFO": {
-					"FACTORY_SITE_ASSIGNMENT": "Zuweisung des Werksgeländes",
-					"ROOM_ASSIGNMENT": "Raumzuweisung ({{factorySiteName}})"
+					"FACTORY_SITE_ASSIGNMENT": "Standort zuweisen",
+					"ROOM_ASSIGNMENT": "Raum zuweisen ({{factorySiteName}})"
 				},
 				"SUB_HEADER": {
-					"APPLETS": "Applet",
+					"APPLETS": "Applets",
 					"DIGITAL_NAMEPLATE": "Digitales Typenschild",
 					"NOTIFICATIONS": "Benachrichtigungen",
-					"PERFORMANCE": "Leistung",
-					"SUBSYSTEMS": "Teilsysteme"
+					"PERFORMANCE": "Performance",
+					"SUBSYSTEMS": "Subsysteme"
 				}
 			},
 			"ASSET_INSTANTIATION": {
 				"DESCRIPTION_MODAL": {
 					"CUSTOM_NAME": "Benutzerdefinierter Name",
-					"CUSTOM_NAME_PLACEHOLDER": "Geben Sie hier einen eigenen Namen ein"
+					"CUSTOM_NAME_PLACEHOLDER": "Geben Sie einen eigenen Namen an"
 				},
 				"FACTORY_SITE_ASSIGNMENT_MODAL": {
 					"SEARCH_TEXT_PLACEHOLDER": "Name",
-					"SELECT_FACTORY_SITE": "Werksgelände auswählen"
+					"SELECT_FACTORY_SITE": "Standort auswählen"
 				},
 				"MODAL_HEADER": {
-					"FACTORY_ASSIGNMENT_MODAL": "Zuweisung des Werksgeländes",
+					"FACTORY_ASSIGNMENT_MODAL": "Standort zuweisen",
 					"GENERAL_INFORMATION": "Allgemeine Informationen",
-					"PAIRING_ASSET": "Pairing Asset",
-					"ROOM_ASSIGNMENT": "Zimmerzuweisung"
+					"PAIRING_ASSET": "Asset koppeln",
+					"ROOM_ASSIGNMENT": "Raum zuweisen"
 				},
 				"PAIRED_MODAL": {
 					"CUSTOMIZE_ASSET": "Asset anpassen",
-					"PAIRING_PROCESS": "Ihr Vermögen wird gepaart!",
+					"PAIRING_PROCESS": "Asset wird gekoppelt!",
 					"SUCCESSFULLY_PAIRED": "Erfolgreich gekoppelt!"
 				},
 				"ROOM_ASSIGNMENT_MODAL": {
 					"SELECT_FACTORY_SITE": "Raum auswählen"
 				},
 				"START_MODAL": {
-					"NO_ASSETS_TO_ONBOARD": "Keine Vermögenswerte, die an Bord gebracht werden müssen!",
-					"READY_FOR_ONBOARDING": "Bereit für Onboarding!"
+					"NO_ASSETS_TO_ONBOARD": "Keine Assets zum Onboarding!",
+					"READY_FOR_ONBOARDING": "Bereit zum Onboarding!"
 				}
 			},
 			"ASSIGN_ASSETS_TO_ROOM": {
 				"SELECT_ASSET": "Assets auswählen"
 			},
 			"FACTORY_PAGE_TITLE": {
-				"SMART_FACTORY": "Intelligente Fabrik"
+				"SMART_FACTORY": "Smart Factory"
 			},
 			"FACTORY_SITES": {
-				"ASSETS": "Vermögenswerte",
+				"ASSETS": "Assets",
 				"CITY": "Stadt",
 				"CONFIRMATION_DIALOG": {
-					"HEADER": "Werksbestätigung löschen",
-					"MESSAGE": "Sind Sie sicher, dass Sie die Fabrik {{ itemToDelete }} löschen wollen?"
+					"HEADER": "Löschen bestätigen",
+					"MESSAGE": "Sind Sie sicher, dass Sie den Standort {{ itemToDelete }} löschen möchten?"
 				},
 				"COUNTRY": "Land",
-				"CREATE_FACTORY_SITE_BUTTON": "Fabrikgelände erstellen",
+				"CREATE_FACTORY_SITE_BUTTON": "Standort erstellen",
 				"DIALOG_HEADING": {
-					"CREATE": "Neue Fabrikseite erstellen",
-					"UPDATE": "Werksgelände aktualisieren"
+					"CREATE": "Neuen Standort erstellen",
+					"UPDATE": "Standort aktualisieren"
 				},
-				"FACTORY_NAME": "Name der Fabrik",
-				"FACTORY_SITE": "Fabrikgelände",
-				"FACTORY_SITES": "Fabrikgelände",
-				"NO_FACTORY_SITES": "Keine Fabrikgelände",
+				"FACTORY_NAME": "Name des Standorts",
+				"FACTORY_SITE": "Standort",
+				"FACTORY_SITES": "Standorte",
+				"NO_FACTORY_SITES": "Keine Standorte",
 				"STREET": "Straße",
-				"ZIP": "Reißverschluss"
+				"ZIP": "PLZ"
 			},
 			"FACTORY_SITE_DIALOG": {
 				"ADDITIONAL_ADDRESS": "Zusätzliche Adresse",
@@ -411,19 +411,19 @@
 				"CITY": "Stadt",
 				"COUNTRY": "Land",
 				"COUNTRY_PLACEHOLDER": "Wählen Sie ein Land...",
-				"FACTORY_NAME": "Name der Fabrik",
-				"FACTORY_TYPE": "Typ Fabrik",
+				"FACTORY_NAME": "Name des Standorts",
+				"FACTORY_TYPE": "Standort-Typ",
 				"FACTORY_TYPES": {
-					"FABRICATION": "Fabrikation",
-					"HEADQUARTER": "Hauptquartier"
+					"FABRICATION": "Fertigung",
+					"HEADQUARTER": "Firmenzentrale"
 				},
 				"STREET": "Straße",
-				"ZIP_LABEL": "Reißverschluss",
+				"ZIP_LABEL": "PLZ",
 				"ZIP_PLACEHOLDER": "Postleitzahl"
 			},
 			"FACTORY_SUB_HEADER": {
-				"ASSETS": "Vermögenswerte",
-				"FACTORY_SITES": "Fabrikgelände",
+				"ASSETS": "Assets",
+				"FACTORY_SITES": "Standorte",
 				"ROOMS": "Räume"
 			},
 			"METRICS_BOARD": {
@@ -432,26 +432,26 @@
 				}
 			},
 			"ROOMS_LIST": {
-				"ASSET_TO_ROOM": "Anlage zu Zimmer",
+				"ASSET_TO_ROOM": "Asset zu Raum",
 				"CONFIRMATION_DIALOG": {
-					"HEADER": "Zimmerbestätigung löschen",
-					"MESSAGE": "Sind Sie sicher, dass Sie den Raum {{ itemToDelete }} löschen wollen?"
+					"HEADER": "Löschen bestätigen",
+					"MESSAGE": "Sind Sie sicher, dass Sie den Raum {{ itemToDelete }} löschen möchten?"
 				},
 				"CREATE_ROOM_BUTTON": "Raum erstellen",
 				"DIALOG_HEADER": {
-					"ADD_NEW_ROOM": "Neuen Raum zur Fabrik hinzufügen",
+					"ADD_NEW_ROOM": "Neuen Raum zum Standort hinzufügen",
 					"ASSIGN_ASSET": "Asset einem Raum zuordnen",
-					"EDIT_ROOM": "Bearbeitungsraum"
+					"EDIT_ROOM": "Raum bearbeiten"
 				},
-				"NO_ROOM": "Kein Zimmer"
+				"NO_ROOM": "Kein Raum"
 			},
 			"ROOM_DIALOG": {
-				"ROOM_DESCRIPTION_LABEL": "Beschreibung des Zimmers",
+				"ROOM_DESCRIPTION_LABEL": "Beschreibung des Raums",
 				"ROOM_DESCRIPTION_PLACEHOLDER": "Geben Sie hier eine Beschreibung ein",
-				"ROOM_NAME_LABEL": "Raum Name",
-				"ROOM_NAME_PLACEHOLDER": "Geben Sie hier einen eigenen Namen ein",
-				"SELECT_FACTORY_PLACEHOLDER": "Fabrikgelände",
-				"SELECT_FACTORY_SITE": "Werksgelände auswählen"
+				"ROOM_NAME_LABEL": "Raum-Name",
+				"ROOM_NAME_PLACEHOLDER": "Geben Sie einen eigenen Namen an",
+				"SELECT_FACTORY_PLACEHOLDER": "Standort",
+				"SELECT_FACTORY_SITE": "Standort auswählen"
 			},
       "PAGES": {
         "ASSET_DETAILS": {
@@ -460,32 +460,32 @@
             "MANUAL": "Handbuch",
             "VIDEO": "Video",
             "SERIAL_NUMBERS": "Seriennummer",
-            "CONSTRUCTION_DATE": "Construction Date",
-            "INSTALLATION_DATE": "Baudatum",
+            "CONSTRUCTION_DATE": "Herstelldatum",
+            "INSTALLATION_DATE": "Inbetriebnahmedatum",
             "CE_CERTIFICATION": "CE-Zertifizierung",
             "PROTECTION_CLASS": "Schutzklasse",
-            "CONNECTIVITY_SETTINGS": "Konnektivitätseinstellungen",
+            "CONNECTIVITY_SETTINGS": "Einstellungen zur Konnektivität",
             "CONNECTIVITY_TYPE": "Art der Konnektivität",
             "PROTOCOL": "Protokoll",
-            "CONNECTION_STRING": "Verbindungszeichenfolge",
+            "CONNECTION_STRING": "Verbindungs-String",
             "ASSET_ATTRIBUTES": "Asset-Attribute"
 
           },
           "PERFORMANCE": {
-            "HISTORICAL_VIEW": "Historische Betrachtung",
+            "HISTORICAL_VIEW": "Historische Ansicht",
             "CHOOSE_MAX_DATA_POINTS": "Wählen Sie max. Datenpunkte:",
             "ALERT_TEXT": "Um die Daten für diesen Zeitraum effizient anzuzeigen, müssen sie aggregiert werden. Max Punkte\n ist die maximale Anzahl von Punkten, die zu einem Zeitpunkt abgerufen werden.",
             "CHOOSE_START_DATE": "Startdatum wählen",
             "CHOOSE_END_DATE": "Enddatum wählen",
             "OPTIONS_MISSING": "Optionen fehlen, bitte erneut eingeben",
-            "GOT_IT": "Ich hab's!",
-            "PERFORMANCE_VIEW": "Performance-Ansicht",
-            "REALTIME_VIEW": "Ansicht in Echtzeit"
+            "GOT_IT": "Verstanden!",
+            "PERFORMANCE_VIEW": "Performance Ansicht",
+            "REALTIME_VIEW": "Realtime Ansicht"
           }
         },
         "ASSET_GRID_PAGE": {
           "ASSET_CARD_VIEW": "Asset-Kartenansicht",
-          "DISPLAY_ONLY_MATCHING_METRICS": "Nur passende Metriken anzeigen"
+          "DISPLAY_ONLY_MATCHING_METRICS": "Nur gleiche Metriken anzeigen"
         }
       }
 		},
@@ -497,52 +497,52 @@
 			},
 			"ASSET_SERIES_DETAILS": {
 				"INFO": {
-					"ASSET_SERIES_VERSION": "Asset-Serie Version"
+					"ASSET_SERIES_VERSION": "Asset-Baureihen Version"
 				},
 				"SUB_HEADER": {
-					"ASSETS": "Vermögenswerte"
+					"ASSETS": "Assets"
 				}
 			},
 			"ASSET_SERIES_LIST": {
-				"ASSET_SERIES_NAME": "Name der Anlagenserie",
-				"CREATE_ASSET_SERIES_BUTTON": "Asset-Serien erstellen",
-				"DIALOG_HEADER": "AssetSeries-Implementierung",
-				"No_ASSET_SERIES": "Keine Anlagenserie",
-				"TEMPLATE_VERSION": "Vorlage Version"
+				"ASSET_SERIES_NAME": "Name der Asset-Baureihe",
+				"CREATE_ASSET_SERIES_BUTTON": "Asset-Baureihe erstellen",
+				"DIALOG_HEADER": "Asset-Baureihen Implementierung",
+				"No_ASSET_SERIES": "Keine Asset-Baureihe",
+				"TEMPLATE_VERSION": "Version der Asset-Typ Vorlage"
 			},
 			"ASSET_SERIES_WIZARD": {
 				"ATTRIBUTES": {
 					"ATTRIBUTES": "Attribute",
 					"ATTRIBUTE_NAME": "Attribut Name",
-					"CUSTOM_ATTRIBUTE_NAME": "Name des benutzerdefinierten Attributs",
+					"CUSTOM_ATTRIBUTE_NAME": "Benutzerdefinierter Name des Attributs",
 					"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
-					"WARNING_LABEL": "Attribute können nicht gelöscht werden, da es bereits Assets dieser Asset-Serie gibt.",
+					"WARNING_LABEL": "Attribute können nicht gelöscht werden, da unter dieser Asset-Baureihe bereits Assets erstellt wurden.",
           "SELECT_VALUE": "Wert auswählen"
         },
 				"GENERAL_INFORMATION": {
-					"ASSET_OR_ASSET_SERIES_NAME": "Name der Anlage oder Anlagenserie",
-					"ASSET_SERIES_DESCRIPTION": "Beschreibung der Anlagenserie",
-					"ASSET_SERIES_NAME": "Name der Anlagenserie",
+					"ASSET_OR_ASSET_SERIES_NAME": "Name des Assets oder der Asset-Baureihe",
+					"ASSET_SERIES_DESCRIPTION": "Beschreibung der Asset-Baureihe",
+					"ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 					"GENERAL_INFORMATION": "Allgemeine Informationen",
-					"HELP_TEXT": "Wie wird meine Anlage in einer Fabrik angezeigt?",
-					"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ-Vorlage auswählen"
+					"HELP_TEXT": "Wie wird mein Asset in einer Fertigung angezeigt?",
+					"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage auswählen"
 				},
 				"METRICS": {
-					"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
+					"CUSTOM_METRIC_NAME": "Benutzerdefinierter Name der Metrik",
 					"CUSTOM_SCRIPT": "Benutzerdefiniertes Skript",
 					"DATA_SOURCE": "Datenquelle",
 					"METRICS": "Metriken",
-					"METRIC_NAME": "Metrische Bezeichnung",
+					"METRIC_NAME": "Metrik Name",
 					"NO_METRICS_AVAILABLE": "keine Metriken verfügbar",
-					"PROVIDE_SOURCE": "Quelle bereitstellen",
-					"WARNING_LABEL": "Metriken können nicht gelöscht werden, da es bereits Assets dieser Asset-Serie gibt."
+					"PROVIDE_SOURCE": "Quelle angeben",
+					"WARNING_LABEL": "Metriken können nicht gelöscht werden, da unter dieser Asset-Baureihe bereits Assets erstellt wurden."
 				},
 				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
-					"ASSET_HANDBOOK": "Vermögenshandbuch",
+					"ASSET_HANDBOOK": "Asset-Handbuch",
 					"ASSET_VIDEO": "Asset-Video",
 					"CE_CERTIFICATION": "CE-Zertifizierung",
-					"CONNECTION_STRING": "Verbindungsstring",
-					"CONNECTIVITY_SETTINGS": "Konnektivitätseinstellungen",
+					"CONNECTION_STRING": "Verbindungs-String",
+					"CONNECTIVITY_SETTINGS": "Einstellungen zur Konnektivität",
 					"CREATE_DIGITAL_NAMEPLATE": "Digitales Typenschild erstellen",
 					"NO": "Nein",
 					"PROTECTION_CLASS": "Schutzklasse",
@@ -550,7 +550,7 @@
 					"SELECT_CONNECTIVITY_TYPE": "Verbindungsart auswählen",
 					"SELECT_PROTOCOL": "Protokoll auswählen",
 					"TOOLTIP": {
-						"LABEL": "Geben Sie die richtige Verbindungszeichenfolge ein, je nachdem\n der Verbindungsart, die Sie für Ihr Asset verwenden.",
+						"LABEL": "Geben Sie den richtigen Verbindungs-String ein, je nachdem\n der Verbindungsart, die Sie für Ihr Asset verwenden.",
 						"PLC4X_CUMMUNICATION": "PLC4X-basierte Kommunikation (fusionplcdataservice)"
 					},
 					"YES": "Ja"
@@ -560,49 +560,49 @@
 				"SHARED": {
 					"ATTRIBUTES": {
 						"ATTRIBUTE_NAME": "Attribut Name",
-						"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
+						"CUSTOM_METRIC_NAME": "Benutzerdefinierter Metrik Name",
 						"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
             "SELECT_VALUE": "Wert auswählen"
           },
 					"METRICS": {
-						"CUSTOM_METRIC_NAME": "Benutzerdefinierter metrischer Name",
+						"CUSTOM_METRIC_NAME": "Benutzerdefinierter Metrik Name",
 						"DATA_SOURCE": "Datenquelle",
-						"METRIC_NAME": "Metrische Bezeichnung",
+						"METRIC_NAME": "Metrik Name",
 						"NO_METRICS_AVAILABLE": "keine Metriken verfügbar"
 					},
 					"SUBSYSTEM": {
 						"NO_SUBSYSTEMS_AVAILABLE": "keine Subsysteme verfügbar",
-						"SUBSYSTEM_NAME": "Name des Teilsystems"
+						"SUBSYSTEM_NAME": "Name des Subsystems"
 					}
 				},
 				"STEP": {
 					"ATTRIBUTES": {
-						"CUSTOMIZE_ATTRIBUTES": "Anpassen von Attributen"
+						"CUSTOMIZE_ATTRIBUTES": "Attribute anpassen"
 					},
 					"CUSTOMER_DATA": {
 						"CREATE_DIGITAL_TWIN_BUTTON": "Digitalen Zwilling erstellen",
-						"ENTERPRISE_NAME": "Name des Unternehmens",
-						"ENTER_CUSTOMER_DATA": "Eingabe Kunde Daten"
+						"ENTERPRISE_NAME": "Firmenname",
+						"ENTER_CUSTOMER_DATA": "Eingabe der Kundendaten"
 					},
 					"GENERAL_INFORMATION": {
-						"ASSET_NAME": "Asset-Name",
+						"ASSET_NAME": "Asset Name",
 						"GENERAL_INFORMATION": "Allgemeine Informationen",
-						"HELP_TEXT": "Wie wird meine Anlage in einer Fabrik angezeigt?",
-						"SELECT_ASSET_SERIES_VERSION": "Version der Asset-Serie auswählen",
+						"HELP_TEXT": "Wie wird meine Anlage in einer Fertigung angezeigt?",
+						"SELECT_ASSET_SERIES_VERSION": "Version der Asset-Baureihe auswählen",
 						"UPLOAD_PICTURE": "Bild hochladen"
 					},
 					"METRICS_THRESHOLD": {
-						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Anpassen von Metriken und Schwellenwerten"
+						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Metriken und Attribute anpassen"
 					},
 					"NAMEPLATE": {
-						"ASSET_HANDBOOK": "Vermögenshandbuch",
+						"ASSET_HANDBOOK": "Asset-Handbuch",
 						"ASSET_VIDEO": "Asset-Video",
 						"CE_CERTIFICATION": "CE-Zertifizierung",
-						"CONNECTION_STRING": "Verbindungsstring",
-						"CONSTRUCTION_DATE": "Baudatum",
+						"CONNECTION_STRING": "Verbindungs-String",
+						"CONSTRUCTION_DATE": "Herstelldatum",
 						"CREATE_DIGITAL_NAMEPLATE": "Digitales Typenschild erstellen",
 						"CUSTOMIZE_CONNECTION": "Verbindung anpassen",
-						"INSTALLATION_DATE": "Datum der Installation",
+						"INSTALLATION_DATE": "Inbetriebnahmedatum",
 						"NO": "Nein",
 						"PROTECTION_CLASS": "Schutzklasse",
 						"PROTECTION_CLASS_PLACEHOLDER": "Wählen Sie eine Schutzklasse...",
@@ -610,19 +610,19 @@
 						"YES": "Ja"
 					},
 					"REVIEW": {
-						"REVIEW_ATTRIBUTES": "Überprüfung der Attribute",
-						"REVIEW_METRICS": "Überprüfung der Metriken",
-						"REVIEW_SUBSYSTEMS": "Überprüfung der Teilsysteme"
+						"REVIEW_ATTRIBUTES": "Attribute überprüfen",
+						"REVIEW_METRICS": "Metriken überprüfen",
+						"REVIEW_SUBSYSTEMS": "Subsysteme überprüfen"
 					},
 					"SUBSYSTEMS": {
 						"ADD_SUBSYSTEM": "Subsystem hinzufügen",
 						"ADD_SUBSYSTEMS": "Subsysteme hinzufügen",
-						"SUBSYSTEMS_PLACEHOLDER": "Suche nach Subsystemen (Assets)..."
+						"SUBSYSTEMS_PLACEHOLDER": "Subsysteme suchen (Assets)..."
 					}
 				}
 			},
 			"SUB_HEADER": {
-				"ASSET_SERIES": "Asset-Reihe"
+				"ASSET_SERIES": "Asset-Baureihe"
 			},
       "PAGES": {
         "ASSET_SERIES_ASSET": {
@@ -630,14 +630,14 @@
             "DIGITAL_NAMEPLATE": "Digitales Typenschild",
             "GENERATE_ASSET_ONBOARDING_FILE": "Asset-Onboarding-Datei generieren",
             "SERIAL_NUMBERS": "Seriennummer",
-            "CONSTRUCTION_DATE": "Construction Date",
-            "INSTALLATION_DATE": "Baudatum",
+            "CONSTRUCTION_DATE": "Herstelldatum",
+            "INSTALLATION_DATE": "Inbetriebnahmedatum",
             "CE_CERTIFICATION": "CE-Zertifizierung",
             "PROTECTION_CLASS": "Schutzklasse",
-            "CONNECTIVITY_SETTINGS": "Konnektivitätseinstellungen",
+            "CONNECTIVITY_SETTINGS": "Einstellungen zur Konnektivität",
             "CONNECTIVITY_TYPE": "Art der Konnektivität",
             "PROTOCOL": "Protokoll",
-            "CONNECTION_STRING": "Verbindungszeichenfolge",
+            "CONNECTION_STRING": "Verbindungs-String",
             "ASSET_ATTRIBUTES": "Asset-Attribute",
             "CUSTOMER_DATA": "Kundendaten",
             "CUSTOMER": "Kunde"
@@ -647,7 +647,7 @@
           "CREATE_ASSET_BUTTON": "Asset erstellen",
           "CUSTOMER": "Kunde",
           "ACTIVATION_DATE": "Aktivierungsdatum",
-          "NO_ASSETS": "Keine Vermögenswerte",
+          "NO_ASSETS": "Keine Assets",
           "DIGITAL_TWIN_CREATOR_FOR_ASSETS": "Digital Twin Creator für Assets"
         }
       }
@@ -669,8 +669,8 @@
 						},
 						"ACTION_WEBHOOK": {
 							"INPUT_PLACEHOLDER": "Wert eingeben",
-							"MESSAGE_HEADER_LABEL": "Nachrichtenkopfzeilen",
-							"SELECTED_WEBHOOK_LABEL": "Ausgewählte Nachrichtenköpfe",
+							"MESSAGE_HEADER_LABEL": "Header der Nachricht",
+							"SELECTED_WEBHOOK_LABEL": "Webhook-Label",
 							"WEBHOOK_URL": "Webhook-URL"
 						},
 						"EMAIL": "E-Mail",
@@ -680,35 +680,35 @@
 					},
 					"CREATE_ACTION_BUTTON": "Neue Aktion erstellen"
 				},
-				"AUTOMATIC_RESET_CHECKBOX": "Automatischen Reset einschalten",
+				"AUTOMATIC_RESET_CHECKBOX": "Automatischer Reset",
 				"CONDITIONS": {
 					"CONDITIONS_VALUE": {
-						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "Durchschnitt & Standardabweichung Baseline",
+						"AVERAGE_AND_STANDARD_DEVIATION_BASELINE": "Baseline der Durchschnitts- & Standardabweichung",
 						"CHOOSE_TRIGGER_ASSET": "Trigger Asset auswählen",
 						"CONDITION_LABEL": "Bedingung wählen",
-						"CONDITION_TYPE_LABEL": "Konditionsart wählen",
+						"CONDITION_TYPE_LABEL": "Bedingungsart wählen",
 						"DEFINE_DURATION": "Dauer definieren",
 						"LIMIT_SELECTOR": {
-							"CALCULATE_CONTROL_LIMIT": "Berechnen Sie die Kontrollgrenze mit",
+							"CALCULATE_CONTROL_LIMIT": "Berechnen Sie die Kontrollgrenze",
 							"STANDARD_DEVIATION": "{{number}} Standardabweichung"
 						},
-						"METRIC_LABEL": "Metrisch wählen",
-						"MINIMAL_INSTANCES_FOR_CALCULATION": "Minimale Instanzen für die Berechnung",
+						"METRIC_LABEL": "Metrik wählen",
+						"MINIMAL_INSTANCES_FOR_CALCULATION": "Minimale Anzahl von Instanzen für die Berechnung",
 						"SETUP_CONDITION": "Setup Bedingung",
 						"VALUE_LABEL": "Wert eingeben"
 					},
-					"CREATE_TRIGGER_BUTTON": "Neuen Auslöser erstellen",
-					"TRIGGER": "Auslöser"
+					"CREATE_TRIGGER_BUTTON": "Neuen Trigger erstellen",
+					"TRIGGER": "Trigger"
 				},
-				"HEADER": "Achtung"
+				"HEADER": "Überschrift"
 			},
 			"LIST": {
 				"ACTIVE": "Aktiv",
 				"APPLET": "Applet",
 				"APPLETS": "Applets",
-				"APPLET_NAME": "AppletName",
+				"APPLET_NAME": "Applet Name",
 				"ARCHIVED": "Archiviert",
-				"CONDITION_SUMMARY": "Zustand Zusammenfassung",
+				"CONDITION_SUMMARY": "Zustand",
 				"CREATE_APPLET_BUTTON": "Applet erstellen",
 				"CREATE_DIALOG_HEADER": "Applet erstellen",
 				"NO_APPLET": "Kein Applet"
@@ -722,19 +722,19 @@
 		},
 		"NOTIFICATIONS": {
 			"SUB_HEADER": {
-				"CLEARED": "Gelöscht",
-				"OPEN": "Öffnen Sie"
+				"CLEARED": "Gelöst",
+				"OPEN": "Offen"
 			}
 		},
 		"SHARED": {
 			"CONTENT": {
 				"NOTIFICATIONS_LIST": {
-					"CLEARED_PLURAL": "Gelöscht",
-					"CLEARED_SINGULAR": "Gelöscht",
+					"CLEARED_PLURAL": "Gelöste",
+					"CLEARED_SINGULAR": "Gelöst",
 					"CLOSE_DIALOG": {
 						"HEADER": "Benachrichtigungsbestätigung schließen",
 						"MESSAGE_PLURAL": "Sind Sie sicher, dass Sie {{ notificationCount }} Benachrichtigungen löschen wollen?",
-						"MESSAGE_SINGULAR": "Sind Sie sicher, dass Sie die Meldung {{ notificationToClose }} löschen wollen?"
+						"MESSAGE_SINGULAR": "Sind Sie sicher, dass Sie die Benachrichtigung {{ notificationToClose }} löschen wollen?"
 					},
 					"CONDITION": "Zustand",
 					"DATE_AND_TIME": "Datum und Uhrzeit",
@@ -758,13 +758,13 @@
 					"MY_ACCOUNT_LABEL": "Mein Konto (in Keycloak öffnen)",
           "LANGUAGE": "Sprache",
 					"PAGE_TITLE": {
-						"APPLETS": "Applet",
+						"APPLETS": "Applets",
 						"DASHBOARDS": "Dashboards",
-						"ECOSYSTEM_MANAGER": "Ökosystem-Manager",
-						"FACTORY_MANAGER": "Betriebsleiter",
-						"FLEET_MANAGER": "Fuhrparkleiter",
+						"ECOSYSTEM_MANAGER": "EcosystemManager",
+						"FACTORY_MANAGER": "FactoryManager",
+						"FLEET_MANAGER": "FleetManager",
 						"NOTIFICATIONS": "Benachrichtigungen",
-						"SMART_FACTORY": "Intelligente Fabrik"
+						"SMART_FACTORY": "Smart Factory"
 					}
 				},
 				"ITEMS_OPTIONS_MENU": {
@@ -773,15 +773,15 @@
 					"CREATE": "Neu erstellen {{ createItemText }}",
 					"DELETE": "Löschen",
 					"RENAME": "Umbenennen",
-					"UPDATE": "Aktualisierung {{ updateItemText }}"
+					"UPDATE": "Aktualisieren {{ updateItemText }}"
 				},
 				"TABLE_FILTER": {
 					"ADD_FILTER": "Filter hinzufügen",
 					"CLEAR_ALL": "Alle löschen",
 					"DATE_FILTER": {
-						"DATE_AND_TIME_FILTER": "Datum & Zeit Filter",
+						"DATE_AND_TIME_FILTER": "Datum & Zeit filtern",
 						"END_DATE": "Enddatum",
-						"START_DATE": "Start Datum"
+						"START_DATE": "Startdatum"
 					},
 					"FILTER": "Filter",
 					"FILTER_BUTTON": "Filter",
@@ -799,7 +799,7 @@
 					"SEARCH": "Suche"
 				},
 				"TABLE_SELECTED_ITEMS_BAR": {
-					"DESELECT": "abwählen",
+					"DESELECT": "Abwählen",
 					"ITEMS_SELECTED": " {{ itemType }} ausgewählt",
 					"NO_ITEM_SELECTED": "Keine {{ itemType }} ausgewählt"
 				}
