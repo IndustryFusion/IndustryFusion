@@ -25,6 +25,10 @@ export class AssetInstantiationDescriptionModalComponent implements OnInit {
 
   @Input()
   assetDetailsForm: FormGroup;
+
+  @Input()
+  assetImage: string;
+
   @Output()
   descriptionAddedEvent = new EventEmitter<boolean>();
 

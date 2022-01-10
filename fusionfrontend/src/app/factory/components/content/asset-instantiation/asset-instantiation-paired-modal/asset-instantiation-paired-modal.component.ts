@@ -25,8 +25,13 @@ export class AssetInstantiationPairedModalComponent implements OnInit {
 
   @Input()
   assetDetailsForm: FormGroup;
+
+  @Input()
+  assetImage: string;
+
   @Output()
   assetPairedEvent = new EventEmitter<boolean>();
+
   pairingProcess = true;
 
 

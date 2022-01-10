@@ -16,7 +16,8 @@ under the License.
 <div>
     <div class="p-grid">
       <div class="p-col-2 p-dir-col column-class">
-        <img class="asset-image" src="assets/img/{{assetDetailsForm.get('imageKey').value}}" alt="AssetSeries Image">
+        <img *ngIf="assetImage == null" class="asset-image" src="assets/img/{{assetDetailsForm.get('imageKey').value}}" alt="Asset Image">
+        <img *ngIf="assetImage != null" class="asset-image" [src]="assetImage" alt="Asset Image">
       </div>
       <div class="p-col-4 p-grid p-dir-col column-class">
         <span class="p-col asset-name">{{assetDetailsForm.get('name').value}}</span>

@@ -44,12 +44,24 @@ export class AssetWizardStepSubsystemsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fleetAssetDetailsService.getSubsystemCandidates(this.asset.companyId,
-      this.asset.assetSeriesId).subscribe(assetDetails => this.fleetAssetDetails = assetDetails);
+    this.fleetAssetDetailsService.getSubsystemCandidates(this.asset.companyId, this.asset.assetSeriesId)
+      .subscribe(assetDetails => {
+        this.fleetAssetDetails = assetDetails;
+        this.removeAlreadyAddedSubsystems();
+      });
+  }
+
+  private removeAlreadyAddedSubsystems() {
+    const existingSubsystems = this.fleetAssetDetails.filter(candidate => this.asset.subsystemIds.includes(candidate.id));
+    existingSubsystems.forEach(subsystem => {
+      this.removedFleetAssetDetails.push(subsystem);
+      this.fleetAssetDetails.splice(this.fleetAssetDetails.indexOf(subsystem), 1);
+    });
   }
 
   public onBack(): void {
     if (this.isReadyForNextStep) {
+      this.subsystemsChild.saveValues();
       this.stepChange.emit(AssetWizardStep.SUBSYSTEMS - 1);
     }
   }
