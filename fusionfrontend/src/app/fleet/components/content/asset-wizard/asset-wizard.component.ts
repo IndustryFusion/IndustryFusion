@@ -290,17 +290,17 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.ref) {
       if (this.type === DialogType.CREATE) {
-        this.deleteUploadedImage();
+        this.deleteUploadedImageIfNotDefault();
       }
       this.ref.close();
     }
   }
 
-  private deleteUploadedImage() {
-    const isImageFromAssetSeries = this.assetForm.get('imageKey')?.value === this.relatedAssetSeries.imageKey;
-    if (this.assetForm.get('imageKey')?.value !== ImageService.DEFAULT_ASSET_IMAGE_KEY && !isImageFromAssetSeries) {
+  private deleteUploadedImageIfNotDefault() {
+    if (this.assetImage) {
       const companyId = this.companyQuery.getActiveId();
-      this.imageService.deleteImage(companyId, this.assetForm.get('imageKey').value).subscribe();
+      this.imageService.deleteImageIfNotDefaultNorParent(companyId, this.assetForm.get('imageKey').value,
+        ImageService.DEFAULT_ASSET_IMAGE_KEY, this.relatedAssetSeries.imageKey).subscribe();
     }
   }
 }

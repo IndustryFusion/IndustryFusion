@@ -87,7 +87,9 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
 
   private deletePreviouslyUploadedImage(): void {
     if (this.assetSeriesImage) {
-      this.imageService.deleteImage(this.companyId, this.assetSeriesForm.get('imageKey').value).subscribe();
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.deleteImageIfNotDefault(companyId, this.assetSeriesForm.get('imageKey').value,
+        ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY).subscribe();
     }
   }
 
