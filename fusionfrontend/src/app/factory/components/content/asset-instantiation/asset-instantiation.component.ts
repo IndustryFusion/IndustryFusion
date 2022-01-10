@@ -19,10 +19,12 @@ import { FactorySite } from '../../../../core/store/factory-site/factory-site.mo
 import {
   AssetModalMode,
   AssetModalType,
-  FactoryAssetDetailsWithFields
+  FactoryAssetDetailsWithFields, FactoryAssetDetailsWithFieldsAndImage
 } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ImageService } from '../../../../core/services/api/image.service';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
 
 enum FormAttributes {
   assetSeriesName = 'assetSeriesName',
@@ -43,7 +45,7 @@ enum FormAttributes {
 export class AssetInstantiationComponent implements OnInit {
   assetDetailsForm: FormGroup;
   assetDetails: FactoryAssetDetailsWithFields;
-  assetsToBeOnboarded: FactoryAssetDetailsWithFields[];
+  assetsToBeOnboarded: FactoryAssetDetailsWithFieldsAndImage[];
   factorySites: FactorySite[];
   selectedFactorySite: FactorySite;
   rooms: Room[];
@@ -53,21 +55,19 @@ export class AssetInstantiationComponent implements OnInit {
   assetModalTypes = AssetModalType;
   activeModalMode: AssetModalMode;
   assetModalModes = AssetModalMode;
+  assetImage: string;
 
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
+    private imageService: ImageService,
+    private companyQuery: CompanyQuery
   ) { }
 
   ngOnInit(): void {
-    this.assetDetailsForm = this.config.data.assetDetailsForm ? this.config.data.assetDetailsForm : null;
-    this.assetDetails = { ...this.config.data.assetToBeEdited };
-    this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
-    this.factorySites = this.config.data.factorySites;
-    this.selectedFactorySite = this.config.data.factorySite;
-    this.rooms = this.config.data.rooms;
-    this.activeModalMode = this.config.data.activeModalMode;
-    this.activeModalType = this.config.data.activeModalType;
+    this.initFromConfig();
+    this.loadImagesForAssetsToBeOnboarded();
+    this.loadAssetImage();
 
     if (this.activeModalMode !== this.assetModalModes.onboardAssetMode) {
       if (this.selectedFactorySite == null || this.assetDetailsForm.controls[FormAttributes.factorySiteName].value !== null) {
@@ -82,13 +82,45 @@ export class AssetInstantiationComponent implements OnInit {
     }
   }
 
-  onboardingStarted(event: FactoryAssetDetailsWithFields) {
+  private initFromConfig() {
+    this.assetDetailsForm = this.config.data.assetDetailsForm ? this.config.data.assetDetailsForm : null;
+    this.assetDetails = { ...this.config.data.assetToBeEdited };
+    this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
+    this.factorySites = this.config.data.factorySites;
+    this.selectedFactorySite = this.config.data.factorySite;
+    this.rooms = this.config.data.rooms;
+    this.activeModalMode = this.config.data.activeModalMode;
+    this.activeModalType = this.config.data.activeModalType;
+  }
+
+  private loadImagesForAssetsToBeOnboarded() {
+    if (this.assetsToBeOnboarded) {
+      const companyId = this.companyQuery.getActiveId();
+      this.assetsToBeOnboarded.forEach(asset => {
+        this.imageService.getImageAsUriSchemeString(companyId, asset.imageKey).subscribe(imageText => {
+          asset.image = imageText;
+        });
+      });
+    }
+  }
+
+  private loadAssetImage() {
+    if (this.assetDetails) {
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.getImageAsUriSchemeString(companyId, this.assetDetails.imageKey).subscribe(imageText => {
+        this.assetImage = imageText;
+      });
+    }
+  }
+
+  onboardingStarted(event: FactoryAssetDetailsWithFieldsAndImage) {
     if (event) {
       this.assetDetails = event;
       this.config.header = 'Pairing Asset';
       this.config.width = '51%';
       this.config.contentStyle = { 'padding-top': '3%' };
       this.activeModalType = this.assetModalTypes.pairAsset;
+      this.loadAssetImage();
       this.updateAssetForm();
     }
   }

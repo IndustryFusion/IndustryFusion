@@ -49,3 +49,7 @@ export enum AssetModalMode  {
 export class FactoryAssetDetailsWithFields extends FactoryAssetDetails {
   fields: FieldDetails[];
 }
+
+export class FactoryAssetDetailsWithFieldsAndImage extends FactoryAssetDetailsWithFields {
+  image: string;
+}
