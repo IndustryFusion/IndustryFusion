@@ -21,5 +21,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface ConnectivityProtocolRepository extends PagingAndSortingRepository<ConnectivityProtocol, Long> {
     Sort DEFAULT_SORT = Sort.by("name").ascending();
-
 }

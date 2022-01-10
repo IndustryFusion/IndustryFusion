@@ -27,16 +27,16 @@ import java.util.Set;
 public interface RoomRepository extends PagingAndSortingRepository<Room, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "Room.allChildren")
+    @EntityGraph(value = "Room.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<Room> findAllByfactorySiteId(Sort sort, Long factorySiteId);
 
-    @EntityGraph(value = "Room.allChildren")
+    @EntityGraph(value = "Room.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Room> findByfactorySiteIdAndId(Long factorySiteId, Long roomId);
 
-    @EntityGraph(value = "Room.allChildrenDeep")
+    @EntityGraph(value = "Room.allChildrenDeep", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Room> findDeepByfactorySiteIdAndId(Long factorySiteId, Long roomId);
 
-    @EntityGraph(value = "Room.allChildren")
+    @EntityGraph(value = "Room.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     @Query("from Room r where r.factorySite.company.id = :companyId")
     Set<Room> findAllByCompanyId(Sort sort, Long companyId);
 }
