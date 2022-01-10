@@ -97,7 +97,19 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
 
     if (this.type === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
-        .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
+        .subscribe(assetSeries => {
+          this.updateAssetSeries(assetSeries);
+          this.loadImage();
+        });
+    }
+  }
+
+  private loadImage() {
+    if (this.assetSeries) {
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.getImageAsUriSchemeString(companyId, this.assetSeries.imageKey).subscribe(imageText => {
+        this.assetSeriesImage = imageText;
+      });
     }
   }
 
