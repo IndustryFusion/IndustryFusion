@@ -38,6 +38,10 @@
   .card-block, .card-header {
     border: 0;
     padding: 1.6rem;
+
+    .card-title {
+      min-height: 1rem;
+    }
   }
 
   .card-footer {
@@ -46,14 +50,14 @@
 
   .card-img {
     img {
-      max-height: 10rem;
+      height: 9rem;
       margin: 0 auto;
-      width: auto;
+      object-fit: cover;
     }
   }
 
   .card-header {
-    min-height: 8rem;
+    min-height: 7rem;
   }
 
   table.table-noborder {
