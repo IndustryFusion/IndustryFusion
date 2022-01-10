@@ -40,7 +40,6 @@ import java.util.Set;
 @SuperBuilder
 @NoArgsConstructor
 public class ConnectivityType extends BaseEntity {
-
     @Column(nullable = false)
     private String infoText;
 

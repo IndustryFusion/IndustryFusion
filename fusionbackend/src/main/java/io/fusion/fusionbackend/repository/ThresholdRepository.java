@@ -17,12 +17,10 @@ package io.fusion.fusionbackend.repository;
 
 import io.fusion.fusionbackend.model.Threshold;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface ThresholdRepository extends PagingAndSortingRepository<Threshold, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "Company.allChildren")
     Iterable<Threshold> findAll(Sort sort);
 }
