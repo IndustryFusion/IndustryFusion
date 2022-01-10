@@ -19,11 +19,13 @@ under the License.
 
 <app-asset-instantiation-paired-modal *ngIf="activeModalType == assetModalTypes.pairAsset"
                                       [assetDetailsForm]="assetDetailsForm"
+                                      [assetImage]="assetImage"
                                       (assetPairedEvent)="finishedPairing($event)">
 </app-asset-instantiation-paired-modal>
 
 <app-asset-instantiation-description-modal  *ngIf="activeModalType == assetModalTypes.customizeAsset"
                                             [assetDetailsForm]="assetDetailsForm"
+                                            [assetImage]="assetImage"
                                             (descriptionAddedEvent)="finishedAddDescription($event)">
 </app-asset-instantiation-description-modal>
 
