@@ -34,14 +34,15 @@ import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
 import { TableSelectedItemsBarType } from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { AssetDetailMenuService } from '../../../../core/services/menu/asset-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
+import { AssetListType } from '../../../../shared/models/asset-list-type.model';
 
 @Component({
   selector: 'app-assets-list',
@@ -50,6 +51,10 @@ import { IfApiService } from '../../../../core/services/api/if-api.service';
   providers: [DialogService, ConfirmationService]
 })
 export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
+  @Input()
+  type: AssetListType = AssetListType.ASSETS;
+  AssetListType = AssetListType;
+
   @Input()
   company: Company;
   @Input()
@@ -75,11 +80,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
-
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
 
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   selectedFactoryAssets: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
@@ -113,16 +113,27 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private assetService: AssetService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private alertaAlertQuery: AlertaAlertQuery,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService,
     public ifApiService: IfApiService) {
   }
 
+  private static refreshPage(): void {
+    window.location.reload();
+  }
+
   ngOnInit() {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
     this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
+
+    if (this.type === AssetListType.SUBSYSTEMS) {
+      this.titleMapping = { '=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems' };
+    }
+
+    this.updateAlertSeverityOnNewAlerts();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -141,6 +152,19 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.filteredFactoryAssets !== null) {
       this.updateAssets();
     }
+  }
+
+  private updateAlertSeverityOnNewAlerts() {
+    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+      if (this.displayedFactoryAssets) {
+        this.displayedFactoryAssets = this.displayedFactoryAssets
+          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+        this.factoryAssetsDetailsWithFields = this.factoryAssetsDetailsWithFields
+          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+
+        this.updateTree();
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -167,18 +191,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.updateAssets();
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
   }
 
   isLastChildElement(rowNode: any): boolean {
@@ -247,7 +261,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   openAssignRoomDialog() {
     if (this.factorySite) {
-      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
+      this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselectedFactorySiteMode,
         `Room Assignment (${this.factorySite.name})`);
     } else {
       this.showAssignRoomDialog(AssetModalType.factorySiteAssignment, AssetModalMode.editRoomForAssetMode,
@@ -269,9 +283,16 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => this.searchedFactoryAssets
-      .filter(searchedAsset => this.filteredFactoryAssets.filter(filteredAsset => this.factoryAssetFilteredByStatus
-        .includes(filteredAsset)).includes(searchedAsset)).includes(asset));
+    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields
+      .filter(asset =>
+        this.searchedFactoryAssets.map(a => a.globalId).filter(searchedAssetGlobalId =>
+          this.filteredFactoryAssets.map(a => a.globalId).filter(filteredAssetGlobalId =>
+            this.factoryAssetFilteredByStatus.map(a => a.globalId)
+              .includes(filteredAssetGlobalId))
+          .includes(searchedAssetGlobalId))
+        .includes(asset.globalId)
+      );
+
     this.updateTree();
   }
 
@@ -362,11 +383,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (fileList.length > 0) {
       const selectedZipFile: File = fileList[0];
       this.ifApiService.uploadZipFileForFactoryManagerImport(this.company.id, this.factorySite.id, selectedZipFile)
-        .subscribe(() => this.refreshPage());
+        .subscribe(() => AssetsListComponent.refreshPage());
     }
-  }
-
-  private refreshPage(): void {
-    window.location.reload();
   }
 }

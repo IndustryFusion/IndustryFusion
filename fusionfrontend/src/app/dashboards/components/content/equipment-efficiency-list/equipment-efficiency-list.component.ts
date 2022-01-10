@@ -13,18 +13,18 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
 import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
 import { Company } from 'src/app/core/store/company/company.model';
-import {  TreeNode } from 'primeng/api';
+import { TreeNode } from 'primeng/api';
 import { ID } from '@datorama/akita';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
-import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
-import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
+import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -50,25 +50,35 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
 
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
-
   tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Asset Type', attributeToBeFiltered: 'category' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
     { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory', attributeToBeFiltered: 'factorySiteName'}];
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private alertaAlertQuery: AlertaAlertQuery) {
   }
 
   ngOnInit(): void {
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
+    this.updateAlertSeverityOnNewAlerts();
   }
 
-  ngOnChanges(): void {
-    this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
-    this.updateTree();
+  private updateAlertSeverityOnNewAlerts() {
+    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+      if (this.displayedFactoryAssets) {
+        this.displayedFactoryAssets = this.displayedFactoryAssets
+          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+        this.updateTree();
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.factoryAssetDetailsWithFields) {
+      this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
+      this.updateTree();
+    }
   }
 
   searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
@@ -87,18 +97,8 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     this.updateTree();
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
-    let openAlertPriority = node.data?.openAlertPriority;
-    if (!node.expanded && node.children?.length > 0) {
-      for (const child of node.children) {
-        const childMaxOpenAlertPriority: OispAlertPriority = this.getMaxOpenAlertPriority(child);
-        if (!openAlertPriority ||
-          OispAlert.getPriorityAsNumber(openAlertPriority) > OispAlert.getPriorityAsNumber(childMaxOpenAlertPriority)) {
-          openAlertPriority = childMaxOpenAlertPriority;
-        }
-      }
-    }
-    return openAlertPriority;
+  public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
+    return this.alertaAlertQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
   }
 
   private updateTree() {

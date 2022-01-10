@@ -19,8 +19,10 @@ under the License.
     <div> {{ assetTypeTemplateForm.get('name')?.value }} </div>
   </div>
 
-  <app-asset-type-template-wizard-shared-subsystems [assetTypeTemplate]="assetTypeTemplate" [isReview]="false" (changeIsValid)="onSetValid($event)"
-                                      (subsystemRemoved)="onSubsystemRemoved($event)">
+  <app-asset-type-template-wizard-shared-subsystems [isReview]="false"
+                                                    [subsystemIds]="assetTypeTemplate.subsystemIds"
+                                                    (changeIsValid)="onSetValid($event)"
+                                                    (subsystemsRemoved)="onSubsystemRemoved($event)">
   </app-asset-type-template-wizard-shared-subsystems>
 
   <div class="selection" *ngIf="isAddingMode === true">

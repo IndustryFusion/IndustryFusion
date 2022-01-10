@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssetTypeTemplateWizardSharedSubsystemsComponent } from './asset-type-template-wizard-shared-subsystems.component';
 
-describe('AssetWizardSharedSubsystemsComponent', () => {
+describe('AssetTypeTemplateWizardSharedSubsystemsComponent', () => {
   let component: AssetTypeTemplateWizardSharedSubsystemsComponent;
   let fixture: ComponentFixture<AssetTypeTemplateWizardSharedSubsystemsComponent>;
 

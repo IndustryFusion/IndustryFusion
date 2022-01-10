@@ -16,14 +16,14 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OispAlert } from '../store/oisp/oisp-alert/oisp-alert.model';
-import { OispAlertService } from '../store/oisp/oisp-alert/oisp-alert.service';
+import { AlertaAlert } from '../store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaAlertService } from '../store/oisp/alerta-alert/alerta-alert.service';
 
 @Injectable({ providedIn: 'root' })
-export class OispAlertResolver implements Resolve<OispAlert[]> {
-  constructor(private oispAlertService: OispAlertService) { }
+export class OispAlertResolver implements Resolve<AlertaAlert[]> {
+  constructor(private alertaAlertService: AlertaAlertService) { }
 
-  resolve(): Observable<OispAlert[]> {
-    return this.oispAlertService.getItems();
+  resolve(): Observable<AlertaAlert[]> {
+    return this.alertaAlertService.getItems();
   }
 }

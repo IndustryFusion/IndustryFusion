@@ -20,6 +20,10 @@ export class EnumHelpers {
       .filter(key => typeof key === 'string');
   }
 
+  public getDropdownOptions(enumeration): Array<{ name, value }> {
+    return Object.entries(enumeration).map(([key, value]) => ({ name : key, value }));
+  }
+
   public asEnum<T>(t, enumVal: T | string): T {
     if (typeof enumVal === 'string') {
       if (enumVal === 'null') {

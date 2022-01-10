@@ -74,7 +74,7 @@ public class FieldRestService {
                     fieldService.createField(fieldMapper.toEntity(fieldDto), fieldDto.getUnitId()), true);
         } else {
             return fieldMapper.toDto(
-                    fieldService.createField(fieldMapper.toEntity(fieldDto),
+                    fieldService.createFieldWithOptions(fieldMapper.toEntity(fieldDto),
                             fieldOptionMapper.toEntitySet(fieldDto.getEnumOptions())), true);
         }
     }

@@ -13,11 +13,10 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
-import { Asset } from 'src/app/core/store/asset/asset.model';
 import { AssetQuery } from 'src/app/core/store/asset/asset.query';
 import { Company } from 'src/app/core/store/company/company.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
@@ -34,6 +33,7 @@ import { RoomService } from '../../../../core/store/room/room.service';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
 import { StatusService } from '../../../../core/services/logic/status.service';
+import { AssetListType } from '../../../../shared/models/asset-list-type.model';
 
 
 @Component({
@@ -41,11 +41,16 @@ import { StatusService } from '../../../../core/services/logic/status.service';
   templateUrl: './assets-list-page.component.html',
   styleUrls: ['./assets-list-page.component.scss']
 })
-export class AssetsListPageComponent implements OnInit, OnDestroy {
+export class AssetsListPageComponent implements OnInit {
+
+  @Input()
+  type: AssetListType = AssetListType.ASSETS;
+
+  @Input()
+  factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
+
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
-  assets$: Observable<Asset[]>;
-  factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   factorySites$: Observable<FactorySite[]>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
@@ -53,7 +58,6 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   companyId: ID;
   createdAssetDetailsId: ID;
   factoryAssetStatuses$: Observable<StatusWithAssetId[]>;
-  statusType: ID = null;
 
   constructor(
     private factorySiteQuery: FactorySiteQuery,
@@ -75,16 +79,14 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
-    this.assets$ = this.factoryResolver.assets$;
     this.companyId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'companyId');
-    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
-    this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+
+    if (!this.factoryAssetDetailsWithFields$) {
+      this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    }
     this.factoryAssetDetailsWithFields$.subscribe(() => {
       this.factoryAssetStatuses$ = this.statusService.getStatusesByAssetsWithFields(this.factoryAssetDetailsWithFields$);
     });
-  }
-
-  ngOnDestroy() {
   }
 
   updateAssetData(event: [Room, FactoryAssetDetails]) {
@@ -109,7 +111,11 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   toolbarClick(button: string) {
     if (button === 'GRID') {
       this.assetQuery.setSelectedAssetIds(this.selectedIds);
-      this.router.navigate(['asset-cards', this.selectedIds.join(',')], { relativeTo: this.activatedRoute });
+
+      const commands: string[] = this.type === AssetListType.SUBSYSTEMS ? ['../..'] : [];
+      commands.push('asset-cards', this.selectedIds.join(','));
+
+      this.router.navigate(commands, { relativeTo: this.activatedRoute });
     }
   }
 }

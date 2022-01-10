@@ -25,6 +25,8 @@ export const environment = {
   apiUrlPrefix: 'api',
   oispApiUrlPrefix: 'https://PUT-YOUR-OISP-URL-HERE.com/v1/api',
   kairosApiUrlPrefix: 'https://PUT-YOUR-KAIROS-URL-HERE.com/api/v1',
+  alertaApiUrlPrefix: 'https://PUT-YOUR-ALERTA-URL-HERE.com/api',
+  alertaApiKey: 'PUT-YOUR-ALERTA-APIKEY-HERE',
   alertsUpdateIntervalMs: 10000,
   dataUpdateIntervalMs: 10000,
   assetStatusSampleRateMs: 5000,
@@ -32,6 +34,7 @@ export const environment = {
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',
+  ngsiLdBrokerUrl: 'http://PUT-YOUT-NGSI-LD-URL-HERE/ngsi-ld/v1/entities',
   keycloakConfig: {
     url: 'http://localhost:4200/auth',
     realm: 'OISP',

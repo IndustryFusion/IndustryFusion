@@ -15,8 +15,8 @@
 
 import { Asset } from '../asset/asset.model';
 import { FieldDetails } from '../field-details/field-details.model';
-import { OispAlertPriority } from '../oisp/oisp-alert/oisp-alert.model';
 import { StatusHoursOneDay } from '../../models/kairos-status-aggregation.model';
+import { IFAlertSeverity } from '../oisp/alerta-alert/alerta-alert.model';
 
 
 export class FactoryAssetDetails extends Asset {
@@ -26,7 +26,7 @@ export class FactoryAssetDetails extends Asset {
   category: string;
   roomName: string;
   factorySiteName: string;
-  openAlertPriority: OispAlertPriority;
+  openAlertSeverity: IFAlertSeverity;
   statusHoursOneDay?: StatusHoursOneDay;
   protocol: string;
 }
@@ -43,7 +43,7 @@ export enum AssetModalMode  {
   onboardAssetMode = 1,
   editAssetMode,
   editRoomForAssetMode = 3,
-  editRoomWithPreselecedFactorySiteMode = 4,
+  editRoomWithPreselectedFactorySiteMode = 4,
 }
 
 export class FactoryAssetDetailsWithFields extends FactoryAssetDetails {

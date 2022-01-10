@@ -18,6 +18,7 @@ export enum AssetTypeTemplateWizardSteps {
   METRICS,
   ATTRIBUTES,
   SUBSYSTEMS,
+  PEERS,
   REVIEW,
   FINISHED,
   PUBLISH_CONFIRM

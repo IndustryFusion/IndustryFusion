@@ -17,6 +17,7 @@
 
 :host ::ng-deep .checkbox-column {
   visibility: hidden;
+  display: flex;
 }
 
 #rowElement:hover {
@@ -47,23 +48,6 @@
 
   &:hover {
     background: $hover-grey-border;
-  }
-}
-
-.notification-icons {
-  overflow: initial !important;
-  padding-top: -2px;
-
-  .notification-low {
-    color: $alert-low;
-  }
-
-  .notification-medium {
-    color: $alert-medium;
-  }
-
-  .notification-high {
-    color: $alert-high;
   }
 }
 

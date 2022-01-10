@@ -41,12 +41,24 @@ under the License.
 
   <div class="subtitle">Review&nbsp;Subsystems</div>
   <div *ngIf="assetTypeTemplate.subsystemIds && assetTypeTemplate.subsystemIds.length > 0" class="fields-list fields-padding">
-    <app-asset-type-template-wizard-shared-subsystems [assetTypeTemplate]="assetTypeTemplate" [isReview]="true"
-                                        (backToEditPage)="onBackToSubsystems()">
+    <app-asset-type-template-wizard-shared-subsystems [isReview]="true"
+                                                      [subsystemIds]="assetTypeTemplate.subsystemIds"
+                                                      (backToEditPage)="onBackToSubsystems()">
     </app-asset-type-template-wizard-shared-subsystems>
   </div>
   <button type="button" class="template-fields-button-add" (click)="onBackToSubsystems()">
     <i class="pi pi-plus"></i>Add Subsystem
+  </button>
+
+  <div class="subtitle">Review&nbsp;Peers</div>
+  <div *ngIf="assetTypeTemplate.peers && assetTypeTemplate.peers.length > 0" class="fields-list fields-padding">
+    <app-asset-type-template-wizard-shared-peers [isReview]="true"
+                                                 [assetTypeTemplatePeers]="assetTypeTemplate.peers"
+                                                 (backToEditPage)="onBackToPeers()">
+    </app-asset-type-template-wizard-shared-peers>
+  </div>
+  <button type="button" class="template-fields-button-add" (click)="onBackToPeers()">
+    <i class="pi pi-plus"></i>Add Peer
   </button>
 </div>
 

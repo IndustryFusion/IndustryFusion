@@ -20,8 +20,8 @@ under the License.
       <p-selectButton *ngIf="isInline"  class="notifications on-white-background space-right"
                        optionLabel="name"
                        optionValue="value"
-                       [options]="[{name:'Open', value: notificationStates.OPEN},{name:'Cleared', value: notificationStates.CLEARED}]"
-                       [(ngModel)]="state"
+                       [options]="[{name:'Open', value: IFAlertStatus.OPEN},{name:'Cleared', value: IFAlertStatus.CLEARED}]"
+                       [(ngModel)]="selectedAlertStatus"
                        (ngModelChange)="onChangeTab()">
       </p-selectButton>
       <div class="single-filter-btn-div">
@@ -46,14 +46,14 @@ under the License.
         <th [style.width.%]="4"></th>
         <th [style.width.%]="30">
           <app-table-searchbar filterColumn="Rule name" [itemsToBeFiltered]="allNotifications"
-                               attributeToBeSearched="ruleName" (searchByName)="searchNotifications($event)">
+                               attributeToBeSearched="eventName" (searchByName)="searchNotifications($event)">
           </app-table-searchbar>
         </th>
         <th [style.width.%]="17" pSortableColumn="assetName">Asset
           <p-sortIcon field="assetName"></p-sortIcon>
         </th>
-        <th [style.width.%]="37.5">Condition</th>
-        <th [style.width.%]="10">Measured Value</th>
+        <th [style.width.%]="37.5">Text</th>
+        <th [style.width.%]="10">Value</th>
         <th [style.width.%]="15" pSortableColumn="timestamp">Date & Time
           <p-sortIcon field="timestamp"></p-sortIcon>
         </th>
@@ -66,12 +66,10 @@ under the License.
         <td class="checkbox-td" [style.width.%]="4">
           <p-tableCheckbox class="checkbox-column table-checkbox" [value]="notification"></p-tableCheckbox>
         </td>
-        <td [style.width.%]="4" class="notification-icons" [ngSwitch]="notification.priority">
-          <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
+        <td [style.width.%]="4">
+          <app-alert-icon [severity]="notification.severity"></app-alert-icon>
         </td>
-        <td [style.width.%]="30" class="table-bold-font">{{ notification.ruleName }}</td>
+        <td [style.width.%]="30" class="table-bold-font">{{ notification.eventName }}</td>
         <td [style.width.%]="17">{{ notification.assetName }}</td>
         <td [style.width.%]="37.5">{{ notification.condition }}</td>
         <td [style.width.%]="10">
@@ -79,7 +77,7 @@ under the License.
         </td>
         <td [style.width.%]="15">{{ notification.timestamp | date:'dd.MM.yyyy \'at\' hh:mm:ss' }}</td>
         <td [style.width.%]="5">
-          <button *ngIf="notification.status === alertStatusTypes.NEW || notification.status === alertStatusTypes.OPEN"
+          <button *ngIf="notification.status === IFAlertStatus.OPEN"
                   type="button" class="small-confirm-button" (click)="showCloseDialog([notification])">
             <i class="pi pi-check"></i>
           </button>

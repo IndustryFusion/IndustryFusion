@@ -52,3 +52,6 @@ fusionbackend:
   modelreposyncactive: true
   modelrepourl: git@github.com:IndustryFusion/fusionmodels.git
   modelRepoPrivateKeyPath: ${MODEL_REPO_SSH_KEY}
+
+ngsi-broker:
+  server-url: "http://localhost:9090"

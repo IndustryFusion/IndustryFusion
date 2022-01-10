@@ -17,6 +17,14 @@ module.exports = {
       "^/oispapi": ""
     }
   },
+  "/ngsildapi": {
+    "target": "http://localhost:9090/ngsi-ld/v1/entities",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/ngsildapi": ""
+    }
+  },
   "/kairosapi": {
     "target": "https://development.industry-fusion.com/tsdb/api/v1",
     "secure": false,
@@ -24,5 +32,12 @@ module.exports = {
     "pathRewrite": {
       "^/kairosapi": ""
     }
-  }
+  },
+  "/alertaapi": {
+    "target": "http://localhost:8082/api",
+    "secure": false,
+    "pathRewrite": {
+      "^/alertaapi": ""
+    }
+  },
 };

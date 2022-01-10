@@ -23,9 +23,9 @@ under the License.
                         class="filter-btn">
       </app-table-filter>
     </div>
-    <app-create-button (createItem)="showOnboardDialog()" class="create-btn"
-                       text="Onboard new Asset"></app-create-button>
-    <label *ngIf="factorySite != null" class="if-upload-button-light" [pTooltip]="'Import data from Fleet Manager'">
+    <app-create-button *ngIf="type === AssetListType.ASSETS" class="create-btn" text="Onboard new Asset"
+                       (createItem)="showOnboardDialog()"></app-create-button>
+    <label *ngIf="factorySite != null && type === AssetListType.ASSETS" class="if-upload-button-light" [pTooltip]="'Import data from Fleet Manager'">
       <i class="pi pi-upload"></i>
       <input type="file" accept="application/zip" (change)="onZipFileUpload($event)">
     </label>
@@ -34,7 +34,8 @@ under the License.
 
 <app-table-selected-items-bar (deleteItem)="setActiveRow(); openDeleteDialog()"
                               (deselectAllItems)="deselectAllItems()" (editItem)="setActiveRow(); openEditDialog()"
-                              (showAssetCards)="onCardsViewClick()" [itemName]="'Asset'"
+                              (showAssetCards)="onCardsViewClick()"
+                              [itemName]="type === AssetListType.ASSETS ? 'Asset' : 'Subsystem'"
                               [selectedItems]="selectedFactoryAssets"
                               [tableSelectedItemsBarTypes]="[TableSelectedItemsBarType.EDIT,
                               TableSelectedItemsBarType.DELETE, TableSelectedItemsBarType.SHOW_ASSET_CARDS]">
@@ -78,13 +79,7 @@ under the License.
         <p-treeTableCheckbox [value]="rowNode" class="column-visibility table-checkbox"></p-treeTableCheckbox>
       </td>
       <td class="column-without-padding" [style.width.%]="1.5">
-        <div [ngSwitch]="getMaxOpenAlertPriority(rowNode.node)" class="list-item-cell notification-icons">
-          <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle"
-                   class="fa-fw notification-medium"></fa-icon>
-          <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle"
-                   class="fa-fw notification-high"></fa-icon>
-        </div>
+        <app-alert-icon [severity]="getMaxOpenAlertSeverity(rowNode.node)"></app-alert-icon>
       </td>
       <td [routerLink]="getAssetLink(rowData)"
           class="asset-column p-flex-row table-bold-font right-column-padding">
