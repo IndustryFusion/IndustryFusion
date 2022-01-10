@@ -174,7 +174,8 @@ public class AssetTypeTemplateService {
                         IllegalStateException("A subsystem has to be of another asset type than the parent template.");
             }
             if (assetTypeTemplateRepository.findAllPeerIds().contains(subsystem.getId())) {
-                throw new IllegalStateException("An asset type template can not be a subsystem if already used as peer.");
+                throw new
+                        IllegalStateException("An asset type template can not be a subsystem if already used as peer.");
             }
             if (subsystem.getPublicationState().equals(PublicationState.DRAFT)) {
                 throw new IllegalStateException("A subsystem has to be a published asset type template.");
