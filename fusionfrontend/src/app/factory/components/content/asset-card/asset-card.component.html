@@ -19,7 +19,8 @@ under the License.
         <p class="description clickable" (click)="goToDetails()"> {{asset.description}}</p>
     </div>
     <div class="card-img">
-        <img class="clickable" src="assets/img/{{asset.imageKey}}" alt="image of asset" (click)="goToDetails()">
+        <img *ngIf="assetImage == null" class="clickable" src="assets/img/{{asset.imageKey}}" alt="image of asset" (click)="goToDetails()">
+        <img *ngIf="assetImage != null" class="clickable" [src]="assetImage" alt="image of asset" (click)="goToDetails()">
     </div>
     <div class="card-block">
         <div class="card-title">
