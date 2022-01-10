@@ -56,11 +56,68 @@ public class NgsiLdSerializer {
 
         JSONObject root = new JSONObject();
 
-        //Generate URN
         String id = generateUrn(asset);
-        root.put(NgsiLdVocabulary.ID, id);
+        addId(root, id);
 
-        //Add AssetType
+        addAssetType(asset, root);
+
+        addSubsystems(asset, root);
+
+        addMetainfo(asset, root);
+
+        addContext(root);
+
+
+        return getPrettyString(asset, root, id);
+    }
+
+    private void addId(JSONObject root, String id) {
+        root.put(NgsiLdVocabulary.ID, id);
+    }
+
+    private String getPrettyString(Asset asset, JSONObject root, String id) {
+        LOG.debug("Try to generate NGSI-LD File with ID: {}", id);
+        String prettyString = null;
+        try {
+            prettyString = JsonUtils.toPrettyString(root);
+        } catch (IOException e) {
+            LOG.error("Unable to generate NGSI-LD File with ID: {} from Asset {}", id, asset.getId());
+            throw new RuntimeException(e);
+        }
+        return prettyString;
+    }
+
+    private void addContext(JSONObject root) {
+        JSONArray context = new JSONArray();
+        context.add(CONTEXT_NGSILD);
+        root.put(NgsiLdVocabulary.CONTEXT, context);
+    }
+
+    private void addMetainfo(Asset asset, JSONObject root) {
+        JSONObject metainfo = new JSONObject();
+        asset.getFieldInstances().forEach(fieldInstance -> {
+            JSONObject jsonObject = new JSONObject();
+            metainfo.put(getFieldInstanceCleanName(fieldInstance), jsonObject);
+            addThreshold(jsonObject, "AbsoluteThreshold", fieldInstance.getAbsoluteThreshold());
+            addThreshold(jsonObject, "CriticalThreshold", fieldInstance.getCriticalThreshold());
+            addThreshold(jsonObject, "IdealThreshold", fieldInstance.getIdealThreshold());
+            jsonObject.put("description", fieldInstance.getDescription());
+            if (fieldInstance.getFieldSource().getRegister() != null) {
+                jsonObject.put("register", fieldInstance.getFieldSource().getRegister());
+            }
+            jsonObject.put("fieldType", fieldInstance.getFieldSource().getFieldTarget().getFieldType());
+        });
+        addProperty(root, "metainfo", metainfo);
+    }
+
+    private void addSubsystems(Asset asset, JSONObject root) {
+        List<String> urls = asset.getSubsystems().stream()
+                .map(this::generateUrn)
+                .collect(Collectors.toList());
+        addRelationship(root, "subsystems", urls);
+    }
+
+    private void addAssetType(Asset asset, JSONObject root) {
         addType(root, cleanName(asset.getAssetSeries().getName()));
 
         asset.getFieldInstances().stream().forEach(fieldInstance -> {
@@ -81,44 +138,6 @@ public class NgsiLdSerializer {
                     throw new IllegalArgumentException();
             }
         });
-
-        //add Subsystems
-        List<String> urls = asset.getSubsystems().stream()
-                .map(this::generateUrn)
-                .collect(Collectors.toList());
-        addRelationship(root, "subsystems", urls);
-
-
-        //add Metainfo
-        JSONObject metainfo = new JSONObject();
-        asset.getFieldInstances().forEach(fieldInstance -> {
-            JSONObject jsonObject = new JSONObject();
-            metainfo.put(getFieldInstanceCleanName(fieldInstance), jsonObject);
-            addThreshold(jsonObject, "AbsoluteThreshold", fieldInstance.getAbsoluteThreshold());
-            addThreshold(jsonObject, "CriticalThreshold", fieldInstance.getCriticalThreshold());
-            addThreshold(jsonObject, "IdealThreshold", fieldInstance.getIdealThreshold());
-            jsonObject.put("description", fieldInstance.getDescription());
-            if (fieldInstance.getFieldSource().getRegister() != null) {
-                jsonObject.put("register", fieldInstance.getFieldSource().getRegister());
-            }
-            jsonObject.put("fieldType", fieldInstance.getFieldSource().getFieldTarget().getFieldType());
-        });
-        addProperty(root, "metainfo", metainfo);
-
-        //add @Context
-        JSONArray context = new JSONArray();
-        context.add(CONTEXT_NGSILD);
-        root.put(NgsiLdVocabulary.CONTEXT, context);
-
-        LOG.debug("Try to generate NGSI-LD File with ID: {}", id);
-        String prettyString = null;
-        try {
-            prettyString = JsonUtils.toPrettyString(root);
-        } catch (IOException e) {
-            LOG.error("Unable to generate NGSI-LD File with ID: {} from Asset {}", id, asset.getId());
-            throw new RuntimeException(e);
-        }
-        return prettyString;
     }
 
     private void addThreshold(JSONObject jsonObject, String name, Threshold threshold) {
