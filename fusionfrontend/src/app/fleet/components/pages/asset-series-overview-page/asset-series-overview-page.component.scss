@@ -21,6 +21,16 @@
   margin: 1rem 5rem;
 }
 
-.asset-series-item {
+:host ::ng-deep .column-visibility {
+  visibility: hidden;
+}
+
+#rowElement {
   cursor: pointer;
+
+  &:hover {
+    .column-visibility {
+      visibility: visible;
+    }
+  }
 }

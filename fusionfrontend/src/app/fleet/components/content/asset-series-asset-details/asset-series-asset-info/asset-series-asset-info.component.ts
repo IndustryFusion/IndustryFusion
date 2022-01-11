@@ -20,6 +20,14 @@ import { Observable } from 'rxjs';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
+import { FactoryAssetDetailMenuService } from '../../../../../core/services/menu/factory-asset-detail-menu.service';
+import { ConfirmationService } from 'primeng/api';
+import { AssetService } from '../../../../../core/store/asset/asset.service';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { AssetWizardComponent } from '../../asset-wizard/asset-wizard.component';
+import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -31,13 +39,21 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   @Input()
   asset$: Observable<FactoryAssetDetailsWithFields>;
 
-  dropdownMenuOptions: ItemOptionsMenuType[] = [];
-
   assetIdOfImage: ID;
   assetImage: string;
+  asset: FactoryAssetDetailsWithFields;
+
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   constructor(private companyQuery: CompanyQuery,
-              private imageService: ImageService) {
+              private imageService: ImageService,
+              private assetService: AssetService,
+              private router: Router,
+              private routingLocation: Location,
+              private confirmationService: ConfirmationService,
+              private assetDetailMenuService: FactoryAssetDetailMenuService,
+              private dialogService: DialogService,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -46,6 +62,7 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
 
   private loadImageForChangedAsset() {
     this.asset$.subscribe(asset => {
+      this.asset = asset;
       if (asset.id !== this.assetIdOfImage) {
         this.assetIdOfImage = asset.id;
 
@@ -54,6 +71,32 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
           this.assetImage = imageText;
         });
       }
+    });
+  }
+
+  openEditWizard() {
+    this.dialogService.open(AssetWizardComponent, {
+      data: {
+        asset: this.asset,
+        prefilledAssetSeriesId: this.asset.assetSeriesId,
+      },
+      header: this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
+      width: '80%'
+    });
+
+    // assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
+  }
+
+  openDeleteDialog() {
+    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-asset-delete-dialog-detail',
+      this.asset.name, () => this.deleteAsset(this.asset.id));
+  }
+
+  private deleteAsset(id: ID) {
+    this.assetService.removeCompanyAsset(this.companyQuery.getActiveId(), id).subscribe(() => {
+      const currentUrlSeparated = this.routingLocation.path().split('/');
+      const newRoutingLocation = currentUrlSeparated.slice(0, currentUrlSeparated.findIndex(elem => elem === 'assets') + 1);
+      this.router.navigateByUrl(newRoutingLocation.join('/')).catch(error => console.warn('Routing error: ', error));
     });
   }
 }

@@ -31,6 +31,10 @@ import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-det
 import { AssetSeriesDetailsService } from '../../../../core/store/asset-series-details/asset-series-details.service';
 import { Company } from '../../../../core/store/company/company.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfirmationService } from 'primeng/api';
+import { FactoryAssetDetailMenuService } from '../../../../core/services/menu/factory-asset-detail-menu.service';
+import { AssetService } from '../../../../core/store/asset/asset.service';
+import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-asset-series-overview-page',
@@ -42,9 +46,8 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   assetSerieId: ID;
   assetSerieDetails$: Observable<AssetSeriesDetails>;
 
-  isLoading$: Observable<boolean>;
   factorySites$: Observable<FactorySite[]>;
-  assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite, company: Company }[]>;
+  assetsCombined$: Observable<AssetCombined[]>;
 
   assetsMapping: { [k: string]: string } = {
     '=0': this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.NO_ASSETS'),
@@ -52,23 +55,28 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
     other: '# ' + this.translate.instant('APP.COMMON.TERMS.ASSETS')
   };
   of = of;
-  public factorySiteTypes = FactorySiteType;
+  factorySiteTypes = FactorySiteType;
+  ItemOptionsMenuType = ItemOptionsMenuType;
+
+  private activeListItem: AssetCombined;
 
   constructor(private assetSeriesDetailsQuery: AssetSeriesDetailsQuery,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
               private assetQuery: AssetQuery,
+              private assetService: AssetService,
               private activatedRoute: ActivatedRoute,
               private roomQuery: RoomQuery,
               private companyQuery: CompanyQuery,
               private dialogService: DialogService,
               private factorySiteQuery: FactorySiteQuery,
               private route: ActivatedRoute,
+              private confirmationService: ConfirmationService,
+              private assetDetailMenuService: FactoryAssetDetailMenuService,
               private translate: TranslateService) {
     this.resolve(this.activatedRoute);
   }
 
   ngOnInit(): void {
-    this.isLoading$ = this.assetSeriesDetailsQuery.selectLoading();
   }
 
   ngOnDestroy(): void {
@@ -113,7 +121,6 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   createAssetFromAssetSeries() {
     const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
       data: {
-        companyId: this.companyQuery.getActiveId(),
         prefilledAssetSeriesId: this.assetSerieId,
       },
       header: this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
@@ -122,4 +129,34 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
 
     assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
   }
+
+  setActiveRow(assetCombined: AssetCombined) {
+    this.activeListItem = assetCombined;
+  }
+
+  openAssetEditWizard() {
+    this.dialogService.open(AssetWizardComponent, {
+      data: {
+        asset: this.activeListItem.asset,
+        prefilledAssetSeriesId: this.activeListItem.asset.assetSeriesId,
+      },
+      header: this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
+      width: '80%'
+    });
+
+    // assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
+  }
+
+  openAssetDeleteDialog() {
+    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-asset-delete-dialog',
+      this.activeListItem.asset.name, () =>
+        this.assetService.removeCompanyAsset(this.companyQuery.getActiveId(), this.activeListItem.asset.id).subscribe());
+  }
+}
+
+class AssetCombined {
+  id: ID;
+  asset: Asset;
+  factorySite: FactorySite;
+  company: Company;
 }
