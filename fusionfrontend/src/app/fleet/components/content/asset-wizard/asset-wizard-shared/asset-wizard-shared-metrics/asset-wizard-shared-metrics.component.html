@@ -28,7 +28,7 @@ under the License.
     <p-accordion>
       <ng-container *ngFor="let fieldInstance of fieldInstancesFormArray?.controls;">
         <ng-container [formGroup]="fieldInstance //noinspection InvalidExpressionResultType">
-          <ng-container *ngIf="fieldInstance.get('quantityDataType')?.value !== QuantityDataType.NUMERIC">
+          <ng-container *ngIf="isNonNumericOrDisabled(fieldInstance)">
             <div class="p-grid">
               <label class="if-label p-col-3" displayControlValue="name"></label>
               <label class="if-label p-col-2" displayControlValue="fieldName"></label>
@@ -43,8 +43,8 @@ under the License.
             </div>
           </ng-container>
 
-          <ng-container *ngIf="fieldInstance.get('quantityDataType')?.value === QuantityDataType.NUMERIC">
-            <p-accordionTab [disabled]="fieldInstance.get('fieldThresholdType')?.value === FieldThresholdType.DISABLED" >
+          <ng-container *ngIf="!isNonNumericOrDisabled(fieldInstance)">
+            <p-accordionTab >
               <ng-template pTemplate="header">
                 <div class="p-grid">
                   <label class="if-label p-col-3" displayControlValue="name"></label>
@@ -86,7 +86,7 @@ under the License.
                     <tr>
                       <td class="tree-line"><div></div></td>
                       <td class="tree-entry"></td>
-                      <td colspan="2"><label class="if-label-small">{{ThresholdType.getTypeTitle(type)}}</label></td>
+                      <td colspan="2"><label class="if-label-small">{{ThresholdType.getTypeTitle(type, translation)}}</label></td>
                       <td colspan="2"><label class="if-label-small-header"> {{type == ThresholdType.ABSOLUTE ? 'Threshold Value' : ''}}</label></td>
                       <td></td>
                       <td></td>
@@ -95,10 +95,10 @@ under the License.
                       <td class="tree-line"> <div></div> </td>
                       <td class="tree-entry"> <div></div> </td>
                       <td></td>
-                      <td class="label-thresholds">{{ThresholdType.getLowerLimitTitle(type)}}</td>
+                      <td class="label-thresholds">{{ThresholdType.getLowerLimitTitle(type, translation)}}</td>
                       <td>
                         <input class="threshold-input" type="number" pInputText
-                               [formControl]="fieldInstance.get('thresholds.' + type + 'Lower') //noinspection InvalidExpressionResultType">
+                               [formControl]="getFormControl(fieldInstance.get('thresholds.' + type + 'Lower'))">
                       </td>
                       <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
                       <td></td>
@@ -107,10 +107,10 @@ under the License.
                       <td class="tree-line"> <div></div> </td>
                       <td class="tree-entry"> <div></div> </td>
                       <td></td>
-                      <td class="label-thresholds">{{ThresholdType.getUpperLimitTitle(type)}}</td>
+                      <td class="label-thresholds">{{ThresholdType.getUpperLimitTitle(type, translation)}}</td>
                       <td>
                         <input class="threshold-input" type="number" pInputText
-                               [formControl]="fieldInstance.get('thresholds.' + type + 'Upper') //noinspection InvalidExpressionResultType">
+                               [formControl]="getFormControl(fieldInstance.get('thresholds.' + type + 'Upper'))">
                       </td>
                       <td><label class="if-label-small" displayControlValue="sourceUnitName"></label></td>
                       <td></td>
