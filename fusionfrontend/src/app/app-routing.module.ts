@@ -18,6 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LaunchpadPageComponent } from './shared/components/pages/launchpad-page/launchpad-page.component';
 import { MainAuthGuard } from './core/guards/main-auth.guard';
+import { AppBreadCrumbs } from './app-routing.model';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,7 +27,7 @@ const routes: Routes = [
     component: LaunchpadPageComponent,
     canActivate: [MainAuthGuard],
     data: {
-      breadcrumb: 'Launchpad'
+      breadcrumb: AppBreadCrumbs.LAUNCHPAD
     }
   },
   {

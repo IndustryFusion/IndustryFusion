@@ -20,8 +20,8 @@ under the License.
       <p-selectButton *ngIf="isInline"  class="notifications on-white-background space-right"
                        optionLabel="name"
                        optionValue="value"
-                       [options]="[{name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.OPEN_SINGULAR'), value: notificationStates.OPEN},
-                       {name: this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLEARED_SINGULAR'), value: notificationStates.CLEARED}]"
+                       [options]="[{name: transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.OPEN_SINGULAR'), value: notificationStates.OPEN},
+                       {name: transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.CLEARED_SINGULAR'), value: notificationStates.CLEARED}]"
                        [(ngModel)]="state"
                        (ngModelChange)="onChangeTab()">
       </p-selectButton>
@@ -39,10 +39,10 @@ under the License.
                                 itemTypePlural="{{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATIONS' | translate }}"
                                 (deselectAllItems)="deselectAllNotifications()" (closeNotification)="showCloseDialog(this.selectedNotifications)">
   </app-table-selected-items-bar>
-
   <p-table [(selection)]="selectedNotifications" [rowHover]="true"  [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
            [showCurrentPageReport]="true" [value]="displayedNotifications" (rowsChange)="updateRowCountInUrl($event)"
-           class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Notifications">
+           class="list-container" currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {last}
+            {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }} {totalRecords} {{ 'APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATIONS' | translate }}">
     <ng-template pTemplate="header">
       <tr>
         <th [style.width.%]="4"></th>

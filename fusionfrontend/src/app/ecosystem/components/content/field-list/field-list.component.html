@@ -23,7 +23,8 @@ under the License.
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
          [showCurrentPageReport]="true" [value]="displayedFields" (rowsChange)="updateRowCountInUrl($event)"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Metrics & Attributes">
+         class="list-container" currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {last}
+            {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }} {totalRecords} {{ 'APP.ECOSYSTEM.FIELD_LIST.METRICS_AND_ATTRIBUTES' | translate }}">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>

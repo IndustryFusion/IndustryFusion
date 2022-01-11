@@ -16,20 +16,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
+import { NotificationsBreadCrumbs } from './notifications-routing.model';
 
 const routes: Routes = [
   {
     path: 'notifications/open',
     component: NotificationsPageComponent,
     data: {
-      breadcrumb: 'Open Notifications',
+      breadcrumb: NotificationsBreadCrumbs.OPEN_NOTIFICATION,
     },
   },
   {
     path: 'notifications/cleared',
     component: NotificationsPageComponent,
     data: {
-      breadcrumb: 'Cleared Notifications',
+      breadcrumb: NotificationsBreadCrumbs.CLEARED_NOTIFICATION,
     },
   },
 ];

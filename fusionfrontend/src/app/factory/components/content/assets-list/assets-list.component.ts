@@ -125,7 +125,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService,
-    public translate: TranslateService) {
+    private  translate: TranslateService) {
   }
 
   ngOnInit() {

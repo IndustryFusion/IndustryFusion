@@ -31,7 +31,7 @@ under the License.
       <div *ngIf="!factorySiteSelected" class="input-div">
         <label class="if-label">{{  'APP.FACTORY.ROOM_DIALOG.SELECT_FACTORY_SITE' | translate }}</label>
         <p-dropdown [options]="factorySites" formControlName="factorySiteId" optionLabel="name" optionValue="id"
-                    placeholder="{{  'APP.COMMON.TERMS.FACTORY_SITE' | translate }}" class="factory-sites-dropdown"></p-dropdown>
+                    placeholder="{{  'APP.FACTORY.ROOM_DIALOG.SELECT_FACTORY_PLACEHOLDER' | translate }}" class="factory-sites-dropdown"></p-dropdown>
         </div>
       <div class="room-dialog-footer">
         <button type="button" class="if-button button-secondary" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>

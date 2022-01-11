@@ -152,12 +152,9 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   private initNameMappings(): void {
     this.titleMapping = {
-      '=0': this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NO_NOTIFICATION',
-        { statusName: this.getStatusName()}),
-      '=1': `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATION',
-        { statusName: this.getStatusName()}),
-      other: `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NO_NOTIFICATION_SELECTED',
-        { statusName: this.getStatusName()}),
+      '=0': this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NO_NOTIFICATION'),
+      '=1': `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATION'),
+      other: `# ` + this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NOTIFICATIONS')
     };
     this.editBarMapping = {
       '=0': this.transalte.instant('APP.SHARED.CONTENT.NOTIFICATIONS_LIST.NO_NOTIFICATION_SELECTED',

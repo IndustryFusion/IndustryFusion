@@ -38,11 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private ngZone: NgZone,
               private translateService: TranslateService) {
     this.translateService.addLangs(['en', 'ger']);
-    // this language will be used as a fallback when a translation isn't found in the current language
     this.translateService.setDefaultLang('en');
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    // const browserLang = translate.getBrowserLang();
-    // translateService.use(browserLang.match(/en|ger/) ? browserLang : 'en');
     this.translateService.use(localStorage.getItem('lang' || 'en'));
   }
   factorySubTitle$: Subject<string>;

@@ -44,6 +44,7 @@ import { AssetTypeQuery } from '../core/store/asset-type/asset-type.query';
 import { FieldQuery } from '../core/store/field/field.query';
 import { QuantityTypeQuery } from '../core/store/quantity-type/quantity-type.query';
 import { UnitQuery } from '../core/store/unit/unit.query';
+import { EcosystemBreadCrumbs } from './ecosystem-routing.model';
 
 const routes: Routes = [
   {
@@ -55,7 +56,7 @@ const routes: Routes = [
     },
     data: {
       roles: [Role.ECOSYSTEM_MANAGER],
-      breadcrumb: 'Asset Types',
+      breadcrumb: EcosystemBreadCrumbs.ASSET_TYPES,
     },
     children: [
       {
@@ -95,7 +96,7 @@ const routes: Routes = [
     },
     data: {
       roles: [Role.ECOSYSTEM_MANAGER],
-      breadcrumb: 'Asset Type Templates',
+      breadcrumb: EcosystemBreadCrumbs.ASSET_TYPE_TEMPLATES,
     },
     children: [
       {
@@ -131,7 +132,7 @@ const routes: Routes = [
     },
     data: {
       roles: [Role.ECOSYSTEM_MANAGER],
-      breadcrumb: 'Metrics & Attributes',
+      breadcrumb: EcosystemBreadCrumbs.METRICS_AND_ATTRIBUTES,
     },
     children: [
       {
@@ -166,7 +167,7 @@ const routes: Routes = [
     },
     data: {
       roles: [Role.ECOSYSTEM_MANAGER],
-      breadcrumb: 'Quantity Types',
+      breadcrumb: EcosystemBreadCrumbs.QUANTITY_TYPES,
     },
     children: [
       {
@@ -207,7 +208,7 @@ const routes: Routes = [
     },
     data: {
       roles: [Role.ECOSYSTEM_MANAGER],
-      breadcrumb: 'Units'
+      breadcrumb: EcosystemBreadCrumbs.UNITS
     },
     children: [
       {
