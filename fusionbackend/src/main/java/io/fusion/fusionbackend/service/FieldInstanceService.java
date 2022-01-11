@@ -21,6 +21,7 @@ import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.enums.FieldThresholdType;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
+import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class FieldInstanceService {
-    private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FieldInstanceService.class);
     private final ThresholdService thresholdService;
     private final UnitService unitService;
+    private final FieldInstanceRepository fieldInstanceRepository;
 
     @Autowired
-    public FieldInstanceService(ThresholdService thresholdService, UnitService unitService) {
+    public FieldInstanceService(ThresholdService thresholdService,
+                                UnitService unitService,
+                                FieldInstanceRepository fieldInstanceRepository) {
         this.thresholdService = thresholdService;
         this.unitService = unitService;
+        this.fieldInstanceRepository = fieldInstanceRepository;
     }
 
     public FieldInstance initFieldInstanceDraft(FieldSource fieldSource) {
@@ -134,5 +139,11 @@ public class FieldInstanceService {
                 throw new RuntimeException("Thresholds are not valid in every field instance");
             }
         }
+    }
+
+    public void delete(FieldInstance fieldInstance) {
+        fieldInstance.getAsset().getFieldInstances().remove(fieldInstance);
+        fieldInstance.setAsset(null);
+        fieldInstanceRepository.delete(fieldInstance);
     }
 }

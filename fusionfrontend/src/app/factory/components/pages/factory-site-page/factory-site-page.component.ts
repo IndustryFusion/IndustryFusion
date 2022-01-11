@@ -98,7 +98,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     const assetDetails: FactoryAssetDetails = event[1];
 
     assetDetails.id = assetDetails.id ? assetDetails.id : this.createdAssetDetailsId;
-    this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(
+    this.assetService.editFactoryAsset(assetDetails.companyId, assetDetails).subscribe(
       () => {
         if (oldRoom.id !== assetDetails.roomId) {
           this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);

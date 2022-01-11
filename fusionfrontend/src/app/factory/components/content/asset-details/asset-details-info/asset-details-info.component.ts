@@ -114,7 +114,7 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   updateAssetData(oldRoom, assetDetails) {
-    this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(
+    this.assetService.editFactoryAsset(assetDetails.companyId, assetDetails).subscribe(
       () => {
         if (oldRoom.id !== assetDetails.roomId) {
           this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);

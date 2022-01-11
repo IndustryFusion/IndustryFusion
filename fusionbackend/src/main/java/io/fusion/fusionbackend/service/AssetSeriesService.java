@@ -128,7 +128,6 @@ public class AssetSeriesService {
         validateForUpdates(sourceAssetSeries, targetAssetSeries);
 
         List<FieldSource> deletedFieldSources = targetAssetSeries.calculateDeletedFieldSources(sourceAssetSeries);
-
         deletedFieldSources.forEach(fieldSourceService::delete);
 
         targetAssetSeries.copyFrom(sourceAssetSeries);
@@ -151,7 +150,7 @@ public class AssetSeriesService {
     public void deleteAssetSeries(final Long companyId, final Long assetSeriesId) {
         final AssetSeries assetSeries = getAssetSeriesByCompany(companyId, assetSeriesId);
 
-        if (assetSeries.getAssets().size() > 0) {
+        if (!assetSeries.getAssets().isEmpty()) {
             LOG.warn("User try to delete assetSeries({}) with {} assets associated with",
                     assetSeries.getId(), assetSeries.getAssets().size());
 

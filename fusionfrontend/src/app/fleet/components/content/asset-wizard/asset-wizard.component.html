@@ -33,6 +33,7 @@ under the License.
   <div class="content">
     <app-asset-wizard-step-general-information *ngIf="step === AssetWizardStep.GENERAL_INFORMATION"
                                                [assetForm]="assetForm"
+                                               [type]="type"
                                                [isAssetSeriesLocked]="isAssetSeriesLocked"
                                                [relatedAssetSeries]="relatedAssetSeries"
                                                [relatedAssetSeriesId]="relatedAssetSeriesId"
@@ -68,6 +69,7 @@ under the License.
     </app-asset-wizard-step-review>
     <app-asset-wizard-step-customer-data *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
                                          [asset]="asset"
+                                         [type]="type"
                                          (stepChange)="onStepChange($event)" (createAsset)="onSaveAsset()"
                                          (valid)="setCustomerDataValid($event)">
     </app-asset-wizard-step-customer-data>

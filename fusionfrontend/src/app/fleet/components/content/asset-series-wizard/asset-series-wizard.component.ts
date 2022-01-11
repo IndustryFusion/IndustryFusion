@@ -59,6 +59,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
   relatedAssetType: AssetType;
 
   assetSeriesImage: string = null;
+  assetSeriesImageKeyBeforeEditing: string;
 
   AssetSeriesCreateSteps = AssetSeriesWizardStep;
 
@@ -79,7 +80,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
               private dynamicDialogRef: DynamicDialogRef,
   ) {
     this.resolve();
-    this.initFromConfigData(dialogConfig);
+    this.initFromConfig(dialogConfig);
   }
 
   private resolve() {
@@ -89,7 +90,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     this.assetSeriesDetailsResolver.resolveFromComponent().subscribe();
   }
 
-  private initFromConfigData(dialogConfig: DynamicDialogConfig): void {
+  private initFromConfig(dialogConfig: DynamicDialogConfig): void {
     this.companyId = dialogConfig.data.companyId;
 
     const assetSeriesId = this.dialogConfig.data.assetSeriesId;
@@ -98,6 +99,8 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     if (this.type === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
         .subscribe(assetSeries => {
+          this.assetSeriesImageKeyBeforeEditing = this.type === DialogType.CREATE ? ImageService.DEFAULT_ASSET_IMAGE_KEY
+            : assetSeries.imageKey;
           this.updateAssetSeries(assetSeries);
           this.loadImage();
         });
@@ -160,7 +163,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     if (this.assetSeriesImage) {
       const companyId = this.companyQuery.getActiveId();
       this.imageService.deleteImageIfNotDefault(companyId, this.assetSeriesForm.get('imageKey').value,
-        ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY).subscribe();
+        this.assetSeriesImageKeyBeforeEditing).subscribe();
     }
   }
 

@@ -19,6 +19,7 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
+import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.AssetRepository;
@@ -29,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -298,11 +301,55 @@ public class AssetService {
                                         final Asset sourceAsset) {
         final Asset targetAsset = getAssetOverAssetSeries(companyId, assetSeriesId, assetId);
 
+        validateForUpdates(targetAsset, assetSeriesId);
+
+        List<FieldInstance> deletedFieldSources = targetAsset.calculateDeletedFieldSources(sourceAsset);
+        deletedFieldSources.forEach(fieldInstanceService::delete);
+
         targetAsset.copyFrom(sourceAsset);
+
+        updateRoomOfAssetSeriesAsset(companyId, sourceAsset, targetAsset);
 
         validate(targetAsset);
 
         return targetAsset;
+    }
+
+    private void validateForUpdates(final Asset targetAsset, final Long assetSeriesId) {
+        if (!Objects.equals(targetAsset.getAssetSeries().getId(), assetSeriesId)) {
+            throw new RuntimeException("It is not allowed to change the asset series of an asset.");
+        }
+    }
+
+    private void updateRoomOfAssetSeriesAsset(Long companyId, Asset sourceAsset, Asset targetAsset) {
+        final boolean existsSourceAssetRoom = sourceAsset.getRoom() != null
+                && sourceAsset.getRoom().getFactorySite() != null;
+        final boolean existsTargetAssetRoom = targetAsset.getRoom() != null && targetAsset.getRoom().getId() != null
+                && targetAsset.getRoom().getFactorySite() != null;
+
+        final boolean wasRoomAdded = existsSourceAssetRoom && !existsTargetAssetRoom;
+        final boolean wasRoomUpdated = existsSourceAssetRoom && targetAsset.getRoom() != null;
+        final boolean wasRoomDeleted = !existsSourceAssetRoom && existsTargetAssetRoom;
+
+        if (wasRoomAdded) {
+            final Room newRoom = roomService.createRoomAndFactorySite(companyId, sourceAsset.getRoom(),
+                    sourceAsset.getRoom().getFactorySite());
+            targetAsset.setRoom(newRoom);
+            newRoom.getAssets().add(targetAsset);
+
+        } else if (wasRoomUpdated) {
+            final FactorySite updatedFactorySite = factorySiteService.updateFactorySite(companyId,
+                    targetAsset.getRoom().getFactorySite().getId(), sourceAsset.getRoom().getFactorySite());
+
+            final Room updatedRoom = roomService.updateRoom(companyId, updatedFactorySite.getId(),
+                    targetAsset.getRoom().getId(), sourceAsset.getRoom());
+            targetAsset.setRoom(updatedRoom);
+
+        } else if (wasRoomDeleted) {
+            roomService.deleteRoom(companyId, targetAsset.getRoom().getFactorySite().getId(),
+                    targetAsset.getRoom().getId());
+            targetAsset.setRoom(null);
+        }
     }
 
     public Asset transferFromFleetToFactory(final Long companyId, final Long targetCompanyId, final Long assetSeriesId,

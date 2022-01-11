@@ -73,9 +73,7 @@ public class FieldInstance extends BaseEntity {
         if (sourceField.getDescription() != null) {
             setDescription(sourceField.getDescription());
         }
-        if (sourceField.getValue() != null) {
-            setValue(sourceField.getValue());
-        }
+        setValue(sourceField.getValue());
         if (sourceField.getExternalName() != null) {
             setExternalName(sourceField.getExternalName());
         }
