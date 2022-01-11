@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.UnitDto;
 import io.fusion.fusionbackend.dto.mappers.UnitMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
@@ -105,16 +106,17 @@ public class UnitService {
 
     public byte[] exportAllToJson() throws IOException {
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
     }
 
-    public Boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
+    public boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
         if (file.exists() && !overwrite) {
             return false;
         }
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        objectMapper.writeValue(file, getAllAsDto());
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, getAllAsDto());
         return true;
     }
 
@@ -123,17 +125,27 @@ public class UnitService {
         return unitMapper.toDtoSet(units, true);
     }
 
-    public int importMultipleFromJson(byte[] fileContent) throws IOException {
+    public ProcessingResultDto importMultipleFromJson(byte[] fileContent) throws IOException {
         Set<UnitDto> unitDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
         });
+        return importMultiple(unitDtos);
+    }
 
+    public ProcessingResultDto importMultipleFromJsonFile(File file) throws IOException {
+        Set<UnitDto> unitDtos = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(unitDtos);
+    }
+
+    public ProcessingResultDto importMultiple(final Set<UnitDto> unitDtos) {
         Set<Long> existingUnitIds = unitRepository
                 .findAll(UnitRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
         // Due to cyclic dependency of unit and quantity type first create quantity types without references to units.
         // Then we create units with setting the base unit of quantity type afterwards so that it can be persisted.
-        int entitySkippedCount = quantityTypeService.createQuantityTypesFromUnitDtos(unitDtos);
+        final ProcessingResultDto result = quantityTypeService.createQuantityTypesFromUnitDtos(unitDtos);
 
         for (UnitDto unitDto : BaseZipImportExport.toSortedList(unitDtos)) {
             if (!existingUnitIds.contains(unitDto.getId())) {
@@ -146,12 +158,13 @@ public class UnitService {
                 if (Objects.equals(unitDto.getQuantityType().getBaseUnitId(), unit.getId())) {
                     quantityTypeService.setQuantityTypeBaseUnit(quantityType.getId(), unit.getId());
                 }
+                result.incHandled();
             } else {
                 log.warn("Unit with the id " + unitDto.getId() + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
-        return entitySkippedCount;
+        return result;
     }
 }

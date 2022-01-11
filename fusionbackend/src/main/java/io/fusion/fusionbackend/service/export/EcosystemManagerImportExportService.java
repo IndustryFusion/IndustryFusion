@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.service.export;
 
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.service.AssetTypeService;
@@ -31,13 +32,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -51,6 +57,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     private static final String FILENAME_ASSET_TYPES = "AssetTypes";
     private static final String FILENAME_ASSET_TYPE_TEMPLATES = "PublishedAssetTypeTemplates";
     private static final String ECOMAN_SUBDIR = "ecosystem";
+    private static final String ATT_SUBDIR = "att";
     private final UnitService unitService;
     private final FieldService fieldService;
     private final AssetTypeService assetTypeService;
@@ -109,7 +116,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
                                           final Long factorySiteIdIgnored) throws IOException {
 
         ImportResult importResult = tryImportOfZipEntry(entry, zipInputStream, ImportResult.empty());
-        if (!importResult.isEntryImported
+        if (!importResult.isEntryImported()
                 && !entry.getName().equals(getContentFileName(FleetManagerImportExportService.FILENAME_ASSET_SERIES))
                 && !entry.getName().equals(getContentFileName(FleetManagerImportExportService.FILENAME_ASSETS))
                 && !entry.getName().equals(getContentFileName(FleetManagerImportExportService.FILENAME_ASSET))) {
@@ -123,22 +130,26 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
                                             final ZipInputStream zipInputStream,
                                             final ImportResult prevImportResult) throws IOException {
         boolean isEntryImported = entry != null;
-        int totalEntitySkippedCount = prevImportResult.totalEntitySkippedCount;
+        int totalEntitySkippedCount = prevImportResult.getTotalEntitySkippedCount();
         if (isEntryImported) {
             switch (entry.getName()) {
                 case FILENAME_UNITS + CONTENT_FILE_EXTENSION:
-                    totalEntitySkippedCount += unitService.importMultipleFromJson(readZipEntry(entry, zipInputStream));
+                    totalEntitySkippedCount += unitService.importMultipleFromJson(readZipEntry(entry, zipInputStream))
+                            .getSkipped();
                     break;
                 case FILENAME_FIELDS + CONTENT_FILE_EXTENSION:
-                    totalEntitySkippedCount += fieldService.importMultipleFromJson(readZipEntry(entry, zipInputStream));
+                    totalEntitySkippedCount += fieldService.importMultipleFromJson(readZipEntry(entry, zipInputStream))
+                            .getSkipped();
                     break;
                 case FILENAME_ASSET_TYPES + CONTENT_FILE_EXTENSION:
                     totalEntitySkippedCount += assetTypeService
-                            .importMultipleFromJson(readZipEntry(entry, zipInputStream));
+                            .importMultipleFromJson(readZipEntry(entry, zipInputStream))
+                            .getSkipped();
                     break;
                 case FILENAME_ASSET_TYPE_TEMPLATES + CONTENT_FILE_EXTENSION:
                     totalEntitySkippedCount += assetTypeTemplateService
-                            .importMultipleFromJson(readZipEntry(entry, zipInputStream));
+                            .importMultipleFromJson(readZipEntry(entry, zipInputStream))
+                            .getSkipped();
                     break;
 
                 default:
@@ -149,6 +160,22 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         return new ImportResult(isEntryImported, totalEntitySkippedCount);
     }
 
+    public ProcessingResultDto tryImportOfFile(final File file) throws IOException {
+        switch (file.getName()) {
+            case FILENAME_UNITS + CONTENT_FILE_EXTENSION:
+                return unitService.importMultipleFromJsonFile(file);
+            case FILENAME_FIELDS + CONTENT_FILE_EXTENSION:
+                return fieldService.importMultipleFromJsonFile(file);
+            case FILENAME_ASSET_TYPES + CONTENT_FILE_EXTENSION:
+                return assetTypeService.importMultipleFromJsonFile(file);
+            default:
+                if (!file.getName().endsWith(CONTENT_FILE_EXTENSION)) {
+                    return ProcessingResultDto.builder().build();
+                }
+                return assetTypeTemplateService.importSingleFromJsonFile(file);
+        }
+    }
+
     public void exportOntologyModelToStream(final OutputStream outputStream) throws IOException {
         OntModel model = ontologyBuilder.buildEcosystemOntology();
         OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, outputStream);
@@ -156,13 +183,18 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
 
     public SyncResultDto syncWithModelRepo() {
         if (modelRepoSyncService.pullRepo()) {
-            exportAssetTypeTemplates();
-            modelRepoSyncService.checkChangesAndSync();
+            SyncResultDto result = new SyncResultDto();
+            result.getImportResult().add(importAttFiles());
+            result.getImportResult().add(importOtherFiles());
+            result.setExportResult(exportAssetTypeTemplates());
+            result.getExportResult().setHandled(modelRepoSyncService.checkChangesAndSync());
+            return result;
         }
         return SyncResultDto.builder().build();
     }
 
-    private void exportAssetTypeTemplates() {
+    private ProcessingResultDto exportAssetTypeTemplates() {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<AssetTypeTemplate> publishedAssetTypeTemplates =
                 assetTypeTemplateService.getPublishedAssetTypeTemplates();
         long modelExportCount =
@@ -171,15 +203,59 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         long contentExportCount =
                 publishedAssetTypeTemplates.stream().filter(this::writeAttContentToGitDir).count();
         log.info("Wrote {} from {} ATT jsons", contentExportCount, publishedAssetTypeTemplates.size());
-        writeUnitsContentToGitDir();
-        log.info("Wrote units json");
-        writeFieldsContentToGitDir();
-        log.info("Wrote fields json");
-        writeAssetTypesContentToGitDir();
-        log.info("Wrote assettypes json");
+
+        result.setHandled(modelExportCount + contentExportCount);
+        result.setSkipped(publishedAssetTypeTemplates.size() * 2L - modelExportCount - contentExportCount);
+
+        if (writeUnitsContentToGitDir()) {
+            log.info("Wrote units json");
+            result.incHandled();
+        } else {
+            result.incSkipped();
+        }
+
+        if (writeFieldsContentToGitDir()) {
+            log.info("Wrote fields json");
+            result.incHandled();
+        } else {
+            result.incSkipped();
+        }
+
+        if (writeAssetTypesContentToGitDir()) {
+            log.info("Wrote assettypes json");
+            result.incHandled();
+        } else {
+            result.incSkipped();
+        }
+        return result;
     }
 
-    private Boolean writeAttModelToGitDir(final AssetTypeTemplate assetTypeTemplate) {
+    private ProcessingResultDto importOtherFiles() {
+        return importEcomanFiles(getEcomanDirPath());
+    }
+
+    private ProcessingResultDto importAttFiles() {
+        return importEcomanFiles(getAttDirPath());
+    }
+
+    private ProcessingResultDto importEcomanFiles(final Path dirPath) {
+        try (Stream<Path> fileStream = Files.list(dirPath)) {
+            List<Path> files = fileStream
+                    .filter(path -> !Files.isDirectory(path)).collect(Collectors.toList());
+            final ProcessingResultDto result = files.stream()
+                    .map(path -> importFile(path.toFile()))
+                    .reduce(ProcessingResultDto.builder().build(), ProcessingResultDto::add);
+            log.info("Imported {} and skipped {} entities from {} jsons in {}", result.getHandled(),
+                    result.getSkipped(), files.size(), dirPath);
+            return result;
+        } catch (IOException e) {
+            log.warn("Import error: reading files from {}", dirPath, e);
+            return ProcessingResultDto.builder().build();
+        }
+
+    }
+
+    private boolean writeAttModelToGitDir(final AssetTypeTemplate assetTypeTemplate) {
         OntModel ontModel = ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
         final Path filepath = getAttFilePath(assetTypeTemplate, MODEL_FILE_EXTENSION);
         try {
@@ -190,7 +266,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         }
     }
 
-    private Boolean writeAttContentToGitDir(final AssetTypeTemplate assetTypeTemplate) {
+    private boolean writeAttContentToGitDir(final AssetTypeTemplate assetTypeTemplate) {
         Path filepath = getAttFilePath(assetTypeTemplate, CONTENT_FILE_EXTENSION);
         try {
             return assetTypeTemplateService.exportAssetTypeTemplateToJsonFile(assetTypeTemplate, filepath.toFile(),
@@ -201,7 +277,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         }
     }
 
-    private Boolean writeUnitsContentToGitDir() {
+    private boolean writeUnitsContentToGitDir() {
         Path filepath = getEcomanFilePath(FILENAME_UNITS, CONTENT_FILE_EXTENSION);
         try {
             return unitService.exportAllToJsonFile(filepath.toFile(), true);
@@ -211,7 +287,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         }
     }
 
-    private Boolean writeFieldsContentToGitDir() {
+    private boolean writeFieldsContentToGitDir() {
         Path filepath = getEcomanFilePath(FILENAME_FIELDS, CONTENT_FILE_EXTENSION);
         try {
             return fieldService.exportAllToJsonFile(filepath.toFile(), true);
@@ -221,7 +297,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         }
     }
 
-    private Boolean writeAssetTypesContentToGitDir() {
+    private boolean writeAssetTypesContentToGitDir() {
         Path filepath = getEcomanFilePath(FILENAME_ASSET_TYPES, CONTENT_FILE_EXTENSION);
         try {
             return assetTypeService.exportAllToJsonFile(filepath.toFile(), true);
@@ -231,13 +307,35 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         }
     }
 
+    private ProcessingResultDto importFile(File file) {
+        try {
+            return tryImportOfFile(file);
+        } catch (IOException e) {
+            log.warn(ERROR_READING_FILE, file, e);
+            return ProcessingResultDto.builder().build();
+        }
+    }
+
+
     private Path getAttFilePath(final AssetTypeTemplate assetTypeTemplate, final String extension) {
         final String filename = URLEncoder.encode(assetTypeTemplate.getAssetType().getLabel(), StandardCharsets.UTF_8)
-                + "-V" + assetTypeTemplate.getPublishedVersion() + extension;
-        return getEcomanFilePath(filename, extension);
+                + "-V" + assetTypeTemplate.getPublishedVersion();
+        return getAttFilePath(filename, extension);
+    }
+
+    private Path getAttFilePath(final String filename, final String extension) {
+        return getAttDirPath().resolve(filename + extension);
     }
 
     private Path getEcomanFilePath(final String filename, final String extension) {
-        return modelRepoSyncService.getLocalGitPath().resolve(ECOMAN_SUBDIR).resolve(filename + extension);
+        return getEcomanDirPath().resolve(filename + extension);
+    }
+
+    private Path getAttDirPath() {
+        return getEcomanDirPath().resolve(ATT_SUBDIR);
+    }
+
+    private Path getEcomanDirPath() {
+        return modelRepoSyncService.getLocalGitPath().resolve(ECOMAN_SUBDIR);
     }
 }

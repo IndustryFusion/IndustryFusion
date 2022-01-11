@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.dto.FieldInstanceDto;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldSourceMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
@@ -491,7 +492,8 @@ public class AssetService {
         sortFieldInstances(assetDtos);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetDtos));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(assetDtos));
     }
 
     private Set<AssetDto> removeUnnecessaryItems(Set<AssetDto> assetDtos) {
@@ -516,9 +518,10 @@ public class AssetService {
         }
     }
 
-    public int importMultipleFromJsonToFactoryManager(byte[] fileContent,
-                                                      final Long companyId,
-                                                      final Long factorySiteId) throws IOException {
+    public ProcessingResultDto importMultipleFromJsonToFactoryManager(byte[] fileContent,
+                                                                      final Long companyId,
+                                                                      final Long factorySiteId) throws IOException {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<AssetDto> assetDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
         });
         Set<String> existingGlobalAssetIds = assetRepository
@@ -527,7 +530,6 @@ public class AssetService {
 
         Map<String, Set<String>> assetSubsystemMap = new HashMap<>();
 
-        int entitySkippedCount = 0;
         for (AssetDto assetDto : BaseZipImportExport.toSortedList(assetDtos)) {
             if (!existingGlobalAssetIds.contains(assetDto.getGlobalId())) {
 
@@ -539,15 +541,16 @@ public class AssetService {
                 // Info: field instances are created automatically with cascade-all
                 Asset asset = assetMapper.toEntity(assetDto);
                 createFactoryAssetAggregateWithGlobalId(companyId, assetDto.getAssetSeriesGlobalId(), asset);
+                result.incHandled();
             } else {
                 log.warn("Asset with the id " + assetDto.getId() + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
         addCachedSubsystemsAndRoomsToAssets(assetSubsystemMap, companyId, factorySiteId);
 
-        return entitySkippedCount;
+        return result;
     }
 
     private void addFieldSourceToFieldInstanceDtos(AssetDto assetDto, final Long companyId) {

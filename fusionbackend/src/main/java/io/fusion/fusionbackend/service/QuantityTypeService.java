@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.service;
 
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.QuantityTypeDto;
 import io.fusion.fusionbackend.dto.UnitDto;
 import io.fusion.fusionbackend.dto.mappers.QuantityTypeMapper;
@@ -87,26 +88,27 @@ public class QuantityTypeService {
         return quantityType;
     }
 
-    public int createQuantityTypesFromUnitDtos(Set<UnitDto> unitDtos) {
+    public ProcessingResultDto createQuantityTypesFromUnitDtos(Set<UnitDto> unitDtos) {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<QuantityTypeDto> quantityTypeDtos = unitDtos.stream().map(UnitDto::getQuantityType)
                 .collect(Collectors.toSet());
         Set<Long> existingQuantityTypeIds = quantityTypeRepository
                 .findAll(QuantityTypeRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-        int entitySkippedCount = 0;
         for (QuantityTypeDto quantityTypeDto : BaseZipImportExport.toSortedList(quantityTypeDtos)) {
             if (!existingQuantityTypeIds.contains(quantityTypeDto.getId())) {
                 QuantityType quantityType = quantityTypeMapper.toEntity(quantityTypeDto);
                 Long noBaseUnitYetDueToCyclicDependency = null;
 
                 createQuantityType(quantityType, noBaseUnitYetDueToCyclicDependency);
+                result.incHandled();
             } else {
                 log.warn("Quantity Type with the id " + quantityTypeDto.getId() + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
-        return entitySkippedCount;
+        return result;
     }
 }

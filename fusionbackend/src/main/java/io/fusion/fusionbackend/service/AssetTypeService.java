@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.dto.AssetTypeDto;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
@@ -81,16 +82,17 @@ public class AssetTypeService {
 
     public byte[] exportAllToJson() throws IOException {
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
     }
 
-    public Boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
+    public boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
         if (file.exists() && !overwrite) {
             return false;
         }
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        objectMapper.writeValue(file, getAllAsDto());
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, getAllAsDto());
         return true;
     }
 
@@ -99,26 +101,38 @@ public class AssetTypeService {
         return assetTypeMapper.toDtoSet(assetTypes, true);
     }
 
+    public ProcessingResultDto importMultipleFromJson(byte[] fileContent) throws IOException {
+        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
+                new TypeReference<>() {
+                });
+        return importMultiple(assetTypeDtos);
+    }
 
-    public int importMultipleFromJson(byte[] fileContent) throws IOException {
-        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
-        });
+    public ProcessingResultDto importMultipleFromJsonFile(File file) throws IOException {
+        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(assetTypeDtos);
+    }
+
+    public ProcessingResultDto importMultiple(final Set<AssetTypeDto> assetTypeDtos) {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<Long> existingAssetTypeIds = assetTypeRepository
                 .findAll(AssetTypeRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-        int entitySkippedCount = 0;
         for (AssetTypeDto assetTypeDto : BaseZipImportExport.toSortedList(assetTypeDtos)) {
             if (!existingAssetTypeIds.contains(assetTypeDto.getId())) {
                 AssetType assetType = assetTypeMapper.toEntity(assetTypeDto);
                 createAssetType(assetType);
+                result.incHandled();
             } else {
                 log.warn("Asset type with the id " + assetTypeDto.getId()
                         + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
-        return entitySkippedCount;
+        return result;
     }
 }
