@@ -50,14 +50,13 @@ import { ImageService } from '../../../../core/services/api/image.service';
 })
 export class AssetWizardComponent implements OnInit, OnDestroy {
 
-  private isAssetSeriesLoading$: Observable<boolean>;
-
   public assetForm: FormGroup;
   public asset: Asset;
   public relatedAssetSeriesId: ID = null;
   public relatedAssetSeries: AssetSeries = null;
   public relatedCompany: Company = null;
   public relatedAssetType: AssetType = null;
+
   public type = DialogType.CREATE;
   public step = AssetWizardStep.GENERAL_INFORMATION;
   public isAssetSeriesLocked = false;
@@ -70,6 +69,14 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   public customerDataValid: boolean;
 
   public AssetWizardStep = AssetWizardStep;
+
+  private companyId: ID;
+  private metricsValid: boolean;
+  private attributesValid: boolean;
+  private subsystemsValid: boolean;
+  private customerDataValid: boolean;
+  private isAssetSeriesLoading$: Observable<boolean>;
+
 
   constructor(private assetSeriesResolver: AssetSeriesResolver,
               private changeDetectorRef: ChangeDetectorRef,
@@ -108,7 +115,9 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.asset = { ...this.config.data.asset };
+    this.companyId = this.companyQuery.getActiveId();
+    this.initFromConfig();
+
     this.createAssetForm();
 
     this.relatedAssetSeriesId = this.config.data.prefilledAssetSeriesId;
@@ -165,8 +174,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   }
 
   private loadAssetImageFromAssetSeries() {
-    const companyId = this.companyQuery.getActiveId();
-    this.imageService.getImageAsUriSchemeString(companyId, this.relatedAssetSeries.imageKey).subscribe(imageText => {
+    this.imageService.getImageAsUriSchemeString(this.companyId, this.relatedAssetSeries.imageKey).subscribe(imageText => {
       this.assetImage = imageText;
     });
   }
@@ -215,14 +223,11 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   }
 
   private initAssetDraftAndUpdateForm(step: number) {
-    const assetName: string = this.assetForm.get('name').value;
-    const assetDescription: string = this.assetForm.get('description').value;
-
     this.assetSeriesService.initAssetDraft(this.relatedCompany.id, this.relatedAssetSeriesId).subscribe(
       asset => {
         this.asset = asset;
-        this.asset.name = assetName;
-        this.asset.description = assetDescription;
+        this.asset.name = this.assetForm.get('name').value;
+        this.asset.description = this.assetForm.get('description').value;
         this.asset.imageKey = this.assetForm.get('imageKey').value;
         this.createAssetForm();
         this.step = step;
@@ -298,8 +303,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
 
   private deleteUploadedImageIfNotDefault() {
     if (this.assetImage) {
-      const companyId = this.companyQuery.getActiveId();
-      this.imageService.deleteImageIfNotDefaultNorParent(companyId, this.assetForm.get('imageKey').value,
+      this.imageService.deleteImageIfNotDefaultNorParent(this.companyId, this.assetForm.get('imageKey').value,
         ImageService.DEFAULT_ASSET_IMAGE_KEY, this.relatedAssetSeries.imageKey).subscribe();
     }
   }

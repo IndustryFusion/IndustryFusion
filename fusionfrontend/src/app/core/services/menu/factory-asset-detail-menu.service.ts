@@ -32,7 +32,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root'
 })
-export class AssetDetailMenuService {
+export class FactoryAssetDetailMenuService {
 
   constructor(
     private dialogService: DialogService,
@@ -61,7 +61,7 @@ export class AssetDetailMenuService {
     return assetDetailsForm;
   }
 
-  public showEditDialog(asset: FactoryAssetDetailsWithFields, factorySite: FactorySite, factorySites: FactorySite[],
+  public showEditWizard(asset: FactoryAssetDetailsWithFields, factorySite: FactorySite, factorySites: FactorySite[],
                         rooms: Room[], closeCallback: () => any, updateCallback: (FactoryAssetDetails) => any) {
     const assetDetailsForm = this.createAssetDetailsForm(asset);
     const ref = this.dialogService.open(AssetInstantiationComponent, {

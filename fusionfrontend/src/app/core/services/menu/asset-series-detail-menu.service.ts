@@ -35,7 +35,6 @@ export class AssetSeriesDetailMenuService {
   public showCreateAssetFromAssetSeries(assetSeriesId: string, createCallback: (FactoryAssetDetails) => any) {
     const ref = this.dialogService.open(AssetWizardComponent, {
       data: {
-        companyId: this.companyQuery.getActiveId(),
         prefilledAssetSeriesId: assetSeriesId,
       },
       header: this.translate.instant('APP.CORE.SERVICES.ASSET_SERIES_DETAILS_MENU.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
