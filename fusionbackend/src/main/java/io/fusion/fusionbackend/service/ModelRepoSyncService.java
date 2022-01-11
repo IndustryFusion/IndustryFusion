@@ -18,7 +18,6 @@ package io.fusion.fusionbackend.service;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import io.fusion.fusionbackend.config.FusionBackendConfig;
-import io.fusion.fusionbackend.dto.SyncResultDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
@@ -136,11 +135,11 @@ public class ModelRepoSyncService {
         return true;
     }
 
-    public SyncResultDto checkChangesAndSync() {
-        int modifiedCount = 0;
-        int untrackedCount = 0;
+    public long checkChangesAndSync() {
+        long modifiedCount;
+        long untrackedCount;
         if (git == null) {
-            return SyncResultDto.builder().modifiedFileCount(modifiedCount).newFileCount(untrackedCount).build();
+            return 0;
         }
         try {
             Status status = git.status().call();
@@ -160,9 +159,9 @@ public class ModelRepoSyncService {
             }
         } catch (GitAPIException e) {
             log.warn("Error pulling repo", e);
-            return SyncResultDto.builder().modifiedFileCount(modifiedCount).newFileCount(untrackedCount).build();
+            return 0;
         }
-        return SyncResultDto.builder().modifiedFileCount(modifiedCount).newFileCount(untrackedCount).build();
+        return modifiedCount + untrackedCount;
     }
 
     public Path getLocalGitPath() {

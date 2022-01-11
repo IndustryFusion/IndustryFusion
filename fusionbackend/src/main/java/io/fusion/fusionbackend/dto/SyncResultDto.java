@@ -15,12 +15,18 @@
 
 package io.fusion.fusionbackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SyncResultDto {
-    int newFileCount;
-    int modifiedFileCount;
+    @Builder.Default
+    private ProcessingResultDto importResult = new ProcessingResultDto();
+    @Builder.Default
+    private ProcessingResultDto exportResult = new ProcessingResultDto();
 }

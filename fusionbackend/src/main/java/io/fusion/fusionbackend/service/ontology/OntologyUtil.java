@@ -53,7 +53,7 @@ public class OntologyUtil {
         return outputStream.toByteArray();
     }
 
-    public Boolean writeOntologyModelToFile(final OntModel ontModel, final File file, final boolean overwrite)
+    public boolean writeOntologyModelToFile(final OntModel ontModel, final File file, final boolean overwrite)
             throws IOException {
         if (file.exists() && !overwrite) {
             log.info("{} already exists", file);

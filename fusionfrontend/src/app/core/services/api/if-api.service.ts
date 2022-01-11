@@ -26,7 +26,7 @@ export class IfApiService {
   httpOptions = {
     headers: new HttpHeaders({ Accept: 'application/zip' })
   };
-  syncResult: SyncResult;
+  syncResult: SyncResult = new SyncResult();
   showResult: boolean;
 
   constructor(private http: HttpClient) {
@@ -97,6 +97,11 @@ export class IfApiService {
 }
 
 class SyncResult {
-  newFileCount: number;
-  modifiedFileCount: number;
+  importResult: ProcessingResultDto;
+  exportResult: ProcessingResultDto;
+}
+
+class ProcessingResultDto {
+  handled: number;
+  skipped: number;
 }

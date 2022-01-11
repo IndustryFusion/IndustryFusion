@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fusion.fusionbackend.dto.AssetSeriesDto;
 import io.fusion.fusionbackend.dto.FieldSourceDto;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.mappers.AssetSeriesMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldTargetMapper;
 import io.fusion.fusionbackend.dto.mappers.UnitMapper;
@@ -328,15 +329,16 @@ public class AssetSeriesService {
         sortFieldSources(assetSeriesDtos);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetSeriesDtos));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(assetSeriesDtos));
     }
 
-    public Boolean exportAssetSeriesToJsonFile(AssetSeries assetSeries, final File file,
+    public boolean exportAssetSeriesToJsonFile(AssetSeries assetSeries, final File file,
                                                boolean overwrite) throws IOException {
         return exportAssetSeriesDtoToJsonFile(assetSeriesMapper.toDto(assetSeries, true), file, overwrite);
     }
 
-    private Boolean exportAssetSeriesDtoToJsonFile(AssetSeriesDto assetSeriesDto, final File file,
+    private boolean exportAssetSeriesDtoToJsonFile(AssetSeriesDto assetSeriesDto, final File file,
                                                    boolean overwrite) throws IOException {
         if (file.exists() && !overwrite) {
             return false;
@@ -346,7 +348,7 @@ public class AssetSeriesService {
         sortFieldSources(assetSeriesDto);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        objectMapper.writeValue(file, assetSeriesDto);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, assetSeriesDto);
         return true;
     }
 
@@ -380,15 +382,33 @@ public class AssetSeriesService {
         assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
     }
 
-    public int importMultipleFromJson(byte[] fileContent, final Long companyId) throws IOException {
+    public ProcessingResultDto importMultipleFromJson(byte[] fileContent, final Long companyId) throws IOException {
         Set<AssetSeriesDto> assetSeriesDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
                 new TypeReference<>() {
                 });
+        return importMultiple(assetSeriesDtos, companyId);
+    }
+
+    public ProcessingResultDto importMultipleFromJsonFile(File file, final Long companyId) throws IOException {
+        Set<AssetSeriesDto> assetSeriesDtos = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(assetSeriesDtos, companyId);
+    }
+
+    public ProcessingResultDto importSingleFromJsonFile(File file, final Long companyId) throws IOException {
+        AssetSeriesDto assetSeriesDto = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(Set.of(assetSeriesDto), companyId);
+    }
+
+    private ProcessingResultDto importMultiple(Set<AssetSeriesDto> assetSeriesDtos, final Long companyId) {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<String> existingGlobalAssetSeriesIds = assetSeriesRepository
                 .findAllByCompanyId(AssetSeriesRepository.DEFAULT_SORT, companyId)
                 .stream().map(AssetSeries::getGlobalId).collect(Collectors.toSet());
 
-        int entitySkippedCount = 0;
         for (AssetSeriesDto assetSeriesDto : BaseZipImportExport.toSortedList(assetSeriesDtos)) {
             if (!existingGlobalAssetSeriesIds.contains(assetSeriesDto.getGlobalId())) {
 
@@ -404,13 +424,14 @@ public class AssetSeriesService {
                         assetSeriesDto.getConnectivitySettings().getConnectivityTypeId(),
                         assetSeriesDto.getConnectivitySettings().getConnectivityProtocolId(),
                         assetSeries);
+                result.incHandled();
             } else {
                 log.warn("Asset series with the id " + assetSeriesDto.getId() + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
-        return entitySkippedCount;
+        return result;
     }
 
     private void addBaseUnitToFieldSourceDtos(AssetSeriesDto assetSeriesDto) {

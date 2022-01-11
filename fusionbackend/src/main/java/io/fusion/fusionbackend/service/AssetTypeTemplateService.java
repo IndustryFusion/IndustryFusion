@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.AssetTypeTemplatePeerDto;
 import io.fusion.fusionbackend.dto.FieldTargetDto;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplateMapper;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeTemplatePeerMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
@@ -220,7 +221,7 @@ public class AssetTypeTemplateService {
 
         sourceAssetTypeTemplate.setPeers(savedPeersToBypassCopyingToTarget);
         assetTypeTemplatePeerService
-                 .updatePeersOfAssetTypeTemplate(targetAssetTypeTemplate, sourceAssetTypeTemplate);
+                .updatePeersOfAssetTypeTemplate(targetAssetTypeTemplate, sourceAssetTypeTemplate);
 
         return targetAssetTypeTemplate;
     }
@@ -274,7 +275,7 @@ public class AssetTypeTemplateService {
             fieldTarget.getField().getUnit().getQuantityType().setBaseUnit(null);
         });
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(writer, assetTypeTemplate);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(writer, assetTypeTemplate);
     }
 
     public byte[] exportAllToJson() throws IOException {
@@ -287,7 +288,8 @@ public class AssetTypeTemplateService {
 
         publishedAssetTypeTemplates = removeUnnecessaryItems(publishedAssetTypeTemplates);
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(publishedAssetTypeTemplatesDtos));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(publishedAssetTypeTemplatesDtos));
     }
 
     private Set<AssetTypeTemplateDto> removeUnnecessaryItems(Set<AssetTypeTemplateDto> assetTypeTemplateDtos) {
@@ -322,10 +324,29 @@ public class AssetTypeTemplateService {
         }
     }
 
-    public int importMultipleFromJson(byte[] fileContent) throws IOException {
-        Set<AssetTypeTemplateDto> assetTypeTemplateDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
+    public ProcessingResultDto importMultipleFromJson(byte[] fileContent) throws IOException {
+        final Set<AssetTypeTemplateDto> assetTypeTemplateDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
                 new TypeReference<>() {
                 });
+        return importMultiple(assetTypeTemplateDtos);
+    }
+
+    public ProcessingResultDto importMultipleFromJsonFile(File file) throws IOException {
+        final Set<AssetTypeTemplateDto> assetTypeTemplateDtos = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(assetTypeTemplateDtos);
+    }
+
+    public ProcessingResultDto importSingleFromJsonFile(File file) throws IOException {
+        final AssetTypeTemplateDto assetTypeTemplateDto = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(Set.of(assetTypeTemplateDto));
+    }
+
+    public ProcessingResultDto importMultiple(Set<AssetTypeTemplateDto> assetTypeTemplateDtos) {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<Long> existingAssetTypeTemplateIds = assetTypeTemplateRepository
                 .findAll(AssetTypeTemplateRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
@@ -333,7 +354,6 @@ public class AssetTypeTemplateService {
         Map<Long, Set<Long>> assetTypeTemplateSubsystemDtoMap = new HashMap<>();
         Map<Long, Set<AssetTypeTemplatePeerDto>> assetTypeTemplatePeerDtoMap = new HashMap<>();
 
-        int entitySkippedCount = 0;
         for (AssetTypeTemplateDto assetTypeTemplateDto : BaseZipImportExport.toSortedList(assetTypeTemplateDtos)) {
             if (!existingAssetTypeTemplateIds.contains(assetTypeTemplateDto.getId())) {
                 removeAndCacheSubsystems(assetTypeTemplateSubsystemDtoMap, assetTypeTemplateDto);
@@ -342,10 +362,11 @@ public class AssetTypeTemplateService {
                 AssetTypeTemplate assetTypeTemplate = assetTypeTemplateMapper.toEntity(assetTypeTemplateDto);
                 assetTypeTemplate.setFieldTargets(new LinkedHashSet<>());
                 createAssetTypeTemplateAggregate(assetTypeTemplateDto.getAssetTypeId(), assetTypeTemplate);
+                result.incHandled();
             } else {
                 log.warn("Asset type template  with the id " + assetTypeTemplateDto.getId()
                         + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
@@ -353,7 +374,7 @@ public class AssetTypeTemplateService {
         addCachedSubsystemsToAssetTypeTemplates(assetTypeTemplateSubsystemDtoMap);
         addCachedPeersToAssetTypeTemplates(assetTypeTemplatePeerDtoMap);
 
-        return entitySkippedCount;
+        return result;
     }
 
     public Boolean exportAssetTypeTemplateToJsonFile(AssetTypeTemplate assetTypeTemplate, final File file,
@@ -371,7 +392,7 @@ public class AssetTypeTemplateService {
         sortFieldTargets(assetTypeTemplateDto);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        objectMapper.writeValue(file, assetTypeTemplateDto);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, assetTypeTemplateDto);
         return true;
     }
 
@@ -382,7 +403,7 @@ public class AssetTypeTemplateService {
     }
 
     private void removeAndCachePeers(final Map<Long, Set<AssetTypeTemplatePeerDto>> assetTypeTemplatePeerDtoMap,
-                                          final AssetTypeTemplateDto assetTypeTemplateDto) {
+                                     final AssetTypeTemplateDto assetTypeTemplateDto) {
         assetTypeTemplatePeerDtoMap.put(assetTypeTemplateDto.getId(), assetTypeTemplateDto.getPeers());
         assetTypeTemplateDto.setPeers(new LinkedHashSet<>());
         assetTypeTemplateDto.setPeerIds(null);

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.dto.FieldDto;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.mappers.FieldMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldOptionMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
@@ -128,16 +129,17 @@ public class FieldService {
 
     public byte[] exportAllToJson() throws IOException {
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
     }
 
-    public Boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
+    public boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
         if (file.exists() && !overwrite) {
             return false;
         }
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        objectMapper.writeValue(file, getAllAsDto());
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, getAllAsDto());
         return true;
     }
 
@@ -146,14 +148,25 @@ public class FieldService {
         return fieldMapper.toDtoSet(fields, true);
     }
 
-    public int importMultipleFromJson(byte[] fileContent) throws IOException {
+    public ProcessingResultDto importMultipleFromJson(byte[] fileContent) throws IOException {
         Set<FieldDto> fieldDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
         });
+        return importMultiple(fieldDtos);
+    }
+
+    public ProcessingResultDto importMultipleFromJsonFile(File file) throws IOException {
+        Set<FieldDto> fieldDtos = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(fieldDtos);
+    }
+
+    public ProcessingResultDto importMultiple(final Set<FieldDto> fieldDtos) {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<Long> existingFieldIds = fieldRepository
                 .findAll(FieldRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-        int entitySkippedCount = 0;
         for (FieldDto fieldDto : BaseZipImportExport.toSortedList(fieldDtos)) {
             if (!existingFieldIds.contains(fieldDto.getId())) {
                 Field field = fieldMapper.toEntity(fieldDto);
@@ -165,12 +178,13 @@ public class FieldService {
                 } else {
                     throw new InvalidArgumentException("Field with the id " + fieldDto.getId() + " misses a unit.");
                 }
+                result.incHandled();
             } else {
                 log.warn("Field with the id " + fieldDto.getId() + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
-        return entitySkippedCount;
+        return result;
     }
 }

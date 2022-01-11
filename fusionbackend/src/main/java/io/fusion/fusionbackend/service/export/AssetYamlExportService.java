@@ -106,7 +106,7 @@ public class AssetYamlExportService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         outputStream.write(YAML_CONTENT.getBytes(StandardCharsets.UTF_8));
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-        objectMapper.writeValue(outputStream, fusiondataservice);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(outputStream, fusiondataservice);
         return outputStream.toByteArray();
     }
 
