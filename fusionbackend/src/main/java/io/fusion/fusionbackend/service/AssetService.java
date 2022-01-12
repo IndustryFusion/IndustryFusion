@@ -301,7 +301,7 @@ public class AssetService {
                                         final Asset sourceAsset) {
         final Asset targetAsset = getAssetOverAssetSeries(companyId, assetSeriesId, assetId);
 
-        validateForUpdates(targetAsset, assetSeriesId);
+        validateForUpdates(companyId, assetSeriesId, targetAsset);
 
         List<FieldInstance> deletedFieldSources = targetAsset.calculateDeletedFieldSources(sourceAsset);
         deletedFieldSources.forEach(fieldInstanceService::delete);
@@ -315,9 +315,12 @@ public class AssetService {
         return targetAsset;
     }
 
-    private void validateForUpdates(final Asset targetAsset, final Long assetSeriesId) {
+    private void validateForUpdates(final Long companyId, final Long assetSeriesId, final Asset targetAsset) {
         if (!Objects.equals(targetAsset.getAssetSeries().getId(), assetSeriesId)) {
-            throw new RuntimeException("It is not allowed to change the asset series of an asset.");
+            throw new IllegalStateException("It is not allowed to change the asset series of an asset.");
+        }
+        if (!Objects.equals(targetAsset.getCompany().getId(), companyId)) {
+            throw new IllegalStateException("Target and source company of asset must be the same.");
         }
     }
 
@@ -355,8 +358,14 @@ public class AssetService {
     public Asset transferFromFleetToFactory(final Long companyId, final Long targetCompanyId, final Long assetSeriesId,
                                             final Long assetId) {
         final Asset targetAsset = getAssetOverAssetSeries(companyId, assetSeriesId, assetId);
+        final Company newCompany = companyService.getCompany(targetCompanyId, false);
 
-        targetAsset.setCompany(companyService.getCompany(targetCompanyId, false));
+        targetAsset.setCompany(newCompany);
+        if (targetAsset.getRoom() != null) {
+            Room room = roomService.getRoomById(targetAsset.getRoom().getId());
+            room.getFactorySite().setCompany(newCompany);
+            targetAsset.setRoom(room);
+        }
 
         return targetAsset;
     }
