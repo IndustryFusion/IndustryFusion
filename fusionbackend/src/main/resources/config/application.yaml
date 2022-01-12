@@ -50,7 +50,7 @@ logging:
 
 fusionbackend:
   modelreposyncactive: true
-  modelrepourl: git@github.com:IndustryFusion/fusionmodels.git
+  modelrepourl: ${MODEL_REPO_URL}
   modelRepoPrivateKeyPath: ${MODEL_REPO_SSH_KEY}
 
 ngsi-broker:
