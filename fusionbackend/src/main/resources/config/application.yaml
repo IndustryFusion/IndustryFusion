@@ -49,7 +49,7 @@ logging:
     root: INFO
 
 fusionbackend:
-  modelreposyncactive: true
+  modelreposyncactive: ${MODEL_REPO_SYNC}
   modelrepourl: ${MODEL_REPO_URL}
   modelRepoPrivateKeyPath: ${MODEL_REPO_SSH_KEY}
 
