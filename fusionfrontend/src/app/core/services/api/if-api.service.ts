@@ -35,13 +35,13 @@ export class IfApiService {
   getExportLinkEcosystemManager(exportType: string): string {
     let path;
     switch (exportType) {
-      case "ZIP":
+      case 'ZIP':
         path = `/zipexport`;
         break;
-      case "OWL":
+      case 'OWL':
         path = `/owlexport`;
         break;
-      case "GIT":
+      case 'GIT':
         path = `/synctomodelrepo`;
         break;
       default:
@@ -84,7 +84,7 @@ export class IfApiService {
     this.http.put<SyncResult>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).subscribe((syncResult) => {
       this.syncResult = syncResult;
       this.showResult = true;
-    })
+    });
   }
 
   syncModelRepo(): void  {
@@ -92,7 +92,7 @@ export class IfApiService {
     this.http.put<SyncResult>(`${path}`, this.httpOptions).subscribe((syncResult) => {
       this.syncResult = syncResult;
       this.showResult = true;
-    })
+    });
   }
 }
 
