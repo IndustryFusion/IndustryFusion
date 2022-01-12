@@ -49,9 +49,12 @@ export class FactoryAssetDetailsService {
       })));
   }
 
-  getAssetDetails(companyId: ID, assetDetailsId: ID): Observable<FactoryAssetDetails> {
+  getFactoryAssetDetails(companyId: ID, assetDetailsId: ID): Observable<FactoryAssetDetails> {
     const path = `companies/${companyId}/factoryassetdetails/${assetDetailsId}`;
-    return this.http.get<FactoryAssetDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+    return this.http.get<FactoryAssetDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+      .pipe(tap(entity => {
+      this.factoryAssetDetailsStore.upsertCached(entity);
+    }));
   }
 
   updateRoomNames(room: Room) {
@@ -79,6 +82,10 @@ export class FactoryAssetDetailsService {
         this.factoryAssetDetailsStore.upsertCached(assetWithUpdatedRoom);
       })
     ).subscribe();
+  }
+
+  deleteItem(assetId: ID) {
+    this.factoryAssetDetailsStore.removeCached(assetId);
   }
 
   public setActive(id: ID) {

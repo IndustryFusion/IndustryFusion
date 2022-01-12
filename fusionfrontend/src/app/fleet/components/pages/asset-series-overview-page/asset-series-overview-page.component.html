@@ -55,7 +55,7 @@ under the License.
       <td [routerLink]="assetCombined.asset.id+'/digital-nameplate'">{{assetCombined.factorySite?.country?.name}}</td>
       <td [routerLink]="assetCombined.asset.id+'/digital-nameplate'">{{assetCombined.asset?.installationDate | date}}</td>
       <td [routerLink]="assetCombined.asset.id+'/digital-nameplate'">
-        <app-asset-activation-status [asset$]="of(assetCombined.asset)"
+        <app-asset-activation-status [assetWithFields$]="of(assetCombined.asset)"
                                      [showInline]="true"></app-asset-activation-status>
       </td>
       <td (click)="setActiveRow(assetCombined)" [style.width.%]="5">

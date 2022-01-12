@@ -14,10 +14,10 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { FactoryAssetDetailsWithFields } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { map, switchMap } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
+import { FleetAssetDetailsWithFields } from '../../../../core/store/fleet-asset-details/fleet-asset-details.model';
 
 @Component({
   selector: 'app-asset-activation-status',
@@ -27,7 +27,7 @@ import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-det
 export class AssetActivationStatusComponent implements OnInit {
 
   @Input()
-  asset$: Observable<FactoryAssetDetailsWithFields>;
+  assetWithFields$: Observable<FleetAssetDetailsWithFields>;
 
   @Input()
   showInline: boolean;
@@ -40,10 +40,10 @@ export class AssetActivationStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const assetSeries$ = this.asset$.pipe(
+    const assetSeries$ = this.assetWithFields$.pipe(
       switchMap(asset => this.assetSeriesQuery.selectAssetSeriesDetails(asset?.assetSeriesId))
     );
-    this.isActive$ = combineLatest(([this.asset$, assetSeries$])).pipe(map(([asset, series]) => {
+    this.isActive$ = combineLatest(([this.assetWithFields$, assetSeries$])).pipe(map(([asset, series]) => {
       return series.companyId !== asset.companyId;
     }));
   }

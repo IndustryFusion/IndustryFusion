@@ -21,6 +21,7 @@ import { environment } from '../../../../environments/environment';
 import { FleetAssetDetails } from './fleet-asset-details.model';
 import { tap } from 'rxjs/operators';
 import { FleetAssetDetailsStore } from './fleet-asset-details.store';
+import { FactoryAssetDetails } from '../factory-asset-details/factory-asset-details.model';
 
 
 @Injectable({
@@ -44,8 +45,20 @@ export class FleetAssetDetailsService {
       })));
   }
 
+  getFleetAssetDetails(companyId: ID, assetDetailsId: ID): Observable<FactoryAssetDetails> {
+    const path = `companies/${companyId}/fleetassetdetails/${assetDetailsId}`;
+    return this.http.get<FactoryAssetDetails>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
+      .pipe(tap(entity => {
+        this.fleetAssetDetailsStore.upsertCached(entity);
+      }));
+  }
+
   getSubsystemCandidates(companyId: ID, assetSeriesId: ID): Observable<FleetAssetDetails[]> {
     const path = `companies/${companyId}/assetseries/${assetSeriesId}/subsystemcandidates`;
     return this.http.get<FleetAssetDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
+  setActive(assetId: ID) {
+    this.fleetAssetDetailsStore.setActive(assetId);
   }
 }

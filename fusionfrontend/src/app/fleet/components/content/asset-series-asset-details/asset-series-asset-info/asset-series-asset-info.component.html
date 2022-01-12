@@ -14,18 +14,18 @@ under the License.
 -->
 
 <section class="asset">
-  <img *ngIf="assetImage == null && asset != null" class="asset-img" src="assets/img/{{asset.imageKey}}" alt="Asset Image"/>
+  <img *ngIf="assetImage == null && assetWithFields != null" class="asset-img" src="assets/img/{{assetWithFields.imageKey}}" alt="Asset Image"/>
   <img *ngIf="assetImage != null" class="asset-img" [src]="assetImage" alt="Asset Image"/>
   <div class="asset-info">
-    <h3>{{(asset$ | async)?.name}}</h3>
-    <p>{{(asset$ | async)?.assetTypeName}}</p>
+    <h3>{{(assetWithFields$ | async)?.name}}</h3>
+    <p>{{(assetWithFields$ | async)?.assetTypeName}}</p>
   </div>
   <div class="flex-box"></div>
   <div class="asset-info asset-status">
     <div class="asset-status-wrapper">
       <div class="flex-box"></div>
       <p>
-        <app-asset-activation-status [asset$]="asset$" [showInline]="false"></app-asset-activation-status>
+        <app-asset-activation-status [assetWithFields$]="assetWithFields$" [showInline]="false"></app-asset-activation-status>
       </p>
     </div>
   </div>

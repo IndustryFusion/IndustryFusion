@@ -20,9 +20,9 @@ import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
-import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
-import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
+import { FleetAssetDetailsQuery } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
+import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
+import { FleetComposedQuery } from '../../../../../core/store/composed/fleet-composed.query';
 
 @Component({
   selector: 'app-asset-series-asset-sub-header',
@@ -32,28 +32,28 @@ import { FactoryComposedQuery } from '../../../../../core/store/composed/factory
 export class AssetSeriesAssetSubHeaderComponent implements OnInit, OnDestroy {
 
   assetId: ID;
-  asset$: Observable<FactoryAssetDetailsWithFields>;
+  assetWithFields$: Observable<FleetAssetDetailsWithFields>;
 
   private unSubscribe$ = new Subject<void>();
 
   constructor(public activatedRoute: ActivatedRoute,
               private router: Router,
               private routingLocation: Location,
-              private factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
-              private factoryComposedQuery: FactoryComposedQuery) {
+              private fleetAssetDetailsQuery: FleetAssetDetailsQuery,
+              private fleetComposedQuery: FleetComposedQuery) {
   }
 
   ngOnInit() {
     this.activatedRoute.fragment.subscribe(() => {
       this.updateAsset();
     });
-    this.factoryAssetDetailsQuery.selectLoading();
+    this.fleetAssetDetailsQuery.selectLoading();
     this.updateAsset();
   }
 
   updateAsset() {
-    this.assetId = this.factoryAssetDetailsQuery.getActiveId();
-    this.asset$ = this.factoryComposedQuery.selectActiveAssetWithFieldInstanceDetails()
+    this.assetId = this.fleetAssetDetailsQuery.getActiveId();
+    this.assetWithFields$ = this.fleetComposedQuery.selectActivesAssetWithFieldInstanceDetails()
       .pipe(takeUntil(this.unSubscribe$));
   }
 

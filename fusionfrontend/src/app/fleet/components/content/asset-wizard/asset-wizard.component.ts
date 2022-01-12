@@ -196,7 +196,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   }
 
   private resolveFieldInstancesOfAsset() {
-    this.fieldInstanceResolver.resolveOfAsset(this.asset).subscribe(fieldInstances => {
+    this.fieldInstanceResolver.resolveFromComponentOfAsset(this.asset).subscribe(fieldInstances => {
       this.asset.fieldInstances = fieldInstances.filter(fieldInstance => this.asset.fieldInstanceIds.includes(fieldInstance.id));
       this.asset.fieldInstanceIds = [];
     });

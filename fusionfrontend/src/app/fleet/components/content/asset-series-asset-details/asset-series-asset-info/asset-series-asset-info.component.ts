@@ -15,7 +15,6 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
-import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { Observable } from 'rxjs';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
@@ -28,6 +27,9 @@ import { Router } from '@angular/router';
 import { AssetWizardComponent } from '../../asset-wizard/asset-wizard.component';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from 'primeng/dynamicdialog';
+import { FleetAssetDetailsResolver } from '../../../../../core/resolvers/fleet-asset-details.resolver';
+import { FleetAssetDetailsService } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.service';
+import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -37,11 +39,11 @@ import { DialogService } from 'primeng/dynamicdialog';
 export class AssetSeriesAssetInfoComponent implements OnInit {
 
   @Input()
-  asset$: Observable<FactoryAssetDetailsWithFields>;
+  assetWithFields$: Observable<FleetAssetDetailsWithFields>;
 
   assetIdOfImage: ID;
   assetImage: string;
-  asset: FactoryAssetDetailsWithFields;
+  assetWithFields: FleetAssetDetailsWithFields;
 
   ItemOptionsMenuType = ItemOptionsMenuType;
 
@@ -52,6 +54,8 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
               private routingLocation: Location,
               private confirmationService: ConfirmationService,
               private assetDetailMenuService: FactoryAssetDetailMenuService,
+              private fleetAssetDetailsResolver: FleetAssetDetailsResolver,
+              private fleetAssetDetailsService: FleetAssetDetailsService,
               private dialogService: DialogService,
               private translate: TranslateService) {
   }
@@ -61,8 +65,8 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   }
 
   private loadImageForChangedAsset() {
-    this.asset$.subscribe(asset => {
-      this.asset = asset;
+    this.assetWithFields$.subscribe(asset => {
+      this.assetWithFields = asset;
       if (asset.id !== this.assetIdOfImage) {
         this.assetIdOfImage = asset.id;
 
@@ -77,8 +81,8 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   openEditWizard() {
     this.dialogService.open(AssetWizardComponent, {
       data: {
-        asset: this.asset,
-        prefilledAssetSeriesId: this.asset.assetSeriesId,
+        asset: this.assetWithFields,
+        prefilledAssetSeriesId: this.assetWithFields.assetSeriesId,
       },
       header: this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
       width: '80%'
@@ -89,7 +93,7 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
 
   openDeleteDialog() {
     this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-asset-delete-dialog-detail',
-      this.asset.name, () => this.deleteAsset(this.asset.id));
+      this.assetWithFields.name, () => this.deleteAsset(this.assetWithFields.id));
   }
 
   private deleteAsset(id: ID) {

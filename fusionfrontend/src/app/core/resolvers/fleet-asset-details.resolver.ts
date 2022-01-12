@@ -14,19 +14,25 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { CompanyQuery } from '../store/company/company.query';
 import { FleetAssetDetailsService } from '../store/fleet-asset-details/fleet-asset-details.service';
 import { ID } from '@datorama/akita';
 import { EMPTY, Observable } from 'rxjs';
 import { FleetAssetDetails } from '../store/fleet-asset-details/fleet-asset-details.model';
+import { RouteHelpers } from '../helpers/route-helpers';
 
 @Injectable({ providedIn: 'root' })
 export class FleetAssetDetailsResolver implements Resolve<void>{
   constructor(private companyQuery: CompanyQuery,
               private fleetAssetDetailsService: FleetAssetDetailsService) { }
 
-  resolve(): void { // using Observable will (probably) result in deadlock when called from routing module
+  resolve(route: ActivatedRouteSnapshot): void { // using Observable will (probably) result in deadlock when called from routing module
+    const assetId = RouteHelpers.findParamInFullActivatedRoute(route, 'assetId');
+    if (assetId) {
+      this.fleetAssetDetailsService.setActive(assetId);
+    }
+
     this.resolveFromComponent().subscribe();
   }
 

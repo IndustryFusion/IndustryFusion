@@ -29,11 +29,11 @@ export class FieldInstanceResolver implements Resolve<void> {
 
   resolve(): void { // using Observable will (probably) result in deadlock when called from routing module
     this.assetQuery.waitForActive().subscribe(asset => {
-      this.resolveOfAsset(asset).subscribe();
+      this.resolveFromComponentOfAsset(asset).subscribe();
     });
   }
 
-  resolveOfAsset(asset: Asset): Observable<FieldInstance[]> {
+  resolveFromComponentOfAsset(asset: Asset): Observable<FieldInstance[]> {
       return this.fieldInstanceService.getFieldInstances(asset.companyId, asset.id);
   }
 }

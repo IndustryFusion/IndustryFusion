@@ -88,6 +88,13 @@ public class FleetAssetRestService {
         return assetDetailsMapper.toDtoSet(assetSet, embedChildren);
     }
 
+    @GetMapping(path = "/companies/{companyId}/fleetassetdetails/{assetDetailsId}")
+    public AssetDetailsDto getSingleAssetDetails(@PathVariable final Long companyId,
+                                                 @PathVariable final Long assetDetailsId,
+                                                 @RequestParam(defaultValue = "false") final boolean embedChildren) {
+        return assetDetailsMapper.toDto(assetService.getAssetById(assetDetailsId), embedChildren);
+    }
+
     @PutMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}")
     public AssetDto updateAsset(@PathVariable final Long companyId,
                                 @PathVariable final Long assetSeriesId,
