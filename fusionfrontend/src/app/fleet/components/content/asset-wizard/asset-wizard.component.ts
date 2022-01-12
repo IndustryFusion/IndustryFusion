@@ -295,18 +295,21 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       this.asset = asset;
 
       if (this.type === DialogType.EDIT) {
-        this.assetService.editFleetAsset(this.relatedAssetSeriesId, this.asset).subscribe();
+        this.assetService.editFleetAsset(this.relatedAssetSeriesId, this.asset)
+          .subscribe(() => this.closeAfterPersisting());
       } else if (this.type === DialogType.CREATE) {
-        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset).subscribe();
+        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset)
+          .subscribe(() => this.closeAfterPersisting());
       }
-
-      this.ref.close(this.asset);
-      this.ref = null;
-
     } else {
       this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
       console.error('[Asset Wizard]: Error at saving asset');
     }
+  }
+
+  private closeAfterPersisting(): void {
+    this.ref.close(this.asset);
+    this.ref = null;
   }
 
   setMetricsValid(isValid: boolean) {

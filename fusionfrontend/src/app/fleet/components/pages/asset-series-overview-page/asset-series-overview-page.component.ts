@@ -35,6 +35,11 @@ import { ConfirmationService } from 'primeng/api';
 import { FactoryAssetDetailMenuService } from '../../../../core/services/menu/factory-asset-detail-menu.service';
 import { AssetService } from '../../../../core/store/asset/asset.service';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
+import { FleetAssetDetailsService } from '../../../../core/store/fleet-asset-details/fleet-asset-details.service';
+import { FieldDetailsService } from '../../../../core/store/field-details/field-details.service';
+import { FactorySiteService } from '../../../../core/store/factory-site/factory-site.service';
+import { RoomService } from '../../../../core/store/room/room.service';
+import { FleetAssetDetailsResolver } from '../../../../core/resolvers/fleet-asset-details.resolver';
 
 @Component({
   selector: 'app-asset-series-overview-page',
@@ -69,6 +74,11 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
               private companyQuery: CompanyQuery,
               private dialogService: DialogService,
               private factorySiteQuery: FactorySiteQuery,
+              private fleetAssetDetailsService: FleetAssetDetailsService,
+              private fieldDetailsService: FieldDetailsService,
+              private factorySiteService: FactorySiteService,
+              private fleetAssetDetailsResolver: FleetAssetDetailsResolver,
+              private roomService: RoomService,
               private route: ActivatedRoute,
               private confirmationService: ConfirmationService,
               private assetDetailMenuService: FactoryAssetDetailMenuService,
@@ -135,7 +145,7 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   }
 
   openAssetEditWizard() {
-    this.dialogService.open(AssetWizardComponent, {
+    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
       data: {
         asset: this.activeListItem.asset,
         prefilledAssetSeriesId: this.activeListItem.asset.assetSeriesId,
@@ -144,7 +154,25 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
       width: '80%'
     });
 
-    // assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
+    assetWizardRef.onClose.subscribe(asset => this.refreshData(asset));
+  }
+
+  private refreshData(asset?: Asset) {
+    if (!asset) {
+      return;
+    }
+
+    if (asset.room && asset.room.factorySiteId) {
+      this.roomService.getRoom(asset.companyId, asset.room.factorySiteId, asset.room.id, true).subscribe();
+      this.factorySiteService.getFactorySite(asset.companyId, asset.room.factorySiteId, true).subscribe();
+    }
+
+    this.fleetAssetDetailsResolver.resolveFromComponent().subscribe(() => {
+      this.fleetAssetDetailsService.setActive(asset.id);
+      this.assetService.setActive(asset.id);
+    });
+
+    this.fieldDetailsService.getFieldsOfAsset(asset.companyId, asset.id, true).subscribe();
   }
 
   openAssetDeleteDialog() {

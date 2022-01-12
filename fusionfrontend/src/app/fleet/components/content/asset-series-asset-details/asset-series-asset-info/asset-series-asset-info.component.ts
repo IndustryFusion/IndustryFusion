@@ -30,6 +30,10 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { FleetAssetDetailsResolver } from '../../../../../core/resolvers/fleet-asset-details.resolver';
 import { FleetAssetDetailsService } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.service';
 import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
+import { RoomService } from '../../../../../core/store/room/room.service';
+import { Asset } from '../../../../../core/store/asset/asset.model';
+import { FactorySiteService } from '../../../../../core/store/factory-site/factory-site.service';
+import { FieldDetailsService } from '../../../../../core/store/field-details/field-details.service';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -42,6 +46,7 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   assetWithFields$: Observable<FleetAssetDetailsWithFields>;
 
   assetIdOfImage: ID;
+  prevImageKey: string;
   assetImage: string;
   assetWithFields: FleetAssetDetailsWithFields;
 
@@ -56,6 +61,9 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
               private assetDetailMenuService: FactoryAssetDetailMenuService,
               private fleetAssetDetailsResolver: FleetAssetDetailsResolver,
               private fleetAssetDetailsService: FleetAssetDetailsService,
+              private fieldDetailsService: FieldDetailsService,
+              private factorySiteService: FactorySiteService,
+              private roomService: RoomService,
               private dialogService: DialogService,
               private translate: TranslateService) {
   }
@@ -67,8 +75,9 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   private loadImageForChangedAsset() {
     this.assetWithFields$.subscribe(asset => {
       this.assetWithFields = asset;
-      if (asset.id !== this.assetIdOfImage) {
+      if (asset.id !== this.assetIdOfImage || asset.imageKey !== this.prevImageKey) {
         this.assetIdOfImage = asset.id;
+        this.prevImageKey = asset.imageKey;
 
         const companyId = this.companyQuery.getActiveId();
         this.imageService.getImageAsUriSchemeString(companyId, asset.imageKey).subscribe(imageText => {
@@ -79,7 +88,7 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   }
 
   openEditWizard() {
-    this.dialogService.open(AssetWizardComponent, {
+    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
       data: {
         asset: this.assetWithFields,
         prefilledAssetSeriesId: this.assetWithFields.assetSeriesId,
@@ -88,7 +97,27 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
       width: '80%'
     });
 
-    // assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
+    assetWizardRef.onClose.subscribe((asset?: Asset) => {
+      this.refreshData(asset);
+    });
+  }
+
+  private refreshData(asset?: Asset) {
+    if (!asset) {
+      return;
+    }
+
+    if (asset.room && asset.room.factorySiteId) {
+      this.roomService.getRoom(asset.companyId, asset.room.factorySiteId, asset.room.id, true).subscribe();
+      this.factorySiteService.getFactorySite(asset.companyId, asset.room.factorySiteId, true).subscribe();
+    }
+
+    this.fleetAssetDetailsResolver.resolveFromComponent().subscribe(() => {
+      this.fleetAssetDetailsService.setActive(this.assetWithFields.id);
+      this.assetService.setActive(this.assetWithFields.id);
+    });
+
+    this.fieldDetailsService.getFieldsOfAsset(asset.companyId, asset.id, true).subscribe();
   }
 
   openDeleteDialog() {
