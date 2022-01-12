@@ -1168,10 +1168,10 @@
     "@cds/city" "^1.1.0"
     normalize.css "^8.0.1"
 
-"@clr/angular@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.npmjs.org/@clr/angular/-/angular-5.1.1.tgz"
-  integrity sha512-5WbfcoAkJ50W5u89WxI9Fw+5RdJQba2U7HfItDb7YALaCQz07QEH7ioyyJCnwKTbvrjVVP+EwlPU2Ob3hpBxyw==
+"@clr/angular@5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@clr/angular/-/angular-5.5.2.tgz#3b65acb957bba7427be3d0f5d59bef43b91df6f8"
+  integrity sha512-z5U12tAJEVeU3GlFn3kEQmQ6RwK2qfGLEVxFs8mUm2l6pe7H1tKeGnXvwiq2e4gCLtt9fSR40dg8/C8r2aF6Lw==
   dependencies:
     tslib "^2.0.0"
 
