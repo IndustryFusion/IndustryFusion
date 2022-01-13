@@ -56,7 +56,7 @@ import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient);
+  return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }
 
 @NgModule({
