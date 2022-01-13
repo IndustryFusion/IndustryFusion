@@ -34,6 +34,8 @@ import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-det
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { ImageService } from '../../../../core/services/api/image.service';
+import { AssetQuery } from '../../../../core/store/asset/asset.query';
+import { AssetService } from '../../../../core/store/asset/asset.service';
 
 @Component({
   selector: 'app-asset-series-wizard',
@@ -69,6 +71,8 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
               private companyQuery: CompanyQuery,
               private assetTypeTemplateQuery: AssetTypeTemplateQuery,
               private assetTypeQuery: AssetTypeQuery,
+              private assetQuery: AssetQuery,
+              private assetService: AssetService,
               private assetTypesResolver: AssetTypesResolver,
               private changeDetectorRef: ChangeDetectorRef,
               private fieldsResolver: FieldsResolver,
@@ -99,15 +103,16 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     if (this.type === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
         .subscribe(assetSeries => {
-          this.assetSeriesImageKeyBeforeEditing = this.type === DialogType.CREATE ? ImageService.DEFAULT_ASSET_IMAGE_KEY
-            : assetSeries.imageKey;
+          this.assetSeriesImageKeyBeforeEditing = assetSeries.imageKey;
           this.updateAssetSeries(assetSeries);
-          this.loadImage();
+          this.loadInitialImage();
         });
+    } else if (this.type === DialogType.CREATE) {
+      this.assetSeriesImageKeyBeforeEditing = ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY;
     }
   }
 
-  private loadImage() {
+  private loadInitialImage() {
     if (this.assetSeries) {
       const companyId = this.companyQuery.getActiveId();
       this.imageService.getImageAsUriSchemeString(companyId, this.assetSeries.imageKey).subscribe(imageText => {
@@ -225,6 +230,9 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
 
   private updateAssetSeries(assetSeries: AssetSeries) {
     this.assetSeries = assetSeries;
+    if (this.type === DialogType.CREATE) {
+      this.assetSeries.imageKey = this.assetSeriesForm.get('imageKey').value;
+    }
     this.createAssetSeriesFormGroup();
     this.updateRelatedObjects(assetSeries);
   }
@@ -255,14 +263,42 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
 
   private saveAssetSeries(): void {
     this.updateAssetSeriesFromForm();
-
-    if (this.assetSeries.id) {
-      this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries).subscribe(
-        () => this.closeWizardAfterSave());
-    } else {
-      this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
-        .subscribe(() => this.closeWizardAfterSave());
+    if (this.isAssetSeriesValid()) {
+      if (this.type === DialogType.EDIT) {
+        this.assetSeriesService.editItem(this.assetSeries.id, this.assetSeries)
+          .subscribe(() => this.onEditingSuccess());
+      } else if (this.type === DialogType.CREATE) {
+        this.assetSeriesService.createItem(this.assetSeries.companyId, this.assetSeries)
+          .subscribe(() => this.closeWizardAfterSave());
+      }
     }
+  }
+
+  private isAssetSeriesValid(): boolean {
+    if (this.assetSeries.imageKey == null) {
+      console.warn('[asset series wizard]: No image key exists.');
+      return false;
+    }
+    return true;
+  }
+
+  private onEditingSuccess(): void {
+    this.editImageKeysOfAssetsOfAssetSerie();
+    this.closeWizardAfterSave();
+  }
+
+  private editImageKeysOfAssetsOfAssetSerie(): void {
+    this.assetQuery.selectAssetsOfAssetSerie(this.assetSeries.id).subscribe(assetsOfAssetSerie => {
+      for (const asset of assetsOfAssetSerie) {
+        const isAssetImageKeyDefaultOfAssetSeries = asset.imageKey === this.assetSeriesImageKeyBeforeEditing
+          && asset.imageKey !== this.assetSeries.imageKey;
+
+        if (isAssetImageKeyDefaultOfAssetSeries) {
+          const changedAsset = { ...asset, imageKey: this.assetSeries.imageKey};
+          this.assetService.editFleetAsset(this.assetSeries.id, changedAsset).subscribe();
+        }
+      }
+    });
   }
 
   private closeWizardAfterSave() {
