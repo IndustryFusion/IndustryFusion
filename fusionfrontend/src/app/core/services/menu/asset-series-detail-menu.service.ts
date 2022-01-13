@@ -15,12 +15,13 @@
 
 import { Injectable } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
-import { FactoryAssetDetails } from '../../store/factory-asset-details/factory-asset-details.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetWizardComponent } from '../../../fleet/components/content/asset-wizard/asset-wizard.component';
 import { AssetSeriesWizardComponent } from '../../../fleet/components/content/asset-series-wizard/asset-series-wizard.component';
 import { CompanyQuery } from '../../store/company/company.query';
 import { TranslateService } from '@ngx-translate/core';
+import { FleetAssetDetails } from '../../store/fleet-asset-details/fleet-asset-details.model';
+import { ID } from '@datorama/akita';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class AssetSeriesDetailMenuService {
               private translate: TranslateService) {
   }
 
-  public showCreateAssetFromAssetSeries(assetSeriesId: string, createCallback: (FactoryAssetDetails) => any) {
+  public showCreateAssetWizardAssetSeriesPrefilled(assetSeriesId: ID, createCallback: (FleetAssetDetails) => any) {
     const ref = this.dialogService.open(AssetWizardComponent, {
       data: {
         prefilledAssetSeriesId: assetSeriesId,
@@ -41,7 +42,7 @@ export class AssetSeriesDetailMenuService {
       width: '80%'
     });
 
-    ref.onClose.subscribe((newAssetDetails: FactoryAssetDetails) => {
+    ref.onClose.subscribe((newAssetDetails: FleetAssetDetails) => {
       if (newAssetDetails) {
         createCallback(newAssetDetails);
       }

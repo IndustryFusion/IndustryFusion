@@ -33,7 +33,9 @@ import { AssetInstantiationComponent } from '../asset-instantiation/asset-instan
 import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
-import { TableSelectedItemsBarType } from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
+import {
+  TableSelectedItemsBarType
+} from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
 import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FactoryAssetDetailMenuService } from '../../../../core/services/menu/factory-asset-detail-menu.service';
@@ -123,7 +125,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService,
     private assetDetailMenuService: FactoryAssetDetailMenuService,
     public translate: TranslateService) {
   }
@@ -250,8 +251,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-delete-dialog-list',
-      this.activeListItem.name, () => this.deleteAsset());
+    this.assetDetailMenuService.showDeleteDialog('asset-delete-dialog-list', this.activeListItem.name,
+      () => this.deleteAsset());
   }
 
   openAssignRoomDialog() {

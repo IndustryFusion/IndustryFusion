@@ -31,7 +31,6 @@ import { FactorySiteQuery } from '../../../../../core/store/factory-site/factory
 import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ConfirmationService } from 'primeng/api';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
@@ -64,7 +63,6 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
               private roomQuery: RoomQuery,
               private router: Router,
               private routingLocation: Location,
-              private confirmationService: ConfirmationService,
               private companyQuery: CompanyQuery,
               private imageService: ImageService,
               private translate: TranslateService) {
@@ -99,8 +97,8 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-delete-dialog-detail',
-      this.assetWithFields.name, () => this.deleteAsset());
+    this.assetDetailMenuService.showDeleteDialog('asset-delete-dialog-detail', this.assetWithFields.name,
+      () => this.deleteAsset());
   }
 
   openAssignRoomDialog() {

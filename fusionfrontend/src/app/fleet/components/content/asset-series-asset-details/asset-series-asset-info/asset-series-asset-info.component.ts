@@ -19,21 +19,11 @@ import { Observable } from 'rxjs';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
-import { FactoryAssetDetailMenuService } from '../../../../../core/services/menu/factory-asset-detail-menu.service';
-import { ConfirmationService } from 'primeng/api';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { AssetWizardComponent } from '../../asset-wizard/asset-wizard.component';
-import { TranslateService } from '@ngx-translate/core';
-import { DialogService } from 'primeng/dynamicdialog';
-import { FleetAssetDetailsResolver } from '../../../../../core/resolvers/fleet-asset-details.resolver';
-import { FleetAssetDetailsService } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.service';
 import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
-import { RoomService } from '../../../../../core/store/room/room.service';
-import { Asset } from '../../../../../core/store/asset/asset.model';
-import { FactorySiteService } from '../../../../../core/store/factory-site/factory-site.service';
-import { FieldDetailsService } from '../../../../../core/store/field-details/field-details.service';
+import { FleetAssetDetailMenuService } from '../../../../../core/services/menu/fleet-asset-detail-menu.service';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -57,15 +47,7 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
               private assetService: AssetService,
               private router: Router,
               private routingLocation: Location,
-              private confirmationService: ConfirmationService,
-              private assetDetailMenuService: FactoryAssetDetailMenuService,
-              private fleetAssetDetailsResolver: FleetAssetDetailsResolver,
-              private fleetAssetDetailsService: FleetAssetDetailsService,
-              private fieldDetailsService: FieldDetailsService,
-              private factorySiteService: FactorySiteService,
-              private roomService: RoomService,
-              private dialogService: DialogService,
-              private translate: TranslateService) {
+              private fleetAssetDetailMenuService: FleetAssetDetailMenuService) {
   }
 
   ngOnInit() {
@@ -88,40 +70,11 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   }
 
   openEditWizard() {
-    const assetWizardRef = this.dialogService.open(AssetWizardComponent, {
-      data: {
-        asset: this.assetWithFields,
-        prefilledAssetSeriesId: this.assetWithFields.assetSeriesId,
-      },
-      header: this.translate.instant('APP.FLEET.PAGES.ASSET_SERIES_OVERVIEW.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
-      width: '80%'
-    });
-
-    assetWizardRef.onClose.subscribe((asset?: Asset) => {
-      this.refreshData(asset);
-    });
-  }
-
-  private refreshData(asset?: Asset) {
-    if (!asset) {
-      return;
-    }
-
-    if (asset.room && asset.room.factorySiteId) {
-      this.roomService.getRoom(asset.companyId, asset.room.factorySiteId, asset.room.id, true).subscribe();
-      this.factorySiteService.getFactorySite(asset.companyId, asset.room.factorySiteId, true).subscribe();
-    }
-
-    this.fleetAssetDetailsResolver.resolveFromComponent().subscribe(() => {
-      this.fleetAssetDetailsService.setActive(this.assetWithFields.id);
-      this.assetService.setActive(this.assetWithFields.id);
-    });
-
-    this.fieldDetailsService.getFieldsOfAsset(asset.companyId, asset.id, true).subscribe();
+    this.fleetAssetDetailMenuService.showEditWizardAndRefresh(this.assetWithFields);
   }
 
   openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-series-asset-delete-dialog-detail',
+    this.fleetAssetDetailMenuService.showDeleteDialog('asset-series-asset-delete-dialog-detail',
       this.assetWithFields.name, () => this.deleteAsset(this.assetWithFields.id));
   }
 

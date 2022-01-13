@@ -13,13 +13,12 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { AssetSeriesDetailsQuery } from '../../../../../core/store/asset-series-details/asset-series-details.query';
 import { AssetSeriesDetails } from '../../../../../core/store/asset-series-details/asset-series-details.model';
 
@@ -28,12 +27,10 @@ import { AssetSeriesDetails } from '../../../../../core/store/asset-series-detai
   templateUrl: './asset-series-details-sub-header.component.html',
   styleUrls: ['./asset-series-details-sub-header.component.scss']
 })
-export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
+export class AssetSeriesDetailsSubHeaderComponent implements OnInit {
 
   assetSeriesID: ID;
-  assetSeries: AssetSeriesDetails;
-
-  private unSubscribe$ = new Subject<void>();
+  assetSeries$: Observable<AssetSeriesDetails>;
 
   constructor(public activatedRoute: ActivatedRoute,
               private router: Router,
@@ -45,16 +42,11 @@ export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
     this.activatedRoute.fragment.subscribe(() => {
       this.updateAssetSeries();
     });
-    this.updateAssetSeries();
   }
 
   private updateAssetSeries() {
     this.assetSeriesID = this.assetSeriesDetailsQuery.getActiveId();
-    this.assetSeriesDetailsQuery.selectActive()
-      .pipe(takeUntil(this.unSubscribe$))
-      .subscribe(assetSeries => {
-        this.assetSeries = assetSeries;
-      });
+    this.assetSeries$ = this.assetSeriesDetailsQuery.waitForActives();
   }
 
   onRouteClick(subroute: string, subroute2: string = null): Promise<boolean> {
@@ -79,16 +71,4 @@ export class AssetSeriesDetailsSubHeaderComponent implements OnInit, OnDestroy {
   isAssets() {
     return this.isRouteActive('assets', true);
   }
-
-/*
-  isVersions() {
-    return this.isRouteActive('versions');
-  }
-*/
-
-  ngOnDestroy() {
-    this.unSubscribe$.next();
-    this.unSubscribe$.complete();
-  }
-
 }

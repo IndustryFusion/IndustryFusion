@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-asset-series-details-info [assetSeries]="assetSeries"></app-asset-series-details-info>
+<app-asset-series-details-info [assetSeries]="assetSeries$ | async"></app-asset-series-details-info>
 
 <div class="subheader-flex">
   <div class="flexbox"></div>
@@ -22,7 +22,6 @@ under the License.
       <li (click)="onRouteClick('assets', '')" [ngClass]="{'active': isAssets()}">
         {{ 'APP.FLEET.ASSET_SERIES_DETAILS.SUB_HEADER.ASSETS' | translate }}
       </li>
-      <!-- <li (click)="onRouteClick('versions', '')" [ngClass]="{'active': isVersions()}">Versions</li> -->
     </ul>
   </div>
   <div class="flexbox"></div>
