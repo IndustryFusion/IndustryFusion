@@ -25,10 +25,11 @@ under the License.
     </div>
 
     <ng-container *ngFor="let subsystem of subsystemFormArray?.controls;">
-      <form [formGroup]="subsystem //noinspection InvalidExpressionResultType">
+      <form [formGroup]="toFormGroup(subsystem)">
         <div class="p-grid subsystem-row">
           <div class="p-col-4 manufacturer-icon">
-            <img src="assets/img/{{subsystem.get('imageKey').value}}">
+            <img *ngIf="subsystem.get('assetImage').value != null" [src]="subsystem.get('assetImage').value" alt="asset-symbol">
+            <img *ngIf="subsystem.get('assetImage').value == null" src="assets/img/{{subsystem.get('imageKey').value}}" alt="asset-symbol">
             <label class="if-label" displayControlValue="name"></label>
           </div>
           <label class="if-label-normal-weight p-col-3" displayControlValue="assetTypeName"></label>

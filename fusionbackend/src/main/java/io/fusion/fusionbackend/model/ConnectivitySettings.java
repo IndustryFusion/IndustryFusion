@@ -37,7 +37,6 @@ import javax.persistence.Table;
 @SuperBuilder
 @NoArgsConstructor
 public class ConnectivitySettings extends BaseEntity {
-
     @Basic(optional = false)
     private String connectionString;
 

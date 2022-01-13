@@ -30,6 +30,8 @@ spring:
       ddl-auto: validate
     open-in-view: false
     database: postgresql
+  main:
+    allow-circular-references: true
 
 keycloak:
   realm: OISP
