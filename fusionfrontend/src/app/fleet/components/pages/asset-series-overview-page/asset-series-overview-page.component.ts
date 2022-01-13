@@ -116,7 +116,7 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   }
 
   createAssetFromAssetSeries() {
-    this.assetSeriesDetailMenuService.showCreateAssetWizardAssetSeriesPrefilled(this.assetSerieId, () => this.resolve(this.route));
+    this.assetSeriesDetailMenuService.showPrefilledCreateAssetWizardAndRefresh(this.assetSerieId, () => this.resolve(this.route));
   }
 
   setActiveRow(assetCombined: AssetCombined) {

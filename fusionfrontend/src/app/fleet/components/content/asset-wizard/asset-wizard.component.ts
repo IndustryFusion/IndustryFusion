@@ -298,7 +298,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
         this.assetService.editFleetAsset(this.relatedAssetSeriesId, this.asset)
           .subscribe(() => this.closeAfterPersisting());
       } else if (this.type === DialogType.CREATE) {
-        this.assetService.createAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset)
+        this.assetService.createFleetAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset)
           .subscribe(() => this.closeAfterPersisting());
       }
     } else {

@@ -53,10 +53,10 @@ export class FleetAssetDetailMenuService {
       width: '80%'
     });
 
-    assetWizardRef.onClose.subscribe(asset => this.refreshDataIfSaved(asset));
+    assetWizardRef.onClose.subscribe(asset => this.refreshAssetAggregate(asset));
   }
 
-  private refreshDataIfSaved(asset?: Asset) {
+  public refreshAssetAggregate(asset?: Asset) {
     if (!asset) {
       return;
     }

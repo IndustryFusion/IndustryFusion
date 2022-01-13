@@ -64,7 +64,8 @@ export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   private loadImageForChangedAssetSeries() {
-    if (this.assetSeries.id !== this.assetSeriesIdOfImage || this.assetSeries.imageKey !== this.prevImageKey) {
+    if (this.assetSeries
+      && (this.assetSeries.id !== this.assetSeriesIdOfImage || this.assetSeries.imageKey !== this.prevImageKey)) {
       this.assetSeriesIdOfImage = this.assetSeries.id;
       this.prevImageKey = this.assetSeries.imageKey;
 
@@ -76,7 +77,7 @@ export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   openCreateWizard() {
-    this.assetSeriesDetailMenuService.showCreateAssetWizardAssetSeriesPrefilled(this.assetSeries.id, () => { });
+    this.assetSeriesDetailMenuService.showPrefilledCreateAssetWizardAndRefresh(this.assetSeries.id, () => { });
   }
 
   openEditWizard() {

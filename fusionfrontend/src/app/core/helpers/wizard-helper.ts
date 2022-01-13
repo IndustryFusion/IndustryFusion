@@ -25,7 +25,7 @@ export class WizardHelper {
                                                formArray: FormArray, formArrayIndexPath: string,
                                                dataArray: any[], dataArrayIndexPath: string): void {
 
-    if (!WizardHelper.isArgumentsValid(group, formArray, formArrayIndexPath, dataArray, dataArrayIndexPath) ) {
+    if (WizardHelper.isArgumentsInvalid(group, formArray, formArrayIndexPath, dataArray, dataArrayIndexPath) ) {
       console.error('[wizard helper]: invalid arguments');
     }
 
@@ -38,9 +38,11 @@ export class WizardHelper {
     WizardHelper.updateFormAndDataArrayIndices(formArray, formArrayIndexPath, indexFormArray, dataArrayIndexPath);
   }
 
-  private static isArgumentsValid(group: FormGroup,
-                                  formArray: FormArray, formArrayIndexPath: string,
-                                  dataArray: any[], dataArrayIndexPath: string): boolean {
+  private static isArgumentsInvalid(group: FormGroup,
+                                    formArray: FormArray,
+                                    formArrayIndexPath: string,
+                                    dataArray: any[],
+                                    dataArrayIndexPath: string): boolean {
     return group == null || formArray == null || dataArray == null
      || formArrayIndexPath == null || dataArrayIndexPath == null;
   }

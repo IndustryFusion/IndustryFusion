@@ -22,6 +22,7 @@ import { CompanyQuery } from '../../store/company/company.query';
 import { TranslateService } from '@ngx-translate/core';
 import { FleetAssetDetails } from '../../store/fleet-asset-details/fleet-asset-details.model';
 import { ID } from '@datorama/akita';
+import { FleetAssetDetailMenuService } from './fleet-asset-detail-menu.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,11 @@ export class AssetSeriesDetailMenuService {
 
   constructor(private dialogService: DialogService,
               private companyQuery: CompanyQuery,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private fleetAssetDetailMenuService: FleetAssetDetailMenuService) {
   }
 
-  public showCreateAssetWizardAssetSeriesPrefilled(assetSeriesId: ID, createCallback: (FleetAssetDetails) => any) {
+  public showPrefilledCreateAssetWizardAndRefresh(assetSeriesId: ID, createCallback: (FleetAssetDetails) => any) {
     const ref = this.dialogService.open(AssetWizardComponent, {
       data: {
         prefilledAssetSeriesId: assetSeriesId,
@@ -44,6 +46,7 @@ export class AssetSeriesDetailMenuService {
 
     ref.onClose.subscribe((newAssetDetails: FleetAssetDetails) => {
       if (newAssetDetails) {
+        this.fleetAssetDetailMenuService.refreshAssetAggregate();
         createCallback(newAssetDetails);
       }
     });

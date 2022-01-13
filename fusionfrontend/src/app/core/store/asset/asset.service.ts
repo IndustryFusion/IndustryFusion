@@ -119,14 +119,14 @@ export class AssetService {
       }));
   }
 
-  createAsset(companyId: ID, assetSeriesId: ID, asset: Asset): Observable<ID> {
+  createFleetAsset(companyId: ID, assetSeriesId: ID, asset: Asset): Observable<ID> {
     const path = `companies/${companyId}/assetseries/${assetSeriesId}/assets`;
     return this.http.post<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(savedAsset => {
           this.assetStore.upsertCached(savedAsset);
 
-          const assetDetails$ = this.factoryAssetDetailsService.getFactoryAssetDetails(savedAsset.companyId, savedAsset.id);
+          const assetDetails$ = this.fleetAssetDetailsService.getFleetAssetDetails(savedAsset.companyId, savedAsset.id);
 
           this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId, true).subscribe();
           if (savedAsset.room) {

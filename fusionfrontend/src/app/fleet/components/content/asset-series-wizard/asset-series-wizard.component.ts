@@ -36,6 +36,7 @@ import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { ImageService } from '../../../../core/services/api/image.service';
 import { AssetQuery } from '../../../../core/store/asset/asset.query';
 import { AssetService } from '../../../../core/store/asset/asset.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-series-wizard',
@@ -288,16 +289,18 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
   }
 
   private editImageKeysOfAssetsOfAssetSerie(): void {
-    this.assetQuery.selectAssetsOfAssetSerie(this.assetSeries.id).subscribe(assetsOfAssetSerie => {
-      for (const asset of assetsOfAssetSerie) {
+    this.assetQuery.selectAssetsOfAssetSerie(this.assetSeries.id)
+      .pipe(take(1))
+      .subscribe(assetsOfAssetSerie => {
+      assetsOfAssetSerie.forEach(asset => {
         const isAssetImageKeyDefaultOfAssetSeries = asset.imageKey === this.assetSeriesImageKeyBeforeEditing
           && asset.imageKey !== this.assetSeries.imageKey;
 
         if (isAssetImageKeyDefaultOfAssetSeries) {
-          const changedAsset = { ...asset, imageKey: this.assetSeries.imageKey};
+          const changedAsset = { ...asset, imageKey: this.assetSeries.imageKey };
           this.assetService.editFleetAsset(this.assetSeries.id, changedAsset).subscribe();
         }
-      }
+      });
     });
   }
 
