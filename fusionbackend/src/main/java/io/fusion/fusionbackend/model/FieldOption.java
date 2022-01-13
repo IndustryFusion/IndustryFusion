@@ -33,7 +33,6 @@ import javax.persistence.SequenceGenerator;
 @SuperBuilder
 @NoArgsConstructor
 public class FieldOption extends BaseEntity {
-
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "field_id", nullable = false)
     private Field field;

@@ -31,14 +31,11 @@ export namespace ThresholdType {
   export function getTypeTitle(type: ThresholdType) {
     switch (type) {
       case ThresholdType.ABSOLUTE:
-        return this.translateService.instant('APP.CORE.STORE.THRESHOLD.ABSOLUT_LOWER_AND_UPPER_LIMIT');
-        // return 'Absolute lower & upper limit *';
+        return this.translateService.instant('APP.CORE.STORE.THRESHOLD.ABSOLUT_LOWER_AND_UPPER_LIMIT') + ' *';
       case ThresholdType.IDEAL:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.IDEAL_RANGE');
-        // return 'Ideal range';
       case ThresholdType.CRITICAL:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.CRITICAL_ALERT_RANGE');
-        // return 'Critical alert range';
     }
   }
 
@@ -46,13 +43,10 @@ export namespace ThresholdType {
     switch (type) {
       case ThresholdType.ABSOLUTE:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.ABSOLUTE_LOWER_LIMIT');
-        // return 'Absolute lower limit';
       case ThresholdType.IDEAL:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.LOWER_IDEAL_THRESHOLD');
-        // return 'Lower ideal threshold';
       case ThresholdType.CRITICAL:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.LOWER_CRITICAL_ALERT_THRESHOLD');
-      // return 'Lower critical alert threshold';
     }
   }
 
@@ -60,13 +54,10 @@ export namespace ThresholdType {
     switch (type) {
       case ThresholdType.ABSOLUTE:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.ABSOLUTE_UPPER_LIMIT');
-      // return 'Absolute upper limit';
       case ThresholdType.IDEAL:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.UPPER_IDEAL_THRESHOLD');
-        // return 'Upper ideal threshold';
       case ThresholdType.CRITICAL:
         return this.translateService.instant('APP.CORE.STORE.THRESHOLD.UPPER_CRITICAL_ALERT_THRESHOLD');
-        // return 'Upper critical alert threshold';
     }
   }
 }

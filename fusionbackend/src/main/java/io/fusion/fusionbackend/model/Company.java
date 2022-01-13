@@ -42,7 +42,7 @@ import java.util.Set;
                 @NamedAttributeNode(value = "assets")})
 @NamedEntityGraph(name = "Company.allChildrenDeep",
         attributeNodes = {
-                @NamedAttributeNode(value = "factorySites", subgraph = "factorySitesChildren"),
+                @NamedAttributeNode(value = "factorySites", subgraph = "factorySiteChildren"),
                 @NamedAttributeNode(value = "assetSeries", subgraph = "assetSeriesChildren"),
                 @NamedAttributeNode(value = "assets")},
         subgraphs = {

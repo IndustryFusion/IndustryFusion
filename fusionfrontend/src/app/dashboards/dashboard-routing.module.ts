@@ -16,8 +16,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MaintenancePageComponent } from './components/pages/maintenance-page/maintenance-page.component';
-import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
+import {
+  EquipmentEfficiencyPageComponent
+} from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
 import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
+import { DashboardBreadCrumbs } from './dashboard-routing.model';
 
 const routes: Routes = [
   {
@@ -27,14 +30,14 @@ const routes: Routes = [
       devices: OispDeviceResolver
     },
     data: {
-      breadcrumb: 'Maintenance'
+      breadcrumb: DashboardBreadCrumbs.MAINTENANCE
     }
   },
   {
     path: 'dashboards/companies/:companyId/equipment-efficiency',
     component: EquipmentEfficiencyPageComponent,
     data: {
-      breadcrumb: 'Equipment Efficiency'
+      breadcrumb: DashboardBreadCrumbs.EQUIPMENT_EFFICIENCY
     },
     resolve: {
       devices: OispDeviceResolver

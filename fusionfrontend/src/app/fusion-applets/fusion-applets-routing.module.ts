@@ -22,6 +22,7 @@ import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
 import { FusionAppletsOverviewComponent } from './pages/fusion-applets-overview/fusion-applets-overview.component';
 import { OispRuleFilteredByStatusResolver, OispSingleRuleResolver } from '../core/resolvers/oisp-rule-filtered-by-status.resolver';
 import { OispRuleQuery } from '../core/store/oisp/oisp-rule/oisp-rule.query';
+import { FusionAppletBreadCrumbs } from './fusion-applets-routing.model';
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
         path: 'overview',
         component: FusionAppletsOverviewComponent,
         data: {
-          breadcrumb: 'Overview',
+          breadcrumb: FusionAppletBreadCrumbs.OVERVIEW,
         },
         resolve: {
           rules: OispRuleFilteredByStatusResolver
@@ -41,7 +42,7 @@ const routes: Routes = [
         path: 'archiv',
         component: FusionAppletsOverviewComponent,
         data: {
-          breadcrumb: 'Archive',
+          breadcrumb: FusionAppletBreadCrumbs.ARCHIVE,
         },
         resolve: {
           rules: OispRuleFilteredByStatusResolver
@@ -61,7 +62,7 @@ const routes: Routes = [
         path: 'detail',
         component: FusionAppletPageComponent,
         data: {
-          breadcrumb: 'Applet Detail',
+          breadcrumb: FusionAppletBreadCrumbs.APPLET_DETAIL,
         },
         children: [{
           path: ':fusionAppletId',
@@ -78,7 +79,7 @@ const routes: Routes = [
         path: 'editor',
         component: FusionAppletPageComponent,
         data: {
-          breadcrumb: 'Applet Editor',
+          breadcrumb: FusionAppletBreadCrumbs.APPLET_EDITOR,
         },
         resolve: {
           devices: OispDeviceResolver,

@@ -20,7 +20,7 @@ import { FactorySitePageComponent } from './components/pages/factory-site-page/f
 import { AssetsGridPageComponent } from './components/pages/assets-grid-page/assets-grid-page.component';
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
-import { FactoryManagerPageType } from './factory-routing.model';
+import { FactoryManagerBreadCrumbs, FactoryManagerPageType } from './factory-routing.model';
 import { MainAuthGuard } from '../core/guards/main-auth.guard';
 import { Role } from '../core/models/roles.model';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
@@ -54,7 +54,7 @@ const routes: Routes = [
         component: FactorySitesPageComponent,
         data: {
           roles: [Role.FACTORY_MANAGER],
-          breadcrumb: 'Factory Sites'
+          breadcrumb: FactoryManagerBreadCrumbs.FACTORY_SITES
         },
         resolve: {
           company: CompanyResolver
@@ -95,7 +95,7 @@ const routes: Routes = [
                 data: {
                   pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_CARD],
                   roles: [Role.FACTORY_MANAGER],
-                  breadcrumb: 'Asset Cards'
+                  breadcrumb: FactoryManagerBreadCrumbs.ASSET_CARDS
                 }
               }
             ]
@@ -111,7 +111,7 @@ const routes: Routes = [
     canActivate: [MainAuthGuard],
     data: {
       roles: [Role.FACTORY_MANAGER],
-      breadcrumb: 'Rooms'
+      breadcrumb: FactoryManagerBreadCrumbs.Rooms
     },
     resolve: {
       company: CompanyResolver
@@ -153,7 +153,7 @@ const routes: Routes = [
             data: {
               pageTypes: [FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ASSET_CARD],
               roles: [Role.FACTORY_MANAGER],
-              breadcrumb: 'Asset Cards'
+              breadcrumb: FactoryManagerBreadCrumbs.ASSET_CARDS
             }
           }
         ]
@@ -170,7 +170,7 @@ const routes: Routes = [
     },
     data: {
       roles: [Role.FACTORY_MANAGER],
-      breadcrumb: 'Assets',
+      breadcrumb: FactoryManagerBreadCrumbs.ASSETS,
     },
     children: [
       {
@@ -201,7 +201,7 @@ const routes: Routes = [
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_LIST, FactoryManagerPageType.ASSET_CARD],
           roles: [Role.FACTORY_MANAGER],
-          breadcrumb: 'Asset Cards'
+          breadcrumb: FactoryManagerBreadCrumbs.ASSET_CARDS
         }
       },
       {
@@ -227,14 +227,14 @@ const routes: Routes = [
             resolve: { },
             component: AssetPerformanceComponent,
             data: {
-              breadcrumb: 'Performance',
+              breadcrumb: FactoryManagerBreadCrumbs.PERFORMANCE,
             },
           },
           {
             path: 'performance/historical',
             component: AssetPerformanceComponent,
             data: {
-              breadcrumb: 'Performance',
+              breadcrumb: FactoryManagerBreadCrumbs.PERFORMANCE,
             },
           },
           {
@@ -242,7 +242,7 @@ const routes: Routes = [
             component: AssetPerformanceComponent,
             resolve: { fieldInstanceDetails: FieldInstanceDetailsResolver},
             data: {
-              breadcrumb: 'Performance',
+              breadcrumb: FactoryManagerBreadCrumbs.PERFORMANCE,
             },
           },
 
@@ -251,7 +251,7 @@ const routes: Routes = [
             component: AssetAppletsComponent,
             resolve: { rules: OispRuleFilteredByStatusResolver },
             data: {
-              breadcrumb: 'Active Applets',
+              breadcrumb: FactoryManagerBreadCrumbs.ACTIVE_APPLETS,
             },
           },
           {
@@ -259,7 +259,7 @@ const routes: Routes = [
             component: AssetAppletsComponent,
             resolve: { rules: OispRuleFilteredByStatusResolver },
             data: {
-              breadcrumb: 'Archived Applets',
+              breadcrumb: FactoryManagerBreadCrumbs.ARCHIVED_APPLETS,
             },
           },
 
@@ -267,28 +267,28 @@ const routes: Routes = [
             path: 'digital-nameplate',
             component: AssetDigitalNameplateComponent,
             data: {
-              breadcrumb: 'Digital Nameplate',
+              breadcrumb: FactoryManagerBreadCrumbs.DIGITAL_NAMEPLATE,
             },
           },
           {
             path: 'subsystems',
             component: AssetSubsystemsComponent,
             data: {
-              breadcrumb: 'Subsystems',
+              breadcrumb: FactoryManagerBreadCrumbs.SUBSYSTEMS,
             },
           },
           {
             path: 'notifications/open',
             component: AssetNotificationsComponent,
             data: {
-              breadcrumb: 'Notifications',
+              breadcrumb: FactoryManagerBreadCrumbs.NOTIFICATIONS,
             },
           },
           {
             path: 'notifications/cleared',
             component: AssetNotificationsComponent,
             data: {
-              breadcrumb: 'Notifications',
+              breadcrumb: FactoryManagerBreadCrumbs.NOTIFICATIONS,
             },
           },
         ]

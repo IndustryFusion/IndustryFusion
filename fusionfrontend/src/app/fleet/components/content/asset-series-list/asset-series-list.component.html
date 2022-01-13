@@ -21,7 +21,8 @@ under the License.
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
          [showCurrentPageReport]="true" [value]="displayedAssetSeries" (rowsChange)="updateRowCountInUrl($event)"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Asset Series">
+         class="list-container" currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }}
+         {last} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {totalRecords} {{ 'APP.COMMON.TERMS.ASSET_SERIES' | translate }}">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>

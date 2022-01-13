@@ -15,7 +15,7 @@ under the License.
 
 <ng-container *ngIf="isInitialized">
   <label *ngIf="showTitle" class="caption">{{ metricGroupName != null ? metricGroupName :
-    translate.instant('APP.FACTORY.METRICS_BOARD.METRICS_GROUP.DEFAULT_LABEL') }}</label>
+    translate.instant('APP.FACTORY.METRICS_BOARD.METRICS_GROUP.GENERAL_LABEL') }}</label>
 
   <div  class="metrics-board" [ngClass]="(isHeightDifferent ? 'fake-masonry fake-masonry-' + index : '')">
     <ng-container *ngFor="let metric of metricDetails">

@@ -26,9 +26,9 @@ import java.util.Set;
 public interface QuantityTypeRepository extends PagingAndSortingRepository<QuantityType, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "QuantityType.allChildren")
+    @EntityGraph(value = "QuantityType.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<QuantityType> findAll(Sort sort);
 
-    @EntityGraph(value = "QuantityType.allChildren")
+    @EntityGraph(value = "QuantityType.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<QuantityType> findById(Long id);
 }

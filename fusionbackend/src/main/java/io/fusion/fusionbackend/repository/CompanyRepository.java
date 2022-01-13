@@ -25,12 +25,12 @@ import java.util.Optional;
 public interface CompanyRepository extends PagingAndSortingRepository<Company, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "Company.allChildren")
+    @EntityGraph(value = "Company.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Iterable<Company> findAll(Sort sort);
 
     @EntityGraph(value = "Company.allChildren")
     Optional<Company> findById(Long id);
 
-    @EntityGraph(value = "Company.allChildrenDeep")
+    @EntityGraph(value = "Company.allChildrenDeep", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Company> findDeepById(Long id);
 }
