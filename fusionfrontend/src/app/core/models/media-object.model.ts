@@ -31,9 +31,21 @@ export class MediaObject {
     this.fileSize = fileSize;
     this.filename = filename;
   }
+
+  public static getFilename(fileKey: string) {
+    const fileNameWithUuid = fileKey.split('/').pop();
+    const uuidLength = fileNameWithUuid.split('_')[0].length;
+    return fileNameWithUuid.substring(uuidLength + 1);
+  }
 }
 
 export enum MediaObjectKeyPrefix {
   ASSETS = 'assets',
   ASSET_SERIES = 'assetseries'
+}
+
+export enum MediaObjectType {
+  IMAGES = 'images',
+  VIDEOS = 'videos',
+  MANUALS = 'manuals',
 }

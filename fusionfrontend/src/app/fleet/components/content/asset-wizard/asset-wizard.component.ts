@@ -45,6 +45,8 @@ import { ImageService } from '../../../../core/services/api/storage/image.servic
 import { FieldInstanceResolver } from '../../../../core/resolvers/field-instance.resolver';
 import { RoomQuery } from '../../../../core/store/room/room.query';
 import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
+import { ManualService } from '../../../../core/services/api/storage/manual.service';
+import { VideoService } from '../../../../core/services/api/storage/video.service';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -99,6 +101,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
               private config: DynamicDialogConfig,
               private ref: DynamicDialogRef,
               private imageService: ImageService,
+              private manualService: ManualService,
+              private videoService: VideoService,
               private messageService: MessageService) {
     this.resolveWizard();
   }
@@ -339,6 +343,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.ref) {
       this.deleteUploadedImageIfNotDefault();
+      this.deleteUploadedManualIfNotDefault();
+      this.deleteUploadedVideoIfNotDefault();
       this.ref.close();
     }
   }
@@ -347,6 +353,20 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     if (this.assetImage) {
       this.imageService.deleteImageIfNotDefaultNorParent(this.companyId, this.assetForm.get('imageKey').value,
         this.assetImageKeyBeforeEditing, this.relatedAssetSeries.imageKey).subscribe();
+    }
+  }
+
+  private deleteUploadedManualIfNotDefault() {
+    if (ManualService.isManualUploaded(this.assetForm?.get('handbookUrl').value)) {
+      this.manualService.deleteManualIfNotOfParent(this.companyId, this.assetForm.get('handbookUrl').value,
+        this.relatedAssetSeries.handbookUrl).subscribe();
+    }
+  }
+
+  private deleteUploadedVideoIfNotDefault() {
+    if (VideoService.isVideoUploaded(this.assetForm?.get('videoUrl').value)) {
+      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.assetForm.get('videoUrl').value,
+        this.relatedAssetSeries.handbookUrl).subscribe();
     }
   }
 }

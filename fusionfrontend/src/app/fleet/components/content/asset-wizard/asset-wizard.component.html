@@ -46,6 +46,7 @@ under the License.
     </app-asset-wizard-step-general-information>
     <app-asset-wizard-step-nameplate *ngIf="step === AssetWizardStep.DIGITAL_NAMEPLATE"
                                      [assetForm]="assetForm"
+                                     [relatedAssetSeries]="relatedAssetSeries"
                                      (stepChange)="onStepChange($event)">
     </app-asset-wizard-step-nameplate>
     <app-asset-wizard-step-metrics-thresholds *ngIf="step === AssetWizardStep.METRICS_THRESHOLDS"

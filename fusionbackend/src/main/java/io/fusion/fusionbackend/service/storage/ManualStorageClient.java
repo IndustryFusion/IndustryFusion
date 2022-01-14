@@ -23,34 +23,34 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Base64;
 import java.util.Locale;
 
-public class ImageStorageClient {
-    private static final Long MAX_FILE_SIZE_MB = 3L;
-    private static final String MEDIA_TYPE_PREFIX = "image/";
+public class ManualStorageClient {
+    private static final Long MAX_FILE_SIZE_MB = 20L;
+    private static final String MEDIA_TYPE_PREFIX = "application/";
 
     private final ObjectStorageBaseClient client;
 
-    public ImageStorageClient(@NotNull ObjectStorageBaseClient client) {
+    public ManualStorageClient(@NotNull ObjectStorageBaseClient client) {
         this.client = client;
         client.setMaxFileSize(MAX_FILE_SIZE_MB);
     }
 
-    public MediaObjectDto getImage(@NotNull final String uniqueImageKey) throws ResourceNotFoundException {
-        if (isContentTypeInvalid(getContentType(uniqueImageKey))) {
+    public MediaObjectDto getManual(@NotNull final String uniqueManualKey) throws ResourceNotFoundException {
+        if (isContentTypeInvalid(getContentType(uniqueManualKey))) {
             throw new IllegalArgumentException("Content type is invalid");
         }
 
-        byte[] imageContent = client.getFile(uniqueImageKey);
+        byte[] manualContent = client.getFile(uniqueManualKey);
 
         try {
-            String imageContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(imageContent);
+            String manualContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(manualContent);
 
-            String contentType = getContentType(uniqueImageKey);
+            String contentType = getContentType(uniqueManualKey);
             return MediaObjectDto.builder()
                     .companyId(client.getConfig().companyId)
-                    .fileKey(uniqueImageKey)
-                    .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueImageKey))
-                    .contentBase64("data:" + contentType + ";base64," + imageContentBase64)
-                    .fileSize(BaseClient.getFileSizeFrom64Based(imageContentBase64))
+                    .fileKey(uniqueManualKey)
+                    .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueManualKey))
+                    .contentBase64("data:" + contentType + ";base64," + manualContentBase64)
+                    .fileSize(BaseClient.getFileSizeFrom64Based(manualContentBase64))
                     .contentType(contentType)
                     .build();
         } catch (Exception e) {
@@ -60,31 +60,26 @@ public class ImageStorageClient {
     }
 
     private boolean isContentTypeInvalid(@NotNull final String contentTypeLowerCase) {
-        return !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "png")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "jpeg")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "svg+xml")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "bmp")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "tiff");
+        return !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "pdf");
     }
 
     private String getContentType(final String fileKey) {
         String fileExtension = BaseClient.getFileExtension(fileKey).toLowerCase(Locale.ROOT);
-        fileExtension = fileExtension.replace("jpg", "jpeg").replace("svg", "svg+xml");
         return MEDIA_TYPE_PREFIX + fileExtension;
     }
 
-    public MediaObjectDto uploadImage(@NotNull MediaObjectDto imageDto) throws ExternalApiException  {
+    public MediaObjectDto uploadManual(@NotNull MediaObjectDto manualDto) throws ExternalApiException  {
 
-        final String contentType = imageDto.getContentType().toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
+        final String contentType = manualDto.getContentType().toLowerCase(Locale.ROOT);
         if (isContentTypeInvalid(contentType)) {
             throw new IllegalArgumentException("Content type is invalid");
         }
 
-        imageDto.setContentType(contentType);
-        return client.uploadFile(imageDto);
+        manualDto.setContentType(contentType);
+        return client.uploadFile(manualDto);
     }
 
-    public void deleteImageErrorIfNotExist(@NotNull final String imageKey) {
-        client.deleteFileErrorIfNotExist(imageKey);
+    public void deleteManualErrorIfNotExist(@NotNull final String manualKey) {
+        client.deleteFileErrorIfNotExist(manualKey);
     }
 }

@@ -63,12 +63,28 @@ under the License.
 
     <div class="input-div">
       <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.ASSET_HANDBOOK' | translate }}</label>
-      <input type="text" pInputText formControlName="handbookUrl" />
+      <div class="upload-container">
+        <input class="upload-input" type="url" pInputText formControlName="handbookUrl"/>
+
+        <i *ngIf="isManualUploaded()" class="upload-button-light pi pi-trash" (click)="deletePreviouslyUploadedManual()"></i>
+        <label *ngIf="!isManualUploaded()" class="upload-button-light">
+          <i [ngClass]="isManualUploaded() ? 'pi pi-trash' : 'pi pi-upload'"></i>
+          <input type="file" accept="application/pdf" (change)="onManualUpload($event)">
+        </label>
+      </div>
     </div>
 
     <div class="input-div">
       <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.ASSET_VIDEO' | translate }}</label>
-      <input type="text" pInputText formControlName="videoUrl" />
+      <div class="upload-container">
+        <input class="upload-input" type="url" pInputText formControlName="videoUrl"/>
+
+        <i *ngIf="isVideoUploaded()" class="upload-button-light pi pi-trash" (click)="deletePreviouslyUploadedVideo()"></i>
+        <label *ngIf="!isVideoUploaded()" class="upload-button-light">
+          <i [ngClass]="isVideoUploaded() ? 'pi pi-trash' : 'pi pi-upload'"></i>
+          <input type="file" accept="video/*" (change)="onVideoUpload($event)">
+        </label>
+      </div>
     </div>
 
     <label class="if-dialog-section-title">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.CUSTOMIZE_CONNECTION' | translate }}</label>

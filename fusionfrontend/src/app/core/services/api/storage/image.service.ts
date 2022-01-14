@@ -14,56 +14,28 @@
  */
 
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, of } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MediaObject, MediaObjectKeyPrefix } from '../../../models/media-object.model';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { MediaObject, MediaObjectKeyPrefix, MediaObjectType } from '../../../models/media-object.model';
 import { map } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
+import { ObjectStorageService } from './object-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ImageService {
+export class ImageService extends ObjectStorageService {
 
   public static DEFAULT_ASSET_IMAGE_KEY = 'default-avatar-asset.png';
   public static DEFAULT_ASSET_SERIES_IMAGE_KEY = 'default-avatar-asset.png';
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
-  constructor(private http: HttpClient) {
-  }
-
-  private static getFileExtension(filename: string): string {
-    const parts: string[] = filename.split('.');
-    return parts.length > 0 ? parts[parts.length - 1] : 'jpeg';
-  }
-
-  private static escapeSlash(text: string): string {
-    return text.replace('/', '$');
-  }
-
-  getImage(companyId: ID, imageKey: string): Observable<MediaObject> {
-    const path = `companies/${companyId}/images/${ImageService.escapeSlash(imageKey)}`;
-    return this.http.get<MediaObject>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  constructor(http: HttpClient) {
+    super(http);
+    this.setMediaTypePrefix('image/');
   }
 
   getImageAsUriSchemeString(companyId: ID, imageKey: string): Observable<string> {
-    if (imageKey == null) {
-      console.error('[image service]: Empty image key');
-      return EMPTY;
-    }
-
-    return this.getImage(companyId, imageKey).pipe(
-      map((fusionImage: MediaObject) => {
-          if (!fusionImage.contentBase64.startsWith('data')) {
-            return `data:${fusionImage.contentType};base64,${fusionImage.contentBase64}`;
-          }
-          return fusionImage.contentBase64;
-        }
-      ));
+    return this.getMediaObjectAsUriSchemeString(companyId, imageKey, MediaObjectType.IMAGES);
   }
 
   uploadImage(companyId: ID,
@@ -71,11 +43,7 @@ export class ImageService {
               keyPrefix: MediaObjectKeyPrefix,
               imageContentBase64: string,
               fileSize: number): Observable<MediaObject> {
-    const path = `companies/${companyId}/images`;
-    const image: MediaObject = new MediaObject(companyId, filename, keyPrefix, imageContentBase64,
-      'image/' + ImageService.getFileExtension(filename), fileSize);
-
-    return this.http.post<MediaObject>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);
+    return this.uploadMediaObject(companyId, filename, keyPrefix, imageContentBase64, fileSize, MediaObjectType.IMAGES);
   }
 
   deleteImageIfNotDefault(companyId: ID, imageKey: string, imageKeyDefault: string): Observable<boolean> {
@@ -93,7 +61,6 @@ export class ImageService {
   }
 
   private deleteImage(companyId: ID, imageKey: string): Observable<void> {
-    const path = `companies/${companyId}/images/${ImageService.escapeSlash(imageKey)}`;
-    return this.http.delete<void>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+    return this.deleteMediaObject(companyId, imageKey, MediaObjectType.IMAGES);
   }
 }
