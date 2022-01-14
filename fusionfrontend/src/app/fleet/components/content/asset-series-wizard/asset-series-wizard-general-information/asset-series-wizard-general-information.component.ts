@@ -22,6 +22,8 @@ import { Company } from '../../../../../core/store/company/company.model';
 import { AssetType } from '../../../../../core/store/asset-type/asset-type.model';
 import { SelectItem } from 'primeng/api';
 import { NameWithVersionPipe } from 'src/app/shared/pipes/namewithversion.pipe';
+import { ImageService } from '../../../../../core/services/api/image.service';
+import { CompanyQuery } from '../../../../../core/store/company/company.query';
 
 @Component({
   selector: 'app-asset-series-wizard-general-information',
@@ -30,20 +32,27 @@ import { NameWithVersionPipe } from 'src/app/shared/pipes/namewithversion.pipe';
 })
 export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
 
-  @Input() mode: DialogType = DialogType.EDIT;
   @Input() assetSeriesForm: FormGroup;
   @Input() relatedManufacturer: Company;
   @Input() relatedAssetType: AssetType;
+  @Input() assetSeriesImage: string;
   @Output() updateTypeTemplate = new EventEmitter<ID>();
+  @Output() assetSeriesImageChanged = new EventEmitter<string>();
 
   assetTypeTemplateOptions: SelectItem[] = [];
   DialogType = DialogType;
+  DEFAULT_ASSET_IMAGE_KEY = ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY;
 
-  constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery) {
+  private companyId: ID;
+
+  constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery,
+              private companyQuery: CompanyQuery,
+              private imageService: ImageService) {
   }
 
   ngOnInit() {
     this.initAssetTypeTemplateOptions();
+    this.companyId = this.companyQuery.getActiveId();
   }
 
   private initAssetTypeTemplateOptions() {
@@ -55,6 +64,33 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
         });
       }
     });
+  }
+
+  onImageUpload(event: any): void {
+    this.deletePreviouslyUploadedImage();
+
+    const selectedImage: any = event.target.files[0];
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.addEventListener('load', (readFileEvent: any) => {
+        this.imageService.uploadImage(this.companyId, selectedImage.name, 'assetseries', readFileEvent.target.result, selectedImage.size)
+          .subscribe(uploadedImage => {
+            this.assetSeriesImage = uploadedImage.contentBase64;
+            this.assetSeriesImageChanged.emit(this.assetSeriesImage);
+            this.assetSeriesForm.get('imageKey').setValue(uploadedImage.fileKey);
+          });
+      });
+
+      reader.readAsDataURL(selectedImage);
+    }
+  }
+
+  private deletePreviouslyUploadedImage(): void {
+    if (this.assetSeriesImage) {
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.deleteImageIfNotDefault(companyId, this.assetSeriesForm.get('imageKey').value,
+        ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY).subscribe();
+    }
   }
 
 }

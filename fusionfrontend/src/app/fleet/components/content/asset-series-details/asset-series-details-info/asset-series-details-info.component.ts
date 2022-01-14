@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AssetSeriesDetails } from '../../../../../core/store/asset-series-details/asset-series-details.model';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
@@ -25,16 +25,20 @@ import { Location } from '@angular/common';
 import { AssetSeriesDetailsResolver } from '../../../../../core/resolvers/asset-series-details.resolver';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
 import { AssetSeriesDetailMenuService } from '../../../../../core/services/menu/asset-series-detail-menu.service';
+import { ImageService } from '../../../../../core/services/api/image.service';
 
 @Component({
   selector: 'app-asset-series-details-info',
   templateUrl: './asset-series-details-info.component.html',
   styleUrls: ['./asset-series-details-info.component.scss']
 })
-export class AssetSeriesDetailsInfoComponent implements OnInit {
+export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
 
   @Input()
   assetSeries: AssetSeriesDetails;
+
+  assetSeriesIdOfImage: ID;
+  assetSeriesImage: string;
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE];
 
@@ -45,10 +49,28 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
               private assetSeriesService: AssetSeriesService,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
               private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
+              private imageService: ImageService,
               private companyQuery: CompanyQuery) {
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.assetSeries) {
+      this.loadImageForChangedAssetSeries();
+    }
+  }
+
+  private loadImageForChangedAssetSeries() {
+    if (this.assetSeries && this.assetSeries.id !== this.assetSeriesIdOfImage) {
+      this.assetSeriesIdOfImage = this.assetSeries.id;
+
+      const companyId = this.companyQuery.getActiveId();
+      this.imageService.getImageAsUriSchemeString(companyId, this.assetSeries.imageKey).subscribe(imageText => {
+        this.assetSeriesImage = imageText;
+      });
+    }
   }
 
   openCreateWizard() {

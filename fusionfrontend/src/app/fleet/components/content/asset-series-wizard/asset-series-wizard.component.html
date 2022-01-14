@@ -18,15 +18,16 @@ under the License.
 
   <app-asset-series-wizard-general-information
     *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
-    [mode]="mode"
     [assetSeriesForm]="assetSeriesForm"
-    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)"
+    [assetSeriesImage]="assetSeriesImage"
     [relatedManufacturer]="relatedManufacturer"
-    [relatedAssetType]="relatedAssetType">
+    [relatedAssetType]="relatedAssetType"
+    (assetSeriesImageChanged)="updateAssetSeriesImage($event)"
+    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)">
   </app-asset-series-wizard-general-information>
   <app-asset-series-wizard-nameplate-and-connectivity-settings
     *ngIf="step === AssetSeriesCreateSteps.NAMEPLATE_AND_CONNECTIVITY_SETTINGS"
-    [mode]="mode"
+    [type]="type"
     [assetSeries]="assetSeries"
     [assetSeriesForm]="assetSeriesForm"
     (valid)="setConnectivitySettingsValid($event)">

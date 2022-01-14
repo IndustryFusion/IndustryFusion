@@ -41,12 +41,22 @@ under the License.
           <input pInputText formControlName="description"
                  placeholder="{{ 'APP.FLEET.ASSET_SERIES_WIZARD.GENERAL_INFORMATION.ASSET_SERIES_DESCRIPTION' | translate }}">
         </div>
+
+        <div class="image-upload-container">
+          <label class="upload-button">
+            <i class="pi pi-upload"></i>
+            <input #imageInput type="file" accept="image/*" (change)="onImageUpload($event)">
+          </label>
+          <div class="wizard-title"> {{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.UPLOAD_PICTURE' | translate }}</div>
+        </div>
       </div>
 
       <div id="column-right">
         <i class="if-icon-help"></i>
         <span class="if-hint"> {{ 'APP.FLEET.ASSET_SERIES_WIZARD.GENERAL_INFORMATION.HELP_TEXT' | translate }}</span>
-        <div class="sample-asset-display">
+        <div class="info-display-preview">
+          <img *ngIf="assetSeriesImage != null" [src]="assetSeriesImage" alt="asset-series-symbol">
+          <img *ngIf="assetSeriesImage == null" src="assets/img/{{DEFAULT_ASSET_IMAGE_KEY}}" alt="asset-series-symbol">
           <div>
             <span class="wizard-icon-title">{{ assetSeriesForm?.get('name')?.value }}</span>
             <span>{{ relatedAssetType?.name }}</span>

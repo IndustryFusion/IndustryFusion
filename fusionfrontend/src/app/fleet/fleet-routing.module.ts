@@ -30,6 +30,7 @@ import { FactoryAssetDetailsQuery } from '../core/store/factory-asset-details/fa
 import { AssetSeriesResolver } from '../core/resolvers/asset-series.resolver';
 import { ConnectivityTypeResolver } from '../core/resolvers/connectivity-type.resolver';
 import { CompanyResolver } from '../core/resolvers/company.resolver';
+import { AssetTypeTemplatesResolver } from '../core/resolvers/asset-type-templates.resolver';
 import { FleetManagerBreadCrumbs } from './fleet-routing.model';
 
 
@@ -61,6 +62,7 @@ const routes: Routes = [
         resolve: {
           asset: AssetResolver,
           room: RoomResolver,
+          assetTypeTemplates: AssetTypeTemplatesResolver,
         },
         children: [
           {

@@ -14,7 +14,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MediaObject } from '../../models/fusion-image.model';
@@ -27,6 +27,7 @@ import { ID } from '@datorama/akita';
 export class ImageService {
 
   public static DEFAULT_ASSET_IMAGE_KEY = 'default-avatar-asset.png';
+  public static DEFAULT_ASSET_SERIES_IMAGE_KEY = 'default-avatar-asset.png';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -68,7 +69,21 @@ export class ImageService {
     return this.http.post<MediaObject>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);
   }
 
-  deleteImage(companyId: ID, imageKey: string): Observable<void> {
+  deleteImageIfNotDefault(companyId: ID, imageKey: string, imageKeyDefault: string): Observable<boolean> {
+    if (imageKey && imageKey !== imageKeyDefault) {
+      return this.deleteImage(companyId, imageKey).pipe(map(() => true));
+    }
+    return of(false);
+  }
+
+  deleteImageIfNotDefaultNorParent(companyId: ID, imageKey: string, imageKeyDefault: string, imageKeyParent: string): Observable<boolean> {
+    if (imageKey && imageKey !== imageKeyDefault && imageKey !== imageKeyParent) {
+      return this.deleteImage(companyId, imageKey).pipe(map(() => true));
+    }
+    return of(false);
+  }
+
+  private deleteImage(companyId: ID, imageKey: string): Observable<void> {
     const path = `companies/${companyId}/images/${ImageService.escapeSlash(imageKey)}`;
     return this.http.delete<void>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }

@@ -13,21 +13,15 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<section class="asset">
-  <img class="asset-img" src="assets/img/{{(assetSeries)?.imageKey}}"/>
-  <div class="asset-info">
+<section class="asset-series-details">
+  <img *ngIf="assetSeriesImage == null" class="asset-series-img" src="assets/img/{{(assetSeries)?.imageKey}}" alt="asset-series-image"/>
+  <img *ngIf="assetSeriesImage != null" class="asset-series-img" [src]="assetSeriesImage" alt="asset-series-image">
+  <div class="asset-series-info">
     <h3>{{(assetSeries)?.name}}</h3>
     <p>{{(assetSeries)?.assetType}}</p>
   </div>
   <div class="flex-box"></div>
-  <!--  <div class="asset-info asset-status">
-      <div class="asset-status-wrapper">
-        <div class="flex-box"></div>
-        <app-asset-series-status [assetSeries]="assetSeries" [showInline]="false"></app-asset-series-status>
-      </div>
-      <p>{{(assetSeries)?.templateVersion}}</p>
-    </div>-->
-  <div class="asset-info asset-menu">
+  <div class="asset-series-info asset-menu">
     <app-item-options-menu [actions]="dropdownMenuOptions" [showInline]="false"
                            (createItem)="openCreateWizard()"
                            (editItem)="openEditWizard()"

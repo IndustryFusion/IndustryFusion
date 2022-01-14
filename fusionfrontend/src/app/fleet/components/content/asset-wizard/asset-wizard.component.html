@@ -39,7 +39,7 @@ under the License.
                                                [relatedAssetType]="relatedAssetType"
                                                [relatedCompany]="relatedCompany"
                                                [assetImage]="assetImage"
-                                               (assetImageChanged)="assetImage = $event"
+                                               (assetImageChanged)="updateAssetImage($event)"
                                                (stepChange)="onStepChange($event)"
                                                (changeAssetSeries)="onChangeAssetSeries($event)">
     </app-asset-wizard-step-general-information>
