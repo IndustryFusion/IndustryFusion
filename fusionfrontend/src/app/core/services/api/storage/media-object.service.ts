@@ -24,7 +24,7 @@ import { ID } from '@datorama/akita';
 @Injectable({
   providedIn: 'root'
 })
-export abstract class ObjectStorageService {
+export abstract class MediaObjectService {
 
   private mediaTypePrefix: string;
   private httpOptions = {
@@ -32,6 +32,35 @@ export abstract class ObjectStorageService {
   };
 
   protected constructor(private readonly http: HttpClient) {
+  }
+
+  public static downloadMediaObject(mediaObject: MediaObject): void {
+    const linkSource = MediaObject.getUriSchemeString(mediaObject);
+    const downloadLink = document.createElement('a');
+    const fileName = mediaObject.filename;
+
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  }
+
+  public static downloadFileContent(fileContent: string, fileName: string, contentType: string): void {
+    console.log('this is the content', fileContent);
+    const blob = new Blob([fileContent], { type: contentType });
+
+    if (window.navigator.msSaveOrOpenBlob) {
+      // modern way
+      window.navigator.msSaveBlob(blob, fileName);
+    } else {
+      // workaround
+      const anchor = window.document.createElement('a');
+      anchor.href = window.URL.createObjectURL(blob);
+      anchor.download = fileName;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      window.URL.revokeObjectURL(anchor.href);
+    }
   }
 
   protected static getFileExtension(filename: string): string {
@@ -60,19 +89,14 @@ export abstract class ObjectStorageService {
     }
 
     return this.getMediaObject(companyId, mediaObjectKey, mediaObjectType).pipe(
-      map((mediaObject: MediaObject) => {
-          if (!mediaObject.contentBase64.startsWith('data')) {
-            return `data:${mediaObject.contentType};base64,${mediaObject.contentBase64}`;
-          }
-          return mediaObject.contentBase64;
-        }
-      ));
+      map((mediaObject: MediaObject) => MediaObject.getUriSchemeString(mediaObject))
+    );
   }
 
-  private getMediaObject(companyId: ID,
-                         mediaObjectKey: string,
-                         mediaObjectType: MediaObjectType): Observable<MediaObject> {
-    const path = `companies/${companyId}/${mediaObjectType}/${ObjectStorageService.escapeSlash(mediaObjectKey)}`;
+  protected getMediaObject(companyId: ID,
+                           mediaObjectKey: string,
+                           mediaObjectType: MediaObjectType): Observable<MediaObject> {
+    const path = `companies/${companyId}/${mediaObjectType}/${MediaObjectService.escapeSlash(mediaObjectKey)}`;
 
     this.setHeaderContentType(mediaObjectKey);
     return this.http.get<MediaObject>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
@@ -95,7 +119,7 @@ export abstract class ObjectStorageService {
   protected deleteMediaObject(companyId: ID,
                               mediaObjectKey: string,
                               mediaObjectType: MediaObjectType): Observable<void> {
-    const path = `companies/${companyId}/${mediaObjectType}/${ObjectStorageService.escapeSlash(mediaObjectKey)}`;
+    const path = `companies/${companyId}/${mediaObjectType}/${MediaObjectService.escapeSlash(mediaObjectKey)}`;
 
     this.setHeaderContentType(mediaObjectKey);
     return this.http.delete<void>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
@@ -106,6 +130,6 @@ export abstract class ObjectStorageService {
   }
 
   private getContentType(filename: string): string {
-    return this.mediaTypePrefix + ObjectStorageService.getFileExtension(filename);
+    return this.mediaTypePrefix + MediaObjectService.getFileExtension(filename);
   }
 }

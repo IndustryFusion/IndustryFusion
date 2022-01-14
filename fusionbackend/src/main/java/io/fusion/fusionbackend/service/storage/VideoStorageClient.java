@@ -49,7 +49,7 @@ public class VideoStorageClient {
                     .companyId(client.getConfig().companyId)
                     .fileKey(uniqueVideoKey)
                     .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueVideoKey))
-                    .contentBase64("data:" + contentType + ";base64," + videoContentBase64)
+                    .contentBase64(videoContentBase64)
                     .fileSize(BaseClient.getFileSizeFrom64Based(videoContentBase64))
                     .contentType(contentType)
                     .build();

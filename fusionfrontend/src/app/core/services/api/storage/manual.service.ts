@@ -19,12 +19,12 @@ import { HttpClient } from '@angular/common/http';
 import { MediaObject, MediaObjectKeyPrefix, MediaObjectType } from '../../../models/media-object.model';
 import { map } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { ObjectStorageService } from './object-storage.service';
+import { MediaObjectService } from './media-object.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ManualService extends ObjectStorageService {
+export class ManualService extends MediaObjectService {
 
   constructor(http: HttpClient) {
     super(http);
@@ -36,8 +36,8 @@ export class ManualService extends ObjectStorageService {
       && (manualUrl.startsWith(MediaObjectKeyPrefix.ASSETS + '/') || manualUrl.startsWith(MediaObjectKeyPrefix.ASSET_SERIES + '/'));
   }
 
-  getManualAsUriSchemeString(companyId: ID, manualKey: string): Observable<string> {
-    return this.getMediaObjectAsUriSchemeString(companyId, manualKey, MediaObjectType.MANUALS);
+  getManual(companyId: ID, manualKey: string): Observable<MediaObject> {
+    return this.getMediaObject(companyId, manualKey, MediaObjectType.MANUALS);
   }
 
   uploadManual(companyId: ID,

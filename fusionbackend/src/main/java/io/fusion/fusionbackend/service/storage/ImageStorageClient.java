@@ -49,7 +49,7 @@ public class ImageStorageClient {
                     .companyId(client.getConfig().companyId)
                     .fileKey(uniqueImageKey)
                     .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueImageKey))
-                    .contentBase64("data:" + contentType + ";base64," + imageContentBase64)
+                    .contentBase64(imageContentBase64)
                     .fileSize(BaseClient.getFileSizeFrom64Based(imageContentBase64))
                     .contentType(contentType)
                     .build();

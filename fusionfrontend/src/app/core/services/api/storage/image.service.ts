@@ -19,12 +19,12 @@ import { HttpClient } from '@angular/common/http';
 import { MediaObject, MediaObjectKeyPrefix, MediaObjectType } from '../../../models/media-object.model';
 import { map } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
-import { ObjectStorageService } from './object-storage.service';
+import { MediaObjectService } from './media-object.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ImageService extends ObjectStorageService {
+export class ImageService extends MediaObjectService {
 
   public static DEFAULT_ASSET_IMAGE_KEY = 'default-avatar-asset.png';
   public static DEFAULT_ASSET_SERIES_IMAGE_KEY = 'default-avatar-asset.png';

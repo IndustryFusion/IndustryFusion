@@ -49,7 +49,7 @@ public class ManualStorageClient {
                     .companyId(client.getConfig().companyId)
                     .fileKey(uniqueManualKey)
                     .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueManualKey))
-                    .contentBase64("data:" + contentType + ";base64," + manualContentBase64)
+                    .contentBase64(manualContentBase64)
                     .fileSize(BaseClient.getFileSizeFrom64Based(manualContentBase64))
                     .contentType(contentType)
                     .build();
