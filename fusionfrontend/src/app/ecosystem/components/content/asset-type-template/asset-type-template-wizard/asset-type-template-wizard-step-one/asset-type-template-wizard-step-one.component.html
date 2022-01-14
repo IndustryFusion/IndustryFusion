@@ -22,7 +22,7 @@ under the License.
           <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE' | translate }}</label>
           <p-dropdown [options]="(assetTypes$ | async)" formControlName="assetTypeId" optionLabel="name" optionValue="id"
                       class="select-asset-input" filter="true" resetFilterOnHide="true"
-                      placeholder="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE' | translate }}..." (onChange)="onChangeAssetType($event.value)"
+                      placeholder="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE_PLACEHOLDER' | translate }}" (onChange)="onChangeAssetType($event.value)"
                       [disabled]="isAssetTypeLocked">
           </p-dropdown>
         </div>
@@ -46,7 +46,7 @@ under the License.
         <div class="input-div">
           <label class="if-label">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE_TEMPLATE' | translate }}</label>
           <p-dropdown [options]="(assetTypeTemplates$ | async)" formControlName="assetTypeTemplateId" optionLabel="name"
-                      optionValue="id" placeholder="Select Asset type template..."
+                      optionValue="id" placeholder="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.WIZARD.STEP_ONE.SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER' | translate }}"
                       class="select-asset-input" (onChange)="onChangeTemplate($event.value)">
           </p-dropdown>
         </div>

@@ -33,6 +33,7 @@ import { AssetSeriesResolver } from '../core/resolvers/asset-series.resolver';
 import { ConnectivityTypeResolver } from '../core/resolvers/connectivity-type.resolver';
 import { CompanyResolver } from '../core/resolvers/company.resolver';
 import { AssetTypeTemplatesResolver } from '../core/resolvers/asset-type-templates.resolver';
+import { FleetManagerBreadCrumbs } from './fleet-routing.model';
 
 
 const routes: Routes = [
@@ -41,7 +42,7 @@ const routes: Routes = [
     component: AssetSeriesPageComponent,
     canActivate: [MainAuthGuard],
     data: {
-      breadcrumb: 'Asset Series',
+      breadcrumb: FleetManagerBreadCrumbs.ASSET_SERIES,
     },
     resolve: {
       company: CompanyResolver,

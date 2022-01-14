@@ -26,9 +26,9 @@ import java.util.Set;
 public interface AssetSeriesRepository extends PagingAndSortingRepository<AssetSeries, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "AssetSeries.allChildren")
+    @EntityGraph(value = "AssetSeries.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<AssetSeries> findAllByCompanyId(Sort sort, Long companyId);
 
-    @EntityGraph(value = "AssetSeries.allChildren")
+    @EntityGraph(value = "AssetSeries.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<AssetSeries> findByCompanyIdAndId(Long companyId, Long assetSeriesId);
 }

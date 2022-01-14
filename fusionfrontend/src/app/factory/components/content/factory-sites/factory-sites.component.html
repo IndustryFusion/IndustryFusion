@@ -22,7 +22,8 @@ under the License.
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
          [showCurrentPageReport]="true" [value]="displayedFactorySites" (rowsChange)="updateRowCountInUrl($event)"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Factory Sites">
+         class="list-container" currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {last}
+            {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }} {totalRecords} {{ 'APP.FACTORY.FACTORY_SITES.FACTORY_SITES' | translate }}">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>

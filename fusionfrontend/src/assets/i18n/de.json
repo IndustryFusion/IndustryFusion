@@ -7,9 +7,9 @@
 				"CANCEL": "Abbrechen",
 				"CONFIRM": "Bestätigen",
 				"CONTINUE": "Weiter",
-				"CREATE": "Erstellen.",
+				"CREATE": "Erstellen",
 				"EDIT": "Bearbeiten",
-				"FINISH": "Oberfläche",
+				"FINISH": "Abschließen",
 				"NEXT": "Weiter",
 				"ONBOARD": "Onboarden",
 				"PUBLISH": "Veröffentlichen",
@@ -32,8 +32,8 @@
 			},
 			"TABLE": {
 				"PAGINATION": {
-					"OF": "Von",
-					"TO": "Bis"
+					"OF": "von",
+					"TO": "bis"
 				}
 			},
 			"TERMS": {
@@ -89,7 +89,7 @@
       },
       "STORE": {
         "THRESHOLD": {
-          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute Unter- und Obergrenze *",
+          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute Unter- und Obergrenze",
           "IDEAL_RANGE": "Optimaler Bereich",
           "CRITICAL_ALERT_RANGE": "Kritischer Alarmbereich",
           "ABSOLUTE_LOWER_LIMIT": "Absolute Untergrenze",
@@ -98,6 +98,11 @@
           "ABSOLUTE_UPPER_LIMIT": "Absolute Obergrenze",
           "UPPER_IDEAL_THRESHOLD": "Oberer optimaler Schwellenwert",
           "UPPER_CRITICAL_ALERT_THRESHOLD": "Oberer Schwellenwert für kritische Alarme"
+        },
+        "OISP-RULE": {
+          "BASIC_CONDITION": "Grundlegende Bedingung",
+          "TIME_BASED_CONDITION": "Zeitabhängige Bedingung",
+          "STATISTIC_BASED_CONDITION": "Statistikbasierte Bedingung"
         }
       }
     },
@@ -122,7 +127,11 @@
 			"SUB_HEADER": {
 				"EQUIPMENT_EFFICIENCY": "Anlageneffizienz",
 				"MAINTENANCE": "Wartung"
-			}
+			},
+      "BREAD_CRUMBS": {
+        "EQUIPMENT_EFFICIENCY": "Anlageneffizienz",
+        "MAINTENANCE": "Wartung"
+      }
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
@@ -142,7 +151,7 @@
 			},
 			"ASSET_TYPE_TEMPLATE": {
 				"DIALOG.UPDATE": {
-					"DIALOG_DESCRIPTION": "Das Aktualisieren einer Asset-Typ Vorlage erstellt\n   und speichert eine völlig neue Version der Vorlage"
+					"DIALOG_DESCRIPTION": "Das Aktualisieren einer Asset-Typ Vorlage erstellt\nund speichert eine völlig neue Version der Vorlage"
 				},
 				"FIELD_HEADER_AND_ROW": {
 					"ATTRIBUTE_NAME": "Attribut Name",
@@ -172,8 +181,8 @@
 					},
 					"STEP_FINISHED": {
 						"ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage",
-						"CREATE_TEXT": "Ihre Asset-Typ Vorlage wurde\n    erfolgreich erstellt",
-						"UPDATE_TEXT": "Ihre Asset-Typ Vorlage wurde\n   erfolgreich aktualisiert"
+						"CREATE_TEXT": "Ihre Asset-Typ Vorlage wurde\nerfolgreich erstellt",
+						"UPDATE_TEXT": "Ihre Asset-Typ Vorlage wurde\nerfolgreich aktualisiert"
 					},
 					"STEP_FOUR": {
 						"ADD_ATTRIBUTE": "Attribut hinzufügen",
@@ -187,8 +196,10 @@
 						"CREATE_NEW": "Neu erstellen",
 						"CREATE_OR_UPDATE_TEMPLATE": "Eine neue Vorlage erstellen oder eine bestehende aktualisieren?",
 						"SELECT_ASSET_TYPE": "Asset-Typ auswählen",
-						"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage auswählen",
-						"TITLE": "Asset-Typ Vorlage erstellen oder aktualisieren",
+            "SELECT_ASSET_TYPE_PLACEHOLDER": "Asset-Typ auswählen...",
+            "SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage auswählen",
+            "SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER": "Asset-Typ Vorlage auswählen...",
+            "TITLE": "Asset-Typ Vorlage erstellen oder aktualisieren",
 						"USE_EXISTING_TEMPLATE": "Vorhandene Vorlage verwenden"
 					},
 					"STEP_PUBLISHED": {
@@ -211,7 +222,7 @@
 			},
 			"FIELD_DIALOG": {
         "DEFINE_DATA_TYPE": "Datentyp definieren",
-        "SELECT_DATA_TYPE": "Datentyp auswählen",
+        "DATA_TYPE_PLACEHOLDER": "Datentyp auswählen",
 				"ACCURACY_PLACEHOLDER": "Genauigkeit auswählen",
 				"DEFINE_ACCURACY": "Definieren Sie die Genauigkeit",
 				"DEFINE_THRESHOLDS_AND_LIMITS": "Schwellenwerte und Grenzwerte definieren",
@@ -264,8 +275,16 @@
 				"QUANTITY_TYPES": "Mengenarten",
 				"UNITS": "Einheiten"
 			},
+      "BREAD_CRUMBS": {
+        "ASSET_TYPES": "Asset-Baureihen",
+        "ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
+        "METRICS_AND_ATTRIBUTES": "Metriken & Attribute",
+        "QUANTITY_TYPES": "Mengenarten",
+        "UNITS": "Einheiten"
+      },
 			"UNIT_DIALOG": {
-				"UNIT_NAME": "Einheit"
+				"UNIT_NAME": "Einheit",
+        "QUANTITY_TYPE_PLACEHOLDER": "Mengenart"
 			},
 			"UNIT_LIST": {
 				"CONFIRMATION_DIALOG": {
@@ -313,7 +332,7 @@
 		},
 		"FACTORY": {
 			"ASSETS_LIST": {
-				"ASSIGN_ITEM_TEXT": "Anlage zu Zimmer",
+				"ASSIGN_ITEM_TEXT": "Asset zu Raum",
 				"CATEGORY": "Kategorie",
 				"DIALOG_HEADING": {
 					"FACTORY_SITE_ASSIGNMENT": "Standort zuweisen",
@@ -413,7 +432,8 @@
 				"COUNTRY_PLACEHOLDER": "Wählen Sie ein Land...",
 				"FACTORY_NAME": "Name des Standorts",
 				"FACTORY_TYPE": "Standort-Typ",
-				"FACTORY_TYPES": {
+        "FACTORY_TYPE_PLACEHOLDER": "Standort-Typ",
+        "FACTORY_TYPES": {
 					"FABRICATION": "Fertigung",
 					"HEADQUARTER": "Firmenzentrale"
 				},
@@ -421,14 +441,26 @@
 				"ZIP_LABEL": "PLZ",
 				"ZIP_PLACEHOLDER": "Postleitzahl"
 			},
-			"FACTORY_SUB_HEADER": {
+			"SUB_HEADER": {
 				"ASSETS": "Assets",
 				"FACTORY_SITES": "Standorte",
 				"ROOMS": "Räume"
 			},
+      "BREAD_CRUMBS": {
+        "FACTORY_SITES": "Standorte",
+        "ASSET_CARDS": "Asset Karten",
+        "ROOMS": "Räume",
+        "ASSETS": "Assets",
+        "PERFORMANCE": "Performance",
+        "ACTIVE_APPLETS": "Aktive Applets",
+        "ARCHIVED_APPLETS": "Archivierte Applets",
+        "DIGITAL_NAMEPLATE": "Digitales Typenschild",
+        "SUBSYSTEMS": "Subsysteme",
+        "NOTIFICATIONS": "Benachrichtigungen"
+      },
 			"METRICS_BOARD": {
 				"METRICS_GROUP": {
-					"DEFAULT_LABEL": "Allgemein"
+					"GENERAL_LABEL": "Allgemein"
 				}
 			},
 			"ROOMS_LIST": {
@@ -450,9 +482,9 @@
 				"ROOM_DESCRIPTION_PLACEHOLDER": "Geben Sie hier eine Beschreibung ein",
 				"ROOM_NAME_LABEL": "Raum-Name",
 				"ROOM_NAME_PLACEHOLDER": "Geben Sie einen eigenen Namen an",
-				"SELECT_FACTORY_PLACEHOLDER": "Standort",
-				"SELECT_FACTORY_SITE": "Standort auswählen"
-			},
+				"SELECT_FACTORY_SITE": "Standort auswählen",
+        "SELECT_FACTORY_PLACEHOLDER": "Standort"
+      },
       "PAGES": {
         "ASSET_DETAILS": {
           "DIGITAL_NAMEPLATE": {
@@ -515,9 +547,10 @@
 					"ATTRIBUTES": "Attribute",
 					"ATTRIBUTE_NAME": "Attribut Name",
 					"CUSTOM_ATTRIBUTE_NAME": "Benutzerdefinierter Name des Attributs",
-					"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
+          "DATA_TYPE_UNKNOWN": "Datentyp nicht bekannt!",
+          "NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
 					"WARNING_LABEL": "Attribute können nicht gelöscht werden, da unter dieser Asset-Baureihe bereits Assets erstellt wurden.",
-          "SELECT_VALUE": "Wert auswählen"
+          "VALUE_PLACEHOLDER": "Wert auswählen"
         },
 				"GENERAL_INFORMATION": {
 					"ASSET_OR_ASSET_SERIES_NAME": "Name des Assets oder der Asset-Baureihe",
@@ -525,8 +558,9 @@
 					"ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 					"GENERAL_INFORMATION": "Allgemeine Informationen",
 					"HELP_TEXT": "Wie wird mein Asset in einer Fertigung angezeigt?",
-					"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage auswählen"
-				},
+					"SELECT_ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage auswählen",
+          "SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER": "Asset-Typ Vorlage auswählen..."
+        },
 				"METRICS": {
 					"CUSTOM_METRIC_NAME": "Benutzerdefinierter Name der Metrik",
 					"CUSTOM_SCRIPT": "Benutzerdefiniertes Skript",
@@ -546,12 +580,12 @@
 					"CREATE_DIGITAL_NAMEPLATE": "Digitales Typenschild erstellen",
 					"NO": "Nein",
 					"PROTECTION_CLASS": "Schutzklasse",
-					"PROTECTION_CLASS_PLACEHOLDER": "Wählen Sie eine Schutzklasse",
+					"PROTECTION_CLASS_PLACEHOLDER": "Wählen Sie eine Schutzklasse...",
 					"SELECT_CONNECTIVITY_TYPE": "Verbindungsart auswählen",
 					"SELECT_PROTOCOL": "Protokoll auswählen",
 					"TOOLTIP": {
 						"LABEL": "Geben Sie den richtigen Verbindungs-String ein, je nachdem\n der Verbindungsart, die Sie für Ihr Asset verwenden.",
-						"PLC4X_CUMMUNICATION": "PLC4X-basierte Kommunikation (fusionplcdataservice)"
+						"PLC4X_COMMUNICATION": "PLC4X-basierte Kommunikation (fusionplcdataservice):"
 					},
 					"YES": "Ja"
 				}
@@ -562,7 +596,7 @@
 						"ATTRIBUTE_NAME": "Attribut Name",
 						"CUSTOM_METRIC_NAME": "Benutzerdefinierter Metrik Name",
 						"NO_ATTRIBUTES_AVAILABLE": "keine Attribute verfügbar",
-            "SELECT_VALUE": "Wert auswählen"
+            "VALUE_PLACEHOLDER": "Wert auswählen"
           },
 					"METRICS": {
 						"CUSTOM_METRIC_NAME": "Benutzerdefinierter Metrik Name",
@@ -624,6 +658,9 @@
 			"SUB_HEADER": {
 				"ASSET_SERIES": "Asset-Baureihe"
 			},
+      "BREAD_CRUMBS": {
+        "ASSET_SERIES": "Asset-Baureihe"
+      },
       "PAGES": {
         "ASSET_SERIES_ASSET": {
           "DIGITAL_NAMEPLATE": {
@@ -693,7 +730,8 @@
 							"STANDARD_DEVIATION": "{{number}} Standardabweichung"
 						},
 						"METRIC_LABEL": "Metrik wählen",
-						"MINIMAL_INSTANCES_FOR_CALCULATION": "Minimale Anzahl von Instanzen für die Berechnung",
+            "METRIC_LABEL_PLACEHOLDER": "Metrik wählen",
+            "MINIMAL_INSTANCES_FOR_CALCULATION": "Minimale Anzahl von Instanzen für die Berechnung",
 						"SETUP_CONDITION": "Setup Bedingung",
 						"VALUE_LABEL": "Wert eingeben"
 					},
@@ -718,13 +756,23 @@
 				"DETAIL": "Detail",
 				"EDITOR": "Editor",
 				"OVERVIEW": "Übersicht"
-			}
+			},
+      "BREAD_CRUMBS": {
+        "OVERVIEW": "Übersicht",
+        "ARCHIVE": "Archiv",
+        "APPLET_DETAIL": "Applet-Detail",
+        "APPLET_EDITOR": "Applet-Editor"
+      }
 		},
 		"NOTIFICATIONS": {
 			"SUB_HEADER": {
 				"CLEARED": "Gelöst",
 				"OPEN": "Offen"
-			}
+			},
+      "BREAD_CRUMBS": {
+        "OPEN_NOTIFICATION": "Offene Benachrichtigungen",
+        "CLEARED_NOTIFICATION": "Gelöste Benachrichtigungen"
+      }
 		},
 		"SHARED": {
 			"CONTENT": {
@@ -739,18 +787,24 @@
 					"CONDITION": "Zustand",
 					"DATE_AND_TIME": "Datum und Uhrzeit",
 					"MEASURED_VALUE": "Gemessener Wert",
-					"NOTIFICATION": "{{ statusName }} Benachrichtigung",
-					"NOTIFICATIONS": "{{ statusName }} Benachrichtigungen",
+					"NOTIFICATION": "Benachrichtigung",
+					"NOTIFICATIONS": "Benachrichtigungen",
 					"NOTIFICATIONS_SELECTED": "{{ statusName }} Benachrichtigungen ausgewählt",
 					"NOTIFICATIONS_WITH_STATUS": "{{ statusName }} Benachrichtigungen",
 					"NOTIFICATION_SELECTED": "{{ statusName }} Benachrichtigung ausgewählt",
 					"NOTIFICATION_WITH_STATUS": "{{ statusName }} Benachrichtigung",
-					"NO_NOTIFICATION": "Keine {{ statusName }} Benachrichtigungen",
+					"NO_NOTIFICATION": "Keine Benachrichtigungen",
 					"NO_NOTIFICATION_SELECTED": "Keine {{ statusName }} Benachrichtigung ausgewählt",
 					"OPEN_PLURAL": "Offene",
 					"OPEN_SINGULAR": "Offen",
 					"RULE_NAME": "Name der Regel"
-				}
+				},
+        "GAUGE_CHART": {
+          "CRITICAL": "kritisch",
+          "WARNING": "Warnung",
+          "IDEAL": "ideal",
+          "CURRENT_VALUE": "aktueller Wert"
+        }
 			},
 			"UI": {
 				"HEADER": {
@@ -768,17 +822,18 @@
 					}
 				},
 				"ITEMS_OPTIONS_MENU": {
-					"ASSIGN": "Zuweisen {{ assignItemText }}",
+					"ASSIGN": "{{ assignItemText }} zuweisen",
 					"CLONE": "Klonen",
-					"CREATE": "Neu erstellen {{ createItemText }}",
+					"CREATE": "{{ createItemText }} neu erstellen",
 					"DELETE": "Löschen",
 					"RENAME": "Umbenennen",
-					"UPDATE": "Aktualisieren {{ updateItemText }}"
+					"UPDATE": "{{ updateItemText }} aktualisieren"
 				},
 				"TABLE_FILTER": {
 					"ADD_FILTER": "Filter hinzufügen",
 					"CLEAR_ALL": "Alle löschen",
 					"DATE_FILTER": {
+            "DATE_SET": "Datum festgelegt",
 						"DATE_AND_TIME_FILTER": "Datum & Zeit filtern",
 						"END_DATE": "Enddatum",
 						"START_DATE": "Startdatum"
@@ -804,6 +859,9 @@
 					"NO_ITEM_SELECTED": "Keine {{ itemType }} ausgewählt"
 				}
 			}
-		}
-	}
+		},
+    "BREAD_CRUMBS": {
+      "LAUNCHPAD": "Launchpad"
+    }
+  }
 }

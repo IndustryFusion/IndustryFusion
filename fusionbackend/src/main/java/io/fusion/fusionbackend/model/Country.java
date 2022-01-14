@@ -21,12 +21,10 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@NamedEntityGraph(name = "Country.allChildren")
 @Table(name = "country")
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_country")
 @Getter

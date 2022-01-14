@@ -33,7 +33,6 @@ import javax.persistence.Table;
 @SuperBuilder
 @NoArgsConstructor
 public class ConnectivityProtocol extends BaseEntity {
-
     @Column(nullable = false)
     private String name;
 

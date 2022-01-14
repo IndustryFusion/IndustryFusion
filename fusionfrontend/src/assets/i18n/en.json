@@ -89,7 +89,7 @@
       },
       "STORE": {
         "THRESHOLD": {
-          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute lower & upper limit *",
+          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute lower & upper limit",
           "IDEAL_RANGE": "Ideal range",
           "CRITICAL_ALERT_RANGE": "Critical alert range",
           "ABSOLUTE_LOWER_LIMIT": "Absolute lower limit",
@@ -98,6 +98,11 @@
           "ABSOLUTE_UPPER_LIMIT": "Absolute upper limit",
           "UPPER_IDEAL_THRESHOLD": "Upper ideal threshold",
           "UPPER_CRITICAL_ALERT_THRESHOLD": "Upper critical alert threshold"
+        },
+        "OISP-RULE": {
+          "BASIC_CONDITION": "Basic Condition",
+          "TIME_BASED_CONDITION": "Timebased Condition",
+          "STATISTIC_BASED_CONDITION": "Statistic based Condition"
         }
       }
     },
@@ -122,7 +127,11 @@
 			"SUB_HEADER": {
 				"EQUIPMENT_EFFICIENCY": "Equipment Efficiency",
 				"MAINTENANCE": "Maintenance"
-			}
+			},
+      "BREAD_CRUMBS": {
+        "EQUIPMENT_EFFICIENCY": "Equipment Efficiency",
+        "MAINTENANCE": "Maintenance"
+      }
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
@@ -187,8 +196,10 @@
 						"CREATE_NEW": "Create new",
 						"CREATE_OR_UPDATE_TEMPLATE": "Create new template or update an existing one?",
 						"SELECT_ASSET_TYPE": "Select Asset type",
+            "SELECT_ASSET_TYPE_PLACEHOLDER": "Select Asset type...",
 						"SELECT_ASSET_TYPE_TEMPLATE": "Select Asset Type Template",
-						"TITLE": "Create or update Asset Type Template",
+            "SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER": "Select Asset type template...",
+            "TITLE": "Create or update Asset Type Template",
 						"USE_EXISTING_TEMPLATE": "Use existing template"
 					},
 					"STEP_PUBLISHED": {
@@ -211,7 +222,7 @@
 			},
 			"FIELD_DIALOG": {
         "DEFINE_DATA_TYPE": "Define Data Type",
-        "SELECT_DATA_TYPE": "Select data type",
+        "DATA_TYPE_PLACEHOLDER": "Select data type",
 				"ACCURACY_PLACEHOLDER": "Select accuracy format",
 				"DEFINE_ACCURACY": "Define Accuracy",
 				"DEFINE_THRESHOLDS_AND_LIMITS": "Define Thresholds & Limits",
@@ -264,9 +275,17 @@
 				"QUANTITY_TYPES": "Quantity Types",
 				"UNITS": "Units"
 			},
+      "BREAD_CRUMBS": {
+        "ASSET_TYPES": "Asset Types",
+        "ASSET_TYPE_TEMPLATES": "Asset Type Templates",
+        "METRICS_AND_ATTRIBUTES": "Metrics & Attributes",
+        "QUANTITY_TYPES": "Quantity Types",
+        "UNITS": "Units"
+      },
 			"UNIT_DIALOG": {
-				"UNIT_NAME": "Unit name"
-			},
+				"UNIT_NAME": "Unit name",
+        "QUANTITY_TYPE_PLACEHOLDER": "Quantity type"
+      },
 			"UNIT_LIST": {
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Delete Unit Confirmation",
@@ -413,7 +432,8 @@
 				"COUNTRY_PLACEHOLDER": "Select a country...",
 				"FACTORY_NAME": "Factory name",
 				"FACTORY_TYPE": "Factory type",
-				"FACTORY_TYPES": {
+        "FACTORY_TYPE_PLACEHOLDER": "Factory type",
+        "FACTORY_TYPES": {
 					"FABRICATION": "Fabrication",
 					"HEADQUARTER": "Headquarter"
 				},
@@ -421,14 +441,26 @@
 				"ZIP_LABEL": "ZIP",
 				"ZIP_PLACEHOLDER": "Zip code"
 			},
-			"FACTORY_SUB_HEADER": {
+			"SUB_HEADER": {
 				"ASSETS": "Assets",
 				"FACTORY_SITES": "Factory Sites",
 				"ROOMS": "Rooms"
 			},
+      "BREAD_CRUMBS": {
+        "FACTORY_SITES": "Factory Sites",
+        "ASSET_CARDS": "Asset Cards",
+        "ROOMS": "Rooms",
+        "ASSETS": "Assets",
+        "PERFORMANCE": "Performance",
+        "ACTIVE_APPLETS": "Active Applets",
+        "ARCHIVED_APPLETS": "Archived Applets",
+        "DIGITAL_NAMEPLATE": "Digital Nameplate",
+        "SUBSYSTEMS": "Subsystems",
+        "NOTIFICATIONS": "Notifications"
+      },
 			"METRICS_BOARD": {
 				"METRICS_GROUP": {
-					"DEFAULT_LABEL": "General"
+					"GENERAL_LABEL": "General"
 				}
 			},
 			"ROOMS_LIST": {
@@ -450,9 +482,9 @@
 				"ROOM_DESCRIPTION_PLACEHOLDER": "Enter a description here",
 				"ROOM_NAME_LABEL": "Room name",
 				"ROOM_NAME_PLACEHOLDER": "Enter a custom name here",
-				"SELECT_FACTORY_PLACEHOLDER": "Factory site",
-				"SELECT_FACTORY_SITE": "Select Factory site"
-			},
+				"SELECT_FACTORY_SITE": "Select Factory site",
+        "SELECT_FACTORY_PLACEHOLDER": "Factory site"
+      },
       "PAGES": {
         "ASSET_DETAILS": {
           "DIGITAL_NAMEPLATE": {
@@ -515,9 +547,10 @@
 					"ATTRIBUTES": "Attributes",
 					"ATTRIBUTE_NAME": "Attribute name",
 					"CUSTOM_ATTRIBUTE_NAME": "Custom Attribute name",
+          "DATA_TYPE_UNKNOWN": "DataType unknown!",
 					"NO_ATTRIBUTES_AVAILABLE": "no attributes available",
 					"WARNING_LABEL": "Attributes can not be deleted as assets of this asset series already exist.",
-          "SELECT_VALUE": "Select Value"
+          "VALUE_PLACEHOLDER": "Select Value"
         },
 				"GENERAL_INFORMATION": {
 					"ASSET_OR_ASSET_SERIES_NAME": "Asset or Asset Series name",
@@ -525,8 +558,9 @@
 					"ASSET_SERIES_NAME": "Asset series name",
 					"GENERAL_INFORMATION": "General Information",
 					"HELP_TEXT": "How will my asset be displayed in a factory?",
-					"SELECT_ASSET_TYPE_TEMPLATE": "Select Asset Type Template"
-				},
+					"SELECT_ASSET_TYPE_TEMPLATE": "Select Asset Type Template",
+          "SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER": "Select Asset Type Template..."
+        },
 				"METRICS": {
 					"CUSTOM_METRIC_NAME": "Custom Metric name",
 					"CUSTOM_SCRIPT": "Custom script",
@@ -546,12 +580,12 @@
 					"CREATE_DIGITAL_NAMEPLATE": "Create Digital Nameplate",
 					"NO": "No",
 					"PROTECTION_CLASS": "Protection Class",
-					"PROTECTION_CLASS_PLACEHOLDER": "Select a protection class",
+					"PROTECTION_CLASS_PLACEHOLDER": "Select a protection class...",
 					"SELECT_CONNECTIVITY_TYPE": "Select connectivity type",
 					"SELECT_PROTOCOL": "Select protocol",
 					"TOOLTIP": {
 						"LABEL": "Enter the correct connection string depending on \n the connectivity type you are using for your asset.",
-						"PLC4X_CUMMUNICATION": "PLC4X-based Communication (fusionplcdataservice)"
+						"PLC4X_COMMUNICATION": "PLC4X-based Communication (fusionplcdataservice):"
 					},
 					"YES": "Yes"
 				}
@@ -562,7 +596,7 @@
 						"ATTRIBUTE_NAME": "Attribute name",
 						"CUSTOM_METRIC_NAME": "Custom Metric name",
 						"NO_ATTRIBUTES_AVAILABLE": "no attributes available",
-            "SELECT_VALUE": "Select Value"
+            "VALUE_PLACEHOLDER": "Select Value"
 					},
 					"METRICS": {
 						"CUSTOM_METRIC_NAME": "Custom Metric name",
@@ -624,6 +658,9 @@
 			"SUB_HEADER": {
 				"ASSET_SERIES": "Asset Series"
 			},
+      "BREAD_CRUMBS": {
+        "ASSET_SERIES": "Asset Series"
+      },
       "PAGES": {
         "ASSET_SERIES_ASSET": {
           "DIGITAL_NAMEPLATE": {
@@ -693,7 +730,8 @@
 							"STANDARD_DEVIATION": "{{number}} Standard deviation"
 						},
 						"METRIC_LABEL": "Choose Metric",
-						"MINIMAL_INSTANCES_FOR_CALCULATION": "Minimal Instances for Calculation",
+            "METRIC_LABEL_PLACEHOLDER": "Choose Metric",
+            "MINIMAL_INSTANCES_FOR_CALCULATION": "Minimal Instances for Calculation",
 						"SETUP_CONDITION": "Setup Condition",
 						"VALUE_LABEL": "Enter Value"
 					},
@@ -718,14 +756,24 @@
 				"DETAIL": "Detail",
 				"EDITOR": "Editor",
 				"OVERVIEW": "Overview"
-			}
-		},
+			},
+      "BREAD_CRUMBS": {
+        "OVERVIEW": "Overview",
+        "ARCHIVE": "Archive",
+        "APPLET_DETAIL": "Applet Detail",
+        "APPLET_EDITOR": "Applet Editor"
+      }
+    },
 		"NOTIFICATIONS": {
 			"SUB_HEADER": {
 				"CLEARED": "Cleared",
 				"OPEN": "Open"
-			}
-		},
+			},
+      "BREAD_CRUMBS": {
+        "OPEN_NOTIFICATION": "Open Notifications",
+        "CLEARED_NOTIFICATION": "Cleared Notifications"
+      }
+    },
 		"SHARED": {
 			"CONTENT": {
 				"NOTIFICATIONS_LIST": {
@@ -750,7 +798,13 @@
 					"OPEN_PLURAL": "Open",
 					"OPEN_SINGULAR": "Open",
 					"RULE_NAME": "Rule name"
-				}
+				},
+        "GAUGE_CHART": {
+          "CRITICAL": "critical",
+          "WARNING": "warning",
+          "IDEAL": "ideal",
+          "CURRENT_VALUE": "current value"
+        }
 			},
 			"UI": {
 				"HEADER": {
@@ -779,7 +833,8 @@
 					"ADD_FILTER": "Add Filter",
 					"CLEAR_ALL": "Clear all",
 					"DATE_FILTER": {
-						"DATE_AND_TIME_FILTER": "Date & Time Filter",
+            "DATE_SET": "Date set",
+            "DATE_AND_TIME_FILTER": "Date & Time Filter",
 						"END_DATE": "End Date",
 						"START_DATE": "Start Date"
 					},
@@ -804,6 +859,9 @@
 					"NO_ITEM_SELECTED": "No {{ itemType }} selected"
 				}
 			}
-		}
+		},
+    "BREAD_CRUMBS": {
+      "LAUNCHPAD": "Launchpad"
+    }
 	}
 }

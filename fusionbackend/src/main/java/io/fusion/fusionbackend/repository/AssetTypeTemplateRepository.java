@@ -28,18 +28,18 @@ import java.util.Set;
 public interface AssetTypeTemplateRepository extends PagingAndSortingRepository<AssetTypeTemplate, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "AssetTypeTemplate.allChildren")
+    @EntityGraph(value = "AssetTypeTemplate.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<AssetTypeTemplate> findAll(Sort sort);
 
-    @EntityGraph(value = "AssetTypeTemplate.allChildren")
+    @EntityGraph(value = "AssetTypeTemplate.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<AssetTypeTemplate> findById(Long assetTypeTemplateId);
 
-    @EntityGraph(value = "AssetTypeTemplate.allChildrenDeep")
+    @EntityGraph(value = "AssetTypeTemplate.allChildrenDeep", type = EntityGraph.EntityGraphType.LOAD)
     Optional<AssetTypeTemplate> findDeepById(Long assetTypeTemplateId);
 
-    @EntityGraph(value = "AssetTypeTemplate.allChildren")
+    @EntityGraph(value = "AssetTypeTemplate.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     List<AssetTypeTemplate> findAllByAssetType(AssetType assetType);
 
-    @EntityGraph(value = "AssetTypeTemplate.allChildren")
+    @EntityGraph(value = "AssetTypeTemplate.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     List<AssetTypeTemplate> findAllByAssetTypeId(Long assetTypeId);
 }

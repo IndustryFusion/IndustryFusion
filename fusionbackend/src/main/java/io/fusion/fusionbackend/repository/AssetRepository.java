@@ -27,25 +27,25 @@ import java.util.Set;
 public interface AssetRepository extends PagingAndSortingRepository<Asset, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "Asset.allChildren")
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<Asset> findAllByCompanyId(Sort sort, Long companyId);
 
-    @EntityGraph(value = "Asset.allChildren")
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<Asset> findAllByRoomId(Sort sort, Long roomId);
 
-    @EntityGraph(value = "Asset.allChildren")
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<Asset> findAllByAssetSeriesId(Sort sort, Long assetSeriesId);
 
-    @EntityGraph(value = "Asset.allChildren")
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Asset> findByCompanyIdAndId(Long companyId, Long assetId);
 
-    @EntityGraph(value = "Asset.allChildren")
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Asset> findByRoomIdAndId(Long roomId, Long assetId);
 
-    @EntityGraph(value = "Asset.allChildren")
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Asset> findByAssetSeriesIdAndId(Long assetSeriesId, Long assetId);
 
-    @EntityGraph(value = "Asset.allChildren")
+    @EntityGraph(value = "Asset.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     @Query("from Asset asset where asset.room.factorySite.id = ?1")
     Set<Asset> findAllByFactorySiteId(Sort sort, Long factorySiteId);
 

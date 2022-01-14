@@ -20,6 +20,7 @@ import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs/operators';
 import { BaseSubtitleQuery } from '../../../../core/store/basesubtitlequery.model';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-page-title',
@@ -42,7 +43,8 @@ export class PageTitleComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
-              private injector: Injector) {
+              private injector: Injector,
+              private translate: TranslateService) {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -51,8 +53,11 @@ export class PageTitleComponent implements OnInit, OnDestroy {
       });
   }
 
-  private static addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
-    const label = breadcrumbData;
+  private addLabelIfExisting(breadcrumbData: any, url: string, breadcrumbs: MenuItem[]): MenuItem[] {
+    let label;
+    if (breadcrumbData) {
+      label = this.translate.instant(breadcrumbData);
+    }
     if (label) {
       breadcrumbs.push({ label, routerLink: url.substr(1).split('/')  });
     }
@@ -78,7 +83,7 @@ export class PageTitleComponent implements OnInit, OnDestroy {
     if (isQuery) {
       breadcrumbs = this.addQueryResult(breadcrumbData, url, breadcrumbs);
     } else {
-      breadcrumbs = PageTitleComponent.addLabelIfExisting(breadcrumbData, url, breadcrumbs);
+      breadcrumbs = this.addLabelIfExisting(breadcrumbData, url, breadcrumbs);
     }
 
     return this.createBreadcrumbs(firstChild, url, breadcrumbs);

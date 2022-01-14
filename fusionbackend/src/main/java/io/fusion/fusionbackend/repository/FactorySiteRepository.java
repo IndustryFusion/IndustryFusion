@@ -26,12 +26,12 @@ import java.util.Set;
 public interface FactorySiteRepository extends PagingAndSortingRepository<FactorySite, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "FactorySite.allChildren")
+    @EntityGraph(value = "FactorySite.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Set<FactorySite> findAllByCompanyId(Sort sort, Long companyId);
 
-    @EntityGraph(value = "FactorySite.allChildren")
+    @EntityGraph(value = "FactorySite.allChildren", type = EntityGraph.EntityGraphType.LOAD)
     Optional<FactorySite> findByCompanyIdAndId(Long companyId, Long factorySiteId);
 
-    @EntityGraph(value = "FactorySite.allChildrenDeep")
+    @EntityGraph(value = "FactorySite.allChildrenDeep", type = EntityGraph.EntityGraphType.LOAD)
     Optional<FactorySite> findDeepByCompanyIdAndId(Long companyId, Long factorySiteId);
 }

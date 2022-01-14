@@ -24,7 +24,8 @@ under the License.
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
          [showCurrentPageReport]="true" [value]="displayedUnits" (rowsChange)="updateRowCountInUrl($event)"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Units">
+         class="list-container" currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {last}
+            {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }} {totalRecords} {{ 'APP.ECOSYSTEM.UNIT_LIST.UNITS' | translate }}">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>
