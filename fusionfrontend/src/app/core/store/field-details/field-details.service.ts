@@ -32,8 +32,12 @@ export class FieldDetailsService {
 
   constructor(private fieldStore: FieldDetailsStore, private http: HttpClient) { }
 
-  getFieldsOfAsset(companyId: ID, assetId: ID): Observable<FieldDetails[]> {
+  getFieldsOfAsset(companyId: ID, assetId: ID, refresh: boolean = false): Observable<FieldDetails[]> {
     const path = `companies/${companyId}/assets/${assetId}/fields`;
+    if (refresh) {
+      this.fieldStore.invalidateCacheParentId(assetId);
+    }
+
     return this.fieldStore.cachedByParentId(assetId, this.http.get<FieldDetails[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entities => {
         this.fieldStore.upsertManyByParentIdCached(assetId, entities);

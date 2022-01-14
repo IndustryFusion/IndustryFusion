@@ -78,6 +78,11 @@ export class RoomService {
       }));
   }
 
+  createRoomDraft(companyId: ID): Observable<Room> {
+    const path = `companies/${companyId}/init-room-draft`;
+    return this.http.get<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
   deleteRoom(companyId: ID, factorySiteId: ID, roomId: ID) {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}`;
     return this.http.delete<Room>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)

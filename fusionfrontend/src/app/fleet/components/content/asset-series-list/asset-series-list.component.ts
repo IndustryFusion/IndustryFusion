@@ -101,8 +101,7 @@ export class AssetSeriesListComponent implements OnInit {
   }
 
   createAssetFromAssetSeries(assetSeriesId: ID) {
-    this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(assetSeriesId.toString(),
-      () => this.resolveAssetSeriesDetails());
+    this.assetSeriesDetailMenuService.showPrefilledCreateAssetWizardAndRefresh(assetSeriesId, () => this.resolveAssetSeriesDetails());
   }
 
   editAssetSeries(assetSeriesId: ID) {

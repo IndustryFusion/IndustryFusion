@@ -14,7 +14,7 @@
  */
 
 import { Asset } from '../asset/asset.model';
-
+import { FieldDetails } from '../field-details/field-details.model';
 
 export class FleetAssetDetails extends Asset {
   manufacturer: string;
@@ -23,4 +23,8 @@ export class FleetAssetDetails extends Asset {
   category: string;
   roomName: string;
   factorySiteName: string;
+}
+
+export class FleetAssetDetailsWithFields extends FleetAssetDetails {
+  fields: FieldDetails[];
 }

@@ -16,7 +16,9 @@
 package io.fusion.fusionbackend.rest.fleetmanager;
 
 import io.fusion.fusionbackend.dto.AssetDto;
+import io.fusion.fusionbackend.dto.RoomDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
+import io.fusion.fusionbackend.dto.mappers.RoomMapper;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.draft.AssetDraftService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +32,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class FleetAssetDraftRestService {
     private final AssetDraftService assetDraftService;
     private final AssetMapper assetMapper;
+    private final RoomMapper roomMapper;
 
     @Autowired
     public FleetAssetDraftRestService(AssetDraftService assetDraftService,
-                                      AssetMapper assetMapper) {
+                                      AssetMapper assetMapper,
+                                      RoomMapper roomMapper) {
         this.assetDraftService = assetDraftService;
         this.assetMapper = assetMapper;
+        this.roomMapper = roomMapper;
     }
 
     @GetMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/init-asset-draft")
@@ -44,5 +49,12 @@ public class FleetAssetDraftRestService {
                                     @RequestParam(defaultValue = "true") final boolean embedChildren) {
         return assetMapper.toDto(
                 assetDraftService.initAssetDraft(companyId, assetSeriesId), embedChildren);
+    }
+
+    @GetMapping(path = "/companies/{companyId}/init-room-draft")
+    public RoomDto initUnspecificRoomDraft(@PathVariable final Long companyId,
+                                           @RequestParam(defaultValue = "true") final boolean embedChildren) {
+        return roomMapper.toDto(
+                assetDraftService.initUnspecificRoomDraft(companyId), embedChildren);
     }
 }

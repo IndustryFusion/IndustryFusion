@@ -25,6 +25,7 @@ import { FieldType } from '../../../../../../core/store/field-target/field-targe
 import { FieldQuery } from '../../../../../../core/store/field/field.query';
 import { QuantityTypeQuery } from '../../../../../../core/store/quantity-type/quantity-type.query';
 import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-wizard-shared-metrics',
@@ -66,6 +67,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private fieldQuery: FieldQuery,
+              public translation: TranslateService,
               private quantityTypeQuery: QuantityTypeQuery) {
   }
 
@@ -134,26 +136,26 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
     const thresholdForm = this.formBuilder.group({
       id: [fieldInstance.id],
       version: [fieldInstance.version],
-      absoluteLower: [fieldInstance.absoluteThreshold?.valueLower,
+      absoluteLower: [{ value: fieldInstance.absoluteThreshold?.valueLower, disabled: this.isReview },
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('absoluteUpper'),
           CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames),
           CustomFormValidators.requiredIfMandatoryField(fieldThresholdType)]],
-      absoluteUpper: [fieldInstance.absoluteThreshold?.valueUpper,
+      absoluteUpper: [{ value: fieldInstance.absoluteThreshold?.valueUpper, disabled: this.isReview },
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('absoluteLower'),
           CustomFormValidators.requiredIfAnyOtherNotEmpty(optionalThresholdNames),
           CustomFormValidators.requiredIfMandatoryField(fieldThresholdType)]],
-      idealLower: [fieldInstance.idealThreshold?.valueLower,
+      idealLower: [{ value: fieldInstance.idealThreshold?.valueLower, disabled: this.isReview },
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('idealUpper')]],
-      idealUpper: [fieldInstance.idealThreshold?.valueUpper,
+      idealUpper: [{ value: fieldInstance.idealThreshold?.valueUpper, disabled: this.isReview },
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('idealLower')]],
-      criticalLower: [fieldInstance.criticalThreshold?.valueLower,
+      criticalLower: [{ value: fieldInstance.criticalThreshold?.valueLower, disabled: this.isReview },
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('criticalUpper')]],
-      criticalUpper: [fieldInstance.criticalThreshold?.valueUpper,
+      criticalUpper: [{ value: fieldInstance.criticalThreshold?.valueUpper, disabled: this.isReview },
         [CustomFormValidators.requiredFloatingNumber(),
           CustomFormValidators.requiredIfOtherNotEmpty('criticalLower')]],
     });
@@ -222,5 +224,14 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
 
   public isMandatory(group: AbstractControl): boolean {
     return group == null || group.get('mandatory').value;
+  }
+
+  public isNonNumericOrDisabled(fieldInstanceGroup: AbstractControl) {
+    return (fieldInstanceGroup?.get('quantityDataType').value !== QuantityDataType.NUMERIC
+      || fieldInstanceGroup?.get('fieldThresholdType').value === FieldThresholdType.DISABLED);
+  }
+
+  public getFormControl(control: AbstractControl): FormControl {
+    return control as FormControl;
   }
 }

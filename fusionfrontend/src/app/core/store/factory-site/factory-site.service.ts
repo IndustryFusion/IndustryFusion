@@ -41,8 +41,12 @@ export class FactorySiteService {
       })));
   }
 
-  getFactorySite(companyId: ID, factorySiteId: ID): Observable<FactorySite> {
+  getFactorySite(companyId: ID, factorySiteId: ID, refresh: boolean = false): Observable<FactorySite> {
     const path = `companies/${companyId}/factorysites/${factorySiteId}`;
+    if (refresh) {
+      this.factorySiteStore.invalidateCacheId(factorySiteId);
+    }
+
     return this.factorySiteStore.cachedById(factorySiteId,
       this.http.get<FactorySite>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
       .pipe(tap(entity => {

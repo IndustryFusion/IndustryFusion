@@ -24,9 +24,11 @@ import { AssetResolver } from '../core/resolvers/asset.resolver';
 import { RoomResolver } from '../core/resolvers/room.resolver';
 import { FactorySiteResolver } from '../core/resolvers/factory-site.resolver';
 import { AssetSeriesDetailsQuery } from '../core/store/asset-series-details/asset-series-details.query';
-import { AssetSeriesAssetDigitalNameplateComponent } from './components/pages/asset-series-asset/asset-series-asset-digital-nameplate/asset-series-asset-digital-nameplate.component';
-import { FactoryAssetDetailsResolver } from '../core/resolvers/factory-asset-details.resolver';
-import { FactoryAssetDetailsQuery } from '../core/store/factory-asset-details/factory-asset-details.query';
+import {
+  AssetSeriesAssetDigitalNameplateComponent
+} from './components/pages/asset-series-asset/asset-series-asset-digital-nameplate/asset-series-asset-digital-nameplate.component';
+import { FleetAssetDetailsResolver } from '../core/resolvers/fleet-asset-details.resolver';
+import { FleetAssetDetailsQuery } from '../core/store/fleet-asset-details/fleet-asset-details.query';
 import { AssetSeriesResolver } from '../core/resolvers/asset-series.resolver';
 import { ConnectivityTypeResolver } from '../core/resolvers/connectivity-type.resolver';
 import { CompanyResolver } from '../core/resolvers/company.resolver';
@@ -85,12 +87,12 @@ const routes: Routes = [
                 path: ':assetId/digital-nameplate',
                 component: AssetSeriesAssetDigitalNameplateComponent,
                 resolve: {
-                  asset: FactoryAssetDetailsResolver,
+                  asset: FleetAssetDetailsResolver,
                   assetSeries: AssetSeriesResolver,
                   connectivityTypes: ConnectivityTypeResolver
                 },
                 data: {
-                  breadcrumb: FactoryAssetDetailsQuery
+                  breadcrumb: FleetAssetDetailsQuery
                 }
               }
             ]

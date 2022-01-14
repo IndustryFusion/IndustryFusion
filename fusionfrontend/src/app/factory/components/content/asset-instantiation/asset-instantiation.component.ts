@@ -86,7 +86,7 @@ export class AssetInstantiationComponent implements OnInit {
 
   private initFromConfig() {
     this.assetDetailsForm = this.config.data.assetDetailsForm ? this.config.data.assetDetailsForm : null;
-    this.assetDetails = { ...this.config.data.assetToBeEdited };
+    this.assetDetails = this.config.data.assetToBeEdited ? { ...this.config.data.assetToBeEdited } : null;
     this.assetsToBeOnboarded = this.config.data.assetsToBeOnboarded;
     this.factorySites = this.config.data.factorySites;
     this.selectedFactorySite = this.config.data.factorySite;

@@ -19,7 +19,6 @@ import { Threshold } from '../threshold/threshold.model';
 import { FieldSource } from '../field-source/field-source.model';
 
 export class FieldInstance extends BaseEntity{
-
   description: string;
   externalName: string;
   name: string;

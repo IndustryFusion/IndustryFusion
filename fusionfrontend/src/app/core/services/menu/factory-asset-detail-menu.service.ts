@@ -32,12 +32,13 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root'
 })
-export class AssetDetailMenuService {
+export class FactoryAssetDetailMenuService {
 
   constructor(
     private dialogService: DialogService,
     private formBuilder: FormBuilder,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private confirmationService: ConfirmationService) {
   }
 
   // TODO: Has to be extracted into Dialog/AssetInstantiationComponent (IF-429)
@@ -61,7 +62,7 @@ export class AssetDetailMenuService {
     return assetDetailsForm;
   }
 
-  public showEditDialog(asset: FactoryAssetDetailsWithFields, factorySite: FactorySite, factorySites: FactorySite[],
+  public showEditWizard(asset: FactoryAssetDetailsWithFields, factorySite: FactorySite, factorySites: FactorySite[],
                         rooms: Room[], closeCallback: () => any, updateCallback: (FactoryAssetDetails) => any) {
     const assetDetailsForm = this.createAssetDetailsForm(asset);
     const ref = this.dialogService.open(AssetInstantiationComponent, {
@@ -109,8 +110,8 @@ export class AssetDetailMenuService {
     });
   }
 
-  public showDeleteDialog(confirmationService: ConfirmationService, dialogKey: string, assetName: string, acceptCallback: () => any) {
-    confirmationService.confirm({
+  public showDeleteDialog(dialogKey: string, assetName: string, acceptCallback: () => any) {
+    this.confirmationService.confirm({
       key: dialogKey,
       message: this.translate.instant('APP.CORE.SERVICES.ASSET_DETAILS_MENU.CONFIRMATION_DIALOG.MESSAGE', { itemToDelete: assetName}),
       header: this.translate.instant('APP.CORE.SERVICES.ASSET_DETAILS_MENU.CONFIRMATION_DIALOG.HEADER'),

@@ -21,7 +21,7 @@ import {
   FactoryAssetDetailsWithFields
 } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
-import { AssetDetailMenuService } from '../../../../../core/services/menu/asset-detail-menu.service';
+import { FactoryAssetDetailMenuService } from '../../../../../core/services/menu/factory-asset-detail-menu.service';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactorySite } from '../../../../../core/store/factory-site/factory-site.model';
 import { Room } from '../../../../../core/store/room/room.model';
@@ -31,7 +31,6 @@ import { FactorySiteQuery } from '../../../../../core/store/factory-site/factory
 import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ConfirmationService } from 'primeng/api';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
@@ -56,7 +55,7 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE];
 
-  constructor(private assetDetailMenuService: AssetDetailMenuService,
+  constructor(private assetDetailMenuService: FactoryAssetDetailMenuService,
               private factoryResolver: FactoryResolver,
               private assetService: AssetService,
               private roomService: RoomService,
@@ -64,7 +63,6 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
               private roomQuery: RoomQuery,
               private router: Router,
               private routingLocation: Location,
-              private confirmationService: ConfirmationService,
               private companyQuery: CompanyQuery,
               private imageService: ImageService,
               private translate: TranslateService) {
@@ -94,13 +92,13 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   openEditDialog() {
-    this.assetDetailMenuService.showEditDialog(this.assetWithFields, this.factorySite, this.factorySites, this.rooms,
+    this.assetDetailMenuService.showEditWizard(this.assetWithFields, this.factorySite, this.factorySites, this.rooms,
       () => { }, (details) => this.assetUpdated(details));
   }
 
   openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-delete-dialog-detail',
-      this.assetWithFields.name, () => this.deleteAsset());
+    this.assetDetailMenuService.showDeleteDialog('asset-delete-dialog-detail', this.assetWithFields.name,
+      () => this.deleteAsset());
   }
 
   openAssignRoomDialog() {
@@ -114,7 +112,7 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   updateAssetData(oldRoom, assetDetails) {
-    this.assetService.updateCompanyAsset(assetDetails.companyId, assetDetails).subscribe(
+    this.assetService.editFactoryAsset(assetDetails.companyId, assetDetails).subscribe(
       () => {
         if (oldRoom.id !== assetDetails.roomId) {
           this.roomService.updateRoomsAfterEditAsset(oldRoom.id, assetDetails);

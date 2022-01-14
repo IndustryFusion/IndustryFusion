@@ -21,7 +21,7 @@ under the License.
 
           <div class="selection">
             <div class="input-div">
-              <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.SELECT_ASSET_SERIES_VERSION' | translate }}</label>
+              <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.SELECT_ASSET_SERIES_VERSION' | translate }} *</label>
               <p-dropdown [options]="(assetSeries$ | async)" formControlName="assetSeriesId" optionLabel="name"
                           optionValue="id" filter="true" resetFilterOnHide="true" (onChange)="onChangeAssetSeries($event.value)">
               </p-dropdown>
@@ -29,7 +29,7 @@ under the License.
           </div>
 
           <div class="input-div">
-            <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.ASSET_NAME' | translate }}</label>
+            <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.ASSET_NAME' | translate }} *</label>
             <input type="text" pInputText formControlName="name" />
           </div>
 
@@ -66,7 +66,7 @@ under the License.
     <div class="footer">
       <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
-              (click)="onStart()">{{ 'APP.COMMON.DIALOG_BUTTONS.START' | translate }}</button>
+              (click)="onStart()">{{ 'APP.COMMON.DIALOG_BUTTONS.' + (type === DialogType.CREATE ? 'START' : 'NEXT') | translate }}</button>
     </div>
   </form>
 </div>

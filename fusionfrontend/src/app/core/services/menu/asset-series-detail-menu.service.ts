@@ -15,12 +15,14 @@
 
 import { Injectable } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
-import { FactoryAssetDetails } from '../../store/factory-asset-details/factory-asset-details.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AssetWizardComponent } from '../../../fleet/components/content/asset-wizard/asset-wizard.component';
 import { AssetSeriesWizardComponent } from '../../../fleet/components/content/asset-series-wizard/asset-series-wizard.component';
 import { CompanyQuery } from '../../store/company/company.query';
 import { TranslateService } from '@ngx-translate/core';
+import { FleetAssetDetails } from '../../store/fleet-asset-details/fleet-asset-details.model';
+import { ID } from '@datorama/akita';
+import { FleetAssetDetailMenuService } from './fleet-asset-detail-menu.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,21 +31,22 @@ export class AssetSeriesDetailMenuService {
 
   constructor(private dialogService: DialogService,
               private companyQuery: CompanyQuery,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private fleetAssetDetailMenuService: FleetAssetDetailMenuService) {
   }
 
-  public showCreateAssetFromAssetSeries(assetSeriesId: string, createCallback: (FactoryAssetDetails) => any) {
+  public showPrefilledCreateAssetWizardAndRefresh(assetSeriesId: ID, createCallback: (FleetAssetDetails) => any) {
     const ref = this.dialogService.open(AssetWizardComponent, {
       data: {
-        companyId: this.companyQuery.getActiveId(),
         prefilledAssetSeriesId: assetSeriesId,
       },
       header: this.translate.instant('APP.CORE.SERVICES.ASSET_SERIES_DETAILS_MENU.DIGITAL_TWIN_CREATOR_FOR_ASSETS'),
       width: '80%'
     });
 
-    ref.onClose.subscribe((newAssetDetails: FactoryAssetDetails) => {
+    ref.onClose.subscribe((newAssetDetails: FleetAssetDetails) => {
       if (newAssetDetails) {
+        this.fleetAssetDetailMenuService.refreshAssetAggregate();
         createCallback(newAssetDetails);
       }
     });

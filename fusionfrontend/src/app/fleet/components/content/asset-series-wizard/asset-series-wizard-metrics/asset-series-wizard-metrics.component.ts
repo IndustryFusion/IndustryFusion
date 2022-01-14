@@ -72,7 +72,7 @@ export class AssetSeriesWizardMetricsComponent implements OnInit {
   }
 
   saveValue(group: AbstractControl): void {
-    this.assetSeries.fieldSources[group.get('indexInArray').value].register =  group.get('register').value;
+    this.assetSeries.fieldSources[group.get('indexFieldSources').value].register = group.get('register').value;
     group.get('saved').patchValue(true);
   }
 

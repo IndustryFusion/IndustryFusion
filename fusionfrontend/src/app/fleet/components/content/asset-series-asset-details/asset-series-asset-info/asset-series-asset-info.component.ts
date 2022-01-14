@@ -15,11 +15,15 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
-import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { Observable } from 'rxjs';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
+import { AssetService } from '../../../../../core/store/asset/asset.service';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
+import { FleetAssetDetailMenuService } from '../../../../../core/services/menu/fleet-asset-detail-menu.service';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -29,15 +33,21 @@ import { ID } from '@datorama/akita';
 export class AssetSeriesAssetInfoComponent implements OnInit {
 
   @Input()
-  asset$: Observable<FactoryAssetDetailsWithFields>;
-
-  dropdownMenuOptions: ItemOptionsMenuType[] = [];
+  assetWithFields$: Observable<FleetAssetDetailsWithFields>;
 
   assetIdOfImage: ID;
+  prevImageKey: string;
   assetImage: string;
+  assetWithFields: FleetAssetDetailsWithFields;
+
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   constructor(private companyQuery: CompanyQuery,
-              private imageService: ImageService) {
+              private imageService: ImageService,
+              private assetService: AssetService,
+              private router: Router,
+              private routingLocation: Location,
+              private fleetAssetDetailMenuService: FleetAssetDetailMenuService) {
   }
 
   ngOnInit() {
@@ -45,15 +55,34 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   }
 
   private loadImageForChangedAsset() {
-    this.asset$.subscribe(asset => {
-      if (asset.id !== this.assetIdOfImage) {
+    this.assetWithFields$.subscribe(asset => {
+      this.assetWithFields = asset;
+      if (asset.id !== this.assetIdOfImage || asset.imageKey !== this.prevImageKey) {
         this.assetIdOfImage = asset.id;
+        this.prevImageKey = asset.imageKey;
 
         const companyId = this.companyQuery.getActiveId();
         this.imageService.getImageAsUriSchemeString(companyId, asset.imageKey).subscribe(imageText => {
           this.assetImage = imageText;
         });
       }
+    });
+  }
+
+  openEditWizard() {
+    this.fleetAssetDetailMenuService.showEditWizardAndRefresh(this.assetWithFields);
+  }
+
+  openDeleteDialog() {
+    this.fleetAssetDetailMenuService.showDeleteDialog('asset-series-asset-delete-dialog-detail',
+      this.assetWithFields.name, () => this.deleteAsset(this.assetWithFields.id));
+  }
+
+  private deleteAsset(id: ID) {
+    this.assetService.removeCompanyAsset(this.companyQuery.getActiveId(), id).subscribe(() => {
+      const currentUrlSeparated = this.routingLocation.path().split('/');
+      const newRoutingLocation = currentUrlSeparated.slice(0, currentUrlSeparated.findIndex(elem => elem === 'assets') + 1);
+      this.router.navigateByUrl(newRoutingLocation.join('/')).catch(error => console.warn('Routing error: ', error));
     });
   }
 }

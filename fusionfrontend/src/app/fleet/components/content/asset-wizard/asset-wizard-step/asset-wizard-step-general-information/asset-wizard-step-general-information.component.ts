@@ -26,6 +26,7 @@ import { AssetType } from '../../../../../../core/store/asset-type/asset-type.mo
 import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 import { ImageService } from '../../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../../core/store/company/company.query';
+import { DialogType } from '../../../../../../shared/models/dialog-type.model';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',
@@ -35,6 +36,7 @@ import { CompanyQuery } from '../../../../../../core/store/company/company.query
 export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
   @Input() assetForm: FormGroup;
+  @Input() type: DialogType;
   @Input() relatedAssetSeries: AssetSeries;
   @Input() relatedAssetSeriesId: ID;
   @Input() relatedCompany: Company;
@@ -49,6 +51,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
 
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
   public DEFAULT_ASSET_IMAGE_KEY = ImageService.DEFAULT_ASSET_IMAGE_KEY;
+  public DialogType = DialogType;
 
   private companyId: ID;
 

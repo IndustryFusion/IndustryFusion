@@ -57,10 +57,7 @@ public class AssetDraftService {
     public Asset initAssetDraft(final Long companyId, final Long assetSeriesId) {
         final AssetSeries assetSeries = this.assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId);
         final Company company = assetSeries.getCompany();
-
-        final Country countryGermany = countryRepository.findCountryByName("Germany").get();
-        final Room unspecificRoom = roomDraftService.initUnspecificRoomDraftWithFactorySite(companyId, countryGermany,
-                                        FactorySiteType.FLEETMANAGER);
+        final Room unspecificRoom = initUnspecificRoomDraft(companyId);
 
         final Asset transientAsset = Asset.builder()
                 .name(assetSeries.getName())
@@ -86,5 +83,11 @@ public class AssetDraftService {
         transientAsset.getFieldInstances().addAll(newFieldInstances);
 
         return transientAsset;
+    }
+
+    public Room initUnspecificRoomDraft(final Long companyId) {
+        final Country countryGermany = countryRepository.findCountryByName("Germany").orElseThrow();
+        return roomDraftService.initUnspecificRoomDraftWithFactorySite(companyId, countryGermany,
+                FactorySiteType.FLEETMANAGER);
     }
 }

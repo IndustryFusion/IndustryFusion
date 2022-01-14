@@ -35,7 +35,7 @@ export class FieldInstanceService {
   }
 
   getFieldInstances(companyId: ID, assetID: ID): Observable<FieldInstance[]> {
-    const path = `companies/${companyId}/asset/${assetID}/fieldinstances`;
+    const path = `companies/${companyId}/assets/${assetID}/fieldinstances`;
     const cacheKey = 'asset-' + assetID;
     return this.fieldInstanceStore.cachedByParentId(cacheKey,
       this.http.get<FieldInstance[]>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
@@ -45,7 +45,7 @@ export class FieldInstanceService {
   }
 
   editItem(companyId: ID, fieldInstance: FieldInstance): Observable<FieldInstance> {
-    const path = `companies/${companyId}/asset/${fieldInstance.assetId}/fieldinstances/${fieldInstance.id}`;
+    const path = `companies/${companyId}/assets/${fieldInstance.assetId}/fieldinstances/${fieldInstance.id}`;
     return this.http.patch<FieldInstance>(`${environment.apiUrlPrefix}/${path}`, fieldInstance, this.httpOptions)
       .pipe(
         tap(entity => {

@@ -24,20 +24,22 @@ import { StatusService } from 'src/app/core/services/logic/status.service';
 import { FieldDetails, FieldType } from 'src/app/core/store/field-details/field-details.model';
 import { OispDeviceQuery } from '../../../../../core/store/oisp/oisp-device/oisp-device.query';
 import { ID } from '@datorama/akita';
-import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
-import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
 import { environment } from 'src/environments/environment';
-import { FactoryResolver } from '../../../../../factory/services/factory-resolver.service';
-import { FactoryAssetDetailsResolver } from '../../../../../core/resolvers/factory-asset-details.resolver';
 import { FactorySite, FactorySiteType } from '../../../../../core/store/factory-site/factory-site.model';
 import { Company } from '../../../../../core/store/company/company.model';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { FactorySiteQuery } from '../../../../../core/store/factory-site/factory-site.query';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
-import { FactoryComposedQuery } from '../../../../../core/store/composed/factory-composed.query';
 import { AssetOnboardingService } from '../../../../../core/services/logic/asset-onboarding.service';
 import { FieldDataType } from '../../../../../core/store/field/field.model';
+import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
+import { FleetComposedQuery } from '../../../../../core/store/composed/fleet-composed.query';
+import { FleetAssetDetailsQuery } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
+import { Room } from '../../../../../core/store/room/room.model';
+import { RoomQuery } from '../../../../../core/store/room/room.query';
+import { FieldInstanceDetailsResolver } from '../../../../../core/resolvers/field-instance-details.resolver';
+import { AssetService } from '../../../../../core/store/asset/asset.service';
 
 
 @Component({
@@ -48,7 +50,7 @@ import { FieldDataType } from '../../../../../core/store/field/field.model';
 export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
 
   assetId: ID;
-  asset$: Observable<FactoryAssetDetailsWithFields>;
+  assetWithFields$: Observable<FleetAssetDetailsWithFields>;
 
   latestPoints$: Observable<PointWithId[]>;
   mergedFields$: Observable<FieldDetails[]>;
@@ -60,18 +62,21 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
   factorySiteTypes = FactorySiteType;
   fieldDataTypes = FieldDataType;
 
+  private rooms$: Observable<Room[]>;
+
   constructor(
     private oispService: OispService,
     private oispDeviceQuery: OispDeviceQuery,
     private statusService: StatusService,
-    private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
-    private factoryAssetQuery: FactoryAssetDetailsQuery,
-    private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
+    private assetService: AssetService,
+    private fleetAssetDetailsQuery: FleetAssetDetailsQuery,
+    private fieldInstanceDetailsResolver: FieldInstanceDetailsResolver,
     private companyQuery: CompanyQuery,
+    private roomQuery: RoomQuery,
     private factorySiteQuery: FactorySiteQuery,
     private assetSeriesDetailsService: AssetSeriesDetailsService,
-    private factoryComposedQuery: FactoryComposedQuery,
+    private fleetComposedQuery: FleetComposedQuery,
     private assetOnboardingService: AssetOnboardingService,
   ) {
   }
@@ -97,7 +102,34 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
   ngOnInit() {
     this.resolve();
 
-    this.factorySite$ = combineLatest([this.asset$, this.factoryResolver.rooms$]).pipe(
+    this.factorySite$ = this.initFactorySite();
+    this.company$ = this.factorySite$.pipe(switchMap(site => this.companyQuery.selectEntity(site?.companyId)));
+
+    this.latestPoints$ = this.initLatestPoints();
+    this.mergedFields$ = this.initMergedFields();
+
+    this.status$ = this.mergedFields$.pipe(
+      map(fields => this.statusService.determineStatus(fields))
+    );
+  }
+
+  private resolve() {
+    this.assetId = this.fleetAssetDetailsQuery.getActiveId();
+    this.assetService.setActive(this.assetId);
+
+    this.fieldInstanceDetailsResolver.resolve();
+    this.assetWithFields$ = this.fleetComposedQuery.selectFieldsOfAssetsDetailsOfActivesAsset();
+
+    const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
+    if (assetSeriesId != null) {
+      this.assetSeriesDetailsService.setActive(assetSeriesId);
+    }
+  }
+
+  private initFactorySite() {
+    this.rooms$ = this.roomQuery.selectRoomsOfCompany();
+
+    return combineLatest([this.assetWithFields$, this.rooms$]).pipe(
       switchMap(([asset, rooms]) => {
         const assetRoom = rooms.find((room) => room.id === asset.roomId);
         return this.factorySiteQuery.selectAll().pipe(
@@ -105,17 +137,19 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
         );
       })
     );
+  }
 
-    this.company$ = this.factorySite$.pipe(switchMap(site => this.companyQuery.selectEntity(site?.companyId)));
-
+  private initLatestPoints() {
     // TODO: refactor using status.service.getStatusByAssetWithFields
-    this.latestPoints$ = combineLatest([this.asset$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
+    return combineLatest([this.assetWithFields$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
       switchMap(([asset, _]) => {
         return this.oispService.getLastValueOfAllFields(asset, asset?.fields, 5);
       })
     );
+  }
 
-    this.mergedFields$ = combineLatest([this.asset$, this.latestPoints$])
+  private initMergedFields() {
+    return combineLatest([this.assetWithFields$, this.latestPoints$])
       .pipe(
         map(([asset, latestPoints]) => {
           return asset.fields.map(field => {
@@ -129,11 +163,6 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
             return fieldCopy;
           });
         }));
-
-
-    this.status$ = this.mergedFields$.pipe(
-      map(fields => this.statusService.determineStatus(fields))
-    );
   }
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
@@ -141,23 +170,11 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
   }
 
   generateAssetOnboardingFile() {
-    this.asset$.subscribe(asset => {
-        this.factoryComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
+    this.assetWithFields$.subscribe(asset => {
+        this.fleetComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
           this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
             .subscribe(fileContent => AssetSeriesAssetDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
       }
     );
-  }
-
-  private resolve() {
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.assetId = this.factoryAssetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
-
-    const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
-    if (assetSeriesId != null) {
-      this.assetSeriesDetailsService.setActive(assetSeriesId);
-    }
   }
 }

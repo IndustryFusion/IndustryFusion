@@ -39,6 +39,7 @@ export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
 
   assetSeriesIdOfImage: ID;
   assetSeriesImage: string;
+  prevImageKey: string;
 
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE];
 
@@ -63,8 +64,10 @@ export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   private loadImageForChangedAssetSeries() {
-    if (this.assetSeries && this.assetSeries.id !== this.assetSeriesIdOfImage) {
+    if (this.assetSeries
+      && (this.assetSeries.id !== this.assetSeriesIdOfImage || this.assetSeries.imageKey !== this.prevImageKey)) {
       this.assetSeriesIdOfImage = this.assetSeries.id;
+      this.prevImageKey = this.assetSeries.imageKey;
 
       const companyId = this.companyQuery.getActiveId();
       this.imageService.getImageAsUriSchemeString(companyId, this.assetSeries.imageKey).subscribe(imageText => {
@@ -74,7 +77,7 @@ export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
   }
 
   openCreateWizard() {
-    this.assetSeriesDetailMenuService.showCreateAssetFromAssetSeries(this.assetSeries.id.toString(), () => { });
+    this.assetSeriesDetailMenuService.showPrefilledCreateAssetWizardAndRefresh(this.assetSeries.id, () => { });
   }
 
   openEditWizard() {

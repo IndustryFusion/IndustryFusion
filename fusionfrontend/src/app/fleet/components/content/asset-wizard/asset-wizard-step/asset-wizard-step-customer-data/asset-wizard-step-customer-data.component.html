@@ -53,8 +53,9 @@ under the License.
   <div class="footer">
     <button type="button" class="if-button button-cancel" (click)="onBack()">{{ 'APP.COMMON.DIALOG_BUTTONS.BACK' | translate }}</button>
     <button type="button" class="if-button button-confirm button-primary" [disabled]="!isReadyForNextStep()"
-            (click)="onSave()">{{ 'APP.FLEET.ASSET_WIZARD.STEP.CUSTOMER_DATA.CREATE_DIGITAL_TWIN_BUTTON' | translate }}</button>
-  </div>
+            (click)="onSave()">{{ (type === DialogType.CREATE ? 'APP.FLEET.ASSET_WIZARD.STEP.CUSTOMER_DATA.CREATE_DIGITAL_TWIN_BUTTON' :
+      'APP.COMMON.DIALOG_BUTTONS.SAVE') | translate }}</button>
+</div>
 </form>
 
 <!--Ensures that google can be resolved in GeocoderService-->

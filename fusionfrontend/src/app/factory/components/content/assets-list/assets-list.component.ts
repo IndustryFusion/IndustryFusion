@@ -33,10 +33,12 @@ import { AssetInstantiationComponent } from '../asset-instantiation/asset-instan
 import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
-import { TableSelectedItemsBarType } from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
+import {
+  TableSelectedItemsBarType
+} from '../../../../shared/components/ui/table-selected-items-bar/table-selected-items-bar.type';
 import { OispAlert, OispAlertPriority } from '../../../../core/store/oisp/oisp-alert/oisp-alert.model';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { AssetDetailMenuService } from '../../../../core/services/menu/asset-detail-menu.service';
+import { FactoryAssetDetailMenuService } from '../../../../core/services/menu/factory-asset-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
@@ -123,9 +125,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService,
-    private assetDetailMenuService: AssetDetailMenuService,
-    private  translate: TranslateService) {
+    private assetDetailMenuService: FactoryAssetDetailMenuService,
+    public translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -245,13 +246,13 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   openEditDialog() {
-    this.assetDetailMenuService.showEditDialog(this.activeListItem, this.factorySite, this.factorySites, this.rooms,
+    this.assetDetailMenuService.showEditWizard(this.activeListItem, this.factorySite, this.factorySites, this.rooms,
       () => this.deselectAllItems(), (details) => this.assetUpdated(details));
   }
 
   openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog(this.confirmationService, 'asset-delete-dialog-list',
-      this.activeListItem.name, () => this.deleteAsset());
+    this.assetDetailMenuService.showDeleteDialog('asset-delete-dialog-list', this.activeListItem.name,
+      () => this.deleteAsset());
   }
 
   openAssignRoomDialog() {

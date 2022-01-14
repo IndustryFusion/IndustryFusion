@@ -22,7 +22,6 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { environment } from '../../../../environments/environment';
 import { RoomService } from '../room/room.service';
-import { FactoryAssetDetailsStore } from '../factory-asset-details/factory-asset-details.store';
 import { FactoryAssetDetailsService } from '../factory-asset-details/factory-asset-details.service';
 import {
   FactoryAssetDetails,
@@ -33,6 +32,7 @@ import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-
 import { PointWithId } from '../../services/api/oisp.model';
 import { FieldDetails } from '../field-details/field-details.model';
 import { OispService } from '../../services/api/oisp.service';
+import { FleetAssetDetailsService } from '../fleet-asset-details/fleet-asset-details.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +46,8 @@ export class AssetService {
 
   constructor(private assetStore: AssetStore,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
-              private assetDetailsService: FactoryAssetDetailsService,
-              private assetDetailsStore: FactoryAssetDetailsStore,
+              private factoryAssetDetailsService: FactoryAssetDetailsService,
+              private fleetAssetDetailsService: FleetAssetDetailsService,
               private factorySiteService: FactorySiteService,
               private roomService: RoomService,
               private oispService: OispService,
@@ -103,7 +103,7 @@ export class AssetService {
       .pipe(tap(entities => {
         entities.forEach(asset => {
           this.assetStore.upsertCached(asset);
-          this.assetDetailsService.updateRoom(asset.id, asset.roomId);
+          this.factoryAssetDetailsService.updateRoom(asset.id, asset.roomId);
         });
       }));
   }
@@ -119,17 +119,14 @@ export class AssetService {
       }));
   }
 
-  createAsset(companyId: ID, assetSeriesId: ID, asset: Asset): Observable<ID> {
+  createFleetAsset(companyId: ID, assetSeriesId: ID, asset: Asset): Observable<ID> {
     const path = `companies/${companyId}/assetseries/${assetSeriesId}/assets`;
     return this.http.post<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(savedAsset => {
           this.assetStore.upsertCached(savedAsset);
 
-          const assetDetails = this.assetDetailsService.getAssetDetails(savedAsset.companyId, savedAsset.id)
-            .pipe(tap(entity => {
-              this.assetDetailsStore.upsertCached(entity);
-            }));
+          const assetDetails$ = this.fleetAssetDetailsService.getFleetAssetDetails(savedAsset.companyId, savedAsset.id);
 
           this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId, true).subscribe();
           if (savedAsset.room) {
@@ -137,7 +134,7 @@ export class AssetService {
             this.roomService.getRoom(savedAsset.companyId, savedAsset.room.factorySite.id, savedAsset.roomId, false)
               .subscribe();
           }
-          return assetDetails.pipe(map(entity => entity.id));
+          return assetDetails$.pipe(map(entity => entity.id));
         })
       );
   }
@@ -146,18 +143,26 @@ export class AssetService {
     this.assetStore.setActive(assetId);
   }
 
-  updateCompanyAsset(companyId: ID, assetDetails: FactoryAssetDetails): Observable<Asset> {
+  editFactoryAsset(companyId: ID, assetDetails: FactoryAssetDetails): Observable<Asset> {
     const path = `companies/${assetDetails.companyId}/assets/${assetDetails.id}`;
     const asset: Asset = this.mapAssetDetailsToAsset(assetDetails);
     return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
         switchMap(updatedAsset => {
           this.assetStore.upsertCached(updatedAsset);
-          return this.assetDetailsService.getAssetDetails(companyId, updatedAsset.id).pipe(tap(entity => {
-            this.assetDetailsStore.upsertCached(entity);
-          }));
+          return this.factoryAssetDetailsService.getFactoryAssetDetails(companyId, updatedAsset.id);
         })
       );
+  }
+
+  editFleetAsset(assetSeriesId: ID, asset: Asset): Observable<Asset> {
+    const path = `companies/${asset.companyId}/assetseries/${assetSeriesId}/assets/${asset.id}`;
+    return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
+      .pipe(
+        switchMap(updatedAsset => {
+          this.assetStore.upsertCached(updatedAsset);
+          return this.fleetAssetDetailsService.getFleetAssetDetails(asset.companyId, updatedAsset.id);
+        }));
   }
 
   removeCompanyAsset(companyId: ID, assetId: ID): Observable<any> {
@@ -165,7 +170,7 @@ export class AssetService {
     return this.http.delete(`${environment.apiUrlPrefix}/${path}`).pipe(tap({
       complete: () => {
         this.assetStore.removeCached(assetId);
-        this.assetDetailsStore.removeCached(assetId);
+        this.factoryAssetDetailsService.deleteItem(assetId);
       },
       error: (error) => {
         console.error(error);

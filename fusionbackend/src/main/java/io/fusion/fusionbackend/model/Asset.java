@@ -35,8 +35,11 @@ import javax.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedEntityGraph(name = "Asset.allChildren",
@@ -138,14 +141,31 @@ public class Asset extends BaseAsset {
         if (sourceAsset.getRoom() != null) {
             setRoom(sourceAsset.getRoom());
         }
-        if (sourceAsset.getFieldInstances() != null) {
-            setFieldInstances(sourceAsset.getFieldInstances());
-        }
         if (sourceAsset.getSubsystems() != null) {
             setSubsystems(sourceAsset.getSubsystems());
         }
         if (sourceAsset.getConnectionString() != null) {
             setConnectionString(sourceAsset.getConnectionString());
         }
+
+        if (!sourceAsset.getFieldInstances().isEmpty()) {
+            Map<Long, FieldInstance> sourceFieldSourcesIdBasedMap = sourceAsset.getFieldInstances().stream()
+                    .collect(Collectors.toMap(BaseEntity::getId, fieldInstance -> fieldInstance));
+            for (FieldInstance targetFieldInstance: getFieldInstances()) {
+                FieldInstance sourceFieldInstance = sourceFieldSourcesIdBasedMap.get(targetFieldInstance.getId());
+                if (sourceFieldInstance != null) {
+                    targetFieldInstance.copyFrom(sourceFieldInstance);
+                }
+            }
+        }
+    }
+
+    public List<FieldInstance> calculateDeletedFieldSources(Asset sourceAsset) {
+
+        Set<FieldInstance> sourceFieldInstances = sourceAsset.getFieldInstances();
+
+        return this.getFieldInstances().stream()
+                .filter(targetFieldInstance -> !sourceFieldInstances.contains(targetFieldInstance))
+                .collect(Collectors.toList());
     }
 }

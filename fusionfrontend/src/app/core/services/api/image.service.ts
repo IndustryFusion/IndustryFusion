@@ -14,7 +14,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MediaObject } from '../../models/fusion-image.model';
@@ -51,7 +51,12 @@ export class ImageService {
   }
 
   getImageAsUriSchemeString(companyId: ID, imageKey: string): Observable<string> {
-   return this.getImage(companyId, imageKey).pipe(
+    if (imageKey == null) {
+      console.error('[image service]: Empty image key');
+      return EMPTY;
+    }
+
+    return this.getImage(companyId, imageKey).pipe(
       map((fusionImage: MediaObject) => {
           if (!fusionImage.contentBase64.startsWith('data')) {
             return `data:${fusionImage.contentType};base64,${fusionImage.contentBase64}`;

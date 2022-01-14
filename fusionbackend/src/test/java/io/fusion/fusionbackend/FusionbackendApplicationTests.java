@@ -883,9 +883,8 @@ class FusionbackendApplicationTests {
                 .companyId(companyAiristMachId.longValue())
                 .build();
 
-        addSubsystemToParentAndTest(companyLaserlyMachId, assetSeriesLaserlyLaserCutterId, assetRoomWestStruumpFabId,
-                subsystem, accessTokenFleetManAirist, accessTokenFleetManLaserly);
-
+        addSubsystemToFactoryAssetParentAndTest(companyStruumpFabId, assetRoomWestStruumpFabId, subsystem,
+                accessTokenFleetManAirist, accessTokenFabManStruump);
     }
 
     @RepeatedTest(10)
@@ -971,7 +970,7 @@ class FusionbackendApplicationTests {
         List<ConnectivityTypeDto> connectivityTypeDtos = getConnectivityTypeDtos(accessTokenFabManStruump);
 
         assertThat(connectivityTypeDtos.size()).isGreaterThan(1);
-        assertThat(connectivityTypeDtos.get(0).getAvailableProtocols().size()).isGreaterThanOrEqualTo(1);
+        assertThat(connectivityTypeDtos.get(0).getAvailableProtocols().size()).isPositive();
     }
 
     private Integer createAndTestCompany(final CompanyDto company) {
@@ -1522,7 +1521,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + newAssetId)
+                .put(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + newAssetId)
 
                 .then()
                 .statusCode(200);
@@ -1543,55 +1542,53 @@ class FusionbackendApplicationTests {
         return newAssetId;
     }
 
-    private void addSubsystemToParentAndTest(final Integer companyId,
-                                             final Long assetSeriesId,
-                                             final Integer parentAssetId,
-                                             final AssetDto newSubsystem,
-                                             final String subsystemAccessToken,
-                                             final String parentAccessToken) {
+    private void addSubsystemToFactoryAssetParentAndTest(final Integer companyId,
+                                                         final Integer parentAssetId,
+                                                         final AssetDto newSubsystem,
+                                                         final String subsystemAccessToken,
+                                                         final String parentAccessToken) {
 
         Integer newSubsystemId = persistNewAsset(newSubsystem, subsystemAccessToken);
 
-        addSubstemToParent(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
+        addSubsystemToParent(companyId, parentAssetId, parentAccessToken, newSubsystemId);
 
-        validateSubsystemExists(companyId, assetSeriesId, parentAssetId, parentAccessToken, newSubsystemId);
-
+        validateSubsystemExists(companyId, parentAssetId, parentAccessToken, newSubsystemId);
     }
 
-    private void validateSubsystemExists(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
+    private void validateSubsystemExists(Integer companyId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+                .get(baseUrl + "/companies/" + companyId + "/assets/" + parentAssetId)
 
                 .then()
                 .statusCode(200)
                 .body("subsystemIds", equalTo(Collections.singletonList(newSubsystemId)));
     }
 
-    private void addSubstemToParent(Integer companyId, Long assetSeriesId, Integer parentAssetId, String accessToken, Integer newSubsystemId) {
-        AssetDto parent = given()
+    private void addSubsystemToParent(Integer companyId, Integer parentFactoryAssetId, String accessToken, Integer newSubsystemId) {
+        AssetDto parentFactoryAsset = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .get(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+                .get(baseUrl + "/companies/" + companyId + "/assets/" + parentFactoryAssetId)
 
                 .then()
                 .statusCode(200)
                 .extract().as(AssetDto.class);
 
-        parent.getSubsystemIds().add(newSubsystemId.longValue());
+        parentFactoryAsset.getSubsystemIds().add(newSubsystemId.longValue());
 
         given()
                 .contentType(ContentType.JSON)
-                .body(parent)
+                .body(parentFactoryAsset)
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .patch(baseUrl + "/companies/" + companyId + "/assetseries/" + assetSeriesId + "/assets/" + parentAssetId)
+                .put(baseUrl + "/companies/" + companyId + "/assets/" + parentFactoryAssetId)
 
                 .then()
                 .statusCode(200);
@@ -1626,7 +1623,7 @@ class FusionbackendApplicationTests {
                 .header("Authorization", "Bearer " + accessToken)
 
                 .when()
-                .patch(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets/" + newSubsystemId)
+                .put(baseUrl + "/companies/" + newSubsystem.getCompanyId() + "/assetseries/" + newSubsystem.getAssetSeriesId() + "/assets/" + newSubsystemId)
 
                 .then()
                 .statusCode(200);

@@ -22,6 +22,8 @@ import { Asset } from '../../../../../../core/store/asset/asset.model';
 import { FactorySite, FactorySiteType } from '../../../../../../core/store/factory-site/factory-site.model';
 import { Coordinate, GeocoderService } from '../../../../../../core/services/api/geocoder.service';
 import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
+import { DialogType } from '../../../../../../shared/models/dialog-type.model';
+import { RoomService } from '../../../../../../core/store/room/room.service';
 
 @Component({
   selector: 'app-asset-wizard-step-customer-data',
@@ -31,6 +33,7 @@ import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
 export class AssetWizardStepCustomerDataComponent implements OnInit {
 
   @Input() asset: Asset;
+  @Input() type: DialogType;
   @Output() stepChange = new EventEmitter<number>();
   @Output() createAsset = new EventEmitter<void>();
   @Output() valid = new EventEmitter<boolean>();
@@ -38,8 +41,11 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
   public countries: SelectItem[] = [];
   public factorySiteForm: FormGroup;
 
+  public DialogType = DialogType;
+
   constructor(private countryQuery: CountryQuery,
               private geocoderService: GeocoderService,
+              private roomService: RoomService,
               private formBuilder: FormBuilder) {
   }
 
@@ -53,6 +59,10 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
     );
 
     this.createFactorySiteForm();
+
+    if (!this.asset.room) {
+      this.roomService.createRoomDraft(this.asset.companyId).subscribe(unspecificRoom => this.asset.room = unspecificRoom);
+    }
   }
 
   private createFactorySiteForm(): void {
@@ -61,7 +71,7 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
     this.factorySiteForm = this.formBuilder.group({
       id: [],
       version: [],
-      companyId: [null, Validators.required],
+      companyId: [this.asset.companyId, Validators.required],
       name: [null, WizardHelper.maxTextLengthValidator],
       line1: ['', WizardHelper.maxTextLengthValidator],
       line2: ['', WizardHelper.maxTextLengthValidator],
@@ -78,10 +88,14 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
     this.factorySiteForm.get('type').setValue(FactorySiteType.FLEETMANAGER);
   }
 
-  private hasNotMandatoryData(): boolean {
+  private hasData(): boolean {
     const factorySite: FactorySite =  this.asset.room.factorySite;
-    return factorySite.zip != null || factorySite.city != null || factorySite.name != null
-      || factorySite.line1 != null || factorySite.id != null;
+    return this.hasValue(factorySite.zip) || this.hasValue(factorySite.city)
+      || this.hasValue(factorySite.name) || this.hasValue(factorySite.line1);
+  }
+
+  private hasValue(text: string) {
+    return (text != null && text.trim().length > 0);
   }
 
   private save() {
@@ -89,15 +103,16 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
 
       this.asset.room.factorySite = { ...this.factorySiteForm.getRawValue() as FactorySite };
 
-      if (this.hasNotMandatoryData()) {
+      if (this.hasData()) {
         const country = this.countryQuery.getEntity(this.factorySiteForm.get('countryId').value);
-        this.asset.room.factorySite.country = { ...country};
+        this.asset.room.factorySite.country = { ...country };
 
         const factorySite = this.asset.room.factorySite;
         this.geocoderService.getGeocode(factorySite.line1, factorySite.zip, factorySite.city, factorySite.country.name,
           (coordinate: Coordinate)  => this.setCoordinateAndCreateAsset(coordinate));
       } else {
         this.asset.room = null;
+        this.asset.roomId = null;
         this.createAsset.emit();
       }
     }
