@@ -15,9 +15,9 @@
 
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MediaObject } from '../../models/fusion-image.model';
+import { MediaObject, MediaObjectKeyPrefix } from '../../../models/media-object.model';
 import { map } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 
@@ -66,9 +66,13 @@ export class ImageService {
       ));
   }
 
-  uploadImage(companyId: ID, filename: string, folder: string, imageContentBase64: string, fileSize: number): Observable<MediaObject> {
+  uploadImage(companyId: ID,
+              filename: string,
+              keyPrefix: MediaObjectKeyPrefix,
+              imageContentBase64: string,
+              fileSize: number): Observable<MediaObject> {
     const path = `companies/${companyId}/images`;
-    const image: MediaObject = new MediaObject(companyId, filename, folder, imageContentBase64,
+    const image: MediaObject = new MediaObject(companyId, filename, keyPrefix, imageContentBase64,
       'image/' + ImageService.getFileExtension(filename), fileSize);
 
     return this.http.post<MediaObject>(`${environment.apiUrlPrefix}/${path}`, image, this.httpOptions);

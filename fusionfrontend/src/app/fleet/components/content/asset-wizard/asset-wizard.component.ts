@@ -41,7 +41,7 @@ import { CountryResolver } from '../../../../core/resolvers/country.resolver';
 import { FleetAssetDetailsResolver } from '../../../../core/resolvers/fleet-asset-details.resolver';
 import { MessageService } from 'primeng/api';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { FieldInstanceResolver } from '../../../../core/resolvers/field-instance.resolver';
 import { RoomQuery } from '../../../../core/store/room/room.query';
 import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';

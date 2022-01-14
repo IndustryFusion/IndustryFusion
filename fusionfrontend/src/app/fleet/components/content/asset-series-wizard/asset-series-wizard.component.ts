@@ -33,7 +33,7 @@ import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-ser
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { AssetQuery } from '../../../../core/store/asset/asset.query';
 import { AssetService } from '../../../../core/store/asset/asset.service';
 import { take } from 'rxjs/operators';

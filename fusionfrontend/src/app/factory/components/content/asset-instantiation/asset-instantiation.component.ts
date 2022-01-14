@@ -23,7 +23,7 @@ import {
 } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { TranslateService } from '@ngx-translate/core';
 

@@ -22,8 +22,9 @@ import { Company } from '../../../../../core/store/company/company.model';
 import { AssetType } from '../../../../../core/store/asset-type/asset-type.model';
 import { SelectItem } from 'primeng/api';
 import { NameWithVersionPipe } from 'src/app/shared/pipes/namewithversion.pipe';
-import { ImageService } from '../../../../../core/services/api/image.service';
+import { ImageService } from '../../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
+import { MediaObjectKeyPrefix } from '../../../../../core/models/media-object.model';
 
 @Component({
   selector: 'app-asset-series-wizard-general-information',
@@ -73,7 +74,8 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
     if (selectedImage) {
       const reader = new FileReader();
       reader.addEventListener('load', (readFileEvent: any) => {
-        this.imageService.uploadImage(this.companyId, selectedImage.name, 'assetseries', readFileEvent.target.result, selectedImage.size)
+        this.imageService.uploadImage(this.companyId, selectedImage.name, MediaObjectKeyPrefix.ASSET_SERIES,
+          readFileEvent.target.result, selectedImage.size)
           .subscribe(uploadedImage => {
             this.assetSeriesImage = uploadedImage.contentBase64;
             this.assetSeriesImageChanged.emit(this.assetSeriesImage);

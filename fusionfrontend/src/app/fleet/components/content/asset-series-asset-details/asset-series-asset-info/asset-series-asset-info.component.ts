@@ -16,7 +16,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { Observable } from 'rxjs';
-import { ImageService } from '../../../../../core/services/api/image.service';
+import { ImageService } from '../../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
 import { AssetService } from '../../../../../core/store/asset/asset.service';

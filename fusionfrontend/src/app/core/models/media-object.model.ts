@@ -32,3 +32,8 @@ export class MediaObject {
     this.filename = filename;
   }
 }
+
+export enum MediaObjectKeyPrefix {
+  ASSETS = 'assets',
+  ASSET_SERIES = 'assetseries'
+}

@@ -24,9 +24,10 @@ import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Company } from '../../../../../../core/store/company/company.model';
 import { AssetType } from '../../../../../../core/store/asset-type/asset-type.model';
 import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
-import { ImageService } from '../../../../../../core/services/api/image.service';
+import { ImageService } from '../../../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../../../core/store/company/company.query';
 import { DialogType } from '../../../../../../shared/models/dialog-type.model';
+import { MediaObjectKeyPrefix } from '../../../../../../core/models/media-object.model';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',
@@ -97,7 +98,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
     if (selectedImage) {
       const reader = new FileReader();
       reader.addEventListener('load', (readFileEvent: any) => {
-        this.imageService.uploadImage(this.companyId, selectedImage.name, 'assets', readFileEvent.target.result, selectedImage.size)
+        this.imageService.uploadImage(this.companyId, selectedImage.name, MediaObjectKeyPrefix.ASSETS,
+          readFileEvent.target.result, selectedImage.size)
           .subscribe(uploadedImage => {
             this.assetImage = uploadedImage.contentBase64;
             this.assetImageChanged.emit(this.assetImage);

@@ -31,7 +31,7 @@ import { FactorySiteQuery } from '../../../../../core/store/factory-site/factory
 import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ImageService } from '../../../../../core/services/api/image.service';
+import { ImageService } from '../../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
 import { TranslateService } from '@ngx-translate/core';
