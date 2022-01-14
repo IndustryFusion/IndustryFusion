@@ -17,7 +17,8 @@
                [value]="treeData"
                (onPage)="updateRowCountInUrl($event.rows)"
                class="list-container"
-               currentPageReportTemplate="{first} to {last} of {totalRecords} Assets"
+               currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {last}
+            {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }} {totalRecords} {{ 'APP.COMMON.TERMS.ASSETS' | translate }}"
                (sortFunction)="customSort($event)"
                [customSort]="true">
     <ng-template pTemplate="header">

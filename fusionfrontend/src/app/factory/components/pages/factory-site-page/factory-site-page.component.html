@@ -16,7 +16,7 @@ under the License.
 <app-company-info [factorySite]="(factorySite$ | async)" [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
 
 <p-accordion class="factory-site-content">
-  <p-accordionTab header="Assets" [selected]="true">
+  <p-accordionTab header="{{ 'APP.COMMON.TERMS.ASSETS' | translate }}" [selected]="true">
     <app-assets-list [company]="(company$ | async)"
                      [factorySites]="(factorySites$ | async)"
                      [factorySite]="(factorySite$ | async)" [rooms]="(rooms$ | async)"
@@ -28,7 +28,7 @@ under the License.
     </app-assets-list>
   </p-accordionTab>
 
-  <p-accordionTab header="Rooms">
+  <p-accordionTab header="{{ 'APP.COMMON.TERMS.ROOMS' | translate }}">
     <app-rooms-list></app-rooms-list>
   </p-accordionTab>
 </p-accordion>

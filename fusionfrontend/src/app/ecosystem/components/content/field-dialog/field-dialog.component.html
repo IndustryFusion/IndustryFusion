@@ -35,7 +35,7 @@ under the License.
       <p-dropdown [options]="(dataTypes | stringEnumToOptionArray)" class="field-dialog-inputs"
                   formControlName="dataType"
                   optionLabel="label"
-                  optionValue="id" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.SELECT_DATA_TYPE' | translate }}"></p-dropdown>
+                  optionValue="id" placeholder="{{ 'APP.ECOSYSTEM.FIELD_DIALOG.DATA_TYPE_PLACEHOLDER' | translate }}"></p-dropdown>
     </div>
 
     <div *ngIf="this.fieldForm.get('dataType').value == dataTypes.NUMERIC">

@@ -25,6 +25,6 @@ import java.util.Optional;
 public interface UnitRepository extends PagingAndSortingRepository<Unit, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "Unit.allChildrenDeep")
+    @EntityGraph(value = "Unit.allChildrenDeep", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Unit> findDeepById(Long id);
 }

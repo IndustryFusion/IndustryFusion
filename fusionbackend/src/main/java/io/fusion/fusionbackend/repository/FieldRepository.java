@@ -25,6 +25,6 @@ import java.util.Optional;
 public interface FieldRepository extends PagingAndSortingRepository<Field, Long> {
     Sort DEFAULT_SORT = Sort.by("id").ascending();
 
-    @EntityGraph(value = "Field.allChildrenDeep")
+    @EntityGraph(value = "Field.allChildrenDeep", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Field> findDeepById(Long id);
 }

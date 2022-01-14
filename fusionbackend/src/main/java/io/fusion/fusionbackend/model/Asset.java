@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 @Entity
 @NamedEntityGraph(name = "Asset.allChildren",
         attributeNodes = {
-                @NamedAttributeNode(value = "fieldInstances")})
+                @NamedAttributeNode(value = "fieldInstances"), @NamedAttributeNode(value = "subsystems")})
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_asset")
 @Getter
 @Setter
@@ -71,22 +71,28 @@ public class Asset extends BaseAsset {
      */
     @Column(nullable = false)
     protected String connectionString;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     private Room room;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "asset_series_id", nullable = false)
     private AssetSeries assetSeries;
+
     @OneToMany(mappedBy = "asset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default
     private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
-    @OneToMany(fetch = FetchType.EAGER)
+
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "subsystem_parent_id")
     @Builder.Default
     private Set<Asset> subsystems = new HashSet<>();
+
     private String externalName;
     private String controlSystemType;
     private Boolean hasGateway;

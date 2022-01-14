@@ -90,11 +90,11 @@ export enum ConditionType {
 export function displayConditionType(type: ConditionType): string {
   switch (type){
     case ConditionType.basic:
-      return 'Basic Condition';
+      return this.translate.instant('APP.STORE.OISP-RULE.BASIC_CONDITION');
     case ConditionType.time:
-      return 'Timebased Condition';
+      return this.translate.instant('APP.STORE.OISP-RULE.TIME_BASED_CONDITION');
     case ConditionType.statistics:
-      return 'Statistic based Condition';
+      return this.translate.instant('APP.STORE.OISP-RULE.STATISTIC_BASED_CONDITION');
   }
 }
 

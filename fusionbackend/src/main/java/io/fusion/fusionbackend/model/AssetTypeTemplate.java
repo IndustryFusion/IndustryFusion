@@ -59,7 +59,6 @@ import java.util.Set;
 @SuperBuilder
 @NoArgsConstructor
 public class AssetTypeTemplate extends BaseAsset {
-
     @OneToMany(mappedBy = "assetTypeTemplate")
     @Builder.Default
     private Set<AssetSeries> assetSeries = new LinkedHashSet<>();
@@ -74,6 +73,7 @@ public class AssetTypeTemplate extends BaseAsset {
 
     @Enumerated(EnumType.STRING)
     private PublicationState publicationState;
+
     private OffsetDateTime publishedDate;
     private Long publishedVersion;
 

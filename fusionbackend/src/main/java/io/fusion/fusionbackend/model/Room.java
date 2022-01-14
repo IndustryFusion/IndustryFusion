@@ -54,9 +54,11 @@ public class Room extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "factory_site_id", nullable = false)
     private FactorySite factorySite;
+
     @OneToMany(mappedBy = "room")
     @Builder.Default
     private Set<Asset> assets = new LinkedHashSet<>();
+
     private String name;
     private String imageKey;
     private String description;

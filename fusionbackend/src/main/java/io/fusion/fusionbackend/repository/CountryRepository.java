@@ -17,7 +17,6 @@ package io.fusion.fusionbackend.repository;
 
 import io.fusion.fusionbackend.model.Country;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
@@ -25,6 +24,5 @@ import java.util.Optional;
 public interface CountryRepository extends PagingAndSortingRepository<Country, Long> {
     Sort DEFAULT_SORT = Sort.by("name").ascending();
 
-    @EntityGraph(value = "Country.allChildren")
     Optional<Country> findCountryByName(String name);
 }

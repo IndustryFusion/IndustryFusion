@@ -20,7 +20,8 @@ under the License.
 
 <p-table [paginator]="true" [rowHover]="false" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
          [showCurrentPageReport]="true" [value]="rooms" (rowsChange)="updateRowCountInUrl($event)"
-         class="list-container" currentPageReportTemplate="{first} to {last} of {totalRecords} Rooms">
+         class="list-container" currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {last}
+            {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }} {totalRecords} {{ 'APP.COMMON.TERMS.ROOMS' | translate }}">
   <ng-template pTemplate="header">
     <tr>
       <th [style.width.%]="5"></th>

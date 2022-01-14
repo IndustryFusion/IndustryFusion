@@ -31,7 +31,7 @@ under the License.
                   [options]="mapDevicesToComponents(selectedDevices)"
                   [optionLabel]="'label'"
                   [optionValue]="'value'"
-                  (onChange)="updateComponent($event.value)" placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL' | translate }}'"
+                  (onChange)="updateComponent($event.value)" placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL_PLACEHOLDER' | translate }}"
       ></p-dropdown>
       <label class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.CONDITION_TYPE_LABEL' | translate }} *</label>
       <p-dropdown [formControlName]="'type'"

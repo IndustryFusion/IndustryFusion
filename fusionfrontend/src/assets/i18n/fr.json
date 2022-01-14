@@ -89,7 +89,7 @@
       },
       "STORE": {
         "THRESHOLD": {
-          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Limites inférieures et supérieures absolues *",
+          "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Limites inférieures et supérieures absolues",
           "IDEAL_RANGE": "Gamme idéale",
           "CRITICAL_ALERT_RANGE": "Plage d'alerte critique",
           "ABSOLUTE_LOWER_LIMIT": "Limite inférieure absolue",
@@ -98,6 +98,11 @@
           "ABSOLUTE_UPPER_LIMIT": "Limite supérieure absolue",
           "UPPER_IDEAL_THRESHOLD": "Seuil idéal supérieur",
           "UPPER_CRITICAL_ALERT_THRESHOLD": "Seuil d'alerte critique supérieur"
+        },
+        "OISP-RULE": {
+          "BASIC_CONDITION": "Condition de base",
+          "TIME_BASED_CONDITION": "Condition temporelle",
+          "STATISTIC_BASED_CONDITION": "Condition basée sur les statistiques"
         }
       }
     },
@@ -122,7 +127,11 @@
 			"SUB_HEADER": {
 				"EQUIPMENT_EFFICIENCY": "Efficacité de l'équipement",
 				"MAINTENANCE": "Maintenance"
-			}
+			},
+      "BREAD_CRUMBS": {
+        "EQUIPMENT_EFFICIENCY": "Efficacité de l'équipement",
+        "MAINTENANCE": "Maintenance"
+      }
 		},
 		"ECOSYSTEM": {
 			"ASSET_TYPE_LIST": {
@@ -185,10 +194,12 @@
 					"STEP_ONE": {
 						"ASSET_TYPE_TEMPLATE_NAME": "Type d'actif Nom du modèle",
 						"CREATE_NEW": "Créer un nouveau",
-						"CREATE_OR_UPDATE_TEMPLATE": "Créer un nouveau modèle ou mettre à jour un modèle existant ?",
+						"CREATE_OR_UPDATE_TEMPLATE": "Créer un nouveau modèle ou mettre à jour un modèle existant?",
 						"SELECT_ASSET_TYPE": "Sélectionnez le type d'actif",
+            "SELECT_ASSET_TYPE_PLACEHOLDER": "Sélectionnez le type d'actif...",
 						"SELECT_ASSET_TYPE_TEMPLATE": "Sélectionnez le modèle de type d'actif",
-						"TITLE": "Créer ou mettre à jour le modèle de type d'actif",
+            "SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER": "Sélectionnez le modèle de type d'actif...",
+            "TITLE": "Créer ou mettre à jour le modèle de type d'actif",
 						"USE_EXISTING_TEMPLATE": "Utiliser un modèle existant"
 					},
 					"STEP_PUBLISHED": {
@@ -211,7 +222,7 @@
 			},
 			"FIELD_DIALOG": {
         "DEFINE_DATA_TYPE": "Définir le type de données",
-        "SELECT_DATA_TYPE": "Sélectionner le type de données",
+        "DATA_TYPE_PLACEHOLDER": "Sélectionner le type de données",
 				"ACCURACY_PLACEHOLDER": "Sélectionner le format de précision",
 				"DEFINE_ACCURACY": "Définir la précision",
 				"DEFINE_THRESHOLDS_AND_LIMITS": "Définir les seuils et les limites",
@@ -264,9 +275,17 @@
 				"QUANTITY_TYPES": "Types de quantités",
 				"UNITS": "Unités"
 			},
+      "BREAD_CRUMBS": {
+        "ASSET_TYPES": "Types d'actifs",
+        "ASSET_TYPE_TEMPLATES": "Modèles de types d'actifs",
+        "METRICS_AND_ATTRIBUTES": "Métriques et attributs",
+        "QUANTITY_TYPES": "Types de quantités",
+        "UNITS": "Unités"
+      },
 			"UNIT_DIALOG": {
-				"UNIT_NAME": "Nom de l'unité"
-			},
+				"UNIT_NAME": "Nom de l'unité",
+        "QUANTITY_TYPE_PLACEHOLDER": "Quantité Type"
+      },
 			"UNIT_LIST": {
 				"CONFIRMATION_DIALOG": {
 					"HEADER": "Confirmation de la suppression de l'unité",
@@ -413,7 +432,8 @@
 				"COUNTRY_PLACEHOLDER": "Sélectionnez un pays...",
 				"FACTORY_NAME": "Nom de l'usine",
 				"FACTORY_TYPE": "Type d'usine",
-				"FACTORY_TYPES": {
+        "FACTORY_TYPE_PLACEHOLDER": "Type d'usine",
+        "FACTORY_TYPES": {
 					"FABRICATION": "Fabrication",
 					"HEADQUARTER": "Siège social"
 				},
@@ -421,14 +441,26 @@
 				"ZIP_LABEL": "Zip",
 				"ZIP_PLACEHOLDER": "Code postal"
 			},
-			"FACTORY_SUB_HEADER": {
+			"SUB_HEADER": {
 				"ASSETS": "Actifs",
 				"FACTORY_SITES": "Sites d'usines",
 				"ROOMS": "Chambres"
 			},
+      "BREAD_CRUMBS": {
+        "FACTORY_SITES": "Sites d'usines",
+        "ASSET_CARDS": "Fiches d'actifs",
+        "ROOMS": "Chambres",
+        "ASSETS": "Actifs",
+        "PERFORMANCE": "Performance",
+        "ACTIVE_APPLETS": "Applets actives",
+        "ARCHIVED_APPLETS": "Applets archivées",
+        "DIGITAL_NAMEPLATE": "Plaque d'identification numérique",
+        "SUBSYSTEMS": "Sous-systèmes",
+        "NOTIFICATIONS": "Notifications"
+      },
 			"METRICS_BOARD": {
 				"METRICS_GROUP": {
-					"DEFAULT_LABEL": "Généralités"
+					"GENERAL_LABEL": "Généralités"
 				}
 			},
 			"ROOMS_LIST": {
@@ -450,9 +482,9 @@
 				"ROOM_DESCRIPTION_PLACEHOLDER": "Entrez une description ici",
 				"ROOM_NAME_LABEL": "Nom de la salle",
 				"ROOM_NAME_PLACEHOLDER": "Entrez un nom personnalisé ici",
-				"SELECT_FACTORY_PLACEHOLDER": "Site de l'usine",
-				"SELECT_FACTORY_SITE": "Sélectionnez le site de l'usine"
-			},
+				"SELECT_FACTORY_SITE": "Sélectionnez le site de l'usine",
+        "SELECT_FACTORY_PLACEHOLDER": "Site de l'usine"
+      },
       "PAGES": {
         "ASSET_DETAILS": {
           "DIGITAL_NAMEPLATE": {
@@ -515,18 +547,20 @@
 					"ATTRIBUTES": "Attributs",
 					"ATTRIBUTE_NAME": "Nom de l'attribut",
 					"CUSTOM_ATTRIBUTE_NAME": "Nom de l'attribut personnalisé",
-					"NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible",
+          "DATA_TYPE_UNKNOWN": "Type de données inconnu!",
+          "NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible",
 					"WARNING_LABEL": "Les attributs ne peuvent pas être supprimés car les biens de cette série de biens existent déjà.",
-          "SELECT_VALUE": "Sélectionner la valeur"
+          "VALUE_PLACEHOLDER": "Sélectionner la valeur"
         },
 				"GENERAL_INFORMATION": {
 					"ASSET_OR_ASSET_SERIES_NAME": "Nom de l'actif ou de la série d'actifs",
 					"ASSET_SERIES_DESCRIPTION": "Description de la série d'actifs",
 					"ASSET_SERIES_NAME": "Nom de la série d'actifs",
 					"GENERAL_INFORMATION": "Informations générales",
-					"HELP_TEXT": "Comment mon bien sera-t-il présenté dans une usine ?",
-					"SELECT_ASSET_TYPE_TEMPLATE": "Sélectionnez le modèle de type d'actif"
-				},
+					"HELP_TEXT": "Comment mon bien sera-t-il présenté dans une usine?",
+					"SELECT_ASSET_TYPE_TEMPLATE": "Sélectionnez le modèle de type d'actif",
+          "SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER": "Sélectionnez le modèle de type d'actif..."
+        },
 				"METRICS": {
 					"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
 					"CUSTOM_SCRIPT": "Script personnalisé",
@@ -546,12 +580,12 @@
 					"CREATE_DIGITAL_NAMEPLATE": "Créer une plaque d'identification numérique",
 					"NO": "Non",
 					"PROTECTION_CLASS": "Classe de protection",
-					"PROTECTION_CLASS_PLACEHOLDER": "Sélectionnez une classe de protection",
+					"PROTECTION_CLASS_PLACEHOLDER": "Sélectionnez une classe de protection...",
 					"SELECT_CONNECTIVITY_TYPE": "Sélectionnez le type de connectivité",
 					"SELECT_PROTOCOL": "Sélectionnez le protocole",
 					"TOOLTIP": {
 						"LABEL": "Saisissez la chaîne de connexion correcte en fonction du\n le type de connectivité que vous utilisez pour votre poste.",
-						"PLC4X_CUMMUNICATION": "Communication basée sur PLC4X (fusionplcdataservice)"
+						"PLC4X_COMMUNICATION": "Communication basée sur PLC4X (fusionplcdataservice):"
 					},
 					"YES": "Oui"
 				}
@@ -562,7 +596,7 @@
 						"ATTRIBUTE_NAME": "Nom de l'attribut",
 						"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
 						"NO_ATTRIBUTES_AVAILABLE": "aucun attribut disponible",
-            "SELECT_VALUE": "Sélectionner la valeur"
+            "VALUE_PLACEHOLDER": "Sélectionner la valeur"
           },
 					"METRICS": {
 						"CUSTOM_METRIC_NAME": "Nom de métrique personnalisé",
@@ -587,7 +621,7 @@
 					"GENERAL_INFORMATION": {
 						"ASSET_NAME": "Nom de l'actif",
 						"GENERAL_INFORMATION": "Informations générales",
-						"HELP_TEXT": "Comment mon bien sera-t-il présenté dans une usine ?",
+						"HELP_TEXT": "Comment mon bien sera-t-il présenté dans une usine?",
 						"SELECT_ASSET_SERIES_VERSION": "Sélectionnez la version de la série d'actifs",
 						"UPLOAD_PICTURE": "Télécharger l'image"
 					},
@@ -624,6 +658,9 @@
 			"SUB_HEADER": {
 				"ASSET_SERIES": "Série d'actifs"
 			},
+      "BREAD_CRUMBS": {
+        "ASSET_SERIES": "Série d'actifs"
+      },
       "PAGES": {
         "ASSET_SERIES_ASSET": {
           "DIGITAL_NAMEPLATE": {
@@ -693,7 +730,8 @@
 							"STANDARD_DEVIATION": "{{number}} Ecart-type"
 						},
 						"METRIC_LABEL": "Choisir le système métrique",
-						"MINIMAL_INSTANCES_FOR_CALCULATION": "Instances minimales de calcul",
+            "METRIC_LABEL_PLACEHOLDER": "Choisir le système métrique",
+            "MINIMAL_INSTANCES_FOR_CALCULATION": "Instances minimales de calcul",
 						"SETUP_CONDITION": "Condition de mise en place",
 						"VALUE_LABEL": "Entrez la valeur"
 					},
@@ -718,13 +756,23 @@
 				"DETAIL": "Détail",
 				"EDITOR": "Rédacteur en chef",
 				"OVERVIEW": "Vue d'ensemble"
-			}
+			},
+      "BREAD_CRUMBS": {
+        "OVERVIEW": "Vue d'ensemble",
+        "ARCHIVE": "archives",
+        "APPLET_DETAIL": "Applet Détail",
+        "APPLET_EDITOR": "Applet Rédacteur en chef"
+      }
 		},
 		"NOTIFICATIONS": {
 			"SUB_HEADER": {
 				"CLEARED": "Nettoyé",
 				"OPEN": "Ouvrez"
-			}
+			},
+      "BREAD_CRUMBS": {
+        "OPEN_NOTIFICATION": "Ouvrir les notifications",
+        "CLEARED_NOTIFICATION": "Notifications supprimées"
+      }
 		},
 		"SHARED": {
 			"CONTENT": {
@@ -733,7 +781,7 @@
 					"CLEARED_SINGULAR": "Nettoyé",
 					"CLOSE_DIALOG": {
 						"HEADER": "Confirmation de la notification de fermeture",
-						"MESSAGE_PLURAL": "Êtes-vous sûr de vouloir effacer les notifications {{ notificationCount }} ?",
+						"MESSAGE_PLURAL": "Êtes-vous sûr de vouloir effacer les notifications {{ notificationCount }}?",
 						"MESSAGE_SINGULAR": "Etes-vous sûr de vouloir effacer la notification{{ notificationToClose }}?"
 					},
 					"CONDITION": "Condition",
@@ -750,7 +798,13 @@
 					"OPEN_PLURAL": "Ouvrez",
 					"OPEN_SINGULAR": "Ouvrez",
 					"RULE_NAME": "Nom de la règle"
-				}
+				},
+        "GAUGE_CHART": {
+          "CRITICAL": "critique",
+          "WARNING": "avertissement",
+          "IDEAL": "idéal",
+          "CURRENT_VALUE": "valeur actuelle"
+        }
 			},
 			"UI": {
 				"HEADER": {
@@ -779,7 +833,8 @@
 					"ADD_FILTER": "Ajouter un filtre",
 					"CLEAR_ALL": "Effacer tout",
 					"DATE_FILTER": {
-						"DATE_AND_TIME_FILTER": "Filtre date et heure",
+            "DATE_SET": "Date fixée",
+            "DATE_AND_TIME_FILTER": "Filtre date et heure",
 						"END_DATE": "Date de fin",
 						"START_DATE": "Date de début"
 					},
@@ -804,6 +859,9 @@
 					"NO_ITEM_SELECTED": "Non {{ itemType }} sélectionné"
 				}
 			}
-		}
+		},
+    "BREAD_CRUMBS": {
+      "LAUNCHPAD": "Launchpad"
+    }
 	}
 }
