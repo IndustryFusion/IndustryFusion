@@ -84,6 +84,16 @@ public class ModelRepoSyncService {
     }
 
     private boolean checkoutRepo(Path localGitPath) {
+        if (!checkAndDoClone(localGitPath)) {
+            return false;
+        }
+        if (!checkGitRepo(localGitPath)) {
+            return false;
+        }
+        return pullRepo();
+    }
+
+    private boolean checkAndDoClone(final Path localGitPath) {
         if (!isGitRepo(localGitPath)) {
             try {
                 final boolean isDirectoryEmpty = isDirectoryEmpty(localGitPath);
@@ -106,6 +116,10 @@ public class ModelRepoSyncService {
                 return false;
             }
         }
+        return true;
+    }
+
+    private boolean checkGitRepo(final Path localGitPath) {
         try {
             Repository modelRepoTest = getRepository(localGitPath);
             String remoteUrl = modelRepoTest.getConfig().getString("remote", "origin", "url");
@@ -119,7 +133,7 @@ public class ModelRepoSyncService {
             log.warn("Error opening repo path {}: {}", localGitPath, e);
             return false;
         }
-        return pullRepo();
+        return true;
     }
 
     public boolean pullRepo() {

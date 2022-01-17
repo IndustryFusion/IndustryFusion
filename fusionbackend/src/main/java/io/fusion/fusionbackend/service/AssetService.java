@@ -454,7 +454,7 @@ public class AssetService {
         return assetRepository.findSubsystemCandidates(parentAssetSeriesId, companyId);
     }
 
-    public String getAssetByIdAsNgsiLD(Long assetId) throws IOException {
+    public String getAssetByIdAsNgsiLD(Long assetId) {
         Asset asset = getAssetById(assetId);
 
         return ngsiLdSerializer.getAssetByIdAsNgsiLD(asset);
@@ -502,7 +502,6 @@ public class AssetService {
             assetDto.setCompanyId(null);
             assetDto.setRoom(null);
             assetDto.setRoomId(null);
-            assetDto.setSubsystemIds(null);
             assetDto.getFieldInstances().forEach(fieldInstanceDto -> fieldInstanceDto.setFieldSource(null));
             resultAssetDtos.add(assetDto);
         }
