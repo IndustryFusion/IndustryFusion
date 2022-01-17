@@ -417,7 +417,7 @@
 					"CREATE": "Neuen Standort erstellen",
 					"UPDATE": "Standort aktualisieren"
 				},
-				"FACTORY_NAME": "Name des Standorts",
+				"FACTORY_NAME": "Standort",
 				"FACTORY_SITE": "Standort",
 				"FACTORY_SITES": "Standorte",
 				"NO_FACTORY_SITES": "Keine Standorte",
@@ -430,7 +430,7 @@
 				"CITY": "Stadt",
 				"COUNTRY": "Land",
 				"COUNTRY_PLACEHOLDER": "Wählen Sie ein Land...",
-				"FACTORY_NAME": "Name des Standorts",
+				"FACTORY_NAME": "Standort",
 				"FACTORY_TYPE": "Standort-Typ",
         "FACTORY_TYPE_PLACEHOLDER": "Standort-Typ",
         "FACTORY_TYPES": {
