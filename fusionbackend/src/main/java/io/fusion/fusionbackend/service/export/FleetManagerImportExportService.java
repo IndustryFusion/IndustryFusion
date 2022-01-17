@@ -56,7 +56,7 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
     public static final String FILENAME_NGSI_LD = "NGSI-LD";
     public static final String FILENAME_OWL = "Owl";
     public static final String FILENAME_APPLICATION_YAML = "application";
-    private static final String FLEETMAN_SUBDIR = "machinemanufacturer";
+    private static final String FLEET_MANAGER_SUBDIR = "machinemanufacturer";
     private final AssetSeriesService assetSeriesService;
     private final AssetService assetService;
     private final EcosystemManagerImportExportService ecosystemManagerImportExportService;
@@ -270,7 +270,7 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
 
     private Path getAsDirPath(final Long companyId) {
         return modelRepoSyncService.getLocalGitPath()
-                .resolve(FLEETMAN_SUBDIR)
+                .resolve(FLEET_MANAGER_SUBDIR)
                 .resolve(Long.toString(companyId));
     }
 }

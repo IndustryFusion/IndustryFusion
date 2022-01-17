@@ -56,7 +56,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     private static final String FILENAME_FIELDS = "Fields";
     private static final String FILENAME_ASSET_TYPES = "AssetTypes";
     private static final String FILENAME_ASSET_TYPE_TEMPLATES = "PublishedAssetTypeTemplates";
-    private static final String ECOMAN_SUBDIR = "ecosystem";
+    private static final String ECOSYSTEM_MANAGER_SUBDIR = "ecosystem";
     private static final String ATT_SUBDIR = "att";
     private final UnitService unitService;
     private final FieldService fieldService;
@@ -231,14 +231,14 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     }
 
     private ProcessingResultDto importOtherFiles() {
-        return importEcomanFiles(getEcomanDirPath());
+        return importEcosystemManagerFiles(getEcosystemManagerDirPath());
     }
 
     private ProcessingResultDto importAttFiles() {
-        return importEcomanFiles(getAttDirPath());
+        return importEcosystemManagerFiles(getAttDirPath());
     }
 
-    private ProcessingResultDto importEcomanFiles(final Path dirPath) {
+    private ProcessingResultDto importEcosystemManagerFiles(final Path dirPath) {
         try (Stream<Path> fileStream = Files.list(dirPath)) {
             List<Path> files = fileStream
                     .filter(path -> !Files.isDirectory(path)).collect(Collectors.toList());
@@ -278,7 +278,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     }
 
     private boolean writeUnitsContentToGitDir() {
-        Path filepath = getEcomanFilePath(FILENAME_UNITS, CONTENT_FILE_EXTENSION);
+        Path filepath = getEcosystemManagerFilePath(FILENAME_UNITS, CONTENT_FILE_EXTENSION);
         try {
             return unitService.exportAllToJsonFile(filepath.toFile(), true);
         } catch (IOException e) {
@@ -288,7 +288,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     }
 
     private boolean writeFieldsContentToGitDir() {
-        Path filepath = getEcomanFilePath(FILENAME_FIELDS, CONTENT_FILE_EXTENSION);
+        Path filepath = getEcosystemManagerFilePath(FILENAME_FIELDS, CONTENT_FILE_EXTENSION);
         try {
             return fieldService.exportAllToJsonFile(filepath.toFile(), true);
         } catch (IOException e) {
@@ -298,7 +298,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     }
 
     private boolean writeAssetTypesContentToGitDir() {
-        Path filepath = getEcomanFilePath(FILENAME_ASSET_TYPES, CONTENT_FILE_EXTENSION);
+        Path filepath = getEcosystemManagerFilePath(FILENAME_ASSET_TYPES, CONTENT_FILE_EXTENSION);
         try {
             return assetTypeService.exportAllToJsonFile(filepath.toFile(), true);
         } catch (IOException e) {
@@ -327,15 +327,15 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         return getAttDirPath().resolve(filename + extension);
     }
 
-    private Path getEcomanFilePath(final String filename, final String extension) {
-        return getEcomanDirPath().resolve(filename + extension);
+    private Path getEcosystemManagerFilePath(final String filename, final String extension) {
+        return getEcosystemManagerDirPath().resolve(filename + extension);
     }
 
     private Path getAttDirPath() {
-        return getEcomanDirPath().resolve(ATT_SUBDIR);
+        return getEcosystemManagerDirPath().resolve(ATT_SUBDIR);
     }
 
-    private Path getEcomanDirPath() {
-        return modelRepoSyncService.getLocalGitPath().resolve(ECOMAN_SUBDIR);
+    private Path getEcosystemManagerDirPath() {
+        return modelRepoSyncService.getLocalGitPath().resolve(ECOSYSTEM_MANAGER_SUBDIR);
     }
 }
