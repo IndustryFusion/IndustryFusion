@@ -13,18 +13,17 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.service.export;
+package io.fusion.fusionbackend.config;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+@Component
+@ConfigurationProperties("fusionbackend")
 @Data
-@AllArgsConstructor
-public class ImportResult {
-    private final boolean isEntryImported;
-    private final int totalEntitySkippedCount;
-
-    public static ImportResult empty() {
-        return new ImportResult(false, 0);
-    }
+public class FusionBackendConfig {
+    private Boolean modelRepoSyncActive = false;
+    private String modelRepoUrl;
+    private String modelRepoPrivateKeyPath;
 }

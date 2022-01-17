@@ -25,45 +25,46 @@ import org.apache.jena.rdf.model.RDFList;
 import org.apache.jena.rdf.model.RDFNode;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Map;
 
+/**
+ * .
+ * The basic Ontology of an QuantityType
+ */
 public class QuantityTypeSchema {
-
-    /**
-     * .
-     * The basic Ontology of an QuantityType
-     */
-    public static final String uri = "https://industry-fusion.com/quantityType-schema/1.0#";
+    public static final String URI = "https://industry-fusion.com/quantityType-schema/1.0#";
     public static final OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-    public static final Property name = m.createProperty(uri, "name");
-    public static final Property description = m.createProperty(uri, "description");
-    public static final Property label = m.createProperty(uri, "label");
-    public static final Property dataType = m.createProperty(uri, "dataType");
-    public static final Property units = m.createProperty(uri, "units");
-    private HashMap<QuantityDataType, Property> dataTypeMap;
+    public static final Property name = m.createProperty(URI, "name");
+    public static final Property description = m.createProperty(URI, "description");
+    public static final Property label = m.createProperty(URI, "label");
+    public static final Property dataType = m.createProperty(URI, "dataType");
+    public static final Property units = m.createProperty(URI, "units");
+    private Map<QuantityDataType, Property> dataTypeMap;
 
     public QuantityTypeSchema() {
         generateDataType();
     }
 
-    private EnumeratedClass generateDataType() {
-        dataTypeMap = new HashMap<>();
-        Arrays.stream(QuantityDataType.values()).forEach(quantityDataType ->
-                dataTypeMap.put(quantityDataType, m.createProperty(uri, quantityDataType.toString())));
-        RDFList dataTypeList = m.createList(dataTypeMap.values().iterator());
-        return m.createEnumeratedClass(uri + "QuantityDataType", dataTypeList);
-    }
-
-    public RDFNode getQuantityDataType(QuantityDataType quantityDataType) {
-        return dataTypeMap.get(quantityDataType);
-    }
-
-    /**.
+    /**
+     * .
      * returns the URI for this schema
      *
      * @return the URI for this schema
      */
     public static String getUri() {
-        return uri;
+        return URI;
+    }
+
+    private EnumeratedClass generateDataType() {
+        dataTypeMap = new EnumMap<>(QuantityDataType.class);
+        Arrays.stream(QuantityDataType.values()).forEach(quantityDataType ->
+                dataTypeMap.put(quantityDataType, m.createProperty(URI, quantityDataType.toString())));
+        RDFList dataTypeList = m.createList(dataTypeMap.values().iterator());
+        return m.createEnumeratedClass(URI + "QuantityDataType", dataTypeList);
+    }
+
+    public RDFNode getQuantityDataType(QuantityDataType quantityDataType) {
+        return dataTypeMap.get(quantityDataType);
     }
 }

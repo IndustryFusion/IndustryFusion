@@ -15,13 +15,12 @@
 
 package io.fusion.fusionbackend.rest.ecosystemmanager;
 
-import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
-import io.fusion.fusionbackend.service.ontology.OntologyUtil;
+import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.export.EcosystemManagerImportExportService;
-import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,29 +30,28 @@ import java.io.IOException;
 @IsEcosystemUser
 public class EcosystemManagerRestService {
     private final EcosystemManagerImportExportService ecosystemManagerImportExportService;
-    private final OntologyBuilder ontologyBuilder;
 
     @Autowired
     public EcosystemManagerRestService(
-            EcosystemManagerImportExportService ecosystemManagerImportExportService,
-            OntologyBuilder ontologyBuilder
-    ) {
+            EcosystemManagerImportExportService ecosystemManagerImportExportService) {
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
-        this.ontologyBuilder = ontologyBuilder;
     }
 
     @GetMapping(path = "/zipexport")
     public void getAsZipExport(HttpServletResponse response) throws IOException {
         response.setContentType("application/zip");
-        response.addHeader("Content-Disposition","attachment;filename=\"ecosystem_manager_exported.zip\"");
+        response.addHeader("Content-Disposition", "attachment;filename=\"ecosystem_manager_exported.zip\"");
         ecosystemManagerImportExportService.exportEntitiesToStreamAsZip(response.getOutputStream());
     }
 
     @GetMapping(path = "/owlexport")
     public void getAsOwlExport(HttpServletResponse response) throws IOException {
-        response.addHeader("Content-Disposition","attachment;filename=\"ecosystem_manager.owl\"");
-        OntModel model = ontologyBuilder.buildEcosystemOntology();
-        OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, response.getOutputStream());
+        response.addHeader("Content-Disposition", "attachment;filename=\"ecosystem_manager.owl\"");
+        ecosystemManagerImportExportService.exportOntologyModelToStream(response.getOutputStream());
     }
 
+    @PutMapping(path = "/synctomodelrepo")
+    public SyncResultDto syncToModelRepo() {
+        return ecosystemManagerImportExportService.syncWithModelRepo();
+    }
 }

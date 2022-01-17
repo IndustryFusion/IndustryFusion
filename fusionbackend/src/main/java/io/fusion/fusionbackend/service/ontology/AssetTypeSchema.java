@@ -15,21 +15,22 @@
 
 package io.fusion.fusionbackend.service.ontology;
 
+import lombok.experimental.UtilityClass;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
+/**.
+ * The basic Ontology of an AssetType
+ */
+@UtilityClass
 public class AssetTypeSchema {
-
-    /**.
-     * The basic Ontology of an AssetType
-     */
-    public static final String uri = "https://industry-fusion.com/at-schema/1.0#";
+    public static final String URI = "https://industry-fusion.com/at-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-    public static final Property name = m.createProperty(uri, "name");
-    public static final Property description = m.createProperty(uri, "description");
-    public static final Property label = m.createProperty(uri, "label");
+    public static final Property name = m.createProperty(URI, "name");
+    public static final Property description = m.createProperty(URI, "description");
+    public static final Property label = m.createProperty(URI, "label");
 
     /**.
      * returns the URI for this schema
@@ -37,6 +38,6 @@ public class AssetTypeSchema {
      * @return the URI for this schema
      */
     public static String getUri() {
-        return uri;
+        return URI;
     }
 }

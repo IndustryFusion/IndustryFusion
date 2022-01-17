@@ -19,30 +19,31 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.dto.AssetTypeDto;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.mappers.AssetTypeMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.BaseEntity;
 import io.fusion.fusionbackend.repository.AssetTypeRepository;
 import io.fusion.fusionbackend.repository.CompanyRepository;
+import io.fusion.fusionbackend.repository.FieldRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AssetTypeService {
     private final AssetTypeRepository assetTypeRepository;
     private final AssetTypeMapper assetTypeMapper;
-
-    private static final Logger LOG = LoggerFactory.getLogger(AssetTypeService.class);
 
     @Autowired
     public AssetTypeService(AssetTypeRepository assetTypeRepository, AssetTypeMapper assetTypeMapper) {
@@ -80,33 +81,58 @@ public class AssetTypeService {
     }
 
     public byte[] exportAllToJson() throws IOException {
-        Set<AssetType> assetTypes = Sets.newLinkedHashSet(assetTypeRepository
-                .findAll(AssetTypeRepository.DEFAULT_SORT));
-
-        Set<AssetTypeDto> assetTypeDtos = assetTypeMapper.toDtoSet(assetTypes, true);
-
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetTypeDtos));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(getAllAsDto()));
     }
 
-    public int importMultipleFromJson(byte[] fileContent) throws IOException {
-        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>(){});
+    public boolean exportAllToJsonFile(final File file, boolean overwrite) throws IOException {
+        if (file.exists() && !overwrite) {
+            return false;
+        }
+
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, getAllAsDto());
+        return true;
+    }
+
+    private Set<AssetTypeDto> getAllAsDto() {
+        Set<AssetType> assetTypes = Sets.newLinkedHashSet(assetTypeRepository.findAll(FieldRepository.DEFAULT_SORT));
+        return assetTypeMapper.toDtoSet(assetTypes, true);
+    }
+
+    public ProcessingResultDto importMultipleFromJson(byte[] fileContent) throws IOException {
+        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileContentToDtoSet(fileContent,
+                new TypeReference<>() {
+                });
+        return importMultiple(assetTypeDtos);
+    }
+
+    public ProcessingResultDto importMultipleFromJsonFile(File file) throws IOException {
+        Set<AssetTypeDto> assetTypeDtos = BaseZipImportExport.fileToDtoSet(file,
+                new TypeReference<>() {
+                });
+        return importMultiple(assetTypeDtos);
+    }
+
+    public ProcessingResultDto importMultiple(final Set<AssetTypeDto> assetTypeDtos) {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<Long> existingAssetTypeIds = assetTypeRepository
                 .findAll(AssetTypeRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-        int entitySkippedCount = 0;
         for (AssetTypeDto assetTypeDto : BaseZipImportExport.toSortedList(assetTypeDtos)) {
             if (!existingAssetTypeIds.contains(assetTypeDto.getId())) {
                 AssetType assetType = assetTypeMapper.toEntity(assetTypeDto);
                 createAssetType(assetType);
+                result.incHandled();
             } else {
-                LOG.warn("Asset type with the id " + assetTypeDto.getId()
+                log.warn("Asset type with the id " + assetTypeDto.getId()
                         + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                result.incSkipped();
             }
         }
 
-        return entitySkippedCount;
+        return result;
     }
 }

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fusion.fusionbackend.dto.AssetDto;
 import io.fusion.fusionbackend.dto.FieldInstanceDto;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.dto.mappers.FieldSourceMapper;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
@@ -32,9 +33,7 @@ import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.repository.AssetRepository;
 import io.fusion.fusionbackend.repository.FieldInstanceRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -53,9 +52,8 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AssetService {
-    private static final Logger LOG = LoggerFactory.getLogger(AssetService.class);
-
     private final AssetRepository assetRepository;
     private final AssetMapper assetMapper;
     private final FieldInstanceRepository fieldInstanceRepository;
@@ -78,7 +76,8 @@ public class AssetService {
                         FactorySiteService factorySiteService,
                         FieldInstanceService fieldInstanceService,
                         FieldSourceMapper fieldSourceMapper,
-                        NgsiLdSerializer ngsiLdSerializer, NgsiLdBrokerService ngsiLdBrokerService) {
+                        NgsiLdSerializer ngsiLdSerializer,
+                        NgsiLdBrokerService ngsiLdBrokerService) {
         this.assetRepository = assetRepository;
         this.assetMapper = assetMapper;
         this.fieldInstanceRepository = fieldInstanceRepository;
@@ -121,7 +120,6 @@ public class AssetService {
         return assetRepository.findByCompanyIdAndGlobalId(companyId, assetGlobalId)
                 .orElseThrow(ResourceNotFoundException::new);
     }
-
 
     public Set<Asset> getAssetsByFactorySite(final Long companyId, final Long factorySiteId) {
         // Make sure factory site belongs to company
@@ -456,7 +454,7 @@ public class AssetService {
         return assetRepository.findSubsystemCandidates(parentAssetSeriesId, companyId);
     }
 
-    public String getAssetByIdAsNgsiLD(Long assetId) throws IOException {
+    public String getAssetByIdAsNgsiLD(Long assetId) {
         Asset asset = getAssetById(assetId);
 
         return ngsiLdSerializer.getAssetByIdAsNgsiLD(asset);
@@ -494,7 +492,8 @@ public class AssetService {
         sortFieldInstances(assetDtos);
 
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
-        return objectMapper.writeValueAsBytes(BaseZipImportExport.toSortedList(assetDtos));
+        return objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(BaseZipImportExport.toSortedList(assetDtos));
     }
 
     private Set<AssetDto> removeUnnecessaryItems(Set<AssetDto> assetDtos) {
@@ -518,17 +517,18 @@ public class AssetService {
         }
     }
 
-    public int importMultipleFromJsonToFactoryManager(byte[] fileContent,
-                                                      final Long companyId,
-                                                      final Long factorySiteId) throws IOException {
-        Set<AssetDto> assetDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {});
+    public ProcessingResultDto importMultipleFromJsonToFactoryManager(byte[] fileContent,
+                                                                      final Long companyId,
+                                                                      final Long factorySiteId) throws IOException {
+        final ProcessingResultDto result = new ProcessingResultDto();
+        Set<AssetDto> assetDtos = BaseZipImportExport.fileContentToDtoSet(fileContent, new TypeReference<>() {
+        });
         Set<String> existingGlobalAssetIds = assetRepository
                 .findAllByCompanyId(AssetRepository.DEFAULT_SORT, companyId)
                 .stream().map(Asset::getGlobalId).collect(Collectors.toSet());
 
         Map<String, Set<String>> assetSubsystemMap = new HashMap<>();
 
-        int entitySkippedCount = 0;
         for (AssetDto assetDto : BaseZipImportExport.toSortedList(assetDtos)) {
             if (!existingGlobalAssetIds.contains(assetDto.getGlobalId())) {
 
@@ -540,15 +540,16 @@ public class AssetService {
                 // Info: field instances are created automatically with cascade-all
                 Asset asset = assetMapper.toEntity(assetDto);
                 createFactoryAssetAggregateWithGlobalId(companyId, assetDto.getAssetSeriesGlobalId(), asset);
+                result.incHandled();
             } else {
-                LOG.warn("Asset with the id " + assetDto.getId() + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                log.warn("Asset with the id " + assetDto.getId() + " already exists. Entry is ignored.");
+                result.incSkipped();
             }
         }
 
         addCachedSubsystemsAndRoomsToAssets(assetSubsystemMap, companyId, factorySiteId);
 
-        return entitySkippedCount;
+        return result;
     }
 
     private void addFieldSourceToFieldInstanceDtos(AssetDto assetDto, final Long companyId) {

@@ -30,7 +30,6 @@ export const environment = {
   alertsUpdateIntervalMs: 10000,
   dataUpdateIntervalMs: 10000,
   assetStatusSampleRateMs: 5000,
-  oispAuthToken: 'Not required anymore',
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',

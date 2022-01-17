@@ -14,6 +14,13 @@ under the License.
 -->
 
 <div class="wrapper if-subheader">
+  <p-dialog header="Ecosystem files synced with repo" [(visible)]="ifApiService.showResult">
+    <div>Import: {{ ifApiService.syncResult.importResult.handled }} handled, {{ ifApiService.syncResult.importResult.skipped }} skipped (objects)</div>
+    <div>Export: {{ ifApiService.syncResult.exportResult.handled }} handled, {{ ifApiService.syncResult.exportResult.skipped }} skipped (files)</div>
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" (click)="ifApiService.showResult=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+  </p-dialog>
   <ul>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/assettypes">Asset Types</li>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/assettypetemplate">Asset Type Templates</li>
@@ -21,14 +28,17 @@ under the License.
     <li routerLinkActive="active" routerLink="/ecosystemmanager/quantitytypes">Quantity Types</li>
     <li routerLinkActive="active" routerLink="/ecosystemmanager/units">Units</li>
     <li>
-      <a [href]="ifApiService.getExportLinkEcosystemManager(false)" target="_self" [pTooltip]="'Export data of Ecosystem Manager'">
+      <a [href]="ifApiService.getExportLinkEcosystemManager('ZIP')" target="_self" [pTooltip]="'Export data of Ecosystem Manager'">
         <i class="pi pi-download"></i>
       </a>
     </li>
     <li>
-      <a [href]="ifApiService.getExportLinkEcosystemManager(true)" target="_self" [pTooltip]="'Export OWL-data of Ecosystem Manager'">
+      <a [href]="ifApiService.getExportLinkEcosystemManager('OWL')" target="_self" [pTooltip]="'Export OWL-data of Ecosystem Manager'">
         <i class="pi pi-download"></i>
       </a>
+    </li>
+    <li (click)="ifApiService.syncModelRepo()" [pTooltip]="'Sync data of Ecosystem Manager with model git repository'">
+      <i class="pi pi-refresh"></i>
     </li>
   </ul>
 </div>

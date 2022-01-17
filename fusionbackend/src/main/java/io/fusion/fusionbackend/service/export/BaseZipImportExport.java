@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -36,9 +37,25 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public abstract class BaseZipImportExport {
-
+    public static final String ERROR_WRITING_FILE = "Error writing file {}";
+    public static final String ERROR_READING_FILE = "Error reading file {}";
+    protected static final String MODEL_FILE_EXTENSION = ".ttl";
+    protected static final String CONTENT_FILE_EXTENSION = ".json";
+    protected static final String CONFIG_FILE_EXTENSION = ".yaml";
     private static final Long MAX_FILE_SIZE_ZIP = BaseClient.convertMegabytesToBytes(10L);
     private static final int BUFFER_SIZE = 4096;
+
+    public static String getContentFileName(final String filenameStem) {
+        return filenameStem + CONTENT_FILE_EXTENSION;
+    }
+
+    public String getModelFileName(final String filenameStem) {
+        return filenameStem + MODEL_FILE_EXTENSION;
+    }
+
+    public String getConfigFileName(final String filenameStem) {
+        return filenameStem + CONFIG_FILE_EXTENSION;
+    }
 
     public static ObjectMapper getNewObjectMapper() {
         return new ObjectMapper().findAndRegisterModules()
@@ -51,14 +68,19 @@ public abstract class BaseZipImportExport {
         return objectMapper.readerFor(x).readValue(fileContent);
     }
 
+    public static <T> T fileToDtoSet(final File file, TypeReference<T> x) throws IOException {
+        ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
+        return objectMapper.readerFor(x).readValue(file);
+    }
+
     public static <T extends BaseEntityDto> List<T> toSortedList(final Set<T> dtos) {
-        return dtos.stream().sorted((o1, o2) -> (int)(o1.getId() - o2.getId())).collect(Collectors.toList());
+        return dtos.stream().sorted((o1, o2) -> (int) (o1.getId() - o2.getId())).collect(Collectors.toList());
     }
 
     public static void checkFileSize(final MultipartFile zipFile) {
         if (zipFile == null) {
             throw new NullPointerException();
-        } else if  (zipFile.getSize() > MAX_FILE_SIZE_ZIP) {
+        } else if (zipFile.getSize() > MAX_FILE_SIZE_ZIP) {
             throw new IllegalArgumentException("Zip file is too large");
         }
     }
@@ -100,7 +122,7 @@ public abstract class BaseZipImportExport {
             ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 totalEntitySkippedCount += importZipEntry(entry, zipInputStream, companyId, factorySiteId)
-                        .totalEntitySkippedCount;
+                        .getTotalEntitySkippedCount();
             }
         }
         inputStream.close();

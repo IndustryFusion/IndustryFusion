@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.service;
 
 import com.google.common.collect.Sets;
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.QuantityTypeDto;
 import io.fusion.fusionbackend.dto.UnitDto;
 import io.fusion.fusionbackend.dto.mappers.QuantityTypeMapper;
@@ -25,8 +26,7 @@ import io.fusion.fusionbackend.model.QuantityType;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.repository.QuantityTypeRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -37,12 +37,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class QuantityTypeService {
     private final QuantityTypeRepository quantityTypeRepository;
     private final QuantityTypeMapper quantityTypeMapper;
     private final UnitService unitService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(QuantityTypeService.class);
 
     @Autowired
     public QuantityTypeService(QuantityTypeRepository quantityTypeRepository,
@@ -89,26 +88,27 @@ public class QuantityTypeService {
         return quantityType;
     }
 
-    public int createQuantityTypesFromUnitDtos(Set<UnitDto> unitDtos) {
+    public ProcessingResultDto createQuantityTypesFromUnitDtos(Set<UnitDto> unitDtos) {
+        final ProcessingResultDto result = new ProcessingResultDto();
         Set<QuantityTypeDto> quantityTypeDtos = unitDtos.stream().map(UnitDto::getQuantityType)
                 .collect(Collectors.toSet());
         Set<Long> existingQuantityTypeIds = quantityTypeRepository
                 .findAll(QuantityTypeRepository.DEFAULT_SORT)
                 .stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-        int entitySkippedCount = 0;
         for (QuantityTypeDto quantityTypeDto : BaseZipImportExport.toSortedList(quantityTypeDtos)) {
             if (!existingQuantityTypeIds.contains(quantityTypeDto.getId())) {
                 QuantityType quantityType = quantityTypeMapper.toEntity(quantityTypeDto);
                 Long noBaseUnitYetDueToCyclicDependency = null;
 
                 createQuantityType(quantityType, noBaseUnitYetDueToCyclicDependency);
+                result.incHandled();
             } else {
-                LOG.warn("Quantity Type with the id " + quantityTypeDto.getId() + " already exists. Entry is ignored.");
-                entitySkippedCount += 1;
+                log.warn("Quantity Type with the id " + quantityTypeDto.getId() + " already exists. Entry is ignored.");
+                result.incSkipped();
             }
         }
 
-        return entitySkippedCount;
+        return result;
     }
 }

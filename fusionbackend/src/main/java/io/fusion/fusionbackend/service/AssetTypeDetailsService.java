@@ -25,8 +25,7 @@ import io.fusion.fusionbackend.model.AssetTypeTemplate;
 import io.fusion.fusionbackend.repository.AssetTypeRepository;
 import io.fusion.fusionbackend.repository.AssetTypeTemplateRepository;
 import io.fusion.fusionbackend.repository.CompanyRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +38,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AssetTypeDetailsService {
     private final AssetTypeTemplateRepository assetTypeTemplateRepository;
     private final AssetTypeRepository assetTypeRepository;
     private final AssetTypeDetailsMapper assetTypeDetailsMapper;
-
-    private static final Logger LOG = LoggerFactory.getLogger(AssetTypeDetailsService.class);
 
     @Autowired
     public AssetTypeDetailsService(AssetTypeTemplateRepository assetTypeTemplateRepository,
@@ -67,7 +65,7 @@ public class AssetTypeDetailsService {
     public AssetTypeDetailsDto getAssetTypeDetails(final Long assetTypeId) {
         final Optional<AssetType> assetTypeOptional = assetTypeRepository.findById(assetTypeId);
         if (assetTypeOptional.isEmpty()) {
-            LOG.warn("Asset type with id {} not found", assetTypeId);
+            log.warn("Asset type with id {} not found", assetTypeId);
             throw new ResourceNotFoundException();
         }
 

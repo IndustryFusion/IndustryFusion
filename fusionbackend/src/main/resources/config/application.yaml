@@ -48,5 +48,10 @@ logging:
   level:
     root: INFO
 
+fusionbackend:
+  modelrepo-sync-active: ${MODEL_REPO_SYNC}
+  modelrepo-url: ${MODEL_REPO_URL}
+  modelrepo-privatekey-path: ${MODEL_REPO_SSH_KEY}
+
 ngsi-broker:
   server-url: "http://localhost:9090"

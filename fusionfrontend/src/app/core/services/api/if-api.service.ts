@@ -23,18 +23,29 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class IfApiService {
-
   httpOptions = {
     headers: new HttpHeaders({ Accept: 'application/zip' })
   };
+  syncResult: SyncResult = new SyncResult();
+  showResult: boolean;
 
   constructor(private http: HttpClient) {
   }
 
-  getExportLinkEcosystemManager(asOwl: boolean): string {
-    let path = `/zipexport`;
-    if (asOwl) {
-      path = '/owlexport';
+  getExportLinkEcosystemManager(exportType: string): string {
+    let path;
+    switch (exportType) {
+      case ExportType.ZIP:
+        path = `/zipexport`;
+        break;
+      case ExportType.OWL:
+        path = `/owlexport`;
+        break;
+      case ExportType.GIT:
+        path = `/synctomodelrepo`;
+        break;
+      default:
+        break;
     }
     return `${environment.apiUrlPrefix}${path}`;
   }
@@ -67,4 +78,36 @@ export class IfApiService {
 
     return this.http.post<void>(`${environment.apiUrlPrefix}/${path}`, formDataZipFile, this.httpOptions);
   }
+
+  syncModelRepoFleetManager(companyId: ID): void {
+    const path = `companies/${companyId}/fleetmanager/synctomodelrepo`;
+    this.http.put<SyncResult>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).subscribe((syncResult) => {
+      this.syncResult = syncResult;
+      this.showResult = true;
+    });
+  }
+
+  syncModelRepo(): void  {
+    const path = this.getExportLinkEcosystemManager('GIT');
+    this.http.put<SyncResult>(`${path}`, this.httpOptions).subscribe((syncResult) => {
+      this.syncResult = syncResult;
+      this.showResult = true;
+    });
+  }
+}
+
+class SyncResult {
+  importResult: ProcessingResultDto;
+  exportResult: ProcessingResultDto;
+}
+
+class ProcessingResultDto {
+  handled: number;
+  skipped: number;
+}
+
+enum ExportType {
+  ZIP = 'ZIP',
+  OWL = 'OWL',
+  GIT = 'GIT'
 }

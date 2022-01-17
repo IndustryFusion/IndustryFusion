@@ -13,18 +13,20 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.service.export;
+package io.fusion.fusionbackend.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class ImportResult {
-    private final boolean isEntryImported;
-    private final int totalEntitySkippedCount;
-
-    public static ImportResult empty() {
-        return new ImportResult(false, 0);
-    }
+public class SyncResultDto {
+    @Builder.Default
+    private ProcessingResultDto importResult = new ProcessingResultDto();
+    @Builder.Default
+    private ProcessingResultDto exportResult = new ProcessingResultDto();
 }

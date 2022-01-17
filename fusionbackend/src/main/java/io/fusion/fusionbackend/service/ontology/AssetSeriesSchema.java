@@ -15,24 +15,25 @@
 
 package io.fusion.fusionbackend.service.ontology;
 
+import lombok.experimental.UtilityClass;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
+/**.
+ * The basic Ontology of an AssetSeries
+ */
+@UtilityClass
 public class AssetSeriesSchema {
-
-    /**.
-     * The basic Ontology of an AssetSeries
-     */
-    public static final String uri = "https://industry-fusion.com/as-schema/1.0#";
+    public static final String URI = "https://industry-fusion.com/as-schema/1.0#";
     public static final Model m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-    public static final Property id = m.createProperty(uri, "id");
-    public static final Property version = m.createProperty(uri, "version");
-    public static final Property name = m.createProperty(uri, "name");
-    public static final Property description = m.createProperty(uri, "description");
-    public static final Property imageKey = m.createProperty(uri, "imageKey");
-    public static final Property assetTypeTemplate = m.createProperty(uri, "assetTypeTemplate");
+    public static final Property id = m.createProperty(URI, "id");
+    public static final Property version = m.createProperty(URI, "version");
+    public static final Property name = m.createProperty(URI, "name");
+    public static final Property description = m.createProperty(URI, "description");
+    public static final Property imageKey = m.createProperty(URI, "imageKey");
+    public static final Property assetTypeTemplate = m.createProperty(URI, "assetTypeTemplate");
 
     /**.
      * returns the URI for this schema
@@ -40,6 +41,6 @@ public class AssetSeriesSchema {
      * @return the URI for this schema
      */
     public static String getUri() {
-        return uri;
+        return URI;
     }
 }

@@ -48,7 +48,7 @@ executors:
       - image: circleci/openjdk:11-jdk-stretch
   vm:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202111-02
 
 jobs:
   trigger-workflows:
