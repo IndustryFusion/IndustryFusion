@@ -23,7 +23,7 @@ under the License.
 
   <div class="room-field">
     <div *ngFor="let room of filteredRooms" class="p-field-checkbox p-grid">
-      <p-radioButton class="if-radiobutton p-col-2" [inputId]="room.id" [value]="room" [(ngModel)]="selectedRoom"></p-radioButton>
+      <p-radioButton class="p-col-2" [inputId]="room.id" [value]="room" [(ngModel)]="selectedRoom"></p-radioButton>
       <label class="p-col-5" [for]="room.id">{{room.name}}</label>
       <label class="room-info p-col-5" [for]="room.id">{{room.description}}</label>
     </div>
