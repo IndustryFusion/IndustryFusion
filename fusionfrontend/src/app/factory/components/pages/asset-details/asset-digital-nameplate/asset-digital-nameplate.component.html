@@ -18,16 +18,16 @@ under the License.
     <div class="flexbox"></div>
     <div class="card-button-box">
       <button  *ngIf="(asset$ | async) as asset" class="card-button"
-               [disabled]="!asset?.handbookUrl"
-               (click)="openExternalUrlOrDownload(asset.handbookUrl, MediaObjectType.MANUALS)">
+               [disabled]="!asset?.manualKey"
+               (click)="openExternalUrlOrDownload(asset.manualKey, MediaObjectType.MANUALS)">
         <fa-icon [icon]="manualIcon" class="fa-fw"></fa-icon>
         {{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.MANUAL' | translate }}
       </button>
     </div>
     <div class="card-button-box">
       <button *ngIf="(asset$ | async) as asset" class="card-button"
-              [disabled]="!asset?.videoUrl"
-              (click)="openExternalUrlOrDownload(asset.videoUrl, MediaObjectType.VIDEOS)">
+              [disabled]="!asset?.videoKey"
+              (click)="openExternalUrlOrDownload(asset.videoKey, MediaObjectType.VIDEOS)">
         <fa-icon [icon]="videoIcon" class="fa-fw"></fa-icon>
         {{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.VIDEO' | translate }}
       </button>

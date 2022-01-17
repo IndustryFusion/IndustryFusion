@@ -38,8 +38,8 @@ public class AssetSeriesDto extends BaseAssetDto {
     private Set<FieldSourceDto> fieldSources = new LinkedHashSet<>();
     protected Boolean ceCertified;
     protected String protectionClass;
-    protected String handbookUrl;
-    protected String videoUrl;
+    protected String manualKey;
+    protected String videoKey;
     protected String customScript;
 
     private Long connectivitySettingsId;

@@ -41,7 +41,7 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
 
   private companyId: ID;
   private hiddenManualUrl: string;
-  private hiddenVideoUrl: string;
+  private hiddenVideoKey: string;
 
   constructor(private protectionClassService: ProtectionClassService,
               private manualService: ManualService,
@@ -58,24 +58,24 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
       });
     });
 
-    if (ManualService.isManualUploaded(this.assetForm?.get('handbookUrl').value)) {
-      this.hideManualUrlAndDisable(this.assetForm.get('handbookUrl').value);
+    if (ManualService.isManualUploaded(this.assetForm?.get('manualKey').value)) {
+      this.hideManualUrlAndDisable(this.assetForm.get('manualKey').value);
     }
-    if (VideoService.isVideoUploaded(this.assetForm?.get('videoUrl').value)) {
-      this.hideVideoUrlAndDisable(this.assetForm.get('videoUrl').value);
+    if (VideoService.isVideoUploaded(this.assetForm?.get('videoKey').value)) {
+      this.hideVideoKeyAndDisable(this.assetForm.get('videoKey').value);
     }
   }
 
   private hideManualUrlAndDisable(manualKey: string) {
     this.hiddenManualUrl = manualKey;
-    this.assetForm.get('handbookUrl').setValue(MediaObject.getFilename(manualKey));
-    this.assetForm.get('handbookUrl').disable();
+    this.assetForm.get('manualKey').setValue(MediaObject.getFilename(manualKey));
+    this.assetForm.get('manualKey').disable();
   }
 
-  private hideVideoUrlAndDisable(videoKey: string) {
-    this.hiddenVideoUrl = videoKey;
-    this.assetForm.get('videoUrl').setValue(MediaObject.getFilename(videoKey));
-    this.assetForm.get('videoUrl').disable();
+  private hideVideoKeyAndDisable(videoKey: string) {
+    this.hiddenVideoKey = videoKey;
+    this.assetForm.get('videoKey').setValue(MediaObject.getFilename(videoKey));
+    this.assetForm.get('videoKey').disable();
   }
 
   ngOnDestroy() {
@@ -84,23 +84,23 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
 
   private restoreHiddenUrlsAndEnable() {
     this.restoreHiddenManualUrlAndEnable();
-    this.restoreHiddenVideoUrlAndEnable();
+    this.restoreHiddenVideoKeyAndEnable();
   }
 
   private restoreHiddenManualUrlAndEnable() {
     if (this.hiddenManualUrl) {
-      this.assetForm.get('handbookUrl').setValue(this.hiddenManualUrl);
+      this.assetForm.get('manualKey').setValue(this.hiddenManualUrl);
       this.hiddenManualUrl = null;
     }
-    this.assetForm.get('handbookUrl').enable();
+    this.assetForm.get('manualKey').enable();
   }
 
-  private restoreHiddenVideoUrlAndEnable() {
-    if (this.hiddenVideoUrl) {
-      this.assetForm.get('videoUrl').setValue(this.hiddenVideoUrl);
-      this.hiddenVideoUrl = null;
+  private restoreHiddenVideoKeyAndEnable() {
+    if (this.hiddenVideoKey) {
+      this.assetForm.get('videoKey').setValue(this.hiddenVideoKey);
+      this.hiddenVideoKey = null;
     }
-    this.assetForm.get('videoUrl').enable();
+    this.assetForm.get('videoKey').enable();
   }
 
   onBack(): void {
@@ -140,10 +140,10 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
 
   deletePreviouslyUploadedManual(): void {
     if (this.isManualUploaded()) {
-      this.manualService.deleteManualIfNotOfParent(this.companyId, this.assetForm.get('handbookUrl').value,
-        this.relatedAssetSeries.handbookUrl).subscribe(() => {
-        this.assetForm.get('handbookUrl').setValue(null);
-        this.assetForm.get('handbookUrl').enable();
+      this.manualService.deleteManualIfNotOfParent(this.companyId, this.assetForm.get('manualKey').value,
+        this.relatedAssetSeries.manualKey).subscribe(() => {
+        this.assetForm.get('manualKey').setValue(null);
+        this.assetForm.get('manualKey').enable();
       });
     }
   }
@@ -163,7 +163,7 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
         this.videoService.uploadVideo(this.companyId, selectedVideo.name, MediaObjectKeyPrefix.ASSETS,
           readFileEvent.target.result, selectedVideo.size)
           .subscribe(uploadedVideo => {
-            this.hideVideoUrlAndDisable(uploadedVideo.fileKey);
+            this.hideVideoKeyAndDisable(uploadedVideo.fileKey);
           });
       });
 
@@ -173,15 +173,15 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
 
   deletePreviouslyUploadedVideo(): void {
     if (this.isVideoUploaded()) {
-      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.assetForm.get('videoUrl').value,
-        this.relatedAssetSeries.videoUrl).subscribe(() => {
-        this.assetForm.get('videoUrl').setValue(null);
-        this.assetForm.get('videoUrl').enable();
+      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.assetForm.get('videoKey').value,
+        this.relatedAssetSeries.videoKey).subscribe(() => {
+        this.assetForm.get('videoKey').setValue(null);
+        this.assetForm.get('videoKey').enable();
       });
     }
   }
 
   isVideoUploaded(): boolean {
-    return this.hiddenVideoUrl != null;
+    return this.hiddenVideoKey != null;
   }
 }

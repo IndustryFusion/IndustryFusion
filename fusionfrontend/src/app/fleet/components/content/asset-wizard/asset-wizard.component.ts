@@ -167,8 +167,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       constructionDate: [null, Validators.required],
       installationDate: [null],
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
-      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
-      videoUrl: [null, WizardHelper.maxTextLengthValidator],
+      manualKey: [null, WizardHelper.maxTextLengthValidator],
+      videoKey: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [ImageService.DEFAULT_ASSET_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });
@@ -227,9 +227,9 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       this.assetForm.get('description')?.setValue(assetSeries.description);
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
-      this.assetForm.get('handbookUrl')?.setValue(assetSeries.handbookUrl);
+      this.assetForm.get('manualKey')?.setValue(assetSeries.manualKey);
       this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey);
-      this.assetForm.get('videoUrl')?.setValue(assetSeries.videoUrl);
+      this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
       this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
       console.warn('[Asset wizard]: Related asset series not found', assetSeriesId);
@@ -357,16 +357,16 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   }
 
   private deleteUploadedManualIfNotDefault() {
-    if (ManualService.isManualUploaded(this.assetForm?.get('handbookUrl').value)) {
-      this.manualService.deleteManualIfNotOfParent(this.companyId, this.assetForm.get('handbookUrl').value,
-        this.relatedAssetSeries.handbookUrl).subscribe();
+    if (ManualService.isManualUploaded(this.assetForm?.get('manualKey').value)) {
+      this.manualService.deleteManualIfNotOfParent(this.companyId, this.assetForm.get('manualKey').value,
+        this.relatedAssetSeries.manualKey).subscribe();
     }
   }
 
   private deleteUploadedVideoIfNotDefault() {
-    if (VideoService.isVideoUploaded(this.assetForm?.get('videoUrl').value)) {
-      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.assetForm.get('videoUrl').value,
-        this.relatedAssetSeries.handbookUrl).subscribe();
+    if (VideoService.isVideoUploaded(this.assetForm?.get('videoKey').value)) {
+      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.assetForm.get('videoKey').value,
+        this.relatedAssetSeries.manualKey).subscribe();
     }
   }
 }

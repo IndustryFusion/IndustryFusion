@@ -61,8 +61,13 @@ public class Asset extends BaseAsset {
     protected String serialNumber;
     protected OffsetDateTime constructionDate;
     protected String protectionClass;
-    protected String handbookUrl;
-    protected String videoUrl;
+
+    /** Key to object storage or link to an external url. */
+    protected String manualKey;
+
+    /** Key to object storage or link to an external url. */
+    protected String videoKey;
+
     protected OffsetDateTime installationDate;
     /**
      * This connectionsString attribute is derived from the {@link ConnectivitySettings#getConnectionString()}.
@@ -129,11 +134,11 @@ public class Asset extends BaseAsset {
         if (sourceAsset.getProtectionClass() != null) {
             setProtectionClass(sourceAsset.getProtectionClass());
         }
-        if (sourceAsset.getHandbookUrl() != null) {
-            setHandbookUrl(sourceAsset.getHandbookUrl());
+        if (sourceAsset.getManualKey() != null) {
+            setManualKey(sourceAsset.getManualKey());
         }
-        if (sourceAsset.getVideoUrl() != null) {
-            setVideoUrl(sourceAsset.getVideoUrl());
+        if (sourceAsset.getVideoKey() != null) {
+            setVideoKey(sourceAsset.getVideoKey());
         }
         if (sourceAsset.getInstallationDate() != null) {
             setInstallationDate(sourceAsset.getInstallationDate());
@@ -148,6 +153,10 @@ public class Asset extends BaseAsset {
             setConnectionString(sourceAsset.getConnectionString());
         }
 
+        copyFromFieldInstances(sourceAsset);
+    }
+
+    private void copyFromFieldInstances(final Asset sourceAsset) {
         if (!sourceAsset.getFieldInstances().isEmpty()) {
             Map<Long, FieldInstance> sourceFieldSourcesIdBasedMap = sourceAsset.getFieldInstances().stream()
                     .collect(Collectors.toMap(BaseEntity::getId, fieldInstance -> fieldInstance));

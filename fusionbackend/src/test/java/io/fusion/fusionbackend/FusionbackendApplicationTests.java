@@ -719,8 +719,8 @@ class FusionbackendApplicationTests {
                 .ceCertified(true)
                 .protectionClass("IP20")
                 .imageKey("airisgasimagekey")
-                .handbookUrl("https://airistgashandbookkey")
-                .videoUrl("https://airistgasvideokey")
+                .manualKey("https://airistgasmanualkey")
+                .videoKey("https://airistgasvideokey")
                 .connectivitySettings(createConnectivitySettings())
                 .build();
 
@@ -742,8 +742,8 @@ class FusionbackendApplicationTests {
                 .ceCertified(true)
                 .protectionClass("1c")
                 .imageKey("lascutterimagekey")
-                .handbookUrl("https://lascutterhandbookkey")
-                .videoUrl("https://lascuttervideokey")
+                .manualKey("https://lascuttermanualkey")
+                .videoKey("https://lascuttervideokey")
                 .connectivitySettings(createConnectivitySettings())
                 .build();
 
@@ -760,8 +760,8 @@ class FusionbackendApplicationTests {
                 .ceCertified(true)
                 .protectionClass("1c")
                 .imageKey("genericcutterimagekey" + repetitionInfo.getCurrentRepetition())
-                .handbookUrl("https://genericcutterhandbookkey" + repetitionInfo.getCurrentRepetition())
-                .videoUrl("https://genericcuttervideokey" + repetitionInfo.getCurrentRepetition())
+                .manualKey("https://genericcuttermanualkey" + repetitionInfo.getCurrentRepetition())
+                .videoKey("https://genericcuttervideokey" + repetitionInfo.getCurrentRepetition())
                 .connectivitySettings(createConnectivitySettings())
                 .build();
 

@@ -62,9 +62,9 @@ under the License.
     </div>
 
     <div class="input-div">
-      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.ASSET_HANDBOOK' | translate }}</label>
+      <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.ASSET_MANUAL' | translate }}</label>
       <div class="upload-container">
-        <input class="upload-input" type="url" pInputText formControlName="handbookUrl"/>
+        <input class="upload-input" type="url" pInputText formControlName="manualKey"/>
 
         <i *ngIf="isManualUploaded()" class="upload-button-light pi pi-trash" (click)="deletePreviouslyUploadedManual()"></i>
         <label *ngIf="!isManualUploaded()" class="upload-button-light">
@@ -77,7 +77,7 @@ under the License.
     <div class="input-div">
       <label class="if-label">{{ 'APP.FLEET.ASSET_WIZARD.STEP.NAMEPLATE.ASSET_VIDEO' | translate }}</label>
       <div class="upload-container">
-        <input class="upload-input" type="url" pInputText formControlName="videoUrl"/>
+        <input class="upload-input" type="url" pInputText formControlName="videoKey"/>
 
         <i *ngIf="isVideoUploaded()" class="upload-button-light pi pi-trash" (click)="deletePreviouslyUploadedVideo()"></i>
         <label *ngIf="!isVideoUploaded()" class="upload-button-light">

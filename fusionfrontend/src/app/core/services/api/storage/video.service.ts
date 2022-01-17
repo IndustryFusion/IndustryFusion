@@ -31,9 +31,9 @@ export class VideoService extends MediaObjectService {
     this.setMediaTypePrefix('video/');
   }
 
-  public static isVideoUploaded(videoUrl: string): boolean {
-    return videoUrl
-      && (videoUrl.startsWith(MediaObjectKeyPrefix.ASSETS + '/') || videoUrl.startsWith(MediaObjectKeyPrefix.ASSET_SERIES + '/'));
+  public static isVideoUploaded(videoKey: string): boolean {
+    return videoKey
+      && (videoKey.startsWith(MediaObjectKeyPrefix.ASSETS + '/') || videoKey.startsWith(MediaObjectKeyPrefix.ASSET_SERIES + '/'));
   }
 
   getVideo(companyId: ID, videoKey: string): Observable<MediaObject> {

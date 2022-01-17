@@ -56,8 +56,8 @@ public class AssetDto extends BaseAssetDto {
     protected String serialNumber;
     protected OffsetDateTime constructionDate;
     protected String protectionClass;
-    protected String handbookUrl;
-    protected String videoUrl;
+    protected String manualKey;
+    protected String videoKey;
     protected OffsetDateTime installationDate;
     protected String connectionString;
 

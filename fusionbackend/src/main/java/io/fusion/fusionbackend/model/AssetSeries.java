@@ -74,8 +74,13 @@ public class AssetSeries extends BaseAsset {
 
     protected Boolean ceCertified;
     protected String protectionClass;
-    protected String handbookUrl;
-    protected String videoUrl;
+
+    /** Key to object storage or link to an external url. */
+    protected String manualKey;
+
+    /** Key to object storage or link to an external url. */
+    protected String videoKey;
+
     protected String customScript;
 
     public void copyFrom(final AssetSeries sourceAssetSeries) {
@@ -88,11 +93,11 @@ public class AssetSeries extends BaseAsset {
         if (sourceAssetSeries.getCeCertified() != null) {
             setCeCertified(sourceAssetSeries.getCeCertified());
         }
-        if (sourceAssetSeries.getHandbookUrl() != null) {
-            setHandbookUrl(sourceAssetSeries.getHandbookUrl());
+        if (sourceAssetSeries.getManualKey() != null) {
+            setManualKey(sourceAssetSeries.getManualKey());
         }
-        if (sourceAssetSeries.getVideoUrl() != null) {
-            setVideoUrl(sourceAssetSeries.getVideoUrl());
+        if (sourceAssetSeries.getVideoKey() != null) {
+            setVideoKey(sourceAssetSeries.getVideoKey());
         }
         if (sourceAssetSeries.getAssets() != null) {
             setAssets(sourceAssetSeries.getAssets());
@@ -138,19 +143,14 @@ public class AssetSeries extends BaseAsset {
         ConnectivityProtocol targetConnectivityProtocol = targetConnectivitySettings.getConnectivityProtocol();
 
 
-        if (!sourceConnectivitySettings.equals(targetConnectivitySettings)) {
-            isChanged = true;
-        } else if (!sourceConnectionString.equals(targetConnectionString)) {
-            isChanged = true;
-        } else if (!sourceConnectivityType.equals(targetConnectivityType)) {
-            isChanged = true;
-        } else if (!sourceConnectivityProtocol.equals(targetConnectivityProtocol)) {
+        if (!sourceConnectionString.equals(targetConnectionString)
+                || !sourceConnectivitySettings.equals(targetConnectivitySettings)
+                || !sourceConnectivityType.equals(targetConnectivityType)
+                || !sourceConnectivityProtocol.equals(targetConnectivityProtocol)) {
             isChanged = true;
         }
 
-
         return isChanged;
-
     }
 
     public List<FieldSource> calculateDeletedFieldSources(AssetSeries sourceAssetSeries) {
