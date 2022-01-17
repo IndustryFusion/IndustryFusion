@@ -35,13 +35,13 @@ export class IfApiService {
   getExportLinkEcosystemManager(exportType: string): string {
     let path;
     switch (exportType) {
-      case 'ZIP':
+      case ExportType.ZIP:
         path = `/zipexport`;
         break;
-      case 'OWL':
+      case ExportType.OWL:
         path = `/owlexport`;
         break;
-      case 'GIT':
+      case ExportType.GIT:
         path = `/synctomodelrepo`;
         break;
       default:
@@ -104,4 +104,10 @@ class SyncResult {
 class ProcessingResultDto {
   handled: number;
   skipped: number;
+}
+
+enum ExportType {
+  ZIP = 'ZIP',
+  OWL = 'OWL',
+  GIT = 'GIT'
 }
