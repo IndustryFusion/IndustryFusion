@@ -41,7 +41,7 @@
 				"ASSET": "Asset",
 				"ASSETS": "Assets",
         "ASSET_NAME": "Asset-Name",
-        "ASSET_SERIES": "Asset-Baureihe",
+        "ASSET_SERIES": "Asset-Baureihen",
 				"ASSET_TYPE": "Asset-Typ",
         "BASE_UNIT": "Basiseinheit",
         "CITY": "Stadt",
@@ -64,7 +64,7 @@
 				"STREET": "Straße",
 				"SYMBOL": "Symbol",
 				"TIME": "Zeit",
-				"UNIT": "Gerät",
+				"UNIT": "Einheit",
 				"VALUE": "Wert",
 				"ZIP": "PLZ"
 			}
@@ -113,11 +113,11 @@
 			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Datum auswählen",
-				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Assets)",
+				"DONUT_CHART_TITLE": "Statusübersicht (Ø aller Assets)",
 				"STATUS": {
 					"DASHBOARD_OVERVIEW_LABEL": "Echtzeit-Status"
 				},
-				"TITLE": "Anlageneffizienz Dashboard"
+				"TITLE": "Anlageneffizienz-Dashboard"
 			},
 			"MAINTENANCE_LIST": {
 				"DAYS_TILL_MAINTENANCE": "Tage bis Wartung",
@@ -210,13 +210,13 @@
 						"ADD_ATTRIBUTE": "Attribut hinzufügen",
 						"ADD_ATTRIBUTES": "Attribute hinzufügen",
 						"SELECT_ATTRIBUTE": "Attribut auswählen",
-						"SELECT_ATTRIBUTE_PLACEHOLDER": "Attribut auswählen..."
+						"SELECT_ATTRIBUTE_PLACEHOLDER": "Wählen Sie ein Attribut aus..."
 					},
 					"STEP_TWO": {
 						"ADD_METRIC": "Metrik hinzufügen",
 						"ADD_METRICS": "Metriken hinzufügen",
-						"SELECT_METRIC": "Metrik wählen",
-						"SELECT_METRIC_PLACEHOLDER": "Metrik Maß auswählen..."
+						"SELECT_METRIC": "Metrik auswählen",
+						"SELECT_METRIC_PLACEHOLDER": "Wählen Sie eine Metrik aus..."
 					}
 				}
 			},
@@ -238,7 +238,7 @@
 				},
 				"CREATE_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut erstellen",
 				"DATE_CREATED": "Erstellungsdatum",
-				"FIELD_NAME": "Feldname",
+				"FIELD_NAME": "Name",
 				"HEADER": {
 					"CREATE": "Neue Metrik oder neues Attribut erstellen",
 					"EDIT": "Metrik oder Attribut bearbeiten"
@@ -265,11 +265,11 @@
 					"EDIT": "Mengenart bearbeiten"
 				},
 				"NO_QUANTITY_TYPES": "Keine Mengenart",
-				"QUANTITY_NAME": "Bezeichnung der Mengenart",
+				"QUANTITY_NAME": "Mengenart",
 				"QUANTITY_TYPES": "Mengenarten"
 			},
 			"SUB_HEADER": {
-				"ASSET_TYPES": "Asset-Baureihen",
+				"ASSET_TYPES": "Asset-Typen",
 				"ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
 				"METRICS_AND_ATTRIBUTES": "Metriken & Attribute",
 				"QUANTITY_TYPES": "Mengenarten",
@@ -333,14 +333,14 @@
 		"FACTORY": {
 			"ASSETS_LIST": {
 				"ASSIGN_ITEM_TEXT": "Asset zu Raum",
-				"CATEGORY": "Kategorie",
+				"CATEGORY": "Asset-Typ",
 				"DIALOG_HEADING": {
 					"FACTORY_SITE_ASSIGNMENT": "Standort zuweisen",
 					"ON_BOARDING": "Asset für Onboarding auswählen",
 					"ROOM_ASSIGNMENT": "Raum zuweisen"
 				},
 				"NO_ASSETS": "Keine Assets",
-				"ONBOARD_NEW_ASSET": "Neues Asset onboarden"
+				"ONBOARD_NEW_ASSET": "Asset onboarden"
 			},
 			"ASSET_CARD": {
 				"CONTROL_SYSTEM_TYPE": "Steuerungs-Typ",
@@ -395,7 +395,7 @@
 				},
 				"START_MODAL": {
 					"NO_ASSETS_TO_ONBOARD": "Keine Assets zum Onboarding!",
-					"READY_FOR_ONBOARDING": "Bereit zum Onboarding!"
+					"READY_FOR_ONBOARDING": "Bereit!"
 				}
 			},
 			"ASSIGN_ASSETS_TO_ROOM": {
@@ -471,8 +471,8 @@
 				},
 				"CREATE_ROOM_BUTTON": "Raum erstellen",
 				"DIALOG_HEADER": {
-					"ADD_NEW_ROOM": "Neuen Raum zum Standort hinzufügen",
-					"ASSIGN_ASSET": "Asset einem Raum zuordnen",
+					"ADD_NEW_ROOM": "Neuen Raum hinzufügen",
+					"ASSIGN_ASSET": "Asset einem Raum zuweisen",
 					"EDIT_ROOM": "Raum bearbeiten"
 				},
 				"NO_ROOM": "Kein Raum"
@@ -538,9 +538,9 @@
 			"ASSET_SERIES_LIST": {
 				"ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 				"CREATE_ASSET_SERIES_BUTTON": "Asset-Baureihe erstellen",
-				"DIALOG_HEADER": "Asset-Baureihen Implementierung",
+				"DIALOG_HEADER": "Asset-Baureihe implementieren",
 				"No_ASSET_SERIES": "Keine Asset-Baureihe",
-				"TEMPLATE_VERSION": "Version der Asset-Typ Vorlage"
+				"TEMPLATE_VERSION": "Version"
 			},
 			"ASSET_SERIES_WIZARD": {
 				"ATTRIBUTES": {
@@ -553,7 +553,7 @@
           "VALUE_PLACEHOLDER": "Wert auswählen"
         },
 				"GENERAL_INFORMATION": {
-					"ASSET_OR_ASSET_SERIES_NAME": "Name des Assets oder der Asset-Baureihe",
+					"ASSET_OR_ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 					"ASSET_SERIES_DESCRIPTION": "Beschreibung der Asset-Baureihe",
 					"ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 					"GENERAL_INFORMATION": "Allgemeine Informationen",
@@ -656,10 +656,10 @@
 				}
 			},
 			"SUB_HEADER": {
-				"ASSET_SERIES": "Asset-Baureihe"
+				"ASSET_SERIES": "Asset-Baureihen"
 			},
       "BREAD_CRUMBS": {
-        "ASSET_SERIES": "Asset-Baureihe"
+        "ASSET_SERIES": "Asset-Baureihen"
       },
       "PAGES": {
         "ASSET_SERIES_ASSET": {
@@ -692,7 +692,7 @@
 		"FUSION_APPLETS": {
 			"CREATE": {
 				"APPLET_NAME": "Name des Applets",
-				"PRIORITY_PLACEHOLDER": "Wählen Sie eine"
+				"PRIORITY_PLACEHOLDER": "Wählen Sie die Priorität"
 			},
 			"EDITOR": {
 				"ACTION_LIST": {
@@ -744,9 +744,9 @@
 				"ACTIVE": "Aktiv",
 				"APPLET": "Applet",
 				"APPLETS": "Applets",
-				"APPLET_NAME": "Applet Name",
+				"APPLET_NAME": "Applet-Name",
 				"ARCHIVED": "Archiviert",
-				"CONDITION_SUMMARY": "Zustand",
+				"CONDITION_SUMMARY": "Bedingung",
 				"CREATE_APPLET_BUTTON": "Applet erstellen",
 				"CREATE_DIALOG_HEADER": "Applet erstellen",
 				"NO_APPLET": "Kein Applet"
@@ -784,9 +784,9 @@
 						"MESSAGE_PLURAL": "Sind Sie sicher, dass Sie {{ notificationCount }} Benachrichtigungen löschen wollen?",
 						"MESSAGE_SINGULAR": "Sind Sie sicher, dass Sie die Benachrichtigung {{ notificationToClose }} löschen wollen?"
 					},
-					"CONDITION": "Zustand",
+					"CONDITION": "Bedingung",
 					"DATE_AND_TIME": "Datum und Uhrzeit",
-					"MEASURED_VALUE": "Gemessener Wert",
+					"MEASURED_VALUE": "Messewert",
 					"NOTIFICATION": "Benachrichtigung",
 					"NOTIFICATIONS": "Benachrichtigungen",
 					"NOTIFICATIONS_SELECTED": "{{ statusName }} Benachrichtigungen ausgewählt",
@@ -824,14 +824,14 @@
 				"ITEMS_OPTIONS_MENU": {
 					"ASSIGN": "{{ assignItemText }} zuweisen",
 					"CLONE": "Klonen",
-					"CREATE": "{{ createItemText }} neu erstellen",
+					"CREATE": "{{ createItemText }} erstellen",
 					"DELETE": "Löschen",
 					"RENAME": "Umbenennen",
 					"UPDATE": "{{ updateItemText }} aktualisieren"
 				},
 				"TABLE_FILTER": {
 					"ADD_FILTER": "Filter hinzufügen",
-					"CLEAR_ALL": "Alle löschen",
+					"CLEAR_ALL": "Löschen",
 					"DATE_FILTER": {
             "DATE_SET": "Datum festgelegt",
 						"DATE_AND_TIME_FILTER": "Datum & Zeit filtern",
@@ -839,14 +839,14 @@
 						"START_DATE": "Startdatum"
 					},
 					"FILTER": "Filter",
-					"FILTER_BUTTON": "Filter",
-					"NOT_SET": "Nicht festgelegt",
+					"FILTER_BUTTON": "Filtern",
+					"NOT_SET": "Auswählen",
 					"NUMERIC_FILTER": {
 						"LONG_TERM_PRIORITY": "Langfristig (blau)",
 						"MEDIUM_TERM_PRIORITY": "Mittelfristig (grau)",
 						"SHORT_TERM_PRIORITY": "Kritisch (rot)"
 					},
-					"SELECT": "Wählen Sie",
+					"SELECT": "Filtern nach",
 					"VALUE": "Wert",
 					"VALUES": "Werte"
 				},
