@@ -14,8 +14,8 @@ under the License.
 -->
 
 <section class="asset">
-  <img *ngIf="assetImage == null && assetWithFields != null" class="asset-img" src="assets/img/{{assetWithFields.imageKey}}" alt="Asset Image"/>
-  <img *ngIf="assetImage != null" class="asset-img" [src]="assetImage" alt="Asset Image"/>
+  <app-image [isKeyLoading]="assetWithFields == null" [imageKey]="assetWithFields?.imageKey"
+             [styleType]="ImageStyleType.INFO_PAGE" [alt]="'image of asset'"></app-image>
   <div class="asset-info">
     <h3>{{(assetWithFields$ | async)?.name}}</h3>
     <p>{{(assetWithFields$ | async)?.assetTypeName}}</p>

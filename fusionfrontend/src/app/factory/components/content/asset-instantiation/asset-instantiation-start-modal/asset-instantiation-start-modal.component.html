@@ -18,8 +18,8 @@ under the License.
     <div *ngFor="let assetToBeOnboarded of assetsToBeOnboarded">
       <div class="p-grid asset-item">
         <div class="p-col-2 p-dir-col column-class">
-          <img *ngIf="assetToBeOnboarded.image == null" class="asset-image" src="assets/img/{{assetToBeOnboarded.imageKey}}" alt="Asset Image">
-          <img *ngIf="assetToBeOnboarded.image != null" class="asset-image" [src]="assetToBeOnboarded.image" alt="Asset Image">
+          <app-image [imageKey]="assetToBeOnboarded.imageKey" [columnSize]="4"
+                     [styleType]="ImageStyleType.DIALOG" [alt]="'image of asset'"></app-image>
         </div>
         <div class="p-col-4 p-grid p-dir-col column-class">
           <span class="p-col asset-name">{{assetToBeOnboarded.name}}</span>

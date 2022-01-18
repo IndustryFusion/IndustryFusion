@@ -16,7 +16,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { Observable } from 'rxjs';
-import { ImageService } from '../../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
@@ -24,6 +23,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
 import { FleetAssetDetailMenuService } from '../../../../../core/services/menu/fleet-asset-detail-menu.service';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -35,15 +35,12 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   @Input()
   assetWithFields$: Observable<FleetAssetDetailsWithFields>;
 
-  assetIdOfImage: ID;
-  prevImageKey: string;
-  assetImage: string;
   assetWithFields: FleetAssetDetailsWithFields;
 
   ItemOptionsMenuType = ItemOptionsMenuType;
+  ImageStyleType = ImageStyleType;
 
   constructor(private companyQuery: CompanyQuery,
-              private imageService: ImageService,
               private assetService: AssetService,
               private router: Router,
               private routingLocation: Location,
@@ -51,21 +48,8 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadImageForChangedAsset();
-  }
-
-  private loadImageForChangedAsset() {
     this.assetWithFields$.subscribe(asset => {
       this.assetWithFields = asset;
-      if (asset.id !== this.assetIdOfImage || asset.imageKey !== this.prevImageKey) {
-        this.assetIdOfImage = asset.id;
-        this.prevImageKey = asset.imageKey;
-
-        const companyId = this.companyQuery.getActiveId();
-        this.imageService.getImageAsUriSchemeString(companyId, asset.imageKey).subscribe(imageText => {
-          this.assetImage = imageText;
-        });
-      }
     });
   }
 

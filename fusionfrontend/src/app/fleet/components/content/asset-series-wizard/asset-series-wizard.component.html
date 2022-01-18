@@ -20,10 +20,11 @@ under the License.
     *ngIf="step === AssetSeriesCreateSteps.GENERAL_INFORMATION"
     [assetSeriesForm]="assetSeriesForm"
     [assetSeriesImage]="assetSeriesImage"
+    [initialAssetSeriesImageKey]="initialAssetSeriesImageKey"
     [relatedManufacturer]="relatedManufacturer"
     [relatedAssetType]="relatedAssetType"
     (assetSeriesImageChanged)="updateAssetSeriesImage($event)"
-    (updateTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)">
+    (updateAssetTypeTemplate)="createAssetSeriesOfAssetTypeTemplate($event)">
   </app-asset-series-wizard-general-information>
   <app-asset-series-wizard-nameplate-and-connectivity-settings
     *ngIf="step === AssetSeriesCreateSteps.NAMEPLATE_AND_CONNECTIVITY_SETTINGS"

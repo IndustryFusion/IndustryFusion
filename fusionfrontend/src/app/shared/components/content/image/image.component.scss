@@ -16,15 +16,45 @@
 @import 'src/styles/abstract/variables';
 @import 'src/styles/base/typography';
 
-.asset-card {
-    height: 9rem;
-    margin: 0 auto;
-    object-fit: cover;
-    max-width: 100%;
-    width: 100%;
-    display: block;
-}
-
 .clickable {
   cursor: pointer;
+}
+
+.card-image {
+  height: 9rem;
+  margin: 0 auto;
+  object-fit: cover;
+  max-width: 100%;
+  width: 100%;
+  display: block;
+}
+
+.rounded-image {
+  border-radius: 60px;
+  overflow: hidden;
+}
+
+.rounded-image-info {
+  @extend .rounded-image;
+  width: 6rem;
+  height: 6rem;
+  margin: 1.25rem 2.5rem 1.25rem 0;
+}
+
+.rounded-image-dialogs {
+  @extend .rounded-image;
+  width: 5.2rem;
+  height: 5.2rem;
+}
+
+.rounded-image-wizards {
+  @extend .rounded-image-dialogs;
+  margin-top: 0.5rem;
+}
+
+.rounded-image-lists {
+  @extend .rounded-image;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
 }

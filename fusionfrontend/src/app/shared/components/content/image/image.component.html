@@ -13,7 +13,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<img *ngIf="assetImageLoadingFailedOrDefault" class="{{styleClasses}}" src="assets/img/{{fallbackImageKey}}"
+<img *ngIf="imageLoadingFailedOrDefault" [class]="styleClasses" [src]="'assets/img/' + fallbackImageKey"
      alt="{{alt}}" (click)="onClick()">
-<img *ngIf="assetImage != null" class="{{styleClasses}}" [src]="assetImage" alt="{{alt}}" (click)="onClick()">
-<img *ngIf="assetImage == null && assetImageLoadingFailedOrDefault == false" src="" class="{{styleClasses}}" alt="{{alt}}" (click)="onClick()">
+<img *ngIf="displayedImage != null" [class]="styleClasses" [src]="displayedImage" [alt]="alt" (click)="onClick()">
+
+<img *ngIf="(displayedImage == null && (imageLoadingFailedOrDefault == false || isKeyLoading || preventImageLoading))"
+     [src]="" [class]="styleClasses" (click)="onClick()">

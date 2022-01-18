@@ -15,6 +15,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 
 @Component({
   selector: 'app-asset-instantiation-description-modal',
@@ -26,11 +27,10 @@ export class AssetInstantiationDescriptionModalComponent implements OnInit {
   @Input()
   assetDetailsForm: FormGroup;
 
-  @Input()
-  assetImage: string;
-
   @Output()
   descriptionAddedEvent = new EventEmitter<boolean>();
+
+  ImageStyleType = ImageStyleType;
 
   constructor() { }
 

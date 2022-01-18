@@ -14,6 +14,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 import {
   FactoryAssetDetailsWithFieldsAndImage
 } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
@@ -30,6 +31,8 @@ export class AssetInstantiationStartModalComponent implements OnInit {
 
   @Output()
   assetOnboardingEvent = new EventEmitter<FactoryAssetDetailsWithFieldsAndImage>();
+
+  ImageStyleType = ImageStyleType;
 
   constructor() { }
 

@@ -26,8 +26,7 @@ import { MediaObjectService } from './media-object.service';
 })
 export class ImageService extends MediaObjectService {
 
-  public static DEFAULT_ASSET_IMAGE_KEY = 'default-avatar-asset.png';
-  public static DEFAULT_ASSET_SERIES_IMAGE_KEY = 'default-avatar-asset.png';
+  public static DEFAULT_ASSET_AND_SERIES_IMAGE_KEY = 'default-image-asset-and-series.png';
 
   constructor(http: HttpClient) {
     super(http);

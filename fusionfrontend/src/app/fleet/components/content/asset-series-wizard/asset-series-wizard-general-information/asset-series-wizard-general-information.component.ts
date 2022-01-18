@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AssetTypeTemplateQuery } from '../../../../../core/store/asset-type-template/asset-type-template.query';
 import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../shared/models/dialog-type.model';
@@ -25,24 +25,28 @@ import { NameWithVersionPipe } from 'src/app/shared/pipes/namewithversion.pipe';
 import { ImageService } from '../../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { MediaObjectKeyPrefix } from '../../../../../core/models/media-object.model';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 
 @Component({
   selector: 'app-asset-series-wizard-general-information',
   templateUrl: './asset-series-wizard-general-information.component.html',
   styleUrls: ['./asset-series-wizard-general-information.component.scss']
 })
-export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
+export class AssetSeriesWizardGeneralInformationComponent implements OnInit, OnChanges {
 
   @Input() assetSeriesForm: FormGroup;
   @Input() relatedManufacturer: Company;
   @Input() relatedAssetType: AssetType;
   @Input() assetSeriesImage: string;
-  @Output() updateTypeTemplate = new EventEmitter<ID>();
+  @Input() initialAssetSeriesImageKey: string;
+  @Output() updateAssetTypeTemplate = new EventEmitter<ID>();
   @Output() assetSeriesImageChanged = new EventEmitter<string>();
 
   assetTypeTemplateOptions: SelectItem[] = [];
+  wasImageUploaded: boolean;
+
   DialogType = DialogType;
-  DEFAULT_ASSET_IMAGE_KEY = ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY;
+  ImageStyleType = ImageStyleType;
 
   private companyId: ID;
 
@@ -52,8 +56,10 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initAssetTypeTemplateOptions();
     this.companyId = this.companyQuery.getActiveId();
+    this.wasImageUploaded = this.initialAssetSeriesImageKey !== this.assetSeriesForm.get('imageKey').value;
+
+    this.initAssetTypeTemplateOptions();
   }
 
   private initAssetTypeTemplateOptions() {
@@ -67,12 +73,20 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.assetSeriesForm) {
+      this.wasImageUploaded = this.initialAssetSeriesImageKey !== this.assetSeriesForm.get('imageKey').value;
+    }
+  }
+
   onImageUpload(event: any): void {
     this.deletePreviouslyUploadedImage();
 
     const selectedImage: any = event.target.files[0];
     if (selectedImage) {
       const reader = new FileReader();
+
+      this.wasImageUploaded = true;
       reader.addEventListener('load', (readFileEvent: any) => {
         this.imageService.uploadImage(this.companyId, selectedImage.name, MediaObjectKeyPrefix.ASSET_SERIES,
           readFileEvent.target.result, selectedImage.size)
@@ -91,8 +105,11 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit {
     if (this.assetSeriesImage) {
       const companyId = this.companyQuery.getActiveId();
       this.imageService.deleteImageIfNotDefault(companyId, this.assetSeriesForm.get('imageKey').value,
-        ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY).subscribe();
+        ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY).subscribe();
     }
   }
 
+  onSelectAssetTypeTemplate(assetTypeTemplateId: ID): void {
+    this.updateAssetTypeTemplate.emit(assetTypeTemplateId);
+  }
 }

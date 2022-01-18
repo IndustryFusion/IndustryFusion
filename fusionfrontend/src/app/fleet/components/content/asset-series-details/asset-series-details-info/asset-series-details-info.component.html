@@ -14,8 +14,8 @@ under the License.
 -->
 
 <section class="asset-series-details">
-  <img *ngIf="assetSeriesImage == null" class="asset-series-img" src="assets/img/{{(assetSeries)?.imageKey}}" alt="asset-series-image"/>
-  <img *ngIf="assetSeriesImage != null" class="asset-series-img" [src]="assetSeriesImage" alt="asset-series-image">
+  <app-image [isKeyLoading]="assetSeries == null" [imageKey]="assetSeries?.imageKey"
+             [styleType]="ImageStyleType.INFO_PAGE" [alt]="'image of asset'"></app-image>
   <div class="asset-series-info">
     <h3>{{(assetSeries)?.name}}</h3>
     <p>{{(assetSeries)?.assetType}}</p>

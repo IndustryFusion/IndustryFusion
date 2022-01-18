@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AssetSeries } from '../../../../../../core/store/asset-series/asset-series.model';
 import { AssetSeriesQuery } from '../../../../../../core/store/asset-series/asset-series.query';
@@ -28,13 +28,14 @@ import { ImageService } from '../../../../../../core/services/api/storage/image.
 import { CompanyQuery } from '../../../../../../core/store/company/company.query';
 import { DialogType } from '../../../../../../shared/models/dialog-type.model';
 import { MediaObjectKeyPrefix } from '../../../../../../core/models/media-object.model';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',
   templateUrl: './asset-wizard-step-general-information.component.html',
   styleUrls: ['./asset-wizard-step-general-information.component.scss']
 })
-export class AssetWizardStepGeneralInformationComponent implements OnInit {
+export class AssetWizardStepGeneralInformationComponent implements OnInit, OnChanges {
 
   @Input() assetForm: FormGroup;
   @Input() type: DialogType;
@@ -44,15 +45,17 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
   @Input() relatedAssetType: AssetType;
   @Input() isAssetSeriesLocked: boolean;
   @Input() assetImage: string;
+  @Input() initialAssetImageKey: string;
   @Output() changeAssetSeries = new EventEmitter<ID>();
   @Output() stepChange = new EventEmitter<AssetWizardStep>();
   @Output() assetImageChanged = new EventEmitter<string>();
 
   public assetSeries$: Observable<AssetSeries[]>;
+  public wasImageUploaded;
 
   public MAX_TEXT_LENGTH = WizardHelper.MAX_TEXT_LENGTH;
-  public DEFAULT_ASSET_IMAGE_KEY = ImageService.DEFAULT_ASSET_IMAGE_KEY;
   public DialogType = DialogType;
+  public ImageStyleType = ImageStyleType;
 
   private companyId: ID;
 
@@ -68,7 +71,14 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
       this.assetForm.get('assetSeriesId').setValue(this.relatedAssetSeriesId);
     }
 
+    this.wasImageUploaded = this.initialAssetImageKey !== this.assetForm.get('imageKey').value;
     this.companyId = this.companyQuery.getActiveId();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.assetSeriesForm) {
+      this.wasImageUploaded = this.initialAssetImageKey !== this.assetForm.get('imageKey').value;
+    }
   }
 
   onChangeAssetSeries(assetSeriesId: ID): void {
@@ -97,6 +107,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
     const selectedImage: any = event.target.files[0];
     if (selectedImage) {
       const reader = new FileReader();
+
+      this.wasImageUploaded = true;
       reader.addEventListener('load', (readFileEvent: any) => {
         this.imageService.uploadImage(this.companyId, selectedImage.name, MediaObjectKeyPrefix.ASSETS,
           readFileEvent.target.result, selectedImage.size)
@@ -115,7 +127,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit {
     if (this.assetImage) {
       const companyId = this.companyQuery.getActiveId();
       this.imageService.deleteImageIfNotDefaultNorParent(companyId, this.assetForm.get('imageKey').value,
-        ImageService.DEFAULT_ASSET_IMAGE_KEY, this.relatedAssetSeries.imageKey).subscribe();
+        ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY, this.relatedAssetSeries.imageKey).subscribe();
     }
   }
 }

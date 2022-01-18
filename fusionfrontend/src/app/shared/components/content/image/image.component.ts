@@ -19,6 +19,7 @@ import { catchError, take } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { ImageService } from '../../../../core/services/api/storage/image.service';
+import { ImageStyleType } from '../../../models/image-style-type.model';
 
 @Component({
   selector: 'app-image',
@@ -31,7 +32,19 @@ export class ImageComponent implements OnInit, OnChanges {
   imageKey: string;
 
   @Input()
-  isAssetCardStyling = false;
+  styleType: ImageStyleType;
+
+  @Input()
+  prioritizedImageContent: string = null;
+
+  @Input()
+  columnSize: number = null;
+
+  @Input()
+  isKeyLoading = false;
+
+  @Input()
+  preventImageLoading = false;
 
   @Input()
   isClickable = false;
@@ -39,14 +52,15 @@ export class ImageComponent implements OnInit, OnChanges {
   @Input()
   alt = 'image'; // TODO (fpa): translation
 
+  @Input()
+  fallbackImageKey: string = ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
+
   @Output()
   clickEvent: EventEmitter<void> = new EventEmitter<void>();
 
-  assetImage: string;
+  displayedImage: string;
   prevImageKey: string;
-  assetImageLoadingFailedOrDefault: boolean;
-
-  fallbackImageKey: string = ImageService.DEFAULT_ASSET_IMAGE_KEY;
+  imageLoadingFailedOrDefault: boolean;
   styleClasses: string;
 
   constructor(private imageService: ImageService,
@@ -54,48 +68,108 @@ export class ImageComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.assetImageLoadingFailedOrDefault = false;
+    if (this.styleType == null) {
+      throw new Error('[Image element]: Please provide style type.');
+    }
+
     this.initStyleClasses();
-    this.loadImage();
+
+    this.imageLoadingFailedOrDefault = false;
+    this.overwriteDisplayedImageIfProvided();
+    if (!this.isImageProvided()) {
+      this.loadImage();
+    }
   }
 
   private initStyleClasses() {
-    this.styleClasses = this.isClickable ? 'clickable' : '';
-    this.styleClasses += this.isAssetCardStyling ? ' asset-card' : '';
+    this.styleClasses = this.isClickable ? 'clickable ' : '';
+    this.styleClasses += this.columnSize ? `p-col-${this.columnSize} ` : '';
+
+    switch (this.styleType) {
+      case ImageStyleType.INFO_PAGE:
+        this.styleClasses += 'rounded-image-info';
+        break;
+      case ImageStyleType.DIALOG:
+        this.styleClasses += 'rounded-image-dialogs';
+        break;
+      case ImageStyleType.WIZARD:
+        this.styleClasses += 'rounded-image-wizards';
+        break;
+      case ImageStyleType.LIST:
+        this.styleClasses += 'rounded-image-lists';
+        break;
+      case ImageStyleType.CARD:
+        this.styleClasses += 'card-image';
+        break;
+    }
   }
 
   private loadImage() {
-    if (!this.imageKey) {
-      this.assetImageLoadingFailedOrDefault = true;
-      console.warn('[Image element]: Image key is not provided.');
-      return;
-    }
-
-    if (this.imageKey !== this.prevImageKey) {
-      console.log(this.imageKey, this.prevImageKey);
+    if (this.checkImageDownloadAllowed() && this.imageKey !== this.prevImageKey) {
       this.prevImageKey = this.imageKey;
-      this.assetImageLoadingFailedOrDefault = false;
+      this.imageLoadingFailedOrDefault = false;
 
       const companyId = this.companyQuery.getActiveId();
       this.imageService.getImageAsUriSchemeString(companyId, this.imageKey)
         .pipe(catchError(err => {
             console.error('[Image element]: ' + err);
-            this.assetImageLoadingFailedOrDefault = true;
+            this.imageLoadingFailedOrDefault = true;
             return EMPTY;
           }),
           take(1)
         )
         .subscribe(imageText => {
-          this.assetImage = imageText;
-          this.assetImageLoadingFailedOrDefault = false;
+          this.displayedImage = imageText;
+          this.imageLoadingFailedOrDefault = false;
         });
     }
   }
 
+  private checkImageDownloadAllowed(): boolean {
+    if (this.isKeyLoading || this.preventImageLoading || this.isImageProvided()) {
+      return false;
+    }
+
+    if (this.imageKey === this.fallbackImageKey) {
+      this.imageLoadingFailedOrDefault = true;
+      return false;
+    }
+
+    if (!this.imageKey || this.imageKey.trim() === '') {
+      this.imageLoadingFailedOrDefault = true;
+      console.warn('[Image element]: Image key is not provided.');
+      return false;
+    }
+
+    return true;
+  }
+
+  private isImageProvided(): boolean {
+    return this.prioritizedImageContent != null;
+  }
+
+  private overwriteDisplayedImageIfProvided() {
+    if (this.prioritizedImageContent) {
+      this.displayedImage = this.prioritizedImageContent;
+      this.imageLoadingFailedOrDefault = false;
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges) {
+    if ((changes.prioritizedImageContent && !changes.prioritizedImageContent.isFirstChange())
+      || (changes.preventImageLoading && !changes.preventImageLoading.isFirstChange())) {
+      this.overwriteDisplayedImageIfProvided();
+
+      if (!this.isImageProvided()) {
+        this.loadImage();
+      }
+    }
+
     if (changes.imageKey && !changes.imageKey.isFirstChange()) {
       this.loadImage();
-    } else if (changes.isClickable || changes.isAssetCardStyling) {
+    }
+
+    if (changes.isClickable || changes.isAssetCardStyling) {
       this.initStyleClasses();
     }
   }
