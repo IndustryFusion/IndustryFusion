@@ -15,43 +15,27 @@
 
 @import "abstract/variables";
 
-.field-dialog {
-  .field-dialog-footer {
-    margin-top: 8.1%;
-    margin-bottom: 5%;
-    text-align: right;
+
+.subsystem-grid {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  margin-top: -2rem;
+  margin-bottom: -2rem;
+
+  .upper {
+    width: 10px;
+    height: 50%;
+    border-bottom: 1px solid $middle-grey;
+    border-left: 1px solid $middle-grey;
   }
 
-  .field-dialog-inputs {
-    width: 82.0%;
+  .lower {
+    border-left: 1px solid $middle-grey;
+    height: 50%;
   }
 
-  .input-div {
-    display: grid;
-    padding-bottom: 24px;
-  }
-
-  .dialog-grid {
-    display: inline-flex;
-  }
-
-  .dialog-grid-col {
-    padding-left: 35px;
-  }
-
-  .trash-button {
-    padding-left: 15px;
-    padding-right: 5px;
-  }
-
-  ::ng-deep .if-trash-button {
-    max-height: 45px !important;
-    max-width: 45px !important;
-  }
-
-  ::ng-deep .button-create {
-    height: 45px !important;
-    width: 45px !important;
-    padding: 8px 16px !important;
+  .last-element {
+    border: unset;
   }
 }

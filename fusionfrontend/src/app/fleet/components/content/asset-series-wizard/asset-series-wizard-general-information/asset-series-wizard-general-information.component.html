@@ -26,7 +26,7 @@ under the License.
             name="assetTypeTemplate"
             placeholder="{{ 'APP.FLEET.ASSET_SERIES_WIZARD.GENERAL_INFORMATION.SELECT_ASSET_TYPE_TEMPLATE_PLACEHOLDER' | translate }}"
             formControlName="assetTypeTemplateId"
-            (ngModelChange)="updateTypeTemplate.emit($event)">
+            (ngModelChange)="onSelectAssetTypeTemplate($event)">
           </p-dropdown>
         </div>
 
@@ -55,8 +55,10 @@ under the License.
         <i class="if-icon-help"></i>
         <span class="if-hint"> {{ 'APP.FLEET.ASSET_SERIES_WIZARD.GENERAL_INFORMATION.HELP_TEXT' | translate }}</span>
         <div class="info-display-preview">
-          <img *ngIf="assetSeriesImage != null" [src]="assetSeriesImage" alt="asset-series-symbol">
-          <img *ngIf="assetSeriesImage == null" src="assets/img/{{DEFAULT_ASSET_IMAGE_KEY}}" alt="asset-series-symbol">
+          <app-image [imageKey]="assetSeriesForm.get('imageKey').value"
+                     [prioritizedImageContent]="assetSeriesImage" [preventImageLoading]="wasImageUploaded"
+                     [styleType]="ImageStyleType.WIZARD"
+                     [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET_SERIES')"></app-image>
           <div>
             <span class="wizard-icon-title">{{ assetSeriesForm?.get('name')?.value }}</span>
             <span>{{ relatedAssetType?.name }}</span>

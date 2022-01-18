@@ -67,7 +67,7 @@ export class AssetWizardSharedMetricsComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private fieldQuery: FieldQuery,
-              public translation: TranslateService,
+              public translate: TranslateService,
               private quantityTypeQuery: QuantityTypeQuery) {
   }
 

@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AssetSeriesDetails } from '../../../../../core/store/asset-series-details/asset-series-details.model';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
@@ -25,23 +25,21 @@ import { Location } from '@angular/common';
 import { AssetSeriesDetailsResolver } from '../../../../../core/resolvers/asset-series-details.resolver';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
 import { AssetSeriesDetailMenuService } from '../../../../../core/services/menu/asset-series-detail-menu.service';
-import { ImageService } from '../../../../../core/services/api/storage/image.service';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-series-details-info',
   templateUrl: './asset-series-details-info.component.html',
   styleUrls: ['./asset-series-details-info.component.scss']
 })
-export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
+export class AssetSeriesDetailsInfoComponent implements OnInit {
 
   @Input()
   assetSeries: AssetSeriesDetails;
 
-  assetSeriesIdOfImage: ID;
-  assetSeriesImage: string;
-  prevImageKey: string;
-
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE];
+  ImageStyleType = ImageStyleType;
 
   constructor(private router: Router,
               private routingLocation: Location,
@@ -50,30 +48,11 @@ export class AssetSeriesDetailsInfoComponent implements OnInit, OnChanges {
               private assetSeriesService: AssetSeriesService,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
               private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-              private imageService: ImageService,
-              private companyQuery: CompanyQuery) {
+              private companyQuery: CompanyQuery,
+              public translate: TranslateService) {
   }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.assetSeries) {
-      this.loadImageForChangedAssetSeries();
-    }
-  }
-
-  private loadImageForChangedAssetSeries() {
-    if (this.assetSeries
-      && (this.assetSeries.id !== this.assetSeriesIdOfImage || this.assetSeries.imageKey !== this.prevImageKey)) {
-      this.assetSeriesIdOfImage = this.assetSeries.id;
-      this.prevImageKey = this.assetSeries.imageKey;
-
-      const companyId = this.companyQuery.getActiveId();
-      this.imageService.getImageAsUriSchemeString(companyId, this.assetSeries.imageKey).subscribe(imageText => {
-        this.assetSeriesImage = imageText;
-      });
-    }
   }
 
   openCreateWizard() {

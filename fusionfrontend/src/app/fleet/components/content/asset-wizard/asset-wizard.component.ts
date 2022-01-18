@@ -57,7 +57,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
 
   public assetForm: FormGroup;
   public asset: Asset;
-  public assetImageKeyBeforeEditing: string;
+  public initialAssetImageKey: string;
   public assetImage: string = null;
   public relatedAssetSeriesId: ID = null;
   public relatedAssetSeries: AssetSeries = null;
@@ -143,7 +143,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     this.type = this.asset ? DialogType.EDIT : DialogType.CREATE;
     this.isAssetSeriesLocked = this.relatedAssetSeriesId != null || this.type === DialogType.EDIT;
 
-    this.assetImageKeyBeforeEditing = this.type === DialogType.CREATE ? ImageService.DEFAULT_ASSET_IMAGE_KEY : this.asset.imageKey;
+    this.initialAssetImageKey = this.type === DialogType.CREATE ? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY : this.asset.imageKey;
   }
 
   private createAssetForm() {
@@ -169,7 +169,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
       manualKey: [null, WizardHelper.maxTextLengthValidator],
       videoKey: [null, WizardHelper.maxTextLengthValidator],
-      imageKey: [ImageService.DEFAULT_ASSET_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
+      imageKey: [ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });
 
@@ -185,7 +185,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   private initialUpdateOfAssetAndRelations() {
     if (this.isAssetSeriesLocked) {
       if (this.type === DialogType.CREATE) {
-        this.initFromAssetSeries(this.relatedAssetSeriesId);
+        this.prefillFormFromAssetSeries(this.relatedAssetSeriesId);
+        this.initialAssetImageKey = this.assetForm.get('imageKey').value;
       }
       else if (this.type === DialogType.EDIT) {
         if (!this.asset.room && this.asset.roomId) {
@@ -194,7 +195,6 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
         }
         this.resolveFieldInstancesOfAsset();
         this.updateRelatedObjects(this.assetSeriesQuery.getEntity(this.asset.assetSeriesId));
-        this.loadAssetImage();
       }
     }
   }
@@ -206,31 +206,18 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadAssetImage() {
-    if (this.asset) {
-      this.imageService.getImageAsUriSchemeString(this.companyId, this.asset.imageKey).subscribe(imageText => {
-        this.assetImage = imageText;
-      });
-    }
-  }
-
-  private initFromAssetSeries(assetSeriesId: ID) {
-    this.prefillFormFromAssetSeries(assetSeriesId);
-    this.loadAssetImageFromAssetSeries();
-  }
-
   private prefillFormFromAssetSeries(assetSeriesId: ID): void {
     const assetSeries = this.assetSeriesQuery.getEntity(assetSeriesId);
     if (assetSeries) {
       this.updateRelatedObjects(assetSeries);
-      this.assetForm.get('name')?.setValue(assetSeries.name);
-      this.assetForm.get('description')?.setValue(assetSeries.description);
-      this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
-      this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
-      this.assetForm.get('manualKey')?.setValue(assetSeries.manualKey);
-      this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey);
-      this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
-      this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
+      this.assetForm.get('name').setValue(assetSeries.name);
+      this.assetForm.get('description').setValue(assetSeries.description);
+      this.assetForm.get('ceCertified').setValue(assetSeries.ceCertified);
+      this.assetForm.get('protectionClass').setValue(assetSeries.protectionClass);
+      this.assetForm.get('manualKey').setValue(assetSeries.manualKey);
+      this.assetForm.get('imageKey').setValue(assetSeries.imageKey);
+      this.assetForm.get('videoKey').setValue(assetSeries.videoKey);
+      this.assetForm.get('connectionString').setValue(assetSeries.connectivitySettings.connectionString);
     } else {
       console.warn('[Asset wizard]: Related asset series not found', assetSeriesId);
     }
@@ -252,12 +239,6 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadAssetImageFromAssetSeries() {
-    this.imageService.getImageAsUriSchemeString(this.companyId, this.relatedAssetSeries.imageKey).subscribe(imageText => {
-      this.assetImage = imageText;
-    });
-  }
-
   onStepChange(step: number) {
     if (this.step === AssetWizardStep.GENERAL_INFORMATION && this.type === DialogType.CREATE) {
       this.initAssetDraftAndUpdateForm(step);
@@ -272,7 +253,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
         this.asset = asset;
         this.asset.name = this.assetForm.get('name').value;
         this.asset.description = this.assetForm.get('description').value;
-        this.asset.imageKey = this.assetForm.get('imageKey').value;
+        this.asset.imageKey = this.assetForm.get('imageKey').value ?? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
         this.createAssetForm();
         this.step = step;
       }
@@ -281,7 +262,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
 
   onChangeAssetSeries(assetSeriesId: ID): void {
     if (!this.isAssetSeriesLocked) {
-      this.initFromAssetSeries(assetSeriesId);
+      this.prefillFormFromAssetSeries(assetSeriesId);
     }
   }
 
@@ -352,7 +333,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   private deleteUploadedImageIfNotDefault() {
     if (this.assetImage) {
       this.imageService.deleteImageIfNotDefaultNorParent(this.companyId, this.assetForm.get('imageKey').value,
-        this.assetImageKeyBeforeEditing, this.relatedAssetSeries.imageKey).subscribe();
+        this.initialAssetImageKey, this.relatedAssetSeries.imageKey).subscribe();
     }
   }
 

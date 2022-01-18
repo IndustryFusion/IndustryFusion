@@ -15,10 +15,6 @@
 
 @import "abstract/variables";
 @import "base/typography";
-@import "components/labels";
-
-.content {
-}
 
 :host ::ng-deep .if-wizard-wrapper {
   overflow: inherit !important;

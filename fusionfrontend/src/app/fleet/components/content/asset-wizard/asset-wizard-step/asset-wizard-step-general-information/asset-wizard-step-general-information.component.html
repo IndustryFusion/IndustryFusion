@@ -52,8 +52,10 @@ under the License.
           <i class="if-icon-help"></i>
           <span class="if-hint" > {{ 'APP.FLEET.ASSET_WIZARD.STEP.GENERAL_INFORMATION.HELP_TEXT' | translate }}</span>
           <div class="info-display-preview">
-            <img *ngIf="assetImage != null" [src]="assetImage" alt="asset-symbol">
-            <img *ngIf="assetImage == null" src="assets/img/{{DEFAULT_ASSET_IMAGE_KEY}}" alt="asset-symbol">
+            <app-image [imageKey]="assetForm.get('imageKey').value"
+                       [prioritizedImageContent]="assetImage" [preventImageLoading]="wasImageUploaded"
+                       [styleType]="ImageStyleType.WIZARD"
+                       [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"></app-image>
             <div>
               <span class="wizard-icon-title">{{ assetForm.get('name')?.value }}</span>
               <span class="if-detail-page-label">{{ relatedAssetSeries?.name }}</span>

@@ -14,9 +14,9 @@
  */
 
 @import 'abstract/variables';
-@import 'components/labels';
+@import "base/typography";
 
-.if-badge{
+.if-badge {
   display: inline-flex;
   vertical-align: middle;
   align-items: center;
@@ -34,7 +34,7 @@
   color: #fff;
 }
 
-.if-badge-active{
+.if-badge-active {
   background: $status-active;
 }
 .wrapper {
