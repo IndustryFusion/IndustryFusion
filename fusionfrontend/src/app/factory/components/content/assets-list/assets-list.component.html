@@ -17,13 +17,13 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ treeData?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <div class="filter-btn-div">
+    <div class="inner-button">
       <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetsDetailsWithFields"
                         [tableFilters]="tableFilters" [statusesWithAssetId]="factoryAssetStatuses"
                         class="filter-btn">
       </app-table-filter>
     </div>
-    <app-create-button (createItem)="showOnboardDialog()" class="create-btn"
+    <app-create-button (createItem)="showOnboardDialog()" class="outer-button"
                        text="{{ 'APP.FACTORY.ASSETS_LIST.ONBOARD_NEW_ASSET' | translate }}"></app-create-button>
   </div>
 </div>

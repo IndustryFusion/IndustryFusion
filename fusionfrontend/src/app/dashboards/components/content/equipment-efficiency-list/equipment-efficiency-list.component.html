@@ -25,12 +25,12 @@ under the License.
       </div>
     </div>
     <div class="p-grid">
-      <div class="filter-btn-div">
+      <div class="inner-button">
         <app-table-group-by [fields]="fields" [assetsToBeGrouped]="factoryAssetDetailsWithFields"
                             (groupedItems)="groupAssets($event)">
         </app-table-group-by>
       </div>
-      <div class="single-filter-btn-div">
+      <div class="inner-button">
         <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                           (filteredItems)="filterAssets($event)">
         </app-table-filter>

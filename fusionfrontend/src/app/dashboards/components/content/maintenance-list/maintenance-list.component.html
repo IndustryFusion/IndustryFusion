@@ -1,7 +1,7 @@
 <div>
   <div class="p-grid p-jc-between header-line">
     <h3 class="table-header">{{ 'APP.DASHBOARDS.MAINTENANCE_LIST.TABLE_HEADER' | translate }}</h3>
-    <div class="single-filter-btn-div">
+    <div class="single-outer-button">
       <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
                         (filteredItems)="filterAssets($event)">
       </app-table-filter>

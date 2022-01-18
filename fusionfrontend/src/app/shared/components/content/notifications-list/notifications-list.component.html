@@ -25,7 +25,7 @@ under the License.
                        [(ngModel)]="state"
                        (ngModelChange)="onChangeTab()">
       </p-selectButton>
-      <div class="single-filter-btn-div">
+      <div class="single-outer-button">
         <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="allNotifications"
                          (filteredItems)="filterNotifications($event)">
         </app-table-filter>
