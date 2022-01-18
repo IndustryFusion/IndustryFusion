@@ -47,30 +47,24 @@
   }
 }
 
-.dashboardFilterPanel {
+.smallOverlayPanel  {
   .p-overlaypanel {
-      border-radius: 8px;
-      width: 500px;
+    border-radius: 8px;
+    width: 260px;
   }
 }
 
-.searchPanel {
+.mediumOverlayPanel  {
   .p-overlaypanel {
     border-radius: 8px;
     width: 330px;
   }
 }
 
-.filterPanel {
+.largeOverlayPanel {
   .p-overlaypanel {
     border-radius: 8px;
     width: 500px;
   }
-  .smallFilterPanel {
-    .p-overlaypanel {
-      width: 330px;
-      border-radius: 8px;
-    }
-  }
-
 }
+
