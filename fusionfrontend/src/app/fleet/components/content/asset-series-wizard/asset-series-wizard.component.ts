@@ -33,7 +33,7 @@ import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-ser
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { AssetQuery } from '../../../../core/store/asset/asset.query';
 import { AssetService } from '../../../../core/store/asset/asset.service';
 import { take } from 'rxjs/operators';
@@ -144,8 +144,8 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
       description: ['', WizardHelper.maxTextLengthValidator],
       ceCertified: [null, Validators.required],
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
-      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
-      videoUrl: [null, WizardHelper.maxTextLengthValidator],
+      manualKey: [null, WizardHelper.maxTextLengthValidator],
+      videoKey: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [null, WizardHelper.maxTextLengthValidator],
       assetTypeTemplateId: [{ value: null, disabled: this.type === DialogType.EDIT }, Validators.required],
       companyId: [null, Validators.required],

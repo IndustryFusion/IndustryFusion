@@ -40,6 +40,7 @@ import { Room } from '../../../../../core/store/room/room.model';
 import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { FieldInstanceDetailsResolver } from '../../../../../core/resolvers/field-instance-details.resolver';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
+import { MediaObjectService } from '../../../../../core/services/api/storage/media-object.service';
 
 
 @Component({
@@ -79,24 +80,6 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     private fleetComposedQuery: FleetComposedQuery,
     private assetOnboardingService: AssetOnboardingService,
   ) {
-  }
-
-  private static downloadFile(fileContent: string, fileName: string) {
-    const blob = new Blob([fileContent], { type: 'text/yaml' });
-
-    if (window.navigator.msSaveOrOpenBlob) {
-      // modern way
-      window.navigator.msSaveBlob(blob, fileName);
-    } else {
-      // workaround
-      const anchor = window.document.createElement('a');
-      anchor.href = window.URL.createObjectURL(blob);
-      anchor.download = fileName;
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      window.URL.revokeObjectURL(anchor.href);
-    }
   }
 
   ngOnInit() {
@@ -173,7 +156,8 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     this.assetWithFields$.subscribe(asset => {
         this.fleetComposedQuery.joinAssetAndFieldInstanceDetails(asset).subscribe(assetWithField =>
           this.assetOnboardingService.createYamlFile(assetWithField, this.activatedRoute)
-            .subscribe(fileContent => AssetSeriesAssetDigitalNameplateComponent.downloadFile(fileContent, 'application.yaml')));
+            .subscribe(fileContent => MediaObjectService
+              .downloadFileContent(fileContent, 'application.yaml', 'text/yaml')));
       }
     );
   }

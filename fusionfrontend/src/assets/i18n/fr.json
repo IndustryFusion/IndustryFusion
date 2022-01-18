@@ -572,7 +572,7 @@
 					"WARNING_LABEL": "Les métriques ne peuvent pas être supprimées car les actifs de cette série d'actifs existent déjà."
 				},
 				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
-					"ASSET_HANDBOOK": "Manuel des actifs",
+					"ASSET_MANUAL": "Manuel des actifs",
 					"ASSET_VIDEO": "Vidéo de l'actif",
 					"CE_CERTIFICATION": "Certification CE",
 					"CONNECTION_STRING": "Chaîne de connexion",
@@ -629,7 +629,7 @@
 						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Personnaliser les paramètres et les seuils"
 					},
 					"NAMEPLATE": {
-						"ASSET_HANDBOOK": "Manuel des actifs",
+						"ASSET_MANUAL": "Manuel des actifs",
 						"ASSET_VIDEO": "Vidéo de l'actif",
 						"CE_CERTIFICATION": "Certification CE",
 						"CONNECTION_STRING": "Chaîne de connexion",

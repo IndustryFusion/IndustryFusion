@@ -24,7 +24,7 @@ import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 
 @Component({
   selector: 'app-asset-card',

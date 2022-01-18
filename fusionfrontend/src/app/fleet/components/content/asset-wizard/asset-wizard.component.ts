@@ -41,10 +41,12 @@ import { CountryResolver } from '../../../../core/resolvers/country.resolver';
 import { FleetAssetDetailsResolver } from '../../../../core/resolvers/fleet-asset-details.resolver';
 import { MessageService } from 'primeng/api';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { FieldInstanceResolver } from '../../../../core/resolvers/field-instance.resolver';
 import { RoomQuery } from '../../../../core/store/room/room.query';
 import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
+import { ManualService } from '../../../../core/services/api/storage/manual.service';
+import { VideoService } from '../../../../core/services/api/storage/video.service';
 
 @Component({
   selector: 'app-asset-wizard',
@@ -99,6 +101,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
               private config: DynamicDialogConfig,
               private ref: DynamicDialogRef,
               private imageService: ImageService,
+              private manualService: ManualService,
+              private videoService: VideoService,
               private messageService: MessageService) {
     this.resolveWizard();
   }
@@ -163,8 +167,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       constructionDate: [null, Validators.required],
       installationDate: [null],
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
-      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
-      videoUrl: [null, WizardHelper.maxTextLengthValidator],
+      manualKey: [null, WizardHelper.maxTextLengthValidator],
+      videoKey: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [ImageService.DEFAULT_ASSET_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });
@@ -223,9 +227,9 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       this.assetForm.get('description')?.setValue(assetSeries.description);
       this.assetForm.get('ceCertified')?.setValue(assetSeries.ceCertified);
       this.assetForm.get('protectionClass')?.setValue(assetSeries.protectionClass);
-      this.assetForm.get('handbookUrl')?.setValue(assetSeries.handbookUrl);
+      this.assetForm.get('manualKey')?.setValue(assetSeries.manualKey);
       this.assetForm.get('imageKey')?.setValue(assetSeries.imageKey);
-      this.assetForm.get('videoUrl')?.setValue(assetSeries.videoUrl);
+      this.assetForm.get('videoKey')?.setValue(assetSeries.videoKey);
       this.assetForm.get('connectionString')?.setValue(assetSeries.connectivitySettings.connectionString);
     } else {
       console.warn('[Asset wizard]: Related asset series not found', assetSeriesId);
@@ -339,6 +343,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.ref) {
       this.deleteUploadedImageIfNotDefault();
+      this.deleteUploadedManualIfNotDefault();
+      this.deleteUploadedVideoIfNotDefault();
       this.ref.close();
     }
   }
@@ -347,6 +353,20 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     if (this.assetImage) {
       this.imageService.deleteImageIfNotDefaultNorParent(this.companyId, this.assetForm.get('imageKey').value,
         this.assetImageKeyBeforeEditing, this.relatedAssetSeries.imageKey).subscribe();
+    }
+  }
+
+  private deleteUploadedManualIfNotDefault() {
+    if (ManualService.isManualUploaded(this.assetForm?.get('manualKey').value)) {
+      this.manualService.deleteManualIfNotOfParent(this.companyId, this.assetForm.get('manualKey').value,
+        this.relatedAssetSeries.manualKey).subscribe();
+    }
+  }
+
+  private deleteUploadedVideoIfNotDefault() {
+    if (VideoService.isVideoUploaded(this.assetForm?.get('videoKey').value)) {
+      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.assetForm.get('videoKey').value,
+        this.relatedAssetSeries.manualKey).subscribe();
     }
   }
 }

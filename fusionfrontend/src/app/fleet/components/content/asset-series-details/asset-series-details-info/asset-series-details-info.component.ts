@@ -25,7 +25,7 @@ import { Location } from '@angular/common';
 import { AssetSeriesDetailsResolver } from '../../../../../core/resolvers/asset-series-details.resolver';
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
 import { AssetSeriesDetailMenuService } from '../../../../../core/services/menu/asset-series-detail-menu.service';
-import { ImageService } from '../../../../../core/services/api/image.service';
+import { ImageService } from '../../../../../core/services/api/storage/image.service';
 
 @Component({
   selector: 'app-asset-series-details-info',

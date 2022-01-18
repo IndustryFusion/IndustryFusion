@@ -17,16 +17,17 @@ under the License.
     <div class="caption">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.DIGITAL_NAMEPLATE' | translate }}</div>
     <div class="flexbox"></div>
     <div class="card-button-box">
-      <button (click)="openExternalUrl(asset.handbookUrl)" *ngIf="(asset$ | async) as asset"
-              [disabled]="!asset?.handbookUrl"
-              class="card-button">
+      <button  *ngIf="(asset$ | async) as asset" class="card-button"
+               [disabled]="!asset?.manualKey"
+               (click)="openExternalUrlOrDownload(asset.manualKey, MediaObjectType.MANUALS)">
         <fa-icon [icon]="manualIcon" class="fa-fw"></fa-icon>
         {{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.MANUAL' | translate }}
       </button>
     </div>
     <div class="card-button-box">
-      <button (click)="openExternalUrl(asset.videoUrl)" *ngIf="(asset$ | async) as asset" [disabled]="!asset?.videoUrl"
-              class="card-button">
+      <button *ngIf="(asset$ | async) as asset" class="card-button"
+              [disabled]="!asset?.videoKey"
+              (click)="openExternalUrlOrDownload(asset.videoKey, MediaObjectType.VIDEOS)">
         <fa-icon [icon]="videoIcon" class="fa-fw"></fa-icon>
         {{ 'APP.FACTORY.PAGES.ASSET_DETAILS.DIGITAL_NAMEPLATE.VIDEO' | translate }}
       </button>

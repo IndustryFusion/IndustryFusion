@@ -572,7 +572,7 @@
 					"WARNING_LABEL": "Metriken können nicht gelöscht werden, da unter dieser Asset-Baureihe bereits Assets erstellt wurden."
 				},
 				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
-					"ASSET_HANDBOOK": "PDF-Handbuch",
+					"ASSET_MANUAL": "PDF-Handbuch",
 					"ASSET_VIDEO": "Video",
 					"CE_CERTIFICATION": "CE-Zertifizierung",
 					"CONNECTION_STRING": "Verbindungs-String",
@@ -629,7 +629,7 @@
 						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Metriken anpassen"
 					},
 					"NAMEPLATE": {
-						"ASSET_HANDBOOK": "PDF-Handbuch",
+						"ASSET_MANUAL": "PDF-Handbuch",
 						"ASSET_VIDEO": "Video",
 						"CE_CERTIFICATION": "CE-Zertifizierung",
 						"CONNECTION_STRING": "Verbindungs-String",

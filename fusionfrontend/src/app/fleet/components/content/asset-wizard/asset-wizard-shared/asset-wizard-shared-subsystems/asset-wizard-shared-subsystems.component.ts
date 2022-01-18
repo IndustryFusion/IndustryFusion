@@ -20,7 +20,7 @@ import { FleetAssetDetails } from '../../../../../../core/store/fleet-asset-deta
 import { FleetAssetDetailsQuery } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
 import { ID } from '@datorama/akita';
 import { CompanyQuery } from '../../../../../../core/store/company/company.query';
-import { ImageService } from '../../../../../../core/services/api/image.service';
+import { ImageService } from '../../../../../../core/services/api/storage/image.service';
 
 @Component({
   selector: 'app-asset-wizard-shared-subsystems',

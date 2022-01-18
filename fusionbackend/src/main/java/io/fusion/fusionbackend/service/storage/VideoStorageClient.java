@@ -23,34 +23,34 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Base64;
 import java.util.Locale;
 
-public class ImageStorageClient {
-    private static final Long MAX_FILE_SIZE_MB = 3L;
-    private static final String MEDIA_TYPE_PREFIX = "image/";
+public class VideoStorageClient {
+    private static final Long MAX_FILE_SIZE_MB = 1024L;
+    private static final String MEDIA_TYPE_PREFIX = "video/";
 
     private final ObjectStorageBaseClient client;
 
-    public ImageStorageClient(@NotNull ObjectStorageBaseClient client) {
+    public VideoStorageClient(@NotNull ObjectStorageBaseClient client) {
         this.client = client;
         client.setMaxFileSize(MAX_FILE_SIZE_MB);
     }
 
-    public MediaObjectDto getImage(@NotNull final String uniqueImageKey) throws ResourceNotFoundException {
-        if (isContentTypeInvalid(getContentType(uniqueImageKey))) {
+    public MediaObjectDto getVideo(@NotNull final String uniqueVideoKey) throws ResourceNotFoundException {
+        if (isContentTypeInvalid(getContentType(uniqueVideoKey))) {
             throw new IllegalArgumentException("Content type is invalid");
         }
 
-        byte[] imageContent = client.getFile(uniqueImageKey);
+        byte[] videoContent = client.getFile(uniqueVideoKey);
 
         try {
-            String imageContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(imageContent);
+            String videoContentBase64 = Base64.getEncoder().withoutPadding().encodeToString(videoContent);
 
-            String contentType = getContentType(uniqueImageKey);
+            String contentType = getContentType(uniqueVideoKey);
             return MediaObjectDto.builder()
                     .companyId(client.getConfig().companyId)
-                    .fileKey(uniqueImageKey)
-                    .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueImageKey))
-                    .contentBase64(imageContentBase64)
-                    .fileSize(BaseClient.getFileSizeFrom64Based(imageContentBase64))
+                    .fileKey(uniqueVideoKey)
+                    .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueVideoKey))
+                    .contentBase64(videoContentBase64)
+                    .fileSize(BaseClient.getFileSizeFrom64Based(videoContentBase64))
                     .contentType(contentType)
                     .build();
         } catch (Exception e) {
@@ -60,31 +60,26 @@ public class ImageStorageClient {
     }
 
     private boolean isContentTypeInvalid(@NotNull final String contentTypeLowerCase) {
-        return !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "png")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "jpeg")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "svg+xml")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "bmp")
-                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "tiff");
+        return !contentTypeLowerCase.startsWith(MEDIA_TYPE_PREFIX);
     }
 
     private String getContentType(final String fileKey) {
         String fileExtension = BaseClient.getFileExtension(fileKey).toLowerCase(Locale.ROOT);
-        fileExtension = fileExtension.replace("jpg", "jpeg").replace("svg", "svg+xml");
         return MEDIA_TYPE_PREFIX + fileExtension;
     }
 
-    public MediaObjectDto uploadImage(@NotNull MediaObjectDto imageDto) throws ExternalApiException  {
+    public MediaObjectDto uploadVideo(@NotNull MediaObjectDto manualDto) throws ExternalApiException  {
 
-        final String contentType = imageDto.getContentType().toLowerCase(Locale.ROOT).replace("jpg", "jpeg");
+        final String contentType = manualDto.getContentType().toLowerCase(Locale.ROOT);
         if (isContentTypeInvalid(contentType)) {
             throw new IllegalArgumentException("Content type is invalid");
         }
 
-        imageDto.setContentType(contentType);
-        return client.uploadFile(imageDto);
+        manualDto.setContentType(contentType);
+        return client.uploadFile(manualDto);
     }
 
-    public void deleteImageErrorIfNotExist(@NotNull final String imageKey) {
-        client.deleteFileErrorIfNotExist(imageKey);
+    public void deleteVideoErrorIfNotExist(@NotNull final String videoKey) {
+        client.deleteFileErrorIfNotExist(videoKey);
     }
 }
