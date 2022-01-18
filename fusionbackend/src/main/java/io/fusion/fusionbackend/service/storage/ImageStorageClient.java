@@ -25,6 +25,7 @@ import java.util.Locale;
 
 public class ImageStorageClient {
     private static final Long MAX_FILE_SIZE_MB = 3L;
+    private static final String MEDIA_TYPE_PREFIX = "image/";
 
     private final ObjectStorageBaseClient client;
 
@@ -48,7 +49,7 @@ public class ImageStorageClient {
                     .companyId(client.getConfig().companyId)
                     .fileKey(uniqueImageKey)
                     .filename(BaseClient.getFileNameFromUniqueFileKey(uniqueImageKey))
-                    .contentBase64("data:" + contentType + ";base64," + imageContentBase64)
+                    .contentBase64(imageContentBase64)
                     .fileSize(BaseClient.getFileSizeFrom64Based(imageContentBase64))
                     .contentType(contentType)
                     .build();
@@ -59,15 +60,17 @@ public class ImageStorageClient {
     }
 
     private boolean isContentTypeInvalid(@NotNull final String contentTypeLowerCase) {
-        return !contentTypeLowerCase.equals("image/png") && !contentTypeLowerCase.equals("image/jpeg")
-                && !contentTypeLowerCase.equals("image/svg+xml") && !contentTypeLowerCase.equals("image/bmp")
-                && !contentTypeLowerCase.equals("image/tiff");
+        return !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "png")
+                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "jpeg")
+                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "svg+xml")
+                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "bmp")
+                && !contentTypeLowerCase.equals(MEDIA_TYPE_PREFIX + "tiff");
     }
 
     private String getContentType(final String fileKey) {
         String fileExtension = BaseClient.getFileExtension(fileKey).toLowerCase(Locale.ROOT);
         fileExtension = fileExtension.replace("jpg", "jpeg").replace("svg", "svg+xml");
-        return "image/" + fileExtension;
+        return MEDIA_TYPE_PREFIX + fileExtension;
     }
 
     public MediaObjectDto uploadImage(@NotNull MediaObjectDto imageDto) throws ExternalApiException  {

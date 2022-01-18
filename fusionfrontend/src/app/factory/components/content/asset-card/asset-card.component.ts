@@ -24,7 +24,8 @@ import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageStyleType } from '../../../../shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-card',
@@ -48,28 +49,20 @@ export class AssetCardComponent implements OnInit, OnChanges {
   allMergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
 
-  assetImage: string;
+  ImageStyleType = ImageStyleType;
 
   constructor(
     private companyQuery: CompanyQuery,
     private oispService: OispService,
     private statusService: StatusService,
-    private imageService: ImageService,
-    private router: Router) {
+    private router: Router,
+    public translate: TranslateService) {
   }
 
   ngOnInit() {
     this.allMergedFields$ = this.oispService.getMergedFieldsByAssetWithFields(this.asset, environment.dataUpdateIntervalMs);
     this.updateMergedFields();
     this.status$ = this.statusService.getStatusFromMergedFields(this.currentMergedFields$);
-    this.loadImage();
-  }
-
-  private loadImage() {
-    const companyId = this.companyQuery.getActiveId();
-    this.imageService.getImageAsUriSchemeString(companyId, this.asset.imageKey).subscribe(imageText => {
-      this.assetImage = imageText;
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

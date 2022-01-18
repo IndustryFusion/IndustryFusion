@@ -17,80 +17,43 @@
 @import 'base/typography';
 @import '../../pages/equipment-efficiency-page/equipment-efficiency-page.component.scss';
 
-.table-header-with-status-info {
-  margin-left: 68px;
-}
-
-.table-header {
-  font-size: $big-font-size;
-  font-weight: bold;
-  margin-top: 0 !important;
-  margin-left: 0 !important;
-}
-
 .efficiency-dashboard {
-  .manufacturer-icon {
-    display: flex;
-    width: 100% !important;
-    align-items: center;
+  .table-header-with-status-info {
+    margin-left: 68px;
+  }
 
-    img {
-      width: 2rem;
-      height: 2rem;
-      background: grey;
-      border-radius: 45px;
-      margin-right: 0.5rem;
+  h3.table-header {
+    font-size: $big-font-size;
+    font-weight: bold;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .notification-icons {
+    overflow: initial !important;
+    padding-top: -2px;
+
+    .notification-low {
+      color: $alert-low;
+    }
+
+    .notification-medium {
+      color: $alert-medium;
+    }
+
+    .notification-high {
+      color: $alert-high;
     }
   }
-}
 
-.subsystem-grid {
-  display: flex;
-  flex-direction: column;
-  margin-left: 15px;
-  margin-top: -2rem;
-  margin-bottom: -2rem;
-
-  .upper {
-    width: 10px;
-    height: 50%;
-    border-bottom: 1px solid $middle-grey;
-    border-left: 1px solid $middle-grey;
-  }
-
-  .lower {
-    border-left: 1px solid $middle-grey;
-    height: 50%;
-  }
-
-  .last-element {
-    border: unset;
+  .first-header-item {
+    padding-left: 3.9rem !important;
   }
 }
+
 
 :host ::ng-deep .p-treetable .p-treetable-thead > tr > th {
   &:first-child {
     padding-left: 70px;
   }
-}
-
-.notification-icons {
-  overflow: initial !important;
-  padding-top: -2px;
-
-  .notification-low {
-    color: $alert-low;
-  }
-
-  .notification-medium {
-    color: $alert-medium;
-  }
-
-  .notification-high {
-    color: $alert-high;
-  }
-}
-
-.first-header-item {
-  padding-left: 3.9rem !important;
 }

@@ -19,8 +19,8 @@ import { Asset } from '../../../../../../core/store/asset/asset.model';
 import { FleetAssetDetails } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
 import { FleetAssetDetailsQuery } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
 import { ID } from '@datorama/akita';
-import { CompanyQuery } from '../../../../../../core/store/company/company.query';
-import { ImageService } from '../../../../../../core/services/api/image.service';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-wizard-shared-subsystems',
@@ -37,10 +37,11 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
 
   subsystemFormArray: FormArray;
 
+  ImageStyleType = ImageStyleType;
+
   constructor(private formBuilder: FormBuilder,
-              private companyQuery: CompanyQuery,
-              private imageService: ImageService,
-              private fleetAssetDetailsQuery: FleetAssetDetailsQuery) {
+              private fleetAssetDetailsQuery: FleetAssetDetailsQuery,
+              public translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -70,23 +71,11 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
       name: [null, Validators.required],
       assetTypeName: [null, Validators.required],
       manufacturer: [null, Validators.required],
-      imageKey: [],
-      assetImage: [],
+      imageKey: []
     });
 
     subsystemGroup.patchValue(assetDetails);
     this.subsystemFormArray.push(subsystemGroup);
-
-    this.loadAssetImageToGroup(subsystemGroup);
-  }
-
-  private loadAssetImageToGroup(subsystemGroup: FormGroup) {
-    if (subsystemGroup && subsystemGroup.get('imageKey').value) {
-      const companyId = this.companyQuery.getActiveId();
-      this.imageService.getImageAsUriSchemeString(companyId, subsystemGroup.get('imageKey').value).subscribe(imageText => {
-        subsystemGroup.get('assetImage').setValue(imageText);
-      });
-    }
   }
 
   public removeSubsystem(subsystemGroup: AbstractControl): void {

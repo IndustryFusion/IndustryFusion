@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -24,13 +24,20 @@ import { StatusService } from 'src/app/core/services/logic/status.service';
 import { FieldDetails, FieldType } from 'src/app/core/store/field-details/field-details.model';
 import { OispDeviceQuery } from '../../../../../core/store/oisp/oisp-device/oisp-device.query';
 import { ID } from '@datorama/akita';
-import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import {
+  FactoryAssetDetailsWithFields
+} from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactoryAssetDetailsQuery } from '../../../../../core/store/factory-asset-details/factory-asset-details.query';
 import { faLayerGroup, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
 import { FactoryAssetDetailsResolver } from '../../../../../core/resolvers/factory-asset-details.resolver';
 import { FieldDataType } from '../../../../../core/store/field/field.model';
+import { MediaObjectType } from '../../../../../core/models/media-object.model';
+import { ManualService } from '../../../../../core/services/api/storage/manual.service';
+import { VideoService } from '../../../../../core/services/api/storage/video.service';
+import { CompanyQuery } from '../../../../../core/store/company/company.query';
+import { MediaObjectService } from '../../../../../core/services/api/storage/media-object.service';
 
 
 @Component({
@@ -39,7 +46,7 @@ import { FieldDataType } from '../../../../../core/store/field/field.model';
   styleUrls: ['./asset-digital-nameplate.component.scss']
 })
 
-export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
+export class AssetDigitalNameplateComponent implements OnInit {
 
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;
@@ -51,11 +58,19 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
   manualIcon = faLayerGroup;
   videoIcon = faPlayCircle;
   fieldDataTypes = FieldDataType;
+  MediaObjectType = MediaObjectType;
+
+  private static openExternalUrl(url: string): void {
+    window.open(url, '_blank');
+  }
 
   constructor(
     private oispService: OispService,
     private oispDeviceQuery: OispDeviceQuery,
+    private companyQuery: CompanyQuery,
     private statusService: StatusService,
+    private manualService: ManualService,
+    private videoService: VideoService,
     private factoryResolver: FactoryResolver,
     private activatedRoute: ActivatedRoute,
     private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
@@ -96,11 +111,35 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
+  openExternalUrlOrDownload(url: string, type: MediaObjectType) {
+    const isUploadedObject = type === MediaObjectType.VIDEOS ?
+      VideoService.isVideoUploaded(url) : ManualService.isManualUploaded(url);
+
+    if (isUploadedObject) {
+      this.downloadFile(url, type);
+    } else {
+      AssetDigitalNameplateComponent.openExternalUrl(url);
+    }
   }
 
-  openExternalUrl(url: string) {
-    window.open(url, '_blank');
+  private downloadFile(mediaObjectKey: string, type: MediaObjectType): void {
+    const companyId = this.companyQuery.getActiveId();
+    switch (type) {
+      case MediaObjectType.MANUALS:
+        this.manualService.getManual(companyId, mediaObjectKey).subscribe(manualObject => {
+          MediaObjectService.downloadMediaObject(manualObject);
+        });
+        break;
+
+      case MediaObjectType.VIDEOS:
+        this.videoService.getVideo(companyId, mediaObjectKey).subscribe(videoObject => {
+          MediaObjectService.downloadMediaObject(videoObject);
+        });
+        break;
+
+      default:
+        throw new Error('[asset]: Media object type not supported');
+    }
   }
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {

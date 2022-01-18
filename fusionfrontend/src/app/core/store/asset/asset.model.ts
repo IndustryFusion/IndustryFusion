@@ -38,8 +38,8 @@ export class Asset extends BaseEntity {
   serialNumber: string;
   constructionDate: Date;
   protectionClass: string;
-  handbookUrl: string;
-  videoUrl: string;
+  manualKey: string;
+  videoKey: string;
   installationDate: Date;
   imageKey: string;
   connectionString: string;

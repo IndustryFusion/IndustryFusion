@@ -15,6 +15,53 @@
 
 @import '../../asset-wizard.component';
 
+.upload-container {
+  display: flex;
+  border-radius: 10px;
+  padding: 0;
+
+  border: 2px solid $light-grey;
+
+  &:hover {
+    border: 2px solid $basic-grey !important;
+  }
+
+  &:focus, &.p-focus, &:focus-within {
+    border: 2px solid $highlighted !important;
+    box-shadow: none !important;
+  }
+
+  .p-inputtext {
+    border: none !important;
+  }
+
+  .upload-input {
+    width: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: none;
+  }
+
+  .upload-button-light {
+    display: flex;
+    background-size: contain;
+    justify-content: center;
+    align-items: center;
+
+    color: $basic-black;
+    background-color: $light-white;
+    cursor: pointer;
+
+    width: 2.8rem;
+    border-radius: 0 10px 10px 0;
+    border: none;
+
+    input {
+      display: none;
+    }
+  }
+}
+
 :host ::ng-deep .textarea-character-count {
   padding-right: 0 !important;
 }

@@ -31,4 +31,28 @@ export class MediaObject {
     this.fileSize = fileSize;
     this.filename = filename;
   }
+
+  public static getFilename(fileKey: string) {
+    const fileNameWithUuid = fileKey.split('/').pop();
+    const uuidLength = fileNameWithUuid.split('_')[0].length;
+    return fileNameWithUuid.substring(uuidLength + 1);
+  }
+
+  public static getUriSchemeString(mediaObject: MediaObject): string {
+    if (!mediaObject.contentBase64.startsWith('data')) {
+      return `data:${mediaObject.contentType};base64,${mediaObject.contentBase64}`;
+    }
+    return mediaObject.contentBase64;
+  }
+}
+
+export enum MediaObjectKeyPrefix {
+  ASSETS = 'assets',
+  ASSET_SERIES = 'assetseries'
+}
+
+export enum MediaObjectType {
+  IMAGES = 'images',
+  VIDEOS = 'videos',
+  MANUALS = 'manuals',
 }

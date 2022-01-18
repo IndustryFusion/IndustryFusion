@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   AssetModalMode,
   AssetModalType,
@@ -31,17 +31,15 @@ import { FactorySiteQuery } from '../../../../../core/store/factory-site/factory
 import { RoomQuery } from '../../../../../core/store/room/room.query';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ImageService } from '../../../../../core/services/api/image.service';
-import { CompanyQuery } from '../../../../../core/store/company/company.query';
-import { ID } from '@datorama/akita';
 import { TranslateService } from '@ngx-translate/core';
+import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 
 @Component({
   selector: 'app-asset-details-info',
   templateUrl: './asset-details-info.component.html',
   styleUrls: ['./asset-details-info.component.scss']
 })
-export class AssetDetailsInfoComponent implements OnInit, OnChanges {
+export class AssetDetailsInfoComponent implements OnInit {
 
   @Input()
   assetWithFields: FactoryAssetDetailsWithFields;
@@ -50,10 +48,8 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   factorySites: FactorySite[];
   rooms: Room[];
 
-  assetIdOfImage: ID;
-  assetImage: string;
-
   dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE];
+  ImageStyleType = ImageStyleType;
 
   constructor(private assetDetailMenuService: FactoryAssetDetailMenuService,
               private factoryResolver: FactoryResolver,
@@ -63,32 +59,13 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
               private roomQuery: RoomQuery,
               private router: Router,
               private routingLocation: Location,
-              private companyQuery: CompanyQuery,
-              private imageService: ImageService,
-              private translate: TranslateService) {
+              public translate: TranslateService) {
   }
 
   ngOnInit() {
     this.factoryResolver.factorySite$.subscribe(site => this.factorySite = site);
     this.factoryQuery.selectAll().subscribe(sites => this.factorySites = sites);
     this.roomQuery.selectAll().subscribe(rooms => this.rooms = rooms);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.assetWithFields) {
-      this.loadImageForChangedAsset();
-    }
-  }
-
-  private loadImageForChangedAsset() {
-    if (this.assetWithFields && this.assetWithFields.id !== this.assetIdOfImage) {
-      this.assetIdOfImage = this.assetWithFields.id;
-
-      const companyId = this.companyQuery.getActiveId();
-      this.imageService.getImageAsUriSchemeString(companyId, this.assetWithFields.imageKey).subscribe(imageText => {
-        this.assetImage = imageText;
-      });
-    }
   }
 
   openEditDialog() {

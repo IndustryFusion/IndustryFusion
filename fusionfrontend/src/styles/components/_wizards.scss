@@ -24,7 +24,6 @@
   overflow: auto;
 
   .timeline {
-  /*  margin-top: 1.3rem;*/
     align-self: center;
 
     .clr-timeline-step {
@@ -161,13 +160,6 @@
   .info-display-preview {
     display: flex;
     margin-top: 1.5rem;
-
-    img {
-      width: 5.2rem;
-      height: 5.2rem;
-      margin-top: 10px;
-      border-radius: 60px;
-    }
 
     div {
       display: flex;

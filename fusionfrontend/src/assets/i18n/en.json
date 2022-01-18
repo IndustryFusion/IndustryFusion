@@ -36,6 +36,11 @@
 					"TO": "to"
 				}
 			},
+      "IMAGE_PLACEHOLDER": {
+        "ASSET": "Image of asset",
+        "ASSET_SERIES": "Image of asset series",
+        "IMAGE": "Image"
+      },
 			"TERMS": {
 				"ACCURACY": "Accuracy",
 				"ASSET": "Asset",
@@ -572,7 +577,7 @@
 					"WARNING_LABEL": "Metrics can not be deleted as assets of this asset series already exist."
 				},
 				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
-					"ASSET_HANDBOOK": "Asset Handbook",
+					"ASSET_MANUAL": "Asset Manual",
 					"ASSET_VIDEO": "Asset Video",
 					"CE_CERTIFICATION": "CE Certification",
 					"CONNECTION_STRING": "Connection string",
@@ -629,7 +634,7 @@
 						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Customize Metrics & Thresholds"
 					},
 					"NAMEPLATE": {
-						"ASSET_HANDBOOK": "Asset Handbook",
+						"ASSET_MANUAL": "Asset Manual",
 						"ASSET_VIDEO": "Asset Video",
 						"CE_CERTIFICATION": "CE Certification",
 						"CONNECTION_STRING": "Connection String",

@@ -18,10 +18,9 @@ under the License.
         <label class="if-title clickable" (click)="goToDetails()">{{asset.name}}</label>
         <p class="description clickable" (click)="goToDetails()"> {{asset.description}}</p>
     </div>
-    <div class="card-img">
-        <img *ngIf="assetImage == null" class="clickable" src="assets/img/{{asset.imageKey}}" alt="image of asset" (click)="goToDetails()">
-        <img *ngIf="assetImage != null" class="clickable" [src]="assetImage" alt="image of asset" (click)="goToDetails()">
-    </div>
+    <app-image [imageKey]="asset.imageKey" [styleType]="ImageStyleType.CARD" [isClickable]="true"
+               [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"
+               (clickEvent)="goToDetails()"></app-image>
     <div class="card-block">
         <div class="card-title">
           <app-asset-status class="clickable" [assetWithFields]="asset" [showInline]="false" (click)="goToDetails()"></app-asset-status>

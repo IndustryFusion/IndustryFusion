@@ -14,7 +14,6 @@
  */
 
 @import 'abstract/variables';
-@import 'components/radiobuttons';
 
 .asset-img {
   .asset-image {
@@ -23,13 +22,6 @@
     border-radius: 60px;
     overflow: hidden;
   }
-}
-
-.if-radiobutton {
-  display: flex;
-  justify-content: flex-start;
-  margin-right: 5px;
-  align-items: center;
 }
 
 .fieldLabel {

@@ -53,8 +53,8 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .assetTypeTemplateId(EntityDtoMapper.getEntityId(entity.getAssetTypeTemplate()))
                 .ceCertified(entity.getCeCertified())
                 .protectionClass(entity.getProtectionClass())
-                .handbookUrl(entity.getHandbookUrl())
-                .videoUrl(entity.getVideoUrl())
+                .manualKey(entity.getManualKey())
+                .videoKey(entity.getVideoKey())
                 .fieldSourceIds(EntityDtoMapper.getSetOfEntityIds(entity.getFieldSources()))
                 .connectivitySettingsId(entity.getConnectivitySettings().getId())
                 .customScript(entity.getCustomScript())
@@ -100,8 +100,8 @@ public class AssetSeriesMapper implements EntityDtoMapper<AssetSeries, AssetSeri
                 .version(dto.getVersion())
                 .ceCertified(dto.getCeCertified())
                 .protectionClass(dto.getProtectionClass())
-                .handbookUrl(dto.getHandbookUrl())
-                .videoUrl(dto.getVideoUrl())
+                .manualKey(dto.getManualKey())
+                .videoKey(dto.getVideoKey())
                 .customScript(dto.getCustomScript())
                 .build();
 

@@ -54,6 +54,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
+import { ImageComponent } from './components/content/image/image.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -90,6 +91,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     EnumOptionsToStringPipe,
     EnumOptionToStringPipe,
     StatusFilterComponent,
+    ImageComponent,
   ],
   imports: [
     CommonModule,
@@ -124,7 +126,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
   ],
   exports: [
     CommonModule,
@@ -171,7 +173,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     EnumOptionsToStringPipe,
     EnumOptionToStringPipe,
     StatusFilterComponent,
-    TranslateModule
+    TranslateModule,
+    ImageComponent,
   ],
   providers: [
     MessageService,

@@ -33,7 +33,7 @@ import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-ser
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
-import { ImageService } from '../../../../core/services/api/image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { AssetQuery } from '../../../../core/store/asset/asset.query';
 import { AssetService } from '../../../../core/store/asset/asset.service';
 import { take } from 'rxjs/operators';
@@ -62,7 +62,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
   relatedAssetType: AssetType;
 
   assetSeriesImage: string = null;
-  assetSeriesImageKeyBeforeEditing: string;
+  initialAssetSeriesImageKey: string;
 
   AssetSeriesCreateSteps = AssetSeriesWizardStep;
 
@@ -104,21 +104,11 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     if (this.type === DialogType.EDIT) {
       this.assetSeriesService.getAssetSeries(this.companyId, assetSeriesId)
         .subscribe(assetSeries => {
-          this.assetSeriesImageKeyBeforeEditing = assetSeries.imageKey;
-          this.updateAssetSeries(assetSeries);
-          this.loadInitialImage();
+          this.initialAssetSeriesImageKey = assetSeries.imageKey;
+          this.initAssetSeries(assetSeries);
         });
     } else if (this.type === DialogType.CREATE) {
-      this.assetSeriesImageKeyBeforeEditing = ImageService.DEFAULT_ASSET_SERIES_IMAGE_KEY;
-    }
-  }
-
-  private loadInitialImage() {
-    if (this.assetSeries) {
-      const companyId = this.companyQuery.getActiveId();
-      this.imageService.getImageAsUriSchemeString(companyId, this.assetSeries.imageKey).subscribe(imageText => {
-        this.assetSeriesImage = imageText;
-      });
+      this.initialAssetSeriesImageKey = ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
     }
   }
 
@@ -144,8 +134,8 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
       description: ['', WizardHelper.maxTextLengthValidator],
       ceCertified: [null, Validators.required],
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
-      handbookUrl: [null, WizardHelper.maxTextLengthValidator],
-      videoUrl: [null, WizardHelper.maxTextLengthValidator],
+      manualKey: [null, WizardHelper.maxTextLengthValidator],
+      videoKey: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [null, WizardHelper.maxTextLengthValidator],
       assetTypeTemplateId: [{ value: null, disabled: this.type === DialogType.EDIT }, Validators.required],
       companyId: [null, Validators.required],
@@ -169,13 +159,13 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     if (this.assetSeriesImage) {
       const companyId = this.companyQuery.getActiveId();
       this.imageService.deleteImageIfNotDefault(companyId, this.assetSeriesForm.get('imageKey').value,
-        this.assetSeriesImageKeyBeforeEditing).subscribe();
+        this.initialAssetSeriesImageKey).subscribe();
     }
   }
 
   createAssetSeriesOfAssetTypeTemplate(assetTypeTemplateId: ID): void {
     this.assetSeriesService.initDraftFromAssetTypeTemplate(this.companyId, assetTypeTemplateId)
-      .subscribe(assetSeries => this.updateAssetSeries(assetSeries));
+      .subscribe(assetSeries => this.initAssetSeries(assetSeries));
   }
 
   nextStep(): void {
@@ -229,10 +219,11 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
   }
 
-  private updateAssetSeries(assetSeries: AssetSeries) {
+  private initAssetSeries(assetSeries: AssetSeries) {
     this.assetSeries = assetSeries;
     if (this.type === DialogType.CREATE) {
-      this.assetSeries.imageKey = this.assetSeriesForm.get('imageKey').value;
+      this.assetSeries.imageKey = this.assetSeriesForm.get('imageKey').value ?? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
+      this.initialAssetSeriesImageKey = this.assetSeries.imageKey;
     }
     this.createAssetSeriesFormGroup();
     this.updateRelatedObjects(assetSeries);
@@ -293,7 +284,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(assetsOfAssetSerie => {
       assetsOfAssetSerie.forEach(asset => {
-        const isAssetImageKeyDefaultOfAssetSeries = asset.imageKey === this.assetSeriesImageKeyBeforeEditing
+        const isAssetImageKeyDefaultOfAssetSeries = asset.imageKey === this.initialAssetSeriesImageKey
           && asset.imageKey !== this.assetSeries.imageKey;
 
         if (isAssetImageKeyDefaultOfAssetSeries) {

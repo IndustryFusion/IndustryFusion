@@ -29,7 +29,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
@@ -50,19 +50,22 @@ import java.util.stream.Collectors;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@NamedNativeQuery(
-        name = "Asset.findSubsystemCandidates",
-        query = "select * from asset where subsystem_parent_id is null"
-                + " and asset_series_id != ? and company_id = ? ",
-        resultClass = Asset.class)
+@NamedQuery(name = "Asset.findSubsystemCandidates",
+        query = "select a from Asset a where subsystem_parent_id is null "
+                + "and not (asset_series_id = :parentAssetSeriesId) and company_id = :companyId")
 public class Asset extends BaseAsset {
     protected UUID guid;
     protected Boolean ceCertified;
     protected String serialNumber;
     protected OffsetDateTime constructionDate;
     protected String protectionClass;
-    protected String handbookUrl;
-    protected String videoUrl;
+
+    /** Key to object storage or link to an external url. */
+    protected String manualKey;
+
+    /** Key to object storage or link to an external url. */
+    protected String videoKey;
+
     protected OffsetDateTime installationDate;
     /**
      * This connectionsString attribute is derived from the {@link ConnectivitySettings#getConnectionString()}.
@@ -88,7 +91,7 @@ public class Asset extends BaseAsset {
     @Builder.Default
     private Set<FieldInstance> fieldInstances = new LinkedHashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "subsystem_parent_id")
     @Builder.Default
     private Set<Asset> subsystems = new HashSet<>();
@@ -129,11 +132,11 @@ public class Asset extends BaseAsset {
         if (sourceAsset.getProtectionClass() != null) {
             setProtectionClass(sourceAsset.getProtectionClass());
         }
-        if (sourceAsset.getHandbookUrl() != null) {
-            setHandbookUrl(sourceAsset.getHandbookUrl());
+        if (sourceAsset.getManualKey() != null) {
+            setManualKey(sourceAsset.getManualKey());
         }
-        if (sourceAsset.getVideoUrl() != null) {
-            setVideoUrl(sourceAsset.getVideoUrl());
+        if (sourceAsset.getVideoKey() != null) {
+            setVideoKey(sourceAsset.getVideoKey());
         }
         if (sourceAsset.getInstallationDate() != null) {
             setInstallationDate(sourceAsset.getInstallationDate());
@@ -148,6 +151,10 @@ public class Asset extends BaseAsset {
             setConnectionString(sourceAsset.getConnectionString());
         }
 
+        copyFromFieldInstances(sourceAsset);
+    }
+
+    private void copyFromFieldInstances(final Asset sourceAsset) {
         if (!sourceAsset.getFieldInstances().isEmpty()) {
             Map<Long, FieldInstance> sourceFieldSourcesIdBasedMap = sourceAsset.getFieldInstances().stream()
                     .collect(Collectors.toMap(BaseEntity::getId, fieldInstance -> fieldInstance));

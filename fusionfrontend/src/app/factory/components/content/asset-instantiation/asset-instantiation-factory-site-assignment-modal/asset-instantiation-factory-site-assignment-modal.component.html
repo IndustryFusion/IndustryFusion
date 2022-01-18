@@ -23,7 +23,7 @@ under the License.
 
   <div class="factory-site-field">
     <div *ngFor="let factorySite of filteredFactorySite" class="p-field-checkbox p-grid">
-    <p-radioButton class="if-radiobutton p-col-2" [inputId]="factorySite.id" [value]="factorySite" [(ngModel)]="selectedFactorySite"></p-radioButton>
+    <p-radioButton class="radiobutton-container p-col-2" [inputId]="factorySite.id" [value]="factorySite" [(ngModel)]="selectedFactorySite"></p-radioButton>
       <label class="p-col-5" [for]="factorySite.id">{{factorySite.name}}</label>
       <label class="factory-site-info p-col-5" [for]="factorySite.id">{{factorySite.city}}</label>
     </div>

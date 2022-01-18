@@ -28,8 +28,9 @@ under the License.
       <form [formGroup]="toFormGroup(subsystem)">
         <div class="p-grid subsystem-row">
           <div class="p-col-4 manufacturer-icon">
-            <img *ngIf="subsystem.get('assetImage').value != null" [src]="subsystem.get('assetImage').value" alt="asset-symbol">
-            <img *ngIf="subsystem.get('assetImage').value == null" src="assets/img/{{subsystem.get('imageKey').value}}" alt="asset-symbol">
+            <app-image [imageKey]="subsystem.get('imageKey').value"
+                       [styleType]="ImageStyleType.LIST"
+                       [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"></app-image>
             <label class="if-label" displayControlValue="name"></label>
           </div>
           <label class="if-label-normal-weight p-col-3" displayControlValue="assetTypeName"></label>
