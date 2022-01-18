@@ -26,6 +26,7 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@forta
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Field } from '../../../../core/store/field/field.model';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -39,6 +40,8 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   @Input()
   factorySites: FactorySite[];
   @Input()
+  fields: Field[];
+  @Input()
   companies: Company[];
   @Input()
   assetTypes: AssetType[];
@@ -49,6 +52,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
+  groupedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
 
   faInfoCircle = faInfoCircle;
@@ -90,8 +94,14 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     this.updateDisplayedAssets();
   }
 
+  groupAssets(event: Array<FactoryAssetDetailsWithFields>) {
+    this.groupedFactoryAssets = event;
+    this.updateDisplayedAssets();
+  }
+
   updateDisplayedAssets() {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
+    // TODO
     this.displayedFactoryAssets = this.searchedFactoryAssets.filter(asset => this.filteredFactoryAssets.includes(asset));
     this.updateTree();
   }

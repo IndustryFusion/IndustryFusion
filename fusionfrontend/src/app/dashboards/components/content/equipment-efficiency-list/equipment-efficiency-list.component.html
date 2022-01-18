@@ -24,11 +24,20 @@ under the License.
         <span class="status-square offline"></span> <label class="badge-padding">{{ 'APP.COMMON.STATUSES.OFFLINE' | translate }}</label>
       </div>
     </div>
-    <div class="single-filter-btn-div">
-      <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
-                        (filteredItems)="filterAssets($event)">
-      </app-table-filter>
+    <div class="p-grid">
+      <div class="filter-btn-div">
+        <app-table-group-by [fields]="fields" [assetsToBeGrouped]="factoryAssetDetailsWithFields"
+                            (groupedItems)="groupAssets($event)">
+        </app-table-group-by>
+      </div>
+      <div class="single-filter-btn-div">
+        <app-table-filter [tableFilters]="tableFilters" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                          (filteredItems)="filterAssets($event)">
+        </app-table-filter>
+      </div>
+
     </div>
+
   </div>
 
   <p-treeTable [alwaysShowPaginator]="true"
