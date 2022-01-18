@@ -26,6 +26,7 @@ import { AssetSeriesDetailsResolver } from '../../../../../core/resolvers/asset-
 import { AssetSeriesDetailsService } from '../../../../../core/store/asset-series-details/asset-series-details.service';
 import { AssetSeriesDetailMenuService } from '../../../../../core/services/menu/asset-series-detail-menu.service';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-series-details-info',
@@ -47,7 +48,8 @@ export class AssetSeriesDetailsInfoComponent implements OnInit {
               private assetSeriesService: AssetSeriesService,
               private assetSeriesDetailsService: AssetSeriesDetailsService,
               private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
-              private companyQuery: CompanyQuery) {
+              private companyQuery: CompanyQuery,
+              public translate: TranslateService) {
   }
 
   ngOnInit() {

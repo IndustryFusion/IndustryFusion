@@ -20,6 +20,7 @@ import { FleetAssetDetails } from '../../../../../../core/store/fleet-asset-deta
 import { FleetAssetDetailsQuery } from '../../../../../../core/store/fleet-asset-details/fleet-asset-details.query';
 import { ID } from '@datorama/akita';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-wizard-shared-subsystems',
@@ -39,7 +40,8 @@ export class AssetWizardSharedSubsystemsComponent implements OnInit {
   ImageStyleType = ImageStyleType;
 
   constructor(private formBuilder: FormBuilder,
-              private fleetAssetDetailsQuery: FleetAssetDetailsQuery) {
+              private fleetAssetDetailsQuery: FleetAssetDetailsQuery,
+              public translate: TranslateService) {
   }
 
   ngOnInit(): void {

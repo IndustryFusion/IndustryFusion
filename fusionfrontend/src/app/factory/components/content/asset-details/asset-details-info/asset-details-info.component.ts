@@ -59,7 +59,7 @@ export class AssetDetailsInfoComponent implements OnInit {
               private roomQuery: RoomQuery,
               private router: Router,
               private routingLocation: Location,
-              private translate: TranslateService) {
+              public translate: TranslateService) {
   }
 
   ngOnInit() {

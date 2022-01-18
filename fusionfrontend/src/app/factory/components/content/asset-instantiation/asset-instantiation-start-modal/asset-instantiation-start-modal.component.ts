@@ -18,6 +18,7 @@ import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
 import {
   FactoryAssetDetailsWithFieldsAndImage
 } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-instantiation-start-modal',
@@ -34,7 +35,7 @@ export class AssetInstantiationStartModalComponent implements OnInit {
 
   ImageStyleType = ImageStyleType;
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit(): void {
   }

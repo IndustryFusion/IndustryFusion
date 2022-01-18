@@ -29,36 +29,36 @@ export enum ThresholdType {
 
 // tslint:disable-next-line:no-namespace
 export namespace ThresholdType {
-  export function getTypeTitle(type: ThresholdType, translation: TranslateService) {
+  export function getTypeTitle(type: ThresholdType, translate: TranslateService) {
     switch (type) {
       case ThresholdType.ABSOLUTE:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.ABSOLUT_LOWER_AND_UPPER_LIMIT') + ' *';
+        return translate.instant('APP.CORE.STORE.THRESHOLD.ABSOLUT_LOWER_AND_UPPER_LIMIT') + ' *';
       case ThresholdType.IDEAL:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.IDEAL_RANGE');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.IDEAL_RANGE');
       case ThresholdType.CRITICAL:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.CRITICAL_ALERT_RANGE');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.CRITICAL_ALERT_RANGE');
     }
   }
 
-  export function getLowerLimitTitle(type: ThresholdType, translation: TranslateService) {
+  export function getLowerLimitTitle(type: ThresholdType, translate: TranslateService) {
     switch (type) {
       case ThresholdType.ABSOLUTE:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.ABSOLUTE_LOWER_LIMIT');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.ABSOLUTE_LOWER_LIMIT');
       case ThresholdType.IDEAL:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.LOWER_IDEAL_THRESHOLD');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.LOWER_IDEAL_THRESHOLD');
       case ThresholdType.CRITICAL:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.LOWER_CRITICAL_ALERT_THRESHOLD');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.LOWER_CRITICAL_ALERT_THRESHOLD');
     }
   }
 
-  export function getUpperLimitTitle(type: ThresholdType, translation: TranslateService) {
+  export function getUpperLimitTitle(type: ThresholdType, translate: TranslateService) {
     switch (type) {
       case ThresholdType.ABSOLUTE:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.ABSOLUTE_UPPER_LIMIT');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.ABSOLUTE_UPPER_LIMIT');
       case ThresholdType.IDEAL:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.UPPER_IDEAL_THRESHOLD');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.UPPER_IDEAL_THRESHOLD');
       case ThresholdType.CRITICAL:
-        return translation.instant('APP.CORE.STORE.THRESHOLD.UPPER_CRITICAL_ALERT_THRESHOLD');
+        return translate.instant('APP.CORE.STORE.THRESHOLD.UPPER_CRITICAL_ALERT_THRESHOLD');
     }
   }
 }

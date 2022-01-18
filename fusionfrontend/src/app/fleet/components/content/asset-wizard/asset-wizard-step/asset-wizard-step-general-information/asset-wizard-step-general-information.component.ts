@@ -29,6 +29,7 @@ import { CompanyQuery } from '../../../../../../core/store/company/company.query
 import { DialogType } from '../../../../../../shared/models/dialog-type.model';
 import { MediaObjectKeyPrefix } from '../../../../../../core/models/media-object.model';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-wizard-step-general-information',
@@ -62,7 +63,8 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit, OnCha
   constructor(private assetSeriesQuery: AssetSeriesQuery,
               private companyQuery: CompanyQuery,
               private imageService: ImageService,
-              private wizardRef: DynamicDialogRef) { }
+              private wizardRef: DynamicDialogRef,
+              public translate: TranslateService) { }
 
   ngOnInit(): void {
     this.assetSeries$ = this.assetSeriesQuery.selectAll();

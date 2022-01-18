@@ -20,6 +20,7 @@ import { EMPTY } from 'rxjs';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { ImageStyleType } from '../../../models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-image',
@@ -50,7 +51,7 @@ export class ImageComponent implements OnInit, OnChanges {
   isClickable = false;
 
   @Input()
-  alt = 'image'; // TODO (fpa): translation
+  alt = null;
 
   @Input()
   fallbackImageKey: string = ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
@@ -64,12 +65,17 @@ export class ImageComponent implements OnInit, OnChanges {
   styleClasses: string;
 
   constructor(private imageService: ImageService,
+              private translate: TranslateService,
               private companyQuery: CompanyQuery) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.styleType == null) {
       throw new Error('[Image element]: Please provide style type.');
+    }
+
+    if (!this.alt) {
+      this.alt = this.translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.IMAGE');
     }
 
     this.initStyleClasses();
@@ -81,7 +87,7 @@ export class ImageComponent implements OnInit, OnChanges {
     }
   }
 
-  private initStyleClasses() {
+  private initStyleClasses(): void {
     this.styleClasses = this.isClickable ? 'clickable ' : '';
     this.styleClasses += this.columnSize ? `p-col-${this.columnSize} ` : '';
 
@@ -104,7 +110,7 @@ export class ImageComponent implements OnInit, OnChanges {
     }
   }
 
-  private loadImage() {
+  private loadImage(): void {
     if (this.checkImageDownloadAllowed() && this.imageKey !== this.prevImageKey) {
       this.prevImageKey = this.imageKey;
       this.imageLoadingFailedOrDefault = false;
@@ -148,7 +154,7 @@ export class ImageComponent implements OnInit, OnChanges {
     return this.prioritizedImageContent != null;
   }
 
-  private overwriteDisplayedImageIfProvided() {
+  private overwriteDisplayedImageIfProvided(): void {
     if (this.prioritizedImageContent) {
       this.displayedImage = this.prioritizedImageContent;
       this.imageLoadingFailedOrDefault = false;
@@ -174,7 +180,7 @@ export class ImageComponent implements OnInit, OnChanges {
     }
   }
 
-  onClick() {
+  onClick(): void {
     if (this.isClickable) {
       this.clickEvent.emit();
     }

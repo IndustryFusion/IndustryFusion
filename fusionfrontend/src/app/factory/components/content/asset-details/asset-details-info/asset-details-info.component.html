@@ -15,7 +15,8 @@ under the License.
 
 <section class="asset">
   <app-image *ngIf="assetWithFields != null" [imageKey]="this.assetWithFields.imageKey"
-             [styleType]="ImageStyleType.INFO_PAGE" [alt]="'image of asset'"></app-image>
+             [styleType]="ImageStyleType.INFO_PAGE"
+             [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"></app-image>
   <div class="asset-info">
     <h3>{{(assetWithFields)?.name}}</h3>
     <p>{{(assetWithFields)?.assetTypeName}}</p>

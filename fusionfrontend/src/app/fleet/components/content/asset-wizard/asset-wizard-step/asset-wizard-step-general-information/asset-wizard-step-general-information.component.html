@@ -54,7 +54,8 @@ under the License.
           <div class="info-display-preview">
             <app-image [imageKey]="assetForm.get('imageKey').value"
                        [prioritizedImageContent]="assetImage" [preventImageLoading]="wasImageUploaded"
-                       [styleType]="ImageStyleType.WIZARD" [alt]="'image of asset'"></app-image>
+                       [styleType]="ImageStyleType.WIZARD"
+                       [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"></app-image>
             <div>
               <span class="wizard-icon-title">{{ assetForm.get('name')?.value }}</span>
               <span class="if-detail-page-label">{{ relatedAssetSeries?.name }}</span>

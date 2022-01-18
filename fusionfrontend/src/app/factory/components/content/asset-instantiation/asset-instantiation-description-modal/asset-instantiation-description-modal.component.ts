@@ -16,6 +16,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-instantiation-description-modal',
@@ -32,7 +33,7 @@ export class AssetInstantiationDescriptionModalComponent implements OnInit {
 
   ImageStyleType = ImageStyleType;
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit(): void {
   }

@@ -36,6 +36,11 @@
 					"TO": "À l'adresse suivante :"
 				}
 			},
+      "IMAGE_PLACEHOLDER": {
+        "ASSET": "Image de l'actif",
+        "ASSET_SERIES": "Image de la série d'actifs",
+        "IMAGE": "Image"
+      },
 			"TERMS": {
 				"ACCURACY": "Précision",
 				"ASSET": "actif",

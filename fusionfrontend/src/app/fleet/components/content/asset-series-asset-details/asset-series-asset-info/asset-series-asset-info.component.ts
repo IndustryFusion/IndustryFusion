@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 import { FleetAssetDetailsWithFields } from '../../../../../core/store/fleet-asset-details/fleet-asset-details.model';
 import { FleetAssetDetailMenuService } from '../../../../../core/services/menu/fleet-asset-detail-menu.service';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-series-asset-info',
@@ -44,7 +45,8 @@ export class AssetSeriesAssetInfoComponent implements OnInit {
               private assetService: AssetService,
               private router: Router,
               private routingLocation: Location,
-              private fleetAssetDetailMenuService: FleetAssetDetailMenuService) {
+              private fleetAssetDetailMenuService: FleetAssetDetailMenuService,
+              public translate: TranslateService) {
   }
 
   ngOnInit() {

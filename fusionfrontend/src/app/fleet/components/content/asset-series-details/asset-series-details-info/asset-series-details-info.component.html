@@ -15,7 +15,8 @@ under the License.
 
 <section class="asset-series-details">
   <app-image [isKeyLoading]="assetSeries == null" [imageKey]="assetSeries?.imageKey"
-             [styleType]="ImageStyleType.INFO_PAGE" [alt]="'image of asset'"></app-image>
+             [styleType]="ImageStyleType.INFO_PAGE"
+             [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"></app-image>
   <div class="asset-series-info">
     <h3>{{(assetSeries)?.name}}</h3>
     <p>{{(assetSeries)?.assetType}}</p>

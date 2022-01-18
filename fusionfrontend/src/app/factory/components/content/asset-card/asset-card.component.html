@@ -18,7 +18,8 @@ under the License.
         <label class="if-title clickable" (click)="goToDetails()">{{asset.name}}</label>
         <p class="description clickable" (click)="goToDetails()"> {{asset.description}}</p>
     </div>
-    <app-image [imageKey]="asset.imageKey" [styleType]="ImageStyleType.CARD" [isClickable]="true" [alt]="'image of asset'"
+    <app-image [imageKey]="asset.imageKey" [styleType]="ImageStyleType.CARD" [isClickable]="true"
+               [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"
                (clickEvent)="goToDetails()"></app-image>
     <div class="card-block">
         <div class="card-title">

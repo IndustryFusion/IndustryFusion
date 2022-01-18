@@ -26,6 +26,7 @@ import { ImageService } from '../../../../../core/services/api/storage/image.ser
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { MediaObjectKeyPrefix } from '../../../../../core/models/media-object.model';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-series-wizard-general-information',
@@ -52,7 +53,8 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit, OnC
 
   constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery,
               private companyQuery: CompanyQuery,
-              private imageService: ImageService) {
+              private imageService: ImageService,
+              public translate: TranslateService) {
   }
 
   ngOnInit() {

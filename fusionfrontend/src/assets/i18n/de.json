@@ -36,6 +36,11 @@
 					"TO": "bis"
 				}
 			},
+      "IMAGE_PLACEHOLDER": {
+        "ASSET": "Bild von Asset",
+        "ASSET_SERIES": "Bild von Baureihe",
+        "IMAGE": "Bild"
+      },
 			"TERMS": {
 				"ACCURACY": "Genauigkeit",
 				"ASSET": "Asset",

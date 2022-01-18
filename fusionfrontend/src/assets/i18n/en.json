@@ -36,6 +36,11 @@
 					"TO": "to"
 				}
 			},
+      "IMAGE_PLACEHOLDER": {
+        "ASSET": "Image of asset",
+        "ASSET_SERIES": "Image of asset series",
+        "IMAGE": "Image"
+      },
 			"TERMS": {
 				"ACCURACY": "Accuracy",
 				"ASSET": "Asset",

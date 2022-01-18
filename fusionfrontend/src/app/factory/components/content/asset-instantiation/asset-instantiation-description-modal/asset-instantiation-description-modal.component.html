@@ -18,7 +18,8 @@ under the License.
     <form [formGroup]="assetDetailsForm">
       <div class="p-grid asset-info">
         <app-image [imageKey]="assetDetailsForm.get('imageKey').value" [columnSize]="4"
-                   [styleType]="ImageStyleType.DIALOG" [alt]="'image of asset'"></app-image>
+                   [styleType]="ImageStyleType.DIALOG"
+                   [alt]="translate.instant('APP.COMMON.IMAGE_PLACEHOLDER.ASSET')"></app-image>
         <div class="p-col-6 p-grid p-flex-column">
           <span class="asset-name p-col">{{assetDetailsForm.get('name').value}}</span>
           <span class="text-styling p-col">{{assetDetailsForm.get('category').value}}</span>

@@ -86,7 +86,7 @@ under the License.
                     <tr>
                       <td class="tree-line"><div></div></td>
                       <td class="tree-entry"></td>
-                      <td colspan="2"><label class="if-label-small">{{ThresholdType.getTypeTitle(type, translation)}}</label></td>
+                      <td colspan="2"><label class="if-label-small">{{ThresholdType.getTypeTitle(type, translate)}}</label></td>
                       <td colspan="2"><label class="if-label-small-header"> {{type == ThresholdType.ABSOLUTE ? 'Threshold Value' : ''}}</label></td>
                       <td></td>
                       <td></td>
@@ -95,7 +95,7 @@ under the License.
                       <td class="tree-line"> <div></div> </td>
                       <td class="tree-entry"> <div></div> </td>
                       <td></td>
-                      <td class="label-thresholds">{{ThresholdType.getLowerLimitTitle(type, translation)}}</td>
+                      <td class="label-thresholds">{{ThresholdType.getLowerLimitTitle(type, translate)}}</td>
                       <td>
                         <input class="threshold-input" type="number" pInputText
                                [formControl]="getFormControl(fieldInstance.get('thresholds.' + type + 'Lower'))">
@@ -107,7 +107,7 @@ under the License.
                       <td class="tree-line"> <div></div> </td>
                       <td class="tree-entry"> <div></div> </td>
                       <td></td>
-                      <td class="label-thresholds">{{ThresholdType.getUpperLimitTitle(type, translation)}}</td>
+                      <td class="label-thresholds">{{ThresholdType.getUpperLimitTitle(type, translate)}}</td>
                       <td>
                         <input class="threshold-input" type="number" pInputText
                                [formControl]="getFormControl(fieldInstance.get('thresholds.' + type + 'Upper'))">

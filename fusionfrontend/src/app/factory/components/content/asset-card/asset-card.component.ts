@@ -25,6 +25,7 @@ import { FieldDetails } from 'src/app/core/store/field-details/field-details.mod
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { ImageStyleType } from '../../../../shared/models/image-style-type.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-card',
@@ -54,7 +55,8 @@ export class AssetCardComponent implements OnInit, OnChanges {
     private companyQuery: CompanyQuery,
     private oispService: OispService,
     private statusService: StatusService,
-    private router: Router) {
+    private router: Router,
+    public translate: TranslateService) {
   }
 
   ngOnInit() {
