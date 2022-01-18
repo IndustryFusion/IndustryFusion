@@ -41,7 +41,7 @@
 				"ASSET": "Asset",
 				"ASSETS": "Assets",
         "ASSET_NAME": "Asset-Name",
-        "ASSET_SERIES": "Asset-Baureihe",
+        "ASSET_SERIES": "Asset-Baureihen",
 				"ASSET_TYPE": "Asset-Typ",
         "BASE_UNIT": "Basiseinheit",
         "CITY": "Stadt",
@@ -64,7 +64,7 @@
 				"STREET": "Straße",
 				"SYMBOL": "Symbol",
 				"TIME": "Zeit",
-				"UNIT": "Gerät",
+				"UNIT": "Einheit",
 				"VALUE": "Wert",
 				"ZIP": "PLZ"
 			}
@@ -113,11 +113,11 @@
 			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
 				"CALENDER_LABEL": "Datum auswählen",
-				"DONUT_CHART_TITLE": "Statusübersicht (Durchschnitt aller Assets)",
+				"DONUT_CHART_TITLE": "Statusübersicht (Ø aller Assets)",
 				"STATUS": {
 					"DASHBOARD_OVERVIEW_LABEL": "Echtzeit-Status"
 				},
-				"TITLE": "Anlageneffizienz Dashboard"
+				"TITLE": "Anlageneffizienz-Dashboard"
 			},
 			"MAINTENANCE_LIST": {
 				"DAYS_TILL_MAINTENANCE": "Tage bis Wartung",
@@ -210,13 +210,13 @@
 						"ADD_ATTRIBUTE": "Attribut hinzufügen",
 						"ADD_ATTRIBUTES": "Attribute hinzufügen",
 						"SELECT_ATTRIBUTE": "Attribut auswählen",
-						"SELECT_ATTRIBUTE_PLACEHOLDER": "Attribut auswählen..."
+						"SELECT_ATTRIBUTE_PLACEHOLDER": "Wählen Sie ein Attribut aus..."
 					},
 					"STEP_TWO": {
 						"ADD_METRIC": "Metrik hinzufügen",
 						"ADD_METRICS": "Metriken hinzufügen",
-						"SELECT_METRIC": "Metrik wählen",
-						"SELECT_METRIC_PLACEHOLDER": "Metrik Maß auswählen..."
+						"SELECT_METRIC": "Metrik auswählen",
+						"SELECT_METRIC_PLACEHOLDER": "Wählen Sie eine Metrik aus..."
 					}
 				}
 			},
@@ -238,9 +238,9 @@
 				},
 				"CREATE_METRIC_OR_ATTRIBUTE": "Metrik oder Attribut erstellen",
 				"DATE_CREATED": "Erstellungsdatum",
-				"FIELD_NAME": "Feldname",
+				"FIELD_NAME": "Name",
 				"HEADER": {
-					"CREATE": "Neue Metrik oder neues Attribut erstellen",
+					"CREATE": "Metrik oder Attribut erstellen",
 					"EDIT": "Metrik oder Attribut bearbeiten"
 				},
 				"METRICS_AND_ATTRIBUTES": "Metriken & Attribute",
@@ -261,15 +261,15 @@
 				"CREATE_QUANTITY_TYPE": "Mengenart anlegen",
 				"DESCRIPTION": "Beschreibung",
 				"HEADER": {
-					"CREATE": "Neue Mengenart anlegen",
+					"CREATE": "Mengenart anlegen",
 					"EDIT": "Mengenart bearbeiten"
 				},
 				"NO_QUANTITY_TYPES": "Keine Mengenart",
-				"QUANTITY_NAME": "Bezeichnung der Mengenart",
+				"QUANTITY_NAME": "Mengenart",
 				"QUANTITY_TYPES": "Mengenarten"
 			},
 			"SUB_HEADER": {
-				"ASSET_TYPES": "Asset-Baureihen",
+				"ASSET_TYPES": "Asset-Typen",
 				"ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
 				"METRICS_AND_ATTRIBUTES": "Metriken & Attribute",
 				"QUANTITY_TYPES": "Mengenarten",
@@ -294,7 +294,7 @@
 				"CREATE_UNIT": "Einheit erstellen",
 				"DATE_CREATED": "Erstellungsdatum",
 				"HEADER": {
-					"CREATE": "Neue Einheit erstellen",
+					"CREATE": "Einheit erstellen",
 					"EDIT": "Einheit bearbeiten"
 				},
 				"NO_UNITS": "Keine Einheiten",
@@ -333,14 +333,14 @@
 		"FACTORY": {
 			"ASSETS_LIST": {
 				"ASSIGN_ITEM_TEXT": "Asset zu Raum",
-				"CATEGORY": "Kategorie",
+				"CATEGORY": "Asset-Typ",
 				"DIALOG_HEADING": {
 					"FACTORY_SITE_ASSIGNMENT": "Standort zuweisen",
 					"ON_BOARDING": "Asset für Onboarding auswählen",
 					"ROOM_ASSIGNMENT": "Raum zuweisen"
 				},
 				"NO_ASSETS": "Keine Assets",
-				"ONBOARD_NEW_ASSET": "Neues Asset onboarden"
+				"ONBOARD_NEW_ASSET": "Asset onboarden"
 			},
 			"ASSET_CARD": {
 				"CONTROL_SYSTEM_TYPE": "Steuerungs-Typ",
@@ -395,7 +395,7 @@
 				},
 				"START_MODAL": {
 					"NO_ASSETS_TO_ONBOARD": "Keine Assets zum Onboarding!",
-					"READY_FOR_ONBOARDING": "Bereit zum Onboarding!"
+					"READY_FOR_ONBOARDING": "Bereit!"
 				}
 			},
 			"ASSIGN_ASSETS_TO_ROOM": {
@@ -414,7 +414,7 @@
 				"COUNTRY": "Land",
 				"CREATE_FACTORY_SITE_BUTTON": "Standort erstellen",
 				"DIALOG_HEADING": {
-					"CREATE": "Neuen Standort erstellen",
+					"CREATE": "Standort erstellen",
 					"UPDATE": "Standort aktualisieren"
 				},
 				"FACTORY_NAME": "Standort",
@@ -471,8 +471,8 @@
 				},
 				"CREATE_ROOM_BUTTON": "Raum erstellen",
 				"DIALOG_HEADER": {
-					"ADD_NEW_ROOM": "Neuen Raum zum Standort hinzufügen",
-					"ASSIGN_ASSET": "Asset einem Raum zuordnen",
+					"ADD_NEW_ROOM": "Neuen Raum hinzufügen",
+					"ASSIGN_ASSET": "Asset einem Raum zuweisen",
 					"EDIT_ROOM": "Raum bearbeiten"
 				},
 				"NO_ROOM": "Kein Raum"
@@ -481,7 +481,7 @@
 				"ROOM_DESCRIPTION_LABEL": "Beschreibung des Raums",
 				"ROOM_DESCRIPTION_PLACEHOLDER": "Geben Sie hier eine Beschreibung ein",
 				"ROOM_NAME_LABEL": "Raum-Name",
-				"ROOM_NAME_PLACEHOLDER": "Geben Sie einen eigenen Namen an",
+				"ROOM_NAME_PLACEHOLDER": "Geben Sie einen Raum-Namen an",
 				"SELECT_FACTORY_SITE": "Standort auswählen",
         "SELECT_FACTORY_PLACEHOLDER": "Standort"
       },
@@ -489,7 +489,7 @@
         "ASSET_DETAILS": {
           "DIGITAL_NAMEPLATE": {
             "DIGITAL_NAMEPLATE": "Digitales Typenschild",
-            "MANUAL": "Handbuch",
+            "MANUAL": "PDF-Handbuch",
             "VIDEO": "Video",
             "SERIAL_NUMBERS": "Seriennummer",
             "CONSTRUCTION_DATE": "Herstelldatum",
@@ -511,8 +511,8 @@
             "CHOOSE_END_DATE": "Enddatum wählen",
             "OPTIONS_MISSING": "Optionen fehlen, bitte erneut eingeben",
             "GOT_IT": "Verstanden!",
-            "PERFORMANCE_VIEW": "Performance Ansicht",
-            "REALTIME_VIEW": "Realtime Ansicht"
+            "PERFORMANCE_VIEW": "Performance-Ansicht",
+            "REALTIME_VIEW": "Realtime-Ansicht"
           }
         },
         "ASSET_GRID_PAGE": {
@@ -538,9 +538,9 @@
 			"ASSET_SERIES_LIST": {
 				"ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 				"CREATE_ASSET_SERIES_BUTTON": "Asset-Baureihe erstellen",
-				"DIALOG_HEADER": "Asset-Baureihen Implementierung",
+				"DIALOG_HEADER": "Asset-Baureihe implementieren",
 				"No_ASSET_SERIES": "Keine Asset-Baureihe",
-				"TEMPLATE_VERSION": "Version der Asset-Typ Vorlage"
+				"TEMPLATE_VERSION": "Version"
 			},
 			"ASSET_SERIES_WIZARD": {
 				"ATTRIBUTES": {
@@ -553,7 +553,7 @@
           "VALUE_PLACEHOLDER": "Wert auswählen"
         },
 				"GENERAL_INFORMATION": {
-					"ASSET_OR_ASSET_SERIES_NAME": "Name des Assets oder der Asset-Baureihe",
+					"ASSET_OR_ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 					"ASSET_SERIES_DESCRIPTION": "Beschreibung der Asset-Baureihe",
 					"ASSET_SERIES_NAME": "Name der Asset-Baureihe",
 					"GENERAL_INFORMATION": "Allgemeine Informationen",
@@ -568,12 +568,12 @@
 					"METRICS": "Metriken",
 					"METRIC_NAME": "Metrik Name",
 					"NO_METRICS_AVAILABLE": "keine Metriken verfügbar",
-					"PROVIDE_SOURCE": "Quelle angeben",
+					"PROVIDE_SOURCE": "Datenquelle angeben",
 					"WARNING_LABEL": "Metriken können nicht gelöscht werden, da unter dieser Asset-Baureihe bereits Assets erstellt wurden."
 				},
 				"NAMEPLATE_AND_CONNECTIVITY_SETTINGS": {
-					"ASSET_MANUAL": "Asset-Handbuch",
-					"ASSET_VIDEO": "Asset-Video",
+					"ASSET_MANUAL": "PDF-Handbuch",
+					"ASSET_VIDEO": "Video",
 					"CE_CERTIFICATION": "CE-Zertifizierung",
 					"CONNECTION_STRING": "Verbindungs-String",
 					"CONNECTIVITY_SETTINGS": "Einstellungen zur Konnektivität",
@@ -606,7 +606,7 @@
 					},
 					"SUBSYSTEM": {
 						"NO_SUBSYSTEMS_AVAILABLE": "keine Subsysteme verfügbar",
-						"SUBSYSTEM_NAME": "Name des Subsystems"
+						"SUBSYSTEM_NAME": "Subsystem-Name"
 					}
 				},
 				"STEP": {
@@ -614,7 +614,7 @@
 						"CUSTOMIZE_ATTRIBUTES": "Attribute anpassen"
 					},
 					"CUSTOMER_DATA": {
-						"CREATE_DIGITAL_TWIN_BUTTON": "Digitalen Zwilling erstellen",
+						"CREATE_DIGITAL_TWIN_BUTTON": "Digital Twin erstellen",
 						"ENTERPRISE_NAME": "Firmenname",
 						"ENTER_CUSTOMER_DATA": "Eingabe der Kundendaten"
 					},
@@ -626,11 +626,11 @@
 						"UPLOAD_PICTURE": "Bild hochladen"
 					},
 					"METRICS_THRESHOLD": {
-						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Metriken und Attribute anpassen"
+						"CUSTOMIZE_METRICS_AND_ATTRIBUTES": "Metriken anpassen"
 					},
 					"NAMEPLATE": {
-						"ASSET_MANUAL": "Asset-Handbuch",
-						"ASSET_VIDEO": "Asset-Video",
+						"ASSET_MANUAL": "PDF-Handbuch",
+						"ASSET_VIDEO": "Video",
 						"CE_CERTIFICATION": "CE-Zertifizierung",
 						"CONNECTION_STRING": "Verbindungs-String",
 						"CONSTRUCTION_DATE": "Herstelldatum",
@@ -656,10 +656,10 @@
 				}
 			},
 			"SUB_HEADER": {
-				"ASSET_SERIES": "Asset-Baureihe"
+				"ASSET_SERIES": "Asset-Baureihen"
 			},
       "BREAD_CRUMBS": {
-        "ASSET_SERIES": "Asset-Baureihe"
+        "ASSET_SERIES": "Asset-Baureihen"
       },
       "PAGES": {
         "ASSET_SERIES_ASSET": {
@@ -691,8 +691,8 @@
 		},
 		"FUSION_APPLETS": {
 			"CREATE": {
-				"APPLET_NAME": "Name des Applets",
-				"PRIORITY_PLACEHOLDER": "Wählen Sie eine"
+				"APPLET_NAME": "Applet-Name",
+				"PRIORITY_PLACEHOLDER": "Wählen Sie die Priorität"
 			},
 			"EDITOR": {
 				"ACTION_LIST": {
@@ -744,9 +744,9 @@
 				"ACTIVE": "Aktiv",
 				"APPLET": "Applet",
 				"APPLETS": "Applets",
-				"APPLET_NAME": "Applet Name",
+				"APPLET_NAME": "Applet-Name",
 				"ARCHIVED": "Archiviert",
-				"CONDITION_SUMMARY": "Zustand",
+				"CONDITION_SUMMARY": "Bedingung",
 				"CREATE_APPLET_BUTTON": "Applet erstellen",
 				"CREATE_DIALOG_HEADER": "Applet erstellen",
 				"NO_APPLET": "Kein Applet"
@@ -784,9 +784,9 @@
 						"MESSAGE_PLURAL": "Sind Sie sicher, dass Sie {{ notificationCount }} Benachrichtigungen löschen wollen?",
 						"MESSAGE_SINGULAR": "Sind Sie sicher, dass Sie die Benachrichtigung {{ notificationToClose }} löschen wollen?"
 					},
-					"CONDITION": "Zustand",
-					"DATE_AND_TIME": "Datum und Uhrzeit",
-					"MEASURED_VALUE": "Gemessener Wert",
+					"CONDITION": "Bedingung",
+					"DATE_AND_TIME": "Datum & Uhrzeit",
+					"MEASURED_VALUE": "Messwert",
 					"NOTIFICATION": "Benachrichtigung",
 					"NOTIFICATIONS": "Benachrichtigungen",
 					"NOTIFICATIONS_SELECTED": "{{ statusName }} Benachrichtigungen ausgewählt",
@@ -824,14 +824,14 @@
 				"ITEMS_OPTIONS_MENU": {
 					"ASSIGN": "{{ assignItemText }} zuweisen",
 					"CLONE": "Klonen",
-					"CREATE": "{{ createItemText }} neu erstellen",
+					"CREATE": "{{ createItemText }} erstellen",
 					"DELETE": "Löschen",
 					"RENAME": "Umbenennen",
 					"UPDATE": "{{ updateItemText }} aktualisieren"
 				},
 				"TABLE_FILTER": {
 					"ADD_FILTER": "Filter hinzufügen",
-					"CLEAR_ALL": "Alle löschen",
+					"CLEAR_ALL": "Löschen",
 					"DATE_FILTER": {
             "DATE_SET": "Datum festgelegt",
 						"DATE_AND_TIME_FILTER": "Datum & Zeit filtern",
@@ -839,14 +839,14 @@
 						"START_DATE": "Startdatum"
 					},
 					"FILTER": "Filter",
-					"FILTER_BUTTON": "Filter",
-					"NOT_SET": "Nicht festgelegt",
+					"FILTER_BUTTON": "Filtern",
+					"NOT_SET": "Auswählen",
 					"NUMERIC_FILTER": {
 						"LONG_TERM_PRIORITY": "Langfristig (blau)",
 						"MEDIUM_TERM_PRIORITY": "Mittelfristig (grau)",
 						"SHORT_TERM_PRIORITY": "Kritisch (rot)"
 					},
-					"SELECT": "Wählen Sie",
+					"SELECT": "Filtern nach",
 					"VALUE": "Wert",
 					"VALUES": "Werte"
 				},
