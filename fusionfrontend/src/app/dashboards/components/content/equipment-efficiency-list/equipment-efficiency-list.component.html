@@ -27,7 +27,7 @@ under the License.
     <div class="p-grid">
       <div class="inner-button">
         <app-table-group-by [fields]="fields" [assetsToBeGrouped]="factoryAssetDetailsWithFields"
-                            (groupedItems)="groupAssets($event)">
+                            (emitSelectedEnum)="groupAssets($event)">
         </app-table-group-by>
       </div>
       <div class="inner-button">
@@ -40,7 +40,8 @@ under the License.
 
   </div>
 
-  <p-treeTable [alwaysShowPaginator]="true"
+  <p-treeTable *ngIf="!groupByActive"
+               [alwaysShowPaginator]="true"
                [pageLinks]="5"
                [paginator]="true"
                [rowsPerPageOptions]="rowsPerPageOptions"
@@ -70,7 +71,7 @@ under the License.
           <p-treeTableSortIcon field="factorySiteName"></p-treeTableSortIcon>
         </th>
         <th [style.width.%]="22.5">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.STATUS_OVERVIEW' | translate }}</th>
-        <th [style.width.%]="3"></th>
+        <th [style.width.%]="5"></th>
       </tr>
     </ng-template>
 
@@ -102,9 +103,76 @@ under the License.
                                               [assetStatusHoursOfDays]="[rowData.statusHoursOneDay]">
           </app-equipment-efficiency-bar-chart>
         </td>
-        <td [style.width.%]="3"></td>
+        <td [style.width.%]="5"></td>
       </tr>
     </ng-template>
 
   </p-treeTable>
+
+  <p-table *ngIf="groupByActive"
+           [alwaysShowPaginator]="true"
+           [pageLinks]="5"
+           [paginator]="true"
+           [rowsPerPageOptions]="rowsPerPageOptions"
+           [rows]="rowCount"
+           [showCurrentPageReport]="true"
+           [value]="displayedFactoryAssets"
+           class="list-container"
+           (onPage)="updateRowCountInUrl($event.rows)"
+           currentPageReportTemplate="{first} {{ 'APP.COMMON.TABLE.PAGINATION.TO' | translate }} {last}
+            {{ 'APP.COMMON.TABLE.PAGINATION.OF' | translate }} {totalRecords} {{ 'APP.COMMON.TERMS.ASSETS' | translate }}">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th [style.width.%]="2"></th>
+        <th [style.width.%]="3"></th>
+        <th [style.width.%]="20" class="first-header-item">
+          <app-table-searchbar filterColumn="{{ 'APP.COMMON.TERMS.ASSET' | translate }}" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                               attributeToBeSearched="name" (searchByName)="searchAssets($event)">
+          </app-table-searchbar>
+        </th>
+        <th [style.width.%]="20" pSortableColumn="category">{{ 'APP.COMMON.TERMS.ASSET_TYPE' | translate }}
+          <p-sortIcon field="category"></p-sortIcon>
+        </th>
+        <th [style.width.%]="15" pSortableColumn="manufacturer">{{ 'APP.COMMON.TERMS.MANUFACTURER' | translate }}
+          <p-sortIcon field="manufacturer"></p-sortIcon>
+        </th>
+        <th [style.width.%]="12.5" pSortableColumn="factorySiteName">{{ 'APP.COMMON.TERMS.FACTORY_SITE' | translate }}
+          <p-sortIcon field="factorySiteName"></p-sortIcon>
+        </th>
+        <th [style.width.%]="22.5">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_LIST.STATUS_OVERVIEW' | translate }}</th>
+        <th [style.width.%]="5"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-asset let-rowIndex="rowIndex">
+      <tr *ngIf="(getFieldIndexOfSelectedEnum(asset) != -1 ? rowGroupMetadata[asset.fields[getFieldIndexOfSelectedEnum(asset)].value].index : rowGroupMetadata[-1].index ) === rowIndex">
+        <td colspan="10" class="group-by-row">
+          <span class="p-text-bold p-ml-2" *ngIf="getFieldIndexOfSelectedEnum(asset) != -1">{{ selectedEnum.optionLabel }} - {{ selectedEnumOptions[asset.fields[getFieldIndexOfSelectedEnum(asset)].value - 1].optionLabel }}</span>
+          <span class="p-text-bold p-ml-2" *ngIf="getFieldIndexOfSelectedEnum(asset) == -1">{{ selectedEnum.optionLabel }} - Value not found</span>
+        </td>
+      </tr>
+      <tr id="rowElement" style="cursor: pointer;">
+        <td [style.width.%]="2"></td>
+        <td [style.width.%]="3">
+          <div [ngSwitch]="getMaxOpenAlertPriority(asset)" class="list-item-cell notification-icons">
+            <fa-icon *ngSwitchCase="OispPriority.LOW" [icon]="faInfoCircle" class="fa-fw notification-low"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.MEDIUM" [icon]="faExclamationCircle" class="fa-fw notification-medium"></fa-icon>
+            <fa-icon *ngSwitchCase="OispPriority.HIGH" [icon]="faExclamationTriangle" class="fa-fw notification-high"></fa-icon>
+          </div>
+        </td>
+        <td [style.width.%]="20" class="table-bold-font">{{asset.name}}</td>
+        <td [style.width.%]="20">{{asset.category}}</td>
+        <td [style.width.%]="15">{{asset.manufacturer}}</td>
+        <td [style.width.%]="12.5">{{asset.factorySiteName}}</td>
+        <td [style.width.%]="22.5">
+          <app-equipment-efficiency-bar-chart *ngIf="asset.statusHoursOneDay"
+                                              [assetStatusHoursOfDays]="[asset.statusHoursOneDay]">
+          </app-equipment-efficiency-bar-chart>
+        </td>
+        <td [style.width.%]="5"></td>
+      </tr>
+    </ng-template>
+  </p-table>
+
 </div>

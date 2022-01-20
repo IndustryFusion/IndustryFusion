@@ -26,7 +26,7 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@forta
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Field } from '../../../../core/store/field/field.model';
+import { Field, FieldOption } from '../../../../core/store/field/field.model';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -52,8 +52,11 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   displayedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
-  groupedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+  groupByActive = false;
+  selectedEnum: FieldOption;
+  selectedEnumOptions: FieldOption[];
+  rowGroupMetadata: any;
 
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
@@ -94,9 +97,13 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     this.updateDisplayedAssets();
   }
 
-  groupAssets(event: Array<FactoryAssetDetailsWithFields>) {
-    this.groupedFactoryAssets = event;
-    this.updateDisplayedAssets();
+  groupAssets(event: FieldOption) {
+    this.selectedEnum = event;
+    this.groupByActive = this.selectedEnum !== null;
+    if (this.selectedEnum) {
+      this.selectedEnumOptions = this.fields.filter(field => field.id === this.selectedEnum.fieldId).pop().enumOptions;
+      this.updateRowGroupMetaData();
+    }
   }
 
   updateDisplayedAssets() {
@@ -104,6 +111,9 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     // TODO
     this.displayedFactoryAssets = this.searchedFactoryAssets.filter(asset => this.filteredFactoryAssets.includes(asset));
     this.updateTree();
+    if (this.selectedEnum) {
+      this.updateRowGroupMetaData();
+    }
   }
 
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
@@ -179,4 +189,51 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   updateRowCountInUrl(rowCount: number): void {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
+
+
+  updateRowGroupMetaData() {
+    this.rowGroupMetadata = { };
+    const sortedAssetFieldIndexTuples = this.generateSoredAssetFieldIndexMap();
+
+    if (sortedAssetFieldIndexTuples) {
+      for (let i = 0; i < sortedAssetFieldIndexTuples.length; i++) {
+        const rowData = sortedAssetFieldIndexTuples[i];
+        const enumValue = rowData.fieldIndex >= 0 ? rowData.asset.fields[rowData.fieldIndex].value : - 1;
+
+        if (i === 0) {
+          this.rowGroupMetadata[enumValue] = { index: 0, size: 1 };
+        }
+        else {
+          const previousRowData = sortedAssetFieldIndexTuples[i - 1];
+          const previousRowGroup = previousRowData.fieldIndex >= 0 ? previousRowData.asset.fields[previousRowData.fieldIndex].value : -1;
+          if (enumValue === previousRowGroup) {
+            this.rowGroupMetadata[enumValue].size++;
+          } else {
+            this.rowGroupMetadata[enumValue] = { index: i, size: 1 };
+          }
+        }
+      }
+    }
+  }
+
+  generateSoredAssetFieldIndexMap() {
+    return this.displayedFactoryAssets.sort((asset1, asset2) => {
+      const fieldIndexOfAsset1 = this.getFieldIndexOfSelectedEnum(asset1);
+      const fieldIndexOfAsset2 = this.getFieldIndexOfSelectedEnum(asset2);
+      if (fieldIndexOfAsset1 < 0) {
+        return 0;
+      } else if (fieldIndexOfAsset2 < 0) {
+        return -1;
+      } else {
+        return asset1.fields[fieldIndexOfAsset1].value.localeCompare(asset2.fields[fieldIndexOfAsset2].value);
+      }
+    }).map(factoryAsset => {
+      return { asset: factoryAsset, fieldIndex: this.getFieldIndexOfSelectedEnum(factoryAsset) };
+    });
+  }
+
+  getFieldIndexOfSelectedEnum(factoryAsset: FactoryAssetDetailsWithFields): number {
+    return factoryAsset.fields.indexOf(factoryAsset.fields.filter(field => field.name === this.selectedEnum.optionLabel).pop());
+  }
+
 }

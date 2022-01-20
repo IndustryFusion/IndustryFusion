@@ -67,7 +67,6 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
     this.fields$ = this.fieldsResolver.resolve();
-    this.fields$.subscribe(fields => console.log(fields));
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.companies$ = this.companyQuery.selectAll();
     this.companies$.subscribe(res => {

@@ -29,10 +29,10 @@ under the License.
   <ng-template pTemplate>
     <div class="if-panel-heading">Group By</div>
     <div *ngFor="let enum of enumOptions">
-      <div class="p-grid p-jc-between" style="margin-left: 10px">
-        <label class="p-col-9 panel-items" [for]="enum.id" [ngClass]="enum == selectedEnum ? 'if-label' : 'if-label-normal-weight'"
-               (click)="selectedEnum = enum">{{ enum.optionLabel }}</label>
-        <p-radioButton (onClick)="enumSelected()" class="p-col-3 if-radiobutton panel-items" [inputId]="enum.id" name="enum" [value]="enum"
+      <div class="p-grid p-jc-between panel-row">
+        <label class="p-col-10 panel-items" [for]="enum.id" [ngClass]="enum == selectedEnum ? 'if-label' : 'if-label-normal-weight'"
+               (click)="selectedEnum = enum; enumSelected()">{{ enum.optionLabel }}</label>
+        <p-radioButton (onClick)="enumSelected()" class="p-col-2 if-radiobutton panel-items" [inputId]="enum.id" name="enum" [value]="enum"
                        [(ngModel)]="selectedEnum" [ngClass]="enum == selectedEnum ? 'checkbox-icon' : 'no-icon'">
         </p-radioButton>
       </div>

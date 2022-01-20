@@ -57,3 +57,11 @@
     padding-left: 70px;
   }
 }
+
+:host ::ng-deep .group-by-row {
+  background-color: $middle-grey !important;
+  width: inherit !important;
+  height: 60px !important;
+  border-radius: 10px !important;
+}
+

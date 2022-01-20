@@ -83,7 +83,14 @@ $left: var(--left-position);
   margin-left: .25rem;
 }
 
-::ng-deep .panel-items {
+.panel-row {
+  margin: 0 -.4rem;
+  padding: 0 .4rem;
+  background-color: $light-grey;
+  border-radius: 10px;
+}
+
+.panel-items {
   flex-grow: 0;
   padding: 0.5rem 0.2rem;
   cursor: pointer;
@@ -107,6 +114,7 @@ $left: var(--left-position);
 :host ::ng-deep .p-radiobutton {
   .p-radiobutton-box {
     border: none;
+    background-color: $light-grey;
 
     .p-radiobutton-icon {
       background: none;
@@ -124,6 +132,10 @@ $left: var(--left-position);
         content: "\f00c" !important;
       }
     }
+  }
+
+  .p-radiobutton-box.p-highlight {
+    align-items: start;
   }
 }
 

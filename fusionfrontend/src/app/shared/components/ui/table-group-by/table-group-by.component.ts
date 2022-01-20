@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { StatusWithAssetId } from '../../../../factory/models/status.model';
 import { Field, FieldDataType, FieldOption } from '../../../../core/store/field/field.model';
 import {
   FactoryAssetDetailsWithFields
@@ -17,24 +16,18 @@ export class TableGroupByComponent implements OnInit, OnChanges {
   @Input()
   assetsToBeGrouped: FactoryAssetDetailsWithFields[];
   @Input()
-  statusesWithAssetId: StatusWithAssetId[];
-  @Input()
   position: [string, string];
   @Output()
-  groupedItems = new EventEmitter<any>();
+  emitSelectedEnum = new EventEmitter<FieldOption>();
 
   hasPositionSet = false;
-
 
   enumOptions: FieldOption[] = [];
   selectedEnum: FieldOption = null;
 
-  constructor(
-  ) {
-  }
+  constructor() {  }
 
   ngOnInit(): void {
-    this.fields = this.fields.filter(field => field.dataType === FieldDataType.ENUM);
     if (this.position) {
       this.hasPositionSet = true;
       this.changeTheme(this.position[0], this.position[1]);
@@ -44,17 +37,13 @@ export class TableGroupByComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.fields) {
       this.fields = this.fields.filter(field => field.dataType === FieldDataType.ENUM);
-      this.fields.forEach(field => console.log(field.id, field.dataType, field.enumOptions));
       this.enumOptions = [];
       this.fields.forEach(field => this.enumOptions.push(new FieldOption(field.id, field.description)));
     }
   }
 
   enumSelected() {
-    this.assetsToBeGrouped.forEach(asset => {
-      const fields = asset.fields;
-      fields.filter(field => field.id === this.selectedEnum.fieldId).forEach(field => console.log(field, asset));
-    });
+    this.emitSelectedEnum.emit(this.selectedEnum);
   }
 
   private changeTheme(top: string, left: string) {
@@ -64,6 +53,7 @@ export class TableGroupByComponent implements OnInit, OnChanges {
 
   clearSelectedEnum() {
     this.selectedEnum = null;
+    this.emitSelectedEnum.emit(this.selectedEnum);
   }
 
 }
