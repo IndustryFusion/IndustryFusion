@@ -41,6 +41,24 @@
         "ASSET_SERIES": "Bild von Baureihe",
         "IMAGE": "Bild"
       },
+      "DAYS": {
+        "MONDAY": "Montag",
+        "TUESDAY": "Dienstag",
+        "WEDNESDAY": "Mittwoch",
+        "THURSDAY": "Donnerstag",
+        "FRIDAY": "Freitag",
+        "SATURDAY": "Samstag",
+        "SUNDAY": "Sonntag"
+      },
+      "DAYS_SHORT": {
+        "MONDAY": "Mo",
+        "TUESDAY": "Di",
+        "WEDNESDAY": "Mi",
+        "THURSDAY": "Do",
+        "FRIDAY": "Fr",
+        "SATURDAY": "Sa",
+        "SUNDAY": "So"
+      },
 			"TERMS": {
 				"ACCURACY": "Genauigkeit",
 				"ASSET": "Asset",
@@ -446,6 +464,20 @@
 				"ZIP_LABEL": "PLZ",
 				"ZIP_PLACEHOLDER": "Postleitzahl"
 			},
+      "SHIFTS_DIALOG": {
+        "TITLE": "Schichten Einstellungen",
+        "START_OF_THE_WEEK": "Erster Wochentag",
+        "SHIFTS_SUBTITLE": "Arbeitstage & Schichten",
+        "ADD_SHIFT": "Schicht hinzufügen",
+        "EDIT_SHIFT": "Schicht bearbeiten",
+        "ADD_DIALOG": {
+          "NAME": "Schichtname",
+          "NAME_PLACEHOLDER": "Schichtname",
+          "HOURS": "Schichtzeiten",
+          "START_PLACEHOLDER": "Beginn",
+          "END_PLACEHOLDER": "Ende"
+        }
+      },
 			"SUB_HEADER": {
 				"ASSETS": "Assets",
 				"FACTORY_SITES": "Standorte",

@@ -41,6 +41,24 @@
         "ASSET_SERIES": "Image of asset series",
         "IMAGE": "Image"
       },
+      "DAYS": {
+        "MONDAY": "Monday",
+        "TUESDAY": "Tuesday",
+        "WEDNESDAY": "Wednesday",
+        "THURSDAY": "Thursday",
+        "FRIDAY": "Friday",
+        "SATURDAY": "Saturday",
+        "SUNDAY": "Sunday"
+      },
+      "DAYS_SHORT": {
+        "MONDAY": "Mo",
+        "TUESDAY": "Tu",
+        "WEDNESDAY": "We",
+        "THURSDAY": "Th",
+        "FRIDAY": "Fr",
+        "SATURDAY": "Sa",
+        "SUNDAY": "Su"
+      },
 			"TERMS": {
 				"ACCURACY": "Accuracy",
 				"ASSET": "Asset",
@@ -446,6 +464,20 @@
 				"ZIP_LABEL": "ZIP",
 				"ZIP_PLACEHOLDER": "Zip code"
 			},
+      "SHIFTS_DIALOG": {
+        "TITLE": "Shifts & Time Settings",
+        "START_OF_THE_WEEK": "Start of the week",
+        "SHIFTS_SUBTITLE": "Working Days & Shifts",
+        "ADD_SHIFT": "Add Shift",
+        "EDIT_SHIFT": "Edit Shift",
+        "ADD_DIALOG": {
+          "NAME": "Shift name",
+          "NAME_PLACEHOLDER": "Shift name",
+          "HOURS": "Shift hours",
+          "START_PLACEHOLDER": "Start",
+          "END_PLACEHOLDER": "End"
+        }
+      },
 			"SUB_HEADER": {
 				"ASSETS": "Assets",
 				"FACTORY_SITES": "Factory Sites",
