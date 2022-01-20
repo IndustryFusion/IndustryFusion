@@ -37,7 +37,7 @@ under the License.
       <input class="p-col" formControlName="label" pInputText placeholder="{{ 'APP.COMMON.TERMS.LABEL' | translate }}" type="text">
     </div>
     <div class="footer-buttons">
-      <button (click)="dismissModal()" class="if-button-cancel" type="button">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+      <button (click)="dismissModal()" class="if-button button-cancel" type="button">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button (click)="confirmModal()" [disabled]="unitForm.invalid" class="if-button button-primary" type="button">
         {{ type === DialogType.EDIT ? translate.instant('APP.COMMON.DIALOG_BUTTONS.SAVE') :
         translate.instant('APP.COMMON.DIALOG_BUTTONS.CREATE')}}
