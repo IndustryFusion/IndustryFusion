@@ -70,6 +70,11 @@ export class FactorySiteService {
       }));
   }
 
+  initFactorySiteDraft(companyId: ID): Observable<FactorySite> {
+    const path = `companies/${companyId}/factorysites/init-factory-site-draft`;
+    return this.http.get<FactorySite>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+  }
+
   updateFactorySite(factorySite: FactorySite): Observable<FactorySite> {
     const path = `companies/${factorySite.companyId}/factorysites/${factorySite.id}`;
     return this.http.patch<FactorySite>(`${environment.apiUrlPrefix}/${path}`, factorySite, this.httpOptions)
