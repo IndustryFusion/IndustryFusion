@@ -34,6 +34,7 @@ import { Field, FieldOption } from '../../../../core/store/field/field.model';
   styleUrls: ['./equipment-efficiency-list.component.scss']
 })
 export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
+  public static ASSET_FIELD_INDEX_WITHOUT_VALUE = -1;
 
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
@@ -56,7 +57,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   groupByActive = false;
   selectedEnum: FieldOption;
   selectedEnumOptions: FieldOption[];
-  rowGroupMetadata: any;
+  rowGroupMetaDataMap: Map<ID, RowGroupData>;
 
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
@@ -192,31 +193,30 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
 
 
   updateRowGroupMetaData() {
-    this.rowGroupMetadata = { };
-    const sortedAssetFieldIndexTuples = this.generateSoredAssetFieldIndexMap();
+    this.rowGroupMetaDataMap = new Map<number, RowGroupData>();
+    const sortedAssetFieldIndexTuples: AssetWithFieldIndex[] = this.generateSortedAssetFieldIndexMap();
 
     if (sortedAssetFieldIndexTuples) {
       for (let i = 0; i < sortedAssetFieldIndexTuples.length; i++) {
-        const rowData = sortedAssetFieldIndexTuples[i];
-        const enumValue = rowData.fieldIndex >= 0 ? rowData.asset.fields[rowData.fieldIndex].value : - 1;
+        const row = sortedAssetFieldIndexTuples[i];
+        const enumValue = row.fieldIndex >= 0 ? row.asset.fields[row.fieldIndex].value :
+          EquipmentEfficiencyListComponent.ASSET_FIELD_INDEX_WITHOUT_VALUE;
 
         if (i === 0) {
-          this.rowGroupMetadata[enumValue] = { index: 0, size: 1 };
+          this.rowGroupMetaDataMap.set(enumValue, new RowGroupData(i, 1));
         }
         else {
-          const previousRowData = sortedAssetFieldIndexTuples[i - 1];
-          const previousRowGroup = previousRowData.fieldIndex >= 0 ? previousRowData.asset.fields[previousRowData.fieldIndex].value : -1;
-          if (enumValue === previousRowGroup) {
-            this.rowGroupMetadata[enumValue].size++;
+          if (this.rowGroupMetaDataMap.has(enumValue)) {
+            this.rowGroupMetaDataMap.get(enumValue).size++;
           } else {
-            this.rowGroupMetadata[enumValue] = { index: i, size: 1 };
+            this.rowGroupMetaDataMap.set(enumValue, new RowGroupData(i, 1));
           }
         }
       }
     }
   }
 
-  generateSoredAssetFieldIndexMap() {
+  generateSortedAssetFieldIndexMap(): AssetWithFieldIndex[] {
     return this.displayedFactoryAssets.sort((asset1, asset2) => {
       const fieldIndexOfAsset1 = this.getFieldIndexOfSelectedEnum(asset1);
       const fieldIndexOfAsset2 = this.getFieldIndexOfSelectedEnum(asset2);
@@ -228,7 +228,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
         return asset1.fields[fieldIndexOfAsset1].value.localeCompare(asset2.fields[fieldIndexOfAsset2].value);
       }
     }).map(factoryAsset => {
-      return { asset: factoryAsset, fieldIndex: this.getFieldIndexOfSelectedEnum(factoryAsset) };
+      return new AssetWithFieldIndex(factoryAsset, this.getFieldIndexOfSelectedEnum(factoryAsset));
     });
   }
 
@@ -236,4 +236,27 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     return factoryAsset.fields.indexOf(factoryAsset.fields.filter(field => field.name === this.selectedEnum.optionLabel).pop());
   }
 
+  checkIfRowDataMapIndexMatchesRowIndex(asset: FactoryAssetDetailsWithFields, rowIndex: number): boolean {
+    return (this.getFieldIndexOfSelectedEnum(asset) !== -1 ? this.rowGroupMetaDataMap.get(asset.fields[this.getFieldIndexOfSelectedEnum(asset)]
+        .value).index : this.rowGroupMetaDataMap.get(EquipmentEfficiencyListComponent.ASSET_FIELD_INDEX_WITHOUT_VALUE).index) === rowIndex;
+  }
+
+}
+
+class RowGroupData {
+  index: number;
+  size: number;
+  constructor(index: number, size: number) {
+    this.index = index;
+    this.size = size;
+  }
+}
+
+class AssetWithFieldIndex {
+  asset: FactoryAssetDetailsWithFields;
+  fieldIndex: number;
+  constructor(asset: FactoryAssetDetailsWithFields, fieldIndex: number) {
+    this.asset = asset;
+    this.fieldIndex = fieldIndex;
+  }
 }

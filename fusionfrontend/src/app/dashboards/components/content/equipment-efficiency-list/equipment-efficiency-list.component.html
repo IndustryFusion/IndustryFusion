@@ -146,7 +146,7 @@ under the License.
     </ng-template>
 
     <ng-template pTemplate="body" let-asset let-rowIndex="rowIndex">
-      <tr *ngIf="(getFieldIndexOfSelectedEnum(asset) != -1 ? rowGroupMetadata[asset.fields[getFieldIndexOfSelectedEnum(asset)].value].index : rowGroupMetadata[-1].index ) === rowIndex">
+      <tr *ngIf="checkIfRowDataMapIndexMatchesRowIndex(asset, rowIndex)">
         <td colspan="10" class="group-by-row">
           <span class="p-text-bold p-ml-2" *ngIf="getFieldIndexOfSelectedEnum(asset) != -1">{{ selectedEnum.optionLabel }} - {{ selectedEnumOptions[asset.fields[getFieldIndexOfSelectedEnum(asset)].value - 1].optionLabel }}</span>
           <span class="p-text-bold p-ml-2" *ngIf="getFieldIndexOfSelectedEnum(asset) == -1">{{ selectedEnum.optionLabel }} - Value not found</span>
