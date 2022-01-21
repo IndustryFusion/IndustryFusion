@@ -15,12 +15,9 @@ export class TableGroupByComponent implements OnInit, OnChanges {
   fields: Field[];
   @Input()
   assetsToBeGrouped: FactoryAssetDetailsWithFields[];
-  @Input()
-  position: [string, string];
   @Output()
   emitSelectedEnum = new EventEmitter<FieldOption>();
 
-  hasPositionSet = false;
 
   enumOptions: FieldOption[] = [];
   selectedEnum: FieldOption = null;
@@ -28,10 +25,6 @@ export class TableGroupByComponent implements OnInit, OnChanges {
   constructor() {  }
 
   ngOnInit(): void {
-    if (this.position) {
-      this.hasPositionSet = true;
-      this.changeTheme(this.position[0], this.position[1]);
-    }
   }
 
   ngOnChanges(): void {
@@ -44,11 +37,6 @@ export class TableGroupByComponent implements OnInit, OnChanges {
 
   enumSelected() {
     this.emitSelectedEnum.emit(this.selectedEnum);
-  }
-
-  private changeTheme(top: string, left: string) {
-    document.documentElement.style.setProperty('--top-position', top);
-    document.documentElement.style.setProperty('--left-position', left);
   }
 
   clearSelectedEnum() {

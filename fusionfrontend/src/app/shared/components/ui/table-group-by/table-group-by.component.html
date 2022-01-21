@@ -24,8 +24,7 @@ under the License.
   </button>
 </div>
 
-<p-overlayPanel #groupbypanel [ngClass]="{'panel-position': hasPositionSet==true}" [dismissable]="true"
-                [showCloseIcon]="true" class="smallOverlayPanel  panel-class">
+<p-overlayPanel #groupbypanel [dismissable]="true" [showCloseIcon]="true" class="smallOverlayPanel  panel-class">
   <ng-template pTemplate>
     <div class="if-panel-heading">{{ 'APP.SHARED.UI.TABLE_GROUP_BY.GROUP_BY' | translate }}</div>
     <div *ngFor="let enum of enumOptions">

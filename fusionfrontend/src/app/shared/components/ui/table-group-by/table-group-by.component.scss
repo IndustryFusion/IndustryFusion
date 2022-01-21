@@ -120,7 +120,6 @@ $left: var(--left-position);
 :host ::ng-deep .p-radiobutton {
   .p-radiobutton-box {
     border: none;
-    background-color: $light-grey;
 
     .p-radiobutton-icon {
       background: none;
@@ -130,7 +129,7 @@ $left: var(--left-position);
       text-rendering: auto;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      text-indent: 0px !important;
+      text-indent: 0 !important;
       text-align: center;
       border: none;
 
