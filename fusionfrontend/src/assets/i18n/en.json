@@ -855,6 +855,9 @@
 					"VALUE": "Value",
 					"VALUES": "Values"
 				},
+        "TABLE_GROUP_BY": {
+          "GROUP_BY": "Group by"
+        },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Search"
 				},

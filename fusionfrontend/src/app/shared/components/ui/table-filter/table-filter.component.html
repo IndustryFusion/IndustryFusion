@@ -15,7 +15,7 @@ under the License.
 
 <div class="button-div">
   <button (click)="filterpanel.toggle($event)" class="filter-btn" [ngClass]="{'filter-active': activeFilterSet.size > 0}">
-    <span class="filter-btn-item">Filter</span>
+    <span class="filter-btn-item">{{ 'APP.SHARED.UI.TABLE_FILTER.FILTER' | translate }}</span>
     <fa-icon [icon]="faFilter" class="fa-fw"></fa-icon>
     <span *ngIf="activeFilterSet.size > 0" class="active-filter">{{ activeFilterSet.size }}</span>
   </button>
