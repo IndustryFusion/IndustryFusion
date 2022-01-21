@@ -29,7 +29,7 @@ under the License.
   <ng-template pTemplate>
     <div class="if-panel-heading">Group By</div>
     <div *ngFor="let enum of enumOptions">
-      <div class="p-grid p-jc-between panel-row">
+      <div class="p-grid p-jc-between panel-row" [ngClass]="{'panel-row-active': enum == selectedEnum}">
         <label class="p-col-10 panel-items" [for]="enum.id" [ngClass]="enum == selectedEnum ? 'if-label' : 'if-label-normal-weight'"
                (click)="selectedEnum = enum; enumSelected()">{{ enum.optionLabel }}</label>
         <p-radioButton (onClick)="enumSelected()" class="p-col-2 if-radiobutton panel-items" [inputId]="enum.id" name="enum" [value]="enum"

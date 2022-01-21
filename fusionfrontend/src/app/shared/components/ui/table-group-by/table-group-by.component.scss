@@ -86,8 +86,14 @@ $left: var(--left-position);
 .panel-row {
   margin: 0 -.4rem;
   padding: 0 .4rem;
-  background-color: $light-grey;
   border-radius: 10px;
+  .active {
+    background-color: $light-grey;
+  }
+}
+
+.panel-row-active {
+  background-color: $light-grey;
 }
 
 .panel-items {
@@ -105,8 +111,8 @@ $left: var(--left-position);
   top: .45rem;
   cursor: pointer;
 
-  .remove-selected-enum-icon {
-    font-size: $regular-font-size;
+  .remove-selected-enum-btn-icon {
+    font-size: $medium-font-size;
     color: $basic-black;
   }
 }
