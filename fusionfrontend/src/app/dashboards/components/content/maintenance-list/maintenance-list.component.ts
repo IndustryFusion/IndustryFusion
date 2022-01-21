@@ -32,6 +32,7 @@ import {
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Field, FieldOption } from '../../../../core/store/field/field.model';
 
 
 @Component({
@@ -40,6 +41,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./maintenance-list.component.scss']
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
+  public static ASSET_FIELD_INDEX_WITHOUT_VALUE = -1;
 
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
@@ -49,6 +51,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   companies: Company[];
   @Input()
   assetTypes: AssetType[];
+  @Input()
+  fields: Field[];
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -57,6 +61,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+  searchText = '';
+  groupByActive = false;
+  selectedEnum: FieldOption;
+  selectedEnumOptions: FieldOption[];
+  rowGroupMetaDataMap: Map<ID, RowGroupData>;
 
   faChevronCircleDown = faChevronCircleDown;
   faChevronCircleUp = faChevronCircleUp;
@@ -64,8 +73,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   faExclamationCircle = faExclamationCircle;
   faExclamationTriangle = faExclamationTriangle;
   OispPriority = OispAlertPriority;
-
-  searchText = '';
 
   tableFilters: FilterOption[] =
     [{ filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ASSET_TYPE'), attributeToBeFiltered: 'category' },
@@ -96,15 +103,31 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.updateDisplayedAssets();
   }
 
+  setSearchText(event: string) {
+    this.searchText = event;
+  }
+
   filterAssets(event: Array<FactoryAssetDetailsWithFields>) {
     this.filteredFactoryAssets = event;
     this.updateDisplayedAssets();
+  }
+
+  groupAssets(event: FieldOption) {
+    this.selectedEnum = event;
+    this.groupByActive = this.selectedEnum !== null;
+    if (this.selectedEnum) {
+      this.selectedEnumOptions = this.fields.filter(field => field.id === this.selectedEnum.fieldId).pop().enumOptions;
+      this.updateRowGroupMetaData();
+    }
   }
 
   updateDisplayedAssets() {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
     this.displayedFactoryAssets = this.searchedFactoryAssets.filter(asset => this.filteredFactoryAssets.includes(asset));
     this.updateTree();
+    if (this.selectedEnum) {
+      this.updateRowGroupMetaData();
+    }
   }
 
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
@@ -136,6 +159,11 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.treeData = [...this.treeData];
   }
 
+  public isMaintenanceNeededSoonForAsset(asset: FactoryAssetDetailsWithFields) {
+    return this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
+      || this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
+  }
+
   public isMaintenanceNeededSoon(node: TreeNode): boolean {
     const asset = node.data;
     return this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
@@ -155,7 +183,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   private isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
     const maintenanceValue = Utils.getMaintenanceValue(asset, type);
-    return maintenanceValue && maintenanceValue < type.lowerThreshold;
+    return (maintenanceValue && maintenanceValue < type.lowerThreshold);
   }
 
   private updateTree() {
@@ -251,5 +279,73 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
       return (event.order * result);
     });
+  }
+
+  updateRowGroupMetaData() {
+    this.rowGroupMetaDataMap = new Map<number, RowGroupData>();
+    const sortedAssetFieldIndexTuples: AssetWithFieldIndex[] = this.generateSortedAssetFieldIndexMap();
+
+    if (sortedAssetFieldIndexTuples) {
+      for (let i = 0; i < sortedAssetFieldIndexTuples.length; i++) {
+        const row = sortedAssetFieldIndexTuples[i];
+        const enumValue = row.fieldIndex >= 0 ? row.asset.fields[row.fieldIndex].value :
+          MaintenanceListComponent.ASSET_FIELD_INDEX_WITHOUT_VALUE;
+
+        if (i === 0) {
+          this.rowGroupMetaDataMap.set(enumValue, new RowGroupData(i, 1));
+        }
+        else {
+          if (this.rowGroupMetaDataMap.has(enumValue)) {
+            this.rowGroupMetaDataMap.get(enumValue).size++;
+          } else {
+            this.rowGroupMetaDataMap.set(enumValue, new RowGroupData(i, 1));
+          }
+        }
+      }
+    }
+  }
+
+  generateSortedAssetFieldIndexMap(): AssetWithFieldIndex[] {
+    return this.displayedFactoryAssets.sort((asset1, asset2) => {
+      const fieldIndexOfAsset1 = this.getFieldIndexOfSelectedEnum(asset1);
+      const fieldIndexOfAsset2 = this.getFieldIndexOfSelectedEnum(asset2);
+      if (fieldIndexOfAsset1 < 0) {
+        return 0;
+      } else if (fieldIndexOfAsset2 < 0) {
+        return -1;
+      } else {
+        return asset1.fields[fieldIndexOfAsset1].value.localeCompare(asset2.fields[fieldIndexOfAsset2].value);
+      }
+    }).map(factoryAsset => {
+      return new AssetWithFieldIndex(factoryAsset, this.getFieldIndexOfSelectedEnum(factoryAsset));
+    });
+  }
+
+  getFieldIndexOfSelectedEnum(factoryAsset: FactoryAssetDetailsWithFields): number {
+    return factoryAsset.fields.indexOf(factoryAsset.fields.filter(field => field.name === this.selectedEnum.optionLabel).pop());
+  }
+
+  checkIfRowDataMapIndexMatchesRowIndex(asset: FactoryAssetDetailsWithFields, rowIndex: number): boolean {
+    return (this.getFieldIndexOfSelectedEnum(asset) !== -1 ? this.rowGroupMetaDataMap.get(asset.fields[this.getFieldIndexOfSelectedEnum(
+        asset)].value).index : this.rowGroupMetaDataMap.get(MaintenanceListComponent.ASSET_FIELD_INDEX_WITHOUT_VALUE).index)
+      === rowIndex;
+  }
+}
+
+class RowGroupData {
+  index: number;
+  size: number;
+  constructor(index: number, size: number) {
+    this.index = index;
+    this.size = size;
+  }
+}
+
+class AssetWithFieldIndex {
+  asset: FactoryAssetDetailsWithFields;
+  fieldIndex: number;
+  constructor(asset: FactoryAssetDetailsWithFields, fieldIndex: number) {
+    this.asset = asset;
+    this.fieldIndex = fieldIndex;
   }
 }
