@@ -54,6 +54,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+  searchText = '';
   groupByActive = false;
   selectedEnum: FieldOption;
   selectedEnumOptions: FieldOption[];
@@ -91,6 +92,10 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
     this.searchedFactoryAssets = event;
     this.updateDisplayedAssets();
+  }
+
+  setSearchText(event: string) {
+    this.searchText = event;
   }
 
   filterAssets(event: Array<FactoryAssetDetailsWithFields>) {
@@ -237,10 +242,10 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   }
 
   checkIfRowDataMapIndexMatchesRowIndex(asset: FactoryAssetDetailsWithFields, rowIndex: number): boolean {
-    return (this.getFieldIndexOfSelectedEnum(asset) !== -1 ? this.rowGroupMetaDataMap.get(asset.fields[this.getFieldIndexOfSelectedEnum(asset)]
-        .value).index : this.rowGroupMetaDataMap.get(EquipmentEfficiencyListComponent.ASSET_FIELD_INDEX_WITHOUT_VALUE).index) === rowIndex;
+    return (this.getFieldIndexOfSelectedEnum(asset) !== -1 ? this.rowGroupMetaDataMap.get(asset.fields[this.getFieldIndexOfSelectedEnum(
+      asset)].value).index : this.rowGroupMetaDataMap.get(EquipmentEfficiencyListComponent.ASSET_FIELD_INDEX_WITHOUT_VALUE).index)
+      === rowIndex;
   }
-
 }
 
 class RowGroupData {
