@@ -1,0 +1,58 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div *ngIf="shiftForm" class="factory-site-shift-settings-dialog if-wizard-wrapper" [formGroup]="shiftForm">
+  <div class="content">
+    <div class="week-start-container">
+      <label class="if-label">{{ 'APP.FACTORY.SHIFTS_DIALOG.START_OF_THE_WEEK' | translate }}&nbsp;*</label>
+      <p-dropdown [options]="weekdays" formControlName="weekStart">
+      </p-dropdown>
+    </div>
+
+    <div class="shifts-container">
+      <label class="if-label">{{ 'APP.FACTORY.SHIFTS_DIALOG.SHIFTS_SUBTITLE' | translate }}</label>
+
+      <ng-container *ngFor="let dayForm of getDaysFormGroups()" class="p-grid attribute-row">
+        <div class="day-container" [formGroup]="dayForm">
+          <button type="button" [ngClass]="'button-working-day ' + (dayForm.get('isActive').value ? 'active' : 'inactive')"
+                  (click)="toggleIsDayActive(dayForm)">{{ 'APP.COMMON.DAYS_SHORT.' + dayForm.get('day').value | translate }}</button>
+
+          <ng-container *ngFor="let shiftForm of getShiftsOfDayFormGroups(dayForm)">
+            <div id="rowElement" class="if-button button-tertiary shift" [formGroup]="shiftForm">
+              <label displayControlValue="name"></label>
+              <app-item-options-menu [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
+                                     (editItem)="onEditShift(shiftForm)" (deleteItem)="onDeleteShift(shiftForm)">
+              </app-item-options-menu>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="dayForm.get('isActive').value && !isMaxShiftsOfDayReached(dayForm)">
+            <button type="button" class="button-add-shift" (click)="onAddShift(dayForm.get('day').value)">+</button>
+            <label class="label-add-shift">{{ 'APP.FACTORY.SHIFTS_DIALOG.ADD_SHIFT' | translate }}</label>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="footer">
+    <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+    <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="shiftForm.invalid">
+      {{ 'APP.COMMON.DIALOG_BUTTONS.UPDATE' | translate }}
+    </button>
+  </div>
+</div>
+
+

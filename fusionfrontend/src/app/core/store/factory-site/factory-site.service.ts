@@ -32,7 +32,7 @@ export class FactorySiteService {
 
   constructor(private factorySiteStore: FactorySiteStore, private http: HttpClient) { }
 
-  getFactorySites(companyId: ID): Observable<FactorySite[]> {
+  getFactorySitesWithoutShiftSettings(companyId: ID): Observable<FactorySite[]> {
     const path = `companies/${companyId}/factorysites`;
     return this.factorySiteStore.cachedByParentId(companyId,
       this.http.get<FactorySite[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
@@ -41,17 +41,25 @@ export class FactorySiteService {
       })));
   }
 
-  getFactorySite(companyId: ID, factorySiteId: ID, refresh: boolean = false): Observable<FactorySite> {
-    const path = `companies/${companyId}/factorysites/${factorySiteId}`;
+  getFactorySiteWithoutShiftSettings(companyId: ID, factorySiteId: ID, refresh: boolean = false): Observable<FactorySite> {
+    return this.getFactorySite(companyId, factorySiteId, refresh, false);
+  }
+
+  getFactorySiteWithShiftsSettings(companyId: ID, factorySiteId: ID): Observable<FactorySite> {
+    return this.getFactorySite(companyId, factorySiteId, true, true);
+  }
+
+  private getFactorySite(companyId: ID, factorySiteId: ID, refresh: boolean, embedChildren: boolean, ): Observable<FactorySite> {
+    const path = `companies/${companyId}/factorysites/${factorySiteId}?embedChildren=${embedChildren}`;
     if (refresh) {
       this.factorySiteStore.invalidateCacheId(factorySiteId);
     }
 
     return this.factorySiteStore.cachedById(factorySiteId,
       this.http.get<FactorySite>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
-      .pipe(tap(entity => {
-        this.factorySiteStore.upsertCached(entity);
-      })));
+        .pipe(tap(entity => {
+          this.factorySiteStore.upsertCached(entity);
+        })));
   }
 
   createFactorySite(factorySite: FactorySite): Observable<FactorySite> {

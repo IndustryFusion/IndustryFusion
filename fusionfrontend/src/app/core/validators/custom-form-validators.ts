@@ -18,9 +18,19 @@ import { FieldThresholdType } from 'src/app/core/store/field/field.model';
 
 export class CustomFormValidators {
   static FLOAT_REGEX = /^[+-]?([0-9]*[.])?[0-9]+$/;
+  static TIME_REGEX = /^(([01]?\d|2[0-3]):?([0-5]\d|0))|([01]?\d|2[0-3])$/;
 
   public static requiredFloatingNumber(): ValidatorFn {
     return CustomFormValidators.namedPattern(CustomFormValidators.FLOAT_REGEX, 'floatingNumber');
+  }
+
+  public static requiredTimeFormat(): ValidatorFn {
+    return CustomFormValidators.namedPattern(CustomFormValidators.TIME_REGEX, 'timeFormat');
+  }
+
+  public static isTimeStringValid(timeString: string): boolean {
+    const regExp = new RegExp(CustomFormValidators.TIME_REGEX);
+    return regExp.test(timeString);
   }
 
   /**

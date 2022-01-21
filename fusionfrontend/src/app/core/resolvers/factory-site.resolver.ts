@@ -32,7 +32,7 @@ export class FactorySiteResolver implements Resolve<void>{
   resolveFromComponent(): Observable<FactorySite[]> {
     const companyId = this.companyQuery.getActiveId();
     if (companyId) {
-      return  this.factorySiteService.getFactorySites(companyId);
+      return  this.factorySiteService.getFactorySitesWithoutShiftSettings(companyId);
     } else {
       console.error('[asset series details resolver]: company unknown');
       return EMPTY;

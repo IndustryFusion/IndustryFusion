@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -32,17 +32,21 @@ import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { AssetService } from '../../../../core/store/asset/asset.service';
 import { RoomService } from '../../../../core/store/room/room.service';
 import { FactorySiteService } from '../../../../core/store/factory-site/factory-site.service';
+import { DialogService } from 'primeng/dynamicdialog';
+import { TranslateService } from '@ngx-translate/core';
+import { FactorySiteShiftSettingsDialogComponent } from '../../content/factory-site-shifts-settings-dialog/factory-site-shift-settings-dialog.component';
 
 @Component({
   selector: 'app-factory-site-page',
   templateUrl: './factory-site-page.component.html',
   styleUrls: ['./factory-site-page.component.scss']
 })
-export class FactorySitePageComponent implements OnInit, OnDestroy {
+export class FactorySitePageComponent implements OnInit {
   isLoading$: Observable<boolean>;
   company$: Observable<Company>;
   factorySites$: Observable<FactorySite[]>;
   factorySite$: Observable<FactorySite>;
+  factorySite: FactorySite;
   rooms$: Observable<Room[]>;
   roomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
@@ -60,7 +64,9 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     private factoryResolver: FactoryResolver,
     private roomService: RoomService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private dialogService: DialogService,
+    private activatedRoute: ActivatedRoute,
+    public translate: TranslateService) { }
 
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
@@ -75,11 +81,13 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
 
     if (this.factorySiteQuery.getActive() == null) {
-      this.factorySite$.subscribe(factorySite => { if (factorySite) { this.factorySiteService.setActive(factorySite.id); } });
+      this.factorySite$.subscribe(factorySite => {
+        if (factorySite) { this.factorySiteService.setActive(factorySite.id); }
+        this.factorySite = factorySite;
+      });
+    } else {
+      this.factorySite = this.factorySiteQuery.getActive();
     }
-  }
-
-  ngOnDestroy() {
   }
 
   selectAssets(selectedAssetIds: ID[]) {
@@ -106,5 +114,14 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
       },
       error => console.error(error)
     );
+  }
+
+  onEditShifts() {
+    this.dialogService.open(FactorySiteShiftSettingsDialogComponent, {
+      data: { factorySite: this.factorySite },
+      header: this.translate.instant('APP.FACTORY.SHIFTS_DIALOG.TITLE'),
+      width: '70%',
+      contentStyle: { 'padding-left': '4%', 'padding-right': '4%' },
+    });
   }
 }

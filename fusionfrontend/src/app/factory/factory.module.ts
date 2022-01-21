@@ -72,6 +72,11 @@ import { HistoricalStatusBarChartComponent } from '../shared/components/content/
 import { ChartModule } from 'primeng/chart';
 import { MetricsBoardComponent } from './components/content/metrics-board/metrics-board.component';
 import { MetricsGroupComponent } from './components/content/metrics-board/metrics-group/metrics-group.component';
+import { FactorySiteShiftSettingsDialogComponent } from './components/content/factory-site-shifts-settings-dialog/factory-site-shift-settings-dialog.component';
+import {
+  ShiftDialogComponent
+} from './components/content/factory-site-shifts-settings-dialog/shift-dialog/shift-dialog.component';
+import { SliderModule } from 'primeng/slider';
 
 @NgModule({
   declarations: [
@@ -117,6 +122,8 @@ import { MetricsGroupComponent } from './components/content/metrics-board/metric
     HistoricalStatusBarChartComponent,
     MetricsBoardComponent,
     MetricsGroupComponent,
+    FactorySiteShiftSettingsDialogComponent,
+    ShiftDialogComponent,
   ],
   imports: [
     SharedModule,
@@ -134,6 +141,7 @@ import { MetricsGroupComponent } from './components/content/metrics-board/metric
     ChartModule,
     TreeTableModule,
     TreeModule,
+    SliderModule,
   ],
   exports: [
     FactorySubHeaderComponent,

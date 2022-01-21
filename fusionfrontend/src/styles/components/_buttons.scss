@@ -40,6 +40,25 @@
     margin-right: 16px;
   }
 
+  &.button-tertiary {
+    font-style: normal;
+    font-weight: bold;
+    font-size: $medium-font-size;
+    line-height: $medium-line-height;
+    border-radius: 10px;
+
+    text-transform: unset;
+    box-shadow: unset;
+    height: 32px;
+
+    background: $light-grey 0 0% no-repeat padding-box;
+    padding: .4rem .8rem .4rem .8rem;
+
+    &:hover {
+      background: $hover-grey-border;
+    }
+  }
+
   &.button-secondary {
     font-weight: normal;
     color: $basic-black;

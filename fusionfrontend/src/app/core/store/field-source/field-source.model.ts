@@ -20,7 +20,6 @@ import { ID } from '@datorama/akita';
 import { Threshold } from '../threshold/threshold.model';
 
 export class FieldSource  extends BaseEntity{
-
   description: string;
   name: string;
   register: string;

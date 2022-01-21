@@ -109,7 +109,7 @@ export class FactoryResolver {
     this.companyService.setActive(companyId);
     if (companyId != null) {
       this.companyService.getCompany(companyId).subscribe();
-      this.factorySiteService.getFactorySites(companyId).subscribe();
+      this.factorySiteService.getFactorySitesWithoutShiftSettings(companyId).subscribe();
       this.roomService.getRoomsOfCompany(companyId).subscribe();
       this.assetService.getAssetsOfCompany(companyId).subscribe();
       this.assetDetailsService.getAssetDetailsOfCompany(companyId).subscribe();
