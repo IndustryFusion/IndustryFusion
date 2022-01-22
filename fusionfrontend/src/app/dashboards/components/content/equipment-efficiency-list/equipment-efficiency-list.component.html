@@ -89,7 +89,7 @@ under the License.
         <td [style.width.%]="20" class="table-bold-font">
           <div class="p-flex-row" style="display: flex">
             <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-            <span class="if-subsystem-grid p-col-" *ngIf="rowNode.parent">
+            <span class="subsystem-grid p-col-" *ngIf="rowNode.parent">
               <span class="upper"></span>
               <span class="lower" [ngClass]="{'last-element': isLastChildElement(rowNode)}"></span>
             </span>

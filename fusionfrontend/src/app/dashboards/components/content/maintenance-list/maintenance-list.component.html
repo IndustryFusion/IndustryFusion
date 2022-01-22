@@ -70,7 +70,7 @@
         <td [ngClass]="{'asset-needs-maintenance': isMaintenanceNeededSoon(rowNode.node)}"
             class="asset-column p-flex-row table-bold-font">
           <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-          <span *ngIf="rowNode.parent" class="if-subsystem-grid p-col-">
+          <span *ngIf="rowNode.parent" class="subsystem-grid p-col-">
             <span class="upper"></span>
             <span [ngClass]="{'last-element': isLastChildElement(rowNode)}" class="lower"></span>
           </span>
