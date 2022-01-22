@@ -27,6 +27,7 @@ import { RouteHelpers } from '../../../../../../core/helpers/route-helpers';
 import { SelectItem } from 'primeng/api';
 import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -74,7 +75,8 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
               private factoryResolver: FactoryResolver,
               private factoryAssetDetailsResolver: FactoryAssetDetailsResolver,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -163,10 +165,10 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     ];
     this.maxPoints = 50;
 
-    this.timeSlotOptions = [{ name: 'Current', value: 'current' },
+    this.timeSlotOptions = [{ name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CURRENT'), value: 'current' },
       { name: '1h', value: '1hour' },
       { name: '24h', value: '1day' },
-      { name: 'Custom Date', value: 'customDate' }
+      { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CUSTOM_DATE'), value: 'customDate' }
     ];
   }
 

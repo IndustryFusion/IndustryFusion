@@ -36,7 +36,7 @@ under the License.
   <div class="asset-info asset-menu">
     <app-item-options-menu (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()"
                            (editItem)="openEditDialog()" [actions]="dropdownMenuOptions"
-                           [assignItemText]="'Asset to room'"
+                           assignItemText="{{ 'APP.FACTORY.ASSET_DETAILS.INFO.ASSET_TO_ROOM' | translate }}"
                            [showInline]="false"></app-item-options-menu>
   </div>
 </section>

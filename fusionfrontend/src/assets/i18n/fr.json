@@ -375,7 +375,8 @@
 				},
 				"INFO": {
 					"FACTORY_SITE_ASSIGNMENT": "Affectation du site de l'usine",
-					"ROOM_ASSIGNMENT": "Attribution des chambres ({{factorySiteName}})"
+					"ROOM_ASSIGNMENT": "Attribution des chambres ({{factorySiteName}})",
+          "ASSET_TO_ROOM": "Attribuer un asset à une salle"
 				},
 				"SUB_HEADER": {
 					"APPLETS": "Applets",
@@ -527,7 +528,11 @@
             "OPTIONS_MISSING": "options manquantes, veuillez entrer à nouveau",
             "GOT_IT": "Je l'ai eu !",
             "PERFORMANCE_VIEW": "Vue des performances",
-            "REALTIME_VIEW": "Vue en temps réel"
+            "REALTIME_VIEW": "Vue en temps réel",
+            "CURRENT": "Actuel",
+            "CUSTOM_DATE": "Date personnalisée",
+            "24_H_PERFORMANCE_SUMMARY": "Résumé des performances sur 24 heures",
+            "3_DAYS_PERFORMANCE_SUMMARY": "Résumé des performances sur 3 jours"
           }
         },
         "ASSET_GRID_PAGE": {

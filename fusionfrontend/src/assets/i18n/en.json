@@ -375,8 +375,9 @@
 				},
 				"INFO": {
 					"FACTORY_SITE_ASSIGNMENT": "Factory Site Assignment",
-					"ROOM_ASSIGNMENT": "Room Assignment ({{factorySiteName}})"
-				},
+					"ROOM_ASSIGNMENT": "Room Assignment ({{factorySiteName}})",
+          "ASSET_TO_ROOM": "asset to room"
+        },
 				"SUB_HEADER": {
 					"APPLETS": "Applets",
 					"DIGITAL_NAMEPLATE": "Digital Nameplate",
@@ -527,7 +528,11 @@
             "OPTIONS_MISSING": "options missing, please enter again",
             "GOT_IT": "Got it!",
             "PERFORMANCE_VIEW": "Performance View",
-            "REALTIME_VIEW": "Realtime View"
+            "REALTIME_VIEW": "Realtime View",
+            "CURRENT": "Current",
+            "CUSTOM_DATE": "Custom Date",
+            "24_H_PERFORMANCE_SUMMARY": "24 h performance summary",
+            "3_DAYS_PERFORMANCE_SUMMARY": "3 days performance summary"
           }
         },
         "ASSET_GRID_PAGE": {
