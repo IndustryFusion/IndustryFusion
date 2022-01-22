@@ -36,7 +36,7 @@ under the License.
     <tr>
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
-        <app-table-searchbar filterColumn="Asset type name" [itemsToBeFiltered]="(assetTypes$ | async)"
+        <app-table-searchbar filterColumn="{{ 'APP.ECOSYSTEM.ASSET_TYPE_LIST.ASSET_TYPE_NAME' | translate }}" [itemsToBeFiltered]="(assetTypes$ | async)"
                              attributeToBeSearched="name" (searchByName)="searchAssetTypes($event)">
         </app-table-searchbar>
       </th>

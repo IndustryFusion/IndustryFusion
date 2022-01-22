@@ -93,6 +93,13 @@
         }
       },
       "STORE": {
+        "FIELD": {
+          "FIELD_THRESHOLD_TYPE": {
+            "OPTIONAL": "Optional",
+            "MANDATORY": "Mandatory",
+            "DISABLED": "Disabled"
+          }
+        },
         "THRESHOLD": {
           "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute lower & upper limit",
           "IDEAL_RANGE": "Ideal range",
@@ -165,7 +172,8 @@
 					"METRIC_NAME": "Metricname"
 				},
 				"LIST": {
-					"ASSET_TYPE_TEMPLATE": "Asset type template",
+          "TEMPLATE": "Template",
+          "ASSET_TYPE_TEMPLATE": "Asset type template",
 					"ASSET_TYPE_TEMPLATES": "Asset type templates",
 					"CONFIRMATION_DIALOG": {
 						"HEADER": "Delete Asset Type Template Confirmation",

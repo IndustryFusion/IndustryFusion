@@ -57,17 +57,17 @@ under the License.
         <label class="if-label">{{ 'APP.ECOSYSTEM.FIELD_DIALOG.THRESHOLDS_AND_LIMITS' | translate }}&nbsp;*</label>
         <div class="dialog-grid">
           <div>
-            <p-radioButton [label]="FieldThresholdType.OPTIONAL | titlecase" [value]="FieldThresholdType.OPTIONAL"
+            <p-radioButton [label]="translate.instant('APP.CORE.STORE.FIELD.FIELD_THRESHOLD_TYPE.' + FieldThresholdType.OPTIONAL) | titlecase" [value]="FieldThresholdType.OPTIONAL"
                            formControlName="thresholdType"
                            inputId="threshold1"></p-radioButton>
           </div>
           <div class="dialog-grid-col">
-            <p-radioButton [label]="FieldThresholdType.MANDATORY | titlecase" [value]="FieldThresholdType.MANDATORY"
+            <p-radioButton [label]="translate.instant('APP.CORE.STORE.FIELD.FIELD_THRESHOLD_TYPE.' + FieldThresholdType.MANDATORY) | titlecase" [value]="FieldThresholdType.MANDATORY"
                            formControlName="thresholdType"
                            inputId="threshold2"></p-radioButton>
           </div>
           <div class="dialog-grid-col">
-            <p-radioButton [label]="FieldThresholdType.DISABLED | titlecase" [value]="FieldThresholdType.DISABLED"
+            <p-radioButton [label]="translate.instant('APP.CORE.STORE.FIELD.FIELD_THRESHOLD_TYPE.' + FieldThresholdType.DISABLED) | titlecase" [value]="FieldThresholdType.DISABLED"
                            formControlName="thresholdType"
                            inputId="threshold3"></p-radioButton>
           </div>

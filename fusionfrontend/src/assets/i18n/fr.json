@@ -93,6 +93,13 @@
         }
       },
       "STORE": {
+        "FIELD": {
+          "FIELD_THRESHOLD_TYPE": {
+            "OPTIONAL": "En option",
+            "MANDATORY": "Obligatoire",
+            "DISABLED": "Désactivé"
+          }
+        },
         "THRESHOLD": {
           "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Limites inférieures et supérieures absolues",
           "IDEAL_RANGE": "Gamme idéale",
@@ -165,7 +172,8 @@
 					"METRIC_NAME": "Nom de la métrique"
 				},
 				"LIST": {
-					"ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
+          "TEMPLATE": "Modèle",
+          "ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
 					"ASSET_TYPE_TEMPLATES": "Modèles de types d'actifs",
 					"CONFIRMATION_DIALOG": {
 						"HEADER": "Confirmation de la suppression du modèle de type d'actif",

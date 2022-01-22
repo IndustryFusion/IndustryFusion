@@ -93,6 +93,13 @@
         }
       },
       "STORE": {
+        "FIELD": {
+          "FIELD_THRESHOLD_TYPE": {
+            "OPTIONAL": "Optional",
+            "MANDATORY": "Obligatorisch",
+            "DISABLED": "Deaktiviert"
+          }
+        },
         "THRESHOLD": {
           "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute Unter- und Obergrenze",
           "IDEAL_RANGE": "Optimaler Bereich",
@@ -160,11 +167,12 @@
 				},
 				"FIELD_HEADER_AND_ROW": {
 					"ATTRIBUTE_NAME": "Attribut Name",
-					"CUSTOM": "Benutzerdefiniert",
+					"CUSTOM": "Benutzerdefinierter",
 					"MANDATORY": "erforderlich",
 					"METRIC_NAME": "Metrik Name"
 				},
 				"LIST": {
+          "TEMPLATE": "Vorlage",
 					"ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage",
 					"ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
 					"CONFIRMATION_DIALOG": {

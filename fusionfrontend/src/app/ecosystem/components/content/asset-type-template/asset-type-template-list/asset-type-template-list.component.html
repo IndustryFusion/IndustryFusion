@@ -36,7 +36,7 @@ under the License.
       <th [style.width.%]="5"></th>
       <th [style.width.%]="30">
         <app-table-searchbar (searchByName)="searchAssetTypeTemplates($event)" [itemsToBeFiltered]="assetTypeTemplates"
-                             attributeToBeSearched="name" filterColumn="Template">
+                             attributeToBeSearched="name" filterColumn="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.TEMPLATE' | translate }}">
         </app-table-searchbar>
       </th>
       <th [style.width.%]="10" pSortableColumn="publishedVersion">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.VERSION' | translate }}

@@ -15,7 +15,7 @@ under the License.
 
 <div class="field-header" [ngStyle]="{'margin-bottom': editable === true ? '' :  '1.0rem'}">
   <div class="if-label-small-header col-margin" [ngClass]="editable === true ? 'col-20' : 'col-30'">
-    Custom {{ type === FieldType.METRIC ? translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.METRIC_NAME') :
+    {{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.CUSTOM' | translate }} {{ type === FieldType.METRIC ? translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.METRIC_NAME') :
     translate.instant('APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.ATTRIBUTE_NAME') }}
   </div>
   <div class="if-label-small-header col-margin" [ngClass]="editable === true ? 'col-15' : 'col-20'">
@@ -24,7 +24,7 @@ under the License.
   </div>
   <div class="if-label-small-header" [ngClass]="editable === true ? 'col-15' : 'col-20'">{{ 'APP.COMMON.TERMS.QUANTITY_TYPE' | translate }}</div>
   <div class="if-label-small-header" [ngClass]="editable === true ? 'col-5' : 'col-10'">{{ 'APP.COMMON.TERMS.UNIT' | translate }} </div>
-  <div class="if-label-small-header col-10"> Accuracy </div>
+  <div class="if-label-small-header col-10"> {{ 'APP.COMMON.TERMS.ACCURACY' | translate }} </div>
   <div class="if-label-small-header" [ngClass]="editable === true ? 'col-15' : 'col-10'">{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.FIELD_HEADER_AND_ROW.MANDATORY' | translate }}?</div>
   <div class="edit-col" *ngIf="editable === true"> </div>
 </div>
