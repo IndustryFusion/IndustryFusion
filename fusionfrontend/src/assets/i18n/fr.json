@@ -11,12 +11,14 @@
 				"EDIT": "edit",
 				"FINISH": "Finition",
 				"NEXT": "Suivant",
-				"ONBOARD": "A bord",
+        "NO": "Non",
+        "ONBOARD": "A bord",
 				"PUBLISH": "Publier",
 				"SAVE": "Enregistrer",
 				"START": "Démarrer",
-				"UPDATE": "Mise à jour"
-			},
+				"UPDATE": "Mise à jour",
+        "YES": "Oui"
+      },
 			"HEADERS": {
 				"DASHBOARDS": "Tableaux de bord",
 				"ECO_SYSTEM_MANAGER": "Gestionnaire d'écosystème",

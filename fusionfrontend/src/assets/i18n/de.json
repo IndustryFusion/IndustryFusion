@@ -11,11 +11,13 @@
 				"EDIT": "Bearbeiten",
 				"FINISH": "Abschließen",
 				"NEXT": "Weiter",
+        "NO": "Nein",
 				"ONBOARD": "Onboarden",
 				"PUBLISH": "Veröffentlichen",
 				"SAVE": "Speichern",
 				"START": "Starten",
-				"UPDATE": "Aktualisieren"
+				"UPDATE": "Aktualisieren",
+        "YES": "Ja"
 			},
 			"HEADERS": {
 				"DASHBOARDS": "Dashboards",

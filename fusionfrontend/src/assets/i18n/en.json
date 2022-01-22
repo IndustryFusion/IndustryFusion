@@ -11,11 +11,13 @@
 				"EDIT": "Edit",
 				"FINISH": "Finish",
 				"NEXT": "Next",
+        "NO": "No",
 				"ONBOARD": "Onboard",
 				"PUBLISH": "Publish",
 				"SAVE": "Save",
 				"START": "Start",
-				"UPDATE": "Update"
+				"UPDATE": "Update",
+        "YES": "Yes"
 			},
 			"HEADERS": {
 				"DASHBOARDS": "Dashboards",

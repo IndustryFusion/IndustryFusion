@@ -93,5 +93,9 @@ under the License.
   </p-table>
 </div>
 
-<p-confirmDialog class="delete-confirm-dialog" rejectButtonStyleClass="if-button button-secondary"
-                 acceptButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog #cd class="delete-confirm-dialog">
+  <ng-template pTemplate="footer">
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-times" label="{{ 'APP.COMMON.DIALOG_BUTTONS.NO' | translate}}" (click)="cd.reject()"></button>
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-check" label="{{ 'APP.COMMON.DIALOG_BUTTONS.YES' | translate}}" (click)="cd.accept()"></button>
+  </ng-template>
+</p-confirmDialog>

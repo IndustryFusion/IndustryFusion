@@ -149,7 +149,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   showDeleteDialog() {
     this.confirmationService.confirm({
-      message: this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.CONFIRMATION_DIALOG.MESSAGE', { itemToBeDeleted: this.activeListItem.name }),
+      message: this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.CONFIRMATION_DIALOG.MESSAGE', { itemToDelete: this.activeListItem.name }),
       header: this.translate.instant('APP.ECOSYSTEM.UNIT_LIST.CONFIRMATION_DIALOG.HEADER'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
