@@ -32,6 +32,8 @@ import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { AssetService } from '../../../../core/store/asset/asset.service';
 import { RoomService } from '../../../../core/store/room/room.service';
 import { FactorySiteService } from '../../../../core/store/factory-site/factory-site.service';
+import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
+import { Field } from '../../../../core/store/field/field.model';
 
 @Component({
   selector: 'app-factory-site-page',
@@ -46,6 +48,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
   rooms$: Observable<Room[]>;
   roomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
+  fields$: Observable<Field[]>;
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   selectedIds: ID[];
   companyId: ID;
@@ -58,6 +61,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     private assetQuery: AssetQuery,
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
+    private fieldsResolver: FieldsResolver,
     private roomService: RoomService,
     private router: Router,
     private activatedRoute: ActivatedRoute) { }
@@ -73,6 +77,7 @@ export class FactorySitePageComponent implements OnInit, OnDestroy {
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.fields$ = this.fieldsResolver.resolve();
 
     if (this.factorySiteQuery.getActive() == null) {
       this.factorySite$.subscribe(factorySite => { if (factorySite) { this.factorySiteService.setActive(factorySite.id); } });

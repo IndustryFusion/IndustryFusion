@@ -34,6 +34,8 @@ import { RoomService } from '../../../../core/store/room/room.service';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
 import { StatusService } from '../../../../core/services/logic/status.service';
+import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
+import { Field } from '../../../../core/store/field/field.model';
 
 
 @Component({
@@ -49,6 +51,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
   factorySites$: Observable<FactorySite[]>;
   rooms$: Observable<Room[]>;
   room$: Observable<Room>;
+  fields$: Observable<Field[]>;
   selectedIds: Array<ID>;
   companyId: ID;
   createdAssetDetailsId: ID;
@@ -60,6 +63,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     private assetQuery: AssetQuery,
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
+    private fieldsResolver: FieldsResolver,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private assetSeriesDetailsResolver: AssetSeriesDetailsResolver,
@@ -82,6 +86,7 @@ export class AssetsListPageComponent implements OnInit, OnDestroy {
     this.factoryAssetDetailsWithFields$.subscribe(() => {
       this.factoryAssetStatuses$ = this.statusService.getStatusesByAssetsWithFields(this.factoryAssetDetailsWithFields$);
     });
+    this.fields$ = this.fieldsResolver.resolve();
   }
 
   ngOnDestroy() {
