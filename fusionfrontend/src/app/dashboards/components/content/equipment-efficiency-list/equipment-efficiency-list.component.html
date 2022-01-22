@@ -148,10 +148,11 @@ under the License.
     </ng-template>
 
     <ng-template pTemplate="body" let-asset let-rowIndex="rowIndex">
-      <tr *ngIf="checkIfRowDataMapIndexMatchesRowIndex(asset, rowIndex)">
+      <tr *ngIf="GroupByHelper.checkIfRowDataMapIndexMatchesRowIndex(rowGroupMetaDataMap, asset, rowIndex, selectedEnum)">
         <td colspan="10" class="group-by-row">
-          <span class="p-text-bold p-ml-2" *ngIf="getFieldIndexOfSelectedEnum(asset) != -1">{{ selectedEnum.optionLabel }} - {{ selectedEnumOptions[asset.fields[getFieldIndexOfSelectedEnum(asset)].value - 1].optionLabel }}</span>
-          <span class="p-text-bold p-ml-2" *ngIf="getFieldIndexOfSelectedEnum(asset) == -1">{{ selectedEnum.optionLabel }} - Value not found</span>
+          <span class="p-text-bold p-ml-2" *ngIf="GroupByHelper.getFieldIndexOfSelectedEnum(asset, selectedEnum) != GroupByHelper.ASSET_FIELD_INDEX_WITHOUT_VALUE">
+            {{ selectedEnum.optionLabel }} - {{ selectedEnumOptions[asset.fields[GroupByHelper.getFieldIndexOfSelectedEnum(asset, selectedEnum)].value - 1].optionLabel }}</span>
+          <span class="p-text-bold p-ml-2" *ngIf="GroupByHelper.getFieldIndexOfSelectedEnum(asset, selectedEnum) == GroupByHelper.ASSET_FIELD_INDEX_WITHOUT_VALUE">{{ selectedEnum.optionLabel }} - Value not found</span>
         </td>
       </tr>
       <tr id="rowElement" style="cursor: pointer;">

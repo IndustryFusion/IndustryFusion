@@ -200,10 +200,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public getMaxOpenAlertPriorityForAsset(asset: FactoryAssetDetailsWithFields): OispAlertPriority {
-    return asset.openAlertPriority;
-  }
-
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
     let openAlertPriority = node.data?.openAlertPriority;
     if (!node.expanded && node.children?.length > 0) {
