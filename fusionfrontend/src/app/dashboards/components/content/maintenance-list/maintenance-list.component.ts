@@ -42,7 +42,6 @@ import { GroupByHelper, RowGroupData } from '../../../../core/helpers/group-by-h
   styleUrls: ['./maintenance-list.component.scss']
 })
 export class MaintenanceListComponent implements OnInit, OnChanges {
-  public static ASSET_FIELD_INDEX_WITHOUT_VALUE = -1;
 
   @Input()
   factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
