@@ -16,7 +16,7 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{  assetSeries.length | i18nPlural: assetSeriesMapping }}</h3>
   <app-create-button (createItem)="createAssetSeries()" text="{{ 'APP.FLEET.ASSET_SERIES_LIST.CREATE_ASSET_SERIES_BUTTON' | translate }}"
-                     class="single-create-btn"></app-create-button>
+                     class="single-outer-button"></app-create-button>
 </div>
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"

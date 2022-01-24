@@ -33,6 +33,12 @@ export class Field extends BaseEntity {
 export class FieldOption extends BaseEntity {
   fieldId: ID;
   optionLabel: string;
+
+  public constructor(fieldId: ID, optionsLabel: string) {
+    super();
+    this.fieldId = fieldId;
+    this.optionLabel = optionsLabel;
+  }
 }
 
 export enum FieldThresholdType {

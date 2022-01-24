@@ -16,14 +16,14 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedAssetTypeTemplates?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <div class="filter-btn-div">
+    <div class="inner-button">
       <app-table-filter (filteredItems)="filterAssetTypeTemplates($event)" [itemsToBeFiltered]="assetTypeTemplates"
                         [tableFilters]="tableFilters"
                         class="filter-btn">
       </app-table-filter>
     </div>
     <app-create-button (createItem)="onCreate()" text="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.CREATE_ASSET_TYPE_TEMPLATE' | translate }}"
-                       class="create-btn"></app-create-button>
+                       class="outer-button"></app-create-button>
   </div>
 </div>
 

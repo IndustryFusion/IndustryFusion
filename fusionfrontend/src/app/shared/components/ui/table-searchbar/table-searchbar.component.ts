@@ -23,17 +23,20 @@ import { BaseEntity } from '../../../../core/store/baseentity.model';
   styleUrls: ['./table-searchbar.component.scss']
 })
 export class TableSearchbarComponent implements OnInit {
-
   @Input()
   filterColumn: string;
   @Input()
   itemsToBeFiltered: any;
   @Input()
   attributeToBeSearched: string;
+  @Input()
+  searchText: string;
+
   @Output()
   searchByName = new EventEmitter<any>();
+  @Output()
+  emitSearchText = new EventEmitter<string>();
 
-  searchText: string;
   dotToSplitNestedVariables = '.';
   faSearch = faSearch;
 
@@ -43,6 +46,7 @@ export class TableSearchbarComponent implements OnInit {
   }
 
   filterItems() {
+    this.emitSearchText.emit(this.searchText);
     if (this.searchText) {
       this.searchByName.emit(this.filterItemsBySearchText());
     } else {

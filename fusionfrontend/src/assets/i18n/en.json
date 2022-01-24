@@ -870,6 +870,10 @@
 					"VALUE": "Value",
 					"VALUES": "Values"
 				},
+        "TABLE_GROUP_BY": {
+          "GROUP_BY": "Group by",
+          "VALUE_NOT_FOUND": "Value not found"
+        },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Search"
 				},
