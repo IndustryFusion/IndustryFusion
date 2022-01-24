@@ -19,6 +19,8 @@ import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FactorySite;
+import io.fusion.fusionbackend.model.ShiftSettings;
+import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import io.fusion.fusionbackend.repository.FactorySiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -34,14 +36,19 @@ public class FactorySiteService {
     private final CompanyService companyService;
     private final RoomService roomService;
     private final CountryService countryService;
+    private final ShiftSettingsService shiftSettingsService;
 
     @Autowired
-    public FactorySiteService(FactorySiteRepository factorySiteRepository, CompanyService companyService,
-                              @Lazy RoomService roomService, @Lazy CountryService countryService) {
+    public FactorySiteService(FactorySiteRepository factorySiteRepository,
+                              CompanyService companyService,
+                              @Lazy RoomService roomService,
+                              @Lazy CountryService countryService,
+                              ShiftSettingsService shiftSettingsService) {
         this.factorySiteRepository = factorySiteRepository;
         this.companyService = companyService;
         this.roomService = roomService;
         this.countryService = countryService;
+        this.shiftSettingsService = shiftSettingsService;
     }
 
     public Set<FactorySite> getFactorySitesByCompany(final Long companyId) {
@@ -60,21 +67,24 @@ public class FactorySiteService {
     @Transactional
     public FactorySite createFactorySiteWithUnspecificRoom(final Long companyId, final Long countryId,
                                                            final FactorySite factorySite) {
-        final Company company = companyService.getCompany(companyId, false);
-        final Country country = countryService.getCountry(countryId);
 
-        company.getFactorySites().add(factorySite);
-        factorySite.setCompany(company);
-        factorySite.setCountry(country);
-        FactorySite newFactorySite = factorySiteRepository.save(factorySite);
+        FactorySite targetFactorySite = prepareCreateFactorySite(companyId, countryId, factorySite);
+        FactorySite persistedFactorySite = factorySiteRepository.save(targetFactorySite);
 
-        roomService.createUnspecificRoom(companyId, newFactorySite.getId());
+        roomService.createUnspecificRoom(companyId, persistedFactorySite.getId());
 
-        return newFactorySite;
+        return persistedFactorySite;
     }
 
     @Transactional
     public FactorySite createFactorySite(final Long companyId, final Long countryId, final FactorySite factorySite) {
+        FactorySite targetFactorySite = prepareCreateFactorySite(companyId, countryId, factorySite);
+        return factorySiteRepository.save(targetFactorySite);
+    }
+
+    private FactorySite prepareCreateFactorySite(final Long companyId,
+                                                 final Long countryId,
+                                                 final FactorySite factorySite) {
         final Company company = companyService.getCompany(companyId, false);
         final Country country = countryService.getCountry(countryId);
 
@@ -82,19 +92,56 @@ public class FactorySiteService {
         factorySite.setCompany(company);
         factorySite.setCountry(country);
 
-        return factorySiteRepository.save(factorySite);
+        if (hasShiftSettings(factorySite)) {
+            factorySite.getShiftSettings().updateShiftSettingBackReferences();
+        }
+
+        validate(factorySite);
+
+        return factorySite;
     }
 
     public FactorySite updateFactorySite(final Long companyId, final Long factorySiteId,
                                          final FactorySite sourceFactorySite) {
-        final FactorySite targetFactorySite = getFactorySiteByCompany(companyId, factorySiteId, false);
+        final FactorySite targetFactorySite = getFactorySiteByCompany(companyId, factorySiteId, true);
+
+        if (hasShiftSettings(sourceFactorySite)) {
+            final ShiftSettings shiftSettings = shiftSettingsService
+                    .getShiftSettings(sourceFactorySite.getShiftSettings().getId());
+            targetFactorySite.setShiftSettings(shiftSettings);
+
+            shiftSettingsService.deleteRemovedShifts(targetFactorySite.getShiftSettings(),
+                    sourceFactorySite.getShiftSettings());
+        }
 
         targetFactorySite.copyFrom(sourceFactorySite);
 
         final Country country = countryService.getCountry(sourceFactorySite.getCountry().getId());
         targetFactorySite.setCountry(country);
 
+        validate(targetFactorySite);
+
         return targetFactorySite;
+    }
+
+    private boolean hasShiftSettings(final FactorySite factorySite) {
+        return (factorySite.getType() != FactorySiteType.FLEETMANAGER && factorySite.getShiftSettings() != null);
+    }
+
+    private void validate(final FactorySite factorySite) {
+        if (factorySite.getShiftSettings() == null && factorySite.getType() != FactorySiteType.FLEETMANAGER) {
+            throw new IllegalArgumentException("Shift settings have to exist in a factory site");
+        }
+        if (factorySite.getCountry() == null) {
+            throw new IllegalArgumentException("A country has to exist in a factory site");
+        }
+        if (factorySite.getCompany() == null) {
+            throw new IllegalArgumentException("A company has to exist in a factory site");
+        }
+
+        if (factorySite.getShiftSettings() != null) {
+            shiftSettingsService.validate(factorySite.getShiftSettings());
+        }
     }
 
     public void deleteFactorySite(final Long companyId, final Long factorySiteId) {

@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,6 +34,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.LinkedHashSet;
@@ -42,13 +44,17 @@ import java.util.Set;
 @Table(name = "factory_site")
 @NamedEntityGraph(name = "FactorySite.allChildren",
         attributeNodes = {
-                @NamedAttributeNode(value = "rooms")})
+                @NamedAttributeNode(value = "rooms"),
+                @NamedAttributeNode(value = "shiftSettings")})
 @NamedEntityGraph(name = "FactorySite.allChildrenDeep",
         attributeNodes = {
-                @NamedAttributeNode(value = "rooms", subgraph = "roomChildren")},
+                @NamedAttributeNode(value = "rooms", subgraph = "roomChildren"),
+                @NamedAttributeNode(value = "shiftSettings", subgraph = "shiftSettingsChildren")},
         subgraphs = {
                 @NamedSubgraph(name = "roomChildren", attributeNodes = {
-                        @NamedAttributeNode("assets")})})
+                        @NamedAttributeNode("assets")}),
+                @NamedSubgraph(name = "shiftSettingsChildren", attributeNodes = {
+                        @NamedAttributeNode("shiftsOfDays")})})
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "idgen_factory_site")
 @Getter
 @Setter
@@ -81,6 +87,10 @@ public class FactorySite extends BaseEntity {
     private Double longitude;
     private String imageKey;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "shift_settings_id")
+    private ShiftSettings shiftSettings;
+
     public void copyFrom(final FactorySite sourceFactorySite) {
 
         super.copyFrom(sourceFactorySite);
@@ -111,6 +121,9 @@ public class FactorySite extends BaseEntity {
         }
         if (sourceFactorySite.getImageKey() != null) {
             setImageKey(sourceFactorySite.getImageKey());
+        }
+        if (sourceFactorySite.getShiftSettings() != null) {
+            getShiftSettings().copyFrom(sourceFactorySite.getShiftSettings());
         }
     }
 }

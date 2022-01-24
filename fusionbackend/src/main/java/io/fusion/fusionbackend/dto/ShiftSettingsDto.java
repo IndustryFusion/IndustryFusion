@@ -16,7 +16,7 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.fusion.fusionbackend.model.enums.FactorySiteType;
+import io.fusion.fusionbackend.model.enums.DayType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,32 +30,15 @@ import java.util.Set;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class FactorySiteDto extends BaseEntityDto {
-    private Long companyId;
+public class ShiftSettingsDto extends BaseEntityDto {
+    private DayType weekStart;
 
     @Builder.Default
-    private Set<Long> roomIds = new LinkedHashSet<>();
+    private Set<Long> shiftsOfDayIds = new LinkedHashSet<>();
     @Builder.Default
-    private Set<RoomDto> rooms = new LinkedHashSet<>();
-
-    private String name;
-    private String line1;
-    private String line2;
-    private String city;
-    private String zip;
-
-    private Long countryId;
-    private CountryDto country;
-
-    private Long shiftSettingsId;
-    private ShiftSettingsDto shiftSettings;
-
-    private Double latitude;
-    private Double longitude;
-    private String imageKey;
-    private FactorySiteType type;
+    private Set<ShiftsOfDayDto> shiftsOfDays = new LinkedHashSet<>();
 
     @JsonCreator
-    public FactorySiteDto() {
+    public ShiftSettingsDto() {
     }
 }
