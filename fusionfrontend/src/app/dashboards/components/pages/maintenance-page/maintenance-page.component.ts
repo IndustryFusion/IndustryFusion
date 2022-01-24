@@ -24,6 +24,9 @@ import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/core/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/core/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/core/store/company/company.query';
+import { Field } from '../../../../core/store/field/field.model';
+import { FieldQuery } from '../../../../core/store/field/field.query';
+import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
 
 @Component({
   selector: 'app-maintenance-page',
@@ -38,6 +41,7 @@ export class MaintenancePageComponent implements OnInit {
   factorySites$: Observable<FactorySite[]>;
   companies$: Observable<Company[]>;
   companies: Company[];
+  fields$: Observable<Field[]>;
 
   MAINTENANCE_FIELD_NAME_DAYS = 'Days till maintenance';
 
@@ -46,6 +50,8 @@ export class MaintenancePageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
+    private fieldsResolver: FieldsResolver,
+    private fieldQuery: FieldQuery
   ) {
   }
 
@@ -58,8 +64,9 @@ export class MaintenancePageComponent implements OnInit {
       this.companies.filter(company => company.type === CompanyType.MACHINE_MANUFACTURER);
     });
     this.assetTypes$ = this.assetTypesResolver.resolve();
-
     this.factoryAssetDetailsWithFieldsAndValues$ = this.factoryResolver.assetsWithDetailsAndFieldsAndValues$;
+    this.fieldsResolver.resolve().subscribe();
+    this.fields$ = this.fieldQuery.selectAll();
   }
 
 }

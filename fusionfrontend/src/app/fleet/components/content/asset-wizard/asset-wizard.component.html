@@ -72,6 +72,8 @@ under the License.
     <app-asset-wizard-step-customer-data *ngIf="step === AssetWizardStep.CUSTOMER_DATA"
                                          [asset]="asset"
                                          [type]="type"
+                                         [isManualNotUploading]="isManualNotUploading"
+                                         [isVideoNotUploading]="isVideoNotUploading"
                                          (stepChange)="onStepChange($event)" (createAsset)="onSaveAsset()"
                                          (valid)="setCustomerDataValid($event)">
     </app-asset-wizard-step-customer-data>

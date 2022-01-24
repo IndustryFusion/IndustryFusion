@@ -26,6 +26,9 @@ import { AssetTypesResolver } from 'src/app/core/resolvers/asset-types.resolver'
 import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { KairosStatusAggregationService } from '../../../../core/services/api/kairos-status-aggregation.service';
 import { StatusHours, StatusHoursOneDay } from '../../../../core/models/kairos-status-aggregation.model';
+import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
+import { Field } from '../../../../core/store/field/field.model';
+import { FieldQuery } from '../../../../core/store/field/field.query';
 
 const MAINTENANCE_FIELD_NAME = 'Hours till maintenance';
 
@@ -38,6 +41,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
   companyId: ID;
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
+  fields$: Observable<Field[]>;
   assetTypes$: Observable<AssetType[]>;
   factorySites$: Observable<FactorySite[]>;
   companies$: Observable<Company[]>;
@@ -53,6 +57,8 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
   constructor(
     private factoryResolver: FactoryResolver,
+    private fieldsResolver: FieldsResolver,
+    private fieldQuery: FieldQuery,
     private activatedRoute: ActivatedRoute,
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
@@ -62,6 +68,8 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.factoryResolver.resolve(this.activatedRoute);
+    this.fieldsResolver.resolve().subscribe();
+    this.fields$ = this.fieldQuery.selectAll();
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.companies$ = this.companyQuery.selectAll();
     this.companies$.subscribe(res => {

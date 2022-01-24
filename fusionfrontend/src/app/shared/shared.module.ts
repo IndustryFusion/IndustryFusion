@@ -33,6 +33,7 @@ import { TableFilterComponent } from './components/ui/table-filter/table-filter.
 import { DateFilterComponent } from './components/ui/table-filter/date-filter/date-filter.component';
 import { DropdownFilterComponent } from './components/ui/table-filter/dropdown-filter/dropdown-filter.component';
 import { NumericFilterComponent } from './components/ui/table-filter/numeric-filter/numeric-filter.component';
+import { TableGroupByComponent } from './components/ui/table-group-by/table-group-by.component';
 import { CalendarModule } from 'primeng/calendar';
 import { BooleanPipe } from './pipes/boolean.pipe';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -77,6 +78,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DateFilterComponent,
     DropdownFilterComponent,
     NumericFilterComponent,
+    TableGroupByComponent,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
@@ -156,6 +158,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DateFilterComponent,
     DropdownFilterComponent,
     NumericFilterComponent,
+    TableGroupByComponent,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,

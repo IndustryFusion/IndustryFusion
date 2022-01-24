@@ -35,6 +35,9 @@ import { FactorySiteService } from '../../../../core/store/factory-site/factory-
 import { DialogService } from 'primeng/dynamicdialog';
 import { TranslateService } from '@ngx-translate/core';
 import { FactorySiteShiftSettingsDialogComponent } from '../../content/factory-site-shifts-settings-dialog/factory-site-shift-settings-dialog.component';
+import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
+import { Field } from '../../../../core/store/field/field.model';
+import { FieldQuery } from '../../../../core/store/field/field.query';
 
 @Component({
   selector: 'app-factory-site-page',
@@ -50,6 +53,7 @@ export class FactorySitePageComponent implements OnInit {
   rooms$: Observable<Room[]>;
   roomsOfFactorySite$: Observable<Room[]>;
   assets$: Observable<Asset[]>;
+  fields$: Observable<Field[]>;
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
   selectedIds: ID[];
   companyId: ID;
@@ -62,6 +66,8 @@ export class FactorySitePageComponent implements OnInit {
     private assetQuery: AssetQuery,
     private assetService: AssetService,
     private factoryResolver: FactoryResolver,
+    private fieldsResolver: FieldsResolver,
+    private fieldQuery: FieldQuery,
     private roomService: RoomService,
     private router: Router,
     private dialogService: DialogService,
@@ -79,6 +85,8 @@ export class FactorySitePageComponent implements OnInit {
     this.assets$ = this.factoryResolver.assets$;
     this.companyId = this.companyQuery.getActiveId();
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
+    this.fieldsResolver.resolve().subscribe();
+    this.fields$ = this.fieldQuery.selectAll();
 
     if (this.factorySiteQuery.getActive() == null) {
       this.factorySite$.subscribe(factorySite => {

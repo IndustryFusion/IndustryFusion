@@ -414,31 +414,53 @@ header {
   }
 }
 
+:host ::ng-deep p-dropdown .p-dropdown {
+  height: inherit !important;
+
+  .p-dropdown-label {
+    height: 80% !important;
+    align-self: start;
+  }
+
+  .p-dropdown-trigger {
+    height: 80% !important;
+  }
+
+  p-dropdownitem {
+    .p-highlight {
+      background: $basic-grey !important;
+    }
+  }
+}
+
+.language-dropdown {
+  height: 36px;
+  padding-left: 0.5rem;
+}
+
 .british-flag-icon {
   background: url("^assets/icons/gb.svg");
   display: inline-block;
-  width: 1.9rem;
-  height: 1rem;
+  width: 1.71rem;
+  height: 0.9rem;
   background-size: contain;
   align-items: center;
 }
-
 
 .german-flag-icon {
   background: url("^assets/icons/de.svg");
   display: inline-block;
-  width: 1.65rem;
-  height: 1rem;
+  width: 1.48rem;
+  height: 0.9rem;
   background-size: contain;
   align-items: center;
 }
 
-
 .french-flag-icon {
   background: url("^assets/icons/fr.svg");
   display: inline-block;
-  width: 1.5rem;
-  height: 1rem;
+  width: 1.35rem;
+  height: 0.9rem;
   background-size: contain;
   align-items: center;
 }

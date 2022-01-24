@@ -72,13 +72,13 @@ under the License.
         <span class="language">
           <fa-icon [icon]="faGlobeEurope" class="fa-fw language-icon"></fa-icon>
           <label class="if-label language-label">{{ 'APP.SHARED.UI.HEADER.LANGUAGE' | translate}}</label>
-            <p-dropdown [options]="languageTypes" [(ngModel)]="selectedLanguage" (onChange)="changeLang()">
-              <ng-template let-item pTemplate="selectedItem">
-                   <i class="{{item.label}}"></i>
-              </ng-template>
-              <ng-template let-object pTemplate="item">
-                   <i class="{{object.label}}"></i>
-              </ng-template>
+          <p-dropdown class="language-dropdown" [options]="languageTypes" [(ngModel)]="selectedLanguage" (onChange)="changeLang()">
+            <ng-template let-item pTemplate="selectedItem">
+                 <i class="{{item.label}}"></i>
+            </ng-template>
+            <ng-template let-object pTemplate="item">
+                 <i class="{{object.label}}"></i>
+            </ng-template>
           </p-dropdown>
         </span>
       </div>

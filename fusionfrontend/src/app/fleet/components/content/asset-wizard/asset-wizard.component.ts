@@ -67,6 +67,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
   public type = DialogType.CREATE;
   public step = AssetWizardStep.GENERAL_INFORMATION;
   public isAssetSeriesLocked = false;
+  public isManualNotUploading = true;
+  public isVideoNotUploading = true;
 
   public AssetWizardStep = AssetWizardStep;
 
@@ -170,6 +172,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       manualKey: [null, WizardHelper.maxTextLengthValidator],
       videoKey: [null, WizardHelper.maxTextLengthValidator],
       imageKey: [ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
+      isManualNotUploading: [true],
+      isVideoNotUploading: [true],
       connectionString: [null, WizardHelper.requiredTextValidator],
     });
 
@@ -180,6 +184,9 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       this.assetForm.get('constructionDate').setValue(useConstructionDate ? new Date(this.asset.constructionDate) : null);
       this.assetForm.get('installationDate').setValue(useInstallationDate ? new Date(this.asset.installationDate) : null);
     }
+
+    this.assetForm.get('isManualNotUploading').valueChanges.subscribe(value => this.isManualNotUploading = value);
+    this.assetForm.get('isVideoNotUploading').valueChanges.subscribe(value => this.isVideoNotUploading = value);
   }
 
   private initialUpdateOfAssetAndRelations() {
@@ -270,6 +277,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     if (this.asset && this.assetForm.valid && this.asset.fieldInstances
         && this.metricsValid && this.attributesValid && this.subsystemsValid && this.customerDataValid) {
 
+      this.removeTemporaryAttributes();
       const asset = this.assetForm.getRawValue() as Asset;
 
       asset.subsystemIds = this.asset.subsystemIds;
@@ -290,6 +298,11 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
       console.error('[Asset Wizard]: Error at saving asset');
     }
+  }
+
+  private removeTemporaryAttributes() {
+    this.assetForm.removeControl('isManualNotUploading');
+    this.assetForm.removeControl('isVideoNotUploading');
   }
 
   private closeAfterPersisting(): void {

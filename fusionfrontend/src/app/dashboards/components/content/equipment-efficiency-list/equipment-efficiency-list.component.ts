@@ -26,6 +26,8 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@forta
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Field, FieldOption } from '../../../../core/store/field/field.model';
+import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -39,6 +41,8 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   @Input()
   factorySites: FactorySite[];
   @Input()
+  fields: Field[];
+  @Input()
   companies: Company[];
   @Input()
   assetTypes: AssetType[];
@@ -50,6 +54,12 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   searchedFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   filteredFactoryAssets: Array<FactoryAssetDetailsWithFields> = [];
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
+  searchText = '';
+  groupByActive = false;
+  selectedEnum: FieldOption;
+  selectedEnumOptions: FieldOption[];
+  rowGroupMetaDataMap: Map<ID, RowGroupCount>;
+  GroupByHelper = GroupByHelper;
 
   faInfoCircle = faInfoCircle;
   faExclamationCircle = faExclamationCircle;
@@ -80,20 +90,40 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     this.updateTree();
   }
 
-  searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
-    this.searchedFactoryAssets = event;
+  searchAssets(factoryAssetsSearchedByName: Array<FactoryAssetDetailsWithFields>) {
+    this.searchedFactoryAssets = factoryAssetsSearchedByName;
     this.updateDisplayedAssets();
   }
 
-  filterAssets(event: Array<FactoryAssetDetailsWithFields>) {
-    this.filteredFactoryAssets = event;
+  setSearchText(searchText: string) {
+    this.searchText = searchText;
+  }
+
+  filterAssets(filteredFactoryAssets: Array<FactoryAssetDetailsWithFields>) {
+    this.filteredFactoryAssets = filteredFactoryAssets;
     this.updateDisplayedAssets();
+  }
+
+  groupAssets(selectedFieldOption: FieldOption) {
+    this.selectedEnum = selectedFieldOption;
+    this.groupByActive = this.selectedEnum !== null;
+    if (this.selectedEnum) {
+      this.selectedEnumOptions = this.fields.filter(field => field.id === this.selectedEnum.fieldId).pop().enumOptions;
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+    }
+  }
+
+  hasSelectedEnumValue(asset: FactoryAssetDetailsWithFields): number {
+    return GroupByHelper.getFieldIndexOfSelectedEnum(asset, this.selectedEnum);
   }
 
   updateDisplayedAssets() {
     this.displayedFactoryAssets = this.factoryAssetDetailsWithFields;
     this.displayedFactoryAssets = this.searchedFactoryAssets.filter(asset => this.filteredFactoryAssets.includes(asset));
     this.updateTree();
+    if (this.selectedEnum) {
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+    }
   }
 
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
@@ -170,3 +200,5 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 }
+
+

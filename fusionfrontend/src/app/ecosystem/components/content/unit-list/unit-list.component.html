@@ -17,7 +17,7 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{ displayedUnits?.length | i18nPlural: titleMapping }}</h3>
   <div class="p-grid">
-    <app-create-button (createItem)="showCreateDialog()" class="single-create-btn"
+    <app-create-button (createItem)="showCreateDialog()" class="single-outer-button"
                        text="{{ 'APP.ECOSYSTEM.UNIT_LIST.CREATE_UNIT' | translate }}"></app-create-button>
   </div>
 </div>
@@ -67,6 +67,10 @@ under the License.
 </p-table>
 
 
-<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
-                 rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog #cd class="delete-confirm-dialog">
+  <ng-template pTemplate="footer">
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-times" label="{{ 'APP.COMMON.DIALOG_BUTTONS.NO' | translate}}" (click)="cd.reject()"></button>
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-check" label="{{ 'APP.COMMON.DIALOG_BUTTONS.YES' | translate}}" (click)="cd.accept()"></button>
+  </ng-template>
+</p-confirmDialog>
 

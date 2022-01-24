@@ -34,7 +34,7 @@
 }
 
 .first-header-item {
-  padding-left: 3.35rem !important;
+  padding-left: 2.2rem !important;
 }
 
 .asset-needs-maintenance {
@@ -74,4 +74,11 @@
     width: 100%;
     height: auto;
   }
+}
+
+:host ::ng-deep .group-by-row {
+  background-color: $middle-grey !important;
+  width: inherit !important;
+  height: 3rem !important;
+  border-radius: 10px !important;
 }

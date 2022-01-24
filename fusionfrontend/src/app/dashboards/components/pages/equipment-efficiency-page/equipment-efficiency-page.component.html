@@ -19,8 +19,9 @@ under the License.
                                    [date]="date"
                                    (dateChanged)="dateChanged($event)"></app-equipment-efficiency-overview>
 
-<app-equipment-efficiency-list [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields"
-                      [factorySites]="(factorySites$ | async)"
-                      [companies]="(companies$ | async)"
-                      [assetTypes]="(assetTypes$ | async)">
+<app-equipment-efficiency-list  [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields"
+                                [fields]="(fields$ | async)"
+                                [factorySites]="(factorySites$ | async)"
+                                [companies]="(companies$ | async)"
+                                [assetTypes]="(assetTypes$ | async)">
 </app-equipment-efficiency-list>

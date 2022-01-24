@@ -11,11 +11,13 @@
 				"EDIT": "Edit",
 				"FINISH": "Finish",
 				"NEXT": "Next",
+        "NO": "No",
 				"ONBOARD": "Onboard",
 				"PUBLISH": "Publish",
 				"SAVE": "Save",
 				"START": "Start",
-				"UPDATE": "Update"
+				"UPDATE": "Update",
+        "YES": "Yes"
 			},
 			"HEADERS": {
 				"DASHBOARDS": "Dashboards",
@@ -111,6 +113,13 @@
         }
       },
       "STORE": {
+        "FIELD": {
+          "FIELD_THRESHOLD_TYPE": {
+            "OPTIONAL": "Optional",
+            "MANDATORY": "Mandatory",
+            "DISABLED": "Disabled"
+          }
+        },
         "THRESHOLD": {
           "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute lower & upper limit",
           "IDEAL_RANGE": "Ideal range",
@@ -183,7 +192,8 @@
 					"METRIC_NAME": "Metricname"
 				},
 				"LIST": {
-					"ASSET_TYPE_TEMPLATE": "Asset type template",
+          "TEMPLATE": "Template",
+          "ASSET_TYPE_TEMPLATE": "Asset type template",
 					"ASSET_TYPE_TEMPLATES": "Asset type templates",
 					"CONFIRMATION_DIALOG": {
 						"HEADER": "Delete Asset Type Template Confirmation",
@@ -383,8 +393,9 @@
 				},
 				"INFO": {
 					"FACTORY_SITE_ASSIGNMENT": "Factory Site Assignment",
-					"ROOM_ASSIGNMENT": "Room Assignment ({{factorySiteName}})"
-				},
+					"ROOM_ASSIGNMENT": "Room Assignment ({{factorySiteName}})",
+          "ASSET_TO_ROOM": "asset to room"
+        },
 				"SUB_HEADER": {
 					"APPLETS": "Applets",
 					"DIGITAL_NAMEPLATE": "Digital Nameplate",
@@ -549,7 +560,11 @@
             "OPTIONS_MISSING": "options missing, please enter again",
             "GOT_IT": "Got it!",
             "PERFORMANCE_VIEW": "Performance View",
-            "REALTIME_VIEW": "Realtime View"
+            "REALTIME_VIEW": "Realtime View",
+            "CURRENT": "Current",
+            "CUSTOM_DATE": "Custom Date",
+            "24_H_PERFORMANCE_SUMMARY": "24 h performance summary",
+            "3_DAYS_PERFORMANCE_SUMMARY": "3 days performance summary"
           }
         },
         "ASSET_GRID_PAGE": {
@@ -887,6 +902,10 @@
 					"VALUE": "Value",
 					"VALUES": "Values"
 				},
+        "TABLE_GROUP_BY": {
+          "GROUP_BY": "Group by",
+          "VALUE_NOT_FOUND": "Value not found"
+        },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Search"
 				},

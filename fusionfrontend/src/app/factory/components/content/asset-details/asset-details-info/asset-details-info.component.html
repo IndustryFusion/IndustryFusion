@@ -36,10 +36,14 @@ under the License.
   <div class="asset-info asset-menu">
     <app-item-options-menu (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()"
                            (editItem)="openEditDialog()" [actions]="dropdownMenuOptions"
-                           [assignItemText]="'Asset to room'"
+                           assignItemText="{{ 'APP.FACTORY.ASSET_DETAILS.INFO.ASSET_TO_ROOM' | translate }}"
                            [showInline]="false"></app-item-options-menu>
   </div>
 </section>
 
-<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
-                 key="asset-delete-dialog-detail" rejectButtonStyleClass="if-button button-secondary"></p-confirmDialog>
+<p-confirmDialog #cd class="delete-confirm-dialog" key="asset-delete-dialog-detail">
+  <ng-template pTemplate="footer">
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-times" label="{{ 'APP.COMMON.DIALOG_BUTTONS.NO' | translate}}" (click)="cd.reject()"></button>
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-check" label="{{ 'APP.COMMON.DIALOG_BUTTONS.YES' | translate}}" (click)="cd.accept()"></button>
+  </ng-template>
+</p-confirmDialog>

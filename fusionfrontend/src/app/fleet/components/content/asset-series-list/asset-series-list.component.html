@@ -16,7 +16,7 @@ under the License.
 <div class="p-grid p-jc-between header-line">
   <h3 class="table-header">{{  assetSeries.length | i18nPlural: assetSeriesMapping }}</h3>
   <app-create-button (createItem)="createAssetSeries()" text="{{ 'APP.FLEET.ASSET_SERIES_LIST.CREATE_ASSET_SERIES_BUTTON' | translate }}"
-                     class="single-create-btn"></app-create-button>
+                     class="single-outer-button"></app-create-button>
 </div>
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
@@ -67,6 +67,10 @@ under the License.
   </ng-template>
 </p-table>
 
+<p-confirmDialog #cd class="delete-confirm-dialog" key="asset-series-delete-dialog">
+  <ng-template pTemplate="footer">
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-times" label="{{ 'APP.COMMON.DIALOG_BUTTONS.NO' | translate}}" (click)="cd.reject()"></button>
+    <button class="if-button button-secondary" type="button" pButton icon="pi pi-check" label="{{ 'APP.COMMON.DIALOG_BUTTONS.YES' | translate}}" (click)="cd.accept()"></button>
+  </ng-template>
+</p-confirmDialog>
 
-<p-confirmDialog acceptButtonStyleClass="if-button button-secondary" class="delete-confirm-dialog"
-                 rejectButtonStyleClass="if-button button-secondary" key="asset-series-delete-dialog"></p-confirmDialog>

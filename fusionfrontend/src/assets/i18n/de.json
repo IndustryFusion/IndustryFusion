@@ -11,11 +11,13 @@
 				"EDIT": "Bearbeiten",
 				"FINISH": "Abschließen",
 				"NEXT": "Weiter",
+        "NO": "Nein",
 				"ONBOARD": "Onboarden",
 				"PUBLISH": "Veröffentlichen",
 				"SAVE": "Speichern",
 				"START": "Starten",
-				"UPDATE": "Aktualisieren"
+				"UPDATE": "Aktualisieren",
+        "YES": "Ja"
 			},
 			"HEADERS": {
 				"DASHBOARDS": "Dashboards",
@@ -111,6 +113,13 @@
         }
       },
       "STORE": {
+        "FIELD": {
+          "FIELD_THRESHOLD_TYPE": {
+            "OPTIONAL": "Optional",
+            "MANDATORY": "Obligatorisch",
+            "DISABLED": "Deaktiviert"
+          }
+        },
         "THRESHOLD": {
           "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Absolute Unter- und Obergrenze",
           "IDEAL_RANGE": "Optimaler Bereich",
@@ -178,11 +187,12 @@
 				},
 				"FIELD_HEADER_AND_ROW": {
 					"ATTRIBUTE_NAME": "Attribut Name",
-					"CUSTOM": "Benutzerdefiniert",
+					"CUSTOM": "Benutzerdefinierter",
 					"MANDATORY": "erforderlich",
 					"METRIC_NAME": "Metrik Name"
 				},
 				"LIST": {
+          "TEMPLATE": "Vorlage",
 					"ASSET_TYPE_TEMPLATE": "Asset-Typ Vorlage",
 					"ASSET_TYPE_TEMPLATES": "Asset-Typ Vorlagen",
 					"CONFIRMATION_DIALOG": {
@@ -383,8 +393,9 @@
 				},
 				"INFO": {
 					"FACTORY_SITE_ASSIGNMENT": "Standort zuweisen",
-					"ROOM_ASSIGNMENT": "Raum zuweisen ({{factorySiteName}})"
-				},
+					"ROOM_ASSIGNMENT": "Raum zuweisen ({{factorySiteName}})",
+          "ASSET_TO_ROOM": "Asset zu Raum"
+        },
 				"SUB_HEADER": {
 					"APPLETS": "Applets",
 					"DIGITAL_NAMEPLATE": "Digitales Typenschild",
@@ -549,7 +560,11 @@
             "OPTIONS_MISSING": "Optionen fehlen, bitte erneut eingeben",
             "GOT_IT": "Verstanden!",
             "PERFORMANCE_VIEW": "Performance-Ansicht",
-            "REALTIME_VIEW": "Realtime-Ansicht"
+            "REALTIME_VIEW": "Realtime-Ansicht",
+            "CURRENT": "Aktuell",
+            "CUSTOM_DATE": "Benutzerdefiniertes Datum",
+            "24_H_PERFORMANCE_SUMMARY": "24 Stunden Performance-übersicht",
+            "3_DAYS_PERFORMANCE_SUMMARY": "3 Tage Performance-übersicht"
           }
         },
         "ASSET_GRID_PAGE": {
@@ -887,6 +902,10 @@
 					"VALUE": "Wert",
 					"VALUES": "Werte"
 				},
+        "TABLE_GROUP_BY": {
+          "GROUP_BY": "Gruppieren nach",
+          "VALUE_NOT_FOUND": "Wert nicht gefunden"
+        },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Suche"
 				},

@@ -44,6 +44,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
 import { TranslateService } from '@ngx-translate/core';
+import { Field, FieldOption } from '../../../../core/store/field/field.model';
+import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
 
 @Component({
   selector: 'app-assets-list',
@@ -60,7 +62,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   factorySite: FactorySite;
   @Input()
-  factoryAssetsDetailsWithFields: FactoryAssetDetailsWithFields[];
+  factoryAssetDetailsWithFields: FactoryAssetDetailsWithFields[];
   @Input()
   rooms: Room[];
   @Input()
@@ -69,6 +71,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   room: Room;
   @Input()
   factoryAssetStatuses: StatusWithAssetId[] = [];
+  @Input()
+  fields: Field[];
   @Output()
   selectedEvent = new EventEmitter<ID[]>();
   @Output()
@@ -91,6 +95,12 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   searchedFactoryAssets: FactoryAssetDetailsWithFields[];
   factoryAssetFilteredByStatus: FactoryAssetDetailsWithFields[];
   activeListItem: FactoryAssetDetailsWithFields;
+  searchText = '';
+  groupByActive = false;
+  selectedEnum: FieldOption;
+  selectedEnumOptions: FieldOption[];
+  rowGroupMetaDataMap: Map<ID, RowGroupCount>;
+  GroupByHelper = GroupByHelper;
 
   isLoading$: Observable<boolean>;
   asset: AssetWithFields;
@@ -136,13 +146,13 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.factoryAssetsDetailsWithFields) {
+    if (changes.factoryAssetDetailsWithFields) {
       this.displayedFactoryAssets = this.factoryAssetFilteredByStatus = this.searchedFactoryAssets = this.filteredFactoryAssets
-        = this.factoryAssetsDetailsWithFields;
+        = this.factoryAssetDetailsWithFields;
     }
 
-    if (this.statusType !== null && this.factoryAssetsDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
-      this.factoryAssetFilteredByStatus = this.factoryAssetsDetailsWithFields.filter(asset => {
+    if (this.statusType !== null && this.factoryAssetDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
+      this.factoryAssetFilteredByStatus = this.factoryAssetDetailsWithFields.filter(asset => {
         return this.factoryAssetStatuses.filter(factoryAssetStatus => factoryAssetStatus.status.statusValue === null ?
           String(this.statusType) === '0' : String(factoryAssetStatus.status.statusValue) === String(this.statusType))
           .map(factoryAssetStatusWithId => factoryAssetStatusWithId.factoryAssetId).includes(asset.id);
@@ -167,14 +177,31 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  searchAssets(event: FactoryAssetDetailsWithFields[]): void {
-    this.searchedFactoryAssets = event;
+  searchAssets(factoryAssetsSearchedByName: FactoryAssetDetailsWithFields[]): void {
+    this.searchedFactoryAssets = factoryAssetsSearchedByName;
     this.updateAssets();
   }
 
-  filterAssets(event?: FactoryAssetDetailsWithFields[]) {
-    this.filteredFactoryAssets = event;
+  setSearchText(searchText: string) {
+    this.searchText = searchText;
+  }
+
+  filterAssets(filteredFactoryAssets?: FactoryAssetDetailsWithFields[]) {
+    this.filteredFactoryAssets = filteredFactoryAssets;
     this.updateAssets();
+  }
+
+  groupAssets(selectedFieldOption: FieldOption) {
+    this.selectedEnum = selectedFieldOption;
+    this.groupByActive = this.selectedEnum !== null;
+    if (this.selectedEnum) {
+      this.selectedEnumOptions = this.fields.filter(field => field.id === this.selectedEnum.fieldId).pop().enumOptions;
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+    }
+  }
+
+  hasSelectedEnumValue(asset: FactoryAssetDetailsWithFields): number {
+    return GroupByHelper.getFieldIndexOfSelectedEnum(asset, this.selectedEnum);
   }
 
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
@@ -205,7 +232,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.onboardingDialogRef = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
-        assetsToBeOnboarded: this.factoryAssetsDetailsWithFields,
+        assetsToBeOnboarded: this.factoryAssetDetailsWithFields,
         factorySites: this.factorySites,
         rooms: this.rooms,
         activeModalType: AssetModalType.startInitialization,
@@ -229,7 +256,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getOldRoomForAsset(updatedAsset) {
-    const roomId = this.factoryAssetsDetailsWithFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
+    const roomId = this.factoryAssetDetailsWithFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
     return this.rooms.filter(room => room.id === roomId).pop();
   }
 
@@ -241,7 +268,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   deleteAsset() {
     this.assetService.removeCompanyAsset(this.activeListItem.companyId, this.activeListItem.id).subscribe(() => {
-      this.factoryAssetsDetailsWithFields.splice(this.factoryAssetsDetailsWithFields.indexOf(this.activeListItem), 1);
+      this.factoryAssetDetailsWithFields.splice(this.factoryAssetDetailsWithFields.indexOf(this.activeListItem), 1);
     });
   }
 
@@ -279,10 +306,13 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields.filter(asset => this.searchedFactoryAssets
+    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields.filter(asset => this.searchedFactoryAssets
       .filter(searchedAsset => this.filteredFactoryAssets.filter(filteredAsset => this.factoryAssetFilteredByStatus
         .includes(filteredAsset)).includes(searchedAsset)).includes(asset));
     this.updateTree();
+    if (this.selectedEnum) {
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+    }
   }
 
   private updateTree() {
@@ -320,7 +350,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (value.subsystemIds?.length > 0) {
       const children: TreeNode<FactoryAssetDetailsWithFields>[] = [];
       value.subsystemIds.forEach(id => {
-        const subsystem = this.factoryAssetsDetailsWithFields.find(asset => asset.id === id);
+        const subsystem = this.factoryAssetDetailsWithFields.find(asset => asset.id === id);
         if (subsystem) {
           children.push(this.addNode(treeNode, subsystem));
         }

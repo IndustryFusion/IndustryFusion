@@ -11,12 +11,14 @@
 				"EDIT": "edit",
 				"FINISH": "Finition",
 				"NEXT": "Suivant",
-				"ONBOARD": "A bord",
+        "NO": "Non",
+        "ONBOARD": "A bord",
 				"PUBLISH": "Publier",
 				"SAVE": "Enregistrer",
 				"START": "Démarrer",
-				"UPDATE": "Mise à jour"
-			},
+				"UPDATE": "Mise à jour",
+        "YES": "Oui"
+      },
 			"HEADERS": {
 				"DASHBOARDS": "Tableaux de bord",
 				"ECO_SYSTEM_MANAGER": "Gestionnaire d'écosystème",
@@ -111,6 +113,13 @@
         }
       },
       "STORE": {
+        "FIELD": {
+          "FIELD_THRESHOLD_TYPE": {
+            "OPTIONAL": "En option",
+            "MANDATORY": "Obligatoire",
+            "DISABLED": "Désactivé"
+          }
+        },
         "THRESHOLD": {
           "ABSOLUT_LOWER_AND_UPPER_LIMIT": "Limites inférieures et supérieures absolues",
           "IDEAL_RANGE": "Gamme idéale",
@@ -183,7 +192,8 @@
 					"METRIC_NAME": "Nom de la métrique"
 				},
 				"LIST": {
-					"ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
+          "TEMPLATE": "Modèle",
+          "ASSET_TYPE_TEMPLATE": "Modèle de type d'actif",
 					"ASSET_TYPE_TEMPLATES": "Modèles de types d'actifs",
 					"CONFIRMATION_DIALOG": {
 						"HEADER": "Confirmation de la suppression du modèle de type d'actif",
@@ -383,7 +393,8 @@
 				},
 				"INFO": {
 					"FACTORY_SITE_ASSIGNMENT": "Affectation du site de l'usine",
-					"ROOM_ASSIGNMENT": "Attribution des chambres ({{factorySiteName}})"
+					"ROOM_ASSIGNMENT": "Attribution des chambres ({{factorySiteName}})",
+          "ASSET_TO_ROOM": "Attribuer un asset à une salle"
 				},
 				"SUB_HEADER": {
 					"APPLETS": "Applets",
@@ -549,7 +560,11 @@
             "OPTIONS_MISSING": "options manquantes, veuillez entrer à nouveau",
             "GOT_IT": "Je l'ai eu !",
             "PERFORMANCE_VIEW": "Vue des performances",
-            "REALTIME_VIEW": "Vue en temps réel"
+            "REALTIME_VIEW": "Vue en temps réel",
+            "CURRENT": "Actuel",
+            "CUSTOM_DATE": "Date personnalisée",
+            "24_H_PERFORMANCE_SUMMARY": "Résumé des performances sur 24 heures",
+            "3_DAYS_PERFORMANCE_SUMMARY": "Résumé des performances sur 3 jours"
           }
         },
         "ASSET_GRID_PAGE": {
@@ -887,6 +902,10 @@
 					"VALUE": "Valeur",
 					"VALUES": "Valeurs"
 				},
+        "TABLE_GROUP_BY": {
+          "GROUP_BY": "Regrouper par",
+          "VALUE_NOT_FOUND": "Valeur non trouvée"
+        },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Recherchez"
 				},
