@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.dto.mappers;
 
+import io.fusion.fusionbackend.dto.ShiftDto;
 import io.fusion.fusionbackend.dto.ShiftsOfDayDto;
 import io.fusion.fusionbackend.model.Shift;
 import io.fusion.fusionbackend.model.ShiftsOfDay;
@@ -61,6 +62,12 @@ public class ShiftsOfDayMapper implements EntityDtoMapper<ShiftsOfDay, ShiftsOfD
             dto.setShifts(this.shiftMapper.toDtoSet(entity.getShifts()
                     .stream().sorted(Comparator.comparing(Shift::getId))
                     .collect(Collectors.toCollection(LinkedHashSet::new)), true));
+
+            Long indexInArray = 0L;
+            for (ShiftDto shift : dto.getShifts()) {
+                shift.setIndexInArray(indexInArray);
+                indexInArray++;
+            }
         }
 
         return dto;
@@ -87,7 +94,9 @@ public class ShiftsOfDayMapper implements EntityDtoMapper<ShiftsOfDay, ShiftsOfD
                 .build();
 
         if (dto.getShifts() != null) {
-            entity.setShifts(shiftMapper.toEntitySet(dto.getShifts()));
+            entity.setShifts(shiftMapper.toEntitySet(dto.getShifts()
+                    .stream().sorted(Comparator.comparing(ShiftDto::getIndexInArray))
+                    .collect(Collectors.toCollection(LinkedHashSet::new))));
         }
 
         return entity;

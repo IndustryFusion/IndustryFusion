@@ -26,6 +26,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 public class ShiftDto extends BaseEntityDto {
+    /** Use indexInArray for correct inserting order.
+     * Necessary as JsonCreator sometimes changes order of sets. */
+    private Long indexInArray;
+
     private String name;
     private Long startMinutes;
     private Long endMinutes;

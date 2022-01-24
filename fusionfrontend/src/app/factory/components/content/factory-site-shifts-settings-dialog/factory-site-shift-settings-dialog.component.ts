@@ -182,7 +182,6 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
       daysFormGroup.removeControl('indexInArray');
       for (const shiftsFormGroup of this.getShiftsOfDayFormGroups(daysFormGroup)) {
         shiftsFormGroup.removeControl('day');
-        shiftsFormGroup.removeControl('indexInArray');
       }
     }
   }
