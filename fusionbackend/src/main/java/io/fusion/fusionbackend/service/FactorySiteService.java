@@ -125,7 +125,7 @@ public class FactorySiteService {
     }
 
     private boolean hasShiftSettings(final FactorySite factorySite) {
-        return (factorySite.getType() != FactorySiteType.FLEETMANAGER && factorySite.getShiftSettings() != null);
+        return factorySite.getType() != FactorySiteType.FLEETMANAGER && factorySite.getShiftSettings() != null;
     }
 
     private void validate(final FactorySite factorySite) {
