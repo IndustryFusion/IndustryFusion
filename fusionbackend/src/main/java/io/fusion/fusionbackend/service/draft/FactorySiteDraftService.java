@@ -20,6 +20,7 @@ import io.fusion.fusionbackend.model.Company;
 import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.enums.FactorySiteType;
+import io.fusion.fusionbackend.repository.CountryRepository;
 import io.fusion.fusionbackend.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,23 +30,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class FactorySiteDraftService {
     private final CompanyService companyService;
+    private final CountryRepository countryRepository;
+    private final ShiftSettingsDraftService shiftSettingsDraftService;
 
     @Autowired
-    public FactorySiteDraftService(CompanyService companyService) {
+    public FactorySiteDraftService(CompanyService companyService, CountryRepository countryRepository,
+                                   ShiftSettingsDraftService shiftSettingsDraftService) {
         this.companyService = companyService;
+        this.countryRepository = countryRepository;
+        this.shiftSettingsDraftService = shiftSettingsDraftService;
     }
 
-    public FactorySite initDraft(final Long companyId, final Country country, final FactorySiteType factorySiteType) {
-        if (country == null) {
+    public FactorySite initDraft(final Long companyId, final FactorySiteType factorySiteType) {
+        if (factorySiteType == null || companyId == null) {
             throw new ResourceNotFoundException();
         }
 
         final Company company = companyService.getCompany(companyId, false);
+        final Country countryGermany = countryRepository.findCountryByName("Germany").orElseThrow();
         final FactorySite transientFactorySite = new FactorySite();
 
         transientFactorySite.setCompany(company);
-        transientFactorySite.setCountry(country);
+        transientFactorySite.setCountry(countryGermany);
         transientFactorySite.setType(factorySiteType);
+
+        if (factorySiteType != FactorySiteType.FLEETMANAGER) {
+            transientFactorySite.setShiftSettings(shiftSettingsDraftService.initDraft());
+        }
 
         return transientFactorySite;
     }

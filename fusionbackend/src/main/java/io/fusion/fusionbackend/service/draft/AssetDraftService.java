@@ -18,11 +18,9 @@ package io.fusion.fusionbackend.service.draft;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.Company;
-import io.fusion.fusionbackend.model.Country;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.Room;
 import io.fusion.fusionbackend.model.enums.FactorySiteType;
-import io.fusion.fusionbackend.repository.CountryRepository;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import io.fusion.fusionbackend.service.FieldInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,20 +38,16 @@ public class AssetDraftService {
     private final FieldInstanceService fieldInstanceService;
     private final RoomDraftService roomDraftService;
     private final AssetSeriesService assetSeriesService;
-    private final CountryRepository countryRepository;
 
     @Autowired
     public AssetDraftService(FieldInstanceService fieldInstanceService,
                              RoomDraftService roomDraftService,
-                             AssetSeriesService assetSeriesService,
-                             CountryRepository countryRepository) {
+                             AssetSeriesService assetSeriesService) {
         this.fieldInstanceService = fieldInstanceService;
         this.roomDraftService = roomDraftService;
         this.assetSeriesService = assetSeriesService;
-        this.countryRepository = countryRepository;
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Asset initAssetDraft(final Long companyId, final Long assetSeriesId) {
         final AssetSeries assetSeries = this.assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId);
         final Company company = assetSeries.getCompany();
@@ -86,8 +80,6 @@ public class AssetDraftService {
     }
 
     public Room initUnspecificRoomDraft(final Long companyId) {
-        final Country countryGermany = countryRepository.findCountryByName("Germany").orElseThrow();
-        return roomDraftService.initUnspecificRoomDraftWithFactorySite(companyId, countryGermany,
-                FactorySiteType.FLEETMANAGER);
+        return roomDraftService.initUnspecificRoomDraftWithFactorySite(companyId, FactorySiteType.FLEETMANAGER);
     }
 }
