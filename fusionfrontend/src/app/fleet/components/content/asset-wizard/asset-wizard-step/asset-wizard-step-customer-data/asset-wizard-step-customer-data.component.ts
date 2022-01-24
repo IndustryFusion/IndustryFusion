@@ -34,6 +34,8 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
 
   @Input() asset: Asset;
   @Input() type: DialogType;
+  @Input() isManualNotUploading: boolean;
+  @Input() isVideoNotUploading: boolean;
   @Output() stepChange = new EventEmitter<number>();
   @Output() createAsset = new EventEmitter<void>();
   @Output() valid = new EventEmitter<boolean>();
@@ -47,6 +49,10 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
               private geocoderService: GeocoderService,
               private roomService: RoomService,
               private formBuilder: FormBuilder) {
+  }
+
+  private static hasValue(text: string) {
+    return text != null && text.trim().length > 0;
   }
 
   ngOnInit(): void {
@@ -90,12 +96,10 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
 
   private hasData(): boolean {
     const factorySite: FactorySite =  this.asset.room.factorySite;
-    return this.hasValue(factorySite.zip) || this.hasValue(factorySite.city)
-      || this.hasValue(factorySite.name) || this.hasValue(factorySite.line1);
-  }
-
-  private hasValue(text: string) {
-    return (text != null && text.trim().length > 0);
+    return AssetWizardStepCustomerDataComponent.hasValue(factorySite.zip)
+      || AssetWizardStepCustomerDataComponent.hasValue(factorySite.city)
+      || AssetWizardStepCustomerDataComponent.hasValue(factorySite.name)
+      || AssetWizardStepCustomerDataComponent.hasValue(factorySite.line1);
   }
 
   private save() {
@@ -125,7 +129,7 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
   }
 
   isReadyForNextStep(): boolean {
-    return this.factorySiteForm.valid;
+    return this.factorySiteForm.valid && this.isManualNotUploading && this.isVideoNotUploading;
   }
 
   onBack(): void {
