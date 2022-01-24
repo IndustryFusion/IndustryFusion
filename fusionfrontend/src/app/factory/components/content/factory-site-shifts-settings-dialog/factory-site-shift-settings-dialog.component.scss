@@ -93,10 +93,6 @@
   color: $basic-black !important;
 }
 
-:host ::ng-deep .p-dialog-header {
-  padding-left: 4% !important;
-}
-
 :host ::ng-deep .p-dropdown {
   border-radius: 10px !important;
   height: 2.75rem;

@@ -131,13 +131,17 @@ export class ShiftDialogComponent implements OnInit {
 
   onStartTimeStringChange(): void {
     const startMinutes: Minutes = ShiftDialogComponent.convertTimeStringToMinutes(this.shiftForm.get('startTimeString').value);
-    this.shiftForm.get('startMinutes').setValue(startMinutes);
-    this.updateRange();
+    if (startMinutes >= 0) {
+      this.shiftForm.get('startMinutes').setValue(startMinutes);
+      this.updateRange();
+    }
   }
 
   onEndTimeStringChange(): void {
     const endMinutes: Minutes = ShiftDialogComponent.convertTimeStringToMinutes(this.shiftForm.get('endTimeString').value);
-    this.shiftForm.get('endMinutes').setValue(endMinutes);
-    this.updateRange();
+    if (endMinutes >= 0) {
+      this.shiftForm.get('endMinutes').setValue(endMinutes);
+      this.updateRange();
+    }
   }
 }

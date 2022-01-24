@@ -120,8 +120,7 @@ export class FactorySitePageComponent implements OnInit {
     this.dialogService.open(FactorySiteShiftSettingsDialogComponent, {
       data: { factorySite: this.factorySite },
       header: this.translate.instant('APP.FACTORY.SHIFTS_DIALOG.TITLE'),
-      width: '70%',
-      contentStyle: { 'padding-left': '4%', 'padding-right': '4%' },
+      width: '70%'
     });
   }
 }

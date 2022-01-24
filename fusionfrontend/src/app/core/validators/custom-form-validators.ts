@@ -18,7 +18,7 @@ import { FieldThresholdType } from 'src/app/core/store/field/field.model';
 
 export class CustomFormValidators {
   static FLOAT_REGEX = /^[+-]?([0-9]*[.])?[0-9]+$/;
-  static TIME_REGEX = /^(([01]?\d|2[0-3]):?([0-5]\d|0))|([01]?\d|2[0-3])$/;
+  static TIME_REGEX = /^(([01]?\d|2[0-3]):?([0-5]\d|0))|([01]\d|2[0-3])$/;
 
   public static requiredFloatingNumber(): ValidatorFn {
     return CustomFormValidators.namedPattern(CustomFormValidators.FLOAT_REGEX, 'floatingNumber');
