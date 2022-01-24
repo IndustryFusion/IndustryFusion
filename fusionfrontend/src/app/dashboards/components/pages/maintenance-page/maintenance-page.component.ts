@@ -25,6 +25,7 @@ import { Company, CompanyType } from 'src/app/core/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/core/resolvers/asset-types.resolver';
 import { CompanyQuery } from 'src/app/core/store/company/company.query';
 import { Field } from '../../../../core/store/field/field.model';
+import { FieldQuery } from '../../../../core/store/field/field.query';
 import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
 
 @Component({
@@ -50,6 +51,7 @@ export class MaintenancePageComponent implements OnInit {
     private assetTypesResolver: AssetTypesResolver,
     private companyQuery: CompanyQuery,
     private fieldsResolver: FieldsResolver,
+    private fieldQuery: FieldQuery
   ) {
   }
 
@@ -63,7 +65,8 @@ export class MaintenancePageComponent implements OnInit {
     });
     this.assetTypes$ = this.assetTypesResolver.resolve();
     this.factoryAssetDetailsWithFieldsAndValues$ = this.factoryResolver.assetsWithDetailsAndFieldsAndValues$;
-    this.fields$ = this.fieldsResolver.resolve();
+    this.fieldsResolver.resolve().subscribe();
+    this.fields$ = this.fieldQuery.selectAll();
   }
 
 }

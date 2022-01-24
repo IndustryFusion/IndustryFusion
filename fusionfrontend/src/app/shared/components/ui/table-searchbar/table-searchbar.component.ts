@@ -37,7 +37,6 @@ export class TableSearchbarComponent implements OnInit {
   @Output()
   emitSearchText = new EventEmitter<string>();
 
-  // searchText: string;
   dotToSplitNestedVariables = '.';
   faSearch = faSearch;
 

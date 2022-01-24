@@ -20,8 +20,8 @@ import { ID } from '@datorama/akita';
 export class GroupByHelper {
   public static ASSET_FIELD_INDEX_WITHOUT_VALUE = -1;
 
-  public static updateRowGroupMetaData(factoryAssets: FactoryAssetDetailsWithFields[], selectedEnum: FieldOption): Map<ID, RowGroupData> {
-    const rowGroupMetaDataMap = new Map<ID, RowGroupData>();
+  public static updateRowGroupMetaData(factoryAssets: FactoryAssetDetailsWithFields[], selectedEnum: FieldOption): Map<ID, RowGroupCount> {
+    const rowGroupMetaDataMap = new Map<ID, RowGroupCount>();
     const sortedAssetFieldIndexTuples: AssetWithFieldIndex[] = GroupByHelper.generateSortedAssetFieldIndexMap(factoryAssets, selectedEnum);
 
     if (sortedAssetFieldIndexTuples) {
@@ -31,13 +31,13 @@ export class GroupByHelper {
           GroupByHelper.ASSET_FIELD_INDEX_WITHOUT_VALUE;
 
         if (i === 0) {
-          rowGroupMetaDataMap.set(enumValue, new RowGroupData(i, 1));
+          rowGroupMetaDataMap.set(enumValue, new RowGroupCount(i, 1));
         }
         else {
           if (rowGroupMetaDataMap.has(enumValue)) {
-            rowGroupMetaDataMap.get(enumValue).size++;
+            rowGroupMetaDataMap.get(enumValue).count++;
           } else {
-            rowGroupMetaDataMap.set(enumValue, new RowGroupData(i, 1));
+            rowGroupMetaDataMap.set(enumValue, new RowGroupCount(i, 1));
           }
         }
       }
@@ -67,7 +67,7 @@ export class GroupByHelper {
     return factoryAsset.fields.indexOf(factoryAsset.fields.filter(field => field.name === selectedEnum.optionLabel).pop());
   }
 
-  public static checkIfRowDataMapIndexMatchesRowIndex(rowGroupMetaDataMap: Map<ID, RowGroupData>, asset: FactoryAssetDetailsWithFields,
+  public static checkIfRowDataMapIndexMatchesRowIndex(rowGroupMetaDataMap: Map<ID, RowGroupCount>, asset: FactoryAssetDetailsWithFields,
                                                       rowIndex: number, selectedEnum: FieldOption): boolean {
     return (GroupByHelper.getFieldIndexOfSelectedEnum(asset, selectedEnum) !== -1 ? rowGroupMetaDataMap.get(asset.fields[
       GroupByHelper.getFieldIndexOfSelectedEnum(asset, selectedEnum)].value).index : rowGroupMetaDataMap.get(
@@ -75,12 +75,12 @@ export class GroupByHelper {
   }
 }
 
-export class RowGroupData {
+export class RowGroupCount {
   index: number;
-  size: number;
-  constructor(index: number, size: number) {
+  count: number;
+  constructor(index: number, count: number) {
     this.index = index;
-    this.size = size;
+    this.count = count;
   }
 }
 

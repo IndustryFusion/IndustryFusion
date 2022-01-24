@@ -45,7 +45,7 @@ import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
-import { GroupByHelper, RowGroupData } from '../../../../core/helpers/group-by-helper';
+import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
 
 @Component({
   selector: 'app-assets-list',
@@ -99,7 +99,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   groupByActive = false;
   selectedEnum: FieldOption;
   selectedEnumOptions: FieldOption[];
-  rowGroupMetaDataMap: Map<ID, RowGroupData>;
+  rowGroupMetaDataMap: Map<ID, RowGroupCount>;
   GroupByHelper = GroupByHelper;
 
   isLoading$: Observable<boolean>;
@@ -177,27 +177,31 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  searchAssets(event: FactoryAssetDetailsWithFields[]): void {
-    this.searchedFactoryAssets = event;
+  searchAssets(factoryAssetsSearchedByName: FactoryAssetDetailsWithFields[]): void {
+    this.searchedFactoryAssets = factoryAssetsSearchedByName;
     this.updateAssets();
   }
 
-  setSearchText(event: string) {
-    this.searchText = event;
+  setSearchText(searchText: string) {
+    this.searchText = searchText;
   }
 
-  filterAssets(event?: FactoryAssetDetailsWithFields[]) {
-    this.filteredFactoryAssets = event;
+  filterAssets(filteredFactoryAssets?: FactoryAssetDetailsWithFields[]) {
+    this.filteredFactoryAssets = filteredFactoryAssets;
     this.updateAssets();
   }
 
-  groupAssets(event: FieldOption) {
-    this.selectedEnum = event;
+  groupAssets(selectedFieldOption: FieldOption) {
+    this.selectedEnum = selectedFieldOption;
     this.groupByActive = this.selectedEnum !== null;
     if (this.selectedEnum) {
       this.selectedEnumOptions = this.fields.filter(field => field.id === this.selectedEnum.fieldId).pop().enumOptions;
-      this. rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
     }
+  }
+
+  hasSelectedEnumValue(asset: FactoryAssetDetailsWithFields): number {
+    return GroupByHelper.getFieldIndexOfSelectedEnum(asset, this.selectedEnum);
   }
 
   public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
@@ -307,7 +311,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
         .includes(filteredAsset)).includes(searchedAsset)).includes(asset));
     this.updateTree();
     if (this.selectedEnum) {
-      this. rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
     }
   }
 

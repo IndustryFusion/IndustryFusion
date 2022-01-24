@@ -16,7 +16,7 @@ export class TableGroupByComponent implements OnInit, OnChanges {
   @Input()
   assetsToBeGrouped: FactoryAssetDetailsWithFields[];
   @Output()
-  emitSelectedEnum = new EventEmitter<FieldOption>();
+  enumSelected = new EventEmitter<FieldOption>();
 
 
   enumOptions: FieldOption[] = [];
@@ -35,13 +35,13 @@ export class TableGroupByComponent implements OnInit, OnChanges {
     }
   }
 
-  enumSelected() {
-    this.emitSelectedEnum.emit(this.selectedEnum);
+  onEnumSelected() {
+    this.enumSelected.emit(this.selectedEnum);
   }
 
   clearSelectedEnum() {
     this.selectedEnum = null;
-    this.emitSelectedEnum.emit(this.selectedEnum);
+    this.enumSelected.emit(this.selectedEnum);
   }
 
 }

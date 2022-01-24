@@ -14,8 +14,8 @@ under the License.
 -->
 
 <div class="button-div">
-  <button (click)="groupbypanel.toggle($event)" class="groupBy-btn">
-    <span class="groupBy-btn-item">{{ 'APP.SHARED.UI.TABLE_GROUP_BY.GROUP_BY' | translate }}:</span>
+  <button (click)="groupbypanel.toggle($event)" class="group-by-btn">
+    <span class="group-by-btn-item">{{ 'APP.SHARED.UI.TABLE_GROUP_BY.GROUP_BY' | translate }}:</span>
     <span *ngIf="selectedEnum != null" class="selected-enum">{{ selectedEnum.optionLabel }}</span>
   </button>
   <button (click)="clearSelectedEnum(); groupbypanel.hide()" *ngIf="selectedEnum != null"
@@ -24,14 +24,14 @@ under the License.
   </button>
 </div>
 
-<p-overlayPanel #groupbypanel [dismissable]="true" [showCloseIcon]="true" class="smallOverlayPanel  panel-class">
+<p-overlayPanel #groupbypanel [dismissable]="true" [showCloseIcon]="true" class="small-overlay-panel  panel-class">
   <ng-template pTemplate>
     <div class="if-panel-heading">{{ 'APP.SHARED.UI.TABLE_GROUP_BY.GROUP_BY' | translate }}</div>
     <div *ngFor="let enum of enumOptions">
       <div class="p-grid p-jc-between panel-row" [ngClass]="{'panel-row-active': enum == selectedEnum}">
         <label class="p-col-10 panel-items" [for]="enum.id" [ngClass]="enum == selectedEnum ? 'if-label' : 'if-label-normal-weight'"
-               (click)="selectedEnum = enum; enumSelected()">{{ enum.optionLabel }}</label>
-        <p-radioButton (onClick)="enumSelected()" class="p-col-2 if-radiobutton panel-items" [inputId]="enum.id" name="enum" [value]="enum"
+               (click)="selectedEnum = enum; onEnumSelected()">{{ enum.optionLabel }}</label>
+        <p-radioButton (onClick)="onEnumSelected()" class="p-col-2 if-radiobutton panel-items" [inputId]="enum.id" name="enum" [value]="enum"
                        [(ngModel)]="selectedEnum" [ngClass]="enum == selectedEnum ? 'checkbox-icon' : 'no-icon'">
         </p-radioButton>
       </div>

@@ -856,7 +856,8 @@
 					"VALUES": "Valeurs"
 				},
         "TABLE_GROUP_BY": {
-          "GROUP_BY": "Regrouper par"
+          "GROUP_BY": "Regrouper par",
+          "VALUE_NOT_FOUND": "Valeur non trouvée"
         },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Recherchez"

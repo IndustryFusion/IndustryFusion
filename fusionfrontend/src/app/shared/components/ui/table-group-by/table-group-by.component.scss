@@ -42,7 +42,7 @@ $left: var(--left-position);
   position: relative;
 }
 
-.groupBy-btn {
+.group-by-btn {
   font-style: normal;
   font-weight: bold;
   font-size: $regular-font-size;
@@ -59,7 +59,7 @@ $left: var(--left-position);
   padding: .4rem .8rem .4rem .8rem;
   cursor: pointer;
 
-  &::ng-deep .groupby-btn-item {
+  &::ng-deep .group-by-btn-item {
     margin-right: .5rem !important;
   }
 
@@ -124,7 +124,7 @@ $left: var(--left-position);
     .p-radiobutton-icon {
       background: none;
       display: inline-block;
-      font: normal normal normal 14px/1 FontAwesome;
+      font: normal normal normal $regular-font-size/1 FontAwesome;
       font-size: inherit;
       text-rendering: auto;
       -webkit-font-smoothing: antialiased;

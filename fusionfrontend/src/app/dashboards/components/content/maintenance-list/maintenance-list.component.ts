@@ -33,7 +33,7 @@ import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
-import { GroupByHelper, RowGroupData } from '../../../../core/helpers/group-by-helper';
+import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
 
 
 @Component({
@@ -65,7 +65,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   groupByActive = false;
   selectedEnum: FieldOption;
   selectedEnumOptions: FieldOption[];
-  rowGroupMetaDataMap: Map<ID, RowGroupData>;
+  rowGroupMetaDataMap: Map<ID, RowGroupCount>;
   GroupByHelper = GroupByHelper;
 
   faChevronCircleDown = faChevronCircleDown;
@@ -89,37 +89,41 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
               public translate: TranslateService) {
   }
 
-
   ngOnInit(): void {
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
   }
 
   ngOnChanges(): void {
+    console.log(this.fields);
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
     this.updateTree();
   }
 
-  searchAssets(event: Array<FactoryAssetDetailsWithFields>) {
-    this.searchedFactoryAssets = event;
+  searchAssets(factoryAssetsSearchedByName: Array<FactoryAssetDetailsWithFields>) {
+    this.searchedFactoryAssets = factoryAssetsSearchedByName;
     this.updateDisplayedAssets();
   }
 
-  setSearchText(event: string) {
-    this.searchText = event;
+  setSearchText(searchText: string) {
+    this.searchText = searchText;
   }
 
-  filterAssets(event: Array<FactoryAssetDetailsWithFields>) {
-    this.filteredFactoryAssets = event;
+  filterAssets(filteredFactoryAssets: Array<FactoryAssetDetailsWithFields>) {
+    this.filteredFactoryAssets = filteredFactoryAssets;
     this.updateDisplayedAssets();
   }
 
-  groupAssets(event: FieldOption) {
-    this.selectedEnum = event;
+  groupAssets(selectedFieldOption: FieldOption) {
+    this.selectedEnum = selectedFieldOption;
     this.groupByActive = this.selectedEnum !== null;
     if (this.selectedEnum) {
       this.selectedEnumOptions = this.fields.filter(field => field.id === this.selectedEnum.fieldId).pop().enumOptions;
-      this. rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
     }
+  }
+
+  hasSelectedEnumValue(asset: FactoryAssetDetailsWithFields): number {
+    return GroupByHelper.getFieldIndexOfSelectedEnum(asset, this.selectedEnum);
   }
 
   updateDisplayedAssets() {
@@ -127,7 +131,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
     this.displayedFactoryAssets = this.searchedFactoryAssets.filter(asset => this.filteredFactoryAssets.includes(asset));
     this.updateTree();
     if (this.selectedEnum) {
-      this. rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
     }
   }
 
