@@ -16,12 +16,15 @@ under the License.
 <div class="efficiency-dashboard-overview">
   <div class="p-grid p-jc-between header-line">
     <label class="if-title">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.TITLE' | translate }}</label>
+    <div class="p-grid">
+      <app-shifts-filter [factorySites]="(factorySites$ | async)" [day]="getDayFromDate()"></app-shifts-filter>
 
-    <button class="if-button-page-white">
-      <label>{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.CALENDER_LABEL' | translate }}</label>
-      <p-calendar class="calendar-only-button" [(ngModel)]="date" (ngModelChange)="dateChanged.emit($event)" showIcon="true" showButtonBar="true"
-                  dateFormat="dd.mm.yy"></p-calendar>
-    </button>
+      <button class="if-button-page-white">
+        <label>{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.CALENDER_LABEL' | translate }}</label>
+        <p-calendar class="calendar-only-button" [(ngModel)]="date" (ngModelChange)="dateChanged.emit($event)" showIcon="true" showButtonBar="true"
+                    dateFormat="dd.mm.yy"></p-calendar>
+      </button>
+    </div>
   </div>
 
   <div class="aggregated-stats list-header p-grid">

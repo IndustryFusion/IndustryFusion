@@ -86,7 +86,9 @@
 }
 
 .if-button-page-grey {
+  align-items: center;
   text-align: center;
+
   font-style: normal;
   font-weight: bold;
   font-size: $medium-font-size;
@@ -101,7 +103,6 @@
 
   height: 1.6rem;
   padding: .4rem .8rem .4rem .8rem;
-  align-items: center;
 
   letter-spacing: 0;
   box-shadow: none;
