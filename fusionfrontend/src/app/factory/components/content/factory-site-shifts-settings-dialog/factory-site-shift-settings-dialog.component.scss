@@ -57,6 +57,7 @@
         background: $basic-white;
         height: 2rem;
         min-width: 12rem;
+        cursor: unset;
 
         align-items: center;
         vertical-align: center;
@@ -103,4 +104,8 @@
   .p-dropdown-label {
     border: none;
   }
+}
+
+:host ::ng-deep .p-dialog-content {
+  padding-top: 0 !important;
 }
