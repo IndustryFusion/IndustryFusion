@@ -22,6 +22,7 @@ import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.ShiftSettings;
 import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import io.fusion.fusionbackend.repository.FactorySiteRepository;
+import io.fusion.fusionbackend.repository.ShiftSettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -37,22 +38,38 @@ public class FactorySiteService {
     private final RoomService roomService;
     private final CountryService countryService;
     private final ShiftSettingsService shiftSettingsService;
+    private final ShiftSettingsRepository shiftSettingsRepository;
 
     @Autowired
     public FactorySiteService(FactorySiteRepository factorySiteRepository,
                               CompanyService companyService,
                               @Lazy RoomService roomService,
                               @Lazy CountryService countryService,
-                              ShiftSettingsService shiftSettingsService) {
+                              ShiftSettingsService shiftSettingsService,
+                              ShiftSettingsRepository shiftSettingsRepository) {
         this.factorySiteRepository = factorySiteRepository;
         this.companyService = companyService;
         this.roomService = roomService;
         this.countryService = countryService;
         this.shiftSettingsService = shiftSettingsService;
+        this.shiftSettingsRepository = shiftSettingsRepository;
     }
 
     public Set<FactorySite> getFactorySitesByCompany(final Long companyId) {
-        return factorySiteRepository.findAllByCompanyId(FactorySiteRepository.DEFAULT_SORT, companyId);
+        Set<FactorySite> factorySites = factorySiteRepository
+                .findAllByCompanyId(FactorySiteRepository.DEFAULT_SORT, companyId);
+
+        for (FactorySite factorySite : factorySites) {
+            if (factorySite.hasShiftSettings()) {
+                ShiftSettings shiftSettings = shiftSettingsRepository
+                        .findDeepById(factorySite.getShiftSettings().getId())
+                        .orElseThrow();
+                factorySite.setShiftSettings(shiftSettings);
+            }
+
+        }
+
+        return factorySites;
     }
 
     public FactorySite getFactorySiteByCompany(final Long companyId, final Long factorySiteId, final boolean deep) {
@@ -92,7 +109,7 @@ public class FactorySiteService {
         factorySite.setCompany(company);
         factorySite.setCountry(country);
 
-        if (hasShiftSettings(factorySite)) {
+        if (factorySite.hasShiftSettings()) {
             factorySite.getShiftSettings().updateShiftSettingBackReferences();
         }
 
@@ -105,7 +122,7 @@ public class FactorySiteService {
                                          final FactorySite sourceFactorySite) {
         final FactorySite targetFactorySite = getFactorySiteByCompany(companyId, factorySiteId, true);
 
-        if (hasShiftSettings(sourceFactorySite)) {
+        if (sourceFactorySite.hasShiftSettings()) {
             final ShiftSettings shiftSettings = shiftSettingsService
                     .getShiftSettings(sourceFactorySite.getShiftSettings().getId());
             targetFactorySite.setShiftSettings(shiftSettings);
@@ -122,10 +139,6 @@ public class FactorySiteService {
         validate(targetFactorySite);
 
         return targetFactorySite;
-    }
-
-    private boolean hasShiftSettings(final FactorySite factorySite) {
-        return factorySite.getType() != FactorySiteType.FLEETMANAGER && factorySite.getShiftSettings() != null;
     }
 
     private void validate(final FactorySite factorySite) {

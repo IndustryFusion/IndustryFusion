@@ -22,7 +22,7 @@ import { MainAuthGuard } from '../core/guards/main-auth.guard';
 import { AssetSeriesOverviewPageComponent } from './components/pages/asset-series-overview-page/asset-series-overview-page.component';
 import { AssetResolver } from '../core/resolvers/asset.resolver';
 import { RoomResolver } from '../core/resolvers/room.resolver';
-import { FactorySiteResolver } from '../core/resolvers/factory-site.resolver';
+import { FactorySiteResolverWithoutShiftSettings } from '../core/resolvers/factory-site.resolver';
 import { AssetSeriesDetailsQuery } from '../core/store/asset-series-details/asset-series-details.query';
 import {
   AssetSeriesAssetDigitalNameplateComponent
@@ -73,7 +73,7 @@ const routes: Routes = [
               breadcrumb: AssetSeriesDetailsQuery,
             },
             resolve: {
-              factorySite: FactorySiteResolver
+              factorySite: FactorySiteResolverWithoutShiftSettings
             },
             children: [
               {

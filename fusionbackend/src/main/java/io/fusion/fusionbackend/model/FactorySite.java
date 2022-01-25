@@ -126,4 +126,8 @@ public class FactorySite extends BaseEntity {
             getShiftSettings().copyFrom(sourceFactorySite.getShiftSettings());
         }
     }
+
+    public boolean hasShiftSettings() {
+        return getType() != FactorySiteType.FLEETMANAGER && getShiftSettings() != null;
+    }
 }

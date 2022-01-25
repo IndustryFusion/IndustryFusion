@@ -21,7 +21,7 @@ import { CompanyQuery } from '../store/company/company.query';
 import { FactorySite } from '../store/factory-site/factory-site.model';
 
 @Injectable({ providedIn: 'root' })
-export class FactorySiteResolver implements Resolve<void>{
+export class FactorySiteResolverWithoutShiftSettings implements Resolve<void>{
   constructor(private companyQuery: CompanyQuery,
               private factorySiteService: FactorySiteService) { }
 
@@ -32,9 +32,29 @@ export class FactorySiteResolver implements Resolve<void>{
   resolveFromComponent(): Observable<FactorySite[]> {
     const companyId = this.companyQuery.getActiveId();
     if (companyId) {
-      return  this.factorySiteService.getFactorySitesWithoutShiftSettings(companyId);
+      return this.factorySiteService.getFactorySitesWithoutShiftSettings(companyId);
     } else {
-      console.error('[asset series details resolver]: company unknown');
+      console.error('[factory site resolver]: company unknown');
+      return EMPTY;
+    }
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class FactorySiteResolverWithShiftSettings implements Resolve<void>{
+  constructor(private companyQuery: CompanyQuery,
+              private factorySiteService: FactorySiteService) { }
+
+  resolve(): void { // using Observable will result in deadlock when called from routing module
+    this.resolveFromComponent().subscribe();
+  }
+
+  resolveFromComponent(): Observable<FactorySite[]> {
+    const companyId = this.companyQuery.getActiveId();
+    if (companyId) {
+      return this.factorySiteService.getFactorySitesWithShiftSettings(companyId, true);
+    } else {
+      console.error('[factory site resolver]: company unknown');
       return EMPTY;
     }
   }

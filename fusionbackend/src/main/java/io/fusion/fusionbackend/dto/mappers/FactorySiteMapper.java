@@ -75,9 +75,10 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
 
         FactorySiteDto dto = toDtoShallow(entity);
 
-        dto.setRooms(roomMapper.toDtoSet(entity.getRooms(), false));
         dto.setCountry(countryMapper.toDto(entity.getCountry(), false));
-        dto.setShiftSettings(shiftSettingsMapper.toDto(entity.getShiftSettings(), true));
+        if (entity.hasShiftSettings()) {
+            dto.setShiftSettings(shiftSettingsMapper.toDto(entity.getShiftSettings(), true));
+        }
 
         return dto;
     }
