@@ -144,7 +144,7 @@
 				"TABLE_HEADER": "Status Overview by Asset"
 			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
-				"CALENDER_LABEL": "Pick Date",
+				"CALENDER_LABEL": "Pick date",
 				"DONUT_CHART_TITLE": "Status Overview (Average of all Assets)",
 				"STATUS": {
 					"DASHBOARD_OVERVIEW_LABEL": "Realtime Status"
@@ -905,6 +905,13 @@
         "TABLE_GROUP_BY": {
           "GROUP_BY": "Group by",
           "VALUE_NOT_FOUND": "Value not found"
+        },
+        "SHIFTS_FILTER": {
+          "FILTER_BUTTON": "Select shift",
+          "TITLE": "Select shifts of factory site",
+          "FACTORY_SITE_PLACEHOLDER": "Select factory site...",
+          "SHIFTS_OF_DAY_LABEL": "Select shifts of {{ day }}:",
+          "CLEAR_ALL": "Clear all"
         },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Search"

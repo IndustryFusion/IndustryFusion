@@ -906,6 +906,13 @@
           "GROUP_BY": "Gruppieren nach",
           "VALUE_NOT_FOUND": "Wert nicht gefunden"
         },
+        "SHIFTS_FILTER": {
+          "FILTER_BUTTON": "Schicht auswählen",
+          "TITLE": "Schichten eines Standorts",
+          "FACTORY_SITE_PLACEHOLDER": "Standort auswählen...",
+          "SHIFTS_OF_DAY_LABEL": "Schichten von {{ day }} auswählen:",
+          "CLEAR_ALL": "Zurücksetzen"
+        },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Suche"
 				},

@@ -906,6 +906,13 @@
           "GROUP_BY": "Regrouper par",
           "VALUE_NOT_FOUND": "Valeur non trouvée"
         },
+        "SHIFTS_FILTER": {
+          "FILTER_BUTTON": "Sélectionner les équipes",
+          "TITLE": "Équipes d'un site d'usine",
+          "FACTORY_SITE_PLACEHOLDER": "Sélectionner le site de l'usine...",
+          "SHIFTS_OF_DAY_LABEL": "Les équipes de {{ day }}:",
+          "CLEAR_ALL": "Effacer tout"
+        },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Recherchez"
 				},
