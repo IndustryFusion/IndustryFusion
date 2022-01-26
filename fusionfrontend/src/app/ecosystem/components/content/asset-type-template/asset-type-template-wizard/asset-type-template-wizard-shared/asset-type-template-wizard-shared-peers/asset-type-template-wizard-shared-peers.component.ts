@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   AssetTypeTemplate,
@@ -31,7 +31,7 @@ import { ID } from '@datorama/akita';
   templateUrl: './asset-type-template-wizard-shared-peers.component.html',
   styleUrls: ['./asset-type-template-wizard-shared-peers.component.scss']
 })
-export class AssetTypeTemplateWizardSharedPeersComponent implements OnInit {
+export class AssetTypeTemplateWizardSharedPeersComponent implements OnInit, OnChanges {
 
   @Input() editable = true;
   @Input() isReview = false;
@@ -55,6 +55,12 @@ export class AssetTypeTemplateWizardSharedPeersComponent implements OnInit {
       this.assetTypeTemplatePeers = new Array<AssetTypeTemplatePeer>();
     }
     this.initFormArray();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.assetTypeTemplatePeers && !changes.assetTypeTemplatePeers.firstChange) {
+      this.initFormArray();
+    }
   }
 
   private initFormArray(): void {

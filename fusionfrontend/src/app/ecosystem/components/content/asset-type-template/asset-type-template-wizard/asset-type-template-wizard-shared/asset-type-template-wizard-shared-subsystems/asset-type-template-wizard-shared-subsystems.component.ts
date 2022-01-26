@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 import { ID } from '@datorama/akita';
 import { AssetTypeTemplate } from '../../../../../../../core/store/asset-type-template/asset-type-template.model';
@@ -27,7 +27,7 @@ import { AssetTypeTemplateWizardStepStartComponent } from '../../asset-type-temp
   templateUrl: './asset-type-template-wizard-shared-subsystems.component.html',
   styleUrls: ['./asset-type-template-wizard-shared-subsystems.component.scss']
 })
-export class AssetTypeTemplateWizardSharedSubsystemsComponent implements OnInit {
+export class AssetTypeTemplateWizardSharedSubsystemsComponent implements OnInit, OnChanges {
 
   @Input() subsystemIds: Array<ID>;
   @Input() isReview = false;
@@ -47,15 +47,21 @@ export class AssetTypeTemplateWizardSharedSubsystemsComponent implements OnInit 
     if (!this.subsystemIds) {
       this.subsystemIds = new Array<ID>();
     }
-    this.fillTable(this.subsystemIds);
+    this.initFormArray();
   }
 
-  private fillTable(subsystemIds: ID[]): void {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.subsystemIds && !changes.subsystemIds.firstChange) {
+      this.initFormArray();
+    }
+  }
+
+  private initFormArray(): void {
     this.subsystemFormArray = new FormArray([]);
     this.subsystemFormArray.valueChanges.subscribe(() => this.changeIsValid.emit(this.subsystemFormArray.valid));
     this.changeIsValid.emit(this.subsystemFormArray.valid);
 
-    for (const subsystemId of subsystemIds) {
+    for (const subsystemId of this.subsystemIds) {
       const assetTypeTemplate: AssetTypeTemplate = AssetTypeTemplateWizardStepStartComponent
         .addPublishedVersionToAssetTypeTemplateName(this.assetTypeTemplateQuery.getEntity(subsystemId));
       this.addSubsystem(assetTypeTemplate);
