@@ -15,8 +15,8 @@ under the License.
 
 <div class="wrapper if-subheader">
   <p-dialog header="Ecosystem files synced with repo" [(visible)]="ifApiService.showResult">
-    <div>Import: {{ ifApiService.syncResult.importResult.handled }} handled, {{ ifApiService.syncResult.importResult.skipped }} skipped (objects)</div>
-    <div>Export: {{ ifApiService.syncResult.exportResult.handled }} handled, {{ ifApiService.syncResult.exportResult.skipped }} skipped (files)</div>
+    <div>Import: {{ ifApiService.syncResult?.importResult?.handled }} handled, {{ ifApiService.syncResult?.importResult?.skipped }} skipped (objects)</div>
+    <div>Export: {{ ifApiService.syncResult?.exportResult?.handled }} handled, {{ ifApiService.syncResult?.exportResult?.skipped }} skipped (files)</div>
     <ng-template pTemplate="footer">
       <p-button icon="pi pi-check" (click)="ifApiService.showResult=false" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>
