@@ -99,11 +99,21 @@ export class IfApiService {
 class SyncResult {
   importResult: ProcessingResultDto;
   exportResult: ProcessingResultDto;
+
+  constructor() {
+    this.importResult = new ProcessingResultDto();
+    this.exportResult = new ProcessingResultDto();
+  }
 }
 
 class ProcessingResultDto {
   handled: number;
   skipped: number;
+
+  constructor() {
+    this.skipped = 0;
+    this.handled = 0;
+  }
 }
 
 enum ExportType {
