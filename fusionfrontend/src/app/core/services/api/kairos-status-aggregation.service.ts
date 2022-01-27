@@ -111,10 +111,7 @@ export class KairosStatusAggregationService {
 
   private static getEndTimestampOfShifts(date: Date, dayStartTimestampMs: Milliseconds, shifts: Shift[]): Milliseconds {
     if (shifts == null || shifts.length < 1) {
-      const dayEndTimestampMs: Milliseconds = moment(dayStartTimestampMs)
-        .add(1, 'days')
-        .subtract(1, 'second')
-        .valueOf();
+      const dayEndTimestampMs: Milliseconds = moment(dayStartTimestampMs).add(1, 'days').valueOf();
       const dayUntilNowTimestampMs: Milliseconds = Date.now().valueOf();
 
       return KairosStatusAggregationService.isDateToday(date) ? dayUntilNowTimestampMs : dayEndTimestampMs;

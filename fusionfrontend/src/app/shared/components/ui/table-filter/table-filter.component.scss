@@ -17,9 +17,6 @@
 @import 'base/typography';
 @import 'components/buttons';
 
-$top: var(--top-position);
-$left: var(--left-position);
-
 .panel-class {
   ::ng-deep .p-overlaypanel:before {
     visibility: hidden !important;
@@ -29,13 +26,6 @@ $left: var(--left-position);
   }
   ::ng-deep .p-component {
     margin-top: 0 !important;
-  }
-}
-
-.panel-position {
-  ::ng-deep .p-component {
-    top: $top !important;
-    left: $left !important;
   }
 }
 
