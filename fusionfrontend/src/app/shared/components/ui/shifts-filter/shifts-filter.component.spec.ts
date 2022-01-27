@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShiftsFilterComponent } from './shifts-filter.component';
 
-describe('TableGroupByComponent', () => {
+describe('ShiftsFilterComponent', () => {
   let component: ShiftsFilterComponent;
   let fixture: ComponentFixture<ShiftsFilterComponent>;
 

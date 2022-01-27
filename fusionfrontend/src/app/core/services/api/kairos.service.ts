@@ -31,6 +31,7 @@ import {
   KairosResult,
   MetricsWithAggregationAndGrouping
 } from '../../models/kairos.model';
+import { Milliseconds } from '../../store/factory-site/factory-site.model';
 
 @Injectable({
   providedIn: 'root'
@@ -88,8 +89,8 @@ export class KairosService {
 
   getStatusCounts(asset: Asset,
                   fieldDetails: FieldDetails,
-                  fromDate: number,
-                  toDate: number,
+                  fromTimestampMs: Milliseconds,
+                  toTimestampMs: Milliseconds,
                   limit?: number): Observable<KairosResponseGroup[]> {
 
     const path = `datapoints/query`;
@@ -114,8 +115,8 @@ export class KairosService {
         group_by: [myGrouping], aggregators: [myAggregator] });
     }
     const request: KairosRequest = {
-      start_absolute: fromDate,
-      end_absolute: toDate,
+      start_absolute: fromTimestampMs,
+      end_absolute: toTimestampMs,
       metrics: [metricsWithAggregationAndGrouping]
     };
     return this.makeKairosRequest(path, request);

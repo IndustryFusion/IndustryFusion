@@ -94,7 +94,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    console.log(this.fields);
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
     this.updateTree();
   }

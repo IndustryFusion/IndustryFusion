@@ -17,7 +17,9 @@ under the License.
                                    [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields"
                                    [fullyLoadedAssets$]="fullyLoadedAssets$"
                                    [date]="date"
-                                   (dateChanged)="dateChanged($event)"></app-equipment-efficiency-overview>
+                                   (dateChanged)="onDateChanged($event)"
+                                   (shiftsChanged)="onShiftsChanged($event)"
+></app-equipment-efficiency-overview>
 
 <app-equipment-efficiency-list  [factoryAssetDetailsWithFields]="factoryAssetDetailsWithFields"
                                 [fields]="(fields$ | async)"

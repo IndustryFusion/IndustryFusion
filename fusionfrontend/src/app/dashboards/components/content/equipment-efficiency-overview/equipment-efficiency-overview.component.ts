@@ -19,7 +19,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StatusHours } from '../../../../core/models/kairos-status-aggregation.model';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { EquipmentEfficiencyHelper } from '../../../../core/helpers/equipment-efficiency-helper';
-import { FactorySite } from '../../../../core/store/factory-site/factory-site.model';
+import { FactorySite, Shift } from '../../../../core/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
 import { Day } from '../../../../core/models/days.model';
@@ -46,6 +46,9 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
 
   @Output()
   dateChanged = new EventEmitter<Date>();
+
+  @Output()
+  shiftsChanged = new EventEmitter<Shift[]>();
 
   isLoaded = false;
   averageOfStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
@@ -90,5 +93,9 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
       case 5: return Day.FRIDAY;
       case 6: return Day.SATURDAY;
     }
+  }
+
+  onShiftsChanged(selectedShifts: Shift[]): void {
+    this.shiftsChanged.emit(selectedShifts);
   }
 }

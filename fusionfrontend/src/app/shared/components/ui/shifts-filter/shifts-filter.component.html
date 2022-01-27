@@ -20,7 +20,7 @@ under the License.
     <span *ngIf="selectedShifts.length > 0" class="active-filter">{{ selectedShifts.length }}</span>
 
     <button *ngIf="selectedFactorySite != null" class="remove-all-filters-btn"
-            (click)="clear(); shiftsfilterpanel.hide()">
+            (click)="clearAll(); onApply(); shiftsfilterpanel.hide();">
       <i class="pi pi-times remove-all-filters-btn-icon"></i>
     </button>
   </button>
@@ -44,7 +44,7 @@ under the License.
       </div>
 
       <div class="footer">
-        <button type="button" class="if-button button-cancel button-modal-small" (click)="clear()">
+        <button type="button" class="if-button button-cancel button-modal-small" (click)="clearAll()">
           <span>{{ 'APP.SHARED.UI.SHIFTS_FILTER.CLEAR_ALL' | translate }}</span>
           <i class="pi pi-times clear-all-icon"></i>
         </button>

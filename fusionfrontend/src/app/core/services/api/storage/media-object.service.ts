@@ -45,7 +45,6 @@ export abstract class MediaObjectService {
   }
 
   public static downloadFileContent(fileContent: string, fileName: string, contentType: string): void {
-    console.log('this is the content', fileContent);
     const blob = new Blob([fileContent], { type: contentType });
 
     if (window.navigator.msSaveOrOpenBlob) {

@@ -59,7 +59,9 @@ export class ShiftsOfDay extends BaseEntity {
   shifts: Shift[];
 }
 
+export declare type Seconds = number;
 export declare type Minutes = number;
+export declare type Milliseconds = number;
 
 export class Shift extends BaseEntity {
   indexInArray: number;
