@@ -24,11 +24,10 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
   factorySiteOptions: FactorySite[];
   selectedFactorySite: FactorySite;
   shiftOptions: Shift[];
-  selectedShifts: Shift[] = [];
-
+  selectedShifts?: Shift[];
   subtitle: string;
 
-  private previousAppliedShifts: Shift[];
+  private lastAppliedShiftsSorted: Shift[];
 
   constructor(private translate: TranslateService,
               private companyQuery: CompanyQuery,
@@ -42,7 +41,7 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
       this.subtitle = this.translate.instant('APP.SHARED.UI.SHIFTS_FILTER.SHIFTS_OF_DAY_LABEL',
         { day: this.translate.instant('APP.COMMON.DAYS.' + this.day) });
 
-      this.remainShiftsWithSameNameAsPreviousOnes();
+      this.updateShiftOptions();
       this.onApply();
     }
     if (changes.factorySites) {
@@ -50,23 +49,13 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
     }
   }
 
-  private remainShiftsWithSameNameAsPreviousOnes() {
-    if (this.previousAppliedShifts) {
-      const shiftsOfNewDayWithMatchingNames: Shift[] = [];
-      const namesOfPreviousShiftsLowerCase: string[] = this.previousAppliedShifts.map(shift => shift.name.toLowerCase());
-
-      this.updateShiftOptions();
-      for (const newShiftOption of this.shiftOptions) {
-        if (namesOfPreviousShiftsLowerCase.includes(newShiftOption.name.toLowerCase())) {
-          shiftsOfNewDayWithMatchingNames.push(newShiftOption);
-        }
-      }
-
-      this.previousAppliedShifts = [...shiftsOfNewDayWithMatchingNames];
-      this.selectedShifts = this.previousAppliedShifts;
-    } else {
-      this.clearAll();
-    }
+  private clearAll(): void {
+    this.factorySiteOptions = [];
+    this.selectedFactorySite = null;
+    this.shiftOptions = [];
+    this.selectedShifts = null;
+    this.lastAppliedShiftsSorted = null;
+    this.factorySites?.forEach(factorySite => this.factorySiteOptions.push(factorySite));
   }
 
   onFactorySiteSelected(): void {
@@ -82,6 +71,9 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
   }
 
   private updateShiftOptions(): void {
+    if (!this.selectedFactorySite) {
+      return;
+    }
     if (!this.day) {
       throw Error('[Shifts filter]: Day is not provided');
     }
@@ -89,25 +81,34 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
       throw Error('[Shifts filter]: Shift settings are not provided. Is the correct resolver being used with shift settings?');
     }
 
-    this.selectedShifts = [];
     this.shiftOptions = [];
-    const shiftsOfDay = this.selectedFactorySite.shiftSettings.shiftsOfDays.find(aShiftsOfDay => aShiftsOfDay.day === this.day);
 
+    const shiftsOfDay = this.selectedFactorySite.shiftSettings.shiftsOfDays.find(aShiftsOfDay => aShiftsOfDay.day === this.day);
     if (shiftsOfDay) {
       shiftsOfDay.shifts.forEach(shift => this.shiftOptions.push(shift));
     }
+
+    this.remainShiftsSelectedWithSameNames();
   }
 
-  clearAll(): void {
-    this.factorySiteOptions = [];
-    this.selectedFactorySite = null;
-    this.shiftOptions = [];
-    this.selectedShifts = [];
-    this.previousAppliedShifts = null;
-    this.factorySites?.forEach(factorySite => this.factorySiteOptions.push(factorySite));
+  private remainShiftsSelectedWithSameNames(): void {
+    if (this.selectedShifts) {
+      const shiftsOfNewDayWithMatchingNames: Shift[] = [];
+      const namesOfPreviousShiftsLowerCase: string[] = this.selectedShifts.map(shift => shift.name.toLowerCase());
+
+      for (const newShiftOption of this.shiftOptions) {
+        if (namesOfPreviousShiftsLowerCase.includes(newShiftOption.name.toLowerCase())) {
+          shiftsOfNewDayWithMatchingNames.push(newShiftOption);
+        }
+      }
+
+      this.selectedShifts = shiftsOfNewDayWithMatchingNames;
+    }
   }
 
   onToggleShift(shift: Shift, isChecked: boolean): void {
+    this.initSelectedShiftsIfNull();
+
     if (isChecked) {
       this.selectedShifts.push(shift);
     } else if (shift) {
@@ -116,11 +117,30 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
     }
   }
 
+  private initSelectedShiftsIfNull(): void {
+    if (!this.selectedShifts) {
+      this.selectedShifts = [];
+    }
+  }
+
+  onReset(): void {
+    this.clearAll();
+    this.onApply();
+  }
+
   onApply(): void {
+    if (!this.selectedShifts) {
+      this.lastAppliedShiftsSorted = null;
+      this.shiftsChanged.emit([]);
+      return;
+    }
+
     const sortedSelectedShifts = this.selectedShifts.sort((shift1, shift2) => shift1.indexInArray - shift2.indexInArray);
-    if (!this.previousAppliedShifts ||
-      !this.isArrayEqual(this.previousAppliedShifts.map(shift => shift.id), sortedSelectedShifts.map(shift => shift.id))) {
-      this.previousAppliedShifts = [...sortedSelectedShifts];
+    const isNotAlreadyApplied = !this.lastAppliedShiftsSorted ||
+      !this.isArrayEqual(this.lastAppliedShiftsSorted.map(shift => shift.id), sortedSelectedShifts.map(shift => shift.id));
+
+    if (isNotAlreadyApplied) {
+      this.lastAppliedShiftsSorted = [...sortedSelectedShifts];
       this.shiftsChanged.emit(sortedSelectedShifts);
     }
   }
@@ -132,7 +152,7 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
       a.every((val, index) => val === b[index]);
   }
 
-  isShiftSelected(shift: Shift) {
-    return this.selectedShifts.includes(shift);
+  isShiftSelected(shift: Shift): boolean {
+    return this.selectedShifts != null && this.selectedShifts.includes(shift);
   }
 }
