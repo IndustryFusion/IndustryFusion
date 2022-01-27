@@ -219,7 +219,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'performance/realtime',
+            redirectTo: 'performance/performance',
             pathMatch: 'full',
           },
           {
