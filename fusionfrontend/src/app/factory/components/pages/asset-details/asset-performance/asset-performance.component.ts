@@ -49,7 +49,7 @@ export class AssetPerformanceComponent implements OnInit {
     this.initViewMode();
   }
 
-  private initViewMode() {
+  private initViewMode(): void {
     if (RouteHelpers.isRouteActive('realtime', this.activatedRoute)) {
       this.viewMode = AssetPerformanceViewMode.REALTIME;
     }

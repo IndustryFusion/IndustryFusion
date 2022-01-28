@@ -76,11 +76,11 @@ export class AssetPerformanceViewComponent implements OnInit {
     });
   }
 
-  private initViewMode() {
+  private initViewMode(): void {
     this.viewMode = AssetPerformanceViewMode.PERFORMANCE;
   }
 
-  private updateAssets(assetDetailsWithFields: FactoryAssetDetailsWithFields) {
+  private updateAssets(assetDetailsWithFields: FactoryAssetDetailsWithFields): void {
     const assetToday = assetDetailsWithFields;
     const assetYesterday: FactoryAssetDetailsWithFields = JSON.parse(JSON.stringify(assetDetailsWithFields));
     const assetDayBeforeYesterday: FactoryAssetDetailsWithFields = JSON.parse(JSON.stringify(assetDetailsWithFields));
@@ -116,7 +116,7 @@ export class AssetPerformanceViewComponent implements OnInit {
     this.reversedYBarChartLabels.reverse();
   }
 
-  private updateStatusHoursOfAsset(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]) {
+  private updateStatusHoursOfAsset(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]): void {
     assetWithFields.statusHoursOneDay = new StatusHoursOneDay(statusHours);
     this.loadedStatusCount++;
     if (this.assetsWithStatus === this.loadedStatusCount) {
@@ -124,7 +124,7 @@ export class AssetPerformanceViewComponent implements OnInit {
     }
   }
 
-  private updateAggregatedStatusHours() {
+  private updateAggregatedStatusHours(): void {
     if (this.assetDetailsWithFieldsThreeDays && this.assetDetailsWithFieldsThreeDays.length > 0) {
       const aggregatedStatusHours = EquipmentEfficiencyHelper.getAggregatedStatusHours([this.assetDetailsWithFieldsThreeDays[0]],
         this.enumHelpers);

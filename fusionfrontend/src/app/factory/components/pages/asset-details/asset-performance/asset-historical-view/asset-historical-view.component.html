@@ -114,8 +114,8 @@ under the License.
         <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
           <!--suppress XmlDuplicatedId -->
           <app-asset-charts id="metric-{{field.externalName}}" [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
-                            [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
-                            [options]="currentTimeslot" [startDate]="startDate" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-charts>
+                            [endDate]="getEndDateAsMoment()" [fieldDetails]="field" [maxPoints]="maxPoints"
+                            [options]="currentTimeslot" [startDate]="getStartDateAsMoment()" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-charts>
         </ng-container>
       </ng-container>
     </div>
@@ -127,7 +127,7 @@ under the License.
             <div class="p-md-12 p-col-align-start">
               <!--suppress XmlDuplicatedId -->
               <app-asset-tables id="metric-{{field.externalName}}" [asset]="assetWithFields" [field]="field"
-                                [options]="currentTimeslot" (loadedEvent)="isChartOrTableLoaded(field)"></app-asset-tables>
+                                [options]="currentTimeslot" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-tables>
             </div>
           </ng-container>
         </ng-container>
