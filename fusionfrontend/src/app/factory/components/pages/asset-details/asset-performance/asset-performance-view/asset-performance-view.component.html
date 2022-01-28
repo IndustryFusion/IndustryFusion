@@ -43,6 +43,16 @@ under the License.
           </app-equipment-efficiency-bar-chart>
         </div>
       </div>
+
+      <div class="aggregated-section status p-col-4">
+        <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_DAYS_PERFORMANCE_SUMMARY' | translate }}</label>
+        <div class="bar-charts">
+          <app-equipment-efficiency-bar-chart *ngIf="isLoaded && assetStatusHoursOfThreeDays != null"
+                                              [showAxes]="true" [yLabels]="reversedYBarChartLabels" [maxXAxisValue]="24"
+                                              [assetStatusHoursOfDays]="assetStatusHoursOfThreeDays">
+          </app-equipment-efficiency-bar-chart>
+        </div>
+      </div>
     </div>
   </div>
 </div>

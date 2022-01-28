@@ -17,6 +17,9 @@
 @import "src/styles/abstract/variables";
 @import "../asset-performance.component";
 
+$width-time-dropdown: var(--performance-width-time-dropdown);
+$width-view-dropdown: var(--performance-width-view-dropdown);
+
 .time-interval-selectors {
 
   .selector-with-points {
@@ -141,6 +144,10 @@
   }
 }
 
+:host ::ng-deep .performance-views > .p-selectbutton {
+  width: $width-view-dropdown !important;
+}
+
 :host ::ng-deep .radio-wrapper > .p-selectbutton {
-  width: 17.85rem !important;
+  width: $width-time-dropdown !important;
 }

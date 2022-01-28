@@ -39,6 +39,12 @@ export class AssetPerformanceComponent implements OnInit {
       value: AssetPerformanceViewMode.HISTORICAL }
   ];
 
+  private readonly languagesLayout = [
+    { language: 'de', widthTime: '22.85rem', widthView: '26.7rem' },
+    { language: 'en', widthTime: '17.85rem', widthView: '23.4rem' },
+    { language: 'fr', widthTime: '19.85rem', widthView: '26.1rem' }
+  ];
+
   constructor(private activatedRoute: ActivatedRoute,
               private factoryResolver: FactoryResolver,
               private translate: TranslateService) {
@@ -47,6 +53,7 @@ export class AssetPerformanceComponent implements OnInit {
   ngOnInit() {
     this.factoryResolver.resolve(this.activatedRoute);
     this.initViewMode();
+    this.initLayoutLanguageDependent();
   }
 
   private initViewMode(): void {
@@ -58,6 +65,14 @@ export class AssetPerformanceComponent implements OnInit {
     }
     else if (RouteHelpers.isRouteActive('performance', this.activatedRoute)) {
       this.viewMode = AssetPerformanceViewMode.PERFORMANCE;
+    }
+  }
+
+  private initLayoutLanguageDependent(): void {
+    const layout = this.languagesLayout.find(languageLayout => languageLayout.language === this.translate.currentLang);
+    if (layout) {
+      document.documentElement.style.setProperty('--performance-width-time-dropdown', layout.widthTime);
+      document.documentElement.style.setProperty('--performance-width-view-dropdown', layout.widthView);
     }
   }
 
