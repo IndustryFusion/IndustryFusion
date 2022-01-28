@@ -16,13 +16,13 @@
 package io.fusion.fusionbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.fusion.fusionbackend.model.enums.DayType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,7 +31,7 @@ import java.util.Set;
 @SuperBuilder
 @AllArgsConstructor
 public class ShiftsOfDayDto extends BaseEntityDto {
-    private DayType day;
+    private DayOfWeek day;
     private Boolean isActive;
 
     @Builder.Default

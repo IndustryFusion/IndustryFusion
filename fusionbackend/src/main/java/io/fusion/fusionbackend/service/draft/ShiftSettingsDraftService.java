@@ -17,11 +17,11 @@ package io.fusion.fusionbackend.service.draft;
 
 import io.fusion.fusionbackend.model.ShiftSettings;
 import io.fusion.fusionbackend.model.ShiftsOfDay;
-import io.fusion.fusionbackend.model.enums.DayType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -39,10 +39,10 @@ public class ShiftSettingsDraftService {
     public ShiftSettings initDraft() {
         final ShiftSettings transientShiftSettings = new ShiftSettings();
 
-        transientShiftSettings.setWeekStart(DayType.MONDAY);
+        transientShiftSettings.setWeekStart(DayOfWeek.MONDAY);
 
         Set<ShiftsOfDay> shiftsOfDays = new LinkedHashSet<>();
-        for (DayType day : DayType.values()) {
+        for (DayOfWeek day : DayOfWeek.values()) {
             shiftsOfDays.add(shiftsOfDayDraftService.initDraft(transientShiftSettings, day));
         }
         transientShiftSettings.setShiftsOfDays(shiftsOfDays);

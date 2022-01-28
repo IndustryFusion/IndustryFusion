@@ -1,8 +1,8 @@
 package io.fusion.fusionbackend.test.persistence.builder;
 
 import io.fusion.fusionbackend.model.ShiftSettings;
-import io.fusion.fusionbackend.model.enums.DayType;
 
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 
 public class ShiftSettingsBuilder implements Builder<ShiftSettings> {
@@ -18,7 +18,7 @@ public class ShiftSettingsBuilder implements Builder<ShiftSettings> {
     public ShiftSettings build() {
         ShiftSettings shiftSettings = new ShiftSettings();
 
-        shiftSettings.setWeekStart(DayType.MONDAY);
+        shiftSettings.setWeekStart(DayOfWeek.MONDAY);
         shiftSettings.setShiftsOfDays(new LinkedHashSet<>());
 
         return shiftSettings;

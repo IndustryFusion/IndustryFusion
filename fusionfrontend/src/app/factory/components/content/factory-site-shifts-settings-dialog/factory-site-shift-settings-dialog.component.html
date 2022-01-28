@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div *ngIf="shiftForm" class="factory-site-shift-settings-dialog if-wizard-wrapper" [formGroup]="shiftForm">
+<div *ngIf="shiftSettingsForm" class="factory-site-shift-settings-dialog if-wizard-wrapper" [formGroup]="shiftSettingsForm">
   <div class="content">
     <div class="week-start-container">
       <label class="if-label">{{ 'APP.FACTORY.SHIFTS_DIALOG.START_OF_THE_WEEK' | translate }}&nbsp;*</label>
@@ -49,7 +49,7 @@ under the License.
 
   <div class="footer">
     <button type="button" class="if-button button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
-    <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="shiftForm.invalid">
+    <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="shiftSettingsForm.invalid">
       {{ 'APP.COMMON.DIALOG_BUTTONS.UPDATE' | translate }}
     </button>
   </div>

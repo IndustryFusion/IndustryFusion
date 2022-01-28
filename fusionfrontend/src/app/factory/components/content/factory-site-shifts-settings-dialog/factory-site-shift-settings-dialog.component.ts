@@ -36,7 +36,7 @@ import { Observable, of } from 'rxjs';
 
 export class FactorySiteShiftSettingsDialogComponent implements OnInit {
 
-  shiftForm: FormGroup;
+  shiftSettingsForm: FormGroup;
   weekdays: SelectItem[];
   factorySite: FactorySite;
   type: DialogType;
@@ -56,6 +56,7 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
     private translate: TranslateService) {
 
     this.weekdays = [
+      // TODO: Possibility to use framework for this:  https://day.js.org/docs/en/i18n/loading-into-browser
       { label: this.translate.instant('APP.COMMON.DAYS.MONDAY'), value: Day.MONDAY },
       { label: this.translate.instant('APP.COMMON.DAYS.TUESDAY'), value: Day.TUESDAY },
       { label: this.translate.instant('APP.COMMON.DAYS.WEDNESDAY'), value: Day.WEDNESDAY },
@@ -97,15 +98,16 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
   }
 
   private initShiftSettingsFormGroup(): void {
-    this.shiftForm = this.formBuilder.group({
+    this.shiftSettingsForm = this.formBuilder.group({
       id: [],
       version: [],
+      factorySiteId: [],
       weekStart: [Day.MONDAY, Validators.required],
       shiftsOfDays: this.createShiftsOfWeekFormArray()
     });
 
     if (this.factorySite.shiftSettings) {
-      this.shiftForm.patchValue(this.factorySite.shiftSettings);
+      this.shiftSettingsForm.patchValue(this.factorySite.shiftSettings);
     }
   }
 
@@ -168,9 +170,9 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
   }
 
   onSave(): void {
-    if (this.shiftForm.valid) {
+    if (this.shiftSettingsForm.valid) {
       this.removeNotSavedAttributesInForms();
-      this.factorySite.shiftSettings = this.shiftForm.getRawValue() as ShiftSettings;
+      this.factorySite.shiftSettings = this.shiftSettingsForm.getRawValue() as ShiftSettings;
       this.update();
 
       this.ref.close(this.factorySite);
@@ -237,7 +239,7 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
   }
 
   getDaysFormGroups(): FormGroup[] {
-    const daysFormArray: FormArray = this.shiftForm.controls.shiftsOfDays as FormArray;
+    const daysFormArray: FormArray = this.shiftSettingsForm.controls.shiftsOfDays as FormArray;
     return daysFormArray.controls as FormGroup[];
   }
 

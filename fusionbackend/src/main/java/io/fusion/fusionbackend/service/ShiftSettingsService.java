@@ -16,6 +16,7 @@
 package io.fusion.fusionbackend.service;
 
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
+import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.ShiftSettings;
 import io.fusion.fusionbackend.model.ShiftsOfDay;
 import io.fusion.fusionbackend.repository.ShiftSettingsRepository;
@@ -57,8 +58,11 @@ public class ShiftSettingsService {
         }
     }
 
-    public ShiftSettings getShiftSettings(final Long shiftSettingsId) {
-        return shiftSettingsRepository.findDeepById(shiftSettingsId)
+    public ShiftSettings getShiftSettingsOfFactorySite(final FactorySite factorySite) {
+        if (factorySite == null || factorySite.getShiftSettings() == null) {
+            throw new NullPointerException();
+        }
+        return shiftSettingsRepository.findDeepById(factorySite.getShiftSettings().getId())
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
