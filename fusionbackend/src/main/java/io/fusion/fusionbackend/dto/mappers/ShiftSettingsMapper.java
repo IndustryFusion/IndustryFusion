@@ -45,6 +45,7 @@ public class ShiftSettingsMapper implements EntityDtoMapper<ShiftSettings, Shift
         return ShiftSettingsDto.builder()
                 .id(entity.getId())
                 .version(entity.getVersion())
+                .factorySiteId(entity.getFactorySite().getId())
                 .weekStart(entity.getWeekStart())
                 .shiftsOfDayIds(EntityDtoMapper.getSetOfEntityIds(entity.getShiftsOfDays())
                         .stream().sorted().collect(Collectors.toCollection(LinkedHashSet::new)))

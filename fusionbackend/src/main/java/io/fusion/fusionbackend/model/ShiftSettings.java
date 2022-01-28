@@ -15,7 +15,6 @@
 
 package io.fusion.fusionbackend.model;
 
-import io.fusion.fusionbackend.model.enums.DayType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +30,10 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -52,9 +53,12 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @NoArgsConstructor
 public class ShiftSettings extends BaseEntity {
+    @OneToOne(mappedBy = "shiftSettings")
+    private FactorySite factorySite;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private DayType weekStart;
+    private DayOfWeek weekStart;
 
     @OneToMany(mappedBy = "shiftSettings", cascade = CascadeType.ALL)
     @Builder.Default
@@ -64,6 +68,9 @@ public class ShiftSettings extends BaseEntity {
 
         super.copyFrom(sourceShiftSettings);
 
+        if (sourceShiftSettings.getFactorySite() != null) {
+            setFactorySite(sourceShiftSettings.getFactorySite());
+        }
         if (sourceShiftSettings.getWeekStart() != null) {
             setWeekStart(sourceShiftSettings.getWeekStart());
         }
@@ -77,11 +84,15 @@ public class ShiftSettings extends BaseEntity {
                 targetShiftsOfDay.copyFrom(sourceShiftsOfDay);
             }
 
-            updateShiftSettingBackReferences();
+            updateShiftSettingBackReferences(getFactorySite());
         }
     }
 
-    public void updateShiftSettingBackReferences() {
+    public void updateShiftSettingBackReferences(final FactorySite factorySite) {
+        if (factorySite != null) {
+            setFactorySite(factorySite);
+        }
+
         for (ShiftsOfDay shiftsOfDay : getShiftsOfDays()) {
             shiftsOfDay.setShiftSettings(this);
 

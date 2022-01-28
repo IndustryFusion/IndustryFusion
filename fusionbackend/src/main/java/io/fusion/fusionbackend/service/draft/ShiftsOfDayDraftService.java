@@ -18,11 +18,11 @@ package io.fusion.fusionbackend.service.draft;
 import io.fusion.fusionbackend.exception.ResourceNotFoundException;
 import io.fusion.fusionbackend.model.ShiftSettings;
 import io.fusion.fusionbackend.model.ShiftsOfDay;
-import io.fusion.fusionbackend.model.enums.DayType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 
 @Service
@@ -33,7 +33,7 @@ public class ShiftsOfDayDraftService {
     public ShiftsOfDayDraftService() {
     }
 
-    public ShiftsOfDay initDraft(final ShiftSettings transientShiftSettings, final DayType day) {
+    public ShiftsOfDay initDraft(final ShiftSettings transientShiftSettings, final DayOfWeek day) {
         if (day == null) {
             throw new ResourceNotFoundException();
         }
@@ -41,7 +41,7 @@ public class ShiftsOfDayDraftService {
         final ShiftsOfDay transientShiftsOfDay = new ShiftsOfDay();
 
         transientShiftsOfDay.setDay(day);
-        transientShiftsOfDay.setIsActive(day != DayType.SUNDAY && day != DayType.SATURDAY);
+        transientShiftsOfDay.setIsActive(day != DayOfWeek.SUNDAY && day != DayOfWeek.SATURDAY);
         transientShiftsOfDay.setShiftSettings(transientShiftSettings);
         transientShiftsOfDay.setShifts(new LinkedHashSet<>());
 

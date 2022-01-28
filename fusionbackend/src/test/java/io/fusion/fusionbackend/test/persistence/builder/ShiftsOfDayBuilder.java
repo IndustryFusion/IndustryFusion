@@ -2,8 +2,8 @@ package io.fusion.fusionbackend.test.persistence.builder;
 
 import io.fusion.fusionbackend.model.ShiftSettings;
 import io.fusion.fusionbackend.model.ShiftsOfDay;
-import io.fusion.fusionbackend.model.enums.DayType;
 
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 
 public class ShiftsOfDayBuilder implements Builder<ShiftsOfDay> {
@@ -37,7 +37,7 @@ public class ShiftsOfDayBuilder implements Builder<ShiftsOfDay> {
         shiftsOfDay.setShiftSettings(shiftSettings);
         shiftSettings.getShiftsOfDays().add(shiftsOfDay);
 
-        shiftsOfDay.setDay(DayType.MONDAY);
+        shiftsOfDay.setDay(DayOfWeek.MONDAY);
         shiftsOfDay.setIsActive(true);
         shiftsOfDay.setShifts(new LinkedHashSet<>());
 

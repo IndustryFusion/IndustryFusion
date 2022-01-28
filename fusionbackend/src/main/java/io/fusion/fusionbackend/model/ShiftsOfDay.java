@@ -15,7 +15,6 @@
 
 package io.fusion.fusionbackend.model;
 
-import io.fusion.fusionbackend.model.enums.DayType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +34,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
 public class ShiftsOfDay extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private DayType day;
+    private DayOfWeek day;
 
     @Column(nullable = false)
     private Boolean isActive;

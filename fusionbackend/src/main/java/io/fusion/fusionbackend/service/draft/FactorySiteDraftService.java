@@ -56,6 +56,7 @@ public class FactorySiteDraftService {
 
         if (factorySiteType != FactorySiteType.FLEETMANAGER) {
             transientFactorySite.setShiftSettings(shiftSettingsDraftService.initDraft());
+            transientFactorySite.getShiftSettings().updateShiftSettingBackReferences(transientFactorySite);
         }
 
         return transientFactorySite;

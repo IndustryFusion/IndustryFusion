@@ -117,6 +117,7 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
         }
         if (dto.getShiftSettings() != null) {
             entity.setShiftSettings(shiftSettingsMapper.toEntity(dto.getShiftSettings()));
+            entity.getShiftSettings().setFactorySite(entity);
         }
 
         return entity;
