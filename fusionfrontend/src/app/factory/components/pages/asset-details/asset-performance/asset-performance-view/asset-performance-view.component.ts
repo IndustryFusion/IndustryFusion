@@ -22,9 +22,11 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StatusHours, StatusHoursOneDay } from '../../../../../../core/models/kairos-status-aggregation.model';
 import { EnumHelpers } from '../../../../../../core/helpers/enum-helpers';
 import { KairosStatusAggregationService } from '../../../../../../core/services/api/kairos-status-aggregation.service';
-import { FactoryAssetDetailsWithFields } from '../../../../../../core/store/factory-asset-details/factory-asset-details.model';
+import {
+  FactoryAssetDetailsWithFields
+} from '../../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import * as moment from 'moment';
-import { EquipmentEfficiencyHelper } from '../../../../../../core/helpers/equipment-efficiency-helper';
+import { StatusHoursHelper } from '../../../../../../core/helpers/status-hours-helper';
 
 
 @Component({
@@ -38,117 +40,97 @@ export class AssetPerformanceViewComponent implements OnInit {
   viewModeOptions;
 
   viewMode: AssetPerformanceViewMode;
-  aggregatedStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
+  aggregatedStatusHoursToday$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
+  statusHoursThreeDaysLoaded$ = new Subject<FactoryAssetDetailsWithFields[]>();
 
-  datesOfStatusHours: Date[];
-  reversedYBarChartLabels: string[];
-  assetDetailsWithFieldsThreeDays: FactoryAssetDetailsWithFields[];
-  fullyLoadedAssets$ = new Subject<FactoryAssetDetailsWithFields[]>();
-  assetStatusHoursOfThreeDays: StatusHoursOneDay[];
+  lastThreeDatesAsc: Date[];
+  yBarChartLabelsThreeDaysAsc: string[];
+  statusHoursOfLastThreeDaysAsc: StatusHoursOneDay[];
 
   isLoaded = false;
-  private assetsWithStatus: number;
+  private statusCountToLoad: number;
   private loadedStatusCount = 0;
-  private assetWithDetailsAndFields$: Observable<FactoryAssetDetailsWithFields>;
+  private assetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields>;
+  private assetDetailsWithFields: FactoryAssetDetailsWithFields;
+
+  private readonly statusHoursHelper: StatusHoursHelper;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private factoryResolver: FactoryResolver,
               private kairosStatusAggregationService: KairosStatusAggregationService,
-              private enumHelpers: EnumHelpers) {
+              enumHelpers: EnumHelpers) {
+    this.statusHoursHelper = new StatusHoursHelper(enumHelpers);
   }
 
   ngOnInit() {
     this.factoryResolver.resolve(this.activatedRoute);
     this.initViewMode();
-    this.assetWithDetailsAndFields$ = this.factoryResolver.assetWithDetailsAndFields$;
-    this.assetWithDetailsAndFields$.subscribe(assetDetailsWithFields => {
-      this.updateAssets(assetDetailsWithFields);
-    });
-
-    this.fullyLoadedAssets$.subscribe(assetWithHours => {
-      if (assetWithHours) {
-        this.assetDetailsWithFieldsThreeDays = assetWithHours;
-        this.updateAggregatedStatusHours();
-        this.updateStatusHoursForBarChart();
-        this.isLoaded = true;
-      }
-    });
+    this.loadStatusHoursWhenAssetIsLoaded();
+    this.aggregateHoursWhenLoaded();
   }
 
   private initViewMode(): void {
     this.viewMode = AssetPerformanceViewMode.PERFORMANCE;
   }
 
-  private updateAssets(assetDetailsWithFields: FactoryAssetDetailsWithFields): void {
-    const assetToday = assetDetailsWithFields;
-    const assetYesterday: FactoryAssetDetailsWithFields = JSON.parse(JSON.stringify(assetDetailsWithFields));
-    const assetDayBeforeYesterday: FactoryAssetDetailsWithFields = JSON.parse(JSON.stringify(assetDetailsWithFields));
-    this.assetDetailsWithFieldsThreeDays = [assetToday, assetYesterday, assetDayBeforeYesterday];
-    if (this.assetDetailsWithFieldsThreeDays.length < 1) {
-      console.warn('[equipment efficiency page]: No assets found');
-    }
-    this.addStatusHoursToAssets();
-
-    if (this.assetsWithStatus === 0) {
-      this.fullyLoadedAssets$.next(this.assetDetailsWithFieldsThreeDays);
-    }
+  private loadStatusHoursWhenAssetIsLoaded(): void {
+    this.assetDetailsWithFields$ = this.factoryResolver.assetWithDetailsAndFields$;
+    this.assetDetailsWithFields$.subscribe(assetDetailsWithFields => {
+      this.assetDetailsWithFields = assetDetailsWithFields;
+      this.initStatusHoursLastThreeDays();
+    });
   }
 
-  private addStatusHoursToAssets(): void {
-    this.assetsWithStatus = 0;
-    this.loadedStatusCount = 0;
-    this.datesOfStatusHours = [];
-    this.reversedYBarChartLabels = [];
+  private initStatusHoursLastThreeDays(): void {
+    this.statusCountToLoad = this.loadedStatusCount = 0;
+    this.lastThreeDatesAsc = [];
+    this.yBarChartLabelsThreeDaysAsc = [];
+    this.statusHoursOfLastThreeDaysAsc = [StatusHoursOneDay.empty(), StatusHoursOneDay.empty(), StatusHoursOneDay.empty()];
 
-    for (let i = 0; i < this.assetDetailsWithFieldsThreeDays.length; i++) {
-      const assetWithFields =  this.assetDetailsWithFieldsThreeDays[i];
-      if (KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields) != null) {
+    if (KairosStatusAggregationService.getStatusFieldOfAsset(this.assetDetailsWithFields) != null) {
+      const indizesThreeDays: (0 | 1 | 2)[] = [0, 1, 2];
+      for (const index of indizesThreeDays) {
         const date: Date = new Date(Date.now());
-        this.datesOfStatusHours.push(new Date(date.setDate(date.getDate() - i)));
-        this.reversedYBarChartLabels.push(moment( this.datesOfStatusHours[i]).format('DD.MM'));
-        this.assetsWithStatus++;
+        this.lastThreeDatesAsc.push(new Date(date.setDate(date.getDate() - index)));
+        this.yBarChartLabelsThreeDaysAsc.push(moment(this.lastThreeDatesAsc[index]).format('DD.MM'));
+        this.statusCountToLoad++;
 
-        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.datesOfStatusHours[i], [])
-          .subscribe(assetStatusHours => this.updateStatusHoursOfAsset(assetWithFields, assetStatusHours));
+        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(this.assetDetailsWithFields, this.lastThreeDatesAsc[index], [])
+          .subscribe(statusHoursOfOneDay => this.insertStatusHoursOfOneDayAsc(index, statusHoursOfOneDay));
       }
     }
-    this.reversedYBarChartLabels.reverse();
+    this.yBarChartLabelsThreeDaysAsc.reverse();
+
+    if (this.statusCountToLoad === 0) {
+      this.statusHoursThreeDaysLoaded$.next();
+    }
   }
 
-  private updateStatusHoursOfAsset(assetWithFields: FactoryAssetDetailsWithFields, statusHours: StatusHours[]): void {
-    assetWithFields.statusHoursOneDay = new StatusHoursOneDay(statusHours);
+  private insertStatusHoursOfOneDayAsc(index: 0 | 1 | 2, statusHours: StatusHours[]): void {
+    this.statusHoursOfLastThreeDaysAsc[2 - index] = new StatusHoursOneDay(statusHours);
     this.loadedStatusCount++;
-    if (this.assetsWithStatus === this.loadedStatusCount) {
-      this.fullyLoadedAssets$.next(this.assetDetailsWithFieldsThreeDays);
+    if (this.statusCountToLoad === this.loadedStatusCount) {
+      this.statusHoursThreeDaysLoaded$.next();
     }
   }
 
-  private updateAggregatedStatusHours(): void {
-    if (this.assetDetailsWithFieldsThreeDays && this.assetDetailsWithFieldsThreeDays.length > 0) {
-      const aggregatedStatusHours = EquipmentEfficiencyHelper.getAggregatedStatusHours([this.assetDetailsWithFieldsThreeDays[0]],
-        this.enumHelpers);
-      this.aggregatedStatusHours$.next(aggregatedStatusHours);
-    }
+  private aggregateHoursWhenLoaded(): void {
+    this.statusHoursThreeDaysLoaded$.subscribe(() => {
+      if (this.statusHoursOfLastThreeDaysAsc && this.statusHoursOfLastThreeDaysAsc.length === 3) {
+        this.updateAggregatedStatusHoursToday();
+        this.isLoaded = true;
+      }
+    });
+  }
+
+  private updateAggregatedStatusHoursToday(): void {
+    const aggregatedStatusHoursToday = this.statusHoursHelper.getAggregatedStatusHours([this.statusHoursOfLastThreeDaysAsc[2]]);
+    this.aggregatedStatusHoursToday$.next(aggregatedStatusHoursToday);
   }
 
   onChangeRoute(): Promise<boolean> {
     const newRoute = ['..', this.viewMode];
     return this.router.navigate(newRoute, { relativeTo: RouteHelpers.getActiveRouteLastChild(this.activatedRoute) });
-  }
-
-  private updateStatusHoursForBarChart(): void {
-    this.assetStatusHoursOfThreeDays = null;
-
-    if (this.assetDetailsWithFieldsThreeDays && this.assetDetailsWithFieldsThreeDays.length === 3) {
-      const statusHoursOfDays: StatusHoursOneDay[] = [];
-      for (let index = 2; index >= 0; index--) {
-        if (!this.assetDetailsWithFieldsThreeDays[index].statusHoursOneDay) {
-          return;
-        }
-        statusHoursOfDays.push(this.assetDetailsWithFieldsThreeDays[index].statusHoursOneDay);
-      }
-      this.assetStatusHoursOfThreeDays = statusHoursOfDays;
-    }
   }
 }

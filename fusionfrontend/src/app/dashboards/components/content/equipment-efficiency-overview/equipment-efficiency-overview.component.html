@@ -15,7 +15,7 @@ under the License.
 
 <div class="efficiency-dashboard-overview">
   <div class="p-grid p-jc-between header-line">
-    <label class="if-title">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.TITLE' | translate }}</label>
+    <label class="if-title">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.TITLE' | translate }} ({{ date | date }})</label>
     <div class="p-grid">
       <app-shifts-filter [factorySites]="(factorySites$ | async)" [day]="getDayFromDate()"
                          (shiftsChanged)="onShiftsChanged($event)"></app-shifts-filter>
@@ -35,7 +35,7 @@ under the License.
 
     <app-equipment-efficiency-overview-donut-chart class="aggregated-section status p-col-4" *ngIf="isLoaded"
                                                    title="{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.DONUT_CHART_TITLE' | translate }}"
-                                                   [aggregatedStatusHours$]="averageOfStatusHours$">
+                                                   [aggregatedStatusHours$]="averageOfAllStatusHours$">
     </app-equipment-efficiency-overview-donut-chart>
   </div>
 
