@@ -28,7 +28,6 @@ import { SelectItem } from 'primeng/api';
 import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -197,14 +196,6 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
         }
       })
     );
-  }
-
-  getStartDateAsMoment(): moment.Moment {
-    return moment(this.startDate);
-  }
-
-  getEndDateAsMoment(): moment.Moment {
-    return moment(this.endDate);
   }
 
   ngOnDestroy() {

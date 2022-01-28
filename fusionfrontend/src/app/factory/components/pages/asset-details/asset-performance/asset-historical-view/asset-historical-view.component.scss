@@ -17,9 +17,6 @@
 @import "src/styles/abstract/variables";
 @import "../asset-performance.component";
 
-$width-time-dropdown: var(--performance-width-time-dropdown);
-$width-view-dropdown: var(--performance-width-view-dropdown);
-
 .time-interval-selectors {
 
   .selector-with-points {
@@ -43,19 +40,19 @@ $width-view-dropdown: var(--performance-width-view-dropdown);
   .choiceOptions {
     margin-top: 1.25rem;
     margin-right: 3rem;
-    margin-left: 3.2rem;
+    margin-left: 1rem;
     margin-bottom: 0.5rem;
   }
 
   .radio-wrapper {
     display: flex;
     background: $light-grey;
-    padding-top: 1rem;
-    margin: 0 3.1rem 0;
+    padding-top: 0.5rem;
+    margin: 0 1rem 0;
   }
 
   .ok-button {
-    margin: 1rem 3.1rem;
+    margin: 1rem 1rem;
   }
 
   .interval-options {
@@ -142,12 +139,4 @@ $width-view-dropdown: var(--performance-width-view-dropdown);
     border: none !important;
     box-shadow: none !important;
   }
-}
-
-:host ::ng-deep .performance-views > .p-selectbutton {
-  width: $width-view-dropdown !important;
-}
-
-:host ::ng-deep .radio-wrapper > .p-selectbutton {
-  width: $width-time-dropdown !important;
 }

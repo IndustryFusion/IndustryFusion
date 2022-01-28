@@ -60,10 +60,10 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   clickedOk: boolean;
 
   @Input()
-  startDate: moment.Moment;
+  startDate: Date;
 
   @Input()
-  endDate: moment.Moment;
+  endDate: Date;
 
   @Output()
   loadedEvent = new EventEmitter<void>();
@@ -156,7 +156,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   public loadHistoricData(maxPoints: number, useDate: boolean, secondsInPast?: number): void {
     if (useDate) {
-      const startDate = this.startDate.valueOf();
+      const startDate = moment(this.startDate).valueOf();
       const endDate = moment(this.endDate).add(1, 'days').valueOf();
       this.latestPoints$ = this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startDate, endDate, maxPoints);
     } else {

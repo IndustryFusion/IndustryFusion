@@ -15,7 +15,7 @@ under the License.
 
 <div class='asset-details-wrapper'>
 
-  <div class="p-grid p-jc-between list-header list-header">
+  <div class="p-grid p-jc-between">
     <div class="caption">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.HISTORICAL_VIEW' | translate }}</div>
     <p-selectButton  class="performance-views space-right"
                      optionLabel="name"
@@ -114,8 +114,8 @@ under the License.
         <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
           <!--suppress XmlDuplicatedId -->
           <app-asset-charts id="metric-{{field.externalName}}" [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
-                            [endDate]="getEndDateAsMoment()" [fieldDetails]="field" [maxPoints]="maxPoints"
-                            [options]="currentTimeslot" [startDate]="getStartDateAsMoment()" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-charts>
+                            [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
+                            [options]="currentTimeslot" [startDate]="startDate" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-charts>
         </ng-container>
       </ng-container>
     </div>

@@ -16,49 +16,18 @@
 @import 'src/styles/base/typography';
 @import 'src/styles/abstract/variables';
 @import "../asset-performance.component";
-
-$width-time-dropdown: var(--performance-width-time-dropdown);
-$width-view-dropdown: var(--performance-width-view-dropdown);
-
-.efficiency-dashboard-overview {
-  padding: 1%;
-  width: 100%;
-  background: $grey-background;
-
-  .aggregated-stats {
-    display: flex;
-    padding-bottom: 1rem;
-  }
-}
+@import "src/app/dashboards/components/content/equipment-efficiency-overview/equipment-efficiency-overview.component";
 
 .aggregated-section {
-  background: $white-background !important;
-  height: $dashboard-height-high;
-  border-radius: 10px;
-  display: block;
+  width: 32%;
 
   &.status {
-    margin-left: 1.5rem;
+    margin-left: 2%;
   }
 }
 
-.equipment-efficiency-dashboard-overview-title {
-  padding-left: 2rem;
-  padding-top: 1.5rem;
-  display: inline-block;
-
-  color: $basic-black;
-  text-align: left;
-  font-variant: normal;
-  font-style: normal;
-  font-size: $bigger-font-size;
-  line-height: $big-line-height;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-
-.margin-right {
-  margin-right: 0.5rem;
+.aggregated-stats {
+  margin-top: 1rem;
 }
 
 .bar-charts {
@@ -69,12 +38,3 @@ $width-view-dropdown: var(--performance-width-view-dropdown);
   display: flex;
   justify-content: space-evenly;
 }
-
-:host ::ng-deep .performance-views > .p-selectbutton {
-  width: $width-view-dropdown !important;
-}
-
-:host ::ng-deep .radio-wrapper > .p-selectbutton {
-  width: $width-time-dropdown !important;
-}
-

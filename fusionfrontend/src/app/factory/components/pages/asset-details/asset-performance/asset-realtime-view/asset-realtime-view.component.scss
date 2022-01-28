@@ -16,14 +16,3 @@
 @import 'src/styles/base/typography';
 @import "src/styles/abstract/variables";
 @import "../asset-performance.component";
-
-$width-time-dropdown: var(--performance-width-time-dropdown);
-$width-view-dropdown: var(--performance-width-view-dropdown);
-
-:host ::ng-deep .performance-views > .p-selectbutton {
-  width: $width-view-dropdown !important;
-}
-
-:host ::ng-deep .radio-wrapper > .p-selectbutton {
-  width: $width-time-dropdown !important;
-}

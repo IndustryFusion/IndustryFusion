@@ -564,7 +564,8 @@
             "CURRENT": "Actuel",
             "CUSTOM_DATE": "Date personnalisée",
             "24_H_PERFORMANCE_SUMMARY": "Résumé des performances sur 24 heures",
-            "3_DAYS_PERFORMANCE_SUMMARY": "Résumé des performances sur 3 jours"
+            "3_DAYS_PERFORMANCE_SUMMARY": "Résumé des performances sur 3 jours",
+            "3_SHIFTS_PERFORMANCE_SUMMARY": "Résumé des performances sur 3 équipes ({{date}})"
           }
         },
         "ASSET_GRID_PAGE": {

@@ -564,7 +564,8 @@
             "CURRENT": "Current",
             "CUSTOM_DATE": "Custom Date",
             "24_H_PERFORMANCE_SUMMARY": "24 h performance summary",
-            "3_DAYS_PERFORMANCE_SUMMARY": "3 days performance summary"
+            "3_DAYS_PERFORMANCE_SUMMARY": "3 days performance summary",
+            "3_SHIFTS_PERFORMANCE_SUMMARY": "Shift performance ({{date}})"
           }
         },
         "ASSET_GRID_PAGE": {
