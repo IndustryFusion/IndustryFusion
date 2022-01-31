@@ -45,6 +45,9 @@ p-calendar {
       &:hover {
         color: $hover-grey-border !important;
       }
+      .if-button-page-white > &:hover {
+        color: $regular-grey !important;
+      }
       &:focus {
         color: $highlighted !important;
       }

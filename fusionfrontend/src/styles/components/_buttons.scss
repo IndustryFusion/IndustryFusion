@@ -17,7 +17,7 @@
 @import "abstract/variables";
 
 .if-button {
-  padding: 17px 78px 16px;
+  padding: 0.85rem 3.9rem 0.8rem;
 
   text-align: center;
   font-weight: 500;
@@ -34,7 +34,7 @@
   opacity: 1;
   cursor: pointer;
 
-  box-shadow: 0 3px 6px #00000029;
+  box-shadow: 0 3px 6px $dark-gray;
 
   &:not(:last-child) {
     margin-right: 16px;
@@ -53,13 +53,31 @@
     box-shadow: $dark-box-shadow;
   }
 
+  &.button-cancel {
+    margin-right: 16px;
+    font-weight: normal;
+
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
+  }
+
   &.button-modal {
     padding: 0;
-    margin-right: 10px;
-    width: 120px;
-    height: 40px;
-    font-size: 16px;
+    margin-right: 0.5rem;
+    width: 6rem;
+    height: 2rem;
+    font-size: $medium-font-size;
     border-radius: 20px;
+  }
+
+  &.button-modal-small {
+    @extend .button-modal;
+    line-height: $tiny-line-height;
+    font-size: $regular-font-size;
+    height: 1.5rem;
+    margin: 5px 0 0 0;
+    text-transform: unset;
   }
 
   &:disabled {
@@ -67,27 +85,54 @@
   }
 }
 
-.if-button-cancel {
-  padding-top: 17px;
-  padding-bottom: 16px;
-  padding-right: 78px;
-  padding-left: 78px;
-
-  margin-right: 16px;
-
+.if-button-page-grey {
+  align-items: center;
   text-align: center;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 23px;
-  letter-spacing: 0;
-  color: #000000;
-  text-transform: uppercase;
 
-  background: #FFFFFF 0 0 no-repeat padding-box;
-  box-shadow: 0 3px 6px #00000029;
-  border-radius: 44px;
-  opacity: 1;
+  font-style: normal;
+  font-weight: bold;
+  font-size: $medium-font-size;
+  line-height: $regular-line-height;
+  border-radius: 10px;
+
+  background: $light-grey 0 0% no-repeat padding-box;
+  color: $basic-black;
+
   cursor: pointer;
+  border: none;
+
+  height: 1.6rem;
+  padding: .4rem .8rem .4rem .8rem;
+
+  letter-spacing: 0;
+  box-shadow: none;
+
+  &:hover {
+    background: $hover-dark-white 0 0% no-repeat padding-box;
+  }
+
+  &:not(:last-child) {
+    margin-right: 0.8rem;
+  }
+}
+
+.if-button-page-white {
+  @extend .if-button-page-grey;
+
+  background: $white-background;
+  color: $basic-black;
+
+  &:hover {
+    background: $middle-white 0 0% no-repeat padding-box;
+  }
+}
+
+.composite-button {
+  position: relative;
+
+  &:not(:last-child) {
+    margin-right: 0.8rem;
+  }
 }
 
 .if-button-edit {
@@ -104,9 +149,9 @@
   border: none !important;
   opacity: 1;
 
-  width: 120px;
+  width: 6rem;
   cursor: pointer;
-  padding: 8px 32px 8px 32px;
+  padding: 0.4rem 1.6rem 0.4rem 1.6rem;
 
   clr-icon {
     height: $regular-line-height;
@@ -128,12 +173,12 @@
 .if-button-update {
   @extend .if-button-edit;
   padding: 8px 16px 8px 19px !important;
+  margin-right: 16px;
 }
 
 .close-modal-btn {
-  border: none;
   float: right;
-  border-color: hsl(198, 0%, 95%);
+  border: none hsl(198, 0%, 95%);
   font-size: 15px;
   color: $basic-black;
   cursor: pointer;
@@ -141,20 +186,4 @@
 
 button:focus:not(:focus-visible) {
   outline: none;
-}
-
-.if-light-button {
-  outline: none;
-  background-color: $light-grey;
-  color: $regular-grey;
-  border: none;
-  border-radius: 5px;
-  font-size: $medium-font-size;
-  padding: 5px 10px;
-  cursor: pointer;
-
-  &:disabled {
-    background-color: transparent !important;
-    cursor: default;
-  }
 }

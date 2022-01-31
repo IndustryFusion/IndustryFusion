@@ -19,7 +19,7 @@ import { ID } from '@datorama/akita';
 import { Observable, Subject } from 'rxjs';
 import { FactoryResolver } from 'src/app/factory/services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
-import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { FactorySite, Shift } from 'src/app/core/store/factory-site/factory-site.model';
 import { AssetType } from 'src/app/core/store/asset-type/asset-type.model';
 import { Company, CompanyType } from 'src/app/core/store/company/company.model';
 import { AssetTypesResolver } from 'src/app/core/resolvers/asset-types.resolver';
@@ -52,6 +52,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
   fullyLoadedAssets$ = new Subject<FactoryAssetDetailsWithFields[]>();
 
+  private selectedShifts: Shift[] = [];
   private assetsWithStatus: number;
   private loadedStatusCount = 0;
 
@@ -80,20 +81,22 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
 
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.factoryAssetDetailsWithFields$.subscribe(assetDetailsWithFields => {
-      this.updateAssets(assetDetailsWithFields);
+      this.factoryAssetDetailsWithFields = assetDetailsWithFields;
+      this.updateAssets();
     });
   }
 
-  private updateAssets(assetDetailsWithFields: FactoryAssetDetailsWithFields[]) {
-    this.factoryAssetDetailsWithFields = assetDetailsWithFields;
-    if (this.factoryAssetDetailsWithFields.length < 1) {
-      console.warn('[equipment efficiency page]: No assets found');
-    }
-    this.sortAssetsByMaintenanceValue();
-    this.addStatusHoursToAssets();
+  private updateAssets() {
+    if (this.factoryAssetDetailsWithFields) {
+      if (this.factoryAssetDetailsWithFields.length < 1) {
+        console.warn('[equipment efficiency page]: No assets found');
+      }
+      this.sortAssetsByMaintenanceValue();
+      this.addStatusHoursToAssets();
 
-    if (this.assetsWithStatus === 0) {
-      this.fullyLoadedAssets$.next(this.factoryAssetDetailsWithFields);
+      if (this.assetsWithStatus === 0) {
+        this.fullyLoadedAssets$.next(this.factoryAssetDetailsWithFields);
+      }
     }
   }
 
@@ -118,7 +121,7 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     this.factoryAssetDetailsWithFields.forEach(assetWithFields => {
       if (KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields) != null) {
         this.assetsWithStatus++;
-        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.date)
+        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.date, this.selectedShifts)
           .subscribe(assetStatusHours => this.updateStatusHoursOfAsset(assetWithFields, assetStatusHours));
       }
     });
@@ -132,8 +135,13 @@ export class EquipmentEfficiencyPageComponent implements OnInit {
     }
   }
 
-  dateChanged(date: Date) {
+  onDateChanged(date: Date) {
     this.date = date;
-    this.updateAssets(this.factoryAssetDetailsWithFields);
+    this.updateAssets();
+  }
+
+  onShiftsChanged(selectedShifts: Shift[]) {
+    this.selectedShifts = selectedShifts;
+    this.updateAssets();
   }
 }

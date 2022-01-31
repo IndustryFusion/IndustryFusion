@@ -38,7 +38,7 @@ export class FactoryAssetDetailsResolver implements Resolve<void>{
         assets.forEach(asset => this.fieldDetailsService.getFieldsOfAsset(companyId, asset.id).subscribe());
       });
     } else {
-      console.error('[asset details resolver]: company unknown');
+      console.error('[factory asset details resolver]: company unknown');
     }
   }
 }

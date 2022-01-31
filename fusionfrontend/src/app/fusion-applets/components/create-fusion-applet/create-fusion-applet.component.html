@@ -29,7 +29,7 @@ under the License.
       <textarea class="p-col select-asset-input" pInputTextarea formControlName="description"></textarea>
     </div>
     <div class="footer-buttons">
-      <button (click)="dismissModal()" class="if-button-cancel" type="button">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+      <button (click)="dismissModal()" class="if-button button-cancel" type="button">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
       <button (click)="confirmModal()" [disabled]="ruleForm.invalid" class="if-button button-primary" type="button">
         {{ 'APP.COMMON.DIALOG_BUTTONS.CREATE' | translate }}
       </button>

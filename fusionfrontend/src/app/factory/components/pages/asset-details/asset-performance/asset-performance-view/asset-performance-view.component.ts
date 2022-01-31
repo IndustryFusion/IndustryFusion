@@ -109,7 +109,7 @@ export class AssetPerformanceViewComponent implements OnInit {
         this.reversedYBarChartLabels.push(moment( this.datesOfStatusHours[i]).format('DD.MM'));
         this.assetsWithStatus++;
 
-        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.datesOfStatusHours[i])
+        this.kairosStatusAggregationService.selectHoursPerStatusOfAsset(assetWithFields, this.datesOfStatusHours[i], [])
           .subscribe(assetStatusHours => this.updateStatusHoursOfAsset(assetWithFields, assetStatusHours));
       }
     }

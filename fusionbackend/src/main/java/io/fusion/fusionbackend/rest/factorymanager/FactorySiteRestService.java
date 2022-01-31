@@ -46,7 +46,8 @@ public class FactorySiteRestService {
     @GetMapping(path = "/companies/{companyId}/factorysites")
     public Set<FactorySiteDto> getFactorySites(@PathVariable final Long companyId,
                                             @RequestParam(defaultValue = "false") final boolean embedChildren) {
-        return factorySiteMapper.toDtoSet(factorySiteService.getFactorySitesByCompany(companyId), embedChildren);
+        return factorySiteMapper.toDtoSet(factorySiteService.getFactorySitesByCompany(companyId, embedChildren),
+                embedChildren);
     }
 
     @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}")

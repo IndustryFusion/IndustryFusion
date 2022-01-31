@@ -31,6 +31,7 @@ import io.fusion.fusionbackend.dto.FieldTargetDto;
 import io.fusion.fusionbackend.dto.QuantityTypeDto;
 import io.fusion.fusionbackend.dto.RoomDto;
 import io.fusion.fusionbackend.dto.UnitDto;
+import io.fusion.fusionbackend.model.FactorySite;
 import io.fusion.fusionbackend.model.enums.CompanyType;
 import io.fusion.fusionbackend.model.enums.FactorySiteType;
 import io.fusion.fusionbackend.model.enums.FieldDataType;
@@ -252,16 +253,15 @@ class FusionbackendApplicationTests {
     @Test
     @Order(300)
     void createFactorySiteStruumpHq() {
-        FactorySiteDto factorySite = FactorySiteDto.builder()
-                .name("World Headquarter")
-                .type(FactorySiteType.HEADQUARTER)
-                .line1("Sudetenstr. 1001")
-                .line2("Rückgebäude")
-                .city("Gräfelfing")
-                .zip("90011")
-                .latitude(48.127936)
-                .longitude(11.604835)
-                .build();
+        FactorySiteDto factorySite = getFactorySiteDraft(companyStruumpFabId);
+        factorySite.setName("World Headquarter");
+        factorySite.setType(FactorySiteType.HEADQUARTER);
+        factorySite.setLine1("Sudetenstr. 1001");
+        factorySite.setLine2("Rückgebäude");
+        factorySite.setCity("Gräfelfing");
+        factorySite.setZip("90011");
+        factorySite.setLatitude(48.127936);
+        factorySite.setLongitude(11.604835);
 
         factorySiteStruumpHqId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
@@ -269,16 +269,15 @@ class FusionbackendApplicationTests {
     @Test
     @Order(301)
     void createFactorySiteStruumpFab() {
-        FactorySiteDto factorySite = FactorySiteDto.builder()
-                .name("Landau")
-                .type(FactorySiteType.FABRICATION)
-                .line1("Kerrystr. 2001")
-                .line2("Hinterhof")
-                .city("Lindau")
-                .zip("10011")
-                .latitude(48.024522)
-                .longitude(11.679882)
-                .build();
+        FactorySiteDto factorySite = getFactorySiteDraft(companyStruumpFabId);
+        factorySite.setName("Landau");
+        factorySite.setType(FactorySiteType.FABRICATION);
+        factorySite.setLine1("Kerrystr. 2001");
+        factorySite.setLine2("Hinterhof");
+        factorySite.setCity("Lindau");
+        factorySite.setZip("10011");
+        factorySite.setLatitude(48.024522);
+        factorySite.setLongitude(11.679882);
 
         factorySiteStruumpFabId = createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
@@ -286,16 +285,16 @@ class FusionbackendApplicationTests {
     @RepeatedTest(10)
     @Order(305)
     void createFactorySiteMultiple(final RepetitionInfo repetitionInfo) {
-        FactorySiteDto factorySite = FactorySiteDto.builder()
-                .name("Spandau Random " + repetitionInfo.getCurrentRepetition())
-                .type(FactorySiteType.FABRICATION)
-                .line1("Clarestr. 2001")
-                .line2("Hintermhof")
-                .city("Spandau")
-                .zip("10011")
-                .latitude(48.024522)
-                .longitude(11.679882)
-                .build();
+        FactorySiteDto factorySite = getFactorySiteDraft(companyStruumpFabId);
+        factorySite.setName("Spandau Random " + repetitionInfo.getCurrentRepetition());
+        factorySite.setType(FactorySiteType.FABRICATION);
+        factorySite.setLine1("Clarestr. 2001");
+        factorySite.setLine2("Hintermhof");
+        factorySite.setCity("Spandau");
+        factorySite.setZip("10011");
+        factorySite.setLatitude(48.024522);
+        factorySite.setLongitude(11.679882);
+
         createAndTestFactorySite(companyStruumpFabId, factorySite);
     }
 
@@ -1033,6 +1032,22 @@ class FusionbackendApplicationTests {
                 .then()
                 .statusCode(200)
                 .body("name", equalTo(country.getName()));
+    }
+
+    private FactorySiteDto getFactorySiteDraft(final Integer companyId) {
+        return given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessTokenFabManStruump)
+
+                .when()
+                .get(baseUrl +
+                        "/companies/" +
+                        companyId +
+                        "/factorysites/init-factory-site-draft")
+
+                .then()
+                .statusCode(200)
+                .extract().body().as(FactorySiteDto.class);
     }
 
     // TODO: test getter with embed

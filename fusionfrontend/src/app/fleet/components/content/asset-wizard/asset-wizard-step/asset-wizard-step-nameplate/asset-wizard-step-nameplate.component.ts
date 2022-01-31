@@ -40,8 +40,9 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
   public yearRange: string;
 
   private companyId: ID;
-  private hiddenManualUrl: string;
+  private hiddenManualKey: string;
   private hiddenVideoKey: string;
+  private isDestroyed = false;
 
   constructor(private protectionClassService: ProtectionClassService,
               private manualService: ManualService,
@@ -59,38 +60,47 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
     });
 
     if (ManualService.isManualUploaded(this.assetForm?.get('manualKey').value)) {
-      this.hideManualUrlAndDisable(this.assetForm.get('manualKey').value);
+      this.hideManualKeyAndDisable(this.assetForm.get('manualKey').value);
     }
     if (VideoService.isVideoUploaded(this.assetForm?.get('videoKey').value)) {
       this.hideVideoKeyAndDisable(this.assetForm.get('videoKey').value);
     }
   }
 
-  private hideManualUrlAndDisable(manualKey: string) {
-    this.hiddenManualUrl = manualKey;
+  private hideManualKeyAndDisable(manualKey: string) {
+    this.hiddenManualKey = manualKey;
     this.assetForm.get('manualKey').setValue(MediaObject.getFilename(manualKey));
     this.assetForm.get('manualKey').disable();
+
+    if (this.isDestroyed) {
+      this.restoreHiddenManualKeyAndEnable();
+    }
   }
 
   private hideVideoKeyAndDisable(videoKey: string) {
     this.hiddenVideoKey = videoKey;
     this.assetForm.get('videoKey').setValue(MediaObject.getFilename(videoKey));
     this.assetForm.get('videoKey').disable();
+
+    if (this.isDestroyed) {
+      this.restoreHiddenVideoKeyAndEnable();
+    }
   }
 
   ngOnDestroy() {
-    this.restoreHiddenUrlsAndEnable();
+    this.restoreHiddenKeysAndEnable();
+    this.isDestroyed = true;
   }
 
-  private restoreHiddenUrlsAndEnable() {
-    this.restoreHiddenManualUrlAndEnable();
+  private restoreHiddenKeysAndEnable() {
+    this.restoreHiddenManualKeyAndEnable();
     this.restoreHiddenVideoKeyAndEnable();
   }
 
-  private restoreHiddenManualUrlAndEnable() {
-    if (this.hiddenManualUrl) {
-      this.assetForm.get('manualKey').setValue(this.hiddenManualUrl);
-      this.hiddenManualUrl = null;
+  private restoreHiddenManualKeyAndEnable() {
+    if (this.hiddenManualKey) {
+      this.assetForm.get('manualKey').setValue(this.hiddenManualKey);
+      this.hiddenManualKey = null;
     }
     this.assetForm.get('manualKey').enable();
   }
@@ -104,13 +114,13 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
   }
 
   onBack(): void {
-    this.restoreHiddenUrlsAndEnable();
+    this.restoreHiddenKeysAndEnable();
     this.stepChange.emit(AssetWizardStep.DIGITAL_NAMEPLATE - 1);
   }
 
   onNext(): void {
     if (this.isReadyForNextStep()) {
-      this.restoreHiddenUrlsAndEnable();
+      this.restoreHiddenKeysAndEnable();
       this.stepChange.emit(AssetWizardStep.DIGITAL_NAMEPLATE + 1);
     }
   }
@@ -127,10 +137,12 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
     if (selectedManual) {
       const reader = new FileReader();
       reader.addEventListener('load', (readFileEvent: any) => {
+        this.assetForm.get('isManualNotUploading').setValue(false);
+
         this.manualService.uploadManual(this.companyId, selectedManual.name, MediaObjectKeyPrefix.ASSETS,
-          readFileEvent.target.result, selectedManual.size)
-          .subscribe(uploadedManual => {
-            this.hideManualUrlAndDisable(uploadedManual.fileKey);
+          readFileEvent.target.result, selectedManual.size).subscribe(uploadedManual => {
+            this.hideManualKeyAndDisable(uploadedManual.fileKey);
+            this.assetForm.get('isManualNotUploading').setValue(true);
           });
       });
 
@@ -140,16 +152,19 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
 
   deletePreviouslyUploadedManual(): void {
     if (this.isManualUploaded()) {
-      this.manualService.deleteManualIfNotOfParent(this.companyId, this.assetForm.get('manualKey').value,
-        this.relatedAssetSeries.manualKey).subscribe(() => {
-        this.assetForm.get('manualKey').setValue(null);
-        this.assetForm.get('manualKey').enable();
-      });
+      this.manualService.deleteManualIfNotOfParent(this.companyId, this.hiddenManualKey,
+        this.relatedAssetSeries.manualKey).subscribe(() => this.resetManualKey());
     }
   }
 
+  private resetManualKey() {
+    this.hiddenManualKey = null;
+    this.assetForm.get('manualKey').setValue(null);
+    this.assetForm.get('manualKey').enable();
+  }
+
   isManualUploaded(): boolean {
-    return this.hiddenManualUrl != null;
+    return this.hiddenManualKey != null;
   }
 
 
@@ -160,10 +175,12 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
     if (selectedVideo) {
       const reader = new FileReader();
       reader.addEventListener('load', (readFileEvent: any) => {
+        this.assetForm.get('isVideoNotUploading').setValue(false);
+
         this.videoService.uploadVideo(this.companyId, selectedVideo.name, MediaObjectKeyPrefix.ASSETS,
-          readFileEvent.target.result, selectedVideo.size)
-          .subscribe(uploadedVideo => {
+          readFileEvent.target.result, selectedVideo.size).subscribe(uploadedVideo => {
             this.hideVideoKeyAndDisable(uploadedVideo.fileKey);
+            this.assetForm.get('isVideoNotUploading').setValue(true);
           });
       });
 
@@ -173,12 +190,15 @@ export class AssetWizardStepNameplateComponent implements OnInit, OnDestroy {
 
   deletePreviouslyUploadedVideo(): void {
     if (this.isVideoUploaded()) {
-      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.assetForm.get('videoKey').value,
-        this.relatedAssetSeries.videoKey).subscribe(() => {
-        this.assetForm.get('videoKey').setValue(null);
-        this.assetForm.get('videoKey').enable();
-      });
+      this.videoService.deleteVideoIfNotOfParent(this.companyId, this.hiddenVideoKey,
+        this.relatedAssetSeries.videoKey).subscribe(() => this.resetVideoKey());
     }
+  }
+
+  private resetVideoKey() {
+    this.hiddenVideoKey = null;
+    this.assetForm.get('videoKey').setValue(null);
+    this.assetForm.get('videoKey').enable();
   }
 
   isVideoUploaded(): boolean {

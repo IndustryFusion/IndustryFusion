@@ -13,8 +13,9 @@
 * under the License.
 */
 
-@import 'src/styles/abstract/variables';
-@import 'src/styles/base/typography';
+@import 'abstract/variables';
+@import 'base/typography';
+@import 'components/buttons';
 
 $top: var(--top-position);
 $left: var(--left-position);
@@ -38,26 +39,9 @@ $left: var(--left-position);
   }
 }
 
-.button-div {
-  position: relative;
-}
-
 .group-by-btn {
-  font-style: normal;
-  font-weight: bold;
-  font-size: $regular-font-size;
-  line-height: $regular-line-height;
-
-  letter-spacing: 0;
-  color: $basic-black;
-
-  background: $light-grey 0 0% no-repeat padding-box;
-  border-color: transparent;
-  border-radius: .5rem;
-  opacity: 1;
-
-  padding: .4rem .8rem .4rem .8rem;
-  cursor: pointer;
+  @extend .if-button-page-grey;
+  text-align: left;
 
   &::ng-deep .group-by-btn-item {
     margin-right: .5rem !important;
@@ -68,10 +52,6 @@ $left: var(--left-position);
     padding: 0 .5rem !important;
     width: .5rem;
     height: .5rem;
-  }
-
-  &:hover {
-    background: $hover-grey-border;
   }
 }
 
@@ -103,12 +83,11 @@ $left: var(--left-position);
 }
 
 .remove-selected-enum-btn {
-  background-color: transparent;
   border: transparent;
-  background: none;
+  background: transparent none;
   position: absolute;
   right: .25rem;
-  top: .45rem;
+  top: .25rem;
   cursor: pointer;
 
   .remove-selected-enum-btn-icon {

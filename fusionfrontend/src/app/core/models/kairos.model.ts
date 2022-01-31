@@ -14,6 +14,7 @@
  */
 
 import { Aggregator } from '../services/api/oisp.model';
+import { Milliseconds } from '../store/factory-site/factory-site.model';
 
 export class KairosRequest {
   // tslint:disable-next-line:variable-name
@@ -88,4 +89,14 @@ export enum OispDeviceStatus {
   IDLE = 1,
   RUNNING = 2,
   ERROR = 3
+}
+
+export class TimeInterval {
+  startMs: Milliseconds;
+  endMs: Milliseconds;
+
+  constructor(startMs: Milliseconds, endMs: Milliseconds) {
+    this.startMs = startMs;
+    this.endMs = endMs;
+  }
 }

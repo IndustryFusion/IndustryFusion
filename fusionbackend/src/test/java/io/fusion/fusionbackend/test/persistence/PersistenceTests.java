@@ -1,11 +1,6 @@
 package io.fusion.fusionbackend.test.persistence;
 
-import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.Company;
-import io.fusion.fusionbackend.model.ConnectivityProtocol;
-import io.fusion.fusionbackend.model.ConnectivitySettings;
-import io.fusion.fusionbackend.model.ConnectivityType;
+import io.fusion.fusionbackend.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -19,13 +14,18 @@ import static io.fusion.fusionbackend.test.persistence.builder.AssetTypeTemplate
 import static io.fusion.fusionbackend.test.persistence.builder.CompanyBuilder.aCompany;
 import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityProtocolBuilder.aConnectivityProtocol;
 import static io.fusion.fusionbackend.test.persistence.builder.ConnectivityTypeBuilder.aConnectivityType;
+import static io.fusion.fusionbackend.test.persistence.builder.CountryBuilder.aCountry;
+import static io.fusion.fusionbackend.test.persistence.builder.FactorySiteBuilder.aFactorySite;
+import static io.fusion.fusionbackend.test.persistence.builder.ShiftBuilder.aShift;
+import static io.fusion.fusionbackend.test.persistence.builder.ShiftSettingsBuilder.aShiftSettings;
+import static io.fusion.fusionbackend.test.persistence.builder.ShiftsOfDayBuilder.aShiftsOfDay;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 
-public class PersistenceTests extends PersistenceTestsBase {
+class PersistenceTests extends PersistenceTestsBase {
 
     public static final String NEW_STRING_VALUE = "New String Value";
     @Autowired
@@ -42,7 +42,7 @@ public class PersistenceTests extends PersistenceTestsBase {
     }
 
     @Test
-    public void persistAsset() {
+    void persistAsset() {
         ConnectivityType connectivityType = persisted(aConnectivityType()).build();
         ConnectivityProtocol connectivityProtocol = persisted(aConnectivityProtocol()).build();
 
@@ -250,6 +250,51 @@ public class PersistenceTests extends PersistenceTestsBase {
         oldConnectivitySettings = testEntityManager.find(ConnectivitySettings.class, oldConnectivitySettings.getId());
         assertNull(oldConnectivitySettings);
 
+    }
+
+    @Test
+    void persistFactorySite() {
+        FactorySite factorySite = aFactorySite()
+                .forCompany(persisted(aCompany()))
+                .withCountry(persisted(aCountry()))
+                .withShiftSettings(persisted(aShiftSettings()).build())
+                .build();
+
+        FactorySite foundFactorySite = testEntityManager.persistFlushFind(factorySite);
+
+        assertNotNull(foundFactorySite);
+    }
+
+    @Test
+    void persistShiftSettings() {
+        ShiftSettings shiftSettings = aShiftSettings().build();
+
+        ShiftSettings foundShiftSettings = testEntityManager.persistFlushFind(shiftSettings);
+
+        assertNotNull(foundShiftSettings);
+    }
+
+    @Test
+    void persistShiftsOfDay() {
+        ShiftsOfDay shiftsOfDay = aShiftsOfDay()
+                .forShiftSettings(persisted(aShiftSettings()))
+                .build();
+
+        ShiftsOfDay foundShiftsOfDay = testEntityManager.persistFlushFind(shiftsOfDay);
+
+        assertNotNull(foundShiftsOfDay);
+    }
+
+    @Test
+    void persistShift() {
+        Shift shift = aShift()
+                .forShiftsOfDay(persisted(aShiftsOfDay()
+                        .forShiftSettings(persisted(aShiftSettings()))))
+                .build();
+
+        Shift foundShift = testEntityManager.persistFlushFind(shift);
+
+        assertNotNull(foundShift);
     }
 
 }

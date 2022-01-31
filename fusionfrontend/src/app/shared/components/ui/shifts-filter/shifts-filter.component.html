@@ -1,0 +1,57 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="shifts-filter">
+  <button class="filter-shifts-btn" (click)="shiftsfilterpanel.toggle($event)">
+    <label>{{ 'APP.SHARED.UI.SHIFTS_FILTER.FILTER_BUTTON' | translate }}</label>
+    <i class="if-icon-shifts"></i>
+    <span *ngIf="selectedShifts?.length > 0" class="active-filter">{{ selectedShifts.length }}</span>
+
+    <button *ngIf="selectedFactorySite != null" class="remove-all-filters-btn"
+            (click)="onReset(); shiftsfilterpanel.hide();">
+      <i class="pi pi-times remove-all-filters-btn-icon"></i>
+    </button>
+  </button>
+
+  <p-overlayPanel #shiftsfilterpanel [dismissable]="true" [showCloseIcon]="true" class="small-overlay-panel panel-class">
+    <ng-template pTemplate="">
+      <div class="if-panel-heading">{{ 'APP.SHARED.UI.SHIFTS_FILTER.TITLE' | translate }}</div>
+
+      <p-dropdown
+        [(ngModel)]="selectedFactorySite"
+        [options]="factorySiteOptions"
+        optionLabel="name"
+        placeholder="{{ 'APP.SHARED.UI.SHIFTS_FILTER.FACTORY_SITE_PLACEHOLDER' | translate }}"
+        (ngModelChange)="onFactorySiteSelected()">
+      </p-dropdown>
+
+      <div *ngIf="selectedFactorySite != null" class="if-label-normal-weight select-shifts">{{ subtitle }}</div>
+      <div *ngFor="let shift of shiftOptions">
+        <p-checkbox [ngModel]="isShiftSelected(shift)" [label]="shift.name" binary="true"
+                    (onChange)="onToggleShift(shift, $event.checked)"></p-checkbox>
+      </div>
+
+      <div class="footer">
+        <button type="button" class="if-button button-cancel button-modal-small" (click)="onReset(); shiftsfilterpanel.hide();">
+          <span>{{ 'APP.SHARED.UI.SHIFTS_FILTER.CLEAR_ALL' | translate }}</span>
+          <i class="pi pi-times clear-all-icon"></i>
+        </button>
+        <button type="button" class="if-button button-primary button-modal-small" (click)="onApply(); shiftsfilterpanel.hide();">
+          {{ 'APP.COMMON.DIALOG_BUTTONS.APPLY' | translate }}
+        </button>
+      </div>
+    </ng-template>
+  </p-overlayPanel>
+</div>

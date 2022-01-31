@@ -43,6 +43,24 @@
         "ASSET_SERIES": "Image of asset series",
         "IMAGE": "Image"
       },
+      "DAYS": {
+        "MONDAY": "Monday",
+        "TUESDAY": "Tuesday",
+        "WEDNESDAY": "Wednesday",
+        "THURSDAY": "Thursday",
+        "FRIDAY": "Friday",
+        "SATURDAY": "Saturday",
+        "SUNDAY": "Sunday"
+      },
+      "DAYS_SHORT": {
+        "MONDAY": "Mo",
+        "TUESDAY": "Tu",
+        "WEDNESDAY": "We",
+        "THURSDAY": "Th",
+        "FRIDAY": "Fr",
+        "SATURDAY": "Sa",
+        "SUNDAY": "Su"
+      },
 			"TERMS": {
 				"ACCURACY": "Accuracy",
 				"ASSET": "Asset",
@@ -126,7 +144,7 @@
 				"TABLE_HEADER": "Status Overview by Asset"
 			},
 			"EQUIPMENT_EFFICIENCY_OVERVIEW": {
-				"CALENDER_LABEL": "Pick Date",
+				"CALENDER_LABEL": "Pick date",
 				"DONUT_CHART_TITLE": "Status Overview (Average of all Assets)",
 				"STATUS": {
 					"DASHBOARD_OVERVIEW_LABEL": "Realtime Status"
@@ -457,6 +475,20 @@
 				"ZIP_LABEL": "ZIP",
 				"ZIP_PLACEHOLDER": "Zip code"
 			},
+      "SHIFTS_DIALOG": {
+        "TITLE": "Shifts & Time Settings",
+        "START_OF_THE_WEEK": "Start of the week",
+        "SHIFTS_SUBTITLE": "Working Days & Shifts",
+        "ADD_SHIFT": "Add Shift",
+        "EDIT_SHIFT": "Edit Shift",
+        "ADD_DIALOG": {
+          "NAME": "Shift name",
+          "NAME_PLACEHOLDER": "Shift name",
+          "HOURS": "Shift hours",
+          "START_PLACEHOLDER": "Start",
+          "END_PLACEHOLDER": "End"
+        }
+      },
 			"SUB_HEADER": {
 				"ASSETS": "Assets",
 				"FACTORY_SITES": "Factory Sites",
@@ -873,6 +905,13 @@
         "TABLE_GROUP_BY": {
           "GROUP_BY": "Group by",
           "VALUE_NOT_FOUND": "Value not found"
+        },
+        "SHIFTS_FILTER": {
+          "FILTER_BUTTON": "Select shift",
+          "TITLE": "Select shifts of factory site",
+          "FACTORY_SITE_PLACEHOLDER": "Select factory site...",
+          "SHIFTS_OF_DAY_LABEL": "Select shifts of {{ day }}:",
+          "CLEAR_ALL": "Clear all"
         },
 				"TABLE_SEARCHBAR": {
 					"SEARCH": "Search"

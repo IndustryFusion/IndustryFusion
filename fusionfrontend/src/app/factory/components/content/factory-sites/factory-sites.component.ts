@@ -22,7 +22,6 @@ import { FactorySiteQuery } from 'src/app/core/store/factory-site/factory-site.q
 import { FactoryComposedQuery } from 'src/app/core/store/composed/factory-composed.query';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FactorySiteDialogComponent } from '../factory-site-dialog/factory-site-dialog.component';
-import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { FactoryResolver } from '../../../services/factory-resolver.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
@@ -105,9 +104,7 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
 
   showCreateDialog() {
     this.ref = this.dialogService.open(FactorySiteDialogComponent, {
-      data: {
-        type: DialogType.CREATE
-      },
+      data: { },
       header: this.translate.instant('APP.FACTORY.FACTORY_SITES.DIALOG_HEADING.CREATE'),
       width: '70%',
       contentStyle: { 'padding-left': '6%', 'padding-right': '6%' },
@@ -118,7 +115,6 @@ export class FactorySitesComponent implements OnInit, OnDestroy {
     this.ref = this.dialogService.open(FactorySiteDialogComponent, {
       data: {
         factorySite: this.activeListItem,
-        type: DialogType.EDIT
       },
       header: this.translate.instant('APP.FACTORY.FACTORY_SITES.DIALOG_HEADING.UPDATE') + ` ${this.activeListItem.name}`,
       width: '70%',

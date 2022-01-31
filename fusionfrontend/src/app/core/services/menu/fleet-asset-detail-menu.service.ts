@@ -63,7 +63,7 @@ export class FleetAssetDetailMenuService {
 
     if (asset.room && asset.room.factorySiteId) {
       this.roomService.getRoom(asset.companyId, asset.room.factorySiteId, asset.room.id, true).subscribe();
-      this.factorySiteService.getFactorySite(asset.companyId, asset.room.factorySiteId, true).subscribe();
+      this.factorySiteService.getFactorySiteWithoutShiftSettings(asset.companyId, asset.room.factorySiteId, true).subscribe();
     }
 
     this.fleetAssetDetailsResolver.resolveFromComponent().subscribe(() => {
