@@ -54,6 +54,7 @@ export class KairosStatusAggregationService {
     return new TimeInterval(startTimestampMs, endTimestampMs);
   }
 
+  // see Tests in spec.ts
   public static getCorrectedIntervalsOfShifts(date: Date, boundingInterval: TimeInterval, shifts: Shift[]): TimeInterval[] {
     const intervals: TimeInterval[] = [];
     if (shifts != null && shifts.length > 1) {
