@@ -94,7 +94,6 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    console.log(this.fields);
     this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
     this.updateTree();
   }
@@ -188,7 +187,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   private isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
     const maintenanceValue = Utils.getMaintenanceValue(asset, type);
-    return (maintenanceValue && maintenanceValue < type.lowerThreshold);
+    return (!isNaN(maintenanceValue) && maintenanceValue < type.lowerThreshold);
   }
 
   private updateTree() {
