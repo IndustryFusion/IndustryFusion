@@ -38,6 +38,8 @@ import { FactorySiteShiftSettingsDialogComponent } from '../../content/factory-s
 import { FieldsResolver } from '../../../../core/resolvers/fields-resolver';
 import { Field } from '../../../../core/store/field/field.model';
 import { FieldQuery } from '../../../../core/store/field/field.query';
+import { StatusWithAssetId } from '../../../models/status.model';
+import { StatusService } from '../../../../core/services/logic/status.service';
 
 @Component({
   selector: 'app-factory-site-page',
@@ -55,6 +57,7 @@ export class FactorySitePageComponent implements OnInit {
   assets$: Observable<Asset[]>;
   fields$: Observable<Field[]>;
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
+  factoryAssetStatuses$: Observable<StatusWithAssetId[]>;
   selectedIds: ID[];
   companyId: ID;
   createdAssetDetailsId: ID;
@@ -72,7 +75,9 @@ export class FactorySitePageComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private activatedRoute: ActivatedRoute,
-    public translate: TranslateService) { }
+    public translate: TranslateService,
+    private statusService: StatusService,
+  ) { }
 
   ngOnInit() {
     this.isLoading$ = this.factorySiteQuery.selectLoading();
@@ -87,6 +92,10 @@ export class FactorySitePageComponent implements OnInit {
     this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;
     this.fieldsResolver.resolve().subscribe();
     this.fields$ = this.fieldQuery.selectAll();
+
+    this.factoryAssetDetailsWithFields$.subscribe(() => {
+      this.factoryAssetStatuses$ = this.statusService.getStatusesByAssetsWithFields(this.factoryAssetDetailsWithFields$);
+    });
 
     if (this.factorySiteQuery.getActive() == null) {
       this.factorySite$.subscribe(factorySite => {
