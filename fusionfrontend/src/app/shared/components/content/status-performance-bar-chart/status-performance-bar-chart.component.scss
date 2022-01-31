@@ -15,7 +15,6 @@
 
 @import 'src/styles/base/typography';
 @import 'src/styles/abstract/variables';
-@import "../asset-performance.component";
 @import "src/app/dashboards/components/content/equipment-efficiency-overview/equipment-efficiency-overview.component";
 
 .aggregated-section {
@@ -28,4 +27,12 @@
 
 .aggregated-stats {
   margin-top: 1rem;
+}
+
+.bar-charts {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: -1rem;
+  display: block;
+  justify-content: space-evenly;
 }

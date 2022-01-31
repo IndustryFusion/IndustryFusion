@@ -152,7 +152,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
   }
 
   private updateLegend(totalStatusHours: StatusHours[]): void {
-    if (totalStatusHours) {
+    if (totalStatusHours && totalStatusHours.length > 0) {
       const totalSum = totalStatusHours.map(x => x.hours).reduce((accumulator, currentValue) => accumulator + currentValue);
       totalStatusHours.forEach(statusHour => {
         this.statusHoursPercentage[statusHour.status] = Math.round(statusHour.hours / totalSum * 100.0);

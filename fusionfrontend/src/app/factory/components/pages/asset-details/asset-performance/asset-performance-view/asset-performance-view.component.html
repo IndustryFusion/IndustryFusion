@@ -25,7 +25,7 @@ under the License.
     ></p-selectButton>
   </div>
 
-  <div class="p-grid aggregated-stats" *ngIf="isLoaded">
+  <div class="p-grid aggregated-stats">
     <app-equipment-efficiency-overview-donut-chart class="aggregated-section"
                                                    title="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.24_H_PERFORMANCE_SUMMARY' | translate }}"
                                                    [aggregatedStatusHours$]="aggregatedStatusHoursToday$">
@@ -33,22 +33,19 @@ under the License.
 
     <div class="aggregated-section status">
       <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_DAYS_PERFORMANCE_SUMMARY' | translate }}</label>
-      <div class="bar-charts">
-        <app-equipment-efficiency-bar-chart *ngIf="statusHoursOfLastThreeDaysAsc != null"
-                                            [showAxes]="true" [yLabels]="yBarChartLabelsThreeDaysAsc" [maxXAxisValue]="24"
-                                            [assetStatusHoursOfDays]="statusHoursOfLastThreeDaysAsc">
-        </app-equipment-efficiency-bar-chart>
-      </div>
+      <app-status-performance-bar-chart [assetDetailsWithFields]="(assetDetailsWithFields$ | async)"
+                                        [segmentationType]="SegmentationType.DAYS" [segmentationCount]="3"
+                                        (loaded)="onLoaded()"
+                                        (statusHoursOfTodayAggregated)="onStatusHoursOfTodayAggregated($event)">
+      </app-status-performance-bar-chart>
     </div>
 
     <div class="aggregated-section status">
       <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_SHIFTS_PERFORMANCE_SUMMARY' | translate }}</label>
-      <div class="bar-charts">
-        <app-equipment-efficiency-bar-chart *ngIf="statusHoursOfLastThreeDaysAsc != null"
-                                            [showAxes]="true" [yLabels]="yBarChartLabelsThreeDaysAsc" [maxXAxisValue]="24"
-                                            [assetStatusHoursOfDays]="statusHoursOfLastThreeDaysAsc">
-        </app-equipment-efficiency-bar-chart>
-      </div>
+      <app-status-performance-bar-chart class="wide-chart" [assetDetailsWithFields]="(assetDetailsWithFields$ | async)"
+                                        [segmentationType]="SegmentationType.SHIFTS" [segmentationCount]="3"
+                                        (loaded)="onLoaded()">
+      </app-status-performance-bar-chart>
     </div>
   </div>
 </div>

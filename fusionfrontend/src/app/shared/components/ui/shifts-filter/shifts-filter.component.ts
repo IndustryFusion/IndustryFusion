@@ -4,6 +4,7 @@ import { Day } from '../../../../core/models/days.model';
 import { TranslateService } from '@ngx-translate/core';
 import { FactorySiteService } from '../../../../core/store/factory-site/factory-site.service';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { ShiftsHelper } from '../../../../core/helpers/shifts-helper';
 
 @Component({
   selector: 'app-shifts-filter',
@@ -135,7 +136,7 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
       return;
     }
 
-    const sortedSelectedShifts = this.selectedShifts.sort((shift1, shift2) => shift1.indexInArray - shift2.indexInArray);
+    const sortedSelectedShifts = ShiftsHelper.sortShiftsUsingInsertionOrder(this.selectedShifts);
     const isNotAlreadyApplied = !this.lastAppliedShiftsSorted ||
       !this.isArrayEqual(this.lastAppliedShiftsSorted.map(shift => shift.id), sortedSelectedShifts.map(shift => shift.id));
 

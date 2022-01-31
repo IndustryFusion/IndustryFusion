@@ -69,11 +69,19 @@ export class Shift extends BaseEntity {
   startMinutes: Minutes;
   endMinutes: Minutes;
 
-  public static create(name: string, startMinutes: Minutes, endMinutes: Minutes): Shift {
-    const shift = new Shift();
-    shift.name = name;
-    shift.startMinutes = startMinutes;
-    shift.endMinutes = endMinutes;
-    return shift;
+  constructor(name: string, startMinutes: Minutes, endMinutes: Minutes) {
+    super();
+    this.name = name;
+    this.startMinutes = startMinutes;
+    this.endMinutes = endMinutes;
+  }
+}
+
+export class ShiftWithDate extends Shift {
+  date: Date;
+
+  constructor(shift: Shift, date: Date) {
+    super(shift.name, shift.startMinutes, shift.endMinutes);
+    this.date = date;
   }
 }

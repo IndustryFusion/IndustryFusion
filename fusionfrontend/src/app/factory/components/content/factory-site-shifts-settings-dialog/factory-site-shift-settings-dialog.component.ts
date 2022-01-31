@@ -199,7 +199,7 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
 
     if (shiftOfDayFormGroup && shiftsFormArray && !this.isMaxShiftsOfDayReached(shiftOfDayFormGroup))
     {
-      const emptyShift = Shift.create('', 6 * 60, 14 * 60 + 45);
+      const emptyShift = new Shift('', 6 * 60, 14 * 60 + 45);
       const emptyShiftForm = this.createSingleShiftOfDayFormGroup(day, shiftsFormArray.length, emptyShift);
       this.openShiftDialog(emptyShiftForm, DialogType.CREATE)
         .onClose.subscribe(newShiftForm => {

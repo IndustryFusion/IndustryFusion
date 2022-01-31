@@ -34,5 +34,13 @@ $canvas-height: var(--canvas-height);
 :host ::ng-deep canvas {
   border-radius: 0 8px 8px 0 !important;
   width: 20rem !important;
+  max-width: 100%;
   height: $canvas-height !important;
+}
+
+.wide-chart {
+  :host ::ng-deep canvas {
+    max-width: 100%;
+    width: 25rem !important;
+  }
 }

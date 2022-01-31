@@ -14,8 +14,10 @@
  */
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { KairosStatusAggregationService, TimeInterval } from './kairos-status-aggregation.service';
+import { KairosStatusAggregationService } from './kairos-status-aggregation.service';
 import { Shift } from '../../store/factory-site/factory-site.model';
+import { ShiftsHelper } from '../../helpers/shifts-helper';
+import { TimeInterval } from '../../models/kairos.model';
 
 describe('KairosStatusAggregationService', () => {
   let component: KairosStatusAggregationService;
@@ -42,57 +44,57 @@ describe('KairosStatusAggregationService', () => {
   });
 
   it('correct segmentation of shift into 1 interval', () => {
-    shifts.push(Shift.create('Morning shift', 5 * 60, 13 * 60 + 30 ));
-    shifts.push(Shift.create('Dayshift',      13 * 60, 21 * 60 ));
-    shifts.push(Shift.create('Night shift',    21 * 60, 4 * 60 + 30 ));
+    shifts.push(new Shift('Morning shift', 5 * 60, 13 * 60 + 30 ));
+    shifts.push(new Shift('Dayshift',      13 * 60, 21 * 60 ));
+    shifts.push(new Shift('Night shift',    21 * 60, 4 * 60 + 30 ));
 
     const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(boundingInterval, shifts);
+    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes,
-      KairosStatusAggregationService.getCorrectedEndMinutes(shifts[2]))];
+      ShiftsHelper.getCorrectedEndMinutes(shifts[2]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });
 
   it('correct segmentation of shift into 2 intervals', () => {
-    shifts.push(Shift.create('Shift 1', 5 * 60, 13 * 60 + 30 ));
-    shifts.push(Shift.create('Shift 2',    21 * 60, 4 * 60 + 30 ));
+    shifts.push(new Shift('Shift 1', 5 * 60, 13 * 60 + 30 ));
+    shifts.push(new Shift('Shift 2',    21 * 60, 4 * 60 + 30 ));
 
     const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(boundingInterval, shifts);
+    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes, shifts[0].endMinutes),
-      new TimeInterval(shifts[1].startMinutes, KairosStatusAggregationService.getCorrectedEndMinutes(shifts[1]))];
+      new TimeInterval(shifts[1].startMinutes, ShiftsHelper.getCorrectedEndMinutes(shifts[1]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });
 
   it('correct segmentation of shift into 2 intervals of three shifts', () => {
-    shifts.push(Shift.create('Shift 1', 5 * 60, 13 * 60 + 30 ));
-    shifts.push(Shift.create('Shift 2',    15 * 60, 22 * 60 ));
-    shifts.push(Shift.create('Shift 3',    21 * 60, 6 * 60 ));
+    shifts.push(new Shift('Shift 1', 5 * 60, 13 * 60 + 30 ));
+    shifts.push(new Shift('Shift 2',    15 * 60, 22 * 60 ));
+    shifts.push(new Shift('Shift 3',    21 * 60, 6 * 60 ));
 
     const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(boundingInterval, shifts);
+    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes, shifts[0].endMinutes),
-      new TimeInterval(shifts[1].startMinutes, KairosStatusAggregationService.getCorrectedEndMinutes(shifts[2]))];
+      new TimeInterval(shifts[1].startMinutes, ShiftsHelper.getCorrectedEndMinutes(shifts[2]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });
 
   it('correct segmentation of shift into 3 intervals', () => {
-    shifts.push(Shift.create('Shift 1', 0, 11 * 60 ));
-    shifts.push(Shift.create('Shift 2',      13 * 60, 20 * 60 ));
-    shifts.push(Shift.create('Shift 3',    21 * 60, 4 * 60 ));
+    shifts.push(new Shift('Shift 1', 0, 11 * 60 ));
+    shifts.push(new Shift('Shift 2',      13 * 60, 20 * 60 ));
+    shifts.push(new Shift('Shift 3',    21 * 60, 4 * 60 ));
 
     const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(boundingInterval, shifts);
+    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes, shifts[0].endMinutes),
       new TimeInterval(shifts[1].startMinutes, shifts[1].endMinutes),
-      new TimeInterval(shifts[2].startMinutes, KairosStatusAggregationService.getCorrectedEndMinutes(shifts[2]))];
+      new TimeInterval(shifts[2].startMinutes, ShiftsHelper.getCorrectedEndMinutes(shifts[2]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });

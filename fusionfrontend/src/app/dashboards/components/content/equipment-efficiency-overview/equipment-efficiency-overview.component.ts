@@ -22,8 +22,9 @@ import { StatusHoursHelper } from '../../../../core/helpers/status-hours-helper'
 import { FactorySite, Shift } from '../../../../core/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
-import { Day } from '../../../../core/models/days.model';
 import { FactorySiteResolverWithShiftSettings } from '../../../../core/resolvers/factory-site.resolver';
+import { ShiftsHelper } from '../../../../core/helpers/shifts-helper';
+import { Day } from '../../../../core/models/days.model';
 
 @Component({
   selector: 'app-equipment-efficiency-overview',
@@ -86,15 +87,7 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   }
 
   getDayFromDate(): Day {
-    switch (this.date.getDay()) {
-      case 0: return Day.SUNDAY;
-      case 1: return Day.MONDAY;
-      case 2: return Day.TUESDAY;
-      case 3: return Day.WEDNESDAY;
-      case 4: return Day.THURSDAY;
-      case 5: return Day.FRIDAY;
-      case 6: return Day.SATURDAY;
-    }
+    return ShiftsHelper.getDayFromDate(this.date);
   }
 
   onShiftsChanged(selectedShifts: Shift[]): void {
