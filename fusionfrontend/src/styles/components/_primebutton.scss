@@ -49,7 +49,7 @@ p-selectButton {
 
     &.p-highlight {
       background: $basic-white !important;
-      box-shadow: 0 0 6px #00000029 !important;
+      box-shadow: 0 0 6px $dark-gray !important;
       border-radius: 44px !important;
       border-color: unset !important;
       font-weight: bold !important;

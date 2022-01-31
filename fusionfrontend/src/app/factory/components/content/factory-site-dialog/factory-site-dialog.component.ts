@@ -62,15 +62,27 @@ export class FactorySiteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.type = this.config.data.type;
     this.factorySite = this.config.data.factorySite;
+    this.type = this.factorySite != null ? DialogType.EDIT : DialogType.CREATE;
 
+    if (this.type === DialogType.CREATE) {
+      this.factorySiteService.initFactorySiteDraft(this.companyQuery.getActiveId()).subscribe(factorySiteDraft => {
+        this.factorySite = factorySiteDraft;
+        this.resolveCountriesAndInitFormAndUpdates();
+      });
+    } else {
+      this.resolveCountriesAndInitFormAndUpdates();
+    }
+
+    this.createCountriesItems();
+  }
+
+  private resolveCountriesAndInitFormAndUpdates() {
     this.countryResolver.resolve().subscribe(() => {
       this.createFormGroup();
       this.subscribeToCoordinateUpdates();
       this.updateAddressToChangeLongitudeAndLatitudeInMap();
     });
-    this.createCountriesItems();
   }
 
   private updateAddressToChangeLongitudeAndLatitudeInMap() {
@@ -94,13 +106,12 @@ export class FactorySiteDialogComponent implements OnInit {
       countryId: [this.type === DialogType.CREATE ? countryIdGermany : null, Validators.required],
       latitude: [0],
       longitude: [0],
-      type: [null, requiredTextValidator]
+      type: [null, requiredTextValidator],
+      shiftSettings: [null, Validators.required]
     });
 
-    if (this.factorySite && this.type === DialogType.EDIT) {
+    if (this.factorySite) {
       this.factorySiteForm.patchValue(this.factorySite);
-    } else {
-      this.factorySite = this.factorySiteForm.getRawValue() as FactorySite;
     }
   }
 

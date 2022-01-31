@@ -67,7 +67,7 @@ under the License.
   </div>
 
   <div class="footer-btns">
-    <button type="button" class="if-button-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
+    <button type="button" class="if-button button-cancel-cancel" (click)="onCancel()">{{ 'APP.COMMON.DIALOG_BUTTONS.CANCEL' | translate }}</button>
     <button type="button" class="if-button button-primary" (click)="onSave()" [disabled]="factorySiteForm.invalid">
       <ng-container *ngIf="type === DialogType.EDIT then editFactoryButtonText else createFactoryButtonText"></ng-container>
       <ng-template #createFactoryButtonText>{{ 'APP.COMMON.DIALOG_BUTTONS.CREATE' | translate }}</ng-template>

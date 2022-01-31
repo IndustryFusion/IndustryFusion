@@ -25,6 +25,15 @@
   }
 }
 
+.factory-settings-container {
+  display: flex;
+  align-items: center;
+
+  .factory-settings-text {
+    margin-right: 0.75rem;
+  }
+}
+
 :host ::ng-deep p-accordiontab a {
   margin-top: 1rem;
   border: 2px solid $basic-black !important;

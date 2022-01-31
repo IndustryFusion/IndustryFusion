@@ -28,11 +28,15 @@ import java.util.stream.Collectors;
 public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySiteDto> {
     private final RoomMapper roomMapper;
     private final CountryMapper countryMapper;
+    private final ShiftSettingsMapper shiftSettingsMapper;
 
     @Autowired
-    public FactorySiteMapper(RoomMapper roomMapper, CountryMapper countryMapper) {
+    public FactorySiteMapper(RoomMapper roomMapper,
+                             CountryMapper countryMapper,
+                             ShiftSettingsMapper shiftSettingsMapper) {
         this.roomMapper = roomMapper;
         this.countryMapper = countryMapper;
+        this.shiftSettingsMapper = shiftSettingsMapper;
     }
 
     private FactorySiteDto toDtoShallow(final FactorySite entity) {
@@ -54,6 +58,7 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
                 .longitude(entity.getLongitude())
                 .latitude(entity.getLatitude())
                 .imageKey(entity.getImageKey())
+                .shiftSettingsId(EntityDtoMapper.getEntityId(entity.getShiftSettings()))
                 .build();
 
         if (entity.getCountry() != null) {
@@ -70,8 +75,10 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
 
         FactorySiteDto dto = toDtoShallow(entity);
 
-        dto.setRooms(roomMapper.toDtoSet(entity.getRooms(), false));
         dto.setCountry(countryMapper.toDto(entity.getCountry(), false));
+        if (entity.hasShiftSettings()) {
+            dto.setShiftSettings(shiftSettingsMapper.toDto(entity.getShiftSettings(), true));
+        }
 
         return dto;
     }
@@ -102,8 +109,15 @@ public class FactorySiteMapper implements EntityDtoMapper<FactorySite, FactorySi
                 .latitude(dto.getLatitude())
                 .build();
 
+        if (dto.getRooms() != null) {
+            entity.setRooms(roomMapper.toEntitySet(dto.getRooms()));
+        }
         if (dto.getCountry() != null) {
             entity.setCountry(countryMapper.toEntity(dto.getCountry()));
+        }
+        if (dto.getShiftSettings() != null) {
+            entity.setShiftSettings(shiftSettingsMapper.toEntity(dto.getShiftSettings()));
+            entity.getShiftSettings().setFactorySite(entity);
         }
 
         return entity;

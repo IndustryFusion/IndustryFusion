@@ -47,6 +47,9 @@ public class FactorySiteDto extends BaseEntityDto {
     private Long countryId;
     private CountryDto country;
 
+    private Long shiftSettingsId;
+    private ShiftSettingsDto shiftSettings;
+
     private Double latitude;
     private Double longitude;
     private String imageKey;

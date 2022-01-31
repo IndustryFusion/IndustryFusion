@@ -1,0 +1,106 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@import 'abstract/variables';
+@import 'base/typography';
+
+.factory-site-shift-settings-dialog {
+  .week-start-container {
+    display: grid;
+  }
+
+  .shifts-container {
+    margin-top: 1.6rem;
+
+    .day-container {
+      display: flex;
+      align-items: center;
+      margin: 0.4rem 0;
+
+      .button-working-day {
+        width: 2.8rem;
+        height: 2.8rem;
+        margin-right: 0.4rem;
+
+        border-radius: 10px;
+        border: none;
+
+        text-align: center;
+        font: normal normal bold $bigger-font-size $big-line-height Muli;
+        letter-spacing: 0;
+
+        &.active {
+          color: $basic-white;
+          background: $basic-black;
+        }
+        &.inactive {
+          color: $basic-white;
+          background: $regular-grey;
+        }
+      }
+
+      .shift {
+        display: flex;
+        margin: 0.4rem;
+        background: $basic-white;
+        height: 2rem;
+        min-width: 12rem;
+
+        align-items: center;
+        vertical-align: center;
+
+        app-item-options-menu {
+          margin-left: auto;
+        }
+      }
+
+      .button-add-shift {
+        @extend .button-working-day;
+        cursor: pointer;
+        width: 1.6rem;
+        height: 1.6rem;
+        vertical-align: center;
+        margin-right: 0.4rem;
+        margin-left: 0.4rem;
+
+        background: $basic-black;
+        color: $basic-white;
+      }
+
+      .label-add-shift {
+        color: $basic-black;
+        font-weight: bold;
+        font-size: $medium-font-size;
+        line-height: $medium-line-height;
+      }
+    }
+  }
+}
+
+:host ::ng-deep .table-dropdown-menu-button-inline {
+  color: $basic-black !important;
+}
+
+:host ::ng-deep .p-dropdown {
+  border-radius: 10px !important;
+  height: 2.75rem;
+  width: 16.5rem;
+  border: none;
+  align-items: center;
+
+  .p-dropdown-label {
+    border: none;
+  }
+}

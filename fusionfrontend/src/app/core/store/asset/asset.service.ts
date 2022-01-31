@@ -130,7 +130,7 @@ export class AssetService {
 
           this.assetSeriesDetailsService.getAssetSeriesDetailsOfCompany(savedAsset.companyId, true).subscribe();
           if (savedAsset.room) {
-            this.factorySiteService.getFactorySite(savedAsset.companyId, savedAsset.room.factorySite.id).subscribe();
+            this.factorySiteService.getFactorySiteWithoutShiftSettings(savedAsset.companyId, savedAsset.room.factorySite.id).subscribe();
             this.roomService.getRoom(savedAsset.companyId, savedAsset.room.factorySite.id, savedAsset.roomId, false)
               .subscribe();
           }

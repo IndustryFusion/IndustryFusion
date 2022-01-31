@@ -17,6 +17,7 @@ import { ID } from '@datorama/akita';
 import { BaseEntity } from '../baseentity.model';
 import { Room } from '../room/room.model';
 import { Country } from '../country/country.model';
+import { Day } from '../../models/days.model';
 
 export class FactorySite extends BaseEntity {
   companyId: ID;
@@ -33,6 +34,7 @@ export class FactorySite extends BaseEntity {
   latitude: number;
   longitude: number;
   type: FactorySiteType;
+  shiftSettings: ShiftSettings;
 }
 
 export class FactorySiteWithAssetCount extends FactorySite {
@@ -43,4 +45,33 @@ export enum FactorySiteType {
   HEADQUARTER = 'HEADQUARTER',
   FABRICATION = 'FABRICATION',
   FLEETMANAGER = 'FLEETMANAGER',
+}
+
+export class ShiftSettings extends BaseEntity {
+  factorySiteId: ID;
+  weekStart: Day;
+  shiftsOfDays: ShiftsOfDay[];
+}
+
+export class ShiftsOfDay extends BaseEntity {
+  day: Day;
+  isActive: boolean;
+  shifts: Shift[];
+}
+
+export declare type Minutes = number;
+
+export class Shift extends BaseEntity {
+  indexInArray: number;
+  name: string;
+  startMinutes: Minutes;
+  endMinutes: Minutes;
+
+  public static create(name: string, startMinutes: Minutes, endMinutes: Minutes): Shift {
+    const shift = new Shift();
+    shift.name = name;
+    shift.startMinutes = startMinutes;
+    shift.endMinutes = endMinutes;
+    return shift;
+  }
 }

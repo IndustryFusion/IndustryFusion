@@ -13,7 +13,14 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<app-company-info [factorySite]="(factorySite$ | async)" [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
+<app-company-info [factorySite]="factorySite" [roomCount]="(roomsOfFactorySite$ | async)?.length" [assets]="(assets$ | async)"></app-company-info>
+
+<div class="p-grid p-jc-end header-line">
+  <button class="if-button button-tertiary factory-settings-container" (click)="onEditShifts()">
+    <span class="factory-settings-text">Factory Settings</span>
+    <i class="pi pi-cog"></i>
+  </button>
+</div>
 
 <p-accordion class="factory-site-content">
   <p-accordionTab header="{{ 'APP.COMMON.TERMS.ASSETS' | translate }}" [selected]="true">

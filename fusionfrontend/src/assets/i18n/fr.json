@@ -43,6 +43,24 @@
         "ASSET_SERIES": "Image de la série d'actifs",
         "IMAGE": "Image"
       },
+      "DAYS": {
+        "MONDAY": "Lundi",
+        "TUESDAY": "Mardi",
+        "WEDNESDAY": "Mercredi",
+        "THURSDAY": "Jeudi",
+        "FRIDAY": "Vendredi",
+        "SATURDAY": "Samedi",
+        "SUNDAY": "Dimanche"
+      },
+      "DAYS_SHORT": {
+        "MONDAY": "Lu",
+        "TUESDAY": "Ma",
+        "WEDNESDAY": "Me",
+        "THURSDAY": "Je",
+        "FRIDAY": "Ve",
+        "SATURDAY": "Sa",
+        "SUNDAY": "Di"
+      },
 			"TERMS": {
 				"ACCURACY": "Précision",
 				"ASSET": "actif",
@@ -457,6 +475,20 @@
 				"ZIP_LABEL": "Zip",
 				"ZIP_PLACEHOLDER": "Code postal"
 			},
+      "SHIFTS_DIALOG": {
+        "TITLE":   "Changements et réglages de l'heure",
+        "START_OF_THE_WEEK": "Début de la semaine",
+        "SHIFTS_SUBTITLE": "Jours ouvrables et équipes",
+        "ADD_SHIFT": "Ajouter une équipe",
+        "EDIT_SHIFT": "Modifier une équipe",
+        "ADD_DIALOG": {
+          "NAME": "Nom de l'équipe",
+          "NAME_PLACEHOLDER": "Nomdel'équipe",
+          "HOURS": "Heuresdel'équipe",
+          "START_PLACEHOLDER": "Début",
+          "END_PLACEHOLDER": "Fin"
+        }
+      },
 			"SUB_HEADER": {
 				"ASSETS": "Actifs",
 				"FACTORY_SITES": "Sites d'usines",
