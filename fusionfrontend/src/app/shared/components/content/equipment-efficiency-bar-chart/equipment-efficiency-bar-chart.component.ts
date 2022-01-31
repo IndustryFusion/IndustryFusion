@@ -67,9 +67,9 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   }
 
   public static getHoursString(hoursWithMinutes: number): string {
-      const hours = hoursWithMinutes > 99 ? Math.floor(hoursWithMinutes) : ('00' + Math.floor(hoursWithMinutes)).slice(-2);
-      const minutes = ('00' + Math.round((hoursWithMinutes - Math.floor(hoursWithMinutes)) * 60)).slice(-2);
-      return `${hours}:${minutes} h`;
+      const hours: string = hoursWithMinutes > 99 ? '' + Math.floor(hoursWithMinutes) : ('00' + Math.floor(hoursWithMinutes)).slice(-2);
+      const minutes: string = ('00' + Math.round((hoursWithMinutes - Math.floor(hoursWithMinutes)) * 60)).slice(-2);
+      return minutes === '60' ? `${('00' + Math.floor(hoursWithMinutes + 1)).slice(-2)}:00 h` : `${hours}:${minutes} h`;
   }
 
   ngOnInit(): void {

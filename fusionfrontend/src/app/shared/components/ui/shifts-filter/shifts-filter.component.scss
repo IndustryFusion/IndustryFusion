@@ -1,0 +1,90 @@
+/*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
+@import 'abstract/variables';
+@import 'base/typography';
+@import 'components/buttons';
+
+.shifts-filter {
+  .panel-class {
+    ::ng-deep .p-overlaypanel {
+      width: 16rem;
+    }
+    ::ng-deep .p-overlaypanel:before {
+      visibility: hidden !important;
+    }
+    ::ng-deep .p-overlaypanel:after {
+      visibility: hidden !important;
+    }
+    ::ng-deep .p-component {
+      margin-top: 0.2rem !important;
+    }
+  }
+
+  .filter-shifts-btn {
+    @extend .if-button-page-white;
+    display: flex;
+    text-align: left;
+
+    .if-icon-shifts {
+      margin-left: 0.8rem;
+    }
+
+    &::ng-deep .filter-btn-item {
+      margin-right: .5rem !important;
+    }
+
+    &.filter-active {
+      width: 7.6rem;
+    }
+
+    &::ng-deep .active-filter {
+      margin: 0 .35rem !important;
+      padding: 0.1rem 0.42rem !important;
+      color: $basic-white;
+      background: $black-background;
+      width: 1.3rem;
+      height: 1rem;
+      border-radius: .5rem;
+    }
+  }
+
+  .footer {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .remove-all-filters-btn {
+    border: transparent;
+    background: transparent none;
+    margin-left: .5rem;
+    cursor: pointer;
+
+    .remove-all-filters-btn-icon {
+      font-size: $regular-font-size;
+      color: $basic-black;
+    }
+  }
+
+  .clear-all-icon {
+    font-size: $small-font-size;
+    margin-left: 0.3rem;
+  }
+
+  .select-shifts {
+    margin-top: 0.8rem;
+    margin-bottom: 0.2rem;
+  }
+}

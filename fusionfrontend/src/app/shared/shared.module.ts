@@ -55,6 +55,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
 import { ImageComponent } from './components/content/image/image.component';
+import { ShiftsFilterComponent } from './components/ui/shifts-filter/shifts-filter.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -79,6 +80,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DropdownFilterComponent,
     NumericFilterComponent,
     TableGroupByComponent,
+    ShiftsFilterComponent,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,
@@ -159,6 +161,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DropdownFilterComponent,
     NumericFilterComponent,
     TableGroupByComponent,
+    ShiftsFilterComponent,
     BooleanPipe,
     MaintenanceProgressbarComponent,
     NotificationsListComponent,

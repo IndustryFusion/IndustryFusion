@@ -19,6 +19,11 @@ import { OispDeviceStatus } from './kairos.model';
 export class StatusHours {
   status: OispDeviceStatus;
   hours: number;
+
+  constructor(status: OispDeviceStatus, hours: number) {
+    this.status = status;
+    this.hours = hours;
+  }
 }
 
 export class StatusHoursOneDay {

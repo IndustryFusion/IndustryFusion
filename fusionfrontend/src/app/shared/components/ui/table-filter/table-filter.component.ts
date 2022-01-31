@@ -33,8 +33,6 @@ export class TableFilterComponent implements OnInit {
   itemsToBeFiltered: any;
   @Input()
   statusesWithAssetId: StatusWithAssetId[];
-  @Input()
-  position: [string, string];
   @Output()
   filteredItems = new EventEmitter<any>();
 
@@ -49,25 +47,28 @@ export class TableFilterComponent implements OnInit {
   filterOptions: FilterOption[] = [];
   selectedFilter: FilterOption[] = [];
 
+  faFilter = faFilter;
+
   constructor(private formBuilder: FormBuilder) {
   }
 
-  faFilter = faFilter;
+  private static clearFormValues(form: FormGroup) {
+    form.get('filteredItems').patchValue(null);
+    if (form.get('filterType').value === FilterType.DATEFILTER) {
+      form.get('startTimeValue').patchValue(null);
+      form.get('endTimeValue').patchValue(null);
+    } else if (form.get('filterType').value === FilterType.DROPDOWNFILTER) {
+      form.get('selectedCheckboxItems').patchValue(null);
+    } else if (form.get('filterType').value === FilterType.STATUSFILTER) {
+      form.get('selectedCheckboxItems').patchValue(null);
+    }
+  }
 
   ngOnInit(): void {
     this.tableFilters.forEach(filter => {
       this.createFilterForm(filter);
       this.filterOptions.push(filter);
     });
-    if (this.position) {
-      this.hasPositionSet = true;
-      this.changeTheme(this.position[0], this.position[1]);
-    }
-  }
-
-  private changeTheme(top: string, left: string) {
-    document.documentElement.style.setProperty('--top-position', top);
-    document.documentElement.style.setProperty('--left-position', left);
   }
 
   private createFilterForm(filter: FilterOption) {
@@ -140,12 +141,11 @@ export class TableFilterComponent implements OnInit {
     }
   }
 
-
   clearSingleFilter(filterToRemove) {
     this.activeFilterSet.delete(filterToRemove);
     this.filterFormMap.forEach(form => {
       if (form.get('attributeToBeFiltered').value === filterToRemove.attributeToBeFiltered) {
-        this.clearFormValues(form);
+        TableFilterComponent.clearFormValues(form);
       }
     });
     this.filterItems();
@@ -154,21 +154,9 @@ export class TableFilterComponent implements OnInit {
   clearAllFilters() {
     this.activeFilterSet.clear();
     this.filterFormMap.forEach(form => {
-      this.clearFormValues(form);
+      TableFilterComponent.clearFormValues(form);
     });
     this.filterItems();
-  }
-
-  private clearFormValues(form: FormGroup) {
-    form.get('filteredItems').patchValue(null);
-    if (form.get('filterType').value === FilterType.DATEFILTER) {
-      form.get('startTimeValue').patchValue(null);
-      form.get('endTimeValue').patchValue(null);
-    } else if (form.get('filterType').value === FilterType.DROPDOWNFILTER) {
-      form.get('selectedCheckboxItems').patchValue(null);
-    } else if (form.get('filterType').value === FilterType.STATUSFILTER) {
-      form.get('selectedCheckboxItems').patchValue(null);
-    }
   }
 
   filterItems() {

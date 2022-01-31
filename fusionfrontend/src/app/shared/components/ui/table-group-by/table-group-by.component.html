@@ -13,7 +13,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="button-div">
+<div class="composite-button">
   <button (click)="groupbypanel.toggle($event)" class="group-by-btn">
     <span class="group-by-btn-item">{{ 'APP.SHARED.UI.TABLE_GROUP_BY.GROUP_BY' | translate }}:</span>
     <span *ngIf="selectedEnum != null" class="selected-enum">{{ selectedEnum.optionLabel }}</span>

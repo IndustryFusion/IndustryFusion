@@ -14,43 +14,42 @@
  */
 
 @import "abstract/variables";
+@import "base/typography";
 
 .list-header {
-  margin-right: 48px;
-  margin-left: 68px;
-  margin-top: 35px;
+  margin-right: 2.4rem;
+  margin-left: 3.4rem;
+  margin-top: 1.75rem;
 
   .title {
     text-align: left;
-    font-size: 24px;
-    line-height: 30px;
+    font-size: $big-font-size 24px;
+    line-height: $even-bigger-line-height;
     font-weight: bold;
     letter-spacing: 0;
-    color: #000000;
-    opacity: 1;
+    color: $basic-black;
   }
 
   .button-create {
     text-align: left;
-    font-size: 14px;
+    font-size: $regular-font-size;
     letter-spacing: 0;
     color: $regular-grey;
-    opacity: 1;
 
-    background: #FFFFFF 0% 0% no-repeat padding-box;
+    background: #FFFFFF 0 0 no-repeat padding-box;
     border: 1px solid $basic-grey;
     border-radius: 10px;
 
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-right: 35px;
-    padding-left: 16px;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-right: 1.75rem;
+    padding-left: 0.8rem;
     cursor: pointer;
   }
 }
 
 .list-container {
-  margin-top: 32px;
+  margin-top: 1.6rem;
 
   .list-edit-bar {
     display: flex;
@@ -59,11 +58,11 @@
     justify-content: space-between;
     align-items: center;
 
-    margin-bottom: 10px;
-    height: 56px;
-    background: #000000 0% 0% no-repeat padding-box;
+    margin-bottom: 0.5rem;
+    height: 2.8rem;
+    background: $black-background;
     border-radius: 10px;
-    color: #FFFFFF;
+    color: $basic-white;
 
     .list-edit-bar-item {
       display: flex;
@@ -73,7 +72,7 @@
     .list-edit-bar-last-item {
       display: flex;
       justify-content: flex-end;
-      margin-right: 40px;
+      margin-right: 2rem;
     }
 
     .button-white {

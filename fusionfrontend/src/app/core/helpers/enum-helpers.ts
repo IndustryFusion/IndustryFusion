@@ -20,6 +20,10 @@ export class EnumHelpers {
       .filter(key => typeof key === 'string');
   }
 
+  public getLength(enumeration): number {
+    return this.getIterableArray(enumeration).length;
+  }
+
   public asEnum<T>(t, enumVal: T | string): T {
     if (typeof enumVal === 'string') {
       if (enumVal === 'null') {

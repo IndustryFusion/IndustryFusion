@@ -30,7 +30,7 @@ under the License.
                   (click)="toggleIsDayActive(dayForm)">{{ 'APP.COMMON.DAYS_SHORT.' + dayForm.get('day').value | translate }}</button>
 
           <ng-container *ngFor="let shiftForm of getShiftsOfDayFormGroups(dayForm)">
-            <div id="rowElement" class="if-button button-tertiary shift" [formGroup]="shiftForm">
+            <div id="rowElement" class="if-button-page-white shift" [formGroup]="shiftForm">
               <label displayControlValue="name"></label>
               <app-item-options-menu [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE]"
                                      (editItem)="onEditShift(shiftForm)" (deleteItem)="onDeleteShift(shiftForm)">

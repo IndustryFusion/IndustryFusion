@@ -40,25 +40,6 @@
     margin-right: 16px;
   }
 
-  &.button-tertiary {
-    font-style: normal;
-    font-weight: bold;
-    font-size: $medium-font-size;
-    line-height: $medium-line-height;
-    border-radius: 10px;
-
-    text-transform: unset;
-    box-shadow: unset;
-    height: 32px;
-
-    background: $light-grey 0 0% no-repeat padding-box;
-    padding: .4rem .8rem .4rem .8rem;
-
-    &:hover {
-      background: $hover-grey-border;
-    }
-  }
-
   &.button-secondary {
     font-weight: normal;
     color: $basic-black;
@@ -101,6 +82,56 @@
 
   &:disabled {
     background: $basic-grey;
+  }
+}
+
+.if-button-page-grey {
+  align-items: center;
+  text-align: center;
+
+  font-style: normal;
+  font-weight: bold;
+  font-size: $medium-font-size;
+  line-height: $regular-line-height;
+  border-radius: 10px;
+
+  background: $light-grey 0 0% no-repeat padding-box;
+  color: $basic-black;
+
+  cursor: pointer;
+  border: none;
+
+  height: 1.6rem;
+  padding: .4rem .8rem .4rem .8rem;
+
+  letter-spacing: 0;
+  box-shadow: none;
+
+  &:hover {
+    background: $hover-dark-white 0 0% no-repeat padding-box;
+  }
+
+  &:not(:last-child) {
+    margin-right: 0.8rem;
+  }
+}
+
+.if-button-page-white {
+  @extend .if-button-page-grey;
+
+  background: $white-background;
+  color: $basic-black;
+
+  &:hover {
+    background: $middle-white 0 0% no-repeat padding-box;
+  }
+}
+
+.composite-button {
+  position: relative;
+
+  &:not(:last-child) {
+    margin-right: 0.8rem;
   }
 }
 

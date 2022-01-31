@@ -19,6 +19,11 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StatusHours } from '../../../../core/models/kairos-status-aggregation.model';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { EquipmentEfficiencyHelper } from '../../../../core/helpers/equipment-efficiency-helper';
+import { FactorySite, Shift } from '../../../../core/store/factory-site/factory-site.model';
+import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
+import { Day } from '../../../../core/models/days.model';
+import { FactorySiteResolverWithShiftSettings } from '../../../../core/resolvers/factory-site.resolver';
 
 @Component({
   selector: 'app-equipment-efficiency-overview',
@@ -42,13 +47,23 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   @Output()
   dateChanged = new EventEmitter<Date>();
 
+  @Output()
+  shiftsChanged = new EventEmitter<Shift[]>();
+
   isLoaded = false;
   averageOfStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
+  factorySites$: Observable<FactorySite[]>;
 
-  constructor(private enumHelpers: EnumHelpers) {
+  constructor(private enumHelpers: EnumHelpers,
+              private factorySiteQuery: FactorySiteQuery,
+              private factorySiteResolverWithShiftSettings: FactorySiteResolverWithShiftSettings,
+              private companyQuery: CompanyQuery) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.factorySiteResolverWithShiftSettings.resolveFromComponent().subscribe();
+    this.factorySites$ = this.factorySiteQuery.selectFactorySitesOfCompanyInFactoryManager(this.companyQuery.getActiveId());
+
     this.fullyLoadedAssets$.subscribe(assetWithHours => {
       if (assetWithHours) {
         this.factoryAssetDetailsWithFields = assetWithHours;
@@ -58,7 +73,7 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
     });
   }
 
-  private updateAggregatedStatusHours() {
+  private updateAggregatedStatusHours(): void {
     if (this.factoryAssetDetailsWithFields) {
       const aggregatedStatusHours = EquipmentEfficiencyHelper
         .getAggregatedStatusHours(this.factoryAssetDetailsWithFields, this.enumHelpers);
@@ -68,4 +83,19 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
     }
   }
 
+  getDayFromDate(): Day {
+    switch (this.date.getDay()) {
+      case 0: return Day.SUNDAY;
+      case 1: return Day.MONDAY;
+      case 2: return Day.TUESDAY;
+      case 3: return Day.WEDNESDAY;
+      case 4: return Day.THURSDAY;
+      case 5: return Day.FRIDAY;
+      case 6: return Day.SATURDAY;
+    }
+  }
+
+  onShiftsChanged(selectedShifts: Shift[]): void {
+    this.shiftsChanged.emit(selectedShifts);
+  }
 }
