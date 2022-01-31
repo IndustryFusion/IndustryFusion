@@ -15,10 +15,10 @@ under the License.
 
 <button (click)="dateFilterPanel.toggle($event);" class="open-filterpanel-btn">
   <span class="filter-panel-btn-grid">
-    <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value !== null" class="filter-panel-btn-grid-text">
-      {{ 'APP.SHARED.UI.TABLE_FILTER.DATE_FILTER.DATE_SET' | translate }}</span>
-    <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value === null" class="filter-panel-btn-grid-text">
-      {{ 'APP.SHARED.UI.TABLE_FILTER.NOT_SET' | translate }}</span>
+    <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value !== null && dateSet()"
+          class="filter-panel-btn-grid-text">{{ 'APP.SHARED.UI.TABLE_FILTER.DATE_FILTER.DATE_SET' | translate }}</span>
+    <span *ngIf="this.dateFilterFormGroup.get('filteredItems').value === null || !dateSet()"
+          class="filter-panel-btn-grid-text">{{ 'APP.SHARED.UI.TABLE_FILTER.NOT_SET' | translate }}</span>
       <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
   </span>
 </button>

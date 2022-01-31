@@ -16,10 +16,10 @@ under the License.
 
 <button (click)="numericPanel.toggle($event);" class="open-filterpanel-btn">
   <span class="filter-panel-btn-grid">
-    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value !== null" class="filter-panel-btn-grid-text">
-      {{ this.numericFilterFormGroup.get('selectedCheckboxItems').value.length | i18nPlural: selectedValueMapping }}</span>
-    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value === null" class="filter-panel-btn-grid-text">
-    {{ 'APP.SHARED.UI.TABLE_FILTER.NOT_SET' | translate }}</span>
+    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value !== null && this.numericFilterFormGroup.get('selectedCheckboxItems').value.length > 0"
+          class="filter-panel-btn-grid-text">{{ this.numericFilterFormGroup.get('selectedCheckboxItems').value.length | i18nPlural: selectedValueMapping }}</span>
+    <span *ngIf="this.numericFilterFormGroup.get('selectedCheckboxItems').value === null || this.numericFilterFormGroup.get('selectedCheckboxItems').value.length === 0"
+          class="filter-panel-btn-grid-text">{{ 'APP.SHARED.UI.TABLE_FILTER.NOT_SET' | translate }}</span>
     <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
   </span>
 </button>
@@ -35,7 +35,6 @@ under the License.
     <button (click)="clearSelectedValues();"
             class="if-button button-secondary button-modal clear-filter-btn">
       {{ 'APP.SHARED.UI.TABLE_FILTER.CLEAR_ALL' | translate }}
-      Clear all
       <i class="pi pi-times btn-icon"></i>
     </button>
     <button (click)="filterItemsBySelectedValues(); numericPanel.hide()"

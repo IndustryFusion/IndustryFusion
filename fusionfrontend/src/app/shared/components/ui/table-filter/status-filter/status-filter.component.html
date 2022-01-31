@@ -15,10 +15,10 @@ under the License.
 
 <button (click)="statusPanel.toggle($event);" class="open-filterpanel-btn">
   <span class="filter-panel-btn-grid">
-    <span *ngIf="this.statusFilterFormGroup.get('selectedCheckboxItems').value !== null" class="filter-panel-btn-grid-text">
-      {{ this.statusFilterFormGroup.get('selectedCheckboxItems').value.length | i18nPlural: selectedValueMapping }}</span>
-    <span *ngIf="this.statusFilterFormGroup.get('selectedCheckboxItems').value === null" class="filter-panel-btn-grid-text">
-    {{ 'APP.SHARED.UI.TABLE_FILTER.NOT_SET' | translate }}</span>
+    <span *ngIf="this.statusFilterFormGroup.get('selectedCheckboxItems').value !== null && this.statusFilterFormGroup.get('selectedCheckboxItems').value.length > 0"
+          class="filter-panel-btn-grid-text">{{ this.statusFilterFormGroup.get('selectedCheckboxItems').value.length | i18nPlural: selectedValueMapping }}</span>
+    <span *ngIf="this.statusFilterFormGroup.get('selectedCheckboxItems').value === null || this.statusFilterFormGroup.get('selectedCheckboxItems').value.length === 0"
+          class="filter-panel-btn-grid-text">{{ 'APP.SHARED.UI.TABLE_FILTER.NOT_SET' | translate }}</span>
     <i class="pi pi-chevron-down filter-panel-btn-grid-icon"></i>
   </span>
 </button>

@@ -65,4 +65,8 @@ export class DateFilterComponent implements OnInit {
 
     this.itemsFiltered.emit();
   }
+
+  dateSet() {
+    return (this.dateFilterFormGroup.get('startTimeValue').value !== null || this.dateFilterFormGroup.get('endTimeValue').value !== null);
+  }
 }
