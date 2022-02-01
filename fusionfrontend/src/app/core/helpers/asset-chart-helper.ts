@@ -14,10 +14,47 @@
  */
 
 import { FieldDetails } from '../store/field-details/field-details.model';
-import { ChartPoint } from 'chart.js';
+import { ChartPoint, TimeUnit } from 'chart.js';
 import { Milliseconds } from '../store/factory-site/factory-site.model';
 
 export class AssetChartHelper {
+  private static AXIS_STEP_SIZE_SECONDS = 15;
+  private static AXIS_STEP_SIZE_MINUTES = 5;
+  private static AXIS_STEP_SIZE_MINUTES_FEW = 1;
+  private static AXIS_STEP_SIZE_HOURS = 6;
+  private static AXIS_STEP_SIZE_DAYS = 1;
+
+  public static calculateXAxisOptions(chartPoints: ChartPoint[]):
+    { startTimestampMs: Milliseconds, xAxisUnit: TimeUnit, xAxisStepSize: number } {
+    const startTimestampMs = AssetChartHelper.getMinTimestampOfPoints(chartPoints);
+    const endTimestampMs = AssetChartHelper.getMaxTimestampOfPoints(chartPoints);
+
+    const minuteInMilliseconds = 60 * 1000;
+    const hourInMilliseconds = 60 * 60 * 1000;
+    const dayInMilliseconds = 24 * 60 * 60 * 1000;
+
+    let xAxisStepSize =  this.AXIS_STEP_SIZE_HOURS;
+    let xAxisUnit: TimeUnit = 'hour';
+    if (endTimestampMs - startTimestampMs < 5 * minuteInMilliseconds) {
+      xAxisUnit = 'second';
+      xAxisStepSize = this.AXIS_STEP_SIZE_SECONDS;
+    }
+    else if (endTimestampMs - startTimestampMs < 0.5 * hourInMilliseconds) {
+      xAxisUnit = 'minute';
+      xAxisStepSize = this.AXIS_STEP_SIZE_MINUTES_FEW;
+    }
+    else if (endTimestampMs - startTimestampMs < 2 * hourInMilliseconds) {
+      xAxisUnit = 'minute';
+      xAxisStepSize = this.AXIS_STEP_SIZE_MINUTES;
+    }
+    else if (endTimestampMs - startTimestampMs > 5 * dayInMilliseconds) {
+      xAxisUnit = 'day';
+      xAxisStepSize = this.AXIS_STEP_SIZE_DAYS;
+    }
+
+    return { startTimestampMs, xAxisUnit, xAxisStepSize };
+  }
+
   public static getYMinMaxByAbsoluteThreshold(fieldDetails: FieldDetails): { min?: number, max?: number } {
     if (fieldDetails.absoluteThreshold) {
       return {

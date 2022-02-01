@@ -24,7 +24,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartPoint, ChartScales, LinearScale, TimeUnit } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartPoint, ChartScales, LinearScale } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable, Subject, timer } from 'rxjs';
@@ -38,7 +38,6 @@ import { environment } from 'src/environments/environment';
 import { StatusPoint } from '../../../../models/status.model';
 import { AssetChartHelper } from '../../../../../core/helpers/asset-chart-helper';
 import { TimeInterval } from '../../../../../core/models/kairos.model';
-import { Milliseconds } from '../../../../../core/store/factory-site/factory-site.model';
 import { AssetChartInterval } from '../../../../models/asset-chart-interval.model';
 
 @Component({
@@ -106,11 +105,6 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
 
   private readonly STATUS_MAX_POINTS = 100000;
   private readonly MAX_POINTS_CURRENT = 150;
-  private readonly AXIS_STEP_SIZE_SECONDS = 15;
-  private readonly AXIS_STEP_SIZE_MINUTES = 5;
-  private readonly AXIS_STEP_SIZE_MINUTES_FEW = 1;
-  private readonly AXIS_STEP_SIZE_HOURS = 6;
-  private readonly AXIS_STEP_SIZE_DAYS = 1;
 
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
@@ -176,6 +170,14 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.initialized = true;
     }
+  }
+
+  private flushData(): void {
+    this.statuses = [];
+    this.lineChartData[0].data = [];
+    this.lineChartLabels = [];
+    this.currentNumberOfPoints = 0;
+    this.destroy$.next(true);
   }
 
   private loadCurrentData(): void {
@@ -263,44 +265,27 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
+  private updateStatusPoints(): void {
+    this.statuses = [];
+    this.lineChartData[0].data.forEach(chartPoint => {
+      if (typeof chartPoint.y === 'number') {
+        this.statuses.push({ status: Math.round(chartPoint.y), time: chartPoint.t });
+      }
+    });
   }
 
-  public calculateXAxisUnitAndStep(startTimestampMs: Milliseconds, endTimestampMs: Milliseconds):
-    { xAxisUnit: TimeUnit, xAxisStepSize: number } {
-    const minuteInMilliseconds = 60 * 1000;
-    const hourInMilliseconds = 60 * 60 * 1000;
-    const dayInMilliseconds = 24 * 60 * 60 * 1000;
+  private updateThresholds(newPoints: PointWithId[]): void {
+    const minMax = this.getUpdatedYMinMax(newPoints);
+    this.chart.chart.options.scales.yAxes[0].ticks.min = minMax.min;
+    this.chart.chart.options.scales.yAxes[0].ticks.max = minMax.max;
+    this.lineChartOptions.scales.yAxes[0].ticks.min = minMax.min;
+    this.lineChartOptions.scales.yAxes[0].ticks.max = minMax.max;
 
-    let xAxisStepSize =  this.AXIS_STEP_SIZE_HOURS;
-    let xAxisUnit: TimeUnit = 'hour';
-    if (endTimestampMs - startTimestampMs < 5 * minuteInMilliseconds) {
-      xAxisUnit = 'second';
-      xAxisStepSize = this.AXIS_STEP_SIZE_SECONDS;
-    }
-    else if (endTimestampMs - startTimestampMs < 0.5 * hourInMilliseconds) {
-      xAxisUnit = 'minute';
-      xAxisStepSize = this.AXIS_STEP_SIZE_MINUTES_FEW;
-    }
-    else if (endTimestampMs - startTimestampMs < 2 * hourInMilliseconds) {
-      xAxisUnit = 'minute';
-      xAxisStepSize = this.AXIS_STEP_SIZE_MINUTES;
-    }
-    else if (endTimestampMs - startTimestampMs > 5 * dayInMilliseconds) {
-      xAxisUnit = 'day';
-      xAxisStepSize = this.AXIS_STEP_SIZE_DAYS;
-    }
-
-    return { xAxisUnit, xAxisStepSize };
+    this.lineChartOptions.annotation = this.getAnnotationsByIdealAndCriticalThresholds(minMax);
   }
 
   private updateLineChartOptions(): void {
-    const startTimestampMs = AssetChartHelper.getMinTimestampOfPoints(this.lineChartData[0].data as ChartPoint[]);
-    const endTimestampMs = AssetChartHelper.getMaxTimestampOfPoints(this.lineChartData[0].data as ChartPoint[]);
-    const xAxisOptions = this.calculateXAxisUnitAndStep(startTimestampMs, endTimestampMs);
-
+    const xAxisOptions = AssetChartHelper.calculateXAxisOptions(this.lineChartData[0].data as ChartPoint[]);
     const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
 
     const scales: ChartScales | LinearScale = {
@@ -324,7 +309,7 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
           maxRotation: 0,
           minRotation: 0,
           maxTicksLimit: 10,
-          min: startTimestampMs
+          min: xAxisOptions.startTimestampMs
         },
       }],
       yAxes: [
@@ -393,6 +378,18 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
+  private getUpdatedYMinMax(newPoints?: PointWithId[]): { min: number, max: number } {
+    const minMaxOfNewPoints = this.getYMinMaxOfPoints(newPoints);
+    const minMaxOfChart = {
+      min: this.chart.chart.options.scales.yAxes[0].ticks.min ?? 99999999,
+      max: this.chart.chart.options.scales.yAxes[0].ticks.max ?? -9999999
+    };
+    return {
+      min: Math.min(minMaxOfNewPoints.min, minMaxOfChart.min),
+      max: Math.max(minMaxOfNewPoints.max, minMaxOfChart.max)
+    };
+  }
+
   private getYMinMaxOfPoints(points?: PointWithId[]): { min?: number, max?: number } {
     let minMax: { min?: number, max?: number } = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
 
@@ -407,43 +404,9 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
     return minMax;
   }
 
-  private flushData(): void {
-    this.statuses = [];
-    this.lineChartData[0].data = [];
-    this.lineChartLabels = [];
-    this.currentNumberOfPoints = 0;
+  ngOnDestroy() {
     this.destroy$.next(true);
-  }
-
-  private updateThresholds(newPoints: PointWithId[]): void {
-    const minMax = this.getUpdatedYMinMax(newPoints);
-    this.chart.chart.options.scales.yAxes[0].ticks.min = minMax.min;
-    this.chart.chart.options.scales.yAxes[0].ticks.max = minMax.max;
-    this.lineChartOptions.scales.yAxes[0].ticks.min = minMax.min;
-    this.lineChartOptions.scales.yAxes[0].ticks.max = minMax.max;
-
-    this.lineChartOptions.annotation = this.getAnnotationsByIdealAndCriticalThresholds(minMax);
-  }
-
-  private updateStatusPoints(): void {
-    this.statuses = [];
-    this.lineChartData[0].data.forEach(chartPoint => {
-      if (typeof chartPoint.y === 'number') {
-        this.statuses.push({ status: Math.round(chartPoint.y), time: chartPoint.t });
-      }
-    });
-  }
-
-  private getUpdatedYMinMax(newPoints?: PointWithId[]): { min: number, max: number } {
-    const minMaxOfNewPoints = this.getYMinMaxOfPoints(newPoints);
-    const minMaxOfChart = {
-      min: this.chart.chart.options.scales.yAxes[0].ticks.min ?? 99999999,
-      max: this.chart.chart.options.scales.yAxes[0].ticks.max ?? -9999999
-    };
-    return {
-      min: Math.min(minMaxOfNewPoints.min, minMaxOfChart.min),
-      max: Math.max(minMaxOfNewPoints.max, minMaxOfChart.max)
-    };
+    this.destroy$.complete();
   }
 }
 
