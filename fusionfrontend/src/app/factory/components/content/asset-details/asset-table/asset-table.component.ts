@@ -21,15 +21,16 @@ import { Asset } from '../../../../../core/store/asset/asset.model';
 import { OispService } from '../../../../../core/services/api/oisp.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from '../../../../../../environments/environment';
+import { AssetChartInterval } from '../../../../models/asset-chart-interval.model';
 
 
 @Component({
-  selector: 'app-asset-tables',
-  templateUrl: './asset-tables.component.html',
-  styleUrls: ['./asset-tables.component.scss']
+  selector: 'app-asset-table',
+  templateUrl: './asset-table.component.html',
+  styleUrls: ['./asset-table.component.scss']
 })
 
-export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
+export class AssetTableComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   field: FieldDetails;
@@ -38,7 +39,7 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
   asset: Asset;
 
   @Input()
-  options: string;
+  interval: AssetChartInterval;
 
   @Output()
   loadedEvent = new EventEmitter<void>();
@@ -66,21 +67,21 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.initialized) {
-    if (changes.options) {
-        switch ( this.options ){
-          case 'current':
+    if (changes.interval) {
+        switch ( this.interval ){
+          case AssetChartInterval.CURRENT:
             this.flushData();
             this.loadNewData(environment.dataUpdateIntervalMs / 1000);
             break;
-          case '10min':
+          case AssetChartInterval.TEN_MINUTES:
             this.flushData();
             this.loadNewData(600);
             break;
-          case '1hour':
+          case AssetChartInterval.ONE_HOUR:
             this.flushData();
             this.loadNewData(3600);
             break;
-          case '1day':
+          case AssetChartInterval.ONE_DAY:
             this.flushData();
             this.loadNewData(86400);
             break;

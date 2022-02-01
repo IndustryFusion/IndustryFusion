@@ -39,13 +39,14 @@ import { StatusPoint } from '../../../../models/status.model';
 import { AssetChartHelper } from '../../../../../core/helpers/asset-chart-helper';
 import { TimeInterval } from '../../../../../core/models/kairos.model';
 import { Milliseconds } from '../../../../../core/store/factory-site/factory-site.model';
+import { AssetChartInterval } from '../../../../models/asset-chart-interval.model';
 
 @Component({
-  selector: 'app-asset-charts',
-  templateUrl: './asset-charts.component.html',
-  styleUrls: ['./asset-charts.component.scss']
+  selector: 'app-asset-chart',
+  templateUrl: './asset-chart.component.html',
+  styleUrls: ['./asset-chart.component.scss']
 })
-export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
+export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   fieldDetails: FieldDetails;
 
@@ -53,7 +54,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   asset: Asset;
 
   @Input()
-  options: string;
+  interval: AssetChartInterval;
 
   @Input()
   maxPoints: number;
@@ -119,21 +120,21 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.initialized) {
-      if (changes.options || changes.maxPoints) {
-        switch (this.options) {
-          case 'current':
+      if (changes.interval || changes.maxPoints) {
+        switch (this.interval) {
+          case AssetChartInterval.CURRENT:
             this.flushData();
             this.loadNewCurrentData();
             break;
-          case '1hour':
+          case AssetChartInterval.ONE_HOUR:
             this.flushData();
             this.loadHistoricData(this.maxPoints, false, 3600);
             break;
-          case '1day':
+          case AssetChartInterval.ONE_DAY:
             this.flushData();
             this.loadHistoricData(this.maxPoints, false, 86400);
             break;
-          case 'customDate':
+          case AssetChartInterval.CUSTOM_DATE:
             this.flushData();
             if (changes.maxPoints && this.clickedOk) {
               this.loadHistoricData(this.maxPoints, true);
@@ -148,8 +149,8 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       }
       if (changes.clickedOk) {
         if (this.clickedOk) {
-          switch (this.options) {
-            case 'customDate':
+          switch (this.interval) {
+            case AssetChartInterval.CUSTOM_DATE:
               this.loadHistoricData(this.maxPoints, true);
               break;
             default:

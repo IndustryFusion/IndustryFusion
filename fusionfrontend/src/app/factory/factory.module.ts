@@ -27,10 +27,10 @@ import { AssetsListComponent } from './components/content/assets-list/assets-lis
 import { AssetStatusPipe } from '../shared/pipes/asset-status-pipe';
 import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetDetailsInfoComponent } from './components/content/asset-details/asset-details-info/asset-details-info.component';
-import { AssetChartsComponent } from './components/content/asset-details/asset-charts/asset-charts.component';
+import { AssetChartComponent } from './components/content/asset-details/asset-chart/asset-chart.component';
 import { RoomDialogComponent } from './components/content/room-dialog/room-dialog.component';
 import { RoomsPageComponent } from './components/pages/rooms-page/rooms-page.component';
-import { AssetTablesComponent } from './components/content/asset-details/asset-tables/asset-tables.component';
+import { AssetTableComponent } from './components/content/asset-details/asset-table/asset-table.component';
 import { AssetsListPageComponent } from './components/pages/assets-list-page/assets-list-page.component';
 import { FactoryPageTitleComponent } from './components/content/factory-page-title/factory-page-title.component';
 import { FactorySubHeaderComponent } from './components/content/factory-sub-header/factory-sub-header.component';
@@ -99,10 +99,10 @@ import { SliderModule } from 'primeng/slider';
     AssetDetailsInfoComponent,
     FactorySubHeaderComponent,
     FactoryPageTitleComponent,
-    AssetChartsComponent,
+    AssetChartComponent,
     RoomDialogComponent,
     RoomsPageComponent,
-    AssetTablesComponent,
+    AssetTableComponent,
     AssetStatusComponent,
     AssetInstantiationComponent,
     AssetInstantiationStartModalComponent,

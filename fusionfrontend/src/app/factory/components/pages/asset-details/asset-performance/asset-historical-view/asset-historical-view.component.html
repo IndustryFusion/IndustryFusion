@@ -101,7 +101,7 @@ under the License.
       </div>
     </ng-container>
 
-    <div class="ok-button" *ngIf="currentTimeslot === 'customDate'">
+    <div class="ok-button" *ngIf="currentTimeslot === AssetChartInterval.CUSTOM_DATE">
       <ng-container *ngIf="choiceConfiguration.chooseButton">
         <button class="if-button button button-primary" (click)="onOkClicked()">OK</button>
       </ng-container>
@@ -113,9 +113,9 @@ under the License.
       <ng-container *ngFor="let field of assetWithFields.fields">
         <ng-container *ngIf="hasTypeNumeric(field) && isNotAttribute(field)">
           <!--suppress XmlDuplicatedId -->
-          <app-asset-charts id="metric-{{field.externalName}}" [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
+          <app-asset-chart id="metric-{{field.externalName}}" [asset]="assetWithFields" [clickedOk]="choiceConfiguration.clickedOk"
                             [endDate]="endDate" [fieldDetails]="field" [maxPoints]="maxPoints"
-                            [options]="currentTimeslot" [startDate]="startDate" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-charts>
+                            [interval]="currentTimeslot" [startDate]="startDate" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-chart>
         </ng-container>
       </ng-container>
     </div>
@@ -126,8 +126,8 @@ under the License.
           <ng-container *ngIf="hasTypeCategorical(field) && isNotAttribute(field)">
             <div class="p-md-12 p-col-align-start">
               <!--suppress XmlDuplicatedId -->
-              <app-asset-tables id="metric-{{field.externalName}}" [asset]="assetWithFields" [field]="field"
-                                [options]="currentTimeslot" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-tables>
+              <app-asset-table id="metric-{{field.externalName}}" [asset]="assetWithFields" [field]="field"
+                                [interval]="currentTimeslot" (loadedEvent)="onChartOrTableLoaded(field)"></app-asset-table>
             </div>
           </ng-container>
         </ng-container>

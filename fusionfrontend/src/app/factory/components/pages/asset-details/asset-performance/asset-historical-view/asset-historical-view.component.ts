@@ -28,6 +28,7 @@ import { SelectItem } from 'primeng/api';
 import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { AssetChartInterval } from '../../../../../models/asset-chart-interval.model';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -43,8 +44,8 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   asset$: Observable<FactoryAssetDetailsWithFields>;
   assetId: ID;
 
-  timeSlotOptions: { name: string; value: string; }[];
-  currentTimeslot = 'current';
+  timeSlotOptions: { name: string; value: AssetChartInterval; }[];
+  currentTimeslot: AssetChartInterval = AssetChartInterval.CURRENT;
   startDate: Date;
   endDate: Date = new Date(Date.now());
   minDate: Date;
@@ -52,6 +53,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
   faExclamationCircle = faExclamationCircle;
   faTimes = faTimes;
+  AssetChartInterval = AssetChartInterval;
 
   maxItemsOptions: SelectItem[];
   maxPoints: number;
@@ -105,15 +107,22 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     ];
     this.maxPoints = 50;
 
-    this.timeSlotOptions = [{ name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CURRENT'), value: 'current' },
-      { name: '1h', value: '1hour' },
-      { name: '24h', value: '1day' },
-      { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CUSTOM_DATE'), value: 'customDate' }
+    this.timeSlotOptions = [
+      { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CURRENT'), value: AssetChartInterval.CURRENT },
+      { name: '1h', value: AssetChartInterval.ONE_HOUR },
+      { name: '24h', value: AssetChartInterval.ONE_DAY },
+      { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CUSTOM_DATE'), value: AssetChartInterval.CUSTOM_DATE }
     ];
   }
 
   onTimeslotChanged(): void {
-    const timeslotText = (this.currentTimeslot === 'current' || this.currentTimeslot === 'customDate') ? this.currentTimeslot : 'oneTimeSlot';
+    let timeslotText = 'oneTimeSlot';
+    if (this.currentTimeslot === AssetChartInterval.CURRENT) {
+      timeslotText = 'current';
+    } else if (this.currentTimeslot === AssetChartInterval.CUSTOM_DATE) {
+      timeslotText = 'customDate';
+    }
+
     this.setOptions(timeslotText, false);
 
     if (timeslotText === 'oneTimeSlot') {
@@ -136,7 +145,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
         this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
         return;
       } else {
-        if (this.currentTimeslot === 'customDate') {
+        if (this.currentTimeslot === AssetChartInterval.CUSTOM_DATE) {
           if (!this.startDate || !this.endDate) {
             this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
             return;
@@ -148,7 +157,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   }
 
   resetOptions(): void {
-    if (this.currentTimeslot === 'customDate') {
+    if (this.currentTimeslot === AssetChartInterval.CUSTOM_DATE) {
       this.choiceConfiguration = this.choiceConfigurationMapping.customDate;
     } else {
       this.choiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
