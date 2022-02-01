@@ -14,13 +14,14 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { OispDeviceStatus } from '../../../../core/models/kairos.model';
+import { OispDeviceStatus, TimeInterval } from '../../../../core/models/kairos.model';
 import { UIChart } from 'primeng/chart';
 import * as moment from 'moment';
 import { StatusPoint } from '../../../../factory/models/status.model';
 import { environment } from '../../../../../environments/environment';
 import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { TranslateService } from '@ngx-translate/core';
+import { Milliseconds } from '../../../../core/store/factory-site/factory-site.model';
 
 
 @Component({
@@ -32,6 +33,9 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
   @Input()
   statuses: StatusPoint[];
+
+  @Input()
+  timeInterval: TimeInterval;
 
   @ViewChild('chart') chart: UIChart;
 
@@ -45,16 +49,17 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   constructor(private translate: TranslateService) {
   }
 
-  private static fillOfflineGaps(statuses: StatusPoint[]): StatusPoint[] {
+  private static fillOfflineGapsInBetween(statuses: StatusPoint[]): StatusPoint[] {
     if (statuses && statuses.length > 0) {
       const additionalStatuses: StatusPoint[] = [];
-      let prevTime = statuses[0].time;
+      let prevTime: moment.Moment = statuses[0].time;
 
       for (const status of statuses) {
-        const timeDifference = status.time.valueOf() - prevTime.valueOf();
+        const timeDifferenceMs = status.time.valueOf() - prevTime.valueOf();
 
-        if (timeDifference > environment.assetStatusSampleRateMs * 2) {
-          for (let i = 1; i <= Math.floor(timeDifference / environment.assetStatusSampleRateMs - 1); i++) {
+        this.addMultipleStatusesIfGap(additionalStatuses, timeDifferenceMs, prevTime);
+        if (timeDifferenceMs > environment.assetStatusSampleRateMs * 2) {
+          for (let i = 1; i <= Math.floor(timeDifferenceMs / environment.assetStatusSampleRateMs - 1); i++) {
             additionalStatuses.push({
               status: OispDeviceStatus.OFFLINE,
               time: moment(prevTime.valueOf() + environment.assetStatusSampleRateMs * i) }
@@ -66,12 +71,25 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
       }
 
       if (additionalStatuses.length > 0) {
-        statuses.concat(additionalStatuses);
+        statuses = statuses.concat(additionalStatuses);
         statuses = statuses.sort((a, b) => a.time.valueOf() - b.time.valueOf());
       }
     }
 
     return statuses;
+  }
+
+  private static addMultipleStatusesIfGap(additionalStatuses: StatusPoint[],
+                                          timeDifferenceMs: Milliseconds,
+                                          prevTime: moment.Moment): void {
+    if (timeDifferenceMs > environment.assetStatusSampleRateMs * 2) {
+      for (let i = 1; i <= Math.floor(timeDifferenceMs / environment.assetStatusSampleRateMs - 1); i++) {
+        additionalStatuses.push({
+          status: OispDeviceStatus.OFFLINE,
+          time: moment(prevTime.valueOf() + environment.assetStatusSampleRateMs * i) }
+        );
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -87,6 +105,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
       this.updateChart(changes.statuses.currentValue);
     }
   }
+
   private createDatasetByStatus(firstStatusPointOfGroup: StatusPoint, timeOfStartOfNextGroup: moment.Moment) {
     const durationSec = (timeOfStartOfNextGroup.toDate().valueOf() - firstStatusPointOfGroup.time.toDate().valueOf()) / 1000.0;
     const dataset = { type: 'horizontalBar', data:  [ { x: durationSec, t: firstStatusPointOfGroup.time } ],
@@ -130,7 +149,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
           const durationHoursText = EquipmentEfficiencyBarChartComponent.getHoursString(durationHoursNotRounded);
           const durationText = durationMin > 59 ? durationHoursText : durationSec > 99 ? durationMin + ' min' : durationSec + 'sec';
-          return timestamp.format('d.M, HH:mm') + ' | ca. ' + durationText + ' (' + label + ')';
+          return timestamp.format('D.M, HH:mm') + ' | ca. ' + durationText + ' (' + label + ')';
         },
         label(_, _2) {
           return '';
@@ -189,7 +208,8 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   private updateChartData(statuses: StatusPoint[]) {
     this.stackedData.datasets = [];
     if (statuses && statuses.length > 0) {
-      statuses = HistoricalStatusBarChartComponent.fillOfflineGaps(statuses);
+      statuses = HistoricalStatusBarChartComponent.fillOfflineGapsInBetween(statuses);
+      statuses = this.fillOfflineGapsAtBoundaries(statuses);
 
       let aggregatedStatuses: StatusPoint[] = statuses;
       if (statuses.length > this.START_GROUPING_DATASET_COUNT) {
@@ -199,6 +219,26 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
       this.addDatasetsForAggregatedStatuses(aggregatedStatuses);
     }
+  }
+
+  private fillOfflineGapsAtBoundaries(statuses: StatusPoint[]): StatusPoint[] {
+    if (statuses && statuses.length > 0) {
+      const additionalStatuses: StatusPoint[] = [];
+      const timeDifferenceToStartMs = statuses[0].time.valueOf() - this.timeInterval.startMs;
+      HistoricalStatusBarChartComponent.addMultipleStatusesIfGap(additionalStatuses,
+        timeDifferenceToStartMs, moment(this.timeInterval.startMs));
+
+      const timeDifferenceToEndMs = this.timeInterval.endMs - statuses[statuses.length - 1].time.valueOf();
+      HistoricalStatusBarChartComponent.addMultipleStatusesIfGap(additionalStatuses,
+        timeDifferenceToEndMs, statuses[statuses.length - 1].time);
+
+      if (additionalStatuses.length > 0) {
+        statuses = statuses.concat(additionalStatuses);
+        statuses = statuses.sort((a, b) => a.time.valueOf() - b.time.valueOf());
+      }
+    }
+
+    return statuses;
   }
 
   private addDatasetsForAggregatedStatuses(aggregatedStatuses: StatusPoint[]) {

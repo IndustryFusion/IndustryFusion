@@ -36,6 +36,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { OispDeviceQuery } from '../../store/oisp/oisp-device/oisp-device.query';
 import { ComponentType } from '../../store/oisp/oisp-device/oisp-device.model';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
+import { TimeInterval } from '../../models/kairos.model';
 
 @Injectable({
   providedIn: 'root'
@@ -148,13 +149,12 @@ export class OispService {
     return oispPoints$;
   }
 
-  getValuesOfSingleFieldByDates(asset: Asset,
-                                field: FieldDetails,
-                                fromDate: number,
-                                toDate: number,
-                                maxPoints: number,
-                                samplingUnit?: string,
-                                samplingValue?: number): Observable<PointWithId[]> {
+  getValuesOfSingleFieldByInterval(asset: Asset,
+                                   field: FieldDetails,
+                                   timeInterval: TimeInterval,
+                                   maxPoints: number,
+                                   samplingUnit?: string,
+                                   samplingValue?: number): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
     let metricsWithAggregation: MetricsWithAggregation;
     if (samplingUnit) {
@@ -166,8 +166,8 @@ export class OispService {
         op: 'none', aggregator: myAggregator
       });
       const request: OispRequestWithAggregation = {
-        from: fromDate,
-        to: toDate,
+        from: timeInterval.startMs,
+        to: timeInterval.endMs,
         targetFilter: { deviceList: [asset.externalName] },
         metrics: [metricsWithAggregation]
       };
@@ -180,8 +180,8 @@ export class OispService {
         op: 'none', aggregator: myAggregator
       });
       const request: OispRequestWithAggregation = {
-        from: fromDate,
-        to: toDate,
+        from: timeInterval.startMs,
+        to: timeInterval.endMs,
         maxItems: maxPoints,
         targetFilter: { deviceList: [asset.externalName] },
         metrics: [metricsWithAggregation]

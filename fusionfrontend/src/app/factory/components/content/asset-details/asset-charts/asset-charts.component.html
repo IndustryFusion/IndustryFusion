@@ -23,7 +23,7 @@ under the License.
   <div class="chart-wrapper">
     <div class="flex-item">
       <div style="display: block" class="actual-chart">
-        <app-historical-status-bar-chart *ngIf="isStatus && statuses != null" [statuses]="statuses">
+        <app-historical-status-bar-chart *ngIf="isStatus && statuses != null" [statuses]="statuses" [timeInterval]="selectedTimeInterval">
         </app-historical-status-bar-chart>
 
         <canvas *ngIf="isStatus === false" baseChart style="height: 300px"

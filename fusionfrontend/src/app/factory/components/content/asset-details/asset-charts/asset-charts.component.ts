@@ -37,6 +37,8 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { StatusPoint } from '../../../../models/status.model';
 import { AssetChartHelper } from '../../../../../core/helpers/asset-chart-helper';
+import { TimeInterval } from '../../../../../core/models/kairos.model';
+import { Milliseconds } from '../../../../../core/store/factory-site/factory-site.model';
 
 @Component({
   selector: 'app-asset-charts',
@@ -79,6 +81,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   statuses: StatusPoint[];
   isStatus: boolean;
+  selectedTimeInterval: TimeInterval;
 
   public thresholdColors = [
     { backgroundColor: '#fceace', borderColor: '#f5b352' },
@@ -114,7 +117,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
         switch (this.options) {
           case 'current':
             this.flushData();
-            this.loadNewData();
+            this.loadNewCurrentData();
             break;
           case '1hour':
             this.flushData();
@@ -150,16 +153,23 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       }
     } else {
       this.initialized = true;
-      this.loadNewData();
+      this.loadNewCurrentData();
     }
   }
 
   public loadHistoricData(maxPoints: number, useDate: boolean, secondsInPast?: number): void {
     if (useDate) {
-      const startDate = moment(this.startDate).valueOf();
-      const endDate = moment(this.endDate).add(1, 'days').valueOf();
-      this.latestPoints$ = this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startDate, endDate, maxPoints);
+      const timestampStartMs = moment(this.startDate.toDateString()).valueOf();
+      const timestampEndMs = moment(this.endDate).add(1, 'days').valueOf();
+      this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampEndMs);
+
+      this.latestPoints$ = this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails,
+        this.selectedTimeInterval, maxPoints);
     } else {
+      const timestampNowMs = moment().valueOf();
+      const timestampStartMs = timestampNowMs - secondsInPast * 1000;
+      this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampNowMs);
+
       this.latestPoints$ = this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
     }
     this.latestPoints$.pipe(takeUntil(this.destroy$))
@@ -315,21 +325,26 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.next(true);
   }
 
-  private loadNewData(): void {
+  private loadNewCurrentData(): void {
     let gotFirstPoints = false;
-    let currentTime = moment().valueOf();
-    let startTime = currentTime - 600000;
+
     this.latestPoints$ = timer(0, environment.dataUpdateIntervalMs)
       .pipe(
         switchMap(() => {
-          // If we already received some points, only take points from last 5 seconds.
+          // If we already received some points, only take points from last n (e.g. 5) seconds.
+          const timestampNowMs = moment().valueOf();
           if (gotFirstPoints) {
-            currentTime = moment().valueOf();
-            startTime = currentTime - environment.dataUpdateIntervalMs;
-            return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startTime, currentTime, 1);
+            const timestampStartMs = timestampNowMs - environment.dataUpdateIntervalMs;
+            this.selectedTimeInterval.endMs = timestampNowMs;
+
+            return this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails,
+              new TimeInterval(timestampStartMs, timestampNowMs), 1);
           } else {
+            const timestampStartMs = timestampNowMs - 600000;
+            this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampNowMs);
+
             gotFirstPoints = true;
-            return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startTime, currentTime, 20,
+            return this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails, this.selectedTimeInterval, 20,
               'seconds', 5);
           }
         })
