@@ -14,7 +14,8 @@
  */
 
 import { FieldDetails } from '../store/field-details/field-details.model';
-import { ChartPoint, TimeUnit } from 'chart.js';
+import { ChartPoint } from 'chart.js';
+import { Milliseconds } from '../store/factory-site/factory-site.model';
 
 export class AssetChartHelper {
   public static getYMinMaxByAbsoluteThreshold(fieldDetails: FieldDetails): { min?: number, max?: number } {
@@ -28,26 +29,21 @@ export class AssetChartHelper {
     }
   }
 
-  public static getMinDateForLineChart(chartPoints: ChartPoint[], axisUnit: TimeUnit): number {
-    let stepSize = 0;
-    if (axisUnit === 'day') {
-      stepSize = 12;
-    } else if (axisUnit === 'hour') {
-      stepSize = 3;
-    }
+  public static getMinTimestampOfPoints(chartPoints: ChartPoint[]): Milliseconds {
     if (chartPoints.length === 0) {
       return Date.now().valueOf();
     }
-    const dates = chartPoints.map(point => point.t as number);
-    const minDate = new Date(Math.min(...dates));
-    return minDate.setHours(minDate.getHours() - stepSize);
+    return Math.min(...this.mapPointsToTimestamps(chartPoints));
   }
 
-  public static getMaxDateForLineChart(chartPoints: ChartPoint[]): number {
+  public static getMaxTimestampOfPoints(chartPoints: ChartPoint[]): Milliseconds {
     if (chartPoints.length === 0) {
       return Date.now().valueOf();
     }
-    const dates = chartPoints.map(point => point.t as number);
-    return Math.max(...dates);
+    return Math.max(...this.mapPointsToTimestamps(chartPoints));
+  }
+
+  private static mapPointsToTimestamps(chartPoints: ChartPoint[]): Milliseconds[] {
+    return chartPoints.map(point => point.t as Milliseconds);
   }
 }

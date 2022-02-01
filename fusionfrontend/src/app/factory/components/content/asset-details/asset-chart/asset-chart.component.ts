@@ -70,8 +70,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   loadedEvent = new EventEmitter<void>();
 
-  readonly STATUS_MAX_POINTS = 100000;
-
   name: string;
   initialized = false;
   currentNumberOfPoints = 0;
@@ -96,6 +94,14 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   public lineChartType = 'line';
   public lineChartPlugins = [pluginAnnotations];
 
+  private readonly STATUS_MAX_POINTS = 100000;
+  private readonly MAX_POINTS_CURRENT = 150;
+  private readonly AXIS_STEP_SIZE_SECONDS = 15;
+  private readonly AXIS_STEP_SIZE_MINUTES = 5;
+  private readonly AXIS_STEP_SIZE_MINUTES_FEW = 1;
+  private readonly AXIS_STEP_SIZE_HOURS = 6;
+  private readonly AXIS_STEP_SIZE_DAYS = 1;
+
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
   constructor(private oispService: OispService) {
@@ -108,7 +114,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.lineChartData[0].label = this.fieldDetails.description;
-    this.initLineChartOptions();
+    this.updateLineChartOptions();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -176,7 +182,6 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(
         points => {
           this.updateChart(points);
-          this.initLineChartOptions();
         }
       );
   }
@@ -188,16 +193,26 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       const dateOfPoint: moment.Moment = moment(point.ts);
       data.push({ y: point.value, t: dateOfPoint });
       this.lineChartLabels.push(dateOfPoint.toISOString());
+
+      this.limitPointCountOfCurrentData(points.length, data);
     });
 
     if (this.isStatus) {
       this.updateStatusPoints();
     } else {
       this.updateThresholds(points);
+      this.updateLineChartOptions();
       this.chart.update();
     }
 
     this.loadedEvent.emit();
+  }
+
+  private limitPointCountOfCurrentData(newPointsCount: number, data: ChartPoint[]): void {
+    if (newPointsCount === 1 && data.length > this.MAX_POINTS_CURRENT) {
+      data.shift();
+      this.currentNumberOfPoints -= 1;
+    }
   }
 
   ngOnDestroy() {
@@ -205,19 +220,40 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
-  private initLineChartOptions(): void {
-    const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
-    let minDate = AssetChartHelper.getMinDateForLineChart(this.lineChartData[0].data as ChartPoint[], null);
-    const maxDate = AssetChartHelper.getMaxDateForLineChart(this.lineChartData[0].data as ChartPoint[]);
+  public calculateXAxisUnitAndStep(startTimestampMs: Milliseconds, endTimestampMs: Milliseconds):
+    { xAxisUnit: TimeUnit, xAxisStepSize: number } {
+    const minuteInMilliseconds = 60 * 1000;
+    const hourInMilliseconds = 60 * 60 * 1000;
+    const dayInMilliseconds = 24 * 60 * 60 * 1000;
 
-    const dayInMillisecs = 24 * 60 * 60 * 1000;
-    let xAxisStepSize = 6;
+    let xAxisStepSize =  this.AXIS_STEP_SIZE_HOURS;
     let xAxisUnit: TimeUnit = 'hour';
-    if (maxDate - minDate > 5 * dayInMillisecs) {
-      xAxisUnit = 'day';
-      xAxisStepSize = 1;
+    if (endTimestampMs - startTimestampMs < 5 * minuteInMilliseconds) {
+      xAxisUnit = 'second';
+      xAxisStepSize = this.AXIS_STEP_SIZE_SECONDS;
     }
-    minDate = AssetChartHelper.getMinDateForLineChart(this.lineChartData[0].data as ChartPoint[], xAxisUnit);
+    else if (endTimestampMs - startTimestampMs < 0.5 * hourInMilliseconds) {
+      xAxisUnit = 'minute';
+      xAxisStepSize = this.AXIS_STEP_SIZE_MINUTES_FEW;
+    }
+    else if (endTimestampMs - startTimestampMs < 2 * hourInMilliseconds) {
+      xAxisUnit = 'minute';
+      xAxisStepSize = this.AXIS_STEP_SIZE_MINUTES;
+    }
+    else if (endTimestampMs - startTimestampMs > 5 * dayInMilliseconds) {
+      xAxisUnit = 'day';
+      xAxisStepSize = this.AXIS_STEP_SIZE_DAYS;
+    }
+
+    return { xAxisUnit, xAxisStepSize };
+  }
+
+  private updateLineChartOptions(): void {
+    const startTimestampMs = AssetChartHelper.getMinTimestampOfPoints(this.lineChartData[0].data as ChartPoint[]);
+    const endTimestampMs = AssetChartHelper.getMaxTimestampOfPoints(this.lineChartData[0].data as ChartPoint[]);
+    const xAxisOptions = this.calculateXAxisUnitAndStep(startTimestampMs, endTimestampMs);
+
+    const minMaxYAxis = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
 
     const scales: ChartScales | LinearScale = {
       xAxes: [{
@@ -226,9 +262,11 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
         time: {
           parser: 'MM/DD/YYYY HH:mm',
           tooltipFormat: 'll HH:mm',
-          unit: xAxisUnit,
-          unitStepSize: xAxisStepSize,
+          unit: xAxisOptions.xAxisUnit,
+          unitStepSize: xAxisOptions.xAxisStepSize,
           displayFormats: {
+            second: 'HH:mm:ss',
+            minute: 'HH:mm',
             hour: 'MM/DD/YYYY HH:mm',
             day: 'MM/DD/YYYY HH:mm'
           },
@@ -238,7 +276,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
           maxRotation: 0,
           minRotation: 0,
           maxTicksLimit: 10,
-          min: minDate,
+          min: startTimestampMs
         },
       }],
       yAxes: [
@@ -262,6 +300,9 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       responsive: true,
       maintainAspectRatio: false,
       scales,
+      animation: {
+        duration: 0
+      },
       elements: {
         line: {
           borderWidth: 1
