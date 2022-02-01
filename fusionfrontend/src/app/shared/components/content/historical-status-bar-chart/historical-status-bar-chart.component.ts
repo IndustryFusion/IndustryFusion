@@ -56,17 +56,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
       for (const status of statuses) {
         const timeDifferenceMs = status.time.valueOf() - prevTime.valueOf();
-
-        this.addMultipleStatusesIfGap(additionalStatuses, timeDifferenceMs, prevTime);
-        if (timeDifferenceMs > environment.assetStatusSampleRateMs * 2) {
-          for (let i = 1; i <= Math.floor(timeDifferenceMs / environment.assetStatusSampleRateMs - 1); i++) {
-            additionalStatuses.push({
-              status: OispDeviceStatus.OFFLINE,
-              time: moment(prevTime.valueOf() + environment.assetStatusSampleRateMs * i) }
-            );
-          }
-        }
-
+        this.addMultipleOfflineStatusesIfGap(additionalStatuses, timeDifferenceMs, prevTime);
         prevTime = status.time;
       }
 
@@ -79,9 +69,9 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     return statuses;
   }
 
-  private static addMultipleStatusesIfGap(additionalStatuses: StatusPoint[],
-                                          timeDifferenceMs: Milliseconds,
-                                          prevTime: moment.Moment): void {
+  private static addMultipleOfflineStatusesIfGap(additionalStatuses: StatusPoint[],
+                                                 timeDifferenceMs: Milliseconds,
+                                                 prevTime: moment.Moment): void {
     if (timeDifferenceMs > environment.assetStatusSampleRateMs * 2) {
       for (let i = 1; i <= Math.floor(timeDifferenceMs / environment.assetStatusSampleRateMs - 1); i++) {
         additionalStatuses.push({
@@ -207,30 +197,38 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
 
   private updateChartData(statuses: StatusPoint[]) {
     this.stackedData.datasets = [];
-    if (statuses && statuses.length > 0) {
-      statuses = HistoricalStatusBarChartComponent.fillOfflineGapsInBetween(statuses);
+
+    if (statuses) {
       statuses = this.fillOfflineGapsAtBoundaries(statuses);
+      if (statuses.length > 0) {
+        statuses = HistoricalStatusBarChartComponent.fillOfflineGapsInBetween(statuses);
 
-      let aggregatedStatuses: StatusPoint[] = statuses;
-      if (statuses.length > this.START_GROUPING_DATASET_COUNT) {
-        const groupSize = Math.floor(statuses.length / this.MAX_DATASETS);
-        aggregatedStatuses = this.aggregateStatuses(statuses, groupSize);
+        let aggregatedStatuses: StatusPoint[] = statuses;
+        if (statuses.length > this.START_GROUPING_DATASET_COUNT) {
+          const groupSize = Math.round(statuses.length / this.MAX_DATASETS);
+          aggregatedStatuses = this.aggregateStatuses(statuses, groupSize);
+        }
+
+        this.addDatasetsForAggregatedStatuses(aggregatedStatuses);
       }
-
-      this.addDatasetsForAggregatedStatuses(aggregatedStatuses);
     }
   }
 
   private fillOfflineGapsAtBoundaries(statuses: StatusPoint[]): StatusPoint[] {
-    if (statuses && statuses.length > 0) {
+    if (statuses && this.timeInterval) {
       const additionalStatuses: StatusPoint[] = [];
-      const timeDifferenceToStartMs = statuses[0].time.valueOf() - this.timeInterval.startMs;
-      HistoricalStatusBarChartComponent.addMultipleStatusesIfGap(additionalStatuses,
-        timeDifferenceToStartMs, moment(this.timeInterval.startMs));
 
-      const timeDifferenceToEndMs = this.timeInterval.endMs - statuses[statuses.length - 1].time.valueOf();
-      HistoricalStatusBarChartComponent.addMultipleStatusesIfGap(additionalStatuses,
-        timeDifferenceToEndMs, statuses[statuses.length - 1].time);
+      if (statuses.length > 0) {
+        const timeDifferenceToStartMs = statuses[0].time.valueOf() - this.timeInterval.startMs;
+        HistoricalStatusBarChartComponent.addMultipleOfflineStatusesIfGap(additionalStatuses,
+          timeDifferenceToStartMs, moment(this.timeInterval.startMs));
+
+        const timeDifferenceToEndMs = this.timeInterval.endMs - statuses[statuses.length - 1].time.valueOf();
+        HistoricalStatusBarChartComponent.addMultipleOfflineStatusesIfGap(additionalStatuses,
+          timeDifferenceToEndMs, statuses[statuses.length - 1].time);
+      } else {
+       this.addOfflineStatusesForFullGap(additionalStatuses);
+      }
 
       if (additionalStatuses.length > 0) {
         statuses = statuses.concat(additionalStatuses);
@@ -239,6 +237,12 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
     }
 
     return statuses;
+  }
+
+  private addOfflineStatusesForFullGap(additionalStatuses: StatusPoint[]) {
+    const timeDifferenceToStartMs = this.timeInterval.endMs - this.timeInterval.startMs;
+    HistoricalStatusBarChartComponent.addMultipleOfflineStatusesIfGap(additionalStatuses,
+      timeDifferenceToStartMs, moment(this.timeInterval.startMs));
   }
 
   private addDatasetsForAggregatedStatuses(aggregatedStatuses: StatusPoint[]) {

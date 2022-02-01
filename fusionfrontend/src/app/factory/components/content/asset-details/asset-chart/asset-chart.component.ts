@@ -39,6 +39,7 @@ import { StatusPoint } from '../../../../models/status.model';
 import { AssetChartHelper } from '../../../../../core/helpers/asset-chart-helper';
 import { TimeInterval } from '../../../../../core/models/kairos.model';
 import { AssetChartInterval } from '../../../../models/asset-chart-interval.model';
+import { Milliseconds } from '../../../../../core/store/factory-site/factory-site.model';
 
 @Component({
   selector: 'app-asset-chart',
@@ -62,13 +63,13 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
   clickedOk: boolean;
 
   @Input()
-  startDate: Date = null;
+  startDate: Date = undefined;
 
   @Input()
-  endDate: Date = null;
+  endDate: Date = undefined;
 
   @Input()
-  description: string = null;
+  description: string = undefined;
 
   @Input()
   showPointCount = true;
@@ -104,7 +105,7 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
   public lineChartPlugins = [pluginAnnotations];
 
   private readonly STATUS_MAX_POINTS = 100000;
-  private readonly MAX_POINTS_CURRENT = 150;
+  private readonly MAX_POINTS_CURRENT = 120;
 
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
@@ -112,10 +113,7 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.isStatus = this.fieldDetails.externalName === 'status';
-    if (this.isStatus) {
-      this.maxPoints = this.STATUS_MAX_POINTS;
-    }
+    this.updateMaxPointsIfStatus();
 
     if (!this.description) {
       this.description = this.fieldDetails.description;
@@ -125,9 +123,20 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
     this.updateLineChartOptions();
   }
 
+  private updateMaxPointsIfStatus() {
+    this.isStatus = this.fieldDetails.externalName === 'status';
+    if (this.isStatus) {
+      this.maxPoints = this.STATUS_MAX_POINTS;
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges) {
+    if (!this.maxPoints) {
+      this.updateMaxPointsIfStatus();
+    }
+
     if (changes.interval || changes.maxPoints) {
-      switch (this.interval) {
+       switch (this.interval) {
         case AssetChartInterval.CURRENT:
           this.flushData();
           this.loadCurrentData();
@@ -223,7 +232,11 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
     const timestampStartMs = timestampNowMs - secondsInPast * 1000;
     this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampNowMs);
 
-    this.latestPoints$ = this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
+    if (this.isStatus || !maxPoints) {
+      this.latestPoints$ = this.oispService.getValuesOfSingleFieldWithoutAggregation(this.asset, this.fieldDetails, secondsInPast);
+    } else {
+      this.latestPoints$ = this.oispService.getValuesOfSingleFieldWithAggregation(this.asset, this.fieldDetails, secondsInPast, maxPoints);
+    }
     this.subscribeToLatestPoints();
   }
 
@@ -244,7 +257,8 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
       data.push({ y: point.value, t: dateOfPoint });
       this.lineChartLabels.push(dateOfPoint.toISOString());
 
-      this.limitPointCountOfCurrentData(points.length, data);
+      const removedChartPoint = this.limitPointCountOfCurrentData(points.length, data);
+      this.updateSelectedTimeInterval(points, data, removedChartPoint);
     });
 
     if (this.isStatus) {
@@ -258,10 +272,21 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
     this.loadedEvent.emit();
   }
 
-  private limitPointCountOfCurrentData(newPointsCount: number, data: ChartPoint[]): void {
+  private limitPointCountOfCurrentData(newPointsCount: number, data: ChartPoint[]): ChartPoint {
     if (newPointsCount === 1 && data.length > this.MAX_POINTS_CURRENT) {
-      data.shift();
       this.currentNumberOfPoints -= 1;
+      return data.shift();
+    }
+  }
+
+  private updateSelectedTimeInterval(points: PointWithId[], data: ChartPoint[], removedChartPoint: ChartPoint): void {
+    if (removedChartPoint && data.length > 0) {
+      const diffFirstToRemovedPointMs = (data[0].t as Milliseconds) - (removedChartPoint.t as Milliseconds);
+      this.selectedTimeInterval.startMs += diffFirstToRemovedPointMs;
+    }
+    if (points.length === 1 && data.length > 0) {
+      const diffNewToSecondLastPoint = moment(points[0].ts).valueOf() - (data[data.length - 2].t as Milliseconds);
+      this.selectedTimeInterval.endMs += diffNewToSecondLastPoint;
     }
   }
 

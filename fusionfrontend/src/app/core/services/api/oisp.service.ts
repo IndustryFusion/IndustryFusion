@@ -115,38 +115,42 @@ export class OispService {
     return this.getOispPoints(path, request, true, useFieldNameAsId);
   }
 
-  getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: number): Observable<PointWithId[]> {
+  getValuesOfSingleFieldWithoutAggregation(asset: Asset, field: FieldDetails, secondsInPast: number): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
-    let oispPoints$: Observable<PointWithId[]>;
-    if (!maxPoints) {
-      let metrics: Metrics;
-      metrics = ({
-        id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
-        op: 'none'
-      });
-      const request: OispRequest = {
-        from: -secondsInPast,
-        targetFilter: { deviceList: [asset.externalName] },
-        metrics: [metrics]
-      };
-      oispPoints$ = this.getOispPoints(path, request, false);
-    } else {
-      let metricsWithAggregation: MetricsWithAggregation;
-      const myAggregator: Aggregator = ({ name: 'avg' });
-      metricsWithAggregation = ({
-        id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
-          field.externalName),
-        op: 'none', aggregator: myAggregator
-      });
-      const request: OispRequestWithAggregation = {
-        from: -secondsInPast,
-        maxItems: maxPoints,
-        targetFilter: { deviceList: [asset.externalName] },
-        metrics: [metricsWithAggregation]
-      };
-      oispPoints$ = this.getOispPoints(path, request, false);
-    }
-    return oispPoints$;
+
+    const metrics: Metrics = ({
+      id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
+      op: 'none',
+    });
+
+    const request: OispRequest = {
+      from: -secondsInPast,
+      maxItems: 10000000,
+      targetFilter: { deviceList: [asset.externalName] },
+      metrics: [metrics],
+    };
+
+    return this.getOispPoints(path, request, false);
+  }
+
+  getValuesOfSingleFieldWithAggregation(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints: number): Observable<PointWithId[]> {
+    const path = `accounts/${this.getOispAccountId()}/data/search`;
+
+    const averageAggregator: Aggregator = ({ name: 'avg' });
+    const metricsWithAggregation: MetricsWithAggregation = ({
+      id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
+        field.externalName),
+      op: 'none', aggregator: averageAggregator
+    });
+
+    const request: OispRequestWithAggregation = {
+      from: -secondsInPast,
+      maxItems: maxPoints,
+      targetFilter: { deviceList: [asset.externalName] },
+      metrics: [metricsWithAggregation]
+    };
+
+    return this.getOispPoints(path, request, false);
   }
 
   getValuesOfSingleFieldByInterval(asset: Asset,

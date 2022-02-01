@@ -116,7 +116,7 @@ export class AssetTableComponent implements OnInit, OnChanges, OnDestroy {
             } else {
               gotFirstPoints = true;
             }
-            return this.oispService.getValuesOfSingleField(this.asset, this.field, secondsInPast);
+            return this.oispService.getValuesOfSingleFieldWithoutAggregation(this.asset, this.field, secondsInPast);
           })
         );
 
