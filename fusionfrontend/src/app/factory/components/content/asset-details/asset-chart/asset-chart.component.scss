@@ -22,6 +22,11 @@
   padding: 5px 5px 5px 50px;
   margin: 50px 20px;
 
+  &.full-width {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .chart-wrapper{
     border: 0;
     height: 20%;

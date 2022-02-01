@@ -63,10 +63,19 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
   clickedOk: boolean;
 
   @Input()
-  startDate: Date;
+  startDate: Date = null;
 
   @Input()
-  endDate: Date;
+  endDate: Date = null;
+
+  @Input()
+  description: string = null;
+
+  @Input()
+  showPointCount = true;
+
+  @Input()
+  noMargin = false;
 
   @Output()
   loadedEvent = new EventEmitter<void>();
@@ -114,44 +123,50 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
       this.maxPoints = this.STATUS_MAX_POINTS;
     }
 
-    this.lineChartData[0].label = this.fieldDetails.description;
+    if (!this.description) {
+      this.description = this.fieldDetails.description;
+    }
+
+    this.lineChartData[0].label = this.description;
     this.updateLineChartOptions();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.initialized) {
-      if (changes.interval || changes.maxPoints) {
-        switch (this.interval) {
-          case AssetChartInterval.CURRENT:
-            this.flushData();
-            this.loadNewCurrentData();
-            break;
-          case AssetChartInterval.ONE_HOUR:
-            this.flushData();
-            this.loadHistoricData(this.maxPoints, false, 3600);
-            break;
-          case AssetChartInterval.ONE_DAY:
-            this.flushData();
-            this.loadHistoricData(this.maxPoints, false, 86400);
-            break;
-          case AssetChartInterval.CUSTOM_DATE:
-            this.flushData();
-            if (changes.maxPoints && this.clickedOk) {
-              this.loadHistoricData(this.maxPoints, true);
-            }
-            break;
-          default:
-            break;
-        }
+    if (changes.interval || changes.maxPoints) {
+      switch (this.interval) {
+        case AssetChartInterval.CURRENT:
+          this.flushData();
+          this.loadCurrentData();
+          break;
+        case AssetChartInterval.ONE_HOUR:
+          this.flushData();
+          this.loadHistoricDataBackwards(this.maxPoints, 3600);
+          break;
+        case AssetChartInterval.ONE_DAY:
+          this.flushData();
+          this.loadHistoricDataBackwards(this.maxPoints, 86400);
+          break;
+        case AssetChartInterval.CUSTOM_DATE:
+          this.flushData();
+          if (changes.maxPoints && this.clickedOk) {
+            this.loadHistoricDataByDates(this.maxPoints);
+          }
+          break;
+        default:
+          break;
       }
+    }
+
+    if (this.initialized) {
       if (changes.startDate || changes.endDate) {
         this.flushData();
       }
+
       if (changes.clickedOk) {
         if (this.clickedOk) {
           switch (this.interval) {
             case AssetChartInterval.CUSTOM_DATE:
-              this.loadHistoricData(this.maxPoints, true);
+              this.loadHistoricDataByDates(this.maxPoints);
               break;
             default:
               break;
@@ -160,25 +175,57 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
       }
     } else {
       this.initialized = true;
-      this.loadNewCurrentData();
     }
   }
 
-  public loadHistoricData(maxPoints: number, useDate: boolean, secondsInPast?: number): void {
-    if (useDate) {
-      const timestampStartMs = moment(this.startDate.toDateString()).valueOf();
-      const timestampEndMs = moment(this.endDate).add(1, 'days').valueOf();
-      this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampEndMs);
+  private loadCurrentData(): void {
+    let gotFirstPoints = false;
 
-      this.latestPoints$ = this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails,
-        this.selectedTimeInterval, maxPoints);
-    } else {
-      const timestampNowMs = moment().valueOf();
-      const timestampStartMs = timestampNowMs - secondsInPast * 1000;
-      this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampNowMs);
+    this.latestPoints$ = timer(0, environment.dataUpdateIntervalMs)
+      .pipe(
+        switchMap(() => {
+          // If we already received some points, only take points from last n (e.g. 5) seconds.
+          const timestampNowMs = moment().valueOf();
+          if (gotFirstPoints) {
+            const timestampStartMs = timestampNowMs - environment.dataUpdateIntervalMs;
+            this.selectedTimeInterval.endMs = timestampNowMs;
 
-      this.latestPoints$ = this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
-    }
+            return this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails,
+              new TimeInterval(timestampStartMs, timestampNowMs), 1);
+          } else {
+            const timestampStartMs = timestampNowMs - 600000;
+            this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampNowMs);
+
+            gotFirstPoints = true;
+            return this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails, this.selectedTimeInterval, 20,
+              'seconds', 5);
+          }
+        })
+      );
+
+    this.subscribeToLatestPoints();
+  }
+
+  private loadHistoricDataByDates(maxPoints: number): void {
+    const timestampStartMs = moment(new Date(this.startDate.toDateString())).valueOf();
+    const timestampEndMs = moment(this.endDate).add(1, 'days').valueOf();
+    this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampEndMs);
+
+    this.latestPoints$ = this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails,
+      this.selectedTimeInterval, maxPoints);
+    this.subscribeToLatestPoints();
+  }
+
+  private loadHistoricDataBackwards(maxPoints: number, secondsInPast: number): void {
+    const timestampNowMs = moment().valueOf();
+    const timestampStartMs = timestampNowMs - secondsInPast * 1000;
+    this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampNowMs);
+
+    this.latestPoints$ = this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
+    this.subscribeToLatestPoints();
+  }
+
+  private subscribeToLatestPoints(): void {
     this.latestPoints$.pipe(takeUntil(this.destroy$))
       .subscribe(
         points => {
@@ -361,43 +408,11 @@ export class AssetChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private flushData(): void {
+    this.statuses = [];
     this.lineChartData[0].data = [];
     this.lineChartLabels = [];
     this.currentNumberOfPoints = 0;
     this.destroy$.next(true);
-  }
-
-  private loadNewCurrentData(): void {
-    let gotFirstPoints = false;
-
-    this.latestPoints$ = timer(0, environment.dataUpdateIntervalMs)
-      .pipe(
-        switchMap(() => {
-          // If we already received some points, only take points from last n (e.g. 5) seconds.
-          const timestampNowMs = moment().valueOf();
-          if (gotFirstPoints) {
-            const timestampStartMs = timestampNowMs - environment.dataUpdateIntervalMs;
-            this.selectedTimeInterval.endMs = timestampNowMs;
-
-            return this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails,
-              new TimeInterval(timestampStartMs, timestampNowMs), 1);
-          } else {
-            const timestampStartMs = timestampNowMs - 600000;
-            this.selectedTimeInterval = new TimeInterval(timestampStartMs, timestampNowMs);
-
-            gotFirstPoints = true;
-            return this.oispService.getValuesOfSingleFieldByInterval(this.asset, this.fieldDetails, this.selectedTimeInterval, 20,
-              'seconds', 5);
-          }
-        })
-      );
-
-    this.latestPoints$.pipe(takeUntil(this.destroy$))
-      .subscribe(
-        points => {
-          this.updateChart(points);
-        }
-      );
   }
 
   private updateThresholds(newPoints: PointWithId[]): void {
