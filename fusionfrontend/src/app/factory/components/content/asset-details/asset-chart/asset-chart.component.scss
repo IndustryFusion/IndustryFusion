@@ -18,9 +18,9 @@
 .chart-container {
   background: $basic-white;
   border: 0;
-  border-radius: 15px;
-  padding: 5px 5px 5px 50px;
-  margin: 50px 20px;
+  border-radius: 0.75rem;
+  padding: 0.25rem 0.25rem 0.25rem 2.5rem;
+  margin: 2.5rem 1rem;
 
   &.full-width {
     margin-left: 0;
@@ -28,14 +28,14 @@
   }
 
   &.small-margin {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
   .chart-wrapper{
     border: 0;
     height: 20%;
-    margin: 20px 20px;
+    margin: 1rem 1rem;
     padding: 0;
   }
 }

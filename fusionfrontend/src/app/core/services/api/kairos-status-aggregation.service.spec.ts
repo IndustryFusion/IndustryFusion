@@ -48,11 +48,11 @@ describe('KairosStatusAggregationService', () => {
     shifts.push(new Shift('Dayshift',      13 * 60, 21 * 60 ));
     shifts.push(new Shift('Night shift',    21 * 60, 4 * 60 + 30 ));
 
-    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
+    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalFromDateAndShifts(dateToday, shifts);
+    const intervals = KairosStatusAggregationService.getIntervalsFromShiftsRespectingDayChange(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes,
-      ShiftsHelper.getCorrectedEndMinutes(shifts[2]))];
+      ShiftsHelper.getEndMinutesRespectingDayChange(shifts[2]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });
@@ -61,11 +61,11 @@ describe('KairosStatusAggregationService', () => {
     shifts.push(new Shift('Shift 1', 5 * 60, 13 * 60 + 30 ));
     shifts.push(new Shift('Shift 2',    21 * 60, 4 * 60 + 30 ));
 
-    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
+    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalFromDateAndShifts(dateToday, shifts);
+    const intervals = KairosStatusAggregationService.getIntervalsFromShiftsRespectingDayChange(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes, shifts[0].endMinutes),
-      new TimeInterval(shifts[1].startMinutes, ShiftsHelper.getCorrectedEndMinutes(shifts[1]))];
+      new TimeInterval(shifts[1].startMinutes, ShiftsHelper.getEndMinutesRespectingDayChange(shifts[1]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });
@@ -75,11 +75,11 @@ describe('KairosStatusAggregationService', () => {
     shifts.push(new Shift('Shift 2',    15 * 60, 22 * 60 ));
     shifts.push(new Shift('Shift 3',    21 * 60, 6 * 60 ));
 
-    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
+    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalFromDateAndShifts(dateToday, shifts);
+    const intervals = KairosStatusAggregationService.getIntervalsFromShiftsRespectingDayChange(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes, shifts[0].endMinutes),
-      new TimeInterval(shifts[1].startMinutes, ShiftsHelper.getCorrectedEndMinutes(shifts[2]))];
+      new TimeInterval(shifts[1].startMinutes, ShiftsHelper.getEndMinutesRespectingDayChange(shifts[2]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });
@@ -89,12 +89,12 @@ describe('KairosStatusAggregationService', () => {
     shifts.push(new Shift('Shift 2',      13 * 60, 20 * 60 ));
     shifts.push(new Shift('Shift 3',    21 * 60, 4 * 60 ));
 
-    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(dateToday, shifts);
-    const intervals = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(dateToday, boundingInterval, shifts);
+    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalFromDateAndShifts(dateToday, shifts);
+    const intervals = KairosStatusAggregationService.getIntervalsFromShiftsRespectingDayChange(dateToday, boundingInterval, shifts);
 
     const expectedIntervals: TimeInterval[] = [new TimeInterval(shifts[0].startMinutes, shifts[0].endMinutes),
       new TimeInterval(shifts[1].startMinutes, shifts[1].endMinutes),
-      new TimeInterval(shifts[2].startMinutes, ShiftsHelper.getCorrectedEndMinutes(shifts[2]))];
+      new TimeInterval(shifts[2].startMinutes, ShiftsHelper.getEndMinutesRespectingDayChange(shifts[2]))];
 
     expect(intervals).toEqual(expectedIntervals);
   });
