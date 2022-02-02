@@ -13,17 +13,19 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<div class="chart-container">
+<div [ngClass]="'chart-container' + (noMargin ? ' full-width small-margin' : '')">
 
   <div class="table-header" >
-    <h4 style="font-weight: bold">{{fieldDetails.description}} </h4>
-     {{currentNumberOfPoints | germanNumber}} {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_CHARTS.POINTS' | translate }}
+    <h4 style="font-weight: bold">{{description}} </h4>
+    <ng-container *ngIf="showPointCount">
+      {{ currentNumberOfPoints | germanNumber }} {{ 'APP.FACTORY.ASSET_DETAILS.ASSET_CHARTS.POINTS' | translate }}
+    </ng-container>
   </div>
 
   <div class="chart-wrapper">
     <div class="flex-item">
       <div style="display: block" class="actual-chart">
-        <app-historical-status-bar-chart *ngIf="isStatus && statuses != null" [statuses]="statuses">
+        <app-historical-status-bar-chart *ngIf="isStatus && statuses != null" [statuses]="statuses" [timeInterval]="selectedTimeInterval">
         </app-historical-status-bar-chart>
 
         <canvas *ngIf="isStatus === false" baseChart style="height: 300px"

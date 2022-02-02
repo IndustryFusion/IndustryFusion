@@ -18,12 +18,15 @@ import { AssetPerformanceViewMode } from '../AssetPerformanceViewMode';
 import { RouteHelpers } from '../../../../../../core/helpers/route-helpers';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FactoryResolver } from '../../../../../services/factory-resolver.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import {
   FactoryAssetDetailsWithFields
 } from '../../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { StatusHours } from '../../../../../../core/models/kairos-status-aggregation.model';
 import { SegmentationType } from '../../../../../../shared/models/segmentation-type.model';
+import { KairosStatusAggregationService } from '../../../../../../core/services/api/kairos-status-aggregation.service';
+import { FieldDetails } from '../../../../../../core/store/field-details/field-details.model';
+import { AssetChartInterval } from '../../../../../models/asset-chart-interval.model';
 
 
 @Component({
@@ -38,20 +41,29 @@ export class AssetPerformanceViewComponent implements OnInit {
 
   isLoaded = false;
   viewMode: AssetPerformanceViewMode;
-  assetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields>;
+  statusField: FieldDetails;
+  assetDetailsWithFields: FactoryAssetDetailsWithFields;
   aggregatedStatusHoursToday$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
 
   SegmentationType = SegmentationType;
+  AssetChartInterval = AssetChartInterval;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private factoryResolver: FactoryResolver) {
   }
 
+  private static getStatusField(asset: FactoryAssetDetailsWithFields): FieldDetails {
+    return KairosStatusAggregationService.getStatusFieldOfAsset(asset);
+  }
+
   ngOnInit() {
     this.factoryResolver.resolve(this.activatedRoute);
     this.initViewMode();
-    this.assetDetailsWithFields$ = this.factoryResolver.assetWithDetailsAndFields$;
+    this.factoryResolver.assetWithDetailsAndFields$.subscribe(assetWithFields => {
+      this.assetDetailsWithFields = assetWithFields;
+      this.statusField = AssetPerformanceViewComponent.getStatusField(assetWithFields);
+    });
   }
 
   private initViewMode(): void {

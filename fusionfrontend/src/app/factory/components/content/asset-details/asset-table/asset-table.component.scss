@@ -13,24 +13,18 @@
  * under the License.
  */
 
-@import 'src/styles/base/typography';
-@import 'src/styles/abstract/variables';
-@import "../asset-performance.component";
-@import "src/app/dashboards/components/content/equipment-efficiency-overview/equipment-efficiency-overview.component";
+@import "abstract/variables";
 
-.aggregated-section {
-  width: 32%;
+.card {
+  background: $light-grey;
+  border: 0;
+  box-shadow: none;
 
-  &.status {
-    margin-left: 2%;
+  .data-table-header {
+   font-weight: bold;
   }
-}
 
-.aggregated-stats {
-  margin-top: 1rem;
-}
-
-.full-width {
-  width: 100%;
-  margin-right: 0;
+  .data-table {
+    margin: 1rem 1rem;
+  }
 }

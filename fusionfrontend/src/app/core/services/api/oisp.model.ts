@@ -18,10 +18,10 @@ export class OispRequest {
   to?: number;
   targetFilter: Filter;
   metrics: Metrics[];
+  maxItems?: number;
 }
 
 export class OispRequestWithAggregation extends OispRequest {
-  maxItems?: number;
 }
 
 export class Filter {

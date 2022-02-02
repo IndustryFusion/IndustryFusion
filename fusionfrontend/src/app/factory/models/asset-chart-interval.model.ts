@@ -13,18 +13,10 @@
  * under the License.
  */
 
-@import "abstract/variables";
-
-.card{
-  background: $light-grey;
-  border: 0px;
-  box-shadow: none;
-
-  .data-table-header {
-   font-weight: bold;
-  }
-
-  .data-table {
-    margin: 20px 20px;
-  }
+export enum AssetChartInterval {
+  CURRENT,
+  TEN_MINUTES,
+  ONE_HOUR,
+  ONE_DAY,
+  CUSTOM_DATE
 }

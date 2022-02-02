@@ -565,7 +565,8 @@
             "CUSTOM_DATE": "Benutzerdefiniertes Datum",
             "24_H_PERFORMANCE_SUMMARY": "24 Stunden Performance-Übersicht",
             "3_DAYS_PERFORMANCE_SUMMARY": "3 Tage Performance-Übersicht",
-            "3_SHIFTS_PERFORMANCE_SUMMARY": "3 Schichten Performance-Übersicht"
+            "3_SHIFTS_PERFORMANCE_SUMMARY": "3 Schichten Performance-Übersicht",
+            "24_H_STATUS_TIMELINE": "24 Stunden Status-Zeitleiste"
           }
         },
         "ASSET_GRID_PAGE": {

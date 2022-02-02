@@ -25,7 +25,7 @@ under the License.
     ></p-selectButton>
   </div>
 
-  <div class="p-grid aggregated-stats">
+  <div class="p-grid aggregated-stats first-row">
     <app-equipment-efficiency-overview-donut-chart class="aggregated-section"
                                                    title="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.24_H_PERFORMANCE_SUMMARY' | translate }}"
                                                    [aggregatedStatusHours$]="aggregatedStatusHoursToday$">
@@ -33,7 +33,7 @@ under the License.
 
     <div class="aggregated-section status">
       <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_DAYS_PERFORMANCE_SUMMARY' | translate }}</label>
-      <app-status-performance-bar-chart [assetDetailsWithFields]="(assetDetailsWithFields$ | async)"
+      <app-status-performance-bar-chart [assetDetailsWithFields]="assetDetailsWithFields"
                                         [segmentationType]="SegmentationType.DAYS" [segmentationCount]="3"
                                         (loaded)="onLoaded()"
                                         (statusHoursOfTodayAggregated)="onStatusHoursOfTodayAggregated($event)">
@@ -42,10 +42,17 @@ under the License.
 
     <div class="aggregated-section status">
       <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_SHIFTS_PERFORMANCE_SUMMARY' | translate }}</label>
-      <app-status-performance-bar-chart class="wide-chart" [assetDetailsWithFields]="(assetDetailsWithFields$ | async)"
+      <app-status-performance-bar-chart class="wide-chart" [assetDetailsWithFields]="assetDetailsWithFields"
                                         [segmentationType]="SegmentationType.SHIFTS" [segmentationCount]="3"
                                         (loaded)="onLoaded()">
       </app-status-performance-bar-chart>
     </div>
+  </div>
+
+  <div class="p-grid aggregated-stats" *ngIf="assetDetailsWithFields != null && statusField != null">
+    <app-asset-chart id="metric-{{statusField.externalName}}" class="full-width"
+                     [asset]="assetDetailsWithFields" [clickedOk]="true" [showPointCount]="false" [noMargin]="true"
+                     [description]="'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.24_H_STATUS_TIMELINE' | translate"
+                     [fieldDetails]="statusField" [interval]="AssetChartInterval.ONE_DAY"></app-asset-chart>
   </div>
 </div>

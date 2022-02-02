@@ -46,7 +46,7 @@ export class KairosStatusAggregationService {
     return asset.fields.find(field => field.externalName === 'status');
   }
 
-  public static getBoundingIntervalOfShiftsOfDate(date: Date, selectedShifts: Shift[]): TimeInterval {
+  public static getBoundingIntervalFromDateAndShifts(date: Date, selectedShifts: Shift[]): TimeInterval {
     if (!date || !selectedShifts) {
       throw new Error('[kairos status aggregation]: Invalid arguments');
     }
@@ -60,7 +60,7 @@ export class KairosStatusAggregationService {
   }
 
   // see Tests in spec.ts
-  public static getCorrectedIntervalsOfShifts(date: Date, boundingInterval: TimeInterval, shifts: Shift[]): TimeInterval[] {
+  public static getIntervalsFromShiftsRespectingDayChange(date: Date, boundingInterval: TimeInterval, shifts: Shift[]): TimeInterval[] {
     const intervals: TimeInterval[] = [];
     if (shifts != null && shifts.length > 1) {
       const dayStartTimestampMs: Milliseconds = new Date(date.toDateString()).valueOf();
@@ -68,7 +68,7 @@ export class KairosStatusAggregationService {
 
       let intervalStartMs = this.convertMinutesToMilliseconds(shiftSorted[0].startMinutes);
       for (let i = 0; i < shiftSorted.length - 1; i++) {
-        const correctedIntervalEndMs = this.convertMinutesToMilliseconds(ShiftsHelper.getCorrectedEndMinutes(shiftSorted[i]));
+        const correctedIntervalEndMs = this.convertMinutesToMilliseconds(ShiftsHelper.getEndMinutesRespectingDayChange(shiftSorted[i]));
         const isGapToNextShift = shiftSorted[i + 1].startMinutes > correctedIntervalEndMs;
         if (isGapToNextShift) {
           intervals.push(new TimeInterval(dayStartTimestampMs + intervalStartMs,
@@ -78,7 +78,7 @@ export class KairosStatusAggregationService {
       }
 
       const correctedLastIntervalEndMs = this.convertMinutesToMilliseconds(
-        ShiftsHelper.getCorrectedEndMinutes(shiftSorted[shiftSorted.length - 1])
+        ShiftsHelper.getEndMinutesRespectingDayChange(shiftSorted[shiftSorted.length - 1])
       );
       intervals.push(new TimeInterval(dayStartTimestampMs + intervalStartMs,
         dayStartTimestampMs + correctedLastIntervalEndMs + this.INCLUDING_FIRST_MINUTE_MS));
@@ -120,8 +120,8 @@ export class KairosStatusAggregationService {
       return KairosStatusAggregationService.isDateToday(date) ? dayUntilNowTimestampMs : dayEndTimestampMs;
     }
 
-    const lastShift = ShiftsHelper.sortShiftsUsingCorrectedEndDesc(shifts)[0];
-    return dayStartTimestampMs + this.convertMinutesToMilliseconds(ShiftsHelper.getCorrectedEndMinutes(lastShift));
+    const lastShift = ShiftsHelper.sortShiftsUsingEndRespectingDayChangeDesc(shifts)[0];
+    return dayStartTimestampMs + this.convertMinutesToMilliseconds(ShiftsHelper.getEndMinutesRespectingDayChange(lastShift));
   }
 
   private static convertMinutesToMilliseconds(minutes: Minutes): Milliseconds {
@@ -132,8 +132,9 @@ export class KairosStatusAggregationService {
                                      date: Date,
                                      selectedShifts: Shift[]): Observable<StatusHours[]> {
 
-    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalOfShiftsOfDate(date, selectedShifts);
-    const intervals: TimeInterval[] = KairosStatusAggregationService.getCorrectedIntervalsOfShifts(date, boundingInterval, selectedShifts);
+    const boundingInterval = KairosStatusAggregationService.getBoundingIntervalFromDateAndShifts(date, selectedShifts);
+    const intervals: TimeInterval[] = KairosStatusAggregationService.getIntervalsFromShiftsRespectingDayChange(date,
+      boundingInterval, selectedShifts);
 
     const intervalResults$: Observable<StatusHours[]>[] = [];
     for (const interval of intervals) {

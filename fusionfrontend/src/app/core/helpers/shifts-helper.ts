@@ -38,16 +38,22 @@ export class ShiftsHelper {
     return shifts.sort((shift1, shift2) => shift1.startMinutes - shift2.startMinutes);
   }
 
-  public static sortShiftsUsingCorrectedEndDesc(shifts: Shift[]) {
+  /**
+   * Sorts the shifts taking into account the shifts across days.
+   *
+   * @param shifts an array of shifts
+   * @return array of shifts, where the first index contains the last finished shift.
+   */
+  public static sortShiftsUsingEndRespectingDayChangeDesc(shifts: Shift[]) {
     return shifts.sort((shift1, shift2) =>
-      this.getCorrectedEndMinutes(shift2) - this.getCorrectedEndMinutes(shift1));
+      this.getEndMinutesRespectingDayChange(shift2) - this.getEndMinutesRespectingDayChange(shift1));
   }
 
   public static sortShiftsUsingInsertionOrder(shifts: Shift[]) {
     return shifts.sort((shift1, shift2) => shift1.indexInArray - shift2.indexInArray);
   }
 
-  public static getCorrectedEndMinutes(shift: Shift) {
+  public static getEndMinutesRespectingDayChange(shift: Shift) {
     const isShiftExceedingMidnight = shift.endMinutes < shift.startMinutes;
     return shift.endMinutes + (isShiftExceedingMidnight ? this.MINUTES_PER_DAY : 0);
   }
@@ -64,7 +70,7 @@ export class ShiftsHelper {
 
         if (shiftsOfDay.shifts.length > 0) {
           const shiftsCopy = [...shiftsOfDay.shifts];
-          const sortedCompletedShifts = this.sortShiftsUsingCorrectedEndDesc(shiftsCopy)
+          const sortedCompletedShifts = this.sortShiftsUsingEndRespectingDayChangeDesc(shiftsCopy)
             .filter(shift => this.isShiftCompleted(shift, date));
 
           for (const shift of sortedCompletedShifts) {
@@ -84,7 +90,8 @@ export class ShiftsHelper {
   private static isShiftCompleted(shift: Shift, date: Date) {
     const now = new Date(Date.now());
     const dayStartTimestampMs: Milliseconds = new Date(date.toDateString()).valueOf();
-    const endOfShiftTimestampMs: Milliseconds = dayStartTimestampMs + this.convertMinutesToMilliseconds(this.getCorrectedEndMinutes(shift));
+    const endOfShiftTimestampMs: Milliseconds = dayStartTimestampMs +
+      this.convertMinutesToMilliseconds(this.getEndMinutesRespectingDayChange(shift));
 
     return now.valueOf() > endOfShiftTimestampMs;
   }
