@@ -14,12 +14,17 @@
  */
 
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MediaObject, MediaObjectType } from '../../../models/media-object.model';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
+
+interface CachedMediaObject {
+  url: string;
+  mediaObject: MediaObject;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +35,10 @@ export abstract class MediaObjectService {
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+
+  private isCacheEnabled = false;
+  private cachedUrls: string[] = [];
+  private cachedMediaObjects: CachedMediaObject[] = [];
 
   protected constructor(private readonly http: HttpClient) {
   }
@@ -79,6 +88,10 @@ export abstract class MediaObjectService {
     this.mediaTypePrefix = mediaTypePrefix;
   }
 
+  protected enableCache(): void {
+    this.isCacheEnabled = true;
+  }
+
   protected getMediaObjectAsUriSchemeString(companyId: ID,
                                             mediaObjectKey: string,
                                             mediaObjectType: MediaObjectType): Observable<string> {
@@ -97,8 +110,29 @@ export abstract class MediaObjectService {
                            mediaObjectType: MediaObjectType): Observable<MediaObject> {
     const path = `companies/${companyId}/${mediaObjectType}/${MediaObjectService.escapeSlash(mediaObjectKey)}`;
 
+    const cachedMediaObject = this.getCachedImage(path);
+    if (cachedMediaObject) {
+      return of(cachedMediaObject);
+    }
+
     this.setHeaderContentType(mediaObjectKey);
-    return this.http.get<MediaObject>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
+    return this.http.get<MediaObject>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions).pipe(
+      tap((mediaObject: MediaObject) => this.checkAndCacheImage(path, mediaObject))
+    );
+  }
+
+  private getCachedImage(url: string): MediaObject {
+    if (!this.isCacheEnabled) {
+      return null;
+    }
+    return this.cachedMediaObjects.find(image => image.url === url)?.mediaObject;
+  }
+
+  private checkAndCacheImage(url: string, mediaObject: MediaObject): void {
+    if (this.isCacheEnabled && this.cachedUrls.indexOf(url) === -1) {
+      this.cachedMediaObjects.push({ url, mediaObject });
+      this.cachedUrls.push(url);
+    }
   }
 
   protected uploadMediaObject(companyId: ID,

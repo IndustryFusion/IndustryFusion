@@ -33,7 +33,7 @@ import { AssetSeriesDetailsResolver } from '../../../../core/resolvers/asset-ser
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
-import { ImageService } from '../../../../core/services/api/storage/image.service';
+import { CachedImageService } from '../../../../core/services/api/storage/cached-image.service';
 import { AssetQuery } from '../../../../core/store/asset/asset.query';
 import { AssetService } from '../../../../core/store/asset/asset.service';
 import { take } from 'rxjs/operators';
@@ -81,7 +81,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
               private enumHelpers: EnumHelpers,
               private connectivityTypeResolver: ConnectivityTypeResolver,
               private dialogConfig: DynamicDialogConfig,
-              private imageService: ImageService,
+              private imageService: CachedImageService,
               private dynamicDialogRef: DynamicDialogRef,
   ) {
     this.resolve();
@@ -108,7 +108,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
           this.initAssetSeries(assetSeries);
         });
     } else if (this.type === DialogType.CREATE) {
-      this.initialAssetSeriesImageKey = ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
+      this.initialAssetSeriesImageKey = CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
     }
   }
 
@@ -222,7 +222,7 @@ export class AssetSeriesWizardComponent implements OnInit, OnDestroy {
   private initAssetSeries(assetSeries: AssetSeries) {
     this.assetSeries = assetSeries;
     if (this.type === DialogType.CREATE) {
-      this.assetSeries.imageKey = this.assetSeriesForm.get('imageKey').value ?? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
+      this.assetSeries.imageKey = this.assetSeriesForm.get('imageKey').value ?? CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
       this.initialAssetSeriesImageKey = this.assetSeries.imageKey;
     }
     this.createAssetSeriesFormGroup();

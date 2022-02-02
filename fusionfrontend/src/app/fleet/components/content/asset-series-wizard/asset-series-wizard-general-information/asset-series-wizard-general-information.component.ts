@@ -22,7 +22,7 @@ import { Company } from '../../../../../core/store/company/company.model';
 import { AssetType } from '../../../../../core/store/asset-type/asset-type.model';
 import { SelectItem } from 'primeng/api';
 import { NameWithVersionPipe } from 'src/app/shared/pipes/namewithversion.pipe';
-import { ImageService } from '../../../../../core/services/api/storage/image.service';
+import { CachedImageService } from '../../../../../core/services/api/storage/cached-image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { MediaObjectKeyPrefix } from '../../../../../core/models/media-object.model';
 import { ImageStyleType } from 'src/app/shared/models/image-style-type.model';
@@ -53,7 +53,7 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit, OnC
 
   constructor(private assetTypeTemplateQuery: AssetTypeTemplateQuery,
               private companyQuery: CompanyQuery,
-              private imageService: ImageService,
+              private imageService: CachedImageService,
               public translate: TranslateService) {
   }
 
@@ -107,7 +107,7 @@ export class AssetSeriesWizardGeneralInformationComponent implements OnInit, OnC
     if (this.assetSeriesImage) {
       const companyId = this.companyQuery.getActiveId();
       this.imageService.deleteImageIfNotDefault(companyId, this.assetSeriesForm.get('imageKey').value,
-        ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY).subscribe();
+        CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY).subscribe();
     }
   }
 

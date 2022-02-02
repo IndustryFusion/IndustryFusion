@@ -17,5 +17,5 @@ under the License.
      alt="{{alt}}" (click)="onClick()">
 <img *ngIf="displayedImage != null" [class]="styleClasses" [src]="displayedImage" [alt]="alt" (click)="onClick()">
 
-<img *ngIf="(displayedImage == null && (imageLoadingFailedOrDefault == false || isKeyLoading || preventImageLoading))"
-     [src]="" [class]="styleClasses" (click)="onClick()">
+<img *ngIf="(isImageAltEnabled && displayedImage == null && (imageLoadingFailedOrDefault == false || isKeyLoading || preventImageLoading))"
+     [src]="" [alt]="alt" [class]="styleClasses" (click)="onClick()">
