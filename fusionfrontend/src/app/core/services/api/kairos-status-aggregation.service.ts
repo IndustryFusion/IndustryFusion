@@ -59,6 +59,7 @@ export class KairosStatusAggregationService {
     return new TimeInterval(startTimestampMs, endTimestampMs + (selectedShifts.length > 0 ? this.INCLUDING_FIRST_MINUTE_MS : 0));
   }
 
+  // see Tests in spec.ts
   public static getIntervalsFromShiftsRespectingDayChange(date: Date, boundingInterval: TimeInterval, shifts: Shift[]): TimeInterval[] {
     const intervals: TimeInterval[] = [];
     if (shifts != null && shifts.length > 1) {

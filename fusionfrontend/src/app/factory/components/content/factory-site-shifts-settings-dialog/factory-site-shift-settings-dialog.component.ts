@@ -56,6 +56,7 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
     private translate: TranslateService) {
 
     this.weekdays = [
+      // TODO: Possibility to use framework for this:  https://day.js.org/docs/en/i18n/loading-into-browser
       { label: this.translate.instant('APP.COMMON.DAYS.MONDAY'), value: Day.MONDAY },
       { label: this.translate.instant('APP.COMMON.DAYS.TUESDAY'), value: Day.TUESDAY },
       { label: this.translate.instant('APP.COMMON.DAYS.WEDNESDAY'), value: Day.WEDNESDAY },
