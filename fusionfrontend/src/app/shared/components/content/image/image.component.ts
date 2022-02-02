@@ -15,10 +15,10 @@
 
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { catchError, take } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
+import { catchError, take, tap } from 'rxjs/operators';
+import { EMPTY, timer } from 'rxjs';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
-import { ImageService } from '../../../../core/services/api/storage/image.service';
+import { CachedImageService } from '../../../../core/services/api/storage/cached-image.service';
 import { ImageStyleType } from '../../../models/image-style-type.model';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -54,7 +54,7 @@ export class ImageComponent implements OnInit, OnChanges {
   alt = null;
 
   @Input()
-  fallbackImageKey: string = ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
+  fallbackImageKey: string = CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
 
   @Output()
   clickEvent: EventEmitter<void> = new EventEmitter<void>();
@@ -63,8 +63,9 @@ export class ImageComponent implements OnInit, OnChanges {
   prevImageKey: string;
   imageLoadingFailedOrDefault: boolean;
   styleClasses: string;
+  isImageAltEnabled = false;
 
-  constructor(private imageService: ImageService,
+  constructor(private imageService: CachedImageService,
               private translate: TranslateService,
               private companyQuery: CompanyQuery) {
   }
@@ -85,6 +86,12 @@ export class ImageComponent implements OnInit, OnChanges {
     if (!this.isImageProvided()) {
       this.loadImage();
     }
+
+    this.enableImagePlaceholderAfterTwoSeconds();
+  }
+
+  private enableImagePlaceholderAfterTwoSeconds() {
+    timer(2000, 0).pipe(take(1), tap(() => this.isImageAltEnabled = true)).subscribe();
   }
 
   private initStyleClasses(): void {
