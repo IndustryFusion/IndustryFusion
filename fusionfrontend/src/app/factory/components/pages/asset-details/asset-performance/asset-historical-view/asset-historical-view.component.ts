@@ -85,74 +85,14 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     this.initPointAndTimeSlotOptions();
   }
 
-  onTimeslotChanged(): void {
-    const timeslotText = (this.currentTimeslot === 'current' || this.currentTimeslot === 'customDate') ? this.currentTimeslot : 'oneTimeSlot';
-    this.setOptions(timeslotText, false);
-
-    if (timeslotText === 'oneTimeSlot') {
-      this.onOkClicked();
-    }
-  }
-
-  onOkClicked(): void {
-    const prevConfiguration = this.choiceConfiguration;
-    this.setOptions('onOkClick', true);
-
-    if (prevConfiguration !== this.choiceConfigurationMapping.current) {
-      this.choiceConfiguration.chooseMaxPointsInline = true;
-    }
-  }
-
-  resetOptions() {
-    if (this.currentTimeslot === 'customDate') {
-      this.choiceConfiguration = this.choiceConfigurationMapping.customDate;
-    } else {
-      this.choiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
-    }
-  }
-
-  setStartDate(startDate: Date) {
-    this.startDate = startDate;
-    this.minDate = startDate;
-    this.choiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
-  }
-
-  hasTypeCategorical(field: FieldDetails): boolean {
-    return field.quantityDataType === QuantityDataType.CATEGORICAL;
-  }
-
-  hasTypeNumeric(field: FieldDetails): boolean {
-    return field.quantityDataType === QuantityDataType.NUMERIC;
-  }
-
-  isNotAttribute(field: FieldDetails) {
-    return (field.fieldType !== FieldType.ATTRIBUTE);
-  }
-
-  onChangeRoute(): Promise<boolean> {
-    const newRoute = ['..', this.viewMode];
-    return this.router.navigate(newRoute, { relativeTo: RouteHelpers.getActiveRouteLastChild(this.activatedRoute) });
-  }
-
-  ngOnDestroy() {
-    this.unSubscribe$.next();
-    this.unSubscribe$.complete();
-  }
-
-  isChartOrTableLoaded(field: FieldDetails) {
-    if (!this.wasScrolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
-      this.scrollToMetric().subscribe(success => this.wasScrolled = success);
-    }
-  }
-
-  private resolve() {
+  private resolve(): void {
     this.factoryResolver.resolve(this.activatedRoute);
     this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
     this.assetId = this.assetQuery.getActiveId();
     this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
   }
 
-  private initViewMode() {
+  private initViewMode(): void {
     this.viewMode = AssetPerformanceViewMode.HISTORICAL;
   }
 
@@ -172,8 +112,25 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private setOptions(key: string,
-                     validateOptions: boolean) {
+  onTimeslotChanged(): void {
+    const timeslotText = (this.currentTimeslot === 'current' || this.currentTimeslot === 'customDate') ? this.currentTimeslot : 'oneTimeSlot';
+    this.setOptions(timeslotText, false);
+
+    if (timeslotText === 'oneTimeSlot') {
+      this.onOkClicked();
+    }
+  }
+
+  onOkClicked(): void {
+    const prevConfiguration = this.choiceConfiguration;
+    this.setOptions('onOkClick', true);
+
+    if (prevConfiguration !== this.choiceConfigurationMapping.current) {
+      this.choiceConfiguration.chooseMaxPointsInline = true;
+    }
+  }
+
+  private setOptions(key: string, validateOptions: boolean): void {
     if (validateOptions) {
       if (!this.maxPoints) {
         this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
@@ -190,6 +147,43 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     this.choiceConfiguration = this.choiceConfigurationMapping[key];
   }
 
+  resetOptions(): void {
+    if (this.currentTimeslot === 'customDate') {
+      this.choiceConfiguration = this.choiceConfigurationMapping.customDate;
+    } else {
+      this.choiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
+    }
+  }
+
+  setStartDate(startDate: Date): void {
+    this.startDate = startDate;
+    this.minDate = startDate;
+    this.choiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
+  }
+
+  hasTypeCategorical(field: FieldDetails): boolean {
+    return field.quantityDataType === QuantityDataType.CATEGORICAL;
+  }
+
+  hasTypeNumeric(field: FieldDetails): boolean {
+    return field.quantityDataType === QuantityDataType.NUMERIC;
+  }
+
+  isNotAttribute(field: FieldDetails): boolean {
+    return (field.fieldType !== FieldType.ATTRIBUTE);
+  }
+
+  onChangeRoute(): Promise<boolean> {
+    const newRoute = ['..', this.viewMode];
+    return this.router.navigate(newRoute, { relativeTo: RouteHelpers.getActiveRouteLastChild(this.activatedRoute) });
+  }
+
+  onChartOrTableLoaded(field: FieldDetails): void {
+    if (!this.wasScrolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
+      this.scrollToMetric().subscribe(success => this.wasScrolled = success);
+    }
+  }
+
   private scrollToMetric(): Observable<boolean> {
     return this.activatedRoute.fragment.pipe(
       map(fragment => {
@@ -202,6 +196,11 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe$.next();
+    this.unSubscribe$.complete();
   }
 }
 

@@ -83,8 +83,13 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.assetStatusHoursOfDays && this.isInitialized) {
-      this.updateChart(changes.assetStatusHoursOfDays.currentValue);
+    if (this.isInitialized) {
+      if (changes.assetStatusHoursOfDays) {
+        this.updateChart(changes.assetStatusHoursOfDays.currentValue);
+      }
+      if (changes.showAxes) {
+        this.initCanvasHeight();
+      }
     }
   }
 

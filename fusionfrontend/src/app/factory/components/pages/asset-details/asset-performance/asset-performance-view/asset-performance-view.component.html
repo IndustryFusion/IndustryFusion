@@ -14,35 +14,38 @@ under the License.
 -->
 
 <div class='asset-details-wrapper'>
-  <div class="caption-with-buttons">
-    <div class="clr-row clr-justify-content-between clr-align-items-center list-header">
-      <div class="caption">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.PERFORMANCE_VIEW' | translate }}</div>
-      <p-selectButton  class="performance-views space-right"
-                       optionLabel="name"
-                       optionValue="value"
-                       [options]="viewModeOptions"
-                       [(ngModel)]="viewMode"
-                       (ngModelChange)="onChangeRoute()"
-      ></p-selectButton>
-    </div>
+  <div class="p-grid p-jc-between">
+    <div class="caption">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.PERFORMANCE_VIEW' | translate }}</div>
+    <p-selectButton  class="performance-views space-right"
+                     optionLabel="name"
+                     optionValue="value"
+                     [options]="viewModeOptions"
+                     [(ngModel)]="viewMode"
+                     (ngModelChange)="onChangeRoute()"
+    ></p-selectButton>
   </div>
 
-  <div>
-    <div class="aggregated-stats list-header p-grid">
-      <app-equipment-efficiency-overview-donut-chart class="aggregated-section p-col-4" *ngIf="isLoaded"
-                                                     title="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.24_H_PERFORMANCE_SUMMARY' | translate }}"
-                                                     [aggregatedStatusHours$]="aggregatedStatusHours$">
-      </app-equipment-efficiency-overview-donut-chart>
+  <div class="p-grid aggregated-stats">
+    <app-equipment-efficiency-overview-donut-chart class="aggregated-section"
+                                                   title="{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.24_H_PERFORMANCE_SUMMARY' | translate }}"
+                                                   [aggregatedStatusHours$]="aggregatedStatusHoursToday$">
+    </app-equipment-efficiency-overview-donut-chart>
 
-      <div class="aggregated-section status p-col-4">
-        <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_DAYS_PERFORMANCE_SUMMARY' | translate }}</label>
-        <div class="bar-charts">
-          <app-equipment-efficiency-bar-chart *ngIf="isLoaded && assetStatusHoursOfThreeDays != null"
-                                              [showAxes]="true" [yLabels]="reversedYBarChartLabels" [maxXAxisValue]="24"
-                                              [assetStatusHoursOfDays]="assetStatusHoursOfThreeDays">
-          </app-equipment-efficiency-bar-chart>
-        </div>
-      </div>
+    <div class="aggregated-section status">
+      <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_DAYS_PERFORMANCE_SUMMARY' | translate }}</label>
+      <app-status-performance-bar-chart [assetDetailsWithFields]="(assetDetailsWithFields$ | async)"
+                                        [segmentationType]="SegmentationType.DAYS" [segmentationCount]="3"
+                                        (loaded)="onLoaded()"
+                                        (statusHoursOfTodayAggregated)="onStatusHoursOfTodayAggregated($event)">
+      </app-status-performance-bar-chart>
+    </div>
+
+    <div class="aggregated-section status">
+      <label class="equipment-efficiency-dashboard-overview-title">{{ 'APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.3_SHIFTS_PERFORMANCE_SUMMARY' | translate }}</label>
+      <app-status-performance-bar-chart class="wide-chart" [assetDetailsWithFields]="(assetDetailsWithFields$ | async)"
+                                        [segmentationType]="SegmentationType.SHIFTS" [segmentationCount]="3"
+                                        (loaded)="onLoaded()">
+      </app-status-performance-bar-chart>
     </div>
   </div>
 </div>

@@ -31,12 +31,18 @@ export class AssetPerformanceComponent implements OnInit {
   AssetPerformanceViewMode = AssetPerformanceViewMode;
 
   viewModeOptions = [
+    { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.PERFORMANCE_VIEW'),
+      value: AssetPerformanceViewMode.PERFORMANCE },
     { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.REALTIME_VIEW'),
       value: AssetPerformanceViewMode.REALTIME },
     { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.HISTORICAL_VIEW'),
-      value: AssetPerformanceViewMode.HISTORICAL },
-    { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.PERFORMANCE_VIEW'),
-      value: AssetPerformanceViewMode.PERFORMANCE }
+      value: AssetPerformanceViewMode.HISTORICAL }
+  ];
+
+  private readonly languagesLayout = [
+    { language: 'de', widthTime: '22.85rem', widthView: '26.7rem' },
+    { language: 'en', widthTime: '17.85rem', widthView: '23.4rem' },
+    { language: 'fr', widthTime: '19.85rem', widthView: '26.1rem' }
   ];
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -47,9 +53,10 @@ export class AssetPerformanceComponent implements OnInit {
   ngOnInit() {
     this.factoryResolver.resolve(this.activatedRoute);
     this.initViewMode();
+    this.initLayoutLanguageDependent();
   }
 
-  private initViewMode() {
+  private initViewMode(): void {
     if (RouteHelpers.isRouteActive('realtime', this.activatedRoute)) {
       this.viewMode = AssetPerformanceViewMode.REALTIME;
     }
@@ -58,6 +65,14 @@ export class AssetPerformanceComponent implements OnInit {
     }
     else if (RouteHelpers.isRouteActive('performance', this.activatedRoute)) {
       this.viewMode = AssetPerformanceViewMode.PERFORMANCE;
+    }
+  }
+
+  private initLayoutLanguageDependent(): void {
+    const layout = this.languagesLayout.find(languageLayout => languageLayout.language === this.translate.currentLang);
+    if (layout) {
+      document.documentElement.style.setProperty('--performance-width-time-dropdown', layout.widthTime);
+      document.documentElement.style.setProperty('--performance-width-view-dropdown', layout.widthView);
     }
   }
 

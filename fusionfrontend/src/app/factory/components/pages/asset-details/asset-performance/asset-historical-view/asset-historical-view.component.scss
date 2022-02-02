@@ -40,19 +40,19 @@
   .choiceOptions {
     margin-top: 1.25rem;
     margin-right: 3rem;
-    margin-left: 3.2rem;
+    margin-left: 1rem;
     margin-bottom: 0.5rem;
   }
 
   .radio-wrapper {
     display: flex;
     background: $light-grey;
-    padding-top: 1rem;
-    margin: 0 3.1rem 0;
+    padding-top: 0.5rem;
+    margin: 0 1rem 0;
   }
 
   .ok-button {
-    margin: 1rem 3.1rem;
+    margin: 1rem 1rem;
   }
 
   .interval-options {
@@ -139,8 +139,4 @@
     border: none !important;
     box-shadow: none !important;
   }
-}
-
-:host ::ng-deep .radio-wrapper > .p-selectbutton {
-  width: 17.85rem !important;
 }

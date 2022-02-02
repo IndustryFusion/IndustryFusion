@@ -32,4 +32,8 @@ export class StatusHoursOneDay {
   constructor(statusHours: StatusHours[]) {
     this.statusHours = statusHours;
   }
+
+  public static empty() {
+    return new StatusHoursOneDay([]);
+  }
 }

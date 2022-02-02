@@ -49,7 +49,7 @@ export class AssetRealtimeViewComponent implements OnInit {
     this.initViewMode();
   }
 
-  private initViewMode() {
+  private initViewMode(): void {
     this.viewMode = AssetPerformanceViewMode.REALTIME;
   }
 
