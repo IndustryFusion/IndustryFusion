@@ -18,7 +18,7 @@ import { ID } from '@datorama/akita';
 
 export class Status {
   gotData: boolean;
-  statusValue: string;
+  value: string;
 }
 
 export class StatusWithAssetId {

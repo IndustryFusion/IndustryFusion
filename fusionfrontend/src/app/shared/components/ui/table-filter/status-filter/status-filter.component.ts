@@ -74,9 +74,9 @@ export class StatusFilterComponent implements OnInit {
     if (this.selectedCheckBoxItems.length > 0) {
       this.statusFilterFormGroup.get('filteredItems').patchValue(
         this.itemsToBeFiltered.filter(itemToBeFiltered => {
-          return this.statusesWithAssetId.filter(statusWithAssetId => statusWithAssetId.status.statusValue === null ?
+          return this.statusesWithAssetId.filter(statusWithAssetId => statusWithAssetId.status.value === null ?
             this.selectedCheckBoxItems.includes(this.checkBoxItems[0]) : this.selectedCheckBoxItems
-              .includes(this.checkBoxItems[statusWithAssetId.status.statusValue]))
+              .includes(this.checkBoxItems[statusWithAssetId.status.value]))
             .map(statusWithAssetId => statusWithAssetId.factoryAssetId).includes(itemToBeFiltered.id);
         })
       );

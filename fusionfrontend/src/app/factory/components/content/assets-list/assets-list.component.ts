@@ -15,7 +15,6 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
 import { AssetService } from 'src/app/core/store/asset/asset.service';
 import { Company } from 'src/app/core/store/company/company.model';
 import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
@@ -28,7 +27,7 @@ import {
 } from '../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
-import { Asset, AssetWithFields } from '../../../../core/store/asset/asset.model';
+import { Asset } from '../../../../core/store/asset/asset.model';
 import { AssetInstantiationComponent } from '../asset-instantiation/asset-instantiation.component';
 import { ConfirmationService, SortEvent, TreeNode } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
@@ -83,52 +82,37 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
 
-  faInfoCircle = faInfoCircle;
-  faExclamationCircle = faExclamationCircle;
-  faExclamationTriangle = faExclamationTriangle;
-  OispPriority = OispAlertPriority;
-
   treeData: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   selectedFactoryAssets: Array<TreeNode<FactoryAssetDetailsWithFields>> = [];
   displayedFactoryAssets: FactoryAssetDetailsWithFields[];
-  filteredFactoryAssets: FactoryAssetDetailsWithFields[];
-  searchedFactoryAssets: FactoryAssetDetailsWithFields[];
-  factoryAssetFilteredByStatus: FactoryAssetDetailsWithFields[];
-  activeListItem: FactoryAssetDetailsWithFields;
+
   searchText = '';
   groupByActive = false;
   selectedEnum: FieldOption;
   selectedEnumOptions: FieldOption[];
+  tableFilters: FilterOption[];
   rowGroupMetaDataMap: Map<ID, RowGroupCount>;
-  GroupByHelper = GroupByHelper;
-
-  isLoading$: Observable<boolean>;
-  asset: AssetWithFields;
-  assetDetailsForm: FormGroup;
-  companyId: ID;
-  statusType: ID;
-
-  private onboardingDialogRef: DynamicDialogRef;
 
   titleMapping:
     { [k: string]: string } = { '=0': this.translate.instant('APP.FACTORY.ASSETS_LIST.NO_ASSETS'),
     '=1': '# ' + this.translate.instant('APP.COMMON.TERMS.ASSET'), other: '# ' + this.translate.instant('APP.COMMON.TERMS.ASSETS') };
 
+  GroupByHelper = GroupByHelper;
+  faInfoCircle = faInfoCircle;
+  faExclamationCircle = faExclamationCircle;
+  faExclamationTriangle = faExclamationTriangle;
+  OispPriority = OispAlertPriority;
   ItemOptionsMenuType = ItemOptionsMenuType;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
-  tableFilters: FilterOption[] = [
-    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.FACTORY.ASSETS_LIST.CATEGORY'),
-      attributeToBeFiltered: 'category' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.MANUFACTURER'),
-      attributeToBeFiltered: 'manufacturer' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ROOM'),
-      attributeToBeFiltered: 'roomName' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.FACTORY_SITE'),
-      attributeToBeFiltered: 'factorySiteName'},
-    { filterType: FilterType.STATUSFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.STATUS'),
-      attributeToBeFiltered: 'status'}
-  ];
+  private assetDetailsForm: FormGroup;
+  private statusType: ID;
+  private onboardingDialogRef: DynamicDialogRef;
+  private filteredFactoryAssets: FactoryAssetDetailsWithFields[];
+  private searchedFactoryAssets: FactoryAssetDetailsWithFields[];
+  private factoryAssetFilteredByStatus: FactoryAssetDetailsWithFields[];
+  private activeListItem: FactoryAssetDetailsWithFields;
+
 
   constructor(
     private assetService: AssetService,
@@ -143,9 +127,24 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
     this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
+    this.initTableFilters();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  private initTableFilters(): void {
+    this.tableFilters = [{ filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.FACTORY.ASSETS_LIST.CATEGORY'),
+        attributeToBeFiltered: 'category' },
+      { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.MANUFACTURER'),
+        attributeToBeFiltered: 'manufacturer' },
+      { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.ROOM'),
+        attributeToBeFiltered: 'roomName' },
+      { filterType: FilterType.DROPDOWNFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.FACTORY_SITE'),
+        attributeToBeFiltered: 'factorySiteName'},
+      { filterType: FilterType.STATUSFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.STATUS'),
+        attributeToBeFiltered: 'status'}
+    ];
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     if (changes.factoryAssetDetailsWithFields) {
       this.displayedFactoryAssets = this.factoryAssetFilteredByStatus = this.searchedFactoryAssets = this.filteredFactoryAssets
         = this.factoryAssetDetailsWithFields;
@@ -169,7 +168,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  setActiveRow(asset?) {
+  setActiveRow(asset?: FactoryAssetDetailsWithFields): void {
     if (asset) {
       this.activeListItem = asset;
     } else {
@@ -182,16 +181,16 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.updateAssets();
   }
 
-  setSearchText(searchText: string) {
+  setSearchText(searchText: string): void {
     this.searchText = searchText;
   }
 
-  filterAssets(filteredFactoryAssets?: FactoryAssetDetailsWithFields[]) {
+  filterAssets(filteredFactoryAssets?: FactoryAssetDetailsWithFields[]): void {
     this.filteredFactoryAssets = filteredFactoryAssets;
     this.updateAssets();
   }
 
-  groupAssets(selectedFieldOption: FieldOption) {
+  groupAssets(selectedFieldOption: FieldOption): void {
     this.selectedEnum = selectedFieldOption;
     this.groupByActive = this.selectedEnum !== null;
     if (this.selectedEnum) {
@@ -204,7 +203,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     return GroupByHelper.getFieldIndexOfSelectedEnum(asset, this.selectedEnum);
   }
 
-  public getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
+  getMaxOpenAlertPriority(node: TreeNode<FactoryAssetDetailsWithFields>): OispAlertPriority {
     let openAlertPriority = node.data?.openAlertPriority;
     if (!node.expanded && node.children?.length > 0) {
       for (const child of node.children) {
@@ -228,7 +227,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  showOnboardDialog() {
+  showOnboardDialog(): void {
     this.onboardingDialogRef = this.dialogService.open(AssetInstantiationComponent, {
       data: {
         assetDetailsForm: this.assetDetailsForm,
@@ -255,34 +254,34 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.updateAssetEvent.emit([oldRoom, newAssetDetails]);
   }
 
-  getOldRoomForAsset(updatedAsset) {
+  private getOldRoomForAsset(updatedAsset: FactoryAssetDetails): Room {
     const roomId = this.factoryAssetDetailsWithFields.filter(asset => asset.id === updatedAsset.id).pop().roomId;
     return this.rooms.filter(room => room.id === roomId).pop();
   }
 
-  onCardsViewClick() {
+  onCardsViewClick(): void {
     const selectedFactoryAssetIds = this.selectedFactoryAssets.map(asset => asset.data.id);
     this.selectedEvent.emit(selectedFactoryAssetIds);
     this.toolBarClickEvent.emit('GRID');
   }
 
-  deleteAsset() {
+  openEditDialog(): void {
+    this.assetDetailMenuService.showEditWizard(this.activeListItem, this.factorySite, this.factorySites, this.rooms,
+      () => this.deselectAllItems(), (details) => this.assetUpdated(details));
+  }
+
+  openDeleteDialog(): void {
+    this.assetDetailMenuService.showDeleteDialog('asset-delete-dialog-list', this.activeListItem.name,
+      () => this.deleteAsset());
+  }
+
+  private deleteAsset(): void {
     this.assetService.removeCompanyAsset(this.activeListItem.companyId, this.activeListItem.id).subscribe(() => {
       this.factoryAssetDetailsWithFields.splice(this.factoryAssetDetailsWithFields.indexOf(this.activeListItem), 1);
     });
   }
 
-  openEditDialog() {
-    this.assetDetailMenuService.showEditWizard(this.activeListItem, this.factorySite, this.factorySites, this.rooms,
-      () => this.deselectAllItems(), (details) => this.assetUpdated(details));
-  }
-
-  openDeleteDialog() {
-    this.assetDetailMenuService.showDeleteDialog('asset-delete-dialog-list', this.activeListItem.name,
-      () => this.deleteAsset());
-  }
-
-  openAssignRoomDialog() {
+  openAssignRoomDialog(): void {
     if (this.factorySite) {
       this.showAssignRoomDialog(AssetModalType.roomAssignment, AssetModalMode.editRoomWithPreselecedFactorySiteMode,
         this.translate.instant('APP.FACTORY.ASSETS_LIST.DIALOG_HEADING.ROOM_ASSIGNMENT')` (${this.factorySite.name})`);
@@ -300,7 +299,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     return ['/factorymanager', 'companies', asset.companyId, 'assets', asset.id];
   }
 
-  private showAssignRoomDialog(modalType: AssetModalType, modalMode: AssetModalMode, header: string) {
+  private showAssignRoomDialog(modalType: AssetModalType, modalMode: AssetModalMode, header: string): void {
     this.assetDetailMenuService.showAssignRoomDialog(this.activeListItem, this.factorySite, this.factorySites,
       this.rooms, modalType, modalMode, header, (details) => this.assetUpdated(details));
   }
@@ -315,7 +314,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private updateTree() {
+  private updateTree(): void {
     if (this.displayedFactoryAssets) {
       const subsystemIDs = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
       const flattenedSubsystemIDs = subsystemIDs.reduce((acc, val) => acc.concat(val), []);
@@ -332,7 +331,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private expandChildren(node: TreeNode) {
+  private expandChildren(node: TreeNode): void {
     if (node.children) {
       node.expanded = true;
       for (const cn of node.children) {
@@ -365,13 +364,12 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
   }
 
-  customSort(event: SortEvent) {
+  customSort(event: SortEvent): void {
     const status = 'status';
 
     event.data.sort((data1, data2) => {
-      let value1;
-      let value2;
-      let result;
+      let value1: string;
+      let value2: string;
       if (event.field === status) {
         value1 = this.factoryAssetStatuses.find(factoryAssetStatus =>
           factoryAssetStatus.factoryAssetId === data1.data.id).status.statusValue;
@@ -382,16 +380,20 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
         value2 = data2.data[event.field];
       }
 
+      const valuesAreEqual = 0;
+      const value1IsBigger = 1;
+      const value2IsBigger = -1;
+      let result: number;
       if (value1 == null && value2 != null) {
-        result = -1;
+        result = value2IsBigger;
       } else if (value1 != null && value2 == null) {
-        result = 1;
+        result = value1IsBigger;
       } else if (value1 == null && value2 == null) {
-        result = 0;
+        result = valuesAreEqual;
       } else if (typeof value1 === 'string' && typeof value2 === 'string') {
         result = value1.localeCompare(value2);
       } else {
-        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+        result = (value1 < value2) ? value2IsBigger : (value1 > value2) ? value1IsBigger : valuesAreEqual;
       }
       return (event.order * result);
     });
