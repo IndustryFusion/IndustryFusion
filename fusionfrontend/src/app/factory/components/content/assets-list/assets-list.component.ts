@@ -108,7 +108,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   private onboardingDialogRef: DynamicDialogRef;
   private filteredFactoryAssets: FactoryAssetDetailsWithFields[];
   private searchedFactoryAssets: FactoryAssetDetailsWithFields[];
-  private factoryAssetFilteredByStatus: FactoryAssetDetailsWithFields[];
   private activeListItem: FactoryAssetDetailsWithFields;
 
 
@@ -143,23 +142,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.factoryAssetDetailsWithFields) {
-      this.displayedFactoryAssets = this.factoryAssetFilteredByStatus = this.searchedFactoryAssets = this.filteredFactoryAssets
-        = this.factoryAssetDetailsWithFields;
-
-      if (this.filteredFactoryAssets != null) {
-        this.updateDisplayedAssets();
-      }
-    }
-
-    if (this.statusType !== null && this.factoryAssetDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
-      this.factoryAssetFilteredByStatus = this.factoryAssetDetailsWithFields.filter(asset => {
-        return this.factoryAssetStatuses.filter(factoryAssetStatus => factoryAssetStatus.status.statusValue === null ?
-          String(this.statusType) === '0' : String(factoryAssetStatus.status.statusValue) === String(this.statusType))
-          .map(factoryAssetStatusWithId => factoryAssetStatusWithId.factoryAssetId).includes(asset.id);
-      });
-    }
-    if (this.filteredFactoryAssets !== null) {
-      this.updateAssets();
+      this.displayedFactoryAssets = this.searchedFactoryAssets = this.filteredFactoryAssets = this.factoryAssetDetailsWithFields;
+      this.updateDisplayedAssets();
     }
   }
 
@@ -179,7 +163,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   searchAssets(factoryAssetsSearchedByName: FactoryAssetDetailsWithFields[]): void {
     this.searchedFactoryAssets = factoryAssetsSearchedByName;
-    this.updateAssets();
+    this.updateDisplayedAssets();
   }
 
   setSearchText(searchText: string): void {
@@ -188,12 +172,12 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   filterAssets(filteredFactoryAssets?: FactoryAssetDetailsWithFields[]): void {
     this.filteredFactoryAssets = filteredFactoryAssets;
-    this.updateAssets();
+    this.updateDisplayedAssets();
   }
 
   groupAssets(selectedFieldOption: FieldOption): void {
     this.selectedEnum = selectedFieldOption;
-    this.groupByActive = this.selectedEnum !== null;
+    this.groupByActive = this.selectedEnum != null;
     if (this.selectedEnum) {
       this.selectedEnumOptions = this.fields.filter(field => field.id === this.selectedEnum.fieldId).pop().enumOptions;
       this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
@@ -309,28 +293,35 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       this.rooms, modalType, modalMode, header, (details) => this.assetUpdated(details));
   }
 
-  private updateAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields.filter(asset => this.searchedFactoryAssets
-      .filter(searchedAsset => this.filteredFactoryAssets.filter(filteredAsset => this.factoryAssetFilteredByStatus
-        .includes(filteredAsset)).includes(searchedAsset)).includes(asset));
-    this.updateTree();
-    if (this.selectedEnum) {
-      this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+  private updateDisplayedAssets(): void {
+    if (this.filteredFactoryAssets != null) {
+      this.displayedFactoryAssets = this.factoryAssetDetailsWithFields.filter(asset => this.searchedFactoryAssets
+        .filter(searchedAsset => this.filteredFactoryAssets.includes(searchedAsset)).includes(asset));
+
+      this.rebuildTree();
+      if (this.selectedEnum) {
+        this.rowGroupMetaDataMap = GroupByHelper.updateRowGroupMetaData(this.displayedFactoryAssets, this.selectedEnum);
+      }
     }
   }
 
-  private updateTree(): void {
+  private rebuildTree(): void {
     if (this.displayedFactoryAssets) {
       const subsystemIDs = this.displayedFactoryAssets.map(asset => asset.subsystemIds);
       const flattenedSubsystemIDs = subsystemIDs.reduce((acc, val) => acc.concat(val), []);
       const treeData: TreeNode<FactoryAssetDetailsWithFields>[] = [];
+      const previousNotExpandedAssetIds: ID[] = this.treeData?.map(treeNode => !treeNode.expanded && treeNode.data.id);
+
       this.displayedFactoryAssets
         .filter(asset => !flattenedSubsystemIDs.includes(asset.id))
         .forEach((value: FactoryAssetDetailsWithFields) => {
           treeData.push(this.addNode(null, value));
         });
+
       treeData.forEach(node => {
-        this.expandChildren(node);
+        if (!previousNotExpandedAssetIds.includes(node.data.id)) {
+          this.expandChildren(node);
+        }
       });
       this.treeData = treeData;
     }
