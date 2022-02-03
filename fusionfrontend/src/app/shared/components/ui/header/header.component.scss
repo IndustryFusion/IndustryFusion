@@ -200,6 +200,7 @@ header {
     &.user {
       background-image: url("^assets/icons/avatar-example.svg");
       align-items: center;
+      cursor: unset;
       height: 80px;
       width: 80px;
     }
@@ -229,8 +230,6 @@ header {
 }
 
 .userpanel {
-/*  min-width: 24rem !important; // not working... */
-
   .header {
     background-color: $light-grey;
     width: 100%;
