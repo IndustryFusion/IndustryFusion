@@ -41,7 +41,7 @@ import { FactoryAssetDetailMenuService } from '../../../../core/services/menu/fa
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
-import { StatusWithAssetId } from '../../../models/status.model';
+import { Status, StatusWithAssetId } from '../../../models/status.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
@@ -297,6 +297,10 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
 
   getAssetLink(asset: Asset) {
     return ['/factorymanager', 'companies', asset.companyId, 'assets', asset.id];
+  }
+
+  getStatus(assetDetails: FactoryAssetDetails): Status {
+    return this.factoryAssetStatuses?.find(x => x.factoryAssetId === assetDetails.id)?.status;
   }
 
   private showAssignRoomDialog(modalType: AssetModalType, modalMode: AssetModalMode, header: string): void {
