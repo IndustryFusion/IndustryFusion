@@ -24,7 +24,7 @@ import { AssetWizardStep } from '../asset-wizard-step.model';
 import { Company } from '../../../../../../core/store/company/company.model';
 import { AssetType } from '../../../../../../core/store/asset-type/asset-type.model';
 import { WizardHelper } from '../../../../../../core/helpers/wizard-helper';
-import { CachedImageService } from '../../../../../../core/services/api/storage/cached-image.service';
+import { ImageService } from '../../../../../../core/services/api/storage/image.service';
 import { CompanyQuery } from '../../../../../../core/store/company/company.query';
 import { DialogType } from '../../../../../../shared/models/dialog-type.model';
 import { MediaObjectKeyPrefix } from '../../../../../../core/models/media-object.model';
@@ -62,7 +62,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit, OnCha
 
   constructor(private assetSeriesQuery: AssetSeriesQuery,
               private companyQuery: CompanyQuery,
-              private imageService: CachedImageService,
+              private imageService: ImageService,
               private wizardRef: DynamicDialogRef,
               public translate: TranslateService) { }
 
@@ -129,7 +129,7 @@ export class AssetWizardStepGeneralInformationComponent implements OnInit, OnCha
     if (this.assetImage) {
       const companyId = this.companyQuery.getActiveId();
       this.imageService.deleteImageIfNotDefaultNorParent(companyId, this.assetForm.get('imageKey').value,
-        CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY, this.relatedAssetSeries.imageKey).subscribe();
+        ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY, this.relatedAssetSeries.imageKey).subscribe();
     }
   }
 }

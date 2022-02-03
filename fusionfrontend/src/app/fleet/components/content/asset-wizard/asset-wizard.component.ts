@@ -41,7 +41,7 @@ import { CountryResolver } from '../../../../core/resolvers/country.resolver';
 import { FleetAssetDetailsResolver } from '../../../../core/resolvers/fleet-asset-details.resolver';
 import { MessageService } from 'primeng/api';
 import { WizardHelper } from '../../../../core/helpers/wizard-helper';
-import { CachedImageService } from '../../../../core/services/api/storage/cached-image.service';
+import { ImageService } from '../../../../core/services/api/storage/image.service';
 import { FieldInstanceResolver } from '../../../../core/resolvers/field-instance.resolver';
 import { RoomQuery } from '../../../../core/store/room/room.query';
 import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
@@ -102,7 +102,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private config: DynamicDialogConfig,
               private ref: DynamicDialogRef,
-              private imageService: CachedImageService,
+              private imageService: ImageService,
               private manualService: ManualService,
               private videoService: VideoService,
               private messageService: MessageService) {
@@ -145,7 +145,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     this.type = this.asset ? DialogType.EDIT : DialogType.CREATE;
     this.isAssetSeriesLocked = this.relatedAssetSeriesId != null || this.type === DialogType.EDIT;
 
-    this.initialAssetImageKey = this.type === DialogType.CREATE ? CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY
+    this.initialAssetImageKey = this.type === DialogType.CREATE ? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY
       : this.asset.imageKey;
   }
 
@@ -172,7 +172,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
       protectionClass: [null, WizardHelper.maxTextLengthValidator],
       manualKey: [null, WizardHelper.maxTextLengthValidator],
       videoKey: [null, WizardHelper.maxTextLengthValidator],
-      imageKey: [CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
+      imageKey: [ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY, WizardHelper.maxTextLengthValidator],
       isManualNotUploading: [true],
       isVideoNotUploading: [true],
       connectionString: [null, WizardHelper.requiredTextValidator],
@@ -261,7 +261,7 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
         this.asset = asset;
         this.asset.name = this.assetForm.get('name').value;
         this.asset.description = this.assetForm.get('description').value;
-        this.asset.imageKey = this.assetForm.get('imageKey').value ?? CachedImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
+        this.asset.imageKey = this.assetForm.get('imageKey').value ?? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY;
         this.createAssetForm();
         this.step = step;
       }

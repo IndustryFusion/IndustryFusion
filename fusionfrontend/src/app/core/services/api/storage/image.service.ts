@@ -24,14 +24,13 @@ import { MediaObjectService } from './media-object.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CachedImageService extends MediaObjectService {
+export class ImageService extends MediaObjectService {
 
   public static DEFAULT_ASSET_AND_SERIES_IMAGE_KEY = 'default-image-asset-and-series.png';
 
   constructor(http: HttpClient) {
     super(http);
     this.setMediaTypePrefix('image/');
-    this.enableCache();
   }
 
   getImageAsUriSchemeString(companyId: ID, imageKey: string): Observable<string> {
