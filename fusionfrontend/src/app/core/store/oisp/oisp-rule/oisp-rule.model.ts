@@ -14,6 +14,8 @@
  */
 
 import { ComponentDataType } from '../oisp-device/oisp-device.model';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 export class Rule {
   id: string;
@@ -87,14 +89,14 @@ export enum ConditionType {
   statistics = 'statistics',
 }
 
-export function displayConditionType(type: ConditionType): string {
+export function displayConditionType(type: ConditionType, translate: TranslateService): Observable<string> {
   switch (type){
     case ConditionType.basic:
-      return this.translate.instant('APP.STORE.OISP-RULE.BASIC_CONDITION');
+      return translate.get('APP.CORE.STORE.OISP-RULE.BASIC_CONDITION');
     case ConditionType.time:
-      return this.translate.instant('APP.STORE.OISP-RULE.TIME_BASED_CONDITION');
+      return translate.get('APP.CORE.STORE.OISP-RULE.TIME_BASED_CONDITION');
     case ConditionType.statistics:
-      return this.translate.instant('APP.STORE.OISP-RULE.STATISTIC_BASED_CONDITION');
+      return translate.get('APP.CORE.STORE.OISP-RULE.STATISTIC_BASED_CONDITION');
   }
 }
 
