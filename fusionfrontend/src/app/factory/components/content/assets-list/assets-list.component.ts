@@ -40,7 +40,6 @@ import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@forta
 import { FactoryAssetDetailMenuService } from '../../../../core/services/menu/factory-asset-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { Status, StatusWithAssetId } from '../../../models/status.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
@@ -106,7 +105,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
   private assetDetailsForm: FormGroup;
-  private statusType: ID;
   private onboardingDialogRef: DynamicDialogRef;
   private filteredFactoryAssets: FactoryAssetDetailsWithFields[];
   private searchedFactoryAssets: FactoryAssetDetailsWithFields[];
@@ -126,7 +124,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
-    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
     this.initTableFilters();
   }
 
@@ -148,6 +145,10 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.factoryAssetDetailsWithFields) {
       this.displayedFactoryAssets = this.factoryAssetFilteredByStatus = this.searchedFactoryAssets = this.filteredFactoryAssets
         = this.factoryAssetDetailsWithFields;
+
+      if (this.filteredFactoryAssets != null) {
+        this.updateDisplayedAssets();
+      }
     }
 
     if (this.statusType !== null && this.factoryAssetDetailsWithFields !== null && this.factoryAssetStatuses !== null) {
@@ -376,9 +377,9 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       let value2: string;
       if (event.field === status) {
         value1 = this.factoryAssetStatuses.find(factoryAssetStatus =>
-          factoryAssetStatus.factoryAssetId === data1.data.id).status.statusValue;
+          factoryAssetStatus.factoryAssetId === data1.data.id).status.value;
         value2 = this.factoryAssetStatuses.find(factoryAssetStatus =>
-          factoryAssetStatus.factoryAssetId === data2.data.id).status.statusValue;
+          factoryAssetStatus.factoryAssetId === data2.data.id).status.value;
       } else {
         value1 = data1.data[event.field];
         value2 = data2.data[event.field];

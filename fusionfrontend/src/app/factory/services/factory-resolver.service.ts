@@ -95,7 +95,6 @@ export class FactoryResolver {
     const factorySiteId = this.resolveFactorySite(activatedRoute, companyId);
     this.resolveRoom(activatedRoute, factorySiteId);
     this.resolveAsset(activatedRoute, companyId);
-    this.resolveStatus(activatedRoute);
   }
 
   private resolveCompany(activatedRoute: ActivatedRoute): ID {
@@ -150,13 +149,6 @@ export class FactoryResolver {
       this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectFieldsOfAssetsDetailsByFactorySiteId(factorySiteId);
     }
     return factorySiteId;
-  }
-
-  private resolveStatus(activatedRoute: ActivatedRoute) {
-    const statusType =  RouteHelpers.findParamInFullActivatedRoute(activatedRoute.snapshot, 'statusType');
-    if (statusType != null) {
-      this.assetsWithDetailsAndFields$ = this.factoryComposedQuery.selectAssetsWithFieldInstanceDetails();
-    }
   }
 
   private resolveRoom(activatedRoute: ActivatedRoute, factorySiteId: ID) {
