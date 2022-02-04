@@ -187,7 +187,7 @@ export class FusionAppletsListComponent implements OnInit {
   }
 
   onToggleRoute(): Promise<boolean> {
-    const newRoute = ['..', this.showActive ? 'active' : 'archiv'];
+    const newRoute = ['..', this.showActive ? 'archiv' : 'active'];
     return this.router.navigate(newRoute, { relativeTo: this.getActiveRouteLastChild() });
   }
 
