@@ -56,6 +56,13 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
 import { ImageComponent } from './components/content/image/image.component';
 import { ShiftsFilterComponent } from './components/ui/shifts-filter/shifts-filter.component';
+import {
+  StatusPerformanceBarChartComponent
+} from './components/content/status-performance-bar-chart/status-performance-bar-chart.component';
+import {
+  EquipmentEfficiencyBarChartComponent
+} from './components/content/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
+import { ChartModule } from 'primeng/chart';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -94,6 +101,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     EnumOptionToStringPipe,
     StatusFilterComponent,
     ImageComponent,
+    StatusPerformanceBarChartComponent,
+    EquipmentEfficiencyBarChartComponent,
   ],
   imports: [
     CommonModule,
@@ -129,6 +138,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    ChartModule,
   ],
   exports: [
     CommonModule,
@@ -178,6 +188,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     StatusFilterComponent,
     TranslateModule,
     ImageComponent,
+    StatusPerformanceBarChartComponent,
+    EquipmentEfficiencyBarChartComponent,
   ],
   providers: [
     MessageService,

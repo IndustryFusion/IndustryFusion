@@ -143,16 +143,24 @@ export class FusionAppletsListComponent implements OnInit {
 
   deleteItem(rowIndex: number) {
     this.oispRuleService.deleteRule(this.filteredRules[rowIndex].id).subscribe(() => {
-      this.filteredRules[rowIndex].status = RuleStatus.Deleted;
-      this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
+      const archivedRule = JSON.parse(JSON.stringify(this.filteredRules[rowIndex]));
+      archivedRule.status = RuleStatus.Deleted;
+      this.filteredRules[rowIndex] = archivedRule;
+      this.filterRulesAndUpdate();
     });
   }
 
   cloneItem(rowIndex: number) {
-    this.oispRuleService.cloneRule(this.filteredRules[rowIndex].id).subscribe(clone => {
-      this.filteredRules.splice(rowIndex + 1, 0, clone);
-      this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
+    this.oispRuleService.cloneRule(this.filteredRules[rowIndex].id).subscribe(clonedApplet => {
+      this.filteredRules.splice(rowIndex + 1, 0, clonedApplet);
+      this.filterRulesAndUpdate();
     });
+  }
+
+  private filterRulesAndUpdate() {
+    this.filteredRules = this.oispRuleService.filterRulesByStatus(this.filteredRules, this.showActive);
+    this.displayedRules = this.rulesSearchedByName = this.rulesSearchedCondition = this.filteredRules;
+    this.updateDisplayedRules();
   }
 
   getMenuOptionsByStatus(status: RuleStatus): ItemOptionsMenuType[] {

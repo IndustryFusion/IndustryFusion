@@ -13,9 +13,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<img *ngIf="imageLoadingFailedOrDefault" [class]="styleClasses" [src]="'assets/img/' + fallbackImageKey"
-     alt="{{alt}}" (click)="onClick()">
-<img *ngIf="displayedImage != null" [class]="styleClasses" [src]="displayedImage" [alt]="alt" (click)="onClick()">
-
-<img *ngIf="(displayedImage == null && (imageLoadingFailedOrDefault == false || isKeyLoading || preventImageLoading))"
-     [src]="transparentPixelPlaceholder" [alt]="alt" [class]="styleClasses" (click)="onClick()">
+<div class="bar-charts">
+  <app-equipment-efficiency-bar-chart *ngIf="isLoaded && statusHoursLastSegmentsAsc != null"
+                                      [showAxes]="true" [yLabels]="yBarChartLabelsLastSegmentsAsc" [maxXAxisValue]="24"
+                                      [assetStatusHoursOfDays]="statusHoursLastSegmentsAsc">
+  </app-equipment-efficiency-bar-chart>
+</div>

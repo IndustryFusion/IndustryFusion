@@ -24,6 +24,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./status-filter.component.scss']
 })
 export class StatusFilterComponent implements OnInit {
+  private static checkBoxItems: string[];
+  private static isEnabled;
 
   @Input()
   itemsToBeFiltered: any[];
@@ -35,16 +37,6 @@ export class StatusFilterComponent implements OnInit {
   itemsFiltered = new EventEmitter<any>();
 
   checkBoxItemsSet: Set<any> = new Set();
-  checkBoxItems: string[] = [
-    this.translate.instant('APP.COMMON.STATUSES.OFFLINE'),
-    this.translate.instant('APP.COMMON.STATUSES.IDLE'),
-    this.translate.instant('APP.COMMON.STATUSES.RUNNING'),
-    this.translate.instant('APP.COMMON.STATUSES.ERROR'),
-  ];
-
-  selectedCheckBoxItems: any[] = [];
-
-
   selectedValueMapping:
     { [k: string]: string } = {
     '=0': '# ' +  this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES'),
@@ -52,7 +44,39 @@ export class StatusFilterComponent implements OnInit {
     other: '# ' + this.translate.instant('APP.SHARED.UI.TABLE_FILTER.VALUES')
   };
 
+  selectedCheckBoxItems: any[] = [];
+
   constructor(private translate: TranslateService) {
+    StatusFilterComponent.checkBoxItems = [
+      this.translate.instant('APP.COMMON.STATUSES.OFFLINE'),
+      this.translate.instant('APP.COMMON.STATUSES.IDLE'),
+      this.translate.instant('APP.COMMON.STATUSES.RUNNING'),
+      this.translate.instant('APP.COMMON.STATUSES.ERROR'),
+    ];
+  }
+
+  public static isFilterEnabled(): boolean {
+    return StatusFilterComponent.isEnabled;
+  }
+
+  public static disableFilter(): void {
+    StatusFilterComponent.isEnabled = false;
+  }
+
+  public static applyFilter(statusFilterFormGroup: FormGroup, itemsToBeFiltered: any, statusesWithAssetId: StatusWithAssetId[]) {
+    const selectedCheckBoxItems: any[] = statusFilterFormGroup?.get('selectedCheckboxItems')?.value;
+    if (selectedCheckBoxItems?.length > 0) {
+      statusFilterFormGroup.get('filteredItems').patchValue(
+        itemsToBeFiltered.filter(itemToBeFiltered => {
+          return statusesWithAssetId.filter(statusWithAssetId => statusWithAssetId.status.value === null ?
+            selectedCheckBoxItems.includes(this.checkBoxItems[0]) : selectedCheckBoxItems
+              .includes(this.checkBoxItems[statusWithAssetId.status.value]))
+            .map(statusWithAssetId => statusWithAssetId.factoryAssetId).includes(itemToBeFiltered.id);
+        })
+      );
+    } else {
+      statusFilterFormGroup?.get('filteredItems').patchValue(itemsToBeFiltered);
+    }
   }
 
   ngOnInit(): void {
@@ -63,31 +87,20 @@ export class StatusFilterComponent implements OnInit {
   }
 
   private getStatusValues() {
-    this.checkBoxItems.forEach((item, index) => {
+    StatusFilterComponent.checkBoxItems.forEach((item, index) => {
       this.checkBoxItemsSet.add({ value: item, id: index });
     });
   }
 
   filterItemsBySelectedValues() {
     this.statusFilterFormGroup.get('selectedCheckboxItems').patchValue(this.selectedCheckBoxItems);
-
-    if (this.selectedCheckBoxItems.length > 0) {
-      this.statusFilterFormGroup.get('filteredItems').patchValue(
-        this.itemsToBeFiltered.filter(itemToBeFiltered => {
-          return this.statusesWithAssetId.filter(statusWithAssetId => statusWithAssetId.status.statusValue === null ?
-            this.selectedCheckBoxItems.includes(this.checkBoxItems[0]) : this.selectedCheckBoxItems
-              .includes(this.checkBoxItems[statusWithAssetId.status.statusValue]))
-            .map(statusWithAssetId => statusWithAssetId.factoryAssetId).includes(itemToBeFiltered.id);
-        })
-      );
-    } else {
-      this.statusFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
-    }
-
+    StatusFilterComponent.applyFilter(this.statusFilterFormGroup, this.itemsToBeFiltered, this.statusesWithAssetId);
     this.itemsFiltered.emit();
+    StatusFilterComponent.isEnabled = true;
   }
 
   clearSelectedValues() {
+    StatusFilterComponent.isEnabled = false;
     this.statusFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
     this.statusFilterFormGroup.get('selectedCheckboxItems').patchValue(null);
     this.selectedCheckBoxItems = [];

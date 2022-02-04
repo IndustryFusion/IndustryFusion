@@ -47,7 +47,6 @@
   .info-text {
     color: $inactive;
     text-align: left;
-    //font: normal normal normal 18px/23px Multi;
     font-size: $regular-font-size;
     line-height: $regular-line-height;
     letter-spacing: 0;
@@ -56,7 +55,6 @@
   .confirmed-name {
     color: $highlighted;
     text-align: left;
-    //font: normal normal normal 18px/23px Multi;
     font-size: $regular-font-size;
     line-height: $regular-line-height;
     font-weight: bold;
@@ -70,7 +68,7 @@
 
   .edit-col {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     width: 20%;
 
     .edit-button {

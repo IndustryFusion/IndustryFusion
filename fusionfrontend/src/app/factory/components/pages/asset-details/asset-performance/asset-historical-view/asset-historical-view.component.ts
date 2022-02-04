@@ -28,6 +28,7 @@ import { SelectItem } from 'primeng/api';
 import { faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { AssetChartInterval } from '../../../../../models/asset-chart-interval.model';
 
 @Component({
   selector: 'app-asset-historical-view',
@@ -43,8 +44,8 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
   asset$: Observable<FactoryAssetDetailsWithFields>;
   assetId: ID;
 
-  timeSlotOptions: { name: string; value: string; }[];
-  currentTimeslot = 'current';
+  timeSlotOptions: { name: string; value: AssetChartInterval; }[];
+  currentTimeslot: AssetChartInterval = AssetChartInterval.CURRENT;
   startDate: Date;
   endDate: Date = new Date(Date.now());
   minDate: Date;
@@ -52,6 +53,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
 
   faExclamationCircle = faExclamationCircle;
   faTimes = faTimes;
+  AssetChartInterval = AssetChartInterval;
 
   maxItemsOptions: SelectItem[];
   maxPoints: number;
@@ -85,8 +87,42 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     this.initPointAndTimeSlotOptions();
   }
 
+  private resolve(): void {
+    this.factoryResolver.resolve(this.activatedRoute);
+    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
+    this.assetId = this.assetQuery.getActiveId();
+    this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
+  }
+
+  private initViewMode(): void {
+    this.viewMode = AssetPerformanceViewMode.HISTORICAL;
+  }
+
+  private initPointAndTimeSlotOptions() {
+    this.maxItemsOptions = [
+      { label: '50', value: 50 }, { label: '200', value: 200 }, { label: '500', value: 500 }, {
+        label: '1000',
+        value: 1000
+      },
+    ];
+    this.maxPoints = 50;
+
+    this.timeSlotOptions = [
+      { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CURRENT'), value: AssetChartInterval.CURRENT },
+      { name: '1h', value: AssetChartInterval.ONE_HOUR },
+      { name: '24h', value: AssetChartInterval.ONE_DAY },
+      { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CUSTOM_DATE'), value: AssetChartInterval.CUSTOM_DATE }
+    ];
+  }
+
   onTimeslotChanged(): void {
-    const timeslotText = (this.currentTimeslot === 'current' || this.currentTimeslot === 'customDate') ? this.currentTimeslot : 'oneTimeSlot';
+    let timeslotText = 'oneTimeSlot';
+    if (this.currentTimeslot === AssetChartInterval.CURRENT) {
+      timeslotText = 'current';
+    } else if (this.currentTimeslot === AssetChartInterval.CUSTOM_DATE) {
+      timeslotText = 'customDate';
+    }
+
     this.setOptions(timeslotText, false);
 
     if (timeslotText === 'oneTimeSlot') {
@@ -103,15 +139,32 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  resetOptions() {
-    if (this.currentTimeslot === 'customDate') {
+  private setOptions(key: string, validateOptions: boolean): void {
+    if (validateOptions) {
+      if (!this.maxPoints) {
+        this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
+        return;
+      } else {
+        if (this.currentTimeslot === AssetChartInterval.CUSTOM_DATE) {
+          if (!this.startDate || !this.endDate) {
+            this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
+            return;
+          }
+        }
+      }
+    }
+    this.choiceConfiguration = this.choiceConfigurationMapping[key];
+  }
+
+  resetOptions(): void {
+    if (this.currentTimeslot === AssetChartInterval.CUSTOM_DATE) {
       this.choiceConfiguration = this.choiceConfigurationMapping.customDate;
     } else {
       this.choiceConfiguration = this.choiceConfigurationMapping.oneTimeSlot;
     }
   }
 
-  setStartDate(startDate: Date) {
+  setStartDate(startDate: Date): void {
     this.startDate = startDate;
     this.minDate = startDate;
     this.choiceConfiguration = this.choiceConfigurationMapping.customDateWithEndDate;
@@ -125,7 +178,7 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     return field.quantityDataType === QuantityDataType.NUMERIC;
   }
 
-  isNotAttribute(field: FieldDetails) {
+  isNotAttribute(field: FieldDetails): boolean {
     return (field.fieldType !== FieldType.ATTRIBUTE);
   }
 
@@ -134,60 +187,10 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
     return this.router.navigate(newRoute, { relativeTo: RouteHelpers.getActiveRouteLastChild(this.activatedRoute) });
   }
 
-  ngOnDestroy() {
-    this.unSubscribe$.next();
-    this.unSubscribe$.complete();
-  }
-
-  isChartOrTableLoaded(field: FieldDetails) {
+  onChartOrTableLoaded(field: FieldDetails): void {
     if (!this.wasScrolled && 'metric-' + field.externalName === this.activatedRoute.snapshot.fragment) {
       this.scrollToMetric().subscribe(success => this.wasScrolled = success);
     }
-  }
-
-  private resolve() {
-    this.factoryResolver.resolve(this.activatedRoute);
-    this.factoryAssetDetailsResolver.resolve(this.activatedRoute.snapshot);
-    this.assetId = this.assetQuery.getActiveId();
-    this.asset$ = this.factoryResolver.assetWithDetailsAndFieldsAndValues$;
-  }
-
-  private initViewMode() {
-    this.viewMode = AssetPerformanceViewMode.HISTORICAL;
-  }
-
-  private initPointAndTimeSlotOptions() {
-    this.maxItemsOptions = [
-      { label: '50', value: 50 }, { label: '200', value: 200 }, { label: '500', value: 500 }, {
-        label: '1000',
-        value: 1000
-      },
-    ];
-    this.maxPoints = 50;
-
-    this.timeSlotOptions = [{ name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CURRENT'), value: 'current' },
-      { name: '1h', value: '1hour' },
-      { name: '24h', value: '1day' },
-      { name: this.translate.instant('APP.FACTORY.PAGES.ASSET_DETAILS.PERFORMANCE.CUSTOM_DATE'), value: 'customDate' }
-    ];
-  }
-
-  private setOptions(key: string,
-                     validateOptions: boolean) {
-    if (validateOptions) {
-      if (!this.maxPoints) {
-        this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
-        return;
-      } else {
-        if (this.currentTimeslot === 'customDate') {
-          if (!this.startDate || !this.endDate) {
-            this.choiceConfiguration = this.choiceConfigurationMapping.onOkClickShowWarning;
-            return;
-          }
-        }
-      }
-    }
-    this.choiceConfiguration = this.choiceConfigurationMapping[key];
   }
 
   private scrollToMetric(): Observable<boolean> {
@@ -202,6 +205,11 @@ export class AssetHistoricalViewComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe$.next();
+    this.unSubscribe$.complete();
   }
 }
 

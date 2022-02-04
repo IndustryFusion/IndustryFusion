@@ -16,53 +16,21 @@
 @import 'src/styles/base/typography';
 @import 'src/styles/abstract/variables';
 @import "../asset-performance.component";
-
-.efficiency-dashboard-overview {
-  padding: 1%;
-  width: 100%;
-  background: $grey-background;
-
-  .aggregated-stats {
-    display: flex;
-    padding-bottom: 1rem;
-  }
-}
+@import "src/app/dashboards/components/content/equipment-efficiency-overview/equipment-efficiency-overview.component";
 
 .aggregated-section {
-  background: $white-background !important;
-  height: $dashboard-height-high;
-  border-radius: 10px;
-  display: block;
+  width: 32%;
 
   &.status {
-    margin-left: 1.5rem;
+    margin-left: 2%;
   }
 }
 
-.equipment-efficiency-dashboard-overview-title {
-  padding-left: 2rem;
-  padding-top: 1.5rem;
-  display: inline-block;
-
-  color: $basic-black;
-  text-align: left;
-  font-variant: normal;
-  font-style: normal;
-  font-size: $bigger-font-size;
-  line-height: $big-line-height;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-
-.margin-right {
-  margin-right: 0.5rem;
-}
-
-.bar-charts {
+.aggregated-stats {
   margin-top: 1rem;
-  margin-left: 1rem;
-  margin-right: -1rem;
-  position: relative;
-  display: flex;
-  justify-content: space-evenly;
+}
+
+.full-width {
+  width: 100%;
+  margin-right: 0;
 }

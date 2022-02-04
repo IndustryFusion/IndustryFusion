@@ -35,7 +35,7 @@ export class StatusService {
 
   determineStatus(fields: FieldDetails[]): Status {
     if (fields.length <= 0) {
-      return ({ gotData: false, statusValue: 'none'});
+      return ({ gotData: false, value: 'none'});
     }
     let gotAnyValues = false;
     fields.forEach( field => {
@@ -45,9 +45,9 @@ export class StatusService {
     });
 
     if (!gotAnyValues) {
-      return ({ gotData: false, statusValue: 'none'});
+      return ({ gotData: false, value: 'none'});
     } else {
-      return ({ gotData: true, statusValue: this.getStatusValue(fields)});
+      return ({ gotData: true, value: this.getStatusValue(fields)});
     }
   }
 
@@ -87,7 +87,7 @@ export class StatusService {
 
   transformStatusToOispDeviceStatus(status: Status): OispDeviceStatus {
     const assetStatusPipe = new AssetStatusPipe();
-    const statusString = assetStatusPipe.transform(status.gotData, status.statusValue).status;
+    const statusString = assetStatusPipe.transform(status.gotData, status.value).status;
 
     switch (statusString) {
       case 'offline':

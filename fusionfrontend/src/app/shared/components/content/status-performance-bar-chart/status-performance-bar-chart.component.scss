@@ -13,20 +13,26 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../core/models/kairos.model';
-import { ID } from '@datorama/akita';
+@import 'src/styles/base/typography';
+@import 'src/styles/abstract/variables';
+@import "src/app/dashboards/components/content/equipment-efficiency-overview/equipment-efficiency-overview.component";
 
-export class Status {
-  gotData: boolean;
-  value: string;
+.aggregated-section {
+  width: 32%;
+
+  &.status {
+    margin-left: 2%;
+  }
 }
 
-export class StatusWithAssetId {
-  factoryAssetId: ID;
-  status: Status;
+.aggregated-stats {
+  margin-top: 1rem;
 }
 
-export class StatusPoint {
-  status: OispDeviceStatus;
-  time: moment.Moment;
+.bar-charts {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: -1rem;
+  display: block;
+  justify-content: space-evenly;
 }

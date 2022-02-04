@@ -18,12 +18,13 @@ import { FactoryAssetDetailsWithFields } from '../../../../core/store/factory-as
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StatusHours } from '../../../../core/models/kairos-status-aggregation.model';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
-import { EquipmentEfficiencyHelper } from '../../../../core/helpers/equipment-efficiency-helper';
+import { StatusHoursHelper } from '../../../../core/helpers/status-hours-helper';
 import { FactorySite, Shift } from '../../../../core/store/factory-site/factory-site.model';
 import { FactorySiteQuery } from '../../../../core/store/factory-site/factory-site.query';
 import { CompanyQuery } from '../../../../core/store/company/company.query';
-import { Day } from '../../../../core/models/days.model';
 import { FactorySiteResolverWithShiftSettings } from '../../../../core/resolvers/factory-site.resolver';
+import { ShiftsHelper } from '../../../../core/helpers/shifts-helper';
+import { Day } from '../../../../core/models/days.model';
 
 @Component({
   selector: 'app-equipment-efficiency-overview',
@@ -51,13 +52,16 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   shiftsChanged = new EventEmitter<Shift[]>();
 
   isLoaded = false;
-  averageOfStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
+  averageOfAllStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
   factorySites$: Observable<FactorySite[]>;
 
-  constructor(private enumHelpers: EnumHelpers,
+  private readonly statusHoursHelper: StatusHoursHelper;
+
+  constructor(enumHelpers: EnumHelpers,
               private factorySiteQuery: FactorySiteQuery,
               private factorySiteResolverWithShiftSettings: FactorySiteResolverWithShiftSettings,
               private companyQuery: CompanyQuery) {
+    this.statusHoursHelper = new StatusHoursHelper(enumHelpers);
   }
 
   ngOnInit() {
@@ -67,32 +71,23 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
     this.fullyLoadedAssets$.subscribe(assetWithHours => {
       if (assetWithHours) {
         this.factoryAssetDetailsWithFields = assetWithHours;
-        this.updateAggregatedStatusHours();
+        this.updateAggregatedStatusHoursOfDate();
       }
       this.isLoaded = assetWithHours !== null;
     });
   }
 
-  private updateAggregatedStatusHours(): void {
+  private updateAggregatedStatusHoursOfDate(): void {
     if (this.factoryAssetDetailsWithFields) {
-      const aggregatedStatusHours = EquipmentEfficiencyHelper
-        .getAggregatedStatusHours(this.factoryAssetDetailsWithFields, this.enumHelpers);
-      const averageOfStatusHours = EquipmentEfficiencyHelper
-        .getAverageOfAggregatedStatusHours(aggregatedStatusHours, this.factoryAssetDetailsWithFields);
-      this.averageOfStatusHours$.next(averageOfStatusHours);
+      const statusHoursOfAssets = this.factoryAssetDetailsWithFields.map(asset => asset.statusHoursOneDay);
+      const averageOfAllStatusHours = this.statusHoursHelper.getAverageOfAggregatedStatusHours(statusHoursOfAssets);
+
+      this.averageOfAllStatusHours$.next(averageOfAllStatusHours);
     }
   }
 
   getDayFromDate(): Day {
-    switch (this.date.getDay()) {
-      case 0: return Day.SUNDAY;
-      case 1: return Day.MONDAY;
-      case 2: return Day.TUESDAY;
-      case 3: return Day.WEDNESDAY;
-      case 4: return Day.THURSDAY;
-      case 5: return Day.FRIDAY;
-      case 6: return Day.SATURDAY;
-    }
+    return ShiftsHelper.getDayFromDate(this.date);
   }
 
   onShiftsChanged(selectedShifts: Shift[]): void {

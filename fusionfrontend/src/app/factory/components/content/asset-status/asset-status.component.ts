@@ -29,6 +29,9 @@ import { environment } from 'src/environments/environment';
 export class AssetStatusComponent implements OnInit {
 
   @Input()
+  status: Status;
+
+  @Input()
   assetWithFields: FactoryAssetDetailsWithFields;
 
   @Input()
@@ -40,6 +43,8 @@ export class AssetStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.status$ = this.statusService.getStatusByAssetWithFields(this.assetWithFields, environment.dataUpdateIntervalMs);
+    if (!this.status && this.assetWithFields) {
+      this.status$ = this.statusService.getStatusByAssetWithFields(this.assetWithFields, environment.dataUpdateIntervalMs);
+    }
   }
 }

@@ -13,11 +13,12 @@
 * under the License.
 */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FilterOption, FilterType } from 'src/app/shared/components/ui/table-filter/filter-options';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { StatusWithAssetId } from '../../../../factory/models/status.model';
+import { StatusFilterComponent } from './status-filter/status-filter.component';
 
 
 @Component({
@@ -25,7 +26,7 @@ import { StatusWithAssetId } from '../../../../factory/models/status.model';
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss']
 })
-export class TableFilterComponent implements OnInit {
+export class TableFilterComponent implements OnInit, OnChanges {
 
   @Input()
   tableFilters: FilterOption[];
@@ -49,6 +50,8 @@ export class TableFilterComponent implements OnInit {
 
   faFilter = faFilter;
 
+  private previousStatusesWithAssetIdSorted: StatusWithAssetId[];
+
   constructor(private formBuilder: FormBuilder) {
   }
 
@@ -69,7 +72,35 @@ export class TableFilterComponent implements OnInit {
       this.createFilterForm(filter);
       this.filterOptions.push(filter);
     });
+
+    const statusSorted = this.statusesWithAssetId?.sort((a, b) => a.factoryAssetId as number - (b.factoryAssetId as number));
+    this.previousStatusesWithAssetIdSorted = this.statusesWithAssetId ? [...statusSorted] : null;
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+   this.filterItemsByStatusOnStatusChange(changes);
+  }
+
+  private filterItemsByStatusOnStatusChange(changes: SimpleChanges) {
+    if (StatusFilterComponent.isFilterEnabled() && changes.statusesWithAssetId && this.statusesWithAssetId) {
+      let changesToPrevious = this.previousStatusesWithAssetIdSorted?.length !== this.statusesWithAssetId.length;
+
+      const statusSorted = this.statusesWithAssetId.sort((a, b) => a.factoryAssetId as number - (b.factoryAssetId as number));
+      for (let i = 0; i < this.statusesWithAssetId.length && !changesToPrevious; i++) {
+         if (statusSorted[i].status.value !== this.previousStatusesWithAssetIdSorted[i].status.value
+           || statusSorted[i].factoryAssetId !== this.previousStatusesWithAssetIdSorted[i].factoryAssetId) {
+           changesToPrevious = true;
+         }
+      }
+
+      if (changesToPrevious) {
+        this.previousStatusesWithAssetIdSorted = [...statusSorted];
+        StatusFilterComponent.applyFilter(this.filterFormMap.get('status'), this.itemsToBeFiltered, this.statusesWithAssetId);
+        this.filterItems();
+      }
+    }
+  }
+
 
   private createFilterForm(filter: FilterOption) {
     if (filter.filterType === FilterType.DATEFILTER) {
@@ -138,16 +169,24 @@ export class TableFilterComponent implements OnInit {
     if (this.activeFilterSet.has(oldActiveFilter)) {
       this.activeFilterSet.add(newActiveFilter);
       this.activeFilterSet.delete(oldActiveFilter);
+
+      if (oldActiveFilter.filterType === FilterType.STATUSFILTER) {
+        StatusFilterComponent.disableFilter();
+      }
     }
   }
 
-  clearSingleFilter(filterToRemove) {
+  clearSingleFilter(filterToRemove: FilterOption) {
     this.activeFilterSet.delete(filterToRemove);
     this.filterFormMap.forEach(form => {
       if (form.get('attributeToBeFiltered').value === filterToRemove.attributeToBeFiltered) {
         TableFilterComponent.clearFormValues(form);
       }
     });
+
+    if (filterToRemove.filterType === FilterType.STATUSFILTER) {
+      StatusFilterComponent.disableFilter();
+    }
     this.filterItems();
   }
 
@@ -156,6 +195,7 @@ export class TableFilterComponent implements OnInit {
     this.filterFormMap.forEach(form => {
       TableFilterComponent.clearFormValues(form);
     });
+    StatusFilterComponent.disableFilter();
     this.filterItems();
   }
 

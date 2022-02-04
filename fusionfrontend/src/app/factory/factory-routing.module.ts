@@ -183,15 +183,6 @@ const routes: Routes = [
         }
       },
       {
-        path: 'status/:statusType',
-        component: AssetsListPageComponent,
-        canActivate: [MainAuthGuard],
-        data: {
-          pageTypes: [FactoryManagerPageType.ASSET_LIST],
-          breadcrumb: null
-        }
-      },
-      {
         path: 'asset-cards/:assetIdList',
         component: AssetsGridPageComponent,
         canActivate: [MainAuthGuard],
@@ -219,7 +210,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'performance/realtime',
+            redirectTo: 'performance/performance',
             pathMatch: 'full',
           },
           {

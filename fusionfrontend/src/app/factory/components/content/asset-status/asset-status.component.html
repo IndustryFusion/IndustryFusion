@@ -13,7 +13,13 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<ng-container *ngIf="status$ | async as currentStatus">
-  <app-status [showInline]="showInline" [text]="(currentStatus.gotData | assetStatus: currentStatus.statusValue).status"
-  [color]="(currentStatus.gotData | assetStatus: currentStatus.statusValue).color"></app-status>
+<ng-container *ngIf="status != null">
+  <app-status [showInline]="showInline" [text]="(status.gotData | assetStatus: status.value).status"
+              [color]="(status.gotData | assetStatus: status.value).color"></app-status>
+</ng-container>
+
+
+<ng-container *ngIf="status == null && status$ | async as currentStatus">
+  <app-status [showInline]="showInline" [text]="(currentStatus.gotData | assetStatus: currentStatus.value).status"
+  [color]="(currentStatus.gotData | assetStatus: currentStatus.value).color"></app-status>
 </ng-container>

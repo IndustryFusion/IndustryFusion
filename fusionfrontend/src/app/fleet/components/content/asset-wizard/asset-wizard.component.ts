@@ -145,7 +145,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     this.type = this.asset ? DialogType.EDIT : DialogType.CREATE;
     this.isAssetSeriesLocked = this.relatedAssetSeriesId != null || this.type === DialogType.EDIT;
 
-    this.initialAssetImageKey = this.type === DialogType.CREATE ? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY : this.asset.imageKey;
+    this.initialAssetImageKey = this.type === DialogType.CREATE ? ImageService.DEFAULT_ASSET_AND_SERIES_IMAGE_KEY
+      : this.asset.imageKey;
   }
 
   private createAssetForm() {

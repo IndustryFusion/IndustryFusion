@@ -64,6 +64,9 @@ export class ImageComponent implements OnInit, OnChanges {
   imageLoadingFailedOrDefault: boolean;
   styleClasses: string;
 
+  readonly transparentPixelPlaceholder = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAA' +
+    '7EAAAOxAGVKw4bAAAAC0lEQVQImWNgAAIAAAUAAWJVMogAAAAASUVORK5CYII';
+
   constructor(private imageService: ImageService,
               private translate: TranslateService,
               private companyQuery: CompanyQuery) {

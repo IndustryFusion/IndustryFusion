@@ -31,7 +31,6 @@ import { SharedModule } from '../shared/shared.module';
 import { MaintenanceAssetSortPipe } from '../shared/pipes/maintenance-asset-sort.pipe';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
 import { EquipmentEfficiencyListComponent } from './components/content/equipment-efficiency-list/equipment-efficiency-list.component';
-import { EquipmentEfficiencyBarChartComponent } from '../shared/components/content/equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { CalendarModule } from 'primeng/calendar';
 import { ChartModule } from 'primeng/chart';
 import { TreeTableModule } from 'primeng/treetable';
@@ -50,7 +49,6 @@ import { GaugeChartComponent } from '../shared/components/content/gauge-chart/ga
     MaintenanceAssetSortPipe,
     EquipmentEfficiencyPageComponent,
     EquipmentEfficiencyListComponent,
-    EquipmentEfficiencyBarChartComponent,
     EquipmentEfficiencyOverviewComponent,
     EquipmentEfficiencyOverviewRealtimeStatusComponent,
     EquipmentEfficiencyOverviewDonutChartComponent,
@@ -78,7 +76,6 @@ import { GaugeChartComponent } from '../shared/components/content/gauge-chart/ga
     DashboardSubHeaderComponent,
     EquipmentEfficiencyOverviewRealtimeStatusComponent,
     EquipmentEfficiencyOverviewDonutChartComponent,
-    EquipmentEfficiencyBarChartComponent,
     GaugeChartComponent,
   ]
 })
