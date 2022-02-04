@@ -102,11 +102,12 @@ $left: var(--left-position);
     border: none;
 
     .p-radiobutton-icon {
+      font-family: 'primeicons';
       position: absolute;
-      font-size: 0.8rem;
+      font-weight: bold;
+      font-size: $bigger-font-size;
 
       &:before {
-        //content: "\e929" !important;
         content: "\e909" !important;
       }
     }
