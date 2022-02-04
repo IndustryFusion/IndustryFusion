@@ -38,6 +38,7 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
   @Output() renameItem = new EventEmitter<void>();
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
+  @Output() archiveItem = new EventEmitter<void>();
   @Output() assignItem = new EventEmitter<void>();
 
   public menuActions: MenuItem[];
@@ -76,6 +77,10 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
     this.deleteItem.emit();
   }
 
+  onArchiveClick() {
+    this.archiveItem.emit();
+  }
+
   onAssignClick() {
     this.assignItem.emit();
   }
@@ -99,6 +104,11 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
     const deleteItem = {
       label: this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.DELETE'), icon: 'pi pw-fw pi-trash', command: (_) => {
         this.onDeleteClick();
+      }
+    };
+    const archiveItem = {
+      label: this.translate.instant('APP.SHARED.UI.ITEMS_OPTIONS_MENU.ARCHIVE'), icon: 'pi pw-fw pi-inbox', command: (_) => {
+        this.onArchiveClick();
       }
     };
     const updateItem = {
@@ -153,6 +163,10 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
             break;
           case ItemOptionsMenuType.ASSIGN:
             menuActions.push(assignItem);
+            break;
+          case ItemOptionsMenuType.ARCHIVE:
+            menuActions.push(archiveItem);
+            break;
         }
       }
     }

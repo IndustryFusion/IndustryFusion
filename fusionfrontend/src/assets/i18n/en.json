@@ -881,8 +881,9 @@
 					"CREATE": "Create new {{ createItemText }}",
 					"DELETE": "Delete",
 					"RENAME": "Rename",
-					"UPDATE": "Update {{ updateItemText }}"
-				},
+					"UPDATE": "Update {{ updateItemText }}",
+          "ARCHIVE": "Archive"
+        },
 				"TABLE_FILTER": {
 					"ADD_FILTER": "Add Filter",
 					"CLEAR_ALL": "Clear all",
