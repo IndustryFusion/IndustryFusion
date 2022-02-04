@@ -43,6 +43,9 @@ const routes: Routes = [
   {
     path: 'factorymanager/companies/:companyId',
     canActivate: [MainAuthGuard],
+    resolve: {
+      devices: OispDeviceResolver
+    },
     children: [
       {
         path: '',
@@ -89,9 +92,6 @@ const routes: Routes = [
               {
                 path: 'asset-cards/:assetIdList',
                 component: AssetsGridPageComponent,
-                resolve: {
-                  devices: OispDeviceResolver
-                },
                 data: {
                   pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_CARD],
                   roles: [Role.FACTORY_MANAGER],
@@ -111,7 +111,7 @@ const routes: Routes = [
     canActivate: [MainAuthGuard],
     data: {
       roles: [Role.FACTORY_MANAGER],
-      breadcrumb: FactoryManagerBreadCrumbs.Rooms
+      breadcrumb: FactoryManagerBreadCrumbs.ROOMS
     },
     resolve: {
       company: CompanyResolver
@@ -147,9 +147,6 @@ const routes: Routes = [
           {
             path: 'asset-cards/:assetIdList',
             component: AssetsGridPageComponent,
-            resolve: {
-              devices: OispDeviceResolver
-            },
             data: {
               pageTypes: [FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ASSET_CARD],
               roles: [Role.FACTORY_MANAGER],
@@ -165,7 +162,6 @@ const routes: Routes = [
     path: 'factorymanager/companies/:companyId/assets',
     canActivate: [MainAuthGuard],
     resolve: {
-      devices: OispDeviceResolver,
       company: CompanyResolver,
     },
     data: {
@@ -186,9 +182,6 @@ const routes: Routes = [
         path: 'asset-cards/:assetIdList',
         component: AssetsGridPageComponent,
         canActivate: [MainAuthGuard],
-        resolve: {
-          devices: OispDeviceResolver
-        },
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_LIST, FactoryManagerPageType.ASSET_CARD],
           roles: [Role.FACTORY_MANAGER],
