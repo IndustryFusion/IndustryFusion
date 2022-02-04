@@ -137,6 +137,8 @@ export class NumericFilterComponent implements OnInit {
 
       if (index !== -1 && fields[index].value !== null) {
         return fields[index].value < lowerLimitValue;
+      } else if (index !== -1 && fields[index].value === null) {
+        return true;
       }
       return false;
     });
