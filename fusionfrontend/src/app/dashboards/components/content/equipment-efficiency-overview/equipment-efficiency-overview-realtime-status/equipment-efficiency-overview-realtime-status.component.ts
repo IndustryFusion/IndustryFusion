@@ -40,7 +40,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
   constructor(private statusService: StatusService) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.statuses$ = combineLatest([this.factoryAssetDetailsWithFields$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
       switchMap(([assetsWithFields, _]) =>
         forkJoin(assetsWithFields.map(assetWithFields => this.statusService.getStatusByAssetWithFields(assetWithFields, null)) )
@@ -50,7 +50,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
     this.statuses$.subscribe((statuses: Status[]) => this.updateStatusCounts(statuses));
   }
 
-  private updateStatusCounts(statuses: Status[]) {
+  private updateStatusCounts(statuses: Status[]): void {
     this.statusCounts = this.statusCounts.map(() => 0);
 
     statuses.forEach(status => {
@@ -59,7 +59,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
     });
   }
 
-  getAssetLinkByStatus(event) {
-    return ['/factorymanager/companies/2/assets/status/' + event];
+  getAssetLinkByStatus(status: OispDeviceStatus) {
+    return ['/factorymanager/companies/2/assets/status/' + status];
   }
 }

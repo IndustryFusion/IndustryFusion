@@ -19,6 +19,8 @@ import { FilterOption, FilterType } from 'src/app/shared/components/ui/table-fil
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { StatusWithAssetId } from '../../../../factory/models/status.model';
 import { StatusFilterComponent } from './status-filter/status-filter.component';
+import { OispDeviceStatus } from '../../../../core/models/kairos.model';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -34,6 +36,8 @@ export class TableFilterComponent implements OnInit, OnChanges {
   itemsToBeFiltered: any;
   @Input()
   statusesWithAssetId: StatusWithAssetId[];
+  @Input()
+  defaultStatusFilter: OispDeviceStatus = undefined;
   @Output()
   filteredItems = new EventEmitter<any>();
 
@@ -52,7 +56,8 @@ export class TableFilterComponent implements OnInit, OnChanges {
 
   private previousStatusesWithAssetIdSorted: StatusWithAssetId[];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private translate: TranslateService) {
   }
 
   private static clearFormValues(form: FormGroup) {
@@ -67,7 +72,9 @@ export class TableFilterComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    StatusFilterComponent.preInitStaticAttributes(this.translate);
+
     this.tableFilters.forEach(filter => {
       this.createFilterForm(filter);
       this.filterOptions.push(filter);
@@ -75,29 +82,45 @@ export class TableFilterComponent implements OnInit, OnChanges {
 
     const statusSorted = this.statusesWithAssetId?.sort((a, b) => a.factoryAssetId as number - (b.factoryAssetId as number));
     this.previousStatusesWithAssetIdSorted = this.statusesWithAssetId ? [...statusSorted] : null;
+
+    this.addDefaultStatusFilterIfProvided();
+  }
+
+  private addDefaultStatusFilterIfProvided() {
+    if (this.defaultStatusFilter) {
+      const newActiveStatusFilter: FilterOption = this.tableFilters.find(filter => filter.filterType === FilterType.STATUSFILTER);
+      this.selectedFilter[this.activeFilterSet.size] = newActiveStatusFilter;
+      this.activeFilterSet.add(newActiveStatusFilter);
+
+      const selectedStatusValue = this.translate.instant(`APP.COMMON.STATUSES.${this.defaultStatusFilter}`);
+      this.filterFormMap.get('status').get('selectedCheckboxItems').patchValue([selectedStatusValue]);
+
+      StatusFilterComponent.enableFilter();
+      this.filterItemsByStatus();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-   this.filterItemsByStatusOnStatusChange(changes);
+    if (StatusFilterComponent.isFilterEnabled() && changes.statusesWithAssetId && this.statusesWithAssetId) {
+      this.filterItemsByStatus();
+    }
   }
 
-  private filterItemsByStatusOnStatusChange(changes: SimpleChanges) {
-    if (StatusFilterComponent.isFilterEnabled() && changes.statusesWithAssetId && this.statusesWithAssetId) {
-      let changesToPrevious = this.previousStatusesWithAssetIdSorted?.length !== this.statusesWithAssetId.length;
+  private filterItemsByStatus() {
+    let changesToPrevious = this.previousStatusesWithAssetIdSorted?.length !== this.statusesWithAssetId.length;
 
-      const statusSorted = this.statusesWithAssetId.sort((a, b) => a.factoryAssetId as number - (b.factoryAssetId as number));
-      for (let i = 0; i < this.statusesWithAssetId.length && !changesToPrevious; i++) {
-         if (statusSorted[i].status.value !== this.previousStatusesWithAssetIdSorted[i].status.value
-           || statusSorted[i].factoryAssetId !== this.previousStatusesWithAssetIdSorted[i].factoryAssetId) {
-           changesToPrevious = true;
-         }
-      }
+    const statusSorted = this.statusesWithAssetId.sort((a, b) => a.factoryAssetId as number - (b.factoryAssetId as number));
+    for (let i = 0; i < this.statusesWithAssetId.length && !changesToPrevious; i++) {
+       if (statusSorted[i].status.value !== this.previousStatusesWithAssetIdSorted[i].status.value
+         || statusSorted[i].factoryAssetId !== this.previousStatusesWithAssetIdSorted[i].factoryAssetId) {
+         changesToPrevious = true;
+       }
+    }
 
-      if (changesToPrevious) {
-        this.previousStatusesWithAssetIdSorted = [...statusSorted];
-        StatusFilterComponent.applyFilter(this.filterFormMap.get('status'), this.itemsToBeFiltered, this.statusesWithAssetId);
-        this.filterItems();
-      }
+    if (changesToPrevious) {
+      this.previousStatusesWithAssetIdSorted = [...statusSorted];
+      StatusFilterComponent.applyFilter(this.filterFormMap.get('status'), this.itemsToBeFiltered, this.statusesWithAssetId);
+      this.filterItems();
     }
   }
 

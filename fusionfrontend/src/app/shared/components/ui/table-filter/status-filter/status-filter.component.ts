@@ -47,12 +47,6 @@ export class StatusFilterComponent implements OnInit {
   selectedCheckBoxItems: any[] = [];
 
   constructor(private translate: TranslateService) {
-    StatusFilterComponent.checkBoxItems = [
-      this.translate.instant('APP.COMMON.STATUSES.OFFLINE'),
-      this.translate.instant('APP.COMMON.STATUSES.IDLE'),
-      this.translate.instant('APP.COMMON.STATUSES.RUNNING'),
-      this.translate.instant('APP.COMMON.STATUSES.ERROR'),
-    ];
   }
 
   public static isFilterEnabled(): boolean {
@@ -63,9 +57,22 @@ export class StatusFilterComponent implements OnInit {
     StatusFilterComponent.isEnabled = false;
   }
 
+  public static enableFilter(): void {
+    StatusFilterComponent.isEnabled = true;
+  }
+
+  public static preInitStaticAttributes(translate: TranslateService) {
+    StatusFilterComponent.checkBoxItems = [
+      translate.instant('APP.COMMON.STATUSES.OFFLINE'),
+      translate.instant('APP.COMMON.STATUSES.IDLE'),
+      translate.instant('APP.COMMON.STATUSES.RUNNING'),
+      translate.instant('APP.COMMON.STATUSES.ERROR'),
+    ];
+  }
+
   public static applyFilter(statusFilterFormGroup: FormGroup, itemsToBeFiltered: any, statusesWithAssetId: StatusWithAssetId[]) {
     const selectedCheckBoxItems: any[] = statusFilterFormGroup?.get('selectedCheckboxItems')?.value;
-    if (selectedCheckBoxItems?.length > 0) {
+    if (selectedCheckBoxItems?.length > 0 && this.isFilterEnabled()) {
       statusFilterFormGroup.get('filteredItems').patchValue(
         itemsToBeFiltered.filter(itemToBeFiltered => {
           return statusesWithAssetId.filter(statusWithAssetId => statusWithAssetId.status.value === null ?
@@ -94,13 +101,13 @@ export class StatusFilterComponent implements OnInit {
 
   filterItemsBySelectedValues() {
     this.statusFilterFormGroup.get('selectedCheckboxItems').patchValue(this.selectedCheckBoxItems);
+    StatusFilterComponent.enableFilter();
     StatusFilterComponent.applyFilter(this.statusFilterFormGroup, this.itemsToBeFiltered, this.statusesWithAssetId);
     this.itemsFiltered.emit();
-    StatusFilterComponent.isEnabled = true;
   }
 
   clearSelectedValues() {
-    StatusFilterComponent.isEnabled = false;
+    StatusFilterComponent.disableFilter();
     this.statusFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
     this.statusFilterFormGroup.get('selectedCheckboxItems').patchValue(null);
     this.selectedCheckBoxItems = [];

@@ -179,6 +179,15 @@ const routes: Routes = [
         }
       },
       {
+        path: 'status/:status',
+        component: AssetsListPageComponent,
+        canActivate: [MainAuthGuard],
+        data: {
+          pageTypes: [FactoryManagerPageType.ASSET_LIST],
+          breadcrumb: null
+        }
+      },
+      {
         path: 'asset-cards/:assetIdList',
         component: AssetsGridPageComponent,
         canActivate: [MainAuthGuard],
