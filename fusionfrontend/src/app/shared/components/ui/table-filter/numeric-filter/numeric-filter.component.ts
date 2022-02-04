@@ -93,7 +93,7 @@ export class NumericFilterComponent implements OnInit {
     this.itemsFiltered.emit();
   }
 
-  filterItems(checkboxItem: string, itemsToBeFiltered :any[], fieldName: string) {
+  filterItems(checkboxItem: string, itemsToBeFiltered: any[], fieldName: string) {
     const attributeToBeFiltered = 'fields';
     switch (checkboxItem) {
       case this.SHORTTERM_PRIORITY: {
@@ -108,12 +108,13 @@ export class NumericFilterComponent implements OnInit {
       }
       case this.MEDIUMTERM_PRIORITY: {
         if (fieldName === this.MAINTENANCE_DAYS_FIELD_NAME) {
-          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME)
-            .concat(this.removeAboveThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME));
+          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
+            this.MAINTENANCE_DAYS_FIELD_NAME).concat(this.removeAboveThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD,
+            attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME));
         } else if (fieldName === this.MAINTENANCE_HOURS_FIELD_NAME) {
-          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_HOURS_FIELD_NAME)
-            .concat(this.removeAboveThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
-              this.MAINTENANCE_HOURS_FIELD_NAME));
+          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
+            this.MAINTENANCE_HOURS_FIELD_NAME).concat(this.removeAboveThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD,
+            attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_HOURS_FIELD_NAME));
         }
         break;
       }
