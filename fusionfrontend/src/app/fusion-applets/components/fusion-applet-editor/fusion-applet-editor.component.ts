@@ -109,7 +109,8 @@ export class FusionAppletEditorComponent implements OnInit {
     this.createPopulation();
     this.oispRuleService.updateRule(this.rule.id, this.rule).subscribe(rule => {
       this.rule = rule;
-      this.router.navigate(['../..', 'detail', this.rule.id], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.isRenamingOpenByDefault ? '../../..' : '../..', 'detail', this.rule.id],
+        { relativeTo: this.activatedRoute });
     });
   }
 
