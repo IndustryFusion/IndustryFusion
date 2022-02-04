@@ -881,7 +881,8 @@
 					"CREATE": "{{ createItemText }} erstellen",
 					"DELETE": "Löschen",
 					"RENAME": "Umbenennen",
-					"UPDATE": "{{ updateItemText }} aktualisieren"
+					"UPDATE": "{{ updateItemText }} aktualisieren",
+          "ARCHIVE": "Archivieren"
 				},
 				"TABLE_FILTER": {
 					"ADD_FILTER": "Filter hinzufügen",
