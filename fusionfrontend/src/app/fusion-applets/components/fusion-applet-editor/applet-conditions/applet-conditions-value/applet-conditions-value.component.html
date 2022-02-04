@@ -27,7 +27,8 @@ under the License.
                   header="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.SETUP_CONDITION' | translate }}">
     <div class="p-grid p-flex-column">
       <label class="if-label full-width">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL' | translate }} *</label>
-      <p-dropdown [options]="mapDevicesToComponents(selectedDevices)"
+      <p-dropdown [formGroupName]="'component'"
+                  [options]="mapDevicesToComponents(selectedDevices)"
                   [optionLabel]="'label'"
                   [optionValue]="'value'"
                   (onChange)="updateComponent($event.value)" placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL_PLACEHOLDER' | translate }}"
