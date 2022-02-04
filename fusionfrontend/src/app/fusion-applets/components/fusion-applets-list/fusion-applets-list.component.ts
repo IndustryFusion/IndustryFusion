@@ -137,8 +137,16 @@ export class FusionAppletsListComponent implements OnInit {
     });
   }
 
-  editItem(rowIndex: number) {
+  goToItemDetails(rowIndex: number) {
     this.router.navigate(['fusion-applets', 'detail', this.filteredRules[rowIndex].id]);
+  }
+
+  editItem(rowIndex: number) {
+    this.router.navigate(['fusion-applets', 'editor', this.filteredRules[rowIndex].id]);
+  }
+
+  renameItem(rowIndex: number) {
+    this.router.navigate(['fusion-applets', 'editor', this.filteredRules[rowIndex].id, 'rename']);
   }
 
   deleteItem(rowIndex: number) {

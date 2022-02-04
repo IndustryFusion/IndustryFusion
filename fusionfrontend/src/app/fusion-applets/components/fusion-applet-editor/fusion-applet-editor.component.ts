@@ -22,11 +22,12 @@ import {
   RuleStatus,
   RuleType, SynchronizationStatus,
 } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Device } from '../../../core/store/oisp/oisp-device/oisp-device.model';
 import { OispDeviceQuery } from '../../../core/store/oisp/oisp-device/oisp-device.query';
 import { OispRuleService } from '../../../core/store/oisp/oisp-rule/oisp-rule.service';
 import { OispRuleQuery } from '../../../core/store/oisp/oisp-rule/oisp-rule.query';
+import { RouteHelpers } from '../../../core/helpers/route-helpers';
 
 @Component({
   selector: 'app-fusion-applet-editor',
@@ -40,6 +41,7 @@ export class FusionAppletEditorComponent implements OnInit {
   ruleGroup: FormGroup;
   assets: any[];
   devices: Device[];
+  isRenamingOpenByDefault: boolean;
 
   constructor(
     private router: Router,
@@ -52,6 +54,9 @@ export class FusionAppletEditorComponent implements OnInit {
     this.loadDevices();
     this.createRuleGroup();
     const fusionAppletId = this.activatedRoute.snapshot.paramMap.get('fusionAppletId');
+    const lastRouteChild = RouteHelpers.getActiveRouteLastChild(this.activatedRoute);
+    this.isRenamingOpenByDefault = lastRouteChild.snapshot.url[lastRouteChild.snapshot.url.length - 1].path === 'rename';
+
     this.oispRuleQuery.selectEntity(fusionAppletId).subscribe(rule => {
       this.rule = JSON.parse(JSON.stringify(rule));
       this.emptyMailActionIfInDraftMode();
@@ -126,5 +131,9 @@ export class FusionAppletEditorComponent implements OnInit {
       .subscribe(devices => {
         this.devices = devices;
       });
+  }
+
+  getAsFormArray(control: AbstractControl): FormArray {
+    return control as FormArray;
   }
 }
