@@ -51,7 +51,6 @@ export class NumericFilterComponent implements OnInit {
   filteredItems: Set<any> = new Set();
   filteredItemsByMaintenanceHours: any[] = [];
   filteredItemsByMaintenanceDays: any[] = [];
-  index: number;
 
   selectedValueMapping:
     { [k: string]: string } = {
@@ -80,52 +79,50 @@ export class NumericFilterComponent implements OnInit {
     if (this.selectedCheckBoxItems.length > 0) {
       this.checkBoxItems.forEach(checkBoxValue => {
         this.filteredItemsByMaintenanceDays = this.selectedCheckBoxItems.includes(checkBoxValue) ? this.filteredItemsByMaintenanceDays :
-          this.filterItems(checkBoxValue, this.MAINTENANCE_DAYS_FIELD_NAME).filter(item =>
+          this.filterItems(checkBoxValue, this.itemsToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME).filter(item =>
             this.filteredItemsByMaintenanceDays.includes(item));
         this.filteredItemsByMaintenanceHours = this.selectedCheckBoxItems.includes(checkBoxValue) ? this.filteredItemsByMaintenanceHours :
-          this.filterItems(checkBoxValue, this.MAINTENANCE_HOURS_FIELD_NAME).filter(item =>
+          this.filterItems(checkBoxValue, this.itemsToBeFiltered, this.MAINTENANCE_HOURS_FIELD_NAME).filter(item =>
             this.filteredItemsByMaintenanceHours.includes(item));
       });
       this.filteredItems = new Set(this.filteredItemsByMaintenanceDays.concat(this.filteredItemsByMaintenanceHours));
       this.numericFilterFormGroup.get('filteredItems').patchValue(Array.from(this.filteredItems));
-
     } else {
       this.numericFilterFormGroup.get('filteredItems').patchValue(this.itemsToBeFiltered);
     }
     this.itemsFiltered.emit();
   }
 
-  filterItems(checkboxItem: string, fieldName: string) {
+  filterItems(checkboxItem: string, itemsToBeFiltered :any[], fieldName: string) {
     const attributeToBeFiltered = 'fields';
     switch (checkboxItem) {
       case this.SHORTTERM_PRIORITY: {
         if (fieldName === this.MAINTENANCE_DAYS_FIELD_NAME) {
-          return this.removeAboveThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered,
+          return this.removeAboveThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
             this.MAINTENANCE_DAYS_FIELD_NAME);
         } else if (fieldName === this.MAINTENANCE_HOURS_FIELD_NAME) {
-          return this.removeAboveThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered,
+          return this.removeAboveThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
             this.MAINTENANCE_HOURS_FIELD_NAME);
         }
         break;
       }
       case this.MEDIUMTERM_PRIORITY: {
         if (fieldName === this.MAINTENANCE_DAYS_FIELD_NAME) {
-          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME)
-            .concat(this.removeAboveThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered),
-              this.MAINTENANCE_DAYS_FIELD_NAME);
+          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME)
+            .concat(this.removeAboveThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_DAYS_FIELD_NAME));
         } else if (fieldName === this.MAINTENANCE_HOURS_FIELD_NAME) {
-          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered, this.MAINTENANCE_HOURS_FIELD_NAME)
-            .concat(this.removeAboveThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD, attributeToBeFiltered,
+          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_LOWER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered, this.MAINTENANCE_HOURS_FIELD_NAME)
+            .concat(this.removeAboveThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
               this.MAINTENANCE_HOURS_FIELD_NAME));
         }
         break;
       }
       case this.LONGTERM_PRIORITY: {
         if (fieldName === this.MAINTENANCE_DAYS_FIELD_NAME) {
-          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered,
+          return this.removeBelowThreshold(this.MAINTENANCE_DAYS_UPPER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
             this.MAINTENANCE_DAYS_FIELD_NAME);
         } else if (fieldName === this.MAINTENANCE_HOURS_FIELD_NAME) {
-          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD, attributeToBeFiltered,
+          return this.removeBelowThreshold(this.MAINTENANCE_HOURS_UPPER_THRESHOLD, attributeToBeFiltered, itemsToBeFiltered,
             this.MAINTENANCE_HOURS_FIELD_NAME);
         }
         break;
@@ -133,25 +130,25 @@ export class NumericFilterComponent implements OnInit {
     }
   }
 
-  private removeBelowThreshold(lowerLimitValue: number, attributeToBeFiltered: string, fieldName?: string) {
-    return this.itemsToBeFiltered.filter(item => {
+  private removeBelowThreshold(lowerLimitValue: number, attributeToBeFiltered: string,  itemsToBeFiltered: any[], fieldName?: string) {
+    return itemsToBeFiltered.filter(item => {
       const fields: any[] = item[attributeToBeFiltered];
-      this.index = fields.findIndex(field => field.name === fieldName);
+      const index = fields.findIndex(field => field.name === fieldName);
 
-      if (this.index !== -1 && fields[this.index].value !== null) {
-        return fields[this.index].value < lowerLimitValue;
+      if (index !== -1 && fields[index].value !== null) {
+        return fields[index].value < lowerLimitValue;
       }
       return false;
     });
   }
 
-  private removeAboveThreshold(upperLimitValue: number, attributeToBeFiltered: string, fieldName?: string) {
-    return this.itemsToBeFiltered.filter(item => {
+  private removeAboveThreshold(upperLimitValue: number, attributeToBeFiltered: string, itemsToBeFiltered: any[], fieldName?: string) {
+    return itemsToBeFiltered.filter(item => {
       const fields: any[] = item[attributeToBeFiltered];
-      this.index = fields.findIndex(field => field.name === fieldName);
+      const index = fields.findIndex(field => field.name === fieldName);
 
-      if (this.index !== -1 && fields[this.index].value !== null) {
-        return fields[this.index].value > upperLimitValue;
+      if (index !== -1 && fields[index].value !== null) {
+        return fields[index].value > upperLimitValue;
       }
       return false;
     });
