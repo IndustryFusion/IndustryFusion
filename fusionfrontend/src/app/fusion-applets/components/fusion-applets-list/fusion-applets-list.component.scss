@@ -37,27 +37,6 @@
 .if-badge-active {
   background: $status-active;
 }
-.wrapper {
-  margin: 0 80px;
-
-  .list-header {
-    margin-left: 68px;
-    margin-right: 48px;
-    margin-top: 35px;
-
-    .space-right {
-      margin-right: 20px;
-    }
-
-    .if-button {
-      padding: 14px 20px 12px;
-      margin-bottom: 5px;
-      font-size: $regular-font-size;
-      line-height: $regular-line-height;
-      border-radius: 22px;
-    }
-  }
-}
 
 :host ::ng-deep .fusion-applet > .p-selectbutton {
   width: 9.7rem !important;

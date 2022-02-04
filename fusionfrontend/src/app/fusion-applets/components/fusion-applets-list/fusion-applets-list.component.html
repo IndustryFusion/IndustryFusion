@@ -84,8 +84,7 @@ under the License.
           (cloneItem)="cloneItem(rowIndex)"
           (deleteItem)="deleteItem(rowIndex)"
           (editItem)="editItem(rowIndex)"
-          [actions]="getMenuOptionsByStatus(rule.status)"
-          [appendTo]="table">
+          [actions]="getMenuOptionsByStatus(rule.status)">
         </app-item-options-menu>
       </td>
     </tr>
