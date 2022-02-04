@@ -137,11 +137,19 @@ export class FusionAppletsListComponent implements OnInit {
     });
   }
 
-  editItem(rowIndex: number) {
+  goToItemDetails(rowIndex: number) {
     this.router.navigate(['fusion-applets', 'detail', this.filteredRules[rowIndex].id]);
   }
 
-  deleteItem(rowIndex: number) {
+  editItem(rowIndex: number) {
+    this.router.navigate(['fusion-applets', 'editor', this.filteredRules[rowIndex].id]);
+  }
+
+  renameItem(rowIndex: number) {
+    this.router.navigate(['fusion-applets', 'editor', this.filteredRules[rowIndex].id, 'rename']);
+  }
+
+  archiveItem(rowIndex: number) {
     this.oispRuleService.deleteRule(this.filteredRules[rowIndex].id).subscribe(() => {
       const archivedRule = JSON.parse(JSON.stringify(this.filteredRules[rowIndex]));
       archivedRule.status = RuleStatus.Deleted;
@@ -168,14 +176,14 @@ export class FusionAppletsListComponent implements OnInit {
     switch (status) {
       case RuleStatus.Active:
       case RuleStatus.OnHold:
-        result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.CLONE, ItemOptionsMenuType.DELETE];
+        result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.CLONE, ItemOptionsMenuType.ARCHIVE];
         break;
       case RuleStatus.Archived:
       case RuleStatus.Deleted:
         result = [ItemOptionsMenuType.CLONE];
         break;
       case RuleStatus.Draft:
-        result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.DELETE];
+        result = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.RENAME, ItemOptionsMenuType.ARCHIVE];
         break;
     }
 

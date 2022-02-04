@@ -16,7 +16,7 @@ under the License.
 <p-confirmDialog header="{{ 'APP.FUSION_APPLETS.EDITOR.HEADER' | translate }}" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <div class="if-fusion-applet-editor" *ngIf="rule">
   <div class="p-grid p-jc-between full-width p-align-center p-justify-center">
-    <p-inplace class="p-col-" [formGroup]="ruleGroup" [closable]="true" [closeIcon]="'pi pi-check'">
+    <p-inplace class="p-col-" [formGroup]="ruleGroup" [closable]="true" [closeIcon]="'pi pi-check'" [active]="isRenamingOpenByDefault">
       <ng-template pTemplate="display">
         <i class="pi pi-pencil"></i>&nbsp;
         <label class="if-title p-col-" displayControlValue="name"></label>
@@ -40,7 +40,7 @@ under the License.
   ></app-applet-conditions>
   <div class="vl"></div>
   <app-applet-action-list class="full-width"
-                          [actionsArray]="ruleGroup.get('actions')"
+                          [actionsArray]="getAsFormArray(ruleGroup.get('actions'))"
                           [actions]="rule.actions"
   ></app-applet-action-list>
   <div class="full-width p-grid p-justify-end">

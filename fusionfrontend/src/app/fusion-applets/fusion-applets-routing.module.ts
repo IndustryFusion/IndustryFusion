@@ -94,6 +94,16 @@ const routes: Routes = [
             resolve: {
               rules: OispSingleRuleResolver
             }
+          },
+          {
+            path: ':fusionAppletId/rename',
+            component: FusionAppletEditorComponent,
+            data: {
+              breadcrumb: OispRuleQuery,
+            },
+            resolve: {
+              rules: OispSingleRuleResolver
+            }
           }
         ]
       }

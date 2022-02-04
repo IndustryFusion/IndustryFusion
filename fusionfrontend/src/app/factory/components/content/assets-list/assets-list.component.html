@@ -24,6 +24,7 @@ under the License.
     </div>
     <div class="inner-button">
       <app-table-filter (filteredItems)="filterAssets($event)" [itemsToBeFiltered]="factoryAssetDetailsWithFields"
+                        [defaultStatusFilter]="defaultStatusForTableFilter"
                         [tableFilters]="tableFilters" [statusesWithAssetId]="factoryAssetStatuses"
                         class="filter-btn">
       </app-table-filter>

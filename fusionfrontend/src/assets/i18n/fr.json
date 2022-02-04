@@ -881,7 +881,8 @@
 					"CREATE": "Créer un nouveau {{ createItemText }}",
 					"DELETE": "Supprimer",
 					"RENAME": "Renommer",
-					"UPDATE": "Mise à jour {{ updateItemText }}"
+					"UPDATE": "Mise à jour {{ updateItemText }}",
+          "ARCHIVE": "Archives"
 				},
 				"TABLE_FILTER": {
 					"ADD_FILTER": "Ajouter un filtre",

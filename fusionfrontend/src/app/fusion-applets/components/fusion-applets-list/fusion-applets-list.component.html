@@ -58,16 +58,15 @@ under the License.
   </ng-template>
   <ng-template pTemplate="body" let-rule let-rowIndex="rowIndex">
     <tr id="rowElement">
-      <td (click)="editItem(rowIndex)" style="direction: rtl">
+      <td (click)="goToItemDetails(rowIndex)" style="direction: rtl">
         <i *ngIf="hasActionType(rule,RuleActionType.mail)" class="if-icon-mail"></i>
         <i *ngIf="hasActionType(rule,RuleActionType.http)" class="if-icon-webhook"></i>
       </td>
-      <td (click)="editItem(rowIndex)">
-
+      <td (click)="goToItemDetails(rowIndex)">
         <span class="if-label">{{rule.name}}</span> <br>
         {{rule.description}}
       </td>
-      <td (click)="editItem(rowIndex)">{{rule.naturalLanguage}}</td>
+      <td (click)="goToItemDetails(rowIndex)">{{rule.naturalLanguage}}</td>
       <td>
         <p-inputSwitch
           (ngModelChange)="changeStatus(rowIndex, $event)"
@@ -75,14 +74,15 @@ under the License.
           [ngModel]="ruleStatusUtil.isActive(rule.status)"
         ></p-inputSwitch>
       </td>
-      <td (click)="editItem(rowIndex)">
+      <td (click)="goToItemDetails(rowIndex)">
         <span [ngClass]="{'if-badge-active': isActive(rule.status)}" class="if-badge"></span> {{rule.status}}
       </td>
       <td *ngIf="showActions">
         <app-item-options-menu class="column-visibility"
           (createItem)="createItem()"
           (cloneItem)="cloneItem(rowIndex)"
-          (deleteItem)="deleteItem(rowIndex)"
+          (renameItem)="renameItem(rowIndex)"
+          (archiveItem)="archiveItem(rowIndex)"
           (editItem)="editItem(rowIndex)"
           [actions]="getMenuOptionsByStatus(rule.status)">
         </app-item-options-menu>

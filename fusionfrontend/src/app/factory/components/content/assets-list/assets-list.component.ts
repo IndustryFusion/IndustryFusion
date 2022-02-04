@@ -44,6 +44,8 @@ import { Status, StatusWithAssetId } from '../../../models/status.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
+import { RouteHelpers } from '../../../../core/helpers/route-helpers';
+import { OispDeviceStatus } from '../../../../core/models/kairos.model';
 
 @Component({
   selector: 'app-assets-list',
@@ -91,6 +93,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   selectedEnumOptions: FieldOption[];
   tableFilters: FilterOption[];
   rowGroupMetaDataMap: Map<ID, RowGroupCount>;
+  defaultStatusForTableFilter: OispDeviceStatus;
 
   titleMapping:
     { [k: string]: string } = { '=0': this.translate.instant('APP.FACTORY.ASSETS_LIST.NO_ASSETS'),
@@ -124,6 +127,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
     this.initTableFilters();
+    this.setStatusFilterIfParam();
   }
 
   private initTableFilters(): void {
@@ -138,6 +142,11 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       { filterType: FilterType.STATUSFILTER, columnName: this.translate.instant('APP.COMMON.TERMS.STATUS'),
         attributeToBeFiltered: 'status'}
     ];
+  }
+
+  private setStatusFilterIfParam() {
+    const statusText = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'status');
+    this.defaultStatusForTableFilter = OispDeviceStatus[statusText];
   }
 
   ngOnChanges(changes: SimpleChanges) {
