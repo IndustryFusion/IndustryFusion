@@ -86,7 +86,7 @@
 }
 
 .panel-heading {
-  font-size: large;
+  font-size: $bigger-font-size;
   font-weight: bold;
   color: $basic-black;
   margin-bottom: .5rem;
@@ -102,6 +102,7 @@
   cursor: pointer;
 
   .remove-all-filters-btn-icon {
+    margin-right: 0.5rem;
     font-size: $regular-font-size;
     color: $basic-black;
   }

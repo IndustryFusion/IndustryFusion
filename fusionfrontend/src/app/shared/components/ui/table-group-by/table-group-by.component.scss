@@ -56,7 +56,7 @@ $left: var(--left-position);
 }
 
 .panel-heading {
-  font-size: large;
+  font-size: $bigger-font-size;
   font-weight: bold;
   color: $basic-black;
   margin-bottom: .5rem;
@@ -91,6 +91,7 @@ $left: var(--left-position);
   cursor: pointer;
 
   .remove-selected-enum-btn-icon {
+    margin-right: 0.5rem;
     font-size: $medium-font-size;
     color: $basic-black;
   }
@@ -101,19 +102,12 @@ $left: var(--left-position);
     border: none;
 
     .p-radiobutton-icon {
-      background: none;
-      display: inline-block;
-      font: normal normal normal $regular-font-size/1 FontAwesome;
-      font-size: inherit;
-      text-rendering: auto;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-indent: 0 !important;
-      text-align: center;
-      border: none;
+      position: absolute;
+      font-size: 0.8rem;
 
       &:before {
-        content: "\f00c" !important;
+        //content: "\e929" !important;
+        content: "\e909" !important;
       }
     }
   }
