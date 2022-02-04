@@ -22,8 +22,9 @@ import {
 } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { SelectItem } from 'primeng/api';
 import { EnumHelpers } from '../../../../../core/helpers/enum-helpers';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Device, DeviceComponent } from '../../../../../core/store/oisp/oisp-device/oisp-device.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-applet-conditions-value',
@@ -44,7 +45,8 @@ export class AppletConditionsValueComponent implements OnInit {
   conditionTypeDropdownValue: SelectItem[];
   conditionOperatorDropdownValue: SelectItem[];
 
-  constructor(private enumHelpers: EnumHelpers) {
+  constructor(private enumHelpers: EnumHelpers,
+              private translate: TranslateService) {
     this.setupDropdowns();
   }
 
@@ -74,10 +76,12 @@ export class AppletConditionsValueComponent implements OnInit {
     const result = [];
 
     for (const element of this.enumHelpers.getIterableArray(ConditionType)) {
-      result.push({
-        label: displayConditionType(element),
-        value: element
-      });
+      displayConditionType(element, this.translate).subscribe(label => {
+          result.push({
+            label,
+            value: element
+          });
+        });
     }
     return result;
   }
@@ -142,5 +146,13 @@ export class AppletConditionsValueComponent implements OnInit {
       result = result || this.conditionValueGroup.get('type').value === type;
     }
     return result;
+  }
+
+  getAsFormControl(control: AbstractControl): FormControl {
+    return control as FormControl;
+  }
+
+  getAsFormArray(control: AbstractControl): FormArray {
+    return control as FormArray;
   }
 }

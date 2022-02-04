@@ -68,13 +68,13 @@ export class OispService {
 
   getOispPoints(path: string, request: OispRequest, allFields: boolean, useNameAsId = false):
     Observable<PointWithId[]> {
-    if (request.metrics.length < 1) {
+    if (request.metrics.length < 1 || (request.targetFilter.deviceList.length > 0 && request.targetFilter.deviceList[0] == null)) {
       return of(this.defaultPoints);
     }
     return this.http.post<OispResponse>(`${environment.oispApiUrlPrefix}/${path}`, request, this.httpOptions)
       .pipe(
         catchError(() => {
-          console.error('[oisp service] caught error while searching for oispPoints');
+          console.error('[oisp service] caught error while searching for oispPoints', request);
           return EMPTY;
         }),
         map((entity) => {

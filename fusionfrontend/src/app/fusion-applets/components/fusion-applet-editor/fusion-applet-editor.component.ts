@@ -20,7 +20,7 @@ import {
   RuleActionType,
   RuleResetType,
   RuleStatus,
-  RuleType,
+  RuleType, SynchronizationStatus,
 } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Device } from '../../../core/store/oisp/oisp-device/oisp-device.model';
@@ -56,6 +56,9 @@ export class FusionAppletEditorComponent implements OnInit {
       this.rule = JSON.parse(JSON.stringify(rule));
       this.emptyMailActionIfInDraftMode();
       this.ruleGroup.patchValue(this.rule);
+      if (!this.rule.synchronizationStatus) {
+        this.ruleGroup.get('synchronizationStatus').patchValue(SynchronizationStatus.NotSync);
+      }
       this.oispRuleService.setActive(this.rule.id);
     });
   }
@@ -79,7 +82,7 @@ export class FusionAppletEditorComponent implements OnInit {
       resetType: [],
       priority: [],
       status: [, [Validators.required]],
-      synchronizationStatus: [],
+      synchronizationStatus: [, [Validators.required]],
       population: [],
       actions: new FormArray([], [Validators.required, Validators.minLength(1)])
     });

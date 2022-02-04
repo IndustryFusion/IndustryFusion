@@ -17,10 +17,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { OispRuleStore } from './oisp-rule.store';
 import { Observable } from 'rxjs';
-import { ConditionType, Rule, RuleAction, RuleStatus } from './oisp-rule.model';
+import { ConditionType, Rule, RuleAction, RuleStatus, SynchronizationStatus } from './oisp-rule.model';
 import { environment } from '../../../../../environments/environment';
 import { ID } from '@datorama/akita';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { UserManagementService } from '../../../services/api/user-management.service';
 
 @Injectable({
@@ -63,7 +63,11 @@ export class OispRuleService {
   cloneRule(ruleId: string): Observable<Rule> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/clone/${ruleId}`;
     return this.http.post<Rule>(url, null, this.httpOptions).pipe(
-      tap((rule: Rule) => this.oispRuleStore.upsert(rule.id, rule))
+      map((rule: Rule) => {
+        rule.synchronizationStatus = SynchronizationStatus.NotSync;
+        this.oispRuleStore.upsert(rule.id, rule);
+        return rule;
+      })
     );
   }
 
@@ -128,9 +132,7 @@ export class OispRuleService {
 
   deleteRule(ruleId: string): Observable<any> {
     const url = `${environment.oispApiUrlPrefix}/accounts/${this.userManagementService.getOispAccountId()}/rules/delete_rule_with_alerts/${ruleId}`;
-    return this.http.delete(url, this.httpOptions).pipe(
-      tap((deletedRule: Rule) => this.oispRuleStore.remove(deletedRule.id))
-    );
+    return this.http.delete(url, this.httpOptions);
   }
 
   setActive(id: ID) {

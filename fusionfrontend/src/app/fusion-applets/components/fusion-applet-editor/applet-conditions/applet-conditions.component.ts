@@ -136,7 +136,7 @@ export class AppletConditionsComponent implements OnInit {
     groups.forEach(control => control.updateValueAndValidity());
   }
 
-  getConditonValues(): FormArray {
+  getConditionValues(): FormArray {
     return (this.conditionsGroup.get('values') as FormArray);
   }
 
@@ -145,7 +145,7 @@ export class AppletConditionsComponent implements OnInit {
   }
 
   removeAction(index: number) {
-    this.getConditonValues().removeAt(index);
+    this.getConditionValues().removeAt(index);
   }
 
   getOperatorDropdownValue(): SelectItem[] {
@@ -158,5 +158,13 @@ export class AppletConditionsComponent implements OnInit {
       });
     }
     return result;
+  }
+
+  getAsFormGroup(control: AbstractControl): FormGroup {
+    return control as FormGroup;
+  }
+
+  getAsFormControl(control: AbstractControl): FormControl {
+    return control as FormControl;
   }
 }
