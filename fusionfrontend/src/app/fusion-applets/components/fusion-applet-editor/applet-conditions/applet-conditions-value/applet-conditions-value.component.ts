@@ -22,7 +22,7 @@ import {
 } from 'src/app/core/store/oisp/oisp-rule/oisp-rule.model';
 import { SelectItem } from 'primeng/api';
 import { EnumHelpers } from '../../../../../core/helpers/enum-helpers';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Device, DeviceComponent } from '../../../../../core/store/oisp/oisp-device/oisp-device.model';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -146,5 +146,13 @@ export class AppletConditionsValueComponent implements OnInit {
       result = result || this.conditionValueGroup.get('type').value === type;
     }
     return result;
+  }
+
+  getAsFormControl(control: AbstractControl): FormControl {
+    return control as FormControl;
+  }
+
+  getAsFormArray(control: AbstractControl): FormArray {
+    return control as FormArray;
   }
 }

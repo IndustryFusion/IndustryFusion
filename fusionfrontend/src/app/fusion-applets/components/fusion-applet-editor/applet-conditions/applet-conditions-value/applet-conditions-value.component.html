@@ -27,8 +27,7 @@ under the License.
                   header="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.SETUP_CONDITION' | translate }}">
     <div class="p-grid p-flex-column">
       <label class="if-label full-width">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL' | translate }} *</label>
-      <p-dropdown [formControlName]="'component'"
-                  [options]="mapDevicesToComponents(selectedDevices)"
+      <p-dropdown [options]="mapDevicesToComponents(selectedDevices)"
                   [optionLabel]="'label'"
                   [optionValue]="'value'"
                   (onChange)="updateComponent($event.value)" placeholder="{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.METRIC_LABEL_PLACEHOLDER' | translate }}"
@@ -54,17 +53,17 @@ under the License.
     </div>
     <div class="p-grid p-flex-column" *ngIf="isAnyConditionType([ConditionType.time])">
       <span class="if-label full-width">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.DEFINE_DURATION' | translate }}</span>
-      <app-condition-time-selector [timeLimit]="conditionValueGroup.get('timeLimit')"
+      <app-condition-time-selector [timeLimit]="getAsFormControl(conditionValueGroup.get('timeLimit'))"
       ></app-condition-time-selector>
     </div>
     <div class="p-grid p-flex-column" *ngIf="isAnyConditionType([ConditionType.statistics])">
-      <app-control-limit-selector [valuesGroup]="conditionValueGroup.get('values')"></app-control-limit-selector>
+      <app-control-limit-selector [valuesGroup]="getAsFormArray(conditionValueGroup.get('values'))"></app-control-limit-selector>
       <span class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.AVERAGE_AND_STANDARD_DEVIATION_BASELINE' | translate }}</span>
-      <app-condition-time-selector [timeLimit]="conditionValueGroup.get('baselineSecondsBack')"
+      <app-condition-time-selector [timeLimit]="getAsFormControl(conditionValueGroup.get('baselineSecondsBack'))"
       ></app-condition-time-selector>
       <span class="if-label">{{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.CONDITIONS_VALUE.MINIMAL_INSTANCES_FOR_CALCULATION' | translate }}</span>
       <label class="if-label">{{ 'APP.COMMON.TERMS.VALUE' | translate }} *</label>
-      <p-inputNumber [formControl]="conditionValueGroup.get('baselineMinimalInstances')" class="full-width"
+      <p-inputNumber [formControl]="getAsFormControl(conditionValueGroup.get('baselineMinimalInstances'))" class="full-width"
       ></p-inputNumber>
     </div>
     <button class="if-button button-primary full-width space-top"

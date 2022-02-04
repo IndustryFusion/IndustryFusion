@@ -15,7 +15,7 @@ under the License.
 
 <div *ngIf="devices">
   <div class="applet-conditions-value-list"
-       *ngFor="let conditonValueGroup of getConditonValues().controls; let i = index; let last = last">
+       *ngFor="let conditionValueGroup of getConditionValues().controls; let i = index; let last = last">
     <div class="if-card">
       <div class="p-grid p-justify-between">
         <div class="p-grid">
@@ -23,14 +23,14 @@ under the License.
           <div class="if-label p-col">
             {{i + 1}}. {{ 'APP.FUSION_APPLETS.EDITOR.CONDITIONS.TRIGGER' | translate }}
           </div>
-          <app-valid-icon [isValid]="conditonValueGroup.valid"></app-valid-icon>
+          <app-valid-icon [isValid]="conditionValueGroup.valid"></app-valid-icon>
         </div>
         <div>
           <app-item-options-menu (deleteItem)="removeAction(i)" [actions]="[ItemOptionsMenuType.DELETE]">
           </app-item-options-menu>
         </div>
       </div>
-      <app-applet-conditions-value [conditionValueGroup]="conditonValueGroup"
+      <app-applet-conditions-value [conditionValueGroup]="getAsFormGroup(conditionValueGroup)"
                                    [devices]="devices"
       ></app-applet-conditions-value>
     </div>
@@ -39,7 +39,7 @@ under the License.
     <p-dropdown [options]="dropdownOperatorOptions"
                 [optionLabel]="'label'"
                 [optionValue]="'value'"
-                [formControl]="conditionsGroup.get('operator')"
+                [formControl]="getAsFormControl(conditionsGroup.get('operator'))"
     ></p-dropdown>
     </div>
     <div *ngIf="!last" class="vl"></div>
