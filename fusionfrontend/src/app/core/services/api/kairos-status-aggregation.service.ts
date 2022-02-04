@@ -69,11 +69,12 @@ export class KairosStatusAggregationService {
       let intervalStartMs = this.convertMinutesToMilliseconds(shiftSorted[0].startMinutes);
       for (let i = 0; i < shiftSorted.length - 1; i++) {
         const correctedIntervalEndMs = this.convertMinutesToMilliseconds(ShiftsHelper.getEndMinutesRespectingDayChange(shiftSorted[i]));
-        const isGapToNextShift = shiftSorted[i + 1].startMinutes > correctedIntervalEndMs;
+        const nextShiftStartMs = this.convertMinutesToMilliseconds(shiftSorted[i + 1].startMinutes);
+        const isGapToNextShift = nextShiftStartMs > correctedIntervalEndMs;
         if (isGapToNextShift) {
           intervals.push(new TimeInterval(dayStartTimestampMs + intervalStartMs,
             dayStartTimestampMs + correctedIntervalEndMs + this.INCLUDING_FIRST_MINUTE_MS));
-          intervalStartMs = this.convertMinutesToMilliseconds(shiftSorted[i + 1].startMinutes);
+          intervalStartMs = nextShiftStartMs;
         }
       }
 
@@ -138,6 +139,7 @@ export class KairosStatusAggregationService {
 
     const intervalResults$: Observable<StatusHours[]>[] = [];
     for (const interval of intervals) {
+      console.log(new Date(interval.startMs).toTimeString(), new Date(interval.endMs).toTimeString());
       intervalResults$.push(this.kairosService.getStatusCounts(assetWithFields,
         KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields), interval.startMs, interval.endMs,
         KairosStatusAggregationService.getStatusUpdateCountOfInterval(interval))
