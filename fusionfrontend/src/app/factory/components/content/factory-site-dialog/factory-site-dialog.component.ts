@@ -111,6 +111,17 @@ export class FactorySiteDialogComponent implements OnInit {
     });
 
     if (this.factorySite) {
+      if (!this.factorySite.shiftSettings) {
+        this.factorySiteService.getFactorySiteWithShiftsSettings(this.companyQuery.getActiveId(), this.factorySite.id)
+          .subscribe(factorySiteWithShiftsSettings => {
+            this.factorySite = factorySiteWithShiftsSettings;
+            this.factorySiteForm.get('shiftSettings').patchValue(this.factorySite.shiftSettings);
+
+            if (!this.factorySite.shiftSettings) {
+              console.error('[factory site dialog]: No shift settings given. Are data corrupt?');
+            }
+          });
+      }
       this.factorySiteForm.patchValue(this.factorySite);
     }
   }
@@ -163,7 +174,7 @@ export class FactorySiteDialogComponent implements OnInit {
   }
 
   private edit() {
-    this.factorySiteService.updateFactorySite(this.factorySite).subscribe(
+    this.factorySiteService.updateFactorySite(this.factorySite).subscribe(() => { },
       error => console.error(error)
     );
   }

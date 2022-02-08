@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ID } from '@datorama/akita';
-import { FactorySite } from 'src/app/core/store/factory-site/factory-site.model';
+import { FactorySite, FactorySiteType } from 'src/app/core/store/factory-site/factory-site.model';
 import { Asset } from 'src/app/core/store/asset/asset.model';
 import { FactoryAssetDetails } from 'src/app/core/store/factory-asset-details/factory-asset-details.model';
 import { Room } from 'src/app/core/store/room/room.model';
@@ -92,6 +92,18 @@ export class RoomsListComponent implements OnInit {
     this.factorySite$ = this.factoryResolver.factorySite$;
   }
 
+  private static sortRoomsByFactorySiteByDefault(rooms: Room[]): Room[] {
+    return rooms.sort((a, b) => {
+      if (a.factorySite.name > b.factorySite.name) {
+        return 1;
+      } else if (a.factorySite.name < b.factorySite.name) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+
   ngOnInit() {
     this.isLoading$ = this.companyQuery.selectLoading();
 
@@ -126,28 +138,21 @@ export class RoomsListComponent implements OnInit {
     });
   }
 
-  addFactorySideToRooms(rooms: Room[]): Room[] {
+  private addFactorySideToRooms(rooms: Room[]): Room[] {
     if (this.rooms$ && this.factorySites) {
       const roomsWithFactorySite: Room[] = [];
       rooms.forEach((room, index) =>  {
-        roomsWithFactorySite.push({ ...room });
-        roomsWithFactorySite[index].factorySite = this.factorySites.find(factorySite => factorySite.id === room.factorySiteId);
+        const factorySiteOfRoom = this.factorySites.find(factorySite => factorySite.id === room.factorySiteId);
+        if (factorySiteOfRoom && factorySiteOfRoom.type !== FactorySiteType.FLEETMANAGER) {
+          roomsWithFactorySite.push({ ...room });
+          roomsWithFactorySite[index].factorySite = factorySiteOfRoom;
+        }
       });
-      return this.sortRoomsByFactorySiteByDefault(roomsWithFactorySite);
+      return RoomsListComponent.sortRoomsByFactorySiteByDefault(roomsWithFactorySite);
     }
   }
 
-  sortRoomsByFactorySiteByDefault(rooms: Room[]): Room[] {
-    return rooms.sort((a, b) => {
-      if (a.factorySite.name > b.factorySite.name) {
-        return 1;
-      } else if (a.factorySite.name < b.factorySite.name) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-  }
+
 
   private initFactorySitesAndRoomsMap() {
     if (this.rooms && this.factorySites) {

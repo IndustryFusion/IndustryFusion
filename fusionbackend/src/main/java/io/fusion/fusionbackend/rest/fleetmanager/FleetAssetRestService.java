@@ -99,10 +99,11 @@ public class FleetAssetRestService {
     public AssetDto updateAsset(@PathVariable final Long companyId,
                                 @PathVariable final Long assetSeriesId,
                                 @PathVariable final Long assetId,
-                                @RequestBody final AssetDto assetDto) {
+                                @RequestBody final AssetDto assetDto,
+                                @RequestParam(defaultValue = "true") final boolean embedChildren) {
         return assetMapper.toDto(assetService.updateAssetSeriesAsset(companyId, assetSeriesId, assetId,
                 assetMapper.toEntity(assetDto)),
-                false);
+                embedChildren);
     }
 
     @PatchMapping(path = "/companies/{companyId}/assetseries/{assetSeriesId}/assets/{assetId}/company-transfer")

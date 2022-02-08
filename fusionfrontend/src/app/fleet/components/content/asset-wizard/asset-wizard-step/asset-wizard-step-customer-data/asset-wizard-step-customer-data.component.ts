@@ -68,6 +68,8 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
 
     if (!this.asset.room) {
       this.roomService.createRoomDraft(this.asset.companyId).subscribe(unspecificRoom => this.asset.room = unspecificRoom);
+    } else {
+      this.asset.room = { ...this.asset.room, factorySite: this.asset.room.factorySite};
     }
   }
 
@@ -102,10 +104,11 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
       || AssetWizardStepCustomerDataComponent.hasValue(factorySite.line1);
   }
 
-  private save() {
+  private save(shouldCreateAsset: boolean) {
     if (this.factorySiteForm.valid) {
 
       this.asset.room.factorySite = { ...this.factorySiteForm.getRawValue() as FactorySite };
+      this.asset.roomId = this.asset.room.id;
 
       if (this.hasData()) {
         const country = this.countryQuery.getEntity(this.factorySiteForm.get('countryId').value);
@@ -113,19 +116,27 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
 
         const factorySite = this.asset.room.factorySite;
         this.geocoderService.getGeocode(factorySite.line1, factorySite.zip, factorySite.city, factorySite.country.name,
-          (coordinate: Coordinate)  => this.setCoordinateAndCreateAsset(coordinate));
+          (coordinate: Coordinate)  => {
+            this.updateFactorySiteCoordinate(coordinate);
+            this.maybeEmitAssetCreation(shouldCreateAsset);
+          });
       } else {
         this.asset.room = null;
         this.asset.roomId = null;
-        this.createAsset.emit();
+        this.maybeEmitAssetCreation(shouldCreateAsset);
       }
     }
   }
 
-  private setCoordinateAndCreateAsset(coordinate: Coordinate) {
+  private updateFactorySiteCoordinate(coordinate: Coordinate) {
     this.asset.room.factorySite.latitude = coordinate.latitude;
     this.asset.room.factorySite.longitude = coordinate.longitude;
-    this.createAsset.emit();
+  }
+
+  private maybeEmitAssetCreation(shouldCreateAsset: boolean) {
+    if (shouldCreateAsset) {
+      this.createAsset.emit();
+    }
   }
 
   isReadyForNextStep(): boolean {
@@ -133,13 +144,14 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
   }
 
   onBack(): void {
+    this.save(false);
     this.stepChange.emit(AssetWizardStep.CUSTOMER_DATA - 1);
   }
 
   onSave(): void {
     if (this.isReadyForNextStep()) {
       this.valid.emit(this.factorySiteForm.valid);
-      this.save();
+      this.save(true);
     }
   }
 }

@@ -159,9 +159,10 @@ export class AssetService {
     const path = `companies/${asset.companyId}/assetseries/${assetSeriesId}/assets/${asset.id}`;
     return this.http.put<Asset>(`${environment.apiUrlPrefix}/${path}`, asset, this.httpOptions)
       .pipe(
-        switchMap(updatedAsset => {
+        tap(updatedAsset => {
           this.assetStore.upsertCached(updatedAsset);
-          return this.fleetAssetDetailsService.getFleetAssetDetails(asset.companyId, updatedAsset.id);
+          this.fleetAssetDetailsService.getFleetAssetDetails(asset.companyId, updatedAsset.id).subscribe();
+          return updatedAsset;
         }));
   }
 
