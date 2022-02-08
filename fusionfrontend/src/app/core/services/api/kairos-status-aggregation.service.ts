@@ -139,7 +139,6 @@ export class KairosStatusAggregationService {
 
     const intervalResults$: Observable<StatusHours[]>[] = [];
     for (const interval of intervals) {
-      console.log(new Date(interval.startMs).toTimeString(), new Date(interval.endMs).toTimeString());
       intervalResults$.push(this.kairosService.getStatusCounts(assetWithFields,
         KairosStatusAggregationService.getStatusFieldOfAsset(assetWithFields), interval.startMs, interval.endMs,
         KairosStatusAggregationService.getStatusUpdateCountOfInterval(interval))

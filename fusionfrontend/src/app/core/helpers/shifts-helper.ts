@@ -66,7 +66,7 @@ export class ShiftsHelper {
 
       while (lastNShiftsWithDate.length < n) {
         const day = ShiftsHelper.getDayFromDate(date);
-        const shiftsOfDay = shiftSettings.shiftsOfDays.find(aShiftsOfDay => aShiftsOfDay.day === day);
+        const shiftsOfDay = this.getActiveShiftsOfDay(day, shiftSettings);
 
         if (shiftsOfDay.shifts.length > 0) {
           const shiftsCopy = [...shiftsOfDay.shifts];
@@ -85,6 +85,10 @@ export class ShiftsHelper {
     }
 
     return lastNShiftsWithDate;
+  }
+
+  public static getActiveShiftsOfDay(day: Day, shiftSettings: ShiftSettings) {
+    return shiftSettings?.shiftsOfDays.find(aShiftsOfDay => aShiftsOfDay.day === day && aShiftsOfDay.isActive);
   }
 
   private static isShiftCompleted(shift: Shift, date: Date) {

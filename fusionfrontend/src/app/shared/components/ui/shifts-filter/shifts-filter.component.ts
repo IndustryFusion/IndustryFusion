@@ -84,7 +84,7 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
 
     this.shiftOptions = [];
 
-    const shiftsOfDay = this.selectedFactorySite.shiftSettings.shiftsOfDays.find(aShiftsOfDay => aShiftsOfDay.day === this.day);
+    const shiftsOfDay = ShiftsHelper.getActiveShiftsOfDay(this.day, this.selectedFactorySite.shiftSettings);
     if (shiftsOfDay) {
       shiftsOfDay.shifts.forEach(shift => this.shiftOptions.push(shift));
     }
