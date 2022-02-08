@@ -68,6 +68,8 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
 
     if (!this.asset.room) {
       this.roomService.createRoomDraft(this.asset.companyId).subscribe(unspecificRoom => this.asset.room = unspecificRoom);
+    } else {
+      this.asset.room = { ...this.asset.room, factorySite: this.asset.room.factorySite};
     }
   }
 
@@ -102,7 +104,7 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
       || AssetWizardStepCustomerDataComponent.hasValue(factorySite.line1);
   }
 
-  private save(createAsset: boolean) {
+  private save(shouldCreateAsset: boolean) {
     if (this.factorySiteForm.valid) {
 
       this.asset.room.factorySite = { ...this.factorySiteForm.getRawValue() as FactorySite };
@@ -116,12 +118,12 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
         this.geocoderService.getGeocode(factorySite.line1, factorySite.zip, factorySite.city, factorySite.country.name,
           (coordinate: Coordinate)  => {
             this.updateFactorySiteCoordinate(coordinate);
-            this.maybeEmitAssetCreation(createAsset);
+            this.maybeEmitAssetCreation(shouldCreateAsset);
           });
       } else {
         this.asset.room = null;
         this.asset.roomId = null;
-        this.maybeEmitAssetCreation(createAsset);
+        this.maybeEmitAssetCreation(shouldCreateAsset);
       }
     }
   }
@@ -131,8 +133,8 @@ export class AssetWizardStepCustomerDataComponent implements OnInit {
     this.asset.room.factorySite.longitude = coordinate.longitude;
   }
 
-  private maybeEmitAssetCreation(createAsset: boolean) {
-    if (createAsset) {
+  private maybeEmitAssetCreation(shouldCreateAsset: boolean) {
+    if (shouldCreateAsset) {
       this.createAsset.emit();
     }
   }

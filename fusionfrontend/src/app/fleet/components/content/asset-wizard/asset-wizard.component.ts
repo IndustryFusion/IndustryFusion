@@ -290,10 +290,10 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
 
       if (this.type === DialogType.EDIT) {
         this.assetService.editFleetAsset(this.relatedAssetSeriesId, this.asset)
-          .subscribe(() => this.closeAfterPersisting());
+          .subscribe(fleetAsset => this.closeAfterPersisting(fleetAsset));
       } else if (this.type === DialogType.CREATE) {
         this.assetService.createFleetAsset(this.relatedCompany.id, this.relatedAssetSeriesId, this.asset)
-          .subscribe(() => this.closeAfterPersisting());
+          .subscribe(() => this.closeAfterPersisting(this.asset));
       }
     } else {
       this.messageService.add(({ severity: 'info', summary: 'Error', detail: 'Error at saving asset', sticky: true }));
@@ -306,8 +306,8 @@ export class AssetWizardComponent implements OnInit, OnDestroy {
     this.assetForm.removeControl('isVideoNotUploading');
   }
 
-  private closeAfterPersisting(): void {
-    this.ref.close(this.asset);
+  private closeAfterPersisting(persistedAsset: Asset): void {
+    this.ref.close(persistedAsset);
     this.ref = null;
   }
 
