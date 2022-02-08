@@ -118,14 +118,7 @@ public class FactorySiteService {
                                          final FactorySite sourceFactorySite) {
         final FactorySite targetFactorySite = getFactorySiteByCompany(companyId, factorySiteId, true);
 
-        if (sourceFactorySite.hasShiftSettings()) {
-            final ShiftSettings shiftSettings = shiftSettingsService.getShiftSettingsOfFactorySite(sourceFactorySite);
-            targetFactorySite.setShiftSettings(shiftSettings);
-
-            shiftSettingsService.deleteRemovedShifts(targetFactorySite.getShiftSettings(),
-                    sourceFactorySite.getShiftSettings());
-        }
-
+        updateRemovedShifts(targetFactorySite, sourceFactorySite);
         targetFactorySite.copyFrom(sourceFactorySite);
 
         final Country country = countryService.getCountry(sourceFactorySite.getCountry().getId());
@@ -134,6 +127,16 @@ public class FactorySiteService {
         validate(targetFactorySite);
 
         return targetFactorySite;
+    }
+
+    private void updateRemovedShifts(final FactorySite targetFactorySite, final FactorySite sourceFactorySite) {
+        if (sourceFactorySite.hasShiftSettings()) {
+            final ShiftSettings shiftSettings = shiftSettingsService.getShiftSettingsOfFactorySite(sourceFactorySite);
+            targetFactorySite.setShiftSettings(shiftSettings);
+
+            shiftSettingsService.deleteRemovedShifts(targetFactorySite.getShiftSettings(),
+                    sourceFactorySite.getShiftSettings());
+        }
     }
 
     private void validate(final FactorySite factorySite) {

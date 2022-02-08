@@ -189,7 +189,7 @@ export class FactorySiteShiftSettingsDialogComponent implements OnInit {
   }
 
   private update() {
-    this.factorySiteService.updateFactorySite(this.factorySite).subscribe(
+    this.factorySiteService.updateFactorySite(this.factorySite).subscribe(() => { },
       error => console.error('[factory site shifts dialog]: ' + error)
     );
   }
