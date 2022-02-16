@@ -20,7 +20,7 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
   day: Day;
 
   @Output()
-  shiftsChanged = new EventEmitter<Shift[]>();
+  shiftsChanged = new EventEmitter<{ selectedShifts: Shift[], factorySite: FactorySite }>();
 
   factorySiteOptions: FactorySite[];
   selectedFactorySite: FactorySite;
@@ -132,7 +132,7 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
   onApply(): void {
     if (!this.selectedShifts) {
       this.lastAppliedShiftsSorted = null;
-      this.shiftsChanged.emit([]);
+      this.shiftsChanged.emit({ selectedShifts: [], factorySite: null });
       return;
     }
 
@@ -142,7 +142,7 @@ export class ShiftsFilterComponent implements OnInit, OnChanges {
 
     if (isNotAlreadyApplied) {
       this.lastAppliedShiftsSorted = [...sortedSelectedShifts];
-      this.shiftsChanged.emit(sortedSelectedShifts);
+      this.shiftsChanged.emit({ selectedShifts: sortedSelectedShifts, factorySite: this.selectedFactorySite });
     }
   }
 

@@ -15,7 +15,20 @@ under the License.
 
 <div class="efficiency-dashboard-overview">
   <div class="p-grid p-jc-between header-line">
-    <label class="if-title">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.TITLE' | translate }} ({{ date | date }})</label>
+    <label *ngIf="selectedFactorySite == null" class="if-title">{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.TITLE' | translate }} ({{ date | date }})</label>
+    <div *ngIf="selectedFactorySite != null">
+      <label class="if-title">
+        <span>{{ 'APP.DASHBOARDS.EQUIPMENT_EFFICIENCY_OVERVIEW.TITLE' | translate }} ({{ date | date }} -
+        {{ selectedFactorySite.name }} -</span>
+        <span *ngFor="let shift of selectedShifts; let i = index" [attr.data-index]="i">
+          <ng-container *ngIf="shift.name.length < 18"> {{ shift.name }}</ng-container>
+          <ng-container *ngIf="shift.name.length >= 18"> {{ shift.name.substr(0, 18) }}...</ng-container>
+          <ng-container *ngIf="i+1 != selectedShifts.length">,</ng-container>
+        </span>
+        <span>)</span>
+      </label>
+    </div>
+
     <div class="p-grid">
       <app-shifts-filter [factorySites]="(factorySites$ | async)" [day]="getDayFromDate()"
                          (shiftsChanged)="onShiftsChanged($event)"></app-shifts-filter>

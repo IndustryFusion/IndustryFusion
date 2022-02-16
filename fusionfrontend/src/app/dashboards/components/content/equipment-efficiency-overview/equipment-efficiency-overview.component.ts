@@ -54,6 +54,8 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
   isLoaded = false;
   averageOfAllStatusHours$: BehaviorSubject<StatusHours[]> = new BehaviorSubject<StatusHours[]>([]);
   factorySites$: Observable<FactorySite[]>;
+  selectedFactorySite: FactorySite;
+  selectedShifts: Shift[];
 
   private readonly statusHoursHelper: StatusHoursHelper;
 
@@ -90,7 +92,9 @@ export class EquipmentEfficiencyOverviewComponent implements OnInit {
     return ShiftsHelper.getDayFromDate(this.date);
   }
 
-  onShiftsChanged(selectedShifts: Shift[]): void {
-    this.shiftsChanged.emit(selectedShifts);
+  onShiftsChanged(data: { selectedShifts: Shift[], factorySite: FactorySite }): void {
+    this.selectedFactorySite = data.factorySite;
+    this.selectedShifts = data.selectedShifts;
+    this.shiftsChanged.emit(data.selectedShifts);
   }
 }
