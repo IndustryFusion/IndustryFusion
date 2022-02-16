@@ -1,0 +1,3 @@
+UPDATE connectivity_type SET info_text = 'APP.SQL.CONNECTIVITY_TYPE.DIRECT_IO' WHERE id = 1;
+UPDATE connectivity_type SET info_text = 'APP.SQL.CONNECTIVITY_TYPE.INTERNAL_MACHINE_NETWORK' WHERE id = 2;
+UPDATE connectivity_type SET info_text = 'APP.SQL.CONNECTIVITY_TYPE.NETWORK_BASED' WHERE id = 3;

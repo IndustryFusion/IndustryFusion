@@ -928,6 +928,13 @@
 		},
     "BREAD_CRUMBS": {
       "LAUNCHPAD": "Launchpad"
+    },
+    "SQL": {
+      "CONNECTIVITY_TYPE": {
+        "DIRECT_IO": "Sensoren sind direkt an das Gateway angeschlossen",
+        "INTERNAL_MACHINE_NETWORK": "Gateway ist 1 zu 1 mit der Anlage verbunden (z.B. SPS über Ethernet/Seriell)",
+        "NETWORK_BASED": "Alles, was über das Netzwerk verbunden ist (SQL-Datenbank, MQTT-Broker)"
+      }
     }
   }
 }

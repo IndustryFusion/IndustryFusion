@@ -928,6 +928,13 @@
 		},
     "BREAD_CRUMBS": {
       "LAUNCHPAD": "Launchpad"
+    },
+    "SQL": {
+      "CONNECTIVITY_TYPE": {
+        "DIRECT_IO": "Capteurs connectés directement à la passerelle",
+        "INTERNAL_MACHINE_NETWORK": "La passerelle est connectée 1 à 1 à l'actif (par exemple, un PLC via Ethernet/Série).",
+        "NETWORK_BASED": "Tout ce qui est connecté via le réseau (base de données SQL, broker MQTT)."
+      }
     }
 	}
 }

@@ -8,6 +8,7 @@ import { DialogType } from '../../../../../shared/models/dialog-type.model';
 import { WizardHelper } from '../../../../../core/helpers/wizard-helper';
 import { SelectItem } from 'primeng/api';
 import { ProtectionClassService } from '../../../../../core/services/api/protection-class.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-asset-series-wizard-nameplate-and-connectivity-settings',
@@ -31,6 +32,7 @@ export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implemen
 
   constructor(private connectivityTypeQuery: ConnectivityTypeQuery,
               private protectionClassService: ProtectionClassService,
+              private translate: TranslateService,
               private formBuilder: FormBuilder) {
     this.connectivityTypeOptions = this.connectivityTypeQuery.getAll();
   }
@@ -98,7 +100,7 @@ export class AssetSeriesWizardNameplateAndConnectivitySettingsComponent implemen
         .find(connectivityType => String(connectivityType.id) === String(connectivityTypeId));
 
       this.connectivityProtocolOptions = selectedConnectivityType.availableProtocols;
-      this.infoText = selectedConnectivityType.infoText;
+      this.infoText = this.translate.instant(selectedConnectivityType.infoText);
     }
   }
 

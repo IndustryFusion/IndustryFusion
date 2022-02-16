@@ -928,6 +928,13 @@
 		},
     "BREAD_CRUMBS": {
       "LAUNCHPAD": "Launchpad"
+    },
+    "SQL": {
+      "CONNECTIVITY_TYPE": {
+        "DIRECT_IO": "Sensors connected directly to the Gateway",
+        "INTERNAL_MACHINE_NETWORK": "Gateway is connected 1 to 1 to the Asset (e.g. PLC via Ethernet/Serial)",
+        "NETWORK_BASED": "Everything thats connected via the Network (SQL database, MQTT broker)"
+      }
     }
 	}
 }
