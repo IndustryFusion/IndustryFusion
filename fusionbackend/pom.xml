@@ -94,7 +94,7 @@ under the License.
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
-            <version>8.3.3</version>
+            <version>8.3.8</version>
         </dependency>
 
         <!-- Needed to avoid conflict with OkHttp in MinIOClient being used in auth0-java and okhttp3 being used by spring -->
