@@ -29,7 +29,7 @@
     "@clr/core": "4.0.14",
     "@clr/icons": "5.1.1",
     "@clr/ui": "5.1.1",
-    "@datorama/akita": "6.1.3",
+    "@datorama/akita": "6.2.0",
     "@fortawesome/angular-fontawesome": "0.8.2",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
