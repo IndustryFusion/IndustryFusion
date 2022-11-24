@@ -31,6 +31,8 @@ import { ConfirmationService } from 'primeng/api';
 import { AssetSeriesDetailMenuService } from '../../../../core/services/menu/asset-series-detail-menu.service';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { AssetSeries } from '../../../../core/store/asset-series/asset-series.model';
+import { environment } from '../../../../../environments/environment';
+import { UploadDownloadService } from '../../../../shared/services/upload-download.service';
 
 @Component({
   selector: 'app-asset-series-list',
@@ -68,8 +70,9 @@ export class AssetSeriesListComponent implements OnInit {
     private unitsResolver: UnitsResolver,
     private dialogService: DialogService,
     private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
-    private confirmationService: ConfirmationService) {
-  }
+    private confirmationService: ConfirmationService,
+    private uploadDownloadService: UploadDownloadService
+    ) { }
 
   ngOnInit() {
     this.resolveAssetSeriesDetails();
@@ -153,4 +156,16 @@ export class AssetSeriesListComponent implements OnInit {
     const exportLink = this.assetSeriesService.getExportLink(assetSeries.id, assetSeries.companyId, asOwl);
     window.open(exportLink, '_blank');
   }
+
+  onImportShacl(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('change', (event: Event) => {
+      const file = (event.target as HTMLInputElement).files[0];
+      const companyId = this.companyQuery.getActiveId();
+      this.uploadDownloadService.uploadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/shaclimport`, file);
+    });
+    input.click();
+  }
+
 }

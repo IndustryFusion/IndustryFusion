@@ -27,6 +27,8 @@ import { FormGroup } from '@angular/forms';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
 import { AssetTypeTemplateWizardComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard.component';
 import { ID } from '@datorama/akita';
+import { environment } from '../../../../../environments/environment';
+import { UploadDownloadService } from '../../../../shared/services/upload-download.service';
 
 @Component({
   selector: 'app-asset-type-template-page',
@@ -51,7 +53,9 @@ export class AssetTypeTemplatePageComponent implements OnInit {
               private assetTypeTemplateService: AssetTypeTemplateService,
               private fieldTargetService: FieldTargetService,
               private dialogService: DialogService,
-              public route: ActivatedRoute) { }
+              public route: ActivatedRoute,
+              private uploadDownloadService: UploadDownloadService
+  ) { }
 
   ngOnInit(): void {
     this.metrics = [];
@@ -134,5 +138,13 @@ export class AssetTypeTemplatePageComponent implements OnInit {
       this.assetTypeTemplate.publishedVersion = assetTypeTemplateForm.get('publishedVersion')?.value;
       this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
     }
+  }
+
+  onExportShacl() {
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/eco/${this.assetTypeTemplate.id}/shaclexport`,
+      `${this.assetTypeTemplate.name
+        .replace(/[ ]/ig, '_')
+        .replace(/[^\w]/ig, '')
+      }_v${this.assetTypeTemplate.version}.scl`);
   }
 }

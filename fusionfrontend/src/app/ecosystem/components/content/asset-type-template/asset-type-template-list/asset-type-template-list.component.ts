@@ -32,6 +32,8 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableHelper } from '../../../../../core/helpers/table-helper';
 import { AssetTypeTemplateWizardComponent } from '../asset-type-template-wizard/asset-type-template-wizard.component';
+import { environment } from '../../../../../../environments/environment';
+import { UploadDownloadService } from '../../../../../shared/services/upload-download.service';
 
 @Component({
   selector: 'app-asset-type-template-list',
@@ -76,7 +78,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private uploadDownloadService: UploadDownloadService
+  ) {
      }
 
   ngOnInit() {
@@ -192,5 +196,10 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   onDownload(asOwl: boolean) {
     const exportLink = this.assetTypeTemplateService.getExportLink(this.activeListItem.id, asOwl);
     window.open(exportLink, '_blank');
+  }
+
+  onExportShacl(): void {
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/eco/shaclexport`,
+      `All_Asset_Type_Templates.scl`);
   }
 }

@@ -51,6 +51,8 @@ import { EnumOptionsToStringPipe } from './pipes/enum-options-to-string.pipe';
 import { StatusFilterComponent } from './components/ui/table-filter/status-filter/status-filter.component';
 import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
 import { AlertIconComponent } from './components/ui/alert-icon/alert-icon.component';
+import { DownloadButtonComponent } from './components/ui/download-button/download-button.component';
+import { UploadButtonComponent } from './components/ui/upload-button/upload-button.component';
 
 
 @NgModule({
@@ -83,6 +85,8 @@ import { AlertIconComponent } from './components/ui/alert-icon/alert-icon.compon
     EnumOptionToStringPipe,
     StatusFilterComponent,
     AlertIconComponent,
+    DownloadButtonComponent,
+    UploadButtonComponent
   ],
   imports: [
     CommonModule,
@@ -156,6 +160,8 @@ import { AlertIconComponent } from './components/ui/alert-icon/alert-icon.compon
     EnumOptionToStringPipe,
     StatusFilterComponent,
     AlertIconComponent,
+    DownloadButtonComponent,
+    UploadButtonComponent
   ],
   providers: [
     MessageService,
