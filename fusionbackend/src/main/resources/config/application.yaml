@@ -48,15 +48,24 @@ logging:
   level:
     root: INFO
 
+object-storage:
+  server-type: minio
+  server-url: http://localhost:9000
+  buckets-prefix: if
+
+
 fusionbackend:
-  modelrepo-sync-active: ${MODEL_REPO_SYNC}
-  modelrepo-url: ${MODEL_REPO_URL}
-  modelrepo-privatekey-path: ${MODEL_REPO_SSH_KEY}
+  modelrepo-sync-active: false
+  modelrepo-url: git@github.com:IndustryFusion/fusionmodels.git
+  modelrepo-privatekey-path: C:\Users\mreuder/.ssh/id_rsa
 
 shacl:
   default-prefix: https://www.industry-fusion.com/
   additional-prefixes:
+    ifs: https://www.industry-fusion.com/schema#
+    ift: https://www.industry-fusion.com/types#
     iff: https://www.industry-fusion.com/
 
 ngsi-broker:
   server-url: "http://localhost:9090"
+
