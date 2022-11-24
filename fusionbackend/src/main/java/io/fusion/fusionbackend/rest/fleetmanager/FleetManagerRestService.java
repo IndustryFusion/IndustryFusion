@@ -15,6 +15,7 @@
 
 package io.fusion.fusionbackend.rest.fleetmanager;
 
+import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
@@ -51,7 +52,7 @@ public class FleetManagerRestService {
     public void getAsZipExport(@PathVariable final Long companyId,
                                HttpServletResponse response) throws IOException {
         response.setContentType("application/zip");
-        response.addHeader("Content-Disposition","attachment;filename=\"fleet_manager_exported.zip\"");
+        response.addHeader("Content-Disposition", "attachment;filename=\"fleet_manager_exported.zip\"");
         fleetManagerImportExportService.exportEntitiesToStreamAsZip(companyId, response.getOutputStream());
     }
 
@@ -61,11 +62,19 @@ public class FleetManagerRestService {
     }
 
     @PostMapping(path = "/companies/{companyId}/fleetmanager/import",
-            consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Object> importZip(@PathVariable final Long companyId,
                                             @RequestParam("zipFile") MultipartFile zipFile) throws IOException {
         BaseZipImportExport.checkFileSize(zipFile);
         ecosystemManagerImportExportService.importEntitiesFromZip(zipFile.getInputStream());
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "/fleet/{companyId}/shaclimport")
+    public ProcessingResultDto importAssetSeriesShacl(
+            HttpServletResponse response,
+            @RequestParam MultipartFile file,
+            @PathVariable final Long companyId) throws IOException {
+        return fleetManagerImportExportService.importEntitiesFromShacl(file, companyId);
     }
 }

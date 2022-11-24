@@ -20,6 +20,7 @@ import io.fusion.fusionbackend.rest.annotations.IsEcosystemUser;
 import io.fusion.fusionbackend.service.export.EcosystemManagerImportExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +49,18 @@ public class EcosystemManagerRestService {
     public void getAsOwlExport(HttpServletResponse response) throws IOException {
         response.addHeader("Content-Disposition", "attachment;filename=\"ecosystem_manager.owl\"");
         ecosystemManagerImportExportService.exportOntologyModelToStream(response.getOutputStream());
+    }
+
+    @GetMapping(path = "/eco/shaclexport")
+    public void getAsSclExport(HttpServletResponse response) throws IOException {
+        response.addHeader("Content-Disposition", "attachment;filename=\"ecosystem_manager.ttl\"");
+        ecosystemManagerImportExportService.exportShaclModelToStream(response.getOutputStream());
+    }
+
+    @GetMapping(path = "/eco/{id}/shaclexport")
+    public void getAsSclExportById(HttpServletResponse response, @PathVariable Long id) throws IOException {
+        response.addHeader("Content-Disposition", "attachment;filename=\"ecosystem_manager.ttl\"");
+        ecosystemManagerImportExportService.exportShaclModelToStream(response.getOutputStream(), id);
     }
 
     @PutMapping(path = "/synctomodelrepo")

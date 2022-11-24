@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.dto.AssetTypeTemplateDto;
 import io.fusion.fusionbackend.dto.AssetTypeTemplatePeerDto;
 import io.fusion.fusionbackend.dto.FieldTargetDto;
@@ -435,7 +436,6 @@ public class AssetTypeTemplateService {
             for (AssetTypeTemplatePeerDto peerDto : BaseZipImportExport.toSortedList(peerDtos)) {
                 AssetTypeTemplatePeer assetTypeTemplatePeer = assetTypeTemplatePeerMapper.toEntity(peerDto);
                 assetTypeTemplatePeer.setPeer(getAssetTypeTemplate(peerDto.getPeerId(), false));
-
                 assetTypeTemplatePeerService.createAssetTypeTemplatePeer(assetTypeTemplate, assetTypeTemplatePeer);
             }
 
@@ -448,5 +448,9 @@ public class AssetTypeTemplateService {
 
     public Set<AssetTypeTemplate> findPeerCandidates(final Long assetTypeTemplateId) {
         return assetTypeTemplateRepository.findPeerCandidates(assetTypeTemplateId, assetTypeTemplateId);
+    }
+
+    public Set<AssetTypeTemplate> getAllAssetTypeTemplates() {
+        return Sets.newLinkedHashSet(assetTypeTemplateRepository.findAll(AssetTypeTemplateRepository.DEFAULT_SORT));
     }
 }

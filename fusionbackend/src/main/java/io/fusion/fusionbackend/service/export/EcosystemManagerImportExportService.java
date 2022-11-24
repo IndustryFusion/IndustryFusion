@@ -15,9 +15,15 @@
 
 package io.fusion.fusionbackend.service.export;
 
+import io.fusion.fusionbackend.config.ShaclConfig;
 import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.enums.FieldDataType;
+import io.fusion.fusionbackend.model.shacl.ShaclShape;
+import io.fusion.fusionbackend.model.shacl.enums.IfsPaths;
+import io.fusion.fusionbackend.model.shacl.enums.NgsiLdPaths;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
 import io.fusion.fusionbackend.service.AssetTypeService;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import io.fusion.fusionbackend.service.FieldService;
@@ -25,6 +31,9 @@ import io.fusion.fusionbackend.service.ModelRepoSyncService;
 import io.fusion.fusionbackend.service.UnitService;
 import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyUtil;
+import io.fusion.fusionbackend.service.shacl.ShaclBuilder;
+import io.fusion.fusionbackend.service.shacl.ShaclPrefixes;
+import io.fusion.fusionbackend.service.shacl.ShaclUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +73,8 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     private final AssetTypeTemplateService assetTypeTemplateService;
     private final ModelRepoSyncService modelRepoSyncService;
     private final OntologyBuilder ontologyBuilder;
+    private final ShaclBuilder shaclBuilder;
+    private final ShaclConfig shaclConfig;
 
     @Autowired
     public EcosystemManagerImportExportService(UnitService unitService,
@@ -71,13 +82,17 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
                                                AssetTypeService assetTypeService,
                                                AssetTypeTemplateService assetTypeTemplateService,
                                                ModelRepoSyncService modelRepoSyncService,
-                                               OntologyBuilder ontologyBuilder) {
+                                               OntologyBuilder ontologyBuilder,
+                                               ShaclBuilder shaclBuilder,
+                                               ShaclConfig shaclConfig) {
         this.unitService = unitService;
         this.fieldService = fieldService;
         this.assetTypeService = assetTypeService;
         this.assetTypeTemplateService = assetTypeTemplateService;
         this.modelRepoSyncService = modelRepoSyncService;
         this.ontologyBuilder = ontologyBuilder;
+        this.shaclBuilder = shaclBuilder;
+        this.shaclConfig = shaclConfig;
     }
 
     public void exportEntitiesToStreamAsZip(final OutputStream responseOutputStream) throws IOException {
@@ -179,6 +194,31 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     public void exportOntologyModelToStream(final OutputStream outputStream) throws IOException {
         OntModel model = ontologyBuilder.buildEcosystemOntology();
         OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, outputStream);
+    }
+
+    public void exportShaclModelToStream(OutputStream outputStream) {
+        Set<ShaclShape> shapes = shaclBuilder.buildEcosystemShacl();
+        ShaclPrefixes prefixes = ShaclPrefixes.getDefaultPrefixes()
+                .addPrefix("sh", ShaclPaths.BASE_PATH)
+                .addPrefix("ngsi", NgsiLdPaths.BASE_PATH)
+                .addPrefix("ifs", IfsPaths.BASE_PATH)
+                .addPrefix("xsd", FieldDataType.BASE_PATH)
+                .addPrefix(shaclConfig.getAdditionalPrefixes());
+        ShaclUtil.writeShaclShapeToStream(shapes, prefixes, outputStream);
+    }
+
+    public void exportShaclModelToStream(OutputStream outputStream, Long id) {
+        ShaclShape shapes = shaclBuilder.buildEcosystemShacl(
+                assetTypeTemplateService.getAssetTypeTemplate(id, true)
+        );
+        ShaclPrefixes prefixes = ShaclPrefixes.getDefaultPrefixes()
+                .addPrefix("sh", ShaclPaths.BASE_PATH)
+                .addPrefix("ngsi", NgsiLdPaths.BASE_PATH)
+                .addPrefix("ifs", IfsPaths.BASE_PATH)
+                .addPrefix("xsd", FieldDataType.BASE_PATH)
+                .addPrefix(shaclConfig.getAdditionalPrefixes());
+
+        ShaclUtil.writeShaclShapeToStream(shapes, prefixes, outputStream);
     }
 
     public SyncResultDto syncWithModelRepo() {

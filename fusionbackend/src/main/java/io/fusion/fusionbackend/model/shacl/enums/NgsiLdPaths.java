@@ -13,36 +13,30 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.model.enums;
-
-import io.fusion.fusionbackend.model.shacl.enums.BasicPaths;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+package io.fusion.fusionbackend.model.shacl.enums;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum FieldDataType implements BasicPaths {
-    NUMERIC(FieldDataType.BASE_PATH + "decimal"),
-    ENUM(FieldDataType.BASE_PATH + "enumeration");
+public enum NgsiLdPaths implements BasicPaths {
+    HAS_PATH(NgsiLdPaths.BASE_PATH + "hasValue");
 
-    private String path;
+    private final String path;
 
-    public static final String BASE_PATH = "http://www.w3.org/2001/XMLSchema#";
+    public static final String BASE_PATH = "https://uri.etsi.org/ngsi-ld/";
 
+    NgsiLdPaths(String path) {
+        this.path = path;
+    }
 
     @Override
     public String getPath() {
         return path;
     }
 
-    FieldDataType(String path) {
-        this.path = path;
-    }
-
-    public static Optional<ShaclPaths> asEnum(String uri) {
-        return Arrays.stream(ShaclPaths.values())
+    public static Optional<NgsiLdPaths> asEnum(String uri) {
+        return Arrays.stream(NgsiLdPaths.values())
                 .filter(candidate -> candidate.getPath().equalsIgnoreCase(uri)).findAny();
     }
-
 
 }

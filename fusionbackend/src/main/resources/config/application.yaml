@@ -53,5 +53,10 @@ fusionbackend:
   modelrepo-url: ${MODEL_REPO_URL}
   modelrepo-privatekey-path: ${MODEL_REPO_SSH_KEY}
 
+shacl:
+  default-prefix: https://www.industry-fusion.com/
+  additional-prefixes:
+    iff: https://www.industry-fusion.com/
+
 ngsi-broker:
   server-url: "http://localhost:9090"
