@@ -22,3 +22,7 @@ spring:
               action: update # update is only available for Hibernate JPA implementation
               create-target: fusionbackend/target/database_helper/database_schema_diff.sql
 
+fusionbackend:
+  modelrepo-sync-active: false
+  modelrepo-url:
+  modelrepo-privatekey-path:
