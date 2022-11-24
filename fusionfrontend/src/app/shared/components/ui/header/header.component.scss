@@ -387,10 +387,18 @@ header {
       background-color: $basic-black;
     }
 
+    .p-toast-message-success {
+      background-color: $basic-black;
+    }
+
     .p-toast-message-icon {
       padding-left: 5px;
       margin-right: 10px;
       color: $error !important;
+    }
+
+    .p-toast-message-icon.pi-check {
+      color: $alert-low !important;
     }
 
     .p-toast-icon-close {

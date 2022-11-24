@@ -24,6 +24,9 @@ under the License.
     </div>
     <app-create-button (createItem)="onCreate()" text="{{ 'APP.ECOSYSTEM.ASSET_TYPE_TEMPLATE.LIST.CREATE_ASSET_TYPE_TEMPLATE' | translate }}"
                        class="outer-button"></app-create-button>
+    <app-download-button (createItem)="onExportShacl()" class="outer-button"
+                         text="Export SHACL"></app-download-button>
+
   </div>
 </div>
 

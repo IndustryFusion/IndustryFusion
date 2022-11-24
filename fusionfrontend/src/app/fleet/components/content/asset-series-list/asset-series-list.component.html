@@ -17,6 +17,9 @@ under the License.
   <h3 class="table-header">{{  assetSeries.length | i18nPlural: assetSeriesMapping }}</h3>
   <app-create-button (createItem)="createAssetSeries()" text="{{ 'APP.FLEET.ASSET_SERIES_LIST.CREATE_ASSET_SERIES_BUTTON' | translate }}"
                      class="single-outer-button"></app-create-button>
+  <app-upload-button (createItem)="onImportShacl()" class="outer-button"
+                     text="Import SHACL"></app-upload-button>
+
 </div>
 
 <p-table [paginator]="true" [rowHover]="true" [rowsPerPageOptions]="rowsPerPageOptions" [rows]="rowCount"
