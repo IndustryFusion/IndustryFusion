@@ -23,11 +23,15 @@ import io.fusion.fusionbackend.service.AssetService;
 import io.fusion.fusionbackend.service.ModelRepoSyncService;
 import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyUtil;
+import io.fusion.fusionbackend.service.shacl.ShaclFactory;
+import io.fusion.fusionbackend.service.shacl.ShaclMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
+import org.apache.jena.riot.RDFDataMgr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -63,6 +67,8 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
     private final AssetYamlExportService assetYamlExportService;
     private final ModelRepoSyncService modelRepoSyncService;
     private final OntologyBuilder ontologyBuilder;
+    private final ShaclFactory shaclFactory;
+    private final ShaclMapper shaclMapper;
 
     @Autowired
     public FleetManagerImportExportService(AssetSeriesService assetSeriesService,
@@ -70,13 +76,18 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                                            EcosystemManagerImportExportService ecosystemManagerImportExportService,
                                            AssetYamlExportService assetYamlExportService,
                                            ModelRepoSyncService modelRepoSyncService,
-                                           OntologyBuilder ontologyBuilder) {
+                                           OntologyBuilder ontologyBuilder,
+                                           ShaclMapper shaclMapper,
+                                           ShaclFactory shaclFactory
+    ) {
         this.assetSeriesService = assetSeriesService;
         this.assetService = assetService;
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
         this.assetYamlExportService = assetYamlExportService;
         this.modelRepoSyncService = modelRepoSyncService;
         this.ontologyBuilder = ontologyBuilder;
+        this.shaclFactory = shaclFactory;
+        this.shaclMapper = shaclMapper;
     }
 
     public void exportEntitiesToStreamAsZip(final Long companyId,
@@ -156,8 +167,8 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                 case FILENAME_ASSETS + CONTENT_FILE_EXTENSION:
                 case FILENAME_ASSET + CONTENT_FILE_EXTENSION:
                     totalEntitySkippedCount += assetService.importMultipleFromJsonToFactoryManager(
-                                    readZipEntry(entry, zipInputStream),
-                                    companyId, factorySiteId)
+                            readZipEntry(entry, zipInputStream),
+                            companyId, factorySiteId)
                             .getSkipped();
                     break;
 
@@ -272,5 +283,56 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
         return modelRepoSyncService.getLocalGitPath()
                 .resolve(FLEET_MANAGER_SUBDIR)
                 .resolve(Long.toString(companyId));
+    }
+
+    public ProcessingResultDto importEntitiesFromShacl(MultipartFile file, Long companyId) throws IOException {
+        ProcessingResultDto result = new ProcessingResultDto();
+        Set<AssetSeries> existingAssetSeries = assetSeriesService.getAssetSeriesSetByCompany(companyId);
+        Path tempFile = Files.write(Files.createTempFile(null, ".ttl"),
+                file.getInputStream().readAllBytes());
+        try {
+            shaclFactory.graphTriplesToShaclShapes(
+                    RDFDataMgr.loadModel(tempFile.toAbsolutePath().toString())
+                            .getGraph())
+                    .stream()
+                    .map(shape -> shaclMapper.mapToAssetSeries(shape, companyId))
+                    .forEach(assetSeries -> {
+                        if (existingAssetSeries.stream()
+                                .anyMatch(candidate -> isEqualAssetSeries(assetSeries, candidate))) {
+                            result.incSkipped();
+                        } else {
+                            changeSeriesNameIfPresent(assetSeries, existingAssetSeries);
+                            assetSeriesService.createAssetSeries(
+                                    companyId,
+                                    assetSeries.getAssetTypeTemplate().getId(),
+                                    assetSeries.getConnectivitySettings().getConnectivityType().getId(),
+                                    assetSeries.getConnectivitySettings().getConnectivityProtocol().getId(),
+                                    assetSeries
+                            );
+                            result.incHandled();
+                        }
+                    });
+        } finally {
+            Files.delete(tempFile);
+        }
+        return result;
+    }
+
+    private void changeSeriesNameIfPresent(AssetSeries assetSeries, Set<AssetSeries> existingAssetSeries) {
+        Set<String> names = existingAssetSeries.stream().map(AssetSeries::getName).collect(Collectors.toSet());
+        if (names.contains(assetSeries.getName())) {
+            int id = 1;
+            while (names.contains(assetSeries.getName() + " " + id)) {
+                id++;
+            }
+            assetSeries.setName(assetSeries.getName() + " " + id);
+        }
+    }
+
+    private boolean isEqualAssetSeries(AssetSeries a, AssetSeries b) {
+        return a.getCompany().equals(b.getCompany())
+                && a.getAssetTypeTemplate().getId().equals(b.getAssetTypeTemplate().getId())
+                && a.getName().equals(b.getName())
+                && a.getDescription().equals(b.getDescription());
     }
 }

@@ -13,36 +13,31 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.model.enums;
-
-import io.fusion.fusionbackend.model.shacl.enums.BasicPaths;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+package io.fusion.fusionbackend.model.shacl.enums;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum FieldDataType implements BasicPaths {
-    NUMERIC(FieldDataType.BASE_PATH + "decimal"),
-    ENUM(FieldDataType.BASE_PATH + "enumeration");
+public enum ShaclNodeKind {
+
+    UNSET(""),
+    IRI("http://www.w3.org/ns/shacl#IRI"),
+    LITERAL("http://www.w3.org/ns/shacl#Literal"),
+    BLANK_NODE("http://www.w3.org/ns/shacl#blankNode");
 
     private String path;
 
-    public static final String BASE_PATH = "http://www.w3.org/2001/XMLSchema#";
-
-
-    @Override
     public String getPath() {
         return path;
     }
 
-    FieldDataType(String path) {
+    ShaclNodeKind(String path) {
         this.path = path;
     }
 
-    public static Optional<ShaclPaths> asEnum(String uri) {
-        return Arrays.stream(ShaclPaths.values())
+    public static Optional<ShaclNodeKind> asEnum(String uri) {
+        return Arrays.stream(ShaclNodeKind.values())
                 .filter(candidate -> candidate.getPath().equalsIgnoreCase(uri)).findAny();
     }
-
 
 }

@@ -140,6 +140,11 @@ under the License.
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.codepoetics</groupId>
+            <artifactId>protonpack</artifactId>
+            <version>1.13</version>
+        </dependency>
+        <dependency>
             <groupId>com.playtika.testcontainers</groupId>
             <artifactId>embedded-postgresql</artifactId>
             <scope>test</scope>
