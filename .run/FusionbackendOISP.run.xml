@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FusionbackendOISP" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="dev,local_dev-cluster" />
+    <envs>
+      <env name="MODEL_REPO_SYNC" value="false" />
+      <env name="MODEL_REPO_URL" value="" />
+    </envs>
+    <module name="fusionbackend" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="io.fusion.fusionbackend.FusionbackendApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
