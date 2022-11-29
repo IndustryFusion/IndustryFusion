@@ -16,14 +16,14 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OispNotification } from '../../../../../core/store/oisp/oisp-notification/oisp-notification.model';
+import { Notification } from '../../../../../core/store/ngsi-ld/notification/notification.model';
 import { first, map, mergeMap } from 'rxjs/operators';
-import { OispNotificationService } from '../../../../../core/store/oisp/oisp-notification/oisp-notification.service';
+import { NotificationService } from '../../../../../core/store/ngsi-ld/notification/notification.service';
 import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
-import { IFAlertStatus } from '../../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { IFAlertStatus } from '../../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-asset-notifications',
@@ -34,10 +34,10 @@ export class AssetNotificationsComponent implements OnInit {
 
   asset$: Observable<FactoryAssetDetailsWithFields>;
 
-  notificationsOfAsset$: Observable<OispNotification[]>;
+  notificationsOfAsset$: Observable<Notification[]>;
 
   constructor(private factoryResolver: FactoryResolver,
-              private oispNotificationService: OispNotificationService,
+              private oispNotificationService: NotificationService,
               private activatedRoute: ActivatedRoute) {
     this.factoryResolver.resolve(this.activatedRoute);
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
@@ -49,13 +49,13 @@ export class AssetNotificationsComponent implements OnInit {
     );
   }
 
-  private getFilteredNotificationsOfAsset(asset: FactoryAssetDetailsWithFields): Observable<OispNotification[]> {
-    return this.oispNotificationService.getNotificationsUsingAlertStore(asset.externalName).pipe(
+  private getFilteredNotificationsOfAsset(asset: FactoryAssetDetailsWithFields): Observable<Notification[]> {
+    return this.oispNotificationService.getNotificationsOfAsset(asset).pipe(
       map(notifications => this.filterNotificationsByStatus(notifications))
     );
   }
 
-  private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
+  private filterNotificationsByStatus(notifications: Notification[]): Notification[] {
     const status = RouteHelpers.isRouteActive('cleared', this.activatedRoute) ? IFAlertStatus.CLEARED : IFAlertStatus.OPEN;
     return notifications.filter(notification => notification.status === status);
   }

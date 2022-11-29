@@ -29,8 +29,8 @@ import {
 } from '../../../../factory/util/asset-maintenance-utils';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
-import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
+import { IFAlertSeverity } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.query';
 
 
 @Component({

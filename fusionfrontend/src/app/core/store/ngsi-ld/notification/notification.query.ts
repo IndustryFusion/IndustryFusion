@@ -13,16 +13,23 @@
  * under the License.
  */
 
-import { ID } from '@datorama/akita';
-import { IFAlertSeverity, IFAlertStatus } from '../alerta-alert/alerta-alert.model';
+import { Injectable } from '@angular/core';
+import { QueryEntity } from '@datorama/akita';
+import { NotificationState, NotificationStore } from './notification.store';
 
-export class OispNotification {
-  id: ID;
-  severity: IFAlertSeverity;
-  eventName: string;
-  assetName: string;
-  condition: string;
-  measuredValue: string;
-  timestamp: Date;
-  status: IFAlertStatus;
+@Injectable({ providedIn: 'root' })
+export class NotificationQuery extends QueryEntity<NotificationState> {
+
+  constructor(protected store: NotificationStore) {
+    super(store);
+  }
+
+  resetStore() {
+    this.store.reset();
+  }
+
+  resetError() {
+    this.store.setError(null);
+  }
+
 }

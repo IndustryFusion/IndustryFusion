@@ -14,22 +14,22 @@
  */
 
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { OispNotificationState, OispNotificationStore } from './oisp-notification.store';
+import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
+import { Notification } from './notification.model';
+import { CachedStore } from '../../cachedstore';
+
+export interface NotificationState extends EntityState<Notification, ID>, ActiveState { }
+
+const initialState = {
+  active: null
+};
 
 @Injectable({ providedIn: 'root' })
-export class OispNotificationQuery extends QueryEntity<OispNotificationState> {
+@StoreConfig({ name: 'notifications', resettable: true })
+export class NotificationStore extends CachedStore<NotificationState, Notification> {
 
-  constructor(protected store: OispNotificationStore) {
-    super(store);
-  }
-
-  resetStore() {
-    this.store.reset();
-  }
-
-  resetError() {
-    this.store.setError(null);
+  constructor() {
+    super(initialState);
   }
 
 }

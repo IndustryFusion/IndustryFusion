@@ -56,7 +56,7 @@ const routes: Routes = [
   },
   {
     path: 'notifications',
-    redirectTo: '/notifications/open',
+    redirectTo: '/notifications/companies',
     pathMatch: 'full'
   },
 ];

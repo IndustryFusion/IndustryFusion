@@ -39,8 +39,8 @@ import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
-import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
-import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
+import { IFAlertSeverity } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
+import { AlertaAlertQuery } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
 import { AssetListType } from '../../../../shared/models/asset-list-type.model';
 

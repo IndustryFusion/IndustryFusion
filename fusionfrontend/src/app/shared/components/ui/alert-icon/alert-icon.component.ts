@@ -15,7 +15,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { faExclamationCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { IFAlertSeverity } from 'src/app/core/store/oisp/alerta-alert/alerta-alert.model';
+import { IFAlertSeverity } from 'src/app/core/store/ngsi-ld/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-alert-icon',

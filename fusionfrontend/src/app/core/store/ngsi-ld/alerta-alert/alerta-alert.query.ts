@@ -20,14 +20,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AlertaAlert, AlertSeverity, IFAlertSeverity, IFAlertStatus } from './alerta-alert.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
-import { OispDeviceQuery } from '../oisp-device/oisp-device.query';
 import { TreeNode } from 'primeng/api';
 
 @Injectable({ providedIn: 'root' })
 export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
 
-  constructor(protected store: AlertaAlertStore,
-              protected oispDeviceQuery: OispDeviceQuery) {
+  constructor(protected store: AlertaAlertStore) {
     super(store);
   }
 
@@ -71,7 +69,7 @@ export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
         mostCriticalSeverity = sortedAlerts[0].severity;
       }
     } else {
-      console.warn('[oisp alert query]: ExternalId does not exist');
+      console.warn('[alerta alert query]: ExternalId does not exist');
     }
 
     return mostCriticalSeverity;

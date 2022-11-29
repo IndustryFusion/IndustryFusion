@@ -23,7 +23,9 @@ import { UserManagementService } from '../../../../core/services/api/user-manage
 import { KeycloakProfile } from 'keycloak-js';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
-import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
+import { AlertaAlertQuery } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.query';
+import { ID } from '@datorama/akita';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-header',
@@ -41,11 +43,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   openAlertCount = 0;
   ManagerType = ManagerType;
   private unSubscribe$ = new Subject<void>();
+  private companyId: ID;
   faUserCircle = faUserCircle;
 
   constructor(private routingLocation: Location,
               private alertaAlertQuery: AlertaAlertQuery,
               private userManagementService: UserManagementService,
+              private keycloakService: KeycloakService,
               private router: Router) {
   }
 
@@ -60,6 +64,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.route = '/';
         }
       });
+
+    this.companyId = (this.keycloakService.getKeycloakInstance().tokenParsed as any).IF_COMPANY;
 
     this.alertaAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
@@ -91,7 +97,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onNotificationsClick() {
-    return this.router.navigate(['/notifications']);
+    if (this.companyId) {
+      return this.router.navigate(['/notifications/companies', this.companyId, 'open']);
+    }
   }
 
   isNotifications(): boolean {

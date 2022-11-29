@@ -13,17 +13,16 @@
  * under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AlertaAlert } from '../store/oisp/alerta-alert/alerta-alert.model';
-import { AlertaAlertService } from '../store/oisp/alerta-alert/alerta-alert.service';
+import { ID } from '@datorama/akita';
+import { IFAlertSeverity, IFAlertStatus } from '../alerta-alert/alerta-alert.model';
 
-@Injectable({ providedIn: 'root' })
-export class OispAlertResolver implements Resolve<AlertaAlert[]> {
-  constructor(private alertaAlertService: AlertaAlertService) { }
-
-  resolve(): Observable<AlertaAlert[]> {
-    return this.alertaAlertService.getItems();
-  }
+export class Notification {
+  id: ID;
+  severity: IFAlertSeverity;
+  eventName: string;
+  assetName: string;
+  condition: string;
+  measuredValue: string;
+  timestamp: Date;
+  status: IFAlertStatus;
 }

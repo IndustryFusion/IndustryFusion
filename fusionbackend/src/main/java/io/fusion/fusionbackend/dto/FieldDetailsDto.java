@@ -33,6 +33,7 @@ import java.util.Set;
 @SuperBuilder
 @AllArgsConstructor
 public class FieldDetailsDto extends BaseEntityDto {
+    private String globalId;
     private Long assetId;
     private Long fieldSourceId;
     private String externalName;

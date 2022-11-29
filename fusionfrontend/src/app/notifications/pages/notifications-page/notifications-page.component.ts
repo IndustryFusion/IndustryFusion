@@ -17,10 +17,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { OispNotification } from '../../../core/store/oisp/oisp-notification/oisp-notification.model';
-import { OispNotificationService } from '../../../core/store/oisp/oisp-notification/oisp-notification.service';
+import { Notification } from '../../../core/store/ngsi-ld/notification/notification.model';
+import { NotificationService } from '../../../core/store/ngsi-ld/notification/notification.service';
 import { RouteHelpers } from '../../../core/helpers/route-helpers';
-import { IFAlertStatus } from '../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { IFAlertStatus } from '../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
 
 @Component({
   selector: 'app-notifications-page',
@@ -29,19 +29,19 @@ import { IFAlertStatus } from '../../../core/store/oisp/alerta-alert/alerta-aler
 })
 export class NotificationsPageComponent implements OnInit {
 
-  notifications$: Observable<OispNotification[]>;
+  notifications$: Observable<Notification[]>;
 
-  constructor(private oispNotificationService: OispNotificationService,
+  constructor(private notificationService: NotificationService,
               private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.notifications$ = this.oispNotificationService.getNotificationsUsingAlertStore().pipe(
+    this.notifications$ = this.notificationService.getAllNotifications().pipe(
       map(notifications => this.filterNotificationsByStatus(notifications)),
     );
   }
 
-  private filterNotificationsByStatus(notifications: OispNotification[]): OispNotification[] {
+  private filterNotificationsByStatus(notifications: Notification[]): Notification[] {
     const status = RouteHelpers.isRouteActive('open', this.activatedRoute) ? IFAlertStatus.OPEN : IFAlertStatus.CLEARED;
     return notifications.filter(notification => notification.status === status);
   }

@@ -30,7 +30,7 @@ import { FactorySiteWithAssetCount } from '../factory-site/factory-site.model';
 import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
 import { RoomQuery } from '../room/room.query';
-import { AlertaAlertQuery } from '../oisp/alerta-alert/alerta-alert.query';
+import { AlertaAlertQuery } from '../ngsi-ld/alerta-alert/alerta-alert.query';
 
 @Injectable({ providedIn: 'root' })
 export class FactoryComposedQuery {
