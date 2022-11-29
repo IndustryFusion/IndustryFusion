@@ -77,10 +77,3 @@ export class PointWithIdAndDate {
   date: Date;
   value: string;
 }
-
-export class OISPUser {
-  id: string;
-  created: Date;
-  updated: Date;
-  email: string;
-}

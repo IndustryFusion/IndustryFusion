@@ -80,10 +80,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.route && this.route.match(`\/${'dashboards'}\/`);
   }
 
-  isFusionApplet() {
-    return this.route && this.route.match(`\/${'fusion-applets\/'}`);
-  }
-
   isHome() {
     return this.route && this.route.match('/home');
   }
@@ -129,8 +125,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       title = 'Fleet Manager';
     } else if (this.isManager(ManagerType.ECOSYSTEM_MANAGER)) {
       title = 'Ecosystem Manager';
-    } else if (this.isFusionApplet()) {
-      title = 'Applets';
     } else if (this.isDashboards()) {
       title = 'Dashboards';
     } else if (this.isNotifications()) {

@@ -27,7 +27,6 @@ import {
   OispRequest,
   OispRequestWithAggregation,
   OispResponse,
-  OISPUser,
   PointWithId,
   Sampling,
   Series
@@ -48,11 +47,6 @@ export class OispService {
     private http: HttpClient,
     private oispDeviceQuery: OispDeviceQuery,
     private keycloakService: KeycloakService) {
-  }
-
-  getUsers(): Observable<OISPUser[]> {
-    const url = `${environment.oispApiUrlPrefix}/accounts/${this.getOispAccountId()}/users`;
-    return this.http.get<OISPUser[]>(url, this.httpOptions);
   }
 
   hasAnyPoints(oispSeries: Series[]): boolean {
