@@ -32,6 +32,9 @@ export class CompanyService {
 
   constructor(private companyStore: CompanyStore, private http: HttpClient) { }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   */
   getCompanies(): Observable<Company[]> {
     const path = `companies`;
     return this.companyStore.cachedByParentId('root', this.http.get<Company[]>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)
@@ -40,6 +43,9 @@ export class CompanyService {
       })));
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   */
   getCompany(companyId: ID): Observable<Company> {
     const path = `companies/${companyId}`;
     return this.companyStore.cachedById(companyId, this.http.get<Company>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions)

@@ -33,6 +33,11 @@ export class FieldSourceService {
   constructor(private fieldSourceStore: FieldSourceStore, private http: HttpClient) {
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId     Id of the company
+   * @param assetSeriesId Id of the asset series
+   */
   getFieldSourcesOfAssetSeries(companyId: ID, assetSeriesId: ID): Observable<FieldSource[]> {
     const path = `companies/${companyId}/assetseries/${assetSeriesId}/fieldsources`;
     const cacheKey = 'assetseries-' + assetSeriesId;

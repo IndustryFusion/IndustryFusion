@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Status } from 'src/app/factory/models/status.model';
-import { PointWithId } from 'src/app/core/services/api/oisp.model';
+import { ngsiLdLatestKeyValues } from '../../../../../core/models/kairos.model';
 import { StatusService } from 'src/app/core/services/logic/status.service';
 import { FieldDetails, FieldType } from 'src/app/core/store/field-details/field-details.model';
 import { ID } from '@datorama/akita';
@@ -43,7 +43,7 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
   assetId: ID;
   asset$: Observable<FactoryAssetDetailsWithFields>;
 
-  latestPoints$: Observable<PointWithId[]>;
+  latestPoints$: Observable<ngsiLdLatestKeyValues[]>;
   mergedFields$: Observable<FieldDetails[]>;
   status$: Observable<Status>;
 
@@ -69,22 +69,14 @@ export class AssetDigitalNameplateComponent implements OnInit, OnDestroy {
     // TODO: refactor using status.service.getStatusByAssetWithFields
     this.latestPoints$ = combineLatest([this.asset$, timer(0, environment.dataUpdateIntervalMs)]).pipe(
       switchMap(([asset, _]) => {
-        return this.ngsiLdService.getLastValueOfAllFields(asset);
+        return this.ngsiLdService.getLatestValuesOfAsset(asset);
       })
     );
 
     this.mergedFields$ = combineLatest([this.asset$, this.latestPoints$])
       .pipe(
         map(([asset, latestPoints]) => {
-          return asset.fields.map(field => {
-            const fieldCopy = Object.assign({ }, field);
-            const point = latestPoints[field.externalName];
-
-            if (point) {
-              fieldCopy.value = point;
-            }
-            return fieldCopy;
-          });
+          return this.ngsiLdService.mergeFieldValuesToAsset(latestPoints, asset);
         }));
 
 

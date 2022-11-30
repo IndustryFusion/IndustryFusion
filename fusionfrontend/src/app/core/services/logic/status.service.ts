@@ -20,7 +20,7 @@ import { AssetWithFields } from 'src/app/core/store/asset/asset.model';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { OispDeviceStatus } from '../../models/kairos.model';
+import { DeviceStatus } from '../../models/kairos.model';
 import { AssetStatusPipe } from '../../../shared/pipes/asset-status-pipe';
 import { environment } from '../../../../environments/environment';
 import { NgsiLdService } from '../api/ngsi-ld.service';
@@ -85,19 +85,19 @@ export class StatusService {
     );
   }
 
-  transformStatusToOispDeviceStatus(status: Status): OispDeviceStatus {
+  transformStatusToDeviceStatus(status: Status): DeviceStatus {
     const assetStatusPipe = new AssetStatusPipe();
     const statusString = assetStatusPipe.transform(status.gotData, status.statusValue).status;
 
     switch (statusString) {
       case 'offline':
-        return OispDeviceStatus.OFFLINE;
+        return DeviceStatus.OFFLINE;
       case 'idle':
-        return OispDeviceStatus.IDLE;
+        return DeviceStatus.IDLE;
       case 'running':
-        return OispDeviceStatus.RUNNING;
+        return DeviceStatus.RUNNING;
       default:
-        return OispDeviceStatus.ERROR;
+        return DeviceStatus.ERROR;
     }
   }
 }

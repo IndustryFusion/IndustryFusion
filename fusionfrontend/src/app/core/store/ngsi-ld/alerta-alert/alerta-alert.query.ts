@@ -69,7 +69,7 @@ export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
         mostCriticalSeverity = sortedAlerts[0].severity;
       }
     } else {
-      console.warn('[alerta alert query]: ExternalId does not exist');
+      console.warn('[alerta alert query]: ExternalName does not exist');
     }
 
     return mostCriticalSeverity;

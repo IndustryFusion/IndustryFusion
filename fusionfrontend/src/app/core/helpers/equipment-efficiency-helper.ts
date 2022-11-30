@@ -15,7 +15,7 @@
 
 import { FactoryAssetDetailsWithFields } from '../store/factory-asset-details/factory-asset-details.model';
 import { StatusHours } from '../models/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../models/kairos.model';
+import { DeviceStatus } from '../models/kairos.model';
 import { EnumHelpers } from './enum-helpers';
 
 export class EquipmentEfficiencyHelper {
@@ -59,8 +59,8 @@ export class EquipmentEfficiencyHelper {
 
   private static getEmptyAggregatedStatusHours(enumHelpers: EnumHelpers): StatusHours[] {
     const aggregatedStatusHours: StatusHours[] = [];
-    for (let i = 0; i < enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
-      aggregatedStatusHours.push({ status: i as OispDeviceStatus, hours: 0 });
+    for (let i = 0; i < enumHelpers.getIterableArray(DeviceStatus).length; i++) {
+      aggregatedStatusHours.push({ status: i as DeviceStatus, hours: 0 });
     }
     return aggregatedStatusHours;
   }

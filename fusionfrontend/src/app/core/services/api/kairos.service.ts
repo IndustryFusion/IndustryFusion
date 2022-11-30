@@ -16,41 +16,206 @@
 import { Asset } from '../../store/asset/asset.model';
 import { FieldDetails } from '../../store/field-details/field-details.model';
 import { EMPTY, Observable, of } from 'rxjs';
-import { Aggregator, Sampling } from './oisp.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { OispDeviceQuery } from '../../store/oisp/oisp-device/oisp-device.query';
-import { environment } from '../../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import {
+  KairosAggregator,
+  KairosDataPoint,
+  KairosDataPointGroup,
   KairosGroupBy,
   KairosQuery,
   KairosRequest,
   KairosResponse,
-  KairosResponseGroup,
   KairosResult,
+  KairosSampling,
   MetricsWithAggregationAndGrouping
 } from '../../models/kairos.model';
+import { NgsiLdService } from './ngsi-ld.service';
+import * as moment from 'moment/moment';
 
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * @see https://kairosdb.github.io/docs/restapi/QueryMetrics.html#id3
+ */
 export class KairosService {
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  private readonly emptyResponse: KairosResponseGroup[] = [];
+  private readonly EMPTY_DATA_POINT_GROUPS: KairosDataPointGroup[] = [];
+  private readonly DEFAULT_ACCOUNT_NAME: string = 'default'; // multi-tenancy support will come later;
+  private readonly PATH: string = 'datapoints/query'; // multi-tenancy support will come later;
 
   constructor(
     private http: HttpClient,
-    private oispDeviceQuery: OispDeviceQuery) {
+    private ngsiLdService: NgsiLdService) {
   }
 
-  public static mapResultToResponseGroup(result: KairosResult): KairosResponseGroup {
-    return ({ index: result.group_by[0].group.group_number,
+  public static mapQueryResultToDataGroup(result: KairosResult): KairosDataPointGroup {
+    return ({ index:      result.group_by[0].group?.group_number ?? 0,
               timestamps: result.values.map((valueArray: number[]) => valueArray[0]),
-              results:    result.values.map((valueArray: number[]) => valueArray[1])});
+              values:    result.values.map((valueArray: number[]) => valueArray[1])});
+  }
+
+  public static getFieldIri(fieldDetails: FieldDetails): string {
+    const cleanedExternalName = this.getFieldInstanceCleanName(fieldDetails);
+    return `https://industry-fusion.com/field/${cleanedExternalName}`;
+  }
+
+  /**
+   * @see NgsiLdSerializer.getFieldInstanceCleanName (backend)
+   */
+  public static getFieldInstanceCleanName(fieldDetails: FieldDetails): string {
+    let fieldName: string = fieldDetails.externalName;
+    if (fieldName == null) {
+      fieldName = fieldDetails.fieldLabel;
+    }
+    fieldName = this.cleanName(fieldName);
+    return fieldName;
+  }
+
+  /**
+   * @see NgsiLdSerializer.cleanName (backend)
+   */
+  private static cleanName(fieldName: string): string {
+    fieldName = fieldName.replace('[\\<\\"\\\'\\=\\;\\(\\)\\>\\?\\*\\s]', '');
+    return fieldName;
+  }
+
+  getValuesOfFieldByLastSeconds(asset: Asset,
+                                fieldDetails: FieldDetails,
+                                secondsInPast: number,
+                                limit?: number): Observable<KairosDataPoint[]> {
+
+    const fromDate = moment(Date.now()).subtract(secondsInPast, 'seconds').valueOf();
+    const nowDate = moment(Date.now()).valueOf();
+
+    const kairosIdentifier = this.generateKairosIdentifier(asset, fieldDetails);
+    const request = this.prepareKairosRequestNoGrouping(kairosIdentifier, fromDate, nowDate, limit);
+
+    return this.runKairosPostRequest(this.PATH, request).pipe(
+      map(dataGroups => this.flatMapDataPointGroups(dataGroups))
+    );
+  }
+
+  getValuesOfFieldByDateRange(asset: Asset,
+                              fieldDetails: FieldDetails,
+                              fromDate: number,
+                              toDate: number,
+                              limit: number,
+                              samplingUnit?: string,
+                              samplingValue?: number): Observable<KairosDataPoint[]> {
+
+    const mySampling: KairosSampling = ({ unit: samplingUnit, value: samplingValue });
+    const myAggregator: KairosAggregator = samplingUnit ? ({ name: 'avg', sampling: mySampling }) : ({ name: 'avg' });
+    const myGrouping: KairosGroupBy = ({ name: 'value', range_size: 1 });
+
+    const kairosIdentifier = this.generateKairosIdentifier(asset, fieldDetails);
+    const request = this.prepareKairosRequest(kairosIdentifier, myGrouping, myAggregator, fromDate, toDate, limit);
+
+    return this.runKairosPostRequest(this.PATH, request).pipe(
+      map(dataGroups => this.flatMapDataPointGroups(dataGroups))
+    );
+  }
+
+   // TODO has to be tested with new kairos version
+  private flatMapDataPointGroups(dataPointGroups: KairosDataPointGroup[]): KairosDataPoint[] {
+      const flattenedDataPoints: KairosDataPoint[] = [];
+      dataPointGroups.forEach((group) => {
+        for (let i = 0; i < group.values.length; i++) {
+          flattenedDataPoints.push({ timestamp: group.timestamps[i], value: group.values[i] } as KairosDataPoint);
+        }
+      });
+      return flattenedDataPoints;
+  }
+
+  getStatusCounts(asset: Asset,
+                  fieldDetails: FieldDetails,
+                  fromDate: number,
+                  toDate: number,
+                  limit?: number): Observable<KairosDataPointGroup[]> {
+
+    const mySampling: KairosSampling = ({ unit: 'days', value: 1 });
+    const myAggregator: KairosAggregator = ({ name: 'count', sampling: mySampling });
+    const myGrouping: KairosGroupBy = ({ name: 'value', range_size: 1 });
+
+    const kairosIdentifier = this.generateKairosIdentifier(asset, fieldDetails);
+    const request = this.prepareKairosRequest(kairosIdentifier, myGrouping, myAggregator, fromDate, toDate, limit);
+
+    return this.runKairosPostRequest(this.PATH, request);
+  }
+
+  private generateKairosIdentifier(asset: Asset,
+                                   fieldDetails: FieldDetails): string {
+    const assetUri = this.ngsiLdService.getAssetUri(asset);
+    const fieldIri = KairosService.getFieldIri(fieldDetails);
+
+    return this.DEFAULT_ACCOUNT_NAME + '\\' + assetUri + '\\' + fieldIri;
+  }
+
+  private prepareKairosRequest(kairosIdentifier: string,
+                               myGrouping: KairosGroupBy,
+                               myAggregator: KairosAggregator,
+                               fromDate: number,
+                               toDate: number,
+                               limit: number): KairosRequest {
+    let metricsWithAggregationAndGrouping: MetricsWithAggregationAndGrouping;
+    if (limit) {
+      metricsWithAggregationAndGrouping = ({ name: kairosIdentifier, limit, group_by: [myGrouping], aggregators: [myAggregator] });
+    } else {
+      metricsWithAggregationAndGrouping = ({ name: kairosIdentifier, group_by: [myGrouping], aggregators: [myAggregator] });
+    }
+
+    return {
+      start_absolute: fromDate,
+      end_absolute: toDate,
+      metrics: [metricsWithAggregationAndGrouping]
+    } as KairosRequest;
+  }
+
+  private prepareKairosRequestNoGrouping(kairosIdentifier: string,
+                                         fromDate: number,
+                                         toDate: number,
+                                         limit: number): KairosRequest {
+    let metricsWithoutAggregation: MetricsWithAggregationAndGrouping;
+    if (limit) {
+      metricsWithoutAggregation = ({ name: kairosIdentifier, limit, group_by: [], aggregators: [] });
+    } else {
+      metricsWithoutAggregation = ({ name: kairosIdentifier, group_by: [], aggregators: [] });
+    }
+
+    return {
+      start_absolute: fromDate,
+      end_absolute: toDate,
+      metrics: [metricsWithoutAggregation]
+    } as KairosRequest;
+  }
+
+  private runKairosPostRequest(path: string, request: KairosRequest): Observable<KairosDataPointGroup[]> {
+    if (request.metrics.length < 1) {
+      return of(this.EMPTY_DATA_POINT_GROUPS);
+    }
+    return this.http.post<KairosResponse>(`${environment.kairosApiUrlPrefix}/${path}`, request, this.httpOptions)
+      .pipe(
+        catchError(() => {
+          console.error('[kairos service] caught error during post request');
+          return EMPTY;
+        }),
+        map(((response: KairosResponse) => {
+          if (response.queries && this.hasAnyResult(response.queries)) {
+            const groups: KairosDataPointGroup[] = [];
+            response.queries.forEach(query => {
+              query.results.forEach(result => groups.push(KairosService.mapQueryResultToDataGroup(result)));
+            });
+            return groups;
+          } else {
+            return this.EMPTY_DATA_POINT_GROUPS;
+          }
+        })));
   }
 
   private hasAnyResult(queries: KairosQuery[]): boolean {
@@ -61,63 +226,5 @@ export class KairosService {
       });
     });
     return answer;
-  }
-
-  private makeKairosRequest(path: string, request: KairosRequest): Observable<KairosResponseGroup[]> {
-    if (request.metrics.length < 1) {
-      return of(this.emptyResponse);
-    }
-    return this.http.post<KairosResponse>(`${environment.kairosApiUrlPrefix}/${path}`, request, this.httpOptions)
-      .pipe(
-        catchError(() => {
-          console.error('[kairos service] caught error during post request');
-          return EMPTY;
-        }),
-        map(((response: KairosResponse) => {
-          if (response.queries && this.hasAnyResult(response.queries)) {
-            const groups: KairosResponseGroup[] = [];
-            response.queries.forEach(query => {
-              query.results.forEach(result => groups.push(KairosService.mapResultToResponseGroup(result)));
-            });
-            return groups;
-          } else {
-            return this.emptyResponse;
-          }
-        })));
-  }
-
-  getStatusCounts(asset: Asset,
-                  fieldDetails: FieldDetails,
-                  fromDate: number,
-                  toDate: number,
-                  limit?: number): Observable<KairosResponseGroup[]> {
-
-    const path = `datapoints/query`;
-    let metricsWithAggregationAndGrouping: MetricsWithAggregationAndGrouping;
-
-    const mySampling: Sampling = ({ unit: 'days', value: 1 });
-    const myAggregator: Aggregator = ({ name: 'count', sampling: mySampling });
-    const myGrouping: KairosGroupBy = ({ name: 'value', range_size: 1 });
-    const domainIdOfDevice = this.oispDeviceQuery.getDeviceOfAsset(asset.externalName)?.domainId;
-    const externalIdOfFieldInstance = this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName,
-      fieldDetails.externalName);
-
-    if (domainIdOfDevice == null) {
-      return of(this.emptyResponse);
-    }
-
-    if (limit) {
-      metricsWithAggregationAndGrouping = ({ name: domainIdOfDevice + '.' + externalIdOfFieldInstance, limit,
-        group_by: [myGrouping], aggregators: [myAggregator] });
-    } else {
-      metricsWithAggregationAndGrouping = ({ name: domainIdOfDevice + '.' + externalIdOfFieldInstance,
-        group_by: [myGrouping], aggregators: [myAggregator] });
-    }
-    const request: KairosRequest = {
-      start_absolute: fromDate,
-      end_absolute: toDate,
-      metrics: [metricsWithAggregationAndGrouping]
-    };
-    return this.makeKairosRequest(path, request);
   }
 }

@@ -37,7 +37,7 @@ export class AssetNotificationsComponent implements OnInit {
   notificationsOfAsset$: Observable<Notification[]>;
 
   constructor(private factoryResolver: FactoryResolver,
-              private oispNotificationService: NotificationService,
+              private notificationService: NotificationService,
               private activatedRoute: ActivatedRoute) {
     this.factoryResolver.resolve(this.activatedRoute);
     this.asset$ = this.factoryResolver.assetWithDetailsAndFields$;
@@ -50,7 +50,7 @@ export class AssetNotificationsComponent implements OnInit {
   }
 
   private getFilteredNotificationsOfAsset(asset: FactoryAssetDetailsWithFields): Observable<Notification[]> {
-    return this.oispNotificationService.getNotificationsOfAsset(asset).pipe(
+    return this.notificationService.getNotificationsOfAsset(asset).pipe(
       map(notifications => this.filterNotificationsByStatus(notifications))
     );
   }

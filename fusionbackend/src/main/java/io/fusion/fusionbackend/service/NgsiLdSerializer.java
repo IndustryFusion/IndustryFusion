@@ -147,11 +147,23 @@ public class NgsiLdSerializer {
         }
     }
 
+    /**
+     * Remove not allowed chars in name.
+     *
+     * @param name name of field instance
+     * @apiNote see kairos.service.ts::cleanName (frontend)
+     */
     private String cleanName(String name) {
         name = name.replaceAll("[\\<\\\"\\'\\=\\;\\(\\)\\>\\?\\*\\s]", "");
         return name;
     }
 
+    /**
+     * Get cleaned field instance name.
+     *
+     * @param fieldInstance field instance
+     * @apiNote see kairos.service.ts::getFieldInstanceCleanName (frontend)
+     */
     private String getFieldInstanceCleanName(FieldInstance fieldInstance) {
         String fieldName = fieldInstance.getExternalName();
         if (fieldName == null) {

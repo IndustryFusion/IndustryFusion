@@ -32,6 +32,11 @@ export class AssetSeriesDetailsService {
 
   constructor(private assetSeriesDetailsStore: AssetSeriesDetailsStore, private http: HttpClient) { }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId Id of the company
+   * @param refresh   if the cache should be refreshed
+   */
   getAssetSeriesDetailsOfCompany(companyId: ID, refresh: boolean = false): Observable<AssetSeriesDetails[]> {
     const path = `companies/${companyId}/assetseriesdetails`;
     const cacheKey = 'company-' + companyId;

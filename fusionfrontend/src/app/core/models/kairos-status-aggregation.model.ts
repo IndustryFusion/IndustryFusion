@@ -14,10 +14,10 @@
  */
 
 
-import { OispDeviceStatus } from './kairos.model';
+import { DeviceStatus } from './kairos.model';
 
 export class StatusHours {
-  status: OispDeviceStatus;
+  status: DeviceStatus;
   hours: number;
 }
 

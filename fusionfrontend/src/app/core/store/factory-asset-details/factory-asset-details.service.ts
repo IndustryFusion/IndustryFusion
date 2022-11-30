@@ -39,6 +39,10 @@ export class FactoryAssetDetailsService {
               private factoryComposedQuery: FactoryComposedQuery,
               private http: HttpClient) { }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId     Id of the company
+   */
   getAssetDetailsOfCompany(companyId: ID): Observable<FactoryAssetDetails[]> {
     const path = `companies/${companyId}/factoryassetdetails`;
     const cacheKey = 'company-' + companyId;

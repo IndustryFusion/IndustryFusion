@@ -17,7 +17,6 @@ import { Injectable } from '@angular/core';
 import { combineQueries, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { OispService } from '../../services/api/oisp.service';
 import {
   FactoryAssetDetails,
   FactoryAssetDetailsWithFields
@@ -40,8 +39,7 @@ export class FactoryComposedQuery {
     protected assetQuery: AssetQuery,
     protected factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
     protected fieldDetailsQuery: FieldDetailsQuery,
-    protected alertaAlertQuery: AlertaAlertQuery,
-    protected oispService: OispService) { }
+    protected alertaAlertQuery: AlertaAlertQuery) { }
 
   selectAssetsOfFactorySite(factorySiteId: ID): Observable<Asset[]> {
     return combineQueries([

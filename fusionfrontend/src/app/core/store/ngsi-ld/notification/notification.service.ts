@@ -67,9 +67,10 @@ export class NotificationService {
 
   getNotificationsOfAsset(asset: FactoryAssetDetailsWithFields): Observable<Notification[]> {
     return this.alertaAlertQuery.selectAll().pipe(
-      // filter(alert => this.ngsiLdService.getAssetUri(asset) === alert.resource),
       map((alerts: AlertaAlert[]) => {
-        return alerts.map<Notification>((alert: AlertaAlert) => this.getNotificationOfAlertWithDevices(alert, [asset]));
+        return alerts
+          .filter(alert => this.ngsiLdService.getAssetUri(asset) === alert.resource)
+          .map<Notification>((alert: AlertaAlert) => NotificationService.mapAlertToNotification(alert, asset.name));
       }),
       tap(notifications => this.notificationStore.upsertMany(notifications))
     );
@@ -80,7 +81,7 @@ export class NotificationService {
       mergeMap((assets: Asset[]) => {
         return this.alertaAlertQuery.selectAll().pipe(
           map((alerts: AlertaAlert[]) => {
-            return alerts.map<Notification>((alert: AlertaAlert) => this.getNotificationOfAlertWithDevices(alert, assets));
+            return alerts.map<Notification>((alert: AlertaAlert) => this.mapAlertToNotification(alert, assets));
           }),
           tap(notifications => this.notificationStore.upsertMany(notifications))
         );
@@ -88,7 +89,7 @@ export class NotificationService {
     );
   }
 
-  private getNotificationOfAlertWithDevices(alert: AlertaAlert, assets: Asset[]): Notification {
+  private mapAlertToNotification(alert: AlertaAlert, assets: Asset[]): Notification {
     let assetName = null;
     if (!!assets && assets.length > 0 && alert) {
       const assetOfAlert = assets.find(asset => this.ngsiLdService.getAssetUri(asset) === String(alert.resource));

@@ -28,7 +28,6 @@ import {
 } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { FactoryAssetDetailsResolver } from '../core/resolvers/factory-asset-details.resolver';
-import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
 import {
   AssetNotificationsComponent
 } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
@@ -42,6 +41,7 @@ import {
 } from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { FieldInstanceDetailsResolver } from '../core/resolvers/field-instance-details.resolver';
 import { CompanyResolver } from '../core/resolvers/company.resolver';
+import { AssetResolver } from '../core/resolvers/asset.resolver';
 
 const routes: Routes = [
   {
@@ -93,9 +93,6 @@ const routes: Routes = [
               {
                 path: 'asset-cards/:assetIdList',
                 component: AssetsGridPageComponent,
-                resolve: {
-                  devices: OispDeviceResolver
-                },
                 data: {
                   pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_CARD],
                   roles: [Role.FACTORY_MANAGER],
@@ -151,9 +148,6 @@ const routes: Routes = [
           {
             path: 'asset-cards/:assetIdList',
             component: AssetsGridPageComponent,
-            resolve: {
-              devices: OispDeviceResolver
-            },
             data: {
               pageTypes: [FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ASSET_CARD],
               roles: [Role.FACTORY_MANAGER],
@@ -169,7 +163,6 @@ const routes: Routes = [
     path: 'factorymanager/companies/:companyId/assets',
     canActivate: [MainAuthGuard],
     resolve: {
-      devices: OispDeviceResolver,
       company: CompanyResolver,
     },
     data: {
@@ -199,9 +192,6 @@ const routes: Routes = [
         path: 'asset-cards/:assetIdList',
         component: AssetsGridPageComponent,
         canActivate: [MainAuthGuard],
-        resolve: {
-          devices: OispDeviceResolver
-        },
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_LIST, FactoryManagerPageType.ASSET_CARD],
           roles: [Role.FACTORY_MANAGER],
@@ -212,7 +202,7 @@ const routes: Routes = [
         path: ':assetId',
         canActivate: [MainAuthGuard],
         resolve: {
-          assets: FactoryAssetDetailsResolver,
+          assetDetails: FactoryAssetDetailsResolver,
           fieldInstanceDetails: FieldInstanceDetailsResolver
         },
         data: {
@@ -267,6 +257,9 @@ const routes: Routes = [
           {
             path: 'notifications/open',
             component: AssetNotificationsComponent,
+            resolve: {
+              assets: AssetResolver
+            },
             data: {
               breadcrumb: 'Notifications',
             },
@@ -274,6 +267,9 @@ const routes: Routes = [
           {
             path: 'notifications/cleared',
             component: AssetNotificationsComponent,
+            resolve: {
+              assets: AssetResolver
+            },
             data: {
               breadcrumb: 'Notifications',
             },
