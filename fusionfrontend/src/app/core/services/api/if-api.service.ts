@@ -27,7 +27,7 @@ export class IfApiService {
     headers: new HttpHeaders({ Accept: 'application/zip' })
   };
   syncResult: SyncResult = new SyncResult();
-  showResult: boolean = false;
+  showResult = false;
 
   constructor(private http: HttpClient) {
   }
