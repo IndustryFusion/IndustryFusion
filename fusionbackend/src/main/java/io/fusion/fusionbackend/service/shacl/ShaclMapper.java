@@ -54,12 +54,12 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class ShaclMapper {
@@ -228,8 +228,7 @@ public class ShaclMapper {
         AssetTypeTemplate att = assetTypeTemplateService.getAllAssetTypeTemplates().stream()
                 .filter(candidate -> isRightAssetTypeTemplate(shape, candidate))
                 .findAny()
-                .orElseThrow(() -> new SyntaxError("Unknown asset type template"
-                        + shape.getStringParameter(ShaclPaths.LABEL_TEMPLATE)));
+                .orElseThrow(() -> new SyntaxError("Unknown asset type template" + findShapeIdentifier(shape)));
         validateAssetTypeTemplate(shape, att);
         return att;
     }
@@ -248,25 +247,57 @@ public class ShaclMapper {
         series.setHandbookUrl(shape.getStringParameter(IfsPaths.ASSET_MANUAL, ""));
         series.setVideoUrl(shape.getStringParameter(IfsPaths.ASSET_VIDEO, ""));
         series.setCompany(companyService.getCompany(companyId, true));
-        series.setFieldSources(mapToFieldSources(shape.getSubShapes(),
-                series.getAssetTypeTemplate().getFieldTargets()));
+        series.setFieldSources(mapToFieldSources(shape, series.getAssetTypeTemplate().getFieldTargets()));
+        validateAllMandatoriesPresent(shape, series);
 
         return series;
     }
 
-    private Set<FieldSource> mapToFieldSources(Collection<ShaclShape> shapes, Collection<FieldTarget> fieldTargets) {
-        Set<FieldSource> fieldSources = new HashSet<>();
-        for (ShaclShape shape : shapes) {
-            ShaclNodeKind snk = ShaclNodeKind
-                    .asEnum(getParameterOrThrow(shape, ShaclPaths.NODE_KIND))
-                    .orElse(ShaclNodeKind.UNSET);
-            if (ShaclNodeKind.BLANK_NODE.equals(snk)) {
-                fieldSources.addAll(mapToFieldSources(shape.getSubShapes(), fieldTargets));
-            } else if (ShaclNodeKind.LITERAL.equals(snk)) {
-                fieldSources.add(mapToFieldSource(shape, fieldTargets));
+    private void validateAllMandatoriesPresent(ShaclShape shape, AssetSeries series) {
+        series.getAssetTypeTemplate().getFieldTargets().stream()
+                .filter(FieldTarget::getMandatory)
+                .map(mandatory -> getFieldInShapeOrThrow(mandatory, shape))
+                .forEach(candidate -> getParameterOrThrow(candidate, IfsPaths.REGISTER));
+    }
+
+    private ShaclShape getFieldInShapeOrThrow(FieldTarget mandatory, ShaclShape shape) {
+        return flatPropertyShapeStream(shape)
+                .filter(candidate -> validateParameter(candidate, ShaclPaths.LABEL_TEMPLATE, mandatory.getLabel()))
+                .findAny()
+                .orElseThrow(() -> new SyntaxError("Missing mandatory field "
+                        + findFieldTargetIdentifier(mandatory)
+                        + " in "
+                        + findShapeIdentifier(shape)));
+    }
+
+    private void addPropertiesRecursive(Stream.Builder<PropertyShape> streamBuilder, Collection<ShaclShape> shape) {
+        shape.forEach(candidate -> {
+            switch (ShaclNodeKind
+                    .asEnum(getParameterOrThrow(candidate, ShaclPaths.NODE_KIND))
+                    .orElse(ShaclNodeKind.UNSET)) {
+                case BLANK_NODE:
+                    addPropertiesRecursive(streamBuilder, candidate.getSubShapes());
+                    break;
+                case LITERAL:
+                    if (candidate instanceof PropertyShape) {
+                        streamBuilder.add((PropertyShape) candidate);
+                    }
+                    break;
+                default:
             }
-        }
-        return fieldSources;
+        });
+    }
+
+    private Stream<PropertyShape> flatPropertyShapeStream(ShaclShape shape) {
+        Stream.Builder<PropertyShape> stream = Stream.builder();
+        addPropertiesRecursive(stream, shape.getSubShapes());
+        return stream.build();
+    }
+
+    private Set<FieldSource> mapToFieldSources(ShaclShape shape, Collection<FieldTarget> fieldTargets) {
+        return flatPropertyShapeStream(shape)
+                .map(candidate -> mapToFieldSource(candidate, fieldTargets))
+                .collect(Collectors.toSet());
     }
 
     private FieldSource mapToFieldSource(ShaclShape shape, Collection<FieldTarget> fieldTargets) {
@@ -313,28 +344,19 @@ public class ShaclMapper {
 
     private void validateAssetTypeTemplate(ShaclShape shape, AssetTypeTemplate candidate) {
         validateAssetType(shape, candidate.getAssetType());
-        validateFieldTargets(shape.getSubShapes(), candidate.getFieldTargets());
+        validateFieldTargets(shape, candidate.getFieldTargets());
     }
 
-    private void validateFieldTargets(Collection<ShaclShape> shapes, Collection<FieldTarget> fieldTargets) {
-        for (ShaclShape shape : shapes) {
-            ShaclNodeKind snk = ShaclNodeKind
-                    .asEnum(getParameterOrThrow(shape, ShaclPaths.NODE_KIND))
-                    .orElse(ShaclNodeKind.UNSET);
-            if (ShaclNodeKind.BLANK_NODE.equals(snk)) {
-                validateFieldTargets(shape.getSubShapes(), fieldTargets);
-            } else if (ShaclNodeKind.LITERAL.equals(snk)) {
-                validateFieldTarget(shape, fieldTargets);
-            }
-        }
+    private void validateFieldTargets(ShaclShape shape, Collection<FieldTarget> fieldTargets) {
+        flatPropertyShapeStream(shape).forEach(candidate -> validateFieldTarget(candidate, fieldTargets));
     }
 
     private FieldTarget findFieldTargetOrThrow(ShaclShape shape, Collection<FieldTarget> fieldTargets) {
         return fieldTargets.stream()
                 .filter(candidate -> validateParameter(shape, ShaclPaths.LABEL_TEMPLATE, candidate.getLabel()))
                 .findAny()
-                .orElseThrow(() -> new SyntaxError("Missing or inconsistent field target"
-                        + shape.getStringParameter(ShaclPaths.LABEL_TEMPLATE)));
+                .orElseThrow(() -> new SyntaxError("Missing or inconsistent field target "
+                        + findShapeIdentifier(shape)));
     }
 
     private void validateFieldTarget(ShaclShape shape, Collection<FieldTarget> fieldTargets) {
@@ -421,6 +443,12 @@ public class ShaclMapper {
                 .orElseThrow(() -> new SyntaxError("Missing "
                         + path.getPath() + " property in " + findShapeIdentifier(shape))
                 );
+    }
+
+    private String findFieldTargetIdentifier(FieldTarget fieldTarget) {
+        return fieldTarget.getLabel() != null && !fieldTarget.getLabel().isEmpty()
+                ? fieldTarget.getLabel()
+                : fieldTarget.getName();
     }
 
     private String findShapeIdentifier(ShaclShape shape) {
