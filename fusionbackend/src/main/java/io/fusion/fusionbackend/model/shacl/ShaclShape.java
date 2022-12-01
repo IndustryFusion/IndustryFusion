@@ -75,7 +75,7 @@ public abstract class ShaclShape {
         return this;
     }
 
-    public ShaclShape addSubShapes(Collection<PropertyShape> map) {
+    public ShaclShape addSubShapes(Collection<ShaclShape> map) {
         subShapes.addAll(map);
         return this;
     }

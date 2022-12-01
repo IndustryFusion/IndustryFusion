@@ -17,6 +17,7 @@ package io.fusion.fusionbackend.service.shacl;
 
 import com.codepoetics.protonpack.StreamUtils;
 import io.fusion.fusionbackend.config.ShaclConfig;
+import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
@@ -58,16 +59,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Component
 public class ShaclMapper {
 
-    private ShaclConfig shaclConfig;
-    private AssetTypeTemplateService assetTypeTemplateService;
-    private CompanyService companyService;
-    private ConnectivityTypeService connectivityTypeService;
+    private final ShaclConfig shaclConfig;
+    private final AssetTypeTemplateService assetTypeTemplateService;
+    private final CompanyService companyService;
+    private final ConnectivityTypeService connectivityTypeService;
 
     public ShaclMapper(ShaclConfig shaclConfig,
                        AssetTypeTemplateService assetTypeTemplateService,
@@ -80,77 +80,151 @@ public class ShaclMapper {
         this.connectivityTypeService = connectivityTypeService;
     }
 
-    public NodeShape mapAssetTypeTemplate(AssetTypeTemplate assetTypeTemplate) {
-
-        return (NodeShape) new NodeShape(createIriIfNeeded(assetTypeTemplate.getName()))
-                .addParameter(ShaclPaths.NAME, toValidText(assetTypeTemplate.getName()))
-                .addParameter(ShaclPaths.DESCRIPTION, toValidText(assetTypeTemplate.getDescription()))
-                .addParameter(IfsPaths.VERSION, assetTypeTemplate.getVersion())
-                .addParameter(IfsPaths.ASSET_TYPE_NAME, toValidText(assetTypeTemplate.getAssetType().getName()))
-                .addParameter(IfsPaths.ASSET_TYPE_LABEL, toValidText(assetTypeTemplate.getAssetType().getLabel()))
-                .addParameter(IfsPaths.ASSET_TYPE_VERSION, assetTypeTemplate.getAssetType().getVersion());
+    public NodeShape mapFromAsset(Asset asset) {
+        return (NodeShape) mapFromAsset(asset, 1L, true);
     }
 
-    public PropertyShape mapAssetTypeTemplate(FieldTarget fieldTarget, Long orderId, boolean withBlankNode) {
+    public ShaclShape mapFromAsset(Asset asset, Long orderId, boolean isRootNodeShape) {
+        String iri = ShaclHelper.createAssetIriWithSerial(asset, shaclConfig.getDefaultPrefix());
+        return mapFromAsset(asset, isRootNodeShape
+                ? new NodeShape(iri)
+                : new PropertyShape(ShaclNodeKind.IRI, iri), iri, orderId);
+    }
 
-        String iri = createIriIfNeeded(fieldTarget.getName());
-        PropertyShape shape = (PropertyShape) new PropertyShape(ShaclNodeKind.LITERAL,
-                withBlankNode ? NgsiLdPaths.HAS_PATH.getPath() : iri)
+    private ShaclShape mapFromAsset(Asset asset, ShaclShape shape, String iri, Long orderId) {
+        return shape
+                .addParameter(IfsPaths.CONNECTION_STRING, ShaclHelper.toValidText(asset.getConnectionString()))
+                .addParameter(IfsPaths.CONNECTIVITY_TYPE, ShaclHelper.toValidText(asset.getControlSystemType()))
+                .addParameter(IfsPaths.CONNECTIVITY_PROTOCOL, ShaclHelper.toValidText(asset.getGatewayConnectivity()))
+                .addParameter(ShaclPaths.NAME, iri)
+                .addParameter(ShaclPaths.ORDER, orderId)
+                .addParameter(IfsPaths.SERIAL_NUMBER, ShaclHelper.toValidText(asset.getSerialNumber()))
+                .addParameter(IfsPaths.FIELD_NAME, ShaclHelper.toValidText(asset.getExternalName()))
+                .addParameter(IfsPaths.ASSET_MANUAL, ShaclHelper.toValidText(asset.getHandbookUrl()))
+                .addParameter(IfsPaths.ASSET_VIDEO, ShaclHelper.toValidText(asset.getVideoUrl()))
+                .addParameter(IfsPaths.CE_CERTIFICATION, asset.getCeCertified())
+                .addParameter(IfsPaths.CONSTRUCTION_DATE, ShaclHelper
+                        .toValidText(asset.getConstructionDate().toString()))
+                .addParameter(IfsPaths.INSTALLATION_DATE, ShaclHelper
+                        .toValidText(asset.getInstallationDate().toString()))
+                .addParameter(IfsPaths.ASSET_SERIES_NAME,
+                        ShaclHelper.createIriIfNeeded(asset.getAssetSeries().getName(),
+                                shaclConfig.getDefaultPrefix()))
+                .addSubShapes(
+                        StreamUtils.zipWithIndex(asset.getFieldInstances().stream())
+                                .map(source -> mapFromAssetFieldSource(source.getValue().getFieldSource(),
+                                        source.getIndex() + 1))
+                                .collect(Collectors.toSet()))
+                .addSubShapes(StreamUtils.zipWithIndex(asset.getSubsystems().stream()
+                        .sorted(Comparator.comparing(Asset::getName)))
+                        .map(candidate -> this.mapFromAsset(candidate.getValue(), candidate.getIndex() + 1, false))
+                        .collect(Collectors.toSet()));
+
+    }
+
+    private ShaclShape mapFromAssetFieldSource(FieldSource fieldSource, Long orderId) {
+        return mapFromAssetFieldTarget(fieldSource.getFieldTarget(), orderId,
+                (subShape) -> {
+                    subShape.addParameter(IfsPaths.GLOBAL_ID, ShaclHelper.toValidText(fieldSource.getGlobalId()))
+                            .addParameter(IfsPaths.REGISTER, ShaclHelper.toValidText(fieldSource.getRegister()));
+                    if (fieldSource.getIdealThreshold() != null) {
+                        subShape.addParameter(IfsPaths.ABSOLUTE_THRESHOLD_UPPER,
+                                fieldSource.getIdealThreshold().getValueUpper())
+                                .addParameter(IfsPaths.ABSOLUTE_THRESHOLD_LOWER,
+                                        fieldSource.getIdealThreshold().getValueLower());
+                    }
+                    if (fieldSource.getAbsoluteThreshold() != null) {
+                        subShape.addParameter(IfsPaths.ABSOLUTE_THRESHOLD_UPPER,
+                                fieldSource.getAbsoluteThreshold().getValueUpper())
+                                .addParameter(IfsPaths.ABSOLUTE_THRESHOLD_LOWER,
+                                        fieldSource.getAbsoluteThreshold().getValueLower());
+                    }
+                    if (fieldSource.getAbsoluteThreshold() != null) {
+                        subShape.addParameter(IfsPaths.ABSOLUTE_THRESHOLD_UPPER,
+                                fieldSource.getCriticalThreshold().getValueUpper())
+                                .addParameter(IfsPaths.ABSOLUTE_THRESHOLD_LOWER,
+                                        fieldSource.getCriticalThreshold().getValueLower());
+                    }
+
+                });
+    }
+
+    public NodeShape mapFromAssetTypeTemplate(AssetTypeTemplate assetTypeTemplate) {
+
+        return (NodeShape) new NodeShape(ShaclHelper.createIriIfNeeded(assetTypeTemplate.getName(),
+                shaclConfig.getDefaultPrefix()))
+                .addParameter(ShaclPaths.NAME, ShaclHelper.toValidText(assetTypeTemplate.getName()))
+                .addParameter(ShaclPaths.DESCRIPTION, ShaclHelper.toValidText(assetTypeTemplate.getDescription()))
+                .addParameter(IfsPaths.VERSION, assetTypeTemplate.getVersion())
+                .addParameter(IfsPaths.ASSET_TYPE_NAME,
+                        ShaclHelper.toValidText(assetTypeTemplate.getAssetType().getName()))
+                .addParameter(IfsPaths.ASSET_TYPE_LABEL,
+                        ShaclHelper.toValidText(assetTypeTemplate.getAssetType().getLabel()))
+                .addParameter(IfsPaths.ASSET_TYPE_VERSION, assetTypeTemplate.getAssetType().getVersion())
+                .addSubShapes(mapFromAssetFieldTargets(assetTypeTemplate.getFieldTargets(), null));
+    }
+
+    public PropertyShape mapFromAssetFieldTarget(
+            FieldTarget fieldTarget,
+            Long orderId,
+            ShaclHelper.LambdaWrapper executeAfter) {
+        String iri = ShaclHelper.createIriIfNeeded(fieldTarget.getName(), shaclConfig.getDefaultPrefix());
+        PropertyShape shape = (PropertyShape) new PropertyShape(ShaclNodeKind.LITERAL, NgsiLdPaths.HAS_PATH.getPath())
                 .addParameter(ShaclPaths.NAME,
-                        toValidText(fieldTarget.getName()))
+                        ShaclHelper.toValidText(fieldTarget.getName()))
                 .addParameter(ShaclPaths.LABEL_TEMPLATE,
-                        toValidText(fieldTarget.getLabel()))
+                        ShaclHelper.toValidText(fieldTarget.getLabel()))
                 .addParameter(ShaclPaths.DESCRIPTION,
-                        toValidText(fieldTarget.getDescription()))
+                        ShaclHelper.toValidText(fieldTarget.getDescription()))
                 .addParameter(IfsPaths.FIELD_TYPE,
-                        toValidText(fieldTarget.getFieldType().toString()))
+                        ShaclHelper.toValidText(fieldTarget.getFieldType().toString()))
                 .addParameter(IfsPaths.FIELD_NAME,
-                        toValidText(fieldTarget.getField().getName()))
+                        ShaclHelper.toValidText(fieldTarget.getField().getName()))
                 .addParameter(IfsPaths.FIELD_LABEL,
-                        toValidText(fieldTarget.getField().getLabel()))
+                        ShaclHelper.toValidText(fieldTarget.getField().getLabel()))
                 .addParameter(IfsPaths.FIELD_DESCRIPTION,
-                        toValidText(fieldTarget.getField().getDescription()))
+                        ShaclHelper.toValidText(fieldTarget.getField().getDescription()))
                 .addParameter(IfsPaths.FIELD_ACCURACY,
                         fieldTarget.getField().getAccuracy())
                 .addParameter(ShaclPaths.DATATYPE,
                         fieldTarget.getField().getDataType().getPath())
                 .addParameter(IfsPaths.FIELD_THRESHOLD_TYPE,
-                        toValidText(fieldTarget.getField().getThresholdType().name()))
+                        ShaclHelper.toValidText(fieldTarget.getField().getThresholdType().name()))
                 .addParameter(IfsPaths.FIELD_UNIT,
-                        toValidText(fieldTarget.getField().getUnit().getLabel()))
+                        ShaclHelper.toValidText(fieldTarget.getField().getUnit().getLabel()))
                 .addParameter(IfsPaths.FIELD_WIDGET_TYPE,
-                        toValidText(fieldTarget.getField().getWidgetType().name()))
+                        ShaclHelper.toValidText(fieldTarget.getField().getWidgetType().name()))
                 .addParameter(IfsPaths.FIELD_DASHBOARD_GROUP,
-                        toValidText(fieldTarget.getDashboardGroup()))
-                .addParameter(ShaclPaths.MIN_COUNT, withBlankNode || fieldTarget.getMandatory())
+                        ShaclHelper.toValidText(fieldTarget.getDashboardGroup()))
+                .addParameter(ShaclPaths.MIN_COUNT, 1)
                 .addParameter(ShaclPaths.MAX_COUNT, 1);
-
-        if (withBlankNode) {
-            return (PropertyShape) new PropertyShape(ShaclNodeKind.BLANK_NODE, iri)
-                    .addParameter(ShaclPaths.MIN_COUNT,
-                            fieldTarget.getMandatory() ? 1 : 0)
-                    .addParameter(ShaclPaths.MAX_COUNT,
-                            fieldTarget.getField().getThresholdType().equals(FieldThresholdType.OPTIONAL)
-                                    && fieldTarget.getMandatory() ? 0 : 1)
-                    .addParameter(ShaclPaths.ORDER, orderId)
-                    .addSubShape(shape.addParameter(ShaclPaths.ORDER, 1));
+        if (executeAfter != null) {
+            executeAfter.execute(shape);
         }
 
-        return (PropertyShape) shape.addParameter(ShaclPaths.ORDER, orderId);
+        return (PropertyShape) new PropertyShape(ShaclNodeKind.BLANK_NODE, iri)
+                .addParameter(ShaclPaths.MIN_COUNT,
+                        fieldTarget.getMandatory() ? 1 : 0)
+                .addParameter(ShaclPaths.MAX_COUNT,
+                        fieldTarget.getField().getThresholdType().equals(FieldThresholdType.OPTIONAL)
+                                && fieldTarget.getMandatory() ? 0 : 1)
+                .addParameter(ShaclPaths.ORDER, orderId)
+                .addSubShape(shape.addParameter(ShaclPaths.ORDER, 1));
     }
 
-    public List<PropertyShape> mapAssetTypeTemplate(Collection<FieldTarget> fieldTargets, boolean withBlankNode) {
+    public List<ShaclShape> mapFromAssetFieldTargets(Collection<FieldTarget> fieldTargets,
+                                                     ShaclHelper.LambdaWrapper wrapper) {
         return StreamUtils.zipWithIndex(fieldTargets.stream()
-                .sorted(Comparator.comparing(FieldTarget::getId)))
-                .map(indexedFieldTarget -> mapAssetTypeTemplate(
+                .sorted(Comparator.comparing(FieldTarget::getName)))
+                .map(indexedFieldTarget -> mapFromAssetFieldTarget(
                         indexedFieldTarget.getValue(),
                         indexedFieldTarget.getIndex() + 1,
-                        withBlankNode)
+                        wrapper)
                 )
                 .collect(Collectors.toList());
     }
 
-    public AssetTypeTemplate mapAssetTypeTemplate(ShaclShape shape) {
+    public AssetTypeTemplate mapToAssetFieldTarget(ShaclShape shape) {
         AssetTypeTemplate att = assetTypeTemplateService.getAllAssetTypeTemplates().stream()
                 .filter(candidate -> isRightAssetTypeTemplate(shape, candidate))
                 .findAny()
@@ -162,7 +236,7 @@ public class ShaclMapper {
 
     public AssetSeries mapToAssetSeries(ShaclShape shape, Long companyId) {
         AssetSeries series = new AssetSeries();
-        series.setAssetTypeTemplate(mapAssetTypeTemplate(shape));
+        series.setAssetTypeTemplate(mapToAssetFieldTarget(shape));
         series.setName(shape.getStringParameter(IfsPaths.ASSET_SERIES_NAME, series.getAssetTypeTemplate().getName()));
         series.setDescription(shape.getStringParameter(IfsPaths.ASSET_SERIES_DESCRIPTION,
                 series.getAssetTypeTemplate().getDescription()));
@@ -359,49 +433,6 @@ public class ShaclMapper {
         );
     }
 
-    private String createIriIfNeeded(String candidate) {
-        return isIri(candidate)
-                ? candidate
-                : shaclConfig.getDefaultPrefix() + candidate;
-    }
-
-    public static boolean isIri(String candidate) {
-        return candidate.toLowerCase().startsWith("http://") || candidate.toLowerCase().startsWith("https://");
-    }
-
-    public static String toValidText(String text) {
-        return text == null ? null : "\"" + escapeTurtleStrings(text) + "\"";
-    }
-
-    public static String escapeTurtleStrings(String text) {
-        return escapeChars("\"\\", text);
-    }
-
-    public static String escapeTurtleObjectName(String object) {
-        AtomicBoolean first = new AtomicBoolean(true);
-        return Arrays.stream(object
-                .replaceAll("[<\"'=;()>:?.*]", "")
-                .replace(" ", "_")
-                .split("_"))
-                .map(fragment -> !first.getAndSet(false)
-                        ? ShaclMapper.toCamelCase(fragment)
-                        : fragment)
-                .collect(Collectors.joining());
-    }
-
-    private static String toCamelCase(String fragment) {
-        return fragment.length() > 1
-                ? fragment.substring(0, 1).toUpperCase()
-                + fragment.substring(1)
-                : fragment;
-    }
-
-    private static String escapeChars(String charSequence, String text) {
-        for (int i = 0; i < charSequence.length(); i++) {
-            text = text.replace(Character.toString(charSequence.charAt(i)), "\\" + charSequence.charAt(i));
-        }
-        return text;
-    }
 
     public static ShaclShape nodeToShaclShape(ShaclFactory.ShaclFactoryTreeNode node) {
         ShaclShape shape = createShaclShapeByNodeKind(

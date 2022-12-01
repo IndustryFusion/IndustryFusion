@@ -22,7 +22,10 @@ under the License.
         <img class="fusion-icon" src="/assets/img/IndustryFusion-hive.png">
         Generate Asset Onboarding Package
       </a>
-    </div>
+      <app-download-button (createItem)="onExportShacl()" class="cell-button"
+                           text="SHACL"></app-download-button>
+      <app-download-button (createItem)="onExportNgsiLd()" class="cell-button"
+                           text="NGSI-LD"></app-download-button>    </div>
   </div>
   <p-card class="card">
     <div class="grid">

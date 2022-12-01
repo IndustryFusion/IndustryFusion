@@ -52,7 +52,7 @@ class ShaclPrefixesTest {
         prefixes.addPrefix("ex1", "http://www.example.org#");
         StringWriter out = new StringWriter();
         prefixes.writePrefixesAsShacl(new PrintWriter(out));
-        assertEquals("@prefix ex1 <http://www.example.org#> .", out.toString());
+        assertEquals("@prefix ex1: <http://www.example.org#> .", out.toString());
 
 
     }

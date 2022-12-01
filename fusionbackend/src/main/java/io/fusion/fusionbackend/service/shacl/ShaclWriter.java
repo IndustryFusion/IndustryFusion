@@ -32,6 +32,7 @@ public class ShaclWriter {
             shape.writeNodeAsShacl(printWriter, prefixes, "");
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
     }
 
@@ -46,6 +47,7 @@ public class ShaclWriter {
                     .forEach(shape -> shape.writeNodeAsShacl(printWriter, prefixes, ""));
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
     }
 

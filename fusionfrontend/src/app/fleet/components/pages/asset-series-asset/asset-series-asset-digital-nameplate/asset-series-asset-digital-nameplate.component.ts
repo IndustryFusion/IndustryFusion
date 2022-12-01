@@ -36,6 +36,7 @@ import { AssetSeriesDetailsService } from '../../../../../core/store/asset-serie
 import { FieldDataType } from '../../../../../core/store/field/field.model';
 import { AssetService } from '../../../../../core/store/asset/asset.service';
 import { NgsiLdService } from '../../../../../core/services/api/ngsi-ld.service';
+import { UploadDownloadService } from '../../../../../shared/services/upload-download.service';
 
 
 @Component({
@@ -68,7 +69,8 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     private companyQuery: CompanyQuery,
     private factorySiteQuery: FactorySiteQuery,
     private assetSeriesDetailsService: AssetSeriesDetailsService,
-    public assetService: AssetService
+    public assetService: AssetService,
+    private uploadDownloadService: UploadDownloadService
   ) {
   }
 
@@ -127,5 +129,17 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
+  }
+
+  onExportShacl() {
+    const companyId = this.companyQuery.getActiveId();
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/shaclexport/${this.assetId}`,
+      `Asset_${this.assetId}.ttl`);
+  }
+
+  onExportNgsiLd() {
+    const companyId = this.companyQuery.getActiveId();
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/ngsildexport/${this.assetId}`,
+      `Asset_${this.assetId}.json`);
   }
 }

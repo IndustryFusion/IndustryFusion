@@ -47,7 +47,16 @@ public enum IfsPaths implements BasicPaths {
     DATA_SOURCE(IfsPaths.BASE_PATH + "dataSource"),
     CUSTOM_SCRIPT(IfsPaths.BASE_PATH + "customScript"),
     GLOBAL_ID(IfsPaths.BASE_PATH + "globalId"),
-    REGISTER(IfsPaths.BASE_PATH + "register");
+    REGISTER(IfsPaths.BASE_PATH + "register"),
+    CONSTRUCTION_DATE(IfsPaths.BASE_PATH + "constructionDate"),
+    INSTALLATION_DATE(IfsPaths.BASE_PATH + "installationDate"),
+    SERIAL_NUMBER(IfsPaths.BASE_PATH + "serialNumber"),
+    IDEAL_THRESHOLD_UPPER(IfsPaths.BASE_PATH + "idealThresholdUpper"),
+    IDEAL_THRESHOLD_LOWER(IfsPaths.BASE_PATH + "idealThresholdLower"),
+    ABSOLUTE_THRESHOLD_UPPER(IfsPaths.BASE_PATH + "absoluteThresholdUpper"),
+    ABSOLUTE_THRESHOLD_LOWER(IfsPaths.BASE_PATH + "absoluteThresholdLower"),
+    CRITICAL_THRESHOLD_UPPER(IfsPaths.BASE_PATH + "criticalThresholdUpper"),
+    CRITICAL_THRESHOLD_LOWER(IfsPaths.BASE_PATH + "criticalThresholdLower");
 
     private final String path;
 

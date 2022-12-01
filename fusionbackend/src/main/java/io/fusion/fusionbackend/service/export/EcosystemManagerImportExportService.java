@@ -19,11 +19,7 @@ import io.fusion.fusionbackend.config.ShaclConfig;
 import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
-import io.fusion.fusionbackend.model.enums.FieldDataType;
 import io.fusion.fusionbackend.model.shacl.ShaclShape;
-import io.fusion.fusionbackend.model.shacl.enums.IfsPaths;
-import io.fusion.fusionbackend.model.shacl.enums.NgsiLdPaths;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
 import io.fusion.fusionbackend.service.AssetTypeService;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import io.fusion.fusionbackend.service.FieldService;
@@ -197,28 +193,17 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     }
 
     public void exportShaclModelToStream(OutputStream outputStream) {
-        Set<ShaclShape> shapes = shaclBuilder.buildEcosystemShacl();
-        ShaclPrefixes prefixes = ShaclPrefixes.getDefaultPrefixes()
-                .addPrefix("sh", ShaclPaths.BASE_PATH)
-                .addPrefix("ngsi", NgsiLdPaths.BASE_PATH)
-                .addPrefix("ifs", IfsPaths.BASE_PATH)
-                .addPrefix("xsd", FieldDataType.BASE_PATH)
-                .addPrefix(shaclConfig.getAdditionalPrefixes());
-        ShaclUtil.writeShaclShapeToStream(shapes, prefixes, outputStream);
+        Set<ShaclShape> shapes = shaclBuilder.buildAssetTypeTemplatesShacl();
+        ShaclUtil.writeShaclShapeToStream(shapes, ShaclPrefixes.getDefaultPrefixes()
+                .addPrefix(shaclConfig.getAdditionalPrefixes()), outputStream);
     }
 
     public void exportShaclModelToStream(OutputStream outputStream, Long id) {
-        ShaclShape shapes = shaclBuilder.buildEcosystemShacl(
+        ShaclShape shapes = shaclBuilder.buildAssetTypeTemplatesShacl(
                 assetTypeTemplateService.getAssetTypeTemplate(id, true)
         );
-        ShaclPrefixes prefixes = ShaclPrefixes.getDefaultPrefixes()
-                .addPrefix("sh", ShaclPaths.BASE_PATH)
-                .addPrefix("ngsi", NgsiLdPaths.BASE_PATH)
-                .addPrefix("ifs", IfsPaths.BASE_PATH)
-                .addPrefix("xsd", FieldDataType.BASE_PATH)
-                .addPrefix(shaclConfig.getAdditionalPrefixes());
-
-        ShaclUtil.writeShaclShapeToStream(shapes, prefixes, outputStream);
+        ShaclUtil.writeShaclShapeToStream(shapes, ShaclPrefixes.getDefaultPrefixes()
+                .addPrefix(shaclConfig.getAdditionalPrefixes()), outputStream);
     }
 
     public SyncResultDto syncWithModelRepo() {

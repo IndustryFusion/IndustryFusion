@@ -15,16 +15,21 @@
 
 package io.fusion.fusionbackend.service.export;
 
+import io.fusion.fusionbackend.config.ShaclConfig;
 import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.shacl.ShaclShape;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import io.fusion.fusionbackend.service.AssetService;
 import io.fusion.fusionbackend.service.ModelRepoSyncService;
+import io.fusion.fusionbackend.service.ngsilj.NgsiLdBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.service.shacl.ShaclFactory;
 import io.fusion.fusionbackend.service.shacl.ShaclMapper;
+import io.fusion.fusionbackend.service.shacl.ShaclPrefixes;
+import io.fusion.fusionbackend.service.shacl.ShaclWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.riot.RDFDataMgr;
@@ -69,6 +74,8 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
     private final OntologyBuilder ontologyBuilder;
     private final ShaclFactory shaclFactory;
     private final ShaclMapper shaclMapper;
+    private final ShaclConfig shaclConfig;
+    private final NgsiLdBuilder ngsiLdBuilder;
 
     @Autowired
     public FleetManagerImportExportService(AssetSeriesService assetSeriesService,
@@ -78,7 +85,9 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                                            ModelRepoSyncService modelRepoSyncService,
                                            OntologyBuilder ontologyBuilder,
                                            ShaclMapper shaclMapper,
-                                           ShaclFactory shaclFactory
+                                           ShaclFactory shaclFactory,
+                                           ShaclConfig shaclConfig,
+                                           NgsiLdBuilder ngsiLdBuilder
     ) {
         this.assetSeriesService = assetSeriesService;
         this.assetService = assetService;
@@ -88,6 +97,8 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
         this.ontologyBuilder = ontologyBuilder;
         this.shaclFactory = shaclFactory;
         this.shaclMapper = shaclMapper;
+        this.shaclConfig = shaclConfig;
+        this.ngsiLdBuilder = ngsiLdBuilder;
     }
 
     public void exportEntitiesToStreamAsZip(final Long companyId,

@@ -15,6 +15,11 @@
 
 package io.fusion.fusionbackend.service.shacl;
 
+import io.fusion.fusionbackend.model.enums.FieldDataType;
+import io.fusion.fusionbackend.model.shacl.enums.IfsPaths;
+import io.fusion.fusionbackend.model.shacl.enums.NgsiLdPaths;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +42,7 @@ public class ShaclPrefixes {
     }
 
     private static Optional<String> checkIriAndReturn(String candidate) {
-        return Optional.ofNullable(ShaclMapper.isIri(candidate) ? candidate : null);
+        return Optional.ofNullable(ShaclHelper.isIri(candidate) ? candidate : null);
     }
 
     public String checkAndFormatIri(String candidate) {
@@ -48,7 +53,7 @@ public class ShaclPrefixes {
             ) {
                 return prefix.getKey()
                         + ":"
-                        + ShaclMapper.escapeTurtleObjectName(candidate.substring(prefix.getValue().length()));
+                        + ShaclHelper.escapeTurtleObjectName(candidate.substring(prefix.getValue().length()));
             }
         }
         for (Map.Entry<String, String> prefix : prefixes.entrySet()) {
@@ -71,7 +76,11 @@ public class ShaclPrefixes {
                 .addPrefix("dash", "http://datashapes.org/dash#")
                 .addPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                 .addPrefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
-                .addPrefix("schema", "http://schema.org/");
+                .addPrefix("schema", "http://schema.org/")
+                .addPrefix("sh", ShaclPaths.BASE_PATH)
+                .addPrefix("ngsi", NgsiLdPaths.BASE_PATH)
+                .addPrefix("ifs", IfsPaths.BASE_PATH)
+                .addPrefix("xsd", FieldDataType.BASE_PATH);
     }
 
 }

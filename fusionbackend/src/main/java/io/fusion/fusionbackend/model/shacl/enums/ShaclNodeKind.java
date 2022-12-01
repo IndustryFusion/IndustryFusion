@@ -23,7 +23,7 @@ public enum ShaclNodeKind {
     UNSET(""),
     IRI("http://www.w3.org/ns/shacl#IRI"),
     LITERAL("http://www.w3.org/ns/shacl#Literal"),
-    BLANK_NODE("http://www.w3.org/ns/shacl#blankNode");
+    BLANK_NODE("http://www.w3.org/ns/shacl#BlankNode");
 
     private String path;
 

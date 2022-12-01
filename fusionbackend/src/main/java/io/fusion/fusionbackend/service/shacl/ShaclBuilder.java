@@ -16,7 +16,6 @@
 package io.fusion.fusionbackend.service.shacl;
 
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
-import io.fusion.fusionbackend.model.shacl.NodeShape;
 import io.fusion.fusionbackend.model.shacl.ShaclShape;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import org.springframework.stereotype.Service;
@@ -37,10 +36,10 @@ public class ShaclBuilder {
         this.shaclMapper = shaclMapper;
     }
 
-    public Set<ShaclShape> buildEcosystemShacl() {
+    public Set<ShaclShape> buildAssetTypeTemplatesShacl() {
         try {
             return assetTypeTemplateService.getPublishedAssetTypeTemplates().stream()
-                    .map(this::buildEcosystemShacl)
+                    .map(this::buildAssetTypeTemplatesShacl)
                     .collect(Collectors.toSet());
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,10 +47,8 @@ public class ShaclBuilder {
         }
     }
 
-    public ShaclShape buildEcosystemShacl(AssetTypeTemplate assetTypeTemplate) {
-        NodeShape shape = shaclMapper.mapAssetTypeTemplate(assetTypeTemplate);
-        shape.addSubShapes(shaclMapper.mapAssetTypeTemplate(assetTypeTemplate.getFieldTargets(), true));
-        return shape;
+    public ShaclShape buildAssetTypeTemplatesShacl(AssetTypeTemplate assetTypeTemplate) {
+        return shaclMapper.mapFromAssetTypeTemplate(assetTypeTemplate);
     }
 
 }
