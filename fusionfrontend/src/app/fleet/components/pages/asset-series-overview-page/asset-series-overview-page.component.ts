@@ -46,7 +46,7 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite, company: Company }[]>;
 
   assetsMapping:
-    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets'};
   of = of;
   public factorySiteTypes = FactorySiteType;
 
@@ -58,7 +58,8 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
               private companyQuery: CompanyQuery,
               private dialogService: DialogService,
               private factorySiteQuery: FactorySiteQuery,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+  ) {
     this.resolve(this.activatedRoute);
   }
 
@@ -92,7 +93,7 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
                 )?.factorySiteId
               );
               const assetCompany = companies.find(company => company.id === asset.companyId);
-              combined.push({ id: asset.id, asset, factorySite, company: assetCompany });
+              combined.push({ id: asset.id, asset, factorySite, company: assetCompany});
             }
             return combined;
           })

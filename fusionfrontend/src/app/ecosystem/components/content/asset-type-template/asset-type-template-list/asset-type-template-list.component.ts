@@ -200,6 +200,6 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   onExportShacl(): void {
     this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/eco/shaclexport`,
-      `All_Asset_Type_Templates.scl`);
+      `All_Asset_Type_Templates.ttl`);
   }
 }

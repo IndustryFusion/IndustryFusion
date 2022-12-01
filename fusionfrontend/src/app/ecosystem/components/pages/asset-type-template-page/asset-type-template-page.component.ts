@@ -145,6 +145,6 @@ export class AssetTypeTemplatePageComponent implements OnInit {
       `${this.assetTypeTemplate.name
         .replace(/[ ]/ig, '_')
         .replace(/[^\w]/ig, '')
-      }_v${this.assetTypeTemplate.version}.scl`);
+      }_v${this.assetTypeTemplate.version}.ttl`);
   }
 }

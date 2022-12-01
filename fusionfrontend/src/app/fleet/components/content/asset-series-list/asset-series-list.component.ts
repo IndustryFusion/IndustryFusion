@@ -43,7 +43,7 @@ import { UploadDownloadService } from '../../../../shared/services/upload-downlo
 export class AssetSeriesListComponent implements OnInit {
 
   assetSeriesMapping:
-    { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
+    { [k: string]: string } = {'=0': 'No asset series', '=1': '# Asset series', other: '# Asset series'};
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -72,7 +72,8 @@ export class AssetSeriesListComponent implements OnInit {
     private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
     private confirmationService: ConfirmationService,
     private uploadDownloadService: UploadDownloadService
-    ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.resolveAssetSeriesDetails();
@@ -163,7 +164,9 @@ export class AssetSeriesListComponent implements OnInit {
     input.addEventListener('change', (event: Event) => {
       const file = (event.target as HTMLInputElement).files[0];
       const companyId = this.companyQuery.getActiveId();
-      this.uploadDownloadService.uploadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/shaclimport`, file);
+      this.uploadDownloadService.uploadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/shaclimport`, file, this);
+      this.ngOnInit();
+
     });
     input.click();
   }

@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -346,4 +347,15 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                 && a.getName().equals(b.getName())
                 && a.getDescription().equals(b.getDescription());
     }
+
+    public void exportAssetAsShacl(ServletOutputStream outputStream, Long assetId) {
+        ShaclShape shape = shaclMapper.mapFromAsset(assetService.getAssetById(assetId));
+        ShaclWriter.out(outputStream, shape, ShaclPrefixes.getDefaultPrefixes()
+                .addPrefix(shaclConfig.getAdditionalPrefixes()));
+    }
+
+    public void exportAssetAsNgsiLd(ServletOutputStream outputStream, Long assetId) {
+        ngsiLdBuilder.buildAssetNgsiLd(outputStream, assetService.getAssetById(assetId));
+    }
+
 }

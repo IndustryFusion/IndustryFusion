@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 
@@ -27,11 +27,14 @@ export class UploadDownloadService {
     );
   }
 
-  uploadFile(route: string, file: File) {
+  uploadFile(route: string, file: File, refresh?: OnInit) {
     const formData = new FormData();
     formData.append('file', file, file.name);
     this.http.post(route, formData).subscribe(
       success => {
+        if (refresh !== undefined) {
+          refresh.ngOnInit();
+        }
         this.successMessage(success);
       }, error => {
         console.log(error);
@@ -43,7 +46,7 @@ export class UploadDownloadService {
     const message = {
       severity: 'success',
       summary: 'Import completed',
-      detail: `${ result.handled } successfully handled, ${ result.skipped } already exist`,
+      detail: `${result.handled} successfully handled, ${result.skipped} already exist`,
       sticky: true,
     };
     this.messageService.add(message);

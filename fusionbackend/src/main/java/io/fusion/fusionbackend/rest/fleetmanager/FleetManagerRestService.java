@@ -77,4 +77,22 @@ public class FleetManagerRestService {
             @PathVariable final Long companyId) throws IOException {
         return fleetManagerImportExportService.importEntitiesFromShacl(file, companyId);
     }
+
+    @GetMapping(path = "/fleet/{companyId}/asset/shaclexport/{id}")
+    public void exportAssetShacl(
+            HttpServletResponse response,
+            @PathVariable final Long companyId,
+            @PathVariable final Long id) throws IOException {
+        response.addHeader("Content-Disposition", "attachment;filename=\"asset_" + id + ".ttl\"");
+        fleetManagerImportExportService.exportAssetAsShacl(response.getOutputStream(), id);
+    }
+
+    @GetMapping(path = "/fleet/{companyId}/asset/ngsildexport/{id}")
+    public void exportAssetNgsiLd(
+            HttpServletResponse response,
+            @PathVariable final Long companyId,
+            @PathVariable final Long id) throws IOException {
+        response.addHeader("Content-Disposition", "attachment;filename=\"asset_" + id + ".json\"");
+        fleetManagerImportExportService.exportAssetAsNgsiLd(response.getOutputStream(), id);
+    }
 }
