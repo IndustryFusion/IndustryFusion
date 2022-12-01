@@ -25,10 +25,12 @@ import { ID } from '@datorama/akita';
 import { ngsiLdLatestKeyValues } from '../../models/kairos.model';
 import { KairosService } from './kairos.service';
 
+/**
+ * @see https://ngsi-ld-tutorials.readthedocs.io/en/latest/ngsi-ld-operations.html
+ */
 @Injectable({
   providedIn: 'root'
 })
-// see https://ngsi-ld-tutorials.readthedocs.io/en/latest/ngsi-ld-operations.html
 export class NgsiLdService {
   private static runningRequests: Map<ID, Observable<any>> = new Map<ID, Observable<any>>();
   httpOptions = {
@@ -39,13 +41,14 @@ export class NgsiLdService {
     private http: HttpClient) {
   }
 
-  getAssetUri(asset: Asset): string {
+  generateAssetUri(asset: Asset): string {
     return `urn:ngsi-ld:asset:${asset.companyId}:${asset.id}`;
   }
 
   getLatestValuesOfAsset(asset: Asset): Observable<ngsiLdLatestKeyValues> {
     if (!NgsiLdService.runningRequests.has(asset.id)) {
-      const newRequest = this.http.get<any>(`${environment.ngsiLdBrokerUrl}/${this.getAssetUri(asset)}?options=keyValues`, this.httpOptions)
+      const newRequest = this.http.get<any>(`${environment.ngsiLdBrokerUrl}/${this.generateAssetUri(asset)}?options=keyValues`,
+        this.httpOptions)
         .pipe(
           catchError(() => {
             console.error(`[NGSI-LD service] caught error while update metrics of Asset ${asset.id}`);

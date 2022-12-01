@@ -15,18 +15,18 @@
 
 import { Injectable } from '@angular/core';
 import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
-import { AlertaAlert } from './alerta-alert.model';
+import { AlertaAlert } from './alerta.model';
 import { CachedStore } from '../../cachedstore';
 
-export interface AlertaAlertState extends EntityState<AlertaAlert, ID>, ActiveState { }
+export interface AlertaState extends EntityState<AlertaAlert, ID>, ActiveState { }
 
 const initialState = {
   active: null
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'alerta-alerts', resettable: true })
-export class AlertaAlertStore extends CachedStore<AlertaAlertState, AlertaAlert> {
+@StoreConfig({ name: 'alerts', resettable: true })
+export class AlertaStore extends CachedStore<AlertaState, AlertaAlert> {
 
   constructor() {
     super(initialState);

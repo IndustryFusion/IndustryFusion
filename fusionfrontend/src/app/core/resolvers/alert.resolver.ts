@@ -16,14 +16,14 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AlertaAlert } from '../store/ngsi-ld/alerta-alert/alerta-alert.model';
-import { AlertaAlertService } from '../store/ngsi-ld/alerta-alert/alerta-alert.service';
+import { AlertaAlert } from '../store/ngsi-ld/alerta/alerta.model';
+import { AlertaService } from '../store/ngsi-ld/alerta/alerta.service';
 
 @Injectable({ providedIn: 'root' })
 export class AlertResolver implements Resolve<AlertaAlert[]> {
-  constructor(private alertaAlertService: AlertaAlertService) { }
+  constructor(private alertaService: AlertaService) { }
 
   resolve(): Observable<AlertaAlert[]> {
-    return this.alertaAlertService.getItems();
+    return this.alertaService.getItems();
   }
 }

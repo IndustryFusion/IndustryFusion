@@ -14,7 +14,7 @@
  */
 
 import { ID } from '@datorama/akita';
-import { IFAlertSeverity, IFAlertStatus } from '../alerta-alert/alerta-alert.model';
+import { IFAlertSeverity, IFAlertStatus } from '../alerta/alerta.model';
 
 export class Notification {
   id: ID;

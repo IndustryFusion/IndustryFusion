@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { Notification } from '../../../core/store/ngsi-ld/notification/notification.model';
 import { NotificationService } from '../../../core/store/ngsi-ld/notification/notification.service';
 import { RouteHelpers } from '../../../core/helpers/route-helpers';
-import { IFAlertStatus } from '../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
+import { IFAlertStatus } from '../../../core/store/ngsi-ld/alerta/alerta.model';
 
 @Component({
   selector: 'app-notifications-page',

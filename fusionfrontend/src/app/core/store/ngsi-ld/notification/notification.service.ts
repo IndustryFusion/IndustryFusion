@@ -19,8 +19,8 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { NotificationStore } from './notification.store';
 import { Observable } from 'rxjs';
 import { map, mergeMap, skipWhile, tap } from 'rxjs/operators';
-import { AlertaAlertQuery } from '../alerta-alert/alerta-alert.query';
-import { AlertaAlert } from '../alerta-alert/alerta-alert.model';
+import { AlertaQuery } from '../alerta/alerta.query';
+import { AlertaAlert } from '../alerta/alerta.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
 import { AssetQuery } from '../../asset/asset.query';
 import { NgsiLdService } from '../../../services/api/ngsi-ld.service';
@@ -39,7 +39,7 @@ export class NotificationService {
   constructor(private notificationStore: NotificationStore,
               private assetQuery: AssetQuery,
               private ngsiLdService: NgsiLdService,
-              private alertaAlertQuery: AlertaAlertQuery) {
+              private alertaQuery: AlertaQuery) {
   }
 
   private static mapAlertToNotification(alert: AlertaAlert, assetName: string): Notification {
@@ -66,10 +66,10 @@ export class NotificationService {
   }
 
   getNotificationsOfAsset(asset: FactoryAssetDetailsWithFields): Observable<Notification[]> {
-    return this.alertaAlertQuery.selectAll().pipe(
+    return this.alertaQuery.selectAll().pipe(
       map((alerts: AlertaAlert[]) => {
         return alerts
-          .filter(alert => this.ngsiLdService.getAssetUri(asset) === alert.resource)
+          .filter(alert => this.ngsiLdService.generateAssetUri(asset) === alert.resource)
           .map<Notification>((alert: AlertaAlert) => NotificationService.mapAlertToNotification(alert, asset.name));
       }),
       tap(notifications => this.notificationStore.upsertMany(notifications))
@@ -80,7 +80,7 @@ export class NotificationService {
     return this.assetQuery.selectAll().pipe(
       skipWhile(assets => assets == null || assets.length === 0),
       mergeMap((assets: Asset[]) => {
-        return this.alertaAlertQuery.selectAll().pipe(
+        return this.alertaQuery.selectAll().pipe(
           map((alerts: AlertaAlert[]) => {
             return alerts.map<Notification>((alert: AlertaAlert) => this.mapAlertToNotification(alert, assets));
           }),
@@ -93,7 +93,7 @@ export class NotificationService {
   private mapAlertToNotification(alert: AlertaAlert, assets: Asset[]): Notification {
     let assetName = null;
     if (!!assets && assets.length > 0 && alert) {
-      const assetOfAlert = assets.find(asset => this.ngsiLdService.getAssetUri(asset) === String(alert.resource));
+      const assetOfAlert = assets.find(asset => this.ngsiLdService.generateAssetUri(asset) === String(alert.resource));
       assetName = assetOfAlert?.name;
     }
     return NotificationService.mapAlertToNotification(alert, assetName);

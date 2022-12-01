@@ -30,7 +30,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Base64;
 
-// see https://docs.min.io/docs/java-client-api-reference.html
+/**
+ * Object Storage Implementation: Minio Client (can be locally installed).
+ * @see
+ * <a href="https://docs.min.io/docs/java-client-api-reference.html">https://docs.min.io/docs/java-client-api-reference.html</a>
+ */
 public class MinIoClient extends BaseClient implements ObjectStorageBaseClient  {
 
     private final ObjectStorageConfiguration configuration;

@@ -29,8 +29,8 @@ import {
 } from '../../../../factory/util/asset-maintenance-utils';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IFAlertSeverity } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
-import { AlertaAlertQuery } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.query';
+import { IFAlertSeverity } from '../../../../core/store/ngsi-ld/alerta/alerta.model';
+import { AlertaQuery } from '../../../../core/store/ngsi-ld/alerta/alerta.query';
 
 
 @Component({
@@ -71,7 +71,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
-              private alertaAlertQuery: AlertaAlertQuery) {
+              private alertaQuery: AlertaQuery) {
   }
 
   private static isMaintenanceNeededSoonForMaintenanceType(asset: FactoryAssetDetailsWithFields, type: MaintenanceType) {
@@ -85,10 +85,10 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   private updateAlertSeverityOnNewAlerts() {
-    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+    this.alertaQuery.selectOpenAlerts().subscribe(() => {
       if (this.displayedFactoryAssets) {
         this.displayedFactoryAssets = this.displayedFactoryAssets
-          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+          .map(asset => this.alertaQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
         this.updateTree();
       }
     });
@@ -118,7 +118,7 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
-    return this.alertaAlertQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
+    return this.alertaQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
   }
 
   isLastChildElement(rowNode: any): boolean {

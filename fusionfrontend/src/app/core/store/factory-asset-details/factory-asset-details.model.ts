@@ -16,7 +16,7 @@
 import { Asset } from '../asset/asset.model';
 import { FieldDetails } from '../field-details/field-details.model';
 import { StatusHoursOneDay } from '../../models/kairos-status-aggregation.model';
-import { IFAlertSeverity } from '../ngsi-ld/alerta-alert/alerta-alert.model';
+import { IFAlertSeverity } from '../ngsi-ld/alerta/alerta.model';
 
 
 export class FactoryAssetDetails extends Asset {

@@ -26,8 +26,8 @@ import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { TableSelectedItemsBarType } from '../../ui/table-selected-items-bar/table-selected-items-bar.type';
 import { ConfirmationService } from 'primeng/api';
 import { TableHelper } from '../../../../core/helpers/table-helper';
-import { IFAlertStatus } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
-import { AlertaAlertService } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.service';
+import { IFAlertStatus } from '../../../../core/store/ngsi-ld/alerta/alerta.model';
+import { AlertaService } from '../../../../core/store/ngsi-ld/alerta/alerta.service';
 
 @Component({
   selector: 'app-notifications-list',
@@ -75,7 +75,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   constructor(
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private alertaAlertService: AlertaAlertService,
+    private alertaService: AlertaService,
     private routingLocation: Location,
     private confirmationService: ConfirmationService
   ) {
@@ -177,12 +177,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private periodicallyFetchNotifications(): void {
-    this.loadNotificationsEnsureAssetsLoaded();
+    this.fetchNotifications();
     this.intervalId = setInterval(() => this.fetchNotifications(), this.FETCHING_INTERVAL_MILLISECONDS);
-  }
-
-  private loadNotificationsEnsureAssetsLoaded(): void {
-      this.fetchNotifications();
   }
 
   private fetchNotifications(): void {
@@ -239,7 +235,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   deleteNotification(id: ID): void {
     const filteredNotification = this.displayedNotifications.find(value => value.id === id);
-    this.alertaAlertService.closeAlert(filteredNotification.id).subscribe(() => {
+    this.alertaService.closeAlert(filteredNotification.id).subscribe(() => {
     });
   }
 

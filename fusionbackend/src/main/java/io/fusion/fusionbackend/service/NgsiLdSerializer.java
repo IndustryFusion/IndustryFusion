@@ -173,6 +173,12 @@ public class NgsiLdSerializer {
         return fieldName;
     }
 
+    /**
+     * Get cleaned field instance name.
+     *
+     * @param asset the Asset
+     * @apiNote see ngsi-ld.service.ts::generateAssetUrn (frontend)
+     */
     private String generateUrn(Asset asset) {
         String id = new StringBuilder()
                 .append("urn:ngsi-ld:asset:")

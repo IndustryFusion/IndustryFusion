@@ -29,7 +29,7 @@ import { FactorySiteWithAssetCount } from '../factory-site/factory-site.model';
 import { FactorySiteQuery } from '../factory-site/factory-site.query';
 import { Room } from '../room/room.model';
 import { RoomQuery } from '../room/room.query';
-import { AlertaAlertQuery } from '../ngsi-ld/alerta-alert/alerta-alert.query';
+import { AlertaQuery } from '../ngsi-ld/alerta/alerta.query';
 
 @Injectable({ providedIn: 'root' })
 export class FactoryComposedQuery {
@@ -39,7 +39,7 @@ export class FactoryComposedQuery {
     protected assetQuery: AssetQuery,
     protected factoryAssetDetailsQuery: FactoryAssetDetailsQuery,
     protected fieldDetailsQuery: FieldDetailsQuery,
-    protected alertaAlertQuery: AlertaAlertQuery) { }
+    protected alertaQuery: AlertaQuery) { }
 
   selectAssetsOfFactorySite(factorySiteId: ID): Observable<Asset[]> {
     return combineQueries([
@@ -198,7 +198,7 @@ export class FactoryComposedQuery {
 
     return assets$.pipe(
       map((assetsDetails: FactoryAssetDetailsWithFields[]) => {
-        return assetsDetails.map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+        return assetsDetails.map(asset => this.alertaQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
       })
     );
   }

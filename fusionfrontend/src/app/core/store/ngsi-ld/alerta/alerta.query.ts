@@ -15,18 +15,22 @@
 
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { AlertaAlertState, AlertaAlertStore } from './alerta-alert.store';
+import { AlertaState, AlertaStore } from './alerta.store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AlertaAlert, AlertSeverity, IFAlertSeverity, IFAlertStatus } from './alerta-alert.model';
+import { AlertaAlert, AlertSeverity, IFAlertSeverity, IFAlertStatus } from './alerta.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
 import { TreeNode } from 'primeng/api';
 import { NgsiLdService } from '../../../services/api/ngsi-ld.service';
 
+/**
+ * Query for Alerta API. Alerts are assigned to assets by their uri.
+ * @see <a href="https://docs.alerta.io/api/reference.html#set-alert-status">https://docs.alerta.io/api/reference.html#set-alert-status</a>
+ */
 @Injectable({ providedIn: 'root' })
-export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
+export class AlertaQuery extends QueryEntity<AlertaState> {
 
-  constructor(protected store: AlertaAlertStore,
+  constructor(protected store: AlertaStore,
               private ngsiLdService: NgsiLdService) {
     super(store);
   }
@@ -54,7 +58,8 @@ export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
 
     const openAlerts = this.getOpenAlerts();
     const assetDetailsCopy = Object.assign({ }, assetDetails);
-    const alertSeverity: AlertSeverity = this.findAlertSeverityOfAssetUri(this.ngsiLdService.getAssetUri(assetDetailsCopy), openAlerts);
+    const alertSeverity: AlertSeverity = this.findAlertSeverityOfAssetUri(this.ngsiLdService.generateAssetUri(assetDetailsCopy),
+      openAlerts);
 
     assetDetailsCopy.openAlertSeverity = AlertaAlert.mapSeverityToIFAlertSeverity(alertSeverity);
     return assetDetailsCopy;

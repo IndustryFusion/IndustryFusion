@@ -34,7 +34,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Base64;
 
-// see https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/examples-s3-objects.html#upload-object
+/**
+ * Object Storage Implementation: AWS S3 Client.
+ * @see
+ * <a href="https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/examples-s3-objects.html#upload-object">docs.aws.amazon.com</a>
+ */
 public class AwsClient extends BaseClient implements ObjectStorageBaseClient {
 
     private final ObjectStorageConfiguration configuration;

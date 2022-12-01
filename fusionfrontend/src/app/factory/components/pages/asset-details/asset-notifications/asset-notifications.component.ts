@@ -23,7 +23,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FactoryResolver } from '../../../../services/factory-resolver.service';
 import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { RouteHelpers } from '../../../../../core/helpers/route-helpers';
-import { IFAlertStatus } from '../../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
+import { IFAlertStatus } from '../../../../../core/store/ngsi-ld/alerta/alerta.model';
 
 @Component({
   selector: 'app-asset-notifications',

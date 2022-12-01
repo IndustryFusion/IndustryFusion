@@ -14,9 +14,9 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AlertaAlert, AlertaResponse, AlertStatus } from './alerta-alert.model';
+import { AlertaAlert, AlertaResponse, AlertStatus } from './alerta.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { AlertaAlertStore } from './alerta-alert.store';
+import { AlertaStore } from './alerta.store';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { map, tap } from 'rxjs/operators';
@@ -25,14 +25,17 @@ import { ID } from '@datorama/akita';
 @Injectable({
   providedIn: 'root'
 })
-// see https://docs.alerta.io/api/reference.html#set-alert-status
-export class AlertaAlertService {
+/**
+ * Service for Alerta API handling alerts.
+ * @see <a href="https://docs.alerta.io/api/reference.html#set-alert-status">https://docs.alerta.io/api/reference.html#set-alert-status</a>
+ */
+export class AlertaService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json', Authorization: 'Key ' + environment.alertaApiKey }),
     params: new HttpParams()
   };
 
-  constructor(private alertaAlertStore: AlertaAlertStore,
+  constructor(private alertaAlertStore: AlertaStore,
               private http: HttpClient) { }
 
   getItems(): Observable<AlertaAlert[]> {

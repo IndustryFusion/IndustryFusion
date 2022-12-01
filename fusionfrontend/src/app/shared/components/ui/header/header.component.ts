@@ -23,7 +23,7 @@ import { UserManagementService } from '../../../../core/services/api/user-manage
 import { KeycloakProfile } from 'keycloak-js';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
-import { AlertaAlertQuery } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.query';
+import { AlertaQuery } from '../../../../core/store/ngsi-ld/alerta/alerta.query';
 import { ID } from '@datorama/akita';
 import { KeycloakService } from 'keycloak-angular';
 
@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   faUserCircle = faUserCircle;
 
   constructor(private routingLocation: Location,
-              private alertaAlertQuery: AlertaAlertQuery,
+              private alertaQuery: AlertaQuery,
               private userManagementService: UserManagementService,
               private keycloakService: KeycloakService,
               private router: Router) {
@@ -67,7 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.companyId = (this.keycloakService.getKeycloakInstance().tokenParsed as any).IF_COMPANY;
 
-    this.alertaAlertQuery.selectOpenAlertCount().subscribe(openAlertCount => {
+    this.alertaQuery.selectOpenAlertCount().subscribe(openAlertCount => {
       this.openAlertCount = openAlertCount;
     });
   }

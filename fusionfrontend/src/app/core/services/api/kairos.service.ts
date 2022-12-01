@@ -151,10 +151,10 @@ export class KairosService {
 
   private generateKairosIdentifier(asset: Asset,
                                    fieldDetails: FieldDetails): string {
-    const assetUri = this.ngsiLdService.getAssetUri(asset);
+    const assetUri = this.ngsiLdService.generateAssetUri(asset);
     const fieldIri = KairosService.getFieldIri(fieldDetails);
 
-    return this.DEFAULT_ACCOUNT_NAME + '\\' + assetUri + '\\' + fieldIri;
+    return `${this.DEFAULT_ACCOUNT_NAME}\\${assetUri}\\${fieldIri}`;
   }
 
   private prepareKairosRequest(kairosIdentifier: string,
