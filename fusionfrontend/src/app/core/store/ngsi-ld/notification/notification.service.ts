@@ -18,7 +18,7 @@ import { Notification } from './notification.model';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { NotificationStore } from './notification.store';
 import { Observable } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap, skipWhile, tap } from 'rxjs/operators';
 import { AlertaAlertQuery } from '../alerta-alert/alerta-alert.query';
 import { AlertaAlert } from '../alerta-alert/alerta-alert.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
@@ -78,6 +78,7 @@ export class NotificationService {
 
   getAllNotifications(): Observable<Notification[]> {
     return this.assetQuery.selectAll().pipe(
+      skipWhile(assets => assets == null || assets.length === 0),
       mergeMap((assets: Asset[]) => {
         return this.alertaAlertQuery.selectAll().pipe(
           map((alerts: AlertaAlert[]) => {

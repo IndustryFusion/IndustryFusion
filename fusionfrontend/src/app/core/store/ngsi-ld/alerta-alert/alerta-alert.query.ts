@@ -21,11 +21,13 @@ import { map } from 'rxjs/operators';
 import { AlertaAlert, AlertSeverity, IFAlertSeverity, IFAlertStatus } from './alerta-alert.model';
 import { FactoryAssetDetailsWithFields } from '../../factory-asset-details/factory-asset-details.model';
 import { TreeNode } from 'primeng/api';
+import { NgsiLdService } from '../../../services/api/ngsi-ld.service';
 
 @Injectable({ providedIn: 'root' })
 export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
 
-  constructor(protected store: AlertaAlertStore) {
+  constructor(protected store: AlertaAlertStore,
+              private ngsiLdService: NgsiLdService) {
     super(store);
   }
 
@@ -52,24 +54,24 @@ export class AlertaAlertQuery extends QueryEntity<AlertaAlertState> {
 
     const openAlerts = this.getOpenAlerts();
     const assetDetailsCopy = Object.assign({ }, assetDetails);
-    const alertSeverity: AlertSeverity = this.findAlertSeverityByExternalName(assetDetailsCopy.externalName, openAlerts);
+    const alertSeverity: AlertSeverity = this.findAlertSeverityOfAssetUri(this.ngsiLdService.getAssetUri(assetDetailsCopy), openAlerts);
 
     assetDetailsCopy.openAlertSeverity = AlertaAlert.mapSeverityToIFAlertSeverity(alertSeverity);
     return assetDetailsCopy;
   }
 
-  private findAlertSeverityByExternalName(externalName: string, openAlerts: AlertaAlert[]): AlertSeverity {
+  private findAlertSeverityOfAssetUri(assetUri: string, openAlerts: AlertaAlert[]): AlertSeverity {
     let mostCriticalSeverity = null;
 
-    if (externalName) {
-      const openAlertsOfExternalId = openAlerts.filter(alert => String(alert.resource) === externalName);
+    if (assetUri) {
+      const openAlertsOfExternalId = openAlerts.filter(alert => String(alert.resource) === assetUri);
       if (openAlertsOfExternalId.length > 0) {
         const sortedAlerts = openAlertsOfExternalId.sort((openAlert1, openAlert2) =>
           AlertaAlert.mapSeverityToSecurityCode(openAlert1.severity) - AlertaAlert.mapSeverityToSecurityCode(openAlert2.severity));
         mostCriticalSeverity = sortedAlerts[0].severity;
       }
     } else {
-      console.warn('[alerta alert query]: ExternalName does not exist');
+      console.warn('[alerta alert query]: Asset Uri does not exist');
     }
 
     return mostCriticalSeverity;

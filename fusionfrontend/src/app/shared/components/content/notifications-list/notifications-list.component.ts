@@ -28,8 +28,6 @@ import { ConfirmationService } from 'primeng/api';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { IFAlertStatus } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.model';
 import { AlertaAlertService } from '../../../../core/store/ngsi-ld/alerta-alert/alerta-alert.service';
-import { AssetQuery } from '../../../../core/store/asset/asset.query';
-import { AssetResolver } from '../../../../core/resolvers/asset.resolver';
 
 @Component({
   selector: 'app-notifications-list',
@@ -78,8 +76,6 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     private alertaAlertService: AlertaAlertService,
-    private assetQuery: AssetQuery,
-    private assetResolver: AssetResolver,
     private routingLocation: Location,
     private confirmationService: ConfirmationService
   ) {
@@ -186,24 +182,25 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private loadNotificationsEnsureAssetsLoaded(): void {
-    if (this.assetQuery.getCount() < 1) {
-      this.assetResolver.resolve(this.activatedRoute.snapshot);
       this.fetchNotifications();
-    } else {
-      this.fetchNotifications();
-    }
   }
 
   private fetchNotifications(): void {
     this.notificationSubscription?.unsubscribe();
 
     this.notificationSubscription = this.notifications$.subscribe(notifications => {
-      if (notifications.length !== this.allNotifications.length) {
+      // check is done to avoid flicker
+      if (this.haveNotificationsChanged(notifications)) {
         this.allNotifications = notifications;
         this.resetNotificationVariablesToAllNotifications();
         this.updateNotifications();
       }
     });
+  }
+
+  private haveNotificationsChanged(newNotifications: Notification[]): boolean {
+    return newNotifications.length !== this.allNotifications.length
+      || JSON.stringify(newNotifications.sort()) !== JSON.stringify(this.allNotifications.sort());
   }
 
   private closeMultipleNotifications(): void {

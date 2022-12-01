@@ -23,8 +23,8 @@ const routes: Routes = [
   {
     path: 'notifications/companies/:companyId',
     resolve: {
+      company: CompanyResolver,
       assets: AssetResolver,
-      company: CompanyResolver
     },
     children: [
       {
