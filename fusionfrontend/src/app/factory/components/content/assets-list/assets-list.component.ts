@@ -39,8 +39,8 @@ import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { StatusWithAssetId } from '../../../models/status.model';
-import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
-import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
+import { IFAlertSeverity } from '../../../../core/store/ngsi-ld/alerta/alerta.model';
+import { AlertaQuery } from '../../../../core/store/ngsi-ld/alerta/alerta.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
 import { AssetListType } from '../../../../shared/models/asset-list-type.model';
 
@@ -113,7 +113,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private assetService: AssetService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private alertaAlertQuery: AlertaAlertQuery,
+    private alertaQuery: AlertaQuery,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService,
@@ -155,12 +155,12 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateAlertSeverityOnNewAlerts() {
-    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+    this.alertaQuery.selectOpenAlerts().subscribe(() => {
       if (this.displayedFactoryAssets) {
         this.displayedFactoryAssets = this.displayedFactoryAssets
-          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+          .map(asset => this.alertaQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
         this.factoryAssetsDetailsWithFields = this.factoryAssetsDetailsWithFields
-          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+          .map(asset => this.alertaQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
 
         this.updateTree();
       }
@@ -192,7 +192,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
-    return this.alertaAlertQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
+    return this.alertaQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
   }
 
   isLastChildElement(rowNode: any): boolean {

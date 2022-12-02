@@ -35,7 +35,6 @@ import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { DashboardModule } from './dashboards/dashboard.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SharedModule } from './shared/shared.module';
-import { FusionAppletsModule } from './fusion-applets/fusion-applets.module';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { ToastModule } from 'primeng/toast';
 import { PageTitleComponent } from './shared/components/content/page-title/page-title.component';
@@ -58,7 +57,6 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     FleetModule,
     EcosystemModule,
     DashboardModule,
-    FusionAppletsModule,
     NotificationsModule,
     AkitaNgRouterStoreModule,
     ClarityModule,

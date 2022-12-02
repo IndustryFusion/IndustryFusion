@@ -34,16 +34,6 @@ export class FieldInstanceService {
   constructor(private fieldInstanceStore: FieldInstanceStore, private http: HttpClient) {
   }
 
-  getFieldInstances(companyId: ID, assetID: ID): Observable<FieldInstance[]> {
-    const path = `companies/${companyId}/asset/${assetID}/fieldinstances`;
-    const cacheKey = 'asset-' + assetID;
-    return this.fieldInstanceStore.cachedByParentId(cacheKey,
-      this.http.get<FieldInstance[]>(`${environment.apiUrlPrefix}/${path}?embedChildren=true`, this.httpOptions)
-        .pipe(tap(entities => {
-          this.fieldInstanceStore.upsertManyCached(entities);
-        })));
-  }
-
   editItem(companyId: ID, fieldInstance: FieldInstance): Observable<FieldInstance> {
     const path = `companies/${companyId}/asset/${fieldInstance.assetId}/fieldinstances/${fieldInstance.id}`;
     return this.http.patch<FieldInstance>(`${environment.apiUrlPrefix}/${path}`, fieldInstance, this.httpOptions)

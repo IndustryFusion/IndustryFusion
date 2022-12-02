@@ -20,6 +20,7 @@ import { Threshold } from '../threshold/threshold.model';
 
 // Data come from entities field_instance, field_target and field
 export class FieldDetails extends BaseEntity {
+  globalId: string;
   assetId: ID;
   fieldSourceId: ID;
   externalName: string;

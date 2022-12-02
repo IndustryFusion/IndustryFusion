@@ -22,12 +22,17 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { FieldDetails } from '../../store/field-details/field-details.model';
 import { ID } from '@datorama/akita';
+import { ngsiLdLatestKeyValues } from '../../models/kairos.model';
+import { KairosService } from './kairos.service';
 
+/**
+ * @see https://ngsi-ld-tutorials.readthedocs.io/en/latest/ngsi-ld-operations.html
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class NgsiLdService {
-  private static runningRequest: Map<ID, Observable<any>> = new Map<ID, Observable<any>>();
+  private static runningRequests: Map<ID, Observable<any>> = new Map<ID, Observable<any>>();
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
   };
@@ -36,13 +41,14 @@ export class NgsiLdService {
     private http: HttpClient) {
   }
 
-  private getAssetUri(asset: Asset) {
+  generateAssetUri(asset: Asset): string {
     return `urn:ngsi-ld:asset:${asset.companyId}:${asset.id}`;
   }
 
-  getLastValueOfAllFields(asset: Asset): Observable<any> {
-    if (!NgsiLdService.runningRequest.has(asset.id)) {
-      const newRequest = this.http.get<any>(`${environment.ngsiLdBrokerUrl}/${this.getAssetUri(asset)}?options=keyValues`, this.httpOptions)
+  getLatestValuesOfAsset(asset: Asset): Observable<ngsiLdLatestKeyValues> {
+    if (!NgsiLdService.runningRequests.has(asset.id)) {
+      const newRequest = this.http.get<any>(`${environment.ngsiLdBrokerUrl}/${this.generateAssetUri(asset)}?options=keyValues`,
+        this.httpOptions)
         .pipe(
           catchError(() => {
             console.error(`[NGSI-LD service] caught error while update metrics of Asset ${asset.id}`);
@@ -53,35 +59,41 @@ export class NgsiLdService {
             return keyValuePairs;
           })
         );
-      NgsiLdService.runningRequest.set(asset.id, newRequest);
+      NgsiLdService.runningRequests.set(asset.id, newRequest);
     }
-    return NgsiLdService.runningRequest.get(asset.id);
+    return NgsiLdService.runningRequests.get(asset.id);
   }
 
   getMergedFieldsByAssetWithFields(
     assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields, period: number): Observable<FieldDetails[]> {
-    let latestPoints$: Observable<any>;
+    let latestPoints$: Observable<ngsiLdLatestKeyValues>;
     if (period) {
       latestPoints$ = timer(0, period).pipe(
         switchMap(() => {
-          return this.getLastValueOfAllFields(assetWithFields);
+          return this.getLatestValuesOfAsset(assetWithFields);
         })
       );
     } else {
-      latestPoints$ = this.getLastValueOfAllFields(assetWithFields);
+      latestPoints$ = this.getLatestValuesOfAsset(assetWithFields);
     }
 
     return latestPoints$.pipe(
-      map(latestPoints => {
-        return assetWithFields.fields.map(field => {
-          const fieldCopy = Object.assign({ }, field);
-          const point = latestPoints[field.externalName];
-          if (point) {
-            fieldCopy.value = point;
-          }
-          return fieldCopy;
-        });
-      })
+      map(latestPoints => this.mergeFieldValuesToAsset(latestPoints, assetWithFields))
     );
   }
+
+  mergeFieldValuesToAsset(lastValues: ngsiLdLatestKeyValues,
+                          assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): FieldDetails[] {
+    return assetWithFields.fields.map((field) => {
+        const fieldCopy = Object.assign({ }, field);
+        const cleanedExternalName = KairosService.getFieldInstanceCleanName(field);
+        const point = lastValues[cleanedExternalName];
+        if (point && point !== '') {
+          fieldCopy.value = point;
+        }
+        return fieldCopy;
+      }
+    );
+  }
+
 }

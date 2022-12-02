@@ -14,11 +14,13 @@
  */
 
 import { Location } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RouteHelpers } from '../../../core/helpers/route-helpers';
+import { CompanyQuery } from '../../../core/store/company/company.query';
+import { ID } from '@datorama/akita';
 
 @Component({
   selector: 'app-notifications-sub-header',
@@ -28,10 +30,13 @@ import { RouteHelpers } from '../../../core/helpers/route-helpers';
 export class NotificationsSubHeaderComponent implements OnInit, OnDestroy {
 
   private unSubscribe$ = new Subject<void>();
+  private companyId: ID;
 
   route: string;
 
-  constructor(private location: Location, private router: Router) { }
+  constructor(private location: Location,
+              private router: Router,
+              private companyQuery: CompanyQuery) { }
 
   ngOnInit() {
     this.checkUrl();
@@ -41,6 +46,8 @@ export class NotificationsSubHeaderComponent implements OnInit, OnDestroy {
       ).subscribe(() => {
         this.checkUrl();
       });
+
+    this.companyId = this.companyQuery.getActiveId();
   }
 
   checkUrl(): void {
@@ -52,19 +59,19 @@ export class NotificationsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   isOpenActive = () => {
-    return RouteHelpers.matchFullRoutes(this.route, ['^\/notifications\/open+']);
+    return RouteHelpers.matchFullRoutes(this.route, ['^\/notifications\/companies\/[0-9]*\/open+']);
   }
 
   isClearedActive = () => {
-    return RouteHelpers.matchFullRoutes(this.route, ['^\/notifications\/cleared+']);
+    return RouteHelpers.matchFullRoutes(this.route, ['^\/notifications\/companies\/[0-9]*\/cleared+']);
   }
 
   onOpenClick() {
-    return this.router.navigate(['/notifications/open']);
+    return this.router.navigate([`/notifications/companies/${this.companyId}/open`]);
   }
 
   onClearedClick() {
-    return this.router.navigate(['/notifications/cleared']);
+    return this.router.navigate([`/notifications/companies/${this.companyId}/cleared`]);
   }
 
   ngOnDestroy(): void {

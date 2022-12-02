@@ -23,21 +23,25 @@ import { AssetsListPageComponent } from './components/pages/assets-list-page/ass
 import { FactoryManagerPageType } from './factory-routing.model';
 import { MainAuthGuard } from '../core/guards/main-auth.guard';
 import { Role } from '../core/models/roles.model';
-import { AssetDigitalNameplateComponent } from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
+import {
+  AssetDigitalNameplateComponent
+} from './components/pages/asset-details/asset-digital-nameplate/asset-digital-nameplate.component';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
 import { FactoryAssetDetailsResolver } from '../core/resolvers/factory-asset-details.resolver';
-import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
-import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
-import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
-import { OispRuleFilteredByStatusResolver } from '../core/resolvers/oisp-rule-filtered-by-status.resolver';
+import {
+  AssetNotificationsComponent
+} from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 import { FactorySiteQuery } from '../core/store/factory-site/factory-site.query';
 import { FactorySitesComponent } from './components/content/factory-sites/factory-sites.component';
 import { RoomQuery } from '../core/store/room/room.query';
 import { RoomsListComponent } from './components/content/rooms-list/rooms-list.component';
 import { FactoryAssetDetailsQuery } from '../core/store/factory-asset-details/factory-asset-details.query';
-import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
+import {
+  AssetPerformanceComponent
+} from './components/pages/asset-details/asset-performance/asset-performance.component';
 import { FieldInstanceDetailsResolver } from '../core/resolvers/field-instance-details.resolver';
 import { CompanyResolver } from '../core/resolvers/company.resolver';
+import { AssetResolver } from '../core/resolvers/asset.resolver';
 
 const routes: Routes = [
   {
@@ -89,9 +93,6 @@ const routes: Routes = [
               {
                 path: 'asset-cards/:assetIdList',
                 component: AssetsGridPageComponent,
-                resolve: {
-                  devices: OispDeviceResolver
-                },
                 data: {
                   pageTypes: [FactoryManagerPageType.FACTORY_SITE_DETAIL, FactoryManagerPageType.ASSET_CARD],
                   roles: [Role.FACTORY_MANAGER],
@@ -147,9 +148,6 @@ const routes: Routes = [
           {
             path: 'asset-cards/:assetIdList',
             component: AssetsGridPageComponent,
-            resolve: {
-              devices: OispDeviceResolver
-            },
             data: {
               pageTypes: [FactoryManagerPageType.ROOM_DETAIL, FactoryManagerPageType.ASSET_CARD],
               roles: [Role.FACTORY_MANAGER],
@@ -165,7 +163,6 @@ const routes: Routes = [
     path: 'factorymanager/companies/:companyId/assets',
     canActivate: [MainAuthGuard],
     resolve: {
-      devices: OispDeviceResolver,
       company: CompanyResolver,
     },
     data: {
@@ -195,9 +192,6 @@ const routes: Routes = [
         path: 'asset-cards/:assetIdList',
         component: AssetsGridPageComponent,
         canActivate: [MainAuthGuard],
-        resolve: {
-          devices: OispDeviceResolver
-        },
         data: {
           pageTypes: [FactoryManagerPageType.ASSET_LIST, FactoryManagerPageType.ASSET_CARD],
           roles: [Role.FACTORY_MANAGER],
@@ -208,7 +202,7 @@ const routes: Routes = [
         path: ':assetId',
         canActivate: [MainAuthGuard],
         resolve: {
-          assets: FactoryAssetDetailsResolver,
+          assetDetails: FactoryAssetDetailsResolver,
           fieldInstanceDetails: FieldInstanceDetailsResolver
         },
         data: {
@@ -247,23 +241,6 @@ const routes: Routes = [
           },
 
           {
-            path: 'applets/active',
-            component: AssetAppletsComponent,
-            resolve: { rules: OispRuleFilteredByStatusResolver },
-            data: {
-              breadcrumb: 'Active Applets',
-            },
-          },
-          {
-            path: 'applets/archiv',
-            component: AssetAppletsComponent,
-            resolve: { rules: OispRuleFilteredByStatusResolver },
-            data: {
-              breadcrumb: 'Archived Applets',
-            },
-          },
-
-          {
             path: 'digital-nameplate',
             component: AssetDigitalNameplateComponent,
             data: {
@@ -280,6 +257,9 @@ const routes: Routes = [
           {
             path: 'notifications/open',
             component: AssetNotificationsComponent,
+            resolve: {
+              assets: AssetResolver
+            },
             data: {
               breadcrumb: 'Notifications',
             },
@@ -287,6 +267,9 @@ const routes: Routes = [
           {
             path: 'notifications/cleared',
             component: AssetNotificationsComponent,
+            resolve: {
+              assets: AssetResolver
+            },
             data: {
               breadcrumb: 'Notifications',
             },

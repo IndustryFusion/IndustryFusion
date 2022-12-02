@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { OispDeviceStatus } from '../../../../core/models/kairos.model';
+import { DeviceStatus } from '../../../../core/models/kairos.model';
 import { UIChart } from 'primeng/chart';
 import * as moment from 'moment';
 import { StatusPoint } from '../../../../factory/models/status.model';
@@ -50,19 +50,19 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
       label: '', backgroundColor: '' };
 
     switch (firstStatusPointOfGroup.status) {
-      case OispDeviceStatus.OFFLINE:
+      case DeviceStatus.OFFLINE:
         dataset.label = 'Offline';
         dataset.backgroundColor = '#EAEAEA';
         break;
-      case OispDeviceStatus.IDLE:
+      case DeviceStatus.IDLE:
         dataset.label = 'Idle';
         dataset.backgroundColor = '#454F63';
         break;
-      case OispDeviceStatus.RUNNING:
+      case DeviceStatus.RUNNING:
         dataset.label = 'Running';
         dataset.backgroundColor = '#2CA9CE';
         break;
-      case OispDeviceStatus.ERROR:
+      case DeviceStatus.ERROR:
         dataset.label = 'Error';
         dataset.backgroundColor = '#A73737';
         break;
@@ -82,7 +82,7 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
         if (timeDifference > environment.assetStatusSampleRateMs * 2) {
           for (let i = 1; i <= Math.floor(timeDifference / environment.assetStatusSampleRateMs - 1); i++) {
             additionalStatuses.push({
-              status: OispDeviceStatus.OFFLINE,
+              status: DeviceStatus.OFFLINE,
               time: moment(prevTime.valueOf() + environment.assetStatusSampleRateMs * i) }
             );
           }
@@ -248,17 +248,17 @@ export class HistoricalStatusBarChartComponent implements OnInit, OnChanges {
   }
 
   private aggregateGroupOfStatuses(statuses: StatusPoint[]): StatusPoint {
-    const modeOfStatusGroup = this.getMode(statuses.map(status => status.status)) as OispDeviceStatus;
+    const modeOfStatusGroup = this.getMode(statuses.map(status => status.status)) as DeviceStatus;
     const firstTimeOfGroup = statuses[0].time;
     return { status: modeOfStatusGroup, time: firstTimeOfGroup };
   }
 
-  private getMode(statuses: OispDeviceStatus[]): OispDeviceStatus {
+  private getMode(statuses: DeviceStatus[]): DeviceStatus {
     if (statuses.length === 0) {
       return 0;
     }
 
-    const statusesWithCount: { value: OispDeviceStatus, count: number }[] = statuses.reduce((items, current) => {
+    const statusesWithCount: { value: DeviceStatus, count: number }[] = statuses.reduce((items, current) => {
       const item = (items.length === 0) ? null : items.find((x) => x.value === current);
       (item) ? item.count++ : items.push({ value: current, count: 1 });
       return items;

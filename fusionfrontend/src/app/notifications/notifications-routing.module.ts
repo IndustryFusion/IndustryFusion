@@ -16,22 +16,40 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
+import { CompanyResolver } from '../core/resolvers/company.resolver';
+import { AssetResolver } from '../core/resolvers/asset.resolver';
 
 const routes: Routes = [
   {
-    path: 'notifications/open',
-    component: NotificationsPageComponent,
-    data: {
-      breadcrumb: 'Open Notifications',
+    path: 'notifications/companies/:companyId',
+    resolve: {
+      company: CompanyResolver,
+      assets: AssetResolver,
     },
-  },
-  {
-    path: 'notifications/cleared',
-    component: NotificationsPageComponent,
-    data: {
-      breadcrumb: 'Cleared Notifications',
-    },
-  },
+    children: [
+      {
+        path: '',
+        redirectTo: 'open',
+        pathMatch: 'full'
+      },
+      {
+        path: 'open',
+        pathMatch: 'full',
+        component: NotificationsPageComponent,
+        data: {
+          breadcrumb: 'Open Notifications',
+        },
+      },
+      {
+        path: 'cleared',
+        pathMatch: 'full',
+        component: NotificationsPageComponent,
+        data: {
+          breadcrumb: 'Cleared Notifications',
+        },
+      },
+    ]
+  }
 ];
 
 @NgModule({

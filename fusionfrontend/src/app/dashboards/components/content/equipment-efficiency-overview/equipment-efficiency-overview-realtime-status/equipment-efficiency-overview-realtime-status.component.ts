@@ -18,7 +18,7 @@ import { combineLatest, forkJoin, Observable, timer } from 'rxjs';
 import { Status } from '../../../../../factory/models/status.model';
 import { switchMap } from 'rxjs/operators';
 import { StatusService } from '../../../../../core/services/logic/status.service';
-import { OispDeviceStatus } from '../../../../../core/models/kairos.model';
+import { DeviceStatus } from '../../../../../core/models/kairos.model';
 import { FactoryAssetDetailsWithFields } from '../../../../../core/store/factory-asset-details/factory-asset-details.model';
 import { environment } from 'src/environments/environment';
 
@@ -33,7 +33,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
   factoryAssetDetailsWithFields$: Observable<FactoryAssetDetailsWithFields[]>;
 
   public statusCounts: number[] = [0, 0, 0, 0];
-  public OispDeviceStatus = OispDeviceStatus;
+  public DeviceStatus = DeviceStatus;
 
   private statuses$: Observable<Status[]>;
 
@@ -54,7 +54,7 @@ export class EquipmentEfficiencyOverviewRealtimeStatusComponent implements OnIni
     this.statusCounts = this.statusCounts.map(() => 0);
 
     statuses.forEach(status => {
-      const deviceStatus = this.statusService.transformStatusToOispDeviceStatus(status);
+      const deviceStatus = this.statusService.transformStatusToDeviceStatus(status);
       this.statusCounts[deviceStatus]++;
     });
   }

@@ -23,7 +23,6 @@ import { KeycloakConfig } from 'keycloak-js';
 export const environment = {
   production: false,
   apiUrlPrefix: 'api',
-  oispApiUrlPrefix: 'https://PUT-YOUR-OISP-URL-HERE.com/v1/api',
   kairosApiUrlPrefix: 'https://PUT-YOUR-KAIROS-URL-HERE.com/api/v1',
   alertaApiUrlPrefix: 'https://PUT-YOUR-ALERTA-URL-HERE.com/api',
   alertaApiKey: 'PUT-YOUR-ALERTA-APIKEY-HERE',

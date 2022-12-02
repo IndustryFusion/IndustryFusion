@@ -17,7 +17,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UIChart } from 'primeng/chart';
 import { EquipmentEfficiencyBarChartComponent } from '../equipment-efficiency-bar-chart/equipment-efficiency-bar-chart.component';
 import { StatusHours } from '../../../../core/models/kairos-status-aggregation.model';
-import { OispDeviceStatus } from '../../../../core/models/kairos.model';
+import { DeviceStatus } from '../../../../core/models/kairos.model';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { BehaviorSubject } from 'rxjs';
 
@@ -37,7 +37,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
   @ViewChild('chart') chart: UIChart;
 
   statusHoursPercentage: number[] = [0, 0, 0, 0];
-  OispDeviceStatus = OispDeviceStatus;
+  DeviceStatus = DeviceStatus;
 
   data: any;
   chartOptions: any;
@@ -47,15 +47,15 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
     this.initChartData();
   }
 
-  private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
+  private static getDatasetIndexOfStatus(status: DeviceStatus): 0 | 1 | 2 | 3 {
     switch (status) {
-      case OispDeviceStatus.RUNNING:
+      case DeviceStatus.RUNNING:
         return 0;
-      case OispDeviceStatus.OFFLINE:
+      case DeviceStatus.OFFLINE:
         return 1;
-      case OispDeviceStatus.ERROR:
+      case DeviceStatus.ERROR:
         return 2;
-      case OispDeviceStatus.IDLE:
+      case DeviceStatus.IDLE:
         return 3;
     }
   }
@@ -133,7 +133,7 @@ export class EquipmentEfficiencyOverviewDonutChartComponent implements OnInit {
   }
 
   private resetChartData() {
-    for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
+    for (let i = 0; i < this.enumHelpers.getIterableArray(DeviceStatus).length; i++) {
       this.data.datasets[0].data[i] = 0;
       this.statusHoursPercentage[i] = 0;
     }

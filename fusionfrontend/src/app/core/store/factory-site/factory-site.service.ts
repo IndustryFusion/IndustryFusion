@@ -32,6 +32,10 @@ export class FactorySiteService {
 
   constructor(private factorySiteStore: FactorySiteStore, private http: HttpClient) { }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId Id of the company
+   */
   getFactorySites(companyId: ID): Observable<FactorySite[]> {
     const path = `companies/${companyId}/factorysites`;
     return this.factorySiteStore.cachedByParentId(companyId,
@@ -41,6 +45,9 @@ export class FactorySiteService {
       })));
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   */
   getFactorySite(companyId: ID, factorySiteId: ID): Observable<FactorySite> {
     const path = `companies/${companyId}/factorysites/${factorySiteId}`;
     return this.factorySiteStore.cachedById(factorySiteId,

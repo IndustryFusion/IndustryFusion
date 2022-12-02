@@ -24,7 +24,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FactorySiteMapComponent } from './components/content/factory-site-map/factory-site-map.component';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { LabelControlDirective } from './components/ui/label-control/label-control.directive';
 import { TooltipComponent } from './components/ui/tooltip/tooltip.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -53,6 +53,7 @@ import { EnumOptionToStringPipe } from './pipes/enum-option-to-string.pipe';
 import { AlertIconComponent } from './components/ui/alert-icon/alert-icon.component';
 import { DownloadButtonComponent } from './components/ui/download-button/download-button.component';
 import { UploadButtonComponent } from './components/ui/upload-button/upload-button.component';
+import { EnumHelpers } from '../core/helpers/enum-helpers';
 
 
 @NgModule({
@@ -166,6 +167,8 @@ import { UploadButtonComponent } from './components/ui/upload-button/upload-butt
   providers: [
     MessageService,
     BooleanPipe,
+    EnumHelpers,
+    ConfirmationService
   ]
 })
 export class SharedModule {

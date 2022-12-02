@@ -38,6 +38,10 @@ export class RoomService {
               private roomQuery: RoomQuery) {
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId     Id of the company
+   */
   getRoomsOfCompany(companyId: ID): Observable<Room[]> {
     const path = `companies/${companyId}/rooms`;
     const cacheKey = 'company-' + companyId;
@@ -47,6 +51,12 @@ export class RoomService {
       })));
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId     Id of the company
+   * @param factorySiteId Id of the factory site
+   * @param refresh       If the data should be refreshed in the cache
+   */
   getRoomsOfFactorySite(companyId: ID, factorySiteId: ID, refresh: boolean = false): Observable<Room[]> {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms`;
     const cacheKey = 'factorysite-' + factorySiteId;
@@ -59,6 +69,13 @@ export class RoomService {
       })));
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId     Id of the company
+   * @param factorySiteId Id of the factory site
+   * @param roomId        Id of the room
+   * @param refresh       If the data should be refreshed in the cache
+   */
   getRoom(companyId: ID, factorySiteId: ID, roomId: ID, refresh: boolean = false): Observable<Room> {
     const path = `companies/${companyId}/factorysites/${factorySiteId}/rooms/${roomId}`;
     if (refresh) {

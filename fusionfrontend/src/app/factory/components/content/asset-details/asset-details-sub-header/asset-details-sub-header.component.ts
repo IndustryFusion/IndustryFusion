@@ -82,7 +82,7 @@ export class AssetDetailsSubHeaderComponent implements OnInit, OnDestroy {
   }
 
   endsUrlWithTwoSubroutes() {
-    return this.isPerformance() || this.isNotifications() || this.isApplets();
+    return this.isPerformance() || this.isNotifications();
   }
 
   isPerformance() {
@@ -91,10 +91,6 @@ export class AssetDetailsSubHeaderComponent implements OnInit, OnDestroy {
 
   isNotifications() {
     return this.isRouteActive('open') || this.isRouteActive('cleared');
-  }
-
-  isApplets() {
-    return this.isRouteActive('active') || this.isRouteActive('archiv');
   }
 
   ngOnDestroy() {

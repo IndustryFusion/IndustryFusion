@@ -50,13 +50,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'fusion-applets',
-    redirectTo: '/fusion-applets/overview',
-    pathMatch: 'full'
-  },
-  {
     path: 'notifications',
-    redirectTo: '/notifications/open',
+    redirectTo: '/notifications/companies',
     pathMatch: 'full'
   },
 ];

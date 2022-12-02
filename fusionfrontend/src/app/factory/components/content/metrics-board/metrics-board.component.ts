@@ -23,6 +23,7 @@ import { Observable, Subject, Subscription, timer } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { takeUntil, tap } from 'rxjs/operators';
 import { NgsiLdService } from '../../../../core/services/api/ngsi-ld.service';
+import { ngsiLdLatestKeyValues } from '../../../../core/models/kairos.model';
 
 @Component({
   selector: 'app-metrics-board',
@@ -92,14 +93,14 @@ export class MetricsBoardComponent implements OnDestroy {
   }
 
   private loadMetricsData(): void {
-    this.ngsiLdService.getLastValueOfAllFields(this.asset)
-      .subscribe((keyValues: any) => {
+    this.ngsiLdService.getLatestValuesOfAsset(this.asset)
+      .subscribe((keyValues: ngsiLdLatestKeyValues) => {
        this.addPointValuesToMetricsMap(keyValues);
        this.isLoaded = true;
     });
   }
 
-  private addPointValuesToMetricsMap(keyValues: any): void {
+  private addPointValuesToMetricsMap(keyValues: ngsiLdLatestKeyValues): void {
     Object.keys(keyValues).forEach(key => {
       if (this.metricsDetailMap.has(key)) {
         const metric = this.metricsDetailMap.get(key);
