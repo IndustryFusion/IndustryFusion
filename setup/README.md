@@ -136,6 +136,12 @@ The project is [hosted on GitHub](https://github.com/IndustryFusion/IndustryFusi
 1. Select POM File of the root folder (IndustryFusion/pom.xml) and click "OK"
 1. Run `mvn install` from terminal or the Maven tool window within the fusionfrontend module to automatically install node, yarn and the node modules to the "target" folder.
 
+### Troubleshooting
+
+In case the error message `{"message":"No such image: testcontainersofficial/ryuk:0.3.0"}` appears,
+please manually pull the missing docker-image via terminal as the image has to exist locally.
+
+
 ToDo (IF-201): Build schlägt aktuell beim fusion-aggregator fehl
 
 ## Configure Intellij 
