@@ -56,7 +56,8 @@ public enum IfsPaths implements BasicPaths {
     ABSOLUTE_THRESHOLD_UPPER(IfsPaths.BASE_PATH + "absoluteThresholdUpper"),
     ABSOLUTE_THRESHOLD_LOWER(IfsPaths.BASE_PATH + "absoluteThresholdLower"),
     CRITICAL_THRESHOLD_UPPER(IfsPaths.BASE_PATH + "criticalThresholdUpper"),
-    CRITICAL_THRESHOLD_LOWER(IfsPaths.BASE_PATH + "criticalThresholdLower");
+    CRITICAL_THRESHOLD_LOWER(IfsPaths.BASE_PATH + "criticalThresholdLower"),
+    METRIC_DATATYPE(IfsPaths.BASE_PATH + "metricDataType");
 
     private final String path;
 

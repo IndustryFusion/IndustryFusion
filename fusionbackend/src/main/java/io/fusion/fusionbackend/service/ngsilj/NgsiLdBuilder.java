@@ -18,10 +18,11 @@ package io.fusion.fusionbackend.service.ngsilj;
 import io.fusion.fusionbackend.model.Asset;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
+import org.apache.jena.shared.SyntaxError;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,17 +38,18 @@ public class NgsiLdBuilder {
 
     public void buildAssetNgsiLd(OutputStream stream, Asset asset) {
         JsonObject json = Json.createObjectBuilder()
-                .add("@context", getContexts())
-                .addAll(ngsiLdMapper.mapSeriesAssetToJson(asset))
+                .add("@context", "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld")
+                .addAll(ngsiLdMapper.mapAssetToJson(asset))
                 .build();
         Json.createWriterFactory(getConfigMap())
                 .createWriter(stream)
                 .writeObject(json);
-    }
-
-    private JsonObjectBuilder getContexts() {
-        return Json.createObjectBuilder()
-                .add("@vocab", "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld");
+        try {
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new SyntaxError(e.getMessage());
+        }
     }
 
     private Map<String, Object> getConfigMap() {

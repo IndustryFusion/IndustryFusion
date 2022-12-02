@@ -131,15 +131,9 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     return fields?.filter(field => field.fieldType === FieldType.ATTRIBUTE);
   }
 
-  onExportShacl() {
+  onExport() {
     const companyId = this.companyQuery.getActiveId();
-    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/shaclexport/${this.assetId}`,
-      `Asset_${this.assetId}.ttl`);
-  }
-
-  onExportNgsiLd() {
-    const companyId = this.companyQuery.getActiveId();
-    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/ngsildexport/${this.assetId}`,
-      `Asset_${this.assetId}.json`);
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${this.assetId}`,
+      `Asset_${this.assetId}.zip`);
   }
 }

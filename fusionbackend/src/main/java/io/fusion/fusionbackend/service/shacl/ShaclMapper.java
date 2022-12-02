@@ -46,7 +46,9 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Node_Blank;
 import org.apache.jena.graph.Node_URI;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.shared.SyntaxError;
+import org.apache.jena.vocabulary.XSD;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -92,61 +94,69 @@ public class ShaclMapper {
     }
 
     private ShaclShape mapFromAsset(Asset asset, ShaclShape shape, String iri, Long orderId) {
-        return shape
-                .addParameter(IfsPaths.CONNECTION_STRING, ShaclHelper.toValidText(asset.getConnectionString()))
-                .addParameter(IfsPaths.CONNECTIVITY_TYPE, ShaclHelper.toValidText(asset.getControlSystemType()))
-                .addParameter(IfsPaths.CONNECTIVITY_PROTOCOL, ShaclHelper.toValidText(asset.getGatewayConnectivity()))
+        shape
                 .addParameter(ShaclPaths.NAME, iri)
                 .addParameter(ShaclPaths.ORDER, orderId)
-                .addParameter(IfsPaths.SERIAL_NUMBER, ShaclHelper.toValidText(asset.getSerialNumber()))
                 .addParameter(IfsPaths.FIELD_NAME, ShaclHelper.toValidText(asset.getExternalName()))
-                .addParameter(IfsPaths.ASSET_MANUAL, ShaclHelper.toValidText(asset.getHandbookUrl()))
-                .addParameter(IfsPaths.ASSET_VIDEO, ShaclHelper.toValidText(asset.getVideoUrl()))
-                .addParameter(IfsPaths.CE_CERTIFICATION, asset.getCeCertified())
-                .addParameter(IfsPaths.CONSTRUCTION_DATE, ShaclHelper
-                        .toValidText(asset.getConstructionDate().toString()))
-                .addParameter(IfsPaths.INSTALLATION_DATE, ShaclHelper
-                        .toValidText(asset.getInstallationDate().toString()))
                 .addParameter(IfsPaths.ASSET_SERIES_NAME,
                         ShaclHelper.createIriIfNeeded(asset.getAssetSeries().getName(),
                                 shaclConfig.getDefaultPrefix()))
-                .addSubShapes(
-                        StreamUtils.zipWithIndex(asset.getFieldInstances().stream())
-                                .map(source -> mapFromAssetFieldSource(source.getValue().getFieldSource(),
-                                        source.getIndex() + 1))
-                                .collect(Collectors.toSet()))
-                .addSubShapes(StreamUtils.zipWithIndex(asset.getSubsystems().stream()
-                        .sorted(Comparator.comparing(Asset::getName)))
-                        .map(candidate -> this.mapFromAsset(candidate.getValue(), candidate.getIndex() + 1, false))
+                .addSubShape(asExtraPropertyShape(IfsPaths.CONNECTION_STRING, XSD.xstring, 1L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.CONNECTIVITY_TYPE, XSD.xstring, 2L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.CONNECTIVITY_PROTOCOL, XSD.xstring, 3L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.PROTECTION_CLASS, XSD.xstring, 4L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.SERIAL_NUMBER, XSD.xstring, 5L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.ASSET_MANUAL, XSD.xstring, 6L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.ASSET_VIDEO, XSD.xstring, 7L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.CE_CERTIFICATION, XSD.xboolean, 8L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.CONSTRUCTION_DATE, XSD.date, 9L))
+                .addSubShape(asExtraPropertyShape(IfsPaths.INSTALLATION_DATE, XSD.date, 10L));
+        final int offset1 = shape.getSubShapes().size() + 1;
+        shape.addSubShapes(
+                StreamUtils.zipWithIndex(asset.getFieldInstances().stream())
+                        .map(source -> mapFromAssetFieldSource(source.getValue().getFieldSource(),
+                                source.getIndex() + offset1))
                         .collect(Collectors.toSet()));
+        final int offset2 = shape.getSubShapes().size() + 1;
+        shape.addSubShapes(StreamUtils.zipWithIndex(asset.getSubsystems().stream()
+                .sorted(Comparator.comparing(Asset::getName)))
+                .map(candidate -> this.mapFromAsset(candidate.getValue(), candidate.getIndex() + offset2, false))
+                .collect(Collectors.toSet()));
+        return shape;
+    }
 
+    private ShaclShape asPropertyShape(String path,
+                                       Resource dataType,
+                                       Optional<String> metricDataType,
+                                       boolean mandatory,
+                                       Long orderId) {
+
+
+        PropertyShape shape = (PropertyShape) new PropertyShape(ShaclNodeKind.LITERAL, NgsiLdPaths.HAS_PATH.getPath())
+                .addParameter(ShaclPaths.DATATYPE, dataType.getURI())
+                .addParameter(ShaclPaths.MIN_COUNT, 1)
+                .addParameter(ShaclPaths.MAX_COUNT, 1);
+        metricDataType.ifPresent(mdt -> shape.addParameter(IfsPaths.METRIC_DATATYPE, mdt));
+        return new PropertyShape(ShaclNodeKind.BLANK_NODE, path)
+                .addParameter(ShaclPaths.MIN_COUNT, mandatory ? 1 : 0)
+                .addParameter(ShaclPaths.MAX_COUNT, 1)
+                .addParameter(ShaclPaths.ORDER, orderId)
+                .addSubShape(shape.addParameter(ShaclPaths.ORDER, 1));
+    }
+
+    private ShaclShape asExtraPropertyShape(BasicPaths path,
+                                            Resource dataType,
+                                            Long orderId) {
+        return asPropertyShape(path.getPath(), dataType, Optional.empty(), true, orderId);
     }
 
     private ShaclShape mapFromAssetFieldSource(FieldSource fieldSource, Long orderId) {
-        return mapFromAssetFieldTarget(fieldSource.getFieldTarget(), orderId,
-                (subShape) -> {
-                    subShape.addParameter(IfsPaths.GLOBAL_ID, ShaclHelper.toValidText(fieldSource.getGlobalId()))
-                            .addParameter(IfsPaths.REGISTER, ShaclHelper.toValidText(fieldSource.getRegister()));
-                    if (fieldSource.getIdealThreshold() != null) {
-                        subShape.addParameter(IfsPaths.ABSOLUTE_THRESHOLD_UPPER,
-                                fieldSource.getIdealThreshold().getValueUpper())
-                                .addParameter(IfsPaths.ABSOLUTE_THRESHOLD_LOWER,
-                                        fieldSource.getIdealThreshold().getValueLower());
-                    }
-                    if (fieldSource.getAbsoluteThreshold() != null) {
-                        subShape.addParameter(IfsPaths.ABSOLUTE_THRESHOLD_UPPER,
-                                fieldSource.getAbsoluteThreshold().getValueUpper())
-                                .addParameter(IfsPaths.ABSOLUTE_THRESHOLD_LOWER,
-                                        fieldSource.getAbsoluteThreshold().getValueLower());
-                    }
-                    if (fieldSource.getAbsoluteThreshold() != null) {
-                        subShape.addParameter(IfsPaths.ABSOLUTE_THRESHOLD_UPPER,
-                                fieldSource.getCriticalThreshold().getValueUpper())
-                                .addParameter(IfsPaths.ABSOLUTE_THRESHOLD_LOWER,
-                                        fieldSource.getCriticalThreshold().getValueLower());
-                    }
-
-                });
+        return asPropertyShape(
+                ShaclHelper.createIriIfNeeded(fieldSource.getFieldTarget().getName(), shaclConfig.getDefaultPrefix()),
+                XSD.xstring,
+                Optional.of(fieldSource.getFieldTarget().getField().getDataType().getPath()),
+                fieldSource.getFieldTarget().getMandatory(),
+                orderId);
     }
 
     public NodeShape mapFromAssetTypeTemplate(AssetTypeTemplate assetTypeTemplate) {
@@ -167,7 +177,7 @@ public class ShaclMapper {
     public PropertyShape mapFromAssetFieldTarget(
             FieldTarget fieldTarget,
             Long orderId,
-            ShaclHelper.LambdaWrapper executeAfter) {
+            ShaclHelper.LambdaWrapper<ShaclShape> executeAfter) {
         String iri = ShaclHelper.createIriIfNeeded(fieldTarget.getName(), shaclConfig.getDefaultPrefix());
         PropertyShape shape = (PropertyShape) new PropertyShape(ShaclNodeKind.LITERAL, NgsiLdPaths.HAS_PATH.getPath())
                 .addParameter(ShaclPaths.NAME,

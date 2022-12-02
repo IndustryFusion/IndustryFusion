@@ -161,7 +161,7 @@ public class NgsiLdSerializer {
         return fieldName;
     }
 
-    private String generateUrn(Asset asset) {
+    public String generateUrn(Asset asset) {
         String id = new StringBuilder()
                 .append("urn:ngsi-ld:asset:")
                 .append(asset.getCompany().getId())

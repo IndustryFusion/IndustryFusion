@@ -37,18 +37,14 @@ public class ShaclWriter {
     }
 
     public static void out(OutputStream outputStream, Set<ShaclShape> shapes, ShaclPrefixes prefixes) {
-        try (PrintWriter printWriter = new PrintWriter(outputStream)) {
-            prefixes.writePrefixesAsShacl(printWriter);
-            printWriter.println("\n");
-            shapes.stream()
-                    .sorted(Comparator.comparing(
-                            shape -> shape.getStringParameter(ShaclPaths.NAME))
-                    )
-                    .forEach(shape -> shape.writeNodeAsShacl(printWriter, prefixes, ""));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        PrintWriter printWriter = new PrintWriter(outputStream);
+        prefixes.writePrefixesAsShacl(printWriter);
+        printWriter.println("\n");
+        shapes.stream()
+                .sorted(Comparator.comparing(
+                        shape -> shape.getStringParameter(ShaclPaths.NAME))
+                )
+                .forEach(shape -> shape.writeNodeAsShacl(printWriter, prefixes, ""));
     }
 
 }

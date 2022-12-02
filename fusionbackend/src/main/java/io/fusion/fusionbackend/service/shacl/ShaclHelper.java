@@ -16,7 +16,6 @@
 package io.fusion.fusionbackend.service.shacl;
 
 import io.fusion.fusionbackend.model.Asset;
-import io.fusion.fusionbackend.model.shacl.ShaclShape;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,8 +23,8 @@ import java.util.stream.Collectors;
 
 public class ShaclHelper {
 
-    public interface LambdaWrapper {
-        void execute(ShaclShape shape);
+    public interface LambdaWrapper<T> {
+        void execute(T shape);
     }
 
     public static String createIriIfNeeded(String candidate, String defaultPrefix) {

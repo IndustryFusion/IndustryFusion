@@ -27,12 +27,14 @@ import io.fusion.fusionbackend.service.ngsilj.NgsiLdBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.service.shacl.ShaclFactory;
+import io.fusion.fusionbackend.service.shacl.ShaclHelper;
 import io.fusion.fusionbackend.service.shacl.ShaclMapper;
 import io.fusion.fusionbackend.service.shacl.ShaclPrefixes;
 import io.fusion.fusionbackend.service.shacl.ShaclWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.shared.SyntaxError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +51,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -348,14 +351,39 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                 && a.getDescription().equals(b.getDescription());
     }
 
-    public void exportAssetAsShacl(ServletOutputStream outputStream, Long assetId) {
+    public void exportAssetAsShacl(OutputStream outputStream, Long assetId) {
         ShaclShape shape = shaclMapper.mapFromAsset(assetService.getAssetById(assetId));
         ShaclWriter.out(outputStream, shape, ShaclPrefixes.getDefaultPrefixes()
                 .addPrefix(shaclConfig.getAdditionalPrefixes()));
     }
 
-    public void exportAssetAsNgsiLd(ServletOutputStream outputStream, Long assetId) {
+    public void exportAssetAsNgsiLd(OutputStream outputStream, Long assetId) {
         ngsiLdBuilder.buildAssetNgsiLd(outputStream, assetService.getAssetById(assetId));
+    }
+
+    public void exportAssetShaclAndNgsiLdAsZip(ServletOutputStream outputStream, Long assetId) throws IOException {
+        String filename = ShaclHelper.toCamelCase(assetService.getAssetById(assetId).getName());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (ZipOutputStream zipStream = new ZipOutputStream(byteArrayOutputStream)) {
+            addFileAsZipEntry(zipStream, filename + ".ttl", null, (stream) -> exportAssetAsShacl(stream, assetId));
+            addFileAsZipEntry(zipStream, filename + ".json", null, (stream) -> exportAssetAsNgsiLd(stream, assetId));
+
+        } catch (Exception e) {
+            throw new SyntaxError(e.getMessage());
+        } finally {
+            outputStream.write(byteArrayOutputStream.toByteArray());
+            outputStream.close();
+        }
+    }
+
+    private void addFileAsZipEntry(ZipOutputStream stream, String filename, String comment,
+                                   ShaclHelper.LambdaWrapper<OutputStream> execute) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        execute.execute(os);
+        ZipEntry entry = new ZipEntry(filename);
+        Optional.ofNullable(comment).ifPresent(entry::setComment);
+        stream.putNextEntry(entry);
+        stream.write(os.toByteArray());
     }
 
 }
