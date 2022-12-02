@@ -43,7 +43,7 @@ import { UploadDownloadService } from '../../../../shared/services/upload-downlo
 export class AssetSeriesListComponent implements OnInit {
 
   assetSeriesMapping:
-    { [k: string]: string } = {'=0': 'No asset series', '=1': '# Asset series', other: '# Asset series'};
+    { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
