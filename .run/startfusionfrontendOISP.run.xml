@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="startfusionfrontendOISP" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/fusionfrontend/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start-local_dev-cluster" />
+    </scripts>
+    <node-interpreter value="$PROJECT_DIR$/fusionfrontend/target/node/node" />
+    <package-manager value="$PROJECT_DIR$/fusionfrontend/target/node/yarn/dist" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

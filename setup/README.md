@@ -95,7 +95,7 @@ To access the bucket of a specific company, the backend gets the ApiKey and Secr
 As described [here](https://github.com/alerta/docker-alerta), within the setup folder, Alerta using a postgresql-db can be run with this command:
 
 ```
-docker-compose -f docker-compose-alerta.yaml up
+docker-compose -f docker-compose-alerta.yaml -p if-alerta up
 ```
 
 The web UI can be reached at port [8082](http://localhost:8082/). Stop it with:
@@ -107,6 +107,21 @@ docker-compose -f docker-compose-alerta.yaml down
 In IntelliJ, you can connect to the database `postgres` via the URL `jdbc:postgresql://localhost:5433/postgres` and the user `postgres` with the password `postgres`.
 
 There is a postman collection for calls on the local alerta instance.
+
+### Scorpio NGSI-LD Broker
+
+See [GitHub](https://github.com/ScorpioBroker/ScorpioBroker/) for more information on Scorpio Broker.
+ To set up, run this:
+
+```
+docker-compose -f docker-compose-ngsi-ld.yml -p if-ngsi-ld up
+```
+
+#### Generate URNs
+
+Import [ngsi-ld.postman_collection.json](./postman/ngsi-ld.postman_collection.json) in postman.
+With editing the body of the `asset post` request new database entries can be generated.
+
 
 ## Checkout IndustryFusion application
 
@@ -120,6 +135,12 @@ The project is [hosted on GitHub](https://github.com/IndustryFusion/IndustryFusi
 1. Choose menu "File > New > Project from Existing Sources..."
 1. Select POM File of the root folder (IndustryFusion/pom.xml) and click "OK"
 1. Run `mvn install` from terminal or the Maven tool window within the fusionfrontend module to automatically install node, yarn and the node modules to the "target" folder.
+
+### Troubleshooting
+
+In case the error message `{"message":"No such image: testcontainersofficial/ryuk:0.3.0"}` appears,
+please manually pull the missing docker-image via terminal as the image has to exist locally.
+
 
 ToDo (IF-201): Build schlägt aktuell beim fusion-aggregator fehl
 

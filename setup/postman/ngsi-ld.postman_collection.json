@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "afada955-e0a8-4cb8-b217-95c8028443cd",
+		"name": "ngsi-ld",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18216514"
+	},
+	"item": [
+		{
+			"name": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:asset:2:3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:testunit:123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:testunit:123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9090/ngsi-ld/v1/entities/",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:testunit:123\",\r\n    \"type\": \"AirQualityObserved\",\r\n    \"dateObserved\": {\r\n        \"type\": \"Property\",\r\n        \"value\": {\r\n            \"@type\": \"DateTime\",\r\n            \"@value\": \"2018-08-07T12:00:00Z\"\r\n        }\r\n    },\r\n    \"NO2\": {\r\n        \"type\": \"Property\",\r\n        \"value\": 22,\r\n        \"unitCode\": \"GP\",\r\n        \"accuracy\": {\r\n            \"type\": \"Property\",\r\n            \"value\": 0.95\r\n        }\r\n    },\r\n    \"refPointOfInterest\": {\r\n        \"type\": \"Relationship\",\r\n        \"object\": \"urn:ngsi-ld:PointOfInterest:RZ:MainSquare\"\r\n    },\r\n    \"@context\": [\r\n        \"https://schema.lab.fiware.org/ld/context\",\r\n        \"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "asset post",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:asset:8\",\r\n    \"type\": \"Asset\",\r\n    \"ceCertified\": \"true\",\r\n    \"@context\": [\r\n        \"https://gist.githubusercontent.com/seemueller/24c5beb167d580b879d2c1b758611b01/raw/d9e7c19d3dfb0b8e58b62422c8ef4e9027f70d72/asset.jsonld.swaggergen\",\r\n        \"https://www.schema.org/version/latest/schemaorg-current-https.jsonld\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
