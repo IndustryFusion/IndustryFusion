@@ -17,19 +17,17 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Observable, Subscription } from 'rxjs';
-import { OispNotification } from '../../../../core/store/oisp/oisp-notification/oisp-notification.model';
+import { Notification } from '../../../../core/store/ngsi-ld/notification/notification.model';
 import { environment } from '../../../../../environments/environment';
 import { FilterOption, FilterType } from 'src/app/shared/components/ui/table-filter/filter-options';
 
 import { Location } from '@angular/common';
 import { RouteHelpers } from '../../../../core/helpers/route-helpers';
 import { TableSelectedItemsBarType } from '../../ui/table-selected-items-bar/table-selected-items-bar.type';
-import { OispDeviceQuery } from '../../../../core/store/oisp/oisp-device/oisp-device.query';
-import { OispDeviceResolver } from '../../../../core/resolvers/oisp-device-resolver';
 import { ConfirmationService } from 'primeng/api';
 import { TableHelper } from '../../../../core/helpers/table-helper';
-import { IFAlertStatus } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
-import { AlertaAlertService } from '../../../../core/store/oisp/alerta-alert/alerta-alert.service';
+import { IFAlertStatus } from '../../../../core/store/ngsi-ld/alerta/alerta.model';
+import { AlertaService } from '../../../../core/store/ngsi-ld/alerta/alerta.service';
 
 @Component({
   selector: 'app-notifications-list',
@@ -41,7 +39,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   private readonly FETCHING_INTERVAL_MILLISECONDS = environment.alertsUpdateIntervalMs;
 
-  @Input() notifications$: Observable<OispNotification[]>;
+  @Input() notifications$: Observable<Notification[]>;
   @Input() isInline = false;
   selectedAlertStatus: IFAlertStatus;
 
@@ -54,11 +52,11 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   intervalId: number;
 
   searchText = '';
-  allNotifications: OispNotification[] = [];
-  displayedNotifications: OispNotification[];
-  filteredNotifications: OispNotification[];
-  searchedNotifications: OispNotification[];
-  selectedNotifications: OispNotification[] = [];
+  allNotifications: Notification[] = [];
+  displayedNotifications: Notification[];
+  filteredNotifications: Notification[];
+  searchedNotifications: Notification[];
+  selectedNotifications: Notification[] = [];
   notificationSubscription: Subscription;
 
   IFAlertStatus = IFAlertStatus;
@@ -77,9 +75,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   constructor(
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private alertaAlertService: AlertaAlertService,
-    private oispDeviceQuery: OispDeviceQuery,
-    private oispDeviceResolver: OispDeviceResolver,
+    private alertaService: AlertaService,
     private routingLocation: Location,
     private confirmationService: ConfirmationService
   ) {
@@ -181,30 +177,26 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
   }
 
   private periodicallyFetchNotifications(): void {
-    this.initialLoadOfNotificationsEnsureDevicesLoaded();
+    this.fetchNotifications();
     this.intervalId = setInterval(() => this.fetchNotifications(), this.FETCHING_INTERVAL_MILLISECONDS);
-  }
-
-  private initialLoadOfNotificationsEnsureDevicesLoaded(): void {
-    if (this.oispDeviceQuery.getCount() < 1) {
-      this.oispDeviceResolver.resolve().subscribe(() => {
-        this.fetchNotifications();
-      });
-    } else {
-      this.fetchNotifications();
-    }
   }
 
   private fetchNotifications(): void {
     this.notificationSubscription?.unsubscribe();
 
     this.notificationSubscription = this.notifications$.subscribe(notifications => {
-      if (notifications.length !== this.allNotifications.length) {
+      // check is done to avoid flicker
+      if (this.haveNotificationsChanged(notifications)) {
         this.allNotifications = notifications;
         this.resetNotificationVariablesToAllNotifications();
         this.updateNotifications();
       }
     });
+  }
+
+  private haveNotificationsChanged(newNotifications: Notification[]): boolean {
+    return newNotifications.length !== this.allNotifications.length
+      || JSON.stringify(newNotifications.sort()) !== JSON.stringify(this.allNotifications.sort());
   }
 
   private closeMultipleNotifications(): void {
@@ -214,7 +206,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     this.selectedNotifications = [];
   }
 
-  private closeNotification(notification: OispNotification): void {
+  private closeNotification(notification: Notification): void {
     if (notification.status === IFAlertStatus.OPEN) {
       this.deleteNotification(notification.id);
       if (this.selectedNotifications.includes(notification)) {
@@ -223,7 +215,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  showCloseDialog(notifications: OispNotification[]): void {
+  showCloseDialog(notifications: Notification[]): void {
     this.confirmationService.confirm({
       message: notifications.length === 1 ? 'Are you sure you want to clear the notification "' + notifications[0].eventName + '"?' :
         'Are you sure you want to clear ' + notifications.length + ' notifications ?',
@@ -243,7 +235,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
   deleteNotification(id: ID): void {
     const filteredNotification = this.displayedNotifications.find(value => value.id === id);
-    this.alertaAlertService.closeAlert(filteredNotification.id).subscribe(() => {
+    this.alertaService.closeAlert(filteredNotification.id).subscribe(() => {
     });
   }
 

@@ -30,7 +30,6 @@ import {
 } from '../factory-asset-details/factory-asset-details.model';
 import { FactorySiteService } from '../factory-site/factory-site.service';
 import { AssetSeriesDetailsService } from '../asset-series-details/asset-series-details.service';
-import { FieldDetails } from '../field-details/field-details.model';
 import { NgsiLdService } from '../../services/api/ngsi-ld.service';
 
 @Injectable({
@@ -51,6 +50,10 @@ export class AssetService {
               private http: HttpClient) {
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId     Id of the company
+   */
   getAssetsOfCompany(companyId: ID): Observable<Asset[]> {
     const path = `companies/${companyId}/assets`;
     const cacheKey = 'company-' + companyId;
@@ -198,26 +201,14 @@ export class AssetService {
   // tslint:disable-next-line: max-line-length
   updateAssetWithFieldValues(asset: FactoryAssetDetailsWithFields): Observable<FactoryAssetDetailsWithFields> {
     return new Observable<any>((observer) => {
-      this.ngsiLdService.getLastValueOfAllFields(asset).subscribe((lastValues) => {
-          asset.fields = this.getAssetFieldValues(asset, lastValues);
+      this.ngsiLdService.getLatestValuesOfAsset(asset).subscribe((lastValues) => {
+          asset.fields = this.ngsiLdService.mergeFieldValuesToAsset(lastValues, asset);
           observer.next(asset);
         }, _ => {
           observer.next(null);
         }
       );
     });
-  }
-
-  getAssetFieldValues(asset: FactoryAssetDetailsWithFields, lastValues: any): FieldDetails[] {
-    return asset.fields.map((field) => {
-        const fieldCopy = Object.assign({ }, field);
-        const point = lastValues[field.externalName];
-        if (point) {
-          fieldCopy.value = point;
-        }
-        return fieldCopy;
-      }
-    );
   }
 
   getExportLink(assetId: ID, companyId: ID): string {

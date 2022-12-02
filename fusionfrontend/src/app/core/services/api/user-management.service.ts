@@ -28,19 +28,6 @@ export class UserManagementService {
               protected readonly keycloakService: KeycloakService) {
   }
 
-  public getOispAccountId(): string {
-    const token = (this.keycloakService.getKeycloakInstance().tokenParsed as any);
-    let oispAccountId = '';
-
-    if (token.accounts && token.accounts.length > 0) {
-      oispAccountId = token.accounts[0].id;
-    } else {
-      console.warn('cannot retrieve OISP accountId, subsequent calls to OISP will hence most likely fail!');
-    }
-
-    return oispAccountId;
-  }
-
   public logoutCurrentUser(): Promise<void> {
     return this.keycloakService.logout();
   }

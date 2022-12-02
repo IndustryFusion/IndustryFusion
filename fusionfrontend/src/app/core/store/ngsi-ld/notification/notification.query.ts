@@ -13,18 +13,23 @@
  * under the License.
  */
 
+import { Injectable } from '@angular/core';
+import { QueryEntity } from '@datorama/akita';
+import { NotificationState, NotificationStore } from './notification.store';
 
-import { DeviceStatus } from './kairos.model';
+@Injectable({ providedIn: 'root' })
+export class NotificationQuery extends QueryEntity<NotificationState> {
 
-export class StatusHours {
-  status: DeviceStatus;
-  hours: number;
-}
-
-export class StatusHoursOneDay {
-  statusHours: StatusHours[];
-
-  constructor(statusHours: StatusHours[]) {
-    this.statusHours = statusHours;
+  constructor(protected store: NotificationStore) {
+    super(store);
   }
+
+  resetStore() {
+    this.store.reset();
+  }
+
+  resetError() {
+    this.store.setError(null);
+  }
+
 }

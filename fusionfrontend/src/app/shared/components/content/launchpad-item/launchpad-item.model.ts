@@ -28,6 +28,5 @@ export enum HomeItemClass {
     FACTORY = 'fab-manager',
     FLEET = 'fleet-manager',
     ECOSYSTEM = 'ecosystem-manager',
-    DASHBOARDS = 'dashboards',
-    FUSION_APPLETS = 'fusion-applets',
+    DASHBOARDS = 'dashboards'
 }

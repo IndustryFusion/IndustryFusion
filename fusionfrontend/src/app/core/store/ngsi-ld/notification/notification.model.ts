@@ -13,18 +13,16 @@
  * under the License.
  */
 
+import { ID } from '@datorama/akita';
+import { IFAlertSeverity, IFAlertStatus } from '../alerta/alerta.model';
 
-import { DeviceStatus } from './kairos.model';
-
-export class StatusHours {
-  status: DeviceStatus;
-  hours: number;
-}
-
-export class StatusHoursOneDay {
-  statusHours: StatusHours[];
-
-  constructor(statusHours: StatusHours[]) {
-    this.statusHours = statusHours;
-  }
+export class Notification {
+  id: ID;
+  severity: IFAlertSeverity;
+  eventName: string;
+  assetName: string;
+  condition: string;
+  measuredValue: string;
+  timestamp: Date;
+  status: IFAlertStatus;
 }

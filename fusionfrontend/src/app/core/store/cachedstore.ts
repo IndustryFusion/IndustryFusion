@@ -25,6 +25,12 @@ export class CachedStore<S extends EntityState = any, EntityType = getEntityType
   private cachedIdSubject: Subject<ID[]> = new Subject();
   private cachedParentIdMapSubject: Subject<Map<ID, Set<ID>>> = new Subject();
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param parentId   Id of the parent entity
+   * @param request$   the request to return if not cached
+   * @return  request if not cached, otherwise return EMPTY observable
+   */
   cachedByParentId(parentId: ID, request$: Observable<EntityType[]>): Observable<EntityType[] | undefined | never> {
     if (this.cachedParentIdMap.has(String(parentId))) {
       return EMPTY;
@@ -39,6 +45,12 @@ export class CachedStore<S extends EntityState = any, EntityType = getEntityType
     return request$;
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param id         Id of the entity
+   * @param request$   the request to return if not cached
+   * @return  request if not cached, otherwise return EMPTY observable
+   */
   cachedById(id: ID, request$: Observable<EntityType>): Observable<EntityType | undefined | never> {
     if (this.cachedIds.has(String(id))) {
       return EMPTY;

@@ -13,8 +13,8 @@
  * under the License.
  */
 
-import { Aggregator } from '../services/api/oisp.model';
-
+// -------------------------------------------------
+// Models of request (do not change names!), see https://kairosdb.github.io/docs/restapi/QueryMetrics.html#id3
 export class KairosRequest {
   // tslint:disable-next-line:variable-name
   start_absolute: number;
@@ -28,11 +28,20 @@ export class MetricsWithAggregationAndGrouping {
   limit?: number;
   // tslint:disable-next-line:variable-name
   group_by: KairosGroupBy[];
-  aggregators: Aggregator[];
+  aggregators: KairosAggregator[];
 }
 
+/**
+ * @see https://kairosdb.github.io/docs/restapi/TimeGrouping.html (time)
+ * @see https://kairosdb.github.io/docs/restapi/ValueGrouping.html (value)
+ */
 export class KairosGroupBy {
+
+  /**
+   *  global unique field name
+   */
   name: string;
+
   // tslint:disable-next-line:variable-name
   range_size: number;
   group?: KairosGroup;
@@ -43,7 +52,26 @@ export class KairosGroup {
   group_number: number;
 }
 
+/**
+ * @see https://kairosdb.github.io/docs/restapi/Aggregators.html?highlight=aggregator
+ */
+export class KairosAggregator {
 
+  /**
+   * Possible values: 'avg', 'count', ...
+   */
+  name: string;
+  sampling?: KairosSampling;
+}
+
+export class KairosSampling {
+  unit: string;
+  value: number;
+}
+
+
+// -------------------------------------------------
+// Models of response (do not change names!), see https://kairosdb.github.io/docs/restapi/QueryMetrics.html#response
 export class KairosResponse {
   queries: KairosQuery[];
 }
@@ -59,6 +87,10 @@ export class KairosResult {
   // tslint:disable-next-line:variable-name
   group_by: KairosGroupBy[];
   tags: KairosTags;
+
+  /**
+   * each second array consists of timestamp [0] and an (aggregated) data value [1]
+   */
   values: number[][];
 }
 
@@ -67,25 +99,40 @@ export class KairosTags {
 }
 
 
-export class KairosResponseGroup {
+// -------------------------------------------------
+// Models of converted response
+
+/**
+ * KairosResult.values converted into a more readable format,
+ * iterated over results of queries (usually length 1 each for single field-query)
+ */
+export class KairosDataPointGroup {
   index: number;
   timestamps?: number[];
-  results: number[];
+  values: number[];
 }
 
-export class KairosResponseValues {
+export class KairosDataPoint {
   timestamp: number;
   value: number;
 }
 
-export class OispStatus {
-  id: string;
-  status: OispDeviceStatus;
-}
-
-export enum OispDeviceStatus {
+export enum DeviceStatus {
   OFFLINE = 0,
   IDLE = 1,
   RUNNING = 2,
   ERROR = 3
 }
+
+/** example:
+ *  {
+ *   "id" : "urn:ngsi-ld:asset:2:1",
+ *   "type" : "MSF",
+ *   "no_starts" : "2",
+ *   "plate_thickness" : "3",
+ *   "subsystems" : [ ],
+ *   "total_cutting_time" : "",
+ *   "status" : "1"
+ *  }
+ */
+export declare type ngsiLdLatestKeyValues = any;

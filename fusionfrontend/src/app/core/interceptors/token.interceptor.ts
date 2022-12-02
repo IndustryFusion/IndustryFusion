@@ -29,7 +29,6 @@ import { environment } from 'src/environments/environment';
 export class TokenInterceptor implements HttpInterceptor {
 
   private bearerUrlWhitelist: RegExp[] = [
-    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.oispApiUrlPrefix)),
     new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.kairosApiUrlPrefix)),
     new RegExp('^' + TokenInterceptor.ensureTrailingSlash(window.location.origin +
       this.location.prepareExternalUrl(environment.apiUrlPrefix))),

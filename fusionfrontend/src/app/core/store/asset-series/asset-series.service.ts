@@ -37,6 +37,10 @@ export class AssetSeriesService {
               private assetSeriesDetailsStore: AssetSeriesDetailsStore,
               private http: HttpClient) { }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   * @param companyId Id of the company
+   */
   getAssetSeriesOfCompany(companyId: ID): Observable<AssetSeries[]> {
     const path = `companies/${companyId}/assetseries?embedChildren=true`;
     const cacheKey = 'company-' + companyId;

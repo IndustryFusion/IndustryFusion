@@ -16,9 +16,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FieldDetails } from '../../../../../core/store/field-details/field-details.model';
 import { Observable, Subject, timer } from 'rxjs';
-import { PointWithId } from '../../../../../core/services/api/oisp.model';
+import { KairosService } from '../../../../../core/services/api/kairos.service';
 import { Asset } from '../../../../../core/store/asset/asset.model';
-import { OispService } from '../../../../../core/services/api/oisp.service';
+import { KairosDataPoint } from '../../../../../core/models/kairos.model';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from '../../../../../../environments/environment';
 
@@ -43,9 +43,9 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   loadedEvent = new EventEmitter<void>();
 
-  latestPoints$: Observable<PointWithId[]>;
+  pointsOfInterval$: Observable<KairosDataPoint[]>;
 
-  allPoints: [string, number][] = [];
+  allPoints: [number, number][] = [];
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -58,7 +58,7 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
   slidingTimeWindow = 0;
 
   constructor(
-    private oispService: OispService
+    private kairosService: KairosService
   ) { }
 
   ngOnInit() {
@@ -106,7 +106,7 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
 
   loadNewData(secondsInPast: number) {
     let gotFirstPoints = false;
-    this.latestPoints$ = timer(0, environment.dataUpdateIntervalMs)
+    this.pointsOfInterval$ = timer(0, environment.dataUpdateIntervalMs)
         .pipe(
           switchMap(() => {
             // If we already received some points, only take points from relevant past + n seconds margin.
@@ -115,23 +115,23 @@ export class AssetTablesComponent implements OnInit, OnChanges, OnDestroy {
             } else {
               gotFirstPoints = true;
             }
-            return this.oispService.getValuesOfSingleField(this.asset, this.field, secondsInPast);
+            return this.kairosService.getValuesOfFieldByLastSeconds(this.asset, this.field, secondsInPast);
           })
         );
 
-    this.latestPoints$.pipe(takeUntil(this.destroy$))
+    this.pointsOfInterval$.pipe(takeUntil(this.destroy$))
       .subscribe(points => {
-        points.filter(point => !this.currentTimestamps.includes(point.ts)).forEach(point => {
-          if (this.lastReceivedTimestamp < point.ts) {
-            this.lastReceivedTimestamp = point.ts;
+        points.filter(point => !this.currentTimestamps.includes(point.timestamp)).forEach(point => {
+          if (this.lastReceivedTimestamp < point.timestamp) {
+            this.lastReceivedTimestamp = point.timestamp;
           }
-          this.currentTimestamps.push(point.ts);
+          this.currentTimestamps.push(point.timestamp);
           if (this.allPoints.length > 0) {
-            if ( point.value !== this.allPoints[0][0]) { // only add value if it has changed
-              this.allPoints.unshift([point.value, point.ts]);
+            if (point.value !== this.allPoints[0][0]) { // only add value if it has changed
+              this.allPoints.unshift([point.value, point.timestamp]);
             }
           } else {
-            this.allPoints.unshift([point.value, point.ts]);
+            this.allPoints.unshift([point.value, point.timestamp]);
           }
         });
 

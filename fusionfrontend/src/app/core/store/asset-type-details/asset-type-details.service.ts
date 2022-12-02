@@ -41,6 +41,9 @@ export class AssetTypeDetailsService implements RestService<AssetTypeDetails> {
       }));
   }
 
+  /**
+   * Caution: Completes observable directly (no next-call) if data exist in cache.
+   */
   getItem(assetTypeDetailsId: ID): Observable<AssetTypeDetails> {
     const path = `assettypes/details/${assetTypeDetailsId}`;
     return this.assetTypeDetailsStore

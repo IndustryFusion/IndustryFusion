@@ -86,7 +86,6 @@ under the License.
       *ngIf="isManager(ManagerType.FACTORY_MANAGER) && !isAssetDetails()"></app-factory-sub-header>
     <app-fleet-sub-header *ngIf="isManager(ManagerType.FLEET_MANAGER) && !isAssetSerieDetails() && !isAssetSerieAssetDetails()"></app-fleet-sub-header>
     <app-dashboard-sub-header *ngIf=" isDashboards()"></app-dashboard-sub-header>
-    <app-fusion-applet-sub-header *ngIf="isFusionApplet()"></app-fusion-applet-sub-header>
     <app-notifications-sub-header *ngIf="isNotifications()"></app-notifications-sub-header>
     <app-asset-details-sub-header *ngIf="isAssetDetails() && !isAssetSerieAssetDetails()"></app-asset-details-sub-header>
     <app-asset-series-details-sub-header *ngIf="isAssetSerieDetails() && !isAssetSerieAssetDetails()"></app-asset-series-details-sub-header>

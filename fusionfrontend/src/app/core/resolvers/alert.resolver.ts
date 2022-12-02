@@ -13,18 +13,17 @@
  * under the License.
  */
 
+import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AlertaAlert } from '../store/ngsi-ld/alerta/alerta.model';
+import { AlertaService } from '../store/ngsi-ld/alerta/alerta.service';
 
-import { DeviceStatus } from './kairos.model';
+@Injectable({ providedIn: 'root' })
+export class AlertResolver implements Resolve<AlertaAlert[]> {
+  constructor(private alertaService: AlertaService) { }
 
-export class StatusHours {
-  status: DeviceStatus;
-  hours: number;
-}
-
-export class StatusHoursOneDay {
-  statusHours: StatusHours[];
-
-  constructor(statusHours: StatusHours[]) {
-    this.statusHours = statusHours;
+  resolve(): Observable<AlertaAlert[]> {
+    return this.alertaService.getItems();
   }
 }

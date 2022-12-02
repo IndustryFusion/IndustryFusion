@@ -25,21 +25,21 @@ under the License.
     </tr>
     </thead>
     <tbody>
-      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.RUNNING)">
+      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(DeviceStatus.RUNNING)">
         <td><span class="status-circle running margin-right"></span> <label class="if-label-bigger">Running</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.RUNNING]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[DeviceStatus.RUNNING]}}</label> <label class="if-label-small">Assets</label></td>
       </tr>
-      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.IDLE)">
+      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(DeviceStatus.IDLE)">
         <td><span class="status-circle idle margin-right"></span> <label class="if-label-bigger">Idle</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.IDLE]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[DeviceStatus.IDLE]}}</label> <label class="if-label-small">Assets</label></td>
       </tr>
-      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.ERROR)">
+      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(DeviceStatus.ERROR)">
         <td><span class="status-circle error margin-right"></span> <label class="if-label-bigger">Error</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.ERROR]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[DeviceStatus.ERROR]}}</label> <label class="if-label-small">Assets</label></td>
       </tr>
-      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(OispDeviceStatus.OFFLINE)">
+      <tr class="mouse-over-cursor" [routerLink]="getAssetLinkByStatus(DeviceStatus.OFFLINE)">
         <td><span class="status-circle offline margin-right"></span> <label class="if-label-bigger">Offline</label></td>
-        <td><label class="if-label-bigger margin-right">{{statusCounts[OispDeviceStatus.OFFLINE]}}</label> <label class="if-label-small">Assets</label></td>
+        <td><label class="if-label-bigger margin-right">{{statusCounts[DeviceStatus.OFFLINE]}}</label> <label class="if-label-small">Assets</label></td>
       </tr>
     </tbody>
   </table>

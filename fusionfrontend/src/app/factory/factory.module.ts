@@ -56,8 +56,6 @@ import { AssetRealtimeViewComponent } from './components/pages/asset-details/ass
 import { AssetCardComponent } from './components/content/asset-card/asset-card.component';
 import { CardModule } from 'primeng/card';
 import { AssetSubsystemsComponent } from './components/pages/asset-details/asset-subsystems/asset-subsystems.component';
-import { AssetAppletsComponent } from './components/pages/asset-details/asset-applets/asset-applets.component';
-import { FusionAppletsModule } from '../fusion-applets/fusion-applets.module';
 import { AssetNotificationsComponent } from './components/pages/asset-details/asset-notifications/asset-notifications.component';
 import { AccordionModule } from 'primeng/accordion';
 import { AssetPerformanceComponent } from './components/pages/asset-details/asset-performance/asset-performance.component';
@@ -112,7 +110,6 @@ import { TooltipModule } from 'primeng/tooltip';
     AssetDetailsSubHeaderComponent,
     AssetCardComponent,
     AssetSubsystemsComponent,
-    AssetAppletsComponent,
     AssetNotificationsComponent,
     HistoricalStatusBarChartComponent,
     MetricsBoardComponent,
@@ -126,7 +123,6 @@ import { TooltipModule } from 'primeng/tooltip';
         ReactiveFormsModule,
         TableModule,
         CardModule,
-        FusionAppletsModule,
         AccordionModule,
         SelectButtonModule,
         DashboardModule,

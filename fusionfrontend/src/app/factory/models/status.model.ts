@@ -13,7 +13,7 @@
  * under the License.
  */
 
-import { OispDeviceStatus } from '../../core/models/kairos.model';
+import { DeviceStatus } from '../../core/models/kairos.model';
 import { ID } from '@datorama/akita';
 
 export class Status {
@@ -27,6 +27,6 @@ export class StatusWithAssetId {
 }
 
 export class StatusPoint {
-  status: OispDeviceStatus;
+  status: DeviceStatus;
   time: moment.Moment;
 }

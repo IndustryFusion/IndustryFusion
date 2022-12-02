@@ -14,19 +14,19 @@
  */
 
 import { Injectable } from '@angular/core';
-import { FieldDetails } from './field-details.model';
-import { ActiveState, EntityState, StoreConfig, ID } from '@datorama/akita';
-import { CachedStore } from '../cachedstore';
+import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
+import { Notification } from './notification.model';
+import { CachedStore } from '../../cachedstore';
 
-export interface FieldDetailsState extends EntityState<FieldDetails, ID>, ActiveState { }
+export interface NotificationState extends EntityState<Notification, ID>, ActiveState { }
 
 const initialState = {
   active: null
 };
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'field-details' })
-export class FieldDetailsStore extends CachedStore<FieldDetailsState, FieldDetails> {
+@StoreConfig({ name: 'notifications', resettable: true })
+export class NotificationStore extends CachedStore<NotificationState, Notification> {
 
   constructor() {
     super(initialState);

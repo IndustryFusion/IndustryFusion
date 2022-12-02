@@ -17,15 +17,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MaintenancePageComponent } from './components/pages/maintenance-page/maintenance-page.component';
 import { EquipmentEfficiencyPageComponent } from './components/pages/equipment-efficiency-page/equipment-efficiency-page.component';
-import { OispDeviceResolver } from '../core/resolvers/oisp-device-resolver';
 
+// Info: company, assetDetails and field-details are resolved in factory resolver
 const routes: Routes = [
   {
     path: 'dashboards/companies/:companyId/maintenance',
     component: MaintenancePageComponent,
-    resolve: {
-      devices: OispDeviceResolver
-    },
     data: {
       breadcrumb: 'Maintenance'
     }
@@ -35,9 +32,6 @@ const routes: Routes = [
     component: EquipmentEfficiencyPageComponent,
     data: {
       breadcrumb: 'Equipment Efficiency'
-    },
-    resolve: {
-      devices: OispDeviceResolver
     }
   },
 ];

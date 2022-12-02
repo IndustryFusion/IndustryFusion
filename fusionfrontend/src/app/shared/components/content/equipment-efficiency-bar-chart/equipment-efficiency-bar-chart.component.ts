@@ -14,7 +14,7 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { OispDeviceStatus } from '../../../../core/models/kairos.model';
+import { DeviceStatus } from '../../../../core/models/kairos.model';
 import { UIChart } from 'primeng/chart';
 import { EnumHelpers } from '../../../../core/helpers/enum-helpers';
 import { StatusHoursOneDay } from '../../../../core/models/kairos-status-aggregation.model';
@@ -50,15 +50,15 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   constructor(private enumHelpers: EnumHelpers) {
   }
 
-  private static getDatasetIndexOfStatus(status: OispDeviceStatus): 0 | 1 | 2 | 3 {
+  private static getDatasetIndexOfStatus(status: DeviceStatus): 0 | 1 | 2 | 3 {
     switch (status) {
-      case OispDeviceStatus.OFFLINE:
+      case DeviceStatus.OFFLINE:
         return 0;
-      case OispDeviceStatus.ERROR:
+      case DeviceStatus.ERROR:
         return 1;
-      case OispDeviceStatus.IDLE:
+      case DeviceStatus.IDLE:
         return 2;
-      case OispDeviceStatus.RUNNING:
+      case DeviceStatus.RUNNING:
         return 3;
     }
   }
@@ -212,7 +212,7 @@ export class EquipmentEfficiencyBarChartComponent implements OnInit, OnChanges {
   }
 
   private resetChartData() {
-    for (let i = 0; i < this.enumHelpers.getIterableArray(OispDeviceStatus).length; i++) {
+    for (let i = 0; i < this.enumHelpers.getIterableArray(DeviceStatus).length; i++) {
       this.stackedData.datasets[i].data = [];
       this.stackedData.datasets[i].data = this.fillArrayForDays(this.stackedData.datasets[i].data, 0);
     }

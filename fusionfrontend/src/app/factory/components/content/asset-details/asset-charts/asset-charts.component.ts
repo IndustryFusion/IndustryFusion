@@ -30,9 +30,9 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable, Subject, timer } from 'rxjs';
 import { FieldDetails } from 'src/app/core/store/field-details/field-details.model';
 import { Asset } from 'src/app/core/store/asset/asset.model';
-import { OispService } from 'src/app/core/services/api/oisp.service';
+import { KairosService } from '../../../../../core/services/api/kairos.service';
 import * as moment from 'moment';
-import { PointWithId } from '../../../../../core/services/api/oisp.model';
+import { KairosDataPoint } from '../../../../../core/models/kairos.model';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { StatusPoint } from '../../../../models/status.model';
@@ -75,7 +75,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
   currentNumberOfPoints = 0;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
-  latestPoints$: Observable<PointWithId[]>;
+  pointsOfInterval$: Observable<KairosDataPoint[]>;
 
   statuses: StatusPoint[];
   isStatus: boolean;
@@ -95,7 +95,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
-  constructor(private oispService: OispService) {
+  constructor(private kairosService: KairosService) {
   }
 
   ngOnInit() {
@@ -158,11 +158,12 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     if (useDate) {
       const startDate = this.startDate.valueOf();
       const endDate = moment(this.endDate).add(1, 'days').valueOf();
-      this.latestPoints$ = this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startDate, endDate, maxPoints);
+      this.pointsOfInterval$ = this.kairosService.getValuesOfFieldByDateRange(this.asset, this.fieldDetails,
+        startDate, endDate, maxPoints);
     } else {
-      this.latestPoints$ = this.oispService.getValuesOfSingleField(this.asset, this.fieldDetails, secondsInPast, maxPoints);
+      this.pointsOfInterval$ = this.kairosService.getValuesOfFieldByLastSeconds(this.asset, this.fieldDetails, secondsInPast, maxPoints);
     }
-    this.latestPoints$.pipe(takeUntil(this.destroy$))
+    this.pointsOfInterval$.pipe(takeUntil(this.destroy$))
       .subscribe(
         points => {
           this.updateChart(points);
@@ -171,11 +172,11 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       );
   }
 
-  public updateChart(points: PointWithId[]): void {
+  public updateChart(points: KairosDataPoint[]): void {
     points.forEach(point => {
       this.currentNumberOfPoints += 1;
       const data = this.lineChartData[0].data as ChartPoint[];
-      const dateOfPoint: moment.Moment = moment(point.ts);
+      const dateOfPoint: moment.Moment = moment(point.timestamp);
       data.push({ y: point.value, t: dateOfPoint });
       this.lineChartLabels.push(dateOfPoint.toISOString());
     });
@@ -294,7 +295,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
-  private getYMinMaxOfPoints(points?: PointWithId[]): { min?: number, max?: number } {
+  private getYMinMaxOfPoints(points?: KairosDataPoint[]): { min?: number, max?: number } {
     let minMax: { min?: number, max?: number } = AssetChartHelper.getYMinMaxByAbsoluteThreshold(this.fieldDetails);
 
     const isNoStrictMinMax = (minMax.min == null || minMax.max == null); // ! would also include zero
@@ -319,23 +320,23 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     let gotFirstPoints = false;
     let currentTime = moment().valueOf();
     let startTime = currentTime - 600000;
-    this.latestPoints$ = timer(0, environment.dataUpdateIntervalMs)
+    this.pointsOfInterval$ = timer(0, environment.dataUpdateIntervalMs)
       .pipe(
         switchMap(() => {
           // If we already received some points, only take points from last 5 seconds.
           if (gotFirstPoints) {
             currentTime = moment().valueOf();
             startTime = currentTime - environment.dataUpdateIntervalMs;
-            return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startTime, currentTime, 1);
+            return this.kairosService.getValuesOfFieldByDateRange(this.asset, this.fieldDetails, startTime, currentTime, 1);
           } else {
             gotFirstPoints = true;
-            return this.oispService.getValuesOfSingleFieldByDates(this.asset, this.fieldDetails, startTime, currentTime, 20,
+            return this.kairosService.getValuesOfFieldByDateRange(this.asset, this.fieldDetails, startTime, currentTime, 20,
               'seconds', 5);
           }
         })
       );
 
-    this.latestPoints$.pipe(takeUntil(this.destroy$))
+    this.pointsOfInterval$.pipe(takeUntil(this.destroy$))
       .subscribe(
         points => {
           this.updateChart(points);
@@ -343,7 +344,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
       );
   }
 
-  private updateThresholds(newPoints: PointWithId[]): void {
+  private updateThresholds(newPoints: KairosDataPoint[]): void {
     const minMax = this.getUpdatedYMinMax(newPoints);
     this.chart.chart.options.scales.yAxes[0].ticks.min = minMax.min;
     this.chart.chart.options.scales.yAxes[0].ticks.max = minMax.max;
@@ -362,7 +363,7 @@ export class AssetChartsComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private getUpdatedYMinMax(newPoints?: PointWithId[]): { min: number, max: number } {
+  private getUpdatedYMinMax(newPoints?: KairosDataPoint[]): { min: number, max: number } {
     const minMaxOfNewPoints = this.getYMinMaxOfPoints(newPoints);
     const minMaxOfChart = {
       min: this.chart.chart.options.scales.yAxes[0].ticks.min ?? 99999999,

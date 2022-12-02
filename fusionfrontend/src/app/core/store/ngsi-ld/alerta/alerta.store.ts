@@ -13,18 +13,23 @@
  * under the License.
  */
 
+import { Injectable } from '@angular/core';
+import { ActiveState, EntityState, ID, StoreConfig } from '@datorama/akita';
+import { AlertaAlert } from './alerta.model';
+import { CachedStore } from '../../cachedstore';
 
-import { DeviceStatus } from './kairos.model';
+export interface AlertaState extends EntityState<AlertaAlert, ID>, ActiveState { }
 
-export class StatusHours {
-  status: DeviceStatus;
-  hours: number;
-}
+const initialState = {
+  active: null
+};
 
-export class StatusHoursOneDay {
-  statusHours: StatusHours[];
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'alerts', resettable: true })
+export class AlertaStore extends CachedStore<AlertaState, AlertaAlert> {
 
-  constructor(statusHours: StatusHours[]) {
-    this.statusHours = statusHours;
+  constructor() {
+    super(initialState);
   }
+
 }

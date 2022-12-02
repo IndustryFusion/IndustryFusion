@@ -23,8 +23,8 @@ import { ID } from '@datorama/akita';
 import { FilterOption, FilterType } from '../../../../shared/components/ui/table-filter/filter-options';
 import { TableHelper } from '../../../../core/helpers/table-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
-import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
+import { AlertaQuery } from '../../../../core/store/ngsi-ld/alerta/alerta.query';
+import { IFAlertSeverity } from '../../../../core/store/ngsi-ld/alerta/alerta.model';
 
 @Component({
   selector: 'app-equipment-efficiency-list',
@@ -56,7 +56,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
-              private alertaAlertQuery: AlertaAlertQuery) {
+              private alertaQuery: AlertaQuery) {
   }
 
   ngOnInit(): void {
@@ -65,10 +65,10 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   }
 
   private updateAlertSeverityOnNewAlerts() {
-    this.alertaAlertQuery.selectOpenAlerts().subscribe(() => {
+    this.alertaQuery.selectOpenAlerts().subscribe(() => {
       if (this.displayedFactoryAssets) {
         this.displayedFactoryAssets = this.displayedFactoryAssets
-          .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
+          .map(asset => this.alertaQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
         this.updateTree();
       }
     });
@@ -98,7 +98,7 @@ export class EquipmentEfficiencyListComponent implements OnInit, OnChanges {
   }
 
   public getMaxOpenAlertSeverity(node: TreeNode<FactoryAssetDetailsWithFields>): IFAlertSeverity {
-    return this.alertaAlertQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
+    return this.alertaQuery.getMostCriticalOpenAlertSeverityOfAssetNode(node);
   }
 
   private updateTree() {

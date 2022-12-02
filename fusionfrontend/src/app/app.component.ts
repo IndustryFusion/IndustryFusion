@@ -18,7 +18,7 @@ import { Subject } from 'rxjs';
 import { akitaDevtools, enableAkitaProdMode } from '@datorama/akita';
 import { environment } from '../environments/environment';
 import { FactoryResolver } from './factory/services/factory-resolver.service';
-import { OispAlertResolver } from './core/resolvers/oisp-alert-resolver';
+import { AlertResolver } from './core/resolvers/alert.resolver';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { UserManagementService } from './core/services/api/user-management.service';
@@ -31,7 +31,7 @@ import { KeycloakProfile } from 'keycloak-js';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  constructor(private oispAlertResolver: OispAlertResolver,
+  constructor(private alertResolver: AlertResolver,
               private factoryResolver: FactoryResolver,
               private userManagementService: UserManagementService,
               private ngZone: NgZone) { }
@@ -56,8 +56,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private periodicallyFetchAlerts() {
     if (this.FETCHING_INTERVAL_MILLISECONDS > 0) {
-      this.oispAlertResolver.resolve().subscribe();
-      this.intervalHandle = setInterval(() => this.oispAlertResolver.resolve().subscribe(),
+      this.alertResolver.resolve().subscribe();
+      this.intervalHandle = setInterval(() => this.alertResolver.resolve().subscribe(),
         this.FETCHING_INTERVAL_MILLISECONDS);
     }
   }
