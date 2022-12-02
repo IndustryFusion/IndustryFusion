@@ -50,6 +50,8 @@ export class KairosService {
   private readonly DEFAULT_ACCOUNT_NAME: string = 'default'; // multi-tenancy support will come later;
   private readonly PATH: string = 'datapoints/query'; // multi-tenancy support will come later;
 
+  private readonly DELETE_ME_USE_MOCK = true;
+
   constructor(
     private http: HttpClient,
     private ngsiLdService: NgsiLdService) {
@@ -199,7 +201,12 @@ export class KairosService {
     if (request.metrics.length < 1) {
       return of(this.EMPTY_DATA_POINT_GROUPS);
     }
-    return this.http.post<KairosResponse>(`${environment.kairosApiUrlPrefix}/${path}`, request, this.httpOptions)
+
+    let request$: any = this.mockDeleteMe();
+    if (!this.DELETE_ME_USE_MOCK) {
+      request$ = this.http.post<KairosResponse>(`${environment.kairosApiUrlPrefix}/${path}`, request, this.httpOptions);
+    }
+    return request$
       .pipe(
         catchError(() => {
           console.error('[kairos service] caught error during post request');
@@ -216,6 +223,63 @@ export class KairosService {
             return this.EMPTY_DATA_POINT_GROUPS;
           }
         })));
+  }
+
+  private mockDeleteMe(): Observable<KairosResponse> {
+    const nowMs = moment(Date.now()).valueOf();
+    return of(JSON.parse('{\n' +
+      '  "queries": [\n' +
+      '      {\n' +
+      '          "sample_size": 4,\n' +
+      '          "results": [\n' +
+      '              {\n' +
+      '                  "name": "metric_name",\n' +
+      '                  "group_by": [\n' +
+      '                      {\n' +
+      '                         "name": "type",\n' +
+      '                         "type": "number"\n' +
+      '                      },\n' +
+      '                      {\n' +
+      '                         "name": "tag",\n' +
+      '                         "tags": [\n' +
+      '                             "host"\n' +
+      '                         ],\n' +
+      '                        "group": {\n' +
+      '                             "host": "server1"\n' +
+      '                        }\n' +
+      '                      }\n' +
+      '                  ],\n' +
+      '                  "tags": {\n' +
+      '                      "host": [\n' +
+      '                          "server1"\n' +
+      '                      ],\n' +
+      '                      "customer": [\n' +
+      '                          "bar"\n' +
+      '                      ]\n' +
+      '                  },\n' +
+      '                  "values": [\n' +
+      '                      [\n' +
+      `                          ${nowMs - 15000},\n` +
+      '                          1\n' +
+      '                      ],\n' +
+      '                      [\n' +
+      `                          ${nowMs - 10000},\n` +
+      '                          1\n' +
+      '                      ],\n' +
+      '                      [\n' +
+      `                          ${nowMs - 5000},\n` +
+      '                          2\n' +
+      '                      ],\n' +
+      '                      [\n' +
+      `                          ${nowMs},\n` +
+      '                          3\n' +
+      '                      ]\n' +
+      '                  ]\n' +
+      '              }\n' +
+      '         ]\n' +
+      '     }\n' +
+      '  ]\n' +
+      '}'));
   }
 
   private hasAnyResult(queries: KairosQuery[]): boolean {
