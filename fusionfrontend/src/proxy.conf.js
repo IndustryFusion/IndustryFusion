@@ -19,7 +19,7 @@ module.exports = {
     }
   },
   "/kairosapi": {
-    "target": "https://development.industry-fusion.com/tsdb/api/v1",
+    "target": "https://test.streammyiot.com/v1/api",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
