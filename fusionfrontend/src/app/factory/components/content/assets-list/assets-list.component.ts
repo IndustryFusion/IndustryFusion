@@ -43,8 +43,6 @@ import { Status, StatusWithAssetId } from '../../../models/status.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, FieldOption } from '../../../../core/store/field/field.model';
 import { GroupByHelper, RowGroupCount } from '../../../../core/helpers/group-by-helper';
-import { RouteHelpers } from '../../../../core/helpers/route-helpers';
-import { StatusWithAssetId } from '../../../models/status.model';
 import { IFAlertSeverity } from '../../../../core/store/oisp/alerta-alert/alerta-alert.model';
 import { AlertaAlertQuery } from '../../../../core/store/oisp/alerta-alert/alerta-alert.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
@@ -125,8 +123,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private alertaAlertQuery: AlertaAlertQuery,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService,
-    private assetDetailMenuService: AssetDetailMenuService,
     public ifApiService: IfApiService,
     private assetDetailMenuService: FactoryAssetDetailMenuService,
     public translate: TranslateService) {
@@ -140,7 +136,6 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.initTableFilters();
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
-    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
 
     if (this.type === AssetListType.SUBSYSTEMS) {
       this.titleMapping = { '=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems' };
@@ -175,10 +170,10 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       if (this.displayedFactoryAssets) {
         this.displayedFactoryAssets = this.displayedFactoryAssets
           .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
-        this.factoryAssetsDetailsWithFields = this.factoryAssetsDetailsWithFields
+        this.factoryAssetDetailsWithFields = this.factoryAssetDetailsWithFields
           .map(asset => this.alertaAlertQuery.joinAssetDetailsWithOpenAlertSeverity(asset));
 
-        this.updateTree();
+        this.rebuildTree();
       }
     });
   }
@@ -320,12 +315,10 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateDisplayedAssets(): void {
-    this.displayedFactoryAssets = this.factoryAssetsDetailsWithFields
+    this.displayedFactoryAssets = this.factoryAssetDetailsWithFields
       .filter(asset =>
         this.searchedFactoryAssets.map(a => a.globalId).filter(searchedAssetGlobalId =>
-          this.filteredFactoryAssets.map(a => a.globalId).filter(filteredAssetGlobalId =>
-            this.factoryAssetFilteredByStatus.map(a => a.globalId)
-              .includes(filteredAssetGlobalId))
+          this.filteredFactoryAssets.map(a => a.globalId)
           .includes(searchedAssetGlobalId))
         .includes(asset.globalId)
       );

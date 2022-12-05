@@ -64,7 +64,7 @@ under the License.
                                (editItem)="editAssetSeries(assetSeries.id)"
                                (downloadItem1)="downloadAssetSeriesAsOwl(assetSeries)" (downloadItem2)="downloadAssetSeriesAsJson(assetSeries)"
                                [actions]="menuType" [download1ItemText]="'OWL'" [download2ItemText]="'JSON'"
-                               [createItemName]="{{ 'APP.COMMON.TERMS.ASSET' | translate }}"
+                               [createItemName]="translate.instant('APP.COMMON.TERMS.ASSET')"
                                class="column-visibility">
         </app-item-options-menu>
       </td>

@@ -66,14 +66,13 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     private ngsiLdService: NgsiLdService,
     private statusService: StatusService,
     private activatedRoute: ActivatedRoute,
-    private assetService: AssetService,
+    public assetService: AssetService,
     private fleetAssetDetailsQuery: FleetAssetDetailsQuery,
     private fieldInstanceDetailsResolver: FieldInstanceDetailsResolver,
     private companyQuery: CompanyQuery,
     private roomQuery: RoomQuery,
     private factorySiteQuery: FactorySiteQuery,
     private assetSeriesDetailsService: AssetSeriesDetailsService,
-    public assetService: AssetService
     private fleetComposedQuery: FleetComposedQuery,
   ) {
   }
@@ -98,7 +97,6 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
 
     this.fieldInstanceDetailsResolver.resolve();
     this.assetWithFields$ = this.fleetComposedQuery.selectFieldsOfAssetsDetailsOfActivesAsset();
-    this.assetWithFields$.subscribe(asset => this.assetSeriesId = asset.assetSeriesId);
 
 
     const assetSeriesId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'assetSeriesId');
@@ -120,7 +118,6 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
     );
   }
 
-    this.company$ = this.factorySite$.pipe(switchMap(site => this.companyQuery.selectEntity(site?.companyId)));
 
   private initLatestPoints() {
     // TODO: refactor using status.service.getStatusByAssetWithFields
@@ -145,11 +142,6 @@ export class AssetSeriesAssetDigitalNameplateComponent implements OnInit {
             return fieldCopy;
           });
         }));
-
-
-    this.status$ = this.mergedFields$.pipe(
-      map(fields => this.statusService.determineStatus(fields))
-    );
   }
 
   getAttributes(fields: FieldDetails[]): FieldDetails[] {

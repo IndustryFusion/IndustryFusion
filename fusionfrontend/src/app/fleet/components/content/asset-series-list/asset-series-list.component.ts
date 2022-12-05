@@ -77,7 +77,7 @@ export class AssetSeriesListComponent implements OnInit {
     private assetSeriesDetailMenuService: AssetSeriesDetailMenuService,
     private confirmationService: ConfirmationService,
     private uploadDownloadService: UploadDownloadService,
-    private translate: TranslateService) {
+    public translate: TranslateService) {
   }
 
   ngOnInit() {

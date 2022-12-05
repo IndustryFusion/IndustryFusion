@@ -78,8 +78,6 @@ export class AssetsListPageComponent implements OnInit {
     this.factorySites$ = this.factoryResolver.factorySites$;
     this.rooms$ = this.factoryResolver.rooms$;
     this.room$ = this.factoryResolver.room$;
-    this.assets$ = this.factoryResolver.assets$;
-    this.companyId = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'companyId');
 
     if (!this.factoryAssetDetailsWithFields$) {
       this.factoryAssetDetailsWithFields$ = this.factoryResolver.assetsWithDetailsAndFields$;

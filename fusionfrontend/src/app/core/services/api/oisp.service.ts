@@ -34,8 +34,6 @@ import {
 } from './oisp.model';
 import { KeycloakService } from 'keycloak-angular';
 import { OispDeviceQuery } from '../../store/oisp/oisp-device/oisp-device.query';
-import { ComponentType } from '../../store/oisp/oisp-device/oisp-device.model';
-import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { TimeInterval } from '../../models/kairos.model';
 
 @Injectable({
@@ -100,6 +98,25 @@ export class OispService {
   }
 
   getValuesOfSingleField(asset: Asset, field: FieldDetails, secondsInPast: number, maxPoints?: number): Observable<PointWithId[]> {
+    const path = `accounts/${this.getOispAccountId()}/data/search`;
+
+    const metrics: Metrics = ({
+      id: this.oispDeviceQuery.mapExternalNameOFieldInstanceToComponentId(asset.externalName, field.externalName),
+      op: 'none',
+    });
+
+    const request: OispRequest = {
+      from: -secondsInPast,
+      // maxItems: 10000000,
+      maxItems: maxPoints,
+      targetFilter: { deviceList: [asset.externalName] },
+      metrics: [metrics],
+    };
+
+    return this.getOispPoints(path, request, false);
+  }
+
+  getValuesOfSingleFieldWithoutAggregation(asset: Asset, field: FieldDetails, secondsInPast: number): Observable<PointWithId[]> {
     const path = `accounts/${this.getOispAccountId()}/data/search`;
 
     const metrics: Metrics = ({
