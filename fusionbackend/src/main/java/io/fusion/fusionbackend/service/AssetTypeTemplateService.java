@@ -257,11 +257,6 @@ public class AssetTypeTemplateService {
         return assetTypeTemplate;
     }
 
-    public Set<AssetTypeTemplate> findSubsystemCandidates(final Long parentAssetTypeId,
-                                                          final Long assetTypeTemplateId) {
-        return assetTypeTemplateRepository.findSubsystemCandidates(parentAssetTypeId, assetTypeTemplateId);
-    }
-
     public OntModel getAssetTypeTemplateRdf(Long assetTypeTemplateId) {
         AssetTypeTemplate assetTypeTemplate = getAssetTypeTemplate(assetTypeTemplateId, false);
         return ontologyBuilder.buildAssetTypeTemplateOntology(assetTypeTemplate);
@@ -287,7 +282,7 @@ public class AssetTypeTemplateService {
         sortFieldTargets(publishedAssetTypeTemplatesDtos);
         sortPeers(publishedAssetTypeTemplatesDtos);
 
-        publishedAssetTypeTemplates = removeUnnecessaryItems(publishedAssetTypeTemplates);
+        publishedAssetTypeTemplatesDtos = removeUnnecessaryItems(publishedAssetTypeTemplatesDtos);
         ObjectMapper objectMapper = BaseZipImportExport.getNewObjectMapper();
         return objectMapper.writerWithDefaultPrettyPrinter()
                 .writeValueAsBytes(BaseZipImportExport.toSortedList(publishedAssetTypeTemplatesDtos));

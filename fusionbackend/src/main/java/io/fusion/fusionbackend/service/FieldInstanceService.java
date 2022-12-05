@@ -146,7 +146,6 @@ public class FieldInstanceService {
     public String generateGlobalId(final FieldInstance fieldInstance) {
         return fieldInstance.getId() + "/" + (fieldInstance.getName() != null ? fieldInstance.getName() : "");
     }
-}
 
     public void delete(FieldInstance fieldInstance) {
         fieldInstance.getAsset().getFieldInstances().remove(fieldInstance);

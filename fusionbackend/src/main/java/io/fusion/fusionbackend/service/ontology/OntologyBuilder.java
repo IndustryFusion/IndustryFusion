@@ -180,10 +180,10 @@ public class OntologyBuilder {
                 .ifPresent(literal -> assetClass.addLiteral(AssetSchema.constructionDate, literal));
         Optional.ofNullable(asset.getProtectionClass())
                 .ifPresent(literal -> assetClass.addLiteral(AssetSchema.protectionClass, literal));
-        Optional.ofNullable(asset.getHandbookUrl())
-                .ifPresent(literal -> assetClass.addLiteral(AssetSchema.handbookUrl, literal));
-        Optional.ofNullable(asset.getVideoUrl())
-                .ifPresent(literal -> assetClass.addLiteral(AssetSchema.videoUrl, literal));
+        Optional.ofNullable(asset.getManualKey())
+                .ifPresent(literal -> assetClass.addLiteral(AssetSchema.manualKey, literal));
+        Optional.ofNullable(asset.getVideoKey())
+                .ifPresent(literal -> assetClass.addLiteral(AssetSchema.videoKey, literal));
 
         asset.getSubsystems().forEach(subsystem -> {
             OntModel subsystemModel = buildAssetOntology(subsystem);

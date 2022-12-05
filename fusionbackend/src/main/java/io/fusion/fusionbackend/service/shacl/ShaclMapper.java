@@ -171,8 +171,8 @@ public class ShaclMapper {
         series.setConnectivitySettings(findConnectivitySettings(shape));
         series.setCustomScript(shape.getStringParameter(IfsPaths.CUSTOM_SCRIPT, ""));
         series.setGlobalId(shape.getStringParameter(IfsPaths.GLOBAL_ID, UUID.randomUUID().toString()));
-        series.setHandbookUrl(shape.getStringParameter(IfsPaths.ASSET_MANUAL, ""));
-        series.setVideoUrl(shape.getStringParameter(IfsPaths.ASSET_VIDEO, ""));
+        series.setManualKey(shape.getStringParameter(IfsPaths.ASSET_MANUAL, ""));
+        series.setVideoKey(shape.getStringParameter(IfsPaths.ASSET_VIDEO, ""));
         series.setCompany(companyService.getCompany(companyId, true));
         series.setFieldSources(mapToFieldSources(shape.getSubShapes(),
                 series.getAssetTypeTemplate().getFieldTargets()));

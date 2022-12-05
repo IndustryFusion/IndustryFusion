@@ -93,43 +93,6 @@ public class AssetService {
         this.ngsiLdBrokerService = ngsiLdBrokerService;
     }
 
-    private static void addRelationship(JSONObject json, String key, List<String> urls) {
-        JSONArray jsonArray = new JSONArray();
-        urls.forEach(url -> {
-            JSONObject property = new JSONObject();
-            addType(property, "Relationship");
-            property.put("object", url);
-            jsonArray.add(property);
-        });
-
-        json.put(key, jsonArray);
-    }
-
-    private static void addProperty(JSONObject json, String key, String value) {
-        addProperty(json, key, value, null);
-    }
-
-    private static void addProperty(JSONObject json, String key, String value, String unitCode) {
-        JSONObject property = new JSONObject();
-        addType(property, "Property");
-        property.put("value", value);
-        if (unitCode != null) {
-            property.put("unitCode", unitCode);
-        }
-        json.put(key, property);
-    }
-
-    private static void addProperty(JSONObject json, String key, JSONObject jsonObject) {
-        JSONObject property = new JSONObject();
-        addType(property, "Property");
-        property.put("value", jsonObject);
-        json.put(key, property);
-    }
-
-    private static Object addType(JSONObject json, String type) {
-        return json.put("type", type);
-    }
-
     public Asset getAssetById(final Long assetId) {
         return assetRepository.findById(assetId).orElseThrow(ResourceNotFoundException::new);
     }

@@ -34,8 +34,8 @@ public class AssetSchema {
     public static final Property serialNumber = m.createProperty(URI, "serialNumber");
     public static final Property constructionDate = m.createProperty(URI, "constructionDate");
     public static final Property protectionClass = m.createProperty(URI, "protectionClass");
-    public static final Property handbookUrl = m.createProperty(URI, "handbookUrl");
-    public static final Property videoUrl = m.createProperty(URI, "videoUrl");
+    public static final Property manualKey = m.createProperty(URI, "manualKey");
+    public static final Property videoKey = m.createProperty(URI, "videoKey");
     public static final Property subsystems = m.createProperty(URI, "subsystems");
 
     /**.

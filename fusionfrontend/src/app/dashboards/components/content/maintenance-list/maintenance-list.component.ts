@@ -169,8 +169,8 @@ export class MaintenanceListComponent implements OnInit, OnChanges {
   }
 
   public isMaintenanceNeededSoonForAsset(asset: FactoryAssetDetailsWithFields) {
-    return this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
-      || this.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
+    return MaintenanceListComponent.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceHours)
+      || MaintenanceListComponent.isMaintenanceNeededSoonForMaintenanceType(asset, AssetMaintenanceUtils.maintenanceDays);
   }
 
   public isMaintenanceNeededSoon(node: TreeNode): boolean {
