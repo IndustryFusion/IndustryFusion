@@ -141,7 +141,7 @@ public class ShaclMapper {
                 .addParameter(ShaclPaths.MIN_COUNT, mandatory ? 1 : 0)
                 .addParameter(ShaclPaths.MAX_COUNT, 1)
                 .addParameter(ShaclPaths.ORDER, orderId)
-                .addSubShape(shape.addParameter(ShaclPaths.ORDER, 1));
+                .addSubShape(shape);
     }
 
     private ShaclShape asExtraPropertyShape(BasicPaths path,
