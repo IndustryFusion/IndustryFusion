@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "0a9aa854-2a4d-44a1-9d8a-94a4bba502d2",
-		"name": "Alerta",
+		"name": "IF Alerta",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -9,19 +9,7 @@
 			"name": "Alerta, get all alerts",
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "alerta",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "admin@alerta.io",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [
@@ -33,7 +21,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8082/api/alerts",
+					"raw": "http://localhost:8082/api/alerts?api-key=demo-key",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -42,6 +30,12 @@
 					"path": [
 						"api",
 						"alerts"
+					],
+					"query": [
+						{
+							"key": "api-key",
+							"value": "demo-key"
+						}
 					]
 				}
 			},
@@ -119,7 +113,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"resource\": \"mcc-microstep\",\n    \"event\": \"HttpServerError\",\n    \"severity\": \"major\",\n    \"environment\": \"Development\",\n    \"service\": [\n        \"DigitalTwin\"\n    ],\n    \"text\": \"status > 5\",\n    \"value\": \"7\",\n    \"attributes\": {\n        \"resourceFriendlyName\": \"Asset Name\",\n        \"eventFriendlyName\": \"Invalid Status Value\"\n    },\n    \"status\": \"open\"\n}",
+					"raw": "{\n    \"resource\": \"urn:ngsi-ld:asset:2:1\",\n    \"event\": \"HttpServerError\",\n    \"severity\": \"major\",\n    \"environment\": \"Development\",\n    \"service\": [\n        \"DigitalTwin\"\n    ],\n    \"text\": \"status > 15\",\n    \"value\": \"147\",\n    \"attributes\": {\n        \"resourceFriendlyName\": \"Custom Asset Name\",\n        \"eventFriendlyName\": \"Invalid Status Value\"\n    },\n    \"status\": \"open\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -170,7 +164,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n      \"attributes\": {\n        \"region\": \"EU\"\n      },\n      \"correlate\": [\n        \"HttpServerError\",\n        \"HttpServerOK\"\n      ],\n      \"environment\": \"Development\",\n      \"event\": \"HttpServerError\",\n      \"group\": \"Web\",\n      \"origin\": \"curl\",\n      \"resource\": \"web01\",\n      \"service\": [\n        \"example.com\"\n      ],\n      \"severity\": \"security\",\n      \"text\": \"Site is down.\",\n      \"type\": \"exceptionAlert\",\n      \"value\": \"Bad Gateway (501)\"\n}",
+					"raw": "{\n      \"attributes\": {\n        \"region\": \"EU\"\n      },\n      \"correlate\": [\n        \"HttpServerError\",\n        \"HttpServerOK\"\n      ],\n      \"environment\": \"Development\",\n      \"event\": \"HttpServerError\",\n      \"group\": \"Web\",\n      \"origin\": \"curl\",\n      \"resource\": \"urn:ngsi-ld:asset:2:1\",\n      \"service\": [\n        \"example.com\"\n      ],\n      \"severity\": \"security\",\n      \"text\": \"Site is down.\",\n      \"type\": \"exceptionAlert\",\n      \"value\": \"Bad Gateway (501)\",\n      \"timeout\": 5\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -221,7 +215,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n      \"status\": \"ack\",\n      \"text\": \"disk needs replacing.\",\n      \"timeout\": 10\n}",
+					"raw": "{\n      \"status\": \"closed\",\n      \"text\": \"disk needs replacing.\",\n      \"timeout\": 10\n}",
 					"options": {
 						"raw": {
 							"language": "json"

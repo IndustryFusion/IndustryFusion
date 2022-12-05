@@ -1,18 +1,18 @@
 {
 	"info": {
-		"_postman_id": "afada955-e0a8-4cb8-b217-95c8028443cd",
-		"name": "ngsi-ld",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18216514"
+		"_postman_id": "722723a1-b8df-49e9-9f1c-a10dc959abb1",
+		"name": "IF ngsi-ld",
+		"description": "see https://ngsi-ld-tutorials.readthedocs.io/en/latest/ngsi-ld-operations.html and https://documenter.getpostman.com/view/513743/TVCb5B6F#45004f03-8b3a-4370-979e-c5475be975ee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:asset:2:3",
+			"name": "get asset",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:testunit:123",
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:asset:2:16",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -22,14 +22,42 @@
 						"ngsi-ld",
 						"v1",
 						"entities",
-						"urn:ngsi-ld:testunit:123"
+						"urn:ngsi-ld:asset:2:16"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:9090/ngsi-ld/v1/entities/",
+			"name": "get asset field values",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:asset:2:17?options=keyValues",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:asset:2:17"
+					],
+					"query": [
+						{
+							"key": "options",
+							"value": "keyValues"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create asset with values",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -46,7 +74,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:testunit:123\",\r\n    \"type\": \"AirQualityObserved\",\r\n    \"dateObserved\": {\r\n        \"type\": \"Property\",\r\n        \"value\": {\r\n            \"@type\": \"DateTime\",\r\n            \"@value\": \"2018-08-07T12:00:00Z\"\r\n        }\r\n    },\r\n    \"NO2\": {\r\n        \"type\": \"Property\",\r\n        \"value\": 22,\r\n        \"unitCode\": \"GP\",\r\n        \"accuracy\": {\r\n            \"type\": \"Property\",\r\n            \"value\": 0.95\r\n        }\r\n    },\r\n    \"refPointOfInterest\": {\r\n        \"type\": \"Relationship\",\r\n        \"object\": \"urn:ngsi-ld:PointOfInterest:RZ:MainSquare\"\r\n    },\r\n    \"@context\": [\r\n        \"https://schema.lab.fiware.org/ld/context\",\r\n        \"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld\"\r\n    ]\r\n}",
+					"raw": "{\r\n  \"id\" : \"urn:ngsi-ld:asset:2:12\",\r\n  \"type\" : \"CNCControlSystem\",\r\n  \"metainfo\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : {\r\n      \"operating_hours_till_maintenance\" : {\r\n        \"description\" : \"Operating Hours till maintenance\",\r\n        \"fieldType\" : \"METRIC\"\r\n      },\r\n      \"maintenance_interval_operating_hours\" : {\r\n        \"description\" : \"Maintenance interval (operating hours)\",\r\n        \"fieldType\" : \"ATTRIBUTE\"\r\n      },\r\n      \"status\" : {\r\n        \"description\" : \"Status\",\r\n        \"fieldType\" : \"METRIC\"\r\n      },\r\n      \"maintenance_days\" : {\r\n        \"description\" : \"Days till maintenance\",\r\n        \"fieldType\" : \"METRIC\"\r\n      }\r\n    }\r\n  },\r\n  \"subsystems\" : [ ],\r\n  \"@context\" : [ \"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld\" ],\r\n  \"operating_hours_till_maintenance\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : \"15\"\r\n  },\r\n  \"status\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : \"0\"\r\n  },\r\n  \"maintenance_days\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : \"30\"\r\n  }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -71,7 +99,72 @@
 			"response": []
 		},
 		{
-			"name": "asset post",
+			"name": "delete asset",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:asset:2:17",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:asset:2:17"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "udpate asset values",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"operating_hours_till_maintenance\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : \"150\"\r\n  },\r\n  \"maintenance_interval_operating_hours\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : \"250\"\r\n  },\r\n  \"status\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : \"1\"\r\n  },\r\n  \"@context\" : [ \"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld\" ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:asset:2:17/attrs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:asset:2:17",
+						"attrs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add field instance to asset",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -88,7 +181,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:asset:8\",\r\n    \"type\": \"Asset\",\r\n    \"ceCertified\": \"true\",\r\n    \"@context\": [\r\n        \"https://gist.githubusercontent.com/seemueller/24c5beb167d580b879d2c1b758611b01/raw/d9e7c19d3dfb0b8e58b62422c8ef4e9027f70d72/asset.jsonld.swaggergen\",\r\n        \"https://www.schema.org/version/latest/schemaorg-current-https.jsonld\"\r\n    ]\r\n}",
+					"raw": "{\r\n  \"maintenance_days\" : {\r\n    \"type\" : \"Property\",\r\n    \"value\" : \"10\"\r\n  },\r\n  \"@context\" : [ \"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld\" ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -96,7 +189,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9090/ngsi-ld/v1/entities/",
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:asset:2:17/attrs",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -106,7 +199,8 @@
 						"ngsi-ld",
 						"v1",
 						"entities",
-						""
+						"urn:ngsi-ld:asset:2:17",
+						"attrs"
 					]
 				}
 			},
