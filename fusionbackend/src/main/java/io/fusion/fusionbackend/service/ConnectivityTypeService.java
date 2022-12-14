@@ -36,4 +36,12 @@ public class ConnectivityTypeService {
     public Set<ConnectivityType> getAll() {
         return Sets.newHashSet(connectivityTypeRepository.findAll(ConnectivityTypeRepository.DEFAULT_SORT));
     }
+
+    public ConnectivityType createConnectivityType(String name, String infoText, Long version) {
+        ConnectivityType connectivityType = new ConnectivityType();
+        connectivityType.setName(name);
+        connectivityType.setInfoText(infoText);
+        connectivityType.setVersion(version);
+        return connectivityTypeRepository.save(connectivityType);
+    }
 }

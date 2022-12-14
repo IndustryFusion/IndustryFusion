@@ -18,24 +18,26 @@ package io.fusion.fusionbackend.model.shacl.enums;
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum NgsiLdPaths implements BasicPaths {
-    HAS_PATH(NgsiLdPaths.BASE_PATH + "hasValue");
+import static io.fusion.fusionbackend.model.shacl.enums.NameSpaces.FIELD;
 
+public enum AssetTypeKeys implements BasicKeys {
+    VERSION(FIELD.getPath() + "version"),
+    NAME(FIELD.getPath() + "name"),
+    LABEL(FIELD.getPath() + "label"),
+    DESCRIPTION(FIELD.getPath() + "description");
     private final String path;
-
-    public static final String BASE_PATH = "https://uri.etsi.org/ngsi-ld/";
-
-    NgsiLdPaths(String path) {
-        this.path = path;
-    }
 
     @Override
     public String getPath() {
         return path;
     }
 
-    public static Optional<NgsiLdPaths> asEnum(String uri) {
-        return Arrays.stream(NgsiLdPaths.values())
+    AssetTypeKeys(String path) {
+        this.path = path;
+    }
+
+    public static Optional<AssetTypeKeys> asEnum(String uri) {
+        return Arrays.stream(AssetTypeKeys.values())
                 .filter(candidate -> candidate.getPath().equalsIgnoreCase(uri)).findAny();
     }
 

@@ -20,15 +20,19 @@ import { AssetTypeTemplate, PublicationState } from '../../../../core/store/asse
 import { AssetTypeTemplateComposedQuery } from '../../../../core/store/composed/asset-type-template-composed.query';
 import { FieldTargetService } from '../../../../core/store/field-target/field-target.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AssetTypeTemplateDialogPublishComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
+import {
+  AssetTypeTemplateDialogPublishComponent
+} from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-dialog-publish/asset-type-template-dialog-publish.component';
 import { AssetTypeTemplateService } from '../../../../core/store/asset-type-template/asset-type-template.service';
-import { AssetTypeTemplateDialogUpdateComponent } from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
+import {
+  AssetTypeTemplateDialogUpdateComponent
+} from '../../content/asset-type-template/asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { FormGroup } from '@angular/forms';
 import { DialogType } from '../../../../shared/models/dialog-type.model';
-import { AssetTypeTemplateWizardComponent } from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard.component';
+import {
+  AssetTypeTemplateWizardComponent
+} from '../../content/asset-type-template/asset-type-template-wizard/asset-type-template-wizard.component';
 import { ID } from '@datorama/akita';
-import { environment } from '../../../../../environments/environment';
-import { UploadDownloadService } from '../../../../shared/services/upload-download.service';
 
 @Component({
   selector: 'app-asset-type-template-page',
@@ -54,14 +58,14 @@ export class AssetTypeTemplatePageComponent implements OnInit {
               private fieldTargetService: FieldTargetService,
               private dialogService: DialogService,
               public route: ActivatedRoute,
-              private uploadDownloadService: UploadDownloadService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.metrics = [];
     this.attributes = [];
 
-    this.assetTypeTemplateId =  Number.parseInt(this.route.snapshot.paramMap.get('assetTypeTemplateId'), 10);
+    this.assetTypeTemplateId = Number.parseInt(this.route.snapshot.paramMap.get('assetTypeTemplateId'), 10);
     this.initAssetTypeTemplate(this.assetTypeTemplateId);
 
     this.assetTypeTemplateService.setActive(this.assetTypeTemplateId);
@@ -90,11 +94,11 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   }
 
   onUpdate() {
-    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, { width: '60%' } );
+    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, {width: '60%'});
     this.warningDialogRef.onClose.subscribe((callUpdateWizard: boolean) => {
-        if (callUpdateWizard) {
-          this.showUpdateWizard();
-        }
+      if (callUpdateWizard) {
+        this.showUpdateWizard();
+      }
     });
   }
 
@@ -102,7 +106,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.publishDialogRef = this.dialogService.open(AssetTypeTemplateDialogPublishComponent,
       {
         header: `Publish ${this.assetTypeTemplate.name}?`,
-        data: { assetTypeTemplate: this.assetTypeTemplate },
+        data: {assetTypeTemplate: this.assetTypeTemplate},
         width: '70%',
       }
     );
@@ -117,17 +121,17 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent,
       {
-        data: { assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT },
+        data: {assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT},
         header: 'Asset Type Template Editor',
         width: '70%',
       }
     );
     this.updateWizardRef.onClose.subscribe((assetTypeTemplateFormIfPublished: FormGroup) => {
-        if (assetTypeTemplateFormIfPublished) {
-          this.publishAssetTypeTemplate(assetTypeTemplateFormIfPublished);
-        } else {
-          this.initAssetTypeTemplate(this.assetTypeTemplateId);
-        }
+      if (assetTypeTemplateFormIfPublished) {
+        this.publishAssetTypeTemplate(assetTypeTemplateFormIfPublished);
+      } else {
+        this.initAssetTypeTemplate(this.assetTypeTemplateId);
+      }
     });
   }
 
@@ -138,13 +142,5 @@ export class AssetTypeTemplatePageComponent implements OnInit {
       this.assetTypeTemplate.publishedVersion = assetTypeTemplateForm.get('publishedVersion')?.value;
       this.assetTypeTemplateService.editItem(this.assetTypeTemplate.id, this.assetTypeTemplate).subscribe();
     }
-  }
-
-  onExportShacl() {
-    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/eco/${this.assetTypeTemplate.id}/shaclexport`,
-      `${this.assetTypeTemplate.name
-        .replace(/[ ]/ig, '_')
-        .replace(/[^\w]/ig, '')
-      }_v${this.assetTypeTemplate.version}.ttl`);
   }
 }

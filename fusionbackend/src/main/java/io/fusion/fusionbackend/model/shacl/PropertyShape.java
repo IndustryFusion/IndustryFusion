@@ -16,8 +16,8 @@
 package io.fusion.fusionbackend.model.shacl;
 
 import io.fusion.fusionbackend.model.shacl.enums.ShaclNodeKind;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
-import io.fusion.fusionbackend.model.shacl.enums.BasicPaths;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
+import io.fusion.fusionbackend.model.shacl.enums.BasicKeys;
 
 import java.util.Map;
 
@@ -25,11 +25,11 @@ public class PropertyShape extends ShaclShape {
 
 
     public PropertyShape(ShaclNodeKind nodeKind, String path) {
-        addParameter(ShaclPaths.PATH, path);
-        addParameter(ShaclPaths.NODE_KIND, nodeKind.getPath());
+        addParameter(ShaclKeys.PATH, path);
+        addParameter(ShaclKeys.NODE_KIND, nodeKind.getPath());
     }
 
-    public Map<BasicPaths, String> getParameters() {
+    public Map<BasicKeys, String> getParameters() {
         return parameters;
     }
 

@@ -30,6 +30,9 @@ import { AssetSeriesDetails } from '../../../../core/store/asset-series-details/
 import { AssetSeriesDetailsQuery } from '../../../../core/store/asset-series-details/asset-series-details.query';
 import { AssetSeriesDetailsService } from '../../../../core/store/asset-series-details/asset-series-details.service';
 import { Company } from '../../../../core/store/company/company.model';
+import { environment } from '../../../../../environments/environment';
+import { UploadDownloadService } from '../../../../shared/services/upload-download.service';
+import { ItemOptionsMenuType } from '../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 
 @Component({
   selector: 'app-asset-series-overview-page',
@@ -46,7 +49,7 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   assetsCombined$: Observable<{ id: ID; asset: Asset; factorySite: FactorySite, company: Company }[]>;
 
   assetsMapping:
-    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets'};
+    { [k: string]: string } = {'=0': 'No assets', '=1': '# Asset', other: '# Assets'};
   of = of;
   public factorySiteTypes = FactorySiteType;
 
@@ -59,9 +62,12 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
               private dialogService: DialogService,
               private factorySiteQuery: FactorySiteQuery,
               private route: ActivatedRoute,
+              private uploadDownloadService: UploadDownloadService
   ) {
     this.resolve(this.activatedRoute);
   }
+
+  ItemOptionsMenuType = ItemOptionsMenuType;
 
   ngOnInit(): void {
     this.isLoading$ = this.assetSeriesDetailsQuery.selectLoading();
@@ -93,7 +99,7 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
                 )?.factorySiteId
               );
               const assetCompany = companies.find(company => company.id === asset.companyId);
-              combined.push({ id: asset.id, asset, factorySite, company: assetCompany});
+              combined.push({id: asset.id, asset, factorySite, company: assetCompany});
             }
             return combined;
           })
@@ -117,5 +123,11 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
     });
 
     assetWizardRef.onClose.subscribe(() => this.resolve(this.route));
+  }
+
+  exportPackage(asset: Asset) {
+    const companyId = this.companyQuery.getActiveId();
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${asset.id}`,
+      `${asset.name}-v${asset.version}.zip`);
   }
 }

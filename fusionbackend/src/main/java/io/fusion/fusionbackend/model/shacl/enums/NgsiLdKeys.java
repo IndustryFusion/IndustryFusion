@@ -13,32 +13,32 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.model.enums;
-
-import io.fusion.fusionbackend.model.shacl.enums.BasicKeys;
-import io.fusion.fusionbackend.model.shacl.enums.NameSpaces;
+package io.fusion.fusionbackend.model.shacl.enums;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum FieldDataType implements BasicKeys {
-    NUMERIC(NameSpaces.XML.getPath() + "decimal"),
-    ENUM(NameSpaces.XML.getPath() + "enumeration");
+public enum NgsiLdKeys implements BasicKeys {
+    HAS_PATH(NameSpaces.NGSI_LD.getPath() + "hasValue"),
+    CONTEXT("@context"),
+    TYPE("type"),
+    VALUE("value"),
+    ID("id");
 
-    private String path;
+
+    private final String path;
+
+    NgsiLdKeys(String path) {
+        this.path = path;
+    }
 
     @Override
     public String getPath() {
         return path;
     }
 
-    FieldDataType(String path) {
-        this.path = path;
-    }
-
-    public static Optional<FieldDataType> asEnum(String uri) {
-        return Arrays.stream(FieldDataType.values())
+    public static Optional<NgsiLdKeys> asEnum(String uri) {
+        return Arrays.stream(NgsiLdKeys.values())
                 .filter(candidate -> candidate.getPath().equalsIgnoreCase(uri)).findAny();
     }
-
 }

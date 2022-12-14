@@ -13,10 +13,22 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.model.shacl.enums;
+package io.fusion.fusionbackend.dto;
 
-public interface BasicPaths {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    String getPath();
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ImportResultDto {
+    @Builder.Default
+    private String message = "";
 
+    public String getMessage() {
+        return message;
+    }
 }

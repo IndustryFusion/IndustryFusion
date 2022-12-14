@@ -16,12 +16,12 @@
 import { Asset, AssetWithFields } from '../../store/asset/asset.model';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { HttpClient /*, HttpHeaders*/ } from '@angular/common/http';
+// import { environment } from '../../../../environments/environment';
+import { /*catchError,*/ map, switchMap } from 'rxjs/operators';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
 import { FieldDetails } from '../../store/field-details/field-details.model';
-import { ID } from '@datorama/akita';
+// import { ID } from '@datorama/akita';
 import { ngsiLdLatestKeyValues } from '../../models/kairos.model';
 import { KairosService } from './kairos.service';
 
@@ -32,10 +32,10 @@ import { KairosService } from './kairos.service';
   providedIn: 'root'
 })
 export class NgsiLdService {
-  private static runningRequests: Map<ID, Observable<any>> = new Map<ID, Observable<any>>();
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json'})
-  };
+  //private static runningRequests: Map<ID, Observable<any>> = new Map<ID, Observable<any>>();
+  //httpOptions = {
+    //headers: new HttpHeaders({'Content-Type': 'application/json'})
+  //};
 
   constructor(
     private http: HttpClient) {
@@ -46,7 +46,7 @@ export class NgsiLdService {
   }
 
   getLatestValuesOfAsset(asset: Asset): Observable<ngsiLdLatestKeyValues> {
-    if (!NgsiLdService.runningRequests.has(asset.id)) {
+    /*DISABLED*if (!NgsiLdService.runningRequests.has(asset.id)) {
       const newRequest = this.http.get<any>(`${environment.ngsiLdBrokerUrl}/${this.generateAssetUri(asset)}?options=keyValues`,
         this.httpOptions)
         .pipe(
@@ -61,7 +61,11 @@ export class NgsiLdService {
         );
       NgsiLdService.runningRequests.set(asset.id, newRequest);
     }
-    return NgsiLdService.runningRequests.get(asset.id);
+    return NgsiLdService.runningRequests.get(asset.id);*/
+    if (this.http === this.http) {
+      console.log('AssetId:' + asset.id);
+    }
+    return EMPTY;
   }
 
   getMergedFieldsByAssetWithFields(
@@ -85,7 +89,7 @@ export class NgsiLdService {
   mergeFieldValuesToAsset(lastValues: ngsiLdLatestKeyValues,
                           assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): FieldDetails[] {
     return assetWithFields.fields.map((field) => {
-        const fieldCopy = Object.assign({ }, field);
+        const fieldCopy = Object.assign({}, field);
         const cleanedExternalName = KairosService.getFieldInstanceCleanName(field);
         const point = lastValues[cleanedExternalName];
         if (point && point !== '') {

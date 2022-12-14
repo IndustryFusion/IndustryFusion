@@ -43,7 +43,7 @@ import { UploadDownloadService } from '../../../../shared/services/upload-downlo
 export class AssetSeriesListComponent implements OnInit {
 
   assetSeriesMapping:
-    { [k: string]: string } = { '=0': 'No asset series', '=1': '# Asset series', other: '# Asset series' };
+    { [k: string]: string } = {'=0': 'No asset series', '=1': '# Asset series', other: '# Asset series'};
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -86,7 +86,7 @@ export class AssetSeriesListComponent implements OnInit {
 
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
     this.menuType = [ItemOptionsMenuType.CREATE, ItemOptionsMenuType.EDIT, ItemOptionsMenuType.DELETE,
-      ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2];
+      ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2, ItemOptionsMenuType.EXPORT_PACKAGE];
   }
 
   setActiveRow(assetSeries: AssetSeriesDetails) {
@@ -164,11 +164,15 @@ export class AssetSeriesListComponent implements OnInit {
     input.addEventListener('change', (event: Event) => {
       const file = (event.target as HTMLInputElement).files[0];
       const companyId = this.companyQuery.getActiveId();
-      this.uploadDownloadService.uploadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/shaclimport`, file, this);
-      this.ngOnInit();
-
+      this.uploadDownloadService.uploadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/template/import`, file,
+        () => this.ngOnInit());
     });
     input.click();
   }
 
+  exportPackage(assetSeries: AssetSeries) {
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${assetSeries.companyId}/series/export/${assetSeries.id}`,
+      `${assetSeries.name}-v${assetSeries.version}.zip`);
+
+  }
 }

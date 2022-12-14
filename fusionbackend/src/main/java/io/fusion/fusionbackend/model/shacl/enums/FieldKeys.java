@@ -13,31 +13,38 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.model.enums;
-
-import io.fusion.fusionbackend.model.shacl.enums.BasicKeys;
-import io.fusion.fusionbackend.model.shacl.enums.NameSpaces;
+package io.fusion.fusionbackend.model.shacl.enums;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum FieldDataType implements BasicKeys {
-    NUMERIC(NameSpaces.XML.getPath() + "decimal"),
-    ENUM(NameSpaces.XML.getPath() + "enumeration");
+import static io.fusion.fusionbackend.model.shacl.enums.NameSpaces.FIELD;
 
-    private String path;
+public enum FieldKeys implements BasicKeys {
+    VERSION(FIELD.getPath() + "version"),
+    NAME(FIELD.getPath() + "name"),
+    LABEL(FIELD.getPath() + "label"),
+    DESCRIPTION(FIELD.getPath() + "description"),
+    CREATION_DATE(FIELD.getPath() + "creationDate"),
+    ACCURARCY(FIELD.getPath() + "accurarcy"),
+    OPTIONS(FIELD.getPath() + "options"),
+    WIDGET_TYPE(FIELD.getPath() + "widgetType"),
+    UNIT(FIELD.getPath() + "unit"),
+    THRESHOLD_TYPE(FIELD.getPath() + "thresholdType");
+
+    private final String path;
 
     @Override
     public String getPath() {
         return path;
     }
 
-    FieldDataType(String path) {
+    FieldKeys(String path) {
         this.path = path;
     }
 
-    public static Optional<FieldDataType> asEnum(String uri) {
-        return Arrays.stream(FieldDataType.values())
+    public static Optional<FieldKeys> asEnum(String uri) {
+        return Arrays.stream(FieldKeys.values())
                 .filter(candidate -> candidate.getPath().equalsIgnoreCase(uri)).findAny();
     }
 

@@ -23,9 +23,12 @@ under the License.
                         class="filter-btn">
       </app-table-filter>
     </div>
+    <app-upload-button (createItem)="onImportNgsiLd()" style="margin-top: 0.5rem;align-self: center;"
+                       text="Import Asset"></app-upload-button>
     <app-create-button *ngIf="type === AssetListType.ASSETS" class="create-btn" text="Onboard new Asset"
                        (createItem)="showOnboardDialog()"></app-create-button>
-    <label *ngIf="factorySite != null && type === AssetListType.ASSETS" class="if-upload-button-light" [pTooltip]="'Import data from Fleet Manager'">
+    <label *ngIf="factorySite != null && type === AssetListType.ASSETS" class="if-upload-button-light"
+           [pTooltip]="'Import data from Fleet Manager'">
       <i class="pi pi-upload"></i>
       <input type="file" accept="application/zip" (change)="onZipFileUpload($event)">
     </label>
@@ -98,9 +101,12 @@ under the License.
         <app-asset-status [assetWithFields]="rowData" [showInline]="true"></app-asset-status>
       </td>
       <td [style.width.%]="5" class="table-dropdown-menu-wide" (click)="setActiveRow(rowData)">
-        <app-item-options-menu class="column-visibility" [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE]"
+        <app-item-options-menu class="column-visibility"
+                               [actions]="[ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.EXPORT_PACKAGE, ItemOptionsMenuType.DELETE]"
                                [assignItemText]="'Asset to room'" (editItem)="openEditDialog()"
-                               (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()">
+                               (assignItem)="openAssignRoomDialog()" (deleteItem)="openDeleteDialog()"
+                               [exportPackageItemText]="'Asset Package'"
+                               (exportPackage)="exportNgsiLd()">
         </app-item-options-menu>
       </td>
     </tr>

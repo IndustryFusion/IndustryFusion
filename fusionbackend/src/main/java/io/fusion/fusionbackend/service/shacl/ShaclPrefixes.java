@@ -15,10 +15,7 @@
 
 package io.fusion.fusionbackend.service.shacl;
 
-import io.fusion.fusionbackend.model.enums.FieldDataType;
-import io.fusion.fusionbackend.model.shacl.enums.IfsPaths;
-import io.fusion.fusionbackend.model.shacl.enums.NgsiLdPaths;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+import io.fusion.fusionbackend.model.shacl.enums.NameSpaces;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -77,10 +74,6 @@ public class ShaclPrefixes {
                 .addPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                 .addPrefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
                 .addPrefix("schema", "http://schema.org/")
-                .addPrefix("sh", ShaclPaths.BASE_PATH)
-                .addPrefix("ngsi", NgsiLdPaths.BASE_PATH)
-                .addPrefix("ifs", IfsPaths.BASE_PATH)
-                .addPrefix("xsd", FieldDataType.BASE_PATH);
+                .addPrefix(NameSpaces.getAsPrefixes());
     }
-
 }

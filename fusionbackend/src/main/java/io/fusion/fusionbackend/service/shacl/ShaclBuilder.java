@@ -15,13 +15,21 @@
 
 package io.fusion.fusionbackend.service.shacl;
 
+import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.Field;
+import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.shacl.ShaclShape;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class ShaclBuilder {
@@ -36,19 +44,101 @@ public class ShaclBuilder {
         this.shaclMapper = shaclMapper;
     }
 
-    public Set<ShaclShape> buildAssetTypeTemplatesShacl() {
-        try {
-            return assetTypeTemplateService.getPublishedAssetTypeTemplates().stream()
-                    .map(this::buildAssetTypeTemplatesShacl)
-                    .collect(Collectors.toSet());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+    public void buildAssetTypeTemplatePackage(OutputStream stream, AssetTypeTemplate assetTypeTemplate)
+            throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (ZipOutputStream zos = new ZipOutputStream(bos)) {
+            addShaclToZip(
+                    zos,
+                    shaclMapper.mapFromAssetTypeTemplate(assetTypeTemplate),
+                    assetTypeTemplate.getName() + "_v" + assetTypeTemplate.getVersion() + ".ttl");
+            addFolderToZip(zos, ShaclService.DEPENDENCIES_FOLDER + "/");
+            addDependencyAssetTypeTemplates(zos, ShaclHelper.asSet(assetTypeTemplate));
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            throw new IOException(ioe.getMessage());
         }
+        stream.write(bos.toByteArray());
+        stream.close();
+
     }
 
-    public ShaclShape buildAssetTypeTemplatesShacl(AssetTypeTemplate assetTypeTemplate) {
-        return shaclMapper.mapFromAssetTypeTemplate(assetTypeTemplate);
+    public void buildAssetSeriesPackage(OutputStream stream, AssetSeries assetSeries)
+            throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (ZipOutputStream zos = new ZipOutputStream(bos)) {
+            addShaclToZip(
+                    zos,
+                    shaclMapper.mapFromAssetSeries(assetSeries),
+                    assetSeries.getName() + "_v" + assetSeries.getVersion() + ".ttl");
+            addFolderToZip(zos, ShaclService.DEPENDENCIES_FOLDER + "/");
+            addDependencyAssetTypeTemplates(zos, ShaclHelper.asSet(assetSeries.getAssetTypeTemplate()));
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            throw new IOException(ioe.getMessage());
+        }
+        stream.write(bos.toByteArray());
+        stream.close();
+
+    }
+
+    public void addDependencyAssetSeries(ZipOutputStream zip, AssetSeries assetSeries) throws IOException {
+        addShaclToZip(zip,
+                shaclMapper.mapFromAssetSeries(assetSeries),
+                ShaclService.DEPENDENCIES_FOLDER + "/" + ShaclService.SERIES_FILENAME);
+        addDependencyAssetTypeTemplates(zip, ShaclHelper.findAssetSeriesDependencies(ShaclHelper.asSet(assetSeries)));
+    }
+
+    private void addDependencyAssetTypeTemplates(ZipOutputStream zip, Set<AssetTypeTemplate> assetTypeTemplates)
+            throws IOException {
+        addShaclToZip(zip,
+                shaclMapper.mapFromAssetTypeTemplates(assetTypeTemplates),
+                ShaclService.DEPENDENCIES_FOLDER + "/" + ShaclService.TEMPLATES_FILENAME);
+        addDependencyAssetTypes(zip, ShaclHelper.findAssetTypeDependencies(assetTypeTemplates));
+        addDependencyFields(zip, ShaclHelper.findFieldDependencies(assetTypeTemplates));
+    }
+
+    private void addDependencyAssetTypes(ZipOutputStream zip, Set<AssetType> assetTypes) throws IOException {
+        addShaclToZip(zip,
+                shaclMapper.mapFromAssetTypes(assetTypes),
+                ShaclService.DEPENDENCIES_FOLDER + "/" + ShaclService.TYPES_FILENAME);
+    }
+
+    private void addDependencyFields(ZipOutputStream zip, Set<Field> fields) throws IOException {
+        addShaclToZip(zip,
+                shaclMapper.mapFromFields(fields),
+                ShaclService.DEPENDENCIES_FOLDER + "/" + ShaclService.FIELDS_FILENAME);
+        addDependenciyUnits(zip, ShaclHelper.findUnitDependencies(fields));
+    }
+
+    private void addDependenciyUnits(ZipOutputStream zip, Set<Unit> units) throws IOException {
+        addShaclToZip(zip,
+                shaclMapper.mapFromUnits(units),
+                ShaclService.DEPENDENCIES_FOLDER + "/" + ShaclService.UNITS_FILENAME);
+    }
+
+    public void addFolderToZip(ZipOutputStream zip, String folder) throws IOException {
+        ZipEntry entry = new ZipEntry(folder);
+        entry.setComment("All needed dependencies");
+        zip.putNextEntry(entry);
+    }
+
+    private void addShaclToZip(ZipOutputStream zip, ShaclShape shape, String filename)
+            throws IOException {
+        ZipEntry entry = new ZipEntry(filename);
+        zip.putNextEntry(entry);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ShaclWriter.out(os, shape, ShaclPrefixes.getDefaultPrefixes());
+        zip.write(os.toByteArray());
+    }
+
+    private void addShaclToZip(ZipOutputStream zip, Set<ShaclShape> shapes, String filename) throws IOException {
+        ZipEntry entry = new ZipEntry(filename);
+        zip.putNextEntry(entry);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ShaclWriter.out(os, shapes, ShaclPrefixes.getDefaultPrefixes());
+        os.close();
+        zip.write(os.toByteArray());
     }
 
 }

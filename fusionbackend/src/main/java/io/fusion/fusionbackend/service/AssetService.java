@@ -233,6 +233,12 @@ public class AssetService {
                 fieldInstance.setGlobalId(fieldInstanceService.generateGlobalId(fieldInstance));
             }
         }
+        if (persistedAsset.getExternalName() == null || persistedAsset.getExternalName().isEmpty()) {
+            persistedAsset.setExternalName(ngsiLdSerializer.generateUrn(asset));
+        }
+        persistedAsset = assetRepository.save(persistedAsset);
+
+
         return persistedAsset;
     }
 

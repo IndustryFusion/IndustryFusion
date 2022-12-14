@@ -13,7 +13,7 @@
  * under the License.
  */
 
-package io.fusion.fusionbackend.service.ngsilj;
+package io.fusion.fusionbackend.service.ngsild;
 
 import io.fusion.fusionbackend.model.Asset;
 import jakarta.json.Json;

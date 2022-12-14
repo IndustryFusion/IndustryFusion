@@ -18,20 +18,25 @@ package io.fusion.fusionbackend.rest.factorymanager;
 import com.apicatalog.jsonld.http.media.MediaType;
 import io.fusion.fusionbackend.dto.AssetDetailsDto;
 import io.fusion.fusionbackend.dto.AssetDto;
+import io.fusion.fusionbackend.dto.ImportResultDto;
 import io.fusion.fusionbackend.dto.mappers.AssetDetailsMapper;
 import io.fusion.fusionbackend.dto.mappers.AssetMapper;
 import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.rest.annotations.IsFactoryUser;
 import io.fusion.fusionbackend.service.AssetService;
+import io.fusion.fusionbackend.service.export.FactoryImportExportService;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,14 +48,17 @@ public class FactoryAssetRestService {
     private final AssetService assetService;
     private final AssetMapper assetMapper;
     private final AssetDetailsMapper assetDetailsMapper;
+    private final FactoryImportExportService factoryImportExportService;
 
     @Autowired
     public FactoryAssetRestService(AssetService assetService,
                                    AssetMapper assetMapper,
-                                   AssetDetailsMapper assetDetailsMapper) {
+                                   AssetDetailsMapper assetDetailsMapper,
+                                   FactoryImportExportService factoryImportExportService) {
         this.assetService = assetService;
         this.assetMapper = assetMapper;
         this.assetDetailsMapper = assetDetailsMapper;
+        this.factoryImportExportService = factoryImportExportService;
     }
 
     @GetMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/assets")
@@ -115,7 +123,7 @@ public class FactoryAssetRestService {
 
     @DeleteMapping(path = "/companies/{companyId}/assets/{assetId}")
     public void deleteAsset(@PathVariable final Long companyId,
-                                        @PathVariable final Long assetId) {
+                            @PathVariable final Long assetId) {
         assetService.deleteAsset(companyId, assetId);
     }
 
@@ -130,9 +138,9 @@ public class FactoryAssetRestService {
 
     @PutMapping(path = "/companies/{companyId}/factorysites/{factorySiteId}/rooms/{roomId}/assets/assign")
     public Set<AssetDto> assignAssetsToRoom(@PathVariable final Long companyId,
-                                       @PathVariable final Long factorySiteId,
-                                       @PathVariable final Long roomId,
-                                       @RequestBody final Asset[] assets) {
+                                            @PathVariable final Long factorySiteId,
+                                            @PathVariable final Long roomId,
+                                            @RequestBody final Asset[] assets) {
         return assetMapper.toDtoSet(assetService.moveAssetsToRoom(companyId, factorySiteId, roomId, assets), false);
     }
 
@@ -169,4 +177,14 @@ public class FactoryAssetRestService {
         // TODO Open: what the factory manager can change on an asset
         return assetMapper.toDto(assetService.updateAsset(assetMapper.toEntity(assetDto)), false);
     }
+
+    @PostMapping(path = "/companies/{companyId}/assets/import/ngsild")
+    public ImportResultDto importAssetFromNgsiLd(@PathVariable final Long companyId,
+                                                 @RequestParam MultipartFile file)
+            throws IOException, ParseException {
+        // TODO Open: what the factory manager can change on an asset
+        return factoryImportExportService.importAsset(file, companyId);
+    }
+
+
 }

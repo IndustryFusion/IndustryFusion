@@ -15,22 +15,43 @@
 
 package io.fusion.fusionbackend.service.shacl;
 
-import io.fusion.fusionbackend.model.Asset;
+import io.fusion.fusionbackend.model.AssetSeries;
+import io.fusion.fusionbackend.model.AssetType;
+import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.Field;
+import io.fusion.fusionbackend.model.FieldTarget;
+import io.fusion.fusionbackend.model.Unit;
+import io.fusion.fusionbackend.model.shacl.enums.NameSpaces;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ShaclHelper {
+
+    public static String createFieldIri(Field field) {
+
+        return NameSpaces.FIELD.getPath() + escapeTurtleObjectName(field.getName());
+    }
+
+    public static String createUnitIri(Unit unit) {
+        return NameSpaces.UNIT.getPath() + escapeTurtleObjectName(unit.getName());
+    }
+
+    public static String createAssetTypeIri(AssetType assetType) {
+        return NameSpaces.ASSET_TYPE.getPath() + escapeTurtleObjectName(assetType.getName());
+    }
 
     public interface LambdaWrapper<T> {
         void execute(T shape);
     }
 
-    public static String createIriIfNeeded(String candidate, String defaultPrefix) {
+    public static String createIriIfNeeded(String candidate) {
         return isIri(candidate)
                 ? escapeTurtleObjectName(candidate)
-                : defaultPrefix + escapeTurtleObjectName(candidate);
+                : NameSpaces.IF.getPath() + escapeTurtleObjectName(candidate);
     }
 
     public static boolean isIri(String candidate) {
@@ -46,22 +67,16 @@ public class ShaclHelper {
     }
 
     public static String escapeTurtleObjectName(String object) {
-        AtomicBoolean first = new AtomicBoolean(true);
-        return Arrays.stream(object
-                .replaceAll("[<\"'=;()>:?.*]", "")
-                .replace(" ", "_")
-                .split("_"))
-                .map(fragment -> !first.getAndSet(false)
-                        ? ShaclHelper.toCamelCase(fragment)
-                        : fragment)
-                .collect(Collectors.joining());
+        return toCamelCase(object.replaceAll("[<\"'=;()>:?.*]", "").replaceAll("_", " "));
     }
 
-    public static String toCamelCase(String fragment) {
-        return fragment.length() > 1
-                ? fragment.substring(0, 1).toUpperCase()
-                + fragment.substring(1)
-                : fragment;
+    public static String toCamelCase(String value) {
+        return Arrays.stream(value.split(" "))
+                .map(fragment -> fragment.length() > 1
+                        ? fragment.substring(0, 1).toUpperCase()
+                        + fragment.substring(1)
+                        : fragment)
+                .collect(Collectors.joining());
     }
 
     public static String escapeChars(String charSequence, String text) {
@@ -71,15 +86,68 @@ public class ShaclHelper {
         return text;
     }
 
-    public static String createAssetIriWithSerial(Asset asset, String defaultPrefix) {
-        return ShaclHelper.createIriIfNeeded(asset.getName(), defaultPrefix) + "-" + (
-                asset.getSerialNumber() != null && !asset.getSerialNumber().isEmpty()
-                        ? asset.getSerialNumber()
-                        : asset.getGlobalId());
-
+    public static Set<AssetType> findAssetTypeDependencies(Set<AssetTypeTemplate> assetTypeTemplates) {
+        Set<Long> keys = new HashSet<>();
+        Set<AssetType> assets = new HashSet<>();
+        assetTypeTemplates
+                .forEach(att -> {
+                    if (!keys.contains(att.getAssetType().getId())) {
+                        assets.add(att.getAssetType());
+                    }
+                    findAssetTypeDependencies(att.getSubsystems()).forEach(atts -> {
+                                if (!keys.contains(atts.getId())) {
+                                    assets.add(att.getAssetType());
+                                }
+                            }
+                    );
+                });
+        return assets;
     }
 
-    public static String createAssetIriId(Long id, Asset asset, String defaultPrefix) {
-        return ShaclHelper.createAssetIriWithSerial(asset, defaultPrefix) + ":" + id;
+    public static Set<AssetTypeTemplate> findAssetSeriesDependencies(Set<AssetSeries> assetSeries) {
+        Set<Long> ids = new HashSet<>();
+        return assetSeries.stream()
+                .map(AssetSeries::getAssetTypeTemplate)
+                .filter(s -> !ids.contains(s.getId()))
+                .peek(s -> ids.add(s.getId()))
+                .collect(Collectors.toSet());
     }
+
+
+    public static Set<Field> findFieldDependencies(Set<AssetTypeTemplate> assetTypeTemplate) {
+        Set<Long> ids = new HashSet<>();
+        return assetTypeTemplate.stream()
+                .map(AssetTypeTemplate::getFieldTargets)
+                .flatMap(Collection::stream)
+                .map(FieldTarget::getField)
+                .filter(f -> !ids.contains(f.getId()))
+                .peek(f -> ids.add(f.getId()))
+                .collect(Collectors.toSet());
+    }
+
+    public static Set<Field> findFieldDependencies(AssetTypeTemplate assetTypeTemplate) {
+        Set<AssetTypeTemplate> templates = new HashSet<>();
+        templates.add(assetTypeTemplate);
+        return findFieldDependencies(templates);
+    }
+
+    public static Set<Unit> findUnitDependencies(Set<Field> fields) {
+        Set<Long> keys = new HashSet<>();
+        Set<Unit> units = new HashSet<>();
+        fields
+                .forEach(field -> {
+                    if (field.getUnit() != null && !keys.contains(field.getUnit().getId())) {
+                        units.add(field.getUnit());
+                    }
+                });
+        return units;
+    }
+
+    public static <T> Set<T> asSet(T t) {
+        Set<T> ts = new HashSet<>();
+        ts.add(t);
+        return ts;
+    }
+
+
 }

@@ -31,6 +31,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 @Entity
 @NamedEntityGraph(name = "Unit.allChildrenDeep",
@@ -74,5 +75,14 @@ public class Unit extends BaseEntity {
         if (sourceUnit.getQuantityType() != null) {
             setQuantityType(sourceUnit.getQuantityType());
         }
+    }
+
+    public static boolean equal(Unit a, Unit b) {
+
+        if (a == null || b == null) {
+            return false;
+        }
+        return Objects.equals(a.getName(), b.getName())
+                && Objects.equals(a.getVersion(), b.getVersion());
     }
 }

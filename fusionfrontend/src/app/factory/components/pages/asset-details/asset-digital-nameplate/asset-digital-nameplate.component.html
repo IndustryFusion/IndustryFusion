@@ -40,6 +40,7 @@ under the License.
       <app-nameplate-item label="Asset series">{{(asset$ | async)?.assetSeriesName}}</app-nameplate-item>
       <app-nameplate-item label="Manufacturer">{{(asset$ | async)?.manufacturer}}</app-nameplate-item>
       <app-nameplate-item label="Serial Number">{{(asset$ | async)?.serialNumber}}</app-nameplate-item>
+      <app-nameplate-item label="URN">{{(asset$ | async)?.externalName}}</app-nameplate-item>
       <app-nameplate-item
         label="Construction Date">{{(asset$ | async)?.constructionDate | date:'dd.MM.yyyy'}}</app-nameplate-item>
       <app-nameplate-item

@@ -16,7 +16,7 @@
 package io.fusion.fusionbackend.service.shacl;
 
 import io.fusion.fusionbackend.model.shacl.ShaclShape;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -37,14 +37,18 @@ public class ShaclWriter {
     }
 
     public static void out(OutputStream outputStream, Set<ShaclShape> shapes, ShaclPrefixes prefixes) {
-        PrintWriter printWriter = new PrintWriter(outputStream);
-        prefixes.writePrefixesAsShacl(printWriter);
-        printWriter.println("\n");
-        shapes.stream()
-                .sorted(Comparator.comparing(
-                        shape -> shape.getStringParameter(ShaclPaths.NAME))
-                )
-                .forEach(shape -> shape.writeNodeAsShacl(printWriter, prefixes, ""));
+        try (PrintWriter printWriter = new PrintWriter(outputStream)) {
+            prefixes.writePrefixesAsShacl(printWriter);
+            printWriter.println("\n");
+            shapes.stream()
+                    .sorted(Comparator.comparing(
+                            shape -> shape.getStringParameter(ShaclKeys.NAME))
+                    )
+                    .forEach(shape -> shape.writeNodeAsShacl(printWriter, prefixes, ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
 }

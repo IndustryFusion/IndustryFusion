@@ -32,6 +32,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -78,5 +79,26 @@ public class QuantityType extends BaseEntity {
         if (sourceField.getBaseUnit() != null) {
             setBaseUnit(sourceField.getBaseUnit());
         }
+    }
+
+    public static boolean equal(QuantityType a, QuantityType b) {
+
+        if (a == null || b == null) {
+            return false;
+        }
+        return Objects.equals(a.getName(), b.getName())
+                && Objects.equals(a.getVersion(), b.getVersion());
+    }
+
+    @Override
+    public String toString() {
+        return "QuantityType{"
+                + "units=" + units
+                + ", baseUnit=" + baseUnit
+                + ", name='" + name + '\''
+                + ", description='" + description + '\''
+                + ", label='" + label + '\''
+                + ", dataType=" + dataType
+                + '}';
     }
 }

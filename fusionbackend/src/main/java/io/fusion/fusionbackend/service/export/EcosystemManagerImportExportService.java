@@ -15,11 +15,9 @@
 
 package io.fusion.fusionbackend.service.export;
 
-import io.fusion.fusionbackend.config.ShaclConfig;
 import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
-import io.fusion.fusionbackend.model.shacl.ShaclShape;
 import io.fusion.fusionbackend.service.AssetTypeService;
 import io.fusion.fusionbackend.service.AssetTypeTemplateService;
 import io.fusion.fusionbackend.service.FieldService;
@@ -28,8 +26,6 @@ import io.fusion.fusionbackend.service.UnitService;
 import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyUtil;
 import io.fusion.fusionbackend.service.shacl.ShaclBuilder;
-import io.fusion.fusionbackend.service.shacl.ShaclPrefixes;
-import io.fusion.fusionbackend.service.shacl.ShaclUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +66,6 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
     private final ModelRepoSyncService modelRepoSyncService;
     private final OntologyBuilder ontologyBuilder;
     private final ShaclBuilder shaclBuilder;
-    private final ShaclConfig shaclConfig;
 
     @Autowired
     public EcosystemManagerImportExportService(UnitService unitService,
@@ -79,8 +74,7 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
                                                AssetTypeTemplateService assetTypeTemplateService,
                                                ModelRepoSyncService modelRepoSyncService,
                                                OntologyBuilder ontologyBuilder,
-                                               ShaclBuilder shaclBuilder,
-                                               ShaclConfig shaclConfig) {
+                                               ShaclBuilder shaclBuilder) {
         this.unitService = unitService;
         this.fieldService = fieldService;
         this.assetTypeService = assetTypeService;
@@ -88,7 +82,6 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         this.modelRepoSyncService = modelRepoSyncService;
         this.ontologyBuilder = ontologyBuilder;
         this.shaclBuilder = shaclBuilder;
-        this.shaclConfig = shaclConfig;
     }
 
     public void exportEntitiesToStreamAsZip(final OutputStream responseOutputStream) throws IOException {
@@ -192,18 +185,10 @@ public class EcosystemManagerImportExportService extends BaseZipImportExport {
         OntologyUtil.writeOwlOntologyModelToStreamUsingJena(model, outputStream);
     }
 
-    public void exportShaclModelToStream(OutputStream outputStream) {
-        Set<ShaclShape> shapes = shaclBuilder.buildAssetTypeTemplatesShacl();
-        ShaclUtil.writeShaclShapeToStream(shapes, ShaclPrefixes.getDefaultPrefixes()
-                .addPrefix(shaclConfig.getAdditionalPrefixes()), outputStream);
-    }
-
-    public void exportShaclModelToStream(OutputStream outputStream, Long id) {
-        ShaclShape shapes = shaclBuilder.buildAssetTypeTemplatesShacl(
+    public void exportAssetTypeTemplatePackage(OutputStream outputStream, Long id) throws IOException {
+        shaclBuilder.buildAssetTypeTemplatePackage(outputStream,
                 assetTypeTemplateService.getAssetTypeTemplate(id, true)
         );
-        ShaclUtil.writeShaclShapeToStream(shapes, ShaclPrefixes.getDefaultPrefixes()
-                .addPrefix(shaclConfig.getAdditionalPrefixes()), outputStream);
     }
 
     public SyncResultDto syncWithModelRepo() {

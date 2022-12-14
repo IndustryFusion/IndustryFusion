@@ -18,6 +18,7 @@ package io.fusion.fusionbackend.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Sets;
 import io.fusion.fusionbackend.dto.AssetSeriesDto;
 import io.fusion.fusionbackend.dto.FieldSourceDto;
 import io.fusion.fusionbackend.dto.ProcessingResultDto;
@@ -453,5 +454,9 @@ public class AssetSeriesService {
         Set<FieldSourceDto> sortedFieldSourceDtos =
                 new LinkedHashSet<>(BaseZipImportExport.toSortedList(assetSeriesDto.getFieldSources()));
         assetSeriesDto.setFieldSources(sortedFieldSourceDtos);
+    }
+
+    public Set<AssetSeries> getAllAssetSeries() {
+        return Sets.newHashSet(assetSeriesRepository.findAll(AssetSeriesRepository.DEFAULT_SORT));
     }
 }

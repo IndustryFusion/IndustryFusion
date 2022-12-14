@@ -51,16 +51,10 @@ public class EcosystemManagerRestService {
         ecosystemManagerImportExportService.exportOntologyModelToStream(response.getOutputStream());
     }
 
-    @GetMapping(path = "/eco/shaclexport")
-    public void getAsSclExport(HttpServletResponse response) throws IOException {
-        response.addHeader("Content-Disposition", "attachment;filename=\"ecosystem_manager.ttl\"");
-        ecosystemManagerImportExportService.exportShaclModelToStream(response.getOutputStream());
-    }
-
-    @GetMapping(path = "/eco/{id}/shaclexport")
+    @GetMapping(path = "/eco/template/export/{id}")
     public void getAsSclExportById(HttpServletResponse response, @PathVariable Long id) throws IOException {
-        response.addHeader("Content-Disposition", "attachment;filename=\"ecosystem_manager.ttl\"");
-        ecosystemManagerImportExportService.exportShaclModelToStream(response.getOutputStream(), id);
+        response.addHeader("Content-Disposition", "attachment;filename=\"assetTypeTemplate_" + id + ".zip\"");
+        ecosystemManagerImportExportService.exportAssetTypeTemplatePackage(response.getOutputStream(), id);
     }
 
     @PutMapping(path = "/synctomodelrepo")

@@ -15,7 +15,7 @@
 
 package io.fusion.fusionbackend.rest.fleetmanager;
 
-import io.fusion.fusionbackend.dto.ProcessingResultDto;
+import io.fusion.fusionbackend.dto.ImportResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
 import io.fusion.fusionbackend.rest.annotations.IsFleetUser;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
@@ -70,12 +70,12 @@ public class FleetManagerRestService {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(path = "/fleet/{companyId}/shaclimport")
-    public ProcessingResultDto importAssetSeriesShacl(
+    @PostMapping(path = "/fleet/{companyId}/template/import")
+    public ImportResultDto importAssetSeriesShacl(
             HttpServletResponse response,
             @RequestParam MultipartFile file,
             @PathVariable final Long companyId) throws IOException {
-        return fleetManagerImportExportService.importEntitiesFromShacl(file, companyId);
+        return fleetManagerImportExportService.importAssetTypeTemplate(file, companyId);
     }
 
     @GetMapping(path = "/fleet/{companyId}/asset/export/{id}")
@@ -84,7 +84,18 @@ public class FleetManagerRestService {
             @PathVariable final Long companyId,
             @PathVariable final Long id) throws IOException {
         response.setContentType("application/zip");
-        response.addHeader("Content-Disposition", "attachment;filename=\"asset_" + id + ".json\"");
-        fleetManagerImportExportService.exportAssetShaclAndNgsiLdAsZip(response.getOutputStream(), id);
+        response.addHeader("Content-Disposition", "attachment;filename=\"asset_" + id + ".zip\"");
+        fleetManagerImportExportService.exportAssetPackageAsZip(response.getOutputStream(), id);
     }
+
+    @GetMapping(path = "/fleet/{companyId}/series/export/{id}")
+    public void exportAssetSeriesShacl(
+            HttpServletResponse response,
+            @PathVariable final Long companyId,
+            @PathVariable final Long id) throws IOException {
+        response.setContentType("text/plain");
+        response.addHeader("Content-Disposition", "attachment;filename=\"assetseries_" + id + ".ttl\"");
+        fleetManagerImportExportService.exportSeriesPackage(response.getOutputStream(), companyId, id);
+    }
+
 }

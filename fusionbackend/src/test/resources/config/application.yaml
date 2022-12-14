@@ -41,7 +41,3 @@ keycloak:
   bearer-only: true
   use-resource-role-mappings: true
 
-logging:
-  level:
-    root: INFO
-

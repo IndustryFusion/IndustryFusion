@@ -15,29 +15,8 @@
 
 package io.fusion.fusionbackend.model.shacl.enums;
 
-import java.util.Arrays;
-import java.util.Optional;
+public interface BasicKeys {
 
-public enum ShaclNodeKind {
-
-    UNSET(""),
-    IRI(NameSpaces.SHACL.getPath() + "IRI"),
-    LITERAL(NameSpaces.SHACL.getPath() + "Literal"),
-    BLANK_NODE(NameSpaces.SHACL.getPath() + "BlankNode");
-
-    private String path;
-
-    public String getPath() {
-        return path;
-    }
-
-    ShaclNodeKind(String path) {
-        this.path = path;
-    }
-
-    public static Optional<ShaclNodeKind> asEnum(String uri) {
-        return Arrays.stream(ShaclNodeKind.values())
-                .filter(candidate -> candidate.getPath().equalsIgnoreCase(uri)).findAny();
-    }
+    String getPath();
 
 }

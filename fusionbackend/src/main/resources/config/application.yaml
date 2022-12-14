@@ -59,13 +59,6 @@ fusionbackend:
   modelrepo-url: git@github.com:IndustryFusion/fusionmodels.git
   modelrepo-privatekey-path: C:\Users\mreuder/.ssh/id_rsa
 
-shacl:
-  default-prefix: https://www.industry-fusion.com/
-  additional-prefixes:
-    ifs: https://www.industry-fusion.com/schema#
-    ift: https://www.industry-fusion.com/types#
-    iff: https://www.industry-fusion.com/
-
 ngsi-broker:
   server-url: "http://localhost:9090"
 

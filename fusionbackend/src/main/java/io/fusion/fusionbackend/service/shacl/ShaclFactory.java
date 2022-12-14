@@ -16,10 +16,14 @@
 package io.fusion.fusionbackend.service.shacl;
 
 import io.fusion.fusionbackend.model.shacl.ShaclShape;
-import io.fusion.fusionbackend.model.shacl.enums.BasicPaths;
-import io.fusion.fusionbackend.model.shacl.enums.IfsPaths;
-import io.fusion.fusionbackend.model.shacl.enums.NgsiLdPaths;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+import io.fusion.fusionbackend.model.shacl.enums.AssetTypeKeys;
+import io.fusion.fusionbackend.model.shacl.enums.BasicKeys;
+import io.fusion.fusionbackend.model.shacl.enums.FieldKeys;
+import io.fusion.fusionbackend.model.shacl.enums.IfsKeys;
+import io.fusion.fusionbackend.model.shacl.enums.NgsiLdKeys;
+import io.fusion.fusionbackend.model.shacl.enums.QuantityTypeKeys;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
+import io.fusion.fusionbackend.model.shacl.enums.UnitKeys;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
@@ -39,7 +43,7 @@ public class ShaclFactory {
 
         private final Node subject;
         private boolean rootNode = true;
-        private final Map<BasicPaths, Node> attributes = new HashMap<>();
+        private final Map<BasicKeys, Node> attributes = new HashMap<>();
         private final Set<ShaclFactoryTreeNode> properties = new HashSet<>();
 
         public ShaclFactoryTreeNode(Node subject) {
@@ -58,15 +62,19 @@ public class ShaclFactory {
             rootNode = false;
         }
 
-        public Optional<Node> getAttribute(BasicPaths attribute) {
+        public Optional<Node> getAttribute(BasicKeys attribute) {
             return Optional.ofNullable(attributes.getOrDefault(attribute, null));
         }
 
         private void addAttribute(Node predicate, Node object) {
             if (predicate.isURI()) {
-                ShaclPaths.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
-                NgsiLdPaths.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
-                IfsPaths.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
+                AssetTypeKeys.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
+                FieldKeys.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
+                IfsKeys.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
+                NgsiLdKeys.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
+                QuantityTypeKeys.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
+                ShaclKeys.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
+                UnitKeys.asEnum(predicate.getURI()).ifPresent(e -> this.attributes.put(e, object));
             }
         }
 
@@ -94,13 +102,14 @@ public class ShaclFactory {
             return toString("");
         }
 
-        public Map<BasicPaths, Node> getAttributes() {
+        public Map<BasicKeys, Node> getAttributes() {
             return attributes;
         }
 
         public Set<ShaclFactoryTreeNode> getProperties() {
             return properties;
         }
+
     }
 
     public Set<ShaclShape> graphTriplesToShaclShapes(Graph triples) {
@@ -116,14 +125,14 @@ public class ShaclFactory {
     private void fillAttributes(Set<ShaclFactoryTreeNode> factoryNodes, Graph triples) {
         factoryNodes.forEach(subject -> triples.stream()
                 .filter(triple -> subject.getSubject().equals(triple.getSubject()))
-                .filter(triple -> !ShaclPaths.PROPERTY.getPath().equalsIgnoreCase(triple.getPredicate().toString()))
+                .filter(triple -> !ShaclKeys.PROPERTY.getPath().equalsIgnoreCase(triple.getPredicate().toString()))
                 .forEach(triple -> subject.addAttribute(triple.getPredicate(), triple.getObject())));
     }
 
     private void fillProperties(Set<ShaclFactoryTreeNode> factoryNodes, Graph triples) {
         factoryNodes.forEach(subject -> triples.stream()
                 .filter(triple -> subject.getSubject().equals(triple.getSubject()))
-                .filter(triple -> ShaclPaths.PROPERTY.getPath().equalsIgnoreCase(triple.getPredicate().toString()))
+                .filter(triple -> ShaclKeys.PROPERTY.getPath().equalsIgnoreCase(triple.getPredicate().toString()))
                 .forEach(triple ->
                         factoryNodes.stream()
                                 .filter(node -> node.getSubject().equals(triple.getObject()))
@@ -137,5 +146,4 @@ public class ShaclFactory {
                 .map(ShaclFactoryTreeNode::new)
                 .collect(Collectors.toSet());
     }
-
 }

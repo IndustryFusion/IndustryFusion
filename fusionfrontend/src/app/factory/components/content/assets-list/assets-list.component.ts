@@ -43,6 +43,9 @@ import { IFAlertSeverity } from '../../../../core/store/ngsi-ld/alerta/alerta.mo
 import { AlertaQuery } from '../../../../core/store/ngsi-ld/alerta/alerta.query';
 import { IfApiService } from '../../../../core/services/api/if-api.service';
 import { AssetListType } from '../../../../shared/models/asset-list-type.model';
+import { UploadDownloadService } from '../../../../shared/services/upload-download.service';
+import { environment } from '../../../../../environments/environment';
+import { CompanyQuery } from '../../../../core/store/company/company.query';
 
 @Component({
   selector: 'app-assets-list',
@@ -98,16 +101,16 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   private onboardingDialogRef: DynamicDialogRef;
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets' };
+    { [k: string]: string } = {'=0': 'No assets', '=1': '# Asset', other: '# Assets'};
 
   ItemOptionsMenuType = ItemOptionsMenuType;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
-  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'},
-    { filterType: FilterType.STATUSFILTER, columnName: 'Status', attributeToBeFiltered: 'status'}];
+  tableFilters: FilterOption[] = [{filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category'},
+    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer'},
+    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName'},
+    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'},
+    {filterType: FilterType.STATUSFILTER, columnName: 'Status', attributeToBeFiltered: 'status'}];
 
   constructor(
     private assetService: AssetService,
@@ -117,7 +120,9 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private assetDetailMenuService: AssetDetailMenuService,
-    public ifApiService: IfApiService) {
+    public ifApiService: IfApiService,
+    private companyQuery: CompanyQuery,
+    private uploadDownloadService: UploadDownloadService) {
   }
 
   private static refreshPage(): void {
@@ -127,10 +132,10 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.assetDetailsForm = this.assetDetailMenuService.createAssetDetailsForm();
     this.rowCount = TableHelper.getValidRowCountFromUrl(this.rowCount, this.activatedRoute.snapshot, this.router);
-    this.statusType =  RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
+    this.statusType = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
 
     if (this.type === AssetListType.SUBSYSTEMS) {
-      this.titleMapping = { '=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems' };
+      this.titleMapping = {'=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems'};
     }
 
     this.updateAlertSeverityOnNewAlerts();
@@ -217,7 +222,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       },
       header: 'Select Asset for Onboarding',
       width: '70%',
-      contentStyle: { 'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%' },
+      contentStyle: {'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%'},
     });
 
     this.onboardingDialogRef.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {
@@ -289,8 +294,8 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
           this.filteredFactoryAssets.map(a => a.globalId).filter(filteredAssetGlobalId =>
             this.factoryAssetFilteredByStatus.map(a => a.globalId)
               .includes(filteredAssetGlobalId))
-          .includes(searchedAssetGlobalId))
-        .includes(asset.globalId)
+            .includes(searchedAssetGlobalId))
+          .includes(asset.globalId)
       );
 
     this.updateTree();
@@ -385,5 +390,23 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       this.ifApiService.uploadZipFileForFactoryManagerImport(this.company.id, this.factorySite.id, selectedZipFile)
         .subscribe(() => AssetsListComponent.refreshPage());
     }
+  }
+
+  onImportNgsiLd() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('change', (event: Event) => {
+      const file = (event.target as HTMLInputElement).files[0];
+      const companyId = this.companyQuery.getActiveId();
+      this.uploadDownloadService.uploadFile(`${environment.apiUrlPrefix}/companies/${companyId}/assets/import/ngsild`, file,
+        () => AssetsListComponent.refreshPage());
+    });
+    input.click();
+  }
+
+  exportNgsiLd() {
+    const companyId = this.companyQuery.getActiveId();
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${this.activeListItem.id}`,
+      `Asset_${this.activeListItem.name}.zip`);
   }
 }

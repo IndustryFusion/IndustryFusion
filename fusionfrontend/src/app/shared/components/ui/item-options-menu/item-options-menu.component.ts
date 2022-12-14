@@ -30,6 +30,7 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
   @Input() createItemName: string;
   @Input() assignItemText: string;
   @Input() updateItemText: string;
+  @Input() exportPackageItemText: string;
   @Input() download1ItemText: string;
   @Input() download2ItemText: string;
   @Input() showInline = true;
@@ -40,6 +41,7 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
   @Output() editItem = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
   @Output() assignItem = new EventEmitter<void>();
+  @Output() exportPackage = new EventEmitter<void>();
   @Output() downloadItem1 = new EventEmitter<void>();
   @Output() downloadItem2 = new EventEmitter<void>();
 
@@ -91,6 +93,10 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
     this.downloadItem2.emit();
   }
 
+  onExportPackage() {
+    this.exportPackage.emit();
+  }
+
   private generateMenuItems(): MenuItem[] {
     const editItem = {
       label: 'Edit', icon: 'pi pi-fw pi-pencil', command: (_) => {
@@ -129,6 +135,14 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
       label: this.assignItemText ? 'Assign ' + this.assignItemText : 'Assign', icon: 'pi pi-fw pi-sign-in',
       command: (_) => {
         this.onAssignClick();
+      }
+    };
+
+    const exportPackage = {
+      label: this.exportPackageItemText ? 'Export ' + this.exportPackageItemText : 'Export package',
+      icon: 'pi pi-fw pi-cloud-download',
+      command: (_) => {
+        this.onExportPackage();
       }
     };
 
@@ -173,6 +187,9 @@ export class ItemOptionsMenuComponent implements OnInit, OnChanges {
             break;
           case ItemOptionsMenuType.ASSIGN:
             menuActions.push(assignItem);
+            break;
+          case ItemOptionsMenuType.EXPORT_PACKAGE:
+            menuActions.push(exportPackage);
             break;
           case ItemOptionsMenuType.DOWNLOAD1:
             menuActions.push(downloadItem1);

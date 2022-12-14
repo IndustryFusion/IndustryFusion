@@ -18,7 +18,7 @@ under the License.
   <app-create-button (createItem)="createAssetSeries()" [text]="'Create Asset Series'"
   class="outer-button"></app-create-button>
   <app-upload-button (createItem)="onImportShacl()" class="outer-button"
-                     text="Import SHACL"></app-upload-button>
+                     text="Import Template Package"></app-upload-button>
 
 </div>
 
@@ -61,10 +61,15 @@ under the License.
         <app-item-options-menu (createItem)="createAssetFromAssetSeries(assetSeries.id)"
                                (deleteItem)="showDeleteDialog()"
                                (editItem)="editAssetSeries(assetSeries.id)"
-                               (downloadItem1)="downloadAssetSeriesAsOwl(assetSeries)" (downloadItem2)="downloadAssetSeriesAsJson(assetSeries)"
-                               [actions]="menuType" [download1ItemText]="'OWL'" [download2ItemText]="'JSON'"
+                               (downloadItem1)="downloadAssetSeriesAsOwl(assetSeries)"
+                               (downloadItem2)="downloadAssetSeriesAsJson(assetSeries)"
+                               (exportPackage)="exportPackage(assetSeries)"
+                               [actions]="menuType" [download1ItemText]="'OWL'"
+                               [download2ItemText]="'JSON'"
+                               [exportPackageItemText]="'Series Package'"
                                [createItemName]="'Asset'"
-                               class="column-visibility">
+                               class="column-visibility"
+        >
         </app-item-options-menu>
       </td>
     </tr>

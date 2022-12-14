@@ -21,12 +21,15 @@ import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.FieldInstance;
 import io.fusion.fusionbackend.model.enums.FieldType;
+import io.fusion.fusionbackend.service.shacl.ShaclHelper;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.jena.shared.SyntaxError;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -35,18 +38,18 @@ import java.util.stream.Collectors;
 public class AssetYamlExportService {
 
     public static final String YAML_CONTENT = "# Licensed under the Apache License, Version 2.0 (the \"License\");\n"
-                                              + "# you may not use this file except in compliance with the License.\n"
-                                              + "# You may obtain a copy of the License at\n"
-                                              + "#\n"
-                                              + "#   http://www.apache.org/licenses/LICENSE-2.0\n"
-                                              + "#\n"
-                                              + "# Unless required by applicable law or agreed to in writing,\n"
-                                              + "# software distributed under the License is distributed on an\n"
-                                              + "# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n"
-                                              + "# KIND, either express or implied.  See the License for the\n"
-                                              + "# specific language governing permissions and limitations\n"
-                                              + "# under the License.\n"
-                                              + "\n";
+            + "# you may not use this file except in compliance with the License.\n"
+            + "# You may obtain a copy of the License at\n"
+            + "#\n"
+            + "#   http://www.apache.org/licenses/LICENSE-2.0\n"
+            + "#\n"
+            + "# Unless required by applicable law or agreed to in writing,\n"
+            + "# software distributed under the License is distributed on an\n"
+            + "# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n"
+            + "# KIND, either express or implied.  See the License for the\n"
+            + "# specific language governing permissions and limitations\n"
+            + "# under the License.\n"
+            + "\n";
 
     @Getter
     @Setter
@@ -108,6 +111,36 @@ public class AssetYamlExportService {
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(outputStream, fusiondataservice);
         return outputStream.toByteArray();
+    }
+
+    public void createIriYamlFile(OutputStream stream, Asset asset, String defaultPrefix) {
+        try {
+            FusionDataService fusiondataservice = new FusionDataService();
+            fusiondataservice.name = asset.getExternalName();
+            fusiondataservice.connectinString = asset.getConnectionString();
+            fusiondataservice.dataServiceType = getDataServiceType(asset.getAssetSeries());
+            fusiondataservice.jobSpecs = new JobSpecs();
+            fusiondataservice.jobSpecs.betriebsdaten = new Betriebsdaten();
+
+            ArrayList<Field> fields = (ArrayList<Field>) asset.getFieldInstances().stream()
+                    .filter(fieldInstance -> fieldInstance
+                            .getFieldSource()
+                            .getFieldTarget()
+                            .getFieldType()
+                            .equals(FieldType.METRIC))
+                    .map(fieldInstance ->
+                            new Field(fieldInstance.getFieldSource().getRegister(),
+                                    ShaclHelper.createIriIfNeeded(fieldInstance.getFieldSource().getName())))
+                    .collect(Collectors.toList());
+
+            fusiondataservice.jobSpecs.betriebsdaten.fields = fields.toArray(new Field[fields.size()]);
+            stream.write(YAML_CONTENT.getBytes(StandardCharsets.UTF_8));
+            new ObjectMapper(new YAMLFactory())
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValue(stream, fusiondataservice);
+        } catch (Exception e) {
+            throw new SyntaxError("Failed to create application.yaml: " + e.getMessage());
+        }
     }
 
     enum DataServiceType {

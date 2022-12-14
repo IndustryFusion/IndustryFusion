@@ -35,6 +35,8 @@ import { ConfirmationService } from 'primeng/api';
 import { ImageService } from '../../../../../core/services/api/image.service';
 import { CompanyQuery } from '../../../../../core/store/company/company.query';
 import { ID } from '@datorama/akita';
+import { environment } from '../../../../../../environments/environment';
+import { UploadDownloadService } from '../../../../../shared/services/upload-download.service';
 
 @Component({
   selector: 'app-asset-details-info',
@@ -53,7 +55,7 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   assetIdOfImage: ID;
   assetImage: string;
 
-  dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE];
+  dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE, ItemOptionsMenuType.EXPORT_PACKAGE];
 
   constructor(private assetDetailMenuService: AssetDetailMenuService,
               private factoryResolver: FactoryResolver,
@@ -65,7 +67,8 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
               private routingLocation: Location,
               private confirmationService: ConfirmationService,
               private companyQuery: CompanyQuery,
-              private imageService: ImageService) {
+              private imageService: ImageService,
+              private uploadDownloadService: UploadDownloadService) {
   }
 
   ngOnInit() {
@@ -93,7 +96,8 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
 
   openEditDialog() {
     this.assetDetailMenuService.showEditDialog(this.assetWithFields, this.factorySite, this.factorySites, this.rooms,
-      () => { }, (details) => this.assetUpdated(details));
+      () => {
+      }, (details) => this.assetUpdated(details));
   }
 
   openDeleteDialog() {
@@ -143,5 +147,11 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
       const newRoutingLocation = currentUrlSeparated.slice(0, currentUrlSeparated.findIndex(elem => elem === 'assets') + 1);
       this.router.navigateByUrl(newRoutingLocation.join('/'));
     });
+  }
+
+  exportNgsiLd() {
+    const companyId = this.companyQuery.getActiveId();
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${this.assetWithFields.id}`,
+      `Asset_${this.assetWithFields.name}.zip`);
   }
 }

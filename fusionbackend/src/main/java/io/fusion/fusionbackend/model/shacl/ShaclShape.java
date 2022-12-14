@@ -15,8 +15,8 @@
 
 package io.fusion.fusionbackend.model.shacl;
 
-import io.fusion.fusionbackend.model.shacl.enums.BasicPaths;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+import io.fusion.fusionbackend.model.shacl.enums.BasicKeys;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
 import io.fusion.fusionbackend.service.shacl.ShaclPrefixes;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -26,42 +26,43 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class ShaclShape {
 
     protected static final String DEFAULT_INDENTATION = "    ";
-    protected final Map<BasicPaths, String> parameters = new HashMap<>();
+    protected final Map<BasicKeys, String> parameters = new HashMap<>();
     protected final Collection<ShaclShape> subShapes = new HashSet<>();
 
-    public ShaclShape addParameter(BasicPaths parameter, String value) {
+    public ShaclShape addParameter(BasicKeys parameter, String value) {
         if (value != null) {
             parameters.put(parameter, value);
         }
         return this;
     }
 
-    public ShaclShape addParameter(BasicPaths parameter, Integer value) {
+    public ShaclShape addParameter(BasicKeys parameter, Integer value) {
         if (value != null) {
             parameters.put(parameter, Integer.toString(value));
         }
         return this;
     }
 
-    public ShaclShape addParameter(BasicPaths parameter, Long value) {
+    public ShaclShape addParameter(BasicKeys parameter, Long value) {
         if (value != null) {
             parameters.put(parameter, Long.toString(value));
         }
         return this;
     }
 
-    public ShaclShape addParameter(BasicPaths parameter, Double value) {
+    public ShaclShape addParameter(BasicKeys parameter, Double value) {
         if (value != null) {
             parameters.put(parameter, Double.toString(value));
         }
         return this;
     }
 
-    public ShaclShape addParameter(BasicPaths parameter, Boolean value) {
+    public ShaclShape addParameter(BasicKeys parameter, Boolean value) {
         if (value != null) {
             parameters.put(parameter, Boolean.toString(value));
         }
@@ -96,7 +97,7 @@ public abstract class ShaclShape {
                 )
         );
         subShapes.stream()
-                .sorted(Comparator.comparing(parameter -> parameter.getIntParameter(ShaclPaths.ORDER)))
+                .sorted(Comparator.comparing(parameter -> parameter.getIntParameter(ShaclKeys.ORDER)))
                 .forEach(subShape -> subShape.writeNodeAsShacl(printWriter,
                         prefixes, indentation + DEFAULT_INDENTATION + DEFAULT_INDENTATION));
     }
@@ -123,26 +124,40 @@ public abstract class ShaclShape {
     @Override
     public String toString() {
         return "ShaclShape{"
-                + "subShapes="
-                + subShapes
+                + parameters.entrySet().stream()
+                .map(e -> "  " + e.getKey() + ": " + e.getValue() + "\n")
+                .collect(Collectors.joining())
                 + '}';
     }
 
-    public Integer getIntParameter(BasicPaths parameter) {
+    public Integer getIntParameter(BasicKeys parameter) {
         return getIntParameter(parameter, -1);
     }
 
-    public Integer getIntParameter(BasicPaths parameter, Integer defaultValue) {
+    public Integer getIntParameter(BasicKeys parameter, Integer defaultValue) {
         return Integer.parseInt(parameters.getOrDefault(parameter, Integer.toString(defaultValue)));
     }
 
-    public String getStringParameter(BasicPaths parameter) {
+    public String getStringParameter(BasicKeys parameter) {
         return getStringParameter(parameter, "");
     }
 
-    public String getStringParameter(BasicPaths parameter, String defaultValue) {
+    public String getStringParameter(BasicKeys parameter, String defaultValue) {
         String value = parameters.getOrDefault(parameter, defaultValue);
         return value == null ? null : value.replaceAll("^\"(.*)\"$", "$1");
     }
+
+    public boolean containsParameter(BasicKeys parameter) {
+        return parameters.containsKey(parameter);
+    }
+
+    public Double getDoubleParameter(BasicKeys parameter, Double defaultValue) {
+        return Double.parseDouble(parameters.getOrDefault(parameter, Double.toString(defaultValue)));
+    }
+
+    public Double getDoubleParameter(BasicKeys parameter) {
+        return getDoubleParameter(parameter, 0.0);
+    }
+
 
 }

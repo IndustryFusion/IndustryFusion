@@ -27,6 +27,7 @@ import io.fusion.fusionbackend.repository.FieldTargetRepository;
 import io.fusion.fusionbackend.service.export.BaseZipImportExport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,5 +138,9 @@ public class FieldTargetService {
         }
 
         return fieldTargetDtos;
+    }
+
+    public Set<FieldTarget> getAllFieldTargets() {
+        return fieldTargetRepository.findAll(Sort.unsorted());
     }
 }

@@ -24,9 +24,6 @@ under the License.
     </div>
     <app-create-button (createItem)="onCreate()" [text]="'Create Asset Type Template'"
                        class="create-btn"></app-create-button>
-    <app-download-button (createItem)="onExportShacl()" class="outer-button"
-                         text="Export SHACL"></app-download-button>
-
   </div>
 </div>
 
@@ -70,6 +67,8 @@ under the License.
       <td (click)="setActiveRow(assetTypeTemplate)" [style.width.%]="5">
         <app-item-options-menu (deleteItem)="showDeleteDialog()" (editItem)="onUpdate()"
                                (downloadItem1)="onDownload(true)" (downloadItem2)="onDownload(false)"
+                               (exportPackage)="onExportTemplate()"
+                               [exportPackageItemText]="'Template'"
                                [actions]="menuType" [download1ItemText]="'OWL'" [download2ItemText]="'JSON'"
                                class="column-visibility"></app-item-options-menu>
       </td>

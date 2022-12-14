@@ -22,8 +22,6 @@ under the License.
           published on<br>
           <label class="if-label">{{ assetTypeTemplate?.publishedDate | date:'dd.MM.yyyy' }}</label>
         </p>
-        <app-download-button (createItem)="onExportShacl()" class="outer-button"
-                             text="Export SHACL"></app-download-button>
         <button class="if-button-update" (click)="onUpdate()" *ngIf="assetTypeTemplate?.publicationState === PublicationState.DRAFT">
           <i class="pi pi-refresh" style="font-size: 0.7rem"></i> Update
         </button>

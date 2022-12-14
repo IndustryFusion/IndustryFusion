@@ -31,12 +31,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -112,4 +113,14 @@ public class Field extends BaseEntity {
             setOptions(sourceField.getOptions());
         }
     }
+
+    public static boolean equal(Field a, Field b) {
+
+        if (a == null || b == null) {
+            return false;
+        }
+        return Objects.equals(a.getName(), b.getName())
+                && Objects.equals(a.getVersion(), b.getVersion());
+    }
+
 }

@@ -35,6 +35,8 @@ import { AssetService } from '../../../../core/store/asset/asset.service';
 import { RoomQuery } from '../../../../core/store/room/room.query';
 import { ItemOptionsMenuType } from 'src/app/shared/components/ui/item-options-menu/item-options-menu.type';
 import { TableHelper } from '../../../../core/helpers/table-helper';
+import { environment } from '../../../../../environments/environment';
+import { UploadDownloadService } from '../../../../shared/services/upload-download.service';
 
 @Component({
   selector: 'app-rooms-list',
@@ -65,7 +67,7 @@ export class RoomsListComponent implements OnInit {
   oldRoomIds: ID[] = [];
 
   roomMapping:
-    { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms' };
+    { [k: string]: string } = {'=0': 'No room', '=1': '# Room', other: '# Rooms'};
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -83,7 +85,8 @@ export class RoomsListComponent implements OnInit {
               private roomQuery: RoomQuery,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private uploadDownloadService: UploadDownloadService) {
     this.factoryResolver.resolve(this.activatedRoute);
     this.factorySiteId = this.factorySiteQuery.getActiveId();
     this.factorySite$ = this.factoryResolver.factorySite$;
@@ -117,7 +120,7 @@ export class RoomsListComponent implements OnInit {
       this.rooms$ = this.factoryResolver.rooms$;
     }
 
-    this.rooms$.subscribe(rooms =>  {
+    this.rooms$.subscribe(rooms => {
       this.rooms = this.addFactorySideToRooms(rooms);
       this.initFactorySitesAndRoomsMap();
     });
@@ -126,8 +129,8 @@ export class RoomsListComponent implements OnInit {
   addFactorySideToRooms(rooms: Room[]): Room[] {
     if (this.rooms$ && this.factorySites) {
       const roomsWithFactorySite: Room[] = [];
-      rooms.forEach((room, index) =>  {
-        roomsWithFactorySite.push({ ...room });
+      rooms.forEach((room, index) => {
+        roomsWithFactorySite.push({...room});
         roomsWithFactorySite[index].factorySite = this.factorySites.find(factorySite => factorySite.id === room.factorySiteId);
       });
       return this.sortRoomsByFactorySiteByDefault(roomsWithFactorySite);
@@ -169,7 +172,7 @@ export class RoomsListComponent implements OnInit {
         editMode: false,
       },
       header: 'Add new room to factory',
-      contentStyle: { 'padding-top': '1.5%' }
+      contentStyle: {'padding-top': '1.5%'}
     });
 
     ref.onClose.subscribe((room: Room) => {
@@ -193,7 +196,7 @@ export class RoomsListComponent implements OnInit {
         editMode: true,
       },
       header: 'Edit room',
-      contentStyle: { 'padding-top': '1.5%' }
+      contentStyle: {'padding-top': '1.5%'}
     });
 
     ref.onClose.subscribe((room: Room) => {
@@ -308,5 +311,11 @@ export class RoomsListComponent implements OnInit {
 
   updateRowCountInUrl(rowCount: number): void {
     TableHelper.updateRowCountInUrl(rowCount, this.router);
+  }
+
+  exportNgsiLd() {
+    const companyId = this.companyQuery.getActiveId();
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${this.activeListItem.id}`,
+      `Asset_${this.activeListItem.name}.zip`);
   }
 }

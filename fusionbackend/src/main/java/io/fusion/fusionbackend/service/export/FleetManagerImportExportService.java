@@ -15,25 +15,24 @@
 
 package io.fusion.fusionbackend.service.export;
 
-import io.fusion.fusionbackend.config.ShaclConfig;
+import io.fusion.fusionbackend.dto.ImportResultDto;
 import io.fusion.fusionbackend.dto.ProcessingResultDto;
 import io.fusion.fusionbackend.dto.SyncResultDto;
+import io.fusion.fusionbackend.model.Asset;
 import io.fusion.fusionbackend.model.AssetSeries;
-import io.fusion.fusionbackend.model.shacl.ShaclShape;
+import io.fusion.fusionbackend.model.shacl.enums.NameSpaces;
 import io.fusion.fusionbackend.service.AssetSeriesService;
 import io.fusion.fusionbackend.service.AssetService;
 import io.fusion.fusionbackend.service.ModelRepoSyncService;
-import io.fusion.fusionbackend.service.ngsilj.NgsiLdBuilder;
+import io.fusion.fusionbackend.service.ngsild.NgsiLdBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyBuilder;
 import io.fusion.fusionbackend.service.ontology.OntologyUtil;
-import io.fusion.fusionbackend.service.shacl.ShaclFactory;
+import io.fusion.fusionbackend.service.shacl.ShaclBuilder;
 import io.fusion.fusionbackend.service.shacl.ShaclHelper;
 import io.fusion.fusionbackend.service.shacl.ShaclMapper;
-import io.fusion.fusionbackend.service.shacl.ShaclPrefixes;
-import io.fusion.fusionbackend.service.shacl.ShaclWriter;
+import io.fusion.fusionbackend.service.shacl.ShaclService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.ontology.OntModel;
-import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.shared.SyntaxError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +50,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,6 +59,8 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import static java.util.function.Predicate.not;
 
 @Service
 @Transactional
@@ -76,10 +79,10 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
     private final AssetYamlExportService assetYamlExportService;
     private final ModelRepoSyncService modelRepoSyncService;
     private final OntologyBuilder ontologyBuilder;
-    private final ShaclFactory shaclFactory;
     private final ShaclMapper shaclMapper;
-    private final ShaclConfig shaclConfig;
     private final NgsiLdBuilder ngsiLdBuilder;
+    private final ShaclService shaclService;
+    private final ShaclBuilder shaclBuilder;
 
     @Autowired
     public FleetManagerImportExportService(AssetSeriesService assetSeriesService,
@@ -89,20 +92,18 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                                            ModelRepoSyncService modelRepoSyncService,
                                            OntologyBuilder ontologyBuilder,
                                            ShaclMapper shaclMapper,
-                                           ShaclFactory shaclFactory,
-                                           ShaclConfig shaclConfig,
-                                           NgsiLdBuilder ngsiLdBuilder
-    ) {
+                                           NgsiLdBuilder ngsiLdBuilder,
+                                           ShaclService shaclService, ShaclBuilder shaclBuilder) {
         this.assetSeriesService = assetSeriesService;
         this.assetService = assetService;
         this.ecosystemManagerImportExportService = ecosystemManagerImportExportService;
         this.assetYamlExportService = assetYamlExportService;
         this.modelRepoSyncService = modelRepoSyncService;
         this.ontologyBuilder = ontologyBuilder;
-        this.shaclFactory = shaclFactory;
         this.shaclMapper = shaclMapper;
-        this.shaclConfig = shaclConfig;
         this.ngsiLdBuilder = ngsiLdBuilder;
+        this.shaclService = shaclService;
+        this.shaclBuilder = shaclBuilder;
     }
 
     public void exportEntitiesToStreamAsZip(final Long companyId,
@@ -300,74 +301,50 @@ public class FleetManagerImportExportService extends BaseZipImportExport {
                 .resolve(Long.toString(companyId));
     }
 
-    public ProcessingResultDto importEntitiesFromShacl(MultipartFile file, Long companyId) throws IOException {
-        ProcessingResultDto result = new ProcessingResultDto();
-        Set<AssetSeries> existingAssetSeries = assetSeriesService.getAssetSeriesSetByCompany(companyId);
-        Path tempFile = Files.write(Files.createTempFile(null, ".ttl"),
-                file.getInputStream().readAllBytes());
+    public ImportResultDto importAssetTypeTemplate(MultipartFile file, Long companyId) throws IOException {
+        Path tempFile;
+        if (Objects.requireNonNull(file.getOriginalFilename()).toLowerCase(Locale.ROOT).endsWith(".zip")) {
+            tempFile = shaclService.handleDependenciesAndReturnFile(file, companyId, ".ttl");
+        } else {
+            tempFile = Files.write(Files.createTempFile(null, ".ttl"),
+                    file.getInputStream().readAllBytes());
+        }
         try {
-            shaclFactory.graphTriplesToShaclShapes(
-                    RDFDataMgr.loadModel(tempFile.toAbsolutePath().toString())
-                            .getGraph())
-                    .stream()
-                    .map(shape -> shaclMapper.mapToAssetSeries(shape, companyId))
-                    .forEach(assetSeries -> {
-                        if (existingAssetSeries.stream()
-                                .anyMatch(candidate -> isEqualAssetSeries(assetSeries, candidate))) {
-                            result.incSkipped();
-                        } else {
-                            changeSeriesNameIfPresent(assetSeries, existingAssetSeries);
-                            assetSeriesService.createAssetSeries(
-                                    companyId,
-                                    assetSeries.getAssetTypeTemplate().getId(),
-                                    assetSeries.getConnectivitySettings().getConnectivityType().getId(),
-                                    assetSeries.getConnectivitySettings().getConnectivityProtocol().getId(),
-                                    assetSeries
-                            );
-                            result.incHandled();
-                        }
-                    });
+            shaclService.loadShaclShapesFromFile(tempFile).stream()
+                    .filter(not(shaclMapper::assetTypeTemplateExists))
+                    .map(shaclMapper::mapAssetTypeTemplate)
+                    .forEach(shaclService::createAssetTypeTemplateIfNeeded);
         } finally {
             Files.delete(tempFile);
         }
-        return result;
+        return new ImportResultDto("Successfully imported");
     }
 
-    private void changeSeriesNameIfPresent(AssetSeries assetSeries, Set<AssetSeries> existingAssetSeries) {
-        Set<String> names = existingAssetSeries.stream().map(AssetSeries::getName).collect(Collectors.toSet());
-        if (names.contains(assetSeries.getName())) {
-            int id = 1;
-            while (names.contains(assetSeries.getName() + " " + id)) {
-                id++;
-            }
-            assetSeries.setName(assetSeries.getName() + " " + id);
-        }
+    public void exportSeriesPackage(ServletOutputStream outputStream,
+                                    Long companyId,
+                                    Long assetSeriesId) throws IOException {
+        shaclBuilder.buildAssetSeriesPackage(outputStream,
+                assetSeriesService.getAssetSeriesByCompany(companyId, assetSeriesId)
+        );
     }
 
-    private boolean isEqualAssetSeries(AssetSeries a, AssetSeries b) {
-        return a.getCompany().equals(b.getCompany())
-                && a.getAssetTypeTemplate().getId().equals(b.getAssetTypeTemplate().getId())
-                && a.getName().equals(b.getName())
-                && a.getDescription().equals(b.getDescription());
+    public void exportAssetAsNgsiLd(OutputStream outputStream, Asset asset) {
+        ngsiLdBuilder.buildAssetNgsiLd(outputStream, asset);
     }
 
-    public void exportAssetAsShacl(OutputStream outputStream, Long assetId) {
-        ShaclShape shape = shaclMapper.mapFromAsset(assetService.getAssetById(assetId));
-        ShaclWriter.out(outputStream, shape, ShaclPrefixes.getDefaultPrefixes()
-                .addPrefix(shaclConfig.getAdditionalPrefixes()));
-    }
-
-    public void exportAssetAsNgsiLd(OutputStream outputStream, Long assetId) {
-        ngsiLdBuilder.buildAssetNgsiLd(outputStream, assetService.getAssetById(assetId));
-    }
-
-    public void exportAssetShaclAndNgsiLdAsZip(ServletOutputStream outputStream, Long assetId) throws IOException {
-        String filename = ShaclHelper.toCamelCase(assetService.getAssetById(assetId).getName());
+    public void exportAssetPackageAsZip(ServletOutputStream outputStream, Long assetId) throws IOException {
+        Asset asset = assetService.getAssetById(assetId);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (ZipOutputStream zipStream = new ZipOutputStream(byteArrayOutputStream)) {
-            addFileAsZipEntry(zipStream, filename + ".ttl", null, (stream) -> exportAssetAsShacl(stream, assetId));
-            addFileAsZipEntry(zipStream, filename + ".json", null, (stream) -> exportAssetAsNgsiLd(stream, assetId));
-
+        try (ZipOutputStream zip = new ZipOutputStream(byteArrayOutputStream)) {
+            addFileAsZipEntry(zip, ShaclHelper.toCamelCase(asset.getName()) + ".json",
+                    "NGSI-LD file of asset " + asset.getName(),
+                    (stream) -> exportAssetAsNgsiLd(stream, asset));
+            addFileAsZipEntry(zip, "application.yaml",
+                    "Exemplary gateway configuration file",
+                    (stream) -> assetYamlExportService.createIriYamlFile(stream,
+                            asset, NameSpaces.IF.getPath()));
+            shaclBuilder.addFolderToZip(zip, ShaclService.DEPENDENCIES_FOLDER + "/");
+            shaclBuilder.addDependencyAssetSeries(zip, asset.getAssetSeries());
         } catch (Exception e) {
             throw new SyntaxError(e.getMessage());
         } finally {

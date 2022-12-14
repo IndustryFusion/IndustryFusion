@@ -16,15 +16,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AssetTypeTemplateQuery } from '../../../../../core/store/asset-type-template/asset-type-template.query';
 import { AssetTypeTemplateService } from '../../../../../core/store/asset-type-template/asset-type-template.service';
-import {
-  AssetTypeTemplate,
-  PublicationState
-} from '../../../../../core/store/asset-type-template/asset-type-template.model';
+import { AssetTypeTemplate, PublicationState } from '../../../../../core/store/asset-type-template/asset-type-template.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormGroup } from '@angular/forms';
 import { ID } from '@datorama/akita';
 import { DialogType } from '../../../../../shared/models/dialog-type.model';
-import { AssetTypeTemplateDialogUpdateComponent } from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
+import {
+  AssetTypeTemplateDialogUpdateComponent
+} from '../asset-type-template-dialog/asset-type-template-update-dialog/asset-type-template-dialog-update.component';
 import { ItemOptionsMenuType } from '../../../../../shared/components/ui/item-options-menu/item-options-menu.type';
 import { ConfirmationService } from 'primeng/api';
 import { FilterOption, FilterType } from '../../../../../shared/components/ui/table-filter/filter-options';
@@ -48,7 +47,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   @Input() parentAssetTypeId: ID | null;
 
   titleMapping:
-    { [k: string]: string } = { '=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates' };
+    { [k: string]: string } = {'=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates'};
 
   menuType: ItemOptionsMenuType[];
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
@@ -62,9 +61,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   activeListItem: AssetTypeTemplate;
 
   tableFilters: FilterOption[] = [
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion' },
-    { filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate' },
-    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState' }];
+    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion'},
+    {filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate'},
+    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState'}];
 
 
   private createWizardRef: DynamicDialogRef;
@@ -81,7 +80,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private uploadDownloadService: UploadDownloadService
   ) {
-     }
+  }
 
   ngOnInit() {
     this.menuType = [ItemOptionsMenuType.DELETE];
@@ -100,7 +99,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     if (assetTypeTemplate) {
       this.activeListItem = assetTypeTemplate;
       this.menuType = assetTypeTemplate.publicationState === PublicationState.PUBLISHED ?
-        [ItemOptionsMenuType.DELETE, ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2]
+        [ItemOptionsMenuType.DELETE, ItemOptionsMenuType.DOWNLOAD1, ItemOptionsMenuType.DOWNLOAD2, ItemOptionsMenuType.EXPORT_PACKAGE]
         : [ItemOptionsMenuType.UPDATE, ItemOptionsMenuType.DELETE];
     }
   }
@@ -142,7 +141,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   onUpdate() {
-    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, { width: '60%' } );
+    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, {width: '60%'});
     this.warningDialogRef.onClose.subscribe((callUpdateWizard: boolean) => {
       if (callUpdateWizard) {
         this.showUpdateWizard();
@@ -153,7 +152,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent,
       {
-        data: { assetTypeTemplate: this.activeListItem, type: DialogType.EDIT },
+        data: {assetTypeTemplate: this.activeListItem, type: DialogType.EDIT},
         header: 'Asset Type Template Editor',
         width: '70%',
       }
@@ -198,8 +197,8 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
     window.open(exportLink, '_blank');
   }
 
-  onExportShacl(): void {
-    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/eco/shaclexport`,
-      `All_Asset_Type_Templates.ttl`);
+  onExportTemplate(): void {
+    this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/eco/template/export/${this.activeListItem.id}`,
+      `${this.activeListItem.name}_v${this.activeListItem.version}.zip`);
   }
 }

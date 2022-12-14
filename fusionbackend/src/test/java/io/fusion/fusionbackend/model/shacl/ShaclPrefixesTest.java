@@ -1,8 +1,8 @@
 package io.fusion.fusionbackend.model.shacl;
 
-import io.fusion.fusionbackend.model.shacl.enums.IfsPaths;
-import io.fusion.fusionbackend.model.shacl.enums.NgsiLdPaths;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+import io.fusion.fusionbackend.model.shacl.enums.IfsKeys;
+import io.fusion.fusionbackend.model.shacl.enums.NgsiLdKeys;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
 import io.fusion.fusionbackend.service.shacl.ShaclPrefixes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,10 +60,7 @@ class ShaclPrefixesTest {
 
     @Test
     void testDefaultPrefixes() {
-        ShaclPrefixes prefixes = ShaclPrefixes.getDefaultPrefixes()
-                .addPrefix("sh", ShaclPaths.BASE_PATH)
-                .addPrefix("ngsi", NgsiLdPaths.BASE_PATH)
-                .addPrefix("ifs", IfsPaths.BASE_PATH);
+        ShaclPrefixes prefixes = ShaclPrefixes.getDefaultPrefixes();
         assertEquals("sh:testProperty", prefixes.checkAndFormatIri("http://www.w3.org/ns/shacl#testProperty"));
     }
 

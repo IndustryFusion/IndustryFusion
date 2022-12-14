@@ -15,7 +15,9 @@
 
 package io.fusion.fusionbackend.model.shacl;
 
-import io.fusion.fusionbackend.model.shacl.enums.ShaclPaths;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
+
+import java.util.stream.Collectors;
 
 public class NodeShape extends ShaclShape {
 
@@ -23,7 +25,7 @@ public class NodeShape extends ShaclShape {
 
     public NodeShape(String shapeLabel, String targetClass) {
         this.shapeLabel = shapeLabel;
-        addParameter(ShaclPaths.TARGET_CLASS, targetClass);
+        addParameter(ShaclKeys.TARGET_CLASS, targetClass);
     }
 
     public NodeShape(String targetClass) {
@@ -42,9 +44,11 @@ public class NodeShape extends ShaclShape {
     @Override
     public String toString() {
         return "NodeShape{"
-                + "shapeLabel='" + shapeLabel + '\''
-                + ", subShapes=" + subShapes
+                + parameters.entrySet().stream()
+                .map(e -> "  " + e.getKey() + ": " + e.getValue() + "\n")
+                .collect(Collectors.joining())
                 + '}';
+
     }
 
 }
