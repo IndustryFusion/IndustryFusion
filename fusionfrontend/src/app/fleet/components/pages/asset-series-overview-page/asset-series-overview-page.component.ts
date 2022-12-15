@@ -128,6 +128,6 @@ export class AssetSeriesOverviewPageComponent implements OnInit, OnDestroy {
   exportPackage(asset: Asset) {
     const companyId = this.companyQuery.getActiveId();
     this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${asset.id}`,
-      `${asset.name}-v${asset.version}.zip`);
+      `${asset.name.replace(/[^a-zA-Z0-9_-]/g, '')}-v${asset.version}.zip`);
   }
 }

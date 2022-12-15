@@ -316,6 +316,6 @@ export class RoomsListComponent implements OnInit {
   exportNgsiLd() {
     const companyId = this.companyQuery.getActiveId();
     this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${this.activeListItem.id}`,
-      `Asset_${this.activeListItem.name}.zip`);
+      `Asset_${this.activeListItem.name.replace(/[^a-zA-Z0-9_-]/g, '')}.zip`);
   }
 }

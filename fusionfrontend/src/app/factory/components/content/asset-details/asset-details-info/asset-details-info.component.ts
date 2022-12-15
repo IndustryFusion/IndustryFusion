@@ -152,6 +152,6 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   exportNgsiLd() {
     const companyId = this.companyQuery.getActiveId();
     this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${companyId}/asset/export/${this.assetWithFields.id}`,
-      `Asset_${this.assetWithFields.name}.zip`);
+      `Asset_${this.assetWithFields.name.replace(/[^a-zA-Z0-9_-]/g, '')}.zip`);
   }
 }

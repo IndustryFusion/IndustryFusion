@@ -50,7 +50,8 @@ public enum IfsKeys implements BasicKeys {
     ASSET_TYPE_TEMPLATE(NameSpaces.IF.getPath() + "assetTypeTemplate"),
     FIELD(NameSpaces.IF.getPath() + "field"),
     VALUE(NameSpaces.IF.getPath() + "value"),
-    ASSET_TYPE(NameSpaces.IF.getPath() + "assetType");
+    ASSET_TYPE(NameSpaces.IF.getPath() + "assetType"),
+    IMAGE_KEY(NameSpaces.IF.getPath() + "imageKey");
 
     private final String path;
 

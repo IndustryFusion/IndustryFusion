@@ -172,7 +172,7 @@ export class AssetSeriesListComponent implements OnInit {
 
   exportPackage(assetSeries: AssetSeries) {
     this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/fleet/${assetSeries.companyId}/series/export/${assetSeries.id}`,
-      `${assetSeries.name}-v${assetSeries.version}.zip`);
+      `${assetSeries.name.replace(/[^a-zA-Z0-9_-]/g, '')}-v${assetSeries.version}.zip`);
 
   }
 }

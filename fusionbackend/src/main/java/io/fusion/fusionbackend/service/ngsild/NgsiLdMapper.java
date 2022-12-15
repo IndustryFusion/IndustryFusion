@@ -78,6 +78,9 @@ public class NgsiLdMapper {
         asExtraProperty(builder, IfsKeys.PROTECTION_CLASS, XSD.xstring,
                 (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
                         Optional.ofNullable(asset.getProtectionClass()).orElse("")));
+        asExtraProperty(builder, IfsKeys.IMAGE_KEY, XSD.xstring,
+                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
+                        Optional.ofNullable(asset.getImageKey()).orElse("")));
         asExtraProperty(builder, IfsKeys.CONSTRUCTION_DATE, XSD.date,
                 (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
                         Optional.ofNullable(asset.getConstructionDate())
@@ -142,6 +145,7 @@ public class NgsiLdMapper {
         asset.setGatewayConnectivity(getAndRemoveStringPropertyFromJson(jsonAsset,
                 IfsKeys.CONNECTIVITY_PROTOCOL.getPath()));
         asset.setHandbookUrl(getAndRemoveStringPropertyFromJson(jsonAsset, IfsKeys.ASSET_MANUAL.getPath()));
+        asset.setImageKey(getAndRemoveStringPropertyFromJson(jsonAsset, IfsKeys.IMAGE_KEY.getPath()));
         asset.setVideoUrl(getAndRemoveStringPropertyFromJson(jsonAsset, IfsKeys.ASSET_VIDEO.getPath()));
         asset.setCeCertified(getAndRemoveBooleanPropertyFromJson(jsonAsset, IfsKeys.CE_CERTIFICATION.getPath()));
         asset.setProtectionClass(getAndRemoveStringPropertyFromJson(jsonAsset, IfsKeys.PROTECTION_CLASS.getPath()));

@@ -199,6 +199,6 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
 
   onExportTemplate(): void {
     this.uploadDownloadService.downloadFile(`${environment.apiUrlPrefix}/eco/template/export/${this.activeListItem.id}`,
-      `${this.activeListItem.name}_v${this.activeListItem.version}.zip`);
+      `${this.activeListItem.name.replace(/[^a-zA-Z0-9_-]/g, '')}_v${this.activeListItem.version}.zip`);
   }
 }

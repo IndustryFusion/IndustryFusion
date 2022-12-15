@@ -160,6 +160,8 @@ public class ShaclMapper {
                         assetSeries.getCustomScript(), 7L))
                 .addSubShape(asExtraPropertyShape(IfsKeys.CE_CERTIFICATION, XSD.xboolean,
                         Boolean.toString(assetSeries.getCeCertified()), 8L))
+                .addSubShape(asExtraPropertyShape(IfsKeys.IMAGE_KEY, XSD.xstring,
+                        assetSeries.getImageKey(), 9L))
                 .addSubShape(asExtraPropertyShape(IfsKeys.CONSTRUCTION_DATE, XSD.date, null, 9L))
                 .addSubShape(asExtraPropertyShape(IfsKeys.INSTALLATION_DATE, XSD.date, null, 10L));
         final int offset = shape.getSubShapes().size() + 1;
@@ -264,6 +266,13 @@ public class ShaclMapper {
     }
 
     private Set<Unit> getUnitsRecursive(Unit unit) {
+        return getUnitsRecursive(unit, new HashSet<>());
+    }
+
+    private Set<Unit> getUnitsRecursive(Unit unit, Set<Long> addedIds) {
+        if (addedIds.contains(unit.getId())) {
+            throw new SyntaxError("Endless base unit loop in unit " + unit.getName());
+        }
         Set<Unit> units = new HashSet<>();
         units.add(unit);
         if (unit.getQuantityType().getBaseUnit() != null) {
@@ -665,6 +674,7 @@ public class ShaclMapper {
                 .videoUrl(getFromExtraPropertyShape(shape, IfsKeys.ASSET_VIDEO))
                 .ceCertified(Boolean.parseBoolean(getFromExtraPropertyShape(shape, IfsKeys.CE_CERTIFICATION)))
                 .protectionClass(getFromExtraPropertyShape(shape, IfsKeys.PROTECTION_CLASS))
+                .imageKey(getFromExtraPropertyShape(shape, IfsKeys.IMAGE_KEY))
                 .company(companyService.getCompany(companyId, true))
                 .connectivitySettings(extractConnectivitySettings(shape))
                 .customScript(getFromExtraPropertyShape(shape, IfsKeys.CUSTOM_SCRIPT))

@@ -51,7 +51,8 @@ public class ShaclBuilder {
             addShaclToZip(
                     zos,
                     shaclMapper.mapFromAssetTypeTemplate(assetTypeTemplate),
-                    assetTypeTemplate.getName() + "_v" + assetTypeTemplate.getVersion() + ".ttl");
+                    ShaclHelper.toCamelCase(assetTypeTemplate.getName()) + "_v"
+                            + assetTypeTemplate.getVersion() + ".ttl");
             addFolderToZip(zos, ShaclService.DEPENDENCIES_FOLDER + "/");
             addDependencyAssetTypeTemplates(zos, ShaclHelper.asSet(assetTypeTemplate));
         } catch (IOException ioe) {
@@ -70,7 +71,8 @@ public class ShaclBuilder {
             addShaclToZip(
                     zos,
                     shaclMapper.mapFromAssetSeries(assetSeries),
-                    assetSeries.getName() + "_v" + assetSeries.getVersion() + ".ttl");
+                    ShaclHelper.toCamelCase(assetSeries.getName()) + "_v"
+                            + assetSeries.getVersion() + ".ttl");
             addFolderToZip(zos, ShaclService.DEPENDENCIES_FOLDER + "/");
             addDependencyAssetTypeTemplates(zos, ShaclHelper.asSet(assetSeries.getAssetTypeTemplate()));
         } catch (IOException ioe) {
