@@ -47,7 +47,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   @Input() parentAssetTypeId: ID | null;
 
   titleMapping:
-    { [k: string]: string } = {'=0': 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates'};
+    { [k: string]: string } = { '=0' : 'No Asset type templates', '=1': '# Asset type template', other: '# Asset type templates'};
 
   menuType: ItemOptionsMenuType[];
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
@@ -61,9 +61,9 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   activeListItem: AssetTypeTemplate;
 
   tableFilters: FilterOption[] = [
-    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion'},
-    {filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate'},
-    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState'}];
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Version', attributeToBeFiltered: 'publishedVersion'},
+    { filterType: FilterType.DATEFILTER, columnName: 'Publish date', attributeToBeFiltered: 'publishedDate'},
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Status', attributeToBeFiltered: 'publicationState'}];
 
 
   private createWizardRef: DynamicDialogRef;
@@ -141,7 +141,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   }
 
   onUpdate() {
-    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, {width: '60%'});
+    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, { width: '60%'});
     this.warningDialogRef.onClose.subscribe((callUpdateWizard: boolean) => {
       if (callUpdateWizard) {
         this.showUpdateWizard();
@@ -152,7 +152,7 @@ export class AssetTypeTemplateListComponent implements OnInit, OnDestroy {
   private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent,
       {
-        data: {assetTypeTemplate: this.activeListItem, type: DialogType.EDIT},
+        data: { assetTypeTemplate: this.activeListItem, type: DialogType.EDIT},
         header: 'Asset Type Template Editor',
         width: '70%',
       }
