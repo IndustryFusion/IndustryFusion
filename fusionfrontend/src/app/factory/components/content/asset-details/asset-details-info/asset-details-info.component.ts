@@ -55,7 +55,10 @@ export class AssetDetailsInfoComponent implements OnInit, OnChanges {
   assetIdOfImage: ID;
   assetImage: string;
 
-  dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT, ItemOptionsMenuType.ASSIGN, ItemOptionsMenuType.DELETE, ItemOptionsMenuType.EXPORT_PACKAGE];
+  dropdownMenuOptions: ItemOptionsMenuType[] = [ItemOptionsMenuType.EDIT,
+                                                ItemOptionsMenuType.ASSIGN,
+                                                ItemOptionsMenuType.DELETE,
+                                                ItemOptionsMenuType.EXPORT_PACKAGE];
 
   constructor(private assetDetailMenuService: AssetDetailMenuService,
               private factoryResolver: FactoryResolver,

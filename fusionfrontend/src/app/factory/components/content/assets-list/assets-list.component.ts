@@ -101,16 +101,16 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
   private onboardingDialogRef: DynamicDialogRef;
 
   titleMapping:
-    { [k: string]: string } = {'=0': 'No assets', '=1': '# Asset', other: '# Assets'};
+    { [k: string]: string } = { '=0': 'No assets', '=1': '# Asset', other: '# Assets'};
 
   ItemOptionsMenuType = ItemOptionsMenuType;
   TableSelectedItemsBarType = TableSelectedItemsBarType;
 
-  tableFilters: FilterOption[] = [{filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category'},
-    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer'},
-    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName'},
-    {filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'},
-    {filterType: FilterType.STATUSFILTER, columnName: 'Status', attributeToBeFiltered: 'status'}];
+  tableFilters: FilterOption[] = [{ filterType: FilterType.DROPDOWNFILTER, columnName: 'Category', attributeToBeFiltered: 'category'},
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Manufacturer', attributeToBeFiltered: 'manufacturer'},
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Room', attributeToBeFiltered: 'roomName'},
+    { filterType: FilterType.DROPDOWNFILTER, columnName: 'Factory Site', attributeToBeFiltered: 'factorySiteName'},
+    { filterType: FilterType.STATUSFILTER, columnName: 'Status', attributeToBeFiltered: 'status'}];
 
   constructor(
     private assetService: AssetService,
@@ -135,7 +135,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
     this.statusType = RouteHelpers.findParamInFullActivatedRoute(this.activatedRoute.snapshot, 'statusType');
 
     if (this.type === AssetListType.SUBSYSTEMS) {
-      this.titleMapping = {'=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems'};
+      this.titleMapping = { '=0': 'No subsystems', '=1': '# Subsystem', other: '# Subsystems'};
     }
 
     this.updateAlertSeverityOnNewAlerts();
@@ -222,7 +222,7 @@ export class AssetsListComponent implements OnInit, OnChanges, OnDestroy {
       },
       header: 'Select Asset for Onboarding',
       width: '70%',
-      contentStyle: {'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%'},
+      contentStyle: { 'padding-left': '6%', 'padding-right': '6%', 'padding-top': '1.5%'},
     });
 
     this.onboardingDialogRef.onClose.subscribe((assetFormValues: FactoryAssetDetails) => {

@@ -67,7 +67,7 @@ export class RoomsListComponent implements OnInit {
   oldRoomIds: ID[] = [];
 
   roomMapping:
-    { [k: string]: string } = {'=0': 'No room', '=1': '# Room', other: '# Rooms'};
+    { [k: string]: string } = { '=0': 'No room', '=1': '# Room', other: '# Rooms'};
 
   rowsPerPageOptions: number[] = TableHelper.rowsPerPageOptions;
   rowCount = TableHelper.defaultRowCount;
@@ -130,7 +130,7 @@ export class RoomsListComponent implements OnInit {
     if (this.rooms$ && this.factorySites) {
       const roomsWithFactorySite: Room[] = [];
       rooms.forEach((room, index) => {
-        roomsWithFactorySite.push({...room});
+        roomsWithFactorySite.push({ ...room});
         roomsWithFactorySite[index].factorySite = this.factorySites.find(factorySite => factorySite.id === room.factorySiteId);
       });
       return this.sortRoomsByFactorySiteByDefault(roomsWithFactorySite);
@@ -172,7 +172,7 @@ export class RoomsListComponent implements OnInit {
         editMode: false,
       },
       header: 'Add new room to factory',
-      contentStyle: {'padding-top': '1.5%'}
+      contentStyle: { 'padding-top': '1.5%'}
     });
 
     ref.onClose.subscribe((room: Room) => {
@@ -196,7 +196,7 @@ export class RoomsListComponent implements OnInit {
         editMode: true,
       },
       header: 'Edit room',
-      contentStyle: {'padding-top': '1.5%'}
+      contentStyle: { 'padding-top': '1.5%'}
     });
 
     ref.onClose.subscribe((room: Room) => {

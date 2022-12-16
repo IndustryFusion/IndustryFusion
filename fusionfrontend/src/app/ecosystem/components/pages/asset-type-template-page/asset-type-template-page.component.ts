@@ -94,7 +94,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   }
 
   onUpdate() {
-    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, {width: '60%'});
+    this.warningDialogRef = this.dialogService.open(AssetTypeTemplateDialogUpdateComponent, { width: '60%'});
     this.warningDialogRef.onClose.subscribe((callUpdateWizard: boolean) => {
       if (callUpdateWizard) {
         this.showUpdateWizard();
@@ -106,7 +106,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
     this.publishDialogRef = this.dialogService.open(AssetTypeTemplateDialogPublishComponent,
       {
         header: `Publish ${this.assetTypeTemplate.name}?`,
-        data: {assetTypeTemplate: this.assetTypeTemplate},
+        data: { assetTypeTemplate: this.assetTypeTemplate},
         width: '70%',
       }
     );
@@ -121,7 +121,7 @@ export class AssetTypeTemplatePageComponent implements OnInit {
   private showUpdateWizard() {
     this.updateWizardRef = this.dialogService.open(AssetTypeTemplateWizardComponent,
       {
-        data: {assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT},
+        data: { assetTypeTemplate: this.assetTypeTemplate, type: DialogType.EDIT},
         header: 'Asset Type Template Editor',
         width: '70%',
       }

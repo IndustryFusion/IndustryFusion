@@ -16,7 +16,7 @@
 import { Asset, AssetWithFields } from '../../store/asset/asset.model';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders /*, HttpHeaders*/ } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { FactoryAssetDetailsWithFields } from '../../store/factory-asset-details/factory-asset-details.model';
@@ -34,7 +34,7 @@ import { KairosService } from './kairos.service';
 export class NgsiLdService {
   private static runningRequests: Map<ID, Observable<any>> = new Map<ID, Observable<any>>();
   httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   constructor(
@@ -62,10 +62,6 @@ export class NgsiLdService {
       NgsiLdService.runningRequests.set(asset.id, newRequest);
     }
     return NgsiLdService.runningRequests.get(asset.id);
-    if (this.http === this.http) {
-      console.log('AssetId:' + asset.id);
-    }
-    return EMPTY;
   }
 
   getMergedFieldsByAssetWithFields(
@@ -89,7 +85,7 @@ export class NgsiLdService {
   mergeFieldValuesToAsset(lastValues: ngsiLdLatestKeyValues,
                           assetWithFields: FactoryAssetDetailsWithFields | AssetWithFields): FieldDetails[] {
     return assetWithFields.fields.map((field) => {
-        const fieldCopy = Object.assign({}, field);
+        const fieldCopy = Object.assign({ }, field);
         const cleanedExternalName = KairosService.getFieldInstanceCleanName(field);
         const point = lastValues[cleanedExternalName];
         if (point && point !== '') {
