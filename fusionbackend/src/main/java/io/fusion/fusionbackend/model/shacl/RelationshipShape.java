@@ -15,15 +15,14 @@
 
 package io.fusion.fusionbackend.model.shacl;
 
-import io.fusion.fusionbackend.model.shacl.enums.ShaclNodeKind;
-import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
 import io.fusion.fusionbackend.model.shacl.enums.BasicKeys;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclKeys;
+import io.fusion.fusionbackend.model.shacl.enums.ShaclNodeKind;
 
 import java.util.Map;
 
-public class PropertyShape extends ShaclShape {
-
-    public PropertyShape(ShaclNodeKind nodeKind, String path) {
+public class RelationshipShape extends ShaclShape {
+    public RelationshipShape(ShaclNodeKind nodeKind, String path) {
         addParameter(ShaclKeys.PATH, path);
         addParameter(ShaclKeys.NODE_KIND, nodeKind.getPath());
     }
@@ -31,5 +30,4 @@ public class PropertyShape extends ShaclShape {
     public Map<BasicKeys, String> getParameters() {
         return parameters;
     }
-
 }

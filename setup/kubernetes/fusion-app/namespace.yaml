@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: fusion-app
+  labels:
+    name: fusion-app

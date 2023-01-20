@@ -62,8 +62,7 @@ export class KairosService {
   }
 
   public static getFieldIri(fieldDetails: FieldDetails): string {
-    const cleanedExternalName = this.getFieldInstanceCleanName(fieldDetails);
-    return `https://industry-fusion.com/field/${cleanedExternalName}`;
+    return fieldDetails.name;
   }
 
   /**

@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static io.fusion.fusionbackend.service.shacl.ShaclHelper.isIri;
+
 
 @Service
 @Transactional
@@ -63,11 +65,15 @@ public class FieldInstanceService {
         if (fieldTarget == null) {
             return null;
         }
+        if (isIri(fieldTarget.getName())) {
+            String basename = fieldTarget.getName().replaceFirst(".*[/#](\\w+).*","$1");
+            return basename;
+        } else {
+            String nameWithUnderscores = fieldTarget.getName().replace(' ', '_').replace('-', '_');
+            String nameWithOnlyCharactersNumbersAndUnderscores = nameWithUnderscores.replaceAll("\\W", "");
 
-        String nameWithUnderscores = fieldTarget.getName().replace(' ', '_').replace('-', '_');
-        String nameWithOnlyCharactersNumbersAndUnderscores = nameWithUnderscores.replaceAll("\\W", "");
-
-        return nameWithOnlyCharactersNumbersAndUnderscores.toLowerCase();
+            return nameWithOnlyCharactersNumbersAndUnderscores.toLowerCase();
+        }
     }
 
     public boolean isThresholdsValid(FieldInstance fieldInstance,

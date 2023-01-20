@@ -32,10 +32,10 @@ under the License.
     <input type="text" pInputText class="field-row-inputs" *ngIf="!confirmed" name="name"
            [placeholder]="'Custom ' + (fieldType === FieldType.METRIC ? 'Metric' : 'Attribute') + ' name'"
            [(ngModel)]="fieldTarget.name" />
-    <div *ngIf="confirmed" class="confirmed-name" [ngClass]="editable === true ? 'confirmed-padding' : ''">{{ fieldTarget.name }}</div>
+    <div *ngIf="confirmed" class="confirmed-name" [ngClass]="editable === true ? 'confirmed-padding' : ''">{{ fieldTarget.label }}</div>
   </div>
   <div class="info-text col-margin confirmed-name" [ngClass]="editable === true ? 'col-15' : 'col-20'">
-    {{ fieldTarget.field?.name }}
+    {{ fieldTarget.field?.label }}
   </div>
   <div class="info-text" [ngClass]="editable === true ? 'col-15' : 'col-20'">
     {{ getQuantityTypeName(fieldTarget.field?.unitId) }}

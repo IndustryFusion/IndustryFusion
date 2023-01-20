@@ -34,7 +34,7 @@ public enum ShaclKeys implements BasicKeys {
     GROUP(NameSpaces.SHACL.getPath() + "group"),
     DEFAULT_VALUE(NameSpaces.SHACL.getPath() + "defaultValue"),
     DATATYPE(NameSpaces.SHACL.getPath() + "dataType"),
-    NODE_KIND(NameSpaces.SHACL.getPath() + "NodeKind"),
+    NODE_KIND(NameSpaces.SHACL.getPath() + "nodeKind"),
     MIN_COUNT(NameSpaces.SHACL.getPath() + "minCount"),
     MAX_COUNT(NameSpaces.SHACL.getPath() + "maxCount"),
     MAX_LENGTH(NameSpaces.SHACL.getPath() + "maxLength"),

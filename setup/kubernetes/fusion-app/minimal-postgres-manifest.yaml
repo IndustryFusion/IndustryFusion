@@ -1,0 +1,21 @@
+---
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: acid-cluster
+  namespace: fusion-app
+spec:
+  teamId: acid
+  volume:
+    size: 1G
+  numberOfInstances: 1
+  users:
+    testuser:
+    - superuser
+    - createdb
+  databases:
+    foo: testuser
+  postgresql:
+    version: "12"
+    parameters:
+      wal_level: logical

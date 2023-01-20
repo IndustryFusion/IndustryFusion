@@ -16,9 +16,13 @@
 package io.fusion.fusionbackend.service.shacl;
 
 import com.codepoetics.protonpack.StreamUtils;
+//CHECKSTYLE:OFF
+// CHECKSTYLE IGNORE check FOR NEXT 1 LINES
+//CHECKSTYLE:ON
 import io.fusion.fusionbackend.model.AssetSeries;
 import io.fusion.fusionbackend.model.AssetType;
 import io.fusion.fusionbackend.model.AssetTypeTemplate;
+import io.fusion.fusionbackend.model.AssetTypeTemplatePeer;
 import io.fusion.fusionbackend.model.ConnectivitySettings;
 import io.fusion.fusionbackend.model.Field;
 import io.fusion.fusionbackend.model.FieldOption;
@@ -35,6 +39,7 @@ import io.fusion.fusionbackend.model.enums.PublicationState;
 import io.fusion.fusionbackend.model.enums.QuantityDataType;
 import io.fusion.fusionbackend.model.shacl.NodeShape;
 import io.fusion.fusionbackend.model.shacl.PropertyShape;
+import io.fusion.fusionbackend.model.shacl.RelationshipShape;
 import io.fusion.fusionbackend.model.shacl.ShaclShape;
 import io.fusion.fusionbackend.model.shacl.enums.AssetTypeKeys;
 import io.fusion.fusionbackend.model.shacl.enums.BasicKeys;
@@ -221,7 +226,7 @@ public class ShaclMapper {
 
     public ShaclShape mapFromAssetTypeTemplate(AssetTypeTemplate assetTypeTemplate) {
 
-        return new NodeShape(ShaclHelper.createIriIfNeeded(assetTypeTemplate.getName()))
+        return new NodeShape(ShaclHelper.createIriIfNeeded(assetTypeTemplate.getAssetType().getName()))
                 .addParameter(ShaclKeys.NAME, ShaclHelper.toValidText(assetTypeTemplate.getName()))
                 .addParameter(ShaclKeys.DESCRIPTION, ShaclHelper.toValidText(assetTypeTemplate.getDescription()))
                 .addParameter(IfsKeys.VERSION, assetTypeTemplate.getVersion())
@@ -235,7 +240,8 @@ public class ShaclMapper {
                         .getPublishedDate().toString()))
                 .addParameter(IfsKeys.ASSET_TYPE,
                         ShaclHelper.createIriIfNeeded(assetTypeTemplate.getAssetType().getName()))
-                .addSubShapes(mapFromAssetFieldTargets(assetTypeTemplate.getFieldTargets(), null));
+                .addSubShapes(mapFromAssetFieldTargets(assetTypeTemplate.getFieldTargets(), null))
+                .addSubShapes(mapFromAssetPeers(assetTypeTemplate.getPeers(), null));
     }
 
     public Set<ShaclShape> mapFromAssetTypeTemplates(Set<AssetTypeTemplate> assetTypeTemplates) {
@@ -359,7 +365,7 @@ public class ShaclMapper {
             FieldTarget fieldTarget,
             Long orderId,
             ShaclHelper.LambdaWrapper<ShaclShape> executeAfter) {
-        final String iri = ShaclHelper.createIriIfNeeded(fieldTarget.getName());
+        final String iri = ShaclHelper.createClassIri(fieldTarget.getName());
 
         PropertyShape shape = (PropertyShape) new PropertyShape(ShaclNodeKind.LITERAL, NgsiLdKeys.HAS_PATH.getPath())
                 .addParameter(IfsKeys.FIELD, ShaclHelper.createFieldIri(fieldTarget.getField()))
@@ -383,6 +389,30 @@ public class ShaclMapper {
                 .addSubShape(shape.addParameter(ShaclKeys.ORDER, 1));
     }
 
+
+    public RelationshipShape mapFromAssetPeer(
+            AssetTypeTemplatePeer attp,
+            Long orderId,
+            ShaclHelper.LambdaWrapper<ShaclShape> executeAfter) {
+        final String iri = ShaclHelper.createHasClassIri(attp.getPeer().getAssetType().getName());
+
+        RelationshipShape shape = (RelationshipShape) new RelationshipShape(ShaclNodeKind.IRI,
+                NgsiLdKeys.HAS_RELATIONSHIP.getPath());
+        shape.addParameter(ShaclKeys.MIN_COUNT, 1)
+                .addParameter(ShaclKeys.MAX_COUNT, 1);
+        shape.addParameter(ShaclKeys.CLASS, ShaclHelper.createClassIri(attp.getPeer().getAssetType().getName()));
+        if (executeAfter != null) {
+            executeAfter.execute(shape);
+        }
+
+        return (RelationshipShape) new RelationshipShape(ShaclNodeKind.BLANK_NODE, iri)
+                .addParameter(ShaclKeys.MIN_COUNT,
+                        attp.getMandatory() ? 1 : 0)
+                .addParameter(ShaclKeys.MAX_COUNT, 1)
+                .addParameter(ShaclKeys.ORDER, orderId)
+                .addSubShape(shape.addParameter(ShaclKeys.ORDER, 1));
+    }
+
     public List<ShaclShape> mapFromAssetFieldTargets(Collection<FieldTarget> fieldTargets,
                                                      ShaclHelper.LambdaWrapper wrapper) {
         return StreamUtils.zipWithIndex(fieldTargets.stream()
@@ -395,6 +425,16 @@ public class ShaclMapper {
                 .collect(Collectors.toList());
     }
 
+    public List<ShaclShape> mapFromAssetPeers(Collection<AssetTypeTemplatePeer> peers,
+                                              ShaclHelper.LambdaWrapper wrapper) {
+        return StreamUtils.zipWithIndex(peers.stream()
+                .sorted(Comparator.comparing(AssetTypeTemplatePeer::getId)))
+                .map(indexedPeer -> mapFromAssetPeer(
+                        indexedPeer.getValue(),
+                        1000000L + indexedPeer.getValue().getId(), wrapper)
+                )
+                .collect(Collectors.toList());
+    }
 
     private int sortByOrderId(ShaclShape a, ShaclShape b) {
         return a.getIntParameter(ShaclKeys.ORDER, 0)

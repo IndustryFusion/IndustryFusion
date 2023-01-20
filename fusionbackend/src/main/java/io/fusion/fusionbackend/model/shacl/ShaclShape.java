@@ -110,7 +110,7 @@ public abstract class ShaclShape {
             );
             resolveParametersAndSubShapes(printWriter, prefixes, indentation);
             printWriter.println(".");
-        } else if (this instanceof PropertyShape) {
+        } else if (this instanceof PropertyShape || this instanceof RelationshipShape) {
             printWriter.println(indentation
                     + "sh:property ["
             );

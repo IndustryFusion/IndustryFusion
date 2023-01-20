@@ -33,7 +33,8 @@ export class TokenInterceptor implements HttpInterceptor {
     new RegExp('^' + TokenInterceptor.ensureTrailingSlash(window.location.origin +
       this.location.prepareExternalUrl(environment.apiUrlPrefix))),
     new RegExp('^' + TokenInterceptor.ensureTrailingSlash(this.location.prepareExternalUrl(environment.apiUrlPrefix))),
-    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.apiUrlPrefix))
+    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.apiUrlPrefix)),
+    new RegExp('^' + TokenInterceptor.ensureTrailingSlash(environment.ngsiLdBrokerUrl))
   ];
 
   constructor(private keycloak: KeycloakService,

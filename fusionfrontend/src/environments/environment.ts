@@ -22,20 +22,20 @@ import { KeycloakConfig } from 'keycloak-js';
 
 export const environment = {
   production: false,
-  apiUrlPrefix: 'api',
-  kairosApiUrlPrefix: 'https://PUT-YOUR-KAIROS-URL-HERE.com/api/v1',
-  alertaApiUrlPrefix: 'https://PUT-YOUR-ALERTA-URL-HERE.com/api',
-  alertaApiKey: 'PUT-YOUR-ALERTA-APIKEY-HERE',
+  apiUrlPrefix: 'http://localhost:8080',
+  kairosApiUrlPrefix: 'http://industryfusion.local/tsdb/api/v1',
+  alertaApiUrlPrefix: 'http://industryfusion.local/alerta/api',
+  alertaApiKey: 'YsMQtkPYGTcxhuzlV0Z5iJFjjgFRw3Px',
   alertsUpdateIntervalMs: 10000,
   dataUpdateIntervalMs: 10000,
   assetStatusSampleRateMs: 5000,
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',
-  ngsiLdBrokerUrl: 'http://PUT-YOUT-NGSI-LD-URL-HERE/ngsi-ld/v1/entities',
+  ngsiLdBrokerUrl: 'http://industryfusion.local/ngsi-ld/v1/entities',
   keycloakConfig: {
-    url: 'http://localhost:4200/auth',
-    realm: 'OISP',
+    url: 'http://keycloak.local/auth',
+    realm: 'iff',
     clientId: 'fusion-frontend'
   } as KeycloakConfig
 };

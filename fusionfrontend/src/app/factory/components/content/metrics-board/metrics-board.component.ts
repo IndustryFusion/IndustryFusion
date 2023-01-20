@@ -24,6 +24,7 @@ import { environment } from '../../../../../environments/environment';
 import { takeUntil, tap } from 'rxjs/operators';
 import { NgsiLdService } from '../../../../core/services/api/ngsi-ld.service';
 import { ngsiLdLatestKeyValues } from '../../../../core/models/kairos.model';
+//import { DetailService } from '@clr/angular/data/datagrid/providers/detail.service';
 
 @Component({
   selector: 'app-metrics-board',
@@ -82,7 +83,7 @@ export class MetricsBoardComponent implements OnDestroy {
 
   private updateMetricDetails(fieldDetails: FieldDetails[]): void {
     fieldDetails.forEach(fieldDetail => {
-        this.metricsDetailMap.set(fieldDetail.externalName, {
+        this.metricsDetailMap.set(fieldDetail.name, {
           externalName: fieldDetail.externalName,
           fieldDetails: fieldDetail,
           latestValue: null
@@ -105,6 +106,9 @@ export class MetricsBoardComponent implements OnDestroy {
       if (this.metricsDetailMap.has(key)) {
         const metric = this.metricsDetailMap.get(key);
         metric.latestValue = keyValues[key];
+        if (keyValues[key] !== null && typeof keyValues[key] === 'object') {
+          metric.latestValue = keyValues[key].value;
+        }
         this.metricsDetailMap.set(key, metric);
 
         this.metricsDetailMap = new Map(this.metricsDetailMap);
