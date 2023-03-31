@@ -70,7 +70,9 @@ export class NgsiLdService {
     if (period) {
       latestPoints$ = timer(0, period).pipe(
         switchMap(() => {
+
           return this.getLatestValuesOfAsset(assetWithFields);
+
         })
       );
     } else {

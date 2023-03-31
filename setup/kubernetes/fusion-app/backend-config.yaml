@@ -1,0 +1,72 @@
+apiVersion: v1
+data:
+  application.yaml: |+
+    # Licensed under the Apache License, Version 2.0 (the "License");
+    # you may not use this file except in compliance with the License.
+    # You may obtain a copy of the License at
+    #
+    #   http://www.apache.org/licenses/LICENSE-2.0
+    #
+    # Unless required by applicable law or agreed to in writing,
+    # software distributed under the License is distributed on an
+    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    # KIND, either express or implied.  See the License for the
+    # specific language governing permissions and limitations
+    # under the License.
+
+    server:
+      error:
+        include-stacktrace: never
+
+    spring:
+      datasource:
+        hikari:
+          connectionTimeout: 20000
+          maximumPoolSize: 5
+        url: jdbc:postgresql://acid-cluster:5432/foo
+        username: testuser
+        password: VAOndDoJHphzQ5kjutyMYwFtm25XeTB8gq74XKVyfFOpQ2LO58GGZchaYDUMap4Z
+      jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+        hibernate:
+          ddl-auto: validate
+        open-in-view: false
+        database: postgresql
+
+    keycloak:
+      realm: iff
+      resource: fusion-backend
+      auth-server-url: http://keycloak.local/auth/
+      ssl-required: external
+      public-client: false
+      principal-attribute: preferred_username
+      verify-token-audience: true
+      credentials:
+        secret: SDAcNhQPDNR7AWNKNGu8wT4TKqD9uFy4
+      bearer-only: true
+      use-resource-role-mappings: true
+
+    logging:
+      level:
+        root: INFO
+
+    object-storage:
+      server-type: minio
+      server-url: http://minio.iff
+      buckets-prefix: if
+
+
+    fusionbackend:
+      modelrepo-sync-active: false
+      modelrepo-url: git@github.com:IndustryFusion/fusionmodels.git
+      modelrepo-privatekey-path: C:\Users\mreuder/.ssh/id_rsa
+
+    ngsi-broker:
+      server-url: "http://localhost:9090"
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: backend-config
+  namespace: fusion-app

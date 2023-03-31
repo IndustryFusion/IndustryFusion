@@ -20,6 +20,7 @@ import java.util.Optional;
 
 public enum NgsiLdKeys implements BasicKeys {
     HAS_PATH(NameSpaces.NGSI_LD.getPath() + "hasValue"),
+    HAS_RELATIONSHIP(NameSpaces.NGSI_LD.getPath() + "hasObject"),
     CONTEXT("@context"),
     TYPE("type"),
     VALUE("value"),

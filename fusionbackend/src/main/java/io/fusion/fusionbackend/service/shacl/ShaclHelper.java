@@ -23,6 +23,7 @@ import io.fusion.fusionbackend.model.FieldTarget;
 import io.fusion.fusionbackend.model.Unit;
 import io.fusion.fusionbackend.model.shacl.enums.NameSpaces;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -32,25 +33,49 @@ import java.util.stream.Collectors;
 public class ShaclHelper {
 
     public static String createFieldIri(Field field) {
-
-        return NameSpaces.FIELD.getPath() + escapeTurtleObjectName(field.getName());
+        if (isIri(field.getName())) {
+            return field.getName();
+        } else {
+            return NameSpaces.FIELD.getPath() + escapeTurtleObjectName(field.getName());
+        }
     }
 
     public static String createUnitIri(Unit unit) {
-        return NameSpaces.UNIT.getPath() + escapeTurtleObjectName(unit.getName());
+        return NameSpaces.UNIT.getPath() + toCamelCase(escapeTurtleObjectName(unit.getName()));
     }
 
     public static String createAssetTypeIri(AssetType assetType) {
-        return NameSpaces.ASSET_TYPE.getPath() + escapeTurtleObjectName(assetType.getName());
+        if (isIri(assetType.getName())) {
+            return assetType.getName();
+        } else {
+            return NameSpaces.ASSET_TYPE.getPath() + escapeTurtleObjectName(assetType.getName());
+        }
     }
 
     public interface LambdaWrapper<T> {
         void execute(T shape);
     }
 
+    public static String createHasClassIri(String name) {
+        if (isIri(name)) {
+            String strippedName = stripRdfClassFromIri(name);
+            return NameSpaces.FIELD.getPath() + "has" + strippedName;
+        } else {
+            return NameSpaces.FIELD.getPath() + "has" + toCamelCase(escapeTurtleObjectName(name));
+        }
+    }
+
+    public static String createClassIri(String name) {
+        if (isIri(name)) {
+            return name;
+        } else {
+            return NameSpaces.IF.getPath() + toCamelCase(escapeTurtleObjectName(name));
+        }
+    }
+
     public static String createIriIfNeeded(String candidate) {
         return isIri(candidate)
-                ? escapeTurtleObjectName(candidate)
+                ? candidate
                 : NameSpaces.IF.getPath() + escapeTurtleObjectName(candidate);
     }
 
@@ -67,7 +92,8 @@ public class ShaclHelper {
     }
 
     public static String escapeTurtleObjectName(String object) {
-        return toCamelCase(object.replaceAll("[<\"'=;()>:?.*]", "").replaceAll("_", " "));
+        //return toCamelCase(object.replaceAll("[<\"'=;()>:?.*]", "").replaceAll("_", " "));
+        return object.replaceAll("[<\"'=;()>:?.*]", "").replaceAll("_", " ");
     }
 
     public static String toCamelCase(String value) {
@@ -147,6 +173,24 @@ public class ShaclHelper {
         Set<T> ts = new HashSet<>();
         ts.add(t);
         return ts;
+    }
+
+    public static String stripRdfClassFromIri(String iri) {
+        String result = null;
+        try {
+            URL url = new URL(iri);
+
+            String path = url.getPath();
+            int lastslash = path.lastIndexOf('/');
+            result = (lastslash == -1) ? path : path.substring(lastslash + 1);
+            if (url.getRef() != null) {
+                result = url.getRef();
+            }
+        } catch (Exception e) {
+            System.out.println("Caught: " + e.getMessage());
+            result = "";
+        }
+        return result;
     }
 
 

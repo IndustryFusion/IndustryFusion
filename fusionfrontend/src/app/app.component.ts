@@ -57,7 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private periodicallyFetchAlerts() {
     if (this.FETCHING_INTERVAL_MILLISECONDS > 0) {
       this.alertResolver.resolve().subscribe();
-      this.intervalHandle = setInterval(() => this.alertResolver.resolve().subscribe(),
+      this.intervalHandle = +setInterval(() => this.alertResolver.resolve().subscribe(),
         this.FETCHING_INTERVAL_MILLISECONDS);
     }
   }

@@ -13,24 +13,38 @@
  * under the License.
  */
 
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
+
+
 import { KeycloakConfig } from 'keycloak-js';
 
 export const environment = {
-  production: true,
-  apiUrlPrefix: '/fusionapi',
-  kairosApiUrlPrefix: 'https://PUT-YOUR-KAIROS-URL-HERE.com/api/v1',
-  alertaApiUrlPrefix: 'https://PUT-YOUR-ALERTA-URL-HERE.com/api',
-  alertaApiKey: 'PUT-YOUR-ALERTA-APIKEY-HERE',
+  production: false,
+  apiUrlPrefix: '/fusionbackend',
+  kairosApiUrlPrefix: '/tsdb/api/v1',
+  alertaApiUrlPrefix: '/alerta/api',
+  alertaApiKey: 'YsMQtkPYGTcxhuzlV0Z5iJFjjgFRw3Px',
   alertsUpdateIntervalMs: 10000,
   dataUpdateIntervalMs: 10000,
   assetStatusSampleRateMs: 5000,
   weatherApiUrl: 'https://api.openweathermap.org/data/2.5/weather?',
   weatherApiKey: 'PUT-YOUR-OPENWEATHERMAP-APIKEY-HERE',
   googleMapsClientId: 'PUT-YOUR-GOOGLEMAPS-CLIENTID-HERE',
-  ngsiLdBrokerUrl: 'http://PUT-YOUT-NGSI-LD-URL-HERE/ngsi-ld/v1/entities',
+  ngsiLdBrokerUrl: '/ngsi-ld/v1/entities',
   keycloakConfig: {
-    url: 'https://PUT-YOUR-SERVER-URL-HERE.com/keycloak',
-    realm: 'OISP',
+    url: 'http://keycloak.local/auth',
+    realm: 'iff',
     clientId: 'fusion-frontend'
   } as KeycloakConfig
 };
+
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

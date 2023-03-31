@@ -52,13 +52,13 @@ export class AssetTypeTemplateService implements RestService<AssetTypeTemplate> 
   }
 
   getNextPublishVersion(assetTypeId: ID): Observable<bigint> {
-    const path = `/assettypetemplates/nextVersion/${assetTypeId}`;
+    const path = `assettypetemplates/nextVersion/${assetTypeId}`;
     return this.http.get<bigint>(`${environment.apiUrlPrefix}/${path}`, this.httpOptions);
   }
 
   getExportLink(assetTypeId: ID, asOwl: boolean): string {
     const exportSubpath = asOwl ? `owlexport` : 'jsonexport';
-    const path = `/assettypetemplates/${assetTypeId}/${exportSubpath}`;
+    const path = `assettypetemplates/${assetTypeId}/${exportSubpath}`;
     return `${environment.apiUrlPrefix}${path}`;
   }
 

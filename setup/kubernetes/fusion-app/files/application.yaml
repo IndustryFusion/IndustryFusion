@@ -1,4 +1,4 @@
-  # Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -20,9 +20,9 @@ spring:
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5
-    url: jdbc:postgresql://acid-cluster.fusion-app:5432/foo
+    url: jdbc:postgresql://acid-cluster:5432/foo
     username: testuser
-    password: VAOndDoJHphzQ5kjutyMYwFtm25XeTB8gq74XKVyfFOpQ2LO58GGZchaYDUMap4Z
+    password: dU15XF7qWQuTZhw3chylPtKmWgzZUzQudsQJj8CO1hYUXxxjEBOkKR1Yp4SANaBP
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true

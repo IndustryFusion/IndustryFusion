@@ -47,11 +47,12 @@ public class ShaclBuilder {
     public void buildAssetTypeTemplatePackage(OutputStream stream, AssetTypeTemplate assetTypeTemplate)
             throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        String basename = assetTypeTemplate.getName().replaceFirst(".*[/#](\\w+).*","$1");
         try (ZipOutputStream zos = new ZipOutputStream(bos)) {
             addShaclToZip(
                     zos,
                     shaclMapper.mapFromAssetTypeTemplate(assetTypeTemplate),
-                    ShaclHelper.toCamelCase(assetTypeTemplate.getName()) + "_v"
+                    ShaclHelper.toCamelCase(basename) + "_v"
                             + assetTypeTemplate.getVersion() + ".ttl");
             addFolderToZip(zos, ShaclService.DEPENDENCIES_FOLDER + "/");
             addDependencyAssetTypeTemplates(zos, ShaclHelper.asSet(assetTypeTemplate));

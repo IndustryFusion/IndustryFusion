@@ -53,44 +53,34 @@ public class NgsiLdMapper {
         JsonObjectBuilder builder = Json.createObjectBuilder()
                 .add(NgsiLdKeys.ID.getPath(), asset.getExternalName())
                 .add(NgsiLdKeys.TYPE.getPath(),
-                        ShaclHelper.createIriIfNeeded(asset.getAssetSeries().getName()));
-        asExtraProperty(builder, IfsKeys.SERIAL_NUMBER, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getSerialNumber()).orElse("")));
-        asExtraProperty(builder, IfsKeys.CONNECTION_STRING, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getConnectionString()).orElse("")));
-        asExtraProperty(builder, IfsKeys.CONNECTIVITY_TYPE, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getControlSystemType()).orElse("")));
-        asExtraProperty(builder, IfsKeys.CONNECTIVITY_PROTOCOL, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getGatewayConnectivity()).orElse("")));
-        asExtraProperty(builder, IfsKeys.ASSET_MANUAL, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getHandbookUrl()).orElse("")));
-        asExtraProperty(builder, IfsKeys.ASSET_VIDEO, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getVideoUrl()).orElse("")));
-        asExtraProperty(builder, IfsKeys.CE_CERTIFICATION, XSD.xboolean,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getCeCertified()).orElse(false)));
-        asExtraProperty(builder, IfsKeys.PROTECTION_CLASS, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getProtectionClass()).orElse("")));
-        asExtraProperty(builder, IfsKeys.IMAGE_KEY, XSD.xstring,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                        Optional.ofNullable(asset.getImageKey()).orElse("")));
-        asExtraProperty(builder, IfsKeys.CONSTRUCTION_DATE, XSD.date,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
+                        ShaclHelper.createIriIfNeeded(asset.getAssetSeries().getAssetTypeTemplate()
+                                .getAssetType().getName()));
+        asExtraProperty(builder, IfsKeys.SERIAL_NUMBER,
+                        Optional.ofNullable(asset.getSerialNumber()).orElse(""));
+        asExtraProperty(builder, IfsKeys.CONNECTION_STRING,
+                        Optional.ofNullable(asset.getConnectionString()).orElse(""));
+        asExtraProperty(builder, IfsKeys.CONNECTIVITY_TYPE,
+                        Optional.ofNullable(asset.getControlSystemType()).orElse(""));
+        asExtraProperty(builder, IfsKeys.CONNECTIVITY_PROTOCOL,
+                        Optional.ofNullable(asset.getGatewayConnectivity()).orElse(""));
+        asExtraProperty(builder, IfsKeys.ASSET_MANUAL,
+                        Optional.ofNullable(asset.getHandbookUrl()).orElse(""));
+        asExtraProperty(builder, IfsKeys.ASSET_VIDEO,
+                        Optional.ofNullable(asset.getVideoUrl()).orElse(""));
+        asExtraProperty(builder, IfsKeys.CE_CERTIFICATION,
+                        Optional.ofNullable(asset.getCeCertified()).orElse(false));
+        asExtraProperty(builder, IfsKeys.PROTECTION_CLASS,
+                        Optional.ofNullable(asset.getProtectionClass()).orElse(""));
+        asExtraProperty(builder, IfsKeys.IMAGE_KEY,
+                        Optional.ofNullable(asset.getImageKey()).orElse(""));
+        asExtraProperty(builder, IfsKeys.CONSTRUCTION_DATE,
                         Optional.ofNullable(asset.getConstructionDate())
                                 .map(OffsetDateTime::toString)
-                                .orElse("")));
-        asExtraProperty(builder, IfsKeys.INSTALLATION_DATE, XSD.date,
-                (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
+                                .orElse(""));
+        asExtraProperty(builder, IfsKeys.INSTALLATION_DATE,
                         Optional.ofNullable(asset.getInstallationDate())
                                 .map(OffsetDateTime::toString)
-                                .orElse("")));
+                                .orElse(""));
         asset.getFieldInstances()
                 .forEach((field) -> asFieldSourceProperty(builder, field.getFieldSource()));
         asset.getSubsystems()
@@ -98,33 +88,43 @@ public class NgsiLdMapper {
         return builder;
     }
 
-    private void asExtraProperty(JsonObjectBuilder builder, BasicKeys path, Resource dataType,
-                                 ShaclHelper.LambdaWrapper<JsonObjectBuilder> value) {
-        asProperty(builder, dataType.getURI(), path.getPath(), value);
+    private void asExtraProperty(JsonObjectBuilder builder, BasicKeys path,
+                                 String value) {
+        asProperty(builder, path.getPath(), value);
+    }
+
+    private void asExtraProperty(JsonObjectBuilder builder, BasicKeys path,
+                                 Boolean value) {
+        asProperty(builder, path.getPath(), value);
     }
 
     private void asProperty(JsonObjectBuilder builder,
-                            String type,
                             String path,
-                            ShaclHelper.LambdaWrapper<JsonObjectBuilder> value) {
-        JsonObjectBuilder valueObject = Json.createObjectBuilder()
-                .add(NgsiLdKeys.TYPE.getPath(), type);
-        value.execute(valueObject);
+                            String value) {
         builder.add(path,
                 Json.createObjectBuilder()
                         .add(NgsiLdKeys.TYPE.getPath(), "Property")
-                        .add(NgsiLdKeys.HAS_PATH.getPath(), valueObject));
+                        .add(NgsiLdKeys.HAS_PATH.getPath(), value));
+
+    }
+
+    private void asProperty(JsonObjectBuilder builder,
+                            String path,
+                            Boolean value) {
+        builder.add(path,
+                Json.createObjectBuilder()
+                        .add(NgsiLdKeys.TYPE.getPath(), "Property")
+                        .add(NgsiLdKeys.HAS_PATH.getPath(), value));
 
     }
 
     private void asFieldSourceProperty(JsonObjectBuilder builder, FieldSource source) {
         if (source.getRegister() != null) {
-            asProperty(builder, XSD.xstring.getURI(),
+            asProperty(builder,
                     ShaclHelper.createIriIfNeeded(source.getFieldTarget().getName()),
-                    (value) -> value.add(NgsiLdKeys.VALUE.getPath(),
-                            source.getValue() != null
+                    source.getValue() != null
                                     ? source.getValue()
-                                    : source.getRegister()));
+                                    : "");
         }
     }
 

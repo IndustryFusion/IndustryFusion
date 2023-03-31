@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fusionapp
+  name: fusion-backend
+  namespace: fusion-app
+spec:
+  ports:
+  - port: 8080
+    name: backend
+  - port: 80
+    name: frontend
+  selector:
+    app: fusionapp
+---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: fusion-backend
+#  name: fusion-frontend
+#  namespace: fusion-app
+#spec:
+#  ports:
+#  - port: 80
+#  selector:
+#    app: fusion-backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  name: fusionapp
+  namespace: fusion-app
+  labels:
+    app: fusionapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fusionapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: fusionapp
+    spec:
+      containers:
+      - name: fusion-backend
+        image: k3d-iff.localhost:12345/iff/fusionbackend:latest
+        ports:
+        - containerPort: 8080
+#        command: ["sleep"]
+#        args: ["10000"]
+        volumeMounts:
+        - name: application-config 
+          mountPath: "/app/resources/config/" 
+          readOnly: true
+      - name: fusion-frontend
+        image: k3d-iff.localhost:12345/iff/fusionfrontend:latest
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockercred
+      
+      volumes:
+        - name: application-config
+          configMap:
+            name: backend-config 
+            items:
+            - key: application.yaml 
+              path: application.yaml

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "start": "ng serve",
     "start-local_dev": "ng serve -c=local_dev",
     "start-local_dev-cluster": "ng serve -c=local_dev-cluster",
     "build": "ng build",
